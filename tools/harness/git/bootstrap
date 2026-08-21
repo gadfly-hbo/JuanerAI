@@ -1,0 +1,33 @@
+#!/bin/sh
+set -eu
+
+usage() {
+  echo "usage: tools/harness/git/bootstrap <macbook|mac-mini>" >&2
+}
+
+if [ "$#" -ne 1 ]; then
+  usage
+  exit 2
+fi
+
+case "$1" in
+  macbook|mac-mini) device=$1 ;;
+  *)
+    usage
+    exit 2
+    ;;
+esac
+
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+  echo "not inside a Git repository" >&2
+  exit 1
+}
+
+cd "$repo_root"
+git config --local juanerai.device "$device"
+git config --local pull.ff only
+git config --local fetch.prune true
+git config --local push.autoSetupRemote true
+
+echo "JuanerAI Git device configured: $device"
+echo "Start work with: tools/harness/git/start-work <slug>"
