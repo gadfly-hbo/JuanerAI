@@ -104,8 +104,10 @@ git pull --ff-only
 git fetch origin --prune
 ```
 
-Delete a local work branch only after its pull request is merged and its commits
-are reachable from `origin/main`.
+After a squash merge, first confirm that the pull request is merged and its
+intended tree is present on `origin/main`. The local work branch is then
+non-authoritative, but delete it only with explicit user approval; squash merge
+rewrites commit ancestry, so reachability alone cannot prove inclusion.
 
 ## What Travels Through Git
 
