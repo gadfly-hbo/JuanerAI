@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821083439858-I0JXVU",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T08:34:39.858Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "TASK-010真实MiniMax-M3重跑返回failed；进入无原始payload的有界诊断",
+  "status_after": "active",
+  "evidence_refs": []
+}

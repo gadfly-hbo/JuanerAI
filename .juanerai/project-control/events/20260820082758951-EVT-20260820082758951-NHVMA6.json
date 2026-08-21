@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820082758951-NHVMA6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-20T08:27:58.951Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "已生成新 Session handoff；下一步由用户提交首个 Xanthil CLI 详细方案，Controller 先完成只读 intake 与产品澄清。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    "/tmp/JuanerAI-Xanthil-CLI-first-project-handoff.md"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821082733719-2V6KQS",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T08:27:33.719Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "Storage现有测试漏执行replaced-root分支；Controller临时目录审计证明候选错误接受替换根",
+  "status_after": "active",
+  "evidence_refs": []
+}

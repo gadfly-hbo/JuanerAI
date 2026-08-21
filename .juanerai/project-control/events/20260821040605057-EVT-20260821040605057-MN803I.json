@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821040605057-MN803I",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T04:06:05.057Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "TASK-009 Prompt R3.1 Spec Gate PASS; configured juaner_test dispatched for C2 transport-only RED",
+  "status_after": "active",
+  "evidence_refs": []
+}

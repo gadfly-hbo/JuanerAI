@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820112827747-2FWLU7",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T11:28:27.747Z",
+  "actor": {
+    "role": "controller",
+    "session": "task004-test-design"
+  },
+  "summary": "TASK-004 pre-dispatch review 发现 placeholder concrete Adapter tests；已冻结真实临时目录合同并启动 Test role。",
+  "status_after": "active",
+  "evidence_refs": []
+}

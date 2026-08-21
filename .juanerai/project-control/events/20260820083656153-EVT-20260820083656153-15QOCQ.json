@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820083656153-15QOCQ",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-20T08:36:56.153Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-plan-intake"
+  },
+  "summary": "详细方案 intake 完成；请求一次批准首个垂直切片的范围、仓库与数据边界。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

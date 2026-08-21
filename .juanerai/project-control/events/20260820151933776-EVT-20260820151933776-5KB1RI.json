@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820151933776-5KB1RI",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T15:19:33.776Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task005-controller"
+  },
+  "summary": "TASK-005 corrected TDD Gate accepted; Pi Adapter Worker dispatched under frozen one-file scope",
+  "status_after": "active",
+  "evidence_refs": []
+}

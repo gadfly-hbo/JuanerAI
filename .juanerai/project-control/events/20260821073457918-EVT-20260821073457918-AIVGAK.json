@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821073457918-AIVGAK",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T07:34:57.918Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "B2d-B候选GREEN后发现旧取消测试合同漂移；返回Test角色",
+  "status_after": "active",
+  "evidence_refs": []
+}

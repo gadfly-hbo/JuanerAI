@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821074131575-V014RJ",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T07:41:31.575Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "Profile host-timer scheduler GREEN；静态1/1与deadline12/12通过",
+  "status_after": "active",
+  "evidence_refs": []
+}

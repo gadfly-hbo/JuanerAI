@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820115433278-KGJG3P",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T11:54:33.278Z",
+  "actor": {
+    "role": "controller",
+    "session": "task003b-worker-dispatch"
+  },
+  "summary": "TASK-003B/TASK-004 corrected RED 已接受；fresh TASK-003B Worker 先修 Application semantic-writer contract。",
+  "status_after": "active",
+  "evidence_refs": []
+}

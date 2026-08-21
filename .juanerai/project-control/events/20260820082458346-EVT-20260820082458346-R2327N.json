@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820082458346-R2327N",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T08:24:58.346Z",
+  "actor": {
+    "role": "controller",
+    "session": "agent-model-routing-validation"
+  },
+  "summary": "四个项目子 Agent 的真实 R1 默认模型路由启动验证全部 PASS：Spec/Test/Worker 为 Terra medium，Validator 为 Sol medium，零写入。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

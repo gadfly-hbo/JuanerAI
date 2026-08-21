@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820085050454-O8ZZEC",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-20T08:50:50.454Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-structure-grill"
+  },
+  "summary": "请求整体批准 XCLI-STRUCTURE-001；批准前不创建持久 schema、测试或产品实现。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

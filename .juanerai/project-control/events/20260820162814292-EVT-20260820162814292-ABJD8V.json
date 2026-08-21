@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820162814292-ABJD8V",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-20T16:28:14.292Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task006-controller"
+  },
+  "summary": "TASK-006第二轮self-audit发现runtime-value合同歧义；返回Spec最终闭合，Test/Worker保持锁定",
+  "status_after": "active",
+  "evidence_refs": []
+}

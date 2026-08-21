@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820144258458-QZAA0Q",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T14:42:58.458Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "TASK-005 revised Spec Gate PASS; fresh Test role released for corrected RED",
+  "status_after": "active",
+  "evidence_refs": []
+}

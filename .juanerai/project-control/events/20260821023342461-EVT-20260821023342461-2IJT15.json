@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821023342461-2IJT15",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T02:33:42.461Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Evidence SHA oracle conflict returned to TASK-006 Test Revision 004",
+  "status_after": "active",
+  "evidence_refs": []
+}

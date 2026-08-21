@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821024300628-WPQTFY",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T02:43:00.628Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "TASK-006 Test Revision 005 accepted; CLI-only Worker Revision 001 released",
+  "status_after": "active",
+  "evidence_refs": []
+}

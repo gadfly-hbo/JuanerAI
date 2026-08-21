@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820102141346-YC2SAH",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T10:21:41.346Z",
+  "actor": {
+    "role": "controller",
+    "session": "task002-review"
+  },
+  "summary": "TASK-002 GREEN 候选未接受，等待修正测试与 bounded revision。",
+  "status_after": "active",
+  "evidence_refs": []
+}

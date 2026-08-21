@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820153048759-JOEFOP",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T15:30:48.759Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task005-controller"
+  },
+  "summary": "TASK-005 Correction 003 isolated one stale prompt effect count; Correction 004 frozen to one assertion",
+  "status_after": "active",
+  "evidence_refs": []
+}

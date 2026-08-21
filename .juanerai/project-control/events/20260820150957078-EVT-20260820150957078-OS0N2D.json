@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820150957078-OS0N2D",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-20T15:09:57.078Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "User approved XCLI-TASK005-TEST-OVERRIDE-001; final Test Correction 002 released",
+  "status_after": "active",
+  "evidence_refs": []
+}

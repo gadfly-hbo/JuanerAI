@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820103847430-QQURP0",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-20T10:38:47.430Z",
+  "actor": {
+    "role": "controller",
+    "session": "task003-test-reopen"
+  },
+  "summary": "看板同步 TASK-002 accepted、TASK-003 Test active 与当前 8/22 测试 GREEN。",
+  "status_after": "active",
+  "evidence_refs": []
+}

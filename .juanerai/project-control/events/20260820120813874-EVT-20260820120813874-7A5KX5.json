@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820120813874-7A5KX5",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-20T12:08:13.874Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-controller"
+  },
+  "summary": "TASK-004 first GREEN attempt 69/71; storage-only Revision 001 frozen",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/xanthil-cli-local-analysis-slice/worker-task-004-revision-001.md"
+  ]
+}

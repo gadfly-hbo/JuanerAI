@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820-PROJECT-BOARD-CONTROLLER-VALIDATION",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T16:00:01+08:00",
+  "actor": { "role": "controller", "session": "project-board-observability" },
+  "summary": "项目看板通过 3 项契约测试、27 项 Chromium 交互检查、HTTP 负向边界和桌面移动端目视检查；独立验证仍待执行。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    "openspec/changes/project-board-observability/verification.md"
+  ]
+}

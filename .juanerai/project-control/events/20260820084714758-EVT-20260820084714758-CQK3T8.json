@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820084714758-CQK3T8",
+  "event_type": "change_started",
+  "occurred_at": "2026-08-20T08:47:14.758Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-first-slice"
+  },
+  "summary": "CHG-xanthil-cli-local-analysis-slice 已开始：Explore 完成，Proposal 已创建，进入完整 Spec Gate 包编写。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821092820881-NQOA8L",
+  "event_type": "accepted",
+  "occurred_at": "2026-08-21T09:28:20.881Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "Controller accepted TASK-010 and complete xanthil local-analysis Change",
+  "status_after": "active",
+  "evidence_refs": []
+}

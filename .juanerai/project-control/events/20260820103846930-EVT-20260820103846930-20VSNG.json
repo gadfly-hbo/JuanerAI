@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820103846930-20VSNG",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T10:38:46.930Z",
+  "actor": {
+    "role": "controller",
+    "session": "task003-test-reopen"
+  },
+  "summary": "TASK-002 accepted；TASK-003 因测试契约缺陷在 Worker dispatch 前重开 Test Design。",
+  "status_after": "active",
+  "evidence_refs": []
+}

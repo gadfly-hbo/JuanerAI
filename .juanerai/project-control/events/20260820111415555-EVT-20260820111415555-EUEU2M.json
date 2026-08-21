@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820111415555-EUEU2M",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T11:14:15.555Z",
+  "actor": {
+    "role": "controller",
+    "session": "task003-worker-dispatch"
+  },
+  "summary": "TASK-003 focused TDD_READY 已接受；冻结两文件 Worker 合同并进入实现。",
+  "status_after": "active",
+  "evidence_refs": []
+}

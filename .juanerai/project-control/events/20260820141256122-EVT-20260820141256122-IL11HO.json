@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820141256122-IL11HO",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T14:12:56.122Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-controller"
+  },
+  "summary": "TASK-007 install valid; ESM-only TEST-XCLI-021 revision returned to Test Design",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821023054582-QIGETX",
+  "event_type": "task_completed",
+  "occurred_at": "2026-08-21T02:30:54.582Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Proposal validator Core prerequisite accepted; original TASK-006 Worker resumed",
+  "status_after": "active",
+  "evidence_refs": []
+}

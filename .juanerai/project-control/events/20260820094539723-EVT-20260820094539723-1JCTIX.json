@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820094539723-1JCTIX",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T09:45:39.723Z",
+  "actor": {
+    "role": "controller",
+    "session": "spec-gate-pass"
+  },
+  "summary": "Controller Spec Gate PASS；进入 Test / RED，Spec 六份文档加入看板证据。",
+  "status_after": "active",
+  "evidence_refs": []
+}

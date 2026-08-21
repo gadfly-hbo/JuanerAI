@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820103847098-WUGG9O",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T10:38:47.098Z",
+  "actor": {
+    "role": "controller",
+    "session": "task003-test-reopen"
+  },
+  "summary": "TASK-003 focused Test Design correction 进行中。",
+  "status_after": "active",
+  "evidence_refs": []
+}

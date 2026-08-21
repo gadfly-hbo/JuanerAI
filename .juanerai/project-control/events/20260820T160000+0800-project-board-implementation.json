@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820-PROJECT-BOARD-IMPLEMENTATION",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-20T16:00:00+08:00",
+  "actor": { "role": "controller", "session": "project-board-observability" },
+  "summary": "只读项目看板、持久化状态、历史事件、决策资料展示和 Controller 更新工具已写入；验证尚未执行。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    "tools/harness/project-board/",
+    "openspec/changes/project-board-observability/verification.md"
+  ]
+}

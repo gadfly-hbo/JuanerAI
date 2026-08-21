@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821024531752-SLAF59",
+  "event_type": "task_completed",
+  "occurred_at": "2026-08-21T02:45:31.752Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "TASK-006 accepted at 153/153; TASK-008 full regression started",
+  "status_after": "active",
+  "evidence_refs": []
+}

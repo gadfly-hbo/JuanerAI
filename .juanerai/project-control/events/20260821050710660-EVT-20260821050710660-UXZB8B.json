@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821050710660-UXZB8B",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-21T05:07:10.660Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller"
+  },
+  "summary": "真实工具链证据排除CLI生产替换，TASK-009 R4转为embedded SDK最小修复。",
+  "status_after": "active",
+  "evidence_refs": []
+}

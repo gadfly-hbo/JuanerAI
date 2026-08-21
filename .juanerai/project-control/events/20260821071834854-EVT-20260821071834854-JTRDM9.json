@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821071834854-JTRDM9",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T07:18:34.854Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "TASK-010 R3 B2d-B active deadline测试重新激活",
+  "status_after": "active",
+  "evidence_refs": []
+}

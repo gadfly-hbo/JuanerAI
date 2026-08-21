@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821083120475-TXAIUB",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-21T08:31:20.475Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "TASK-010全回归发现E2E旧helper未迁移R3 deadlineScheduler；返回Test角色",
+  "status_after": "active",
+  "evidence_refs": []
+}

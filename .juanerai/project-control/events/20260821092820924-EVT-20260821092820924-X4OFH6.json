@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821092820924-X4OFH6",
+  "event_type": "accepted",
+  "occurred_at": "2026-08-21T09:28:20.924Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "Xanthil local-analysis first slice accepted and released for archive",
+  "status_after": "active",
+  "evidence_refs": []
+}

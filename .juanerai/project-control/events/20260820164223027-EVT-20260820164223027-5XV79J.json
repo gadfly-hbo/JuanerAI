@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820164223027-5XV79J",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T16:42:23.027Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task006-controller"
+  },
+  "summary": "TASK-006 TDD_READY accepted；释放三路径Worker，Validator仍锁定",
+  "status_after": "active",
+  "evidence_refs": []
+}

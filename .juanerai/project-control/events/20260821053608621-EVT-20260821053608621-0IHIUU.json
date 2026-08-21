@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821053608621-0IHIUU",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T05:36:08.621Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "TASK-009 R4 Phase A GREEN；Phase B focused RED 9/12 accepted，单 Adapter parser Worker 释放",
+  "status_after": "active",
+  "evidence_refs": []
+}

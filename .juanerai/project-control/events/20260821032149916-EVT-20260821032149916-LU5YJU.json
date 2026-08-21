@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821032149916-LU5YJU",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T03:21:49.916Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task009"
+  },
+  "summary": "TASK-009 real Pi RED isolated to the production Pi Adapter SDK construction boundary; configured Test returned TDD_READY and Worker repair started.",
+  "status_after": "active",
+  "evidence_refs": []
+}

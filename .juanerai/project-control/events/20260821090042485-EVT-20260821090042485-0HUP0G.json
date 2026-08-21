@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821090042485-0HUP0G",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-21T09:00:42.485Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "用户批准XCLI-TASK010-CANCEL-LINEARIZATION-001选项A",
+  "status_after": "active",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/XCLI-TASK010-CANCEL-LINEARIZATION-001.json"
+  ]
+}

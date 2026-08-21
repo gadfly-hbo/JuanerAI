@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821053253239-DK8CBY",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T05:32:53.239Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "TASK-009 R4 Phase A focused RED accepted，完整 R4 RED 将在 Phase A 后分层续建",
+  "status_after": "active",
+  "evidence_refs": []
+}

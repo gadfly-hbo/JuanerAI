@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820085841096-JKCCUT",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-20T08:58:41.096Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-structure-grill"
+  },
+  "summary": "XCLI-STRUCTURE-001 全部 A 获批，持久结构 Gate 解除。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/XCLI-STRUCTURE-001.json"
+  ]
+}

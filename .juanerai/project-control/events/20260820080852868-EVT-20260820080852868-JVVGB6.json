@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820080852868-JVVGB6",
+  "event_type": "task_completed",
+  "occurred_at": "2026-08-20T08:08:52.868Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "已创建 macOS 一键看板启动器并设置可执行权限；尚未执行双击启动验证。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    "tools/harness/project-board/Start-JuanerAI-Board.command"
+  ]
+}

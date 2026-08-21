@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820154547251-WHAZL3",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T15:45:47.251Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task005-controller"
+  },
+  "summary": "TASK-005 final RED identified as completed-state test-double conflict; Worker R2 withheld",
+  "status_after": "active",
+  "evidence_refs": []
+}

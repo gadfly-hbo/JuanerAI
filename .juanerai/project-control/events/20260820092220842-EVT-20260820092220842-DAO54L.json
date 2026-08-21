@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820092220842-DAO54L",
+  "event_type": "task_completed",
+  "occurred_at": "2026-08-20T09:22:20.842Z",
+  "actor": {
+    "role": "controller",
+    "session": "standing-delegation-authority"
+  },
+  "summary": "R2 Spec subagent 返回 SPEC_READY 和六份 OpenSpec 输出；进入 Controller Spec Gate 审查。",
+  "status_after": "active",
+  "evidence_refs": []
+}

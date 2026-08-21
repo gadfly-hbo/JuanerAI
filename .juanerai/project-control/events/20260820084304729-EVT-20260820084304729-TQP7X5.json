@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820084304729-TQP7X5",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-20T08:43:04.729Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-first-slice"
+  },
+  "summary": "用户批准 XCLI-INTAKE-001 推荐基线，首个垂直切片产品 Gate 已解除。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/XCLI-INTAKE-001.json"
+  ]
+}

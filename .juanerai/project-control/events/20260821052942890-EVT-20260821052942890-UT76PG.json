@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821052942890-UT76PG",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-21T05:29:42.890Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "TASK-009 R4 首轮 RED 因 MODEL_UNAVAILABLE 级联遮蔽及新增 AC 标签缺失退回 Test 修正",
+  "status_after": "active",
+  "evidence_refs": []
+}

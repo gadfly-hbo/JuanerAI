@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820113353915-AQGJ7B",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T11:33:53.915Z",
+  "actor": {
+    "role": "controller",
+    "session": "task003b-artifact-protocol"
+  },
+  "summary": "TASK-004 Test preflight 暴露 Artifact semantic-writer contract defect；冻结 run-explicit payload，重开 TASK-003B Test Design。",
+  "status_after": "active",
+  "evidence_refs": []
+}

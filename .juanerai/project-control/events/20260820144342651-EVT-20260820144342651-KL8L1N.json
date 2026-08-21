@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820144342651-KL8L1N",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-20T14:43:42.651Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Configured juaner_test dispatched for TASK-005 corrected RED",
+  "status_after": "active",
+  "evidence_refs": []
+}

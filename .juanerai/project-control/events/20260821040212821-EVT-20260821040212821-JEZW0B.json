@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821040212821-JEZW0B",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T04:02:12.821Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "TASK-009 nested egress tests exposed Application semantic-authority versus Adapter transport-validation ambiguity; Prompt R3 dispatched",
+  "status_after": "active",
+  "evidence_refs": []
+}

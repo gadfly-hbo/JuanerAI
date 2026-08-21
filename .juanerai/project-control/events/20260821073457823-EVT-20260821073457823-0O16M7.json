@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821073457823-0O16M7",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T07:34:57.823Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "B2d-B候选12/12 GREEN但旧取消测试与R3冲突；Worker重新锁定",
+  "status_after": "active",
+  "evidence_refs": []
+}

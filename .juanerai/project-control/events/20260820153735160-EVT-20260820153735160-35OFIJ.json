@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820153735160-35OFIJ",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T15:37:35.160Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task005-controller"
+  },
+  "summary": "TASK-005 Correction 006 isolates final sync-prompt RED capture defect",
+  "status_after": "active",
+  "evidence_refs": []
+}

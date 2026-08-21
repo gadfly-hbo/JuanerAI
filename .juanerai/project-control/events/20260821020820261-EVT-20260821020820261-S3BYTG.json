@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821020820261-S3BYTG",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T02:08:20.261Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task006-contract-controller"
+  },
+  "summary": "TASK-006 Worker零写入发现缺Proposal validator；接受共享Product Core Interface修订并返回Spec",
+  "status_after": "active",
+  "evidence_refs": []
+}

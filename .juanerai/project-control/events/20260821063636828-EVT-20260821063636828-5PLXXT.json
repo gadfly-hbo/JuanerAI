@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821063636828-5PLXXT",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T06:36:36.828Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "TASK-010 remediation Test/RED重新激活",
+  "status_after": "active",
+  "evidence_refs": []
+}

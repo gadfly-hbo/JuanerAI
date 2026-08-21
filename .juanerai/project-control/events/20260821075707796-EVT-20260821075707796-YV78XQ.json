@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821075707796-YV78XQ",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T07:57:07.796Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "Pi focused 19/20：TEST-XCLI-011误将允许的readiness文件判作Session持久化；返回Test修正证据语义",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/xanthil-cli-local-analysis-slice/spec-task-010-validator-remediation-r3.md",
+    "tests/integration/xanthil-local-analysis/local-analysis.integration.test.mjs"
+  ]
+}

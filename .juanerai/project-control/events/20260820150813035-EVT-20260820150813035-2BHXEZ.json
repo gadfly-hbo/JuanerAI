@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820150813035-2BHXEZ",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-20T15:08:13.035Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "TASK-005 clean RED retained; request one explicit final Test Correction 002 routing override",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

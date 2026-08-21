@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820152728432-RHVC8J",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T15:27:28.432Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task005-controller"
+  },
+  "summary": "TASK-005 first GREEN failed 69/92; six causal-oracle defects isolated from seventeen production defects",
+  "status_after": "active",
+  "evidence_refs": []
+}

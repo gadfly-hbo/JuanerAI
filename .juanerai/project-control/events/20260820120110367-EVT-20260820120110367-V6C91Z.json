@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820120110367-V6C91Z",
+  "event_type": "task_completed",
+  "occurred_at": "2026-08-20T12:01:10.367Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-controller"
+  },
+  "summary": "TASK-003B Controller accepted; TASK-004 real Adapter implementation dispatched",
+  "status_after": "active",
+  "evidence_refs": []
+}

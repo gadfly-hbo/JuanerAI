@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820161645909-Z1RKY6",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T16:16:45.909Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task006-controller"
+  },
+  "summary": "TASK-006初始RED后TDD Gate reopened；释放Test Correction 001，Worker保持锁定",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821054846565-KM4BV4",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T05:48:46.565Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task009"
+  },
+  "summary": "TASK-009真实MiniMax-M3验收因Pi原始消息投影过严产生因果RED；Test Gate确认，Adapter单文件Phase D已释放",
+  "status_after": "active",
+  "evidence_refs": []
+}

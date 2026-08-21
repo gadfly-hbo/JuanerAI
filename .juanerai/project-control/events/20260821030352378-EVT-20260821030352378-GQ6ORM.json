@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821030352378-GQ6ORM",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-21T03:03:52.378Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "TASK-008全量回归与静态质量门PASS，进入TASK-009真实Pi就绪与验收",
+  "status_after": "active",
+  "evidence_refs": []
+}

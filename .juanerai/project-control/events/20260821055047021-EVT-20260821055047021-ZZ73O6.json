@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821055047021-ZZ73O6",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T05:50:47.021Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task009"
+  },
+  "summary": "Phase D候选仍在Discovery立即PROTOCOL_FAILURE；Pi 0.84.2 UserMessage合同仅含role/content/timestamp，当前投影在role分流前错误要求stopReason",
+  "status_after": "active",
+  "evidence_refs": [
+    "node_modules/@earendil-works/pi-coding-agent/docs/session-format.md",
+    "openspec/changes/xanthil-cli-local-analysis-slice/verification.md"
+  ]
+}

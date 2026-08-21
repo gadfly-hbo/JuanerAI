@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "INPUT-001",
+  "type": "PRODUCT_SCOPE",
+  "status": "resolved",
+  "title": "首个 Xanthil 项目方案",
+  "why_now": "工程冷启动已经完成，但 Controller 不能自行定义首个产品场景。方案将决定用户任务、数据边界、行动语义、首个验收闭环和技术约束。",
+  "prompt": "请在新的 Codex CLI Session 中提交首个 Xanthil CLI 项目详细方案。",
+  "options": [
+    {
+      "id": "submit",
+      "label": "方案已准备，下一 Session 提交",
+      "description": "推荐。新 Session 先接收方案，再进入产品澄清和 Spec 阶段。"
+    },
+    {
+      "id": "defer",
+      "label": "稍后提交",
+      "description": "项目继续保持 PRE-INTAKE，不产生产品实现。"
+    },
+    {
+      "id": "template",
+      "label": "先获取方案检查模板",
+      "description": "Controller 只提供输入清单，不创建产品 Spec 或代码。"
+    }
+  ],
+  "recommended_option_id": "submit",
+  "document_refs": [
+    {
+      "label": "工程宪法",
+      "path": "AGENTS.md"
+    },
+    {
+      "label": "产品术语",
+      "path": "CONTEXT.md"
+    },
+    {
+      "label": "系统上下文",
+      "path": "docs/architecture/system-context.md"
+    },
+    {
+      "label": "开发编排",
+      "path": "Orchestration.md"
+    }
+  ],
+  "cli_instruction": "正式决定请在 Codex CLI 中完成；本看板不会向 Codex 提交或执行任何选择。",
+  "created_at": "2026-08-20T14:30:00+08:00",
+  "updated_at": "2026-08-20T08:36:56.064Z",
+  "resolution_summary": "用户已于 2026-08-20 提交详细方案 /Users/huangbo/Desktop/xanthil_agent_cli_product_plan_light_v1.md；Controller 已完成首轮 intake。"
+}

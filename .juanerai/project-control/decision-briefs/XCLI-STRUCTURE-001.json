@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "XCLI-STRUCTURE-001",
+  "type": "STRUCTURE_CONTRACT",
+  "status": "resolved",
+  "title": "Xanthil 首个本地运行持久合同",
+  "why_now": "首个 Change 将创建 .xanthil/runs/、run.json、Analysis Contract 和 Evidence 等耐久结构。根据结构治理规则，必须先一次确认其业务含义、粒度、身份、字段语义、生命周期、读写入口、版本和回滚。",
+  "prompt": "请在 Codex CLI 中整体确认 XCLI-STRUCTURE-001 的 13 项建议。推荐全部采用 A：一个确认合同的一次执行尝试对应一个 UUIDv7 run，核心机器合同分为 Run Manifest、Analysis Contract Snapshot 和 Evidence Index，Application 单写、终态不可变、未知版本 fail closed。",
+  "options": [
+    {
+      "id": "approve_all_a",
+      "label": "批准全部 A",
+      "description": "推荐。形成最小、闭合、可复算且 fail-closed 的首版持久合同。"
+    },
+    {
+      "id": "approve_with_changes",
+      "label": "带编号修改",
+      "description": "列出需要更改的项号和替代选项，未点名项保持 A。"
+    },
+    {
+      "id": "defer_structure",
+      "label": "暂缓持久结构",
+      "description": "首个 Change 停在 Proposal，不创建结构、测试或产品实现。"
+    }
+  ],
+  "recommended_option_id": "approve_all_a",
+  "document_refs": [
+    {
+      "label": "完整结构确认包",
+      "path": "openspec/changes/xanthil-cli-local-analysis-slice/structure-confirmation.md"
+    },
+    {
+      "label": "Change Proposal",
+      "path": "openspec/changes/xanthil-cli-local-analysis-slice/proposal.md"
+    },
+    {
+      "label": "数据权威",
+      "path": "docs/architecture/data-authority.md"
+    },
+    {
+      "label": "安全边界",
+      "path": "docs/architecture/security-boundaries.md"
+    }
+  ],
+  "cli_instruction": "看板只展示完整决策资料。正式批准请在 Codex CLI 回复：批准 XCLI-STRUCTURE-001 全部 A；如需调整，请列出项号。",
+  "created_at": "2026-08-20T16:50:00+08:00",
+  "updated_at": "2026-08-20T08:58:41.092Z",
+  "resolution_summary": "用户于 2026-08-20 批准全部 13 项 A 方案；未提出结构修改。另行要求将 Pi 默认模型从无效的 kimi-coding/k2p7 改为 xiaomi-token-plan-cn/mimo-v2.5-pro，该配置变更不修改结构决策。"
+}

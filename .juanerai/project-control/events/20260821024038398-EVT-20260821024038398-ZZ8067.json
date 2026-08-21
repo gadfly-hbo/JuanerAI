@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821024038398-ZZ8067",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T02:40:38.398Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "TASK-006 candidate 143/153; Revision 005 opened for two Test authority defects",
+  "status_after": "active",
+  "evidence_refs": []
+}

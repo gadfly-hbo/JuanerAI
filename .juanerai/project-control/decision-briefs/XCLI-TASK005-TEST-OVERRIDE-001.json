@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "XCLI-TASK005-TEST-OVERRIDE-001",
+  "type": "RISK_EXCEPTION",
+  "status": "resolved",
+  "title": "TASK-005 最后一次 Test Correction 002 路由覆盖",
+  "why_now": "TASK-005 的升级后 Test Replan 已得到健康的 72 项 focused RED，但 Test 角色在最终自审中发现仍缺少少量独立 mutation leaves。单次自动推理升级与最终命令预算均已耗尽；依据项目持久规则，继续第四轮需要用户明确覆盖 routing/proceed-despite-blocker stop line。",
+  "prompt": "是否批准一次且仅一次 TASK-005 Test Correction 002：继续使用 fresh Terra/high Test 角色，只补齐非冻结/extra facade 状态、dispose 后非 dispose 调用、tool settlement 与 late callback 等精确缺口，并授予一份新的 helper/focused RED 预算；生产 Worker、真实 Pi、凭据、网络和模型仍保持锁定？",
+  "options": [
+    {
+      "id": "approve_final_correction",
+      "label": "批准最后修正",
+      "description": "推荐。增加约 20 个独立 mutation leaves，重新建立一次完整 RED；失败后停止，不再自动追加 Test 轮次。"
+    },
+    {
+      "id": "waive_missing_leaves",
+      "label": "带风险豁免",
+      "description": "把当前 72 项 RED 作为 TDD_READY，但明确豁免遗漏的 facade/settlement 负向证据；不推荐。"
+    },
+    {
+      "id": "stop_task005",
+      "label": "暂停 TASK-005",
+      "description": "保持 Agent Adapter 和后续 CLI/Profile/Validator 锁定，等待以后重新规划。"
+    }
+  ],
+  "recommended_option_id": "approve_final_correction",
+  "document_refs": [
+    {
+      "label": "第二轮自审与 deadline clarification",
+      "path": "openspec/changes/xanthil-cli-local-analysis-slice/spec-task-005-deadline-clarification.md"
+    },
+    {
+      "label": "升级后的 Test Replan",
+      "path": "openspec/changes/xanthil-cli-local-analysis-slice/test-task-005-replan-001.md"
+    },
+    {
+      "label": "当前 Agent Runtime contract tests",
+      "path": "tests/contract/xanthil-local-analysis/local-analysis-ports.contract.test.mjs"
+    }
+  ],
+  "cli_instruction": "正式决定请在 Codex CLI 回复：批准 XCLI-TASK005-TEST-OVERRIDE-001；或选择带风险豁免/暂停。看板不会提交或执行该决定。",
+  "created_at": "2026-08-20T23:30:00+08:00",
+  "updated_at": "2026-08-20T23:42:00+08:00",
+  "resolution_summary": "用户于 2026-08-20 在 Codex CLI 明确批准 XCLI-TASK005-TEST-OVERRIDE-001。授权一次且仅一次 fresh Terra/high Test Correction 002，只补冻结的独立 mutation 证据并获得一份新 helper/focused RED 预算；不授权生产、真实 Pi、凭据、网络、模型、依赖或范围变化。"
+}

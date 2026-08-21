@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "XCLI-INTAKE-001",
+  "type": "PRODUCT_SCOPE",
+  "status": "resolved",
+  "title": "Xanthil CLI 首个垂直切片基线",
+  "why_now": "详细方案已经提交并完成首轮审查。总体方向成立，但完整 v0.1、技术验证和首个可验收切片需要分开；仓库归属、演示数据边界和首个 Change 的范围必须先一次冻结。",
+  "prompt": "请在 Codex CLI 中确认是否批准推荐基线：首个 Change 留在 JuanerAI monorepo，只验证本地非敏感合成 CSV 的 Assistant 垂直链路，排除三种 Workflow、Web Research、外部数据库、真实敏感数据和任何 Decision/Action；Pi 仅通过 Adapter 接入。",
+  "options": [
+    {
+      "id": "approve_lean_slice",
+      "label": "批准精简首切片",
+      "description": "推荐。先冻结一个可验证、可回滚的完整小闭环，再逐项扩展 v0.1。"
+    },
+    {
+      "id": "approve_full_v01",
+      "label": "整包推进 v0.1",
+      "description": "把 Assistant、三种 Workflow、Research 和多数据源作为同一批范围，工期和失败定位风险显著增加。"
+    },
+    {
+      "id": "revise_plan",
+      "label": "先修订产品方案",
+      "description": "继续停在方案评审期，先由用户调整目标、数据或仓库边界。"
+    }
+  ],
+  "recommended_option_id": "approve_lean_slice",
+  "document_refs": [
+    {
+      "label": "工程宪法",
+      "path": "AGENTS.md"
+    },
+    {
+      "label": "产品术语",
+      "path": "CONTEXT.md"
+    },
+    {
+      "label": "Ports 与 Adapters",
+      "path": "docs/architecture/ports-and-adapters.md"
+    },
+    {
+      "label": "数据权威边界",
+      "path": "docs/architecture/data-authority.md"
+    },
+    {
+      "label": "安全边界",
+      "path": "docs/architecture/security-boundaries.md"
+    }
+  ],
+  "cli_instruction": "看板仅展示决策资料；正式批准必须在 Codex CLI 中给出，批准后才可进入首个 OpenSpec Change。",
+  "created_at": "2026-08-20T16:00:00+08:00",
+  "updated_at": "2026-08-20T08:43:04.725Z",
+  "resolution_summary": "用户于 2026-08-20 在 Codex CLI 正式批准推荐基线；首个 Change 采用 monorepo、非敏感合成数据、Assistant-only、Pi Adapter 和 greenfield_fast_path。"
+}

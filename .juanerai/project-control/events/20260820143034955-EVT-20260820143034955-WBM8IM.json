@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820143034955-WBM8IM",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T14:30:34.955Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "TASK-005 SDK seam 初稿经 Controller 复核后进入 bounded Spec Revision 001",
+  "status_after": "active",
+  "evidence_refs": []
+}

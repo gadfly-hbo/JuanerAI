@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820083656071-T84LBB",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-20T08:36:56.071Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-plan-intake"
+  },
+  "summary": "已收到并审查首个 Xanthil CLI 详细方案，解除缺少方案的 blocker。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/INPUT-001.json"
+  ]
+}

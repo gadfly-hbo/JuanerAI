@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821053818502-YL2CX4",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T05:38:18.502Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "Phase B candidate 尚未接受，Worker 在 Test Correction 前锁定",
+  "status_after": "active",
+  "evidence_refs": []
+}

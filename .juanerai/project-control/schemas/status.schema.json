@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "juanerai://project-control/status/1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "project", "phase", "health", "summary", "current_objective", "next_action", "blockers", "milestones", "agents", "metrics", "evidence", "risks", "updated_at", "updated_by"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "health": { "enum": ["active", "waiting_user", "blocked", "validating", "complete"] },
+    "project": { "type": "object" }, "phase": { "type": "object" }, "summary": { "type": "string" }, "current_objective": { "type": "string" }, "next_action": { "type": "string" },
+    "blockers": { "type": "array" }, "milestones": { "type": "array" }, "agents": { "type": "array" }, "metrics": { "type": "array" }, "evidence": { "type": "array" }, "risks": { "type": "array" },
+    "updated_at": { "type": "string", "format": "date-time" }, "updated_by": { "type": "object" }
+  }
+}

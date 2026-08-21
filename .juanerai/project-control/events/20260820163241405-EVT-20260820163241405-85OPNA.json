@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820163241405-85OPNA",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T16:32:41.405Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task006-controller"
+  },
+  "summary": "TASK-006 Runtime Value revised Spec Gate PASS；释放final Test Correction 002",
+  "status_after": "active",
+  "evidence_refs": []
+}

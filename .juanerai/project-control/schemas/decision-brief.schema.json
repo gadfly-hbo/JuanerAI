@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "juanerai://project-control/decision-brief/1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "brief_id", "type", "status", "title", "why_now", "prompt", "options", "recommended_option_id", "document_refs", "cli_instruction", "created_at", "updated_at", "resolution_summary"],
+  "properties": { "schema_version": { "const": "1.0" }, "brief_id": { "type": "string" }, "type": { "type": "string" }, "status": { "type": "string" }, "title": { "type": "string" }, "why_now": { "type": "string" }, "prompt": { "type": "string" }, "options": { "type": "array" }, "recommended_option_id": { "type": "string" }, "document_refs": { "type": "array" }, "cli_instruction": { "type": "string" }, "created_at": { "type": "string", "format": "date-time" }, "updated_at": { "type": "string", "format": "date-time" }, "resolution_summary": { "type": ["string", "null"] } }
+}

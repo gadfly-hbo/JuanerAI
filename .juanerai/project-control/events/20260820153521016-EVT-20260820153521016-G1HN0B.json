@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820153521016-G1HN0B",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T15:35:21.016Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task005-controller"
+  },
+  "summary": "TASK-005 observability audit froze five opaque-facade oracle corrections before Worker revision",
+  "status_after": "active",
+  "evidence_refs": []
+}

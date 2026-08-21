@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820101635541-T8BOAS",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T10:16:35.541Z",
+  "actor": {
+    "role": "controller",
+    "session": "worker-task-002"
+  },
+  "summary": "Test / RED 已完成并由 Controller 接受。",
+  "status_after": "active",
+  "evidence_refs": []
+}

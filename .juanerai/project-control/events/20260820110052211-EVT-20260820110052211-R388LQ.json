@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820110052211-R388LQ",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T11:00:52.211Z",
+  "actor": {
+    "role": "controller",
+    "session": "task003-port-protocol"
+  },
+  "summary": "TASK-003 executable Port protocol technical addendum 已记录；Test Design 对齐 Pi custom-tool callback 数据流。",
+  "status_after": "active",
+  "evidence_refs": []
+}

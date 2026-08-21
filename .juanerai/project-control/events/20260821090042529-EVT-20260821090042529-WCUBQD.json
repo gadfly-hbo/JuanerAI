@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821090042529-WCUBQD",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-21T09:00:42.529Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "Option A已批准；进入Application cancellation clarification Spec Gate",
+  "status_after": "active",
+  "evidence_refs": []
+}

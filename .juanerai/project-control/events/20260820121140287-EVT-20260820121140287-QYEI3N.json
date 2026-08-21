@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820121140287-QYEI3N",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-20T12:11:40.287Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-controller"
+  },
+  "summary": "Authorize root package.json/package-lock.json and local npm install for the frozen Pi stack",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    "openspec/changes/xanthil-cli-local-analysis-slice/design.md",
+    "openspec/changes/xanthil-cli-local-analysis-slice/tasks.md"
+  ]
+}

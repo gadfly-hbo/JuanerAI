@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820154329401-6UIOG3",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T15:43:29.401Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task005-controller"
+  },
+  "summary": "TASK-005 R1 localized five test delivery defects and one production phase gap",
+  "status_after": "active",
+  "evidence_refs": []
+}

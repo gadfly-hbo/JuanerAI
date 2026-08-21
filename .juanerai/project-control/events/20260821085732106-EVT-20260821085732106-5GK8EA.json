@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821085732106-5GK8EA",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-21T08:57:32.106Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "请求XCLI-TASK010-CANCEL-LINEARIZATION-001：pending commitSuccess终态线性化政策",
+  "status_after": "active",
+  "evidence_refs": []
+}

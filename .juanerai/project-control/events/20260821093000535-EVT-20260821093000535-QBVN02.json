@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821093000535-QBVN02",
+  "event_type": "archived",
+  "occurred_at": "2026-08-21T09:30:00.535Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "Published local-analysis baseline and archived accepted first Xanthil CLI Change",
+  "status_after": "complete",
+  "evidence_refs": []
+}

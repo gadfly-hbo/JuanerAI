@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821022416114-8CU1EG",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T02:24:16.114Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Proposal Validator Error matcher defect reopened Test Gate; unaccepted Core candidate rollback started",
+  "status_after": "active",
+  "evidence_refs": []
+}

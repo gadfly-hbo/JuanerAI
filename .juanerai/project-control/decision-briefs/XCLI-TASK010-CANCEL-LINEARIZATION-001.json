@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "XCLI-TASK010-CANCEL-LINEARIZATION-001",
+  "type": "PRODUCT_SCOPE",
+  "status": "resolved",
+  "title": "用户取消与已发出 commitSuccess 的终态赢家",
+  "why_now": "独立 Validator 发现取消竞态缺口。R3 已规定用户取消关闭后续正常准入且不立即中止 deadline signal，但没有规定取消与已发出的最终成功 manifest 谁先线性化时哪个终态权威。该选择会改变用户看到 succeeded 还是 cancelled，Application Test 与 Worker 因此必须等待明确决定。",
+  "prompt": "请选择 pending commitSuccess 的终态政策。推荐 A：已发出的成功 manifest 若先线性化则 success 权威；否则 cancelled 可终态化；deadline 在两者之前始终绝对胜出。",
+  "options": [
+    {
+      "id": "option_a_success_linearization_wins",
+      "label": "A 成功线性化优先",
+      "description": "推荐。保持现有 live signal 与原子发布合同，不新增 Adapter 机制；confirm 与 cancel 收敛到先线性化的终态。"
+    },
+    {
+      "id": "option_b_user_cancel_wins",
+      "label": "B 用户取消优先",
+      "description": "需要新增可证明阻止或排序已发出最终 rename 的 Adapter 并发机制，范围和复杂度更高。"
+    }
+  ],
+  "recommended_option_id": "option_a_success_linearization_wins",
+  "document_refs": [
+    {
+      "label": "完整并发决策包",
+      "path": "openspec/changes/xanthil-cli-local-analysis-slice/spec-task-010-r3-user-cancellation-linearization-decision.md"
+    },
+    {
+      "label": "R3 权威规范",
+      "path": "openspec/changes/xanthil-cli-local-analysis-slice/spec-task-010-validator-remediation-r3.md"
+    },
+    {
+      "label": "独立验证与修复证据",
+      "path": "openspec/changes/xanthil-cli-local-analysis-slice/verification.md"
+    }
+  ],
+  "cli_instruction": "正式决定请在 Codex CLI 回复：批准 XCLI-TASK010-CANCEL-LINEARIZATION-001 选项 A；如选择 B，请明确回复选项 B。看板不会提交或执行该决定。",
+  "created_at": "2026-08-21T17:30:00+08:00",
+  "updated_at": "2026-08-21T09:00:42.478Z",
+  "resolution_summary": "用户于2026-08-21在Codex CLI批准选项A：已发出commitSuccess若先线性化则succeeded权威；否则cancelled可终态化；deadline始终绝对优先。"
+}

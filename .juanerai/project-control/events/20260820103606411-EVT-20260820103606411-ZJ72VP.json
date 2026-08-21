@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820103606411-ZJ72VP",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-20T10:36:06.411Z",
+  "actor": {
+    "role": "controller",
+    "session": "task002-revision-002"
+  },
+  "summary": "看板同步 Test 完成、Worker active 与 Revision 002 证据。",
+  "status_after": "active",
+  "evidence_refs": []
+}

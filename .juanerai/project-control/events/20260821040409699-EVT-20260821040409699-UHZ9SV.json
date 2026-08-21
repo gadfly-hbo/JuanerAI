@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821040409699-UHZ9SV",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-21T04:04:09.699Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "Controller withheld TASK-009 Prompt R3 Spec Gate: Test C2 disposition contradicted the accepted transport-versus-business authority split; precise R3.1 table requested",
+  "status_after": "active",
+  "evidence_refs": []
+}

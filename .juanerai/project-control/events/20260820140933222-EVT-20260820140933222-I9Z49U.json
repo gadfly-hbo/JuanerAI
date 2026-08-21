@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820140933222-I9Z49U",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T14:09:33.222Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-controller"
+  },
+  "summary": "TASK-007 expected RED accepted; authorized reproducible-stack Worker dispatched",
+  "status_after": "active",
+  "evidence_refs": []
+}

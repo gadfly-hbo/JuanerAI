@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820145258832-X2NQ4T",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-20T14:52:58.832Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "TASK-005 second Test return rejected; executable Runtime deadline boundary returned to Spec",
+  "status_after": "active",
+  "evidence_refs": []
+}

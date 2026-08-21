@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821030851184-WIDNXI",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-21T03:08:51.184Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "TASK-009 readiness PASS：Pi 0.84.2、xiaomi-token-plan-cn/mimo-v2.5-pro可发现、非秘密auth status ready",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/xanthil-cli-local-analysis-slice/verification.md"
+  ]
+}

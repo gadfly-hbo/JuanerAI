@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820090019995-P64I4I",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-20T09:00:19.995Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-structure-grill"
+  },
+  "summary": "结构 Gate 已解除，Pi 默认模型配置已修正，恢复首个 Change 的 Specification/Design。",
+  "status_after": "active",
+  "evidence_refs": []
+}

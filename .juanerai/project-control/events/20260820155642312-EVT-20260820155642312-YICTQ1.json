@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820155642312-YICTQ1",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-20T15:56:42.312Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task006-controller"
+  },
+  "summary": "TASK-006 Test stopped before write: seven CLI/Profile contract gaps routed to Spec as one package",
+  "status_after": "active",
+  "evidence_refs": []
+}

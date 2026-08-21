@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821053253108-ORO3LY",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T05:32:53.108Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "TASK-009 R4 Phase A TDD_READY accepted；三路径最小 Worker 释放，Phase B 与 Validator 保持锁定",
+  "status_after": "active",
+  "evidence_refs": []
+}

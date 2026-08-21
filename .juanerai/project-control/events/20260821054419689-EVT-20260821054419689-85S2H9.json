@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821054419689-85S2H9",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T05:44:19.689Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "TASK-009 R4 deterministic GREEN accepted；real MiniMax-M3 TEST-XCLI-013 released",
+  "status_after": "active",
+  "evidence_refs": []
+}

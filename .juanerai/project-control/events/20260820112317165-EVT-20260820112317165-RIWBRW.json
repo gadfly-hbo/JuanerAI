@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820112317165-RIWBRW",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T11:23:17.165Z",
+  "actor": {
+    "role": "controller",
+    "session": "task003-replan-001"
+  },
+  "summary": "TASK-003 第二次停止后完成 Controller 自审；拒绝追加 revision，fresh Replan 001 只修 cancellation quiescence ordering。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820082220714-GVUCSU",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T08:22:20.714Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "开始四个项目子 Agent 的真实 R1 默认模型路由启动验证：Spec/Test/Worker 为 Terra medium，Validator 为 Sol medium。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    "docs/governance/agent-model-routing.md"
+  ]
+}

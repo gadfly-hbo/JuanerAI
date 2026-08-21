@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820145649799-1OV4BT",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-20T14:56:49.799Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Runtime deadline boundary frozen; fresh Terra/high TASK-005 Test Replan 001 released",
+  "status_after": "active",
+  "evidence_refs": []
+}

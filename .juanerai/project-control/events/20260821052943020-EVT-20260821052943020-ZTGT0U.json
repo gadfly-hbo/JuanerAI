@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821052943020-ZTGT0U",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T05:29:43.020Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "TASK-009 R4 Test/RED 重新打开，等待因果拆分与覆盖标签修正",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820155139604-6C0XHG",
+  "event_type": "task_completed",
+  "occurred_at": "2026-08-20T15:51:39.604Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task006-controller"
+  },
+  "summary": "TASK-005 deterministic evidence accepted; TASK-006 Test Design dispatched under frozen CLI/Profile/example scope",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821022741379-AJCNXP",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T02:27:41.379Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Final Proposal validator Test Gate accepted; fresh Core Worker Revision 002 released",
+  "status_after": "active",
+  "evidence_refs": []
+}

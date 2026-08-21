@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821054846610-2WH5FS",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T05:48:46.610Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task009"
+  },
+  "summary": "TASK-009 R4 Phase D进入Adapter私有投影修复",
+  "status_after": "active",
+  "evidence_refs": []
+}

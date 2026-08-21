@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "juanerai://project-control/event/1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "event_type", "occurred_at", "actor", "summary", "status_after", "evidence_refs"],
+  "properties": { "schema_version": { "const": "1.0" }, "event_id": { "type": "string" }, "event_type": { "type": "string" }, "occurred_at": { "type": "string", "format": "date-time" }, "actor": { "type": "object" }, "summary": { "type": "string" }, "status_after": { "type": "string" }, "evidence_refs": { "type": "array" } }
+}

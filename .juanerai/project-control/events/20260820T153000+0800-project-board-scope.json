@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820-PROJECT-BOARD-SCOPE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-20T15:30:00+08:00",
+  "actor": { "role": "controller", "session": "project-board-observability" },
+  "summary": "用户确认项目看板采用 Codex 到 HTML 的单向进度同步；正式决策继续在 Codex CLI 中完成。",
+  "status_after": "waiting_user",
+  "evidence_refs": ["openspec/changes/project-board-observability/proposal.md"]
+}

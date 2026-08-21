@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820103539327-RK0FYY",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-20T10:35:39.327Z",
+  "actor": {
+    "role": "controller",
+    "session": "task002-revision-002"
+  },
+  "summary": "Controller 接受最终 corrected RED 并派发 TASK-002 Revision 002。",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/xanthil-cli-local-analysis-slice/worker-task-002-revision-002.md"
+  ]
+}

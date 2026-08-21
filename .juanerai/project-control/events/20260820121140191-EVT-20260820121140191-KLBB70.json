@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820121140191-KLBB70",
+  "event_type": "accepted",
+  "occurred_at": "2026-08-20T12:11:40.191Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-controller"
+  },
+  "summary": "TASK-004 accepted at 71/71; TASK-005 waits explicit project-local dependency authorization",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821071638942-ODXM69",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-21T07:16:38.942Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task010-r3"
+  },
+  "summary": "移除已由TASK-009 R4验证关闭的过期Prompt R2 blocker",
+  "status_after": "active",
+  "evidence_refs": []
+}

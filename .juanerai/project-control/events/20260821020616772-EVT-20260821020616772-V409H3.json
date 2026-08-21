@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821020616772-V409H3",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-21T02:06:16.772Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-language-strategy"
+  },
+  "summary": "用户确认JuanerAI TypeScript-first语言战略；记录ADR并保持当前.mjs切片合同不变",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821021254926-2AQ5YG",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T02:12:54.926Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Proposal Validator revised Spec Gate PASS; Test RED released",
+  "status_after": "active",
+  "evidence_refs": []
+}

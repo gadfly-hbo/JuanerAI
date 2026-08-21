@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820100619600-375KNS",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T10:06:19.600Z",
+  "actor": {
+    "role": "controller",
+    "session": "tdd-gate-reopened"
+  },
+  "summary": "Controller 在 Worker dispatch 前重开 TDD Gate：修复 tautological 与 label-only coverage；无生产实现已启动。",
+  "status_after": "active",
+  "evidence_refs": []
+}

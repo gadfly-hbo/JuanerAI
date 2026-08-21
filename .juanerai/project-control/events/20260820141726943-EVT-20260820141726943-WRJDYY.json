@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820141726943-WRJDYY",
+  "event_type": "accepted",
+  "occurred_at": "2026-08-20T14:17:26.943Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-controller"
+  },
+  "summary": "TASK-007 accepted; TASK-005 offline SDK seam returned to bounded Spec revision",
+  "status_after": "active",
+  "evidence_refs": []
+}

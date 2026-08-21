@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821055547899-O625SA",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T05:55:47.899Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-task009"
+  },
+  "summary": "真实Pi事件序列确认Execution含3个routine toolResult message_end；官方extensions文档说明message_end覆盖user/assistant/toolResult，当前raw投影需忽略toolResult而保留独立tool_execution_*校验",
+  "status_after": "active",
+  "evidence_refs": [
+    "node_modules/@earendil-works/pi-coding-agent/docs/extensions.md",
+    "node_modules/@earendil-works/pi-coding-agent/docs/session-format.md",
+    "openspec/changes/xanthil-cli-local-analysis-slice/design.md"
+  ]
+}

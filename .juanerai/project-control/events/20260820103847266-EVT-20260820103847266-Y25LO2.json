@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820103847266-Y25LO2",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T10:38:47.266Z",
+  "actor": {
+    "role": "controller",
+    "session": "task003-test-reopen"
+  },
+  "summary": "TASK-003 Worker 等待 corrected RED；已接受的 TASK-002 保持不变。",
+  "status_after": "active",
+  "evidence_refs": []
+}

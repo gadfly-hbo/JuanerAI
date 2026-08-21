@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820144816477-177FIS",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T14:48:16.477Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "TASK-005 first RED clean but coverage-incomplete; Test Revision 001 frozen",
+  "status_after": "active",
+  "evidence_refs": []
+}

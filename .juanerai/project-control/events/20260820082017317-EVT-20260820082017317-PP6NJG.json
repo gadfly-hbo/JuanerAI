@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820082017317-PP6NJG",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-20T08:20:17.317Z",
+  "actor": {
+    "role": "controller",
+    "session": "agent-model-routing"
+  },
+  "summary": "四个项目子 Agent 已切换为中等默认推理，并启用 Controller 按 R0-R3 风险与难度自动路由、单次升级和阻塞停止规则。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

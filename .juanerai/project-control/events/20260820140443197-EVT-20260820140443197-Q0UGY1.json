@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820140443197-Q0UGY1",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-20T14:04:43.197Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-controller"
+  },
+  "summary": "User authorized exact root npm stack; TASK-007 Test Design dispatched",
+  "status_after": "active",
+  "evidence_refs": []
+}

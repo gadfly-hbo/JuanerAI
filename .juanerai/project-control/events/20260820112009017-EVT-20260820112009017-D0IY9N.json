@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820112009017-D0IY9N",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-20T11:20:09.017Z",
+  "actor": {
+    "role": "controller",
+    "session": "task003-revision-001"
+  },
+  "summary": "TASK-003 首次 focused GREEN 为 78/81；Worker 守住单次预算，Controller 已冻结并派发三项 Revision 001。",
+  "status_after": "active",
+  "evidence_refs": []
+}

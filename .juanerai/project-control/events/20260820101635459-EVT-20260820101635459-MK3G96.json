@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260820101635459-MK3G96",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-20T10:16:35.459Z",
+  "actor": {
+    "role": "controller",
+    "session": "worker-task-002"
+  },
+  "summary": "Final TDD_READY PASS；启动 R2 Worker TASK-002，进入最小实现批次。",
+  "status_after": "active",
+  "evidence_refs": []
+}

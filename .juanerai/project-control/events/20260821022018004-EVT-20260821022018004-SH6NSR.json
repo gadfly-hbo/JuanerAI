@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821022018004-SH6NSR",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T02:20:18.004Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Proposal Validator Test Gate accepted; Core-only Worker GREEN released",
+  "status_after": "active",
+  "evidence_refs": []
+}

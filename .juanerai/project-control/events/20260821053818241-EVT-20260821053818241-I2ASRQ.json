@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821053818241-I2ASRQ",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-21T05:38:18.241Z",
+  "actor": {
+    "role": "controller",
+    "session": "root-task009-controller"
+  },
+  "summary": "TASK-009 R4 Phase B candidate 自审发现 repeated think 测试覆盖缺口，返回 Test Correction",
+  "status_after": "active",
+  "evidence_refs": []
+}

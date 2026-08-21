@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821044438119-S2XN0Q",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T04:44:38.119Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller"
+  },
+  "summary": "TASK-009 真实运行暴露 embedded SDK/provider extension 与 MiniMax thinking 输出边界，重新打开 Spec Gate R4。",
+  "status_after": "active",
+  "evidence_refs": []
+}
