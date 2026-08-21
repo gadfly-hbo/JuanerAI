@@ -37,6 +37,7 @@ Cold-start documents and empty module boundaries do not authorize product implem
 - Keep Ontology, Knowledge, and Memory as distinct domain capabilities even if one infrastructure product implements several of them.
 - CLI, desktop, console, and future APIs call Application capabilities; they do not become the business core.
 - Cross-language and cross-module communication uses versioned contracts.
+- Enterprise-ready means preserving the minimum Product Core, Application, Port, Adapter, Profile, versioned-contract, and provenance boundaries needed to keep future replacement possible. It does not authorize enterprise identity, tenancy, policy, isolation, storage, audit, deployment, migration, concurrency, or recovery behavior in a personal/local Change. Review both missing preparation and premature enterprise implementation.
 
 Read docs/architecture/ before changing boundaries, persistence, package formats, runtime behavior, or deployment profiles.
 
@@ -51,6 +52,8 @@ Each non-trivial change belongs to openspec/changes/<change-id>/ and declares al
 ## Reuse and Complexity Control
 
 Before sizing a post-bootstrap Change, or when the same behavior reaches a second Spec clarification, Test correction, or Worker revision or replan, read `docs/governance/change-complexity-control.md`. Xanthil Changes also read `docs/governance/xanthil-first-slice-reuse-baseline.md`. Crossing the stop line returns the Change to Controller root-cause review; it never waives gates or evidence.
+
+Before Spec Gate, the Controller must run `ponytail-review` on the complete OpenSpec diff when the Spec role used high/xhigh reasoning, a non-core or governance Change introduces durable machinery, enterprise readiness is used to justify present scope, or a correction expands the design. Findings return to Spec for deletion; material complexity beyond the approved goal requires explicit plain-language user approval before Test dispatch. Follow `docs/governance/change-complexity-control.md`.
 
 ## Testing
 

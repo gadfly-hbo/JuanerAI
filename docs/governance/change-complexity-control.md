@@ -26,6 +26,48 @@ An ordinary Change starts from current behavior in `openspec/specs/` and identif
 
 The target is one Spec package, one Test return, one Worker implementation, and one Validator verdict. This is an operating target, not evidence by assertion.
 
+## Overdesign Review Before Spec Gate
+
+The Controller MUST run `ponytail-review` on the complete OpenSpec diff before
+Spec Gate when any of these triggers applies:
+
+- the Spec role used high or xhigh reasoning instead of its default medium;
+- a non-core, internal, support, or governance Change introduces persistence,
+  transactions, concurrency, recovery, retry, audit, a new protocol, multiple
+  runtime modes, or background work;
+- a personal, local, single-user, single-writer, or read-only scope invokes team
+  or enterprise needs to justify present behavior;
+- a Requirement, Acceptance Criterion, configuration option, abstraction, or
+  test asset has no current consumer or approved acceptance scenario;
+- a Test, Worker, or Validator finding expands the design instead of completing
+  the approved objective; or
+- a bounded feature begins to require broad existing-test migration or a
+  dedicated complex test framework.
+
+For every triggered review:
+
+1. Apply `ponytail-review` to the complete Proposal, Specification, Design,
+   Tasks, and Test Plan diff.
+2. Map every Requirement, design mechanism, and test asset to the current
+   objective, a current consumer, and an approved acceptance scenario.
+3. Return findings without current necessity to Spec for deletion before Test
+   dispatch.
+4. When material complexity beyond the approved goal may still be necessary,
+   stop and tell the user in plain language: the original goal, the added
+   mechanism, who needs it now, its development/test/maintenance cost, and the
+   simpler alternative.
+5. Preserve that additional complexity only after explicit user approval.
+
+Enterprise readiness is a two-sided review. Preserve the minimum Core,
+Application, Port, Adapter, Profile, versioned-contract, and provenance
+boundaries needed to keep future replacement possible. Defer enterprise-only
+identity, tenancy, policy, isolation, storage, audit, deployment, migration,
+concurrency, and recovery behavior to an explicitly approved enterprise Change.
+The review checks both missing preparation and premature implementation.
+
+This review removes unnecessary complexity only. It does not waive or delete
+security, correctness, or R2/R3 controls required by the approved scope.
+
 ## Complexity Stop Line
 
 For an ordinary Change, any item below stops automatic forward dispatch and returns control to the Controller:
