@@ -1,0 +1,6 @@
+interface:
+  display_name: "JuanerAI Mac mini"
+  short_description: "在 Mac mini 开始、继续或交付 JuanerAI 工作"
+  default_prompt: "Use $juanerai-mini to 开始、继续或交付当前 Mac mini 上的 JuanerAI 工作。"
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "JuanerAI MacBook"
+  short_description: "在 MacBook 同步、审核或合并 JuanerAI 工作"
+  default_prompt: "Use $juanerai-macbook to 同步 main、审核 PR 或合并已批准工作。"
+policy:
+  allow_implicit_invocation: false
