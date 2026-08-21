@@ -1,0 +1,53 @@
+#!/bin/sh
+set -eu
+
+usage() {
+  echo "usage: tools/harness/git/start-work <lowercase-slug>" >&2
+}
+
+if [ "$#" -ne 1 ]; then
+  usage
+  exit 2
+fi
+
+slug=$1
+case "$slug" in
+  ''|*[!a-z0-9-]*|-*|*-|*--*)
+    usage
+    exit 2
+    ;;
+esac
+
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+  echo "not inside a Git repository" >&2
+  exit 1
+}
+cd "$repo_root"
+
+device=$(git config --local --get juanerai.device || true)
+case "$device" in
+  macbook|mac-mini) ;;
+  *)
+    echo "device is not configured; run tools/harness/git/bootstrap first" >&2
+    exit 1
+    ;;
+esac
+
+if [ -n "$(git status --porcelain)" ]; then
+  echo "worktree is not clean; preserve or commit the current work first" >&2
+  exit 1
+fi
+
+branch="work/$device/$slug"
+git fetch origin --prune
+if git show-ref --verify --quiet "refs/heads/$branch" ||
+   git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+  echo "branch already exists: $branch" >&2
+  exit 1
+fi
+
+git switch main
+git merge --ff-only origin/main
+git switch -c "$branch"
+
+echo "Created $branch from origin/main"
