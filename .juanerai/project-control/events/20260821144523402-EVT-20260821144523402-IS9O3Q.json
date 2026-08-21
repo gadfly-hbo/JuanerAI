@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821144523402-IS9O3Q",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-21T14:45:23.402Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pbsa"
+  },
+  "summary": "PBSA post-archive regression发现TEST-009 final-state fixture collision；撤回归档并返回Test Design",
+  "status_after": "active",
+  "evidence_refs": []
+}

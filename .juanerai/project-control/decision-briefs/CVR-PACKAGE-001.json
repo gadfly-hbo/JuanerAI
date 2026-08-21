@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "CVR-PACKAGE-001",
+  "type": "RISK_EXCEPTION",
+  "status": "superseded",
+  "title": "Canonical Validation Runner 执行合同",
+  "why_now": "首切已证明业务链路，但不同角色仍会继承错误的 Node/npm PATH。进入实现前必须冻结单一离线入口、精确工具版本、失败语义和真实模型调用门禁。",
+  "prompt": "是否批准 CVR-PACKAGE-001 的 8 项推荐 A：固定 POSIX 入口和精确工具链，顺序执行完整离线矩阵，输出瞬时 JSONL 结果，并以 CLI 参数、环境变量和单次用户授权共同保护真实模型叶？",
+  "options": [
+    {
+      "id": "approve_all_a",
+      "label": "批准全部 A",
+      "description": "推荐。进入 Test Design，只建立公共入口的因果 RED；不执行真实模型、不安装依赖、不修改产品代码。"
+    },
+    {
+      "id": "approve_with_changes",
+      "label": "带编号修改",
+      "description": "列出需调整的项号和替代合同，未点名项保持 A，随后重新收敛 Spec Gate。"
+    },
+    {
+      "id": "defer",
+      "label": "暂缓 Runner",
+      "description": "保持现有直接验证命令和逐次 PATH 拼接，不启动 Test 或 Worker。"
+    }
+  ],
+  "recommended_option_id": "approve_all_a",
+  "document_refs": [
+    {
+      "label": "完整批准包",
+      "path": "openspec/changes/canonical-validation-runner/approval-package.md"
+    },
+    {
+      "label": "候选规范",
+      "path": "openspec/changes/canonical-validation-runner/specs/canonical-validation/spec.md"
+    },
+    {
+      "label": "测试计划",
+      "path": "openspec/changes/canonical-validation-runner/test-plan.md"
+    }
+  ],
+  "cli_instruction": "正式决定请在 Codex CLI 回复：批准 CVR-PACKAGE-001 全部 A；如需调整，请列出项号。看板不会提交或执行选择。",
+  "created_at": "2026-08-21T15:15:57Z",
+  "updated_at": "2026-08-21T15:19:48.989Z",
+  "resolution_summary": "用户拒绝首版过度设计包；删除real-model模式、JSONL协议、完整ledger和大规模模拟测试，退回R1精简Spec。"
+}

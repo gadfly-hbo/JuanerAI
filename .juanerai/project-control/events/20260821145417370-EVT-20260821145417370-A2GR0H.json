@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821145417370-A2GR0H",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T14:54:17.370Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pbsa"
+  },
+  "summary": "PBSA corrected test fresh Revalidation PASS",
+  "status_after": "complete",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821141635567-WZI8QB",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-21T14:16:35.567Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pbsa-package-review"
+  },
+  "summary": "请求整体确认PBSA-PACKAGE-001最小Change方案。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

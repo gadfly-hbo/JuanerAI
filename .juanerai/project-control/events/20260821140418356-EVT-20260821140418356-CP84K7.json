@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821140418356-CP84K7",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-21T14:04:18.356Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pb-atomic-cancel"
+  },
+  "summary": "PB-ATOMIC-002已因事务化方案取消而标记为superseded。",
+  "status_after": "active",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/PB-ATOMIC-002.json"
+  ]
+}

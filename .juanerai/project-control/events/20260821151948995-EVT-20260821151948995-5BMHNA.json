@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821151948995-5BMHNA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-21T15:19:48.995Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-cvr-simplification"
+  },
+  "summary": "CVR-PACKAGE-001被拒绝并标记为superseded。",
+  "status_after": "active",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/CVR-PACKAGE-001.json"
+  ]
+}

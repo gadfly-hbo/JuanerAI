@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821144302742-D060GQ",
+  "event_type": "accepted",
+  "occurred_at": "2026-08-21T14:43:02.742Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pbsa"
+  },
+  "summary": "PBSA与基础看板独立验证PASS；Controller正式验收",
+  "status_after": "active",
+  "evidence_refs": []
+}

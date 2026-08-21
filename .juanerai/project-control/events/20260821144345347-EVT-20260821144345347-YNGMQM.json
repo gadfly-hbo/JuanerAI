@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821144345347-YNGMQM",
+  "event_type": "archived",
+  "occurred_at": "2026-08-21T14:43:45.347Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pbsa"
+  },
+  "summary": "project-board-observability与project-board-status-authority归档完成",
+  "status_after": "complete",
+  "evidence_refs": []
+}

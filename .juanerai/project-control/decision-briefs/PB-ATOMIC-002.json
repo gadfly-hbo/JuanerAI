@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "PB-ATOMIC-002",
+  "type": "STRUCTURE_CONTRACT",
+  "status": "superseded",
+  "title": "首次事务与 legacy baseline 的单一线性化",
+  "why_now": "Spec Gate 复核发现：若先独立发布 baseline.json、再发布 revision 1，第二步失败会留下已冻结 baseline，无法同时满足首次成功写入才激活和提交前失败零持久变化。",
+  "prompt": "请选择首次事务如何携带 legacy baseline；该决定只收敛首次激活，不改变 PB-ATOMIC-001 已批准的事务权威、并发冲突或兼容投影原则。",
+  "options": [
+    {
+      "id": "A",
+      "label": "嵌入 revision 1",
+      "description": "推荐。revision 1 条件携带完整 baseline_before，一次 exclusive publication 同时完成激活与首笔 mutation；不创建独立 baseline.json。"
+    },
+    {
+      "id": "B",
+      "label": "保留独立 baseline",
+      "description": "允许 baseline.json 在首笔事务失败后仍持久存在；它不改变聚合值，但会提前冻结后续读取权威。"
+    }
+  ],
+  "recommended_option_id": "A",
+  "document_refs": [
+    {
+      "label": "已批准结构决策",
+      "path": "openspec/changes/project-board-atomic-transactions/structure-confirmation.md"
+    },
+    {
+      "label": "当前设计草案",
+      "path": "openspec/changes/project-board-atomic-transactions/design.md"
+    },
+    {
+      "label": "当前规范草案",
+      "path": "openspec/changes/project-board-atomic-transactions/specs/project-board/spec.md"
+    }
+  ],
+  "cli_instruction": "正式决定请在 Codex CLI 中回复：批准 PB-ATOMIC-002 A，或批准 PB-ATOMIC-002 B。看板本身不会提交选择。",
+  "created_at": "2026-08-21T10:25:13.000Z",
+  "updated_at": "2026-08-21T14:04:18.347Z",
+  "resolution_summary": "用户于2026-08-21停止未激活的PB-ATOMIC事务化方案；该结构决定不再授权实现，后续由project-board-status-authority取代。"
+}

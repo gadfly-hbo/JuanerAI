@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "CVR-PACKAGE-002",
+  "type": "PRODUCT_SCOPE",
+  "status": "resolved",
+  "title": "精简 Canonical Validation Runner",
+  "why_now": "首版 CVR 因引入 real-model 模式、JSONL 协议和大规模模拟测试而被拒绝。重写后的 R1 Change 仅解决 PATH、工具版本和单一离线验证入口。",
+  "prompt": "是否批准精简包：一个 POSIX run，固定 PATH 和必要版本，清除真实模型门禁，按现有顺序 fail-fast 运行离线验证，流式输出且不持久化？",
+  "options": [
+    {
+      "id": "approve_all_a",
+      "label": "批准全部 A",
+      "description": "推荐。进入约四项公共入口测试的 Test Design；不调用真实模型、不改产品或依赖。"
+    },
+    {
+      "id": "approve_with_changes",
+      "label": "带编号修改",
+      "description": "列出需调整的条目，未点名项保持当前精简合同。"
+    },
+    {
+      "id": "defer",
+      "label": "暂缓 Runner",
+      "description": "继续使用现有直接命令和逐次 PATH 设置，不启动 Test 或 Worker。"
+    }
+  ],
+  "recommended_option_id": "approve_all_a",
+  "document_refs": [
+    {
+      "label": "精简批准包",
+      "path": "openspec/changes/canonical-validation-runner/approval-package.md"
+    },
+    {
+      "label": "精简规范",
+      "path": "openspec/changes/canonical-validation-runner/specs/canonical-validation/spec.md"
+    },
+    {
+      "label": "四项测试计划",
+      "path": "openspec/changes/canonical-validation-runner/test-plan.md"
+    }
+  ],
+  "cli_instruction": "正式决定请在 Codex CLI 回复：批准 CVR-PACKAGE-002 全部 A；如需调整，请列出条目。看板不会提交或执行选择。",
+  "created_at": "2026-08-21T15:24:50Z",
+  "updated_at": "2026-08-21T15:26:03.915Z",
+  "resolution_summary": "用户于2026-08-21批准CVR-PACKAGE-002全部A；精简R1规范通过Spec Gate。"
+}

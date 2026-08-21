@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821145841432-5G9VT8",
+  "event_type": "change_started",
+  "occurred_at": "2026-08-21T14:58:41.432Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-cvr"
+  },
+  "summary": "启动canonical-validation-runner独立Change",
+  "status_after": "active",
+  "evidence_refs": []
+}

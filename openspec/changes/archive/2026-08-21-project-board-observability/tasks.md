@@ -8,4 +8,4 @@
 - [x] PB-TASK-006 Add project rules and operating documentation.
 - [x] PB-TASK-006A Add a fail-safe macOS one-click launcher.
 - [x] PB-TASK-007 Execute contract, negative-path, browser, responsive, and accessibility validation.
-- [ ] PB-TASK-008 Obtain independent verification and user acceptance, then archive.
+- [x] PB-TASK-008 Obtain independent verification and Controller acceptance, then archive.

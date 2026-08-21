@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821152603920-2A6SOT",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-21T15:26:03.920Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-cvr-spec-gate"
+  },
+  "summary": "CVR-PACKAGE-002全部A获批。",
+  "status_after": "active",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/CVR-PACKAGE-002.json"
+  ]
+}

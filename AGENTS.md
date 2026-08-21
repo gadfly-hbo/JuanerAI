@@ -107,7 +107,7 @@ Read docs/architecture/data-authority.md and docs/architecture/security-boundari
 
 ## Validation and Completion
 
-Project commands are intentionally unset until the implementation stack is approved. Every Change must name its actual validation commands and evidence level before implementation.
+Use `tools/harness/validation/run` as the canonical default offline validation command. It establishes the approved command-local toolchain, runs the accepted deterministic suites, and always removes the real-model test gate; it has no real-model mode. Any actual provider/model invocation requires separate explicit user authorization and a Change-specific command. Every Change must still name its applicable focused validation commands and evidence level before implementation.
 
 No Change is complete without approved specification, expected RED, GREEN tests, required regression and quality checks, scope verification, traceability, independent verification or an explicit risk-based waiver, acceptance, and OpenSpec archive.
 
@@ -117,4 +117,4 @@ The human project board is a read-only observability surface. Formal user decisi
 
 The Controller owns `.juanerai/project-control/` and updates it at meaningful lifecycle transitions: Change start, phase transition, task completion, blocker discovery, user-decision request or resolution, RED/GREEN/verification changes, acceptance, and archive. Workers and validators return evidence to the Controller rather than writing project-control state unless their approved brief explicitly grants that path.
 
-Use `node tools/harness/project-board/status-cli.mjs` for atomic state changes. Keep `status.json` as the current read model, append material transitions under `events/`, and keep display-only decision context under `decision-briefs/`. A board display never overrides OpenSpec, tests, Task Bus state, repository evidence, or an explicit user decision in the CLI.
+Use `node tools/harness/project-board/status-cli.mjs` for state changes. `status.json` is the sole current-state authority and is atomically replaced; `events/` is best-effort non-authoritative history, and `decision-briefs/` is display-only context. The Controller is the only supported writer; concurrent Controller writes are outside the board contract. A board display never overrides OpenSpec, tests, Task Bus state, repository evidence, or an explicit user decision in the CLI.

@@ -8,4 +8,6 @@
 | PB-REQ-004 | PB-AC-004 | PB-TEST-007 | PB-TASK-003 | `status-cli.mjs` |
 | PB-REQ-005 | PB-AC-005 | PB-TEST-006 | PB-TASK-001,006 | `AGENTS.md`, `README.md` |
 
-Controller validation results are recorded in `verification.md`. Independent verification and user acceptance remain pending.
+Controller and fresh independent validation results are recorded in
+`verification.md`. All five requirements and acceptance criteria passed with
+PB-REQ-004 narrowed by the accepted `project-board-status-authority` Change.

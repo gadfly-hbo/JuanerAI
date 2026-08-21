@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821102733314-CUHIKU",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-21T10:27:33.314Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pb-atomic-002"
+  },
+  "summary": "PB-ATOMIC-002选项A已批准并写入结构决策账本。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/PB-ATOMIC-002.json"
+  ]
+}

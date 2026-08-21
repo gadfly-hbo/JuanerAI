@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821144523551-CWLULL",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T14:45:23.551Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pbsa"
+  },
+  "summary": "PBSA旧Validator证据因测试hash变化而失效",
+  "status_after": "active",
+  "evidence_refs": []
+}

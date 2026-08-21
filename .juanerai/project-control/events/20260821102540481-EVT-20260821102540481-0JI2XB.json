@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821102540481-0JI2XB",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-21T10:25:40.481Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pb-atomic-spec-gate"
+  },
+  "summary": "请求确认PB-ATOMIC-002首次事务与legacy baseline线性化方案。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821144345297-AKOSSB",
+  "event_type": "archived",
+  "occurred_at": "2026-08-21T14:43:45.297Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pbsa"
+  },
+  "summary": "PBSA与基础看板已合并current spec并双Change归档",
+  "status_after": "complete",
+  "evidence_refs": []
+}

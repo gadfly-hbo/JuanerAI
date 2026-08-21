@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821101112413-N9K4PO",
+  "event_type": "change_started",
+  "occurred_at": "2026-08-21T10:11:12.413Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pb-atomic"
+  },
+  "summary": "启动project-board-atomic-transactions Change",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821102733358-TK3WT5",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-21T10:27:33.358Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pb-atomic-002"
+  },
+  "summary": "恢复PB-ATOMIC Specification并修订单点激活合同。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821154530031-7HVQTV",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-21T15:45:30.031Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-cvr-evidence-freeze"
+  },
+  "summary": "CVR证据冻结并进入独立验证。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821142728067-3GSHQX",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T14:27:28.067Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pbsa"
+  },
+  "summary": "PBSA冻结测试12项：8 PASS/4 causal RED",
+  "status_after": "active",
+  "evidence_refs": []
+}

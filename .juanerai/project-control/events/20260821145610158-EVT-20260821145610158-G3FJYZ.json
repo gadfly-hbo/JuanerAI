@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821145610158-G3FJYZ",
+  "event_type": "archived",
+  "occurred_at": "2026-08-21T14:56:10.158Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pbsa"
+  },
+  "summary": "PBSA最终归档完成；首次归档撤回记录已保留",
+  "status_after": "complete",
+  "evidence_refs": []
+}

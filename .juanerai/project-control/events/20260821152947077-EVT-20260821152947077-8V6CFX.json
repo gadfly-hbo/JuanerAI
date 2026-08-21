@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821152947077-8V6CFX",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-21T15:29:47.077Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-cvr-tdd-ready"
+  },
+  "summary": "CVR focused tests冻结，4/4 causal RED。",
+  "status_after": "active",
+  "evidence_refs": []
+}

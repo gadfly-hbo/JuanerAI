@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "first_slice_learning_complete",
-    "label": "首切复盘与治理沉淀完成",
+    "id": "canonical_validation_runner_archived",
+    "label": "Canonical Validation Runner：Archived",
     "ordinal": 8,
     "total": 8
   },
   "health": "complete",
-  "summary": "首个Xanthil切片复盘与治理沉淀已完成；TypeScript迁移继续按用户指令暂缓。",
-  "current_objective": "以首切复用基线和复杂度止损线约束后续Change，避免把冷启动返工作为常态。",
-  "next_action": "等待用户选择独立治理后续项，或明确恢复xanthil-typescript-migration；不自动启动第二个业务切片。",
+  "summary": "精简CVR已验收归档：单一POSIX入口、focused 4/4、完整离线矩阵全绿、Validator PASS。",
+  "current_objective": "默认离线验证现统一使用tools/harness/validation/run。",
+  "next_action": "等待用户下一项；TypeScript迁移仍按先前决定暂缓，真实模型调用仍需单独授权。",
   "blockers": [],
   "milestones": [
     {
@@ -599,9 +599,9 @@
       "mitigation": "当前.mjs切片不再扩展新功能；归档后立即以零行为变化的独立Change迁移，并在第二业务切片前完成。"
     }
   ],
-  "updated_at": "2026-08-21T09:46:39.263Z",
+  "updated_at": "2026-08-21T15:50:14.831Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-first-slice-learning"
+    "session": "controller-cvr-archive"
   }
 }

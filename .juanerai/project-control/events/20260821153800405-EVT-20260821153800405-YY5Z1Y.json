@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821153800405-YY5Z1Y",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-21T15:38:00.405Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-cvr-duckdb-clarification"
+  },
+  "summary": "CVR实际预检发现DuckDB输出格式Spec缺口。",
+  "status_after": "active",
+  "evidence_refs": []
+}
