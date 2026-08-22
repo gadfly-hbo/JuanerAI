@@ -2,7 +2,7 @@
 
 ## Current verdict
 
-**CONTROLLER LOCAL GREEN — REVISION 002; REMOTE PROOF PENDING.** Validator rejected the prior implementation/evidence freeze. Revision 002 now implements the frozen live-path descriptor acquisition linearization point and preserves permitted owner-write/search-only mode `0300` roots. Local focused, contract, and canonical regression are GREEN; the single authorized Ubuntu proof and independent validation remain pending.
+**CONTROLLER EVIDENCE FREEZE — REVISION 002; INDEPENDENT VALIDATION PENDING.** Validator rejected the prior implementation/evidence freeze. Revision 002 implements the frozen live-path descriptor acquisition linearization point and preserves permitted owner-write/search-only mode `0300` roots. Local focused, contract, canonical regression, the single authorized Ubuntu proof, and the Test Asset Retirement Gate are complete. Acceptance remains locked pending both the required Validator and the supplementary independent Sol-high review.
 
 The R2 Spec route constraint remains: `juaner_spec` is fixed Terra-medium while the routing policy requires Sol-high. The required Spec role revised the complete package; Controller at Sol-xhigh reviewed the proposal, normative delta, design, tasks, test plan, traceability, evidence boundary, current candidate, Validator findings, and deterministic RED feasibility before issuing this new Gate. Validator also returned `ROUTING_ESCALATION_REQUIRED`; that is recorded, not waived, and final validation must include an additional independent Sol-high review.
 
@@ -46,6 +46,19 @@ The first Worker candidate passed runtime tests but failed canonical TypeScript 
 ## Test Asset Retirement Gate
 
 **PASS.** Controller reconciled the complete test-asset diff with `test-handoff.md`: the existing unsafe-root leaf, new mode-`0300` leaf, and inline two-boundary child-process leaf are permanent regressions with distinct current evidence owners. No fixture, standalone helper, double, snapshot, coverage entry, harness path, temporary evidence, retirement candidate, `skip`, `todo`, or `only` marker was added. Complete-diff `ponytail-review` returned **Lean already. Ship.** The inline child remains the smallest deterministic black-box mechanism that exercises replacement immediately before and immediately after live descriptor acquisition without adding a production seam.
+
+## Revision 002 Ubuntu Proof
+
+Controller created evidence-only draft PR `#6` from frozen formal candidate `e789c49` plus the exact pending CI-governance workflow blob `289ab6238864d49191f4df977f04c9695010c716`. Exactly one `pull_request` run occurred:
+
+- proof head: `a4e04959dd5d478f9fec659a3b0ff37d1e7b38a0`;
+- run: `32578873868`, conclusion `success`;
+- job: `97045155348` (`Canonical validation`), conclusion `success`;
+- started `2026-08-22T14:30:02Z`, completed `2026-08-22T14:30:40Z`;
+- PR `#6` is `CLOSED`, remained draft, `mergedAt: null`, `mergeCommit: null`; the proof branch was deleted;
+- the formal branch contains no `.github/workflows` change.
+
+No retry occurred. This consumes the one Revision-002 remote-proof authorization.
 
 ## Scope and Security Checks
 
