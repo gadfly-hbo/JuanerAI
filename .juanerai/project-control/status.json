@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "run_root_identity_fix_revision_002_implementation",
-    "label": "Run Root Identity Fix Revision 002：实现 / GREEN",
-    "ordinal": 4,
+    "id": "run_root_identity_fix_revision_002_linux_proof",
+    "label": "Run Root Identity Fix Revision 002：Ubuntu 证明",
+    "ordinal": 5,
     "total": 8
   },
   "health": "active",
-  "summary": "Revision 002 已达 TDD_READY：两个新增叶均为因果 RED，既有边界与 198 项 Port 合同保持 GREEN。",
-  "current_objective": "仅在 Storage Adapter 内实现 pinned/live identity descriptor 线性化和 mode 0300 兼容。",
-  "next_action": "Worker 按冻结 brief 完成最小实现并运行 focused GREEN 与 Artifact Port 合同。",
+  "summary": "Revision 002 本地 GREEN 且测试资产退役 Gate PASS；等待唯一一次 Ubuntu 证明。",
+  "current_objective": "以冻结候选和 CI workflow 执行一次 evidence-only Ubuntu canonical validation。",
+  "next_action": "创建不合并的 draft proof PR；一次运行完成后关闭并删除 proof branch。",
   "blockers": [
     {
       "id": "RRIF-ROUTE-001",
@@ -47,7 +47,7 @@
     {
       "id": "implementation_green",
       "label": "实现 / GREEN",
-      "status": "active"
+      "status": "completed"
     },
     {
       "id": "independent_validation",
@@ -91,7 +91,7 @@
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra · medium (configured; R2 route constraint)",
-      "status": "active",
+      "status": "complete",
       "activation": "TDD_READY"
     },
     {
@@ -118,7 +118,7 @@
     {
       "id": "tasks",
       "label": "任务",
-      "done": 2,
+      "done": 4,
       "total": 6
     },
     {
@@ -606,7 +606,7 @@
       "mitigation": "只允许TEST-XCLI-021/022及路径/执行机制做因果机械更新；业务、失败、安全和竞态断言冻结。"
     }
   ],
-  "updated_at": "2026-08-22T14:23:58.725Z",
+  "updated_at": "2026-08-22T14:28:59.867Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-run-root-identity-fix"

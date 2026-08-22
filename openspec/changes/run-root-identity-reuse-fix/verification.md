@@ -2,7 +2,7 @@
 
 ## Current verdict
 
-**CONTROLLER TDD_READY — REVISION 002.** Validator rejected the prior implementation/evidence freeze. Revision 002 defines a feasible live-path descriptor acquisition linearization point and preserves permitted owner-write/search-only mode `0300` roots. Test has frozen causal RED in the one allowed integration file; Worker is unlocked only for the one allowed Adapter file.
+**CONTROLLER LOCAL GREEN — REVISION 002; REMOTE PROOF PENDING.** Validator rejected the prior implementation/evidence freeze. Revision 002 now implements the frozen live-path descriptor acquisition linearization point and preserves permitted owner-write/search-only mode `0300` roots. Local focused, contract, and canonical regression are GREEN; the single authorized Ubuntu proof and independent validation remain pending.
 
 The R2 Spec route constraint remains: `juaner_spec` is fixed Terra-medium while the routing policy requires Sol-high. The required Spec role revised the complete package; Controller at Sol-xhigh reviewed the proposal, normative delta, design, tasks, test plan, traceability, evidence boundary, current candidate, Validator findings, and deterministic RED feasibility before issuing this new Gate. Validator also returned `ROUTING_ESCALATION_REQUIRED`; that is recorded, not waived, and final validation must include an additional independent Sol-high review.
 
@@ -30,6 +30,22 @@ The experimental module-mock flag is a test-only Node 26 subprocess invocation; 
 - New mocked after-live-acquisition mutation retains `{ready:true}`, establishing the defined linearization semantics rather than continuous validity.
 - Existing unsafe-root leaf, affected Artifact Port contract suite, and `tools/harness/validation/run` pass after Test/Worker gates.
 - Exactly one Revision-002 remote Linux proof occurs only after all new local deterministic leaves are GREEN. The invalidated earlier proof does not consume this authorization; no retry of the Revision-002 proof is authorized.
+
+## Revision 002 Local GREEN
+
+Worker and Controller independently established the following against Adapter SHA-256 `dd5ad664d0b83f48497ef8202130cb8899c10243c198774868de3588a76533f0`:
+
+- focused `AC-RRIF-001`: exit `0`, `2/2` pass;
+- existing unsafe-root regression: exit `0`, `1/1` pass;
+- affected Artifact Port contract: exit `0`, `198/198` pass;
+- `tools/harness/validation/run`: exit `0`, including strict TypeScript checking and all canonical offline suites; the one real-Pi acceptance remains intentionally skipped by the canonical no-model gate;
+- `git diff --check`: exit `0`; production diff is only `adapters/storage-local/local-analysis.ts`.
+
+The first Worker candidate passed runtime tests but failed canonical TypeScript checking with `TS2366` in the new `catch/finally` control flow. Worker made a semantic-neutral explicit-throw correction in the same Adapter file; Controller reran the full canonical command and accepts only the corrected GREEN evidence above.
+
+## Test Asset Retirement Gate
+
+**PASS.** Controller reconciled the complete test-asset diff with `test-handoff.md`: the existing unsafe-root leaf, new mode-`0300` leaf, and inline two-boundary child-process leaf are permanent regressions with distinct current evidence owners. No fixture, standalone helper, double, snapshot, coverage entry, harness path, temporary evidence, retirement candidate, `skip`, `todo`, or `only` marker was added. Complete-diff `ponytail-review` returned **Lean already. Ship.** The inline child remains the smallest deterministic black-box mechanism that exercises replacement immediately before and immediately after live descriptor acquisition without adding a production seam.
 
 ## Scope and Security Checks
 

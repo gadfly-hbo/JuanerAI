@@ -49,7 +49,7 @@ Actual results: existing unsafe-root leaf exit 0, 1/1 pass; Artifact Port contra
 | Mode-`0300` TEST-XCLI-008 leaf | permanent compatibility regression | AC-RRIF-001-01 | retain |
 | Inline child module-mock code and linearization leaf | permanent test-private regression | AC-RRIF-001-02..03 and real Adapter linearization boundaries | retain inline |
 
-No test asset is retired. `git diff --check` passes and the only test diff is the authorized integration file. The post-GREEN Controller Test Asset Retirement Gate must reconcile this ledger and perform its required simplification review.
+No test asset is retired. `git diff --check` passes and the only test diff is the authorized integration file. After GREEN, Controller reconciled this ledger against the complete test-asset diff and returned Test Asset Retirement Gate **PASS**. Every retained leaf has a distinct current AC/risk owner; no temporary evidence, retirement candidate, unused consumer, `skip`, `todo`, or `only` marker was added. The required complete-diff `ponytail-review` returned **Lean already. Ship.**
 
 ## Frozen Worker brief
 
