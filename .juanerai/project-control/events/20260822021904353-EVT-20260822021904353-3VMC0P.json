@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822021904353-3VMC0P",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-22T02:19:04.353Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Reissued TDD_READY after reference-preserving Test Correction 003; resumed frozen Sol/high regression",
+  "status_after": "active",
+  "evidence_refs": []
+}

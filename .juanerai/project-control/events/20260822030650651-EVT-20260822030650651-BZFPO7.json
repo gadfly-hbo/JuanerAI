@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822030650651-BZFPO7",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-22T03:06:50.651Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-xanthil-ts-worker-correction-001"
+  },
+  "summary": "Ports结果字段改为必填后，Application复制后delete产生唯一TS2790生产侧RED。",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/xanthil-typescript-migration/verification.md"
+  ]
+}

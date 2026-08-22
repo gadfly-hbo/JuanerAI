@@ -8,4 +8,4 @@
 - Adapter contract suites run unchanged against each implementation.
 - Data, permission, identity, action, persistence, concurrency, recovery, and audit changes require negative-first evidence.
 - A test change during implementation is a conflict requiring return to Test Design unless the approved task explicitly includes the correction.
-
+- Test assets follow `docs/governance/test-asset-retirement.md`; passing or aging alone never authorizes deletion.

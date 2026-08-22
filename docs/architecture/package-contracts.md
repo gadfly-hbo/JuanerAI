@@ -31,6 +31,8 @@ A Model Pack will eventually declare:
 - deterministic or stochastic execution properties;
 - verification, rollback, and retirement policy.
 
+Deterministic Model Pack inference crosses its own business `AnalyticalModelRuntime` Port. An Agent Harness may support an Agent scenario but is not an implicit Model Pack runtime dependency. Runtime selection and provenance follow `docs/adr/0003-business-runtime-port-strategy.md`.
+
 ## Governance
 
 - Manifests use a closed, versioned schema once approved.
@@ -41,4 +43,3 @@ A Model Pack will eventually declare:
 - Contract tests verify every package surface.
 
 No package schema or default field value is frozen during cold start.
-

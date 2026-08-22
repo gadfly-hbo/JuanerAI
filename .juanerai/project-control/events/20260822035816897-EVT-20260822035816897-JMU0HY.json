@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822035816897-JMU0HY",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-22T03:58:16.897Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-typescript-migration"
+  },
+  "summary": "Validation 003 FAIL：AC-XTS-003-05存在单一推断any叶。",
+  "status_after": "active",
+  "evidence_refs": []
+}

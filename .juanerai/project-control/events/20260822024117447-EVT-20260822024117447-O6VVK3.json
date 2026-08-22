@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822024117447-O6VVK3",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-22T02:41:17.447Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Validator FAIL returned production-type ownership gap to Test Correction 004; production frozen",
+  "status_after": "active",
+  "evidence_refs": []
+}

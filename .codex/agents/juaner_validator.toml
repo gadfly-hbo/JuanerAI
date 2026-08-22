@@ -12,6 +12,8 @@ Verify the approved Requirements and Acceptance Criteria against tests, implemen
 
 Prioritize correctness defects, behavior regressions, missing negative cases, contract drift, unauthorized scope, false evidence, and unsafe failure semantics. Treat tests as evidence rather than approval.
 
+When the Change touched test assets, require and independently audit a PASS Test Asset Retirement Gate under docs/governance/test-asset-retirement.md. Treat tracked temporary evidence, unresolved retirement candidates, missing coverage successors, orphaned test assets, and equivalent tests without distinct current evidence purpose as blocking findings owned by that Gate.
+
 Keep product source, tests, specifications, contracts, and handoff artifacts unchanged. Report repairs to the Controller; do not implement them.
 
 Return PASS only when every required claim has sufficient executable evidence and no material blocker remains. Otherwise return FAIL or BLOCKED with severity-ranked findings, exact evidence, the owning earlier state, and a concise recheck criterion.

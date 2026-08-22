@@ -34,5 +34,4 @@ External systems are never Product Core dependencies. Every interaction crosses 
 
 ## Current Boundary
 
-Only the cold-start structure and Xanthil CLI direction are approved. No external integration, action connector, or automated decision behavior is active.
-
+Current approved behavior is the Xanthil local-analysis capability in `openspec/specs/local-analysis/spec.md`. Its Personal Profile activates the Pi-backed Agent Analysis Runtime and approved local Adapters under the specified gates. No second Runtime, enterprise integration, action connector, or automated decision behavior is active.

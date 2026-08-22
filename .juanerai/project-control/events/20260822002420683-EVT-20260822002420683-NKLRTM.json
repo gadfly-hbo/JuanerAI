@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822002420683-NKLRTM",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-22T00:24:20.683Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-xanthil-typescript-migration"
+  },
+  "summary": "Xanthil TypeScript R2 Test角色升级为Terra high",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "canonical_validation_runner_archived",
-    "label": "Canonical Validation Runner：Archived",
+    "id": "xanthil_typescript_migration_archived",
+    "label": "Xanthil TypeScript Migration：已验收归档",
     "ordinal": 8,
     "total": 8
   },
   "health": "complete",
-  "summary": "精简CVR已验收归档：单一POSIX入口、focused 4/4、完整离线矩阵全绿、Validator PASS。",
-  "current_objective": "默认离线验证现统一使用tools/harness/validation/run。",
-  "next_action": "等待用户下一项；TypeScript迁移仍按先前决定暂缓，真实模型调用仍需单独授权。",
+  "summary": "Xanthil闭合生产与测试图已完成Node原生TypeScript零行为迁移，19/19 AC独立验证通过。",
+  "current_objective": "以Node原生.ts、独立strict typecheck、无编译输出和无JS/TS双模式迁移现有Xanthil生产与测试模块。",
+  "next_action": "保持当前spec为行为与迁移权威；如需提交/推送或新能力，另行启动对应流程。",
   "blockers": [],
   "milestones": [
     {
@@ -69,28 +69,28 @@
     {
       "id": "juaner_spec",
       "label": "Spec Agent",
-      "model": "gpt-5.6-terra · medium (configured juaner_spec)",
+      "model": "gpt-5.6-sol · high (R2 automatic escalation)",
       "status": "complete",
       "activation": "Spec Gate 前"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
-      "model": "gpt-5.6-terra · medium (configured juaner_test)",
-      "status": "complete",
+      "model": "gpt-5.6-terra · high (R2 automatic escalation)",
+      "status": "active",
       "activation": "Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
-      "model": "gpt-5.6-terra · medium (configured juaner_worker)",
+      "model": "gpt-5.6-sol · high (single automatic Worker upgrade)",
       "status": "complete",
       "activation": "TDD_READY"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
-      "model": "gpt-5.6-sol · medium",
+      "model": "gpt-5.6-sol · high (R2 route)",
       "status": "complete",
       "activation": "实现与证据冻结"
     }
@@ -99,26 +99,26 @@
     {
       "id": "requirements",
       "label": "需求",
-      "done": 16,
-      "total": 16
+      "done": 0,
+      "total": 0
     },
     {
       "id": "tests",
       "label": "测试",
-      "done": 22,
-      "total": 22
+      "done": 0,
+      "total": 0
     },
     {
       "id": "tasks",
       "label": "任务",
-      "done": 10,
-      "total": 10
+      "done": 0,
+      "total": 0
     },
     {
       "id": "decisions",
       "label": "待决策",
-      "done": 3,
-      "total": 3
+      "done": 6,
+      "total": 6
     }
   ],
   "evidence": [
@@ -570,38 +570,38 @@
   "risks": [
     {
       "id": "RSK-001",
-      "label": "完整 v0.1 与首个切片边界易混淆",
+      "label": "语言迁移意外改变可观察行为",
       "level": "medium",
-      "mitigation": "已批准 Spec 将首个 Change 限定为 Assistant 的本地合成 CSV 小闭环。"
+      "mitigation": "冻结现有local-analysis规范与完整行为oracle；除文件、模块和工具链机制外不修改断言。"
     },
     {
       "id": "RSK-002",
-      "label": "R2 跨模块与持久化合同复杂度",
+      "label": "Node原生执行与TypeScript静态检查语义分离",
       "level": "medium",
-      "mitigation": "Spec 使用 Sol/high 完成并经 Controller Gate；Test 使用 Terra/high，后续仍保持 Test/Worker/Validator 隔离。"
+      "mitigation": "固定erasableSyntaxOnly、NodeNext、显式.ts扩展和独立tsc --noEmit；两类检查均进入canonical runner。"
     },
     {
       "id": "RSK-003",
-      "label": "真实数据的模型可见性尚未冻结",
-      "level": "high",
-      "mitigation": "首个 Change 仅允许非敏感合成数据；真实数据 egress 仍须独立批准。"
+      "label": "内部迁移引入永久构建或双运行模式",
+      "level": "medium",
+      "mitigation": "禁止dist、source map、bundler、loader与allowJs/checkJs；Spec Gate前强制ponytail-review删除无当前消费者的机制。"
     },
     {
       "id": "RSK-004",
-      "label": "项目本地依赖栈可复现性",
-      "level": "low",
-      "mitigation": "用户已批准精确版本；package.json、package-lock.json、本地ESM解析与TEST-XCLI-021均已验证。"
+      "label": "Pi SDK类型泄漏到Core或Application",
+      "level": "medium",
+      "mitigation": "Pi声明只允许在agent-pi Adapter内消费；业务Port和运行时TypeBox验证保持权威。"
     },
     {
       "id": "RSK-005",
-      "label": "首切片与长期TypeScript策略的过渡债务",
+      "label": "过渡期工具链断言与迁移目标冲突",
       "level": "medium",
-      "mitigation": "当前.mjs切片不再扩展新功能；归档后立即以零行为变化的独立Change迁移，并在第二业务切片前完成。"
+      "mitigation": "只允许TEST-XCLI-021/022及路径/执行机制做因果机械更新；业务、失败、安全和竞态断言冻结。"
     }
   ],
-  "updated_at": "2026-08-21T15:50:14.831Z",
+  "updated_at": "2026-08-22T04:23:32.434Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-cvr-archive"
+    "session": "xanthil-typescript-migration"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822002234792-4K3X6H",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-22T00:22:34.792Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-xanthil-typescript-migration"
+  },
+  "summary": "Xanthil TypeScript Spec Correction 001 re-Gate PASS并恢复Test Correction",
+  "status_after": "active",
+  "evidence_refs": []
+}

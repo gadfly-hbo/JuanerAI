@@ -57,6 +57,8 @@ async function fixture(t, {
   await mkdir(bin, { recursive: true });
   await mkdir(path.join(root, 'tools', 'harness', 'validation'), { recursive: true });
   await mkdir(path.join(root, 'node_modules', '@earendil-works', 'pi-coding-agent'), { recursive: true });
+  await mkdir(path.join(root, 'node_modules', '@types', 'node'), { recursive: true });
+  await mkdir(path.join(root, 'node_modules', 'typescript'), { recursive: true });
   await mkdir(path.join(root, 'node_modules', 'typebox'), { recursive: true });
   for (const directory of [
     'tests/unit/xanthil-local-analysis',
@@ -69,15 +71,23 @@ async function fixture(t, {
     dependencies: {
       '@earendil-works/pi-coding-agent': '0.84.2',
       typebox: '1.3.7'
-    }
+    },
+    devDependencies: {
+      '@types/node': '22.19.19',
+      typescript: '5.9.3'
+    },
+    scripts: { typecheck: 'tsc -p tsconfig.json --noEmit' }
   }), 'utf8');
   await writeFile(path.join(root, 'node_modules', '@earendil-works', 'pi-coding-agent', 'package.json'), '{"version":"0.84.2"}\n', 'utf8');
+  await writeFile(path.join(root, 'node_modules', '@types', 'node', 'package.json'), '{"version":"22.19.19"}\n', 'utf8');
+  await writeFile(path.join(root, 'node_modules', 'typescript', 'package.json'), '{"version":"5.9.3"}\n', 'utf8');
   await writeFile(path.join(root, 'node_modules', 'typebox', 'package.json'), '{"version":"1.3.7"}\n', 'utf8');
+  await writeFile(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"strict":true,"noEmit":true}}\n', 'utf8');
   for (const file of [
-    'tests/unit/xanthil-local-analysis/unit.test.mjs',
-    'tests/contract/xanthil-local-analysis/contract.test.mjs',
-    'tests/integration/xanthil-local-analysis/integration.test.mjs',
-    'tests/e2e/xanthil-local-analysis/e2e.test.mjs',
+    'tests/unit/xanthil-local-analysis/local-analysis.unit.test.ts',
+    'tests/contract/xanthil-local-analysis/local-analysis-ports.contract.test.ts',
+    'tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts',
+    'tests/e2e/xanthil-local-analysis/local-analysis.e2e.test.ts',
     'tools/harness/project-board/project-control.test.mjs',
     'tools/harness/project-board/status-cli.test.mjs'
   ]) await writeFile(path.join(root, file), '// fixture placeholder\n', 'utf8');
@@ -100,7 +110,9 @@ case "$1" in
       *tests/e2e/*) group=e2e ;;
       *tools/harness/project-board/*) group=project-board ;;
     esac; done
-    printf '%s:%s\\n' "$group" "\${XANTHIL_REAL_PI_ACCEPTANCE-unset}" >> "$CVR_OBSERVATION"
+    target=unknown
+    for arg in "$@"; do case "$arg" in *.test.*) target="\${arg##*/}" ;; esac; done
+    printf '%s:%s:%s\\n' "$group" "$target" "\${XANTHIL_REAL_PI_ACCEPTANCE-unset}" >> "$CVR_OBSERVATION"
     printf 'native %s stdout\\n' "$group"
     printf 'native %s stderr\\n' "$group" >&2
     if [ "\${CVR_FIXTURE_FAIL:-}" = "$group" ]; then exit 23; fi
@@ -108,26 +120,36 @@ case "$1" in
   *) printf 'unexpected fake node invocation: %s\\n' "$*" >&2; exit 64 ;;
 esac
 `);
-  await writeExecutable(path.join(bin, 'npm'), "#!/bin/sh\n[ \"$1\" = --version ] && printf '11.12.1\\n' || exit 64\n");
+  await writeExecutable(path.join(bin, 'npm'), `#!/bin/sh
+case "$1" in
+  --version) printf '11.12.1\\n' ;;
+  run)
+    [ "$2" = typecheck ] || exit 64
+    printf 'typecheck\\n' >> "$CVR_OBSERVATION"
+    [ "\${CVR_FIXTURE_FAIL:-}" != typecheck ] || exit 29
+    ;;
+  *) exit 64 ;;
+esac
+`);
   await writeExecutable(path.join(bin, 'duckdb'), `#!/bin/sh
 [ "$1" = --version ] && printf '%s\\n' '${duckdbOutput}' || exit 64
 `);
   await writeExecutable(path.join(bin, 'python3'), "#!/bin/sh\n[ \"$1\" = --version ] && printf 'Python 3.9.6\\n' || exit 64\n");
 
-  const health = await run(path.join(bin, 'node'), ['--test', 'tests/unit/xanthil-local-analysis/unit.test.mjs'], {
+  const health = await run(path.join(bin, 'node'), ['--test', 'tests/unit/xanthil-local-analysis/local-analysis.unit.test.ts'], {
     cwd: root,
     env: { ...process.env, CVR_OBSERVATION: observation }
   });
   assert.equal(health.code, 0, 'fixture command health must be GREEN before runner observation');
-  assert.match(await readFile(observation, 'utf8'), /^unit:unset\n$/, 'fixture must record an independently healthy child');
+  assert.match(await readFile(observation, 'utf8'), /^unit:local-analysis\.unit\.test\.ts:unset\n$/, 'fixture must record an independently healthy child');
   await writeFile(observation, '', 'utf8');
 
   t.after(() => rm(root, { recursive: true, force: true }));
-  const mjsBasenames = (await entries(root))
-    .filter((file) => file.endsWith('.mjs'))
+  const syntaxBasenames = (await entries(root))
+    .filter((file) => file.endsWith('.mjs') || file.endsWith('.ts'))
     .map((file) => path.basename(file))
     .sort();
-  return { root, bin, observation, failGroup, mjsBasenames };
+  return { root, bin, observation, failGroup, syntaxBasenames };
 }
 
 async function installPublicRunner(f) {
@@ -157,12 +179,12 @@ async function observedLines(f) {
   return text === '' ? [] : text.trim().split('\n');
 }
 
-function assertSyntaxBeforeSuites(lines, f, expectedSuites) {
+function assertCanonicalOrder(lines, f, expectedSuites) {
   const syntax = lines.filter((line) => line.startsWith('syntax:'));
-  const suites = lines.filter((line) => !line.startsWith('syntax:'));
-  assert.deepEqual(syntax.slice().sort(), f.mjsBasenames.map((name) => `syntax:${name}`));
-  assert.deepEqual(suites, expectedSuites);
-  assert.equal(lines.indexOf(suites[0]), syntax.length, 'each fixture .mjs syntax check must precede suite steps');
+  const phases = lines.filter((line) => !line.startsWith('syntax:'));
+  assert.deepEqual(syntax.slice().sort(), f.syntaxBasenames.map((name) => `syntax:${name}`));
+  assert.deepEqual(phases, ['typecheck', ...expectedSuites]);
+  assert.equal(lines.indexOf('typecheck'), syntax.length, 'native syntax checks must precede the strict typecheck phase');
 }
 
 test('CVR-TEST-001: selected toolchain passes and starts offline checks in order', async (t) => {
@@ -171,8 +193,14 @@ test('CVR-TEST-001: selected toolchain passes and starts offline checks in order
   await mkdir(path.join(f.root, 'elsewhere'));
   const result = await invoke(f, runner);
   assert.equal(result.code, 0);
-  assertSyntaxBeforeSuites(await observedLines(f), f, [
-    'unit:unset', 'contract:unset', 'integration:unset', 'e2e:unset', 'project-board:unset'
+  const lines = await observedLines(f);
+  assert.ok(lines.includes('typecheck'), 'the strict typecheck phase must run after native syntax checks');
+  assertCanonicalOrder(lines, f, [
+    'unit:local-analysis.unit.test.ts:unset',
+    'contract:local-analysis-ports.contract.test.ts:unset',
+    'integration:local-analysis.integration.test.ts:unset',
+    'e2e:local-analysis.e2e.test.ts:unset',
+    'project-board:status-cli.test.mjs:unset'
   ]);
 });
 
@@ -205,7 +233,7 @@ test('CVR-TEST-003: inherited real-model gate is absent from the E2E child', asy
   await mkdir(path.join(f.root, 'elsewhere'));
   const result = await invoke(f, runner, { XANTHIL_REAL_PI_ACCEPTANCE: '1' });
   assert.equal(result.code, 0);
-  assert.match(await readFile(f.observation, 'utf8'), /e2e:unset/);
+  assert.match(await readFile(f.observation, 'utf8'), /e2e:.*:unset/);
 });
 
 test('CVR-TEST-004: validation failure streams natively, stops later checks, and creates no result', async (t) => {
@@ -217,6 +245,9 @@ test('CVR-TEST-004: validation failure streams natively, stops later checks, and
   assert.notEqual(result.code, 0);
   assert.match(result.stdout, /native contract stdout/);
   assert.match(result.stderr, /native contract stderr/);
-  assertSyntaxBeforeSuites(await observedLines(f), f, ['unit:unset', 'contract:unset']);
+  assertCanonicalOrder(await observedLines(f), f, [
+    'unit:local-analysis.unit.test.ts:unset',
+    'contract:local-analysis-ports.contract.test.ts:unset'
+  ]);
   assert.deepEqual(await entries(f.root), before, 'runner must not create a result or other persistent output');
 });

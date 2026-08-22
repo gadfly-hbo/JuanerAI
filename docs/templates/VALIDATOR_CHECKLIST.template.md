@@ -22,6 +22,7 @@
 - [ ] Intended delta is distinguishable from reused baseline behavior.
 - [ ] Shared Port, schema, identity, status, version, persistence, model, dependency, and Profile contracts did not drift.
 - [ ] Product Core/Application dependency direction remains inward.
+- [ ] Runtime SDK types, events, errors, tool structures, and session structures remain confined to their owning Adapter and do not appear in business Ports or public/versioned contracts.
 - [ ] Every replaceable Adapter passes the unchanged relevant contract suite.
 
 ## Test Integrity
@@ -32,6 +33,10 @@
 - [ ] Material invariants use independent positive, negative, boundary, failure, and forbidden-side-effect leaves where applicable.
 - [ ] Broad titles or representative examples do not hide unscheduled mutations.
 - [ ] Doubles exercise the public boundary without replacing the core behavior under test.
+- [ ] When test assets changed, the Test Asset Retirement Gate is PASS and its lifecycle ledger matches the frozen tree.
+- [ ] No tracked temporary evidence, unresolved retirement candidate, or retained test-only asset without a consumer remains.
+- [ ] Every retired behavior test names retained coverage for the same REQ/AC and material mutation, or proves it was diagnostic-only and outside accepted traceability.
+- [ ] Equivalent retained tests have distinct current evidence purposes; obsolete implementation, format, error, or toolchain tests map to a current approved contract.
 
 ## Physical and External Boundaries
 
