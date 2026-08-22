@@ -6,28 +6,16 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "run_root_identity_fix_design_test_remediation",
-    "label": "Run Root Identity Fix：Design / Test Remediation",
-    "ordinal": 2,
+    "id": "run_root_identity_fix_revision_002_test_red",
+    "label": "Run Root Identity Fix Revision 002：Test / RED",
+    "ordinal": 3,
     "total": 8
   },
   "health": "active",
-  "summary": "独立验证未通过：并发替换仍有 TOCTOU，O_RDONLY 缩窄目录权限兼容，R2 Validator 路由不足。",
-  "current_objective": "补闭 preflight 线性化与 writable-searchable 目录兼容合同，建立因果 RED 后再实施 Worker Revision。",
-  "next_action": "Spec 修订私有目录身份机制；Test 增加并发替换与 0300 权限兼容负例，随后重新判定 TDD_READY。",
+  "summary": "Revision 002 已通过 Spec Gate：live descriptor 线性化并保留 mode 0300 兼容。",
+  "current_objective": "在唯一允许的集成测试文件内建立并发替换与 owner-write/search-only 目录的确定性 RED。",
+  "next_action": "Test Agent 冻结两个永久回归叶、因果 RED、命令与测试资产退役 ledger。",
   "blockers": [
-    {
-      "id": "RRIF-TOCTOU-001",
-      "label": "并发替换线性化缺口",
-      "detail": "当前 lstat/realpath/fstat 顺序可能在 pathname 观察期间替换时误接受旧快照。",
-      "owner": "Controller / Spec / Test"
-    },
-    {
-      "id": "RRIF-PERM-001",
-      "label": "目录读取权限兼容漂移",
-      "detail": "O_RDONLY 使原本可写且可搜索的 0300 安全目录在构造期失败。",
-      "owner": "Controller / Spec / Test"
-    },
     {
       "id": "RRIF-ROUTE-001",
       "label": "R2 Validator 路由不足",
@@ -49,12 +37,12 @@
     {
       "id": "spec_gate",
       "label": "Spec Gate",
-      "status": "active"
+      "status": "completed"
     },
     {
       "id": "test_red",
       "label": "Test / RED",
-      "status": "locked"
+      "status": "active"
     },
     {
       "id": "implementation_green",
@@ -89,14 +77,14 @@
       "id": "juaner_spec",
       "label": "Spec Agent",
       "model": "gpt-5.6-terra · medium (configured; R2 route constraint)",
-      "status": "active",
+      "status": "complete",
       "activation": "Spec Gate 前"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra · medium (configured; R2 route constraint)",
-      "status": "waiting",
+      "status": "active",
       "activation": "Spec Gate PASS"
     },
     {
@@ -118,7 +106,7 @@
     {
       "id": "requirements",
       "label": "需求",
-      "done": 0,
+      "done": 1,
       "total": 1
     },
     {
@@ -130,7 +118,7 @@
     {
       "id": "tasks",
       "label": "任务",
-      "done": 2,
+      "done": 1,
       "total": 6
     },
     {
@@ -618,7 +606,7 @@
       "mitigation": "只允许TEST-XCLI-021/022及路径/执行机制做因果机械更新；业务、失败、安全和竞态断言冻结。"
     }
   ],
-  "updated_at": "2026-08-22T14:01:01.263Z",
+  "updated_at": "2026-08-22T14:08:07.775Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-run-root-identity-fix"

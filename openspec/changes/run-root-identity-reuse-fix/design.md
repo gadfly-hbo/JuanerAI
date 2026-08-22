@@ -1,16 +1,16 @@
-# Design: descriptor-pinned run-root identity
+# Design: pinned and live descriptor identity
 
 ## Architecture
 
-Only `adapters/storage-local/local-analysis.ts` changes. Product Core, Application, Ports, Profile, and CLI continue to see the same business-oriented Store and errors. The Adapter's constructor already validates an absolute, non-symlink, non-root directory and freezes its `realpath`, device, and inode. Immediately after that validation it synchronously opens that same physical root read-only using Node filesystem primitives and the supported directory/no-follow flags, `fstat`s the returned descriptor, verifies directory plus exact `(dev, ino)` agreement, and retains the descriptor in the factory closure.
+Only `adapters/storage-local/local-analysis.ts` changes. The factory pins the construction directory object with one private identity-only descriptor. Each preflight separately acquires a private identity-only descriptor for the configured pathname; that live acquisition is the linearization point. It accepts only if `fstat` of the live descriptor and the pinned descriptor identify the same directory object. The live descriptor is closed after the comparison; the pinned descriptor remains private for the Store lifetime.
 
-At every preflight, the Adapter performs its existing configured-path `lstat` plus `realpath` checks, then `fstat`s the retained descriptor. All identities must agree with the frozen constructor identity. The descriptor is not used to create, read, rename, or write Artifacts; current path-based publication remains unchanged. Its sole purpose is to keep the original directory object referenced, so a path removal/recreation cannot recycle the original inode while the Store lives.
+Replacement before live acquisition is observed as a different/missing/unsafe object and rejects. Replacement after live acquisition cannot retrospectively invalidate that completed preflight. Existing path checks may reject before acquisition, but cannot make an acceptance claim after it. The descriptors are never used for Artifact reads/writes; current path-based publication is unchanged.
 
 ## Failure Semantics
 
-Construction cannot safely establish the descriptor: fail `ARTIFACT_WRITE_FAILED`, synchronously, with no Artifact side effect. A later descriptor `fstat` failure or any mismatch during preflight: fail `RUN_ROOT_UNSAFE`, before session/Discovery/model/run/Artifact effects. Existing mutators retain their current error semantics; this Change does not insert new preflight calls, retries, retries-after-error, compensation, or cleanup.
+Construction cannot safely establish the pinned descriptor: fail `ARTIFACT_WRITE_FAILED`, synchronously, with no Artifact side effect. A later live acquisition/`fstat` failure or identity mismatch: fail `RUN_ROOT_UNSAFE`, before session/Discovery/model/run/Artifact effects. Existing mutators retain their current error semantics; this Change does not insert retries, compensation, or cleanup.
 
-The exact POSIX descriptor flags are an approved-runtime dependency, not an optional safety fallback. If this Node/OS combination cannot supply directory/no-follow descriptor acquisition, construction fails closed. The baseline supports the stated GitHub-hosted Ubuntu and macOS temporary descriptor observation; any different deployment profile requires its own approved compatibility decision.
+The private descriptor must be identity/search-only, never `O_RDONLY`, so mode `0300` remains valid. On approved macOS, use native `O_SEARCH`/`O_EXEC` numeric flag `0x40000000` with `O_DIRECTORY` and `O_NOFOLLOW`. On approved Linux, use native `O_PATH` numeric flag `0x200000` with `O_DIRECTORY` and `O_NOFOLLOW`. Node 26 does not export these constants; numeric use remains Adapter-private, scoped only to these two approved runtimes, and adds no platform abstraction. The implementation verifies the resulting descriptor with `fstat`. Unsupported platform/flag/open conditions fail closed.
 
 ## Data and Security Boundaries
 

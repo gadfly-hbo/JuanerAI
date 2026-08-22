@@ -4,13 +4,13 @@
 
 Class: boundary correction, R2/standard. This Change repairs a production defect within the accepted local-analysis contract: a Run Artifact Store constructed for a physical run root must reject that configured path after the original directory is removed and replaced, including immediate same-path replacement on Linux when the filesystem would otherwise reuse the former `(dev, ino)` pair.
 
-The observable contract is physical-root continuity: preflight accepts only the same directory object accepted at construction. A private descriptor-pinning mechanism, defined in `design.md`, removes Linux inode-reuse ambiguity without changing the Port, Profile, CLI, manifest, Artifact format, lifecycle, stable failure vocabulary, runner, or CI behavior.
+The observable contract is physical-root continuity at one feasible linearization point: private live-path descriptor acquisition. Preflight accepts only when the object acquired then is the construction object; a replacement after acquisition does not retroactively change that result. The private pinned/live descriptor mechanism in `design.md` removes Linux inode-reuse ambiguity and preserves mode-`0300` owner-write/search compatibility without changing the Port, Profile, CLI, manifest, Artifact format, lifecycle, stable failure vocabulary, runner, or CI behavior.
 
 ## Objectives
 
 - Product objective: preserve safe run-artifact containment for the approved personal local-analysis Profile.
-- Delivery objective: merge one Adapter-only correction with the existing regression leaf unchanged.
-- Learning objective: obtain one clean GitHub-hosted Linux proof that the former Adapter fails the same-path replacement leaf and the corrected Adapter passes it, without treating CI configuration as product scope.
+- Delivery objective: merge one Adapter-only correction, retain the existing regression leaf, and add the two Revision-002 deterministic leaves.
+- Learning objective: obtain exactly one Revision-002 GitHub-hosted Linux proof of the new deterministic leaves and canonical regression, without treating CI configuration as product scope.
 
 ## Reused Contract
 
@@ -21,11 +21,12 @@ The Change preserves REQ-XCLI-001/AC-XCLI-001-01..02, REQ-XCLI-007/AC-XCLI-007-0
 Allowed paths:
 
 - `openspec/changes/run-root-identity-reuse-fix/**` for this package.
-- After Spec Gate and causal RED, Worker production path: `adapters/storage-local/local-analysis.ts` only.
+- After Spec Gate, Test may change only `tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts` to add the two named black-box leaves and a test-private child fixture inside that same file.
+- After causal RED, Worker production path: `adapters/storage-local/local-analysis.ts` only.
 
 Conditional evidence-only path: a Controller-created temporary draft proof branch/PR may combine the frozen Adapter candidate with the already-reviewed CI workflow solely to run one clean GitHub-hosted Linux canonical validation. It is never merged; no workflow file belongs in the final fix PR.
 
-Forbidden paths: production other than the single Adapter path; every test, fixture, helper, coverage map, Port, Product Core, Application, Profile, CLI, package/lockfile, `.github` final-PR change, current specification, archive, project-control, data, and dependency path.
+Forbidden paths: production other than the single Adapter path; tests other than the named integration file; every shared fixture/helper/coverage map, Port, Product Core, Application, Profile, CLI, package/lockfile, `.github` final-PR change, current specification, archive, project-control, data, and dependency path.
 
 ## Non-goals
 
@@ -37,7 +38,7 @@ Activation is merge of the Adapter correction to `main` after the normal Spec/Te
 
 ## Ponytail Disposition
 
-Controller ponytail review found descriptor acquisition, exact flags/`fstat`, and process-exit lifetime over-specified as durable capability. Accepted: the delta specification now contains only physical-root continuity, unsafe replacement rejection, and unchanged public/persistence surface. The minimum descriptor-pinning mechanism remains design/task detail because it is necessary to prove that observable contract on inode-reusing Linux.
+Controller ponytail review found descriptor acquisition, exact flags/`fstat`, and process-exit lifetime over-specified as durable capability. Accepted: the delta specification contains only linearized physical-root continuity, unsafe replacement rejection, and unchanged public/persistence surface. Private descriptor mechanics, including the two approved native flag sets, remain design/task detail because they are necessary to prove that observable contract without a platform abstraction.
 
 ## Routing Record
 

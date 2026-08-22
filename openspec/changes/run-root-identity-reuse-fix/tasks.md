@@ -2,15 +2,16 @@
 
 ## Gate sequence
 
-1. [x] Controller records this R2 boundary correction and the unavailable Sol-high Spec-route constraint; performs complete-package `ponytail-review` before Spec Gate. [REQ-RRIF-001]
-2. [x] Test role changes no tracked asset. It freezes the existing `TEST-XCLI-008` integration leaf as the permanent regression asset, runs the focused RED against the uncorrected Adapter on clean GitHub-hosted Linux, and returns exact command/output/hash/environment evidence. [AC-RRIF-001-02]
-3. [x] After TDD_READY, Worker changes only `adapters/storage-local/local-analysis.ts`: use a private descriptor to pin/verify the construction directory and compare it at preflight; its acquisition, verification, lifetime, and fail-closed handling stay implementation detail. No test/spec/Port/Profile write. [AC-RRIF-001-01..03]
-4. [x] Worker runs the frozen focused integration leaf and affected existing contract suite once each as authorized by the Test brief; reports output and scope evidence. [AC-RRIF-001-01..03]
-5. [x] Controller obtains one evidence-only clean remote Linux GREEN as described in `verification.md`, performs required offline canonical regression, scope/traceability review, then freezes implementation/evidence. [AC-RRIF-001-01..03]
-6. [ ] Validator independently checks descriptor safety, no contract/data-surface drift, exact existing-leaf mapping, remote evidence boundary, and validation evidence. [REQ-RRIF-001]
+1. [x] Controller records Validator revision 002, false-board-state remediation, and the unavailable Sol-high Spec-route constraint; repeats complete-package ponytail review before a new Spec Gate. [REQ-RRIF-001]
+2. [ ] Test changes only the named integration file: retain existing `TEST-XCLI-008`; add a mode-`0300` success leaf and an isolated module-mock child-process linearization leaf. It freezes RED/hash/commands and Test Asset Retirement ledger. [AC-RRIF-001-01..03]
+3. [ ] After new TDD_READY, Worker changes only `adapters/storage-local/local-analysis.ts`: use pinned and per-preflight live identity-only descriptors, with the approved private macOS/Linux flags and exact linearization semantics. [AC-RRIF-001-01..03]
+4. [ ] Worker runs the frozen focused integration leaves and affected existing contract suite as authorized by the new Test brief. [AC-RRIF-001-01..03]
+5. [ ] Controller performs offline regression and, only after the new deterministic leaves are GREEN, one evidence-only remote Linux proof. Earlier Ubuntu `243/243` is regression evidence only. [AC-RRIF-001-01..03]
+6. [ ] Validator independently checks linearization, mode-`0300`, scope, data surface, test retirement, and evidence. [REQ-RRIF-001]
 
 ## Stop lines
 
-- Any need to alter a test, workflow, Port, Profile, data format, public lifecycle, or more than the single Adapter path: return to Controller as `SCOPE_ESCALATION`.
-- Descriptor acquisition unavailable in the approved personal deployment, or evidence of unbounded Store lifetime: `BLOCKED` pending Controller/user lifecycle/compatibility decision.
-- A second remote proof attempt, any retry/fallback policy, or a remote result that does not prove the target leaf: stop for Controller evidence review; it is not a product retry.
+- Any need to alter a test other than `tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts`, workflow, Port, Profile, data format, public lifecycle, or production other than the single Adapter path: return to Controller as `SCOPE_ESCALATION`.
+- An experimental module-mock child cannot be executed under the repository's Node 26 test command, or cannot mock the imported `node:fs` binding before Adapter import: `BLOCKED`; do not use polling or a production seam.
+- Private search/identity-only descriptor acquisition unavailable on approved macOS or Ubuntu, or descriptor lifetime unacceptable: `BLOCKED` pending Controller/user compatibility decision.
+- Revision 002 authorizes exactly one new remote Linux proof after its deterministic GREEN. The invalidated earlier proof does not consume that authorization. Any retry of the Revision-002 proof, retry/fallback policy, or non-target result stops for Controller evidence review.

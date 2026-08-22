@@ -1,21 +1,23 @@
 # Test Plan
 
-## Frozen Asset and Mapping
+## Assets and Mapping
 
-No test asset changes. `tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts`, existing leaf `TASK-010 R3 TEST-XCLI-008 [AC-XCLI-001-01, AC-XCLI-007-01] maps per-start missing, replaced, symlink, and non-directory run roots to RUN_ROOT_UNSAFE without writing`, is the permanent regression asset.
+`tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts` is the sole Test write path. Existing `TASK-010 R3 TEST-XCLI-008 [AC-XCLI-001-01, AC-XCLI-007-01] maps per-start missing, replaced, symlink, and non-directory run roots to RUN_ROOT_UNSAFE without writing` remains permanent regression coverage. Test adds only the two leaves below, under the existing `TEST-XCLI-008` identity; no shared helper, production seam, or test framework path is added.
 
 | AC | Existing TEST | Positive / negative observable proof |
 |---|---|---|
-| AC-RRIF-001-01 | TEST-XCLI-008 | An unchanged valid root preflights with the existing frozen `{ready:true}` result. |
-| AC-RRIF-001-02 | TEST-XCLI-008 | Delete then immediately recreate the same configured pathname; `preflightRunRoot()` rejects `RUN_ROOT_UNSAFE`, and recreated directory remains empty. Existing missing/symlink/non-directory subcases stay GREEN and prove no write. |
-| AC-RRIF-001-03 | TEST-XCLI-008 plus public-surface/persistence scope review | No Port/Store lifecycle member, persistent root record, marker, retry, or Artifact format change is present. |
+| AC-RRIF-001-01 | TEST-XCLI-008 new mode-`0300` leaf | Create the test-owned root, set `0300`, construct Store, and assert `preflightRunRoot()` returns frozen `{ready:true}`. Restore permissions in `finally` before cleanup. Run on macOS and Ubuntu. |
+| AC-RRIF-001-02 | Existing TEST-XCLI-008 plus new child-process leaf | Existing pre-call replacement remains. New isolated child imports Adapter after `--experimental-test-module-mocks` mock setup: on second `node:fs` `lstatSync` (the preflight configured-path observation), it captures the original stat, synchronously replaces the root pathname, then returns that stale stat. The uncorrected implementation accepts; the live-descriptor implementation must reject exactly `RUN_ROOT_UNSAFE` with no run/Artifact write. |
+| AC-RRIF-001-03 | New child-process leaf plus public-surface/persistence scope review | A complementary child mock intercepts the per-preflight live `openSync`: it calls the real open for the original directory, synchronously replaces the pathname, then returns that original fd. `fstat` must still match the pinned root and preflight returns `{ready:true}`, proving the declared after-linearization result. Scope inspection proves no Port/lifecycle/persistence addition. |
 
 ## Causal RED and GREEN
 
-The uncorrected Adapter is expected to fail only the `replaced` subcase of this existing leaf on clean GitHub-hosted Ubuntu because the original unpinned inode can be reused. The supplied PR #4 run `32575185495`, job `97036374334`, recorded integration `242/243`, missing expected rejection at integration line `2303` / assertion `2317`; it is causal R2 evidence. A local full canonical pass is allocation-dependent regression evidence, not a replacement for this RED.
+The uncorrected Adapter's prior GitHub Ubuntu `242/243` is causal only for replacement before a preflight call; the later `243/243` is regression evidence for that case only. Neither proves mode-`0300` compatibility or a replacement interleaved inside preflight. New Test RED must first prove the module mock executes in a fresh Node 26 child with `--experimental-test-module-mocks`, that `node:fs` is mocked before Adapter import, and that each synchronous mutation occurs at its declared boundary. It may mock only the filesystem boundary; it does not replace the Adapter/core behavior.
+
+The child fixture SHALL use Node 26's `mock.module('node:fs', { exports: { ...actualExports, lstatSync, openSync } })` under `--experimental-test-module-mocks`. It mocks `lstatSync` for before-acquisition and `openSync` for after-acquisition, while delegating all other filesystem functions to their actual implementations. Invocation counters and mutation-trigger assertions SHALL prove that the before-acquisition `lstatSync` and after-acquisition live `openSync` interception each executed exactly once; the latter must fail RED on the current candidate when it makes no second live open, preventing a false pass. If the experimental API cannot preserve required exports or imported-binding interception, the Test role returns `BLOCKED`; polling, timing sleeps, retries, and a production hook are prohibited.
 
 Focused commands must be frozen by Test before TDD_READY. At minimum they name the exact leaf through the project-approved Node test invocation and the affected existing Artifact Port contract command. `tools/harness/validation/run` is the required canonical offline regression command. No model invocation is allowed.
 
 ## Test-asset retirement ledger
 
-`TEST-XCLI-008`: permanent regression; protects unsafe-root replacement and zero-write boundary; retained unchanged. No new, changed, or retired test/fixture/helper/double/snapshot/coverage/harness asset exists, so the Test Asset Retirement Gate records no test-asset diff while retaining this causal asset.
+Existing `TEST-XCLI-008`: permanent regression, retained. Mode-`0300` leaf: permanent compatibility regression. Child module-mock fixture: permanent test-private linearization code, retained inline in its owning integration file; it is not a standalone tracked helper. No retirement is authorized before post-GREEN ledger review.
