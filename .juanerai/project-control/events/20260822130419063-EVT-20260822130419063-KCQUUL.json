@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822130419063-KCQUUL",
+  "event_type": "archived",
+  "occurred_at": "2026-08-22T13:04:19.063Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller"
+  },
+  "summary": "PR CI 当前 spec 已发布，完整 Change 已归档。",
+  "status_after": "complete",
+  "evidence_refs": []
+}

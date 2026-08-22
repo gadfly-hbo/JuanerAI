@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822130317136-P08W5H",
+  "event_type": "accepted",
+  "occurred_at": "2026-08-22T13:03:17.136Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller"
+  },
+  "summary": "PR CI Validator PASS，Controller 验收并发布当前 capability spec。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822140040187-8O6NPW",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-22T14:00:40.187Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-run-root-identity-fix"
+  },
+  "summary": "独立验证未通过；看板回到 Design / Test Remediation，并记录 TOCTOU、权限兼容与 Validator 路由阻断。",
+  "status_after": "active",
+  "evidence_refs": []
+}
