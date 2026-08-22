@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822184534663-570XB9",
+  "event_type": "archived",
+  "occurred_at": "2026-08-22T18:45:34.663Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-runtime-provenance-r2"
+  },
+  "summary": "Runtime Provenance 中立化 R2 Change 已验收、发布并完整归档",
+  "status_after": "complete",
+  "evidence_refs": []
+}

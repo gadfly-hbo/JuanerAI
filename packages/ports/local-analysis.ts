@@ -4,11 +4,17 @@ import type {
   Finding,
   MemberRepurchaseMetrics,
   PlainRecord,
+  ReadableTerminalRunManifest,
   RunManifest,
   SourceDescriptor,
 } from '../product-core/local-analysis.ts';
 
 export type ModelIdentity = Readonly<{ provider: string; model_id: string }>;
+export type RuntimeReadiness = Readonly<{
+  runtime: Readonly<{ id: string; version: string }>;
+  adapter: Readonly<{ id: string; version: string }>;
+  model: ModelIdentity;
+}>;
 export type ConfirmedContract = PlainRecord & { run_id: string };
 export type AnalysisSource = PlainRecord & { version: string; kind: string; sha256: string; path: string };
 export type ExecutionTool = Readonly<{
@@ -26,7 +32,7 @@ export type AgentAnalysisSession = {
   cancel(): Promise<Readonly<{ cancelled: boolean; was_confirmed: boolean }>>;
 };
 export type AgentAnalysisRuntime = {
-  preflightModel(input: Readonly<{ model: ModelIdentity }>): Promise<ModelIdentity>;
+  preflightModel(input: Readonly<{ model: ModelIdentity }>): Promise<RuntimeReadiness>;
   openSession(input: Readonly<{ model: ModelIdentity; discovery_tools: readonly never[]; execution_tools: readonly ExecutionTool[] }>): Promise<AgentAnalysisSession>;
 };
 
@@ -46,7 +52,7 @@ export type RunArtifactStore = {
   appendAsset(input: Readonly<{ run_id: string; asset: AnalysisAsset; cancellation_signal: AbortSignal }>): Promise<Readonly<{ appended: boolean; descriptor: ArtifactDescriptor }>>;
   replaceManifest(input: Readonly<{ run_id: string; next_manifest: RunManifest; cancellation_signal: AbortSignal }>): Promise<Readonly<{ replaced: boolean }>>;
   commitSuccess(input: Readonly<{ run_id: string; next_manifest: RunManifest; evidence: PlainRecord; summary: string; evidence_document: string; cancellation_signal: AbortSignal }>): Promise<Readonly<{ committed: boolean; success_manifest_is_last: boolean }>>;
-  readTerminalRun(input: Readonly<{ run_id: string }>): Promise<Readonly<{ manifest: RunManifest; assets: readonly AnalysisAsset[] }>>;
+  readTerminalRun(input: Readonly<{ run_id: string }>): Promise<Readonly<{ manifest: ReadableTerminalRunManifest; assets: readonly AnalysisAsset[] }>>;
 };
 
 function fail(): never {

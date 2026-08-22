@@ -49,7 +49,10 @@ export type RunManifest = PlainRecord & {
   analysis_kind: string;
   status: string;
   started_at: string;
+  product?: PlainRecord;
   runtime: PlainRecord;
+  adapter?: PlainRecord;
+  profile?: PlainRecord;
   model: PlainRecord;
   contract: PlainRecord;
   sources: SourceDescriptor[];
@@ -58,6 +61,22 @@ export type RunManifest = PlainRecord & {
   evidence?: PlainRecord;
   terminal_detail?: PlainRecord;
 };
+export type LegacyRunManifest = PlainRecord & {
+  schema_version: '1.0';
+  run_id: string;
+  analysis_kind: string;
+  status: 'succeeded' | 'failed' | 'cancelled';
+  started_at: string;
+  runtime: PlainRecord;
+  model: PlainRecord;
+  contract: PlainRecord;
+  sources: SourceDescriptor[];
+  artifacts: ArtifactDescriptor[];
+  ended_at: string;
+  evidence?: PlainRecord;
+  terminal_detail?: PlainRecord;
+};
+export type ReadableTerminalRunManifest = RunManifest | LegacyRunManifest;
 export type AnalysisProposal = PlainRecord & {
   schema_version: string;
   original_question: string;
@@ -91,7 +110,7 @@ const proposalToolNames = Object.freeze(['profile_approved_fixture', 'calculate_
 const canonicalFindingStatement = 'The window-local repurchase-member rate declined in this synthetic fixture.';
 const shaPattern = /^[a-f0-9]{64}$/;
 const uuidV7Pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
-const semverPattern = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
+const semverPattern = /^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-(?:(?:0|[1-9]\d*)|(?:\d*[A-Za-z-][0-9A-Za-z-]*))(?:\.(?:(?:0|[1-9]\d*)|(?:\d*[A-Za-z-][0-9A-Za-z-]*)))*)?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
 const artifactMappings: Readonly<Record<string, Readonly<{ category: string; path: string; media_type: string }>>> = Object.freeze({
   'Q-001': Object.freeze({ category: 'query', path: 'queries/Q-001.sql', media_type: 'application/sql' }),
   'S-001': Object.freeze({ category: 'script', path: 'scripts/S-001.py', media_type: 'text/plain' }),
@@ -300,16 +319,8 @@ function validateArtifactDescriptor(artifact: unknown): asserts artifact is Arti
   if (!expected || artifact.category !== expected.category || artifact.path !== expected.path || artifact.media_type !== expected.media_type) fail('VALIDATION_FAILED');
 }
 
-function validateRunManifest(run: unknown): RunManifest {
-  const common = ['schema_version', 'run_id', 'analysis_kind', 'status', 'started_at', 'runtime', 'model', 'contract', 'sources', 'artifacts'];
-  const terminal = ['ended_at', 'evidence', 'terminal_detail'];
-  closedObject(run, common, terminal);
-  if (run.schema_version !== '1.0') fail('CONTRACT_VERSION_UNSUPPORTED');
+function validateManifestLifecycle(run: PlainRecord): void {
   if (typeof run.run_id !== 'string' || !uuidV7Pattern.test(run.run_id) || run.analysis_kind !== 'analyst_assistant' || !validTimestamp(run.started_at) || typeof run.status !== 'string' || !['in_progress', 'succeeded', 'failed', 'cancelled'].includes(run.status)) fail('VALIDATION_FAILED');
-  closedObject(run.runtime, ['xanthil_version', 'pi_adapter_version', 'pi_version']);
-  if (![run.runtime.xanthil_version, run.runtime.pi_adapter_version, run.runtime.pi_version].every((version) => typeof version === 'string' && semverPattern.test(version))) fail('VALIDATION_FAILED');
-  closedObject(run.model, ['provider', 'model_id'], ['thinking_level']);
-  if (!nonEmptyString(run.model.provider) || !nonEmptyString(run.model.model_id) || (Object.hasOwn(run.model, 'thinking_level') && !nonEmptyString(run.model.thinking_level))) fail('VALIDATION_FAILED');
   closedObject(run.contract, ['path', 'sha256']);
   if (run.contract.path !== 'analysis-contract.json' || typeof run.contract.sha256 !== 'string' || !shaPattern.test(run.contract.sha256) || !Array.isArray(run.sources) || run.sources.length !== 1 || !Array.isArray(run.artifacts)) fail('VALIDATION_FAILED');
   run.sources.forEach(validateSource);
@@ -322,6 +333,7 @@ function validateRunManifest(run: unknown): RunManifest {
     artifactPaths.add(artifact.path);
   }
   if (run.status === 'succeeded' && (run.artifacts.length !== succeededArtifactIds.length || run.artifacts.some((artifact, index) => artifact.artifact_id !== succeededArtifactIds[index]))) fail('VALIDATION_FAILED');
+  const terminal = ['ended_at', 'evidence', 'terminal_detail'];
   if (run.status === 'in_progress') {
     if (terminal.some((field) => Object.hasOwn(run, field))) fail('VALIDATION_FAILED');
   } else {
@@ -337,14 +349,58 @@ function validateRunManifest(run: unknown): RunManifest {
       if (!validStage(run.terminal_detail.stage) || (run.status === 'failed' && !validErrorCode(run.terminal_detail.error_code)) || (run.status === 'cancelled' && Object.hasOwn(run.terminal_detail, 'error_code')) || (Object.hasOwn(run.terminal_detail, 'message') && !nonEmptyString(run.terminal_detail.message))) fail('VALIDATION_FAILED');
     }
   }
+}
+
+function validateCurrentProvenance(run: PlainRecord): void {
+  for (const node of ['product', 'runtime', 'adapter'] as const) {
+    closedObject(run[node], ['id', 'version']);
+    if (!nonEmptyString(run[node].id) || typeof run[node].version !== 'string' || !semverPattern.test(run[node].version)) fail('VALIDATION_FAILED');
+  }
+  closedObject(run.profile, ['id']);
+  if (!nonEmptyString(run.profile.id)) fail('VALIDATION_FAILED');
+  closedObject(run.model, ['provider', 'model_id']);
+  if (!nonEmptyString(run.model.provider) || !nonEmptyString(run.model.model_id)) fail('VALIDATION_FAILED');
+}
+
+function validateLegacyProvenance(run: PlainRecord): void {
+  closedObject(run.runtime, ['xanthil_version', 'pi_adapter_version', 'pi_version']);
+  if (![run.runtime.xanthil_version, run.runtime.pi_adapter_version, run.runtime.pi_version].every((version) => typeof version === 'string' && semverPattern.test(version))) fail('VALIDATION_FAILED');
+  closedObject(run.model, ['provider', 'model_id'], ['thinking_level']);
+  if (!nonEmptyString(run.model.provider) || !nonEmptyString(run.model.model_id) || (Object.hasOwn(run.model, 'thinking_level') && !nonEmptyString(run.model.thinking_level))) fail('VALIDATION_FAILED');
+}
+
+function validateRunManifest(run: unknown): RunManifest {
+  const common = ['schema_version', 'run_id', 'analysis_kind', 'status', 'started_at', 'product', 'runtime', 'adapter', 'profile', 'model', 'contract', 'sources', 'artifacts'];
+  const terminal = ['ended_at', 'evidence', 'terminal_detail'];
+  closedObject(run, common, terminal);
+  if (run.schema_version !== '2.0') fail('CONTRACT_VERSION_UNSUPPORTED');
+  validateCurrentProvenance(run);
+  validateManifestLifecycle(run);
   if (!isRunManifest(run)) fail('VALIDATION_FAILED');
   return run;
+}
+
+function validateReadableTerminalRunManifest(run: unknown): ReadableTerminalRunManifest {
+  if (!isPlainObject(run)) fail('VALIDATION_FAILED');
+  if (run.schema_version === '2.0') {
+    const current = validateRunManifest(run);
+    if (current.status === 'in_progress') fail('VALIDATION_FAILED');
+    return current;
+  }
+  if (run.schema_version !== '1.0') fail('CONTRACT_VERSION_UNSUPPORTED');
+  const common = ['schema_version', 'run_id', 'analysis_kind', 'status', 'started_at', 'runtime', 'model', 'contract', 'sources', 'artifacts'];
+  const terminal = ['ended_at', 'evidence', 'terminal_detail'];
+  closedObject(run, common, terminal);
+  validateLegacyProvenance(run);
+  validateManifestLifecycle(run);
+  if (typeof run.status !== 'string' || !['succeeded', 'failed', 'cancelled'].includes(run.status)) fail('VALIDATION_FAILED');
+  return run as LegacyRunManifest;
 }
 
 function isRunManifest(value: PlainRecord): value is RunManifest {
   return typeof value.schema_version === 'string' && typeof value.run_id === 'string'
     && typeof value.analysis_kind === 'string' && typeof value.status === 'string' && typeof value.started_at === 'string'
-    && isPlainObject(value.runtime) && isPlainObject(value.model) && isPlainObject(value.contract)
+    && isPlainObject(value.product) && isPlainObject(value.runtime) && isPlainObject(value.adapter) && isPlainObject(value.profile) && isPlainObject(value.model) && isPlainObject(value.contract)
     && Array.isArray(value.sources) && value.sources.every(isSourceDescriptor)
     && Array.isArray(value.artifacts) && value.artifacts.every(isArtifactDescriptor);
 }
@@ -518,6 +574,7 @@ export function createLocalAnalysisDomain() {
     calculateMemberRepurchaseMetrics: calculateMetrics,
     validateFinding,
     validateRunManifest,
+    validateReadableTerminalRunManifest,
     validateEvidenceIndex,
     enforceLocalAnalysisSecurityBoundary: enforceSecurityBoundary,
     validateTerminalOutcome,

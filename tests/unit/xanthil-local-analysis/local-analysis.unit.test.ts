@@ -62,6 +62,21 @@ const referenceArtifacts = Object.freeze([
   artifactDescriptor('DOC-EVIDENCE', 'evidence_document', 'evidence.md', 'text/markdown'),
 ]);
 
+function exactReadableTerminalManifest(schema_version: '1.0' | '2.0', status: 'succeeded' | 'failed' | 'cancelled'): Record<string, unknown> {
+  return {
+    schema_version, run_id: runId, analysis_kind: 'analyst_assistant', status,
+    started_at: '2026-08-20T00:00:00.000Z', ended_at: '2026-08-20T00:01:00.000Z',
+    ...(schema_version === '2.0'
+      ? { product: { id: 'xanthil', version: '1.0.0' }, runtime: { id: 'pi', version: '0.84.2' }, adapter: { id: 'agent-pi', version: '1.0.0' }, profile: { id: 'personal' }, model: { provider: 'minimax-cn', model_id: 'MiniMax-M3' } }
+      : { runtime: { xanthil_version: '1.0.0', pi_adapter_version: '1.0.0', pi_version: '0.84.2' }, model: status === 'succeeded' ? { provider: 'minimax-cn', model_id: 'MiniMax-M3', thinking_level: 'low' } : { provider: 'minimax-cn', model_id: 'MiniMax-M3' } }),
+    contract: { path: 'analysis-contract.json', sha256: fixtureSha256 },
+    sources: [{ source_id: 'SRC-001', kind: 'csv', path: 'member-orders-v1.csv', sha256: fixtureSha256, byte_size: fixtureByteSize, read_at: '2026-08-20T00:00:00.000Z', fixture_version: 'member-orders-v1' }],
+    ...(status === 'succeeded'
+      ? { evidence: { path: 'evidence.json', sha256: fixtureSha256 }, artifacts: referenceArtifacts }
+      : { artifacts: [], terminal_detail: status === 'failed' ? { stage: 'validation', error_code: 'VALIDATION_FAILED' } : { stage: 'runtime' } }),
+  };
+}
+
 test('fixture helper health: canonical bytes, SHA-256, and independent exact oracle are stable', async () => {
   const bytes = await canonicalFixtureBytes();
   assert.equal(bytes.byteLength, fixtureByteSize);
@@ -306,16 +321,20 @@ test('TEST-XCLI-002 [AC-XCLI-005-02, AC-XCLI-005-03, AC-XCLI-011-01, AC-XCLI-011
 test('TEST-XCLI-004 [AC-XCLI-003-01, AC-XCLI-009-01, AC-XCLI-010-01, AC-XCLI-010-02, AC-XCLI-016-02] rejects non-closed lifecycle records and unknown versions', async (t) => {
   const validateRunManifest = await domainMethod('validateRunManifest');
   const run = {
-    schema_version: '1.0', run_id: runId, analysis_kind: 'analyst_assistant', status: 'in_progress',
-    started_at: '2026-08-20T00:00:00.000Z', runtime: { xanthil_version: '1.0.0', pi_adapter_version: '1.0.0', pi_version: '0.84.2' },
+    schema_version: '2.0', run_id: runId, analysis_kind: 'analyst_assistant', status: 'in_progress',
+    started_at: '2026-08-20T00:00:00.000Z', product: { id: 'xanthil', version: '1.0.0' }, runtime: { id: 'pi', version: '0.84.2' }, adapter: { id: 'agent-pi', version: '1.0.0' }, profile: { id: 'personal' },
     model: { provider: 'xiaomi-token-plan-cn', model_id: 'mimo-v2.5-pro' },
     contract: { path: 'analysis-contract.json', sha256: fixtureSha256 },
     sources: [{ source_id: 'SRC-001', kind: 'csv', path: 'member-orders-v1.csv', sha256: fixtureSha256, byte_size: fixtureByteSize, read_at: '2026-08-20T00:00:00.000Z', fixture_version: 'member-orders-v1' }], artifacts: [],
   };
-  assert.deepEqual(validateRunManifest(run), run);
+  await t.test('current_in_progress_without_assets', () => {
+    assert.deepEqual(validateRunManifest(run), run);
+  });
   const queryAsset = referenceArtifacts[0];
   const runWithAsset = { ...run, artifacts: [queryAsset] };
-  assert.deepEqual(validateRunManifest(runWithAsset), runWithAsset);
+  await t.test('current_in_progress_with_query_asset', () => {
+    assert.deepEqual(validateRunManifest(runWithAsset), runWithAsset);
+  });
   const succeededRun = {
     ...run,
     status: 'succeeded',
@@ -333,7 +352,7 @@ test('TEST-XCLI-004 [AC-XCLI-003-01, AC-XCLI-009-01, AC-XCLI-010-01, AC-XCLI-010
     assert.deepEqual(validateRunManifest(terminalRun), terminalRun, `${terminalRun.status} may be asset-free`);
   });
   for (const [label, invalid] of [
-    ['unknown_version', { ...run, schema_version: '2.0' }],
+    ['unknown_version', { ...run, schema_version: '3.0' }],
     ['unknown_field', { ...run, unexpected: true }],
     ['missing_run_id', { ...run, run_id: undefined }],
     ['null_model', { ...run, model: null }],
@@ -384,6 +403,80 @@ test('TEST-XCLI-004 [AC-XCLI-003-01, AC-XCLI-009-01, AC-XCLI-010-01, AC-XCLI-010
       );
     });
   }
+});
+
+test('RPN-T02 TEST-XCLI-004 [AC-XCLI-009-01, AC-XCLI-009-03, AC-XCLI-015-01, AC-XCLI-016-02] rejects non-neutral provenance and non-current writes', async (t) => {
+  const validateRunManifest = await domainMethod('validateRunManifest');
+  const current = {
+    schema_version: '2.0', run_id: runId, analysis_kind: 'analyst_assistant', status: 'in_progress',
+    started_at: '2026-08-20T00:00:00.000Z',
+    product: { id: 'xanthil', version: '1.0.0' },
+    runtime: { id: 'pi', version: '0.84.2' },
+    adapter: { id: 'agent-pi', version: '1.0.0' },
+    profile: { id: 'personal' },
+    model: { provider: 'minimax-cn', model_id: 'MiniMax-M3' },
+    contract: { path: 'analysis-contract.json', sha256: fixtureSha256 },
+    sources: [{ source_id: 'SRC-001', kind: 'csv', path: 'member-orders-v1.csv', sha256: fixtureSha256, byte_size: fixtureByteSize, read_at: '2026-08-20T00:00:00.000Z', fixture_version: 'member-orders-v1' }], artifacts: [],
+  };
+  const legacyInProgress = {
+    schema_version: '1.0', run_id: runId, analysis_kind: 'analyst_assistant', status: 'in_progress',
+    started_at: '2026-08-20T00:00:00.000Z',
+    runtime: { xanthil_version: '1.0.0', pi_adapter_version: '1.0.0', pi_version: '0.84.2' },
+    model: current.model, contract: current.contract, sources: current.sources, artifacts: [],
+  };
+  const invalid: readonly [string, unknown][] = [
+    ['legacy_xanthil_version_key', { ...current, runtime: { ...current.runtime, xanthil_version: '1.0.0' } }],
+    ['legacy_pi_adapter_version_key', { ...current, runtime: { ...current.runtime, pi_adapter_version: '1.0.0' } }],
+    ['legacy_pi_version_key', { ...current, runtime: { ...current.runtime, pi_version: '0.84.2' } }],
+    ['missing_product_node', Object.fromEntries(Object.entries(current).filter(([key]) => key !== 'product'))],
+    ['missing_product_version', { ...current, product: { id: 'xanthil' } }],
+    ['extra_product_field', { ...current, product: { ...current.product, edition: 'cli' } }],
+    ['null_product_id', { ...current, product: { ...current.product, id: null } }],
+    ['malformed_product_version', { ...current, product: { ...current.product, version: '1.0' } }],
+    ['missing_runtime_node', Object.fromEntries(Object.entries(current).filter(([key]) => key !== 'runtime'))],
+    ['missing_runtime_id', { ...current, runtime: { version: '0.84.2' } }],
+    ['null_runtime_version', { ...current, runtime: { id: 'pi', version: null } }],
+    ['malformed_runtime_version', { ...current, runtime: { id: 'pi', version: '0.84' } }],
+    ['product_core_numeric_leading_zero', { ...current, product: { ...current.product, version: '01.0.0' } }],
+    ['runtime_prerelease_numeric_leading_zero', { ...current, runtime: { ...current.runtime, version: '0.84.2-01' } }],
+    ['missing_adapter_node', Object.fromEntries(Object.entries(current).filter(([key]) => key !== 'adapter'))],
+    ['missing_adapter_id', { ...current, adapter: { version: '1.0.0' } }],
+    ['null_adapter_version', { ...current, adapter: { id: 'agent-pi', version: null } }],
+    ['extra_adapter_field', { ...current, adapter: { ...current.adapter, implementation: 'local' } }],
+    ['adapter_prerelease_numeric_leading_zero', { ...current, adapter: { ...current.adapter, version: '1.0.0-alpha.01' } }],
+    ['missing_profile_node', Object.fromEntries(Object.entries(current).filter(([key]) => key !== 'profile'))],
+    ['profile_version', { ...current, profile: { id: 'personal', version: '1.0.0' } }],
+    ['null_profile_id', { ...current, profile: { id: null } }],
+    ['empty_profile_id', { ...current, profile: { id: '' } }],
+    ['missing_model_node', Object.fromEntries(Object.entries(current).filter(([key]) => key !== 'model'))],
+    ['missing_model_provider', { ...current, model: { model_id: 'MiniMax-M3' } }],
+    ['null_model_id', { ...current, model: { provider: 'minimax-cn', model_id: null } }],
+    ['model_duplication_under_runtime', { ...current, runtime: { ...current.runtime, model: current.model } }],
+    ['extra_model_field', { ...current, model: { ...current.model, thinking_level: 'high' } }],
+    ['legacy_current_write', legacyInProgress],
+    ['unknown_schema_version', { ...current, schema_version: '3.0' }],
+  ];
+  for (const [label, candidate] of invalid) await t.test(`rejects_${label}`, () => {
+    assert.throws(() => validateRunManifest(candidate), /VALIDATION_FAILED|CONTRACT_VERSION_UNSUPPORTED/);
+  });
+});
+
+test('RPN-T03 TEST-XCLI-008 [AC-XCLI-016-02] directly reads only exact terminal 1.0 and 2.0 manifests without changing caller structure', async (t) => {
+  const validateReadableTerminalRunManifest = await domainMethod('validateReadableTerminalRunManifest');
+  for (const schema_version of ['1.0', '2.0'] as const) for (const status of ['succeeded', 'failed', 'cancelled'] as const) await t.test(`exact_terminal_${schema_version}_${status}`, () => {
+    const manifest = exactReadableTerminalManifest(schema_version, status);
+    const before = structuredClone(manifest);
+    assert.strictEqual(validateReadableTerminalRunManifest(manifest), manifest);
+    assert.deepEqual(manifest, before);
+  });
+  for (const [label, manifest, expected] of [
+    ['current_in_progress', { ...exactReadableTerminalManifest('2.0', 'failed'), status: 'in_progress', ended_at: undefined, terminal_detail: undefined }, /VALIDATION_FAILED/],
+    ['legacy_in_progress', { ...exactReadableTerminalManifest('1.0', 'failed'), status: 'in_progress', ended_at: undefined, terminal_detail: undefined }, /VALIDATION_FAILED/],
+    ['unknown_version', { ...exactReadableTerminalManifest('1.0', 'failed'), schema_version: '3.0' }, /CONTRACT_VERSION_UNSUPPORTED/],
+    ['malformed_record', { ...exactReadableTerminalManifest('1.0', 'failed'), runtime: null }, /VALIDATION_FAILED/],
+  ] as const) await t.test(`rejects_${label}`, () => {
+    assert.throws(() => validateReadableTerminalRunManifest(manifest), expected);
+  });
 });
 
 test('TEST-XCLI-005 [AC-XCLI-011-01, AC-XCLI-011-02, AC-XCLI-011-03, AC-XCLI-012-02, AC-XCLI-012-03, AC-XCLI-015-01] resolves Evidence only inside its run', async (t) => {

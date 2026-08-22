@@ -119,8 +119,13 @@ test('TASK-010 R3 TEST-XCLI-011 [AC-XCLI-001-02, AC-XCLI-007-03, AC-XCLI-007-04,
   const adapter = await loadPublicSeam('agentAdapter');
   const runtime = requiredExport(adapter, 'createPiAgentAnalysisRuntime')(r3Model, { sdkSessionFactory: control.sdkSessionFactory });
   const result = await runtime.preflightModel(Object.freeze({ model: r3Model }));
-  assert.deepEqual(result, r3Model);
+  assert.deepEqual(result, {
+    runtime: { id: 'pi', version: '0.84.2' },
+    adapter: { id: 'agent-pi', version: '1.0.0' },
+    model: r3Model,
+  });
   assert.equal(Object.isFrozen(result), true);
+  for (const node of Object.values(result)) assert.equal(Object.isFrozen(node), true);
   assert.strictEqual(await runtime.preflightModel(Object.freeze({ model: r3Model })), result);
   await assert.rejects(() => invokeNegativeOperationalPort(runtime.preflightModel, [Object.freeze({ model: Object.freeze({ provider: 'xiaomi-token-plan-cn', model_id: 'mimo-v2.5-pro' }) })]), /MODEL_UNAVAILABLE/);
   await assert.rejects(() => invokeNegativeOperationalPort(runtime.preflightModel, [Object.freeze({ model: r3Model, extra: true })]), /PROTOCOL_FAILURE/);

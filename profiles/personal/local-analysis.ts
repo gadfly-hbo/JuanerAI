@@ -9,6 +9,7 @@ import type { DeadlineScheduler } from '../../packages/application/local-analysi
 
 const provider = 'minimax-cn';
 const modelId = 'MiniMax-M3';
+const profile = Object.freeze({ id: 'personal' });
 type ProfileConfig = { workspaceRoot: string; runRoot: string; provider: string; modelId: string };
 function plain(value: unknown): value is Record<string, unknown> { return value !== null && typeof value === 'object' && !Array.isArray(value) && Object.getPrototypeOf(value) === Object.prototype; }
 function closed(value: unknown): value is ProfileConfig { return plain(value) && Object.keys(value).length === 4 && Object.getOwnPropertySymbols(value).length === 0 && ['workspaceRoot', 'runRoot', 'provider', 'modelId'].every((key) => Object.hasOwn(value, key) && value[key] !== null && value[key] !== undefined) && typeof value.workspaceRoot === 'string' && typeof value.runRoot === 'string' && typeof value.provider === 'string' && typeof value.modelId === 'string'; }
@@ -41,6 +42,7 @@ export function createPersonalLocalAnalysisProfile(config: unknown) {
     localAnalysisExecution: createDuckDbPythonLocalAnalysisExecution({ workspaceRoot }),
     runArtifactStore: createLocalRunArtifactStore({ runRoot }),
     model: { provider, model_id: modelId },
+    profile,
     clock: () => new Date(),
     deadlineScheduler,
   });

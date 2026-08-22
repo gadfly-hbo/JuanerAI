@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822163151434-TJW6C7",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-22T16:31:51.434Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-runtime-provenance-r2"
+  },
+  "summary": "TDD_READY 暂缓：第二次 Test correction 根因为 invalid/incomplete test，生产继续冻结",
+  "status_after": "active",
+  "evidence_refs": []
+}
