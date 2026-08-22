@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "run_root_identity_fix_revision_002_complete",
-    "label": "Run Root Identity Fix Revision 002：已验收归档",
+    "id": "pr_ci_merge_ready",
+    "label": "PR CI：已归档 / 合并就绪",
     "ordinal": 8,
     "total": 8
   },
   "health": "complete",
-  "summary": "Revision 002 已由必需 Validator 与独立 Sol-high 双重 PASS，Controller 验收并归档。",
-  "current_objective": "将已验收的最小 Storage 修复通过正式 PR 集成到 main。",
-  "next_action": "推送正式修复分支，创建并 squash merge PR，随后继续 CI 治理 PR。",
+  "summary": "PR CI Change 已验收归档，并已同步包含 Storage 修复的新 main。",
+  "current_objective": "用 PR #4 的 GitHub 托管运行验证 Canonical validation workflow。",
+  "next_action": "强制更新已 rebase 分支，等待唯一 PR 检查 GREEN 后 squash merge。",
   "blockers": [],
   "milestones": [
     {
@@ -69,57 +69,50 @@
     {
       "id": "juaner_spec",
       "label": "Spec Agent",
-      "model": "gpt-5.6-terra · medium (configured; R2 route constraint)",
+      "model": "gpt-5.6-sol · high (R2 automatic escalation)",
       "status": "complete",
       "activation": "Spec Gate 前"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
-      "model": "gpt-5.6-terra · medium (configured; R2 route constraint)",
+      "model": "gpt-5.6-terra · high (R2 automatic escalation)",
       "status": "complete",
       "activation": "Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
-      "model": "gpt-5.6-terra · medium (configured; R2 route constraint)",
+      "model": "gpt-5.6-sol · high (single automatic Worker upgrade)",
       "status": "complete",
       "activation": "TDD_READY"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
-      "model": "gpt-5.6-sol · medium (configured; ROUTING_ESCALATION_REQUIRED)",
+      "model": "gpt-5.6-sol · high (R2 route)",
       "status": "complete",
       "activation": "实现与证据冻结"
-    },
-    {
-      "id": "supplementary_validator",
-      "label": "Supplementary R2 Validator",
-      "model": "gpt-5.6-sol · high",
-      "status": "complete",
-      "activation": "R2 固定路由约束补充验证"
     }
   ],
   "metrics": [
     {
       "id": "requirements",
       "label": "需求",
-      "done": 1,
-      "total": 1
+      "done": 3,
+      "total": 3
     },
     {
       "id": "tests",
       "label": "测试",
-      "done": 2,
-      "total": 2
+      "done": 4,
+      "total": 4
     },
     {
       "id": "tasks",
       "label": "任务",
-      "done": 6,
-      "total": 6
+      "done": 7,
+      "total": 7
     },
     {
       "id": "decisions",
@@ -606,9 +599,9 @@
       "mitigation": "只允许TEST-XCLI-021/022及路径/执行机制做因果机械更新；业务、失败、安全和竞态断言冻结。"
     }
   ],
-  "updated_at": "2026-08-22T14:45:37.620Z",
+  "updated_at": "2026-08-22T14:52:25.507Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-run-root-identity-fix"
+    "session": "controller-pr-ci-integration"
   }
 }
