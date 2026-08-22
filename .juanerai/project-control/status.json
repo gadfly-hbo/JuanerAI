@@ -6,16 +6,35 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "run_root_identity_fix_independent_validation",
-    "label": "Run Root Identity Fix：Independent Validation",
-    "ordinal": 5,
+    "id": "run_root_identity_fix_design_test_remediation",
+    "label": "Run Root Identity Fix：Design / Test Remediation",
+    "ordinal": 2,
     "total": 8
   },
   "health": "active",
-  "summary": "一次性 GitHub Ubuntu proof 已 243/243 GREEN，PR #5 已关闭且临时分支已删除。",
-  "current_objective": "对冻结的单文件 Adapter 修复、RED/GREEN、范围、资源生命周期和证据边界做独立只读验证。",
-  "next_action": "Validator 返回 PASS/FAIL/BLOCKED；PASS 后完成接受、归档与正式修复 PR。",
-  "blockers": [],
+  "summary": "独立验证未通过：并发替换仍有 TOCTOU，O_RDONLY 缩窄目录权限兼容，R2 Validator 路由不足。",
+  "current_objective": "补闭 preflight 线性化与 writable-searchable 目录兼容合同，建立因果 RED 后再实施 Worker Revision。",
+  "next_action": "Spec 修订私有目录身份机制；Test 增加并发替换与 0300 权限兼容负例，随后重新判定 TDD_READY。",
+  "blockers": [
+    {
+      "id": "RRIF-TOCTOU-001",
+      "label": "并发替换线性化缺口",
+      "detail": "当前 lstat/realpath/fstat 顺序可能在 pathname 观察期间替换时误接受旧快照。",
+      "owner": "Controller / Spec / Test"
+    },
+    {
+      "id": "RRIF-PERM-001",
+      "label": "目录读取权限兼容漂移",
+      "detail": "O_RDONLY 使原本可写且可搜索的 0300 安全目录在构造期失败。",
+      "owner": "Controller / Spec / Test"
+    },
+    {
+      "id": "RRIF-ROUTE-001",
+      "label": "R2 Validator 路由不足",
+      "detail": "必需 juaner_validator 固定 Sol-medium；最终需补充独立 Sol-high 验证且不得静默豁免。",
+      "owner": "Controller"
+    }
+  ],
   "milestones": [
     {
       "id": "cold_start",
@@ -30,32 +49,32 @@
     {
       "id": "spec_gate",
       "label": "Spec Gate",
-      "status": "completed"
+      "status": "active"
     },
     {
       "id": "test_red",
       "label": "Test / RED",
-      "status": "completed"
+      "status": "locked"
     },
     {
       "id": "implementation_green",
       "label": "实现 / GREEN",
-      "status": "completed"
+      "status": "locked"
     },
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "completed"
+      "status": "blocked"
     },
     {
       "id": "user_acceptance",
       "label": "用户验收",
-      "status": "completed"
+      "status": "pending"
     },
     {
       "id": "archive",
       "label": "归档",
-      "status": "completed"
+      "status": "pending"
     }
   ],
   "agents": [
@@ -69,29 +88,29 @@
     {
       "id": "juaner_spec",
       "label": "Spec Agent",
-      "model": "gpt-5.6-sol · high (R2 automatic escalation)",
-      "status": "complete",
+      "model": "gpt-5.6-terra · medium (configured; R2 route constraint)",
+      "status": "active",
       "activation": "Spec Gate 前"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
-      "model": "gpt-5.6-terra · high (R2 automatic escalation)",
-      "status": "active",
+      "model": "gpt-5.6-terra · medium (configured; R2 route constraint)",
+      "status": "waiting",
       "activation": "Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
-      "model": "gpt-5.6-sol · high (single automatic Worker upgrade)",
-      "status": "complete",
+      "model": "gpt-5.6-terra · medium (configured; R2 route constraint)",
+      "status": "locked",
       "activation": "TDD_READY"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
-      "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "complete",
+      "model": "gpt-5.6-sol · medium (configured; ROUTING_ESCALATION_REQUIRED)",
+      "status": "blocked",
       "activation": "实现与证据冻结"
     }
   ],
@@ -100,19 +119,19 @@
       "id": "requirements",
       "label": "需求",
       "done": 0,
-      "total": 0
+      "total": 1
     },
     {
       "id": "tests",
       "label": "测试",
       "done": 0,
-      "total": 0
+      "total": 2
     },
     {
       "id": "tasks",
       "label": "任务",
-      "done": 0,
-      "total": 0
+      "done": 2,
+      "total": 6
     },
     {
       "id": "decisions",
@@ -599,7 +618,7 @@
       "mitigation": "只允许TEST-XCLI-021/022及路径/执行机制做因果机械更新；业务、失败、安全和竞态断言冻结。"
     }
   ],
-  "updated_at": "2026-08-22T13:50:11.142Z",
+  "updated_at": "2026-08-22T14:01:01.263Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-run-root-identity-fix"
