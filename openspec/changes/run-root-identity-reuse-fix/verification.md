@@ -2,7 +2,7 @@
 
 ## Current verdict
 
-**LOCAL GREEN; REMOTE LINUX PROOF PENDING.** Controller Spec Gate and corrected TDD_READY passed. Worker changed only `adapters/storage-local/local-analysis.ts`; Controller reviewed the candidate and reproduced focused `1/1`, Artifact Port contract `198/198`, `git diff --check`, and the canonical offline runner at exit 0. GitHub-hosted Ubuntu GREEN remains required before implementation/evidence freeze because local inode allocation cannot prove the repaired Linux condition.
+**IMPLEMENTATION AND EVIDENCE FROZEN; VALIDATOR PENDING.** Controller Spec Gate and corrected TDD_READY passed. Worker changed only `adapters/storage-local/local-analysis.ts`; Controller reviewed the candidate and reproduced focused `1/1`, Artifact Port contract `198/198`, `git diff --check`, and the canonical offline runner at exit 0. The one authorized GitHub-hosted Ubuntu proof also passed integration `243/243`; implementation and evidence are now frozen for independent validation.
 
 GitHub-hosted Ubuntu PR #4 run `32575185495`, job `97036374334`, supplies causal RED: integration `242/243`, with `Missing expected rejection` at the frozen unsafe-root leaf. The conclusion that `replaced` is the failing loop member is a source-based deduction, not a runner label: missing, symlink, and non-directory hit explicit reject branches, while replacement alone depends on the released device/inode pair.
 
@@ -32,6 +32,16 @@ Worker routing constraint is recorded, not waived: the R2 Worker floor is Terra-
 ## Test Asset Retirement Gate after GREEN
 
 PASS. The complete diff adds, changes, or retires no test, fixture, helper, double, mock, snapshot, coverage map, or harness asset. Frozen test SHA-256 remains `f94895a0a55a2886cc26bce4aad4c2a912bc7242ebf8ccf0ad4a280e828c6723`. Existing `TEST-XCLI-008` remains the permanent consumer for unchanged-root success, unsafe-root replacement rejection, and zero-write behavior; there is no orphan, duplicate-purpose, temporary, obsolete, or cleanup asset.
+
+## Remote Linux GREEN
+
+- Evidence-only draft PR: `#5`, closed without merge after its single authorized result.
+- GitHub Actions run `32576797214`, job `97040205704`, head SHA `19c843af236c32a419b84a2bcf62df02f40824fa`; conclusion `success`.
+- Ubuntu canonical counts: `250/250`, `198/198`, integration `243/243`, `131/132` with the one explicitly gated real-Pi leaf skipped, and `12/12`; every suite reported zero failures.
+- The proof-only workflow blob `289ab6238864d49191f4df977f04c9695010c716` exactly matched the already-reviewed workflow on `work/macbook/pr-ci-validation`; no workflow behavior or test changed.
+- After evidence capture, Controller closed PR `#5` and deleted both remote and local `work/macbook/proof-run-root-identity-linux`. The proof commit was not merged. The final fix branch contains no `.github` file or diff.
+
+RED-to-GREEN comparison is environment-matched: the uncorrected PR #4 Ubuntu run failed this integration suite at `242/243`; the frozen Adapter candidate on GitHub-hosted Ubuntu passed it at `243/243`. Local and remote canonical regressions agree, and no second proof attempt occurred.
 
 ## Required evidence
 

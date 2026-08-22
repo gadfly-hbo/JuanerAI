@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "run_root_identity_fix_remote_green",
-    "label": "Run Root Identity Fix：Remote Linux GREEN",
-    "ordinal": 4,
+    "id": "run_root_identity_fix_independent_validation",
+    "label": "Run Root Identity Fix：Independent Validation",
+    "ordinal": 5,
     "total": 8
   },
   "health": "active",
-  "summary": "Storage Adapter 单文件候选已通过 focused、contract、canonical 与测试资产退役门。",
-  "current_objective": "用一次性 draft proof PR 在 GitHub Ubuntu 证明同一冻结候选通过既有 243/243 集成套件。",
-  "next_action": "提交冻结候选，创建仅含候选与已审 CI workflow 的临时 proof PR，并获取单次结果。",
+  "summary": "一次性 GitHub Ubuntu proof 已 243/243 GREEN，PR #5 已关闭且临时分支已删除。",
+  "current_objective": "对冻结的单文件 Adapter 修复、RED/GREEN、范围、资源生命周期和证据边界做独立只读验证。",
+  "next_action": "Validator 返回 PASS/FAIL/BLOCKED；PASS 后完成接受、归档与正式修复 PR。",
   "blockers": [],
   "milestones": [
     {
@@ -599,7 +599,7 @@
       "mitigation": "只允许TEST-XCLI-021/022及路径/执行机制做因果机械更新；业务、失败、安全和竞态断言冻结。"
     }
   ],
-  "updated_at": "2026-08-22T13:46:20.878Z",
+  "updated_at": "2026-08-22T13:50:11.142Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-run-root-identity-fix"
