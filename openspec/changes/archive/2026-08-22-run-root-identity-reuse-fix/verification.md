@@ -2,7 +2,7 @@
 
 ## Current verdict
 
-**CONTROLLER EVIDENCE FREEZE — REVISION 002; INDEPENDENT VALIDATION PENDING.** Validator rejected the prior implementation/evidence freeze. Revision 002 implements the frozen live-path descriptor acquisition linearization point and preserves permitted owner-write/search-only mode `0300` roots. Local focused, contract, canonical regression, the single authorized Ubuntu proof, and the Test Asset Retirement Gate are complete. Acceptance remains locked pending both the required Validator and the supplementary independent Sol-high review.
+**ARCHIVE_COMPLETE — REVISION 002.** Revision 002 implements the frozen live-path descriptor acquisition linearization point and preserves permitted owner-write/search-only mode `0300` roots. Local focused, contract, canonical regression, the single authorized Ubuntu proof, Test Asset Retirement, required Validator, supplementary independent Sol-high review, Controller acceptance, current-spec publication, archive, and post-archive regression are complete with no residual finding.
 
 The R2 Spec route constraint remains: `juaner_spec` is fixed Terra-medium while the routing policy requires Sol-high. The required Spec role revised the complete package; Controller at Sol-xhigh reviewed the proposal, normative delta, design, tasks, test plan, traceability, evidence boundary, current candidate, Validator findings, and deterministic RED feasibility before issuing this new Gate. Validator also returned `ROUTING_ESCALATION_REQUIRED`; that is recorded, not waived, and final validation must include an additional independent Sol-high review.
 
@@ -59,6 +59,22 @@ Controller created evidence-only draft PR `#6` from frozen formal candidate `e78
 - the formal branch contains no `.github/workflows` change.
 
 No retry occurred. This consumes the one Revision-002 remote-proof authorization.
+
+## Independent Validation and Controller Acceptance
+
+The required `juaner_validator` at its configured `gpt-5.6-sol/medium` route returned **PASS — Revision 002** against frozen commit `d94fb5e88b6b167a4eb3ca9f1c8bf9eb9bcb7a41`. It independently reproduced focused `2/2`, unsafe-root `1/1`, Artifact Port `198/198`, canonical exit `0`, hashes, scope, Test Asset Retirement, proof integrity, and exact error/descriptor-lifecycle probes. It explicitly did not waive the R2 Sol-high route floor.
+
+A separate fresh read-only agent actually routed as `gpt-5.6-sol/high` returned **PASS — supplementary independent R2 validation** against the same frozen commit/base. It independently reproduced the same executable evidence, plus unsupported-platform, construction-`fstat`, and live-preflight-`fstat` fault probes; verified the linearization argument, mode-`0300` behavior, descriptor closure/private use, one-run proof integrity, formal-branch workflow absence, and complete scope/contract/security/test-asset boundaries.
+
+Controller accepts the Change with no risk waiver. The fixed required-role route limitation is transparently retained as process history and is closed for this Change by the actual supplementary Sol-high review; neither verdict replaces the other. Publication into the current `local-analysis` specification and archive at `openspec/changes/archive/2026-08-22-run-root-identity-reuse-fix/` are authorized.
+
+## Acceptance and Archive
+
+Controller published `REQ-RRIF-001` and `AC-RRIF-001-01..03` into the current behavior authority `openspec/specs/local-analysis/spec.md`, SHA-256 `0dad0624650a52da7591b0fc43bec7f7ff2a66a248e4e01421f8400bc6631300`. The complete eight-file Change package moved without deletion to `openspec/changes/archive/2026-08-22-run-root-identity-reuse-fix/`; the active path is absent.
+
+The supported project-board writer published `health=complete`, phase `8/8`, all milestones complete, no blocker, actual required Sol-medium Validator, and actual supplementary Sol-high Validator. Post-archive `tools/harness/validation/run` exited `0`: strict TypeScript checking, Unit `250/250`, Contract `198/198`, Integration `245/245`, E2E `131/132` with only the gated real-Pi leaf skipped, and project-board `12/12`. No real model/provider call occurred. `git diff --check` remains clean.
+
+**Archive verdict: COMPLETE.** Activation is now limited to squash-merging the formal fix PR; rollback remains an Adapter revert with no user-data rewrite.
 
 ## Scope and Security Checks
 

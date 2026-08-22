@@ -6,23 +6,16 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "run_root_identity_fix_revision_002_validation",
-    "label": "Run Root Identity Fix Revision 002：独立验证",
-    "ordinal": 6,
+    "id": "run_root_identity_fix_revision_002_complete",
+    "label": "Run Root Identity Fix Revision 002：已验收归档",
+    "ordinal": 8,
     "total": 8
   },
-  "health": "active",
-  "summary": "Revision 002 本地与唯一一次 Ubuntu 证明均 GREEN；实现和证据已冻结。",
-  "current_objective": "由必需 Validator 与补充 Sol-high 独立审查共同验证冻结候选。",
-  "next_action": "两份独立只读验证均 PASS 后，Controller 才可验收并归档 Change。",
-  "blockers": [
-    {
-      "id": "RRIF-ROUTE-001",
-      "label": "R2 Validator 路由不足",
-      "detail": "必需 juaner_validator 固定 Sol-medium；最终需补充独立 Sol-high 验证且不得静默豁免。",
-      "owner": "Controller"
-    }
-  ],
+  "health": "complete",
+  "summary": "Revision 002 已由必需 Validator 与独立 Sol-high 双重 PASS，Controller 验收并归档。",
+  "current_objective": "将已验收的最小 Storage 修复通过正式 PR 集成到 main。",
+  "next_action": "推送正式修复分支，创建并 squash merge PR，随后继续 CI 治理 PR。",
+  "blockers": [],
   "milestones": [
     {
       "id": "cold_start",
@@ -52,17 +45,17 @@
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "active"
+      "status": "completed"
     },
     {
       "id": "user_acceptance",
       "label": "用户验收",
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "archive",
       "label": "归档",
-      "status": "pending"
+      "status": "completed"
     }
   ],
   "agents": [
@@ -98,8 +91,15 @@
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · medium (configured; ROUTING_ESCALATION_REQUIRED)",
-      "status": "active",
+      "status": "complete",
       "activation": "实现与证据冻结"
+    },
+    {
+      "id": "supplementary_validator",
+      "label": "Supplementary R2 Validator",
+      "model": "gpt-5.6-sol · high",
+      "status": "complete",
+      "activation": "R2 固定路由约束补充验证"
     }
   ],
   "metrics": [
@@ -118,7 +118,7 @@
     {
       "id": "tasks",
       "label": "任务",
-      "done": 5,
+      "done": 6,
       "total": 6
     },
     {
@@ -606,7 +606,7 @@
       "mitigation": "只允许TEST-XCLI-021/022及路径/执行机制做因果机械更新；业务、失败、安全和竞态断言冻结。"
     }
   ],
-  "updated_at": "2026-08-22T14:32:13.449Z",
+  "updated_at": "2026-08-22T14:45:37.620Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-run-root-identity-fix"
