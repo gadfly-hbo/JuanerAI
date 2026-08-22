@@ -32,6 +32,7 @@ Cold-start documents and empty module boundaries do not authorize product implem
 - Keep Product Core and Application independent from infrastructure SDKs.
 - Express external capabilities as business-oriented Ports.
 - Put Pi, databases, files, Semantica, model providers, search, and network integrations in Adapters.
+- Confine Pi-specific types, events, errors, tool structures, and session structures to the Pi Adapter. Product Core, Application, Domain Packs, Model Packs, business Ports, Profiles, other Adapters, and public/versioned contracts expose only JuanerAI business or standard platform types.
 - Select Adapters only in a deployment Profile or composition root.
 - Treat SQLite operational state and DuckDB analytical data as different responsibilities.
 - Keep Ontology, Knowledge, and Memory as distinct domain capabilities even if one infrastructure product implements several of them.
@@ -40,6 +41,8 @@ Cold-start documents and empty module boundaries do not authorize product implem
 - Enterprise-ready means preserving the minimum Product Core, Application, Port, Adapter, Profile, versioned-contract, and provenance boundaries needed to keep future replacement possible. It does not authorize enterprise identity, tenancy, policy, isolation, storage, audit, deployment, migration, concurrency, or recovery behavior in a personal/local Change. Review both missing preparation and premature enterprise implementation.
 
 Read docs/architecture/ before changing boundaries, persistence, package formats, runtime behavior, or deployment profiles.
+
+Before proposing a new Agent Runtime, Model Pack runtime, Runtime Port, or Runtime-selecting Profile, read `docs/adr/0003-business-runtime-port-strategy.md`. A second Runtime remains a separate OpenSpec Change; this direction does not authorize a registry, fallback, hot switching, or universal Runtime interface.
 
 ## Change Workflow
 
@@ -69,6 +72,8 @@ Before Spec Gate, the Controller must run `ponytail-review` on the complete Open
 - Use executable evidence before claiming completion.
 
 Read .ai-coding/policies/testing.md and .ai-coding/definition-of-done.md for the applicable gate.
+
+When a Change adds, changes, or removes tests, fixtures, helpers, doubles, mocks, snapshots, coverage maps, or harness code, read `docs/governance/test-asset-retirement.md` at Test Design and again after GREEN/regression. The Controller must pass its Test Asset Retirement Gate before freezing evidence for Validator dispatch.
 
 ## Roles
 

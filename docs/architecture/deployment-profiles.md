@@ -2,18 +2,20 @@
 
 ## Personal
 
-Current target:
+Current approved local-analysis composition:
 
 - Xanthil CLI.
 - local composition root;
 - Pi Agent Runtime Adapter;
-- SQLite candidate for operational state;
-- DuckDB candidate for analytical data;
+- DuckDB/Python Local Analysis Adapter;
 - local artifact storage;
-- Semantica Adapter subject to feasibility validation;
 - single local workspace and user trust boundary.
 
-Only the profile direction is approved. Concrete configuration and runtime contracts remain pending.
+SQLite operational state and a Semantica Adapter remain future Personal candidates. Any additional configuration or Runtime contract requires its own approved Change.
+
+## Runtime Selection
+
+Runtime selection follows `docs/adr/0003-business-runtime-port-strategy.md`. A Profile or composition root supplies one selected Runtime Adapter to Application for the complete Run and Session; Application does not select, switch, or fall back by Runtime name. Adding a second Runtime requires the approved contract and provenance gates before Profile activation.
 
 ## Enterprise
 
@@ -33,4 +35,3 @@ Deferred target:
 Personal and enterprise Profiles share Product Core and Application behavior. They do not pretend infrastructure with different transactional, analytical, consistency, security, or availability semantics is identical.
 
 Every Profile must pass the applicable Port contract suites. Enterprise activation additionally requires production-like integration and recovery evidence.
-

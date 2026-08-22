@@ -14,9 +14,10 @@
 10. Implementation: make the minimum approved production change.
 11. GREEN and Refactor: pass target tests; refactor only after GREEN.
 12. Regression and Quality: run the approved risk-based command set.
-13. Verify: independently check spec, scope, architecture, traceability, and evidence.
-14. Accept: Controller or user approves according to risk.
-15. Archive: merge the delta into openspec/specs and preserve Change history.
+13. Test Asset Retirement: for Changes that touched test assets, reconcile their lifecycle ledger and pass `docs/governance/test-asset-retirement.md`.
+14. Verify: independently check spec, scope, architecture, traceability, and evidence.
+15. Accept: Controller or user approves according to risk.
+16. Archive: merge the delta into openspec/specs and preserve Change history.
 
 ## Xanthil First-Change Gate
 
@@ -25,4 +26,3 @@ Before Step 2 for the first behavior-changing Xanthil Change, request and review
 ## Lightweight Paths
 
 Documentation-only work may use a reduced R0 flow with scope review and evidence. A pure refactor requires a verified pre-change GREEN baseline. An emergency fix requires an immediate regression test and mandatory later specification backfill.
-

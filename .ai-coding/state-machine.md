@@ -14,9 +14,9 @@
 | IMPLEMENTATION | approved source change | target behavior implemented |
 | GREEN | target test evidence | PASS |
 | REGRESSION | related quality evidence | required checks PASS |
+| TEST_ASSET_RETIREMENT | reconciled lifecycle ledger and Controller verdict, when test assets changed | PASS or not applicable |
 | VERIFY | verification.md and traceability | READY_FOR_ACCEPTANCE |
 | ACCEPT | risk-based approval | approved |
 | ARCHIVE | main spec updated, Change archived | baseline represents current behavior |
 
 BLOCKED preserves evidence and names one concrete release condition. Spec, test, implementation, or contract conflict returns to the owning earlier state.
-

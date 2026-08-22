@@ -9,6 +9,7 @@ Read this before proposing a new Xanthil capability, Adapter, runtime, surface, 
 | observable local-analysis behavior | `openspec/specs/local-analysis/spec.md` |
 | architecture and dependency direction | `AGENTS.md` and `docs/architecture/` |
 | TypeScript-first direction and current exception | `docs/adr/0002-typescript-first-language-strategy.md` |
+| long-term Runtime coexistence and replacement seams | `docs/adr/0003-business-runtime-port-strategy.md` |
 | complete first-slice decision and evidence history | `openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/` |
 | executable behavior | `tests/` and current production modules |
 
@@ -48,6 +49,8 @@ Ordinary Xanthil features do not reopen these decisions:
 
 - explicit `minimax-cn/MiniMax-M3` for the archived personal-profile behavior, with no fallback;
 - Pi behind the Agent Runtime Adapter rather than inside Product Core or Application;
+- Pi remains an approved Personal Profile Adapter; a future Runtime coexists and does not implicitly retire it;
+- a second Runtime is a separate Change that first freezes Adapter-independent contracts and runtime/version/Profile/model provenance;
 - one in-memory Discovery/Execution session with approved business tools only;
 - exact source preflight before external/model effects and a physical recheck before analytical read;
 - requested configuration and observed runtime/model/tool state are distinct;

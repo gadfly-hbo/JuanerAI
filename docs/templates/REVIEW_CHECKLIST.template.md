@@ -16,6 +16,7 @@
 - [ ] Shared contracts are unchanged or have an approved change request.
 - [ ] Data authority, privacy, and external-sharing rules hold.
 - [ ] Architecture dependency direction holds.
+- [ ] Runtime SDK types, events, errors, tool structures, and session structures remain inside their owning Adapter and are absent from business Ports and public/versioned contracts.
 - [ ] Expected RED and required negative evidence are genuine.
 - [ ] Independent mutations are independently scheduled; broad titles do not substitute for executable leaves.
 - [ ] Timeout, cancellation, retry, or persistence changes define admission, linearization, winner, late-result, and convergence semantics.
@@ -25,6 +26,14 @@
 - [ ] Actual PATH/toolchain and complete attempt ledger match the approved validation entrypoint and budget.
 - [ ] Current verification verdict, traceability, frozen hashes, project board, and proposed next state agree.
 - [ ] The ordinary-Change complexity stop line was not crossed, or a root-cause return/re-slice is recorded.
+
+## Test Asset Retirement, When Applicable
+
+- [ ] The lifecycle ledger covers every changed test, fixture, helper, double, mock, snapshot, coverage map, and harness path.
+- [ ] Complete test-asset diff received `ponytail-review`; each finding has a recorded disposition.
+- [ ] Every retained asset has a current evidence owner or retained consumer; every deletion has a coverage successor or diagnostic-only proof.
+- [ ] Temporary evidence and unresolved retirement candidates are absent from the verification freeze.
+- [ ] Affected tests and regression were rerun after any retirement edit.
 
 ## Decision
 
