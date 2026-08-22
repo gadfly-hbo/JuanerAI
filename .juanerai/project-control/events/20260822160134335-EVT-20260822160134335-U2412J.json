@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822160134335-U2412J",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-22T16:01:34.335Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-runtime-provenance-r2"
+  },
+  "summary": "用户批准 R2 Test Terra/high default-agent 代行；Test Design/RED 解锁",
+  "status_after": "active",
+  "evidence_refs": []
+}

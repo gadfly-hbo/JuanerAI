@@ -127,11 +127,10 @@ test('TEST-REC-006 [AC-REC-003-01, AC-REC-003-03, AC-REC-004-01..03] exact succe
 
 test('TEST-REC-007 [AC-REC-003-02, AC-REC-005-03] terminal non-success is restricted and unstable reads fail closed', async () => {
   const expected = {
-    failed: { ended_at: '2026-08-20T00:01:00.000Z', stage: 'artifact_finalize', error_code: 'ARTIFACT_WRITE_FAILED', label: undefined, keys: ['ended_at', 'error_code', 'provenance', 'status', 'terminal_stage'] },
-    cancelled: { ended_at: '2026-08-20T00:01:00.000Z', stage: 'analysis_python', error_code: undefined, label: undefined, keys: ['ended_at', 'provenance', 'status', 'terminal_stage'] },
-    in_progress: { ended_at: undefined, stage: undefined, error_code: undefined, label: 'abandoned candidate', keys: ['label', 'provenance', 'status'] },
+    failed: { ended_at: '2026-08-20T00:01:00.000Z', stage: 'artifact_finalize', error_code: 'ARTIFACT_WRITE_FAILED', keys: ['ended_at', 'error_code', 'provenance', 'status', 'terminal_stage'] },
+    cancelled: { ended_at: '2026-08-20T00:01:00.000Z', stage: 'analysis_python', error_code: undefined, keys: ['ended_at', 'provenance', 'status', 'terminal_stage'] },
   } as const;
-  for (const status of ['failed', 'cancelled', 'in_progress'] as const) {
+  for (const status of ['failed', 'cancelled'] as const) {
     const fixture = await createExactRun(status);
     const result = await query(fixture.run);
     assert.equal(result.kind, 'verified_non_success');
@@ -142,7 +141,6 @@ test('TEST-REC-007 [AC-REC-003-02, AC-REC-005-03] terminal non-success is restri
     assert.equal(result.view.ended_at, expected[status].ended_at);
     assert.equal(result.view.terminal_stage, expected[status].stage);
     assert.equal(result.view.error_code, expected[status].error_code);
-    assert.equal(result.view.label, expected[status].label);
     assert.deepEqual(Object.keys(result).sort(), ['integrity', 'kind', 'view']);
     assert.deepEqual(Object.keys(result.view).sort(), expected[status].keys);
     assert.deepEqual(result.view.provenance, {
@@ -153,6 +151,8 @@ test('TEST-REC-007 [AC-REC-003-02, AC-REC-005-03] terminal non-success is restri
     });
     assert.deepEqual(result.integrity, [{ path: 'analysis-contract.json', outcome: 'verified' }]);
   }
+  const inProgress = await createExactRun('in_progress');
+  assert.deepEqual(await query(inProgress.run), { kind: 'rejected', error: { code: 'RUN_READ_FAILED' } });
   const retained = await createExactRun('failed');
   const retainedAsset = retained.artifact.persistedAssetById['DOC-SUMMARY'];
   const { bytes: retainedBytes, ...retainedDescriptor } = retainedAsset;

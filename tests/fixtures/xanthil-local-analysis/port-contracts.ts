@@ -51,6 +51,7 @@ type AgentDoubleOptions = {
   proposal?: unknown;
   driveTurn?: (input: { execution_tools: readonly { tool_name: keyof typeof boundedToolResults; invoke: (request: unknown) => Promise<unknown> }[]; invoke: (index: number, request?: TestRecord) => Promise<unknown> }) => unknown;
   runtimeResult?: unknown;
+  preflightResult?: unknown;
 };
 type ExecutionDoubleOptions = {
   events?: EventLog[];
@@ -221,12 +222,15 @@ export function expectedArtifactRun(run_id: string, started_at = '2026-08-20T00:
   const contract = expectedConfirmedContract(run_id, started_at);
   const contractBytes = Buffer.from(JSON.stringify(contract), 'utf8');
   const initialManifest: RunManifest = {
-    schema_version: '1.0',
+    schema_version: '2.0',
     run_id,
     analysis_kind: 'analyst_assistant',
     status: 'in_progress',
     started_at,
-    runtime: { xanthil_version: '1.0.0', pi_adapter_version: '1.0.0', pi_version: '0.84.2' },
+    product: { id: 'xanthil', version: '1.0.0' },
+    runtime: { id: 'pi', version: '0.84.2' },
+    adapter: { id: 'agent-pi', version: '1.0.0' },
+    profile: { id: 'personal' },
     model: { ...approvedModel },
     contract: { path: 'analysis-contract.json', sha256: sha256(contractBytes) },
     sources: [{
@@ -307,11 +311,16 @@ export function createAgentRuntimeDouble({
   proposal = expectedAnalysisProposal(),
   driveTurn,
   runtimeResult,
+  preflightResult,
 }: AgentDoubleOptions = {}): AgentAnalysisRuntime | TestRecord {
   return {
     async preflightModel({ model }: { model?: TestRecord } = {}) {
       if (!model || model.provider !== approvedModel.provider || model.model_id !== approvedModel.model_id || Object.keys(model).length !== 2) throw new Error('MODEL_UNAVAILABLE');
-      const observed = Object.freeze({ provider: approvedModel.provider, model_id: approvedModel.model_id });
+      const observed = preflightResult ?? Object.freeze({
+        runtime: Object.freeze({ id: 'pi', version: '0.84.2' }),
+        adapter: Object.freeze({ id: 'agent-pi', version: '1.0.0' }),
+        model: Object.freeze({ provider: approvedModel.provider, model_id: approvedModel.model_id }),
+      });
       record(events, 'runtime.preflightModel', { model: structuredClone(model), observed: structuredClone(observed) });
       return observed;
     },
@@ -841,8 +850,8 @@ export function createRunArtifactStoreDouble({ events }: { events?: EventLog[] }
     async beginRun(input: Parameters<RunArtifactStore['beginRun']>[0]) {
       const { run_id, initial_manifest, cancellation_signal } = command(input, ['run_id', 'initial_manifest']);
       if (runs.has(run_id)) throw new Error('RUN_COLLISION');
-      if (!exactKeys(initial_manifest, ['schema_version', 'run_id', 'analysis_kind', 'status', 'started_at', 'runtime', 'model', 'contract', 'sources', 'artifacts'])
-        || initial_manifest.schema_version !== '1.0' || initial_manifest.run_id !== run_id || initial_manifest.status !== 'in_progress'
+      if (!exactKeys(initial_manifest, ['schema_version', 'run_id', 'analysis_kind', 'status', 'started_at', 'product', 'runtime', 'adapter', 'profile', 'model', 'contract', 'sources', 'artifacts'])
+        || initial_manifest.schema_version !== '2.0' || initial_manifest.run_id !== run_id || initial_manifest.status !== 'in_progress'
         || initial_manifest.analysis_kind !== 'analyst_assistant' || !Array.isArray(initial_manifest.sources) || initial_manifest.sources.length !== 1
         || !Array.isArray(initial_manifest.artifacts) || initial_manifest.artifacts.length !== 0) throw new Error('ARTIFACT_WRITE_FAILED');
       runs.set(run_id, { manifest: structuredClone(initial_manifest), assets: [], confirmed: false });
@@ -881,9 +890,9 @@ export function createRunArtifactStoreDouble({ events }: { events?: EventLog[] }
       if (state.manifest.status !== 'in_progress') throw new Error('TERMINAL_IMMUTABLE');
       if (!next_manifest) throw new Error('ARTIFACT_WRITE_FAILED');
       if (!exactKeys(next_manifest, next_manifest.status === 'in_progress'
-        ? ['schema_version', 'run_id', 'analysis_kind', 'status', 'started_at', 'runtime', 'model', 'contract', 'sources', 'artifacts']
-        : ['schema_version', 'run_id', 'analysis_kind', 'status', 'started_at', 'runtime', 'model', 'contract', 'sources', 'artifacts', 'ended_at', 'terminal_detail'])
-        || next_manifest.schema_version !== '1.0' || next_manifest.run_id !== run_id || !['in_progress', 'failed', 'cancelled'].includes(next_manifest.status)) throw new Error('ARTIFACT_WRITE_FAILED');
+        ? ['schema_version', 'run_id', 'analysis_kind', 'status', 'started_at', 'product', 'runtime', 'adapter', 'profile', 'model', 'contract', 'sources', 'artifacts']
+        : ['schema_version', 'run_id', 'analysis_kind', 'status', 'started_at', 'product', 'runtime', 'adapter', 'profile', 'model', 'contract', 'sources', 'artifacts', 'ended_at', 'terminal_detail'])
+        || next_manifest.schema_version !== '2.0' || next_manifest.run_id !== run_id || !['in_progress', 'failed', 'cancelled'].includes(next_manifest.status)) throw new Error('ARTIFACT_WRITE_FAILED');
       const retainedDescriptors = manifestArtifactOrder
         .map((artifact_id) => state.assets.find((asset) => asset.artifact_id === artifact_id))
         .filter((asset): asset is AnalysisAsset => asset !== undefined)
@@ -903,7 +912,7 @@ export function createRunArtifactStoreDouble({ events }: { events?: EventLog[] }
     async commitSuccess(input: Parameters<RunArtifactStore['commitSuccess']>[0]) {
       const { run_id, next_manifest, evidence, summary, evidence_document, cancellation_signal } = command(input, ['run_id', 'next_manifest', 'evidence', 'summary', 'evidence_document']);
       const state = existing(run_id);
-      if (!state.confirmed || state.manifest.status !== 'in_progress' || next_manifest?.run_id !== run_id || next_manifest?.status !== 'succeeded'
+      if (!state.confirmed || state.manifest.status !== 'in_progress' || next_manifest?.schema_version !== '2.0' || next_manifest?.run_id !== run_id || next_manifest?.status !== 'succeeded'
         || !Array.isArray(next_manifest.artifacts) || next_manifest.artifacts.map(({ artifact_id }) => artifact_id).join(',') !== 'Q-001,S-001,O-001,O-002,DOC-SUMMARY,DOC-EVIDENCE'
         || evidence?.run_id !== run_id || typeof summary !== 'string' || !summary || typeof evidence_document !== 'string' || !evidence_document) throw new Error('ARTIFACT_WRITE_FAILED');
       const summaryAsset = { artifact_id: 'DOC-SUMMARY', category: 'summary', path: 'summary.md', media_type: 'text/markdown', bytes: Buffer.from(summary, 'utf8') };

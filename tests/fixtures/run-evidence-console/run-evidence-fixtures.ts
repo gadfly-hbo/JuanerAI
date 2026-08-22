@@ -7,6 +7,19 @@ import { expectedArtifactRun } from '../xanthil-local-analysis/port-contracts.ts
 
 export const runId = '0198d943-8b71-7a11-9abc-0000000000c1';
 
+function artifact1Manifest(value: unknown): Record<string, unknown> {
+  const current = structuredClone(value) as Record<string, unknown>;
+  const product = current.product as Record<string, unknown>;
+  const runtime = current.runtime as Record<string, unknown>;
+  const adapter = current.adapter as Record<string, unknown>;
+  const { product: _product, adapter: _adapter, profile: _profile, runtime: _runtime, ...legacy } = current;
+  return {
+    ...legacy,
+    schema_version: '1.0',
+    runtime: { xanthil_version: product.version, pi_adapter_version: adapter.version, pi_version: runtime.version },
+  };
+}
+
 export function sha256(bytes: Uint8Array): string {
   return createHash('sha256').update(bytes).digest('hex');
 }
@@ -108,9 +121,10 @@ export async function createExactRun(status: 'succeeded' | 'failed' | 'cancelled
   const root = await mkdtemp(join(tmpdir(), 'xanthil-run-evidence-'));
   const run = join(root, runId);
   const artifact = expectedArtifactRun(runId);
-  const manifest = status === 'succeeded' ? artifact.succeededManifest
+  const currentManifest = status === 'succeeded' ? artifact.succeededManifest
     : status === 'in_progress' ? artifact.initialManifest
       : status === 'failed' ? artifact.failedManifest : artifact.cancelledManifest;
+  const manifest = artifact1Manifest(currentManifest);
   await mkdir(run, { recursive: true });
   await writeJson(join(run, 'run.json'), manifest);
   await writeJson(join(run, 'analysis-contract.json'), artifact.contract);

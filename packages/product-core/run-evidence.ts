@@ -19,7 +19,7 @@ export type VerifiedSucceededRunEvidenceView = Readonly<{
   findings: readonly RecordValue[]; evidence: readonly RecordValue[]; assets: readonly RunEvidenceAsset[]; summary: string; evidence_document: string;
   limitations: readonly string[]; contract_version: string; provenance: RunEvidenceProvenance;
 }>;
-export type VerifiedNonSuccessRunEvidenceView = Readonly<{ status: string; ended_at?: string; terminal_stage?: string; error_code?: string; label?: string; assets?: readonly RecordValue[]; provenance: RunEvidenceProvenance }>;
+export type VerifiedNonSuccessRunEvidenceView = Readonly<{ status: string; ended_at?: string; terminal_stage?: string; error_code?: string; assets?: readonly RecordValue[]; provenance: RunEvidenceProvenance }>;
 export type RunEvidenceResult = Readonly<{
   kind: 'rejected'; error: Readonly<{ code: RunEvidenceErrorCode }>;
 }> | Readonly<{
@@ -167,7 +167,7 @@ export function createRunEvidenceDomain() {
       const manifestVersionFailure = schemaVersionFailure(manifestRaw);
       if (manifestVersionFailure) return reject(manifestVersionFailure);
       let manifest: RecordValue;
-      try { manifest = existing.validateRunManifest(manifestRaw); } catch (error) { return reject(String(error).includes('CONTRACT_VERSION_UNSUPPORTED') ? 'RUN_CONTRACT_UNSUPPORTED' : 'RUN_READ_FAILED'); }
+      try { manifest = existing.validateReadableTerminalRunManifest(manifestRaw); } catch (error) { return reject(String(error).includes('CONTRACT_VERSION_UNSUPPORTED') ? 'RUN_CONTRACT_UNSUPPORTED' : 'RUN_READ_FAILED'); }
       if (manifest.run_id !== observation.run_directory_name) return reject('RUN_READ_FAILED');
       const contractDescriptor = manifest.contract as RecordValue;
       const status = manifest.status as string;
@@ -192,7 +192,7 @@ export function createRunEvidenceDomain() {
           integrity.push({ path: artifact.path as string, outcome: 'verified' });
           retainedAssets.push(Object.freeze({ ...artifact }));
         }
-        return Object.freeze({ kind: 'verified_non_success', view: Object.freeze({ status, ...(status === 'in_progress' ? { label: 'abandoned candidate' } : { ended_at: manifest.ended_at as string, terminal_stage: terminal?.stage as string, ...(status === 'failed' ? { error_code: terminal?.error_code as string } : {}) }), ...(retainedAssets.length > 0 ? { assets: Object.freeze(retainedAssets) } : {}), provenance: provenance(manifest) }), integrity: Object.freeze(integrity) });
+        return Object.freeze({ kind: 'verified_non_success', view: Object.freeze({ status, ended_at: manifest.ended_at as string, terminal_stage: terminal?.stage as string, ...(status === 'failed' ? { error_code: terminal?.error_code as string } : {}), ...(retainedAssets.length > 0 ? { assets: Object.freeze(retainedAssets) } : {}), provenance: provenance(manifest) }), integrity: Object.freeze(integrity) });
       }
       const evidenceFile = observedFile(observation, 'evidence.json');
       if ((manifest.evidence as RecordValue).sha256 !== observedChecksum(evidenceFile)) return reject('RUN_CHECKSUM_MISMATCH');

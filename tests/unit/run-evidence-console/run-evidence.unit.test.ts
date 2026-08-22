@@ -148,14 +148,15 @@ test('TEST-REC-002 [AC-REC-003-01..03] separates successful and non-success read
     const rejected = domain.admit({ run_directory_name: runId, files });
     assert.deepEqual(rejected, { kind: 'rejected', error: { code: 'RUN_READ_FAILED' } }, missingPath);
   }
-  for (const status of ['failed', 'cancelled', 'in_progress'] as const) {
+  for (const status of ['failed', 'cancelled'] as const) {
     const fixture = await createExactRun(status);
     const result = domain.admit(await observeRun(fixture.run));
     assert.equal(result.kind, 'verified_non_success');
     assert.equal(result.view.findings, undefined);
     assert.equal(result.view.summary, undefined);
-    if (status === 'in_progress') assert.equal(result.view.label, 'abandoned candidate');
   }
+  const inProgress = await createExactRun('in_progress');
+  assert.deepEqual(domain.admit(await observeRun(inProgress.run)), { kind: 'rejected', error: { code: 'RUN_READ_FAILED' } });
 });
 
 test('TEST-REC-003 [AC-REC-004-01..03] verifies checksums, evidence references, and Markdown non-authority', async (t) => {

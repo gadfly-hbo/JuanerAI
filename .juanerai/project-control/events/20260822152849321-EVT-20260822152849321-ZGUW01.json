@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822152849321-ZGUW01",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-22T15:28:49.321Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-runtime-provenance-r2"
+  },
+  "summary": "Spec_Agent固定Terra_medium低于R2所需Sol_high_等待用户路由决定",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    "docs/governance/agent-model-routing.md",
+    ".codex/agents/juaner_spec.toml"
+  ]
+}

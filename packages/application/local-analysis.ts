@@ -24,6 +24,7 @@ import type {
   ExecutionTool,
   LocalAnalysisExecution,
   ModelIdentity,
+  RuntimeReadiness,
   RunArtifactStore,
 } from '../ports/local-analysis.ts';
 
@@ -34,6 +35,7 @@ export type LocalAnalysisApplicationDependencies = Readonly<{
   localAnalysisExecution: LocalAnalysisExecution;
   runArtifactStore: RunArtifactStore;
   model: ModelIdentity;
+  profile: Readonly<{ id: string }>;
   clock(): Date;
   deadlineScheduler: DeadlineScheduler;
 }>;
@@ -61,6 +63,8 @@ const approvedTools = Object.freeze(['profile_approved_fixture', 'calculate_memb
 const manifestArtifactOrder = Object.freeze(['Q-001', 'S-001', 'O-001', 'O-002', 'DOC-SUMMARY', 'DOC-EVIDENCE']);
 const approvedQuestion = 'Do recent member operations show a problem?';
 const clarifiedQuestion = 'Between 2026-08-08 and 2026-08-14, did the window-local repurchase-member rate decline versus 2026-08-01 through 2026-08-07?';
+const productIdentity = Object.freeze({ id: 'xanthil', version: '1.0.0' });
+const semverPattern = /^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-(?:(?:0|[1-9]\d*)|(?:\d*[A-Za-z-][0-9A-Za-z-]*))(?:\.(?:(?:0|[1-9]\d*)|(?:\d*[A-Za-z-][0-9A-Za-z-]*)))*)?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
 
 function fail(code: string, stage?: string): never {
   const error: XanthilError = Object.assign(new Error(code), { code, stage });
@@ -234,9 +238,21 @@ function hasReadAt(value: PlainRecord): value is PlainRecord & { read_at: string
   return typeof value.read_at === 'string';
 }
 
-function validateModelPreflight(value: unknown): void {
-  closedFrozenResult(value, ['provider', 'model_id'], 'MODEL_UNAVAILABLE');
-  if (!sameValue(value, modelIdentity)) fail('MODEL_UNAVAILABLE');
+function validateRuntimeReadiness(value: unknown, requested: ModelIdentity): RuntimeReadiness {
+  const result = closedFrozenResult(value, ['runtime', 'adapter', 'model'], 'MODEL_UNAVAILABLE');
+  for (const node of ['runtime', 'adapter'] as const) {
+    const provenance = closedFrozenResult(result[node], ['id', 'version'], 'MODEL_UNAVAILABLE');
+    if (typeof provenance.id !== 'string' || provenance.id.length === 0 || typeof provenance.version !== 'string' || !semverPattern.test(provenance.version)) fail('MODEL_UNAVAILABLE');
+  }
+  const model = closedFrozenResult(result.model, ['provider', 'model_id'], 'MODEL_UNAVAILABLE');
+  if (typeof model.provider !== 'string' || model.provider.length === 0 || typeof model.model_id !== 'string' || model.model_id.length === 0 || !sameValue(model, requested)) fail('MODEL_UNAVAILABLE');
+  return result as RuntimeReadiness;
+}
+
+function validateProfileIdentity(value: unknown): Readonly<{ id: string }> {
+  closedObject(value, ['id']);
+  if (typeof value.id !== 'string' || value.id.length === 0) fail('PROFILE_INVALID');
+  return value as Readonly<{ id: string }>;
 }
 
 function validateDeadlineHandle(value: unknown): DeadlineHandle {
@@ -251,7 +267,7 @@ function deadlineHandle(value: PlainRecord): value is PlainRecord & DeadlineHand
 }
 
 function validateDependencies(dependencies: unknown): LocalAnalysisApplicationDependencies {
-  closedObject(dependencies, ['agentRuntime', 'localAnalysisExecution', 'runArtifactStore', 'model', 'clock', 'deadlineScheduler']);
+  closedObject(dependencies, ['agentRuntime', 'localAnalysisExecution', 'runArtifactStore', 'model', 'profile', 'clock', 'deadlineScheduler']);
   closedObject(dependencies.model, ['provider', 'model_id'], 'MODEL_UNAVAILABLE');
   if (!sameValue(dependencies.model, modelIdentity) || typeof dependencies.clock !== 'function') fail('MODEL_UNAVAILABLE');
   return {
@@ -259,6 +275,7 @@ function validateDependencies(dependencies: unknown): LocalAnalysisApplicationDe
     localAnalysisExecution: defineLocalAnalysisExecution(dependencies.localAnalysisExecution),
     runArtifactStore: defineRunArtifactStore(dependencies.runArtifactStore),
     model: freeze({ ...modelIdentity }),
+    profile: validateProfileIdentity(dependencies.profile),
     clock: clockFunction(dependencies.clock),
     deadlineScheduler: validateDeadlineScheduler(dependencies.deadlineScheduler),
   };
@@ -376,7 +393,7 @@ export function createLocalAnalysisApplication(dependencies: unknown): LocalAnal
     const source = validateStartInput(input);
     validateRunRootPreflight(await dependency.runArtifactStore.preflightRunRoot());
     const preflightFixture = validateFixturePreflight(await dependency.localAnalysisExecution.preflightApprovedFixture(freeze({ source })));
-    validateModelPreflight(await dependency.agentRuntime.preflightModel(freeze({ model: dependency.model })));
+    const preflightReadiness = validateRuntimeReadiness(await dependency.agentRuntime.preflightModel(freeze({ model: dependency.model })), dependency.model);
     let state: 'created' | 'discovered' | 'confirmed' | 'executing' | 'succeeded' | 'failed' | 'cancelled' | 'timed_out' = 'created';
     let proposal: AnalysisProposal;
     let run: RunManifest;
@@ -620,8 +637,8 @@ export function createLocalAnalysisApplication(dependencies: unknown): LocalAnal
         })));
         if (deadlineExpired) closeDeadline();
         run = {
-          schema_version: '1.0', run_id, analysis_kind: 'analyst_assistant', status: 'in_progress', started_at: confirmedAt.toISOString(),
-          runtime: { xanthil_version: '1.0.0', pi_adapter_version: '1.0.0', pi_version: '0.84.2' }, model: { ...modelIdentity },
+          schema_version: '2.0', run_id, analysis_kind: 'analyst_assistant', status: 'in_progress', started_at: confirmedAt.toISOString(),
+          product: { ...productIdentity }, runtime: { ...preflightReadiness.runtime }, adapter: { ...preflightReadiness.adapter }, profile: { ...dependency.profile }, model: { ...preflightReadiness.model },
           contract: { path: 'analysis-contract.json', sha256: contractHash }, sources: [{ ...sourceDescriptor, read_at: preflightFixture.read_at }], artifacts: [],
         };
         try {
@@ -649,7 +666,7 @@ export function createLocalAnalysisApplication(dependencies: unknown): LocalAnal
           activeStage = 'runtime';
           if (elapsedExceeded(executionStartedAt)) fail('TIMEOUT', 'execution');
           closedObject(runtimeOutput, ['actual_model', 'finding']);
-          if (!sameValue(runtimeOutput.actual_model, modelIdentity)) fail('MODEL_EXECUTION_FAILED', 'runtime');
+          if (!sameValue(runtimeOutput.actual_model, preflightReadiness.model)) fail('MODEL_EXECUTION_FAILED', 'runtime');
           let evidence;
           let summary;
           let evidence_document;

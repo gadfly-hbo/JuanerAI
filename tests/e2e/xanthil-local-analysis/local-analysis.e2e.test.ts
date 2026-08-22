@@ -68,7 +68,7 @@ async function deterministicApplication() {
   const deadline = createDeterministicDeadlineScheduler();
   const application = createLocalAnalysisApplication({
     agentRuntime: createAgentRuntimeDouble(), localAnalysisExecution: createLocalAnalysisExecutionDouble(), runArtifactStore: createRunArtifactStoreDouble(),
-    model: approvedModel,
+    model: approvedModel, profile: Object.freeze({ id: 'personal' }),
     clock: () => new Date('2026-08-20T00:00:00.000Z'),
     deadlineScheduler: deadline.scheduler,
   });
@@ -102,6 +102,26 @@ test('TEST-XCLI-020 [AC-XCLI-014-03, AC-XCLI-016-04] rejects unavailable resume,
       (error) => error instanceof Error && error.message === 'CLI_INPUT_INVALID',
     );
   }
+});
+
+test('RPN-T10 TEST-XCLI-013 [AC-XCLI-009-01, AC-XCLI-009-03, AC-XCLI-015-01] transports an exact current 2.0 Application success manifest', async () => {
+  const cli = await loadPublicSeam('cli');
+  const result = successfulCliResult();
+  result.run = {
+    ...result.run,
+    schema_version: '2.0',
+    product: { id: 'xanthil', version: '1.0.0' },
+    runtime: { id: 'pi', version: '0.84.2' },
+    adapter: { id: 'agent-pi', version: '1.0.0' },
+    profile: { id: 'personal' },
+  };
+  const scenario = createCliApplicationDouble({ confirmResult: result });
+  const output = capturedOutput();
+  const observed = await requiredExport(cli, 'runXanthil')({
+    input: structuredInput([approvedQuestionEvent(), frozenEvent({ type: 'confirm' })]), output: output.output, application: scenario.application,
+  });
+  assert.deepEqual(observed, { status: 'succeeded', ...result });
+  assert.deepEqual((observed as { run: unknown }).run, result.run);
 });
 
 test('TASK-006 helper health constructs the frozen one-shot input and synchronous output doubles', async () => {
@@ -596,7 +616,16 @@ for (const [label, mutate] of [
   ['non-plain result', (result) => Object.assign(Object.create(null), result)],
   ['missing run', (result) => { delete result.run; return result; }],
   ['extra result field', (result) => ({ ...result, ambient: true })],
-  ['wrong manifest version', (result) => { requiredRecord(result, 'run').schema_version = '2.0'; return result; }],
+  ['legacy current manifest version', (result) => {
+    const run = requiredRecord(result, 'run');
+    run.schema_version = '1.0';
+    run.runtime = { xanthil_version: '1.0.0', pi_adapter_version: '1.0.0', pi_version: '0.84.2' };
+    delete run.product;
+    delete run.adapter;
+    delete run.profile;
+    return result;
+  }],
+  ['unknown current manifest version', (result) => { requiredRecord(result, 'run').schema_version = '3.0'; return result; }],
   ['in-progress manifest', (result) => { const run = requiredRecord(result, 'run'); run.status = 'in_progress'; delete run.ended_at; delete run.evidence; return result; }],
   ['wrong manifest run ID', (result) => { requiredRecord(result, 'run').run_id = 'not-a-uuidv7'; return result; }],
   ['wrong source checksum', (result) => { requiredRecord({ entry: requiredArray(requiredRecord(result, 'run'), 'sources')[0] }, 'entry').sha256 = '0'.repeat(64); return result; }],

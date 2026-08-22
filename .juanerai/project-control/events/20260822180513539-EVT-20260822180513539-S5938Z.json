@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822180513539-S5938Z",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-22T18:05:13.539Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-runtime-provenance-r2"
+  },
+  "summary": "Validator 002 PASS；请求用户明确验收后发布 current spec 并归档 Change",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    "openspec/changes/runtime-provenance-neutralization/verification.md"
+  ]
+}

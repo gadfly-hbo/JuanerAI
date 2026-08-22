@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822165627426-NY0JUE",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-22T16:56:27.426Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-runtime-provenance-r2"
+  },
+  "summary": "GREEN 与 Test Asset Retirement PASS；请求 R2 Validator Sol/high 严格只读代行授权",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

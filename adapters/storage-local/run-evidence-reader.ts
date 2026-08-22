@@ -95,7 +95,7 @@ export function createLocalRunEvidenceReader() {
         catch { throw unsafe(); }
         const versionFailure = manifestVersionFailure(decodedManifest);
         if (versionFailure) throw Object.assign(new Error(versionFailure), { code: versionFailure });
-        try { manifest = createLocalAnalysisDomain().validateRunManifest(decodedManifest) as Record<string, unknown>; }
+        try { manifest = createLocalAnalysisDomain().validateReadableTerminalRunManifest(decodedManifest) as Record<string, unknown>; }
         catch { throw unsafe(); }
         if (manifest.run_id !== basename(root)) throw unsafe();
         if (manifest.status === 'succeeded') {
