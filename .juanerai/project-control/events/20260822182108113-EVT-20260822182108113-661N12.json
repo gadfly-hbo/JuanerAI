@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822182108113-661N12",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:21:08.113Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Prior repaired GREEN was invalidated by independent correctness findings.",
+  "status_after": "active",
+  "evidence_refs": []
+}

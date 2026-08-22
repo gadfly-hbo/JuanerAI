@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822155650485-3P3YO6",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T15:56:50.485Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Blocked Run Evidence Console Spec Gate on REC-CONTRACT-002 and host/launch decision.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

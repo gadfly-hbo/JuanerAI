@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822165320211-ECTOX8",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-22T16:53:20.211Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Terra/high Test gate returned TDD_READY with canonical causal RED and frozen eight-asset ledger.",
+  "status_after": "active",
+  "evidence_refs": []
+}

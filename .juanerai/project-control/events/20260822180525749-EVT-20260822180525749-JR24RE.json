@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822180525749-JR24RE",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:05:25.749Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "R2 Terra high Test Gate returned TDD_READY with 26 causal RED leaves; duplicate TypeScript graph assertion removed.",
+  "status_after": "active",
+  "evidence_refs": []
+}

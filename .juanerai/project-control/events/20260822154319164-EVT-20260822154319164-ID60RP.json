@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822154319164-ID60RP",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T15:43:19.164Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Reset archive pending for CHG-run-evidence-console.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

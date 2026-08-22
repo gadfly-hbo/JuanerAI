@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "pr_ci_merge_ready",
-    "label": "PR CI：已归档 / 合并就绪",
-    "ordinal": 8,
+    "id": "run_evidence_systematic_test_correction",
+    "label": "Run Evidence Console：Systematic Test Closure",
+    "ordinal": 4,
     "total": 8
   },
-  "health": "complete",
-  "summary": "PR CI Change 已验收归档，并已同步包含 Storage 修复的新 main。",
-  "current_objective": "用 PR #4 的 GitHub 托管运行验证 Canonical validation workflow。",
-  "next_action": "强制更新已 rebase 分支，等待唯一 PR 检查 GREEN 后 squash merge。",
+  "health": "active",
+  "summary": "Second revalidation return traced to example-based boundary tests; no new product decision or architecture mechanism is needed.",
+  "current_objective": "Close the complete named reader shape, checksum-code, and public-view type boundary before one final Worker repair.",
+  "next_action": "R2 Terra high Test role adds only the missing systematic leaves and returns causal RED; production remains frozen.",
   "blockers": [],
   "milestones": [
     {
@@ -35,27 +35,27 @@
     {
       "id": "test_red",
       "label": "Test / RED",
-      "status": "completed"
+      "status": "active"
     },
     {
       "id": "implementation_green",
       "label": "实现 / GREEN",
-      "status": "completed"
+      "status": "pending"
     },
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "completed"
+      "status": "pending"
     },
     {
       "id": "user_acceptance",
       "label": "用户验收",
-      "status": "completed"
+      "status": "pending"
     },
     {
       "id": "archive",
       "label": "归档",
-      "status": "completed"
+      "status": "pending"
     }
   ],
   "agents": [
@@ -599,9 +599,9 @@
       "mitigation": "只允许TEST-XCLI-021/022及路径/执行机制做因果机械更新；业务、失败、安全和竞态断言冻结。"
     }
   ],
-  "updated_at": "2026-08-22T14:52:25.507Z",
+  "updated_at": "2026-08-22T18:37:34.015Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-pr-ci-integration"
+    "session": "run-evidence-console"
   }
 }

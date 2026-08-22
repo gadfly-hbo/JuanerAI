@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822165920705-WK2A42",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-22T16:59:20.705Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Canonical regression found one frozen test expectation conflict; REC-CONTRACT-003 requests a one-path Test-only correction.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

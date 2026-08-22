@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822175959476-YUM101",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-22T17:59:59.476Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "User approved retain/delete/defer plan; scoped reduction work resumed.",
+  "status_after": "active",
+  "evidence_refs": []
+}

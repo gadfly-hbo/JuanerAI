@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822183359906-JRKNYQ",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:33:59.906Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Fresh Test Asset Retirement Gate passed; repaired evidence frozen for independent revalidation.",
+  "status_after": "active",
+  "evidence_refs": []
+}

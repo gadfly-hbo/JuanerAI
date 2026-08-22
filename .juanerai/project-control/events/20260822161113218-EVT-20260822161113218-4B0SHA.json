@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822161113218-4B0SHA",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-22T16:11:13.218Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Spec revision verified; Spec Gate remains blocked on REC-CONTRACT-002 and Console host decision.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

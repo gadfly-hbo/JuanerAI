@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822154817121-K04IYP",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T15:48:17.121Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Completed Run Evidence Console intake after REC-CONTRACT-001 approval.",
+  "status_after": "active",
+  "evidence_refs": []
+}

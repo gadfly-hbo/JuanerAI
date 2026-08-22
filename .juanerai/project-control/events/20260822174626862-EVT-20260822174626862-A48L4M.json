@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822174626862-A48L4M",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T17:46:26.862Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Repaired package passed Sol/high Spec review and Controller Spec Gate; Test correction dispatched.",
+  "status_after": "active",
+  "evidence_refs": []
+}

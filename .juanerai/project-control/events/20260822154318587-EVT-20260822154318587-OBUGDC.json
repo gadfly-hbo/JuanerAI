@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822154318587-OBUGDC",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-22T15:43:18.587Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Started CHG-run-evidence-console Explore and stopped at REC-CONTRACT-001 because AC-XCLI-016-04 forbids Console.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

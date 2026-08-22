@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822181502503-SXL8O5",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:15:02.503Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Controller Test Asset Retirement Gate passed and froze repaired evidence for independent validation.",
+  "status_after": "active",
+  "evidence_refs": []
+}

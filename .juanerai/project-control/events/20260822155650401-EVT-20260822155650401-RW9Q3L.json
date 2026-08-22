@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822155650401-RW9Q3L",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-22T15:56:50.401Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Pre-Spec-Gate review found the frozen 21-file TypeScript graph excludes every new Console module and the host/launch UX remains unspecified.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822172319243-VG0J5Y",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-22T17:23:19.243Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Validator returned executable material findings; Change reopened at Spec/Design with no new user decision required.",
+  "status_after": "active",
+  "evidence_refs": []
+}

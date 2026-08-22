@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822154319002-H4ZU6I",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T15:43:19.002Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Reset independent validation pending for CHG-run-evidence-console.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

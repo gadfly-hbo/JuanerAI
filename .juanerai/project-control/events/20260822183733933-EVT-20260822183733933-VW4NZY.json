@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822183733933-VW4NZY",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:37:33.933Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Test Gate reopened for systematic Finding content, Profile checksum, and nested/status view-type coverage.",
+  "status_after": "active",
+  "evidence_refs": []
+}
