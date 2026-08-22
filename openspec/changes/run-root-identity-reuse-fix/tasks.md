@@ -3,7 +3,7 @@
 ## Gate sequence
 
 1. [x] Controller records Validator revision 002, false-board-state remediation, and the unavailable Sol-high Spec-route constraint; repeats complete-package ponytail review before a new Spec Gate. [REQ-RRIF-001]
-2. [ ] Test changes only the named integration file: retain existing `TEST-XCLI-008`; add a mode-`0300` success leaf and an isolated module-mock child-process linearization leaf. It freezes RED/hash/commands and Test Asset Retirement ledger. [AC-RRIF-001-01..03]
+2. [x] Test changes only the named integration file: retain existing `TEST-XCLI-008`; add a mode-`0300` success leaf and an isolated module-mock child-process linearization leaf. It freezes RED/hash/commands and Test Asset Retirement ledger. [AC-RRIF-001-01..03]
 3. [ ] After new TDD_READY, Worker changes only `adapters/storage-local/local-analysis.ts`: use pinned and per-preflight live identity-only descriptors, with the approved private macOS/Linux flags and exact linearization semantics. [AC-RRIF-001-01..03]
 4. [ ] Worker runs the frozen focused integration leaves and affected existing contract suite as authorized by the new Test brief. [AC-RRIF-001-01..03]
 5. [ ] Controller performs offline regression and, only after the new deterministic leaves are GREEN, one evidence-only remote Linux proof. Earlier Ubuntu `243/243` is regression evidence only. [AC-RRIF-001-01..03]

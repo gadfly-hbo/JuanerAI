@@ -1,62 +1,56 @@
-# Test handoff — TDD_READY
+# Test handoff — Revision 002 TDD_READY
 
-## Scope and frozen assets
+Revision 001 is superseded. Controller Spec Gate remains PASS. Risk remains R2; the Test routing floor is Terra-high, but the configured `juaner_test` role is fixed Terra-medium. This constraint is recorded, not waived; Controller Sol-xhigh must review the frozen evidence.
 
-- Approved Change / gate: `run-root-identity-reuse-fix`, Controller Spec Gate PASS.
-- Test asset: `tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts`
-- SHA-256: `f94895a0a55a2886cc26bce4aad4c2a912bc7242ebf8ccf0ad4a280e828c6723`
-- Frozen leaf (line 2303; unsafe-root assertion line 2317): `TASK-010 R3 TEST-XCLI-008 [AC-XCLI-001-01, AC-XCLI-007-01] maps per-start missing, replaced, symlink, and non-directory run roots to RUN_ROOT_UNSAFE without writing`
-- Uncorrected Adapter SHA-256: `3e40eaf9cc0997ca5b708ac056ebd3e3132d4d9e9521af6ae7e103d1d027b170`
+## Frozen assets and map
 
-No test, fixture, helper, double, snapshot, coverage, or harness diff exists. `git diff --exit-code -- tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts` exited 0.
+- Test path: `tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts`
+- Pre-test SHA-256: `f94895a0a55a2886cc26bce4aad4c2a912bc7242ebf8ccf0ad4a280e828c6723`
+- Revision-002 test SHA-256: `14acd3cfd279453a900a65b82be9291eee41a0cac44470388d0d89be9e3821f2`
+- Current Adapter SHA-256: `b846c6b6c20535f156ff699c3666d9768984ec23705f4d939032935efa1f654b`
 
-## AC-to-test map
-
-| Acceptance criterion | Existing test / proof |
+| AC | Permanent TEST-XCLI-008 evidence |
 | --- | --- |
-| AC-RRIF-001-01 | Frozen leaf's initial valid root preflight returns frozen `{ ready: true }`. |
-| AC-RRIF-001-02 | Frozen leaf removes each root, immediately recreates the `replaced` pathname, and requires exact `RUN_ROOT_UNSAFE`; it also checks recreated/symlink-target directories stay empty. Missing, symlink, and non-directory are retained negative paths. |
-| AC-RRIF-001-03 | Existing Artifact Port contract suite verifies the frozen public Store surface; Worker path is constrained to the Adapter and scope review verifies no persistence/lifecycle change. |
+| AC-RRIF-001-01 | New mode-`0300` leaf proves a test-owned root is owner-write/searchable by known-file write/remove, then requires factory + frozen `{ ready: true }` preflight. It restores `0700` in `finally`. |
+| AC-RRIF-001-02 | Existing unsafe-root leaf remains. New isolated Node 26 child replaces the root synchronously on the second configured-path `lstatSync`; it requires exact `RUN_ROOT_UNSAFE` and an empty recreated root. |
+| AC-RRIF-001-03 | The complementary child calls the real second `openSync`, then synchronously replaces the pathname and returns that original fd. It requires frozen `{ ready: true }`; the affected 198-test Artifact Port contract suite guards public surface. |
 
-## Frozen commands and actual local health evidence
+The child is inline test-private code. It runs from the repository cwd in a fresh Node 26 process with `--experimental-test-module-mocks`, mocks only the Adapter's required `node:fs` bindings, and delegates each non-intercepted operation to Node's actual filesystem implementation. It uses no production seam, polling, sleep, retry, fixture, helper, or standalone tracked file. `--no-warnings` suppresses only Node's experimental warning so a future healthy child can retain its exact `stderr === ''` assertion.
+
+## Frozen commands and causal RED
 
 Canonical local toolchain: Node `v26.0.0`, npm `11.12.1`, DuckDB `v1.5.2`.
 
 ```sh
-PATH=/Users/huangbo/Dev/Env/homebrew/bin:/usr/bin:/bin node --test --test-name-pattern='maps per-start missing, replaced, symlink, and non-directory run roots to RUN_ROOT_UNSAFE without writing' tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts
+PATH=/Users/huangbo/Dev/Env/homebrew/bin:/usr/bin:/bin node --test --test-name-pattern='AC-RRIF-001' tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts
 ```
 
-Test Correction 001: the prior fully escaped title pattern was not valid as documented under Node 26 regular-expression parsing. This unique literal title fragment is the corrected reproducible command. Executed verbatim after this correction on the uncorrected Adapter: exit 0; tests 1, pass 1, fail 0, skipped 0. This is environment-health/regression evidence only: macOS did not reuse the released inode in this run, so it is not causal proof that replacement is handled.
+Current result: exit 1; tests 2, pass 0, fail 2.
 
-Affected existing Artifact Store contract command:
+1. Mode `0300`: the known-file write/remove succeeds, proving test fixture permission health; the current `O_RDONLY` construction then rejects exactly `ARTIFACT_WRITE_FAILED`. This is missing compatibility behavior, not a permission or fixture failure.
+2. Linearization child: both synchronous interception boundaries execute. Before live acquisition: `lstatCalls=2`, `mutations=1`, recreated root is empty, but preflight resolves instead of returning `RUN_ROOT_UNSAFE` (`outcome` is `undefined`). After live acquisition: `lstatCalls=2`, but `openCalls=1` rather than required `2`, so the second live acquisition and its mutation boundary cannot occur. Both failures are caused by missing Adapter behavior.
+
+The child freezes `openCalls=2` for both cases: construction pins one descriptor and compliant preflight performs the second live acquisition. It freezes `mutations=1` in both cases. The before case asserts exact error before its open-count assertion, so its causal failure reports missing `RUN_ROOT_UNSAFE` first.
+
+Healthy unchanged boundaries:
 
 ```sh
+PATH=/Users/huangbo/Dev/Env/homebrew/bin:/usr/bin:/bin node --test --test-name-pattern='maps per-start missing, replaced, symlink, and non-directory run roots to RUN_ROOT_UNSAFE without writing' tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts
 PATH=/Users/huangbo/Dev/Env/homebrew/bin:/usr/bin:/bin node --test tests/contract/xanthil-local-analysis/local-analysis-ports.contract.test.ts
 ```
 
-Actual result on the uncorrected Adapter: exit 0; tests 198, pass 198, fail 0, skipped 0.
-
-## Expected RED evidence and attribution
-
-Controller-captured GitHub-hosted Ubuntu evidence from PR #4 is the causal RED: Actions run `32575185495`, job `97036374334`, canonical integration suite `242/243` passed, with `Missing expected rejection` at this leaf (test line 2303; `assert.rejects` line 2317). The setup/toolchain and the other 242 integration tests completed, so this is not a dependency, syntax, runner, fixture, or general environment failure.
-
-The conclusion that the failing loop member is `replaced` is a **source-based deduction**, not a log line naming the member: missing, symlink, and non-directory each hit explicit unsafe checks in `checkRunRoot()` (`lstatSync` failure, `isSymbolicLink()`, or `!isDirectory()`); only the same-path `replaced` member depends on equality of `realpath`, `dev`, and `ino`. On Linux, immediate recreation can reuse the released `(dev, ino)`, leaving the current unpinned comparison unable to reject. This is the missing behavior required by AC-RRIF-001-02.
+Actual results: existing unsafe-root leaf exit 0, 1/1 pass; Artifact Port contract exit 0, 198/198 pass. No real model, network data, or credential was used.
 
 ## Test Asset Retirement initial ledger
 
-| Asset | Class | Current evidence purpose / consumer | Final disposition |
+| Asset | Class | Evidence owner / purpose | Disposition |
 | --- | --- | --- | --- |
-| `TEST-XCLI-008` leaf at line 2303 | permanent regression | REQ-RRIF-001 / AC-RRIF-001-01..03 and existing unsafe-root/no-write contract | retain unchanged |
+| Existing unsafe-root TEST-XCLI-008 leaf | permanent regression | existing missing/replaced/symlink/non-directory and zero-write boundary | retain |
+| Mode-`0300` TEST-XCLI-008 leaf | permanent compatibility regression | AC-RRIF-001-01 | retain |
+| Inline child module-mock code and linearization leaf | permanent test-private regression | AC-RRIF-001-02..03 and real Adapter linearization boundaries | retain inline |
 
-There are no added, changed, or retired test assets. The post-GREEN Controller retirement gate must reconcile this ledger against the complete diff; no Test-role cleanup is authorized.
+No test asset is retired. `git diff --check` passes and the only test diff is the authorized integration file. The post-GREEN Controller Test Asset Retirement Gate must reconcile this ledger and perform its required simplification review.
 
 ## Frozen Worker brief
 
-- Allowed production write: `adapters/storage-local/local-analysis.ts` only.
-- Do not modify tests, fixtures, helpers, harnesses, workflows, Ports, Profiles, contracts, packages, or project-control.
-- Run exactly the focused leaf and affected Artifact Port contract command above after the Adapter change.
-- Any need to change a test/workflow/contract, or any second remote proof, is `SCOPE_ESCALATION` / Controller review. No real model, network data, or credentials are authorized.
-
-## Routing record
-
-R2 Test routing floor is Terra-high; the configured `juaner_test` role is fixed Terra-medium and cannot be overridden. This handoff uses the actual available route without lowering acceptance evidence; Controller Sol-xhigh must fully review it.
+Production write remains restricted to `adapters/storage-local/local-analysis.ts`. Do not change tests, fixtures, helpers, harnesses, workflows, Ports, Profiles, contracts, packages, or project-control. Run the focused Revision-002 command and 198-test Artifact Port contract command after implementation. Any request to change the test boundary, public contract, workflow, or make a second remote proof is `SCOPE_ESCALATION` / Controller review.
