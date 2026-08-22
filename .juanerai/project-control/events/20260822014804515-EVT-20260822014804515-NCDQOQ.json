@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822014804515-NCDQOQ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-22T01:48:04.515Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Upgraded Worker once to Sol/high after Terra/high route insufficiency with 607 strict diagnostics",
+  "status_after": "active",
+  "evidence_refs": []
+}

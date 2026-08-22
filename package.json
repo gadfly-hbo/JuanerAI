@@ -8,5 +8,13 @@
   "dependencies": {
     "@earendil-works/pi-coding-agent": "0.84.2",
     "typebox": "1.3.7"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tools/harness/validation/run"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.19",
+    "typescript": "5.9.3"
   }
 }

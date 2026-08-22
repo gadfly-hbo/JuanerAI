@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821234505142-67IW4D",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-21T23:45:05.142Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-xanthil-typescript-migration"
+  },
+  "summary": "Current spec权威复核：local-analysis唯一AC集合为54；复盘中的51为历史计数错误，迁移parity固定54",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/specs/local-analysis/spec.md"
+  ]
+}

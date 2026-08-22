@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822042332262-ZLPMNK",
+  "event_type": "archived",
+  "occurred_at": "2026-08-22T04:23:32.262Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-typescript-migration"
+  },
+  "summary": "当前capability spec已发布，完整Change已归档到2026-08-22-xanthil-typescript-migration。",
+  "status_after": "active",
+  "evidence_refs": []
+}

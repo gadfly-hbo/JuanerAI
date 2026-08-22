@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822013931741-9ZOVVK",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-22T01:39:31.741Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Activated Test Correction 002 and relocked implementation after verified rollback",
+  "status_after": "active",
+  "evidence_refs": []
+}

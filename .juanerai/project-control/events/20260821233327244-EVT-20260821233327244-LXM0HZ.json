@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821233327244-LXM0HZ",
+  "event_type": "change_started",
+  "occurred_at": "2026-08-21T23:33:27.244Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-xanthil-typescript-migration"
+  },
+  "summary": "Xanthil TypeScript零行为变化迁移启动；六项方向已批准并进入Spec",
+  "status_after": "active",
+  "evidence_refs": []
+}

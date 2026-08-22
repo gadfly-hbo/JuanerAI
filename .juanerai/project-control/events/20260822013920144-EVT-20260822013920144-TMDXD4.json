@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822013920144-TMDXD4",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-22T01:39:20.144Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Worker found declarations-package test defect; rolled back and returned to Test Correction 002",
+  "status_after": "active",
+  "evidence_refs": []
+}

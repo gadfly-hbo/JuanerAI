@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noUncheckedSideEffectImports": true,
+    "types": ["node"]
+  },
+  "files": [
+    "packages/product-core/local-analysis.ts",
+    "packages/ports/local-analysis.ts",
+    "packages/application/local-analysis.ts",
+    "adapters/agent-pi/local-analysis.ts",
+    "adapters/analytics-duckdb/local-analysis.ts",
+    "adapters/storage-local/local-analysis.ts",
+    "profiles/personal/local-analysis.ts",
+    "apps/cli/xanthil.ts",
+    "tests/unit/xanthil-local-analysis/local-analysis.unit.test.ts",
+    "tests/unit/xanthil-local-analysis/coverage-map.test.ts",
+    "tests/contract/xanthil-local-analysis/local-analysis-ports.contract.test.ts",
+    "tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts",
+    "tests/e2e/xanthil-local-analysis/local-analysis.e2e.test.ts",
+    "tests/fixtures/xanthil-local-analysis/cli-profile-harness.ts",
+    "tests/fixtures/xanthil-local-analysis/coverage-map.ts",
+    "tests/fixtures/xanthil-local-analysis/fixture-oracle.ts",
+    "tests/fixtures/xanthil-local-analysis/pi-sdk-failure-child.ts",
+    "tests/fixtures/xanthil-local-analysis/pi-sdk-failure-hook.ts",
+    "tests/fixtures/xanthil-local-analysis/pi-sdk-failure-sdk.ts",
+    "tests/fixtures/xanthil-local-analysis/port-contracts.ts",
+    "tests/fixtures/xanthil-local-analysis/public-seams.ts"
+  ]
+}

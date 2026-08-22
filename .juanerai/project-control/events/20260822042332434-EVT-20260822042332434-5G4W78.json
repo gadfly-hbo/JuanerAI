@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822042332434-5G4W78",
+  "event_type": "archived",
+  "occurred_at": "2026-08-22T04:23:32.434Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-typescript-migration"
+  },
+  "summary": "Xanthil TypeScript零行为迁移完成验收、规范发布与归档。",
+  "status_after": "complete",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822030650822-8N693T",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-22T03:06:50.822Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-xanthil-ts-worker-correction-001"
+  },
+  "summary": "Worker Correction 001扩大到原TASK-004允许的单一Application机械收尾。",
+  "status_after": "active",
+  "evidence_refs": []
+}

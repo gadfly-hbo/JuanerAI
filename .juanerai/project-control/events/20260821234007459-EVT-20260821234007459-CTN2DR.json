@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260821234007459-CTN2DR",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-21T23:40:07.459Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-xanthil-typescript-migration"
+  },
+  "summary": "Explore纠正迁移清单：4个测试层包含5个测试文件；闭合图为8个生产加13个测试与helper，共21个.mjs",
+  "status_after": "active",
+  "evidence_refs": [
+    "tests/unit/xanthil-local-analysis/coverage-map.test.mjs"
+  ]
+}

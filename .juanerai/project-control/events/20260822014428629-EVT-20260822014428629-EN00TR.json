@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822014428629-EN00TR",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-22T01:44:28.629Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Reissued TDD_READY after declarations-package test correction; resumed frozen R2 implementation",
+  "status_after": "active",
+  "evidence_refs": []
+}

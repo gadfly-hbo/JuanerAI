@@ -94,14 +94,19 @@ require_package_version package.json "dependencies['@earendil-works/pi-coding-ag
 require_package_version node_modules/@earendil-works/pi-coding-agent/package.json version 0.84.2 'Pi SDK installation'
 require_package_version package.json "dependencies.typebox" 1.3.7 'TypeBox declaration'
 require_package_version node_modules/typebox/package.json version 1.3.7 'TypeBox installation'
+require_package_version package.json "devDependencies.typescript" 5.9.3 'TypeScript declaration'
+require_package_version node_modules/typescript/package.json version 5.9.3 'TypeScript installation'
+require_package_version package.json "devDependencies['@types/node']" 22.19.19 'Node types declaration'
+require_package_version node_modules/@types/node/package.json version 22.19.19 'Node types installation'
 
-find . -path ./node_modules -prune -o -type f -name '*.mjs' -print |
+find . -path ./node_modules -prune -o -type f \( -name '*.mjs' -o -name '*.ts' \) -print |
 while IFS= read -r file; do
   node --check "$file"
 done
 
-node --test tests/unit/xanthil-local-analysis/*.test.mjs
-node --test tests/contract/xanthil-local-analysis/*.test.mjs
-node --test tests/integration/xanthil-local-analysis/*.test.mjs
-node --test tests/e2e/xanthil-local-analysis/*.test.mjs
+npm run typecheck
+node --test tests/unit/xanthil-local-analysis/*.test.ts
+node --test tests/contract/xanthil-local-analysis/*.test.ts
+node --test tests/integration/xanthil-local-analysis/*.test.ts
+node --test tests/e2e/xanthil-local-analysis/*.test.ts
 node --test tools/harness/project-board/project-control.test.mjs tools/harness/project-board/status-cli.test.mjs
