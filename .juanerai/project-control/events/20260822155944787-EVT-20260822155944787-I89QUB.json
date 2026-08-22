@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822155944787-I89QUB",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-22T15:59:44.787Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-runtime-provenance-r2"
+  },
+  "summary": "Spec Gate PASS；R2 Test route 等待一次性 Terra/high default-agent 代行授权",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

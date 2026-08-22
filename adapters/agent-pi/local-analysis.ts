@@ -1,7 +1,7 @@
 import * as Type from 'typebox';
 
 import type { AnalysisProposal, Finding, PlainRecord } from '../../packages/product-core/local-analysis.ts';
-import type { AgentAnalysisRuntime, AgentAnalysisSession, ExecutionTool, ModelIdentity } from '../../packages/ports/local-analysis.ts';
+import type { AgentAnalysisRuntime, AgentAnalysisSession, ExecutionTool, ModelIdentity, RuntimeReadiness } from '../../packages/ports/local-analysis.ts';
 
 type AdapterError = Error & { code: string };
 type FactoryConfig = { provider: string; model_id: string };
@@ -21,6 +21,7 @@ type SdkModel = { provider: string; id: string };
 type ModelRuntime = { refresh(input: PlainRecord): unknown; getModel(provider: string, modelId: string): unknown };
 type RuntimeSdk = {
   ModelRuntime: { create(input: PlainRecord): unknown };
+  VERSION: unknown;
 };
 type SdkNamespace = RuntimeSdk & {
   DefaultResourceLoader: new (input: PlainRecord) => { getExtensions(): unknown };
@@ -28,7 +29,7 @@ type SdkNamespace = RuntimeSdk & {
   SessionManager: { inMemory(path: string): unknown };
   createAgentSession(input: PlainRecord): Promise<unknown>;
 };
-type ProductionReadiness = Readonly<{ sdk: RuntimeSdk; runtime: ModelRuntime; model: SdkModel }>;
+type ProductionReadiness = Readonly<{ sdk: RuntimeSdk; runtime: ModelRuntime; model: SdkModel; observation: RuntimeReadiness }>;
 type InjectedReadiness = Readonly<{ injected: true }>;
 type Readiness = ProductionReadiness | InjectedReadiness;
 type ToolCall = { name: string; settled: boolean; result?: unknown };
@@ -49,6 +50,10 @@ type ProductionSession = {
 
 const PROVIDER = 'minimax-cn';
 const MODEL_ID = 'MiniMax-M3';
+const RUNTIME_ID = 'pi';
+const ADAPTER_ID = 'agent-pi';
+const ADAPTER_VERSION = '1.0.0';
+const REQUIRED_RUNTIME_VERSION = '0.84.2';
 const TOOL_NAMES = Object.freeze([
   'profile_approved_fixture',
   'calculate_member_repurchase_metrics',
@@ -521,10 +526,12 @@ function createInertResourceLoader(sdk: SdkNamespace, settings: unknown, systemP
 async function createProductionReadiness(request: Readonly<{ requested_model: ModelIdentity }>): Promise<ProductionReadiness> {
   let sdk: RuntimeSdk;
   let runtime: ModelRuntime;
+  let runtimeVersion: string;
   try {
     const sdkSpecifier = ['@earendil-works', 'pi-coding-agent'].join('/');
     const loaded: unknown = await import(sdkSpecifier);
     sdk = validateRuntimeSdk(loaded);
+    runtimeVersion = observedRuntimeVersion(sdk.VERSION);
     runtime = validateModelRuntime(await sdk.ModelRuntime.create({ allowModelNetwork: false, refreshOnCreate: false }));
     await runtime.refresh({ allowNetwork: false });
   } catch {
@@ -541,7 +548,20 @@ async function createProductionReadiness(request: Readonly<{ requested_model: Mo
   if (actual.provider !== request.requested_model.provider || actual.model_id !== request.requested_model.model_id) {
     throw sanitized('MODEL_UNAVAILABLE');
   }
-  return Object.freeze({ sdk, runtime, model: sdkModel(model) });
+  return Object.freeze({ sdk, runtime, model: sdkModel(model), observation: runtimeReadiness(runtimeVersion, actual) });
+}
+
+function observedRuntimeVersion(value: unknown): string {
+  if (typeof value !== 'string' || value !== REQUIRED_RUNTIME_VERSION) throw sanitized('RUNTIME_UNAVAILABLE');
+  return value;
+}
+
+function runtimeReadiness(runtimeVersion: string, model: ModelIdentity): RuntimeReadiness {
+  return deepFreeze({
+    runtime: { id: RUNTIME_ID, version: runtimeVersion },
+    adapter: { id: ADAPTER_ID, version: ADAPTER_VERSION },
+    model: { provider: model.provider, model_id: model.model_id },
+  });
 }
 
 function validateRuntimeSdk(value: unknown): RuntimeSdk {
@@ -676,12 +696,13 @@ export function createPiAgentAnalysisRuntime(config: unknown, injection?: unknow
   const readinessRequest = deepFreeze({ requested_model: requestedModel });
   let readiness: Readiness | undefined;
   let readinessPromise: Promise<Readiness> | undefined;
+  let observation: RuntimeReadiness | undefined;
   let sessionOpened = false;
 
   return Object.freeze({
     async preflightModel(input) {
       validatePreflightInput(input);
-      if (readiness) return requestedModel;
+      if (readiness && observation) return observation;
       if (!readinessPromise) {
         readinessPromise = (async (): Promise<Readiness> => {
           if (injectedFactory) {
@@ -698,7 +719,10 @@ export function createPiAgentAnalysisRuntime(config: unknown, injection?: unknow
       }
       try {
         readiness = await readinessPromise;
-        return requestedModel;
+        observation = isProductionReadiness(readiness)
+          ? readiness.observation
+          : runtimeReadiness(REQUIRED_RUNTIME_VERSION, requestedModel);
+        return observation;
       } catch (error) {
         readinessPromise = undefined;
         if (errorCode(error) === 'MODEL_UNAVAILABLE' || errorCode(error) === 'RUNTIME_UNAVAILABLE') throw error;

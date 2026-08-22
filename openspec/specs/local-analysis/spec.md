@@ -2,7 +2,7 @@
 
 ## Capability Contract
 
-- Source Changes: `CHG-xanthil-cli-local-analysis-slice`; `CHG-xanthil-typescript-migration`; `CHG-run-root-identity-reuse-fix`
+- Source Changes: `CHG-xanthil-cli-local-analysis-slice`; `CHG-xanthil-typescript-migration`; `CHG-run-root-identity-reuse-fix`; `CHG-runtime-provenance-neutralization`
 - Capability: `local-analysis`
 - Accountable user: Data Analyst
 - Delivery path: `greenfield_fast_path`
@@ -10,6 +10,22 @@
 - Product result: evidence-backed analytical Findings only; this Change does not create a `Decision`, `Action Recommendation`, `Automated Decision`, `Action`, or `Outcome`.
 
 The normative words SHALL, SHALL NOT, MUST, and MUST NOT define the accepted current behavior. The fixture, formulae, and reference values below are deterministic test semantics for this synthetic example, not claims about a real business operation.
+
+## Exact Current Run Provenance Contract
+
+Every new Run Manifest has `schema_version: "2.0"` and these exact closed provenance values in the approved Personal composition:
+
+```json
+{
+  "product": { "id": "xanthil", "version": "1.0.0" },
+  "runtime": { "id": "pi", "version": "0.84.2" },
+  "adapter": { "id": "agent-pi", "version": "1.0.0" },
+  "profile": { "id": "personal" },
+  "model": { "provider": "minimax-cn", "model_id": "MiniMax-M3" }
+}
+```
+
+`product`, `runtime`, and `adapter` each contain exactly `id` and `version`; `profile` contains exactly `id`; `model` contains exactly `provider` and `model_id`. IDs/providers/model IDs are non-empty stable identifiers and versions are semantic versions. There is no `profile.version`, no model duplication under `runtime`, and no Pi-named key in schema `2.0`.
 
 ## Frozen Acceptance Scenario
 
@@ -100,21 +116,12 @@ The Finding SHALL state only that the window-local repurchase-member rate declin
 
 ## Requirements
 
-### REQ-XCLI-001 — Eligible CLI Entry and Preflight
+### REQ-XCLI-001 — Eligible CLI Entry and Closed Preflight
 
-The personal Profile SHALL expose one interactive `xanthil` Analyst Assistant entrypoint for the approved repository workspace and SHALL validate the fixture identity, explicit model selection, runtime readiness, run-root safety, and contract-version support before presenting a confirmable Analysis Contract.
+The personal Profile SHALL expose one interactive `xanthil` Analyst Assistant entrypoint for the approved repository workspace and SHALL validate fixture identity, explicit model selection, closed Runtime readiness/provenance, run-root safety, and contract-version support before presenting a confirmable Analysis Contract.
 
-- **AC-XCLI-001-01:** Given the approved workspace, exact fixture, writable safe run root, supported contracts, project-local embedded Pi SDK runtime `0.84.2`, approved Node runtime, and explicit model `minimax-cn/MiniMax-M3`, starting `xanthil` reaches Discovery without creating `.xanthil/runs/<run_id>/`. Activation of that model default remains subject to the R4 real acceptance gate.
-- **AC-XCLI-001-02:** Before opening an Agent Runtime session, Discovery,
-  Proposal, model call, or run creation, preflight validates safe physical run
-  root, realpath-contained regular fixture, exact bytes/SHA/size/closed CSV
-  semantics, explicit runtime/model readiness, and contract version. If the
-  fixture is missing, mismatched, workspace-external, reached through an
-  escaping symlink, the runtime/model is unavailable, the run root is unsafe,
-  or a contract version is unsupported, it reports a stable reason, makes no
-  model call, creates no run, and performs no source or global-configuration
-  write. This local identity read is neither an analytical source-row read nor
-  model egress.
+- **AC-XCLI-001-01:** Given the approved workspace, exact fixture, writable safe run root, supported contracts, approved Node runtime, explicit `minimax-cn/MiniMax-M3`, and Pi Adapter readiness reporting runtime `pi/0.84.2`, Adapter `agent-pi/1.0.0`, and observed model `minimax-cn/MiniMax-M3`, starting `xanthil` reaches Discovery without creating `.xanthil/runs/<run_id>/`. Activation of the model default remains subject to the existing R4 real acceptance gate.
+- **AC-XCLI-001-02:** Before Session opening, Discovery, Proposal, model call, or run creation, preflight validates the unchanged run-root/fixture/contract boundaries and one deeply frozen closed Runtime readiness result. Missing, malformed, extra, unavailable, version-mismatched, or requested-model-mismatched readiness reports the existing stable preflight reason, makes no model/provider call, creates no run, and performs no source or global-configuration write.
 
 ### REQ-XCLI-002 — Discovery and Explicit Analysis Gate
 
@@ -175,20 +182,14 @@ During Execution, the model SHALL receive only dedicated tools for approved-sour
 - **AC-XCLI-006-02:** A request for a forbidden or unknown tool is rejected as `TOOL_POLICY_VIOLATION`, stops further model/tool work, and produces no successful Finding.
 - **AC-XCLI-006-03:** The model cannot select a path, source, query text, script text, output path, provider endpoint, process command, environment variable, or package; Application supplies the approved values and allocates all asset IDs.
 
-### REQ-XCLI-007 — Replaceable Agent Runtime Boundary
+### REQ-XCLI-007 — Replaceable Agent Runtime Boundary and Readiness Provenance
 
-Application SHALL access Pi through a business-oriented Agent Analysis Runtime Port whose contract covers explicit model selection, one in-memory Discovery/Execution session, approved tool invocation, streamed user-visible events, timeout, cancellation, and sanitized failure mapping without exposing Pi SDK, CLI, process, or session-persistence types.
+Application SHALL access Pi through the existing business-oriented Agent Analysis Runtime Port whose contract covers explicit model selection, closed runtime/Adapter/model readiness, one in-memory Discovery/Execution session, approved tool invocation, streamed user-visible events, timeout, cancellation, and sanitized failure mapping without exposing Pi SDK, CLI, process, or session-persistence types.
 
-- **AC-XCLI-007-01:** The project-local Pi SDK Adapter and an in-memory contract double pass the same Agent Analysis Runtime contract suite for Discovery, confirmation handoff, Execution, forbidden-tool rejection, event ordering, timeout, cancellation, and failure mapping.
+- **AC-XCLI-007-01:** The project-local Pi SDK Adapter and an in-memory contract double pass the same Agent Analysis Runtime contract suite with exactly the existing methods `preflightModel` and `openSession`; the suite includes the closed readiness response plus every previously accepted Discovery, confirmation, Execution, forbidden-tool, event-ordering, timeout, cancellation, and failure-mapping behavior.
 - **AC-XCLI-007-02:** Discovery and post-confirmation Execution use the same in-memory Pi-backed session; Pi history is neither authoritative Evidence nor required to reproduce calculations.
-- **AC-XCLI-007-03:** Before Session opening, the Adapter proves local runtime
-  and explicit model readiness through the business Runtime Port. After SDK
-  operations settle, it reads actual provider/model from `session.model` and
-  actual active tools from `getActiveToolNames()` rather than echoing requested
-  values; either mismatch fails closed with a sanitized product error. Ambient
-  defaults, credential values, Pi installation paths, raw SDK errors, and raw
-  transcripts are not persisted.
-- **AC-XCLI-007-04:** The Adapter uses only project-local Pi SDK `0.84.2`, explicit `minimax-cn/MiniMax-M3`, `ModelRuntime.create({allowModelNetwork:false,refreshOnCreate:false})`, then exactly one first-prompt local-only `refresh({allowNetwork:false})` before `getModel`, inert resource discovery, disabled built-ins/extensions, in-memory session persistence, and retry disabled.
+- **AC-XCLI-007-03:** `preflightModel` returns exactly deeply frozen `{runtime:{id,version},adapter:{id,version},model:{provider,model_id}}`; Application persists the preflight-observed model only after it equals the requested model, and after SDK operations settle it requires execution-observed `session.model` equality with that preflight observation. Any structural or equality mismatch fails closed with the existing sanitized product error and cannot produce success.
+- **AC-XCLI-007-04:** The Pi Adapter uses only the project-local Pi SDK `0.84.2`, reads runtime version from that loaded SDK namespace's exact `VERSION` export, self-declares runtime ID `pi` and Adapter `agent-pi/1.0.0`, and retains every existing local-only refresh, explicit model, inert-resource, disabled-tool/extension, in-memory persistence, and no-retry rule. A missing, malformed, or non-`0.84.2` SDK `VERSION` fails as `RUNTIME_UNAVAILABLE` before Session/provider work.
 - **AC-XCLI-007-05:** Before Port return, the Adapter accepts only a complete JSON object or exactly one leading complete `<think>...</think>` prefix followed by one complete JSON object, and detects duplicate object members at every nesting level while parsing; every other wrapper, malformed/multiple/non-object JSON, duplicate member, empty/non-stop result, stream defect, timeout, cancellation, or lifecycle error fails closed without raw diagnostic leakage.
 - **AC-XCLI-007-06:** Discovery has no tool event; Execution admits exactly the three native Application callbacks once and in order with exact `{}` arguments. Application/Product Core own object-order-insensitive business semantic validation and canonical serialization; Adapter does not alter business values or manufacture output.
 
@@ -200,13 +201,13 @@ Application SHALL access source profiling, SQL calculation, and Python validatio
 - **AC-XCLI-008-02:** SQL is read-only and bound to the approved fixture; no extension installation/loading, attach, copy, export, arbitrary file function, database mutation, or external connection is possible.
 - **AC-XCLI-008-03:** Python executes only the repository-owned canonical validator selected by Application; model-supplied code, imports beyond its approved standard-library set, filesystem discovery, environment access, subprocess creation, and network use are not capabilities of the Port.
 
-### REQ-XCLI-009 — Closed Run and Artifact Contract
+### REQ-XCLI-009 — Closed Run Manifest `2.0` and Independent Artifact Contracts
 
-Application SHALL be the single semantic writer of a closed version `1.0` run contract containing `run.json`, `analysis-contract.json`, conditionally successful `evidence.json`, `summary.md`, `evidence.md`, and numbered append-only assets.
+Application SHALL be the single semantic writer of a closed Run Manifest schema `2.0` containing `run.json`, while `analysis-contract.json` and `evidence.json` retain their independent exact schema `1.0` contracts; all current core files, Markdown, and numbered append-only assets remain governed by the accepted Artifact lifecycle.
 
-- **AC-XCLI-009-01:** A successful run has the approved five core files plus `queries/Q-001.sql`, `scripts/S-001.py`, and the declared numbered output assets; empty asset directories may be absent and unknown core files, fields, enum values, versions, or unindexed assets are rejected.
+- **AC-XCLI-009-01:** Every new `run.json` uses schema `2.0` and the exact closed top-level provenance nodes in this specification; the same run's `analysis-contract.json` and conditional `evidence.json` continue to use schema `1.0`, and their closed field sets plus the successful file/asset inventory remain unchanged.
 - **AC-XCLI-009-02:** Core files are committed by same-directory temporary file plus atomic rename; assets receive new `Q-`, `S-`, or `O-` IDs and are never updated in place.
-- **AC-XCLI-009-03:** Only Application through the Artifact Port can write core files; analytical capabilities can return bytes and provenance but cannot choose paths or directly mutate run state.
+- **AC-XCLI-009-03:** Application writes product `xanthil/1.0.0` from Application-owned constants, runtime/Adapter/model from the closed preflight observation, and profile `personal` from Profile composition; Storage and CLI only validate, persist, return, or transport those values and never invent or normalize them.
 - **AC-XCLI-009-04:** On terminal transition, all retained files become immutable to Xanthil; later display and verification are read-only.
 
 ### REQ-XCLI-010 — Status-Discriminated Lifecycle
@@ -230,7 +231,7 @@ A successful run SHALL contain a closed Evidence Index in which every material F
 For a successful run, Application SHALL produce human-readable `summary.md` and `evidence.md` from, or validate them against, the confirmed Analysis Contract and Evidence Index; neither Markdown file is an independent source of authority.
 
 - **AC-XCLI-012-01:** `summary.md` states the confirmed question, `supported` result, exact reference metrics, bounded interpretation, and limitations, and does not include unsupported causal, prescriptive, real-world, or business-action language.
-- **AC-XCLI-012-02:** `evidence.md` resolves `F-001` through its Evidence Items to source identity, time windows, SQL, Python validation, outputs, runtime/model provenance, and checksums.
+- **AC-XCLI-012-02:** `evidence.md` resolves `F-001` through its Evidence Items to source identity, time windows, SQL, Python validation, outputs, and checksums; product/runtime/Adapter/Profile/model provenance resolves from the same-run `run.json` rather than being duplicated into `evidence.json` or Markdown.
 - **AC-XCLI-012-03:** Any inconsistency between Markdown and the machine-readable contracts causes finalization to fail; failed, cancelled, or in-progress runs cannot expose completed Summary/Evidence as a success response.
 
 ### REQ-XCLI-013 — Failure, Timeout, and Cancellation
@@ -276,24 +277,20 @@ Only the selected model provider MAY receive the confirmed contract, synthetic f
 - **AC-XCLI-014-02:** Credentials, secrets, environment values, raw provider/SDK/assistant text, unrelated files, real/user/enterprise data, global Pi settings, and project-control records do not enter prompts, tool outputs, logs, traces, fixtures, or run Artifacts.
 - **AC-XCLI-014-03:** Any attempted forbidden data access or egress is rejected before transmission, terminates fail closed, and is covered by negative evidence; local Pi execution is never described as a security sandbox.
 
-### REQ-XCLI-015 — Complete Provenance Without Credential Capture
+### REQ-XCLI-015 — Complete Neutral Provenance Without Credential Capture
 
-Every successful run SHALL record the source snapshot, confirmed semantics, transformations, validation, runtime, provider/model, lifecycle time, run identity, and Artifact checksums needed to reproduce each material calculation without persisting credentials or relying on Pi memory.
+Every successful run SHALL record the source snapshot, confirmed semantics, transformations, validation, product, runtime, Adapter, Profile, provider/model, lifecycle time, run identity, and Artifact checksums needed to reproduce each material calculation without persisting credentials, relying on Pi memory, or naming Pi in a schema key.
 
-- **AC-XCLI-015-01:** `run.json`, `analysis-contract.json`, and `evidence.json`
-  jointly resolve each Finding to exact fixture bytes, the Adapter-observed
-  actual read time, inclusive business-date windows, canonical SQL and Python
-  assets, outputs, Xanthil/Pi Adapter/Pi versions, observed explicit
-  provider/model, and the same `run_id`.
+- **AC-XCLI-015-01:** `run.json` schema `2.0`, `analysis-contract.json` schema `1.0`, and `evidence.json` schema `1.0` jointly resolve each Finding to exact fixture bytes, the Adapter-observed source read time, inclusive business-date windows, canonical SQL and Python assets, outputs, Application-owned Xanthil `1.0.0`, Profile-owned `personal`, Pi Adapter-declared `agent-pi/1.0.0`, loaded-SDK-observed runtime `pi/0.84.2`, preflight-observed explicit `minimax-cn/MiniMax-M3`, and the same `run_id`.
 - **AC-XCLI-015-02:** Recalculation from the recorded fixture identity and assets reproduces the reference oracle independently of narrative text, Pi transcript, filesystem mtime, ambient model default, or a live model call.
 
-### REQ-XCLI-016 — Activation, Compatibility, Rollback, and Retirement
+### REQ-XCLI-016 — Activation, Bounded Compatibility, Rollback, and Retirement
 
-Version `1.0` SHALL activate only in the personal local Profile for the approved example after all gates pass; readers SHALL accept only explicitly supported exact versions; rollback and retirement SHALL preserve user-owned terminal Artifacts.
+Run Manifest `2.0` SHALL activate only in the Personal local Profile after all gates pass; all new writes and mutations SHALL be current-`2.0` only; terminal read SHALL support only exact terminal `1.0` and exact terminal `2.0`; rollback and retirement SHALL preserve all user-owned Artifacts.
 
 - **AC-XCLI-016-01:** Before activation, executable tests prove expected RED then GREEN at unit, Port contract, integration, and E2E levels, required regression/quality checks pass, and independent verification passes or an authorized waiver is recorded.
-- **AC-XCLI-016-02:** Unknown schema or Port contract versions fail closed without migration, backfill, dual-read, or automatic upgrade; version `1.0` has no historical compatibility obligation.
-- **AC-XCLI-016-03:** Rollback disables the CLI entrypoint and Pi Adapter composition without changing the source fixture or existing runs; retirement removes the example from active composition only after validation and does not delete or rewrite Artifacts.
+- **AC-XCLI-016-02:** `readTerminalRun({run_id})` accepts exact `succeeded`, `failed`, and `cancelled` Run Manifests for schema `1.0` and `2.0`; it returns the exact parsed legacy `1.0` structure with legacy keys intact, verifies indexed assets, and leaves the complete directory tree and `run.json` bytes unchanged. Legacy `1.0 in_progress`, unknown versions, and malformed records fail closed without normalization, backfill, rewrite, repair, or read-as-terminal behavior.
+- **AC-XCLI-016-03:** `beginRun`, `commitConfirmedContract`, `appendAsset`, `replaceManifest`, and `commitSuccess` admit only a current schema `2.0` run and leave legacy/unknown bytes untouched on rejection. Rollback disables new activation and preserves every artifact; the previous implementation is not promised to read schema `2.0`, and no retained reader or migration machinery is added.
 - **AC-XCLI-016-04:** Session resume, run list/delete/repair, retention automation, real data, additional formats, Web Research, Workflows, Desktop, Console, enterprise behavior, SQLite, Trace Platform, Ontology, Knowledge, Memory, Domain Packs, Model Packs, Decisions, recommendations, or Actions remain unavailable.
 
 ### REQ-RRIF-001 — Physical Run Root Continuity
@@ -310,12 +307,23 @@ Preflight failures create no run and use one of: `FIXTURE_NOT_FOUND`, `FIXTURE_M
 
 Post-confirmation failed runs use the stage set `contract_persist | runtime | source_read | analysis_sql | analysis_python | validation | artifact_finalize | execution` and the closed error-code set `ARTIFACT_WRITE_FAILED | SOURCE_CHANGED | SOURCE_BOUNDARY_VIOLATION | SOURCE_INVALID | MODEL_EXECUTION_FAILED | TOOL_POLICY_VIOLATION | ANALYSIS_EXECUTION_FAILED | VALIDATION_FAILED | TIMEOUT | CONTRACT_VERSION_UNSUPPORTED | INTERNAL_ERROR`. Cancellation uses the stage active when cancellation was accepted. Free-text diagnostic messages are optional, sanitized, non-authoritative, and not stable API.
 
+## Compatibility Boundaries
+
+- No generic dual-read dispatcher, version registry, migration marker, normalization layer, or background scan is authorized.
+- Legacy read support is limited to explicit `readTerminalRun({run_id})`; no CLI list/inspect/resume/repair feature is added.
+- Existing failure codes/stages and their boundary mappings remain unchanged.
+- Exact legacy `1.0` validation preserves the currently accepted legacy model rule; new `2.0` writes use only the exact two-field model object above.
+
 ## Explicit Non-Requirements
 
 - No general-purpose chat, coding-agent, SQL console, Python console, or file-analysis promise.
 - No real-data correctness, privacy, isolation, retention, or enterprise claim.
 - No causal inference, forecasting, member-level judgment, operational recommendation, or action execution.
 - No dependency installation, manifest change, schema file, executable test, production implementation, model call, or global Pi mutation is authorized by this document before the applicable gate.
+- No second Runtime, Runtime registry/discovery/fallback/hot switching, universal Runtime Port, new Port method, or vendor-name branch in Application.
+- No Profile configuration field, `profile.version`, package/lock/dependency change, SDK/package manifest lookup, or model/provider change.
+- No data, fixture, DuckDB/Python, Evidence schema, Analysis Contract schema, Markdown content, enterprise, migration, repair, retention, recovery, or action behavior.
+- No user run-directory inspection and no real model/provider call.
 
 ## Native TypeScript Delivery Requirements
 
@@ -344,7 +352,7 @@ The root SHALL use one exact, reproducible TypeScript toolchain for strict stati
 Static migration SHALL preserve the entire accepted `local-analysis` behavior, runtime validation authority, architecture, and executable identity matrix.
 
 - **AC-XTS-003-01:** The exact accepted `AC-XCLI-*` identity set and `TEST-XCLI-001` through `TEST-XCLI-022` identity set remain present and mutually resolved; no business AC or TEST identity is added, removed, or renamed.
-- **AC-XTS-003-02:** All business, failure, security, cancellation, deadline, atomicity, terminal, and provenance assertions remain unchanged and all four layers retain their baseline results—Unit `250`, Contract `198`, Integration `243`, E2E `131` PASS plus one gated skip—except only the approved path/toolchain mechanics inside `TEST-XCLI-021` and `TEST-XCLI-022`.
+- **AC-XTS-003-02:** All business, failure, security, cancellation, deadline, atomicity, terminal, and non-provenance assertions accepted by the TypeScript migration remain unchanged. The four layers retain the migration baseline cases and may add only the independently scheduled assertion groups required by `CHG-runtime-provenance-neutralization`; Test Design freezes the resulting exact counts before TDD_READY, and no unrelated assertion or TEST identity is removed, renamed, or weakened.
 - **AC-XTS-003-03:** Product Core validators, Port definers, and existing public trust entries accept `unknown` where runtime admission is authoritative and refine internally to seam-owned types. Admitted operational Port/use-case methods and valid results remain strongly typed. TypeScript SHALL NOT replace, bypass, weaken, or pre-satisfy TypeBox, Product Core, Adapter, Port-result, closed-object, error, or security runtime validation; the same invalid runtime inputs fail closed with the same observable semantics.
 - **AC-XTS-003-04:** Pi SDK imports and Pi-owned types remain confined to the Pi Adapter. Product Core, Ports, Application, other Adapters, Profile, CLI, tests, and fixtures expose only Xanthil/business or standard platform types at their boundaries.
 - **AC-XTS-003-05:** Tests import or derive contracts from production seams and declare no test-owned duplicate business type or interface; approved runtime value fixtures remain unchanged. Runtime-negative values cross validation entries as `unknown` without `any`, repository suppression directives, or broad assertion casts. The only permitted narrow checked conversion is the single Port-contract-fixture helper with the exact runtime check and negative consumers specified in the archived `design.md`.

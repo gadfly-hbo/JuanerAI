@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readdirSync } from 'node:fs';
 import { chmod, lstat, mkdir, mkdtemp, readFile, readdir, realpath, rm, symlink, writeFile } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
-import { join, relative, sep } from 'node:path';
+import { dirname, join, relative, sep } from 'node:path';
 import test from 'node:test';
 import { tmpdir } from 'node:os';
 import { promisify } from 'node:util';
@@ -133,7 +133,9 @@ type ApplicationOptions = {
   clock?: unknown;
   deadlineScheduler?: unknown;
   model?: unknown;
+  profile?: unknown;
   includeModel?: boolean;
+  includeProfile?: boolean;
   includeDeadlineScheduler?: boolean;
 };
 type ArtifactStoreDouble = ReturnType<typeof createRunArtifactStoreDouble>;
@@ -386,14 +388,70 @@ async function createApplication({
   clock = controlledClock(),
   deadlineScheduler = createVirtualDeadlineScheduler().scheduler,
   model = approvedModel,
+  profile = Object.freeze({ id: 'personal' }),
   includeModel = true,
+  includeProfile = true,
   includeDeadlineScheduler = true,
 }: ApplicationOptions = {}) {
   const createLocalAnalysisApplication = requiredExport(await loadPublicSeam('application'), 'createLocalAnalysisApplication');
-  const dependencies: TestRecord = { agentRuntime, localAnalysisExecution, runArtifactStore, model, clock, deadlineScheduler };
+  const dependencies: TestRecord = { agentRuntime, localAnalysisExecution, runArtifactStore, model, profile, clock, deadlineScheduler };
   if (!includeModel) delete dependencies.model;
+  if (!includeProfile) delete dependencies.profile;
   if (!includeDeadlineScheduler) delete dependencies.deadlineScheduler;
   return createLocalAnalysisApplication(dependencies);
+}
+
+for (const [label, profileDependency] of [
+  ['missing', { includeProfile: false }],
+  ['empty_id', { profile: Object.freeze({ id: '' }) }],
+  ['extra_field', { profile: Object.freeze({ id: 'personal', version: '1.0.0' }) }],
+  ['null', { profile: null }],
+] satisfies readonly (readonly [string, Pick<ApplicationOptions, 'includeProfile' | 'profile'>])[]) {
+  test(`RPN-T08 TEST-XCLI-019 [AC-XCLI-001-02, AC-XCLI-009-03] rejects internal Profile ${label} before Runtime, Session, or Artifact effects`, async () => {
+    const events: EventLog[] = [];
+    await assert.rejects(() => createApplication({ events, ...profileDependency }), /VALIDATION_FAILED|PROFILE_INVALID/);
+    assert.deepEqual(events, []);
+  });
+}
+
+const frozenReadiness = Object.freeze({
+  runtime: Object.freeze({ id: 'pi', version: '0.84.2' }),
+  adapter: Object.freeze({ id: 'agent-pi', version: '1.0.0' }),
+  model: Object.freeze({ provider: 'minimax-cn', model_id: 'MiniMax-M3' }),
+});
+
+for (const [label, preflightResult] of [
+  ['missing_runtime', Object.freeze({ adapter: frozenReadiness.adapter, model: frozenReadiness.model })],
+  ['extra_runtime_field', Object.freeze({ ...frozenReadiness, runtime: Object.freeze({ ...frozenReadiness.runtime, extra: true }) })],
+  ['null_adapter', Object.freeze({ ...frozenReadiness, adapter: null })],
+  ['unfrozen_model', Object.freeze({ ...frozenReadiness, model: { ...frozenReadiness.model } })],
+] as const) {
+  test(`RPN-T07 TEST-XCLI-009 [AC-XCLI-001-02, AC-XCLI-007-03] rejects ${label} closed readiness before Session or run allocation`, async () => {
+    const events: EventLog[] = [];
+    const application = await createApplication({ events, agentRuntime: createAgentRuntimeDouble({ events, preflightResult }) });
+    await assert.rejects(() => application.start({ question: expectedAnalysisInput().question, source: expectedAnalysisInput().fixture }), /MODEL_UNAVAILABLE|VALIDATION_FAILED/);
+    assert.equal(events.some(({ event }) => event === 'runtime.openSession' || event === 'artifact.beginRun'), false);
+  });
+}
+
+test('RPN-T07 TEST-XCLI-009 [AC-XCLI-001-02, AC-XCLI-007-03] rejects a deeply frozen requested/preflight model mismatch before Session or run allocation', async () => {
+  const events: EventLog[] = [];
+  const mismatch = Object.freeze({ ...frozenReadiness, model: Object.freeze({ provider: 'minimax-cn', model_id: 'Different-M3' }) });
+  const application = await createApplication({ events, agentRuntime: createAgentRuntimeDouble({ events, preflightResult: mismatch }) });
+  await assert.rejects(() => application.start({ question: expectedAnalysisInput().question, source: expectedAnalysisInput().fixture }), /MODEL_UNAVAILABLE|VALIDATION_FAILED/);
+  assert.equal(events.some(({ event }) => event === 'runtime.openSession' || event === 'artifact.beginRun'), false);
+});
+
+for (const [label, preflightResult] of [
+  ['runtime_prerelease_numeric_leading_zero', Object.freeze({ ...frozenReadiness, runtime: Object.freeze({ id: 'pi', version: '0.84.2-01' }) })],
+  ['adapter_core_numeric_leading_zero', Object.freeze({ ...frozenReadiness, adapter: Object.freeze({ id: 'agent-pi', version: '01.0.0' }) })],
+] as const) {
+  test(`RPN-T07 TEST-XCLI-009 [AC-XCLI-001-02, AC-XCLI-007-03] rejects deeply frozen ${label} readiness before Session or run allocation`, async () => {
+    const events: EventLog[] = [];
+    const application = await createApplication({ events, agentRuntime: createAgentRuntimeDouble({ events, preflightResult }) });
+    await assert.rejects(() => application.start({ question: expectedAnalysisInput().question, source: expectedAnalysisInput().fixture }), /MODEL_UNAVAILABLE|VALIDATION_FAILED/);
+    assert.equal(events.some(({ event }) => event === 'runtime.openSession' || event === 'artifact.beginRun'), false);
+  });
 }
 
 test('TASK-010 R3 TEST-XCLI-009 [AC-XCLI-001-01, AC-XCLI-001-02, AC-XCLI-013-01] accepts the closed virtual deadline scheduler at Application composition', async () => {
@@ -2572,6 +2630,143 @@ for (const [failureCase, expectedCode, expectedSdk] of [
   });
 }
 
+for (const [versionCase, expectedCode] of [
+  ['sdk_version_exact', 'PRELIGHT_SUCCEEDED'],
+  ['sdk_version_missing', 'RUNTIME_UNAVAILABLE'],
+  ['sdk_version_null', 'RUNTIME_UNAVAILABLE'],
+  ['sdk_version_non_string', 'RUNTIME_UNAVAILABLE'],
+  ['sdk_version_malformed', 'RUNTIME_UNAVAILABLE'],
+  ['sdk_version_mismatch', 'RUNTIME_UNAVAILABLE'],
+] as const) {
+  test(`RPN-T06 TEST-XCLI-011 [AC-XCLI-001-02, AC-XCLI-007-04] observes loaded SDK VERSION for ${versionCase} before Session/provider work`, async () => {
+    const observed = await runProductionPiPreflightFailureCase(versionCase);
+    assert.equal(observed.code, expectedCode);
+    assert.deepEqual(observed.sdk, {
+      create_calls: expectedCode === 'PRELIGHT_SUCCEEDED' ? 1 : 0,
+      refresh_calls: expectedCode === 'PRELIGHT_SUCCEEDED' ? 1 : 0,
+      get_model_calls: expectedCode === 'PRELIGHT_SUCCEEDED' ? 1 : 0,
+      session_creations: 0,
+      provider_calls: 0,
+      credential_output: false,
+    });
+  });
+}
+
+test('RPN-T05 TEST-XCLI-011 [AC-XCLI-001-02, AC-XCLI-007-01, AC-XCLI-007-03] returns one deeply frozen closed readiness observation without opening a Session', async (t) => {
+  const isolatedConfigRoot = await isolatePiCodingAgentDirectory(t, 'xanthil-rpn-readiness-');
+  const adapter = await loadPublicSeam('agentAdapter');
+  const runtime = requiredExport(adapter, 'createPiAgentAnalysisRuntime')({ provider: 'minimax-cn', model_id: 'MiniMax-M3' });
+  assert.deepEqual(Object.keys(runtime), ['preflightModel', 'openSession']);
+  const observed: unknown = await runtime.preflightModel(Object.freeze({ model: Object.freeze({ provider: 'minimax-cn', model_id: 'MiniMax-M3' }) }));
+  assert.deepEqual(observed, {
+    runtime: { id: 'pi', version: '0.84.2' },
+    adapter: { id: 'agent-pi', version: '1.0.0' },
+    model: { provider: 'minimax-cn', model_id: 'MiniMax-M3' },
+  });
+  const assertFrozenTree = (value: unknown): void => {
+    if (value === null || typeof value !== 'object') return;
+    assert.equal(Object.isFrozen(value), true);
+    Object.values(value).forEach(assertFrozenTree);
+  };
+  assertFrozenTree(observed);
+  await assertPiReadinessOnly(isolatedConfigRoot);
+});
+
+for (const operation of ['beginRun', 'commitConfirmedContract', 'appendAsset', 'replaceManifest', 'commitSuccess'] as const) for (const stateName of ['legacy_in_progress_1_0', 'legacy_terminal_1_0', 'unknown_version', 'malformed'] as const) {
+  test(`RPN-T04 TEST-XCLI-008 [AC-XCLI-016-03] rejects ${stateName} at ${operation} without changing its artifact tree or bytes`, async (t) => {
+    const { runRoot, store } = await createRealArtifactStore(t);
+    const fixture = expectedArtifactRun('0198d943-8b71-7a11-9abc-0000000000a1');
+    const live = new AbortController().signal;
+    const legacy = {
+      schema_version: '1.0', run_id: fixture.run_id, analysis_kind: 'analyst_assistant', status: 'in_progress', started_at: fixture.initialManifest.started_at,
+      runtime: { xanthil_version: '1.0.0', pi_adapter_version: '1.0.0', pi_version: '0.84.2' }, model: fixture.initialManifest.model,
+      contract: fixture.initialManifest.contract, sources: fixture.initialManifest.sources, artifacts: [],
+    };
+    const legacyFailed = { ...legacy, status: 'failed', ended_at: fixture.failedManifest.ended_at, terminal_detail: fixture.failedManifest.terminal_detail, artifacts: fixture.failedManifest.artifacts };
+    const legacySucceeded = { ...legacy, status: 'succeeded', ended_at: fixture.succeededManifest.ended_at, evidence: fixture.succeededManifest.evidence, artifacts: fixture.succeededManifest.artifacts };
+    const state = stateName === 'legacy_in_progress_1_0' ? legacy
+      : stateName === 'legacy_terminal_1_0' ? legacyFailed
+        : stateName === 'unknown_version' ? { ...legacy, schema_version: '3.0' }
+          : { ...legacy, runtime: null };
+    if (operation !== 'beginRun') {
+      const directory = join(runRoot, fixture.run_id);
+      await mkdir(directory);
+      await writeFile(join(directory, 'run.json'), JSON.stringify(state), 'utf8');
+      if (operation === 'commitSuccess') for (const asset of fixture.assets) {
+        const path = join(directory, asset.path);
+        await mkdir(dirname(path), { recursive: true });
+        await writeFile(path, asset.bytes);
+      }
+    }
+    const before = await artifactByteSnapshot(runRoot);
+    const action = {
+      beginRun: () => invokeNegativeOperationalPort(store.beginRun, [artifactMutatorInput({ run_id: fixture.run_id, initial_manifest: state }, live)]),
+      commitConfirmedContract: () => store.commitConfirmedContract(artifactMutatorInput({ run_id: fixture.run_id, contract: fixture.contract }, live)),
+      appendAsset: () => store.appendAsset(artifactMutatorInput({ run_id: fixture.run_id, asset: fixture.assets[0] }, live)),
+      replaceManifest: () => store.replaceManifest(artifactMutatorInput({ run_id: fixture.run_id, next_manifest: legacyFailed }, live)),
+      commitSuccess: () => store.commitSuccess(artifactMutatorInput({ run_id: fixture.run_id, next_manifest: legacySucceeded, evidence: fixture.evidence, summary: fixture.summary, evidence_document: fixture.evidenceDocument }, live)),
+    }[operation];
+    await assert.rejects(action, /ARTIFACT_WRITE_FAILED|CONTRACT_VERSION_UNSUPPORTED|TERMINAL_IMMUTABLE/);
+    assert.deepEqual(await artifactByteSnapshot(runRoot), before);
+  });
+}
+
+for (const schema_version of ['1.0', '2.0'] as const) for (const status of ['succeeded', 'failed', 'cancelled'] as const) {
+  test(`RPN-T03 TEST-XCLI-008 [AC-XCLI-016-02] reads an exact terminal ${schema_version} ${status} manifest without changing bytes or creating files`, async (t) => {
+    const { runRoot, store } = await createRealArtifactStore(t);
+    const run_id = '0198d943-8b71-7a11-9abc-0000000000a1';
+    const fixture = expectedArtifactRun(run_id);
+    const terminal: Record<string, unknown> = {
+      schema_version, run_id, analysis_kind: 'analyst_assistant', status, started_at: '2026-08-20T00:00:00.000Z', ended_at: '2026-08-20T00:01:00.000Z',
+      ...(schema_version === '2.0'
+        ? { product: { id: 'xanthil', version: '1.0.0' }, runtime: { id: 'pi', version: '0.84.2' }, adapter: { id: 'agent-pi', version: '1.0.0' }, profile: { id: 'personal' }, model: { provider: 'minimax-cn', model_id: 'MiniMax-M3' } }
+        : { runtime: { xanthil_version: '1.0.0', pi_adapter_version: '1.0.0', pi_version: '0.84.2' }, model: status === 'succeeded' ? { provider: 'minimax-cn', model_id: 'MiniMax-M3', thinking_level: 'low' } : { provider: 'minimax-cn', model_id: 'MiniMax-M3' } }),
+      contract: fixture.initialManifest.contract,
+      sources: [{ source_id: 'SRC-001', kind: 'csv', path: 'member-orders-v1.csv', sha256: fixtureSha256, byte_size: fixtureByteSize, read_at: '2026-08-20T00:00:00.000Z', fixture_version: 'member-orders-v1' }],
+      ...(status === 'succeeded'
+        ? { evidence: fixture.succeededManifest.evidence, artifacts: fixture.succeededManifest.artifacts }
+        : { artifacts: [], terminal_detail: status === 'failed' ? { stage: 'validation', error_code: 'VALIDATION_FAILED' } : { stage: 'runtime' } }),
+    };
+    await mkdir(join(runRoot, run_id));
+    if (status === 'succeeded') {
+      for (const asset of [...fixture.assets, { artifact_id: 'DOC-SUMMARY', path: 'summary.md', bytes: Buffer.from(fixture.summary) }, { artifact_id: 'DOC-EVIDENCE', path: 'evidence.md', bytes: Buffer.from(fixture.evidenceDocument) }]) {
+        const path = join(runRoot, run_id, asset.path);
+        await mkdir(dirname(path), { recursive: true });
+        await writeFile(path, asset.bytes);
+      }
+    }
+    await writeFile(join(runRoot, run_id, 'run.json'), JSON.stringify(terminal), 'utf8');
+    const before = await artifactByteSnapshot(runRoot);
+    assert.deepEqual(await store.readTerminalRun({ run_id }), {
+      manifest: terminal,
+      assets: status === 'succeeded' ? fixture.succeededManifest.artifacts.map(({ artifact_id }) => fixture.persistedAssetById[artifact_id]) : [],
+    });
+    assert.deepEqual(await artifactByteSnapshot(runRoot), before);
+  });
+}
+
+for (const stateName of ['legacy_in_progress_1_0', 'unknown_version', 'malformed'] as const) {
+  test(`RPN-T03 TEST-XCLI-008 [AC-XCLI-016-02] rejects readable ${stateName} without changing its artifact tree or bytes`, async (t) => {
+    const { runRoot, store } = await createRealArtifactStore(t);
+    const run_id = '0198d943-8b71-7a11-9abc-0000000000a1';
+    const fixture = expectedArtifactRun(run_id);
+    const legacy = {
+      schema_version: '1.0', run_id, analysis_kind: 'analyst_assistant', status: 'in_progress', started_at: '2026-08-20T00:00:00.000Z',
+      runtime: { xanthil_version: '1.0.0', pi_adapter_version: '1.0.0', pi_version: '0.84.2' }, model: { provider: 'minimax-cn', model_id: 'MiniMax-M3' },
+      contract: fixture.initialManifest.contract,
+      sources: [{ source_id: 'SRC-001', kind: 'csv', path: 'member-orders-v1.csv', sha256: fixtureSha256, byte_size: fixtureByteSize, read_at: '2026-08-20T00:00:00.000Z', fixture_version: 'member-orders-v1' }], artifacts: [],
+    };
+    const manifest = stateName === 'legacy_in_progress_1_0' ? legacy
+      : stateName === 'unknown_version' ? { ...legacy, schema_version: '3.0' }
+        : { ...legacy, runtime: null };
+    await mkdir(join(runRoot, run_id));
+    await writeFile(join(runRoot, run_id, 'run.json'), JSON.stringify(manifest), 'utf8');
+    const before = await artifactByteSnapshot(runRoot);
+    await assert.rejects(() => store.readTerminalRun({ run_id }), /ARTIFACT_WRITE_FAILED|CONTRACT_VERSION_UNSUPPORTED/);
+    assert.deepEqual(await artifactByteSnapshot(runRoot), before);
+  });
+}
+
 test('TASK-010 R3 TEST-XCLI-011 production-default preflight then one inert open has no prompt, provider fetch, or session persistence', async (t) => {
   const isolatedConfigRoot = await isolatePiCodingAgentDirectory(t, 'xanthil-pi-config-');
   const previousFetch = globalThis.fetch;
@@ -2584,8 +2779,13 @@ test('TASK-010 R3 TEST-XCLI-011 production-default preflight then one inert open
   const runtime = createRuntime({ provider: 'minimax-cn', model_id: 'MiniMax-M3' });
   assert.deepEqual(Object.keys(runtime), ['preflightModel', 'openSession']);
   const model = Object.freeze({ provider: 'minimax-cn', model_id: 'MiniMax-M3' });
-  assert.deepEqual(await runtime.preflightModel(Object.freeze({ model })), model);
-  assert.deepEqual(await runtime.preflightModel(Object.freeze({ model })), model);
+  const readiness = {
+    runtime: { id: 'pi', version: '0.84.2' },
+    adapter: { id: 'agent-pi', version: '1.0.0' },
+    model,
+  };
+  assert.deepEqual(await runtime.preflightModel(Object.freeze({ model })), readiness);
+  assert.deepEqual(await runtime.preflightModel(Object.freeze({ model })), readiness);
   const readinessFiles = await assertPiReadinessOnly(isolatedConfigRoot);
   const session = await runtime.openSession(Object.freeze({ model: Object.freeze({ provider: 'minimax-cn', model_id: 'MiniMax-M3' }), discovery_tools: Object.freeze([]), execution_tools: productionDefaultExecutionTools() }));
   assert.deepEqual(Object.keys(session).sort(), ['cancel', 'discover', 'execute']);

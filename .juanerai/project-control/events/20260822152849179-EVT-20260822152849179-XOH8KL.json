@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822152849179-XOH8KL",
+  "event_type": "change_started",
+  "occurred_at": "2026-08-22T15:28:49.179Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-runtime-provenance-r2"
+  },
+  "summary": "R2_Runtime_Provenance中立化Change已启动并记录当前Spec路由阻塞",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

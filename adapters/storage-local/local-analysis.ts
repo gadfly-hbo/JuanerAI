@@ -3,7 +3,7 @@ import { closeSync, constants, fstatSync, lstatSync, openSync, realpathSync } fr
 import { mkdir, open, readFile, rename, rm } from 'node:fs/promises';
 import { dirname, join, resolve, sep } from 'node:path';
 import { createLocalAnalysisDomain } from '../../packages/product-core/local-analysis.ts';
-import type { ArtifactDescriptor, PlainRecord, RunManifest } from '../../packages/product-core/local-analysis.ts';
+import type { ArtifactDescriptor, PlainRecord, ReadableTerminalRunManifest, RunManifest } from '../../packages/product-core/local-analysis.ts';
 import type { AnalysisAsset, RunArtifactStore } from '../../packages/ports/local-analysis.ts';
 
 type StorageError = Error & { code: string };
@@ -90,6 +90,10 @@ export function createLocalRunArtifactStore(config: unknown): RunArtifactStore {
   async function manifest(run_id: unknown): Promise<{ directory: string; value: RunManifest; bytes: Buffer }> {
     const directory = checkedRunPath(run_id); const data = await regular(join(directory, 'run.json'));
     try { const value: unknown = JSON.parse(data.toString('utf8')); const validated = domain.validateRunManifest(value); if (validated.run_id !== run_id) fail('ARTIFACT_WRITE_FAILED'); return { directory, value: validated, bytes: data }; } catch (cause) { if (errorCode(cause) === 'ARTIFACT_WRITE_FAILED') throw cause; fail('ARTIFACT_WRITE_FAILED'); }
+  }
+  async function readableTerminalManifest(run_id: unknown): Promise<{ directory: string; value: ReadableTerminalRunManifest; bytes: Buffer }> {
+    const directory = checkedRunPath(run_id); const data = await regular(join(directory, 'run.json'));
+    try { const value: unknown = JSON.parse(data.toString('utf8')); const validated = domain.validateReadableTerminalRunManifest(value); if (validated.run_id !== run_id) fail('ARTIFACT_WRITE_FAILED'); return { directory, value: validated, bytes: data }; } catch (cause) { if (errorCode(cause) === 'ARTIFACT_WRITE_FAILED') throw cause; fail('ARTIFACT_WRITE_FAILED'); }
   }
   async function atomic(path: string, data: Uint8Array, signal: AbortSignal, replace = false): Promise<void> {
     liveSignal(signal);
@@ -202,8 +206,7 @@ export function createLocalRunArtifactStore(config: unknown): RunArtifactStore {
       return { committed: true, success_manifest_is_last: true };
     },
     async readTerminalRun(input) {
-      closed(input, ['run_id']); const current = await manifest(input.run_id);
-      if (!['succeeded', 'failed', 'cancelled'].includes(current.value.status)) fail('ARTIFACT_WRITE_FAILED');
+      closed(input, ['run_id']); const current = await readableTerminalManifest(input.run_id);
       const assets = []; for (const record of current.value.artifacts) assets.push(await ensureIndexed(current.directory, record));
       return { manifest: current.value, assets };
     },

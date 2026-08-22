@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822164047596-0N3TMX",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-22T16:40:47.596Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-runtime-provenance-r2"
+  },
+  "summary": "TDD_READY PASS；请求 R2 Worker Terra/high 代行授权",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}
