@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822124305132-8MZ8OL",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T12:43:05.132Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pr-ci"
+  },
+  "summary": "PR CI Spec Gate PASS，进入 Test / RED。",
+  "status_after": "active",
+  "evidence_refs": []
+}
