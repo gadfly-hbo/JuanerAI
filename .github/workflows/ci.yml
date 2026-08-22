@@ -1,0 +1,39 @@
+name: PR canonical validation
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  canonical-validation:
+    name: Canonical validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26.0.0
+          package-manager-cache: false
+      - run: |
+          test "$(node --version)" = v26.0.0
+          npm install --global npm@11.12.1
+          test "$(npm --version)" = 11.12.1
+          DUCKDB_ZIP="$RUNNER_TEMP/duckdb.zip"
+          curl --fail --location --output "$DUCKDB_ZIP" https://github.com/duckdb/duckdb/releases/download/v1.5.2/duckdb_cli-linux-amd64.zip
+          printf '%s  %s\n' 'fc9145affabca627431e73ddaf6b8117e5c192692480c13886f227be202d5d15' "$DUCKDB_ZIP" | sha256sum --check --status
+          unzip -q "$DUCKDB_ZIP" -d "$RUNNER_TEMP/duckdb"
+          TOOLCHAIN_BIN="$RUNNER_TEMP/juanerai-toolchain"
+          mkdir -p "$TOOLCHAIN_BIN"
+          ln -s "$(command -v node)" "$TOOLCHAIN_BIN/node"
+          ln -s "$(command -v npm)" "$TOOLCHAIN_BIN/npm"
+          install -m 755 "$RUNNER_TEMP/duckdb/duckdb" "$TOOLCHAIN_BIN/duckdb"
+          npm ci
+          JUANERAI_TOOLCHAIN_BIN="$TOOLCHAIN_BIN" tools/harness/validation/run
