@@ -2320,6 +2320,102 @@ test('TASK-010 R3 TEST-XCLI-008 [AC-XCLI-001-01, AC-XCLI-007-01] maps per-start 
   }
 });
 
+test('TASK-010 R3 TEST-XCLI-008 [AC-RRIF-001-01] accepts an owner-write/searchable mode-0300 physical run root', async (t) => {
+  const { root: runRoot } = await isolatedDirectory(t, 'xanthil-mode-0300-', 'runs');
+  await chmod(runRoot, 0o300);
+  try {
+    const probe = join(runRoot, 'owner-write-search-probe');
+    await writeFile(probe, 'probe', 'utf8');
+    await rm(probe);
+    const module = await loadPublicSeam('artifactAdapter');
+    const store = requiredExport(module, 'createLocalRunArtifactStore')({ runRoot });
+    const result = await store.preflightRunRoot();
+    assert.deepEqual(result, { ready: true });
+    assert.equal(Object.isFrozen(result), true);
+  } finally {
+    await chmod(runRoot, 0o700);
+  }
+});
+
+test('TASK-010 R3 TEST-XCLI-008 [AC-RRIF-001-02, AC-RRIF-001-03] linearizes root replacement at the live-acquisition boundary', async (t) => {
+  const childSource = String.raw`
+import assert from 'node:assert/strict';
+import { mock } from 'node:test';
+
+const { scenario, runRoot } = JSON.parse(process.env.XANTHIL_LINEARIZATION_CONFIG);
+const actualFs = await import('node:fs');
+let lstatCalls = 0;
+let openCalls = 0;
+let mutations = 0;
+const lstatSync = (...args) => {
+  lstatCalls += 1;
+  if (scenario === 'before-live-acquisition' && lstatCalls === 2) {
+    const stale = actualFs.lstatSync(...args);
+    actualFs.rmSync(runRoot, { recursive: true, force: true });
+    actualFs.mkdirSync(runRoot);
+    mutations += 1;
+    return stale;
+  }
+  return actualFs.lstatSync(...args);
+};
+const openSync = (...args) => {
+  openCalls += 1;
+  const descriptor = actualFs.openSync(...args);
+  if (scenario === 'after-live-acquisition' && openCalls === 2) {
+    actualFs.rmSync(runRoot, { recursive: true, force: true });
+    actualFs.mkdirSync(runRoot);
+    mutations += 1;
+  }
+  return descriptor;
+};
+await mock.module('node:fs', { exports: {
+  closeSync: actualFs.closeSync,
+  constants: actualFs.constants,
+  fstatSync: actualFs.fstatSync,
+  lstatSync,
+  openSync,
+  realpathSync: actualFs.realpathSync,
+} });
+const { createLocalRunArtifactStore } = await import('./adapters/storage-local/local-analysis.ts');
+const store = createLocalRunArtifactStore({ runRoot });
+if (scenario === 'before-live-acquisition') {
+  let outcome;
+  try { await store.preflightRunRoot(); } catch (error) { outcome = error; }
+  assert.equal(lstatCalls, 2);
+  assert.equal(mutations, 1);
+  assert.deepEqual(actualFs.readdirSync(runRoot), []);
+  assert.equal(outcome?.code, 'RUN_ROOT_UNSAFE');
+  assert.equal(openCalls, 2);
+} else if (scenario === 'after-live-acquisition') {
+  const result = await store.preflightRunRoot();
+  assert.deepEqual(result, { ready: true });
+  assert.equal(Object.isFrozen(result), true);
+  assert.equal(lstatCalls, 2);
+  assert.equal(openCalls, 2);
+  assert.equal(mutations, 1);
+  assert.deepEqual(actualFs.readdirSync(runRoot), []);
+} else {
+  throw new Error('unknown scenario');
+}
+console.log(JSON.stringify({ scenario, lstatCalls, openCalls, mutations }));
+`;
+  const failures: string[] = [];
+  for (const scenario of ['before-live-acquisition', 'after-live-acquisition']) {
+    const { root: runRoot } = await isolatedDirectory(t, `xanthil-linearization-${scenario}-`, 'runs');
+    try {
+      const { stdout, stderr } = await execFileAsync(process.execPath, ['--no-warnings', '--experimental-test-module-mocks', '--input-type=module', '--eval', childSource], {
+        cwd: repositoryRoot,
+        env: { XANTHIL_LINEARIZATION_CONFIG: JSON.stringify({ scenario, runRoot }) },
+      });
+      assert.equal(stderr, '');
+      assert.deepEqual(JSON.parse(stdout), { scenario, lstatCalls: 2, openCalls: 2, mutations: 1 });
+    } catch (error) {
+      failures.push(`${scenario}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+  assert.deepEqual(failures, []);
+});
+
 test('TASK-010 R3 TEST-XCLI-008 [AC-XCLI-013-04] beginRun publishes a complete initial directory and manifest together', async (t) => {
   const { runRoot, store } = await createRealArtifactStore(t);
   await preflightRealArtifactStore(store);

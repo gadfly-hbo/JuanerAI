@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from 'node:crypto';
-import { lstatSync, realpathSync } from 'node:fs';
+import { closeSync, constants, fstatSync, lstatSync, openSync, realpathSync } from 'node:fs';
 import { mkdir, open, readFile, rename, rm } from 'node:fs/promises';
 import { dirname, join, resolve, sep } from 'node:path';
 import { createLocalAnalysisDomain } from '../../packages/product-core/local-analysis.ts';
@@ -7,7 +7,7 @@ import type { ArtifactDescriptor, PlainRecord, RunManifest } from '../../package
 import type { AnalysisAsset, RunArtifactStore } from '../../packages/ports/local-analysis.ts';
 
 type StorageError = Error & { code: string };
-type RootIdentity = Readonly<{ root: string; configuredRunRoot: string; device: number; inode: number }>;
+type RootIdentity = Readonly<{ root: string; configuredRunRoot: string; device: number; inode: number; descriptor: number }>;
 
 const uuidV7 = /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const mappings: Readonly<Record<string, Readonly<{ category: string; path: string; media_type: string }>>> = Object.freeze({
@@ -31,14 +31,27 @@ function liveSignal(value: unknown): AbortSignal {
   return value;
 }
 function errorCode(cause: unknown): unknown { return cause !== null && (typeof cause === 'object' || typeof cause === 'function') && 'code' in cause ? Reflect.get(cause, 'code') : undefined; }
+function rootIdentityFlags(): number {
+  if (process.platform === 'darwin') return 0x40000000 | constants.O_DIRECTORY | constants.O_NOFOLLOW;
+  if (process.platform === 'linux') return 0x200000 | constants.O_DIRECTORY | constants.O_NOFOLLOW;
+  fail('ARTIFACT_WRITE_FAILED');
+}
 function rootFrom(config: unknown): RootIdentity {
   closed(config, ['runRoot']);
   if (typeof config.runRoot !== 'string' || !config.runRoot.startsWith(sep)) fail('ARTIFACT_WRITE_FAILED');
+  let descriptor: number | undefined;
   try {
     const stat = lstatSync(config.runRoot); const root = realpathSync(config.runRoot);
     if (stat.isSymbolicLink() || !stat.isDirectory() || root === resolve(sep)) fail('ARTIFACT_WRITE_FAILED');
-    return Object.freeze({ root, configuredRunRoot: config.runRoot, device: stat.dev, inode: stat.ino });
-  } catch (cause) { if (errorCode(cause) === 'ARTIFACT_WRITE_FAILED') throw cause; fail('ARTIFACT_WRITE_FAILED'); }
+    descriptor = openSync(root, rootIdentityFlags());
+    const pinned = fstatSync(descriptor);
+    if (!pinned.isDirectory() || pinned.dev !== stat.dev || pinned.ino !== stat.ino) fail('ARTIFACT_WRITE_FAILED');
+    return Object.freeze({ root, configuredRunRoot: config.runRoot, device: stat.dev, inode: stat.ino, descriptor });
+  } catch (cause) {
+    if (descriptor !== undefined) { try { closeSync(descriptor); } catch {} }
+    if (errorCode(cause) === 'ARTIFACT_WRITE_FAILED') throw cause;
+    fail('ARTIFACT_WRITE_FAILED');
+  }
 }
 function descriptor(asset: AnalysisAsset): ArtifactDescriptor { const data = bytes(asset.bytes); return { artifact_id: asset.artifact_id, category: asset.category, path: asset.path, media_type: asset.media_type, byte_size: data.byteLength, sha256: checksum(data) }; }
 function matchingDescriptor(value: unknown, expected: ArtifactDescriptor): boolean { return plain(value) && Object.keys(value).length === 6 && value.artifact_id === expected.artifact_id && value.category === expected.category && value.path === expected.path && value.media_type === expected.media_type && value.byte_size === expected.byte_size && value.sha256 === expected.sha256; }
@@ -53,12 +66,18 @@ export function createLocalRunArtifactStore(config: unknown): RunArtifactStore {
   const configuredRunRoot = rootIdentity.configuredRunRoot;
   const domain = createLocalAnalysisDomain();
   function checkRunRoot(code = 'ARTIFACT_WRITE_FAILED'): string {
+    let liveDescriptor: number | undefined;
     try {
       const stat = lstatSync(configuredRunRoot);
       const physical = realpathSync(configuredRunRoot);
       if (stat.isSymbolicLink() || !stat.isDirectory() || physical !== runRoot || physical === resolve(sep) || stat.dev !== rootIdentity.device || stat.ino !== rootIdentity.inode) fail(code);
+      liveDescriptor = openSync(configuredRunRoot, rootIdentityFlags());
+      const live = fstatSync(liveDescriptor);
+      const pinned = fstatSync(rootIdentity.descriptor);
+      if (!live.isDirectory() || live.dev !== rootIdentity.device || live.ino !== rootIdentity.inode || !pinned.isDirectory() || pinned.dev !== rootIdentity.device || pinned.ino !== rootIdentity.inode || live.dev !== pinned.dev || live.ino !== pinned.ino) fail(code);
       return physical;
-    } catch (cause) { if (errorCode(cause) === code) throw cause; fail(code); }
+    } catch (cause) { if (errorCode(cause) === code) throw cause; throw safeError(code); }
+    finally { if (liveDescriptor !== undefined) { try { closeSync(liveDescriptor); } catch {} } }
   }
   function runPath(run_id: unknown): string { if (typeof run_id !== 'string' || !uuidV7.test(run_id)) fail('ARTIFACT_WRITE_FAILED'); return join(runRoot, run_id); }
   function checkedRunPath(run_id: unknown): string {

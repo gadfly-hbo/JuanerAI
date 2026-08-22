@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822134241175-LPHEY6",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T13:42:41.175Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-run-root-identity-fix"
+  },
+  "summary": "run-root identity fix 达到 TDD_READY，进入 Implementation / GREEN。",
+  "status_after": "active",
+  "evidence_refs": []
+}

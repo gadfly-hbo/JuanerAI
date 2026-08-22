@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822140101264-N2ML2N",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-22T14:01:01.264Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-run-root-identity-fix"
+  },
+  "summary": "纠正里程碑投影：保留已完成冷启动/方案，重新打开 Spec，锁定下游 Gate。",
+  "status_after": "active",
+  "evidence_refs": []
+}
