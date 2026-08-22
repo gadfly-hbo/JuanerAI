@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822191355776-Y6YTT9",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T19:13:55.776Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "REC-CONTRACT-004 causal RED is frozen: 69 pass and eight failures from five causal leaves plus parent suites.",
+  "status_after": "active",
+  "evidence_refs": []
+}

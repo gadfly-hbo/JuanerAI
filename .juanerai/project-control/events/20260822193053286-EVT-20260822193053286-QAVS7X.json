@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822193053286-QAVS7X",
+  "event_type": "archived",
+  "occurred_at": "2026-08-22T19:30:53.286Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "run-evidence-console archive is complete; Git delivery remains explicitly separate.",
+  "status_after": "complete",
+  "evidence_refs": []
+}

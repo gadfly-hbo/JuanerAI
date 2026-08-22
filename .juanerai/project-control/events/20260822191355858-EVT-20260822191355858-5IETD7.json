@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822191355858-5IETD7",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T19:13:55.858Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Worker is authorized only for the two REC-CONTRACT-004 correctness repairs.",
+  "status_after": "active",
+  "evidence_refs": []
+}

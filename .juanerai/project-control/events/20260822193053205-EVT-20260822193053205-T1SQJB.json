@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822193053205-T1SQJB",
+  "event_type": "archived",
+  "occurred_at": "2026-08-22T19:30:53.205Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Run Evidence Console OpenSpec package was published and moved to the dated archive path.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

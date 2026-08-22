@@ -39,6 +39,7 @@ Reader admission reuses the existing Run Manifest and Evidence Index validators 
 | REC-CONTRACT-001 | remove global Console prohibition only | recorded in Change delta, producer untouched |
 | REC-CONTRACT-002 | exact 14-path TypeScript graph addition | accepted; local delta modifies AC-XTS-001-01 and AC-XTS-002-03; append only at authorized Test/implementation step |
 | REC-CONTRACT-003 | TEST-XCLI-021 21-plus-14 graph expectation correction | accepted; TEST-XCLI-021 is the sole exact graph evidence owner |
+| REC-CONTRACT-004 | exact runtime output, result-envelope/provenance static proof, and deferred nested View static closure | accepted; TEST-REC-001 retains runtime/result-envelope/provenance proof, TEST-REC-004/005 retain checksum propagation, and nested/status compile-time-only guards have no Console `1.0` consumer |
 
 Traceability rows identify evidence ownership only. Gate status and executable counts are recorded solely in `verification.md`.
 

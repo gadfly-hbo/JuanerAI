@@ -9,7 +9,7 @@ export function createRunEvidenceQuery(dependency: Readonly<{ reader: RunEvidenc
       try { return domain.admit(await dependency.reader.readSelectedRun(input)); }
       catch (error) {
         const code = (error as { code?: string }).code;
-        return { kind: 'rejected', error: { code: code === 'RUN_CONTRACT_UNSUPPORTED' ? code : 'RUN_READ_FAILED' } };
+        return { kind: 'rejected', error: { code: code === 'RUN_CONTRACT_UNSUPPORTED' || code === 'RUN_CHECKSUM_MISMATCH' ? code : 'RUN_READ_FAILED' } };
       }
     },
   });

@@ -7,44 +7,13 @@ import { createExactRun, duplicateJsonMember, observeRun, replaceObservedBytes, 
 
 const coreUrl = new URL('../../../packages/product-core/run-evidence.ts', import.meta.url);
 type VerifiedSucceededView = Extract<RunEvidenceResult, { kind: 'verified_succeeded' }>['view'];
-type VerifiedNonSuccessView = Extract<RunEvidenceResult, { kind: 'verified_non_success' }>['view'];
-type VerifiedNonSuccessAsset = NonNullable<VerifiedNonSuccessView['assets']>[number];
-// @ts-expect-error The success view is closed rather than Record<string, unknown>.
-type _NoOpenSuccessView = VerifiedSucceededView['__unapproved_reader_field'];
+type RunEvidenceProvenance = VerifiedSucceededView['provenance'];
+// @ts-expect-error The reader result is closed to its three approved variants.
+type _NoOpenResultEnvelope = RunEvidenceResult['__unapproved_reader_field'];
 // @ts-expect-error Runtime projection belongs only to the neutral provenance object.
 type _NoLegacyRuntime = VerifiedSucceededView['runtime'];
-// @ts-expect-error Every nested reader value is closed rather than Record<string, unknown>.
-type _NoOpenSource = VerifiedSucceededView['sources'][number]['__unapproved_source_field'];
-// @ts-expect-error Every nested reader value is closed rather than Record<string, unknown>.
-type _NoOpenWindow = VerifiedSucceededView['time_windows'][number]['__unapproved_window_field'];
-// @ts-expect-error Every nested reader value is closed rather than Record<string, unknown>.
-type _NoOpenMetric = VerifiedSucceededView['metrics'][number]['__unapproved_metric_field'];
-// @ts-expect-error Every nested reader value is closed rather than Record<string, unknown>.
-type _NoOpenFinding = VerifiedSucceededView['findings'][number]['__unapproved_finding_field'];
-// @ts-expect-error Every nested reader value is closed rather than Record<string, unknown>.
-type _NoOpenEvidence = VerifiedSucceededView['evidence'][number]['__unapproved_evidence_field'];
-// @ts-expect-error Every nested reader value is closed rather than Record<string, unknown>.
-type _NoOpenAsset = VerifiedSucceededView['assets'][number]['__unapproved_asset_field'];
-// @ts-expect-error Every nested reader value is closed rather than Record<string, unknown>.
-type _NoOpenProvenance = VerifiedSucceededView['provenance']['__unapproved_provenance_field'];
-// @ts-expect-error Every retained non-success asset is closed rather than Record<string, unknown>.
-type _NoOpenNonSuccessAsset = VerifiedNonSuccessAsset['__unapproved_non_success_asset_field'];
-// @ts-expect-error Non-success result types exclude a succeeded status.
-type _ClosedNonSuccessStatus = ({ status: 'succeeded'; provenance: VerifiedNonSuccessView['provenance'] } extends VerifiedNonSuccessView ? { current: true } : { expected: true })['current'];
-// @ts-expect-error A failed view requires its stable error code.
-type _ClosedFailedErrorCode = ({ status: 'failed'; ended_at: string; terminal_stage: string; provenance: VerifiedNonSuccessView['provenance'] } extends VerifiedNonSuccessView ? { current: true } : { expected: true })['current'];
-// @ts-expect-error A failed view has no status label.
-type _ClosedFailedLabel = ({ status: 'failed'; ended_at: string; terminal_stage: string; error_code: string; label: string; provenance: VerifiedNonSuccessView['provenance'] } extends VerifiedNonSuccessView ? { current: true } : { expected: true })['current'];
-// @ts-expect-error A cancelled view requires its terminal stage.
-type _ClosedCancelledTerminalStage = ({ status: 'cancelled'; ended_at: string; provenance: VerifiedNonSuccessView['provenance'] } extends VerifiedNonSuccessView ? { current: true } : { expected: true })['current'];
-// @ts-expect-error A cancelled view has no error code.
-type _ClosedCancelledErrorCode = ({ status: 'cancelled'; ended_at: string; terminal_stage: string; error_code: string; provenance: VerifiedNonSuccessView['provenance'] } extends VerifiedNonSuccessView ? { current: true } : { expected: true })['current'];
-// @ts-expect-error A cancelled view has no status label.
-type _ClosedCancelledLabel = ({ status: 'cancelled'; ended_at: string; terminal_stage: string; label: string; provenance: VerifiedNonSuccessView['provenance'] } extends VerifiedNonSuccessView ? { current: true } : { expected: true })['current'];
-// @ts-expect-error An in-progress view requires its only approved label.
-type _ClosedInProgressLabel = ({ status: 'in_progress'; provenance: VerifiedNonSuccessView['provenance'] } extends VerifiedNonSuccessView ? { current: true } : { expected: true })['current'];
-// @ts-expect-error An in-progress view has no terminal fields.
-type _ClosedInProgressTerminalFields = ({ status: 'in_progress'; ended_at: string; terminal_stage: string; error_code: string; label: 'abandoned candidate'; provenance: VerifiedNonSuccessView['provenance'] } extends VerifiedNonSuccessView ? { current: true } : { expected: true })['current'];
+// @ts-expect-error Neutral provenance is exact rather than an open record.
+type _NoOpenProvenance = RunEvidenceProvenance['__unapproved_provenance_field'];
 
 test('TEST-REC-010 [AC-REC-006-01..03, AC-REC-007-03..05] freezes complete AC coverage and permanent test assets', () => {
   const expectedAcs = [

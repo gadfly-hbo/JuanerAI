@@ -7,6 +7,7 @@ import { createLocalAnalysisDomain } from '../../packages/product-core/local-ana
 
 const checksum = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
 const unsafe = () => Object.assign(new Error('RUN_READ_FAILED'), { code: 'RUN_READ_FAILED' });
+const checksumMismatch = () => Object.assign(new Error('RUN_CHECKSUM_MISMATCH'), { code: 'RUN_CHECKSUM_MISMATCH' });
 const contained = (root: string, candidate: string) => {
   const value = relative(root, candidate);
   return value !== '' && !value.startsWith(`..${sep}`) && value !== '..' && !isAbsolute(value);
@@ -79,7 +80,7 @@ export function createLocalRunEvidenceReader() {
           if (physical !== candidate || !contained(root, physical)) throw unsafe();
           const before = await lstat(candidate);
           if (before.isSymbolicLink() || !before.isFile()) throw unsafe();
-          if (expectedByteSize !== undefined && before.size !== expectedByteSize) throw unsafe();
+          if (expectedByteSize !== undefined && before.size !== expectedByteSize) throw checksumMismatch();
           const bytes = await readFile(candidate);
           const after = await lstat(candidate);
           if (after.isSymbolicLink() || !after.isFile() || after.dev !== before.dev || after.ino !== before.ino || after.size !== before.size || bytes.byteLength !== after.size || await realpath(candidate) !== candidate) throw unsafe();
@@ -113,7 +114,7 @@ export function createLocalRunEvidenceReader() {
         }
         return Object.freeze({ run_directory_name: basename(root), files: Object.freeze(files) });
       } catch (error) {
-        if ((error as { code?: string }).code === 'RUN_READ_FAILED' || (error as { code?: string }).code === 'RUN_CONTRACT_UNSUPPORTED') throw error;
+        if ((error as { code?: string }).code === 'RUN_READ_FAILED' || (error as { code?: string }).code === 'RUN_CONTRACT_UNSUPPORTED' || (error as { code?: string }).code === 'RUN_CHECKSUM_MISMATCH') throw error;
         throw unsafe();
       }
     },

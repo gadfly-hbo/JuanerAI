@@ -2,9 +2,9 @@
 
 ## Verdict
 
-`HISTORICAL PASS — INVALIDATED BY THIRD VALIDATOR RETURN`
+`PASS — REC-CONTRACT-004 GREEN`
 
-The Controller reconciled the complete test-asset diff after the second causal RED, repaired GREEN, REC-CONTRACT-003 regression, typecheck, and canonical validation. A later independent Validator found three missing Finding-content leaves, one incorrect permanent Profile checksum assertion, and incomplete nested/status-discriminated type guards. This PASS is retained as history but cannot authorize a new evidence freeze; Test Design and this Gate must be rerun after systematic correction and GREEN.
+The Controller reconciled the complete nine-path Change test-asset diff after REC-CONTRACT-004 causal RED and fresh GREEN. The three Finding empty-content leaves and the contract/integration indexed-size checksum leaves are passing permanent regressions. Seventeen compile-time guards whose only purpose was the deferred nested/status TypeScript closure have been removed; runtime exact-key, result-envelope, provenance, no-runtime, and Pi/vendor-neutral evidence remain.
 
 ## Lifecycle Ledger
 
@@ -26,19 +26,19 @@ The duplicate exact-TypeScript-graph block was removed from TEST-REC-010 before 
 
 `Lean already. Ship.`
 
-The previously approved cleanup removed the unused Console-harness callback and the duplicate TEST-REC-010 TypeScript-graph oracle. The current complete test diff contains no further duplicate behavior or unused asset: schema-shape and relationship-classification mutations, closed-type guards, manifest/identity/size atime probes, the contract driver, hostile-content loopback E2E, Artifact fixture helpers, coverage map, lifecycle ledger, and TEST-XCLI-021 each protect a distinct approved Requirement or Gate.
+The complete diff has no remaining duplicate behavior or unused asset. The previously approved cleanup removed the unused Console-harness callback and the duplicate TEST-REC-010 TypeScript-graph oracle; REC-CONTRACT-004 now retires the seventeen nested/status static-closure guards with no Console `1.0` consumer. Schema-shape and relationship mutations, runtime exact-key/result-envelope/provenance proof, manifest/identity/size atime probes, the Port driver, hostile-content loopback E2E, Artifact fixture helpers, coverage map, lifecycle ledger, and TEST-XCLI-021 each retain a distinct Requirement, boundary, mutation, or Gate consumer.
 
 ## Executable Evidence
 
 Canonical command-local toolchain: Node `26.0.0`, npm `11.12.1`, DuckDB `1.5.2` through `JUANERAI_TOOLCHAIN_BIN`; only lockfile-pinned project packages were installed and no tracked/global toolchain state changed.
 
-- Focused Console suite: `59/59` PASS (`12` top-level tests and `47` parameterized subtests).
+- Focused Console suite: `77/77` PASS.
 - Root `npm run typecheck`: PASS.
 - `tools/harness/validation/run`: PASS.
 - REC-CONTRACT-003 successor TEST-XCLI-021: `1/1` PASS.
 - All eight Console test/fixture/helper assets: `node --check` PASS.
 - `git diff --check`: PASS.
 
-## Historical Gate Decision
+## Gate Decision
 
-At this historical Gate, all retained assets had current consumers and distinct evidence purposes, and the removed TEST-REC-010 assertion had the passing TEST-XCLI-021 successor. The third Validator return invalidates the Gate because one permanent assertion contradicts the approved checksum contract and the named shape/type leaves are absent.
+`PASS`. Every retained test, fixture, helper, driver, harness, coverage entry, and exact-graph regression has a current consumer and distinct evidence purpose. The removed nested/status guards are absent from formal `1.0` traceability under REC-CONTRACT-004; the removed duplicate TypeScript-graph assertion retains TEST-XCLI-021 as its passing successor. No temporary evidence, unresolved retirement candidate, obsolete format/path check, equivalent AC/input/assertion combination, or `.skip`/`.todo`/`.only` marker remains.

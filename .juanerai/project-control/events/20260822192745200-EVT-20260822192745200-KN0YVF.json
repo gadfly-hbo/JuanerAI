@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822192745200-KN0YVF",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T19:27:45.200Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Run Evidence Console is waiting for explicit user acceptance; archive and delivery remain locked.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

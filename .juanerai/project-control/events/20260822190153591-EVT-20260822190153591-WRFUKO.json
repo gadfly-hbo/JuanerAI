@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822190153591-WRFUKO",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T19:01:53.591Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "REC-CONTRACT-004 reopened the Spec Gate for a narrow contract revision.",
+  "status_after": "active",
+  "evidence_refs": []
+}
