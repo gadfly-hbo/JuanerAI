@@ -22,16 +22,23 @@ Use this when the user asks to commit and push current work.
    available codebase-memory index from the current repository worktree with
    `mode=full` and `persistence=false`. An `indexed` status alone is not
    freshness evidence.
-6. Query the rebuilt graph first to account for every intended changed path.
-   Require a current graph node for every intended changed file that remains in
-   the worktree. When entry paths or critical symbols apply, prove that they
-   resolve to the intended files. When either category does not apply, record
-   it as N/A and inspect the available File, Section, Module, or equivalent
-   graph identity instead. For every removed, renamed, or legacy path in scope,
-   prove zero graph hits; record N/A when none apply. Recompute the fingerprint
-   and require it to be identical after indexing. If indexing is unavailable,
-   fails, returns stale results, or changes the worktree, report the condition
-   and stop before staging.
+6. Query the rebuilt graph first for exactly one Branch identity. Require usable
+   canonical repository or worktree root, `branch`, and `head_sha` fields, and
+   require them to match exactly the repository root, current branch, and
+   `HEAD` recorded in step 1. Record the actual root, branch, `head_sha`, and
+   match conclusion. A missing or duplicate Branch identity, unavailable
+   field, or mismatch is a stale result and stops the workflow before staging.
+   An isolated project name may help obtain a fresh graph but never replaces
+   this identity check. Only after it passes, account for every intended
+   changed path. Require a current graph node for every intended changed file
+   that remains in the worktree. When entry paths or critical symbols apply,
+   prove that they resolve to the intended files. When either category does not
+   apply, record it as N/A and inspect the available File, Section, Module, or
+   equivalent graph identity instead. For every removed, renamed, or legacy
+   path in scope, prove zero graph hits; record N/A when none apply. Recompute
+   the fingerprint and require it to be identical after indexing. If indexing
+   is unavailable, fails, returns stale results, or changes the worktree,
+   report the condition and stop before staging.
 7. Stage explicit paths. Do not use `git add .` blindly, and do not include
    credentials, caches, dependency folders, `.DS_Store`, or unrelated changes.
 8. Review the complete staged diff and confirm it matches the validated and
