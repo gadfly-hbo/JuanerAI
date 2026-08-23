@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822170517083-NUU20V",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T17:05:17.083Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "GREEN and Test Asset Retirement PASS; implementation entered Terra/high route review.",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822192745117-HVIYXX",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T19:27:45.117Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Required Validator and R2 Sol/high gate both returned VALIDATION_PASS.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

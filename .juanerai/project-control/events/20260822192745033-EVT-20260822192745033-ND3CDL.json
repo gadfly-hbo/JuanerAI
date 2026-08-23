@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822192745033-ND3CDL",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-22T19:27:45.033Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Independent validation passed; explicit user Acceptance and Archive approval is now required.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

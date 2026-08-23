@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822183733764-SMCS4D",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:37:33.764Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Independent revalidation found three remaining approved-contract gaps; validation must repeat after systematic closure.",
+  "status_after": "active",
+  "evidence_refs": []
+}

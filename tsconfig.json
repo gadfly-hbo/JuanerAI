@@ -34,6 +34,20 @@
     "tests/fixtures/xanthil-local-analysis/pi-sdk-failure-hook.ts",
     "tests/fixtures/xanthil-local-analysis/pi-sdk-failure-sdk.ts",
     "tests/fixtures/xanthil-local-analysis/port-contracts.ts",
-    "tests/fixtures/xanthil-local-analysis/public-seams.ts"
+    "tests/fixtures/xanthil-local-analysis/public-seams.ts",
+    "apps/console/xanthil-console.ts",
+    "packages/application/run-evidence-query.ts",
+    "packages/product-core/run-evidence.ts",
+    "packages/ports/run-evidence-reader.ts",
+    "adapters/storage-local/run-evidence-reader.ts",
+    "profiles/personal/console.ts",
+    "tests/unit/run-evidence-console/run-evidence.unit.test.ts",
+    "tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts",
+    "tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts",
+    "tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts",
+    "tests/fixtures/run-evidence-console/run-evidence-fixtures.ts",
+    "tests/fixtures/run-evidence-console/run-evidence-reader-contract.ts",
+    "tests/fixtures/run-evidence-console/console-harness.ts",
+    "tests/fixtures/run-evidence-console/coverage-map.ts"
   ]
 }

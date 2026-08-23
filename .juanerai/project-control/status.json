@@ -6,25 +6,25 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "runtime_provenance_r2_archive_complete",
-    "label": "Runtime Provenance 中立化：归档完成",
-    "ordinal": 8,
+    "id": "run_evidence_console_pr10_validator_pass",
+    "label": "Run Evidence Console：独立验证 PASS / 等待 MacBook 最终审核",
+    "ordinal": 7,
     "total": 8
   },
-  "health": "complete",
-  "summary": "Runtime Provenance 中立化 R2 Change 已验收、发布 current spec 并完整归档；未执行 Git commit/push。",
-  "current_objective": "将 Run Manifest provenance 中的 Pi 专用字段结构替换为 JuanerAI 中立、闭合、可双读且不迁移的版本化合同。",
-  "next_action": "本 Change 无剩余动作；后续 Git commit/push 仅在单独授权下执行。",
+  "health": "validating",
+  "summary": "Independent Validator PASS and GitHub Canonical SUCCESS are bound to fixed implementation/evidence head a06e8df3bf568da6379140d520782cbe96dcda81; this governance-only record awaits MacBook final review.",
+  "current_objective": "Land the Controller-owned Validator PASS record without changing the accepted Console contracts or implementation.",
+  "next_action": "MacBook final review and, only when authorized, squash merge PR #10; Mac mini must not merge.",
   "blockers": [],
   "milestones": [
     {
-      "id": "explore",
-      "label": "只读 Explore 与用户决策",
+      "id": "cold_start",
+      "label": "工程冷启动",
       "status": "completed"
     },
     {
-      "id": "proposal_specification",
-      "label": "Proposal / Specification",
+      "id": "plan_intake",
+      "label": "方案输入",
       "status": "completed"
     },
     {
@@ -68,150 +68,545 @@
     },
     {
       "id": "juaner_spec",
-      "label": "Spec Agent（bounded default 代行）",
-      "model": "gpt-5.6-sol · high (user-approved R2 route)",
+      "label": "Spec Agent",
+      "model": "gpt-5.6-sol · high (R2 automatic escalation)",
       "status": "complete",
-      "activation": "已完成并通过 Spec Gate"
+      "activation": "Spec Gate 前"
     },
     {
       "id": "juaner_test",
-      "label": "Test Agent（bounded default 代行）",
-      "model": "gpt-5.6-terra · high (user-approved R2 route)",
+      "label": "Test Agent",
+      "model": "gpt-5.6-terra · high (R2 automatic escalation)",
       "status": "complete",
-      "activation": "Correction 003 完成；renewed TDD_READY PASS"
+      "activation": "Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
-      "model": "gpt-5.6-terra · high (user-approved bounded default)",
+      "model": "gpt-5.6-sol · high (single automatic Worker upgrade)",
       "status": "complete",
-      "activation": "Bounded SemVer Revision 001 完成；GREEN 与 retirement PASS"
+      "activation": "TDD_READY"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
-      "model": "gpt-5.6-sol · high (user-approved fresh strict read-only default)",
+      "model": "gpt-5.6-sol · high (R2 route)",
       "status": "complete",
-      "activation": "Fresh Validator 002 PASS；FAIL 001 条件完全闭合"
+      "activation": "实现与证据冻结"
     }
   ],
   "metrics": [
     {
       "id": "requirements",
-      "label": "变更 Requirements",
+      "label": "Console 需求",
       "done": 7,
       "total": 7
     },
     {
       "id": "tests",
-      "label": "测试",
-      "done": 12,
-      "total": 12
+      "label": "Focused 测试",
+      "done": 82,
+      "total": 82
     },
     {
       "id": "tasks",
-      "label": "任务",
-      "done": 8,
-      "total": 8
+      "label": "本轮本地返修",
+      "done": 4,
+      "total": 4
     },
     {
       "id": "decisions",
-      "label": "已确认决策",
+      "label": "已批准 REC",
       "done": 5,
       "total": 5
     }
   ],
   "evidence": [
     {
-      "id": "EVD-RPN-001",
+      "id": "EVD-001",
       "label": "工程宪法",
       "path": "AGENTS.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-RPN-002",
-      "label": "Runtime Port ADR",
-      "path": "docs/adr/0003-business-runtime-port-strategy.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-RPN-003",
-      "label": "当前 local-analysis 规范",
-      "path": "openspec/specs/local-analysis/spec.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-RPN-004",
-      "label": "R2 Explore Handoff",
-      "path": "/private/tmp/JuanerAI-runtime-provenance-neutralization-R2-handoff.md",
       "status": "present"
     },
     {
-      "id": "EVD-RPN-005",
-      "label": "Agent 模型路由",
+      "id": "EVD-002",
+      "label": "系统上下文",
+      "path": "docs/architecture/system-context.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-003",
+      "label": "Agent 编排规则",
+      "path": "Orchestration.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-004",
+      "label": "首个项目方案",
+      "path": "/Users/huangbo/Desktop/xanthil_agent_cli_product_plan_light_v1.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-005",
+      "label": "只读项目看板 Change",
+      "path": "openspec/changes/project-board-observability/",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-006",
+      "label": "Agent 自动模型路由",
       "path": "docs/governance/agent-model-routing.md",
       "status": "verified"
     },
     {
-      "id": "EVD-RPN-006",
-      "label": "R2 OpenSpec 与 Spec Gate",
-      "path": "openspec/changes/archive/2026-08-23-runtime-provenance-neutralization/verification.md",
+      "id": "EVD-007",
+      "label": "四角色真实启动验证",
+      "path": "docs/governance/agent-model-routing-validation-2026-08-20.md",
       "status": "verified"
     },
     {
-      "id": "EVD-RPN-007",
-      "label": "TDD_READY 与冻结 RED",
-      "path": "openspec/changes/archive/2026-08-23-runtime-provenance-neutralization/verification.md",
+      "id": "EVD-008",
+      "label": "首个 Xanthil Change Proposal",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/proposal.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-009",
+      "label": "本机 Pi Agent 只读探索",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/exploration.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-010",
+      "label": "已批准 Capability Spec",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/specs/local-analysis/spec.md",
       "status": "verified"
     },
     {
-      "id": "EVD-RPN-008",
-      "label": "GREEN、回归与 Test Asset Retirement Gate",
-      "path": "openspec/changes/archive/2026-08-23-runtime-provenance-neutralization/verification.md",
+      "id": "EVD-011",
+      "label": "已批准 Design",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/design.md",
       "status": "verified"
     },
     {
-      "id": "EVD-RPN-009",
-      "label": "独立 Validator FAIL 001",
-      "path": "openspec/changes/archive/2026-08-23-runtime-provenance-neutralization/verification.md",
+      "id": "EVD-012",
+      "label": "已冻结 Tasks",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/tasks.md",
       "status": "verified"
     },
     {
-      "id": "EVD-RPN-010",
-      "label": "独立 Validator PASS 002",
-      "path": "openspec/changes/archive/2026-08-23-runtime-provenance-neutralization/verification.md",
+      "id": "EVD-013",
+      "label": "测试计划",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-plan.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-014",
+      "label": "追踪矩阵",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/traceability.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-015",
+      "label": "Spec Gate 结论",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/verification.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-016",
+      "label": "TASK-002 Revision 002 冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-002-revision-002.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-017",
+      "label": "TASK-003 Worker 冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-003-handoff.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-018",
+      "label": "TASK-003 Revision 001 冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-003-revision-001.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-019",
+      "label": "TASK-003 Replan 001 冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-003-replan-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-020",
+      "label": "TASK-004 Test Design 冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-004-handoff.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-021",
+      "label": "TASK-004 Artifact protocol Test addendum",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-004-artifact-protocol-addendum.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-022",
+      "label": "TASK-004 Test Revision 001",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-004-revision-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-023",
+      "label": "TASK-003B Worker 冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-003b-handoff.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-024",
+      "label": "TASK-004 Worker 冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-004-handoff.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-025",
+      "label": "TASK-004 Worker Revision 001",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-004-revision-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-026",
+      "label": "TASK-007 Test 冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-007-handoff.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-027",
+      "label": "TASK-007 Worker 冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-007-handoff.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-028",
+      "label": "TASK-007 Test Revision 001",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-007-revision-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-029",
+      "label": "TASK-005 SDK seam Spec handoff",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/spec-task-005-sdk-seam-handoff.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-030",
+      "label": "TASK-005 SDK seam Spec Revision 001",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/spec-task-005-sdk-seam-revision-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-031",
+      "label": "TASK-005 Test 冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-005-handoff.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-032",
+      "label": "TASK-005 Test Revision 001",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-005-revision-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-033",
+      "label": "TASK-005 Runtime deadline Spec clarification",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/spec-task-005-deadline-clarification.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-034",
+      "label": "TASK-005 Test Replan 001",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-005-replan-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-035",
+      "label": "TASK-005 Test routing override 决策包",
+      "path": ".juanerai/project-control/decision-briefs/XCLI-TASK005-TEST-OVERRIDE-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-036",
+      "label": "TASK-005 final Test Correction 002",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-005-correction-002.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-037",
+      "label": "TASK-005 Worker冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-005-handoff.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-038",
+      "label": "TASK-005 Test Correction 003因果证据合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-005-correction-003.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-039",
+      "label": "TASK-005 Test Correction 004 fail-closed计数合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-005-correction-004.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-040",
+      "label": "TASK-005 Test Correction 005 opaque facade合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-005-correction-005.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-041",
+      "label": "TASK-005 Test Correction 006 sync-prompt RED捕获",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-005-correction-006.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-042",
+      "label": "TASK-005 Worker Revision 001冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-005-revision-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-043",
+      "label": "TASK-005 Test Correction 007 terminal mutation delivery",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-005-correction-007.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-044",
+      "label": "TASK-005 Test Correction 008 completed-state语义",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-005-correction-008.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-045",
+      "label": "TASK-005 deterministic Controller acceptance",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/verification.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-046",
+      "label": "TASK-006 Test冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-handoff.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-047",
+      "label": "TASK-006 CLI/Profile Spec clarification handoff",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/spec-task-006-cli-contract-handoff.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-048",
+      "label": "TASK-006 CLI/Profile revised Spec Gate与Test Revision 001",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-revision-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-049",
+      "label": "TASK-006 Test Correction 001",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-correction-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-050",
+      "label": "TASK-006 runtime value Spec clarification",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/spec-task-006-runtime-value-clarification.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-051",
+      "label": "TASK-006 final Test Correction 002",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-correction-002.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-052",
+      "label": "TASK-006 method-specific error-map Correction 003",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-correction-003.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-053",
+      "label": "TASK-006 final TDD Gate与Worker冻结合同",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-006-handoff.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-054",
+      "label": "JuanerAI TypeScript-first language strategy ADR",
+      "path": "docs/adr/0002-typescript-first-language-strategy.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-055",
+      "label": "TASK-006 Proposal validator contract change request",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/contract-change-request-task006-proposal-validator.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-056",
+      "label": "TASK-006 Proposal Validator Test Handoff",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-proposal-validator-handoff.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-057",
+      "label": "TASK-006 Proposal Validator Test Revision 001",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-proposal-validator-revision-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-058",
+      "label": "TASK-002 Proposal Validator Worker Revision",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-002-proposal-validator-revision.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-059",
+      "label": "TASK-002 Proposal Validator Candidate Rollback",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-002-proposal-validator-rollback.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-060",
+      "label": "TASK-006 Proposal Validator Test Revision 002",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-proposal-validator-revision-002.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-061",
+      "label": "TASK-006 Proposal Validator Test Revision 003",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-proposal-validator-revision-003.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-062",
+      "label": "TASK-002 Proposal Validator Worker Revision 002",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-002-proposal-validator-revision-002.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-063",
+      "label": "TASK-002 Proposal Validator Core GREEN",
+      "path": "packages/product-core/local-analysis.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-064",
+      "label": "TASK-006 Test Revision 004 Evidence Descriptor",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-revision-004-evidence-descriptor.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-065",
+      "label": "TASK-006 Test Revision 005 Run Identity/Profile Realpath",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/test-task-006-revision-005-run-identity-profile-realpath.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-066",
+      "label": "TASK-006 CLI Worker Revision 001",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/worker-task-006-revision-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-067",
+      "label": "TASK-006 CLI/Profile/CSV GREEN",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/verification.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-068",
+      "label": "TASK-008 confirmation/input race RED",
+      "path": "tests/e2e/xanthil-local-analysis/local-analysis.e2e.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-069",
+      "label": "TASK-008 confirmation/input race GREEN",
+      "path": "apps/cli/xanthil.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-070",
+      "label": "TASK-008 Full Regression与静态质量门",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/verification.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-071",
+      "label": "TASK-009 Real Pi expected RED",
+      "path": "tests/e2e/xanthil-local-analysis/local-analysis.e2e.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-072",
+      "label": "TASK-009 Pi Adapter frozen contract",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/design.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-073",
+      "label": "TASK-009 Pi SDK construction/event projection repair",
+      "path": "adapters/agent-pi/local-analysis.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-074",
+      "label": "TASK-009 prompt contract TEST_CONFLICT",
+      "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/verification.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-075",
+      "label": "Run Evidence Console fixed-head verification addendum",
+      "path": "openspec/changes/archive/2026-08-23-run-evidence-console/verification.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-076",
+      "label": "Run Evidence Console JSON Pointer own-property repair",
+      "path": "packages/product-core/run-evidence.ts",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-077",
+      "label": "Run Evidence Console causal Core regression",
+      "path": "tests/unit/run-evidence-console/run-evidence.unit.test.ts",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-078",
+      "label": "Run Evidence Console corrected coverage ownership",
+      "path": "tests/fixtures/run-evidence-console/coverage-map.ts",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-079",
+      "label": "Run Evidence Console Test Asset Retirement gate",
+      "path": "openspec/changes/archive/2026-08-23-run-evidence-console/test-asset-retirement.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-080",
+      "label": "Run Evidence Console independent Validator PASS at a06e8df3",
+      "path": "openspec/changes/archive/2026-08-23-run-evidence-console/verification.md",
       "status": "verified"
     }
   ],
-  "risks": [
-    {
-      "id": "RSK-RPN-001",
-      "label": "耐久 Artifact schema 兼容",
-      "level": "high",
-      "mitigation": "新写 2.0、终态精确双读 1.0/2.0、旧 in_progress 不处理、禁止 backfill。"
-    },
-    {
-      "id": "RSK-RPN-002",
-      "label": "Pi 结构泄漏到公共合同",
-      "level": "high",
-      "mitigation": "Pi 仅作为字段值；Product/Runtime/Adapter/Profile/Model 使用中立闭合结构。"
-    },
-    {
-      "id": "RSK-RPN-003",
-      "label": "角色路由代行",
-      "level": "medium",
-      "mitigation": "Spec、Test、Worker 与 Validator 的 R2 bounded default 代行均已获用户明确授权；Validator 使用 fresh context 和严格只读 brief。"
-    },
-    {
-      "id": "RSK-RPN-004",
-      "label": "非严格 SemVer 与兼容读取负向证据缺口",
-      "level": "high",
-      "mitigation": "Correction 003、bounded SemVer revision、canonical、retirement 与 fresh Validator 002 均 PASS；缺口已独立确认闭合。"
-    }
-  ],
-  "updated_at": "2026-08-22T18:45:34.662Z",
+  "risks": [],
+  "updated_at": "2026-08-23T01:54:33.360Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-runtime-provenance-r2"
+    "session": "status-cli"
   }
 }

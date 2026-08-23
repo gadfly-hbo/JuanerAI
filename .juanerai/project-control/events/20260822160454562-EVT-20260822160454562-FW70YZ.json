@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822160454562-FW70YZ",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T16:04:54.562Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Reopened Run Evidence Console Spec preparation for Runtime-neutral provenance revision.",
+  "status_after": "active",
+  "evidence_refs": []
+}

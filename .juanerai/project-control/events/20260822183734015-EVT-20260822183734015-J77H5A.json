@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822183734015-J77H5A",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-22T18:37:34.015Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Run Evidence Console returned to systematic Test closure after independent revalidation.",
+  "status_after": "active",
+  "evidence_refs": []
+}

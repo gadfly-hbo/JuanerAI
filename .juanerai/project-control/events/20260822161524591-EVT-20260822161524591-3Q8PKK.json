@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822161524591-3Q8PKK",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-22T16:15:24.591Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "User approved REC-CONTRACT-002 and the recommended Console entry contract.",
+  "status_after": "active",
+  "evidence_refs": []
+}

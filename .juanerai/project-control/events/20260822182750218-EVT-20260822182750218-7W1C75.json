@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822182750218-7W1C75",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:27:50.218Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "R2 Terra high Test correction returned TDD_READY with 18 causal RED leaves and 41 retained GREEN tests.",
+  "status_after": "active",
+  "evidence_refs": []
+}

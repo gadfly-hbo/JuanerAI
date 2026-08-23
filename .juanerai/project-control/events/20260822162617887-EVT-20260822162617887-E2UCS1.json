@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822162617887-E2UCS1",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-22T16:26:17.887Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Sol/high review returned exact repair findings; no new user decision or CCR is required.",
+  "status_after": "active",
+  "evidence_refs": []
+}

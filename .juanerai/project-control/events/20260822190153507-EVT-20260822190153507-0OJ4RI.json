@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822190153507-0OJ4RI",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-22T19:01:53.507Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "User approved REC-CONTRACT-004 and resumed the Change with exactly two correctness fixes.",
+  "status_after": "active",
+  "evidence_refs": []
+}

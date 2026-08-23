@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823005306647-AJGNWZ",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-23T00:53:06.647Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-pr10-repair"
+  },
+  "summary": "PR #10 CHANGES_REQUESTED repair reached Controller GREEN; independent Validator is required for the new head.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

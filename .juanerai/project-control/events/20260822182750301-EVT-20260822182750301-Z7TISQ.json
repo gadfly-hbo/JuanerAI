@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822182750301-Z7TISQ",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:27:50.301Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Controller reauthorized Worker repair only in the six frozen Console production paths.",
+  "status_after": "active",
+  "evidence_refs": []
+}

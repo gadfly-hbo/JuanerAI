@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822180525665-91TYXS",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:05:25.665Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Run Evidence Console repaired Spec Gate remains passed after approved complexity shrink.",
+  "status_after": "active",
+  "evidence_refs": []
+}

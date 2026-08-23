@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822182108029-S6U1BW",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:21:08.029Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Independent Validator returned four approved-contract gaps; validation must be repeated after Test and Worker repair.",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822181502587-BOK4TL",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:15:02.587Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Run Evidence Console entered independent validation with frozen GREEN evidence.",
+  "status_after": "active",
+  "evidence_refs": []
+}

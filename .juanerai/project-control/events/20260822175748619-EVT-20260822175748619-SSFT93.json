@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822175748619-SSFT93",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-22T17:57:48.619Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "User paused the Change and froze the worktree pending complexity root-cause review; no Test/Worker/Validator/acceptance work continues.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

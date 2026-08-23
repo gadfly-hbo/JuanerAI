@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822193004437-ST7KXC",
+  "event_type": "accepted",
+  "occurred_at": "2026-08-22T19:30:04.437Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "User explicitly accepted run-evidence-console and authorized OpenSpec publication and archive.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

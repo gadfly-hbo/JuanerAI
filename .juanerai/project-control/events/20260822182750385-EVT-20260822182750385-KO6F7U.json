@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822182750385-KO6F7U",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T18:27:50.385Z",
+  "actor": {
+    "role": "controller",
+    "session": "run-evidence-console"
+  },
+  "summary": "Run Evidence Console re-entered implementation after renewed TDD_READY.",
+  "status_after": "active",
+  "evidence_refs": []
+}

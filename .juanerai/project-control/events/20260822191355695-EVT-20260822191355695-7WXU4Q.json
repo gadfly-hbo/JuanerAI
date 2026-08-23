@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260822191355695-7WXU4Q",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-22T19:13:55.695Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "R2 Test Gate returned TDD_READY; minimum production repair is unlocked.",
+  "status_after": "active",
+  "evidence_refs": []
+}
