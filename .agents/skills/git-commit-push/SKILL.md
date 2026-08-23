@@ -22,13 +22,16 @@ Use this when the user asks to commit and push current work.
    available codebase-memory index from the current repository worktree with
    `mode=full` and `persistence=false`. An `indexed` status alone is not
    freshness evidence.
-6. Query the rebuilt graph to prove that current entry paths and critical
-   symbols resolve to the intended files. For every removed, renamed, or legacy
-   path in scope, prove zero graph hits; explicitly record when none apply.
-   Recompute the fingerprint and require it to be identical after indexing. If
-   indexing is unavailable, fails, returns stale results, or changes the
-   worktree, report the condition and stop before staging until the user
-   explicitly authorizes proceeding without fresh-index evidence.
+6. Query the rebuilt graph first to account for every intended changed path.
+   Require a current graph node for every intended changed file that remains in
+   the worktree. When entry paths or critical symbols apply, prove that they
+   resolve to the intended files. When either category does not apply, record
+   it as N/A and inspect the available File, Section, Module, or equivalent
+   graph identity instead. For every removed, renamed, or legacy path in scope,
+   prove zero graph hits; record N/A when none apply. Recompute the fingerprint
+   and require it to be identical after indexing. If indexing is unavailable,
+   fails, returns stale results, or changes the worktree, report the condition
+   and stop before staging.
 7. Stage explicit paths. Do not use `git add .` blindly, and do not include
    credentials, caches, dependency folders, `.DS_Store`, or unrelated changes.
 8. Review the complete staged diff and confirm it matches the validated and
@@ -38,8 +41,8 @@ Use this when the user asks to commit and push current work.
 10. Commit without amending or rewriting history. Push the current work branch,
    setting its upstream when needed.
 11. Report the commit SHA, branch and remote, validation evidence, fresh-index
-    evidence or explicit exception, and remaining worktree state. A push does
-    not merge the pull request or authorize the next product Gate.
+    evidence, and remaining worktree state. A push does not merge the pull
+    request or authorize the next product Gate.
 
 Never amend, rebase, reset, force-push, delete branches, or rewrite history
 unless the user explicitly requests that exact operation after its target and
