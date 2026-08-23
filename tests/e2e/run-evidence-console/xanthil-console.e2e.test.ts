@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import { readFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import test from 'node:test';
 
 import { startConsole, stopConsole } from '../../fixtures/run-evidence-console/console-harness.ts';
@@ -38,5 +40,27 @@ test('TEST-REC-009 rejects missing, duplicate, and unknown arguments before host
     assert.notEqual(result.status, 0);
     assert.doesNotMatch(`${result.stdout}${result.stderr}`, /http:\/\/127\.0\.0\.1:/);
     assert.doesNotMatch(`${result.stdout}${result.stderr}`, /Cannot find module/);
+  }
+});
+
+test('TEST-REC-009 [AC-REC-003-02, AC-REC-007-02] renders retained non-success artifact descriptor metadata', async () => {
+  const fixture = await createExactRun('failed');
+  const retainedAsset = fixture.artifact.persistedAssetById['DOC-SUMMARY'];
+  const { bytes, ...descriptor } = retainedAsset;
+  const manifest = JSON.parse(await readFile(join(fixture.run, 'run.json'), 'utf8')) as { artifacts: unknown[] };
+  manifest.artifacts = [descriptor];
+  await writeFile(join(fixture.run, descriptor.path), bytes);
+  await writeFile(join(fixture.run, 'run.json'), JSON.stringify(manifest));
+  const console = await startConsole(fixture.run);
+  try {
+    const html = await (await fetch(console.url)).text();
+    assert.match(html, /verified_non_success/);
+    for (const value of [descriptor.artifact_id, descriptor.category, descriptor.path, descriptor.media_type, String(descriptor.byte_size), descriptor.sha256]) {
+      assert.match(html, new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    }
+    assert.doesNotMatch(html, /<script|<form|<a\s|onerror=/i);
+    assert.doesNotMatch(html, new RegExp(Buffer.from(bytes).toString('utf8').replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), 'non-success shows descriptor metadata, not retained asset content');
+  } finally {
+    await stopConsole(console.child);
   }
 });

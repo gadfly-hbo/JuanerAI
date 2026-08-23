@@ -2,7 +2,7 @@
 
 ## Verdict
 
-`PASS — REC-CONTRACT-004 GREEN`
+`PASS — PR #10 CHANGES_REQUESTED REPAIR GREEN`
 
 The Controller reconciled the complete nine-path Change test-asset diff after REC-CONTRACT-004 causal RED and fresh GREEN. The three Finding empty-content leaves and the contract/integration indexed-size checksum leaves are passing permanent regressions. Seventeen compile-time guards whose only purpose was the deferred nested/status TypeScript closure have been removed; runtime exact-key, result-envelope, provenance, no-runtime, and Pi/vendor-neutral evidence remain.
 
@@ -42,3 +42,9 @@ Canonical command-local toolchain: Node `26.0.0`, npm `11.12.1`, DuckDB `1.5.2` 
 ## Gate Decision
 
 `PASS`. Every retained test, fixture, helper, driver, harness, coverage entry, and exact-graph regression has a current consumer and distinct evidence purpose. The removed nested/status guards are absent from formal `1.0` traceability under REC-CONTRACT-004; the removed duplicate TypeScript-graph assertion retains TEST-XCLI-021 as its passing successor. No temporary evidence, unresolved retirement candidate, obsolete format/path check, equivalent AC/input/assertion combination, or `.skip`/`.todo`/`.only` marker remains.
+
+## PR #10 Repair Reconciliation
+
+The CHANGES_REQUESTED repair adds three permanent regression groups inside existing assets only: TEST-REC-009 retained non-success descriptor rendering, TEST-REC-003 own-property rejection for `/toString` and `/constructor`, and TEST-REC-005 observable same-inode/same-size metadata instability through the real Profile. Each failed causally before its production repair and now passes. They cover distinct Experience, Core reference-integrity, and Adapter stability boundaries.
+
+No test file, fixture, helper, double, snapshot, harness, coverage-map entry, TEST identity, dependency, or temporary repository asset was added or retired. Existing lifecycle-ledger ownership remains exact, and the complete focused suite is `81/81` PASS. The fresh retirement verdict is `PASS`; independent product validation remains a separate pending Gate.

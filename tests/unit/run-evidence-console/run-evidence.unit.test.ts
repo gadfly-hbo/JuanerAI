@@ -189,6 +189,12 @@ test('TEST-REC-003 [AC-REC-004-01..03] verifies checksums, evidence references, 
     ['unresolvable_json_pointer', (evidence) => { (evidence.evidence_items as Record<string, unknown>[])[0].result_reference = { artifact_id: 'O-001', json_pointer: '/missing' }; }],
   ];
   for (const [name, mutate] of referenceCases) assert.deepEqual(domain.admit(evidenceMutation(mutate)), { kind: 'rejected', error: { code: 'RUN_REFERENCE_INVALID' } }, name);
+  for (const pointer of ['/toString', '/constructor']) {
+    await t.test(`prototype_property_${pointer.slice(1)}_is_not_a_json_pointer_target`, () => {
+      const changed = evidenceMutation((evidence) => { (evidence.evidence_items as Record<string, unknown>[])[0].result_reference = { artifact_id: 'O-001', json_pointer: pointer }; });
+      assert.deepEqual(domain.admit(changed), { kind: 'rejected', error: { code: 'RUN_REFERENCE_INVALID' } });
+    });
+  }
   for (const [name, mutate] of [
     ['unknown_evidence_field', (evidence: Record<string, unknown>) => { evidence.extra = true; }],
     ['findings_not_array', (evidence: Record<string, unknown>) => { evidence.findings = {}; }],

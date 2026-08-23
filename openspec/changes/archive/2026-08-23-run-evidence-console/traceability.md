@@ -44,3 +44,16 @@ Reader admission reuses the existing Run Manifest and Evidence Index validators 
 Traceability rows identify evidence ownership only. Gate status and executable counts are recorded solely in `verification.md`.
 
 The exact 35-file TypeScript graph has one evidence owner: existing `TEST-XCLI-021` under REC-CONTRACT-003. `TEST-REC-010` retains only its AC coverage map, test-asset lifecycle ledger, forbidden scope/import, typecheck, and canonical-validation evidence.
+
+## PR #10 CHANGES_REQUESTED Repair Trace
+
+Reviewed baseline: `69ed340116f7daf73e7b5304dae35897eb01541a`. The repair reuses existing TEST identities and public seams; it adds no Requirement, AC, schema, Port, Profile, Runtime, helper, fixture, or coverage-map identity.
+
+| Review item | REQ / AC | Causal regression | Code boundary | Current result |
+|---|---|---|---|---|
+| retained non-success descriptor metadata was removed before rendering | REQ-REC-003 / AC-REC-003-02; REQ-REC-007 / AC-REC-007-02 | TEST-REC-009 loopback process + HTTP page | `apps/console/xanthil-console.ts` | escaped descriptor values visible; retained bytes remain undisplayed |
+| prototype-chain names resolved as dangling output properties | REQ-REC-004 / AC-REC-004-02 | TEST-REC-003 `/toString` and `/constructor` leaves through Core `admit` | `packages/product-core/run-evidence.ts` | absent own properties reject as `RUN_REFERENCE_INVALID` |
+| same-inode/same-size mutation was not observably rejected | REQ-REC-002 / AC-REC-002-01; REQ-REC-005 / AC-REC-005-03 | TEST-REC-005 real Personal Profile read with repeated in-read metadata mutation | `adapters/storage-local/run-evidence-reader.ts` | changed `mtime`/`ctime` rejects as `RUN_READ_FAILED` |
+| governance skill was outside the coherent product Change | Change path scope | PR diff against `origin/main` | `.agents/skills/git-commit-push/SKILL.md` | exact `origin/main` content; absent from final PR diff |
+
+Gate state is `GREEN_AWAITING_INDEPENDENT_VALIDATOR`. Focused/typecheck/canonical evidence does not replace the required fresh Validator verdict for the repaired pushed head.

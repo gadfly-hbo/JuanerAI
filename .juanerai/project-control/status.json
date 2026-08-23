@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "run_evidence_console_complete",
-    "label": "Run Evidence Console：Complete",
-    "ordinal": 8,
+    "id": "run_evidence_console_pr10_repair_green",
+    "label": "Run Evidence Console：PR #10 返修 GREEN / 等待独立验证",
+    "ordinal": 7,
     "total": 8
   },
-  "health": "complete",
-  "summary": "Run Evidence Console is accepted, published to current specs, archived, and post-archive canonical validation is green.",
-  "current_objective": "Preserve the accepted read-only Console 1.0 result viewer and its frozen evidence.",
-  "next_action": "On explicit juanerai-mini delivery, commit and push this branch and create a review-only PR for MacBook; never merge from Mac mini.",
+  "health": "validating",
+  "summary": "PR #10 CHANGES_REQUESTED repair is GREEN for retained descriptor visibility, own-property JSON Pointer resolution, and observable file instability; prior Validator evidence is superseded for the repaired head.",
+  "current_objective": "Preserve the accepted Console 1.0 contracts while delivering only the bounded PR #10 review repairs.",
+  "next_action": "Run an independent read-only Validator against the new pushed head; Mac mini must not merge PR #10.",
   "blockers": [],
   "milestones": [
     {
@@ -45,7 +45,7 @@
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "completed"
+      "status": "pending"
     },
     {
       "id": "user_acceptance",
@@ -599,9 +599,9 @@
       "mitigation": "只允许TEST-XCLI-021/022及路径/执行机制做因果机械更新；业务、失败、安全和竞态断言冻结。"
     }
   ],
-  "updated_at": "2026-08-22T19:30:53.286Z",
+  "updated_at": "2026-08-23T00:53:06.700Z",
   "updated_by": {
     "role": "controller",
-    "session": "status-cli"
+    "session": "codex-pr10-repair"
   }
 }

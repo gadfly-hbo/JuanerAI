@@ -83,7 +83,7 @@ export function createLocalRunEvidenceReader() {
           if (expectedByteSize !== undefined && before.size !== expectedByteSize) throw checksumMismatch();
           const bytes = await readFile(candidate);
           const after = await lstat(candidate);
-          if (after.isSymbolicLink() || !after.isFile() || after.dev !== before.dev || after.ino !== before.ino || after.size !== before.size || bytes.byteLength !== after.size || await realpath(candidate) !== candidate) throw unsafe();
+          if (after.isSymbolicLink() || !after.isFile() || after.dev !== before.dev || after.ino !== before.ino || after.size !== before.size || after.mtimeMs !== before.mtimeMs || after.ctimeMs !== before.ctimeMs || bytes.byteLength !== after.size || await realpath(candidate) !== candidate) throw unsafe();
           files[path] = Object.freeze({ path, bytes, byte_size: bytes.byteLength, sha256: checksum(bytes) });
           return bytes;
         };

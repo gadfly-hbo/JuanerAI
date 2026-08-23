@@ -20,8 +20,8 @@ if (!validArguments) {
     const details = { ...view };
     delete details.assets;
     const body = `<pre>${escapeHtml(JSON.stringify({ kind: result.kind, view: details, integrity: result.integrity }, null, 2))}</pre>${assets.map((asset) => {
-      const label = typeof asset.label === 'string' ? asset.label : 'Artifact';
-      const display = typeof asset.display_text === 'string' ? asset.display_text : '';
+      const label = typeof asset.label === 'string' ? asset.label : 'Artifact metadata';
+      const display = typeof asset.display_text === 'string' ? asset.display_text : JSON.stringify(asset, null, 2);
       return `<pre aria-label="${escapeHtml(label)}">${escapeHtml(label)}\n${escapeHtml(display)}</pre>`;
     }).join('')}`;
     const server = createServer((request, response) => {

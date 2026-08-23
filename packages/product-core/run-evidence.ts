@@ -92,7 +92,7 @@ function parsePointer(value: unknown, output: unknown): boolean {
   for (const part of value.json_pointer.slice(1).split('/')) {
     const key = part.replace(/~1/g, '/').replace(/~0/g, '~');
     if (Array.isArray(current) && /^0$|^[1-9]\d*$/.test(key)) current = current[Number(key)];
-    else if (isRecord(current)) current = current[key];
+    else if (isRecord(current) && Object.hasOwn(current, key)) current = current[key];
     else return false;
     if (current === undefined) return false;
   }

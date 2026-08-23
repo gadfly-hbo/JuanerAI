@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { lstat, mkdir, readFile, rename, stat, symlink, unlink, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, readFile, rename, stat, symlink, unlink, utimes, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import test from 'node:test';
 
@@ -123,6 +123,37 @@ test('TEST-REC-006 [AC-REC-003-01, AC-REC-003-03, AC-REC-004-01..03] exact succe
   });
   assert.equal('vendor' in result.view.provenance, false);
   assert.equal(JSON.stringify(result.view.provenance).includes('pi_'), false);
+});
+
+test('TEST-REC-005 [AC-REC-002-01, AC-REC-005-03] rejects observable same-inode same-size mutation during a read', async () => {
+  const fixture = await createExactRun();
+  const path = join(fixture.run, 'queries', 'Q-001.sql');
+  const bytes = Buffer.from(`SELECT 1;\n${' '.repeat(32 * 1024 * 1024)}`, 'utf8');
+  await writeFile(path, bytes);
+  const manifest = JSON.parse(await readFile(join(fixture.run, 'run.json'), 'utf8')) as { artifacts: { path: string; byte_size: number; sha256: string }[] };
+  const descriptor = manifest.artifacts.find((asset) => asset.path === 'queries/Q-001.sql');
+  if (!descriptor) throw new Error('fixture descriptor missing');
+  const { sha256 } = await import('../../fixtures/run-evidence-console/run-evidence-fixtures.ts');
+  descriptor.byte_size = bytes.byteLength;
+  descriptor.sha256 = sha256(bytes);
+  await writeFile(join(fixture.run, 'run.json'), JSON.stringify(manifest));
+
+  let mutating = true;
+  let mutations = 0;
+  const mutation = (async () => {
+    while (mutating) {
+      const timestamp = new Date(1_800_000_000_000 + mutations * 1_000);
+      mutations += 1;
+      await utimes(path, timestamp, timestamp);
+      await new Promise<void>((resolve) => setImmediate(resolve));
+    }
+  })();
+  let result: Awaited<ReturnType<typeof query>>;
+  try { result = await query(fixture.run); }
+  finally { mutating = false; await mutation; }
+
+  assert.ok(mutations > 1, 'the file metadata changed repeatedly while the read was active');
+  assert.deepEqual(result, { kind: 'rejected', error: { code: 'RUN_READ_FAILED' } });
 });
 
 test('TEST-REC-007 [AC-REC-003-02, AC-REC-005-03] terminal non-success is restricted and unstable reads fail closed', async () => {

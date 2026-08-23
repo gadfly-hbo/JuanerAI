@@ -2,9 +2,9 @@
 
 ## Current Verdict
 
-`ARCHIVE_COMPLETE`
+`PR_10_CHANGES_REQUESTED_REPAIR_GREEN — AWAITING_INDEPENDENT_VALIDATOR`
 
-This file is the sole current lifecycle-status authority within this OpenSpec package. The Controller-owned project board mirrors it for observability only; Proposal, Design, Tasks, and traceability retain stable decision, architecture, work, and evidence mappings.
+This file is the sole current lifecycle-status authority within this OpenSpec package. The original Change remains accepted and archived, but PR #10 delivery was reopened from reviewed head `69ed340116f7daf73e7b5304dae35897eb01541a` for a bounded CHANGES_REQUESTED repair. The Controller-owned project board mirrors the current repair state for observability only; Proposal, Design, Tasks, and traceability retain stable decision, architecture, work, and evidence mappings. No prior Validator verdict covers the repaired implementation.
 
 The user accepted REC-CONTRACT-004 after the fresh Validator confirmed the prior version, outer-view, identity-order, and pre-read-size mechanisms but found three gaps. The approved decision keeps runtime output, the result envelope, and provenance exact and closed; it defers only complete TypeScript closure for nested Artifact-derived View values and status-specific detail. The two remaining behavior obligations were Finding empty-content classification as `RUN_READ_FAILED` and real-Profile propagation of indexed pre-read `byte_size` mismatch as `RUN_CHECKSUM_MISMATCH`. Both now pass causal tests through the existing Core, local Adapter, and Application boundaries. Regression, Test Asset Retirement, the required independent role, and R2 Sol/high validation are frozen PASS; no module, shared codec, Runtime abstraction, framework, size cap, or new path was added.
 
@@ -63,3 +63,18 @@ During the explicitly authorized Mac mini delivery on 2026-08-23, `origin/main` 
 The user explicitly accepted REC-CONTRACT-005. Current Console `AC-REC-003-02` now rejects legacy Artifact `1.0 in_progress` as `RUN_READ_FAILED`; only `failed` and `cancelled` yield `verified_non_success`. The archived pre-integration package above remains the historical Acceptance record; `contract-change-request-in-progress-alignment.md` and this addendum record the later delivery-time compatibility decision and its fresh merge evidence.
 
 Fresh post-decision integration evidence is GREEN: focused Console `77/77`, root typecheck, TEST-XCLI-021 `1/1`, all fourteen Console production/test/fixture `node --check` targets, `git diff --check`, and the canonical offline validation runner all pass. No test asset was added or retired; the existing Console fixture now explicitly projects the reused current-writer fixture back to the Artifact `1.0` contract it owns.
+
+## PR #10 CHANGES_REQUESTED Repair Addendum
+
+The repair preserves every accepted schema, version, ownership, Runtime-neutral provenance, and REC-CONTRACT-005 status decision. It makes only these delivery corrections:
+
+- restore `.agents/skills/git-commit-push/SKILL.md` exactly to `origin/main`, removing that governance change from the PR #10 product diff without rewriting its prior Git history;
+- render each retained non-success asset descriptor as escaped inert JSON metadata through the existing loopback Console, without exposing retained asset bytes as completed content;
+- resolve JSON Pointer object tokens only through own JSON-document properties, so `/toString` and `/constructor` are rejected as `RUN_REFERENCE_INVALID` when absent from the output document; and
+- compare `mtime` and `ctime` across the existing bounded file read in addition to device, inode, and size, so observable same-inode/same-size instability is `RUN_READ_FAILED` without a watcher, lock, retry, or new abstraction.
+
+TDD evidence was causal and public-seam based. Before production repair, the retained-descriptor HTTP E2E was `0/1`, the real-Profile observable-instability case was `0/1`, and the two prototype-pointer leaves both failed inside TEST-REC-003 (`22` pass / `3` fail including the parent). After the minimum repair, those targeted runs are respectively `1/1`, `1/1`, and `25/25` PASS.
+
+Fresh Controller evidence on the complete repaired worktree is: focused Console `81/81` PASS; root typecheck PASS; TEST-XCLI-021 `1/1` PASS; all fourteen Console production/test/fixture paths pass `node --check`; canonical offline validation PASS with the real-Pi leaf skipped; and `git diff --check` PASS. The Test Asset Retirement Gate is PASS with three new permanent regression leaves inside existing test files and no new fixture, helper, double, snapshot, harness, coverage-map entry, or TEST identity. The bounded repair ponytail review is `Lean already. Ship.`
+
+This evidence is Controller/regression evidence only. Independent Validator is still required against the new pushed head; the former Validator PASS is historical and must not be reused. Acceptance is not reasserted for the repaired head, PR #10 must not be merged from Mac mini, and the next lifecycle action is independent read-only validation.
