@@ -26,6 +26,8 @@ test('TEST-REC-010 [AC-REC-006-01..03, AC-REC-007-03..05] freezes complete AC co
     'AC-REC-007-01', 'AC-REC-007-02', 'AC-REC-007-03', 'AC-REC-007-04', 'AC-REC-007-05',
   ];
   assert.deepEqual([...new Set(Object.values(coverageMap).flat())].sort(), expectedAcs.sort());
+  assert.ok(coverageMap['TEST-REC-005'].includes('AC-REC-005-03'));
+  assert.ok(coverageMap['TEST-REC-009'].includes('AC-REC-003-02'));
   assert.deepEqual(lifecycleLedger, [
     ['tests/unit/run-evidence-console/run-evidence.unit.test.ts', 'permanent regression', 'TEST-REC-001..003,010', 'Reader Core admission/projection'],
     ['tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts', 'permanent regression', 'TEST-REC-004', 'replaceable Reader Port'],
@@ -195,6 +197,26 @@ test('TEST-REC-003 [AC-REC-004-01..03] verifies checksums, evidence references, 
       assert.deepEqual(domain.admit(changed), { kind: 'rejected', error: { code: 'RUN_REFERENCE_INVALID' } });
     });
   }
+  await t.test('array_prototype_numeric_property_is_not_a_json_pointer_target', () => {
+    const outputWithEmptyItems = synchronizeManifestDescriptor(
+      replaceObservedJson(observation, 'outputs/O-001.json', (output) => { output.items = []; }),
+      'outputs/O-001.json',
+    );
+    const changed = synchronizeManifestDescriptor(
+      replaceObservedJson(outputWithEmptyItems, 'evidence.json', (evidence) => {
+        (evidence.evidence_items as Record<string, unknown>[])[0].result_reference = { artifact_id: 'O-001', json_pointer: '/items/0' };
+      }),
+      'evidence.json',
+    );
+    const previous = Object.getOwnPropertyDescriptor(Array.prototype, '0');
+    try {
+      Object.defineProperty(Array.prototype, '0', { configurable: true, enumerable: false, value: 'inherited', writable: true });
+      assert.deepEqual(domain.admit(changed), { kind: 'rejected', error: { code: 'RUN_REFERENCE_INVALID' } });
+    } finally {
+      if (previous) Object.defineProperty(Array.prototype, '0', previous);
+      else delete (Array.prototype as unknown as Record<string, unknown>)['0'];
+    }
+  });
   for (const [name, mutate] of [
     ['unknown_evidence_field', (evidence: Record<string, unknown>) => { evidence.extra = true; }],
     ['findings_not_array', (evidence: Record<string, unknown>) => { evidence.findings = {}; }],

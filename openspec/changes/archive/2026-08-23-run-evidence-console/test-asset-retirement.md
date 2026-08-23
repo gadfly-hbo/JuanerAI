@@ -2,7 +2,7 @@
 
 ## Verdict
 
-`PASS — PR #10 CHANGES_REQUESTED REPAIR GREEN`
+`PASS — PR #10 FIXED-HEAD VALIDATOR REPAIR GREEN`
 
 The Controller reconciled the complete nine-path Change test-asset diff after REC-CONTRACT-004 causal RED and fresh GREEN. The three Finding empty-content leaves and the contract/integration indexed-size checksum leaves are passing permanent regressions. Seventeen compile-time guards whose only purpose was the deferred nested/status TypeScript closure have been removed; runtime exact-key, result-envelope, provenance, no-runtime, and Pi/vendor-neutral evidence remain.
 
@@ -32,7 +32,7 @@ The complete diff has no remaining duplicate behavior or unused asset. The previ
 
 Canonical command-local toolchain: Node `26.0.0`, npm `11.12.1`, DuckDB `1.5.2` through `JUANERAI_TOOLCHAIN_BIN`; only lockfile-pinned project packages were installed and no tracked/global toolchain state changed.
 
-- Focused Console suite: `77/77` PASS.
+- Focused Console suite: `82/82` PASS.
 - Root `npm run typecheck`: PASS.
 - `tools/harness/validation/run`: PASS.
 - REC-CONTRACT-003 successor TEST-XCLI-021: `1/1` PASS.
@@ -48,3 +48,11 @@ Canonical command-local toolchain: Node `26.0.0`, npm `11.12.1`, DuckDB `1.5.2` 
 The CHANGES_REQUESTED repair adds three permanent regression groups inside existing assets only: TEST-REC-009 retained non-success descriptor rendering, TEST-REC-003 own-property rejection for `/toString` and `/constructor`, and TEST-REC-005 observable same-inode/same-size metadata instability through the real Profile. Each failed causally before its production repair and now passes. They cover distinct Experience, Core reference-integrity, and Adapter stability boundaries.
 
 No test file, fixture, helper, double, snapshot, harness, coverage-map entry, TEST identity, dependency, or temporary repository asset was added or retired. Existing lifecycle-ledger ownership remains exact, and the complete focused suite is `81/81` PASS. The fresh retirement verdict is `PASS`; independent product validation remains a separate pending Gate.
+
+## Fixed-head `8427c0ac` Repair Reconciliation
+
+One new causal leaf was added inside the existing TEST-REC-003 unit asset. It sets `Array.prototype[0]`, proves that `/items/0` cannot resolve against an empty JSON array through inheritance, restores the exact prior descriptor in `finally`, and remains a permanent AC-REC-004-02 reference-integrity regression. The existing `/toString` and `/constructor` leaves remain retained and passing.
+
+No test asset or TEST identity was added or retired. TEST-REC-010 now verifies the corrected existing coverage leaves: TEST-REC-005 maps AC-REC-005-03 for the same-inode/same-size observable-instability regression, and TEST-REC-009 maps AC-REC-003-02 for the retained non-success descriptor E2E. The coverage map, Test Plan, traceability, and this ledger state the same ownership.
+
+The complete focused suite is `82/82` PASS. No temporary evidence, orphaned helper/fixture, duplicate behavior, `.skip`, `.todo`, `.only`, or retirement candidate was introduced. The fresh retirement verdict is `PASS`; the new pushed head still requires GitHub Canonical validation and a new independent Validator.

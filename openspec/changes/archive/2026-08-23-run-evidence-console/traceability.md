@@ -57,3 +57,14 @@ Reviewed baseline: `69ed340116f7daf73e7b5304dae35897eb01541a`. The repair reuses
 | governance skill was outside the coherent product Change | Change path scope | PR diff against `origin/main` | `.agents/skills/git-commit-push/SKILL.md` | exact `origin/main` content; absent from final PR diff |
 
 Gate state is `GREEN_AWAITING_INDEPENDENT_VALIDATOR`. Focused/typecheck/canonical evidence does not replace the required fresh Validator verdict for the repaired pushed head.
+
+## Fixed-head `8427c0ac` Validator Repair Trace
+
+Reviewed baseline: `8427c0ac1a31bc6a0e77f951d40536de5833d3cb`. This bounded follow-up adds no Requirement, AC, schema, public seam, helper, fixture, TEST identity, or acceptance behavior.
+
+| Review item | REQ / AC | Causal regression | Code / evidence boundary | Current result |
+|---|---|---|---|---|
+| an inherited numeric `Array.prototype` property resolved as a JSON Pointer array element | REQ-REC-004 / AC-REC-004-02 | TEST-REC-003 sets `Array.prototype[0]` inside `try/finally` and resolves `/items/0` against an empty array | `packages/product-core/run-evidence.ts` | array and object tokens both require an own JSON-document property; rejection is `RUN_REFERENCE_INVALID` |
+| coverage metadata omitted the accepted owners for observable instability and retained non-success descriptors | REQ-REC-005 / AC-REC-005-03; REQ-REC-003 / AC-REC-003-02 | TEST-REC-010 checks the exact two coverage leaves; existing TEST-REC-005 and TEST-REC-009 execute the behaviors | `tests/fixtures/run-evidence-console/coverage-map.ts`, Test Plan, and retirement ledger | TEST-REC-005 maps AC-REC-005-03; TEST-REC-009 maps AC-REC-003-02 |
+
+Gate state remains `GREEN_AWAITING_INDEPENDENT_VALIDATOR`. The Validator verdict for `8427c0ac` is superseded for the repaired pushed head, and GitHub Canonical validation must rerun for that new head.

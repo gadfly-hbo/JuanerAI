@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823012357065-SFDO30",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-23T01:23:57.065Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Project-control risk audit replaced stale migration risks with the two current PR #10 delivery gates: new-head GitHub Canonical and fresh independent Validator.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

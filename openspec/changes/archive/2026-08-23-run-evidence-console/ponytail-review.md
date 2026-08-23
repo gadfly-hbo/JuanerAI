@@ -1,5 +1,7 @@
 # Ponytail Review: pre-Spec-Gate draft
 
+The `:L` coordinates in the two pre-Spec sections below are historical draft locations retained for audit chronology; they are not current code-line evidence. Current repair reviews use the reviewed head plus stable TEST/AC identities.
+
 `design.md:L19: shrink: a reader-owned Core that refuses to import existing pure Run/Evidence validators would duplicate the frozen Artifact 1.0 admission logic. Reuse createLocalAnalysisDomain() validators unchanged and add only reader-specific contract, reference, checksum, and projection rules.`
 
 `specs/run-evidence-console/spec.md:L15: shrink: eleven new stable reader error codes create a protocol larger than the first viewer needs. Merge selection/not-found, path/file-unsafety, and malformed/identity/incomplete-document cases while retaining distinct unsupported-version, reference, checksum, and sanitized-read outcomes.`
@@ -27,5 +29,9 @@ All final-pass findings were applied; the post-revision package is lean.
 Lean already. Ship.
 
 ## PR #10 CHANGES_REQUESTED repair audit
+
+Lean already. Ship.
+
+## Fixed-head `8427c0ac` Validator repair audit
 
 Lean already. Ship.

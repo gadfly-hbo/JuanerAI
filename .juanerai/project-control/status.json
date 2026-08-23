@@ -12,9 +12,9 @@
     "total": 8
   },
   "health": "validating",
-  "summary": "PR #10 CHANGES_REQUESTED repair is GREEN for retained descriptor visibility, own-property JSON Pointer resolution, and observable file instability; prior Validator evidence is superseded for the repaired head.",
+  "summary": "PR #10 fixed-head repair is locally GREEN: JSON Pointer array indices require own properties, TEST-REC-005/009 AC ownership is reconciled, focused Console is 82/82, and the 8427c0ac Validator verdict is superseded.",
   "current_objective": "Preserve the accepted Console 1.0 contracts while delivering only the bounded PR #10 review repairs.",
-  "next_action": "Run an independent read-only Validator against the new pushed head; Mac mini must not merge PR #10.",
+  "next_action": "Push the new repair head, wait for GitHub Canonical validation on that exact SHA, then request a fresh independent read-only Validator; Mac mini must not merge PR #10.",
   "blockers": [],
   "milestones": [
     {
@@ -91,34 +91,34 @@
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "complete",
+      "status": "waiting",
       "activation": "实现与证据冻结"
     }
   ],
   "metrics": [
     {
       "id": "requirements",
-      "label": "需求",
-      "done": 3,
-      "total": 3
-    },
-    {
-      "id": "tests",
-      "label": "测试",
-      "done": 4,
-      "total": 4
-    },
-    {
-      "id": "tasks",
-      "label": "任务",
+      "label": "Console 需求",
       "done": 7,
       "total": 7
     },
     {
+      "id": "tests",
+      "label": "Focused 测试",
+      "done": 82,
+      "total": 82
+    },
+    {
+      "id": "tasks",
+      "label": "本轮本地返修",
+      "done": 4,
+      "total": 4
+    },
+    {
       "id": "decisions",
-      "label": "待决策",
-      "done": 6,
-      "total": 6
+      "label": "已批准 REC",
+      "done": 5,
+      "total": 5
     }
   ],
   "evidence": [
@@ -565,43 +565,55 @@
       "label": "TASK-009 prompt contract TEST_CONFLICT",
       "path": "openspec/changes/archive/2026-08-21-xanthil-cli-local-analysis-slice/verification.md",
       "status": "present"
+    },
+    {
+      "id": "EVD-075",
+      "label": "Run Evidence Console fixed-head verification addendum",
+      "path": "openspec/changes/archive/2026-08-23-run-evidence-console/verification.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-076",
+      "label": "Run Evidence Console JSON Pointer own-property repair",
+      "path": "packages/product-core/run-evidence.ts",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-077",
+      "label": "Run Evidence Console causal Core regression",
+      "path": "tests/unit/run-evidence-console/run-evidence.unit.test.ts",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-078",
+      "label": "Run Evidence Console corrected coverage ownership",
+      "path": "tests/fixtures/run-evidence-console/coverage-map.ts",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-079",
+      "label": "Run Evidence Console Test Asset Retirement gate",
+      "path": "openspec/changes/archive/2026-08-23-run-evidence-console/test-asset-retirement.md",
+      "status": "verified"
     }
   ],
   "risks": [
     {
-      "id": "RSK-001",
-      "label": "语言迁移意外改变可观察行为",
+      "id": "RSK-REC-001",
+      "label": "新 head 的 GitHub Canonical 尚未完成",
       "level": "medium",
-      "mitigation": "冻结现有local-analysis规范与完整行为oracle；除文件、模块和工具链机制外不修改断言。"
+      "mitigation": "普通 push 后只接受该精确新 SHA 的 GitHub Canonical 结果；不得复用 8427c0ac 的 SUCCESS，也不得在结果前合并。"
     },
     {
-      "id": "RSK-002",
-      "label": "Node原生执行与TypeScript静态检查语义分离",
+      "id": "RSK-REC-002",
+      "label": "修复后独立 Validator 尚未执行",
       "level": "medium",
-      "mitigation": "固定erasableSyntaxOnly、NodeNext、显式.ts扩展和独立tsc --noEmit；两类检查均进入canonical runner。"
-    },
-    {
-      "id": "RSK-003",
-      "label": "内部迁移引入永久构建或双运行模式",
-      "level": "medium",
-      "mitigation": "禁止dist、source map、bundler、loader与allowJs/checkJs；Spec Gate前强制ponytail-review删除无当前消费者的机制。"
-    },
-    {
-      "id": "RSK-004",
-      "label": "Pi SDK类型泄漏到Core或Application",
-      "level": "medium",
-      "mitigation": "Pi声明只允许在agent-pi Adapter内消费；业务Port和运行时TypeBox验证保持权威。"
-    },
-    {
-      "id": "RSK-005",
-      "label": "过渡期工具链断言与迁移目标冲突",
-      "level": "medium",
-      "mitigation": "只允许TEST-XCLI-021/022及路径/执行机制做因果机械更新；业务、失败、安全和竞态断言冻结。"
+      "mitigation": "保持 independent_validation=pending 和 Validator=waiting；GitHub Canonical 完成后停止并等待新的只读 Validator，不由 Mac mini 合并 PR #10。"
     }
   ],
-  "updated_at": "2026-08-23T00:53:06.700Z",
+  "updated_at": "2026-08-23T01:24:35.378Z",
   "updated_by": {
     "role": "controller",
-    "session": "codex-pr10-repair"
+    "session": "status-cli"
   }
 }

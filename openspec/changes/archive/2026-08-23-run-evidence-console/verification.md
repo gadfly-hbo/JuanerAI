@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`PR_10_CHANGES_REQUESTED_REPAIR_GREEN — AWAITING_INDEPENDENT_VALIDATOR`
+`PR_10_FIXED_HEAD_VALIDATOR_REPAIR_GREEN — AWAITING_INDEPENDENT_VALIDATOR`
 
 This file is the sole current lifecycle-status authority within this OpenSpec package. The original Change remains accepted and archived, but PR #10 delivery was reopened from reviewed head `69ed340116f7daf73e7b5304dae35897eb01541a` for a bounded CHANGES_REQUESTED repair. The Controller-owned project board mirrors the current repair state for observability only; Proposal, Design, Tasks, and traceability retain stable decision, architecture, work, and evidence mappings. No prior Validator verdict covers the repaired implementation.
 
@@ -78,3 +78,24 @@ TDD evidence was causal and public-seam based. Before production repair, the ret
 Fresh Controller evidence on the complete repaired worktree is: focused Console `81/81` PASS; root typecheck PASS; TEST-XCLI-021 `1/1` PASS; all fourteen Console production/test/fixture paths pass `node --check`; canonical offline validation PASS with the real-Pi leaf skipped; and `git diff --check` PASS. The Test Asset Retirement Gate is PASS with three new permanent regression leaves inside existing test files and no new fixture, helper, double, snapshot, harness, coverage-map entry, or TEST identity. The bounded repair ponytail review is `Lean already. Ship.`
 
 This evidence is Controller/regression evidence only. Independent Validator is still required against the new pushed head; the former Validator PASS is historical and must not be reused. Acceptance is not reasserted for the repaired head, PR #10 must not be merged from Mac mini, and the next lifecycle action is independent read-only validation.
+
+## Fixed-head `8427c0ac` Validator Repair Addendum
+
+The independent Validator returned `CHANGES_REQUESTED` against `8427c0ac1a31bc6a0e77f951d40536de5833d3cb` for exactly two bounded findings. The repair preserves every previously passed behavior and makes only these corrections:
+
+- JSON Pointer array tokens now require the target array to own the canonical numeric property before resolution. A causal TEST-REC-003 leaf sets `Array.prototype[0]` inside `try/finally`; before repair the empty-array `/items/0` reference was incorrectly admitted, and after the one-condition Core repair it is `RUN_REFERENCE_INVALID`. The prior `/toString` and `/constructor` leaves remain passing.
+- The existing coverage inventory now maps TEST-REC-005 to AC-REC-005-03 for observable same-inode/same-size instability and TEST-REC-009 to AC-REC-003-02 for retained descriptor rendering. TEST-REC-010 asserts both leaves, and the Test Plan, traceability, and retirement ledger are reconciled without inventing an AC or TEST identity.
+
+Fresh Controller evidence is: targeted TEST-REC-003/010 `27/27` PASS; TEST-REC-005 `10/10` PASS; TEST-REC-009 `3/3` PASS; complete focused Console `82/82` PASS; root typecheck PASS; changed-path `node --check` PASS; canonical offline validation PASS with the real-Pi leaf skipped; Test Asset Retirement PASS; and `git diff --check` PASS. The bounded ponytail review is `Lean already. Ship.`
+
+This addendum supersedes the prior fixed-head Validator verdict only for delivery state. GitHub Canonical validation must rerun against the new pushed head, followed by a new independent read-only Validator. Mac mini does not merge PR #10.
+
+## OpenSpec and Governance Consistency Audit
+
+This audit covers both the prior PR #10 repair and the fixed-head `8427c0ac` follow-up. Proposal, Design, archived delta specifications, published Requirements, and Acceptance Criteria are byte-unchanged from the fixed head; no normative contract was revised to fit implementation. Tasks append only the delivery-repair checklist, while Test Plan, traceability, Test Asset Retirement, and this verification addendum reconcile the already accepted TEST/AC ownership.
+
+Older `69ed340`, `77/77`, and `81/81` records remain only inside their named historical sections. The fixed-head addendum above is the sole current local evidence count at `82/82`; current repair evidence uses the reviewed SHA and stable TEST/AC identities rather than mutable code-line anchors. The pre-Spec ponytail line references are explicitly historical review coordinates, not live implementation evidence.
+
+Project control remains `validating` at phase `7/8`, with independent validation pending and Validator waiting. Its current metrics are seven Console Requirements, `82/82` focused tests, four of four local repair tasks complete, and five accepted REC decisions; EVD identifiers are contiguous from EVD-001 through EVD-079. GitHub Canonical and the fresh independent Validator remain external delivery gates in `next_action` and the two current medium risks rather than self-referential committed task counts. No blocker or user decision is open.
+
+The complete PR diff contains no change to `AGENTS.md`, Git workflow governance, or `.agents/skills/git-commit-push/SKILL.md`. No provider/model invocation, dependency installation, reset, rebase, force-push, or merge occurred.

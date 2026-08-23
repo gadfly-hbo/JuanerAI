@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823012435378-QN4JRG",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-23T01:24:35.378Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Project-control task metric now counts the four completed local repair tasks only; GitHub Canonical and independent Validator remain explicit external delivery gates in next action and risks.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

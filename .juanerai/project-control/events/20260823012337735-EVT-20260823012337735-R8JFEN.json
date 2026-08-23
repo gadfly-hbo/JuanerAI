@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823012337735-R8JFEN",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-23T01:23:37.735Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Project-control audit reconciled Console requirements, 82 focused tests, delivery-repair tasks, REC decisions, waiting Validator status, and contiguous EVD-075..079 evidence references.",
+  "status_after": "validating",
+  "evidence_refs": []
+}
