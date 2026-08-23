@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823015433361-Z0FOFE",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-23T01:54:33.361Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "Run Evidence Console independent Validator PASS recorded for a06e8df3; awaiting MacBook final review",
+  "status_after": "validating",
+  "evidence_refs": []
+}

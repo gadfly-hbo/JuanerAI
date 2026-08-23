@@ -2,9 +2,9 @@
 
 ## Current Verdict
 
-`PR_10_FIXED_HEAD_VALIDATOR_REPAIR_GREEN — AWAITING_INDEPENDENT_VALIDATOR`
+`INDEPENDENT_VALIDATOR_PASS — AWAITING_MACBOOK_FINAL_REVIEW`
 
-This file is the sole current lifecycle-status authority within this OpenSpec package. The original Change remains accepted and archived, but PR #10 delivery was reopened from reviewed head `69ed340116f7daf73e7b5304dae35897eb01541a` for a bounded CHANGES_REQUESTED repair. The Controller-owned project board mirrors the current repair state for observability only; Proposal, Design, Tasks, and traceability retain stable decision, architecture, work, and evidence mappings. No prior Validator verdict covers the repaired implementation.
+This file is the sole current lifecycle-status authority within this OpenSpec package. The original Change remains accepted and archived, but PR #10 delivery was reopened from reviewed head `69ed340116f7daf73e7b5304dae35897eb01541a` for a bounded CHANGES_REQUESTED repair. The Controller-owned project board mirrors the current repair state for observability only; Proposal, Design, Tasks, and traceability retain stable decision, architecture, work, and evidence mappings. The current independent Validator PASS is bound only to fixed implementation/evidence head `a06e8df3bf568da6379140d520782cbe96dcda81`; no earlier verdict is reused.
 
 The user accepted REC-CONTRACT-004 after the fresh Validator confirmed the prior version, outer-view, identity-order, and pre-read-size mechanisms but found three gaps. The approved decision keeps runtime output, the result envelope, and provenance exact and closed; it defers only complete TypeScript closure for nested Artifact-derived View values and status-specific detail. The two remaining behavior obligations were Finding empty-content classification as `RUN_READ_FAILED` and real-Profile propagation of indexed pre-read `byte_size` mismatch as `RUN_CHECKSUM_MISMATCH`. Both now pass causal tests through the existing Core, local Adapter, and Application boundaries. Regression, Test Asset Retirement, the required independent role, and R2 Sol/high validation are frozen PASS; no module, shared codec, Runtime abstraction, framework, size cap, or new path was added.
 
@@ -35,7 +35,7 @@ The user accepted REC-CONTRACT-004 after the fresh Validator confirmed the prior
 - Only shape-valid duplicate/foreign/dangling/wrong-kind/unresolvable relationships map to `RUN_REFERENCE_INVALID`; declared core SHA and indexed asset size/SHA mismatches map to `RUN_CHECKSUM_MISMATCH`.
 - E2E renders accepted SQL/Python/JSON/Markdown as labelled escaped inert `<pre>` display text, never numeric byte arrays or executable content.
 
-## Current Frozen Evidence
+## REC-CONTRACT-004 Frozen Evidence (Historical)
 
 - Controller focused Console suite: `77/77` PASS.
 - Root `npm run typecheck`: PASS.
@@ -90,12 +90,22 @@ Fresh Controller evidence is: targeted TEST-REC-003/010 `27/27` PASS; TEST-REC-0
 
 This addendum supersedes the prior fixed-head Validator verdict only for delivery state. GitHub Canonical validation must rerun against the new pushed head, followed by a new independent read-only Validator. Mac mini does not merge PR #10.
 
+## Independent Validator PASS Addendum
+
+The independent read-only Validator returned `PASS` against fixed implementation/evidence head `a06e8df3bf568da6379140d520782cbe96dcda81`. It confirmed that both findings from the `8427c0ac1a31bc6a0e77f951d40536de5833d3cb` review are closed: JSON Pointer array indexes require an own array property, and TEST-REC-005 / TEST-REC-009 coverage ownership is consistent across the executable coverage map, traceability, and Test Asset Retirement ledger.
+
+Validator evidence on that fixed head is complete focused Console `82/82` PASS and root typecheck PASS. GitHub Canonical validation run [32610573916](https://github.com/gadfly-hbo/JuanerAI/actions/runs/32610573916) is `SUCCESS` with `head_sha=a06e8df3bf568da6379140d520782cbe96dcda81`.
+
+The Validator host used Node `25.9.0` and had no DuckDB, so the Validator did not rerun the local canonical command. This disclosed environment limitation is neither a waiver nor a blocker: the exact reviewed SHA has the independent focused/typecheck evidence above and the successful GitHub Canonical run. All prior `CHANGES_REQUESTED`, `69ed340`, `8427c0ac`, `77/77`, and `81/81` records remain intact as historical evidence.
+
+Current verdict: `INDEPENDENT_VALIDATOR_PASS — AWAITING_MACBOOK_FINAL_REVIEW`. This does not claim that PR #10 has been merged; Mac mini stops before merge.
+
 ## OpenSpec and Governance Consistency Audit
 
 This audit covers both the prior PR #10 repair and the fixed-head `8427c0ac` follow-up. Proposal, Design, archived delta specifications, published Requirements, and Acceptance Criteria are byte-unchanged from the fixed head; no normative contract was revised to fit implementation. Tasks append only the delivery-repair checklist, while Test Plan, traceability, Test Asset Retirement, and this verification addendum reconcile the already accepted TEST/AC ownership.
 
 Older `69ed340`, `77/77`, and `81/81` records remain only inside their named historical sections. The fixed-head addendum above is the sole current local evidence count at `82/82`; current repair evidence uses the reviewed SHA and stable TEST/AC identities rather than mutable code-line anchors. The pre-Spec ponytail line references are explicitly historical review coordinates, not live implementation evidence.
 
-Project control remains `validating` at phase `7/8`, with independent validation pending and Validator waiting. Its current metrics are seven Console Requirements, `82/82` focused tests, four of four local repair tasks complete, and five accepted REC decisions; EVD identifiers are contiguous from EVD-001 through EVD-079. GitHub Canonical is verified externally for the final delivery head and reported with its exact SHA; the fresh independent Validator is the sole remaining medium risk and `next_action`. No blocker or user decision is open.
+Project control remains `validating` at phase `7/8`, with independent validation completed and Validator complete. Its current metrics are seven Console Requirements, `82/82` focused tests, four of four local repair tasks complete, and five accepted REC decisions; EVD identifiers are contiguous from EVD-001 through EVD-080. GitHub Canonical and the independent Validator PASS are both bound to fixed implementation/evidence head `a06e8df3bf568da6379140d520782cbe96dcda81`. No current risk, blocker, or user decision is open; the next action is MacBook final review and an authorized squash merge only. Mac mini does not merge PR #10.
 
 The complete PR diff contains no change to `AGENTS.md`, Git workflow governance, or `.agents/skills/git-commit-push/SKILL.md`. No provider/model invocation, dependency installation, reset, rebase, force-push, or merge occurred.

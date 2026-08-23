@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "run_evidence_console_pr10_repair_green",
-    "label": "Run Evidence Console：PR #10 返修 GREEN / 等待独立验证",
+    "id": "run_evidence_console_pr10_validator_pass",
+    "label": "Run Evidence Console：独立验证 PASS / 等待 MacBook 最终审核",
     "ordinal": 7,
     "total": 8
   },
   "health": "validating",
-  "summary": "PR #10 fixed-head repair and governance audit are pushed, and GitHub Canonical is GREEN for the final delivery head; only a fresh independent Validator remains pending.",
-  "current_objective": "Preserve the accepted Console 1.0 contracts while delivering only the bounded PR #10 review repairs.",
-  "next_action": "Run a fresh independent read-only Validator against the final pushed head; Mac mini must not merge PR #10.",
+  "summary": "Independent Validator PASS and GitHub Canonical SUCCESS are bound to fixed implementation/evidence head a06e8df3bf568da6379140d520782cbe96dcda81; this governance-only record awaits MacBook final review.",
+  "current_objective": "Land the Controller-owned Validator PASS record without changing the accepted Console contracts or implementation.",
+  "next_action": "MacBook final review and, only when authorized, squash merge PR #10; Mac mini must not merge.",
   "blockers": [],
   "milestones": [
     {
@@ -45,7 +45,7 @@
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "user_acceptance",
@@ -91,7 +91,7 @@
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "waiting",
+      "status": "complete",
       "activation": "实现与证据冻结"
     }
   ],
@@ -595,17 +595,16 @@
       "label": "Run Evidence Console Test Asset Retirement gate",
       "path": "openspec/changes/archive/2026-08-23-run-evidence-console/test-asset-retirement.md",
       "status": "verified"
-    }
-  ],
-  "risks": [
+    },
     {
-      "id": "RSK-REC-001",
-      "label": "修复后独立 Validator 尚未执行",
-      "level": "medium",
-      "mitigation": "保持 independent_validation=pending 和 Validator=waiting；停止在当前已推送 head，等待新的只读 Validator，不由 Mac mini 合并 PR #10。"
+      "id": "EVD-080",
+      "label": "Run Evidence Console independent Validator PASS at a06e8df3",
+      "path": "openspec/changes/archive/2026-08-23-run-evidence-console/verification.md",
+      "status": "verified"
     }
   ],
-  "updated_at": "2026-08-23T01:30:30.641Z",
+  "risks": [],
+  "updated_at": "2026-08-23T01:54:33.360Z",
   "updated_by": {
     "role": "controller",
     "session": "status-cli"
