@@ -27,6 +27,26 @@ Before creating the first behavior-changing Xanthil Change, ask the user for the
 
 Cold-start documents and empty module boundaries do not authorize product implementation, dependency installation, external data access, or schema creation.
 
+## Product Plan Development-Readiness Gate
+
+Every new or materially revised product plan that is intended to guide development must pass an independent development-readiness review before it is declared ready, frozen as product input, or dispatched to `juaner_spec`.
+
+After drafting the plan, the Controller dispatches a fresh read-only support Agent with an implementation-worker perspective. This Reviewer is not `juaner_worker`, receives no TDD_READY or implementation authority, and must not write OpenSpec, tests, or production code. Give it only the product plan and formal attachments, the JuanerAI authority documents explicitly referenced by the plan, and the review brief. Do not give it the Controller's unstated rationale or use external project repositories to rescue missing plan content; any required external lookup is itself a plan gap unless the user explicitly authorized that read-only study.
+
+The Reviewer returns:
+
+1. `What I Would Build`: the product behavior, boundary, and acceptance endpoint in its own words;
+2. `Required Guessing`: business rules, states, defaults, Gates, errors, failure or cancellation behavior, data authority, Runtime, contracts, ownership, or acceptance details it would have to invent;
+3. `External Study Required`: any repository, document, or historical context needed beyond the supplied package;
+4. `Untestable Requirements`: behavior that cannot yet produce clear positive, negative, or real-scenario acceptance evidence;
+5. `Correctly Deferred`: implementation details explicitly and safely left to OpenSpec, Design, or a later Change;
+6. `Required Plan Additions`: the minimum text or attachment needed to remove each material gap;
+7. `Verdict`: `PASS` or `NEEDS_CLARIFICATION`.
+
+PASS requires an accurate restatement of the intended product and no load-bearing guess about behavior, boundaries, authority, or acceptance. Exact paths, TypeScript names, serialization schemas, and resource limits may remain deferred when the product semantics and stop line are complete. `NEEDS_CLARIFICATION` returns to the Controller; after a material correction, a fresh Reviewer repeats the Gate.
+
+Reviewer PASS does not approve product intent, replace explicit user decisions, or transfer the Controller's product, architecture, contract, integration, or acceptance authority.
+
 ## Architecture
 
 - Keep Product Core and Application independent from infrastructure SDKs.
