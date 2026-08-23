@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823013030642-LXL784",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-23T01:30:30.642Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "GitHub Canonical completed successfully for the published repair; project control now leaves only the fresh independent Validator gate pending.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

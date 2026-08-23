@@ -29,5 +29,5 @@ Any need to alter an existing local-analysis Artifact shape, writer, Port, Profi
 - [x] Establish causal TEST-REC-003 RED for inherited `Array.prototype[0]`, then require own array-index properties with the minimum Core change.
 - [x] Reconcile TEST-REC-005 → AC-REC-005-03 and TEST-REC-009 → AC-REC-003-02 across executable coverage, Test Plan, traceability, and Test Asset Retirement evidence.
 - [x] Run focused regressions, complete Console tests, typecheck, canonical offline validation, Test Asset Retirement, traceability audit, and bounded ponytail review.
-- [ ] Push the new repair commit and wait for GitHub Canonical validation on that exact new head.
+- [x] Push the new repair commit and wait for GitHub Canonical validation on that exact new head.
 - [ ] Obtain a new independent read-only Validator verdict; Mac mini does not merge PR #10.

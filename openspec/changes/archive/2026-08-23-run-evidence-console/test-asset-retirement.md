@@ -55,4 +55,4 @@ One new causal leaf was added inside the existing TEST-REC-003 unit asset. It se
 
 No test asset or TEST identity was added or retired. TEST-REC-010 now verifies the corrected existing coverage leaves: TEST-REC-005 maps AC-REC-005-03 for the same-inode/same-size observable-instability regression, and TEST-REC-009 maps AC-REC-003-02 for the retained non-success descriptor E2E. The coverage map, Test Plan, traceability, and this ledger state the same ownership.
 
-The complete focused suite is `82/82` PASS. No temporary evidence, orphaned helper/fixture, duplicate behavior, `.skip`, `.todo`, `.only`, or retirement candidate was introduced. The fresh retirement verdict is `PASS`; the new pushed head still requires GitHub Canonical validation and a new independent Validator.
+The complete focused suite is `82/82` PASS. No temporary evidence, orphaned helper/fixture, duplicate behavior, `.skip`, `.todo`, `.only`, or retirement candidate was introduced. The fresh retirement verdict is `PASS`; GitHub Canonical is verified externally for the final pushed head, and a new independent Validator remains required.

@@ -12,9 +12,9 @@
     "total": 8
   },
   "health": "validating",
-  "summary": "PR #10 fixed-head repair is locally GREEN: JSON Pointer array indices require own properties, TEST-REC-005/009 AC ownership is reconciled, focused Console is 82/82, and the 8427c0ac Validator verdict is superseded.",
+  "summary": "PR #10 fixed-head repair and governance audit are pushed, and GitHub Canonical is GREEN for the final delivery head; only a fresh independent Validator remains pending.",
   "current_objective": "Preserve the accepted Console 1.0 contracts while delivering only the bounded PR #10 review repairs.",
-  "next_action": "Push the new repair head, wait for GitHub Canonical validation on that exact SHA, then request a fresh independent read-only Validator; Mac mini must not merge PR #10.",
+  "next_action": "Run a fresh independent read-only Validator against the final pushed head; Mac mini must not merge PR #10.",
   "blockers": [],
   "milestones": [
     {
@@ -600,18 +600,12 @@
   "risks": [
     {
       "id": "RSK-REC-001",
-      "label": "新 head 的 GitHub Canonical 尚未完成",
-      "level": "medium",
-      "mitigation": "普通 push 后只接受该精确新 SHA 的 GitHub Canonical 结果；不得复用 8427c0ac 的 SUCCESS，也不得在结果前合并。"
-    },
-    {
-      "id": "RSK-REC-002",
       "label": "修复后独立 Validator 尚未执行",
       "level": "medium",
-      "mitigation": "保持 independent_validation=pending 和 Validator=waiting；GitHub Canonical 完成后停止并等待新的只读 Validator，不由 Mac mini 合并 PR #10。"
+      "mitigation": "保持 independent_validation=pending 和 Validator=waiting；停止在当前已推送 head，等待新的只读 Validator，不由 Mac mini 合并 PR #10。"
     }
   ],
-  "updated_at": "2026-08-23T01:24:35.378Z",
+  "updated_at": "2026-08-23T01:30:30.641Z",
   "updated_by": {
     "role": "controller",
     "session": "status-cli"
