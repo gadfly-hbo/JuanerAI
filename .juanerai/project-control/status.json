@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_acceptance",
-    "label": "Model Pack Contract Enabler：Accepted / Archive Active",
+    "id": "model_pack_contract_enabler_complete",
+    "label": "Model Pack Contract Enabler：Complete / Archived",
     "ordinal": 8,
     "total": 8
   },
-  "health": "active",
-  "summary": "Validator 008 PASS on clean Head 1ef1b66; Controller acceptance PASS and archive authorized.",
-  "current_objective": "Archive the accepted Model Pack Contract Enabler and publish the canonical capability specification.",
-  "next_action": "Merge the accepted delta spec into current specs, archive the Change, validate, and open a PR without merging.",
+  "health": "complete",
+  "summary": "CHG-model-pack-contract-enabler accepted after Validator 008 PASS; canonical spec published and Change archived.",
+  "current_objective": "Preserve the accepted inactive Model Pack contract baseline for later H/P/C/A Changes.",
+  "next_action": "Open the MacBook branch PR without merging; H/P/C/A remain separate future Changes.",
   "blockers": [],
   "milestones": [
     {
@@ -55,7 +55,7 @@
     {
       "id": "archive",
       "label": "归档",
-      "status": "active"
+      "status": "completed"
     }
   ],
   "agents": [
@@ -111,7 +111,7 @@
     {
       "id": "tasks",
       "label": "E lifecycle tasks complete",
-      "done": 11,
+      "done": 12,
       "total": 12
     },
     {
@@ -604,7 +604,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T10:26:38.581Z",
+  "updated_at": "2026-08-24T10:28:17.515Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-recovery-20260824"

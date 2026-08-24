@@ -15,7 +15,7 @@
 | `TASK-009` GREEN and regression | complete and frozen | package 235/235, Runtime 86/86, E 321/321, affected/canonical PASS | all |
 | `TASK-010` Test Asset Retirement Gate | PASS | three rows retained; scans clean; fresh ponytail `Lean already. Ship.` | REQ-MPC-004 |
 | `TASK-011` Independent verification | Validator 008 PASS | standard/adversarial/scope/traceability/retirement/cleanliness PASS on the frozen product/Test candidate | all |
-| `TASK-012` Accept, integrate, archive | Controller; acceptance PASS, archive active | strict E-first integration, current spec merge and archive; Controller-only project-control | all |
+| `TASK-012` Accept, integrate, archive | Controller; complete | canonical spec published, Change archived, strict E-first integration preserved, and Controller-only project-control completed | all |
 
 ## Test-owned Exact Paths
 

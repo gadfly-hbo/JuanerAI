@@ -5,7 +5,7 @@
 - Change: `CHG-model-pack-contract-enabler`
 - Change class: boundary change; R2 / complex root-cause
 - accepted baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
-- archive path: pending
+- archive path: `openspec/changes/archive/2026-08-24-model-pack-contract-enabler`
 - final Validator verdict: `PASS` — Validator 008; Validator 001 through 006 remain historical product `FAIL` and Validator 007 remains an operational `FAIL`
 - Controller acceptance: `PASS`; archive authorized
 
@@ -100,7 +100,7 @@
 
 ## Completion Criterion
 
-- [ ] Final facts match verification, traceability, baseline, archive, and project board.
+- [x] Final facts match verification, traceability, baseline, archive, and project board.
 - [x] Reusable assets have discoverable pointers.
 - [x] Durable product semantics were not changed by this retrospective.
 - [x] Tooling/code debt is not misrepresented as solved by documentation.

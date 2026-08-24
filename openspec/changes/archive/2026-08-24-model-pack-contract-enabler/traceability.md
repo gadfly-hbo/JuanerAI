@@ -127,7 +127,7 @@ checks. Controller acceptance is PASS and archive is authorized.
 | TASK-009 | TEST-MPC-001..009 and affected baseline | remediation GREEN and canonical exit 0 |
 | TASK-010 | every changed test asset | repeated retirement PASS; fresh complete Test delta is lean |
 | TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 001..006 product FAIL historical; Validator 007 operational FAIL; Validator 008 PASS |
-| TASK-012 | all accepted evidence and E integration constraint | Controller acceptance PASS; archive active |
+| TASK-012 | all accepted evidence and E integration constraint | Controller acceptance PASS; canonical spec published and Change archived |
 
 ## Integration Trace
 

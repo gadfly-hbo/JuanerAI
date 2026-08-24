@@ -2,7 +2,19 @@
 
 ## Current Verdict
 
-`VALIDATOR 008 PASS — CONTROLLER ACCEPTED, ARCHIVE AUTHORIZED`
+`ARCHIVED — VALIDATOR 008 PASS — CONTROLLER ACCEPTED`
+
+The accepted delta specification is published unchanged at
+`openspec/specs/model-pack-contract-enabler/spec.md`, and this complete evidence
+package is archived at
+`openspec/changes/archive/2026-08-24-model-pack-contract-enabler/`. E remains
+inactive: no Provider, Consumer, Profile, CLI, SDK, real model, data, network,
+or MLflow activation was introduced. The required E -> H -> P -> C -> A order
+remains intact, and this archive does not authorize any downstream Change.
+Post-archive Controller verification passed: the archived delta spec and
+canonical spec are byte-identical; `git diff --check` passed; package 235/235,
+Runtime 86/86, complete E 321/321, inactive 15/15, project board 12/12, and the
+canonical offline validation command all exited zero.
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical

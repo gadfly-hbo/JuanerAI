@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824102817515-L4UOGK",
+  "event_type": "archived",
+  "occurred_at": "2026-08-24T10:28:17.515Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-recovery-20260824"
+  },
+  "summary": "CHG-model-pack-contract-enabler canonical spec published and Change archived after Validator 008 PASS.",
+  "status_after": "complete",
+  "evidence_refs": []
+}
