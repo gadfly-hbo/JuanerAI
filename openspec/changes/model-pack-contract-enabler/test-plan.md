@@ -242,6 +242,32 @@ found no orphan, temporary probe, skip/todo/only, duplicate helper/fixture/
 driver, dependency, or weakened inactive assertion. The fresh post-cleanup
 review returned exactly `Lean already. Ship.`
 
+## Validator 003 Test Design Return
+
+Validator 003 passed every standard command and all Validator 001/002 public
+probes at clean frozen Head `60a7aa09764c274c527e04d39b7ac6986560ba5f`, but
+found two missing Runtime leaves already required by REQ-MPC-003/004:
+
+1. the exact governed Runtime binding identity boundary accepts 256 characters
+   and rejects 257 characters; and
+2. a public preflight failure cannot trust a spoofed ordinary Error whose
+   `name` is `ModelPackContractError`; it must emit the stable sanitized
+   `ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE` carrier without the raw message.
+
+Formal Test may change only
+`tests/contract/model-pack-contract-enabler/analytical-model-runtime.contract.test.ts`,
+currently 411 lines/SHA-256
+`c6f5bb71e5c1fe4f7bbe1e5fb84c4be6201c21155b1c7717dc0465e1dec25531`.
+Both production files and every other Test, fixture, driver, graph, runner,
+OpenSpec, project-control, dependency, Profile, activation, and external-effect
+path are frozen. Test must preserve every existing assertion, add two
+independently named public leaves, prove exact causal RED, and rerun the
+focused Runtime, complete E, inactive, typecheck, affected Local Analysis,
+project-board, and canonical matrices as far as causal RED allows. TDD_READY
+may release only `packages/ports/analytical-model-runtime.ts`, currently 122
+lines/SHA-256
+`e343db1f25e0e274bf4c33e30a8d1b99b32de98a920124399b347bbe165ba7b5`.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

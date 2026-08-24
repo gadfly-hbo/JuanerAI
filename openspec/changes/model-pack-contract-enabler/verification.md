@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 002 REMEDIATION GREEN + RETIREMENT PASS — VALIDATOR CANDIDATE FREEZE`
+`VALIDATOR 003 FAIL — RETURN TO TEST DESIGN / TDD_READY`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -38,18 +38,28 @@ board 12/12, and canonical offline exit 0. Mandatory Test Asset Retirement
 review found three table-runner consolidations; formal Test applied them with a
 net 20-line deletion, reran the complete matrix, and a fresh post-cleanup
 ponytail returned exactly `Lean already. Ship.` Current production and Test
-bytes are frozen for a new committed read-only Validator. Acceptance,
-activation, archive, and downstream H/P/C/A remain blocked until fresh PASS.
+bytes were frozen for Validator 003 at Head
+`60a7aa09764c274c527e04d39b7ac6986560ba5f`. Validator 003 confirmed the
+complete standard matrix, all Validator 001/002 regressions, scope,
+architecture, inactive integration, and existing retirement ledger, but found
+two additional violations of the same frozen contract: a 257-character
+Runtime binding identity is admitted, and preflight trusts an arbitrary
+`Error.name === "ModelPackContractError"` and can leak its raw message. This is
+a bounded return to Runtime Test Design/TDD_READY with production frozen; no
+product, architecture, Spec, scope, dependency, or re-slice decision is
+needed. Acceptance, activation, archive, and downstream H/P/C/A remain blocked
+until corrected GREEN, retirement PASS, and another fresh Validator PASS.
 
 ## Frozen References
 
 - Explored baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
 - Failed frozen candidate Head: `c0bdf3a158a81d45131862debc8e2b1a24f076c3`
 - Validator 002 frozen Head: `1d88e0dafe4f80119f20677f5688622f2656ab3f`
+- Validator 003 frozen Head: `60a7aa09764c274c527e04d39b7ac6986560ba5f`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 002 remediation GREEN and repeated Test Asset
-  Retirement PASS; production and Tests frozen for fresh read-only Validator
+- Current lifecycle: Validator 003 FAIL; Runtime production frozen while only
+  the existing Runtime contract Test may establish two independent RED leaves
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -68,7 +78,7 @@ activation, archive, and downstream H/P/C/A remain blocked until fresh PASS.
 | implementation | PASS; only package 237 lines/`278025c1…` and Runtime 122 lines/`e343db1f…` changed | none unless production bytes change |
 | GREEN and affected regression | PASS; package 229/229, Runtime 72/72, E 301/301, inactive/affected/typecheck/canonical healthy | none unless frozen bytes change |
 | Test Asset Retirement | PASS; three findings deleted into existing tables, net -20 lines, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
-| independent verification | Validator 001 FAIL; Validator 002 FAIL on nine additional public counterexamples | corrected committed clean Head plus another fresh read-only Validator PASS |
+| independent verification | Validator 001/002 historical FAIL; Validator 003 FAIL on Runtime identity length and spoofed named-Error sanitization | corrected committed clean Head plus another fresh read-only Validator PASS |
 | Controller/user acceptance | blocked | fresh Validator PASS and complete current evidence |
 | archive | blocked | acceptance and integration |
 
@@ -826,3 +836,36 @@ authorized before its PASS.
   exactly `Lean already. Ship.`
 - Freeze: any production or Test byte change reopens its owning Gate. The next
   authorized action is one fresh committed read-only R2/Sol-high Validator.
+
+## Independent Validator 003 — FAIL and Bounded Runtime Return
+
+- Date: `2026-08-24`
+- Route: R2 / standard / Sol high; fresh independent read-only context.
+- Frozen Head: `60a7aa09764c274c527e04d39b7ac6986560ba5f` on
+  `work/macbook/model-pack-contract-enabler`; start/end worktree and index clean;
+  no repository byte changed and the temporary `/tmp` probe was removed.
+- Standard evidence PASS: package 229/229; Runtime 72/72; complete E 301/301;
+  inactive 15/15; root typecheck; affected Local Analysis 198/198, 292/292,
+  and E2E 133 PASS plus one authorized real-Pi skip; project board 12/12;
+  canonical 1,245 PASS plus that skip; all commands exited 0.
+- All 18 required Validator 001/002 public probes passed, including precise
+  decimals, Unicode scalar length, malformed-status/error precedence, closed
+  outer calls, throwing manifest/license and Runtime binding getters,
+  permission precedence, governed release identity length, and raw-path
+  rejection.
+- Two independent violations remain:
+  1. Runtime binding governed identity accepts 257 characters despite the
+     frozen 1–256 bound; and
+  2. Runtime preflight trusts only the `name` of an arbitrary ordinary Error,
+     allowing a fake `ModelPackContractError` name to leak its raw message.
+- Scope, architecture, inactive-by-default boundary, strict E -> H -> P -> C
+  -> A order, and the current retirement ledger independently pass, but the two
+  missing material leaves reopen Test Asset Retirement after correction.
+- Root cause: incomplete Runtime Test Design plus defects inside the existing
+  Runtime Port implementation. No Spec semantic change, user decision, new
+  mechanism, path expansion, dependency, or re-slice is required.
+- Return Gate: production stays frozen while formal Test may edit only
+  `tests/contract/model-pack-contract-enabler/analytical-model-runtime.contract.test.ts`
+  to establish the two causal leaves. TDD_READY may then release only
+  `packages/ports/analytical-model-runtime.ts`.
+- Verdict: `FAIL`.
