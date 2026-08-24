@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`EXTERNAL REVIEW FAIL — ACCEPTANCE/ARCHIVE WITHDRAWN — TEST DESIGN ACTIVE`
+`GREEN / RETIREMENT PASS — FRESH VALIDATOR PENDING`
 
 External review of PR #14 invalidated the accepted candidate at Head
 `27ede0970a70984e87c295dbd76917fb5b8017b0` with two frozen-contract defect
@@ -34,6 +34,24 @@ there is no temporary or retirement-candidate asset. TDD_READY releases only
 `packages/contracts/model-pack.ts` and
 `packages/ports/analytical-model-runtime.ts`; every Test and other path is
 frozen.
+
+The bounded Worker changed only those two production files. Controller rejected
+an initial Runtime rewrite that would have relaxed whitespace and `.`/`..`
+identity rejection; the corrected implementation changes only the Unicode
+scalar length measure and preserves every other predicate. Final production is
+package 259 lines/
+`977a0a42cfc26a9b1e6f1995229a22fd6e848668271a878180f75a3a8b6f2e06`
+and Runtime 148 lines/
+`e8b1d90dc4f8ad57bc2f8f360ac0cadd1bafa6f47e9d4e55f4c12707e7b97177`.
+Controller confirmed package 282/282, Runtime 98/98, complete E 380/380,
+inactive 15/15, typecheck, Local Analysis 198/198 and 292/292, E2E 133 PASS
+plus one authorized real-Pi skip, board 12/12, and canonical offline exit 0.
+Test Asset Retirement reconciled the complete two-file `+91/-0` Test delta:
+both suites remain permanent regressions with current consumers, no helper or
+fixture changed, scans found no temporary/retirement/skip/todo/only asset, and
+the mandatory complete-diff ponytail result is exactly `Lean already. Ship.`
+Production, Tests, and evidence are frozen for one fresh R2 / standard /
+Sol-high Validator. Acceptance/archive remain withdrawn pending that verdict.
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -209,10 +227,10 @@ Profile, authorize downstream H/P/C/A, or merge the Git branch.
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
 | Test Design and driver health | PASS; package 687 lines/`f1df1350…9b505`, Runtime 521 lines/`06df33d5…19a6c`; prior assertions and helpers healthy | none unless a Test byte changes |
 | causal expected RED | PASS; package 282/236/46, Runtime 98/94/4, E 380/330/50 fail only on 39 new leaves and 11 aggregate/table parents | bounded two-file Worker repair |
-| implementation | historical PASS invalidated; renewed TDD_READY releases exactly the two owning production files | focused GREEN with Tests frozen |
-| GREEN and affected regression | historical PASS invalidated | focused E/inactive/Local Analysis/canonical GREEN on the repaired candidate |
-| Test Asset Retirement | reopened by new Test assets | reconcile full Test delta and fresh ponytail after GREEN |
-| independent verification | Validator 008 historical PASS invalidated by external counterexamples | fresh R2 / standard / Sol-high Validator PASS on a new frozen Head |
+| implementation | PASS; package 259 lines/`977a0a42…f2e06`, Runtime 148 lines/`e8b1d90d…b97177`; only two production files changed | none unless production bytes change |
+| GREEN and affected regression | PASS; package 282/282, Runtime 98/98, E 380/380, inactive/Local Analysis/E2E/typecheck/board/canonical healthy | none unless frozen bytes change |
+| Test Asset Retirement | PASS; two permanent suites, complete `+91/-0` delta, scans clean, ponytail `Lean already. Ship.` | none unless Test bytes change |
+| independent verification | Validator 008 historical PASS invalidated; new candidate frozen | fresh R2 / standard / Sol-high Validator PASS on the new committed Head |
 | Controller/user acceptance | withdrawn | new Validator PASS plus Controller re-review |
 | archive | withdrawn; Change restored active | only after renewed acceptance; no Git merge |
 

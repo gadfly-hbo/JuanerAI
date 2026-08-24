@@ -9,12 +9,12 @@
 | `TASK-003` Package Test Design and RED | `juaner_test`; complete and frozen | 687-line/`f1df1350…9b505` suite; 36 URI leaves plus table/aggregate parents causal RED | REQ-MPC-002, 004 |
 | `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; complete and frozen | 521-line/`06df33d5…19a6c` suite; three Unicode-scalar leaves plus parent causal RED | REQ-MPC-001, 003, 004 |
 | `TASK-005` TDD_READY | Controller; PASS | package 282/236/46, Runtime 98/94/4, E 380/330/50; only 39 new leaves and 11 parents fail; two production files released | all |
-| `TASK-006` Implement contracts | `juaner_worker`; active | only `packages/contracts/model-pack.ts`; every Test and other path frozen | REQ-MPC-001, 002, 005 |
-| `TASK-007` Implement Runtime Port | `juaner_worker`; active | only `packages/ports/analytical-model-runtime.ts`; every Test and other path frozen | REQ-MPC-003, 005 |
+| `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | package 259-line/`977a0a42…f2e06`; percent-encoded locator rules GREEN | REQ-MPC-001, 002, 005 |
+| `TASK-007` Implement Runtime Port | `juaner_worker`; complete and frozen | Runtime 148-line/`e8b1d90d…b97177`; scalar-length-only correction GREEN | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
-| `TASK-009` GREEN and regression | reopened | focused package/Runtime/E/inactive plus Local Analysis and canonical evidence | all |
-| `TASK-010` Test Asset Retirement Gate | reopened | reconcile complete Test delta, scans, and fresh ponytail review after GREEN | REQ-MPC-004 |
-| `TASK-011` Independent verification | Validator 008 historical PASS invalidated | fresh R2 / standard / Sol-high Validator on new frozen Head | all |
+| `TASK-009` GREEN and regression | complete and frozen | package 282, Runtime 98, E 380, inactive 15, affected/canonical PASS | all |
+| `TASK-010` Test Asset Retirement Gate | PASS | two permanent suites, `+91/-0`, scans clean, ponytail `Lean already. Ship.` | REQ-MPC-004 |
+| `TASK-011` Independent verification | fresh Validator ready | R2 / standard / Sol-high Validator on new frozen Head | all |
 | `TASK-012` Accept, integrate, archive | withdrawn | PR #14 Draft; no acceptance/archive/M1/H/P/C/A until new Validator PASS and re-review | all |
 
 ## Test-owned Exact Paths

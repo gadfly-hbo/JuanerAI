@@ -532,6 +532,16 @@ helper health, and every prior leaf. The failures are exactly 39 new leaves and
 temporary or retirement-candidate asset exists. Tests are frozen for the
 bounded two-file Worker.
 
+The bounded Worker closed every new leaf without changing any Test byte.
+Controller confirmed package 282/282, Runtime 98/98, E 380/380, inactive
+15/15, typecheck, Local Analysis 198/198 and 292/292, E2E 133 PASS plus one
+authorized skip, board 12/12, and canonical exit 0. The complete Test delta is
+exactly the two existing suites at `+91/-0`; both remain permanent current
+regressions with named consumers, no helper/fixture/driver changed, and scans
+found no temporary, retirement, skip, todo, or only marker. Mandatory
+`ponytail-review` returned exactly `Lean already. Ship.` Tests are frozen for
+fresh independent validation.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

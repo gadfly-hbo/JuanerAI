@@ -198,7 +198,15 @@ const validateObservation = (candidate: unknown, code: ModelPackErrorCode, relea
   } catch (reason) { throw trustedModelPackError(modelPackErrorCode(reason) ?? (release ? 'MODEL_PACK_RELEASE_REFERENCE_INVALID' : code)); }
 };
 function validateFileUri(value: string): void {
-  try { const parsed = new URL(value); if (parsed.protocol !== 'file:' || parsed.host || parsed.username || parsed.password || parsed.search || parsed.hash || parsed.href !== value || !parsed.pathname.startsWith('/') || parsed.pathname.includes('//') || parsed.pathname.split('/').some((part) => part === '.' || part === '..' || /%2e/i.test(part) || /^(latest|alias)$/i.test(part))) fail('MODEL_PACK_RELEASE_REFERENCE_INVALID'); } catch (error) { if ((error as { code?: unknown }).code === 'MODEL_PACK_RELEASE_REFERENCE_INVALID') throw error; fail('MODEL_PACK_RELEASE_REFERENCE_INVALID'); }
+  try {
+    const parsed = new URL(value);
+    const parts = parsed.pathname.split('/');
+    if (parsed.protocol !== 'file:' || parsed.host || parsed.username || parsed.password || parsed.search || parsed.hash || parsed.href !== value || !parsed.pathname.startsWith('/') || parsed.pathname.includes('//') || parts.some((part) => {
+      if (part === '.' || part === '..' || /%2e/i.test(part) || /%2f|%5c/i.test(part)) return true;
+      const decoded = decodeURIComponent(part);
+      return /^(latest|alias)$/i.test(decoded) || /[\x00-\x1f\x7f-\x9f]/.test(decoded);
+    })) fail('MODEL_PACK_RELEASE_REFERENCE_INVALID');
+  } catch (error) { if ((error as { code?: unknown }).code === 'MODEL_PACK_RELEASE_REFERENCE_INVALID') throw error; fail('MODEL_PACK_RELEASE_REFERENCE_INVALID'); }
 }
 
 export function serializeModelPackManifest(manifest: ModelPackManifestV1): Uint8Array { return sanitized('MODEL_PACK_CONTRACT_INVALID', () => canonical(validateManifest(manifest))); }

@@ -5,9 +5,9 @@
 - Change: `CHG-model-pack-contract-enabler`
 - Change class: boundary change; R2 / complex root-cause
 - accepted baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
-- archive path: `openspec/changes/archive/2026-08-24-model-pack-contract-enabler`
-- final Validator verdict: `PASS` — Validator 008; Validator 001 through 006 remain historical product `FAIL` and Validator 007 remains an operational `FAIL`
-- Controller acceptance: `PASS`; archive authorized
+- archive path: historical `openspec/changes/archive/2026-08-24-model-pack-contract-enabler`; withdrawn and restored active after PR #14 external review
+- final Validator verdict: Validator 008 historical `PASS` invalidated by external counterexamples; fresh Validator pending
+- Controller acceptance: withdrawn; PR #14 Draft
 
 ## Intended Value
 
@@ -20,12 +20,12 @@
 
 | Evidence | Expected | Current Result | Source |
 |---|---|---|---|
-| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | all leaves GREEN; Validator 008 PASS | `traceability.md`, `verification.md` |
+| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | repaired candidate GREEN; fresh Validator pending | `traceability.md`, `verification.md` |
 | expected RED | every material frozen invariant fails causally before implementation | latest return: package 235/235, Runtime 82/86, E 317/321; exactly three leaves plus one parent | `test-plan.md`, `verification.md` |
-| target GREEN | focused, affected, and canonical evidence PASS | package 235/235, Runtime 86/86, E 321/321; canonical PASS | `verification.md` |
-| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | GREEN, retirement PASS, and Validator 008 PASS | `verification.md` |
+| target GREEN | focused, affected, and canonical evidence PASS | package 282/282, Runtime 98/98, E 380/380; canonical PASS | `verification.md` |
+| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | renewed GREEN and retirement PASS; fresh Validator pending | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |
-| independent validation | fresh read-only PASS | Validator 008 PASS from a clean committed Head; 84/84 equivalent and 17/17 Unicode leaves PASS | `verification.md` |
+| independent validation | fresh read-only PASS | Validator 008 historical PASS invalidated; replacement Validator pending | `verification.md` |
 
 ## Effort and Rework
 
@@ -93,14 +93,14 @@
 - behavior that must be reused: exact closed package/Runtime calls, sanitized carrier, stable error precedence, exact decimal comparisons, printable bounded identities/categories, inert composition, and strict E -> H -> P -> C -> A integration.
 - decisions that must not be reopened implicitly: no Provider/Consumer/Profile/activation in E; no dependency, registry, fallback, persistence, real data/model/network/MLflow, or new runtime abstraction.
 - expected ordinary Change shape: rule-by-rule public-boundary Test matrix, causal RED, one owning production return, full affected/canonical GREEN, retirement reconciliation, and fresh independent validation.
-- remaining risks: no E release blocker. Later P/C Changes must retain the
-  accepted inactive contracts and independently prove their Provider/Consumer
-  conformance without reopening E's non-goals.
+- remaining risks: the repaired candidate requires a fresh independent
+  Validator and Controller re-review before acceptance/archive. Later P/C
+  Changes remain blocked and must not reopen E's non-goals.
 - explicitly deferred work: P/C/A implementations and every real Artifact, SDK, model, data, or activation proof.
 
 ## Completion Criterion
 
-- [x] Final facts match verification, traceability, baseline, archive, and project board.
+- [ ] Final facts match verification, traceability, baseline, archive, and project board.
 - [x] Reusable assets have discoverable pointers.
 - [x] Durable product semantics were not changed by this retrospective.
 - [x] Tooling/code debt is not misrepresented as solved by documentation.
