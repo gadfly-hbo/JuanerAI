@@ -14,8 +14,8 @@
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
 | `TASK-009` GREEN and regression | complete and frozen | package 282, Runtime 98, E 380, inactive 15, affected/canonical PASS | all |
 | `TASK-010` Test Asset Retirement Gate | PASS | two permanent suites, `+91/-0`, scans clean, ponytail `Lean already. Ship.` | REQ-MPC-004 |
-| `TASK-011` Independent verification | fresh Validator ready | R2 / standard / Sol-high Validator on new frozen Head | all |
-| `TASK-012` Accept, integrate, archive | withdrawn | PR #14 Draft; no acceptance/archive/M1/H/P/C/A until new Validator PASS and re-review | all |
+| `TASK-011` Independent verification | Validator 009 PASS | R2 / standard / Sol-high PASS on clean frozen Head `e023c14…e4ae3`; standard, URI 88/88, identity 54/54, scope/retirement/cleanliness PASS | all |
+| `TASK-012` Accept, integrate, archive | withdrawn; re-review pending | PR #14 Draft; no acceptance/archive/merge/M1/H/P/C/A until re-review after Validator 009 PASS | all |
 
 ## Test-owned Exact Paths
 

@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_validator_009_active",
-    "label": "Model Pack Contract Enabler：Validator 009 Active",
-    "ordinal": 6,
+    "id": "model_pack_contract_enabler_validator_009_pass_re_review",
+    "label": "Model Pack Contract Enabler：Validator 009 PASS / Re-review Pending",
+    "ordinal": 7,
     "total": 8
   },
-  "health": "validating",
-  "summary": "External-review repair GREEN: package 282, Runtime 98, E 380, inactive 15, affected/canonical PASS; Retirement and ponytail PASS.",
-  "current_objective": "Fresh R2 / standard / Sol-high Validator 009 independently verifies the new frozen committed candidate.",
-  "next_action": "Require explicit fresh Validator PASS before re-acceptance, archive, PR readiness, M1, or H/P/C/A.",
+  "health": "waiting_user",
+  "summary": "Validator 009 PASS: standard, URI 88/88, identity 54/54, scope, retirement, and cleanliness PASS; acceptance/archive remain withdrawn.",
+  "current_objective": "Keep PR #14 Draft and preserve the frozen active Change until Controller/external re-review.",
+  "next_action": "Re-review PR #14; do not accept, archive, merge, generate M1, or start H/P/C/A before renewed approval.",
   "blockers": [],
   "milestones": [
     {
@@ -45,7 +45,7 @@
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "active"
+      "status": "completed"
     },
     {
       "id": "user_acceptance",
@@ -91,7 +91,7 @@
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "active",
+      "status": "complete",
       "activation": "实现与证据冻结"
     }
   ],
@@ -111,7 +111,7 @@
     {
       "id": "tasks",
       "label": "E lifecycle tasks currently closed",
-      "done": 10,
+      "done": 11,
       "total": 12
     },
     {
@@ -604,9 +604,9 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T11:35:06.017Z",
+  "updated_at": "2026-08-24T11:43:54.356Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-pr14-external-review-20260824"
+    "session": "controller-pr14-validator009-20260824"
   }
 }

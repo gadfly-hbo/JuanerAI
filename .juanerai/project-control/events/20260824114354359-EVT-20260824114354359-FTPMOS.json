@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824114354359-FTPMOS",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-24T11:43:54.359Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pr14-validator009-20260824"
+  },
+  "summary": "Validator 009 PASS recorded; PR #14 remains Draft and acceptance/archive stay withdrawn pending re-review",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

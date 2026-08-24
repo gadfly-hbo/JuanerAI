@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`GREEN / RETIREMENT PASS — FRESH VALIDATOR PENDING`
+`VALIDATOR 009 PASS — RE-REVIEW PENDING; ACCEPTANCE/ARCHIVE WITHDRAWN`
 
 External review of PR #14 invalidated the accepted candidate at Head
 `27ede0970a70984e87c295dbd76917fb5b8017b0` with two frozen-contract defect
@@ -50,8 +50,25 @@ Test Asset Retirement reconciled the complete two-file `+91/-0` Test delta:
 both suites remain permanent regressions with current consumers, no helper or
 fixture changed, scans found no temporary/retirement/skip/todo/only asset, and
 the mandatory complete-diff ponytail result is exactly `Lean already. Ship.`
-Production, Tests, and evidence are frozen for one fresh R2 / standard /
-Sol-high Validator. Acceptance/archive remain withdrawn pending that verdict.
+Production, Tests, and evidence are frozen. Fresh Validator 009 passed the
+committed candidate without modifying repository state. Acceptance/archive
+remain withdrawn and PR #14 remains Draft pending Controller/external
+re-review; this PASS does not authorize merge, M1, or H/P/C/A.
+
+Fresh read-only R2 / standard / Sol-high Validator 009 verified exact Head
+`e023c14b02fb4ae29254e6f68f707cef094e4ae3` from a clean start and end state.
+The standard matrix passed: package 282/282, Runtime 98/98, complete E 380/380,
+inactive 15/15, typecheck, Local Analysis 198/198 and 292/292, E2E 133 PASS plus
+one existing authorized real-Pi skip, board 12/12, and canonical 1,324 PASS plus
+that skip. Its independent URI matrix passed 88/88 across 22 equivalent values
+and four public boundaries with exact
+`MODEL_PACK_RELEASE_REFERENCE_INVALID`; its Unicode identity matrix passed
+54/54, accepting 200/256 and rejecting 257 supplementary scalars consistently
+across manifest and Runtime factory positions while retaining all governed
+identity rejections. Five Requirements, 30 ACs, nine Test identities, 12 Tasks,
+19 stable errors, architecture, inactive scope, strict E -> H -> P -> C -> A,
+retirement, and the clean 96-path baseline delta all passed. Validator 008 and
+the prior acceptance/archive remain preserved only as invalidated history.
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -209,9 +226,10 @@ Profile, authorize downstream H/P/C/A, or merge the Git branch.
 - Validator 006 frozen Head: `de09cd9515c8bb2ba3382629552a7b0f345a1803`
 - Validator 007 frozen Head: `1ca62a3ebc141512913480f072014e6ef9a75480`
 - Validator 008 PASS Head: `1ef1b66c0fac726d25034d83cc2a52e9c33ee81b`
+- Validator 009 PASS Head: `e023c14b02fb4ae29254e6f68f707cef094e4ae3`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: external review FAIL; acceptance/archive withdrawn; Test Design active
+- Current lifecycle: Validator 009 PASS; re-review pending; acceptance/archive withdrawn
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -230,9 +248,39 @@ Profile, authorize downstream H/P/C/A, or merge the Git branch.
 | implementation | PASS; package 259 lines/`977a0a42…f2e06`, Runtime 148 lines/`e8b1d90d…b97177`; only two production files changed | none unless production bytes change |
 | GREEN and affected regression | PASS; package 282/282, Runtime 98/98, E 380/380, inactive/Local Analysis/E2E/typecheck/board/canonical healthy | none unless frozen bytes change |
 | Test Asset Retirement | PASS; two permanent suites, complete `+91/-0` delta, scans clean, ponytail `Lean already. Ship.` | none unless Test bytes change |
-| independent verification | Validator 008 historical PASS invalidated; new candidate frozen | fresh R2 / standard / Sol-high Validator PASS on the new committed Head |
-| Controller/user acceptance | withdrawn | new Validator PASS plus Controller re-review |
+| independent verification | Validator 009 PASS on clean frozen Head; standard plus URI 88/88 and identity 54/54 independent matrices PASS | none unless frozen bytes change |
+| Controller/user acceptance | withdrawn; re-review pending | Controller/external re-review after Validator 009 PASS |
 | archive | withdrawn; Change restored active | only after renewed acceptance; no Git merge |
+
+## Independent Validator 009 — PASS; Re-review Pending
+
+- Date: `2026-08-24`.
+- Route: R2 / standard / Sol high; fresh independent read-only context.
+- Frozen Head: `e023c14b02fb4ae29254e6f68f707cef094e4ae3`; branch, index,
+  and worktree were clean at start and end; no repository byte was written.
+- Standard evidence PASS: package 282/282; Runtime 98/98; complete E 380/380;
+  inactive 15/15; typecheck; Local Analysis 198/198 and 292/292; E2E 133 PASS
+  plus one existing authorized real-Pi skip; board 12/12; canonical 1,324 PASS
+  plus that skip.
+- URI equivalent-boundary evidence PASS 88/88: 22 encoded separator,
+  alias/latest, unusable control, malformed-encoding, dot/traversal-nearby, and
+  case variants across all four release/observation public boundaries. Every
+  rejection returned exact `MODEL_PACK_RELEASE_REFERENCE_INVALID`; no
+  mismatched-evidence code masked locator invalidity and no raw diagnostic
+  escaped.
+- Unicode identity evidence PASS 54/54: manifest Runtime/dependency and factory
+  Runtime/Adapter/dependency positions accept 200 and 256 supplementary Unicode
+  scalars and reject 257. Existing whitespace, control/format, separator,
+  credential, dot/dotdot, and alias/latest rejection remains intact; rejected
+  bindings make zero predictor calls.
+- Contract, traceability, architecture, inactivity, integration order, scope,
+  Test Asset Retirement, ponytail, and operational cleanliness PASS. Baseline
+  delta is 96 paths: 75 project-control, nine Change, nine allowed, three
+  conditional, zero forbidden. The external-review return delta contains only
+  three project-control paths, five Controller evidence paths, two Test paths,
+  and the two authorized production paths.
+- Verdict: `PASS`. This closes TASK-011 only. TASK-012, acceptance, archive, PR
+  readiness/merge, M1, and H/P/C/A remain blocked pending re-review.
 
 ## Validations Actually Run During Spec
 
