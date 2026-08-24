@@ -515,6 +515,23 @@ Validator 008 independently passed the complete standard matrix, reconstructed
 retirement ledger. The Test assets are accepted and remain permanent for later
 P/C conformance; no Test byte changes are authorized during archive.
 
+PR #14 external review invalidated that historical acceptance with two further
+frozen-contract gaps. Formal R2 Test preserved every prior assertion and added
+the minimum permanent equivalence tables to the two existing suites. Nine MP9
+encoded-locator inputs cover upper/lower encoded forward/back separators,
+encoded alias/latest segments, and encoded C0/C1/DEL controls. Each input is
+checked at release serialization, release-only admission, observation-only
+admission, and matching-invalid release/observation admission, with exact
+`MODEL_PACK_RELEASE_REFERENCE_INVALID` precedence. Manifest and Runtime tests
+also cover 200 and 256 supplementary Unicode scalars as valid governed
+identities and 257 as invalid; Runtime, Adapter, and dependency positions are
+independent and retain zero predictor calls. Controller confirmed package
+282/236/46, Runtime 98/94/4, complete E 380/330/50, inactive 15/15, typecheck,
+helper health, and every prior leaf. The failures are exactly 39 new leaves and
+11 table/aggregate parents. Both changed suites are permanent regressions; no
+temporary or retirement-candidate asset exists. Tests are frozen for the
+bounded two-file Worker.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

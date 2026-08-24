@@ -19,6 +19,22 @@ two existing contract suites to establish causal RED and check equivalent
 boundaries. Any required identity-semantic change returns to Controller and
 must not be hidden by changing the Spec. M1 and H/P/C/A remain blocked.
 
+Formal R2 Test changed only the two existing contract suites and preserved every
+prior assertion. The package suite is 687 lines/
+`f1df135046c546277156416460013bcbd41312d0a83f56ae049aefa5f5f9b505`;
+the Runtime suite is 521 lines/
+`06df33d5e1acd8a0160a1b43c752f07bc2d98a61394153a1c4731ee70f419a6c`.
+Controller independently confirmed causal RED: package 282 total/236 pass/46
+fail, Runtime 98/94/4, and complete E 380/330/50. The failures are exactly 36
+MP9 URI public-boundary leaves plus their nine table parents and package parent,
+and three Unicode-scalar factory leaves plus the Runtime parent. Inactive 15/15,
+typecheck, helper health, every prior leaf, and `git diff --check` pass. The two
+changed suites are permanent regressions with current P/C/Validator consumers;
+there is no temporary or retirement-candidate asset. TDD_READY releases only
+`packages/contracts/model-pack.ts` and
+`packages/ports/analytical-model-runtime.ts`; every Test and other path is
+frozen.
+
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
 below. Fresh R2/Sol-high independent validation of committed frozen Head
@@ -191,9 +207,9 @@ Profile, authorize downstream H/P/C/A, or merge the Git branch.
 | inactive-loader/closed-graph R2 package and Test return | historical Controller Spec Gate PASS; exact Local Analysis correction complete; strict inactive Test still conflicts with Node v26 nested `openSync` | superseded as current Gate authority by this nested-loader-chain revision |
 | nested-loader-chain R2 package | Controller Spec Gate PASS | one bounded inactive Test correction only |
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
-| Test Design and driver health | reopened; formal Test must encode both external defect families and equivalent boundaries without changing Spec semantics | causal RED with healthy helpers and frozen Test hashes |
-| causal expected RED | pending | fail only on the new URI and Unicode-scalar leaves plus existing aggregate parents |
-| implementation | historical PASS invalidated; both production files frozen | TDD_READY may release only the owning necessary production file(s) |
+| Test Design and driver health | PASS; package 687 lines/`f1df1350…9b505`, Runtime 521 lines/`06df33d5…19a6c`; prior assertions and helpers healthy | none unless a Test byte changes |
+| causal expected RED | PASS; package 282/236/46, Runtime 98/94/4, E 380/330/50 fail only on 39 new leaves and 11 aggregate/table parents | bounded two-file Worker repair |
+| implementation | historical PASS invalidated; renewed TDD_READY releases exactly the two owning production files | focused GREEN with Tests frozen |
 | GREEN and affected regression | historical PASS invalidated | focused E/inactive/Local Analysis/canonical GREEN on the repaired candidate |
 | Test Asset Retirement | reopened by new Test assets | reconcile full Test delta and fresh ponytail after GREEN |
 | independent verification | Validator 008 historical PASS invalidated by external counterexamples | fresh R2 / standard / Sol-high Validator PASS on a new frozen Head |

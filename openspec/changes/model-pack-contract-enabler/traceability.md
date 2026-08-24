@@ -73,6 +73,11 @@ scalar identity length between manifest admission and Runtime construction.
 Validator 008 and Controller acceptance remain historical but no longer release
 the candidate. Archive is withdrawn, production is frozen, and formal Test
 Design is active without a Spec semantic or scope change.
+Formal Test added the URI and Unicode-scalar boundaries only to the two existing
+contract suites. Controller confirmed package 282/236/46, Runtime 98/94/4, and
+E 380/330/50 with failures exactly on 39 new causal leaves and 11 table/aggregate
+parents; inactive 15/15 and typecheck pass. Renewed TDD_READY releases only the
+package and Runtime production files; both Tests and every other path are frozen.
 
 | Requirement | Acceptance | Planned test/evidence | Task | Candidate code/evidence | Current result |
 |---|---|---|---|---|---|
@@ -83,12 +88,12 @@ Design is active without a Spec semantic or scope change.
 | REQ-MPC-001 | AC-MPC-001-05 | TEST-MPC-002 | TASK-003,006 | exact input admission/canonical-byte signatures; precise decimal ordering; Unicode scalar category length | REMEDIATION GREEN |
 | REQ-MPC-001 | AC-MPC-001-06 | TEST-MPC-002 | TASK-003,006 | exact forecast admission and precise interval ordering; Runtime-owned result/provenance boundary | REMEDIATION GREEN |
 | REQ-MPC-001 | AC-MPC-001-07 | TEST-MPC-001 | TASK-003,006 | exact evaluation decimal thresholds and metadata/no-data-access proof | REMEDIATION GREEN |
-| REQ-MPC-002 | AC-MPC-002-01 | TEST-MPC-003 | TASK-003,006 | exact release serialize/admit signatures + bounded non-path identities + release bytes/observation/expected binding + closed local-URI verification assertion | EXTERNAL COUNTEREXAMPLE; TEST DESIGN ACTIVE |
+| REQ-MPC-002 | AC-MPC-002-01 | TEST-MPC-003 | TASK-003,006 | exact release serialize/admit signatures + bounded non-path identities + release bytes/observation/expected binding + closed local-URI verification assertion | CAUSAL RED; TDD_READY |
 | REQ-MPC-002 | AC-MPC-002-02 | TEST-MPC-003 | TASK-003,006 | release-stage/decision gate | GREEN PASS |
-| REQ-MPC-002 | AC-MPC-002-03 | TEST-MPC-003 | TASK-003,006 | exact Registry/URI plus supplied location-verification shape/kind admission; no path access | EXTERNAL COUNTEREXAMPLE; TEST DESIGN ACTIVE |
+| REQ-MPC-002 | AC-MPC-002-03 | TEST-MPC-003 | TASK-003,006 | exact Registry/URI plus supplied location-verification shape/kind admission; no path access | CAUSAL RED; TDD_READY |
 | REQ-MPC-002 | AC-MPC-002-04 | TEST-MPC-003 | TASK-003,006 | only repeated release bindings and observation URI/SHA/size/Signature comparisons; singleton lower-boundary codes | GREEN PASS |
 | REQ-MPC-002 | AC-MPC-002-05 | TEST-MPC-003,004 | TASK-003,006 | package fixture and driver; P ownership stop line | GREEN PASS |
-| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; closed dependencies array; governed identity printable/no-control/Unicode-scalar-length/no-credential boundary; adversarial carrier sanitization | EXTERNAL COUNTEREXAMPLE; TEST DESIGN ACTIVE |
+| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; closed dependencies array; governed identity printable/no-control/Unicode-scalar-length/no-credential boundary; adversarial carrier sanitization | CAUSAL RED; TDD_READY |
 | REQ-MPC-003 | AC-MPC-003-02 | TEST-MPC-005 | TASK-004,007 | immutable readiness/openRun/snapshot capture | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-03 | TEST-MPC-005,007 | TASK-004,007 | exact predictor request/same signal and deadline; one-shot predict; Runtime-owned result/provenance | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-04 | TEST-MPC-006 | TASK-004,007 | native mock timers + AbortController + externally ordered atomic terminal outcomes | GREEN PASS |
@@ -97,9 +102,9 @@ Design is active without a Spec semantic or scope change.
 | REQ-MPC-003 | AC-MPC-003-07 | TEST-MPC-005,007 | TASK-004,007 | closed Port/result and forbidden-effect evidence | GREEN PASS |
 | REQ-MPC-004 | AC-MPC-004-01 | TEST-MPC-004 | TASK-003 | package driver/double health | GREEN PASS |
 | REQ-MPC-004 | AC-MPC-004-02 | TEST-MPC-008 | TASK-004 | exact Runtime harness/driver via public predictor seam; double health | GREEN PASS |
-| REQ-MPC-004 | AC-MPC-004-03 | TEST-MPC-001..009 | TASK-003,004 | exact signature/error-delivery and independently named material mutation leaves | REOPENED; URI/UNICODE EQUIVALENCE COVERAGE REQUIRED |
+| REQ-MPC-004 | AC-MPC-004-03 | TEST-MPC-001..009 | TASK-003,004 | exact signature/error-delivery and independently named material mutation leaves | NEW EQUIVALENCE LEAVES FROZEN |
 | REQ-MPC-004 | AC-MPC-004-04 | TEST-MPC-004,008 | TASK-003,004,011 | shared drivers plus Controller/Validator ownership review | DRIVER/OWNERSHIP PASS |
-| REQ-MPC-004 | AC-MPC-004-05 | Controller TDD_READY evidence | TASK-005 | new Test hashes/counts and exact causal RED; bounded production release | PENDING |
+| REQ-MPC-004 | AC-MPC-004-05 | Controller TDD_READY evidence | TASK-005 | new Test hashes/counts and exact causal RED; bounded production release | TDD_READY PASS |
 | REQ-MPC-004 | AC-MPC-004-06 | Controller retirement Gate | TASK-003,004,010 | complete new Test delta reconciled; scans clean; fresh ponytail lean | REOPENED |
 | REQ-MPC-005 | AC-MPC-005-01 | TEST-MPC-009 + TEST-XCLI-021 affected existing regression | TASK-004,008,009 | inactive integration plus completed, byte-frozen exact eight-entry mirrored `approvedTsconfig.files` append; every other Xanthil assertion/current behavior preserved | GREEN PASS |
 | REQ-MPC-005 | AC-MPC-005-02 | TEST-MPC-009 | TASK-004,006,007 | inert import/build/driver composition; exact Node loader paired source-read chains classified as toolchain mechanics, every other filesystem/product effect forbidden | GREEN PASS |
@@ -124,9 +129,9 @@ Design is active without a Spec semantic or scope change.
 |---|---|---|
 | TASK-001 | REQ-MPC-001..005 R2 decision package | complete; current Controller Spec Gate PASS |
 | TASK-002 | every REQ/AC/design mechanism | fresh complete-diff ponytail `Lean already. Ship.` and Controller PASS |
-| TASK-003 | TEST-MPC-001..004 | external URI return active; package production frozen |
-| TASK-004 | TEST-MPC-005..009 plus existing frozen TEST-XCLI-021 | external Unicode-scalar return active; Runtime production frozen |
-| TASK-005 | all tests and exact Worker scope | pending causal RED and renewed TDD_READY |
+| TASK-003 | TEST-MPC-001..004 | formal URI return complete; package suite frozen at `f1df1350…9b505` |
+| TASK-004 | TEST-MPC-005..009 plus existing frozen TEST-XCLI-021 | formal Unicode-scalar return complete; Runtime suite frozen at `06df33d5…19a6c` |
+| TASK-005 | all tests and exact Worker scope | renewed TDD_READY PASS; two production files released |
 | TASK-006 | REQ-MPC-001, 002, 005 | historical complete; reopened pending URI RED |
 | TASK-007 | REQ-MPC-003, 005 | historical complete; reopened pending Unicode-scalar RED |
 | TASK-008 | REQ-MPC-004, 005 | exact graph integration complete and frozen |

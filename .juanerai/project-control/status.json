@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_external_review_test_design",
-    "label": "Model Pack Contract Enabler：External Review / Test Design",
-    "ordinal": 4,
+    "id": "model_pack_contract_enabler_external_review_tdd_ready",
+    "label": "Model Pack Contract Enabler：TDD_READY / Worker Active",
+    "ordinal": 5,
     "total": 8
   },
   "health": "active",
-  "summary": "PR #14 external review invalidated the accepted candidate on MP9 percent-encoded URI and Unicode-scalar identity boundaries; acceptance/archive withdrawn.",
-  "current_objective": "Formal Test establishes causal RED for both frozen-contract defect families and equivalent boundaries without changing Spec semantics.",
-  "next_action": "Dispatch R2 Terra-high juaner_test; require healthy causal RED before any production path is released.",
+  "summary": "Formal Test established causal RED: package 282/236/46, Runtime 98/94/4, E 380/330/50; inactive and typecheck PASS.",
+  "current_objective": "Bounded Worker closes the frozen URI and Unicode-scalar defects in exactly two production files with Tests frozen.",
+  "next_action": "Dispatch R2 Terra-high juaner_worker; require focused GREEN before regression and retirement review.",
   "blockers": [],
   "milestones": [
     {
@@ -35,12 +35,12 @@
     {
       "id": "test_red",
       "label": "Test / RED",
-      "status": "active"
+      "status": "completed"
     },
     {
       "id": "implementation_green",
       "label": "实现 / GREEN",
-      "status": "pending"
+      "status": "active"
     },
     {
       "id": "independent_validation",
@@ -77,14 +77,14 @@
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra · high (R2 automatic escalation)",
-      "status": "active",
+      "status": "complete",
       "activation": "Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra · high (R2 route)",
-      "status": "waiting",
+      "status": "active",
       "activation": "TDD_READY"
     },
     {
@@ -105,13 +105,13 @@
     {
       "id": "tests",
       "label": "External-review defect families encoded in formal Tests",
-      "done": 0,
+      "done": 2,
       "total": 2
     },
     {
       "id": "tasks",
       "label": "E lifecycle tasks currently closed",
-      "done": 3,
+      "done": 6,
       "total": 12
     },
     {
@@ -604,7 +604,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T11:21:53.788Z",
+  "updated_at": "2026-08-24T11:29:22.705Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-pr14-external-review-20260824"

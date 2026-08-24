@@ -6,11 +6,11 @@
 |---|---|---|---|
 | `TASK-001` Complete R2 decision package | `juaner_spec`; complete | this Change's OpenSpec files only; preserves the public surface, prior permission-oracle disposition, and completed closed-graph correction while distinguishing the exact paired Node v26 source-loader chains from product filesystem effects | REQ-MPC-001..005 |
 | `TASK-002` Repeat Spec Gate and lean review | Controller; PASS | nested `openSync` loader-chain root cause, paired-chain/no-mechanism disposition, full-package consistency, and mandatory complete-diff ponytail review | all |
-| `TASK-003` Package Test Design and RED | `juaner_test`; external-review return active | add minimum permanent MP9 percent-encoded URI boundary leaves to the existing package suite; preserve all prior assertions | REQ-MPC-002, 004 |
-| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; external-review return active | add minimum permanent 1–256 Unicode-scalar identity consistency leaves to existing package/Runtime suites; preserve all prior assertions | REQ-MPC-001, 003, 004 |
-| `TASK-005` TDD_READY | Controller; pending | exact causal RED, Test hashes/counts, lifecycle ledger, and only necessary production release | all |
-| `TASK-006` Implement contracts | `juaner_worker`; historical complete, reopened | only `packages/contracts/model-pack.ts` if causal RED proves ownership | REQ-MPC-001, 002, 005 |
-| `TASK-007` Implement Runtime Port | `juaner_worker`; historical complete, reopened | only `packages/ports/analytical-model-runtime.ts` if causal RED proves ownership | REQ-MPC-003, 005 |
+| `TASK-003` Package Test Design and RED | `juaner_test`; complete and frozen | 687-line/`f1df1350…9b505` suite; 36 URI leaves plus table/aggregate parents causal RED | REQ-MPC-002, 004 |
+| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; complete and frozen | 521-line/`06df33d5…19a6c` suite; three Unicode-scalar leaves plus parent causal RED | REQ-MPC-001, 003, 004 |
+| `TASK-005` TDD_READY | Controller; PASS | package 282/236/46, Runtime 98/94/4, E 380/330/50; only 39 new leaves and 11 parents fail; two production files released | all |
+| `TASK-006` Implement contracts | `juaner_worker`; active | only `packages/contracts/model-pack.ts`; every Test and other path frozen | REQ-MPC-001, 002, 005 |
+| `TASK-007` Implement Runtime Port | `juaner_worker`; active | only `packages/ports/analytical-model-runtime.ts`; every Test and other path frozen | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
 | `TASK-009` GREEN and regression | reopened | focused package/Runtime/E/inactive plus Local Analysis and canonical evidence | all |
 | `TASK-010` Test Asset Retirement Gate | reopened | reconcile complete Test delta, scans, and fresh ponytail review after GREEN | REQ-MPC-004 |

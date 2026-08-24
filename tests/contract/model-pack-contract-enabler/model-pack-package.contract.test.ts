@@ -199,6 +199,37 @@ test('TEST-MPC-001..003 production package target and every independent mutation
     assert.equal('state' in admitted, false);
   });
 
+  await t.test('TEST-MPC-001 manifest:governed-Runtime-and-dependency-identities-accept-200-supplementary-plane-scalars', () => {
+    const scalarIdentity = '\u{1F642}'.repeat(200);
+    const manifest = mutateManifestChild(manifestFixture(), 'runtime', (runtime) => ({
+      ...runtime,
+      runtime: { ...(runtime.runtime as RecordValue), identity: scalarIdentity },
+      dependencies: [{ ...((runtime.dependencies as RecordValue[])[0]), identity: scalarIdentity }],
+    }));
+    const bytes = fn(module, 'serializeModelPackManifest')(manifest) as Uint8Array;
+    assert.deepEqual(bytes, canonicalBytes(manifest));
+    const admitted = fn(module, 'admitModelPackManifest')({ manifest_bytes: bytes, artifact_observation: artifactObservationFixture(), expected_package: expectedPackageFixture() }) as ModelPackManifestV1;
+    assert.equal(admitted.runtime.runtime.identity, scalarIdentity);
+    assert.equal(admitted.runtime.dependencies[0]?.identity, scalarIdentity);
+  });
+
+  await t.test('TEST-MPC-001 manifest:governed-Runtime-and-dependency-identities-use-256-scalar-boundary', () => {
+    const exactScalarIdentity = '\u{1F642}'.repeat(256);
+    const exact = mutateManifestChild(manifestFixture(), 'runtime', (runtime) => ({
+      ...runtime,
+      runtime: { ...(runtime.runtime as RecordValue), identity: exactScalarIdentity },
+      dependencies: [{ ...((runtime.dependencies as RecordValue[])[0]), identity: exactScalarIdentity }],
+    }));
+    assert.deepEqual(fn(module, 'serializeModelPackManifest')(exact), canonicalBytes(exact));
+    const tooLongScalarIdentity = '\u{1F642}'.repeat(257);
+    const tooLong = mutateManifestChild(exact, 'runtime', (runtime) => ({
+      ...runtime,
+      runtime: { ...(runtime.runtime as RecordValue), identity: tooLongScalarIdentity },
+      dependencies: [{ ...((runtime.dependencies as RecordValue[])[0]), identity: tooLongScalarIdentity }],
+    }));
+    assert.throws(() => fn(module, 'serializeModelPackManifest')(tooLong), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+  });
+
   const canonicalRawCases: readonly Readonly<{ name: string; bytes(): Uint8Array; code: ModelPackErrorCode }>[] = [
     { name: 'TEST-MPC-001 canonical-json:BOM', bytes: () => new Uint8Array([0xef, 0xbb, 0xbf, ...canonicalBytes(manifestFixture())]), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 canonical-json:malformed-UTF8', bytes: () => new Uint8Array([0xff]), code: 'MODEL_PACK_CONTRACT_INVALID' },
@@ -511,6 +542,37 @@ async function runReleaseCases(t: TestContext, module: ContractModule): Promise<
     await t.test(entry.name, () => {
       const candidate = entry.mutate(releaseInputFixture());
       assert.deepEqual(fn(module, 'serializeModelPackReleaseInput')(candidate), canonicalBytes(candidate));
+    });
+  }
+
+  const encodedArtifactReferenceCases: readonly Readonly<{ name: string; artifactUri: string }>[] = [
+    { name: 'encoded-forward-separator-uppercase', artifactUri: 'file:///var/juanerai-artifacts%2Fmodel.bin' },
+    { name: 'encoded-forward-separator-lowercase', artifactUri: 'file:///var/juanerai-artifacts%2fmodel.bin' },
+    { name: 'encoded-back-separator-uppercase', artifactUri: 'file:///var/juanerai-artifacts%5Cmodel.bin' },
+    { name: 'encoded-back-separator-lowercase', artifactUri: 'file:///var/juanerai-artifacts%5cmodel.bin' },
+    { name: 'encoded-alias-segment', artifactUri: 'file:///var/juanerai-artifacts/%61lias/model.bin' },
+    { name: 'encoded-latest-segment-case-variant', artifactUri: 'file:///var/juanerai-artifacts/%6cATEST/model.bin' },
+    { name: 'encoded-C0-control', artifactUri: 'file:///var/juanerai-artifacts/%00model.bin' },
+    { name: 'encoded-C1-control-case-variant', artifactUri: 'file:///var/juanerai-artifacts/%c2%85model.bin' },
+    { name: 'encoded-DEL-control', artifactUri: 'file:///var/juanerai-artifacts/%7Fmodel.bin' },
+  ];
+  for (const entry of encodedArtifactReferenceCases) {
+    await t.test(`TEST-MPC-003 artifact-reference:${entry.name}-is-rejected-before-any-evidence-mismatch`, async (subtest) => {
+      const invalidRelease = replaceChild(releaseInputFixture(), 'mlflow', { artifact_uri: entry.artifactUri });
+      const invalidReleaseBytes = canonicalBytes(invalidRelease);
+      const invalidObservation = { ...artifactObservationFixture(), artifact_uri: entry.artifactUri };
+      await subtest.test('serialization', () => {
+        assert.throws(() => fn(module, 'serializeModelPackReleaseInput')(invalidRelease), (error) => assertError(error, 'MODEL_PACK_RELEASE_REFERENCE_INVALID'));
+      });
+      await subtest.test('admission:invalid-release-valid-observation', () => {
+        assert.throws(() => fn(module, 'admitModelPackReleaseInput')({ release_input_bytes: invalidReleaseBytes, artifact_observation: artifactObservationFixture(), expected_package: expectedPackageFixture() }), (error) => assertError(error, 'MODEL_PACK_RELEASE_REFERENCE_INVALID'));
+      });
+      await subtest.test('admission:valid-release-invalid-observation', () => {
+        assert.throws(() => fn(module, 'admitModelPackReleaseInput')({ release_input_bytes: canonicalBytes(releaseInputFixture()), artifact_observation: invalidObservation, expected_package: expectedPackageFixture() }), (error) => assertError(error, 'MODEL_PACK_RELEASE_REFERENCE_INVALID'));
+      });
+      await subtest.test('admission:matching-invalid-release-and-observation', () => {
+        assert.throws(() => fn(module, 'admitModelPackReleaseInput')({ release_input_bytes: invalidReleaseBytes, artifact_observation: invalidObservation, expected_package: expectedPackageFixture() }), (error) => assertError(error, 'MODEL_PACK_RELEASE_REFERENCE_INVALID'));
+      });
     });
   }
 
