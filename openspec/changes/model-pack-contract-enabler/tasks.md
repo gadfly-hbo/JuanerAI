@@ -10,11 +10,11 @@
 | `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 003 return complete | 429-line/`852b3d0f…` Runtime suite preserves all prior coverage and adds exactly two causal leaves | REQ-MPC-003..005 |
 | `TASK-005` TDD_READY | Controller; PASS | Runtime 71/74 and E 300/303 fail only on two leaves plus parent; Runtime production released | all |
 | `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | minimum correction completed inside `packages/contracts/model-pack.ts` and `packages/ports/analytical-model-runtime.ts` only | REQ-MPC-001, 002, 005 |
-| `TASK-007` Implement Runtime Port | `juaner_worker`; active after renewed TDD_READY | only `packages/ports/analytical-model-runtime.ts`; every Test and all other paths frozen | REQ-MPC-003, 005 |
+| `TASK-007` Implement Runtime Port | `juaner_worker`; complete and frozen | only `packages/ports/analytical-model-runtime.ts`; identity bound and carrier sanitization GREEN | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
-| `TASK-009` GREEN and regression | historical PASS; reopened | two new Runtime counterexamples block acceptance despite standard matrix PASS | all |
-| `TASK-010` Test Asset Retirement Gate | historical PASS; reopened | repeat ledger/scans/ponytail after the two missing permanent leaves reach GREEN | REQ-MPC-004 |
-| `TASK-011` Independent verification | Validator 003 FAIL | another fresh committed read-only Validator only after renewed GREEN/retirement freeze | all |
+| `TASK-009` GREEN and regression | remediation PASS | package 229/229, Runtime 74/74, E 303/303, affected matrix and canonical exit 0 | all |
+| `TASK-010` Test Asset Retirement Gate | PASS; frozen | two permanent leaves only; scans clean; fresh ponytail `Lean already. Ship.` | REQ-MPC-004 |
+| `TASK-011` Independent verification | ready for Validator 004 | Validator 001/002/003 FAIL remain historical; fresh committed R2/Sol-high recheck next | all |
 | `TASK-012` Accept, integrate, archive | Controller/user according to risk | acceptance, strict E-first integration, current spec merge and archive; Controller-only project-control | all |
 
 ## Test-owned Exact Paths

@@ -286,6 +286,22 @@ lines/SHA-256
   assertion, fixture, driver, helper, dependency, temporary marker, or
   skip/todo/only changed. Only the Runtime production file is Worker-released.
 
+### Validator 003 Remediation GREEN and Retirement Freeze
+
+- Runtime production: 122 to 132 lines; SHA-256
+  `e343db1f25e0e274bf4c33e30a8d1b99b32de98a920124399b347bbe165ba7b5`
+  to `935ce7c4ada232e3c0c6703dd119ed9514b98afff6ea503cf20374b4af87a248`.
+- Runtime Test stays 429 lines/
+  `852b3d0f8b04d2ecdc2729427cd7a20ab70f3ca0ad1c97942c2170e139f621a6`;
+  package production/Test and every other Test asset remain unchanged.
+- Final evidence: package 229/229, Runtime 74/74, complete E 303/303, inactive
+  15/15, typecheck, affected Local Analysis 198/198 and 292/292, E2E 133 PASS
+  plus one authorized skip, project board 12/12, and canonical exit 0.
+- Retirement: the complete 18-line Test delta is exactly two independent
+  permanent leaves; scans found no orphan, helper/fixture/driver, dependency,
+  temporary marker, skip/todo/only, or weakened assertion. Fresh ponytail
+  returned exactly `Lean already. Ship.`
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

@@ -7,6 +7,7 @@ import {
   admitModelPackReleaseStatus,
   canonicalCategoryDemandInputBytes,
   modelPackError,
+  MODEL_PACK_ERROR_CODES,
   type ArtifactObservationV1,
   type CategoryDemandForecastResultV1,
   type CategoryDemandInputV1,
@@ -40,7 +41,16 @@ const detached = <T>(value: T): T => {
   freeze(copy); return copy;
 };
 const same = (left: unknown, right: unknown): boolean => JSON.stringify(left) === JSON.stringify(right);
-const validIdentityVersion = (candidate: unknown): candidate is IdentityVersionV1 => exactKeys(candidate, ['identity', 'version']) && typeof candidate.identity === 'string' && candidate.identity.length > 0 && candidate.identity.trim() === candidate.identity && !/[\s\\/\x00-\x1f\x7f]/.test(candidate.identity) && candidate.identity !== '.' && candidate.identity !== '..' && !/^(latest|alias)$/i.test(candidate.identity) && typeof candidate.version === 'string' && stableVersionPattern.test(candidate.version);
+const contractErrorCode = (reason: unknown): Parameters<typeof modelPackError>[0] | undefined => {
+  try {
+    if (!reason || typeof reason !== 'object') return undefined;
+    const name = Object.getOwnPropertyDescriptor(reason, 'name')?.value;
+    const code = Object.getOwnPropertyDescriptor(reason, 'code')?.value;
+    const message = Object.getOwnPropertyDescriptor(reason, 'message')?.value;
+    return name === 'ModelPackContractError' && message === code && typeof code === 'string' && MODEL_PACK_ERROR_CODES.includes(code as Parameters<typeof modelPackError>[0]) ? code as Parameters<typeof modelPackError>[0] : undefined;
+  } catch { return undefined; }
+};
+const validIdentityVersion = (candidate: unknown): candidate is IdentityVersionV1 => exactKeys(candidate, ['identity', 'version']) && typeof candidate.identity === 'string' && candidate.identity.length > 0 && candidate.identity.length <= 256 && candidate.identity.trim() === candidate.identity && !/[\s\\/\x00-\x1f\x7f]/.test(candidate.identity) && candidate.identity !== '.' && candidate.identity !== '..' && !/^(latest|alias)$/i.test(candidate.identity) && typeof candidate.version === 'string' && stableVersionPattern.test(candidate.version);
 const validPermissions = (candidate: unknown): candidate is ModelPackPermissionsV1 => exactKeys(candidate, ['data', 'network', 'external_data', 'mlflow_at_runtime', 'training_workspace_at_runtime', 'source_write', 'model_execution']) && candidate.data === 'local_only' && candidate.network === 'none' && candidate.external_data === 'none' && candidate.mlflow_at_runtime === 'none' && candidate.training_workspace_at_runtime === 'none' && candidate.source_write === 'forbidden' && candidate.model_execution === 'local_only';
 const validBinding = (candidate: unknown): candidate is AnalyticalModelRuntimeBindingV1 => exactKeys(candidate, ['runtime', 'adapter', 'dependencies', 'permissions']) && validIdentityVersion(candidate.runtime) && validIdentityVersion(candidate.adapter) && Array.isArray(candidate.dependencies) && candidate.dependencies.every(validIdentityVersion) && validPermissions(candidate.permissions);
 const validInstant = (value: unknown): value is string => typeof value === 'string' && instantPattern.test(value) && new Date(value).toISOString() === value;
@@ -63,7 +73,7 @@ export function defineAnalyticalModelRuntime(input: Readonly<{ binding: Analytic
       if (!same(manifest.permissions, binding.permissions)) return error('MODEL_PACK_PERMISSION_DENIED');
       const readiness = detached({ package: expected, manifest, model: { controller_release_decision_id: manifest.provenance.controller_release_decision_id, mlflow_run_id: manifest.provenance.mlflow_run_id, registered_model_name: manifest.provenance.registered_model_name, registered_model_version: manifest.provenance.registered_model_version }, release_status: status, runtime: binding.runtime, adapter: binding.adapter, dependencies: binding.dependencies, permissions: binding.permissions });
       readinesses.add(readiness as object); return readiness;
-    } catch (reason) { throw reason instanceof Error && (reason as { name?: unknown }).name === 'ModelPackContractError' ? reason : modelPackError('ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'); }
+    } catch (reason) { throw modelPackError(contractErrorCode(reason) ?? 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'); }
   };
   const openRun = async (candidate: AnalyticalModelOpenRunInputV1): Promise<AnalyticalModelRun> => {
     try {
@@ -84,9 +94,9 @@ export function defineAnalyticalModelRuntime(input: Readonly<{ binding: Analytic
           if (signal.aborted) return error('ANALYTICAL_MODEL_CANCELLED');
           if (Date.now() >= deadline) return error('ANALYTICAL_MODEL_DEADLINE_EXCEEDED');
           return await executePrediction(predictor, runId, capturedReadiness, capturedSnapshot, signal, call.deadline_at, deadline);
-        } catch (reason) { throw reason instanceof Error && (reason as { name?: unknown }).name === 'ModelPackContractError' ? reason : modelPackError('ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'); }
+        } catch (reason) { throw modelPackError(contractErrorCode(reason) ?? 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'); }
       } });
-    } catch (reason) { throw reason instanceof Error && (reason as { name?: unknown }).name === 'ModelPackContractError' ? reason : modelPackError('ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'); }
+    } catch (reason) { throw modelPackError(contractErrorCode(reason) ?? 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'); }
   };
     return Object.freeze({ preflight, openRun });
   } catch { return error('ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'); }
@@ -111,7 +121,7 @@ async function executePrediction(predictor: LocalCategoryDemandPredictor, runId:
         if (signal.aborted) return fail('ANALYTICAL_MODEL_CANCELLED');
         if (Date.now() >= deadline) return fail('ANALYTICAL_MODEL_DEADLINE_EXCEEDED');
         finish(() => detached({ forecast, provenance: { run_id: runId, package: readiness.package, model: readiness.model, release_status: readiness.release_status, input_snapshot: { snapshot_id: snapshot.snapshot_id, sha256: snapshot.sha256, confirmed_at: snapshot.confirmed_at, as_of_date: snapshot.input.as_of_date }, runtime: readiness.runtime, adapter: readiness.adapter } }));
-      } catch (reason) { if (reason instanceof Error && (reason as { name?: unknown }).name === 'ModelPackContractError') fail((reason as unknown as { code: Parameters<typeof modelPackError>[0] }).code); else fail('ANALYTICAL_MODEL_RUNTIME_FAILED'); }
+      } catch (reason) { fail(contractErrorCode(reason) ?? 'ANALYTICAL_MODEL_RUNTIME_FAILED'); }
     }, () => {
       if (settled) return;
       if (signal.aborted) return fail('ANALYTICAL_MODEL_CANCELLED');
