@@ -136,21 +136,28 @@ the Test-only `+58/-96` delta. Removed partial leaves have exact successors and
 complete-diff ponytail is `Lean already. Ship.` TASK-003/004/009/010 close;
 TASK-011 is ready for fresh Validator 011 only.
 
+Fresh read-only Validator 011 passed exact clean Head
+`44fae80d3630bb074acac69244fd4ed9980ae988`: tracked matrices, independent
+identity 110/110, MP9 48/48, standard commands, hashes, retirement successors,
+scope, traceability, architecture, inactivity, and stop lines all reconcile.
+TASK-011 closes. TASK-012 remains external re-review only and does not release
+acceptance, archive, merge, M1, or H/P/C/A.
+
 | Requirement | Acceptance | Planned test/evidence | Task | Candidate code/evidence | Current result |
 |---|---|---|---|---|---|
 | REQ-MPC-001 | AC-MPC-001-01 | TEST-MPC-001 | TASK-003,006 | exact manifest serialize/admit signatures; malformed status shape; printable bounded identities/categories; immutable manifest/revocation policy | REMEDIATION GREEN |
-| REQ-MPC-001 | AC-MPC-001-02 | TEST-MPC-001 | TASK-003,006 | canonical synchronous serializer/admission; closed all-own-key calls including arrays; exact governed identity bounds and non-path semantics; Proxy sanitization; detached bytes/value | GREEN 324/324; VALIDATOR 011 PENDING |
-| REQ-MPC-001 | AC-MPC-001-03 | TEST-MPC-001 | TASK-003,006 | exact sanitized error carrier with provenance/context ownership; synchronous contract throw; compatibility/artifact/status/permission precedence | VALIDATOR 009 PASS |
-| REQ-MPC-001 | AC-MPC-001-04 | TEST-MPC-001 | TASK-003,006 | purpose/permission/runtime manifest admission including missing/extra/widened-permission precedence | VALIDATOR 009 PASS |
+| REQ-MPC-001 | AC-MPC-001-02 | TEST-MPC-001 | TASK-003,006 | canonical synchronous serializer/admission; closed all-own-key calls including arrays; exact governed identity bounds and non-path semantics; Proxy sanitization; detached bytes/value | VALIDATOR 011 PASS |
+| REQ-MPC-001 | AC-MPC-001-03 | TEST-MPC-001 | TASK-003,006 | exact sanitized error carrier with provenance/context ownership; synchronous contract throw; compatibility/artifact/status/permission precedence | VALIDATOR 011 PASS |
+| REQ-MPC-001 | AC-MPC-001-04 | TEST-MPC-001 | TASK-003,006 | purpose/permission/runtime manifest admission including missing/extra/widened-permission precedence | VALIDATOR 011 PASS |
 | REQ-MPC-001 | AC-MPC-001-05 | TEST-MPC-002 | TASK-003,006 | exact input admission/canonical-byte signatures; precise decimal ordering; Unicode scalar category length | REMEDIATION GREEN |
 | REQ-MPC-001 | AC-MPC-001-06 | TEST-MPC-002 | TASK-003,006 | exact forecast admission and precise interval ordering; Runtime-owned result/provenance boundary | REMEDIATION GREEN |
 | REQ-MPC-001 | AC-MPC-001-07 | TEST-MPC-001 | TASK-003,006 | exact evaluation decimal thresholds and metadata/no-data-access proof | REMEDIATION GREEN |
-| REQ-MPC-002 | AC-MPC-002-01 | TEST-MPC-003 | TASK-003,006 | exact release serialize/admit signatures + bounded non-path identities + release bytes/observation/expected binding + closed local-URI verification assertion | VALIDATOR 009 PASS |
+| REQ-MPC-002 | AC-MPC-002-01 | TEST-MPC-003 | TASK-003,006 | exact release serialize/admit signatures + bounded non-path identities + release bytes/observation/expected binding + closed local-URI verification assertion | VALIDATOR 011 PASS |
 | REQ-MPC-002 | AC-MPC-002-02 | TEST-MPC-003 | TASK-003,006 | release-stage/decision gate | GREEN PASS |
-| REQ-MPC-002 | AC-MPC-002-03 | TEST-MPC-003 | TASK-003,006 | exact Registry/URI plus supplied location-verification shape/kind admission; no path access | VALIDATOR 009 PASS |
+| REQ-MPC-002 | AC-MPC-002-03 | TEST-MPC-003 | TASK-003,006 | exact Registry/URI plus supplied location-verification shape/kind admission; no path access | VALIDATOR 011 PASS |
 | REQ-MPC-002 | AC-MPC-002-04 | TEST-MPC-003 | TASK-003,006 | only repeated release bindings and observation URI/SHA/size/Signature comparisons; singleton lower-boundary codes | GREEN PASS |
 | REQ-MPC-002 | AC-MPC-002-05 | TEST-MPC-003,004 | TASK-003,006 | package fixture and driver; P ownership stop line | GREEN PASS |
-| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; closed dependencies array; governed identity printable/no-whitespace/no-control/Unicode-scalar-length/no-credential/non-path boundary; adversarial carrier sanitization | GREEN 142/142; VALIDATOR 011 PENDING |
+| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; closed dependencies array; governed identity printable/no-whitespace/no-control/Unicode-scalar-length/no-credential/non-path boundary; adversarial carrier sanitization | VALIDATOR 011 PASS |
 | REQ-MPC-003 | AC-MPC-003-02 | TEST-MPC-005 | TASK-004,007 | immutable readiness/openRun/snapshot capture | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-03 | TEST-MPC-005,007 | TASK-004,007 | exact predictor request/same signal and deadline; one-shot predict; Runtime-owned result/provenance | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-04 | TEST-MPC-006 | TASK-004,007 | native mock timers + AbortController + externally ordered atomic terminal outcomes | GREEN PASS |
@@ -165,9 +172,9 @@ TASK-011 is ready for fresh Validator 011 only.
 | REQ-MPC-004 | AC-MPC-004-06 | Controller retirement Gate | TASK-003,004,010 | complete new Test delta reconciled; scans clean; fresh ponytail lean | PASS; `+58/-96`; LEAN |
 | REQ-MPC-005 | AC-MPC-005-01 | TEST-MPC-009 + TEST-XCLI-021 affected existing regression | TASK-004,008,009 | inactive integration plus completed, byte-frozen exact eight-entry mirrored `approvedTsconfig.files` append; every other Xanthil assertion/current behavior preserved | GREEN PASS |
 | REQ-MPC-005 | AC-MPC-005-02 | TEST-MPC-009 | TASK-004,006,007 | inert import/build/driver composition; exact Node loader paired source-read chains classified as toolchain mechanics, every other filesystem/product effect forbidden | GREEN PASS |
-| REQ-MPC-005 | AC-MPC-005-03 | TEST-MPC-009 + Validator review | TASK-004,011,012 | no active binding in E; activation stop line | VALIDATOR 009 PASS |
-| REQ-MPC-005 | AC-MPC-005-04 | TEST-MPC-001,005,007,009 | TASK-003,004,011 | supplied revoked-status block, retained admitted evidence, rollback review | VALIDATOR 009 PASS |
-| REQ-MPC-005 | AC-MPC-005-05 | Controller/Validator evidence | TASK-011,012 | scope/ownership/integration-order review | VALIDATOR 009 PASS |
+| REQ-MPC-005 | AC-MPC-005-03 | TEST-MPC-009 + Validator review | TASK-004,011,012 | no active binding in E; activation stop line | VALIDATOR 011 PASS |
+| REQ-MPC-005 | AC-MPC-005-04 | TEST-MPC-001,005,007,009 | TASK-003,004,011 | supplied revoked-status block, retained admitted evidence, rollback review | VALIDATOR 011 PASS |
+| REQ-MPC-005 | AC-MPC-005-05 | Controller/Validator evidence | TASK-011,012 | scope/ownership/integration-order review | VALIDATOR 011 PASS |
 
 ## Test Asset Ownership
 
@@ -194,7 +201,7 @@ TASK-011 is ready for fresh Validator 011 only.
 | TASK-008 | REQ-MPC-004, 005 | exact graph integration complete and frozen |
 | TASK-009 | TEST-MPC-001..009 and affected baseline | complete; E/affected/canonical GREEN PASS after Test consolidation |
 | TASK-010 | every changed test asset | PASS; Test-only `+58/-96`, exact successors, scans clean, ponytail lean |
-| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | ready; fresh Validator 011 required after Validator 010 coverage FAIL |
+| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 011 PASS on clean Head `44fae80d…ae988` |
 | TASK-012 | all accepted evidence and E integration constraint | external re-review FAIL; acceptance/archive withdrawn; PR #14 Draft |
 
 ## Integration Trace
