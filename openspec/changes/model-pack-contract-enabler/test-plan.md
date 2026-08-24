@@ -21,8 +21,10 @@ canonical exited 0, and the repeated Test Asset Retirement review returned
 `Lean already. Ship.` Validator 002 confirmed the prior five repairs and all
 standard results but found nine additional public violations already governed
 by the frozen Design/Specification. The complexity stop line returned the
-Change to Test Design: production is frozen, and only the existing package and
-Runtime contract Test files may add those nine independent leaves. E continues to use
+Change to Test Design. Formal Test changed only the existing package and
+Runtime contract suites, added all nine independent leaves, and produced exact
+causal RED with production frozen. Controller TDD_READY now releases only the
+two existing production files. E continues to use
 deterministic synthetic values and controlled settlement only; no real Artifact,
 product/user-data filesystem observation, MLflow, network, external repository,
 data, provider/model, install, training, or inference is permitted.
@@ -187,6 +189,30 @@ allows. No fixture/driver/inactive/Local Analysis Test, production, OpenSpec,
 docs/contracts, graph/runner, dependency, Profile, activation, real data/model,
 network, MLflow, or external repository change is authorized.
 
+### Validator 002 Remediation TDD_READY
+
+| Test asset | Before | Frozen after Test return |
+|---|---|---|
+| `tests/contract/model-pack-contract-enabler/model-pack-package.contract.test.ts` | 572 lines / `5c7aa231cfcb8aa6b89a31435c1f39a8ebba7e9adca080818aa16d62b5c5fd7e` | 607 lines / `5045515c1df665fcb56fff08e5c2500c64b407a3ee49747036bf58e8302c35d3` |
+| `tests/contract/model-pack-contract-enabler/analytical-model-runtime.contract.test.ts` | 410 lines / `8f87152439bb644d26f21b96ff11ad8caa2b23d3c550ace24cd9afb65fd8f76e` | 418 lines / `3e50849696b3f1982ab87803d460c5922a65cbdde1a6f764d229286c58315772` |
+
+- Package RED: 229 total, 220 pass, eight new leaves plus aggregate parent fail.
+- Runtime RED: 72 total, 70 pass, one new leaf plus aggregate parent fail.
+- Complete E RED: 301 total, 290 pass, exactly the nine leaves plus two
+  aggregate parents fail.
+- Before-edit health was package 221/221 and Runtime 71/71. Current inactive
+  remains 15/15; root typecheck and affected Local Analysis 198/198, 292/292,
+  and E2E 133 PASS plus one authorized skip remain healthy. Project board is
+  12/12. Canonical fails only at the same E causal RED.
+- Frozen production remains package 210 lines/
+  `512d928a81941abd1b69b341f102b155d55dc72efb2aa97798847cfa9a0130b9`
+  and Runtime 120 lines/
+  `fec5bc710d6ef25cba0452964298e59d81b81df303f2c3b9e5a0017a6dadc323`.
+- All nine leaves are permanent current-contract regressions. No assertion,
+  Test identity, fixture, driver, inactive boundary, helper, graph, dependency,
+  temporary probe, or skip/todo/only was removed, weakened, or added outside
+  the two suites.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The
@@ -330,10 +356,10 @@ Before refreezing evidence:
    contracts. Loader, graph, import resolution, environment, toolchain, fixture,
    driver, double, helper, or unrelated baseline failure is invalid evidence.
 
-A renewed TDD_READY, if Controller grants it after the bounded Test return,
-freezes exact test files, SHA-256 values, observed counts, causal failure
-excerpts, command-local toolchain, and the remaining Worker write set. The
-historical hashes above are not current authorization.
+The current renewed TDD_READY above freezes the exact Test files, SHA-256
+values, observed counts, causal failure excerpts, command-local toolchain, and
+two-file Worker write set. Earlier historical hashes are not current
+authorization.
 
 ## Exact Commands and Evidence Level
 

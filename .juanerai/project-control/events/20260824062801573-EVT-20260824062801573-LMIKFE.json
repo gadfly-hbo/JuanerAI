@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824062801573-LMIKFE",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-24T06:28:01.573Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-e-tdd-ready-002"
+  },
+  "summary": "Controller confirmed Validator 002 nine-leaf causal RED and froze a two-production-file TDD_READY Worker brief",
+  "status_after": "active",
+  "evidence_refs": []
+}

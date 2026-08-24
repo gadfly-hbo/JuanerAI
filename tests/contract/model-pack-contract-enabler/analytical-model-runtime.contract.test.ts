@@ -151,6 +151,14 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
   ];
   for (const entry of factoryCases) await t.test(entry.name, () => assert.throws(() => runtimeModule.defineAnalyticalModelRuntime(entry.candidate), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE')));
 
+  await t.test('TEST-MPC-005 factory:throwing-binding-getter-is-sanitized', () => {
+    const candidate = {
+      get binding() { throw new Error('raw Runtime binding getter secret'); },
+      predictor: async () => forecastFixture(),
+    };
+    assert.throws(() => runtimeModule.defineAnalyticalModelRuntime(candidate), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
+  });
+
   const factoryBindingValueCases: readonly Readonly<{ name: string; mutate(binding: RecordValue): void }>[] = [
     { name: 'TEST-MPC-005 factory:runtime-identity-path-like', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'bad/path'; } },
     { name: 'TEST-MPC-005 factory:runtime-version-leading-zero', mutate: (binding) => { (binding.runtime as RecordValue).version = '01.0.0'; } },

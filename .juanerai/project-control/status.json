@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_complexity_test_return",
-    "label": "Model Pack Contract Enabler：Complexity Test Return",
-    "ordinal": 5,
+    "id": "model_pack_contract_enabler_validator_002_worker",
+    "label": "Model Pack Contract Enabler：Validator 002 Worker",
+    "ordinal": 6,
     "total": 8
   },
   "health": "active",
-  "summary": "Formal R2 Terra-high Test is active on the bounded Validator 002 return; both production files and every non-contract Test are frozen.",
-  "current_objective": "Add nine independent package/Runtime contract leaves for accessor sanitization, identity/control/precision bounds, and stable error precedence.",
-  "next_action": "Require exact Test hashes, helper health, and causal RED for all nine leaves before Controller can issue renewed TDD_READY.",
+  "summary": "Validator 002 remediation TDD_READY PASS: package 220/229, Runtime 70/72, and complete E 290/301 fail only on nine frozen leaves plus two parents.",
+  "current_objective": "Repair the nine causal frozen-contract defects inside only the existing package and Runtime production files.",
+  "next_action": "Dispatch formal R2 Terra-high Worker to the two frozen production paths, then rerun complete GREEN, retirement, and fresh validation.",
   "blockers": [],
   "milestones": [
     {
@@ -35,12 +35,12 @@
     {
       "id": "test_red",
       "label": "Test / RED",
-      "status": "active"
+      "status": "completed"
     },
     {
       "id": "implementation_green",
       "label": "实现 / GREEN",
-      "status": "blocked"
+      "status": "active"
     },
     {
       "id": "independent_validation",
@@ -77,14 +77,14 @@
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra · high (R2 automatic escalation)",
-      "status": "active",
+      "status": "complete",
       "activation": "Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra · high (R2 route)",
-      "status": "locked",
+      "status": "waiting",
       "activation": "TDD_READY"
     },
     {
@@ -104,20 +104,20 @@
     },
     {
       "id": "tests",
-      "label": "Validator public probes GREEN",
-      "done": 5,
+      "label": "Validator public probes encoded",
+      "done": 14,
       "total": 14
     },
     {
       "id": "tasks",
       "label": "E lifecycle tasks complete",
-      "done": 5,
+      "done": 8,
       "total": 12
     },
     {
       "id": "decisions",
-      "label": "Validator defect classes closed",
-      "done": 4,
+      "label": "Validator defect classes test-covered",
+      "done": 8,
       "total": 8
     }
   ],
@@ -604,9 +604,9 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T06:16:07.412Z",
+  "updated_at": "2026-08-24T06:28:01.572Z",
   "updated_by": {
     "role": "controller",
-    "session": "codex-controller-e-test-002"
+    "session": "codex-controller-e-tdd-ready-002"
   }
 }

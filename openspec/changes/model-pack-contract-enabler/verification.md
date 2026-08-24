@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 002 FAIL — COMPLEXITY ROOT-CAUSE RETURN TO TEST DESIGN`
+`VALIDATOR 002 REMEDIATION TDD_READY — TWO-FILE WORKER AUTHORIZED`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -27,9 +27,15 @@ precedence rules are wrong. This second Validator failure crosses the
 complexity stop line. Controller classifies the root cause as incomplete Test
 Design plus production defects inside the frozen two-file contract; no product
 decision, semantic change, scope expansion, re-slice, or new mechanism is
-needed. Production is frozen while formal Test adds independent causal leaves
-to the two existing contract suites. Acceptance, activation, archive, and
-downstream H/P/C/A remain blocked.
+needed. Formal Test changed only the two existing contract suites, preserved
+every prior assertion, and added eight package leaves plus one Runtime factory
+leaf. Controller independently confirmed package 220/229, Runtime 70/72, and
+complete E 290/301: failures are exactly the nine new leaves plus their two
+aggregate parents. Inactive 15/15, typecheck, affected regressions, and
+project-board evidence remain healthy; canonical stops only on the same causal
+E RED. Tests are frozen and only the two existing production files are released
+to a formal Worker. Acceptance, activation, archive, and downstream H/P/C/A
+remain blocked.
 
 ## Frozen References
 
@@ -38,8 +44,8 @@ downstream H/P/C/A remain blocked.
 - Validator 002 frozen Head: `1d88e0dafe4f80119f20677f5688622f2656ab3f`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: complexity root-cause return; two production files frozen;
-  bounded two-suite Test Design correction authorized after evidence freeze
+- Current lifecycle: Controller TDD_READY PASS for Validator 002 remediation;
+  Tests frozen; two existing production files released to formal Worker
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -53,9 +59,9 @@ downstream H/P/C/A remain blocked.
 | inactive-loader/closed-graph R2 package and Test return | historical Controller Spec Gate PASS; exact Local Analysis correction complete; strict inactive Test still conflicts with Node v26 nested `openSync` | superseded as current Gate authority by this nested-loader-chain revision |
 | nested-loader-chain R2 package | Controller Spec Gate PASS | one bounded inactive Test correction only |
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
-| Test Design and driver health | historical five-leaf remediation PASS; reopened because nine material leaves are absent | bounded two-suite Test return with exact hashes/counts |
-| causal expected RED | historical five-leaf RED PASS; no current RED yet for Validator 002 findings | causal RED for all nine leaves with production frozen |
-| implementation | historical remediation GREEN; nine new frozen-contract defects remain | causal RED and bounded owning-path Worker repair |
+| Test Design and driver health | PASS; package Test 607 lines/`5045515c…`, Runtime Test 418 lines/`3e508496…`; all prior assertions retained | none unless a Test byte changes |
+| causal expected RED | PASS; package 220/229, Runtime 70/72, complete E 290/301 fail only on nine leaves plus two aggregate parents | bounded two-file Worker repair |
+| implementation | historical remediation GREEN; nine causal frozen-contract defects remain | minimum correction in the two existing production files |
 | GREEN and affected regression | standard matrix PASS at Validator 002 Head but semantically insufficient | corrected leaves plus complete affected/canonical rerun |
 | Test Asset Retirement | structural PASS at Validator 002 Head; reopened by missing material regressions | repeat after Test/Worker correction |
 | independent verification | Validator 001 FAIL; Validator 002 FAIL on nine additional public counterexamples | corrected committed clean Head plus another fresh read-only Validator PASS |
@@ -545,18 +551,17 @@ Document inspection is not executable product evidence. The exact commands for l
 
 ## Next Gate
 
-Formal R2/Terra-high `juaner_test` may edit only the two existing package and
-Runtime contract Test files. It must add independently named leaves for all
-nine Validator 002 counterexamples, prove helper/driver health, establish
-causal RED with both production files frozen, and record exact hashes/counts.
-It may not weaken an existing assertion or edit fixtures/drivers, inactive or
-Local Analysis Tests, production, OpenSpec, docs/contracts, graphs/runner,
-dependencies, project-control, or any product/activation path. Controller must
-review the returned matrix rule by rule before releasing the minimum owning
-production path(s). No acceptance, archive, merge, H/P/C/A dispatch, Profile
-activation, real Artifact/model/data/network/MLflow access, or downstream
-completion claim is authorized before renewed GREEN, retirement PASS, and a
-fresh Validator PASS.
+Formal R2/Terra-high `juaner_worker` may edit only
+`packages/contracts/model-pack.ts` and
+`packages/ports/analytical-model-runtime.ts`. It must satisfy the nine frozen
+causal leaves without changing public signatures, error vocabulary, fixtures,
+drivers, Tests, OpenSpec, docs/contracts, graphs/runner, dependencies,
+project-control, or any product/activation path. Getter failures must be
+sanitized without source scanning or a test seam; decimal/identity/category
+validation and error precedence must implement the already frozen rules. No
+acceptance, archive, merge, H/P/C/A dispatch, Profile activation, real
+Artifact/model/data/network/MLflow access, or downstream completion claim is
+authorized before renewed GREEN, retirement PASS, and a fresh Validator PASS.
 
 ## Historical Candidate GREEN and Test Asset Retirement Gate — Superseded
 
@@ -740,3 +745,38 @@ fresh Validator PASS.
   contract suites, with both production files frozen, to establish independent
   causal RED for all nine leaves. Any broader need returns to Controller.
 - Verdict: `FAIL`.
+
+## Controller Validator 002 Remediation TDD_READY
+
+- Date: `2026-08-24`
+- Verdict: `PASS`
+- Formal Test route: R2 / standard / Terra high.
+- Sole Test writes:
+  - package contract from 572 lines/
+    `5c7aa231cfcb8aa6b89a31435c1f39a8ebba7e9adca080818aa16d62b5c5fd7e`
+    to 607 lines/
+    `5045515c1df665fcb56fff08e5c2500c64b407a3ee49747036bf58e8302c35d3`;
+  - Runtime contract from 410 lines/
+    `8f87152439bb644d26f21b96ff11ad8caa2b23d3c550ace24cd9afb65fd8f76e`
+    to 418 lines/
+    `3e50849696b3f1982ab87803d460c5922a65cbdde1a6f764d229286c58315772`.
+- Frozen production: package 210 lines/
+  `512d928a81941abd1b69b341f102b155d55dc72efb2aa97798847cfa9a0130b9`;
+  Runtime 120 lines/
+  `fec5bc710d6ef25cba0452964298e59d81b81df303f2c3b9e5a0017a6dadc323`.
+- Causal RED: package 229 total/220 pass/nine fail; Runtime 72 total/70
+  pass/two fail; complete E contract 301 total/290 pass/11 fail. Failures are
+  exactly the eight new package leaves, one new Runtime leaf, and their two
+  aggregate parents.
+- Healthy boundaries: before edit package 221/221 and Runtime 71/71; after edit
+  inactive 15/15, root typecheck, affected Local Analysis contract 198/198,
+  integration 292/292, E2E 133 PASS plus one existing authorized real-Pi skip,
+  and project board 12/12. Canonical exits 1 only when it reaches the same E
+  causal RED.
+- Ownership/retirement preflight: all nine additions are independently named
+  permanent regressions mapped to current REQ-MPC-001/002/003/004 consumers;
+  no prior assertion was removed or weakened and no fixture, driver, helper,
+  inactive oracle, graph, dependency, temporary probe, or skip/todo/only was
+  added.
+- Worker authorization: only the two frozen production paths above; every Test
+  and all other paths are locked. Any need beyond them returns to Controller.

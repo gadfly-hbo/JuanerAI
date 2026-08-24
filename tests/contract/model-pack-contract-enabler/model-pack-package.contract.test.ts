@@ -199,6 +199,15 @@ test('TEST-MPC-001..003 production package target and every independent mutation
     assert.equal('state' in admitted, false);
   });
 
+  await t.test('TEST-MPC-001 manifest:enumerable-throwing-package-getter-is-sanitized', () => {
+    const candidate = clone(manifestFixture());
+    Object.defineProperty(candidate, 'package', {
+      enumerable: true,
+      get() { throw new Error('raw manifest package getter secret'); },
+    });
+    assert.throws(() => fn(module, 'serializeModelPackManifest')(candidate), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+  });
+
   const canonicalRawCases: readonly Readonly<{ name: string; bytes(): Uint8Array; code: ModelPackErrorCode }>[] = [
     { name: 'TEST-MPC-001 canonical-json:BOM', bytes: () => new Uint8Array([0xef, 0xbb, 0xbf, ...canonicalBytes(manifestFixture())]), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 canonical-json:malformed-UTF8', bytes: () => new Uint8Array([0xff]), code: 'MODEL_PACK_CONTRACT_INVALID' },
@@ -225,8 +234,10 @@ test('TEST-MPC-001..003 production package target and every independent mutation
     { name: 'TEST-MPC-001 package-version:prerelease', mutate: (v) => mutateManifestChild(v, 'package', (c) => ({ ...c, version: '1.0.0-rc.1' })), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 package-version:leading-zero', mutate: (v) => mutateManifestChild(v, 'package', (c) => ({ ...c, version: '01.0.0' })), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 purpose:wrong-approved-use', mutate: (v) => mutateManifestChild(v, 'purpose', (c) => ({ ...c, approved_use: 'automatic_replenishment' })), code: 'MODEL_PACK_CONTRACT_INVALID' },
+    { name: 'TEST-MPC-001 category:U+0085-control-is-rejected', mutate: (v) => mutateManifestChild(v, 'io', (c) => ({ ...c, supported_product_categories: ['beverages\u0085'] })), code: 'MODEL_PACK_CONTRACT_INVALID' },
     ...manifestPurposeCases(),
     ...manifestPermissionCases(),
+    { name: 'TEST-MPC-001 permission:missing-network-preserves-permission-denied-precedence', mutate: (v) => mutateManifestChild(v, 'permissions', (c) => remove(c, 'network')), code: 'MODEL_PACK_PERMISSION_DENIED' },
     { name: 'TEST-MPC-001 security:online-learning-enabled', mutate: (v) => mutateManifestChild(v, 'runtime', (c) => ({ ...c, online_learning: true })), code: 'MODEL_PACK_PERMISSION_DENIED' },
     { name: 'TEST-MPC-001 lifecycle:invalid-license-identity', mutate: (v) => mutateManifestChild(v, 'license', (c) => ({ ...c, license_id: '' })), code: 'MODEL_PACK_LICENSE_INVALID' },
     { name: 'TEST-MPC-001 lifecycle:invalid-license-terms-checksum', mutate: (v) => mutateManifestChild(v, 'license', (c) => ({ ...c, terms_sha256: 'bad' })), code: 'MODEL_PACK_LICENSE_INVALID' },
@@ -255,6 +266,13 @@ test('TEST-MPC-001..003 production package target and every independent mutation
     { name: 'TEST-MPC-001 evidence:acceptance-actuals-injected', mutate: (v) => ({ ...v, acceptance_actuals: [] }), code: 'MODEL_PACK_CONTRACT_INVALID' },
   ];
   await runMutationCases(t, manifestCases, manifestFixture, (candidate) => fn(module, 'serializeModelPackManifest')(candidate));
+
+  await t.test('TEST-MPC-001 evaluation:interval-coverage-exact-ninety-valid-and-precision-above-rejected', () => {
+    const exactNinety = mutateManifestChild(manifestFixture(), 'evaluation', (evaluation) => ({ ...evaluation, observed_interval_coverage: '0.90' }));
+    assert.deepEqual(fn(module, 'serializeModelPackManifest')(exactNinety), canonicalBytes(exactNinety));
+    const aboveNinety = mutateManifestChild(manifestFixture(), 'evaluation', (evaluation) => ({ ...evaluation, observed_interval_coverage: '0.90000000000000001' }));
+    assert.throws(() => fn(module, 'serializeModelPackManifest')(aboveNinety), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+  });
 
   const manifestBytes = fn(module, 'serializeModelPackManifest')(manifestFixture()) as Uint8Array;
   const expectedCases: Mutation[] = [
@@ -301,6 +319,8 @@ async function runReleaseStatusCases(t: TestContext, module: ContractModule): Pr
   const cases: Mutation[] = [
     { name: 'TEST-MPC-001 release-status:malformed-shape', mutate: () => ({ state: 'released' }), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 release-status:missing-package-version-is-malformed-not-identity-mismatch', mutate: (v) => ({ ...v, package: remove(v.package as RecordValue, 'version') }), code: 'MODEL_PACK_CONTRACT_INVALID' },
+    { name: 'TEST-MPC-001 release-status:package-version-latest-is-malformed-not-identity-mismatch', mutate: (v) => replaceChild(v, 'package', { version: 'latest' }), code: 'MODEL_PACK_CONTRACT_INVALID' },
+    { name: 'TEST-MPC-001 release-status:package-Artifact-SHA-bad-is-malformed-not-identity-mismatch', mutate: (v) => replaceChild(v, 'package', { artifact_sha256: 'bad' }), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 release-status:unsupported-version', mutate: (v) => ({ ...v, schema_version: '2.0' }), code: 'MODEL_PACK_CONTRACT_UNSUPPORTED' },
     { name: 'TEST-MPC-001 release-status:wrong-package-identity', mutate: (v) => replaceChild(v, 'package', { identity: 'other.package' }), code: 'MODEL_PACK_IDENTITY_MISMATCH' },
     { name: 'TEST-MPC-001 release-status:wrong-package-version', mutate: (v) => replaceChild(v, 'package', { version: '9.9.9' }), code: 'MODEL_PACK_IDENTITY_MISMATCH' },
@@ -426,6 +446,21 @@ async function runReleaseCases(t: TestContext, module: ContractModule): Promise<
     const admitted = fn(module, 'admitModelPackReleaseInput')({ release_input_bytes: bytes, artifact_observation: artifactObservationFixture(), expected_package: expectedPackageFixture() });
     assert.deepEqual(admitted, releaseInputFixture());
     assert.notEqual(admitted, release);
+  });
+
+  await t.test('TEST-MPC-003 release-decision:exact-256-identity-valid-and-257-rejected', () => {
+    const exactDecisionId = 'd'.repeat(256);
+    const exact = mutateManifestChild(replaceChild(releaseInputFixture(), 'controller_release', { decision_id: exactDecisionId }), 'manifest', (manifest) => mutateManifestChild(manifest, 'provenance', (provenance) => ({ ...provenance, controller_release_decision_id: exactDecisionId })));
+    assert.deepEqual(fn(module, 'serializeModelPackReleaseInput')(exact), canonicalBytes(exact));
+    const tooLongDecisionId = 'd'.repeat(257);
+    const tooLong = mutateManifestChild(replaceChild(releaseInputFixture(), 'controller_release', { decision_id: tooLongDecisionId }), 'manifest', (manifest) => mutateManifestChild(manifest, 'provenance', (provenance) => ({ ...provenance, controller_release_decision_id: tooLongDecisionId })));
+    assert.throws(() => fn(module, 'serializeModelPackReleaseInput')(tooLong), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+  });
+
+  await t.test('TEST-MPC-003 MLflow-Run:raw-path-identity-is-rejected', () => {
+    const rawPath = '/private/model/run';
+    const candidate = mutateManifestChild(replaceChild(releaseInputFixture(), 'mlflow', { run_id: rawPath }), 'manifest', (manifest) => mutateManifestChild(manifest, 'provenance', (provenance) => ({ ...provenance, mlflow_run_id: rawPath })));
+    assert.throws(() => fn(module, 'serializeModelPackReleaseInput')(candidate), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
   });
 
   const validAlternateReleaseSingletons: readonly Readonly<{
