@@ -488,6 +488,21 @@ retirement preflight are mandatory before Runtime-only TDD_READY.
 - Retirement preflight is clean and no new helper/fixture/driver/dependency or
   marker was introduced.
 
+### Validator 006 Remediation GREEN and Retirement Freeze
+
+- Runtime production remains 148 lines; SHA-256 `47a93574…7d307` to
+  `991bd21b18fb1544cad274a3a89fbb13b250f82a5ab9406b57489cf5abc57cc9`.
+- Package production remains 251 lines/
+  `c980a150ca50160e5c637dbf06ef49138a96e357965a00295e3123d836642604`.
+- Frozen Tests: package 625 lines/`4db0316d…272fbc`; Runtime 492 lines/
+  `f2685ff896ef71f29cb2f2380d83b31454c5f7feb0984c8105231aa838508479`.
+- Final matrix: package 235/235, Runtime 86/86, E 321/321, inactive 15/15,
+  typecheck, Local Analysis 198/198 and 292/292, E2E 133 PASS plus one
+  authorized skip, board 12/12, canonical exit 0.
+- Retirement: exactly three rows in an existing table; no new helper, fixture,
+  driver, dependency, marker, orphan, duplicate, or weakened assertion. Fresh
+  ponytail returned exactly `Lean already. Ship.`
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

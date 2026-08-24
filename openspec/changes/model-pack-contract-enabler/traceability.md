@@ -55,6 +55,10 @@ Formal Test added exactly those three values to the existing Runtime binding
 table. Controller confirmed package 235/235, Runtime 82/86, and E 317/321 fail
 only on the three leaves plus their parent. Renewed TDD_READY releases only
 Runtime production; every Test and all other paths are frozen.
+The Runtime-only Worker closed all three leaves. Controller confirmed package
+235/235, Runtime 86/86, E 321/321, affected/canonical GREEN, and retirement
+PASS with a fresh `Lean already. Ship.` Production and Test bytes are frozen
+for Validator 007.
 
 | Requirement | Acceptance | Planned test/evidence | Task | Candidate code/evidence | Current result |
 |---|---|---|---|---|---|
@@ -70,7 +74,7 @@ Runtime production; every Test and all other paths are frozen.
 | REQ-MPC-002 | AC-MPC-002-03 | TEST-MPC-003 | TASK-003,006 | exact Registry/URI plus supplied location-verification shape/kind admission; no path access | GREEN PASS |
 | REQ-MPC-002 | AC-MPC-002-04 | TEST-MPC-003 | TASK-003,006 | only repeated release bindings and observation URI/SHA/size/Signature comparisons; singleton lower-boundary codes | GREEN PASS |
 | REQ-MPC-002 | AC-MPC-002-05 | TEST-MPC-003,004 | TASK-003,006 | package fixture and driver; P ownership stop line | GREEN PASS |
-| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; closed dependencies array; governed identity printable/no-control/length/no-credential boundary; adversarial carrier sanitization | CAUSAL RED PASS |
+| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; closed dependencies array; governed identity printable/no-control/length/no-credential boundary; adversarial carrier sanitization | REMEDIATION GREEN; VALIDATOR PENDING |
 | REQ-MPC-003 | AC-MPC-003-02 | TEST-MPC-005 | TASK-004,007 | immutable readiness/openRun/snapshot capture | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-03 | TEST-MPC-005,007 | TASK-004,007 | exact predictor request/same signal and deadline; one-shot predict; Runtime-owned result/provenance | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-04 | TEST-MPC-006 | TASK-004,007 | native mock timers + AbortController + externally ordered atomic terminal outcomes | GREEN PASS |
@@ -79,10 +83,10 @@ Runtime production; every Test and all other paths are frozen.
 | REQ-MPC-003 | AC-MPC-003-07 | TEST-MPC-005,007 | TASK-004,007 | closed Port/result and forbidden-effect evidence | GREEN PASS |
 | REQ-MPC-004 | AC-MPC-004-01 | TEST-MPC-004 | TASK-003 | package driver/double health | GREEN PASS |
 | REQ-MPC-004 | AC-MPC-004-02 | TEST-MPC-008 | TASK-004 | exact Runtime harness/driver via public predictor seam; double health | GREEN PASS |
-| REQ-MPC-004 | AC-MPC-004-03 | TEST-MPC-001..009 | TASK-003,004 | exact signature/error-delivery and independently named material mutation leaves | THREE CONTROL LEAVES FROZEN; CAUSAL RED PASS |
+| REQ-MPC-004 | AC-MPC-004-03 | TEST-MPC-001..009 | TASK-003,004 | exact signature/error-delivery and independently named material mutation leaves | REMEDIATION GREEN; THREE CONTROL LEAVES FROZEN |
 | REQ-MPC-004 | AC-MPC-004-04 | TEST-MPC-004,008 | TASK-003,004,011 | shared drivers plus Controller/Validator ownership review | DRIVER/OWNERSHIP PASS |
 | REQ-MPC-004 | AC-MPC-004-05 | Controller TDD_READY evidence | TASK-005 | Runtime Test hash/count and exact three-leaf causal RED; Runtime-only release | TDD_READY PASS |
-| REQ-MPC-004 | AC-MPC-004-06 | Controller retirement Gate | TASK-003,004,010 | prior delta healthy; three material Unicode-control leaves absent | REOPENED |
+| REQ-MPC-004 | AC-MPC-004-06 | Controller retirement Gate | TASK-003,004,010 | three-row delta reconciled; scans clean; fresh ponytail lean | RETIREMENT PASS |
 | REQ-MPC-005 | AC-MPC-005-01 | TEST-MPC-009 + TEST-XCLI-021 affected existing regression | TASK-004,008,009 | inactive integration plus completed, byte-frozen exact eight-entry mirrored `approvedTsconfig.files` append; every other Xanthil assertion/current behavior preserved | GREEN PASS |
 | REQ-MPC-005 | AC-MPC-005-02 | TEST-MPC-009 | TASK-004,006,007 | inert import/build/driver composition; exact Node loader paired source-read chains classified as toolchain mechanics, every other filesystem/product effect forbidden | GREEN PASS |
 | REQ-MPC-005 | AC-MPC-005-03 | TEST-MPC-009 + Validator review | TASK-004,011,012 | no active binding in E; activation stop line | SCOPE PASS; FRESH VALIDATOR PENDING |
@@ -110,11 +114,11 @@ Runtime production; every Test and all other paths are frozen.
 | TASK-004 | TEST-MPC-005..009 plus existing frozen TEST-XCLI-021 | Validator 006 Runtime Test return complete; three leaves causal RED |
 | TASK-005 | all tests and exact Worker scope | renewed TDD_READY PASS; Runtime-only path released |
 | TASK-006 | REQ-MPC-001, 002, 005 | Validator 005 bounded package Worker complete and frozen |
-| TASK-007 | REQ-MPC-003, 005 | Validator 005 bounded Runtime Worker complete and GREEN |
+| TASK-007 | REQ-MPC-003, 005 | Validator 006 Runtime-only Worker complete and GREEN |
 | TASK-008 | REQ-MPC-004, 005 | exact graph integration complete and frozen |
-| TASK-009 | TEST-MPC-001..009 and affected baseline | historical standard GREEN; three material leaves reopen |
-| TASK-010 | every changed test asset | reopened after Validator 006 |
-| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 001..006 FAIL historical; fresh Validator required after correction |
+| TASK-009 | TEST-MPC-001..009 and affected baseline | remediation GREEN and canonical exit 0 |
+| TASK-010 | every changed test asset | repeated retirement PASS; fresh complete Test delta is lean |
+| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 001..006 FAIL historical; fresh Validator 007 ready |
 | TASK-012 | all accepted evidence and E integration constraint | acceptance and archive |
 
 ## Integration Trace
