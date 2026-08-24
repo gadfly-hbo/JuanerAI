@@ -510,6 +510,11 @@ temporary untracked probe was briefly created in the repository root before
 cleanup. No Test byte changes, no retirement reopen, and no new RED are
 authorized; Validator 008 receives the same frozen Tests.
 
+Validator 008 independently passed the complete standard matrix, reconstructed
+84/84 equivalent boundary leaves, 17/17 Unicode diff leaves, and the frozen
+retirement ledger. The Test assets are accepted and remain permanent for later
+P/C conformance; no Test byte changes are authorized during archive.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

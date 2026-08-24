@@ -63,14 +63,17 @@ Validator 007 found no candidate semantic defect: standard, reconstructed
 84-leaf, and Unicode 17-leaf matrices passed. Its run is invalid solely because
 the Agent briefly created a repository-root untracked probe before restoring a
 clean state. No Test/production byte changed and retirement remains PASS;
-Validator 008 must repeat independent verification.
+Validator 008 repeated independent verification from a clean committed Head and
+passed the standard matrix, reconstructed 84/84 equivalent leaves, Unicode
+17/17 leaves, scope, traceability, retirement, and repository-cleanliness
+checks. Controller acceptance is PASS and archive is authorized.
 
 | Requirement | Acceptance | Planned test/evidence | Task | Candidate code/evidence | Current result |
 |---|---|---|---|---|---|
 | REQ-MPC-001 | AC-MPC-001-01 | TEST-MPC-001 | TASK-003,006 | exact manifest serialize/admit signatures; malformed status shape; printable bounded identities/categories; immutable manifest/revocation policy | REMEDIATION GREEN |
-| REQ-MPC-001 | AC-MPC-001-02 | TEST-MPC-001 | TASK-003,006 | canonical synchronous serializer/admission; closed all-own-key calls including arrays; exact bounds; Proxy sanitization; detached bytes/value | REMEDIATION GREEN; VALIDATOR PENDING |
-| REQ-MPC-001 | AC-MPC-001-03 | TEST-MPC-001 | TASK-003,006 | exact sanitized error carrier with provenance/context ownership; synchronous contract throw; compatibility/artifact/status/permission precedence | REMEDIATION GREEN; VALIDATOR PENDING |
-| REQ-MPC-001 | AC-MPC-001-04 | TEST-MPC-001 | TASK-003,006 | purpose/permission/runtime manifest admission including missing/extra/widened-permission precedence | REMEDIATION GREEN; VALIDATOR PENDING |
+| REQ-MPC-001 | AC-MPC-001-02 | TEST-MPC-001 | TASK-003,006 | canonical synchronous serializer/admission; closed all-own-key calls including arrays; exact bounds; Proxy sanitization; detached bytes/value | VALIDATOR 008 PASS |
+| REQ-MPC-001 | AC-MPC-001-03 | TEST-MPC-001 | TASK-003,006 | exact sanitized error carrier with provenance/context ownership; synchronous contract throw; compatibility/artifact/status/permission precedence | VALIDATOR 008 PASS |
+| REQ-MPC-001 | AC-MPC-001-04 | TEST-MPC-001 | TASK-003,006 | purpose/permission/runtime manifest admission including missing/extra/widened-permission precedence | VALIDATOR 008 PASS |
 | REQ-MPC-001 | AC-MPC-001-05 | TEST-MPC-002 | TASK-003,006 | exact input admission/canonical-byte signatures; precise decimal ordering; Unicode scalar category length | REMEDIATION GREEN |
 | REQ-MPC-001 | AC-MPC-001-06 | TEST-MPC-002 | TASK-003,006 | exact forecast admission and precise interval ordering; Runtime-owned result/provenance boundary | REMEDIATION GREEN |
 | REQ-MPC-001 | AC-MPC-001-07 | TEST-MPC-001 | TASK-003,006 | exact evaluation decimal thresholds and metadata/no-data-access proof | REMEDIATION GREEN |
@@ -79,7 +82,7 @@ Validator 008 must repeat independent verification.
 | REQ-MPC-002 | AC-MPC-002-03 | TEST-MPC-003 | TASK-003,006 | exact Registry/URI plus supplied location-verification shape/kind admission; no path access | GREEN PASS |
 | REQ-MPC-002 | AC-MPC-002-04 | TEST-MPC-003 | TASK-003,006 | only repeated release bindings and observation URI/SHA/size/Signature comparisons; singleton lower-boundary codes | GREEN PASS |
 | REQ-MPC-002 | AC-MPC-002-05 | TEST-MPC-003,004 | TASK-003,006 | package fixture and driver; P ownership stop line | GREEN PASS |
-| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; closed dependencies array; governed identity printable/no-control/length/no-credential boundary; adversarial carrier sanitization | REMEDIATION GREEN; VALIDATOR PENDING |
+| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; closed dependencies array; governed identity printable/no-control/length/no-credential boundary; adversarial carrier sanitization | VALIDATOR 008 PASS |
 | REQ-MPC-003 | AC-MPC-003-02 | TEST-MPC-005 | TASK-004,007 | immutable readiness/openRun/snapshot capture | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-03 | TEST-MPC-005,007 | TASK-004,007 | exact predictor request/same signal and deadline; one-shot predict; Runtime-owned result/provenance | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-04 | TEST-MPC-006 | TASK-004,007 | native mock timers + AbortController + externally ordered atomic terminal outcomes | GREEN PASS |
@@ -94,9 +97,9 @@ Validator 008 must repeat independent verification.
 | REQ-MPC-004 | AC-MPC-004-06 | Controller retirement Gate | TASK-003,004,010 | three-row delta reconciled; scans clean; fresh ponytail lean | RETIREMENT PASS |
 | REQ-MPC-005 | AC-MPC-005-01 | TEST-MPC-009 + TEST-XCLI-021 affected existing regression | TASK-004,008,009 | inactive integration plus completed, byte-frozen exact eight-entry mirrored `approvedTsconfig.files` append; every other Xanthil assertion/current behavior preserved | GREEN PASS |
 | REQ-MPC-005 | AC-MPC-005-02 | TEST-MPC-009 | TASK-004,006,007 | inert import/build/driver composition; exact Node loader paired source-read chains classified as toolchain mechanics, every other filesystem/product effect forbidden | GREEN PASS |
-| REQ-MPC-005 | AC-MPC-005-03 | TEST-MPC-009 + Validator review | TASK-004,011,012 | no active binding in E; activation stop line | SCOPE PASS; FRESH VALIDATOR PENDING |
-| REQ-MPC-005 | AC-MPC-005-04 | TEST-MPC-001,005,007,009 | TASK-003,004,011 | supplied revoked-status block, retained admitted evidence, rollback review | REMEDIATION GREEN; VALIDATOR PENDING |
-| REQ-MPC-005 | AC-MPC-005-05 | Controller/Validator evidence | TASK-011,012 | scope/ownership/integration-order review | SCOPE PASS; FRESH VALIDATOR PENDING |
+| REQ-MPC-005 | AC-MPC-005-03 | TEST-MPC-009 + Validator review | TASK-004,011,012 | no active binding in E; activation stop line | VALIDATOR 008 PASS |
+| REQ-MPC-005 | AC-MPC-005-04 | TEST-MPC-001,005,007,009 | TASK-003,004,011 | supplied revoked-status block, retained admitted evidence, rollback review | VALIDATOR 008 PASS |
+| REQ-MPC-005 | AC-MPC-005-05 | Controller/Validator evidence | TASK-011,012 | scope/ownership/integration-order review | VALIDATOR 008 PASS |
 
 ## Test Asset Ownership
 
@@ -123,8 +126,8 @@ Validator 008 must repeat independent verification.
 | TASK-008 | REQ-MPC-004, 005 | exact graph integration complete and frozen |
 | TASK-009 | TEST-MPC-001..009 and affected baseline | remediation GREEN and canonical exit 0 |
 | TASK-010 | every changed test asset | repeated retirement PASS; fresh complete Test delta is lean |
-| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 001..006 product FAIL historical; Validator 007 operational FAIL; fresh Validator 008 ready |
-| TASK-012 | all accepted evidence and E integration constraint | acceptance and archive |
+| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 001..006 product FAIL historical; Validator 007 operational FAIL; Validator 008 PASS |
+| TASK-012 | all accepted evidence and E integration constraint | Controller acceptance PASS; archive active |
 
 ## Integration Trace
 

@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 007 OPERATIONAL FAIL — UNCHANGED CANDIDATE FOR VALIDATOR 008`
+`VALIDATOR 008 PASS — CONTROLLER ACCEPTED, ARCHIVE AUTHORIZED`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -139,6 +139,16 @@ created an untracked probe in the repository root before deleting it. Final
 Head/index/worktree are clean and no tracked byte changed, so no Test or Worker
 return is indicated. A new fresh read-only Validator 008 must verify the same
 candidate semantics with all temporary artifacts exclusively under `/tmp`.
+Fresh Validator 008 passed on clean Head
+`1ef1b66c0fac726d25034d83cc2a52e9c33ee81b`: standard package 235/235,
+Runtime 86/86, E 321/321, inactive 15/15, typecheck, affected regressions,
+board 12/12, and canonical 1,265 PASS plus one authorized skip. Its independent
+equivalent matrix passed 84/84 and Unicode diff matrix 17/17; actual 90-path
+scope contained no forbidden path. Traceability, architecture, strict
+E -> H -> P -> C -> A, retirement, and operational cleanliness all passed.
+No blocker remains. Controller accepts the inactive E contract Change and
+authorizes canonical spec merge plus OpenSpec archive; this does not activate a
+Profile, authorize downstream H/P/C/A, or merge the Git branch.
 
 ## Frozen References
 
@@ -149,10 +159,10 @@ candidate semantics with all temporary artifacts exclusively under `/tmp`.
 - Validator 005 frozen Head: `fc134d5e9663a7de396fb1532090d87aeddcc12b`
 - Validator 006 frozen Head: `de09cd9515c8bb2ba3382629552a7b0f345a1803`
 - Validator 007 frozen Head: `1ca62a3ebc141512913480f072014e6ef9a75480`
+- Validator 008 PASS Head: `1ef1b66c0fac726d25034d83cc2a52e9c33ee81b`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 007 operational FAIL; product/Test bytes remain
-  frozen and unchanged for Validator 008
+- Current lifecycle: Validator 008 PASS; Controller accepted; archive authorized
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -171,9 +181,9 @@ candidate semantics with all temporary artifacts exclusively under `/tmp`.
 | implementation | PASS; package unchanged 251 lines/`c980a150…`; Runtime 148 lines/`991bd21b…` | none unless production bytes change |
 | GREEN and affected regression | PASS; package 235/235, Runtime 86/86, E 321/321, inactive/affected/typecheck/project-board/canonical healthy | none unless frozen bytes change |
 | Test Asset Retirement | PASS; three permanent table leaves retained, scans clean, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
-| independent verification | Validator 001..006 product FAIL historical; Validator 007 product evidence PASS but run invalid from transient repository-root probe | fresh read-only Validator 008 PASS on clean frozen Head |
-| Controller/user acceptance | blocked | fresh Validator PASS and complete current evidence |
-| archive | blocked | acceptance and integration |
+| independent verification | PASS; Validator 008 standard matrix, equivalent 84/84, Unicode 17/17, scope/trace/retirement/cleanliness | none |
+| Controller/user acceptance | PASS under explicit continue-to-completion instruction; inactive E only | archive current accepted package |
+| archive | authorized | merge current spec and archive Change; no Git merge |
 
 ## Validations Actually Run During Spec
 
@@ -1002,6 +1012,49 @@ authorized before its PASS.
   one fresh read-only R2/Sol-high Validator against the current committed Head,
   with every temporary byte created directly under `/tmp`.
 - Verdict: `FAIL` (Validator operation only; candidate semantics PASS).
+
+## Independent Validator 008 — PASS
+
+- Date: `2026-08-24`; fresh R2 / standard / Sol-high read-only context.
+- Frozen Head: `1ef1b66c0fac726d25034d83cc2a52e9c33ee81b`; start/end branch,
+  Head, merge-base, worktree, index, and untracked inventory exact and clean.
+- Standard matrix: package 235/235; Runtime 86/86; E 321/321; inactive 15/15;
+  typecheck; Local Analysis 198/198 and 292/292; E2E 133 PASS plus one
+  authorized skip; project board 12/12; canonical 1,265 PASS plus that skip.
+- Independent equivalent matrix passed 84/84, covering 35 historical leaves,
+  40 array variants, and nine current carrier/permission/detachment/race/
+  inactive leaves. Unicode diff matrix passed 17/17 across three positions,
+  Cc/Cf/Cs/Co/Cn rejection, and printable ASCII/supplementary acceptance.
+- Actual baseline delta is 90 paths: 69 Controller project-control paths, nine
+  Change documents, nine allowed contract/source/Test paths, three exact
+  conditional graph/runner paths, and zero forbidden paths.
+- Independent counts and set equality passed: five Requirements, 30 ACs, nine
+  Test identities, 12 Tasks, 19 stable errors, nine contract functions and one
+  Runtime factory. Traceability, architecture, inactive-by-default behavior,
+  and strict E -> H -> P -> C -> A all pass.
+- Test Asset Retirement PASS: frozen hashes/consumers match; no orphan,
+  duplicate, marker, scratch, tracked probe, or unauthorized skip. The only
+  `temporaryParent` text is baseline Local Analysis cleanup code.
+- Probes were created directly under `/tmp`, removed there, and absence
+  verified. No repository write, network, install, provider/model, MLflow,
+  Artifact, or external repository access occurred.
+- Residual product work is intentionally deferred to later H/P/C/A Changes;
+  none blocks inactive E acceptance.
+- Verdict: `PASS`.
+
+## Controller Acceptance
+
+- Date: `2026-08-24`
+- Accepted scope: inactive shared Model Pack package contracts, the
+  scenario-specific Analytical Model Runtime Port, deterministic conformance
+  assets, exact graph/runner integration, and human contract documentation.
+- Non-goals remain Provider/SDK/Consumer/Profile/CLI activation, real model or
+  data/Artifact/MLflow/network access, dependency installation, registry,
+  persistence, and downstream H/P/C/A completion.
+- Strict integration order remains E -> H -> P -> C -> A. This acceptance
+  authorizes canonical spec merge and OpenSpec archive only; it does not merge
+  the Git branch or activate product behavior.
+- Verdict: `PASS`.
 
 ## Controller Validator 003 Remediation TDD_READY
 

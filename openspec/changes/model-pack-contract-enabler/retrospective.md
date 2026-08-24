@@ -6,8 +6,8 @@
 - Change class: boundary change; R2 / complex root-cause
 - accepted baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
 - archive path: pending
-- final Validator verdict: pending; Validator 001 through 006 are historical product `FAIL`; Validator 007 is an operational `FAIL`
-- Controller acceptance: blocked
+- final Validator verdict: `PASS` — Validator 008; Validator 001 through 006 remain historical product `FAIL` and Validator 007 remains an operational `FAIL`
+- Controller acceptance: `PASS`; archive authorized
 
 ## Intended Value
 
@@ -20,12 +20,12 @@
 
 | Evidence | Expected | Current Result | Source |
 |---|---|---|---|
-| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | all Validator 006 leaves GREEN; fresh Validator pending | `traceability.md`, `verification.md` |
+| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | all leaves GREEN; Validator 008 PASS | `traceability.md`, `verification.md` |
 | expected RED | every material frozen invariant fails causally before implementation | latest return: package 235/235, Runtime 82/86, E 317/321; exactly three leaves plus one parent | `test-plan.md`, `verification.md` |
 | target GREEN | focused, affected, and canonical evidence PASS | package 235/235, Runtime 86/86, E 321/321; canonical PASS | `verification.md` |
-| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | GREEN and retirement PASS; Validator 007 pending | `verification.md` |
+| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | GREEN, retirement PASS, and Validator 008 PASS | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |
-| independent validation | fresh read-only PASS | Validator 001..006 product FAIL; Validator 007 candidate evidence PASS but run operationally invalid | `verification.md` |
+| independent validation | fresh read-only PASS | Validator 008 PASS from a clean committed Head; 84/84 equivalent and 17/17 Unicode leaves PASS | `verification.md` |
 
 ## Effort and Rework
 
@@ -93,9 +93,9 @@
 - behavior that must be reused: exact closed package/Runtime calls, sanitized carrier, stable error precedence, exact decimal comparisons, printable bounded identities/categories, inert composition, and strict E -> H -> P -> C -> A integration.
 - decisions that must not be reopened implicitly: no Provider/Consumer/Profile/activation in E; no dependency, registry, fallback, persistence, real data/model/network/MLflow, or new runtime abstraction.
 - expected ordinary Change shape: rule-by-rule public-boundary Test matrix, causal RED, one owning production return, full affected/canonical GREEN, retirement reconciliation, and fresh independent validation.
-- remaining risks: fresh Validator 008 must independently confirm the unchanged
-  frozen candidate; all Validator 001..006 counterexamples are GREEN and
-  Validator 007 found no semantic defect.
+- remaining risks: no E release blocker. Later P/C Changes must retain the
+  accepted inactive contracts and independently prove their Provider/Consumer
+  conformance without reopening E's non-goals.
 - explicitly deferred work: P/C/A implementations and every real Artifact, SDK, model, data, or activation proof.
 
 ## Completion Criterion

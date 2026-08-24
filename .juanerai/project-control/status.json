@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_validator_008_active",
-    "label": "Model Pack Contract Enabler：Validator 008 Active",
-    "ordinal": 7,
+    "id": "model_pack_contract_enabler_acceptance",
+    "label": "Model Pack Contract Enabler：Accepted / Archive Active",
+    "ordinal": 8,
     "total": 8
   },
-  "health": "validating",
-  "summary": "Frozen Validator 008 candidate ce556a0 retains semantic GREEN 235/86/321 and retirement PASS; Validator 007 operation recorded.",
-  "current_objective": "Fresh R2 / standard / Sol high Validator 008 independently verifies clean Head ce556a0.",
-  "next_action": "Require explicit independent PASS before acceptance or archive; temporary artifacts must stay under /tmp.",
+  "health": "active",
+  "summary": "Validator 008 PASS on clean Head 1ef1b66; Controller acceptance PASS and archive authorized.",
+  "current_objective": "Archive the accepted Model Pack Contract Enabler and publish the canonical capability specification.",
+  "next_action": "Merge the accepted delta spec into current specs, archive the Change, validate, and open a PR without merging.",
   "blockers": [],
   "milestones": [
     {
@@ -45,17 +45,17 @@
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "active"
+      "status": "completed"
     },
     {
       "id": "user_acceptance",
       "label": "用户验收",
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "archive",
       "label": "归档",
-      "status": "pending"
+      "status": "active"
     }
   ],
   "agents": [
@@ -91,7 +91,7 @@
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "active",
+      "status": "complete",
       "activation": "实现与证据冻结"
     }
   ],
@@ -111,7 +111,7 @@
     {
       "id": "tasks",
       "label": "E lifecycle tasks complete",
-      "done": 10,
+      "done": 11,
       "total": 12
     },
     {
@@ -604,7 +604,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T10:11:49.949Z",
+  "updated_at": "2026-08-24T10:26:38.581Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-recovery-20260824"
