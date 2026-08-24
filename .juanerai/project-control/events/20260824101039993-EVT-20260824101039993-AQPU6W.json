@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824101039993-AQPU6W",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-24T10:10:39.993Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-recovery-20260824"
+  },
+  "summary": "CHG-model-pack-contract-enabler Validator 007 operational FAIL; unchanged candidate frozen for fresh Validator 008.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

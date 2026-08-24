@@ -59,6 +59,11 @@ The Runtime-only Worker closed all three leaves. Controller confirmed package
 235/235, Runtime 86/86, E 321/321, affected/canonical GREEN, and retirement
 PASS with a fresh `Lean already. Ship.` Production and Test bytes are frozen
 for Validator 007.
+Validator 007 found no candidate semantic defect: standard, reconstructed
+84-leaf, and Unicode 17-leaf matrices passed. Its run is invalid solely because
+the Agent briefly created a repository-root untracked probe before restoring a
+clean state. No Test/production byte changed and retirement remains PASS;
+Validator 008 must repeat independent verification.
 
 | Requirement | Acceptance | Planned test/evidence | Task | Candidate code/evidence | Current result |
 |---|---|---|---|---|---|
@@ -118,7 +123,7 @@ for Validator 007.
 | TASK-008 | REQ-MPC-004, 005 | exact graph integration complete and frozen |
 | TASK-009 | TEST-MPC-001..009 and affected baseline | remediation GREEN and canonical exit 0 |
 | TASK-010 | every changed test asset | repeated retirement PASS; fresh complete Test delta is lean |
-| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 001..006 FAIL historical; fresh Validator 007 ready |
+| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 001..006 product FAIL historical; Validator 007 operational FAIL; fresh Validator 008 ready |
 | TASK-012 | all accepted evidence and E integration constraint | acceptance and archive |
 
 ## Integration Trace

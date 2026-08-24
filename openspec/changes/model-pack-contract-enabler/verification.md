@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 006 REMEDIATION GREEN + RETIREMENT PASS — VALIDATOR 007 CANDIDATE`
+`VALIDATOR 007 OPERATIONAL FAIL — UNCHANGED CANDIDATE FOR VALIDATOR 008`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -131,6 +131,14 @@ affected Local Analysis 198/198 and 292/292, E2E 133 PASS plus one authorized
 skip, and project board 12/12. The three-line Test delta is the minimum existing
 table extension; scans are clean and fresh retirement ponytail returned exactly
 `Lean already. Ship.` Production and Test bytes are frozen for Validator 007.
+Validator 007 found no product, Test, scope, traceability, architecture, or
+retirement defect: the standard matrix passed, the independently reconstructed
+Validator 006 equivalent matrix passed 84/84, and the Unicode diff matrix
+passed 17/17. The run is nevertheless invalid because its Agent briefly
+created an untracked probe in the repository root before deleting it. Final
+Head/index/worktree are clean and no tracked byte changed, so no Test or Worker
+return is indicated. A new fresh read-only Validator 008 must verify the same
+candidate semantics with all temporary artifacts exclusively under `/tmp`.
 
 ## Frozen References
 
@@ -140,10 +148,11 @@ table extension; scans are clean and fresh retirement ponytail returned exactly
 - Validator 003 frozen Head: `60a7aa09764c274c527e04d39b7ac6986560ba5f`
 - Validator 005 frozen Head: `fc134d5e9663a7de396fb1532090d87aeddcc12b`
 - Validator 006 frozen Head: `de09cd9515c8bb2ba3382629552a7b0f345a1803`
+- Validator 007 frozen Head: `1ca62a3ebc141512913480f072014e6ef9a75480`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 006 remediation GREEN and Test Asset Retirement
-  PASS; production and Test bytes frozen for Validator 007
+- Current lifecycle: Validator 007 operational FAIL; product/Test bytes remain
+  frozen and unchanged for Validator 008
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -162,7 +171,7 @@ table extension; scans are clean and fresh retirement ponytail returned exactly
 | implementation | PASS; package unchanged 251 lines/`c980a150…`; Runtime 148 lines/`991bd21b…` | none unless production bytes change |
 | GREEN and affected regression | PASS; package 235/235, Runtime 86/86, E 321/321, inactive/affected/typecheck/project-board/canonical healthy | none unless frozen bytes change |
 | Test Asset Retirement | PASS; three permanent table leaves retained, scans clean, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
-| independent verification | Validator 001..006 historical FAIL; Validator 006 standard/history PASS but fresh 81/84 | corrected committed clean Head plus another fresh read-only Validator PASS |
+| independent verification | Validator 001..006 product FAIL historical; Validator 007 product evidence PASS but run invalid from transient repository-root probe | fresh read-only Validator 008 PASS on clean frozen Head |
 | Controller/user acceptance | blocked | fresh Validator PASS and complete current evidence |
 | archive | blocked | acceptance and integration |
 
@@ -967,6 +976,32 @@ authorized before its PASS.
   review returned exactly `Lean already. Ship.`
 - Freeze: any production or Test byte change reopens its owning Gate. The next
   authorized action is one fresh committed read-only R2/Sol-high Validator 007.
+
+## Independent Validator 007 — Operational FAIL, Candidate Semantics PASS
+
+- Date: `2026-08-24`; R2 / standard / Sol-high context.
+- Frozen Head: `1ca62a3ebc141512913480f072014e6ef9a75480`; final branch,
+  merge-base, Head, index, worktree, and untracked inventory clean.
+- Product evidence PASS: package 235/235, Runtime 86/86, E 321/321, inactive
+  15/15, typecheck, Local Analysis 198/198 and 292/292, E2E 133 PASS plus one
+  authorized skip, board 12/12, canonical 1,265 PASS plus that skip.
+- The deleted Validator 006 probe source was unavailable, so Validator 007
+  explicitly reconstructed its archived 35 history + 40 array + 9 fresh
+  categories. After correcting one probe-only fixture error, the equivalent
+  matrix passed 84/84. A separate Unicode diff matrix passed 17/17 across
+  representative Cc/Cf/Cs/Co/Cn rejection and printable identity acceptance.
+- Actual baseline delta is 88 paths; the four additions after Validator 006 are
+  Controller-owned lifecycle events. No forbidden path or scope drift exists.
+- Operational violation: the Agent mistakenly created untracked
+  `juanerai-validator007-probe.ts` in the repository root, then moved its
+  content to `/tmp`, deleted the repository copy, and verified final clean
+  state. No tracked file, index, commit, or Head changed, but the dispatch
+  required probes exclusively under `/tmp`; therefore this run cannot grant
+  Independent Verification PASS.
+- No product/Test repair or retirement reopen is indicated. Recheck criterion:
+  one fresh read-only R2/Sol-high Validator against the current committed Head,
+  with every temporary byte created directly under `/tmp`.
+- Verdict: `FAIL` (Validator operation only; candidate semantics PASS).
 
 ## Controller Validator 003 Remediation TDD_READY
 

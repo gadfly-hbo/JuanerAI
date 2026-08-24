@@ -6,7 +6,7 @@
 - Change class: boundary change; R2 / complex root-cause
 - accepted baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
 - archive path: pending
-- final Validator verdict: pending; Validator 001 through 006 are historical `FAIL`
+- final Validator verdict: pending; Validator 001 through 006 are historical product `FAIL`; Validator 007 is an operational `FAIL`
 - Controller acceptance: blocked
 
 ## Intended Value
@@ -25,7 +25,7 @@
 | target GREEN | focused, affected, and canonical evidence PASS | package 235/235, Runtime 86/86, E 321/321; canonical PASS | `verification.md` |
 | contract/regression | exact package/Runtime/inactive behavior plus affected baseline | GREEN and retirement PASS; Validator 007 pending | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |
-| independent validation | fresh read-only PASS | Validator 001, 002, 003, and 004 FAIL | `verification.md` |
+| independent validation | fresh read-only PASS | Validator 001..006 product FAIL; Validator 007 candidate evidence PASS but run operationally invalid | `verification.md` |
 
 ## Effort and Rework
 
@@ -34,7 +34,7 @@
 - Worker revisions or replans: more than two bounded returns inside the same two production files; complexity stop line crossed.
 - model/reasoning upgrades: R2 automatic role routes only; no matrix waiver.
 - broad existing-test migrations: one exact eight-entry append in existing `TEST-XCLI-021`; no broad migration.
-- Validator FAIL rounds: `6`.
+- Validator FAIL rounds: `7` (six product findings, one Validator operation).
 - environment or tooling incidents: Node v26 paired source-loader observer conflict; resolved as Test/toolchain mechanics without production mechanism.
 
 ## Good Friction
@@ -93,8 +93,9 @@
 - behavior that must be reused: exact closed package/Runtime calls, sanitized carrier, stable error precedence, exact decimal comparisons, printable bounded identities/categories, inert composition, and strict E -> H -> P -> C -> A integration.
 - decisions that must not be reopened implicitly: no Provider/Consumer/Profile/activation in E; no dependency, registry, fallback, persistence, real data/model/network/MLflow, or new runtime abstraction.
 - expected ordinary Change shape: rule-by-rule public-boundary Test matrix, causal RED, one owning production return, full affected/canonical GREEN, retirement reconciliation, and fresh independent validation.
-- remaining risks: fresh Validator 007 must independently confirm the frozen
-  Head; all Validator 001..006 counterexamples are GREEN in permanent tests.
+- remaining risks: fresh Validator 008 must independently confirm the unchanged
+  frozen candidate; all Validator 001..006 counterexamples are GREEN and
+  Validator 007 found no semantic defect.
 - explicitly deferred work: P/C/A implementations and every real Artifact, SDK, model, data, or activation proof.
 
 ## Completion Criterion

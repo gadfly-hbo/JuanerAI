@@ -503,6 +503,13 @@ retirement preflight are mandatory before Runtime-only TDD_READY.
   driver, dependency, marker, orphan, duplicate, or weakened assertion. Fresh
   ponytail returned exactly `Lean already. Ship.`
 
+Validator 007 independently confirmed the frozen Test ledger and candidate
+semantics, including reconstructed 84/84 historical/current leaves and 17/17
+Unicode diff leaves. Its verification run is operationally invalid because a
+temporary untracked probe was briefly created in the repository root before
+cleanup. No Test byte changes, no retirement reopen, and no new RED are
+authorized; Validator 008 receives the same frozen Tests.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The
