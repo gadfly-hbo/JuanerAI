@@ -36,6 +36,11 @@ const stableVersionPattern = /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)
 const runtimeCarriers = new WeakSet<object>();
 const error = (code: Parameters<typeof modelPackError>[0]): never => { const carrier = modelPackError(code); runtimeCarriers.add(carrier); throw carrier; };
 const exactKeys = (value: unknown, keys: readonly string[]): value is RecordValue => Boolean(value && typeof value === 'object' && !Array.isArray(value) && Reflect.ownKeys(value).length === keys.length && keys.every((key) => Object.hasOwn(value, key)));
+const closedArray = (candidate: unknown): candidate is unknown[] => {
+  if (!Array.isArray(candidate)) return false;
+  const keys = Reflect.ownKeys(candidate);
+  return keys.length === candidate.length + 1 && Object.hasOwn(candidate, 'length') && Array.from({ length: candidate.length }, (_, index) => Object.hasOwn(candidate, index)).every(Boolean);
+};
 const detached = <T>(value: T): T => {
   const copy = structuredClone(value);
   const freeze = (candidate: unknown): void => { if (candidate && typeof candidate === 'object' && !Object.isFrozen(candidate)) { for (const child of Object.values(candidate as object)) freeze(child); Object.freeze(candidate); } };
@@ -61,7 +66,7 @@ const packageCall = <T>(operation: () => T, fallback: Parameters<typeof modelPac
 };
 const validIdentityVersion = (candidate: unknown): candidate is IdentityVersionV1 => exactKeys(candidate, ['identity', 'version']) && typeof candidate.identity === 'string' && candidate.identity.length > 0 && candidate.identity.length <= 256 && candidate.identity.trim() === candidate.identity && !/[\s\\/@\x00-\x1f\x7f]/.test(candidate.identity) && candidate.identity !== '.' && candidate.identity !== '..' && !/^(latest|alias)$/i.test(candidate.identity) && typeof candidate.version === 'string' && stableVersionPattern.test(candidate.version);
 const validPermissions = (candidate: unknown): candidate is ModelPackPermissionsV1 => exactKeys(candidate, ['data', 'network', 'external_data', 'mlflow_at_runtime', 'training_workspace_at_runtime', 'source_write', 'model_execution']) && candidate.data === 'local_only' && candidate.network === 'none' && candidate.external_data === 'none' && candidate.mlflow_at_runtime === 'none' && candidate.training_workspace_at_runtime === 'none' && candidate.source_write === 'forbidden' && candidate.model_execution === 'local_only';
-const validBinding = (candidate: unknown): candidate is AnalyticalModelRuntimeBindingV1 => exactKeys(candidate, ['runtime', 'adapter', 'dependencies', 'permissions']) && validIdentityVersion(candidate.runtime) && validIdentityVersion(candidate.adapter) && Array.isArray(candidate.dependencies) && candidate.dependencies.every(validIdentityVersion) && validPermissions(candidate.permissions);
+const validBinding = (candidate: unknown): candidate is AnalyticalModelRuntimeBindingV1 => exactKeys(candidate, ['runtime', 'adapter', 'dependencies', 'permissions']) && validIdentityVersion(candidate.runtime) && validIdentityVersion(candidate.adapter) && closedArray(candidate.dependencies) && candidate.dependencies.every(validIdentityVersion) && validPermissions(candidate.permissions);
 const validInstant = (value: unknown): value is string => typeof value === 'string' && instantPattern.test(value) && new Date(value).toISOString() === value;
 
 export function defineAnalyticalModelRuntime(input: Readonly<{ binding: AnalyticalModelRuntimeBindingV1; predictor: LocalCategoryDemandPredictor }>): AnalyticalModelRuntime {

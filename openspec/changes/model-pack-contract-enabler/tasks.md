@@ -9,12 +9,12 @@
 | `TASK-003` Package Test Design and RED | `juaner_test`; Validator 005 return complete | 625-line/`4db0316d…` suite adds two exact causal leaves | REQ-MPC-001, 004 |
 | `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 005 return complete | 489-line/`1d8ae3d9…` suite adds two exact causal leaves; every other Test frozen | REQ-MPC-003..005 |
 | `TASK-005` TDD_READY | Controller; PASS | package 232/235, Runtime 80/83, E 312/318 fail only on four leaves plus two parents; two production paths released | all |
-| `TASK-006` Implement contracts | `juaner_worker`; active after renewed TDD_READY | package production only for two package leaves | REQ-MPC-001, 002, 005 |
-| `TASK-007` Implement Runtime Port | `juaner_worker`; active after renewed TDD_READY | Runtime production only for two Runtime leaves | REQ-MPC-003, 005 |
+| `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | package production closed both package leaves | REQ-MPC-001, 002, 005 |
+| `TASK-007` Implement Runtime Port | `juaner_worker`; complete and frozen | Runtime production closed both Runtime leaves | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
-| `TASK-009` GREEN and regression | historical PASS; reopened | Validator 005 found four missing material leaves | all |
-| `TASK-010` Test Asset Retirement Gate | historical PASS; reopened | repeat after all four new leaves reach GREEN | REQ-MPC-004 |
-| `TASK-011` Independent verification | Validator 005 FAIL | fresh Validator only after renewed RED/GREEN/retirement freeze | all |
+| `TASK-009` GREEN and regression | complete and frozen | package 235/235, Runtime 83/83, E 318/318, affected/canonical PASS | all |
+| `TASK-010` Test Asset Retirement Gate | PASS | all four leaves retained; scans clean; fresh ponytail `Lean already. Ship.` | REQ-MPC-004 |
+| `TASK-011` Independent verification | Validator 006 ready | fresh committed read-only R2/Sol-high Validator | all |
 | `TASK-012` Accept, integrate, archive | Controller/user according to risk | acceptance, strict E-first integration, current spec merge and archive; Controller-only project-control | all |
 
 ## Test-owned Exact Paths
@@ -40,7 +40,7 @@ root configuration, docs/contracts, OpenSpec, or project-control. After the
 bounded Test Asset Retirement cleanup, every current Test asset is byte-frozen
 at the post-GREEN hashes in `test-plan.md`; no further Test write is authorized.
 
-## Current Worker-owned Remaining Paths
+## Frozen Worker-owned Paths
 
 - `packages/contracts/model-pack.ts`
 - `packages/ports/analytical-model-runtime.ts`
@@ -49,9 +49,10 @@ at the post-GREEN hashes in `test-plan.md`; no further Test write is authorized.
 `tools/harness/validation/run` are complete and byte-frozen for this Worker
 return.
 
-The Worker may edit only the two production paths above. It does not edit tests,
-Profiles, CLI, Product Core, Application, SDK/Provider/Consumer, package/lock
-files, OpenSpec, project-control, or any external repository.
+The Worker return is complete. No further production edit is authorized. The
+Worker did not edit tests, Profiles, CLI, Product Core, Application,
+SDK/Provider/Consumer, package/lock files, OpenSpec, project-control, or any
+external repository.
 
 ## Stop Lines
 

@@ -430,6 +430,24 @@ retirement preflight are mandatory before renewed TDD_READY.
   fixture, driver, dependency, skip/todo/only, TODO/FIXME, temporary, orphan,
   or duplicate asset.
 
+### Validator 005 Remediation GREEN and Retirement Freeze
+
+- Package production: 242 to 251 lines; SHA-256 `9318bbd7…46e69` to
+  `c980a150ca50160e5c637dbf06ef49138a96e357965a00295e3123d836642604`.
+- Runtime production: 143 to 148 lines; SHA-256 `41573c5b…233b7` to
+  `47a93574094a93026b23e1c0476e30755f8f6c9803132305a60e2deb3647d307`.
+- Frozen Tests: package 625 lines/
+  `4db0316d78c66a43fff78f87339e0b7bda3c5dc094532e87380ad7bdc6272fbc`;
+  Runtime 489 lines/
+  `1d8ae3d921beb316d1edf9b7aa4add93bc238abdf42dee2c676da83a504ff8a4`.
+- Final matrix: package 235/235, Runtime 83/83, complete E 318/318,
+  inactive 15/15, typecheck, affected Local Analysis 198/198 and 292/292,
+  E2E 133 PASS plus one authorized skip, project board 12/12, canonical exit 0.
+- Retirement: all four leaves are permanent independent regressions; no
+  skip/todo/only, TODO/FIXME, temporary, orphan, duplicate helper/fixture/
+  driver, dependency, or weakened assertion. Fresh ponytail returned exactly
+  `Lean already. Ship.`
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

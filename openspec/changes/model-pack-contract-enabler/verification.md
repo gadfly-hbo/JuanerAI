@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 005 REMEDIATION TDD_READY — TWO-FILE WORKER RELEASED`
+`VALIDATOR 005 REMEDIATION GREEN + RETIREMENT PASS — VALIDATOR 006 CANDIDATE`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -101,6 +101,14 @@ affected Local Analysis, E2E, project-board, and Test Asset Retirement preflight
 remain healthy; canonical exits nonzero only on the same E RED. Renewed
 TDD_READY releases only the package and Runtime production files; all Test and
 every other path are frozen.
+The bounded Worker changed only those two production files. Controller
+independently confirmed package 235/235, Runtime 83/83, complete E 318/318,
+inactive 15/15, typecheck, affected Local Analysis 198/198 and 292/292, E2E
+133 PASS plus one authorized skip, project board 12/12, and canonical offline
+exit 0. The complete four-leaf Test delta is clean and retains no duplicate,
+orphan, helper, fixture, driver, dependency, skip, todo, only, or temporary
+asset. Fresh mandatory retirement ponytail returned exactly
+`Lean already. Ship.` Production and Test bytes are frozen for Validator 006.
 
 ## Frozen References
 
@@ -111,8 +119,8 @@ every other path are frozen.
 - Validator 005 frozen Head: `fc134d5e9663a7de396fb1532090d87aeddcc12b`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 005 remediation TDD_READY; only package and
-  Runtime production are released to the bounded Worker
+- Current lifecycle: Validator 005 remediation GREEN and Test Asset Retirement
+  PASS; production and Test bytes frozen for Validator 006
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -128,9 +136,9 @@ every other path are frozen.
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
 | Test Design and driver health | PASS; package Test 625 lines/`4db0316d…`, Runtime Test 489 lines/`1d8ae3d9…`; all prior assertions retained | none unless a Test byte changes |
 | causal expected RED | PASS; package 232/235, Runtime 80/83, E 312/318 fail only on four leaves plus two parents | bounded two-file Worker repair |
-| implementation | PASS; package 242 lines/`9318bbd7…`, Runtime 143 lines/`41573c5b…`; only the two released production files changed | none unless production bytes change |
-| GREEN and affected regression | historical standard PASS; Validator 005 found four missing material leaves | causal four-leaf RED then bounded two-file Worker repair |
-| Test Asset Retirement | reopened; prior 11 leaves retained but four material leaves are missing | rerun after four new leaves reach GREEN |
+| implementation | PASS; package 251 lines/`c980a150…`, Runtime 148 lines/`47a93574…`; only the two released production files changed | none unless production bytes change |
+| GREEN and affected regression | PASS; package 235/235, Runtime 83/83, E 318/318, inactive/affected/typecheck/project-board/canonical healthy | none unless frozen bytes change |
+| Test Asset Retirement | PASS; all four new permanent leaves retained, scans clean, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
 | independent verification | Validator 001..005 historical FAIL; Validator 005 standard matrix PASS but fresh probe 32/36 | corrected committed clean Head plus another fresh read-only Validator PASS |
 | Controller/user acceptance | blocked | fresh Validator PASS and complete current evidence |
 | archive | blocked | acceptance and integration |
@@ -826,6 +834,34 @@ authorized before its PASS.
 - Worker authorization: only `packages/contracts/model-pack.ts` and
   `packages/ports/analytical-model-runtime.ts`; every Test and all other paths
   are frozen.
+
+## Controller Validator 005 Remediation GREEN and Retirement Gate
+
+- Date: `2026-08-24`
+- GREEN verdict: `PASS`
+- Test Asset Retirement verdict: `PASS`
+- Formal Worker changed only package production from 242 lines/
+  `9318bbd7676da0b2cefd0aec53b00314633ca946155d0124235e7dc9dd946e69`
+  to 251 lines/
+  `c980a150ca50160e5c637dbf06ef49138a96e357965a00295e3123d836642604`
+  and Runtime production from 143 lines/
+  `41573c5bfe1465d6a3b8cf09167942ad1ec41d098b809190badf83dff17233b7`
+  to 148 lines/
+  `47a93574094a93026b23e1c0476e30755f8f6c9803132305a60e2deb3647d307`.
+- Frozen Tests remain package 625 lines/
+  `4db0316d78c66a43fff78f87339e0b7bda3c5dc094532e87380ad7bdc6272fbc`
+  and Runtime 489 lines/
+  `1d8ae3d921beb316d1edf9b7aa4add93bc238abdf42dee2c676da83a504ff8a4`.
+- Controller GREEN: package 235/235; Runtime 83/83; complete E 318/318;
+  inactive 15/15; typecheck; affected Local Analysis 198/198 and 292/292;
+  E2E 133 PASS plus one authorized skip; project board 12/12; canonical exit 0.
+- Retirement scans found no skip/todo/only, TODO/FIXME, temporary asset,
+  orphan, duplicate helper/fixture/driver, dependency, or weakened assertion.
+  Fresh read-only review found all four leaves independently material and the
+  Runtime public-factory Test seam necessary, returning exactly
+  `Lean already. Ship.`
+- Freeze: any production or Test byte change reopens its owning Gate. The next
+  authorized action is one fresh committed read-only R2/Sol-high Validator 006.
 
 ## Controller Validator 003 Remediation TDD_READY
 

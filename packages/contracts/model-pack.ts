@@ -35,14 +35,16 @@ const utcInstant = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 const prohibited = ['automatic_replenishment', 'automatic_pricing', 'automatic_marketing_or_outreach', 'customer_level_prediction', 'observed_outcome_claim', 'causal_claim', 'authorized_decision_claim', 'action_execution'];
 const errorCarriers = new WeakSet<object>();
 
-export function modelPackError(code: ModelPackErrorCode): ModelPackContractError {
+const createModelPackError = (code: ModelPackErrorCode, trusted: boolean): ModelPackContractError => {
   const error = new Error(code) as ModelPackContractError;
   Object.defineProperty(error, 'name', { value: 'ModelPackContractError', enumerable: true });
   Object.defineProperty(error, 'code', { value: code, enumerable: true });
-  errorCarriers.add(error);
+  if (trusted) errorCarriers.add(error);
   return error;
-}
-const fail = (code: ModelPackErrorCode): never => { throw modelPackError(code); };
+};
+export function modelPackError(code: ModelPackErrorCode): ModelPackContractError { return createModelPackError(code, false); }
+const trustedModelPackError = (code: ModelPackErrorCode): ModelPackContractError => createModelPackError(code, true);
+const fail = (code: ModelPackErrorCode): never => { throw trustedModelPackError(code); };
 const modelPackErrorCode = (reason: unknown): ModelPackErrorCode | undefined => {
   if (!reason || typeof reason !== 'object' || !errorCarriers.has(reason)) return undefined;
   try {
@@ -53,7 +55,7 @@ const modelPackErrorCode = (reason: unknown): ModelPackErrorCode | undefined => 
   } catch { return undefined; }
 };
 const sanitized = <T>(code: ModelPackErrorCode, operation: () => T): T => {
-  try { return operation(); } catch (reason) { throw modelPackError(modelPackErrorCode(reason) ?? code); }
+  try { return operation(); } catch (reason) { throw trustedModelPackError(modelPackErrorCode(reason) ?? code); }
 };
 const record = (value: unknown, keys: readonly string[], code: ModelPackErrorCode): RecordValue => {
   if (!value || typeof value !== 'object' || Array.isArray(value) || Reflect.ownKeys(value).length !== keys.length || !keys.every((key) => Object.hasOwn(value as object, key))) return fail(code);
@@ -126,14 +128,19 @@ const permissions = (candidate: unknown, code: ModelPackErrorCode): ModelPackPer
     return { data: 'local_only', network: 'none', external_data: 'none', mlflow_at_runtime: 'none', training_workspace_at_runtime: 'none', source_write: 'forbidden', model_execution: 'local_only' };
   } catch { return fail('MODEL_PACK_PERMISSION_DENIED'); }
 };
+const closedArray = (candidate: unknown): candidate is unknown[] => {
+  if (!Array.isArray(candidate)) return false;
+  const keys = Reflect.ownKeys(candidate);
+  return keys.length === candidate.length + 1 && Object.hasOwn(candidate, 'length') && Array.from({ length: candidate.length }, (_, index) => Object.hasOwn(candidate, index)).every(Boolean);
+};
 const categories = (candidate: unknown, code: ModelPackErrorCode): readonly string[] => {
-  if (!Array.isArray(candidate) || candidate.length === 0) return fail(code);
+  if (!closedArray(candidate) || candidate.length === 0) return fail(code);
   const values = candidate.map((entry) => nonempty(entry, code));
   if (new Set(values).size !== values.length || values.some((entry) => { const scalars = Array.from(entry); return entry.normalize('NFC') !== entry || scalars.length > 128 || scalars.some((scalar) => scalar.length === 1 && scalar.charCodeAt(0) >= 0xd800 && scalar.charCodeAt(0) <= 0xdfff) || /[\\/]/.test(entry) || entry === '.' || entry === '..'; })) return fail(code);
   return values;
 };
 const stringList = (candidate: unknown, code: ModelPackErrorCode): readonly string[] => {
-  if (!Array.isArray(candidate) || candidate.length === 0) return fail(code);
+  if (!closedArray(candidate) || candidate.length === 0) return fail(code);
   return candidate.map((entry) => nonempty(entry, code));
 };
 
@@ -148,14 +155,14 @@ function validateManifest(candidate: unknown): ModelPackManifestV1 {
   exact(compatibility.juanerai_contract_version, '1.0', 'MODEL_PACK_CONTRACT_UNSUPPORTED'); exact(compatibility.input_contract, 'sales-demand-forecast-input/1.0', 'MODEL_PACK_CONTRACT_UNSUPPORTED'); exact(compatibility.output_contract, 'sales-demand-forecast-output/1.0', 'MODEL_PACK_CONTRACT_UNSUPPORTED');
   const purpose = record(value.purpose, ['approved_use', 'prohibited_uses'], 'MODEL_PACK_CONTRACT_INVALID');
   exact(purpose.approved_use, 'category_demand_forecast_28_day_planning_review', 'MODEL_PACK_CONTRACT_INVALID');
-  if (!Array.isArray(purpose.prohibited_uses) || purpose.prohibited_uses.length !== prohibited.length || purpose.prohibited_uses.some((entry, i) => entry !== prohibited[i])) return fail('MODEL_PACK_CONTRACT_INVALID');
+  if (!closedArray(purpose.prohibited_uses) || purpose.prohibited_uses.length !== prohibited.length || purpose.prohibited_uses.some((entry, i) => entry !== prohibited[i])) return fail('MODEL_PACK_CONTRACT_INVALID');
   const io = record(value.io, ['horizon_days', 'minimum_history_days', 'grain', 'supported_currency', 'supported_product_categories'], 'MODEL_PACK_CONTRACT_INVALID');
   exact(io.horizon_days, 28, 'MODEL_PACK_CONTRACT_INVALID'); exact(io.minimum_history_days, 56, 'MODEL_PACK_CONTRACT_INVALID'); exact(io.grain, 'utc_day_product_category', 'MODEL_PACK_CONTRACT_INVALID');
   const currency = nonempty(io.supported_currency, 'MODEL_PACK_CONTRACT_INVALID'); if (!/^[A-Za-z0-9._-]+$/.test(currency)) return fail('MODEL_PACK_CONTRACT_INVALID');
   const supportedCategories = categories(io.supported_product_categories, 'MODEL_PACK_CONTRACT_INVALID');
   const runtime = record(value.runtime, ['execution', 'deterministic', 'online_learning', 'runtime', 'dependencies'], 'MODEL_PACK_CONTRACT_INVALID');
   exact(runtime.execution, 'local', 'MODEL_PACK_CONTRACT_INVALID'); exact(runtime.deterministic, true, 'MODEL_PACK_CONTRACT_INVALID'); if (runtime.online_learning !== false) return fail('MODEL_PACK_PERMISSION_DENIED');
-  if (!Array.isArray(runtime.dependencies)) return fail('MODEL_PACK_CONTRACT_INVALID');
+  if (!closedArray(runtime.dependencies)) return fail('MODEL_PACK_CONTRACT_INVALID');
   const runtimeIdentity = identityVersion(runtime.runtime, 'MODEL_PACK_CONTRACT_INVALID'); const dependencies = runtime.dependencies.map((entry) => identityVersion(entry, 'MODEL_PACK_CONTRACT_INVALID'));
   const permissionValues = permissions(value.permissions, 'MODEL_PACK_CONTRACT_INVALID');
   const provenance = record(value.provenance, ['controller_release_decision_id', 'released_at', 'mlflow_experiment_id', 'mlflow_run_id', 'registered_model_name', 'registered_model_version', 'training_data_sha256', 'training_code_revision', 'evaluation_evidence_sha256'], 'MODEL_PACK_CONTRACT_INVALID');
@@ -182,11 +189,13 @@ function parseCanonical(bytes: Uint8Array, validator: (value: unknown) => unknow
   return admitted;
 }
 const validateObservation = (candidate: unknown, code: ModelPackErrorCode, release = false): ArtifactObservationV1 => {
-  const value = record(candidate, ['schema_version', 'artifact_uri', 'location_verification', 'sha256', 'byte_size', 'model_signature_sha256'], code); exact(value.schema_version, '1.0', 'MODEL_PACK_CONTRACT_UNSUPPORTED');
-  const uri = string(value.artifact_uri, code); if (release) validateFileUri(uri); else if (!uri.startsWith('file:')) return fail(code);
-  const location = record(value.location_verification, ['kind', 'controller_authorization_id', 'approved_store_id', 'evidence_sha256'], release ? 'MODEL_PACK_RELEASE_REFERENCE_INVALID' : code);
-  const lcode = release ? 'MODEL_PACK_RELEASE_REFERENCE_INVALID' as const : code; exact(location.kind, 'controller_authorized_local_artifact_store', lcode);
-  return detached({ schema_version: '1.0', artifact_uri: uri, location_verification: { kind: 'controller_authorized_local_artifact_store', controller_authorization_id: governedIdentity(location.controller_authorization_id, lcode), approved_store_id: governedIdentity(location.approved_store_id, lcode), evidence_sha256: checksum(location.evidence_sha256, lcode) }, sha256: checksum(value.sha256, code), byte_size: safePositive(value.byte_size, code), model_signature_sha256: checksum(value.model_signature_sha256, code) }) as ArtifactObservationV1;
+  try {
+    const value = record(candidate, ['schema_version', 'artifact_uri', 'location_verification', 'sha256', 'byte_size', 'model_signature_sha256'], code); exact(value.schema_version, '1.0', 'MODEL_PACK_CONTRACT_UNSUPPORTED');
+    const uri = string(value.artifact_uri, code); if (release) validateFileUri(uri); else if (!uri.startsWith('file:')) return fail(code);
+    const location = record(value.location_verification, ['kind', 'controller_authorization_id', 'approved_store_id', 'evidence_sha256'], release ? 'MODEL_PACK_RELEASE_REFERENCE_INVALID' : code);
+    const lcode = release ? 'MODEL_PACK_RELEASE_REFERENCE_INVALID' as const : code; exact(location.kind, 'controller_authorized_local_artifact_store', lcode);
+    return detached({ schema_version: '1.0', artifact_uri: uri, location_verification: { kind: 'controller_authorized_local_artifact_store', controller_authorization_id: governedIdentity(location.controller_authorization_id, lcode), approved_store_id: governedIdentity(location.approved_store_id, lcode), evidence_sha256: checksum(location.evidence_sha256, lcode) }, sha256: checksum(value.sha256, code), byte_size: safePositive(value.byte_size, code), model_signature_sha256: checksum(value.model_signature_sha256, code) }) as ArtifactObservationV1;
+  } catch (reason) { throw trustedModelPackError(modelPackErrorCode(reason) ?? (release ? 'MODEL_PACK_RELEASE_REFERENCE_INVALID' : code)); }
 };
 function validateFileUri(value: string): void {
   try { const parsed = new URL(value); if (parsed.protocol !== 'file:' || parsed.host || parsed.username || parsed.password || parsed.search || parsed.hash || parsed.href !== value || !parsed.pathname.startsWith('/') || parsed.pathname.includes('//') || parsed.pathname.split('/').some((part) => part === '.' || part === '..' || /%2e/i.test(part) || /^(latest|alias)$/i.test(part))) fail('MODEL_PACK_RELEASE_REFERENCE_INVALID'); } catch (error) { if ((error as { code?: unknown }).code === 'MODEL_PACK_RELEASE_REFERENCE_INVALID') throw error; fail('MODEL_PACK_RELEASE_REFERENCE_INVALID'); }
@@ -229,14 +238,14 @@ export function admitModelPackReleaseStatus(input: Readonly<{ release_status: un
 
 export function admitCategoryDemandInput(input: Readonly<{ candidate: unknown; manifest: ModelPackManifestV1 }>): CategoryDemandInputV1 {
   return sanitized('MODEL_PACK_INPUT_INVALID', () => {
-    const call = record(input, ['candidate', 'manifest'], 'MODEL_PACK_INPUT_INVALID'); const manifest = validateManifest(call.manifest); const value = record(call.candidate, ['contract_version', 'as_of_date', 'currency', 'history'], 'MODEL_PACK_INPUT_INVALID'); exact(value.contract_version, '1.0', 'MODEL_PACK_CONTRACT_UNSUPPORTED'); const asOf = date(value.as_of_date, 'MODEL_PACK_INPUT_INVALID'); if (value.currency !== manifest.io.supported_currency || !Array.isArray(value.history)) return fail('MODEL_PACK_INPUT_INVALID'); const rows = value.history.map((candidate) => { const row = record(candidate, ['business_date', 'product_category', 'order_count', 'gross_order_amount', 'discount_amount'], 'MODEL_PACK_INPUT_INVALID'); const gross = decimalString(row.gross_order_amount, 'MODEL_PACK_INPUT_INVALID'); const discount = decimalString(row.discount_amount, 'MODEL_PACK_INPUT_INVALID'); if (compareDecimalStrings(discount, gross) > 0) return fail('MODEL_PACK_INPUT_INVALID'); return { business_date: date(row.business_date, 'MODEL_PACK_INPUT_INVALID'), product_category: nonempty(row.product_category, 'MODEL_PACK_INPUT_INVALID'), order_count: nonnegative(row.order_count, 'MODEL_PACK_INPUT_INVALID'), gross_order_amount: gross, discount_amount: discount }; });
+    const call = record(input, ['candidate', 'manifest'], 'MODEL_PACK_INPUT_INVALID'); const manifest = validateManifest(call.manifest); const value = record(call.candidate, ['contract_version', 'as_of_date', 'currency', 'history'], 'MODEL_PACK_INPUT_INVALID'); exact(value.contract_version, '1.0', 'MODEL_PACK_CONTRACT_UNSUPPORTED'); const asOf = date(value.as_of_date, 'MODEL_PACK_INPUT_INVALID'); if (value.currency !== manifest.io.supported_currency || !closedArray(value.history)) return fail('MODEL_PACK_INPUT_INVALID'); const rows = value.history.map((candidate) => { const row = record(candidate, ['business_date', 'product_category', 'order_count', 'gross_order_amount', 'discount_amount'], 'MODEL_PACK_INPUT_INVALID'); const gross = decimalString(row.gross_order_amount, 'MODEL_PACK_INPUT_INVALID'); const discount = decimalString(row.discount_amount, 'MODEL_PACK_INPUT_INVALID'); if (compareDecimalStrings(discount, gross) > 0) return fail('MODEL_PACK_INPUT_INVALID'); return { business_date: date(row.business_date, 'MODEL_PACK_INPUT_INVALID'), product_category: nonempty(row.product_category, 'MODEL_PACK_INPUT_INVALID'), order_count: nonnegative(row.order_count, 'MODEL_PACK_INPUT_INVALID'), gross_order_amount: gross, discount_amount: discount }; });
     const categoriesValue = manifest.io.supported_product_categories; const historyDays = rows.length / categoriesValue.length; if (!Number.isInteger(historyDays) || historyDays < manifest.io.minimum_history_days) return fail('MODEL_PACK_INPUT_INVALID'); const start = Date.parse(`${asOf}T00:00:00.000Z`) - (historyDays - 1) * 86400000; const expected = [] as Array<[string, string]>; for (let day = 0; day < historyDays; day += 1) for (const category of categoriesValue) expected.push([new Date(start + day * 86400000).toISOString().slice(0, 10), category]); if (rows.some((row, index) => row.business_date !== expected[index]?.[0] || row.product_category !== expected[index]?.[1])) return fail('MODEL_PACK_INPUT_INVALID'); return detached({ contract_version: '1.0', as_of_date: asOf, currency: manifest.io.supported_currency, history: rows }) as CategoryDemandInputV1;
   });
 }
 export function canonicalCategoryDemandInputBytes(input: Readonly<{ admitted_input: CategoryDemandInputV1; manifest: ModelPackManifestV1 }>): Uint8Array { return sanitized('MODEL_PACK_CONTRACT_INVALID', () => { const call = record(input, ['admitted_input', 'manifest'], 'MODEL_PACK_CONTRACT_INVALID'); return canonical(admitCategoryDemandInput({ candidate: call.admitted_input, manifest: call.manifest as ModelPackManifestV1 })); }); }
 export function admitCategoryDemandForecast(input: Readonly<{ candidate: unknown; manifest: ModelPackManifestV1; admitted_input: CategoryDemandInputV1 }>): CategoryDemandForecastV1 {
   return sanitized('MODEL_PACK_OUTPUT_INVALID', () => {
-    const call = record(input, ['candidate', 'manifest', 'admitted_input'], 'MODEL_PACK_OUTPUT_INVALID'); const manifest = validateManifest(call.manifest); const admittedInput = admitCategoryDemandInput({ candidate: call.admitted_input, manifest }); const value = record(call.candidate, ['contract_version', 'as_of_date', 'currency', 'predictions'], 'MODEL_PACK_OUTPUT_INVALID'); exact(value.contract_version, '1.0', 'MODEL_PACK_CONTRACT_UNSUPPORTED'); if (value.as_of_date !== admittedInput.as_of_date || value.currency !== admittedInput.currency || !Array.isArray(value.predictions)) return fail('MODEL_PACK_OUTPUT_INVALID'); const rows = value.predictions.map((candidate) => { const row = record(candidate, ['business_date', 'product_category', 'predicted_order_count', 'predicted_net_order_amount', 'order_count_interval_80', 'net_order_amount_interval_80'], 'MODEL_PACK_OUTPUT_INVALID'); const interval = (candidateInterval: unknown): PredictionInterval80V1 => { const intervalValue = record(candidateInterval, ['lower', 'upper'], 'MODEL_PACK_OUTPUT_INVALID'); const lower = decimalString(intervalValue.lower, 'MODEL_PACK_OUTPUT_INVALID'); const upper = decimalString(intervalValue.upper, 'MODEL_PACK_OUTPUT_INVALID'); if (compareDecimalStrings(lower, upper) > 0) return fail('MODEL_PACK_OUTPUT_INVALID'); return { lower, upper }; }; return { business_date: date(row.business_date, 'MODEL_PACK_OUTPUT_INVALID'), product_category: nonempty(row.product_category, 'MODEL_PACK_OUTPUT_INVALID'), predicted_order_count: decimalString(row.predicted_order_count, 'MODEL_PACK_OUTPUT_INVALID'), predicted_net_order_amount: decimalString(row.predicted_net_order_amount, 'MODEL_PACK_OUTPUT_INVALID'), order_count_interval_80: interval(row.order_count_interval_80), net_order_amount_interval_80: interval(row.net_order_amount_interval_80) }; });
+    const call = record(input, ['candidate', 'manifest', 'admitted_input'], 'MODEL_PACK_OUTPUT_INVALID'); const manifest = validateManifest(call.manifest); const admittedInput = admitCategoryDemandInput({ candidate: call.admitted_input, manifest }); const value = record(call.candidate, ['contract_version', 'as_of_date', 'currency', 'predictions'], 'MODEL_PACK_OUTPUT_INVALID'); exact(value.contract_version, '1.0', 'MODEL_PACK_CONTRACT_UNSUPPORTED'); if (value.as_of_date !== admittedInput.as_of_date || value.currency !== admittedInput.currency || !closedArray(value.predictions)) return fail('MODEL_PACK_OUTPUT_INVALID'); const rows = value.predictions.map((candidate) => { const row = record(candidate, ['business_date', 'product_category', 'predicted_order_count', 'predicted_net_order_amount', 'order_count_interval_80', 'net_order_amount_interval_80'], 'MODEL_PACK_OUTPUT_INVALID'); const interval = (candidateInterval: unknown): PredictionInterval80V1 => { const intervalValue = record(candidateInterval, ['lower', 'upper'], 'MODEL_PACK_OUTPUT_INVALID'); const lower = decimalString(intervalValue.lower, 'MODEL_PACK_OUTPUT_INVALID'); const upper = decimalString(intervalValue.upper, 'MODEL_PACK_OUTPUT_INVALID'); if (compareDecimalStrings(lower, upper) > 0) return fail('MODEL_PACK_OUTPUT_INVALID'); return { lower, upper }; }; return { business_date: date(row.business_date, 'MODEL_PACK_OUTPUT_INVALID'), product_category: nonempty(row.product_category, 'MODEL_PACK_OUTPUT_INVALID'), predicted_order_count: decimalString(row.predicted_order_count, 'MODEL_PACK_OUTPUT_INVALID'), predicted_net_order_amount: decimalString(row.predicted_net_order_amount, 'MODEL_PACK_OUTPUT_INVALID'), order_count_interval_80: interval(row.order_count_interval_80), net_order_amount_interval_80: interval(row.net_order_amount_interval_80) }; });
     const start = Date.parse(`${admittedInput.as_of_date}T00:00:00.000Z`); const expected: Array<[string, string]> = []; for (let day = 1; day <= 28; day += 1) for (const category of manifest.io.supported_product_categories) expected.push([new Date(start + day * 86400000).toISOString().slice(0, 10), category]); if (rows.length !== expected.length || rows.some((row, index) => row.business_date !== expected[index]?.[0] || row.product_category !== expected[index]?.[1])) return fail('MODEL_PACK_OUTPUT_INVALID'); return detached({ contract_version: '1.0', as_of_date: admittedInput.as_of_date, currency: admittedInput.currency, predictions: rows }) as CategoryDemandForecastV1;
   });
 }
