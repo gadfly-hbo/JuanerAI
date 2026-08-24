@@ -6,16 +6,16 @@
 |---|---|---|---|
 | `TASK-001` Complete R2 decision package | `juaner_spec`; complete | this Change's OpenSpec files only; preserves the public surface, prior permission-oracle disposition, and completed closed-graph correction while distinguishing the exact paired Node v26 source-loader chains from product filesystem effects | REQ-MPC-001..005 |
 | `TASK-002` Repeat Spec Gate and lean review | Controller; PASS | nested `openSync` loader-chain root cause, paired-chain/no-mechanism disposition, full-package consistency, and mandatory complete-diff ponytail review | all |
-| `TASK-003` Package Test Design and RED | `juaner_test`; complete and frozen | 709-line/`6104e063…b184614` package suite; six Manifest identity leaves plus parent causal RED | REQ-MPC-001, 004 |
-| `TASK-004` Runtime Test Design and equivalence health | `juaner_test`; complete and frozen | 545-line/`2359f5f4…b3ef077` Runtime suite; Runtime/Adapter/dependency valid and three-value negative matrix 110/110 GREEN | REQ-MPC-003, 004 |
+| `TASK-003` Package Test Design and RED | `juaner_test`; complete and frozen | 700-line/`ec6e9b0b…624115` package suite; Manifest two-position 4-valid/18-invalid governed-identity matrix | REQ-MPC-001, 004 |
+| `TASK-004` Runtime Test Design and equivalence health | `juaner_test`; complete and frozen | 516-line/`da00b997…f5855` Runtime suite; factory three-position matching matrix with zero predictor issue | REQ-MPC-003, 004 |
 | `TASK-005` TDD_READY | Controller; PASS | package 290/283/7, Runtime 110/110, E 400/393/7, inactive 15/15, typecheck PASS; only package production released | all |
 | `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | only `packages/contracts/model-pack.ts`; 259-line/`d6b95748…8db7` governed-identity tightening; Runtime and every other production path unchanged | REQ-MPC-001, 005 |
 | `TASK-007` Implement Runtime Port | complete and frozen | Runtime 148-line/`e8b1d90d…b97177`; whitespace and `.`/`..` rejection semantics must not change | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
-| `TASK-009` GREEN and regression | complete | package 290/290, Runtime 110/110, E 400/400, inactive 15/15, typecheck, affected Local Analysis/E2E, board, and canonical 1,344 PASS plus one authorized skip | all |
-| `TASK-010` Test Asset Retirement Gate | PASS | complete two-suite `+46/-0` delta permanent and owned; no temporary/orphan/retirement marker; ponytail exactly `Lean already. Ship.` | REQ-MPC-004 |
-| `TASK-011` Independent verification | ready | Validator 009 historical PASS invalidated; fresh read-only Validator 010 required on the new frozen Head | all |
-| `TASK-012` Accept, integrate, archive | withdrawn; external re-review FAIL | PR #14 Draft; no acceptance/archive/merge/M1/H/P/C/A before Validator 010 PASS and another re-review | all |
+| `TASK-009` GREEN and regression | complete | package 324/324, Runtime 142/142, E 466/466, inactive 15/15, typecheck, affected Local Analysis/E2E, board, and canonical 1,410 PASS plus one authorized skip | all |
+| `TASK-010` Test Asset Retirement Gate | PASS | Test-only `+58/-96`; successor matrices retain every distinct boundary/error/effect; scans clean; ponytail exactly `Lean already. Ship.` | REQ-MPC-004 |
+| `TASK-011` Independent verification | ready after Validator 010 FAIL correction | fresh read-only Validator 011 required on the corrected frozen Head | all |
+| `TASK-012` Accept, integrate, archive | withdrawn; external re-review FAIL | PR #14 Draft; no acceptance/archive/merge/M1/H/P/C/A before Validator 011 PASS and another re-review | all |
 
 ## Test-owned Exact Paths
 
@@ -50,9 +50,10 @@ at the post-GREEN hashes in `test-plan.md`; no further Test write is authorized.
 return.
 
 The Worker return is complete. No further production edit is authorized. The
-Worker did not edit package production, tests, Profiles, CLI, Product Core,
-Application, SDK/Provider/Consumer, package/lock files, OpenSpec,
-project-control, or any external repository.
+Worker edited only package production for this return; it did not edit Runtime
+production, tests, Profiles, CLI, Product Core, Application,
+SDK/Provider/Consumer, package/lock files, OpenSpec, project-control, or any
+external repository.
 
 ## Stop Lines
 

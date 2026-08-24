@@ -199,53 +199,44 @@ test('TEST-MPC-001..003 production package target and every independent mutation
     assert.equal('state' in admitted, false);
   });
 
-  await t.test('TEST-MPC-001 manifest:governed-Runtime-and-dependency-identities-accept-200-supplementary-plane-scalars', () => {
-    const scalarIdentity = '\u{1F642}'.repeat(200);
-    const manifest = mutateManifestChild(manifestFixture(), 'runtime', (runtime) => ({
-      ...runtime,
-      runtime: { ...(runtime.runtime as RecordValue), identity: scalarIdentity },
-      dependencies: [{ ...((runtime.dependencies as RecordValue[])[0]), identity: scalarIdentity }],
-    }));
-    const bytes = fn(module, 'serializeModelPackManifest')(manifest) as Uint8Array;
-    assert.deepEqual(bytes, canonicalBytes(manifest));
-    const admitted = fn(module, 'admitModelPackManifest')({ manifest_bytes: bytes, artifact_observation: artifactObservationFixture(), expected_package: expectedPackageFixture() }) as ModelPackManifestV1;
-    assert.equal(admitted.runtime.runtime.identity, scalarIdentity);
-    assert.equal(admitted.runtime.dependencies[0]?.identity, scalarIdentity);
-  });
-
-  await t.test('TEST-MPC-001 manifest:governed-Runtime-and-dependency-identities-use-256-scalar-boundary', () => {
-    const exactScalarIdentity = '\u{1F642}'.repeat(256);
-    const exact = mutateManifestChild(manifestFixture(), 'runtime', (runtime) => ({
-      ...runtime,
-      runtime: { ...(runtime.runtime as RecordValue), identity: exactScalarIdentity },
-      dependencies: [{ ...((runtime.dependencies as RecordValue[])[0]), identity: exactScalarIdentity }],
-    }));
-    assert.deepEqual(fn(module, 'serializeModelPackManifest')(exact), canonicalBytes(exact));
-    const tooLongScalarIdentity = '\u{1F642}'.repeat(257);
-    const tooLong = mutateManifestChild(exact, 'runtime', (runtime) => ({
-      ...runtime,
-      runtime: { ...(runtime.runtime as RecordValue), identity: tooLongScalarIdentity },
-      dependencies: [{ ...((runtime.dependencies as RecordValue[])[0]), identity: tooLongScalarIdentity }],
-    }));
-    assert.throws(() => fn(module, 'serializeModelPackManifest')(tooLong), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
-  });
-
   const manifestGovernedIdentityPositions: readonly Readonly<{ name: string; set(manifest: RecordValue, identity: string): void }>[] = [
     { name: 'Runtime', set: (manifest, identity) => { (((manifest.runtime as RecordValue).runtime) as RecordValue).identity = identity; } },
     { name: 'dependency', set: (manifest, identity) => { ((((manifest.runtime as RecordValue).dependencies as RecordValue[])[0]) as RecordValue).identity = identity; } },
   ];
+  const validGovernedIdentities: readonly Readonly<{ name: string; identity: string }>[] = [
+    { name: 'ordinary', identity: 'governed-identity' },
+    { name: 'one-Unicode-scalar', identity: '\u{1F642}' },
+    { name: '200-supplementary-plane-scalars', identity: '\u{1F642}'.repeat(200) },
+    { name: '256-Unicode-scalars', identity: '\u{1F642}'.repeat(256) },
+  ];
+  const invalidGovernedIdentities: readonly Readonly<{ name: string; identity: string }>[] = [
+    { name: 'internal-ASCII-whitespace', identity: 'governed identity' },
+    { name: 'leading-whitespace', identity: ' governed-identity' },
+    { name: 'trailing-whitespace', identity: 'governed-identity ' },
+    { name: 'Unicode-whitespace-U+00A0', identity: 'governed\u00A0identity' },
+    { name: 'exact-dot', identity: '.' }, { name: 'exact-dot-dot', identity: '..' },
+    { name: 'forward-slash-path', identity: 'bad/path' }, { name: 'backslash-path', identity: 'bad\\path' },
+    { name: 'at-sign', identity: 'governed@identity' }, { name: 'credential-like', identity: 'user:secret@governed' },
+    { name: 'alias', identity: 'alias' }, { name: 'latest', identity: 'latest' },
+    { name: 'Cc-control-U+0000', identity: 'governed\u0000identity' }, { name: 'Cf-format-U+200B', identity: 'governed\u200Bidentity' },
+    { name: 'Cs-lone-surrogate-U+D800', identity: 'governed\uD800identity' }, { name: 'Cn-noncharacter-U+FDD0', identity: 'governed\uFDD0identity' },
+    { name: 'Co-private-use-U+E000', identity: 'governed\uE000identity' }, { name: '257-Unicode-scalars', identity: '\u{1F642}'.repeat(257) },
+  ];
   for (const entry of manifestGovernedIdentityPositions) {
-    await t.test(`TEST-MPC-001 manifest:${entry.name}-identity-valid-governed-control-round-trips`, () => {
-      const manifest = clone(manifestFixture());
-      entry.set(manifest, `${entry.name.toLowerCase()}-controlled-identity`);
-      const bytes = fn(module, 'serializeModelPackManifest')(manifest);
-      const admitted = fn(module, 'admitModelPackManifest')({ manifest_bytes: bytes, artifact_observation: artifactObservationFixture(), expected_package: expectedPackageFixture() }) as ModelPackManifestV1;
-      assert.equal(entry.name === 'Runtime' ? admitted.runtime.runtime.identity : admitted.runtime.dependencies[0]?.identity, `${entry.name.toLowerCase()}-controlled-identity`);
-    });
-    for (const identity of ['runtime identity', '.', '..']) {
-      await t.test(`TEST-MPC-001 manifest:${entry.name}-identity-${JSON.stringify(identity)}-is-contract-invalid-at-serialization-and-admission`, () => {
+    for (const identityCase of validGovernedIdentities) {
+      await t.test(`TEST-MPC-001 manifest:${entry.name}-identity-${identityCase.name}-round-trips-through-serialization-and-canonical-byte-admission`, () => {
         const manifest = clone(manifestFixture());
-        entry.set(manifest, identity);
+        entry.set(manifest, identityCase.identity);
+        const bytes = fn(module, 'serializeModelPackManifest')(manifest) as Uint8Array;
+        assert.deepEqual(bytes, canonicalBytes(manifest));
+        const admitted = fn(module, 'admitModelPackManifest')({ manifest_bytes: bytes, artifact_observation: artifactObservationFixture(), expected_package: expectedPackageFixture() }) as ModelPackManifestV1;
+        assert.equal(entry.name === 'Runtime' ? admitted.runtime.runtime.identity : admitted.runtime.dependencies[0]?.identity, identityCase.identity);
+      });
+    }
+    for (const identityCase of invalidGovernedIdentities) {
+      await t.test(`TEST-MPC-001 manifest:${entry.name}-identity-${identityCase.name}-is-contract-invalid-at-serialization-and-canonical-byte-admission`, () => {
+        const manifest = clone(manifestFixture());
+        entry.set(manifest, identityCase.identity);
         assert.throws(() => fn(module, 'serializeModelPackManifest')(manifest), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
         assert.throws(() => fn(module, 'admitModelPackManifest')({ manifest_bytes: canonicalBytes(manifest), artifact_observation: artifactObservationFixture(), expected_package: expectedPackageFixture() }), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
       });

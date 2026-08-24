@@ -163,26 +163,8 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
   for (const entry of factoryCases) await t.test(entry.name, () => assert.throws(() => runtimeModule.defineAnalyticalModelRuntime(entry.candidate), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE')));
 
   const factoryBindingValueCases: readonly Readonly<{ name: string; mutate(binding: RecordValue): void }>[] = [
-    { name: 'TEST-MPC-005 factory:runtime-identity-path-like', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'bad/path'; } },
-    { name: 'TEST-MPC-005 factory:runtime-identity-at-sign', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'runtime@1'; } },
-    { name: 'TEST-MPC-005 factory:runtime-identity-Cf-zero-width-is-incompatible', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'runtime\u200Bhidden'; } },
-    { name: 'TEST-MPC-005 factory:runtime-identity-credential-like-is-incompatible', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'user:secret@runtime'; } },
-    { name: 'TEST-MPC-005 factory:runtime-identity-latest-is-incompatible', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'latest'; } },
-    { name: 'TEST-MPC-005 factory:runtime-identity-alias-is-incompatible', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'alias'; } },
     { name: 'TEST-MPC-005 factory:runtime-version-leading-zero', mutate: (binding) => { (binding.runtime as RecordValue).version = '01.0.0'; } },
-    { name: 'TEST-MPC-005 factory:adapter-identity-path-like', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'bad/path'; } },
-    { name: 'TEST-MPC-005 factory:adapter-identity-at-sign', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'adapter@1'; } },
-    { name: 'TEST-MPC-005 factory:adapter-identity-Cf-zero-width-is-incompatible', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'adapter\u200Bhidden'; } },
-    { name: 'TEST-MPC-005 factory:adapter-identity-credential-like-is-incompatible', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'user:secret@adapter'; } },
-    { name: 'TEST-MPC-005 factory:adapter-identity-latest-is-incompatible', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'latest'; } },
-    { name: 'TEST-MPC-005 factory:adapter-identity-alias-is-incompatible', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'alias'; } },
     { name: 'TEST-MPC-005 factory:adapter-version-leading-zero', mutate: (binding) => { (binding.adapter as RecordValue).version = '01.0.0'; } },
-    { name: 'TEST-MPC-005 factory:dependency-identity-path-like', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'bad/path'; } },
-    { name: 'TEST-MPC-005 factory:dependency-identity-at-sign', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'dependency@1'; } },
-    { name: 'TEST-MPC-005 factory:dependency-identity-Cf-zero-width-is-incompatible', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'dependency\u200Bhidden'; } },
-    { name: 'TEST-MPC-005 factory:dependency-identity-credential-like-is-incompatible', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'user:secret@dependency'; } },
-    { name: 'TEST-MPC-005 factory:dependency-identity-latest-is-incompatible', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'latest'; } },
-    { name: 'TEST-MPC-005 factory:dependency-identity-alias-is-incompatible', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'alias'; } },
     { name: 'TEST-MPC-005 factory:dependency-version-leading-zero', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).version = '01.0.0'; } },
     { name: 'TEST-MPC-005 factory:permission-network-widened', mutate: (binding) => { (binding.permissions as RecordValue).network = 'allowed'; } },
   ];
@@ -201,19 +183,35 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
     { name: 'Adapter', set: (binding, identity) => { (binding.adapter as RecordValue).identity = identity; } },
     { name: 'dependency', set: (binding, identity) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = identity; } },
   ];
+  const validGovernedIdentities: readonly Readonly<{ name: string; identity: string }>[] = [
+    { name: 'ordinary', identity: 'governed-identity' },
+    { name: 'one-Unicode-scalar', identity: '\u{1F642}' },
+    { name: '200-supplementary-plane-scalars', identity: '\u{1F642}'.repeat(200) },
+    { name: '256-Unicode-scalars', identity: '\u{1F642}'.repeat(256) },
+  ];
+  const invalidGovernedIdentities: readonly Readonly<{ name: string; identity: string }>[] = [
+    { name: 'internal-ASCII-whitespace', identity: 'governed identity' }, { name: 'leading-whitespace', identity: ' governed-identity' },
+    { name: 'trailing-whitespace', identity: 'governed-identity ' }, { name: 'Unicode-whitespace-U+00A0', identity: 'governed\u00A0identity' },
+    { name: 'exact-dot', identity: '.' }, { name: 'exact-dot-dot', identity: '..' }, { name: 'forward-slash-path', identity: 'bad/path' }, { name: 'backslash-path', identity: 'bad\\path' },
+    { name: 'at-sign', identity: 'governed@identity' }, { name: 'credential-like', identity: 'user:secret@governed' }, { name: 'alias', identity: 'alias' }, { name: 'latest', identity: 'latest' },
+    { name: 'Cc-control-U+0000', identity: 'governed\u0000identity' }, { name: 'Cf-format-U+200B', identity: 'governed\u200Bidentity' }, { name: 'Cs-lone-surrogate-U+D800', identity: 'governed\uD800identity' },
+    { name: 'Cn-noncharacter-U+FDD0', identity: 'governed\uFDD0identity' }, { name: 'Co-private-use-U+E000', identity: 'governed\uE000identity' }, { name: '257-Unicode-scalars', identity: '\u{1F642}'.repeat(257) },
+  ];
   for (const entry of governedIdentityPositions) {
-    await t.test(`TEST-MPC-005 factory:${entry.name}-identity-valid-governed-control-constructs-without-issue`, () => {
-      const controlled = createControlledPredictor();
-      const binding = clone(bindingFixture());
-      entry.set(binding, `${entry.name.toLowerCase()}-controlled-identity`);
-      assert.doesNotThrow(() => runtimeModule.defineAnalyticalModelRuntime({ binding: binding as never, predictor: controlled.predictor }));
-      assert.equal(controlled.control.issueCount(), 0);
-    });
-    for (const identity of ['runtime identity', '.', '..']) {
-      await t.test(`TEST-MPC-005 factory:${entry.name}-identity-${JSON.stringify(identity)}-is-incompatible-without-issue`, () => {
+    for (const identityCase of validGovernedIdentities) {
+      await t.test(`TEST-MPC-005 factory:${entry.name}-identity-${identityCase.name}-constructs-synchronously-without-predictor-issue`, () => {
         const controlled = createControlledPredictor();
         const binding = clone(bindingFixture());
-        entry.set(binding, identity);
+        entry.set(binding, identityCase.identity);
+        assert.doesNotThrow(() => runtimeModule.defineAnalyticalModelRuntime({ binding: binding as never, predictor: controlled.predictor }));
+        assert.equal(controlled.control.issueCount(), 0);
+      });
+    }
+    for (const identityCase of invalidGovernedIdentities) {
+      await t.test(`TEST-MPC-005 factory:${entry.name}-identity-${identityCase.name}-is-synchronously-incompatible-without-predictor-issue`, () => {
+        const controlled = createControlledPredictor();
+        const binding = clone(bindingFixture());
+        entry.set(binding, identityCase.identity);
         assert.throws(() => runtimeModule.defineAnalyticalModelRuntime({ binding: binding as never, predictor: controlled.predictor }), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
         assert.equal(controlled.control.issueCount(), 0);
       });
@@ -227,33 +225,6 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
     assert.throws(() => runtimeModule.defineAnalyticalModelRuntime({ binding: binding as never, predictor: controlled.predictor }), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
     assert.equal(controlled.control.issueCount(), 0);
   });
-
-  await t.test('TEST-MPC-005 factory:Runtime-binding-identity-256-accepted-and-257-rejected-synchronously', () => {
-    const accepted = clone(bindingFixture()); (accepted.runtime as RecordValue).identity = 'r'.repeat(256);
-    assert.doesNotThrow(() => runtimeModule.defineAnalyticalModelRuntime({ binding: accepted as never, predictor: async () => forecastFixture() }));
-    const rejected = clone(accepted); (rejected.runtime as RecordValue).identity = 'r'.repeat(257);
-    assert.throws(() => runtimeModule.defineAnalyticalModelRuntime({ binding: rejected as never, predictor: async () => forecastFixture() }), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
-  });
-
-  const scalarIdentityPositions: readonly Readonly<{ name: string; set(binding: RecordValue, identity: string): void }>[] = [
-    { name: 'Runtime', set: (binding, identity) => { (binding.runtime as RecordValue).identity = identity; } },
-    { name: 'Adapter', set: (binding, identity) => { (binding.adapter as RecordValue).identity = identity; } },
-    { name: 'dependency', set: (binding, identity) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = identity; } },
-  ];
-  for (const entry of scalarIdentityPositions) {
-    await t.test(`TEST-MPC-005 factory:${entry.name}-identity-200-and-256-supplementary-scalars-accepted-257-rejected-synchronously`, () => {
-      const controlled = createControlledPredictor();
-      for (const count of [200, 256]) {
-        const accepted = clone(bindingFixture());
-        entry.set(accepted, '\u{1F642}'.repeat(count));
-        assert.doesNotThrow(() => runtimeModule.defineAnalyticalModelRuntime({ binding: accepted as never, predictor: controlled.predictor }));
-      }
-      const rejected = clone(bindingFixture());
-      entry.set(rejected, '\u{1F642}'.repeat(257));
-      assert.throws(() => runtimeModule.defineAnalyticalModelRuntime({ binding: rejected as never, predictor: controlled.predictor }), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
-      assert.equal(controlled.control.issueCount(), 0);
-    });
-  }
 
   await t.test('TEST-MPC-005 factory:detached-immutable-binding-and-no-construction-issue', async () => {
     const source = clone(bindingFixture());

@@ -618,6 +618,56 @@ mandatory complete-diff ponytail verdict is exactly `Lean already. Ship.` Test
 Asset Retirement is `PASS`; production, Tests, and evidence are frozen for
 fresh read-only Validator 010.
 
+### Validator 010 FAIL — Equivalent-boundary Test Return
+
+Validator 010 independently confirmed production behavior but returned Test
+Design because the tracked suites do not exercise the complete governed-
+identity matrix at equivalent public positions. Formal Test may change only
+the two existing contract suites. It must preserve every prior assertion and
+add table-driven permanent coverage for Manifest Runtime/dependency and factory
+Runtime/Adapter/dependency positions with:
+
+- valid ordinary, one-scalar, 200-supplementary-scalar, and exact 256-scalar
+  controls;
+- invalid internal, leading, trailing, and representative Unicode whitespace;
+- invalid `.`, `..`, forward slash, backslash, `@`, credential-like, alias,
+  and latest forms;
+- invalid representative `Cc`, `Cf`, `Cs`, `Cn`/noncharacter, `Co`, and exact
+  257-scalar values.
+
+Manifest serialization and canonical-byte admission must reject every invalid
+case synchronously as `MODEL_PACK_CONTRACT_INVALID`. Factory construction must
+reject the same cases synchronously as
+`ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE` with zero predictor issue. The current
+production hashes are frozen. Validator 010's independent matrix was 290/290,
+so the expected outcome is a Test-only GREEN coverage correction; any new RED
+must identify an actual frozen-contract behavior defect and return to
+Controller before production release. No fixture, helper, driver, dependency,
+graph, Spec, Runtime, activation, or other path change is authorized.
+
+Formal Test completed the Test-only return by replacing overlapping partial
+leaves with the smallest complete matrices. Package is 700 lines/
+`ec6e9b0bdb763bfefa06026a0fd61f1ed2db8acda4342081f4595b2a97624115`;
+Runtime is 516 lines/
+`da00b9971f51ec157da8732773b72e751fa0d6ac359ba99567f99d0a841f5855`.
+The package matrix has 44 explicit leaves and the Runtime matrix has 66: each
+position receives four valid and 18 invalid classes. Controller confirmed the
+Unicode categories with native property escapes and independently reran
+package 324/324, Runtime 142/142, E 466/466, inactive 15/15, typecheck,
+affected Local Analysis/E2E, board 12/12, and canonical 1,410 PASS plus one
+authorized skip. No new RED occurred; production hashes are unchanged and no
+Worker is released.
+
+The complete Test-only return is `+58/-96` relative to Validator 010's Head.
+Both successor matrices are permanent regressions with P/C/Validator
+consumers. Every removed partial identity leaf has an exact successor covering
+the same position, class, synchronous error, and factory side-effect boundary.
+No fixture, helper, driver, double, mock, snapshot, coverage map, harness,
+dependency, temporary evidence, orphan, or retirement candidate changed or
+remains. Marker scans are clean. Mandatory complete-diff ponytail is exactly
+`Lean already. Ship.` Test Asset Retirement is `PASS`; both suites are frozen
+for fresh read-only Validator 011.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

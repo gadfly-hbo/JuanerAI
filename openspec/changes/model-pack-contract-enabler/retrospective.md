@@ -6,7 +6,7 @@
 - Change class: boundary change; R2 / complex root-cause
 - accepted baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
 - archive path: historical `openspec/changes/archive/2026-08-24-model-pack-contract-enabler`; withdrawn and restored active after PR #14 external review
-- final Validator verdict: Validator 009 historical `PASS` invalidated by external re-review; Validator 010 pending after bounded repair
+- final Validator verdict: Validator 010 `FAIL`; production behavior passes but equivalent-position tracked Test coverage is incomplete
 - Controller acceptance: withdrawn; PR #14 Draft
 
 ## Intended Value
@@ -20,12 +20,12 @@
 
 | Evidence | Expected | Current Result | Source |
 |---|---|---|---|
-| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | frozen semantics unchanged; identity-equivalence GREEN and retirement PASS | `traceability.md`, `verification.md` |
+| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | frozen semantics unchanged; complete equivalent-position Test matrices now GREEN | `traceability.md`, `verification.md` |
 | expected RED | every material frozen invariant fails causally before implementation | package 290/283/seven and E 400/393/seven fail only on six Manifest leaves plus package parent; Runtime 110/110 | `test-plan.md`, `verification.md` |
-| target GREEN | focused, affected, and canonical evidence PASS | package 290/290, Runtime 110/110, E 400/400, affected and canonical PASS | `verification.md` |
-| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | corrected GREEN and Test Asset Retirement PASS; Validator 010 pending | `verification.md` |
+| target GREEN | focused, affected, and canonical evidence PASS | package 324/324, Runtime 142/142, E 466/466, affected and canonical PASS | `verification.md` |
+| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | Test-only correction GREEN and Retirement PASS; Validator 011 pending | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |
-| independent validation | fresh read-only PASS | Validator 009 historical PASS invalidated; Validator 010 required after new freeze | `verification.md` |
+| independent validation | fresh read-only PASS | Validator 010 FAIL corrections complete; fresh Validator 011 required | `verification.md` |
 
 ## Effort and Rework
 
@@ -34,7 +34,7 @@
 - Worker revisions or replans: more than two bounded returns inside the same two production files; complexity stop line crossed.
 - model/reasoning upgrades: R2 automatic role routes only; no matrix waiver.
 - broad existing-test migrations: one exact eight-entry append in existing `TEST-XCLI-021`; no broad migration.
-- Validator FAIL rounds: `7` (six product findings, one Validator operation).
+- Validator FAIL rounds: `8` (six product findings, one Validator operation, one Test-coverage/evidence return).
 - environment or tooling incidents: Node v26 paired source-loader observer conflict; resolved as Test/toolchain mechanics without production mechanism.
 
 ## Good Friction
@@ -93,10 +93,10 @@
 - behavior that must be reused: exact closed package/Runtime calls, sanitized carrier, stable error precedence, exact decimal comparisons, printable bounded identities/categories, inert composition, and strict E -> H -> P -> C -> A integration.
 - decisions that must not be reopened implicitly: no Provider/Consumer/Profile/activation in E; no dependency, registry, fallback, persistence, real data/model/network/MLflow, or new runtime abstraction.
 - expected ordinary Change shape: rule-by-rule public-boundary Test matrix, causal RED, one owning production return, full affected/canonical GREEN, retirement reconciliation, and fresh independent validation.
-- remaining risks: fresh Validator 010 must independently verify the frozen
-  governed-identity repair, then another external re-review is still required
-  before acceptance/archive. Later P/C Changes remain blocked and must not
-  reopen E's non-goals.
+- remaining risks: fresh Validator 011 must PASS the corrected frozen Test
+  coverage and evidence; another external re-review is still required before
+  acceptance/archive. Later P/C Changes remain blocked and must not reopen E's
+  non-goals.
 - explicitly deferred work: P/C/A implementations and every real Artifact, SDK, model, data, or activation proof.
 
 ## Completion Criterion
