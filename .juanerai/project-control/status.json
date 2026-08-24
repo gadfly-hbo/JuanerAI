@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_validator_004_freeze",
-    "label": "Model Pack Contract Enabler：Validator 004 冻结",
-    "ordinal": 7,
+    "id": "model_pack_contract_enabler_validator_004_test_return",
+    "label": "Model Pack Contract Enabler：Validator 004 Test 返回",
+    "ordinal": 4,
     "total": 8
   },
-  "health": "validating",
-  "summary": "Fresh independent Validator 004 is active against the committed Validator 003 remediation candidate beginning at b8e8ec3; all repository bytes are frozen.",
-  "current_objective": "Obtain a read-only R2/Sol-high verdict on the exact clean committed Head, including all historical and Validator 003 counterexamples.",
-  "next_action": "Accept and archive only on fresh Validator 004 PASS; otherwise return to the owning Gate without changing frozen evidence.",
+  "health": "active",
+  "summary": "Validator 004 FAIL: all declared suites pass, but 11 adversarial probes expose five frozen package/Runtime boundary rule families.",
+  "current_objective": "With production frozen, formal Test adds exactly 11 independently named package/Runtime contract leaves and proves causal RED.",
+  "next_action": "Release only the same two production files after Controller confirms exact 11-leaf RED and healthy boundaries.",
   "blockers": [],
   "milestones": [
     {
@@ -35,17 +35,17 @@
     {
       "id": "test_red",
       "label": "Test / RED",
-      "status": "completed"
+      "status": "active"
     },
     {
       "id": "implementation_green",
       "label": "实现 / GREEN",
-      "status": "completed"
+      "status": "locked"
     },
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "active"
+      "status": "blocked"
     },
     {
       "id": "user_acceptance",
@@ -77,21 +77,21 @@
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra · high (R2 automatic escalation)",
-      "status": "complete",
+      "status": "active",
       "activation": "Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra · high (R2 route)",
-      "status": "complete",
+      "status": "locked",
       "activation": "TDD_READY"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "active",
+      "status": "complete",
       "activation": "实现与证据冻结"
     }
   ],
@@ -99,19 +99,19 @@
     {
       "id": "requirements",
       "label": "E Requirements currently GREEN",
-      "done": 5,
+      "done": 2,
       "total": 5
     },
     {
       "id": "tests",
       "label": "Validator public probes encoded",
       "done": 20,
-      "total": 20
+      "total": 31
     },
     {
       "id": "tasks",
       "label": "E lifecycle tasks complete",
-      "done": 10,
+      "done": 8,
       "total": 12
     },
     {
@@ -604,7 +604,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T07:30:31.539Z",
+  "updated_at": "2026-08-24T08:01:06.660Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-recovery-e"

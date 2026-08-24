@@ -302,6 +302,34 @@ lines/SHA-256
   temporary marker, skip/todo/only, or weakened assertion. Fresh ponytail
   returned exactly `Lean already. Ship.`
 
+## Validator 004 Test Design Return
+
+At clean frozen Head `8518d8cb62940c4f369c0ba9f61e82093eb5b141`, Validator
+004 passed every standard suite and all historical probes but reproduced 11
+missing material leaves already governed by REQ-MPC-001/003/004. Formal Test
+may change only the two existing contract suites and must preserve every prior
+identity/assertion:
+
+1. four Runtime public-boundary exact-lookalike ordinary Error code-spoof leaves
+   at preflight, openRun, predict, and fulfilled-output admission;
+2. one package classifier Proxy descriptor-trap sanitization leaf;
+3. one manifest extra widened-permission key precedence leaf;
+4. three Runtime binding `@` identity rejection leaves for Runtime, Adapter,
+   and dependency; and
+5. two closed-call leaves for an extra Symbol own key and extra non-enumerable
+   string own key.
+
+Frozen Test inputs are package 594 lines/
+`08e8b2fd0310ef9cbcaafbd67f4e1811831571c427b11513420c4e767f4394a9`
+and Runtime 429 lines/
+`852b3d0f8b04d2ecdc2729427cd7a20ab70f3ca0ad1c97942c2170e139f621a6`.
+Frozen production is package 237 lines/
+`278025c19752b98a0cf580785f9c5888722aab9b029a4dd88c032f911f8e4a3d`
+and Runtime 132 lines/
+`935ce7c4ada232e3c0c6703dd119ed9514b98afff6ea503cf20374b4af87a248`.
+Every other path is locked. Exact causal RED plus all healthy boundary counts,
+hashes, diff/status, and retirement preflight are mandatory before TDD_READY.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

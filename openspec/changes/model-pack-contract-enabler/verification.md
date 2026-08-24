@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 003 REMEDIATION GREEN + RETIREMENT PASS — VALIDATOR 004 CANDIDATE`
+`VALIDATOR 004 FAIL — RETURN TO TEST DESIGN / TDD_READY`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -59,7 +59,14 @@ affected regressions, project board 12/12, and canonical offline exit 0. The
 complete new Test delta contains only the two permanent leaves, scans are
 clean, and a fresh mandatory ponytail review returned exactly
 `Lean already. Ship.` Production and Tests are frozen for a new committed
-read-only R2/Sol-high Validator.
+read-only R2/Sol-high Validator. Validator 004 confirmed every declared suite
+and all historical probes but reproduced 11 failures across five frozen rule
+families: exact ordinary-Error lookalike code spoofing at four Runtime
+boundaries, a package classifier Proxy trap leak, widened extra-permission
+precedence, credential-like Runtime/Adapter/dependency identities, and Symbol/
+non-enumerable own-key closure. This is another bounded package/Runtime Test
+return; no new product, architecture, Spec, dependency, scope, or re-slice
+decision is required.
 
 ## Frozen References
 
@@ -69,8 +76,8 @@ read-only R2/Sol-high Validator.
 - Validator 003 frozen Head: `60a7aa09764c274c527e04d39b7ac6986560ba5f`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 003 remediation GREEN and repeated Test Asset
-  Retirement PASS; production and Tests frozen for Validator 004
+- Current lifecycle: Validator 004 FAIL; both production files frozen while
+  only the existing package and Runtime contract Tests may establish causal RED
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -89,7 +96,7 @@ read-only R2/Sol-high Validator.
 | implementation | PASS; Runtime-only remediation is 132 lines/`935ce7c4…`; package unchanged | none unless production bytes change |
 | GREEN and affected regression | PASS; package 229/229, Runtime 74/74, E 303/303, inactive/affected/typecheck/canonical healthy | none unless frozen bytes change |
 | Test Asset Retirement | PASS; two new permanent leaves only, scans clean, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
-| independent verification | Validator 001/002 historical FAIL; Validator 003 FAIL on Runtime identity length and spoofed named-Error sanitization | corrected committed clean Head plus another fresh read-only Validator PASS |
+| independent verification | Validator 001/002/003 historical FAIL; Validator 004 FAIL on 11 adversarial public probes | corrected committed clean Head plus another fresh read-only Validator PASS |
 | Controller/user acceptance | blocked | fresh Validator PASS and complete current evidence |
 | archive | blocked | acceptance and integration |
 
@@ -724,6 +731,33 @@ authorized before its PASS.
   `Lean already. Ship.`
 - Freeze: any production or Test byte change reopens the owning Gate. The next
   authorized action is one fresh committed read-only R2/Sol-high Validator.
+
+## Independent Validator 004 — FAIL and Bounded Contract Return
+
+- Date: `2026-08-24`; fresh R2 / standard / Sol-high read-only context.
+- Frozen Head: `8518d8cb62940c4f369c0ba9f61e82093eb5b141`; branch correct,
+  merge-base equals the accepted baseline, and start/end worktree/index clean.
+- Declared evidence PASS: package 229/229; Runtime 74/74; complete E 303/303;
+  inactive 15/15; typecheck; affected Local Analysis 198/198, 292/292, and E2E
+  133 PASS plus one authorized skip; project board 12/12; canonical exit 0.
+- All Validator 001/002/003 probes and genuine lower-boundary carrier
+  preservation passed. A warning-free adversarial process returned 27 pass and
+  11 fail:
+  1. exact ordinary-Error lookalikes select attacker-chosen stable codes at
+     preflight, openRun, predict, and fulfilled-output admission;
+  2. a Proxy trap during package classifier descriptor inspection leaks a raw
+     Error instead of `MODEL_PACK_CONTRACT_INVALID`;
+  3. an extra widened permission key maps to contract-invalid instead of
+     `MODEL_PACK_PERMISSION_DENIED`;
+  4. Runtime, Adapter, and dependency identities containing `@` are admitted;
+  5. Symbol and non-enumerable extra own keys bypass closed call shapes.
+- Scope, architecture, inactive integration, and strict E -> H -> P -> C -> A
+  order pass. Current Test Asset Retirement structure is healthy but is
+  reopened by the missing material leaves.
+- Return Gate: with production frozen, formal Test may edit only the existing
+  package and Runtime contract Tests to establish all 11 independent causal
+  leaves. Renewed TDD_READY may release only the same two production files.
+- Verdict: `FAIL`.
 
 ## Controller Remediation TDD_READY
 

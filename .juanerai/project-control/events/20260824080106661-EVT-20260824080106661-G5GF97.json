@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824080106661-G5GF97",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-24T08:01:06.661Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-recovery-e"
+  },
+  "summary": "Validator 004 FAIL returns E to bounded package and Runtime Test Design for 11 adversarial leaves",
+  "status_after": "active",
+  "evidence_refs": []
+}

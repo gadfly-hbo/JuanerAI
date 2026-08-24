@@ -6,7 +6,7 @@
 - Change class: boundary change; R2 / complex root-cause
 - accepted baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
 - archive path: pending
-- final Validator verdict: pending; Validator 001, 002, and 003 are historical `FAIL`
+- final Validator verdict: pending; Validator 001, 002, 003, and 004 are historical `FAIL`
 - Controller acceptance: blocked
 
 ## Intended Value
@@ -20,12 +20,12 @@
 
 | Evidence | Expected | Current Result | Source |
 |---|---|---|---|
-| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | all mapped leaves GREEN; fresh Validator 004 pending | `traceability.md`, `verification.md` |
+| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | 11 material leaves reopened by Validator 004 | `traceability.md`, `verification.md` |
 | expected RED | every material frozen invariant fails causally before implementation | nine Validator 002 leaves and two aggregate parents produced exact RED | `test-plan.md`, `verification.md` |
-| target GREEN | focused, affected, and canonical evidence PASS | package 229/229, Runtime 74/74, E 303/303, affected matrix PASS, canonical exit 0 | `verification.md` |
-| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | Validator 003 remediation GREEN and repeated retirement PASS; fresh Validator pending | `verification.md` |
+| target GREEN | focused, affected, and canonical evidence PASS | standard matrix PASS but 11 independent probes block semantic GREEN | `verification.md` |
+| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | five package/Runtime rule families remain open | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |
-| independent validation | fresh read-only PASS | Validator 001, 002, and 003 FAIL | `verification.md` |
+| independent validation | fresh read-only PASS | Validator 001, 002, 003, and 004 FAIL | `verification.md` |
 
 ## Effort and Rework
 
@@ -34,7 +34,7 @@
 - Worker revisions or replans: more than two bounded returns inside the same two production files; complexity stop line crossed.
 - model/reasoning upgrades: R2 automatic role routes only; no matrix waiver.
 - broad existing-test migrations: one exact eight-entry append in existing `TEST-XCLI-021`; no broad migration.
-- Validator FAIL rounds: `3`.
+- Validator FAIL rounds: `4`.
 - environment or tooling incidents: Node v26 paired source-loader observer conflict; resolved as Test/toolchain mechanics without production mechanism.
 
 ## Good Friction
@@ -93,7 +93,7 @@
 - behavior that must be reused: exact closed package/Runtime calls, sanitized carrier, stable error precedence, exact decimal comparisons, printable bounded identities/categories, inert composition, and strict E -> H -> P -> C -> A integration.
 - decisions that must not be reopened implicitly: no Provider/Consumer/Profile/activation in E; no dependency, registry, fallback, persistence, real data/model/network/MLflow, or new runtime abstraction.
 - expected ordinary Change shape: rule-by-rule public-boundary Test matrix, causal RED, one owning production return, full affected/canonical GREEN, retirement reconciliation, and fresh independent validation.
-- remaining risks: fresh Validator 004 has not yet confirmed the frozen remediation candidate; all Validator 001/002/003 counterexamples are encoded and GREEN.
+- remaining risks: 11 Validator 004 counterexamples require causal RED, bounded two-file implementation, retirement, and fresh validation; all earlier counterexamples remain GREEN.
 - explicitly deferred work: P/C/A implementations and every real Artifact, SDK, model, data, or activation proof.
 
 ## Completion Criterion
