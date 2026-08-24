@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824021750920-CGEEZ8",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-24T02:17:50.920Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-model-pack-e-recovery"
+  },
+  "summary": "Controller rejected initial E Test handoff before TDD_READY: false mutation oracles, illegal forecast success candidate, stale wall-clock deadlines, shape-only drivers, non-target inactive test, missing compile-time signature proof, and omitted mandatory leaves. One bounded Test Revision 001 returned; production remains locked.",
+  "status_after": "active",
+  "evidence_refs": []
+}

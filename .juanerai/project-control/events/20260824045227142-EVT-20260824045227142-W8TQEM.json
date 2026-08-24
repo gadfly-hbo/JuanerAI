@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824045227142-W8TQEM",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-24T04:52:27.142Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-recovery"
+  },
+  "summary": "E Test Asset Retirement Gate requires bounded three-path Test cleanup; production GREEN remains frozen.",
+  "status_after": "active",
+  "evidence_refs": []
+}

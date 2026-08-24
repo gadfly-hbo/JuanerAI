@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823234452877-49V0AF",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-23T23:44:52.877Z",
+  "actor": {
+    "role": "controller",
+    "session": "model-pack-contract-enabler-controller"
+  },
+  "summary": "Pre-Gate complexity return: remove speculative single-use readiness state from the E revocation contract.",
+  "status_after": "active",
+  "evidence_refs": []
+}

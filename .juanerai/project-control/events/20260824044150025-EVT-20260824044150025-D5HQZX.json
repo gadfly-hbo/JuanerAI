@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824044150025-D5HQZX",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-24T04:41:50.025Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-recovery"
+  },
+  "summary": "E Controller TDD_READY PASS: inactive 15/15, affected graph regression healthy, and seven causal production leaves frozen.",
+  "status_after": "active",
+  "evidence_refs": []
+}

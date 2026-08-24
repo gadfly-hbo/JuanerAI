@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824035430939-Q9SN63",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-24T03:54:30.939Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-recovery"
+  },
+  "summary": "E Test correction stopped: inactive observer intercepts Node loader source reads and existing closed-tsconfig regression requires one exact conditional Test path release.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

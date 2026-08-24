@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824014138544-G524P1",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-24T01:41:38.544Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-model-pack-e-recovery"
+  },
+  "summary": "Formal R2 standard Sol/high juaner_spec dispatched for the narrow TEST_CONFLICT interface revision; Test and Worker remain locked.",
+  "status_after": "active",
+  "evidence_refs": []
+}

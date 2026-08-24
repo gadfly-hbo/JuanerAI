@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823144135066-4ITREY",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-23T14:41:35.066Z",
+  "actor": {
+    "role": "controller",
+    "session": "model-pack-contract-enabler-controller"
+  },
+  "summary": "E Explore completed and R2 Spec drafting started.",
+  "status_after": "active",
+  "evidence_refs": []
+}

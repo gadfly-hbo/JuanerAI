@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823143933071-UT7L7O",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-23T14:39:33.071Z",
+  "actor": {
+    "role": "controller",
+    "session": "model-pack-contract-enabler-controller"
+  },
+  "summary": "Reset E Spec Gate to pending.",
+  "status_after": "active",
+  "evidence_refs": []
+}
