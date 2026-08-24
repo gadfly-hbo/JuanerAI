@@ -7,10 +7,10 @@
 | `TASK-001` Complete R2 decision package | `juaner_spec`; complete | this Change's OpenSpec files only; preserves the public surface, prior permission-oracle disposition, and completed closed-graph correction while distinguishing the exact paired Node v26 source-loader chains from product filesystem effects | REQ-MPC-001..005 |
 | `TASK-002` Repeat Spec Gate and lean review | Controller; PASS | nested `openSync` loader-chain root cause, paired-chain/no-mechanism disposition, full-package consistency, and mandatory complete-diff ponytail review | all |
 | `TASK-003` Package Test Design and RED | `juaner_test`; Validator 002 return complete | 607-line/`5045515c…` suite preserves all prior coverage and adds eight package-side causal leaves | REQ-MPC-001, 002, 004 |
-| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 003 return active | only the existing Runtime suite may add identity 256/257 and spoofed named-Error sanitization leaves; all other Tests frozen | REQ-MPC-003..005 |
-| `TASK-005` TDD_READY | Controller; reopened | require exact causal RED for two Runtime leaves before releasing only the Runtime production path | all |
+| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 003 return complete | 429-line/`852b3d0f…` Runtime suite preserves all prior coverage and adds exactly two causal leaves | REQ-MPC-003..005 |
+| `TASK-005` TDD_READY | Controller; PASS | Runtime 71/74 and E 300/303 fail only on two leaves plus parent; Runtime production released | all |
 | `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | minimum correction completed inside `packages/contracts/model-pack.ts` and `packages/ports/analytical-model-runtime.ts` only | REQ-MPC-001, 002, 005 |
-| `TASK-007` Implement Runtime Port | historical GREEN; reopened by Validator 003 | Runtime production remains frozen until renewed TDD_READY | REQ-MPC-003, 005 |
+| `TASK-007` Implement Runtime Port | `juaner_worker`; active after renewed TDD_READY | only `packages/ports/analytical-model-runtime.ts`; every Test and all other paths frozen | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
 | `TASK-009` GREEN and regression | historical PASS; reopened | two new Runtime counterexamples block acceptance despite standard matrix PASS | all |
 | `TASK-010` Test Asset Retirement Gate | historical PASS; reopened | repeat ledger/scans/ponytail after the two missing permanent leaves reach GREEN | REQ-MPC-004 |

@@ -171,6 +171,13 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
     });
   }
 
+  await t.test('TEST-MPC-005 factory:Runtime-binding-identity-256-accepted-and-257-rejected-synchronously', () => {
+    const accepted = clone(bindingFixture()); (accepted.runtime as RecordValue).identity = 'r'.repeat(256);
+    assert.doesNotThrow(() => runtimeModule.defineAnalyticalModelRuntime({ binding: accepted as never, predictor: async () => forecastFixture() }));
+    const rejected = clone(accepted); (rejected.runtime as RecordValue).identity = 'r'.repeat(257);
+    assert.throws(() => runtimeModule.defineAnalyticalModelRuntime({ binding: rejected as never, predictor: async () => forecastFixture() }), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
+  });
+
   await t.test('TEST-MPC-005 factory:detached-immutable-binding-and-no-construction-issue', async () => {
     const source = clone(bindingFixture());
     const controlled = createControlledPredictor();
@@ -202,6 +209,17 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
       assert.equal(harness.control.issueCount(), 0);
     });
   }
+
+  await t.test('TEST-MPC-005 preflight:spoofed-named-ordinary-Error-accessor-is-sanitized', async () => {
+    const harness = createHarness(runtimeModule);
+    const candidate = { ...preflightInput(contracts), get manifest_bytes(): never { const spoofed = new Error('raw preflight accessor secret'); spoofed.name = 'ModelPackContractError'; throw spoofed; } };
+    await assert.rejects(assertPromiseCall(() => harness.runtime.preflight(candidate as never)), (error) => {
+      assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE');
+      assert.equal((error as Error).message.includes('raw preflight accessor secret'), false);
+      return true;
+    });
+    assert.equal(harness.control.issueCount(), 0);
+  });
 
   const bindingCases: readonly Readonly<{ name: string; mutate(value: RecordValue): void; code: ModelPackErrorCode }>[] = [
     { name: 'TEST-MPC-005 preflight:manifest-runtime-identity-unequal', mutate: (m) => { ((m.runtime as RecordValue).runtime as RecordValue).identity = 'other-runtime'; }, code: 'MODEL_PACK_RUNTIME_INCOMPATIBLE' },

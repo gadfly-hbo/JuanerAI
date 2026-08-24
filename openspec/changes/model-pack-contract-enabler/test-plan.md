@@ -268,6 +268,24 @@ may release only `packages/ports/analytical-model-runtime.ts`, currently 122
 lines/SHA-256
 `e343db1f25e0e274bf4c33e30a8d1b99b32de98a920124399b347bbe165ba7b5`.
 
+### Validator 003 Remediation TDD_READY
+
+- Runtime Test: 411 to 429 lines; SHA-256
+  `c6f5bb71e5c1fe4f7bbe1e5fb84c4be6201c21155b1c7717dc0465e1dec25531`
+  to `852b3d0f8b04d2ecdc2729427cd7a20ab70f3ca0ad1c97942c2170e139f621a6`.
+- Focused Runtime: 74 total, 71 pass, exactly two leaves and their aggregate
+  parent fail. Complete E: 303 total, 300 pass, the same three failures.
+- Inactive 15/15, typecheck, affected Local Analysis 198/198 and 292/292, E2E
+  133 PASS plus one authorized skip, and project board 12/12 remain healthy.
+  Canonical reaches only the same causal RED.
+- Package production remains 237 lines/
+  `278025c19752b98a0cf580785f9c5888722aab9b029a4dd88c032f911f8e4a3d`;
+  Runtime production remains 122 lines/
+  `e343db1f25e0e274bf4c33e30a8d1b99b32de98a920124399b347bbe165ba7b5`.
+- Both new leaves are permanent current-contract regressions; no existing
+  assertion, fixture, driver, helper, dependency, temporary marker, or
+  skip/todo/only changed. Only the Runtime production file is Worker-released.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The
