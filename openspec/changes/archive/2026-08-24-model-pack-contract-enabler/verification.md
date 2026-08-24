@@ -2,7 +2,28 @@
 
 ## Current Verdict
 
-`VALIDATOR 011 PASS — EXTERNAL RE-REVIEW PENDING; ACCEPTANCE/ARCHIVE WITHDRAWN`
+`ARCHIVE COMPLETE — EXTERNAL RE-REVIEW PASS; SQUASH MERGE AUTHORIZATION PENDING`
+
+External re-review passed exact Head
+`0d08df8ed36f52f139ec7574556bd187b0293a06`: Standards `PASS` with zero
+findings, Spec compliance `PASS` with zero findings, focused E 466/466, local
+canonical exit 0, GitHub canonical `PASS`, and identity, MP9, inactivity,
+scope, and strict E -> H -> P -> C -> A stop-line evidence all passed. No
+production, Test, dependency, Profile, activation, or frozen Spec-semantic byte
+changed after Validator 011, so no additional Validator is required.
+
+Controller accepts the inactive shared-contract Change. TASK-012 is complete:
+the exact delta is published at
+`openspec/specs/model-pack-contract-enabler/spec.md`, SHA-256
+`65634407ebfe432e05f6d1968f8fa7ed75229af60d2f8d11bd256ffac26d426a`,
+and the complete nine-file Change history is preserved at
+`openspec/changes/archive/2026-08-24-model-pack-contract-enabler/`. The active
+Change path is absent, the archived delta has the same SHA-256 as the current
+spec, and post-archive canonical validation exits 0 with focused E 466/466,
+inactive 15/15, and project board 12/12. Project control is complete at phase
+8/8 and TASK 12/12. This archive does not authorize squash merge, M1, H/P/C/A,
+Profile activation, or any production, Test, dependency, or normative-contract
+edit.
 
 External re-review of PR #14 invalidated Validator 009's candidate with one
 frozen-contract defect: manifest governed identity admission accepts internal
@@ -347,9 +368,10 @@ Profile, authorize downstream H/P/C/A, or merge the Git branch.
 - Validator 008 PASS Head: `1ef1b66c0fac726d25034d83cc2a52e9c33ee81b`
 - Validator 009 PASS Head: `e023c14b02fb4ae29254e6f68f707cef094e4ae3`
 - External re-review FAIL observed Head: `e2378f142fa3791360a88542be28d3504642c867`
+- External re-review PASS Head: `0d08df8ed36f52f139ec7574556bd187b0293a06`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 011 PASS; external re-review pending; acceptance/archive withdrawn
+- Current lifecycle: external re-review PASS; Controller acceptance PASS; current spec published; Change archived; squash merge authorization pending
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -369,8 +391,8 @@ Profile, authorize downstream H/P/C/A, or merge the Git branch.
 | GREEN and affected regression | PASS; package 324/324, Runtime 142/142, E 466/466, inactive/Local Analysis/E2E/typecheck/board/canonical healthy | none unless frozen bytes change |
 | Test Asset Retirement | PASS; two permanent successor matrices, complete `+58/-96` Test-only delta, scans clean, ponytail `Lean already. Ship.` | none unless Test bytes change |
 | independent verification | PASS; Validator 011 verified exact clean Head, standard matrix, identity 110/110, MP9 48/48, retirement, scope, and stop lines | none unless frozen bytes change |
-| Controller/user acceptance | withdrawn; Validator 011 PASS | external re-review of the updated Draft PR |
-| archive | withdrawn; Change restored active | only after renewed acceptance; no Git merge |
+| Controller/user acceptance | PASS after Validator 011 and external re-review PASS | none unless frozen production, Test, or Spec semantics change |
+| archive | COMPLETE; exact current spec hash matches archived delta, active path absent, nine archived files, project control 8/8 and 12/12 | no Git merge; await explicit squash-merge authorization |
 
 ## Independent Validator 009 — PASS; Re-review Pending
 

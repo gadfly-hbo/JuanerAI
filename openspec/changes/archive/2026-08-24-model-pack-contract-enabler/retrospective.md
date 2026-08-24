@@ -5,9 +5,9 @@
 - Change: `CHG-model-pack-contract-enabler`
 - Change class: boundary change; R2 / complex root-cause
 - accepted baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
-- archive path: historical `openspec/changes/archive/2026-08-24-model-pack-contract-enabler`; withdrawn and restored active after PR #14 external review
-- final Validator verdict: Validator 011 `PASS`; external re-review pending
-- Controller acceptance: withdrawn; PR #14 Draft
+- archive path: `openspec/changes/archive/2026-08-24-model-pack-contract-enabler`
+- final Validator verdict: Validator 011 `PASS`; external re-review `PASS` on `0d08df8ed36f52f139ec7574556bd187b0293a06`
+- Controller acceptance: `PASS`; squash merge awaits explicit user authorization
 
 ## Intended Value
 
@@ -26,6 +26,8 @@
 | contract/regression | exact package/Runtime/inactive behavior plus affected baseline | Test-only correction GREEN, Retirement PASS, and Validator 011 PASS | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |
 | independent validation | fresh read-only PASS | Validator 011 PASS on clean frozen Head; identity 110/110 and MP9 48/48 | `verification.md` |
+| external re-review | Standards, Spec compliance, focused E, canonical, identity, MP9, inactivity, scope, and stop lines | PASS on `0d08df8…3a06`; zero findings; local and GitHub canonical PASS | `verification.md` |
+| archive consistency | exact current spec, preserved Change history, clean active/archive split, post-archive regression | byte-identical current/archive spec, active absent, nine archived files, canonical exit 0 | `verification.md` |
 
 ## Effort and Rework
 
@@ -93,14 +95,14 @@
 - behavior that must be reused: exact closed package/Runtime calls, sanitized carrier, stable error precedence, exact decimal comparisons, printable bounded identities/categories, inert composition, and strict E -> H -> P -> C -> A integration.
 - decisions that must not be reopened implicitly: no Provider/Consumer/Profile/activation in E; no dependency, registry, fallback, persistence, real data/model/network/MLflow, or new runtime abstraction.
 - expected ordinary Change shape: rule-by-rule public-boundary Test matrix, causal RED, one owning production return, full affected/canonical GREEN, retirement reconciliation, and fresh independent validation.
-- remaining risks: external re-review of the updated Draft PR is still required
-  before acceptance/archive. Later P/C Changes remain blocked and must not
-  reopen E's non-goals.
+- remaining risks: the accepted inactive contract remains unmerged until the
+  user explicitly authorizes squash merge. Later P/C Changes remain blocked
+  and must not reopen E's non-goals.
 - explicitly deferred work: P/C/A implementations and every real Artifact, SDK, model, data, or activation proof.
 
 ## Completion Criterion
 
-- [ ] Final facts match verification, traceability, baseline, archive, and project board.
+- [x] Final facts match verification, traceability, baseline, archive, and project board.
 - [x] Reusable assets have discoverable pointers.
 - [x] Durable product semantics were not changed by this retrospective.
 - [x] Tooling/code debt is not misrepresented as solved by documentation.

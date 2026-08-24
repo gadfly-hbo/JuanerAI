@@ -15,7 +15,7 @@
 | `TASK-009` GREEN and regression | complete | package 324/324, Runtime 142/142, E 466/466, inactive 15/15, typecheck, affected Local Analysis/E2E, board, and canonical 1,410 PASS plus one authorized skip | all |
 | `TASK-010` Test Asset Retirement Gate | PASS | Test-only `+58/-96`; successor matrices retain every distinct boundary/error/effect; scans clean; ponytail exactly `Lean already. Ship.` | REQ-MPC-004 |
 | `TASK-011` Independent verification | complete; Validator 011 PASS | clean Head `44fae80d…ae988`; standard, identity 110/110, MP9 48/48, retirement, scope, traceability, architecture, and stop lines PASS | all |
-| `TASK-012` Accept, integrate, archive | withdrawn; external re-review FAIL | PR #14 Draft; no acceptance/archive/merge/M1/H/P/C/A before Validator 011 PASS and another re-review | all |
+| `TASK-012` Accept, integrate, archive | complete; external re-review PASS | Controller acceptance PASS; exact delta published as the current spec and complete Change history archived; squash merge, M1, and H/P/C/A await explicit user authorization | all |
 
 ## Test-owned Exact Paths
 

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824130010237-EAAJHO",
+  "event_type": "archived",
+  "occurred_at": "2026-08-24T13:00:10.237Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-archive"
+  },
+  "summary": "Model Pack Contract Enabler current spec published and complete Change history archived",
+  "status_after": "active",
+  "evidence_refs": []
+}

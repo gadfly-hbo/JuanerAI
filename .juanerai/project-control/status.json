@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_validator_011_pass_re_review",
-    "label": "Model Pack Contract Enabler：Validator 011 PASS / External Re-review Pending",
-    "ordinal": 7,
+    "id": "model_pack_contract_enabler_archive_complete",
+    "label": "Model Pack Contract Enabler：Accepted / Archived / Squash Merge Authorization Pending",
+    "ordinal": 8,
     "total": 8
   },
-  "health": "waiting_user",
-  "summary": "Validator 011 PASS: standard, identity 110/110, MP9 48/48, retirement, scope, traceability, and stop lines all pass.",
-  "current_objective": "Keep PR #14 Draft and the Change active while awaiting external re-review of the updated Head.",
-  "next_action": "Externally re-review PR #14; do not accept, archive, merge, generate M1, or start H/P/C/A.",
+  "health": "complete",
+  "summary": "CHG-model-pack-contract-enabler accepted and archived after Validator 011 and external re-review PASS; PR #14 remains unmerged.",
+  "current_objective": "Preserve the accepted inactive Model Pack contract baseline and strict E to H to P to C to A order.",
+  "next_action": "Await explicit user authorization for squash merge of PR #14; do not generate M1 or start H/P/C/A before merge authorization.",
   "blockers": [],
   "milestones": [
     {
@@ -50,12 +50,12 @@
     {
       "id": "user_acceptance",
       "label": "用户验收",
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "archive",
       "label": "归档",
-      "status": "pending"
+      "status": "completed"
     }
   ],
   "agents": [
@@ -110,13 +110,13 @@
     },
     {
       "id": "tasks",
-      "label": "E lifecycle tasks currently closed",
-      "done": 11,
+      "label": "E lifecycle tasks closed",
+      "done": 12,
       "total": 12
     },
     {
       "id": "decisions",
-      "label": "Re-review defect classified without Spec change",
+      "label": "External re-review PASS and Controller acceptance",
       "done": 1,
       "total": 1
     }
@@ -601,12 +601,24 @@
       "label": "Run Evidence Console independent Validator PASS at a06e8df3",
       "path": "openspec/changes/archive/2026-08-23-run-evidence-console/verification.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-081",
+      "label": "Model Pack current specification",
+      "path": "openspec/specs/model-pack-contract-enabler/spec.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-082",
+      "label": "Model Pack Contract Enabler archive evidence",
+      "path": "openspec/changes/archive/2026-08-24-model-pack-contract-enabler/verification.md",
+      "status": "verified"
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T12:45:37.046Z",
+  "updated_at": "2026-08-24T13:00:10.284Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller"
+    "session": "codex-controller-archive"
   }
 }

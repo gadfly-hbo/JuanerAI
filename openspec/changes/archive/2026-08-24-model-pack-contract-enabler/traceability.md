@@ -140,8 +140,16 @@ Fresh read-only Validator 011 passed exact clean Head
 `44fae80d3630bb074acac69244fd4ed9980ae988`: tracked matrices, independent
 identity 110/110, MP9 48/48, standard commands, hashes, retirement successors,
 scope, traceability, architecture, inactivity, and stop lines all reconcile.
-TASK-011 closes. TASK-012 remains external re-review only and does not release
-acceptance, archive, merge, M1, or H/P/C/A.
+TASK-011 closes. External re-review then passed exact Head
+`0d08df8ed36f52f139ec7574556bd187b0293a06` with Standards and Spec compliance
+at zero findings, focused E 466/466, local and GitHub canonical PASS, and
+identity, MP9, inactivity, scope, and E -> H -> P -> C -> A stop lines intact.
+Controller acceptance is restored and TASK-012 publishes the unchanged delta
+as the current spec and archives the complete Change. Squash merge, M1, and
+H/P/C/A remain blocked pending explicit user authorization.
+The current spec and archived delta are byte-identical at SHA-256
+`65634407ebfe432e05f6d1968f8fa7ed75229af60d2f8d11bd256ffac26d426a`;
+the active path is absent and post-archive canonical validation exits 0.
 
 | Requirement | Acceptance | Planned test/evidence | Task | Candidate code/evidence | Current result |
 |---|---|---|---|---|---|
@@ -202,7 +210,7 @@ acceptance, archive, merge, M1, or H/P/C/A.
 | TASK-009 | TEST-MPC-001..009 and affected baseline | complete; E/affected/canonical GREEN PASS after Test consolidation |
 | TASK-010 | every changed test asset | PASS; Test-only `+58/-96`, exact successors, scans clean, ponytail lean |
 | TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 011 PASS on clean Head `44fae80d…ae988` |
-| TASK-012 | all accepted evidence and E integration constraint | external re-review FAIL; acceptance/archive withdrawn; PR #14 Draft |
+| TASK-012 | all accepted evidence and E integration constraint | COMPLETE; external re-review PASS, Controller acceptance PASS, current spec published, Change archived; squash merge and downstream work blocked |
 
 ## Integration Trace
 
