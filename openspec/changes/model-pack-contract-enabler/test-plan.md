@@ -550,6 +550,74 @@ equivalent-boundary matrix passed 88/88 and Unicode identity matrix passed
 54/54. Test Asset Retirement and the frozen hashes remain valid; no Test byte
 change is authorized. Acceptance/archive remain withdrawn pending re-review.
 
+## External Re-review Return for Validator 010
+
+External re-review returned `FAIL` on one frozen-contract equivalence defect.
+Controller reproduced at Head `e2378f142fa3791360a88542be28d3504642c867`
+that manifest Runtime and dependency positions accept each of
+`"runtime identity"`, `"."`, and `".."`, while factory Runtime, Adapter, and
+dependency positions reject all corresponding values as
+`ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE`. This is incomplete Test Design plus a
+package production defect, not a Spec-semantic decision.
+
+The pre-agreed public seams are `serializeModelPackManifest` /
+`admitModelPackManifest` and `defineAnalyticalModelRuntime`. Formal Test may
+change only:
+
+- `tests/contract/model-pack-contract-enabler/model-pack-package.contract.test.ts`;
+- `tests/contract/model-pack-contract-enabler/analytical-model-runtime.contract.test.ts`.
+
+The package suite adds independent valid governed-identity controls and exact
+internal-whitespace, `.` and `..` negative leaves for manifest Runtime and
+dependency positions. The Runtime suite adds the same positive/negative
+equivalence matrix for Runtime, Adapter, and dependency positions, asserting
+zero predictor issue. Expected RED is valid only when the Manifest negative
+leaves fail because current production accepts them while every Runtime
+negative leaf and all prior evidence remain healthy. Test must not weaken,
+replace, or remove any prior assertion and must record before/after line counts,
+SHA-256, exact command counts, and a lifecycle ledger. Any need to modify Spec,
+fixtures, drivers, helpers, Runtime production, graphs, dependencies, or other
+paths returns to Controller.
+
+Formal Test completed that exact return. Package changed from 687 lines/
+`f1df135046c546277156416460013bcbd41312d0a83f56ae049aefa5f5f9b505`
+to 709 lines/
+`6104e0637e1022b7040f6094f13b830d84c32c52d6a8aaa156b976ec0b184614`;
+Runtime changed from 521 lines/
+`06df33d5e1acd8a0160a1b43c752f07bc2d98a61394153a1c4731ee70f419a6c`
+to 545 lines/
+`2359f5f4463a41f9652453a207bbffcba51a5d28062e462abdb4c2a9cb3ef077`.
+Controller confirmed causal RED: package 290/283/seven and complete E
+400/393/seven fail only on the six new Manifest leaves plus package parent;
+Runtime 110/110, inactive 15/15, typecheck, all positive controls, helpers, and
+prior leaves pass. Both changes are permanent regressions with P/C/Validator
+consumers; no temporary evidence or retirement candidate exists. Tests are now
+frozen. TDD_READY releases only `packages/contracts/model-pack.ts` and keeps
+Runtime production unchanged.
+
+### Validator 010 Remediation GREEN and Retirement Freeze
+
+The bounded Worker changed only `packages/contracts/model-pack.ts`; the
+existing governed-identity predicate now rejects whitespace and exact `.` /
+`..`. Package production remains 259 lines at
+`d6b95748b9a3a3e10839423ae41f53b9425910474d27840e5fd3b51ebbf18db7`.
+Runtime production remains unchanged at
+`e8b1d90dc4f8ad57bc2f8f360ac0cadd1bafa6f47e9d4e55f4c12707e7b97177`.
+
+Controller independently reran the frozen matrix: package 290/290, Runtime
+110/110, complete E 400/400, inactive 15/15, typecheck, Local Analysis
+198/198 and 292/292, E2E 133 PASS plus one authorized real-Pi skip, project
+board 12/12, and canonical offline 1,345 total / 1,344 pass / one authorized
+skip. The complete new Test delta is exactly the two existing contract suites
+at `+46/-0`; both are permanent regression assets with distinct manifest or
+factory boundary ownership and retained P/C/Validator consumers. No fixture,
+helper, driver, double, mock, snapshot, coverage map, harness, dependency,
+temporary evidence, or retirement candidate changed. Added-line scans found
+no skip, todo, only, temporary, scratch, correction, or obsolete marker. The
+mandatory complete-diff ponytail verdict is exactly `Lean already. Ship.` Test
+Asset Retirement is `PASS`; production, Tests, and evidence are frozen for
+fresh read-only Validator 010.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

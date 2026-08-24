@@ -2,7 +2,72 @@
 
 ## Current Verdict
 
-`VALIDATOR 009 PASS — RE-REVIEW PENDING; ACCEPTANCE/ARCHIVE WITHDRAWN`
+`GREEN / RETIREMENT PASS — VALIDATOR 010 PENDING; ACCEPTANCE/ARCHIVE WITHDRAWN`
+
+External re-review of PR #14 invalidated Validator 009's candidate with one
+frozen-contract defect: manifest governed identity admission accepts internal
+whitespace and the path identities `.` and `..`, while the
+`AnalyticalModelRuntime` factory rejects the same values. Controller reproduced
+all three exact values on current Head
+`e2378f142fa3791360a88542be28d3504642c867`: manifest Runtime and dependency
+positions both accept `"runtime identity"`, `"."`, and `".."`, while factory
+Runtime, Adapter, and dependency positions reject all nine corresponding calls
+as `ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE` with zero construction effect. This
+violates the frozen shared identity semantics and Design rule that governed
+identities cannot be paths. Root cause is incomplete Test Design plus one
+package-contract production defect; no Spec semantic, path, dependency,
+activation, or product-scope change is required. Validator 009 remains
+historical but no longer releases TASK-011.
+
+Production is frozen while formal `juaner_test` may edit only the existing
+package and Runtime contract suites. The approved public seams are manifest
+serialization/admission and `defineAnalyticalModelRuntime`; Test must add
+positive valid-identity controls plus internal-whitespace, `.` and `..`
+negative boundaries at manifest Runtime/dependency and factory
+Runtime/Adapter/dependency equivalent positions. Causal RED must arise only
+from the missing Manifest rejection. Runtime's current whitespace, `.` and
+`..` rejection semantics are frozen and must not be relaxed. TDD_READY may
+release only the smallest production owner proved by RED, expected to be
+`packages/contracts/model-pack.ts`.
+
+Formal R2 Test changed only the two authorized existing contract suites and
+preserved all prior assertions. Package Test is 709 lines/
+`6104e0637e1022b7040f6094f13b830d84c32c52d6a8aaa156b976ec0b184614`
+(`+22/-0`); Runtime Test is 545 lines/
+`2359f5f4463a41f9652453a207bbffcba51a5d28062e462abdb4c2a9cb3ef077`
+(`+24/-0`). Controller independently confirmed package 290 total/283 pass/
+seven fail and complete E 400/393/seven: the failures are exactly six new
+Manifest Runtime/dependency negative leaves plus the package aggregate parent,
+each reporting missing expected serialization rejection. Runtime 110/110,
+inactive 15/15, typecheck, all valid controls, helpers, and prior assertions
+pass. Production remains package
+`977a0a42cfc26a9b1e6f1995229a22fd6e848668271a878180f75a3a8b6f2e06`
+and Runtime
+`e8b1d90dc4f8ad57bc2f8f360ac0cadd1bafa6f47e9d4e55f4c12707e7b97177`.
+The changed suites are permanent regressions with P/C/Validator consumers and
+contain no fixture, helper, driver, dependency, temporary evidence, or
+retirement candidate. TDD_READY releases only
+`packages/contracts/model-pack.ts`; Runtime production, every Test, OpenSpec,
+graph, dependency, activation, and all other paths are frozen.
+
+The bounded Worker changed only `packages/contracts/model-pack.ts`, adding
+whitespace and exact `.` / `..` rejection to the existing governed-identity
+predicate. Package production remains 259 lines and is now
+`d6b95748b9a3a3e10839423ae41f53b9425910474d27840e5fd3b51ebbf18db7`;
+Runtime production is byte-unchanged at
+`e8b1d90dc4f8ad57bc2f8f360ac0cadd1bafa6f47e9d4e55f4c12707e7b97177`.
+Controller independently confirmed package 290/290, Runtime 110/110,
+complete E 400/400, inactive 15/15, typecheck, Local Analysis 198/198 and
+292/292, E2E 133 PASS plus one authorized real-Pi skip, project board 12/12,
+and canonical offline 1,344 PASS plus that skip. Test Asset Retirement
+reconciled the complete two-suite `+46/-0` delta: both suites are permanent
+regressions with P/C/Validator consumers; no fixture, helper, driver,
+dependency, temporary evidence, retirement candidate, skip, todo, only, or
+temporary marker was added. Complete-diff `ponytail-review` returned exactly
+`Lean already. Ship.` Production, Tests, and evidence are frozen for fresh
+read-only Validator 010. PR #14 remains Draft and TASK-012, acceptance,
+archive, merge, M1, and H/P/C/A remain blocked pending Validator PASS and
+another external re-review.
 
 External review of PR #14 invalidated the accepted candidate at Head
 `27ede0970a70984e87c295dbd76917fb5b8017b0` with two frozen-contract defect
@@ -227,9 +292,10 @@ Profile, authorize downstream H/P/C/A, or merge the Git branch.
 - Validator 007 frozen Head: `1ca62a3ebc141512913480f072014e6ef9a75480`
 - Validator 008 PASS Head: `1ef1b66c0fac726d25034d83cc2a52e9c33ee81b`
 - Validator 009 PASS Head: `e023c14b02fb4ae29254e6f68f707cef094e4ae3`
+- External re-review FAIL observed Head: `e2378f142fa3791360a88542be28d3504642c867`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 009 PASS; re-review pending; acceptance/archive withdrawn
+- Current lifecycle: corrected GREEN and Test Asset Retirement PASS; Validator 010 pending on frozen candidate; acceptance/archive withdrawn
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -243,13 +309,13 @@ Profile, authorize downstream H/P/C/A, or merge the Git branch.
 | inactive-loader/closed-graph R2 package and Test return | historical Controller Spec Gate PASS; exact Local Analysis correction complete; strict inactive Test still conflicts with Node v26 nested `openSync` | superseded as current Gate authority by this nested-loader-chain revision |
 | nested-loader-chain R2 package | Controller Spec Gate PASS | one bounded inactive Test correction only |
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
-| Test Design and driver health | PASS; package 687 lines/`f1df1350…9b505`, Runtime 521 lines/`06df33d5…19a6c`; prior assertions and helpers healthy | none unless a Test byte changes |
-| causal expected RED | PASS; package 282/236/46, Runtime 98/94/4, E 380/330/50 fail only on 39 new leaves and 11 aggregate/table parents | bounded two-file Worker repair |
-| implementation | PASS; package 259 lines/`977a0a42…f2e06`, Runtime 148 lines/`e8b1d90d…b97177`; only two production files changed | none unless production bytes change |
-| GREEN and affected regression | PASS; package 282/282, Runtime 98/98, E 380/380, inactive/Local Analysis/E2E/typecheck/board/canonical healthy | none unless frozen bytes change |
-| Test Asset Retirement | PASS; two permanent suites, complete `+91/-0` delta, scans clean, ponytail `Lean already. Ship.` | none unless Test bytes change |
-| independent verification | Validator 009 PASS on clean frozen Head; standard plus URI 88/88 and identity 54/54 independent matrices PASS | none unless frozen bytes change |
-| Controller/user acceptance | withdrawn; re-review pending | Controller/external re-review after Validator 009 PASS |
+| Test Design and driver health | PASS; package 709 lines/`6104e063…b184614`, Runtime 545 lines/`2359f5f4…b3ef077`; prior assertions/helpers healthy | none unless a Test byte changes |
+| causal expected RED | PASS; package 290/283/seven and E 400/393/seven fail only on six Manifest leaves plus package parent; Runtime 110/110 | package-only Worker repair |
+| implementation | PASS; package 259 lines/`d6b95748…8db7`; Runtime 148 lines/`e8b1d90d…b97177` byte-unchanged | none unless production bytes change |
+| GREEN and affected regression | PASS; package 290/290, Runtime 110/110, E 400/400, inactive/Local Analysis/E2E/typecheck/board/canonical healthy | none unless frozen bytes change |
+| Test Asset Retirement | PASS; two permanent suites, complete `+46/-0` delta, scans clean, ponytail `Lean already. Ship.` | none unless Test bytes change |
+| independent verification | Validator 009 historical PASS invalidated by external re-review | fresh read-only Validator 010 PASS after new freeze |
+| Controller/user acceptance | withdrawn; external re-review FAIL | another external re-review after Validator 010 PASS |
 | archive | withdrawn; Change restored active | only after renewed acceptance; no Git merge |
 
 ## Independent Validator 009 — PASS; Re-review Pending

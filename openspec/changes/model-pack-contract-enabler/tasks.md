@@ -6,16 +6,16 @@
 |---|---|---|---|
 | `TASK-001` Complete R2 decision package | `juaner_spec`; complete | this Change's OpenSpec files only; preserves the public surface, prior permission-oracle disposition, and completed closed-graph correction while distinguishing the exact paired Node v26 source-loader chains from product filesystem effects | REQ-MPC-001..005 |
 | `TASK-002` Repeat Spec Gate and lean review | Controller; PASS | nested `openSync` loader-chain root cause, paired-chain/no-mechanism disposition, full-package consistency, and mandatory complete-diff ponytail review | all |
-| `TASK-003` Package Test Design and RED | `juaner_test`; complete and frozen | 687-line/`f1df1350…9b505` suite; 36 URI leaves plus table/aggregate parents causal RED | REQ-MPC-002, 004 |
-| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; complete and frozen | 521-line/`06df33d5…19a6c` suite; three Unicode-scalar leaves plus parent causal RED | REQ-MPC-001, 003, 004 |
-| `TASK-005` TDD_READY | Controller; PASS | package 282/236/46, Runtime 98/94/4, E 380/330/50; only 39 new leaves and 11 parents fail; two production files released | all |
-| `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | package 259-line/`977a0a42…f2e06`; percent-encoded locator rules GREEN | REQ-MPC-001, 002, 005 |
-| `TASK-007` Implement Runtime Port | `juaner_worker`; complete and frozen | Runtime 148-line/`e8b1d90d…b97177`; scalar-length-only correction GREEN | REQ-MPC-003, 005 |
+| `TASK-003` Package Test Design and RED | `juaner_test`; complete and frozen | 709-line/`6104e063…b184614` package suite; six Manifest identity leaves plus parent causal RED | REQ-MPC-001, 004 |
+| `TASK-004` Runtime Test Design and equivalence health | `juaner_test`; complete and frozen | 545-line/`2359f5f4…b3ef077` Runtime suite; Runtime/Adapter/dependency valid and three-value negative matrix 110/110 GREEN | REQ-MPC-003, 004 |
+| `TASK-005` TDD_READY | Controller; PASS | package 290/283/7, Runtime 110/110, E 400/393/7, inactive 15/15, typecheck PASS; only package production released | all |
+| `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | only `packages/contracts/model-pack.ts`; 259-line/`d6b95748…8db7` governed-identity tightening; Runtime and every other production path unchanged | REQ-MPC-001, 005 |
+| `TASK-007` Implement Runtime Port | complete and frozen | Runtime 148-line/`e8b1d90d…b97177`; whitespace and `.`/`..` rejection semantics must not change | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
-| `TASK-009` GREEN and regression | complete and frozen | package 282, Runtime 98, E 380, inactive 15, affected/canonical PASS | all |
-| `TASK-010` Test Asset Retirement Gate | PASS | two permanent suites, `+91/-0`, scans clean, ponytail `Lean already. Ship.` | REQ-MPC-004 |
-| `TASK-011` Independent verification | Validator 009 PASS | R2 / standard / Sol-high PASS on clean frozen Head `e023c14…e4ae3`; standard, URI 88/88, identity 54/54, scope/retirement/cleanliness PASS | all |
-| `TASK-012` Accept, integrate, archive | withdrawn; re-review pending | PR #14 Draft; no acceptance/archive/merge/M1/H/P/C/A until re-review after Validator 009 PASS | all |
+| `TASK-009` GREEN and regression | complete | package 290/290, Runtime 110/110, E 400/400, inactive 15/15, typecheck, affected Local Analysis/E2E, board, and canonical 1,344 PASS plus one authorized skip | all |
+| `TASK-010` Test Asset Retirement Gate | PASS | complete two-suite `+46/-0` delta permanent and owned; no temporary/orphan/retirement marker; ponytail exactly `Lean already. Ship.` | REQ-MPC-004 |
+| `TASK-011` Independent verification | ready | Validator 009 historical PASS invalidated; fresh read-only Validator 010 required on the new frozen Head | all |
+| `TASK-012` Accept, integrate, archive | withdrawn; external re-review FAIL | PR #14 Draft; no acceptance/archive/merge/M1/H/P/C/A before Validator 010 PASS and another re-review | all |
 
 ## Test-owned Exact Paths
 

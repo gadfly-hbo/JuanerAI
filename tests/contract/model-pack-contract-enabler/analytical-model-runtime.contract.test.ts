@@ -196,6 +196,30 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
     });
   }
 
+  const governedIdentityPositions: readonly Readonly<{ name: string; set(binding: RecordValue, identity: string): void }>[] = [
+    { name: 'Runtime', set: (binding, identity) => { (binding.runtime as RecordValue).identity = identity; } },
+    { name: 'Adapter', set: (binding, identity) => { (binding.adapter as RecordValue).identity = identity; } },
+    { name: 'dependency', set: (binding, identity) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = identity; } },
+  ];
+  for (const entry of governedIdentityPositions) {
+    await t.test(`TEST-MPC-005 factory:${entry.name}-identity-valid-governed-control-constructs-without-issue`, () => {
+      const controlled = createControlledPredictor();
+      const binding = clone(bindingFixture());
+      entry.set(binding, `${entry.name.toLowerCase()}-controlled-identity`);
+      assert.doesNotThrow(() => runtimeModule.defineAnalyticalModelRuntime({ binding: binding as never, predictor: controlled.predictor }));
+      assert.equal(controlled.control.issueCount(), 0);
+    });
+    for (const identity of ['runtime identity', '.', '..']) {
+      await t.test(`TEST-MPC-005 factory:${entry.name}-identity-${JSON.stringify(identity)}-is-incompatible-without-issue`, () => {
+        const controlled = createControlledPredictor();
+        const binding = clone(bindingFixture());
+        entry.set(binding, identity);
+        assert.throws(() => runtimeModule.defineAnalyticalModelRuntime({ binding: binding as never, predictor: controlled.predictor }), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
+        assert.equal(controlled.control.issueCount(), 0);
+      });
+    }
+  }
+
   await t.test('TEST-MPC-005 factory:dependencies-non-enumerable-own-key-is-incompatible', () => {
     const controlled = createControlledPredictor();
     const binding = clone(bindingFixture());

@@ -93,10 +93,37 @@ inactivity, retirement, and repository cleanliness passed. This closes
 TASK-011 but does not reinstate Controller acceptance/archive; PR #14 remains
 Draft and TASK-012 awaits re-review.
 
+External re-review then invalidated Validator 009 with one frozen-contract
+equivalence defect. Controller reproduced that manifest Runtime and dependency
+identities accept `"runtime identity"`, `"."`, and `".."`, while factory
+Runtime, Adapter, and dependency positions reject the same values. The current
+return is Test Design with production frozen: formal Test owns only the two
+existing contract suites, causal RED must be Manifest-only, and the Runtime
+predicate must remain unchanged. TASK-011 is reopened for fresh Validator 010;
+TASK-012 and every downstream action remain blocked.
+
+Formal Test completed the two-suite return without changing any other path.
+Package 290/283/seven and complete E 400/393/seven fail only on the six
+Manifest Runtime/dependency internal-whitespace, `.` and `..` leaves plus the
+package parent. Runtime equivalent positions pass 110/110 with zero predictor
+issue; inactive 15/15 and typecheck pass. Controller accepts TDD_READY and
+releases only `packages/contracts/model-pack.ts`; Runtime and both Tests are
+frozen.
+
+The bounded Worker changed only the package contract and left Runtime bytes
+unchanged. Controller confirmed package 290/290, Runtime 110/110, E 400/400,
+inactive 15/15, typecheck, affected Local Analysis 198/198 and 292/292, E2E
+133 PASS plus one authorized skip, board 12/12, and canonical 1,344 PASS plus
+that skip. The complete `+46/-0` Test delta remains two owned permanent
+regressions with no temporary/orphan/retirement asset; mandatory complete-diff
+ponytail is `Lean already. Ship.` GREEN and Test Asset Retirement PASS freeze
+the candidate for fresh read-only Validator 010; they do not release
+TASK-012 or any downstream action.
+
 | Requirement | Acceptance | Planned test/evidence | Task | Candidate code/evidence | Current result |
 |---|---|---|---|---|---|
 | REQ-MPC-001 | AC-MPC-001-01 | TEST-MPC-001 | TASK-003,006 | exact manifest serialize/admit signatures; malformed status shape; printable bounded identities/categories; immutable manifest/revocation policy | REMEDIATION GREEN |
-| REQ-MPC-001 | AC-MPC-001-02 | TEST-MPC-001 | TASK-003,006 | canonical synchronous serializer/admission; closed all-own-key calls including arrays; exact bounds; Proxy sanitization; detached bytes/value | VALIDATOR 009 PASS |
+| REQ-MPC-001 | AC-MPC-001-02 | TEST-MPC-001 | TASK-003,006 | canonical synchronous serializer/admission; closed all-own-key calls including arrays; exact governed identity bounds and non-path semantics; Proxy sanitization; detached bytes/value | GREEN 290/290; VALIDATOR 010 PENDING |
 | REQ-MPC-001 | AC-MPC-001-03 | TEST-MPC-001 | TASK-003,006 | exact sanitized error carrier with provenance/context ownership; synchronous contract throw; compatibility/artifact/status/permission precedence | VALIDATOR 009 PASS |
 | REQ-MPC-001 | AC-MPC-001-04 | TEST-MPC-001 | TASK-003,006 | purpose/permission/runtime manifest admission including missing/extra/widened-permission precedence | VALIDATOR 009 PASS |
 | REQ-MPC-001 | AC-MPC-001-05 | TEST-MPC-002 | TASK-003,006 | exact input admission/canonical-byte signatures; precise decimal ordering; Unicode scalar category length | REMEDIATION GREEN |
@@ -107,7 +134,7 @@ Draft and TASK-012 awaits re-review.
 | REQ-MPC-002 | AC-MPC-002-03 | TEST-MPC-003 | TASK-003,006 | exact Registry/URI plus supplied location-verification shape/kind admission; no path access | VALIDATOR 009 PASS |
 | REQ-MPC-002 | AC-MPC-002-04 | TEST-MPC-003 | TASK-003,006 | only repeated release bindings and observation URI/SHA/size/Signature comparisons; singleton lower-boundary codes | GREEN PASS |
 | REQ-MPC-002 | AC-MPC-002-05 | TEST-MPC-003,004 | TASK-003,006 | package fixture and driver; P ownership stop line | GREEN PASS |
-| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; closed dependencies array; governed identity printable/no-control/Unicode-scalar-length/no-credential boundary; adversarial carrier sanitization | VALIDATOR 009 PASS |
+| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; closed dependencies array; governed identity printable/no-whitespace/no-control/Unicode-scalar-length/no-credential/non-path boundary; adversarial carrier sanitization | RUNTIME EQUIVALENCE 110/110 PASS; FROZEN |
 | REQ-MPC-003 | AC-MPC-003-02 | TEST-MPC-005 | TASK-004,007 | immutable readiness/openRun/snapshot capture | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-03 | TEST-MPC-005,007 | TASK-004,007 | exact predictor request/same signal and deadline; one-shot predict; Runtime-owned result/provenance | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-04 | TEST-MPC-006 | TASK-004,007 | native mock timers + AbortController + externally ordered atomic terminal outcomes | GREEN PASS |
@@ -116,10 +143,10 @@ Draft and TASK-012 awaits re-review.
 | REQ-MPC-003 | AC-MPC-003-07 | TEST-MPC-005,007 | TASK-004,007 | closed Port/result and forbidden-effect evidence | GREEN PASS |
 | REQ-MPC-004 | AC-MPC-004-01 | TEST-MPC-004 | TASK-003 | package driver/double health | GREEN PASS |
 | REQ-MPC-004 | AC-MPC-004-02 | TEST-MPC-008 | TASK-004 | exact Runtime harness/driver via public predictor seam; double health | GREEN PASS |
-| REQ-MPC-004 | AC-MPC-004-03 | TEST-MPC-001..009 | TASK-003,004 | exact signature/error-delivery and independently named material mutation leaves | VALIDATOR 009 PASS |
+| REQ-MPC-004 | AC-MPC-004-03 | TEST-MPC-001..009 | TASK-003,004 | exact signature/error-delivery and independently named material mutation leaves, including governed identity equivalent positions | GREEN 400/400; TESTS FROZEN |
 | REQ-MPC-004 | AC-MPC-004-04 | TEST-MPC-004,008 | TASK-003,004,011 | shared drivers plus Controller/Validator ownership review | DRIVER/OWNERSHIP PASS |
-| REQ-MPC-004 | AC-MPC-004-05 | Controller TDD_READY evidence | TASK-005 | new Test hashes/counts and exact causal RED; bounded production release | TDD_READY PASS |
-| REQ-MPC-004 | AC-MPC-004-06 | Controller retirement Gate | TASK-003,004,010 | complete new Test delta reconciled; scans clean; fresh ponytail lean | RETIREMENT PASS |
+| REQ-MPC-004 | AC-MPC-004-05 | Controller TDD_READY evidence | TASK-005 | new Test hashes/counts and exact causal RED; bounded production release | TDD_READY PASS; PACKAGE ONLY |
+| REQ-MPC-004 | AC-MPC-004-06 | Controller retirement Gate | TASK-003,004,010 | complete new Test delta reconciled; scans clean; fresh ponytail lean | PASS; `+46/-0`; LEAN |
 | REQ-MPC-005 | AC-MPC-005-01 | TEST-MPC-009 + TEST-XCLI-021 affected existing regression | TASK-004,008,009 | inactive integration plus completed, byte-frozen exact eight-entry mirrored `approvedTsconfig.files` append; every other Xanthil assertion/current behavior preserved | GREEN PASS |
 | REQ-MPC-005 | AC-MPC-005-02 | TEST-MPC-009 | TASK-004,006,007 | inert import/build/driver composition; exact Node loader paired source-read chains classified as toolchain mechanics, every other filesystem/product effect forbidden | GREEN PASS |
 | REQ-MPC-005 | AC-MPC-005-03 | TEST-MPC-009 + Validator review | TASK-004,011,012 | no active binding in E; activation stop line | VALIDATOR 009 PASS |
@@ -143,16 +170,16 @@ Draft and TASK-012 awaits re-review.
 |---|---|---|
 | TASK-001 | REQ-MPC-001..005 R2 decision package | complete; current Controller Spec Gate PASS |
 | TASK-002 | every REQ/AC/design mechanism | fresh complete-diff ponytail `Lean already. Ship.` and Controller PASS |
-| TASK-003 | TEST-MPC-001..004 | formal URI return complete; package suite frozen at `f1df1350…9b505` |
-| TASK-004 | TEST-MPC-005..009 plus existing frozen TEST-XCLI-021 | formal Unicode-scalar return complete; Runtime suite frozen at `06df33d5…19a6c` |
-| TASK-005 | all tests and exact Worker scope | renewed TDD_READY PASS; two production files released |
-| TASK-006 | REQ-MPC-001, 002, 005 | bounded package Worker complete; 282/282 GREEN |
-| TASK-007 | REQ-MPC-003, 005 | bounded Runtime Worker complete; 98/98 GREEN |
+| TASK-003 | TEST-MPC-001..004 | complete; package 709 lines/`6104e063…b184614`, six causal leaves plus parent |
+| TASK-004 | TEST-MPC-005..009 plus existing frozen TEST-XCLI-021 | complete; Runtime 545 lines/`2359f5f4…b3ef077`, equivalence matrix 110/110 |
+| TASK-005 | all tests and exact Worker scope | TDD_READY PASS; only package production released |
+| TASK-006 | REQ-MPC-001, 002, 005 | complete; package 259 lines/`d6b95748…8db7`, Runtime unchanged |
+| TASK-007 | REQ-MPC-003, 005 | prior Runtime correction complete; current predicate frozen with no write authorized |
 | TASK-008 | REQ-MPC-004, 005 | exact graph integration complete and frozen |
-| TASK-009 | TEST-MPC-001..009 and affected baseline | renewed E/affected/canonical GREEN |
-| TASK-010 | every changed test asset | renewed retirement PASS; ponytail `Lean already. Ship.` |
-| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 009 PASS on frozen Head `e023c14…e4ae3` |
-| TASK-012 | all accepted evidence and E integration constraint | re-review pending; acceptance/archive withdrawn; PR #14 Draft |
+| TASK-009 | TEST-MPC-001..009 and affected baseline | complete; corrected E/affected/canonical GREEN PASS |
+| TASK-010 | every changed test asset | PASS; `+46/-0` permanent/owned, scans clean, ponytail lean |
+| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | ready; fresh Validator 010 required on frozen candidate |
+| TASK-012 | all accepted evidence and E integration constraint | external re-review FAIL; acceptance/archive withdrawn; PR #14 Draft |
 
 ## Integration Trace
 

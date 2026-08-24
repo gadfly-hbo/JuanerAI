@@ -72,7 +72,7 @@ const businessIdentity = (value: unknown, code: ModelPackErrorCode): string => {
 };
 const governedIdentity = (value: unknown, code: ModelPackErrorCode): string => {
   const output = businessIdentity(value, code);
-  return Array.from(output).length <= 256 && !/[\p{C}@]/u.test(output) ? output : fail(code);
+  return Array.from(output).length <= 256 && !/[\s\p{C}@]/u.test(output) && output !== '.' && output !== '..' ? output : fail(code);
 };
 const checksum = (value: unknown, code: ModelPackErrorCode): string => sha.test(string(value, code)) ? value as string : fail(code);
 const stableVersion = (value: unknown, code: ModelPackErrorCode): string => semver.test(string(value, code)) ? value as string : fail(code);

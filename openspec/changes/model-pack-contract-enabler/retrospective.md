@@ -6,7 +6,7 @@
 - Change class: boundary change; R2 / complex root-cause
 - accepted baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
 - archive path: historical `openspec/changes/archive/2026-08-24-model-pack-contract-enabler`; withdrawn and restored active after PR #14 external review
-- final Validator verdict: Validator 009 `PASS`; Validator 008 remains historical and invalidated by external counterexamples
+- final Validator verdict: Validator 009 historical `PASS` invalidated by external re-review; Validator 010 pending after bounded repair
 - Controller acceptance: withdrawn; PR #14 Draft
 
 ## Intended Value
@@ -20,12 +20,12 @@
 
 | Evidence | Expected | Current Result | Source |
 |---|---|---|---|
-| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | repaired candidate GREEN; Validator 009 PASS; re-review pending | `traceability.md`, `verification.md` |
-| expected RED | every material frozen invariant fails causally before implementation | external-review return: package 282/236/46, Runtime 98/94/4, E 380/330/50; exactly 39 new leaves plus 11 table/aggregate parents | `test-plan.md`, `verification.md` |
-| target GREEN | focused, affected, and canonical evidence PASS | package 282/282, Runtime 98/98, E 380/380; canonical PASS | `verification.md` |
-| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | renewed GREEN, retirement PASS, and Validator 009 PASS | `verification.md` |
+| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | frozen semantics unchanged; identity-equivalence GREEN and retirement PASS | `traceability.md`, `verification.md` |
+| expected RED | every material frozen invariant fails causally before implementation | package 290/283/seven and E 400/393/seven fail only on six Manifest leaves plus package parent; Runtime 110/110 | `test-plan.md`, `verification.md` |
+| target GREEN | focused, affected, and canonical evidence PASS | package 290/290, Runtime 110/110, E 400/400, affected and canonical PASS | `verification.md` |
+| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | corrected GREEN and Test Asset Retirement PASS; Validator 010 pending | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |
-| independent validation | fresh read-only PASS | Validator 009 PASS on clean frozen Head; standard plus URI 88/88 and identity 54/54 matrices PASS | `verification.md` |
+| independent validation | fresh read-only PASS | Validator 009 historical PASS invalidated; Validator 010 required after new freeze | `verification.md` |
 
 ## Effort and Rework
 
@@ -93,9 +93,10 @@
 - behavior that must be reused: exact closed package/Runtime calls, sanitized carrier, stable error precedence, exact decimal comparisons, printable bounded identities/categories, inert composition, and strict E -> H -> P -> C -> A integration.
 - decisions that must not be reopened implicitly: no Provider/Consumer/Profile/activation in E; no dependency, registry, fallback, persistence, real data/model/network/MLflow, or new runtime abstraction.
 - expected ordinary Change shape: rule-by-rule public-boundary Test matrix, causal RED, one owning production return, full affected/canonical GREEN, retirement reconciliation, and fresh independent validation.
-- remaining risks: the repaired candidate requires Controller/external
-  re-review before acceptance/archive. Later P/C Changes remain blocked and
-  must not reopen E's non-goals.
+- remaining risks: fresh Validator 010 must independently verify the frozen
+  governed-identity repair, then another external re-review is still required
+  before acceptance/archive. Later P/C Changes remain blocked and must not
+  reopen E's non-goals.
 - explicitly deferred work: P/C/A implementations and every real Artifact, SDK, model, data, or activation proof.
 
 ## Completion Criterion

@@ -230,6 +230,28 @@ test('TEST-MPC-001..003 production package target and every independent mutation
     assert.throws(() => fn(module, 'serializeModelPackManifest')(tooLong), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
   });
 
+  const manifestGovernedIdentityPositions: readonly Readonly<{ name: string; set(manifest: RecordValue, identity: string): void }>[] = [
+    { name: 'Runtime', set: (manifest, identity) => { (((manifest.runtime as RecordValue).runtime) as RecordValue).identity = identity; } },
+    { name: 'dependency', set: (manifest, identity) => { ((((manifest.runtime as RecordValue).dependencies as RecordValue[])[0]) as RecordValue).identity = identity; } },
+  ];
+  for (const entry of manifestGovernedIdentityPositions) {
+    await t.test(`TEST-MPC-001 manifest:${entry.name}-identity-valid-governed-control-round-trips`, () => {
+      const manifest = clone(manifestFixture());
+      entry.set(manifest, `${entry.name.toLowerCase()}-controlled-identity`);
+      const bytes = fn(module, 'serializeModelPackManifest')(manifest);
+      const admitted = fn(module, 'admitModelPackManifest')({ manifest_bytes: bytes, artifact_observation: artifactObservationFixture(), expected_package: expectedPackageFixture() }) as ModelPackManifestV1;
+      assert.equal(entry.name === 'Runtime' ? admitted.runtime.runtime.identity : admitted.runtime.dependencies[0]?.identity, `${entry.name.toLowerCase()}-controlled-identity`);
+    });
+    for (const identity of ['runtime identity', '.', '..']) {
+      await t.test(`TEST-MPC-001 manifest:${entry.name}-identity-${JSON.stringify(identity)}-is-contract-invalid-at-serialization-and-admission`, () => {
+        const manifest = clone(manifestFixture());
+        entry.set(manifest, identity);
+        assert.throws(() => fn(module, 'serializeModelPackManifest')(manifest), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+        assert.throws(() => fn(module, 'admitModelPackManifest')({ manifest_bytes: canonicalBytes(manifest), artifact_observation: artifactObservationFixture(), expected_package: expectedPackageFixture() }), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+      });
+    }
+  }
+
   const canonicalRawCases: readonly Readonly<{ name: string; bytes(): Uint8Array; code: ModelPackErrorCode }>[] = [
     { name: 'TEST-MPC-001 canonical-json:BOM', bytes: () => new Uint8Array([0xef, 0xbb, 0xbf, ...canonicalBytes(manifestFixture())]), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 canonical-json:malformed-UTF8', bytes: () => new Uint8Array([0xff]), code: 'MODEL_PACK_CONTRACT_INVALID' },
