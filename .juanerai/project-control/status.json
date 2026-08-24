@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_validator_006_freeze",
-    "label": "Model Pack Contract Enabler：Validator 006 Freeze",
+    "id": "model_pack_contract_enabler_validator_006_active",
+    "label": "Model Pack Contract Enabler：Validator 006 Active",
     "ordinal": 7,
     "total": 8
   },
   "health": "validating",
-  "summary": "Validator 005 remediation GREEN: package 235/235, Runtime 83/83, E 318/318; canonical exit 0; Test Asset Retirement PASS.",
-  "current_objective": "Freeze committed production, Test, and Controller evidence bytes for fresh read-only Validator 006.",
-  "next_action": "Dispatch R2 / standard / Sol high Validator 006 and require independent PASS before acceptance or archive.",
+  "summary": "Frozen Validator 006 candidate 9d57be8: package 235/235, Runtime 83/83, E 318/318; canonical exit 0; retirement PASS.",
+  "current_objective": "Fresh R2 / standard / Sol high Validator 006 independently verifies committed clean Head 9d57be8.",
+  "next_action": "Require an explicit independent PASS before Controller acceptance or OpenSpec archive.",
   "blockers": [],
   "milestones": [
     {
@@ -91,7 +91,7 @@
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "waiting",
+      "status": "active",
       "activation": "实现与证据冻结"
     }
   ],
@@ -604,7 +604,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T09:13:53.336Z",
+  "updated_at": "2026-08-24T09:14:25.307Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-recovery-20260824"
