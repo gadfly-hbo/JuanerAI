@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_validator_freeze",
-    "label": "Model Pack Contract Enabler：Validator Freeze",
+    "id": "model_pack_contract_enabler_remediation_validator_freeze",
+    "label": "Model Pack Contract Enabler：Remediation Validator Freeze",
     "ordinal": 7,
     "total": 8
   },
-  "health": "active",
-  "summary": "Change E implementation is GREEN, canonical validation exits 0, and the Test Asset Retirement Gate passed after a final fresh Lean already. Ship. review.",
-  "current_objective": "Freeze the exact E candidate Head and obtain one fresh independent R2 Sol-high Validator verdict without changing product or Test bytes.",
-  "next_action": "Complete pre-commit scope audit, commit the reviewed E candidate on the current work branch, then dispatch the read-only Validator against that frozen Head.",
+  "health": "validating",
+  "summary": "Validator remediation GREEN and repeated Test Asset Retirement Gate PASS: E contract 292/292, canonical offline exit 0, and fresh ponytail Lean already. Ship.",
+  "current_objective": "Freeze the repaired production and Test bytes in a committed clean candidate for a fresh independent R2 Sol-high Validator.",
+  "next_action": "Commit the remediation candidate, mark Validator active on the committed Head, and require fresh read-only PASS before acceptance or archive.",
   "blockers": [],
   "milestones": [
     {
@@ -98,27 +98,27 @@
   "metrics": [
     {
       "id": "requirements",
-      "label": "Console 需求",
-      "done": 7,
-      "total": 7
+      "label": "E Requirements PASS",
+      "done": 5,
+      "total": 5
     },
     {
       "id": "tests",
-      "label": "Focused 测试",
-      "done": 82,
-      "total": 82
+      "label": "Validator mutation leaves GREEN",
+      "done": 5,
+      "total": 5
     },
     {
       "id": "tasks",
-      "label": "本轮本地返修",
-      "done": 4,
-      "total": 4
+      "label": "E lifecycle tasks complete",
+      "done": 10,
+      "total": 12
     },
     {
       "id": "decisions",
-      "label": "已批准 REC",
-      "done": 5,
-      "total": 5
+      "label": "Validator defect classes repaired",
+      "done": 4,
+      "total": 4
     }
   ],
   "evidence": [
@@ -604,9 +604,9 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T05:09:08.329Z",
+  "updated_at": "2026-08-24T05:51:16.085Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-recovery"
+    "session": "codex-controller-e-remediation"
   }
 }

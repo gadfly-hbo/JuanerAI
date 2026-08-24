@@ -12,8 +12,14 @@ evidence, and ended with a fresh complete-diff ponytail verdict of
 `Lean already. Ship.` The current inactive target is 191 lines, SHA-256
 `cca95293f2448fa8963524baca1fd61f36a5c73ebbe1ce9241e0260485ee95b7`,
 and passes 15/15 with both observed target sets equal to the two approved source
-files. Current status is GREEN with Test Asset Retirement PASS; production and
-Test assets are frozen for independent Validator review. E continues to use
+files. That candidate GREEN and Test Asset Retirement PASS are now historical:
+fresh independent validation of Head `c0bdf3a158a81d45131862debc8e2b1a24f076c3`
+found four missing material package-contract mutations. Formal Test added five
+exact leaves, Controller accepted causal RED, and the bounded Worker repaired
+only `packages/contracts/model-pack.ts`. Complete E contract is now 292/292,
+canonical exits 0, and the repeated Test Asset Retirement review returned
+`Lean already. Ship.` Production and Test bytes are frozen for a new committed
+Validator candidate. E continues to use
 deterministic synthetic values and controlled settlement only; no real Artifact,
 product/user-data filesystem observation, MLflow, network, external repository,
 data, provider/model, install, training, or inference is permitted.
@@ -79,6 +85,69 @@ Local Analysis remains contract 198/198, integration 292/292, and E2E 133 PASS
 plus one existing authorized real-Pi skip. The canonical offline runner exits
 0. No new `.skip`, `.todo`, `.only`, temporary probe, unused fixture/driver,
 dependency, product seam, or weakened paired-chain/effect assertion remains.
+
+## Independent Validator Coverage Return
+
+The first frozen candidate passed the existing suite but failed independent
+public-surface probes. Formal Test may edit only
+`tests/contract/model-pack-contract-enabler/model-pack-package.contract.test.ts`
+to add these independently named leaves against frozen production:
+
+1. input admission rejects discount greater than gross using canonical decimal
+   strings that differ beyond IEEE-754 safe integer precision;
+2. forecast admission rejects a reversed interval using the same precision
+   boundary;
+3. malformed release status missing `package.version` maps to
+   `MODEL_PACK_CONTRACT_INVALID`, not an identity mismatch;
+4. `canonicalCategoryDemandInputBytes` rejects any extra outer call key; and
+5. a category containing 65 supplementary-plane Unicode scalar values is a
+   valid positive value within the normative 1–128 scalar range.
+
+Test must first retain helper health and all prior assertions, then observe
+causal RED only on these new leaves or their explicit parents. It may not change
+the Specification, production, fixtures/drivers, Runtime suite, inactive suite,
+root graph/runner, dependency, or public surface. TDD_READY for this remediation
+authorizes only the minimum `packages/contracts/model-pack.ts` repair.
+
+### Remediation TDD_READY
+
+- Package contract Test: 572 lines,
+  `5c7aa231cfcb8aa6b89a31435c1f39a8ebba7e9adca080818aa16d62b5c5fd7e`.
+- Frozen failed production: 203 lines,
+  `b598ab7e81e267d41ac114dda687bc66aabe0128fa726a05ec1f85dbce4b5790`.
+- Focused package: 221 total, 215 pass, six fail only on the five new leaves
+  and their aggregate parent.
+- Complete E contract: 292 total, 286 pass, the same six failures. Runtime
+  remains 71/71 and inactive integration 15/15.
+- Root typecheck and affected Local Analysis contract 198/198, integration
+  292/292, and E2E 133 PASS plus the existing authorized skip remain healthy.
+- Canonical exits 1 only when it reaches the same E contract causal RED under
+  fail-fast; no unrelated suite, loader, graph, helper, or environment failure
+  exists.
+- Test changed only the package contract file by `+19/-0`; no assertion was
+  removed or weakened and no fixture, driver, dependency, seam, or public
+  signature changed.
+
+### Remediation GREEN and Retirement Freeze
+
+| Asset | Lines | Current SHA-256 | Status |
+|---|---:|---|---|
+| `packages/contracts/model-pack.ts` | 210 | `512d928a81941abd1b69b341f102b155d55dc72efb2aa97798847cfa9a0130b9` | remediation GREEN; frozen |
+| `packages/ports/analytical-model-runtime.ts` | 120 | `fec5bc710d6ef25cba0452964298e59d81b81df303f2c3b9e5a0017a6dadc323` | unchanged; frozen |
+| `tests/contract/model-pack-contract-enabler/model-pack-package.contract.test.ts` | 572 | `5c7aa231cfcb8aa6b89a31435c1f39a8ebba7e9adca080818aa16d62b5c5fd7e` | permanent regression; frozen |
+| `tests/contract/model-pack-contract-enabler/analytical-model-runtime.contract.test.ts` | 410 | `8f87152439bb644d26f21b96ff11ad8caa2b23d3c550ace24cd9afb65fd8f76e` | unchanged; frozen |
+| `tests/integration/model-pack-contract-enabler/contracts-inactive.integration.test.ts` | 191 | `cca95293f2448fa8963524baca1fd61f36a5c73ebbe1ce9241e0260485ee95b7` | unchanged; frozen |
+| `tests/fixtures/model-pack-contract-enabler/model-pack-fixtures.ts` | 135 | `916179da7dfa236f4e8fe500bded5f378fdeeea0d37ae6cb30b12a14b6ee2894` | retained consumer; frozen |
+| `tests/fixtures/model-pack-contract-enabler/model-pack-package-driver.ts` | 54 | `45576d9a6b0fbb61e524e16dc93beb4078391893697c42920c04cdbe9b834ef5` | retained P/Validator consumer; frozen |
+| `tests/fixtures/model-pack-contract-enabler/analytical-model-runtime-driver.ts` | 446 | `c246224357560c82b6da3cadab1de95cbbb35cd6f169ea0211af015ddf19ca48` | retained C/Validator consumer; frozen |
+| `tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts` | 3096 | `b5c43e3bf65faab5e75c60a481c8c22aa966690c56b22a465622ab2a18dc433f` | existing permanent regression; frozen |
+
+Controller evidence is E contract 292/292, inactive 15/15, root typecheck PASS,
+affected Local Analysis contract 198/198, integration 292/292, E2E 133 PASS plus
+one existing authorized skip, project board 12/12, and canonical offline exit 0.
+The Test ledger has no orphan, duplicate, temporary probe, or skip/todo/only;
+all five Validator leaves are permanent distinct REQ-MPC-001/004 regressions.
+Fresh complete Test-diff ponytail returned exactly `Lean already. Ship.`
 
 ## Historical Node v26 Loader-chain Conflict and Resolution
 

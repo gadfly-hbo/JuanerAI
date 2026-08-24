@@ -300,6 +300,7 @@ async function runReleaseStatusCases(t: TestContext, module: ContractModule): Pr
   await t.test('TEST-MPC-001 release-status:revoked-is-admitted-value-not-preflight', () => assert.deepEqual(fn(module, 'admitModelPackReleaseStatus')({ release_status: releaseStatusFixture('revoked'), expected_package: expectedPackageFixture() }), releaseStatusFixture('revoked')));
   const cases: Mutation[] = [
     { name: 'TEST-MPC-001 release-status:malformed-shape', mutate: () => ({ state: 'released' }), code: 'MODEL_PACK_CONTRACT_INVALID' },
+    { name: 'TEST-MPC-001 release-status:missing-package-version-is-malformed-not-identity-mismatch', mutate: (v) => ({ ...v, package: remove(v.package as RecordValue, 'version') }), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 release-status:unsupported-version', mutate: (v) => ({ ...v, schema_version: '2.0' }), code: 'MODEL_PACK_CONTRACT_UNSUPPORTED' },
     { name: 'TEST-MPC-001 release-status:wrong-package-identity', mutate: (v) => replaceChild(v, 'package', { identity: 'other.package' }), code: 'MODEL_PACK_IDENTITY_MISMATCH' },
     { name: 'TEST-MPC-001 release-status:wrong-package-version', mutate: (v) => replaceChild(v, 'package', { version: '9.9.9' }), code: 'MODEL_PACK_IDENTITY_MISMATCH' },
@@ -333,6 +334,22 @@ async function runInputCases(t: TestContext, module: ContractModule): Promise<vo
     assert.deepEqual(admitted.history, source.history);
     assert.deepEqual(fn(module, 'canonicalCategoryDemandInputBytes')({ admitted_input: admitted, manifest }), canonicalBytes(source));
   });
+  await t.test('TEST-MPC-002 input:65-supplementary-plane-scalars-is-a-valid-category', () => {
+    const productCategory = '\u{1F642}'.repeat(65);
+    const unicodeManifest = clone(manifestFixture());
+    unicodeManifest.io = { ...(unicodeManifest.io as RecordValue), supported_product_categories: [productCategory] };
+    const candidate = {
+      contract_version: '1.0',
+      as_of_date: dateAt(55),
+      currency: 'USD',
+      history: Array.from({ length: 56 }, (_, day) => ({ business_date: dateAt(day), product_category: productCategory, order_count: 10, gross_order_amount: '100.00', discount_amount: '10.00' })),
+    };
+    assert.deepEqual(fn(module, 'admitCategoryDemandInput')({ candidate, manifest: unicodeManifest }), candidate);
+  });
+  await t.test('TEST-MPC-002 canonical-input-bytes:extra-outer-key', () => {
+    const admitted = fn(module, 'admitCategoryDemandInput')({ candidate: inputFixture(), manifest });
+    assert.throws(() => fn(module, 'canonicalCategoryDemandInputBytes')({ admitted_input: admitted, manifest, extra: true }), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+  });
   const rowMutation = (mutate: (row: RecordValue) => unknown, index = 0) => (v: RecordValue) => ({ ...v, history: (v.history as RecordValue[]).map((row, current) => current === index ? mutate(row) : row) });
   const discontinuous = (v: RecordValue) => {
     const history = (v.history as RecordValue[]).filter((row) => row.business_date !== dateAt(20));
@@ -361,6 +378,7 @@ async function runInputCases(t: TestContext, module: ContractModule): Promise<vo
     { name: 'TEST-MPC-002 input:negative-discount-amount', mutate: rowMutation((r) => ({ ...r, discount_amount: '-1' })), code: 'MODEL_PACK_INPUT_INVALID' },
     { name: 'TEST-MPC-002 input:non-canonical-discount-amount', mutate: rowMutation((r) => ({ ...r, discount_amount: '1e2' })), code: 'MODEL_PACK_INPUT_INVALID' },
     { name: 'TEST-MPC-002 input:discount-greater-than-gross', mutate: rowMutation((r) => ({ ...r, gross_order_amount: '1', discount_amount: '2' })), code: 'MODEL_PACK_INPUT_INVALID' },
+    { name: 'TEST-MPC-002 input:discount-greater-than-gross-above-safe-integer', mutate: rowMutation((r) => ({ ...r, gross_order_amount: '9007199254740992', discount_amount: '9007199254740993' })), code: 'MODEL_PACK_INPUT_INVALID' },
     { name: 'TEST-MPC-002 input:wrong-row-order', mutate: (v) => { const history = [...v.history as unknown[]]; [history[0], history[1]] = [history[1], history[0]]; return { ...v, history }; }, code: 'MODEL_PACK_INPUT_INVALID' },
     { name: 'TEST-MPC-002 input:extra-top-level-field', mutate: (v) => ({ ...v, extra: true }), code: 'MODEL_PACK_INPUT_INVALID' },
     { name: 'TEST-MPC-002 input:extra-row-field', mutate: rowMutation((r) => ({ ...r, net_order_amount: '90' })), code: 'MODEL_PACK_INPUT_INVALID' },
@@ -387,6 +405,7 @@ async function runForecastCases(t: TestContext, module: ContractModule): Promise
     { name: 'TEST-MPC-002 forecast:negative-amount-prediction', mutate: rowMutation((r) => ({ ...r, predicted_net_order_amount: '-1' })), code: 'MODEL_PACK_OUTPUT_INVALID' },
     { name: 'TEST-MPC-002 forecast:non-canonical-amount-prediction', mutate: rowMutation((r) => ({ ...r, predicted_net_order_amount: '1e2' })), code: 'MODEL_PACK_OUTPUT_INVALID' },
     { name: 'TEST-MPC-002 forecast:reversed-order-interval', mutate: rowMutation((r) => ({ ...r, order_count_interval_80: { lower: '12', upper: '8' } })), code: 'MODEL_PACK_OUTPUT_INVALID' },
+    { name: 'TEST-MPC-002 forecast:reversed-order-interval-above-safe-integer', mutate: rowMutation((r) => ({ ...r, order_count_interval_80: { lower: '9007199254740993', upper: '9007199254740992' } })), code: 'MODEL_PACK_OUTPUT_INVALID' },
     { name: 'TEST-MPC-002 forecast:reversed-amount-interval', mutate: rowMutation((r) => ({ ...r, net_order_amount_interval_80: { lower: '100', upper: '80' } })), code: 'MODEL_PACK_OUTPUT_INVALID' },
     { name: 'TEST-MPC-002 forecast:negative-interval-bound', mutate: rowMutation((r) => ({ ...r, order_count_interval_80: { lower: '-1', upper: '12' } })), code: 'MODEL_PACK_OUTPUT_INVALID' },
     { name: 'TEST-MPC-002 forecast:non-canonical-interval-bound', mutate: rowMutation((r) => ({ ...r, net_order_amount_interval_80: { lower: '080', upper: '100' } })), code: 'MODEL_PACK_OUTPUT_INVALID' },
