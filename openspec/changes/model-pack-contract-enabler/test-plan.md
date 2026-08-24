@@ -330,6 +330,20 @@ and Runtime 132 lines/
 Every other path is locked. Exact causal RED plus all healthy boundary counts,
 hashes, diff/status, and retirement preflight are mandatory before TDD_READY.
 
+### Validator 004 Remediation TDD_READY
+
+- Package Test: 594 to 608 lines; SHA-256 `08e8b2fd…394a9` to
+  `0c1c969a6595fad4e019c3e667c436c7cbfd9eed715a917c73334c3045d46c0f`.
+- Runtime Test: 429 to 466 lines; SHA-256 `852b3d0f…621a6` to
+  `efae6d30c7915fa2156897a63cd0c5fd15714cea77c4020a301f9c14739697f8`.
+- Package RED 228/233, Runtime RED 73/81, complete E RED 301/314; failures
+  are exactly 11 leaves plus the two aggregate parents.
+- Inactive 15/15, typecheck, Local Analysis 198/198 and Controller-rechecked
+  292/292, E2E 133 PASS plus one authorized skip, and project board 12/12 are
+  healthy. Canonical reaches the same E RED.
+- Production stays byte-frozen at package `278025c1…e4a3d` and Runtime
+  `935ce7c4…a248`. Only those two production paths are Worker-released.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

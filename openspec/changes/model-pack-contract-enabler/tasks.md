@@ -6,11 +6,11 @@
 |---|---|---|---|
 | `TASK-001` Complete R2 decision package | `juaner_spec`; complete | this Change's OpenSpec files only; preserves the public surface, prior permission-oracle disposition, and completed closed-graph correction while distinguishing the exact paired Node v26 source-loader chains from product filesystem effects | REQ-MPC-001..005 |
 | `TASK-002` Repeat Spec Gate and lean review | Controller; PASS | nested `openSync` loader-chain root cause, paired-chain/no-mechanism disposition, full-package consistency, and mandatory complete-diff ponytail review | all |
-| `TASK-003` Package Test Design and RED | `juaner_test`; Validator 004 return active | package suite may add four exact Proxy/permission/own-key leaves only | REQ-MPC-001, 002, 004 |
-| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 004 return active | Runtime suite may add seven exact spoof/credential-identity leaves only; every other Test frozen | REQ-MPC-003..005 |
-| `TASK-005` TDD_READY | Controller; reopened | require exact 11-leaf causal RED before releasing the same two production files | all |
-| `TASK-006` Implement contracts | historical GREEN; reopened by Validator 004 | both production files remain frozen until renewed TDD_READY | REQ-MPC-001, 002, 005 |
-| `TASK-007` Implement Runtime Port | historical GREEN; reopened by Validator 004 | Runtime production remains frozen until renewed TDD_READY | REQ-MPC-003, 005 |
+| `TASK-003` Package Test Design and RED | `juaner_test`; Validator 004 return complete | 608-line/`0c1c969a…` suite adds four exact causal leaves | REQ-MPC-001, 002, 004 |
+| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 004 return complete | 466-line/`efae6d30…` suite adds seven exact causal leaves; every other Test frozen | REQ-MPC-003..005 |
+| `TASK-005` TDD_READY | Controller; PASS | package 228/233, Runtime 73/81, E 301/314 fail only on 11 leaves plus two parents; two production paths released | all |
+| `TASK-006` Implement contracts | `juaner_worker`; active after renewed TDD_READY | package production only for four package leaves | REQ-MPC-001, 002, 005 |
+| `TASK-007` Implement Runtime Port | `juaner_worker`; active after renewed TDD_READY | Runtime production only for seven Runtime leaves | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
 | `TASK-009` GREEN and regression | historical PASS; reopened | 11 independent counterexamples block semantic GREEN | all |
 | `TASK-010` Test Asset Retirement Gate | historical PASS; reopened | repeat after all 11 permanent leaves reach GREEN | REQ-MPC-004 |

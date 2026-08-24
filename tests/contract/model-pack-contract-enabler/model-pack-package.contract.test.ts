@@ -226,9 +226,11 @@ test('TEST-MPC-001..003 production package target and every independent mutation
     { name: 'TEST-MPC-001 package-version:leading-zero', mutate: (v) => mutateManifestChild(v, 'package', (c) => ({ ...c, version: '01.0.0' })), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 purpose:wrong-approved-use', mutate: (v) => mutateManifestChild(v, 'purpose', (c) => ({ ...c, approved_use: 'automatic_replenishment' })), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 manifest:enumerable-throwing-package-getter-is-sanitized', mutate: (v) => { const candidate = clone(v); Object.defineProperty(candidate, 'package', { enumerable: true, get() { throw new Error('raw manifest package getter secret'); } }); return candidate; }, code: 'MODEL_PACK_CONTRACT_INVALID' },
+    { name: 'TEST-MPC-001 manifest:enumerable-license-getter-Proxy-descriptor-throw-is-sanitized', mutate: (v) => { const candidate = clone(v); Object.defineProperty(candidate, 'license', { enumerable: true, get() { throw new Proxy(new Error('raw manifest license Proxy descriptor secret'), { getOwnPropertyDescriptor() { throw new Error('raw manifest license descriptor trap secret'); } }); } }); return candidate; }, code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 category:U+0085-control-is-rejected', mutate: (v) => mutateManifestChild(v, 'io', (c) => ({ ...c, supported_product_categories: ['beverages\u0085'] })), code: 'MODEL_PACK_CONTRACT_INVALID' },
     ...manifestPurposeCases(),
     ...manifestPermissionCases(),
+    { name: 'TEST-MPC-001 permission:extra-widened-filesystem-is-permission-denied', mutate: (v) => mutateManifestChild(v, 'permissions', (c) => ({ ...c, filesystem: 'all' })), code: 'MODEL_PACK_PERMISSION_DENIED' },
     { name: 'TEST-MPC-001 permission:missing-network-preserves-permission-denied-precedence', mutate: (v) => mutateManifestChild(v, 'permissions', (c) => remove(c, 'network')), code: 'MODEL_PACK_PERMISSION_DENIED' },
     { name: 'TEST-MPC-001 security:online-learning-enabled', mutate: (v) => mutateManifestChild(v, 'runtime', (c) => ({ ...c, online_learning: true })), code: 'MODEL_PACK_PERMISSION_DENIED' },
     { name: 'TEST-MPC-001 lifecycle:invalid-license-identity', mutate: (v) => mutateManifestChild(v, 'license', (c) => ({ ...c, license_id: '' })), code: 'MODEL_PACK_LICENSE_INVALID' },
@@ -361,6 +363,18 @@ async function runInputCases(t: TestContext, module: ContractModule): Promise<vo
   await t.test('TEST-MPC-002 canonical-input-bytes:extra-outer-key', () => {
     const admitted = fn(module, 'admitCategoryDemandInput')({ candidate: inputFixture(), manifest });
     assert.throws(() => fn(module, 'canonicalCategoryDemandInputBytes')({ admitted_input: admitted, manifest, extra: true }), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+  });
+  await t.test('TEST-MPC-002 canonical-input-bytes:extra-own-Symbol-key', () => {
+    const admitted = fn(module, 'admitCategoryDemandInput')({ candidate: inputFixture(), manifest });
+    const candidate = { admitted_input: admitted, manifest };
+    Object.defineProperty(candidate, Symbol('extra'), { value: true, enumerable: true });
+    assert.throws(() => fn(module, 'canonicalCategoryDemandInputBytes')(candidate), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+  });
+  await t.test('TEST-MPC-002 canonical-input-bytes:extra-non-enumerable-own-string-key', () => {
+    const admitted = fn(module, 'admitCategoryDemandInput')({ candidate: inputFixture(), manifest });
+    const candidate = { admitted_input: admitted, manifest };
+    Object.defineProperty(candidate, 'extra', { value: true, enumerable: false });
+    assert.throws(() => fn(module, 'canonicalCategoryDemandInputBytes')(candidate), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
   });
   const rowMutation = (mutate: (row: RecordValue) => unknown, index = 0) => (v: RecordValue) => ({ ...v, history: (v.history as RecordValue[]).map((row, current) => current === index ? mutate(row) : row) });
   const discontinuous = (v: RecordValue) => {

@@ -90,6 +90,13 @@ function assertPromiseCall<T>(call: () => Promise<T>): Promise<T> {
   return promise;
 }
 
+function spoofedOrdinaryError(code: ModelPackErrorCode): Error & Readonly<{ code: ModelPackErrorCode }> {
+  const error = new Error(code) as Error & { code: ModelPackErrorCode };
+  error.name = 'ModelPackContractError';
+  Object.defineProperty(error, 'code', { value: code, enumerable: true });
+  return error;
+}
+
 function deadlineAt(offsetMs: number): string {
   return new Date(FIXED_EPOCH_MS + offsetMs).toISOString();
 }
@@ -154,10 +161,13 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
 
   const factoryBindingValueCases: readonly Readonly<{ name: string; mutate(binding: RecordValue): void }>[] = [
     { name: 'TEST-MPC-005 factory:runtime-identity-path-like', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'bad/path'; } },
+    { name: 'TEST-MPC-005 factory:runtime-identity-at-sign', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'runtime@1'; } },
     { name: 'TEST-MPC-005 factory:runtime-version-leading-zero', mutate: (binding) => { (binding.runtime as RecordValue).version = '01.0.0'; } },
     { name: 'TEST-MPC-005 factory:adapter-identity-path-like', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'bad/path'; } },
+    { name: 'TEST-MPC-005 factory:adapter-identity-at-sign', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'adapter@1'; } },
     { name: 'TEST-MPC-005 factory:adapter-version-leading-zero', mutate: (binding) => { (binding.adapter as RecordValue).version = '01.0.0'; } },
     { name: 'TEST-MPC-005 factory:dependency-identity-path-like', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'bad/path'; } },
+    { name: 'TEST-MPC-005 factory:dependency-identity-at-sign', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'dependency@1'; } },
     { name: 'TEST-MPC-005 factory:dependency-version-leading-zero', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).version = '01.0.0'; } },
     { name: 'TEST-MPC-005 factory:permission-network-widened', mutate: (binding) => { (binding.permissions as RecordValue).network = 'allowed'; } },
   ];
@@ -221,6 +231,13 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
     assert.equal(harness.control.issueCount(), 0);
   });
 
+  await t.test('TEST-MPC-005 preflight:manifest-bytes-getter-spoofed-ordinary-Error-is-sanitized', async () => {
+    const harness = createHarness(runtimeModule);
+    const candidate = { ...preflightInput(contracts), get manifest_bytes(): never { throw spoofedOrdinaryError('MODEL_PACK_REVOKED'); } };
+    await assert.rejects(assertPromiseCall(() => harness.runtime.preflight(candidate as never)), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
+    assert.equal(harness.control.issueCount(), 0);
+  });
+
   const bindingCases: readonly Readonly<{ name: string; mutate(value: RecordValue): void; code: ModelPackErrorCode }>[] = [
     { name: 'TEST-MPC-005 preflight:manifest-runtime-identity-unequal', mutate: (m) => { ((m.runtime as RecordValue).runtime as RecordValue).identity = 'other-runtime'; }, code: 'MODEL_PACK_RUNTIME_INCOMPATIBLE' },
     { name: 'TEST-MPC-005 preflight:manifest-runtime-version-unequal', mutate: (m) => { ((m.runtime as RecordValue).runtime as RecordValue).version = '9.9.9'; }, code: 'MODEL_PACK_RUNTIME_INCOMPATIBLE' },
@@ -270,6 +287,14 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
     });
   }
 
+  await t.test('TEST-MPC-005 openRun:run-id-getter-spoofed-ordinary-Error-is-sanitized', async () => {
+    const harness = createHarness(runtimeModule);
+    const readiness = await harness.runtime.preflight(preflightInput(contracts));
+    const candidate = { readiness, snapshot: snapshotFixture(), get run_id(): never { throw spoofedOrdinaryError('MODEL_PACK_REVOKED'); } };
+    await assert.rejects(assertPromiseCall(() => harness.runtime.openRun(candidate as never)), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
+    assert.equal(harness.control.issueCount(), 0);
+  });
+
   await t.test('TEST-MPC-005 openRun:valid-captures-snapshot-and-causes-zero-issue', async () => {
     const harness = createHarness(runtimeModule);
     const run = await openRun(harness.runtime, contracts, 'open-valid-001');
@@ -302,6 +327,14 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
       assert.equal(harness.control.issueCount(), 0);
     }));
   }
+
+  await t.test('TEST-MPC-005 predict:deadline-getter-spoofed-ordinary-Error-is-sanitized', async (subtest) => withMockTime(subtest, async () => {
+    const harness = createHarness(runtimeModule);
+    const run = await openRun(harness.runtime, contracts, 'predict-spoofed-deadline-001');
+    const candidate = { cancellation_signal: new AbortController().signal, get deadline_at(): never { throw spoofedOrdinaryError('MODEL_PACK_REVOKED'); } };
+    await assert.rejects(assertPromiseCall(() => run.predict(candidate as never)), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
+    assert.equal(harness.control.issueCount(), 0);
+  }));
 
   await t.test('TEST-MPC-005 predict:second-concurrent-call-loses-before-argument-validation-and-only-one-issue', async (subtest) => withMockTime(subtest, async () => {
     const harness = createHarness(runtimeModule);
@@ -402,6 +435,10 @@ async function runResultCases(t: TestContext, runtimeModule: RuntimeModule, cont
   }));
   await t.test('TEST-MPC-007 result:predictor-provenance-is-independently-OUTPUT_INVALID', async (subtest) => withMockTime(subtest, async () => {
     const harness = createHarness(runtimeModule); const run = await openRun(harness.runtime, contracts, 'result-injected'); const terminal = run.predict({ cancellation_signal: new AbortController().signal, deadline_at: deadlineAt(10_000) }); await harness.control.waitForIssue(); harness.control.fulfill({ ...forecastFixture(), provenance: { attacker: true } });
+    await assert.rejects(terminal, (error) => assertError(error, 'MODEL_PACK_OUTPUT_INVALID'));
+  }));
+  await t.test('TEST-MPC-007 result:fulfilled-forecast-Proxy-ownKeys-spoofed-ordinary-Error-is-OUTPUT_INVALID', async (subtest) => withMockTime(subtest, async () => {
+    const harness = createHarness(runtimeModule); const run = await openRun(harness.runtime, contracts, 'result-spoofed-forecast'); const terminal = run.predict({ cancellation_signal: new AbortController().signal, deadline_at: deadlineAt(10_000) }); await harness.control.waitForIssue(); harness.control.fulfill(new Proxy(forecastFixture(), { ownKeys() { throw spoofedOrdinaryError('MODEL_PACK_REVOKED'); } }));
     await assert.rejects(terminal, (error) => assertError(error, 'MODEL_PACK_OUTPUT_INVALID'));
   }));
   await t.test('TEST-MPC-007 result:exact-closed-Runtime-owned-provenance-captured-values-and-forbidden-content', async (subtest) => withMockTime(subtest, async () => {

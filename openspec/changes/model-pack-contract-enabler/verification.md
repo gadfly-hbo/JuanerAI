@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 004 FAIL — RETURN TO TEST DESIGN / TDD_READY`
+`VALIDATOR 004 REMEDIATION TDD_READY — TWO-FILE WORKER RELEASED`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -66,7 +66,13 @@ boundaries, a package classifier Proxy trap leak, widened extra-permission
 precedence, credential-like Runtime/Adapter/dependency identities, and Symbol/
 non-enumerable own-key closure. This is another bounded package/Runtime Test
 return; no new product, architecture, Spec, dependency, scope, or re-slice
-decision is required.
+decision is required. Formal Test changed only the two authorized contract
+suites. Controller independently confirmed package 228/233, Runtime 73/81,
+and complete E 301/314: failures are exactly the 11 new leaves plus their two
+aggregate parents. The earlier direct Local Analysis npm mismatch was an
+Agent-local environment invocation; Controller reran the frozen command with
+the approved toolchain and confirmed 292/292. Renewed TDD_READY releases only
+the same two production files; every Test and all other paths are frozen.
 
 ## Frozen References
 
@@ -76,8 +82,8 @@ decision is required.
 - Validator 003 frozen Head: `60a7aa09764c274c527e04d39b7ac6986560ba5f`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 004 FAIL; both production files frozen while
-  only the existing package and Runtime contract Tests may establish causal RED
+- Current lifecycle: Validator 004 remediation TDD_READY; only the package and
+  Runtime production files are released to the bounded Worker
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -91,8 +97,8 @@ decision is required.
 | inactive-loader/closed-graph R2 package and Test return | historical Controller Spec Gate PASS; exact Local Analysis correction complete; strict inactive Test still conflicts with Node v26 nested `openSync` | superseded as current Gate authority by this nested-loader-chain revision |
 | nested-loader-chain R2 package | Controller Spec Gate PASS | one bounded inactive Test correction only |
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
-| Test Design and driver health | PASS; current Runtime Test 429 lines/`852b3d0f…`; all prior assertions and driver health retained | none unless a Test byte changes |
-| causal expected RED | PASS; Runtime 71/74 and complete E 300/303 fail only on two Validator 003 leaves plus aggregate parent | bounded Runtime-only Worker repair |
+| Test Design and driver health | PASS; package Test 608 lines/`0c1c969a…`, Runtime Test 466 lines/`efae6d30…`; all prior assertions retained | none unless a Test byte changes |
+| causal expected RED | PASS; package 228/233, Runtime 73/81, E 301/314 fail only on 11 leaves plus two parents | bounded two-file Worker repair |
 | implementation | PASS; Runtime-only remediation is 132 lines/`935ce7c4…`; package unchanged | none unless production bytes change |
 | GREEN and affected regression | PASS; package 229/229, Runtime 74/74, E 303/303, inactive/affected/typecheck/canonical healthy | none unless frozen bytes change |
 | Test Asset Retirement | PASS; two new permanent leaves only, scans clean, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
@@ -676,6 +682,31 @@ authorized before its PASS.
   evidence reconciliation, committed clean Head, and one fresh read-only
   Validator PASS.
 - Verdict: `FAIL`.
+
+## Controller Validator 004 Remediation TDD_READY
+
+- Date: `2026-08-24`; formal Test route R2 / standard / Terra high.
+- Sole Test writes:
+  - package Test 594 lines/`08e8b2fd…394a9` to 608 lines/
+    `0c1c969a6595fad4e019c3e667c436c7cbfd9eed715a917c73334c3045d46c0f`;
+  - Runtime Test 429 lines/`852b3d0f…621a6` to 466 lines/
+    `efae6d30c7915fa2156897a63cd0c5fd15714cea77c4020a301f9c14739697f8`.
+- Frozen production remains package 237 lines/
+  `278025c19752b98a0cf580785f9c5888722aab9b029a4dd88c032f911f8e4a3d`
+  and Runtime 132 lines/
+  `935ce7c4ada232e3c0c6703dd119ed9514b98afff6ea503cf20374b4af87a248`.
+- Causal RED: package 233 total/228 pass/five fail; Runtime 81 total/73
+  pass/eight fail; complete E 314 total/301 pass/13 fail. Failures are exactly
+  the 11 new leaves plus both aggregate parents.
+- Healthy boundaries: inactive 15/15, typecheck, affected Local Analysis
+  198/198 and Controller-rechecked 292/292, E2E 133 PASS plus one authorized
+  skip, project board 12/12; canonical reaches only the same E RED.
+- Retirement preflight: all 11 are distinct permanent public regressions; no
+  existing assertion was removed or weakened and no fixture, driver, helper,
+  dependency, temporary marker, or skip/todo/only was added.
+- Worker authorization: only `packages/contracts/model-pack.ts` and
+  `packages/ports/analytical-model-runtime.ts`; every Test and all other paths
+  are frozen.
 
 ## Controller Validator 003 Remediation TDD_READY
 

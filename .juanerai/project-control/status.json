@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_validator_004_test_return",
-    "label": "Model Pack Contract Enabler：Validator 004 Test 返回",
-    "ordinal": 4,
+    "id": "model_pack_contract_enabler_validator_004_worker",
+    "label": "Model Pack Contract Enabler：Validator 004 Worker",
+    "ordinal": 6,
     "total": 8
   },
   "health": "active",
-  "summary": "Validator 004 FAIL: all declared suites pass, but 11 adversarial probes expose five frozen package/Runtime boundary rule families.",
-  "current_objective": "With production frozen, formal Test adds exactly 11 independently named package/Runtime contract leaves and proves causal RED.",
-  "next_action": "Release only the same two production files after Controller confirms exact 11-leaf RED and healthy boundaries.",
+  "summary": "Validator 004 remediation TDD_READY: package 228/233, Runtime 73/81, E 301/314 fail only on 11 leaves plus two parents.",
+  "current_objective": "Formal Worker makes the minimum two-file correction for the five frozen package/Runtime rule families.",
+  "next_action": "Require focused and complete GREEN with every Test frozen, then rerun affected/canonical regression and Test Asset Retirement.",
   "blockers": [],
   "milestones": [
     {
@@ -35,12 +35,12 @@
     {
       "id": "test_red",
       "label": "Test / RED",
-      "status": "active"
+      "status": "completed"
     },
     {
       "id": "implementation_green",
       "label": "实现 / GREEN",
-      "status": "locked"
+      "status": "active"
     },
     {
       "id": "independent_validation",
@@ -77,14 +77,14 @@
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra · high (R2 automatic escalation)",
-      "status": "active",
+      "status": "complete",
       "activation": "Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra · high (R2 route)",
-      "status": "locked",
+      "status": "active",
       "activation": "TDD_READY"
     },
     {
@@ -105,13 +105,13 @@
     {
       "id": "tests",
       "label": "Validator public probes encoded",
-      "done": 20,
+      "done": 31,
       "total": 31
     },
     {
       "id": "tasks",
       "label": "E lifecycle tasks complete",
-      "done": 8,
+      "done": 9,
       "total": 12
     },
     {
@@ -604,7 +604,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T08:01:06.660Z",
+  "updated_at": "2026-08-24T08:15:17.271Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-recovery-e"
