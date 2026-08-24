@@ -12,9 +12,9 @@
     "total": 8
   },
   "health": "validating",
-  "summary": "Validator remediation GREEN and repeated Test Asset Retirement Gate PASS: E contract 292/292, canonical offline exit 0, and fresh ponytail Lean already. Ship.",
-  "current_objective": "Freeze the repaired production and Test bytes in a committed clean candidate for a fresh independent R2 Sol-high Validator.",
-  "next_action": "Commit the remediation candidate, mark Validator active on the committed Head, and require fresh read-only PASS before acceptance or archive.",
+  "summary": "Fresh R2 Sol-high Validator is running read-only against committed remediation candidate 89a8fa4ddb94ba10a5d6376d7159b71b6a094193.",
+  "current_objective": "Independently verify the repaired public counterexamples, complete executable matrix, frozen scope, retirement evidence, and current read model.",
+  "next_action": "Accept and archive only after fresh Validator PASS; any finding returns to its owning Gate.",
   "blockers": [],
   "milestones": [
     {
@@ -45,7 +45,7 @@
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "pending"
+      "status": "active"
     },
     {
       "id": "user_acceptance",
@@ -91,7 +91,7 @@
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "waiting",
+      "status": "active",
       "activation": "实现与证据冻结"
     }
   ],
@@ -604,9 +604,9 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T05:51:16.085Z",
+  "updated_at": "2026-08-24T05:52:52.158Z",
   "updated_by": {
     "role": "controller",
-    "session": "codex-controller-e-remediation"
+    "session": "codex-controller-e-validator"
   }
 }
