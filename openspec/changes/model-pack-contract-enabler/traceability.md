@@ -27,14 +27,18 @@ found 11 additional package/Runtime boundary violations across spoofed carrier
 trust, Proxy sanitization, permission precedence, governed identities, and
 closed own-key shapes. Formal Test added exactly those leaves and Controller
 confirmed causal RED only on them plus their parents. Renewed TDD_READY
-releases only the two production files. No acceptance or archive is claimed.
+released only the two production files. The bounded Worker closed all 11
+leaves; Controller confirmed package 233/233, Runtime 81/81, E 314/314,
+complete affected/canonical regression, and Test Asset Retirement PASS with a
+fresh `Lean already. Ship.` Production and Test bytes are frozen for Validator
+005. No acceptance or archive is claimed.
 
 | Requirement | Acceptance | Planned test/evidence | Task | Candidate code/evidence | Current result |
 |---|---|---|---|---|---|
 | REQ-MPC-001 | AC-MPC-001-01 | TEST-MPC-001 | TASK-003,006 | exact manifest serialize/admit signatures; malformed status shape; printable bounded identities/categories; immutable manifest/revocation policy | REMEDIATION GREEN |
-| REQ-MPC-001 | AC-MPC-001-02 | TEST-MPC-001 | TASK-003,006 | canonical synchronous serializer/admission; closed all-own-key calls; exact bounds; Proxy sanitization; detached bytes/value | CAUSAL RED PASS |
-| REQ-MPC-001 | AC-MPC-001-03 | TEST-MPC-001 | TASK-003,006 | exact sanitized error carrier; synchronous contract throw; compatibility/artifact/status/permission precedence | CAUSAL RED PASS |
-| REQ-MPC-001 | AC-MPC-001-04 | TEST-MPC-001 | TASK-003,006 | purpose/permission/runtime manifest admission including missing/extra/widened-permission precedence | CAUSAL RED PASS |
+| REQ-MPC-001 | AC-MPC-001-02 | TEST-MPC-001 | TASK-003,006 | canonical synchronous serializer/admission; closed all-own-key calls; exact bounds; Proxy sanitization; detached bytes/value | REMEDIATION GREEN; VALIDATOR PENDING |
+| REQ-MPC-001 | AC-MPC-001-03 | TEST-MPC-001 | TASK-003,006 | exact sanitized error carrier; synchronous contract throw; compatibility/artifact/status/permission precedence | REMEDIATION GREEN; VALIDATOR PENDING |
+| REQ-MPC-001 | AC-MPC-001-04 | TEST-MPC-001 | TASK-003,006 | purpose/permission/runtime manifest admission including missing/extra/widened-permission precedence | REMEDIATION GREEN; VALIDATOR PENDING |
 | REQ-MPC-001 | AC-MPC-001-05 | TEST-MPC-002 | TASK-003,006 | exact input admission/canonical-byte signatures; precise decimal ordering; Unicode scalar category length | REMEDIATION GREEN |
 | REQ-MPC-001 | AC-MPC-001-06 | TEST-MPC-002 | TASK-003,006 | exact forecast admission and precise interval ordering; Runtime-owned result/provenance boundary | REMEDIATION GREEN |
 | REQ-MPC-001 | AC-MPC-001-07 | TEST-MPC-001 | TASK-003,006 | exact evaluation decimal thresholds and metadata/no-data-access proof | REMEDIATION GREEN |
@@ -43,7 +47,7 @@ releases only the two production files. No acceptance or archive is claimed.
 | REQ-MPC-002 | AC-MPC-002-03 | TEST-MPC-003 | TASK-003,006 | exact Registry/URI plus supplied location-verification shape/kind admission; no path access | GREEN PASS |
 | REQ-MPC-002 | AC-MPC-002-04 | TEST-MPC-003 | TASK-003,006 | only repeated release bindings and observation URI/SHA/size/Signature comparisons; singleton lower-boundary codes | GREEN PASS |
 | REQ-MPC-002 | AC-MPC-002-05 | TEST-MPC-003,004 | TASK-003,006 | package fixture and driver; P ownership stop line | GREEN PASS |
-| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; governed identity length/no-credential boundary; adversarial exact-lookalike Error sanitization | CAUSAL RED PASS |
+| REQ-MPC-003 | AC-MPC-003-01 | TEST-MPC-005 | TASK-004,007 | exact binding/predictor factory; governed identity length/no-credential boundary; adversarial exact-lookalike Error sanitization | REMEDIATION GREEN; VALIDATOR PENDING |
 | REQ-MPC-003 | AC-MPC-003-02 | TEST-MPC-005 | TASK-004,007 | immutable readiness/openRun/snapshot capture | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-03 | TEST-MPC-005,007 | TASK-004,007 | exact predictor request/same signal and deadline; one-shot predict; Runtime-owned result/provenance | GREEN PASS |
 | REQ-MPC-003 | AC-MPC-003-04 | TEST-MPC-006 | TASK-004,007 | native mock timers + AbortController + externally ordered atomic terminal outcomes | GREEN PASS |
@@ -52,10 +56,10 @@ releases only the two production files. No acceptance or archive is claimed.
 | REQ-MPC-003 | AC-MPC-003-07 | TEST-MPC-005,007 | TASK-004,007 | closed Port/result and forbidden-effect evidence | GREEN PASS |
 | REQ-MPC-004 | AC-MPC-004-01 | TEST-MPC-004 | TASK-003 | package driver/double health | GREEN PASS |
 | REQ-MPC-004 | AC-MPC-004-02 | TEST-MPC-008 | TASK-004 | exact Runtime harness/driver via public predictor seam; double health | GREEN PASS |
-| REQ-MPC-004 | AC-MPC-004-03 | TEST-MPC-001..009 | TASK-003,004 | exact signature/error-delivery and independently named material mutation leaves | CAUSAL RED PASS; ELEVEN LEAVES FROZEN |
+| REQ-MPC-004 | AC-MPC-004-03 | TEST-MPC-001..009 | TASK-003,004 | exact signature/error-delivery and independently named material mutation leaves | REMEDIATION GREEN; ELEVEN LEAVES FROZEN |
 | REQ-MPC-004 | AC-MPC-004-04 | TEST-MPC-004,008 | TASK-003,004,011 | shared drivers plus Controller/Validator ownership review | DRIVER/OWNERSHIP PASS |
 | REQ-MPC-004 | AC-MPC-004-05 | Controller TDD_READY evidence | TASK-005 | renewed two-suite hashes/counts and exact nine-leaf causal RED; two production paths frozen | TDD_READY PASS |
-| REQ-MPC-004 | AC-MPC-004-06 | Controller retirement Gate | TASK-003,004,010 | prior ledger PASS; 11 missing permanent leaves reopen retirement | REOPENED |
+| REQ-MPC-004 | AC-MPC-004-06 | Controller retirement Gate | TASK-003,004,010 | complete 11-leaf delta reconciled; scans clean; fresh ponytail lean | RETIREMENT PASS |
 | REQ-MPC-005 | AC-MPC-005-01 | TEST-MPC-009 + TEST-XCLI-021 affected existing regression | TASK-004,008,009 | inactive integration plus completed, byte-frozen exact eight-entry mirrored `approvedTsconfig.files` append; every other Xanthil assertion/current behavior preserved | GREEN PASS |
 | REQ-MPC-005 | AC-MPC-005-02 | TEST-MPC-009 | TASK-004,006,007 | inert import/build/driver composition; exact Node loader paired source-read chains classified as toolchain mechanics, every other filesystem/product effect forbidden | GREEN PASS |
 | REQ-MPC-005 | AC-MPC-005-03 | TEST-MPC-009 + Validator review | TASK-004,011,012 | no active binding in E; activation stop line | SCOPE PASS; FRESH VALIDATOR PENDING |
@@ -87,7 +91,7 @@ releases only the two production files. No acceptance or archive is claimed.
 | TASK-008 | REQ-MPC-004, 005 | exact graph integration complete and frozen |
 | TASK-009 | TEST-MPC-001..009 and affected baseline | remediation GREEN and canonical exit 0 |
 | TASK-010 | every changed test asset | repeated retirement PASS; fresh complete Test delta is lean |
-| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 001/002/003 FAIL historical; fresh Validator 004 ready |
+| TASK-011 | all Requirements, ACs, tests, code, scope, evidence | Validator 001/002/003/004 FAIL historical; fresh Validator 005 ready |
 | TASK-012 | all accepted evidence and E integration constraint | acceptance and archive |
 
 ## Integration Trace

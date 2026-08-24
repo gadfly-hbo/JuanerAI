@@ -33,26 +33,30 @@ const decimal = /^(0|[1-9][0-9]*)(\.[0-9]+)?$/;
 const utcDate = /^\d{4}-\d{2}-\d{2}$/;
 const utcInstant = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 const prohibited = ['automatic_replenishment', 'automatic_pricing', 'automatic_marketing_or_outreach', 'customer_level_prediction', 'observed_outcome_claim', 'causal_claim', 'authorized_decision_claim', 'action_execution'];
+const errorCarriers = new WeakSet<object>();
 
 export function modelPackError(code: ModelPackErrorCode): ModelPackContractError {
   const error = new Error(code) as ModelPackContractError;
   Object.defineProperty(error, 'name', { value: 'ModelPackContractError', enumerable: true });
   Object.defineProperty(error, 'code', { value: code, enumerable: true });
+  errorCarriers.add(error);
   return error;
 }
 const fail = (code: ModelPackErrorCode): never => { throw modelPackError(code); };
 const modelPackErrorCode = (reason: unknown): ModelPackErrorCode | undefined => {
-  if (!reason || typeof reason !== 'object') return undefined;
-  const name = Object.getOwnPropertyDescriptor(reason, 'name')?.value;
-  const code = Object.getOwnPropertyDescriptor(reason, 'code')?.value;
-  const message = Object.getOwnPropertyDescriptor(reason, 'message')?.value;
-  return name === 'ModelPackContractError' && message === code && typeof code === 'string' && MODEL_PACK_ERROR_CODES.includes(code as ModelPackErrorCode) ? code as ModelPackErrorCode : undefined;
+  if (!reason || typeof reason !== 'object' || !errorCarriers.has(reason)) return undefined;
+  try {
+    const name = Object.getOwnPropertyDescriptor(reason, 'name')?.value;
+    const code = Object.getOwnPropertyDescriptor(reason, 'code')?.value;
+    const message = Object.getOwnPropertyDescriptor(reason, 'message')?.value;
+    return name === 'ModelPackContractError' && message === code && typeof code === 'string' && MODEL_PACK_ERROR_CODES.includes(code as ModelPackErrorCode) ? code as ModelPackErrorCode : undefined;
+  } catch { return undefined; }
 };
 const sanitized = <T>(code: ModelPackErrorCode, operation: () => T): T => {
   try { return operation(); } catch (reason) { throw modelPackError(modelPackErrorCode(reason) ?? code); }
 };
 const record = (value: unknown, keys: readonly string[], code: ModelPackErrorCode): RecordValue => {
-  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value as object).length !== keys.length || !keys.every((key) => Object.hasOwn(value as object, key))) return fail(code);
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Reflect.ownKeys(value).length !== keys.length || !keys.every((key) => Object.hasOwn(value as object, key))) return fail(code);
   return value as RecordValue;
 };
 const string = (value: unknown, code: ModelPackErrorCode): string => typeof value === 'string' ? value : fail(code);
@@ -113,13 +117,14 @@ const artifact = (candidate: unknown, code: ModelPackErrorCode): ModelPackArtifa
 };
 const permissions = (candidate: unknown, code: ModelPackErrorCode): ModelPackPermissionsV1 => {
   const keys = ['data', 'network', 'external_data', 'mlflow_at_runtime', 'training_workspace_at_runtime', 'source_write', 'model_execution'] as const;
-  if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)) return fail('MODEL_PACK_PERMISSION_DENIED');
-  const names = Object.keys(candidate as object);
-  if (names.some((name) => !keys.includes(name as typeof keys[number]))) return fail(code);
-  if (!keys.every((key) => Object.hasOwn(candidate as object, key))) return fail('MODEL_PACK_PERMISSION_DENIED');
-  const value = candidate as RecordValue;
-  if (value.data !== 'local_only' || value.network !== 'none' || value.external_data !== 'none' || value.mlflow_at_runtime !== 'none' || value.training_workspace_at_runtime !== 'none' || value.source_write !== 'forbidden' || value.model_execution !== 'local_only') return fail('MODEL_PACK_PERMISSION_DENIED');
-  return { data: 'local_only', network: 'none', external_data: 'none', mlflow_at_runtime: 'none', training_workspace_at_runtime: 'none', source_write: 'forbidden', model_execution: 'local_only' };
+  try {
+    if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)) return fail('MODEL_PACK_PERMISSION_DENIED');
+    const names = Reflect.ownKeys(candidate);
+    if (names.length !== keys.length || names.some((name) => typeof name !== 'string' || !keys.includes(name as typeof keys[number])) || !keys.every((key) => Object.hasOwn(candidate, key))) return fail('MODEL_PACK_PERMISSION_DENIED');
+    const value = candidate as RecordValue;
+    if (value.data !== 'local_only' || value.network !== 'none' || value.external_data !== 'none' || value.mlflow_at_runtime !== 'none' || value.training_workspace_at_runtime !== 'none' || value.source_write !== 'forbidden' || value.model_execution !== 'local_only') return fail('MODEL_PACK_PERMISSION_DENIED');
+    return { data: 'local_only', network: 'none', external_data: 'none', mlflow_at_runtime: 'none', training_workspace_at_runtime: 'none', source_write: 'forbidden', model_execution: 'local_only' };
+  } catch { return fail('MODEL_PACK_PERMISSION_DENIED'); }
 };
 const categories = (candidate: unknown, code: ModelPackErrorCode): readonly string[] => {
   if (!Array.isArray(candidate) || candidate.length === 0) return fail(code);

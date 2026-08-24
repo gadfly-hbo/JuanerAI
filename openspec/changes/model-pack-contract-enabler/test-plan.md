@@ -33,6 +33,17 @@ deterministic synthetic values and controlled settlement only; no real Artifact,
 product/user-data filesystem observation, MLflow, network, external repository,
 data, provider/model, install, training, or inference is permitted.
 
+Validator 004's 11-leaf remediation is now GREEN. Package production is 242
+lines/`9318bbd7676da0b2cefd0aec53b00314633ca946155d0124235e7dc9dd946e69`;
+Runtime production is 143 lines/
+`41573c5bfe1465d6a3b8cf09167942ad1ec41d098b809190badf83dff17233b7`.
+The frozen Tests remain 608 lines/`0c1c969a…d46c0f` and 466 lines/
+`efae6d30…967f8`. Controller confirmed package 233/233, Runtime 81/81,
+complete E 314/314, every affected regression, and canonical exit 0. The
+repeated Test Asset Retirement Gate found no retirement candidate and a fresh
+complete-delta ponytail returned exactly `Lean already. Ship.` These bytes are
+frozen for Validator 005.
+
 ## Historical TDD_READY Assets — Reopened
 
 | Asset | Lines | SHA-256 |
@@ -343,6 +354,24 @@ hashes, diff/status, and retirement preflight are mandatory before TDD_READY.
   healthy. Canonical reaches the same E RED.
 - Production stays byte-frozen at package `278025c1…e4a3d` and Runtime
   `935ce7c4…a248`. Only those two production paths are Worker-released.
+
+### Validator 004 Remediation GREEN and Retirement Freeze
+
+- Package production: 237 to 242 lines; SHA-256 `278025c1…e4a3d` to
+  `9318bbd7676da0b2cefd0aec53b00314633ca946155d0124235e7dc9dd946e69`.
+- Runtime production: 132 to 143 lines; SHA-256 `935ce7c4…a248` to
+  `41573c5bfe1465d6a3b8cf09167942ad1ec41d098b809190badf83dff17233b7`.
+- Frozen Tests: package 608 lines/
+  `0c1c969a6595fad4e019c3e667c436c7cbfd9eed715a917c73334c3045d46c0f`;
+  Runtime 466 lines/
+  `efae6d30c7915fa2156897a63cd0c5fd15714cea77c4020a301f9c14739697f8`.
+- Final matrix: package 233/233, Runtime 81/81, complete E 314/314,
+  inactive 15/15, typecheck, affected Local Analysis 198/198 and 292/292,
+  E2E 133 PASS plus one authorized skip, project board 12/12, canonical exit 0.
+- Retirement: all 11 leaves are permanent independent regressions; scans found
+  no skip/todo/only, temporary asset, orphan, duplicate helper/fixture/driver,
+  or weakened assertion. Fresh ponytail returned exactly
+  `Lean already. Ship.`
 
 ## Historical Node v26 Loader-chain Conflict and Resolution
 

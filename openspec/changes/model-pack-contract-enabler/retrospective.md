@@ -6,7 +6,7 @@
 - Change class: boundary change; R2 / complex root-cause
 - accepted baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
 - archive path: pending
-- final Validator verdict: pending; Validator 001, 002, 003, and 004 are historical `FAIL`
+- final Validator verdict: pending; Validator 001, 002, 003, and 004 are historical `FAIL`; Validator 005 ready
 - Controller acceptance: blocked
 
 ## Intended Value
@@ -20,10 +20,10 @@
 
 | Evidence | Expected | Current Result | Source |
 |---|---|---|---|
-| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | 11 material leaves reopened by Validator 004 | `traceability.md`, `verification.md` |
-| expected RED | every material frozen invariant fails causally before implementation | nine Validator 002 leaves and two aggregate parents produced exact RED | `test-plan.md`, `verification.md` |
-| target GREEN | focused, affected, and canonical evidence PASS | standard matrix PASS but 11 independent probes block semantic GREEN | `verification.md` |
-| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | five package/Runtime rule families remain open | `verification.md` |
+| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | all 11 Validator 004 leaves are GREEN; fresh Validator pending | `traceability.md`, `verification.md` |
+| expected RED | every material frozen invariant fails causally before implementation | package 228/233, Runtime 73/81, E 301/314: exactly 11 leaves plus two parents | `test-plan.md`, `verification.md` |
+| target GREEN | focused, affected, and canonical evidence PASS | package 233/233, Runtime 81/81, E 314/314; affected/canonical PASS | `verification.md` |
+| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | GREEN and retirement PASS; Validator 005 pending | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |
 | independent validation | fresh read-only PASS | Validator 001, 002, 003, and 004 FAIL | `verification.md` |
 
@@ -93,7 +93,8 @@
 - behavior that must be reused: exact closed package/Runtime calls, sanitized carrier, stable error precedence, exact decimal comparisons, printable bounded identities/categories, inert composition, and strict E -> H -> P -> C -> A integration.
 - decisions that must not be reopened implicitly: no Provider/Consumer/Profile/activation in E; no dependency, registry, fallback, persistence, real data/model/network/MLflow, or new runtime abstraction.
 - expected ordinary Change shape: rule-by-rule public-boundary Test matrix, causal RED, one owning production return, full affected/canonical GREEN, retirement reconciliation, and fresh independent validation.
-- remaining risks: 11 Validator 004 counterexamples require causal RED, bounded two-file implementation, retirement, and fresh validation; all earlier counterexamples remain GREEN.
+- remaining risks: fresh Validator 005 must independently confirm the frozen
+  Head; all Validator 001..004 counterexamples are now GREEN in permanent tests.
 - explicitly deferred work: P/C/A implementations and every real Artifact, SDK, model, data, or activation proof.
 
 ## Completion Criterion
