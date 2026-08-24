@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 005 REMEDIATION GREEN + RETIREMENT PASS — VALIDATOR 006 CANDIDATE`
+`VALIDATOR 006 FAIL — BOUNDED RUNTIME TEST DESIGN RETURN`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -109,6 +109,15 @@ exit 0. The complete four-leaf Test delta is clean and retains no duplicate,
 orphan, helper, fixture, driver, dependency, skip, todo, only, or temporary
 asset. Fresh mandatory retirement ponytail returned exactly
 `Lean already. Ship.` Production and Test bytes are frozen for Validator 006.
+Validator 006 confirmed the complete standard matrix, all 35 historical leaves,
+all 40 package/Runtime array variants, scope, architecture, and clean Head, but
+its fresh matrix found three failures with one root cause: Runtime, Adapter,
+and dependency identities accept Unicode `Cf` zero-width control characters.
+The frozen Design requires printable identities without control characters.
+Semantic GREEN and retirement are reopened. Production is frozen; formal Test
+may add only those three Runtime factory leaves to the existing Runtime suite.
+No package, Spec, architecture, scope, dependency, or activation change is
+needed.
 
 ## Frozen References
 
@@ -117,10 +126,11 @@ asset. Fresh mandatory retirement ponytail returned exactly
 - Validator 002 frozen Head: `1d88e0dafe4f80119f20677f5688622f2656ab3f`
 - Validator 003 frozen Head: `60a7aa09764c274c527e04d39b7ac6986560ba5f`
 - Validator 005 frozen Head: `fc134d5e9663a7de396fb1532090d87aeddcc12b`
+- Validator 006 frozen Head: `de09cd9515c8bb2ba3382629552a7b0f345a1803`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 005 remediation GREEN and Test Asset Retirement
-  PASS; production and Test bytes frozen for Validator 006
+- Current lifecycle: Validator 006 FAIL; production frozen and only the existing
+  Runtime contract suite released to bounded formal Test Design
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -137,9 +147,9 @@ asset. Fresh mandatory retirement ponytail returned exactly
 | Test Design and driver health | PASS; package Test 625 lines/`4db0316d…`, Runtime Test 489 lines/`1d8ae3d9…`; all prior assertions retained | none unless a Test byte changes |
 | causal expected RED | PASS; package 232/235, Runtime 80/83, E 312/318 fail only on four leaves plus two parents | bounded two-file Worker repair |
 | implementation | PASS; package 251 lines/`c980a150…`, Runtime 148 lines/`47a93574…`; only the two released production files changed | none unless production bytes change |
-| GREEN and affected regression | PASS; package 235/235, Runtime 83/83, E 318/318, inactive/affected/typecheck/project-board/canonical healthy | none unless frozen bytes change |
-| Test Asset Retirement | PASS; all four new permanent leaves retained, scans clean, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
-| independent verification | Validator 001..005 historical FAIL; Validator 005 standard matrix PASS but fresh probe 32/36 | corrected committed clean Head plus another fresh read-only Validator PASS |
+| GREEN and affected regression | historical standard PASS; Validator 006 found three missing material Runtime leaves | causal three-leaf RED then Runtime-only Worker repair |
+| Test Asset Retirement | reopened; prior leaves retained but three material control leaves are missing | rerun after three new leaves reach GREEN |
+| independent verification | Validator 001..006 historical FAIL; Validator 006 standard/history PASS but fresh 81/84 | corrected committed clean Head plus another fresh read-only Validator PASS |
 | Controller/user acceptance | blocked | fresh Validator PASS and complete current evidence |
 | archive | blocked | acceptance and integration |
 
@@ -862,6 +872,37 @@ authorized before its PASS.
   `Lean already. Ship.`
 - Freeze: any production or Test byte change reopens its owning Gate. The next
   authorized action is one fresh committed read-only R2/Sol-high Validator 006.
+
+## Independent Validator 006 — FAIL and Bounded Runtime Return
+
+- Date: `2026-08-24`; fresh R2 / standard / Sol-high read-only context.
+- Frozen Head: `de09cd9515c8bb2ba3382629552a7b0f345a1803`; branch and
+  merge-base exact; start/end worktree, index, and untracked inventory clean.
+- Standard evidence PASS: package 235/235; Runtime 83/83; E 318/318; inactive
+  15/15; typecheck; Local Analysis 198/198, 292/292, E2E 133 PASS plus one
+  authorized skip; project board 12/12; canonical exit 0.
+- Historical Validator 001..005 leaves passed 35/35. Forty array-container
+  Symbol/non-enumerable/extra/sparse/Proxy variants passed 40/40. Fresh
+  factory/closed-object/control/detachment/race leaves returned 6 PASS/3 FAIL.
+- Runtime factory accepts `runtime\u200Bhidden`, `adapter\u200Bhidden`, and
+  `dependency\u200Bhidden` rather than synchronously throwing
+  `ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE`. U+200B is Unicode category `Cf`,
+  while the current Runtime validator rejects only whitespace and ASCII
+  controls; package governed identities already reject Unicode `\p{C}`.
+- Root cause is one Runtime identity/control predicate inside the already
+  frozen Design. No package, Spec, architecture, dependency, scope, Profile,
+  activation, or re-slice change is needed.
+- Return Gate: package production and every Test except the Runtime contract
+  suite remain frozen. Formal Test adds the three real-position `Cf` identity
+  leaves; causal RED may release only Runtime production.
+- Retirement: existing assets and all earlier leaves are healthy, but the three
+  missing material control leaves reopen the Gate after correction.
+- Frozen Head has 84 paths, not Validator 005 checkpoint's historical 80; the
+  four additions are Controller-owned lifecycle events and no forbidden scope.
+- Temporary `/tmp/juanerai-validator006-probe.ts` was removed and absence
+  verified; no repository write, network, install, provider/model, MLflow, or
+  Artifact invocation occurred.
+- Verdict: `FAIL`.
 
 ## Controller Validator 003 Remediation TDD_READY
 

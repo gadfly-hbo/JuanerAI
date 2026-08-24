@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824093907643-XNUCRF",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-24T09:39:07.643Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-recovery-20260824"
+  },
+  "summary": "CHG-model-pack-contract-enabler Validator 006 FAIL: three Unicode-Cf Runtime identity leaves return to formal Test Design.",
+  "status_after": "active",
+  "evidence_refs": []
+}

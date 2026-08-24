@@ -448,6 +448,30 @@ retirement preflight are mandatory before renewed TDD_READY.
   driver, dependency, or weakened assertion. Fresh ponytail returned exactly
   `Lean already. Ship.`
 
+## Validator 006 Test Design Return
+
+At clean frozen Head `de09cd9515c8bb2ba3382629552a7b0f345a1803`, Validator
+006 passed the full standard matrix, 35 historical leaves, and 40 array
+variants, but the Runtime factory admitted Unicode `Cf` zero-width control
+characters at all three real identity positions. Formal Test may change only
+the existing Runtime contract suite and must preserve every prior assertion:
+
+1. `runtime.identity = "runtime\u200Bhidden"`;
+2. `adapter.identity = "adapter\u200Bhidden"`; and
+3. `dependencies[0].identity = "dependency\u200Bhidden"`.
+
+Each must synchronously fail as `ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE` with no
+predictor issue. Frozen Runtime Test is 489 lines/
+`1d8ae3d921beb316d1edf9b7aa4add93bc238abdf42dee2c676da83a504ff8a4`;
+package Test remains 625 lines/
+`4db0316d78c66a43fff78f87339e0b7bda3c5dc094532e87380ad7bdc6272fbc`.
+Frozen Runtime production is 148 lines/
+`47a93574094a93026b23e1c0476e30755f8f6c9803132305a60e2deb3647d307`;
+package production remains 251 lines/
+`c980a150ca50160e5c637dbf06ef49138a96e357965a00295e3123d836642604`.
+Exact causal RED plus healthy boundary counts, hashes, diff/status, and
+retirement preflight are mandatory before Runtime-only TDD_READY.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

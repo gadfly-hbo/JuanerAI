@@ -6,15 +6,15 @@
 |---|---|---|---|
 | `TASK-001` Complete R2 decision package | `juaner_spec`; complete | this Change's OpenSpec files only; preserves the public surface, prior permission-oracle disposition, and completed closed-graph correction while distinguishing the exact paired Node v26 source-loader chains from product filesystem effects | REQ-MPC-001..005 |
 | `TASK-002` Repeat Spec Gate and lean review | Controller; PASS | nested `openSync` loader-chain root cause, paired-chain/no-mechanism disposition, full-package consistency, and mandatory complete-diff ponytail review | all |
-| `TASK-003` Package Test Design and RED | `juaner_test`; Validator 005 return complete | 625-line/`4db0316d…` suite adds two exact causal leaves | REQ-MPC-001, 004 |
-| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 005 return complete | 489-line/`1d8ae3d9…` suite adds two exact causal leaves; every other Test frozen | REQ-MPC-003..005 |
-| `TASK-005` TDD_READY | Controller; PASS | package 232/235, Runtime 80/83, E 312/318 fail only on four leaves plus two parents; two production paths released | all |
-| `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | package production closed both package leaves | REQ-MPC-001, 002, 005 |
-| `TASK-007` Implement Runtime Port | `juaner_worker`; complete and frozen | Runtime production closed both Runtime leaves | REQ-MPC-003, 005 |
+| `TASK-003` Package Test Design and RED | `juaner_test`; complete and frozen | 625-line/`4db0316d…` suite unchanged | REQ-MPC-001, 004 |
+| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 006 return active | add only three Runtime/Adapter/dependency Unicode-Cf identity leaves; every other Test frozen | REQ-MPC-003..005 |
+| `TASK-005` TDD_READY | Controller; reopened | require exact three-leaf Runtime causal RED before Runtime-only release | all |
+| `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | package production remains frozen | REQ-MPC-001, 002, 005 |
+| `TASK-007` Implement Runtime Port | `juaner_worker`; blocked pending RED | Runtime-only Unicode-control correction after TDD_READY | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
-| `TASK-009` GREEN and regression | complete and frozen | package 235/235, Runtime 83/83, E 318/318, affected/canonical PASS | all |
-| `TASK-010` Test Asset Retirement Gate | PASS | all four leaves retained; scans clean; fresh ponytail `Lean already. Ship.` | REQ-MPC-004 |
-| `TASK-011` Independent verification | Validator 006 ready | fresh committed read-only R2/Sol-high Validator | all |
+| `TASK-009` GREEN and regression | historical PASS; reopened | Validator 006 found three missing material Runtime leaves | all |
+| `TASK-010` Test Asset Retirement Gate | historical PASS; reopened | repeat after all three new leaves reach GREEN | REQ-MPC-004 |
+| `TASK-011` Independent verification | Validator 006 FAIL | fresh Validator only after renewed RED/GREEN/retirement freeze | all |
 | `TASK-012` Accept, integrate, archive | Controller/user according to risk | acceptance, strict E-first integration, current spec merge and archive; Controller-only project-control | all |
 
 ## Test-owned Exact Paths
