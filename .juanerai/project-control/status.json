@@ -12,9 +12,9 @@
     "total": 8
   },
   "health": "complete",
-  "summary": "CHG-model-pack-contract-enabler accepted after Validator 008 PASS; canonical spec published and Change archived.",
+  "summary": "CHG-model-pack-contract-enabler accepted, archived, pushed, and opened as PR #14; Validator 008 PASS.",
   "current_objective": "Preserve the accepted inactive Model Pack contract baseline for later H/P/C/A Changes.",
-  "next_action": "Open the MacBook branch PR without merging; H/P/C/A remain separate future Changes.",
+  "next_action": "Await human review of PR #14; do not merge or start H/P/C/A without the applicable lifecycle authority.",
   "blockers": [],
   "milestones": [
     {
@@ -604,7 +604,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T10:28:17.515Z",
+  "updated_at": "2026-08-24T10:29:59.927Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-recovery-20260824"

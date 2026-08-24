@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824102959927-SCQ9AZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-24T10:29:59.927Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-recovery-20260824"
+  },
+  "summary": "CHG-model-pack-contract-enabler opened as PR #14 without merge.",
+  "status_after": "complete",
+  "evidence_refs": []
+}
