@@ -16,10 +16,13 @@ files. That candidate GREEN and Test Asset Retirement PASS are now historical:
 fresh independent validation of Head `c0bdf3a158a81d45131862debc8e2b1a24f076c3`
 found four missing material package-contract mutations. Formal Test added five
 exact leaves, Controller accepted causal RED, and the bounded Worker repaired
-only `packages/contracts/model-pack.ts`. Complete E contract is now 292/292,
-canonical exits 0, and the repeated Test Asset Retirement review returned
-`Lean already. Ship.` Production and Test bytes are frozen for a new committed
-Validator candidate. E continues to use
+only `packages/contracts/model-pack.ts`. Complete E contract reached 292/292,
+canonical exited 0, and the repeated Test Asset Retirement review returned
+`Lean already. Ship.` Validator 002 confirmed the prior five repairs and all
+standard results but found nine additional public violations already governed
+by the frozen Design/Specification. The complexity stop line returned the
+Change to Test Design: production is frozen, and only the existing package and
+Runtime contract Test files may add those nine independent leaves. E continues to use
 deterministic synthetic values and controlled settlement only; no real Artifact,
 product/user-data filesystem observation, MLflow, network, external repository,
 data, provider/model, install, training, or inference is permitted.
@@ -148,6 +151,41 @@ one existing authorized skip, project board 12/12, and canonical offline exit 0.
 The Test ledger has no orphan, duplicate, temporary probe, or skip/todo/only;
 all five Validator leaves are permanent distinct REQ-MPC-001/004 regressions.
 Fresh complete Test-diff ponytail returned exactly `Lean already. Ship.`
+
+## Validator 002 Test Design Return
+
+Formal Test may change only:
+
+- `tests/contract/model-pack-contract-enabler/model-pack-package.contract.test.ts`;
+- `tests/contract/model-pack-contract-enabler/analytical-model-runtime.contract.test.ts`.
+
+With both production files frozen, add exactly independent public-boundary
+leaves for:
+
+1. throwing enumerable manifest property access is sanitized as a
+   `ModelPackContractError` with the applicable stable code and no raw message;
+2. throwing Runtime factory `binding` property access is sanitized as
+   `ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE`;
+3. U+0085 and equivalent control category values are rejected;
+4. a 257-character governed identity is rejected while the 256-character
+   boundary remains valid;
+5. a raw-path MLflow Run identity is rejected;
+6. evaluation coverage immediately above exact 0.90 beyond IEEE-754 precision
+   is rejected while exact 0.90 remains valid;
+7. each missing manifest permission field, including `network`, maps to
+   `MODEL_PACK_PERMISSION_DENIED`;
+8. release-status `package.version: "latest"` maps to malformed-status
+   `MODEL_PACK_CONTRACT_INVALID`; and
+9. malformed release-status Artifact SHA maps to
+   `MODEL_PACK_CONTRACT_INVALID`.
+
+Test must preserve all existing assertions and identities, prove fixtures and
+drivers healthy before causal RED, record exact before/after hashes and counts,
+and rerun the focused package/Runtime, complete E, inactive, typecheck, affected
+Local Analysis, project-board, and canonical matrices as far as causal RED
+allows. No fixture/driver/inactive/Local Analysis Test, production, OpenSpec,
+docs/contracts, graph/runner, dependency, Profile, activation, real data/model,
+network, MLflow, or external repository change is authorized.
 
 ## Historical Node v26 Loader-chain Conflict and Resolution
 

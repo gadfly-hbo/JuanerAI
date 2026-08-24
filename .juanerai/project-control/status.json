@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_remediation_validator_freeze",
-    "label": "Model Pack Contract Enabler：Remediation Validator Freeze",
-    "ordinal": 7,
+    "id": "model_pack_contract_enabler_complexity_test_return",
+    "label": "Model Pack Contract Enabler：Complexity Test Return",
+    "ordinal": 5,
     "total": 8
   },
-  "health": "validating",
-  "summary": "Fresh R2 Sol-high Validator is running read-only against committed remediation candidate 89a8fa4ddb94ba10a5d6376d7159b71b6a094193.",
-  "current_objective": "Independently verify the repaired public counterexamples, complete executable matrix, frozen scope, retirement evidence, and current read model.",
-  "next_action": "Accept and archive only after fresh Validator PASS; any finding returns to its owning Gate.",
+  "health": "active",
+  "summary": "Validator 002 returned FAIL on nine additional frozen-contract counterexamples after all standard suites passed; complexity root-cause return is recorded.",
+  "current_objective": "With production frozen, add independent package and Runtime contract leaves for accessor sanitization, identity/control/precision bounds, and stable error precedence.",
+  "next_action": "Dispatch formal R2 Terra-high Test to the two existing contract suites, then require causal RED and renewed TDD_READY before any Worker.",
   "blockers": [],
   "milestones": [
     {
@@ -35,17 +35,17 @@
     {
       "id": "test_red",
       "label": "Test / RED",
-      "status": "completed"
+      "status": "active"
     },
     {
       "id": "implementation_green",
       "label": "实现 / GREEN",
-      "status": "completed"
+      "status": "blocked"
     },
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "active"
+      "status": "blocked"
     },
     {
       "id": "user_acceptance",
@@ -77,48 +77,48 @@
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra · high (R2 automatic escalation)",
-      "status": "complete",
+      "status": "waiting",
       "activation": "Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra · high (R2 route)",
-      "status": "complete",
+      "status": "locked",
       "activation": "TDD_READY"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "active",
+      "status": "complete",
       "activation": "实现与证据冻结"
     }
   ],
   "metrics": [
     {
       "id": "requirements",
-      "label": "E Requirements PASS",
-      "done": 5,
+      "label": "E Requirements independently verified",
+      "done": 0,
       "total": 5
     },
     {
       "id": "tests",
-      "label": "Validator mutation leaves GREEN",
+      "label": "Validator public probes GREEN",
       "done": 5,
-      "total": 5
+      "total": 14
     },
     {
       "id": "tasks",
       "label": "E lifecycle tasks complete",
-      "done": 10,
+      "done": 5,
       "total": 12
     },
     {
       "id": "decisions",
-      "label": "Validator defect classes repaired",
+      "label": "Validator defect classes closed",
       "done": 4,
-      "total": 4
+      "total": 8
     }
   ],
   "evidence": [
@@ -604,9 +604,9 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T05:52:52.158Z",
+  "updated_at": "2026-08-24T06:14:31.628Z",
   "updated_by": {
     "role": "controller",
-    "session": "codex-controller-e-validator"
+    "session": "codex-controller-e-validator-002"
   }
 }

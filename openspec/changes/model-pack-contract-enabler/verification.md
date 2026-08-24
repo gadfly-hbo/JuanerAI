@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`REMEDIATION GREEN + TEST ASSET RETIREMENT PASS — VALIDATOR CANDIDATE FREEZE`
+`VALIDATOR 002 FAIL — COMPLEXITY ROOT-CAUSE RETURN TO TEST DESIGN`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -17,21 +17,29 @@ five exact leaves and Controller independently confirmed causal RED only on
 those leaves plus their aggregate parent. The bounded Worker repaired only
 `packages/contracts/model-pack.ts`; Controller then confirmed E contract
 292/292, inactive 15/15, affected regressions, root typecheck, and canonical
-offline validation exit 0. The repeated Test Asset Retirement Gate is PASS and
-a fresh complete Test-diff ponytail review returned exactly
-`Lean already. Ship.` Current production and Test bytes are frozen for a new
-committed read-only Validator candidate. No Spec semantic change, scope
-expansion, acceptance, activation, archive, or downstream H/P/C/A claim is
-authorized before that Validator returns PASS.
+offline validation exit 0. The repeated Test Asset Retirement Gate passed and
+a fresh ponytail review returned exactly `Lean already. Ship.` Fresh Validator
+002 confirmed all five prior repairs, every standard suite, and canonical
+validation, but independently found nine additional violations of the already
+frozen contract: raw accessor failures escape the sanitized carrier; invalid
+identity/control/precision values are admitted; and three stable error
+precedence rules are wrong. This second Validator failure crosses the
+complexity stop line. Controller classifies the root cause as incomplete Test
+Design plus production defects inside the frozen two-file contract; no product
+decision, semantic change, scope expansion, re-slice, or new mechanism is
+needed. Production is frozen while formal Test adds independent causal leaves
+to the two existing contract suites. Acceptance, activation, archive, and
+downstream H/P/C/A remain blocked.
 
 ## Frozen References
 
 - Explored baseline: `2b2889029d6a0947027096acc0c541a7751fdd4f`
 - Failed frozen candidate Head: `c0bdf3a158a81d45131862debc8e2b1a24f076c3`
+- Validator 002 frozen Head: `1d88e0dafe4f80119f20677f5688622f2656ab3f`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: remediation GREEN and repeated Test Asset Retirement PASS;
-  production and Test bytes frozen for a fresh read-only Validator
+- Current lifecycle: complexity root-cause return; two production files frozen;
+  bounded two-suite Test Design correction authorized after evidence freeze
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -45,12 +53,12 @@ authorized before that Validator returns PASS.
 | inactive-loader/closed-graph R2 package and Test return | historical Controller Spec Gate PASS; exact Local Analysis correction complete; strict inactive Test still conflicts with Node v26 nested `openSync` | superseded as current Gate authority by this nested-loader-chain revision |
 | nested-loader-chain R2 package | Controller Spec Gate PASS | one bounded inactive Test correction only |
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
-| Test Design and driver health | PASS; package Test is 572 lines/`5c7aa231…`; five exact leaves added without weakening existing coverage | none unless a Test byte changes |
-| causal expected RED | PASS; package 215/221 and complete E contract 286/292 fail only on five new leaves plus aggregate parent | minimum one-file Worker correction |
-| implementation | remediation complete in one production file; package is 210 lines/`512d928a…` | none unless production bytes change |
-| GREEN and affected regression | PASS; E 292/292, inactive 15/15, root typecheck and affected regressions PASS, canonical exit 0 | none unless frozen bytes change |
-| Test Asset Retirement | PASS; five distinct leaves retained, scans/ledger clean, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
-| independent verification | first frozen candidate FAIL; remediation candidate ready | committed clean Head plus fresh read-only Validator PASS |
+| Test Design and driver health | historical five-leaf remediation PASS; reopened because nine material leaves are absent | bounded two-suite Test return with exact hashes/counts |
+| causal expected RED | historical five-leaf RED PASS; no current RED yet for Validator 002 findings | causal RED for all nine leaves with production frozen |
+| implementation | historical remediation GREEN; nine new frozen-contract defects remain | causal RED and bounded owning-path Worker repair |
+| GREEN and affected regression | standard matrix PASS at Validator 002 Head but semantically insufficient | corrected leaves plus complete affected/canonical rerun |
+| Test Asset Retirement | structural PASS at Validator 002 Head; reopened by missing material regressions | repeat after Test/Worker correction |
+| independent verification | Validator 001 FAIL; Validator 002 FAIL on nine additional public counterexamples | corrected committed clean Head plus another fresh read-only Validator PASS |
 | Controller/user acceptance | blocked | fresh Validator PASS and complete current evidence |
 | archive | blocked | acceptance and integration |
 
@@ -537,14 +545,18 @@ Document inspection is not executable product evidence. The exact commands for l
 
 ## Next Gate
 
-A fresh R2/Sol-high `juaner_validator` must inspect a committed clean Head in an
-independent read-only context. It must rerun the five public counterexamples,
-the focused and canonical matrices, affected regressions, project-board checks,
-scope/ownership review, and current evidence-consistency review. Production,
-Tests, OpenSpec semantics, docs/contracts, graph/runner, dependencies, and all
-other paths are frozen to Validator. No acceptance, archive, merge, H/P/C/A
-dispatch, Profile activation, real Artifact/model/data/network/MLflow access,
-or downstream completion claim is authorized before fresh Validator PASS.
+Formal R2/Terra-high `juaner_test` may edit only the two existing package and
+Runtime contract Test files. It must add independently named leaves for all
+nine Validator 002 counterexamples, prove helper/driver health, establish
+causal RED with both production files frozen, and record exact hashes/counts.
+It may not weaken an existing assertion or edit fixtures/drivers, inactive or
+Local Analysis Tests, production, OpenSpec, docs/contracts, graphs/runner,
+dependencies, project-control, or any product/activation path. Controller must
+review the returned matrix rule by rule before releasing the minimum owning
+production path(s). No acceptance, archive, merge, H/P/C/A dispatch, Profile
+activation, real Artifact/model/data/network/MLflow access, or downstream
+completion claim is authorized before renewed GREEN, retirement PASS, and a
+fresh Validator PASS.
 
 ## Historical Candidate GREEN and Test Asset Retirement Gate — Superseded
 
@@ -689,3 +701,42 @@ or downstream completion claim is authorized before fresh Validator PASS.
   review returned exactly `Lean already. Ship.`
 - Freeze: any Test or production byte change reopens the owning Gate. The next
   authorized action is one fresh committed read-only R2/Sol-high Validator.
+
+## Independent Validator 002 — FAIL and Complexity Root-cause Return
+
+- Date: `2026-08-24`
+- Route: R2 / standard / Sol high; fresh independent read-only context.
+- Frozen Head: `1d88e0dafe4f80119f20677f5688622f2656ab3f`; branch
+  `work/macbook/model-pack-contract-enabler`; starting and ending worktree
+  clean; no repository byte changed.
+- Prior remediation: all five required probes now produce their exact approved
+  result, so Validator 001's defect classes are closed.
+- Standard evidence: package 221/221; Runtime 71/71; E contract 292/292;
+  inactive 15/15; root typecheck; affected Local Analysis 198/198 and 292/292;
+  E2E 133 PASS plus one existing authorized real-Pi skip; project board 12/12;
+  canonical 1,236 PASS plus that skip; all commands exited 0.
+- Nine independent violations remain:
+  1. an enumerable throwing `manifest.license` getter escapes a raw Error;
+  2. a throwing Runtime factory `binding` getter escapes a raw Error;
+  3. category U+0085 control is admitted;
+  4. a 257-character Controller release-decision identity is admitted;
+  5. raw-path MLflow Run identity `/private/model/run` is admitted;
+  6. evaluation coverage `0.90000000000000001` is admitted above exact 0.90;
+  7. missing manifest permission `network` maps to contract invalid instead of
+     `MODEL_PACK_PERMISSION_DENIED`;
+  8. release-status package version `latest` maps to identity mismatch instead
+     of malformed-status `MODEL_PACK_CONTRACT_INVALID`; and
+  9. malformed release-status Artifact SHA `bad` maps to identity mismatch
+     instead of `MODEL_PACK_CONTRACT_INVALID`.
+- Scope/architecture/activation and structural retirement audit independently
+  pass, but they do not override correctness. The current 292/292 and
+  traceability completeness claims are invalid for acceptance.
+- Complexity disposition: repeated Test/Worker returns and the second Validator
+  failure trigger the mandatory stop line and `retrospective.md`. Root cause is
+  incomplete Test Design plus production defects inside the frozen contract.
+  No user/product/structure decision, Spec semantic change, cross-domain
+  dependency, class raise, or re-slice is required.
+- Return Gate: formal Test may edit only the existing package and Runtime
+  contract suites, with both production files frozen, to establish independent
+  causal RED for all nine leaves. Any broader need returns to Controller.
+- Verdict: `FAIL`.

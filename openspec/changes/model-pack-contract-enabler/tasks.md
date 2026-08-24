@@ -6,15 +6,15 @@
 |---|---|---|---|
 | `TASK-001` Complete R2 decision package | `juaner_spec`; complete | this Change's OpenSpec files only; preserves the public surface, prior permission-oracle disposition, and completed closed-graph correction while distinguishing the exact paired Node v26 source-loader chains from product filesystem effects | REQ-MPC-001..005 |
 | `TASK-002` Repeat Spec Gate and lean review | Controller; PASS | nested `openSync` loader-chain root cause, paired-chain/no-mechanism disposition, full-package consistency, and mandatory complete-diff ponytail review | all |
-| `TASK-003` Package Test Design and RED | `juaner_test`; remediation complete | all prior coverage preserved; five exact large-decimal input/forecast, malformed-status code, closed canonical-call shape, and Unicode-scalar leaves produce causal RED | REQ-MPC-001, 002, 004 |
-| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; complete | exact paired `readFileSync` plus nested `openSync` oracle passes 15/15; Local Analysis and every other Test asset remain frozen; causal RED is limited to seven production leaves | REQ-MPC-003..005 |
-| `TASK-005` TDD_READY | Controller; remediation PASS | corrected package Test frozen at 572 lines/`5c7aa231…`; five new leaves plus parent are the only RED; Worker brief is one production file | all |
-| `TASK-006` Implement contracts | `juaner_worker`; remediation complete and frozen | `packages/contracts/model-pack.ts` only; exact decimal ordering, malformed-status classification, closed canonical-call shape, and Unicode-scalar length repaired without changing other behavior | REQ-MPC-001, 002, 005 |
+| `TASK-003` Package Test Design and RED | `juaner_test`; Validator 002 return active | preserve all prior coverage and add eight package-side leaves for accessor sanitization, control/identity/precision boundaries, permission precedence, and malformed-status precedence | REQ-MPC-001, 002, 004 |
+| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 002 return active only for Runtime contract suite | preserve inactive 15/15 and every other Test byte; add one Runtime factory accessor-sanitization leaf | REQ-MPC-003..005 |
+| `TASK-005` TDD_READY | Controller; reopened | rule-by-rule review, exact hashes/counts, causal RED for all nine Validator 002 leaves, and minimum owning production scope | all |
+| `TASK-006` Implement contracts | `juaner_worker`; prior remediations historical, reopened | after renewed TDD_READY only; minimum correction inside the already approved two production paths | REQ-MPC-001, 002, 005 |
 | `TASK-007` Implement Runtime Port | `juaner_worker`; complete and frozen | `packages/ports/analytical-model-runtime.ts` only; rejects path-like identities and leading-zero/non-stable versions for Runtime, Adapter, and dependencies at construction | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
-| `TASK-009` GREEN and regression | remediation PASS | E contract 292/292, inactive 15/15, typecheck, affected regression, project board, canonical exit 0, and scope evidence | all |
-| `TASK-010` Test Asset Retirement Gate | remediation PASS | all five new leaves retained as distinct permanent regressions; ledger/scans clean; fresh complete Test-diff ponytail `Lean already. Ship.` | REQ-MPC-004 |
-| `TASK-011` Independent verification | first frozen Head FAIL; fresh recheck ready | remediation GREEN/retirement evidence frozen for a new committed read-only Validator Head | all |
+| `TASK-009` GREEN and regression | historical standard PASS; reopened | corrected leaves plus complete focused/affected/canonical evidence | all |
+| `TASK-010` Test Asset Retirement Gate | structural PASS historical; reopened | retain all prior and nine new leaves; repeat ledger/scans/ponytail after GREEN | REQ-MPC-004 |
+| `TASK-011` Independent verification | Validator 001 FAIL; Validator 002 FAIL | another fresh committed read-only Validator only after renewed GREEN/retirement freeze | all |
 | `TASK-012` Accept, integrate, archive | Controller/user according to risk | acceptance, strict E-first integration, current spec merge and archive; Controller-only project-control | all |
 
 ## Test-owned Exact Paths
