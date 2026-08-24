@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824073031539-YIYIIR",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-24T07:30:31.539Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-recovery-e"
+  },
+  "summary": "Fresh R2 Sol-high Validator 004 activated on committed remediation candidate b8e8ec3",
+  "status_after": "validating",
+  "evidence_refs": []
+}
