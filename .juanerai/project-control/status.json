@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_validator_008_freeze",
-    "label": "Model Pack Contract Enabler：Validator 008 Freeze",
+    "id": "model_pack_contract_enabler_validator_008_active",
+    "label": "Model Pack Contract Enabler：Validator 008 Active",
     "ordinal": 7,
     "total": 8
   },
   "health": "validating",
-  "summary": "Validator 007 candidate evidence PASS but run operationally invalid after transient repository-root probe; candidate bytes unchanged.",
-  "current_objective": "Freeze the unchanged product/Test candidate plus Validator 007 history for fresh read-only Validator 008.",
-  "next_action": "Dispatch R2 / standard / Sol high Validator 008 with all temporary artifacts exclusively under /tmp.",
+  "summary": "Frozen Validator 008 candidate ce556a0 retains semantic GREEN 235/86/321 and retirement PASS; Validator 007 operation recorded.",
+  "current_objective": "Fresh R2 / standard / Sol high Validator 008 independently verifies clean Head ce556a0.",
+  "next_action": "Require explicit independent PASS before acceptance or archive; temporary artifacts must stay under /tmp.",
   "blockers": [],
   "milestones": [
     {
@@ -91,7 +91,7 @@
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "waiting",
+      "status": "active",
       "activation": "实现与证据冻结"
     }
   ],
@@ -604,7 +604,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T10:10:39.991Z",
+  "updated_at": "2026-08-24T10:11:49.949Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-recovery-20260824"
