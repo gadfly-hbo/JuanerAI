@@ -148,16 +148,9 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
     { name: 'TEST-MPC-005 factory:dependencies-binding-wrong-type', candidate: { binding: { ...bindingFixture(), dependencies: {} }, predictor: async () => forecastFixture() } },
     { name: 'TEST-MPC-005 factory:permissions-binding-wrong-type', candidate: { binding: { ...bindingFixture(), permissions: [] }, predictor: async () => forecastFixture() } },
     { name: 'TEST-MPC-005 factory:predictor-not-function', candidate: { binding: bindingFixture(), predictor: 'not-a-function' } },
+    { name: 'TEST-MPC-005 factory:throwing-binding-getter-is-sanitized', candidate: { get binding() { throw new Error('raw Runtime binding getter secret'); }, predictor: async () => forecastFixture() } },
   ];
   for (const entry of factoryCases) await t.test(entry.name, () => assert.throws(() => runtimeModule.defineAnalyticalModelRuntime(entry.candidate), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE')));
-
-  await t.test('TEST-MPC-005 factory:throwing-binding-getter-is-sanitized', () => {
-    const candidate = {
-      get binding() { throw new Error('raw Runtime binding getter secret'); },
-      predictor: async () => forecastFixture(),
-    };
-    assert.throws(() => runtimeModule.defineAnalyticalModelRuntime(candidate), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
-  });
 
   const factoryBindingValueCases: readonly Readonly<{ name: string; mutate(binding: RecordValue): void }>[] = [
     { name: 'TEST-MPC-005 factory:runtime-identity-path-like', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'bad/path'; } },

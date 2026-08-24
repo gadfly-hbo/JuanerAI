@@ -199,15 +199,6 @@ test('TEST-MPC-001..003 production package target and every independent mutation
     assert.equal('state' in admitted, false);
   });
 
-  await t.test('TEST-MPC-001 manifest:enumerable-throwing-package-getter-is-sanitized', () => {
-    const candidate = clone(manifestFixture());
-    Object.defineProperty(candidate, 'package', {
-      enumerable: true,
-      get() { throw new Error('raw manifest package getter secret'); },
-    });
-    assert.throws(() => fn(module, 'serializeModelPackManifest')(candidate), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
-  });
-
   const canonicalRawCases: readonly Readonly<{ name: string; bytes(): Uint8Array; code: ModelPackErrorCode }>[] = [
     { name: 'TEST-MPC-001 canonical-json:BOM', bytes: () => new Uint8Array([0xef, 0xbb, 0xbf, ...canonicalBytes(manifestFixture())]), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 canonical-json:malformed-UTF8', bytes: () => new Uint8Array([0xff]), code: 'MODEL_PACK_CONTRACT_INVALID' },
@@ -234,6 +225,7 @@ test('TEST-MPC-001..003 production package target and every independent mutation
     { name: 'TEST-MPC-001 package-version:prerelease', mutate: (v) => mutateManifestChild(v, 'package', (c) => ({ ...c, version: '1.0.0-rc.1' })), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 package-version:leading-zero', mutate: (v) => mutateManifestChild(v, 'package', (c) => ({ ...c, version: '01.0.0' })), code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 purpose:wrong-approved-use', mutate: (v) => mutateManifestChild(v, 'purpose', (c) => ({ ...c, approved_use: 'automatic_replenishment' })), code: 'MODEL_PACK_CONTRACT_INVALID' },
+    { name: 'TEST-MPC-001 manifest:enumerable-throwing-package-getter-is-sanitized', mutate: (v) => { const candidate = clone(v); Object.defineProperty(candidate, 'package', { enumerable: true, get() { throw new Error('raw manifest package getter secret'); } }); return candidate; }, code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-001 category:U+0085-control-is-rejected', mutate: (v) => mutateManifestChild(v, 'io', (c) => ({ ...c, supported_product_categories: ['beverages\u0085'] })), code: 'MODEL_PACK_CONTRACT_INVALID' },
     ...manifestPurposeCases(),
     ...manifestPermissionCases(),
@@ -457,12 +449,6 @@ async function runReleaseCases(t: TestContext, module: ContractModule): Promise<
     assert.throws(() => fn(module, 'serializeModelPackReleaseInput')(tooLong), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
   });
 
-  await t.test('TEST-MPC-003 MLflow-Run:raw-path-identity-is-rejected', () => {
-    const rawPath = '/private/model/run';
-    const candidate = mutateManifestChild(replaceChild(releaseInputFixture(), 'mlflow', { run_id: rawPath }), 'manifest', (manifest) => mutateManifestChild(manifest, 'provenance', (provenance) => ({ ...provenance, mlflow_run_id: rawPath })));
-    assert.throws(() => fn(module, 'serializeModelPackReleaseInput')(candidate), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
-  });
-
   const validAlternateReleaseSingletons: readonly Readonly<{
     name: string;
     mutate(value: RecordValue): RecordValue;
@@ -512,6 +498,7 @@ async function runReleaseCases(t: TestContext, module: ContractModule): Promise<
     { name: 'TEST-MPC-003 registry-version:alias', mutate: (v) => replaceChild(v, 'mlflow', { registered_model_version: 'champion' }), code: 'MODEL_PACK_RELEASE_REFERENCE_INVALID' },
     { name: 'TEST-MPC-003 registry-version:zero', mutate: (v) => replaceChild(v, 'mlflow', { registered_model_version: '0' }), code: 'MODEL_PACK_RELEASE_REFERENCE_INVALID' },
     { name: 'TEST-MPC-003 registry-version:non-numeric', mutate: (v) => replaceChild(v, 'mlflow', { registered_model_version: 'one' }), code: 'MODEL_PACK_RELEASE_REFERENCE_INVALID' },
+    { name: 'TEST-MPC-003 MLflow-Run:raw-path-identity-is-rejected', mutate: (v) => { const rawPath = '/private/model/run'; return mutateManifestChild(replaceChild(v, 'mlflow', { run_id: rawPath }), 'manifest', (manifest) => mutateManifestChild(manifest, 'provenance', (provenance) => ({ ...provenance, mlflow_run_id: rawPath }))); }, code: 'MODEL_PACK_CONTRACT_INVALID' },
     { name: 'TEST-MPC-003 artifact-reference:raw-absolute-path', mutate: (v) => replaceChild(v, 'mlflow', { artifact_uri: '/var/models/model.bin' }), code: 'MODEL_PACK_RELEASE_REFERENCE_INVALID' },
     { name: 'TEST-MPC-003 artifact-reference:raw-relative-path', mutate: (v) => replaceChild(v, 'mlflow', { artifact_uri: '../model.bin' }), code: 'MODEL_PACK_RELEASE_REFERENCE_INVALID' },
     ...['http:', 'https:', 's3:', 'gs:', 'ftp:'].map((scheme) => ({ name: `TEST-MPC-003 artifact-reference:non-file-scheme:${scheme}`, mutate: (v: RecordValue) => replaceChild(v, 'mlflow', { artifact_uri: `${scheme}//example.invalid/model.bin` }), code: 'MODEL_PACK_RELEASE_REFERENCE_INVALID' as const })),

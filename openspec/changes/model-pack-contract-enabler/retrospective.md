@@ -20,10 +20,10 @@
 
 | Evidence | Expected | Current Result | Source |
 |---|---|---|---|
-| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | syntactic map complete; semantic coverage reopened by Validator 002 | `traceability.md`, `verification.md` |
-| expected RED | every material frozen invariant fails causally before implementation | earlier RED rounds valid for their leaves; nine further public leaves are missing | `test-plan.md`, `verification.md` |
-| target GREEN | focused, affected, and canonical evidence PASS | standard matrix PASS but insufficient for acceptance | `verification.md` |
-| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | standard suites PASS; nine independent counterexamples fail | `verification.md` |
+| Requirements and AC closure | five Requirements and 30 ACs with executable coverage | all mapped leaves GREEN; fresh Validator pending | `traceability.md`, `verification.md` |
+| expected RED | every material frozen invariant fails causally before implementation | nine Validator 002 leaves and two aggregate parents produced exact RED | `test-plan.md`, `verification.md` |
+| target GREEN | focused, affected, and canonical evidence PASS | package 229/229, Runtime 72/72, E 301/301, affected matrix PASS, canonical exit 0 | `verification.md` |
+| contract/regression | exact package/Runtime/inactive behavior plus affected baseline | remediation GREEN and repeated retirement PASS; fresh Validator pending | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |
 | independent validation | fresh read-only PASS | Validator 001 FAIL; Validator 002 FAIL | `verification.md` |
 
@@ -93,7 +93,7 @@
 - behavior that must be reused: exact closed package/Runtime calls, sanitized carrier, stable error precedence, exact decimal comparisons, printable bounded identities/categories, inert composition, and strict E -> H -> P -> C -> A integration.
 - decisions that must not be reopened implicitly: no Provider/Consumer/Profile/activation in E; no dependency, registry, fallback, persistence, real data/model/network/MLflow, or new runtime abstraction.
 - expected ordinary Change shape: rule-by-rule public-boundary Test matrix, causal RED, one owning production return, full affected/canonical GREEN, retirement reconciliation, and fresh independent validation.
-- remaining risks: nine Validator 002 counterexamples remain unimplemented until the bounded Test/Worker return completes.
+- remaining risks: fresh independent Validator has not yet confirmed the frozen remediation candidate; the nine Validator 002 counterexamples are implemented and GREEN.
 - explicitly deferred work: P/C/A implementations and every real Artifact, SDK, model, data, or activation proof.
 
 ## Completion Criterion

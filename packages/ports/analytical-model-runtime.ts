@@ -46,10 +46,11 @@ const validBinding = (candidate: unknown): candidate is AnalyticalModelRuntimeBi
 const validInstant = (value: unknown): value is string => typeof value === 'string' && instantPattern.test(value) && new Date(value).toISOString() === value;
 
 export function defineAnalyticalModelRuntime(input: Readonly<{ binding: AnalyticalModelRuntimeBindingV1; predictor: LocalCategoryDemandPredictor }>): AnalyticalModelRuntime {
-  if (!exactKeys(input, ['binding', 'predictor']) || !validBinding(input.binding) || typeof input.predictor !== 'function') return error('ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE');
-  const binding = detached(input.binding);
-  const predictor = input.predictor;
-  const readinesses = new WeakSet<object>();
+  try {
+    if (!exactKeys(input, ['binding', 'predictor']) || !validBinding(input.binding) || typeof input.predictor !== 'function') return error('ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE');
+    const binding = detached(input.binding);
+    const predictor = input.predictor;
+    const readinesses = new WeakSet<object>();
   const preflight = async (candidate: AnalyticalModelPreflightInputV1): Promise<AnalyticalModelReadinessV1> => {
     try {
       if (!exactKeys(candidate, ['expected_package', 'manifest_bytes', 'artifact_observation', 'release_status']) || !(candidate.manifest_bytes instanceof Uint8Array)) return error('ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE');
@@ -87,7 +88,8 @@ export function defineAnalyticalModelRuntime(input: Readonly<{ binding: Analytic
       } });
     } catch (reason) { throw reason instanceof Error && (reason as { name?: unknown }).name === 'ModelPackContractError' ? reason : modelPackError('ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'); }
   };
-  return Object.freeze({ preflight, openRun });
+    return Object.freeze({ preflight, openRun });
+  } catch { return error('ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'); }
 }
 
 async function executePrediction(predictor: LocalCategoryDemandPredictor, runId: string, readiness: AnalyticalModelReadinessV1, snapshot: ConfirmedCategoryDemandSnapshotV1, signal: AbortSignal, deadlineAt: string, deadline: number): Promise<CategoryDemandForecastResultV1> {

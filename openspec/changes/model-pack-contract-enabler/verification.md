@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 002 REMEDIATION TDD_READY — TWO-FILE WORKER AUTHORIZED`
+`VALIDATOR 002 REMEDIATION GREEN + RETIREMENT PASS — VALIDATOR CANDIDATE FREEZE`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -30,12 +30,16 @@ decision, semantic change, scope expansion, re-slice, or new mechanism is
 needed. Formal Test changed only the two existing contract suites, preserved
 every prior assertion, and added eight package leaves plus one Runtime factory
 leaf. Controller independently confirmed package 220/229, Runtime 70/72, and
-complete E 290/301: failures are exactly the nine new leaves plus their two
-aggregate parents. Inactive 15/15, typecheck, affected regressions, and
-project-board evidence remain healthy; canonical stops only on the same causal
-E RED. Tests are frozen and only the two existing production files are released
-to a formal Worker. Acceptance, activation, archive, and downstream H/P/C/A
-remain blocked.
+complete E 290/301: failures were exactly the nine new leaves plus their two
+aggregate parents. The bounded Worker changed only the two authorized
+production files and Controller confirmed package 229/229, Runtime 72/72,
+complete E 301/301, inactive 15/15, typecheck, affected regressions, project
+board 12/12, and canonical offline exit 0. Mandatory Test Asset Retirement
+review found three table-runner consolidations; formal Test applied them with a
+net 20-line deletion, reran the complete matrix, and a fresh post-cleanup
+ponytail returned exactly `Lean already. Ship.` Current production and Test
+bytes are frozen for a new committed read-only Validator. Acceptance,
+activation, archive, and downstream H/P/C/A remain blocked until fresh PASS.
 
 ## Frozen References
 
@@ -44,8 +48,8 @@ remain blocked.
 - Validator 002 frozen Head: `1d88e0dafe4f80119f20677f5688622f2656ab3f`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Controller TDD_READY PASS for Validator 002 remediation;
-  Tests frozen; two existing production files released to formal Worker
+- Current lifecycle: Validator 002 remediation GREEN and repeated Test Asset
+  Retirement PASS; production and Tests frozen for fresh read-only Validator
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -61,9 +65,9 @@ remain blocked.
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
 | Test Design and driver health | PASS; package Test 607 lines/`5045515c…`, Runtime Test 418 lines/`3e508496…`; all prior assertions retained | none unless a Test byte changes |
 | causal expected RED | PASS; package 220/229, Runtime 70/72, complete E 290/301 fail only on nine leaves plus two aggregate parents | bounded two-file Worker repair |
-| implementation | historical remediation GREEN; nine causal frozen-contract defects remain | minimum correction in the two existing production files |
-| GREEN and affected regression | standard matrix PASS at Validator 002 Head but semantically insufficient | corrected leaves plus complete affected/canonical rerun |
-| Test Asset Retirement | structural PASS at Validator 002 Head; reopened by missing material regressions | repeat after Test/Worker correction |
+| implementation | PASS; only package 237 lines/`278025c1…` and Runtime 122 lines/`e343db1f…` changed | none unless production bytes change |
+| GREEN and affected regression | PASS; package 229/229, Runtime 72/72, E 301/301, inactive/affected/typecheck/canonical healthy | none unless frozen bytes change |
+| Test Asset Retirement | PASS; three findings deleted into existing tables, net -20 lines, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
 | independent verification | Validator 001 FAIL; Validator 002 FAIL on nine additional public counterexamples | corrected committed clean Head plus another fresh read-only Validator PASS |
 | Controller/user acceptance | blocked | fresh Validator PASS and complete current evidence |
 | archive | blocked | acceptance and integration |
@@ -551,17 +555,15 @@ Document inspection is not executable product evidence. The exact commands for l
 
 ## Next Gate
 
-Formal R2/Terra-high `juaner_worker` may edit only
-`packages/contracts/model-pack.ts` and
-`packages/ports/analytical-model-runtime.ts`. It must satisfy the nine frozen
-causal leaves without changing public signatures, error vocabulary, fixtures,
-drivers, Tests, OpenSpec, docs/contracts, graphs/runner, dependencies,
-project-control, or any product/activation path. Getter failures must be
-sanitized without source scanning or a test seam; decimal/identity/category
-validation and error precedence must implement the already frozen rules. No
+A new R2/Sol-high `juaner_validator` must inspect a committed clean Head in a
+fresh independent read-only context. It must rerun all Validator 001 and 002
+public probes, focused/complete/inactive/affected/canonical validation,
+scope/architecture/activation review, evidence consistency, and final Test
+Asset Retirement. Production, Tests, OpenSpec, docs/contracts, graphs/runner,
+dependencies, project-control, and all other paths are frozen to Validator. No
 acceptance, archive, merge, H/P/C/A dispatch, Profile activation, real
 Artifact/model/data/network/MLflow access, or downstream completion claim is
-authorized before renewed GREEN, retirement PASS, and a fresh Validator PASS.
+authorized before its PASS.
 
 ## Historical Candidate GREEN and Test Asset Retirement Gate — Superseded
 
@@ -780,3 +782,47 @@ authorized before renewed GREEN, retirement PASS, and a fresh Validator PASS.
   added.
 - Worker authorization: only the two frozen production paths above; every Test
   and all other paths are locked. Any need beyond them returns to Controller.
+
+## Controller Validator 002 Remediation GREEN and Retirement Gate
+
+- Date: `2026-08-24`
+- GREEN verdict: `PASS`
+- Test Asset Retirement verdict: `PASS`
+- Formal Worker changed only:
+  - `packages/contracts/model-pack.ts`, 210 lines/
+    `512d928a81941abd1b69b341f102b155d55dc72efb2aa97798847cfa9a0130b9`
+    to 237 lines/
+    `278025c19752b98a0cf580785f9c5888722aab9b029a4dd88c032f911f8e4a3d`;
+  - `packages/ports/analytical-model-runtime.ts`, 120 lines/
+    `fec5bc710d6ef25cba0452964298e59d81b81df303f2c3b9e5a0017a6dadc323`
+    to 122 lines/
+    `e343db1f25e0e274bf4c33e30a8d1b99b32de98a920124399b347bbe165ba7b5`.
+- Final frozen Tests after retirement cleanup:
+  - package contract 594 lines/
+    `08e8b2fd0310ef9cbcaafbd67f4e1811831571c427b11513420c4e767f4394a9`;
+  - Runtime contract 411 lines/
+    `c6f5bb71e5c1fe4f7bbe1e5fb84c4be6201c21155b1c7717dc0465e1dec25531`;
+  - inactive integration 191 lines/
+    `cca95293f2448fa8963524baca1fd61f36a5c73ebbe1ce9241e0260485ee95b7`;
+  - fixtures 135 lines/
+    `916179da7dfa236f4e8fe500bded5f378fdeeea0d37ae6cb30b12a14b6ee2894`;
+  - package driver 54 lines/
+    `45576d9a6b0fbb61e524e16dc93beb4078391893697c42920c04cdbe9b834ef5`;
+  - Runtime driver 446 lines/
+    `c246224357560c82b6da3cadab1de95cbbb35cd6f169ea0211af015ddf19ca48`;
+  - Local Analysis integration 3,096 lines/
+    `b5c43e3bf65faab5e75c60a481c8c22aa966690c56b22a465622ab2a18dc433f`.
+- GREEN evidence: package 229/229; Runtime 72/72; complete E 301/301;
+  inactive 15/15; root typecheck; affected Local Analysis contract 198/198,
+  integration 292/292, E2E 133 PASS plus one existing authorized real-Pi skip;
+  project board 12/12; canonical offline validation exit 0.
+- Retirement disposition: the first mandatory ponytail identified three
+  standalone leaves that duplicated existing table-runner structure. Formal
+  Test moved the same independent names/values/codes into those tables, changing
+  the two Tests by `+3/-23` net `-20` lines without deleting coverage. All nine
+  leaves remain permanent current-contract regressions; scans found no orphan,
+  temporary probe, skip/todo/only, duplicate fixture/driver/helper, dependency,
+  or weakened inactive assertion. A fresh complete post-cleanup review returned
+  exactly `Lean already. Ship.`
+- Freeze: any production or Test byte change reopens its owning Gate. The next
+  authorized action is one fresh committed read-only R2/Sol-high Validator.
