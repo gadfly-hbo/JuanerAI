@@ -7,10 +7,10 @@
 | `TASK-001` Complete R2 decision package | `juaner_spec`; complete | this Change's OpenSpec files only; preserves the public surface, prior permission-oracle disposition, and completed closed-graph correction while distinguishing the exact paired Node v26 source-loader chains from product filesystem effects | REQ-MPC-001..005 |
 | `TASK-002` Repeat Spec Gate and lean review | Controller; PASS | nested `openSync` loader-chain root cause, paired-chain/no-mechanism disposition, full-package consistency, and mandatory complete-diff ponytail review | all |
 | `TASK-003` Package Test Design and RED | `juaner_test`; complete and frozen | 625-line/`4db0316d…` suite unchanged | REQ-MPC-001, 004 |
-| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 006 return active | add only three Runtime/Adapter/dependency Unicode-Cf identity leaves; every other Test frozen | REQ-MPC-003..005 |
-| `TASK-005` TDD_READY | Controller; reopened | require exact three-leaf Runtime causal RED before Runtime-only release | all |
+| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 006 return complete | 492-line/`f2685ff8…` suite adds three exact causal leaves; every other Test frozen | REQ-MPC-003..005 |
+| `TASK-005` TDD_READY | Controller; PASS | Runtime 82/86 and E 317/321 fail only on three leaves plus one parent; Runtime-only release | all |
 | `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | package production remains frozen | REQ-MPC-001, 002, 005 |
-| `TASK-007` Implement Runtime Port | `juaner_worker`; blocked pending RED | Runtime-only Unicode-control correction after TDD_READY | REQ-MPC-003, 005 |
+| `TASK-007` Implement Runtime Port | `juaner_worker`; active after renewed TDD_READY | Runtime-only Unicode-control correction | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
 | `TASK-009` GREEN and regression | historical PASS; reopened | Validator 006 found three missing material Runtime leaves | all |
 | `TASK-010` Test Asset Retirement Gate | historical PASS; reopened | repeat after all three new leaves reach GREEN | REQ-MPC-004 |
@@ -40,7 +40,7 @@ root configuration, docs/contracts, OpenSpec, or project-control. After the
 bounded Test Asset Retirement cleanup, every current Test asset is byte-frozen
 at the post-GREEN hashes in `test-plan.md`; no further Test write is authorized.
 
-## Frozen Worker-owned Paths
+## Current Worker-owned Remaining Path
 
 - `packages/contracts/model-pack.ts`
 - `packages/ports/analytical-model-runtime.ts`
@@ -49,8 +49,8 @@ at the post-GREEN hashes in `test-plan.md`; no further Test write is authorized.
 `tools/harness/validation/run` are complete and byte-frozen for this Worker
 return.
 
-The Worker return is complete. No further production edit is authorized. The
-Worker did not edit tests, Profiles, CLI, Product Core, Application,
+The Worker may edit only `packages/ports/analytical-model-runtime.ts`. It does
+not edit package production, tests, Profiles, CLI, Product Core, Application,
 SDK/Provider/Consumer, package/lock files, OpenSpec, project-control, or any
 external repository.
 

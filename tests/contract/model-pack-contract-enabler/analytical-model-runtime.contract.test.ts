@@ -165,12 +165,15 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
   const factoryBindingValueCases: readonly Readonly<{ name: string; mutate(binding: RecordValue): void }>[] = [
     { name: 'TEST-MPC-005 factory:runtime-identity-path-like', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'bad/path'; } },
     { name: 'TEST-MPC-005 factory:runtime-identity-at-sign', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'runtime@1'; } },
+    { name: 'TEST-MPC-005 factory:runtime-identity-Cf-zero-width-is-incompatible', mutate: (binding) => { (binding.runtime as RecordValue).identity = 'runtime\u200Bhidden'; } },
     { name: 'TEST-MPC-005 factory:runtime-version-leading-zero', mutate: (binding) => { (binding.runtime as RecordValue).version = '01.0.0'; } },
     { name: 'TEST-MPC-005 factory:adapter-identity-path-like', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'bad/path'; } },
     { name: 'TEST-MPC-005 factory:adapter-identity-at-sign', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'adapter@1'; } },
+    { name: 'TEST-MPC-005 factory:adapter-identity-Cf-zero-width-is-incompatible', mutate: (binding) => { (binding.adapter as RecordValue).identity = 'adapter\u200Bhidden'; } },
     { name: 'TEST-MPC-005 factory:adapter-version-leading-zero', mutate: (binding) => { (binding.adapter as RecordValue).version = '01.0.0'; } },
     { name: 'TEST-MPC-005 factory:dependency-identity-path-like', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'bad/path'; } },
     { name: 'TEST-MPC-005 factory:dependency-identity-at-sign', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'dependency@1'; } },
+    { name: 'TEST-MPC-005 factory:dependency-identity-Cf-zero-width-is-incompatible', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).identity = 'dependency\u200Bhidden'; } },
     { name: 'TEST-MPC-005 factory:dependency-version-leading-zero', mutate: (binding) => { ((binding.dependencies as RecordValue[])[0] as RecordValue).version = '01.0.0'; } },
     { name: 'TEST-MPC-005 factory:permission-network-widened', mutate: (binding) => { (binding.permissions as RecordValue).network = 'allowed'; } },
   ];

@@ -21,7 +21,7 @@
 | Evidence | Expected | Current Result | Source |
 |---|---|---|---|
 | Requirements and AC closure | five Requirements and 30 ACs with executable coverage | all prior leaves GREEN; three Validator 006 Runtime control leaves missing | `traceability.md`, `verification.md` |
-| expected RED | every material frozen invariant fails causally before implementation | latest return: package 232/235, Runtime 80/83, E 312/318; exactly four leaves plus two parents | `test-plan.md`, `verification.md` |
+| expected RED | every material frozen invariant fails causally before implementation | latest return: package 235/235, Runtime 82/86, E 317/321; exactly three leaves plus one parent | `test-plan.md`, `verification.md` |
 | target GREEN | focused, affected, and canonical evidence PASS | standard 235/83/318 PASS but three fresh identity probes FAIL | `verification.md` |
 | contract/regression | exact package/Runtime/inactive behavior plus affected baseline | Unicode-Cf Runtime identities remain open | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |

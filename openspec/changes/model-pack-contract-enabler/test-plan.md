@@ -472,6 +472,22 @@ package production remains 251 lines/
 Exact causal RED plus healthy boundary counts, hashes, diff/status, and
 retirement preflight are mandatory before Runtime-only TDD_READY.
 
+### Validator 006 Remediation TDD_READY
+
+- Runtime Test: 489 to 492 lines; SHA-256 `1d8ae3d9…4ff8a4` to
+  `f2685ff896ef71f29cb2f2380d83b31454c5f7feb0984c8105231aa838508479`.
+- Package Test remains 625 lines/
+  `4db0316d78c66a43fff78f87339e0b7bda3c5dc094532e87380ad7bdc6272fbc`.
+- Package 235/235; Runtime RED 82/86; complete E RED 317/321. Failures are
+  exactly the three `Cf` leaves plus the Runtime aggregate parent.
+- Inactive 15/15, typecheck, Local Analysis 198/198 and 292/292, E2E 133 PASS
+  plus one authorized skip, and project board 12/12 are healthy. Canonical
+  reaches only the same Runtime RED.
+- Production stays frozen at package `c980a150…642604` and Runtime
+  `47a93574…7d307`. Only Runtime production is Worker-released.
+- Retirement preflight is clean and no new helper/fixture/driver/dependency or
+  marker was introduced.
+
 ## Historical Node v26 Loader-chain Conflict and Resolution
 
 - Formal Test first proposed additional path-based `openSync` exceptions. The

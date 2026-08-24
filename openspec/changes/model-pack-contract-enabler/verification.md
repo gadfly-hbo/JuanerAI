@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 006 FAIL — BOUNDED RUNTIME TEST DESIGN RETURN`
+`VALIDATOR 006 REMEDIATION TDD_READY — RUNTIME-ONLY WORKER RELEASED`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -118,6 +118,12 @@ Semantic GREEN and retirement are reopened. Production is frozen; formal Test
 may add only those three Runtime factory leaves to the existing Runtime suite.
 No package, Spec, architecture, scope, dependency, or activation change is
 needed.
+Formal Test changed only the existing Runtime contract suite by adding the
+three exact `Cf` identities to its existing binding-value table. Controller
+confirmed Runtime 86 total/82 pass/4 fail and complete E 321/317/4: failures
+are exactly the three new leaves plus their one aggregate parent; package stays
+235/235. All other Test, production, and evidence paths are frozen. Renewed
+TDD_READY releases only `packages/ports/analytical-model-runtime.ts`.
 
 ## Frozen References
 
@@ -129,8 +135,8 @@ needed.
 - Validator 006 frozen Head: `de09cd9515c8bb2ba3382629552a7b0f345a1803`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 006 FAIL; production frozen and only the existing
-  Runtime contract suite released to bounded formal Test Design
+- Current lifecycle: Validator 006 remediation TDD_READY; only Runtime
+  production released to the bounded Worker
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -144,8 +150,8 @@ needed.
 | inactive-loader/closed-graph R2 package and Test return | historical Controller Spec Gate PASS; exact Local Analysis correction complete; strict inactive Test still conflicts with Node v26 nested `openSync` | superseded as current Gate authority by this nested-loader-chain revision |
 | nested-loader-chain R2 package | Controller Spec Gate PASS | one bounded inactive Test correction only |
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
-| Test Design and driver health | PASS; package Test 625 lines/`4db0316d…`, Runtime Test 489 lines/`1d8ae3d9…`; all prior assertions retained | none unless a Test byte changes |
-| causal expected RED | PASS; package 232/235, Runtime 80/83, E 312/318 fail only on four leaves plus two parents | bounded two-file Worker repair |
+| Test Design and driver health | PASS; package Test 625 lines/`4db0316d…`, Runtime Test 492 lines/`f2685ff8…`; all prior assertions retained | none unless a Test byte changes |
+| causal expected RED | PASS; package 235/235, Runtime 82/86, E 317/321 fail only on three leaves plus one parent | Runtime-only Worker repair |
 | implementation | PASS; package 251 lines/`c980a150…`, Runtime 148 lines/`47a93574…`; only the two released production files changed | none unless production bytes change |
 | GREEN and affected regression | historical standard PASS; Validator 006 found three missing material Runtime leaves | causal three-leaf RED then Runtime-only Worker repair |
 | Test Asset Retirement | reopened; prior leaves retained but three material control leaves are missing | rerun after three new leaves reach GREEN |
@@ -903,6 +909,33 @@ authorized before its PASS.
   verified; no repository write, network, install, provider/model, MLflow, or
   Artifact invocation occurred.
 - Verdict: `FAIL`.
+
+## Controller Validator 006 Remediation TDD_READY
+
+- Date: `2026-08-24`; formal Test route R2 / standard / Terra high.
+- Sole Test write: Runtime contract 489 lines/
+  `1d8ae3d921beb316d1edf9b7aa4add93bc238abdf42dee2c676da83a504ff8a4`
+  to 492 lines/
+  `f2685ff896ef71f29cb2f2380d83b31454c5f7feb0984c8105231aa838508479`;
+  `+3/-0` in the existing factory binding value table.
+- Package Test remains 625 lines/
+  `4db0316d78c66a43fff78f87339e0b7bda3c5dc094532e87380ad7bdc6272fbc`.
+- Frozen production remains package 251 lines/
+  `c980a150ca50160e5c637dbf06ef49138a96e357965a00295e3123d836642604`
+  and Runtime 148 lines/
+  `47a93574094a93026b23e1c0476e30755f8f6c9803132305a60e2deb3647d307`.
+- Causal RED: package 235/235; Runtime 86 total/82 pass/4 fail; complete
+  E 321/317/4. Failures are exactly Runtime/Adapter/dependency `Cf` leaves plus
+  the aggregate parent.
+- Healthy boundaries: inactive 15/15, typecheck, Local Analysis 198/198 and
+  292/292, E2E 133 PASS plus one authorized skip, project board 12/12;
+  canonical reaches only the same Runtime RED.
+- Retirement preflight: no assertion removed or weakened; no helper, fixture,
+  driver, dependency, temporary marker, skip/todo/only, TODO/FIXME, orphan, or
+  duplicate asset; `git diff --check` passes.
+- Worker authorization: only
+  `packages/ports/analytical-model-runtime.ts`; package production, every Test,
+  and all other paths are frozen.
 
 ## Controller Validator 003 Remediation TDD_READY
 

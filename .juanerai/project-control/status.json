@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_validator_006_test_return",
-    "label": "Model Pack Contract Enabler：Validator 006 Test Return",
+    "id": "model_pack_contract_enabler_validator_006_worker",
+    "label": "Model Pack Contract Enabler：Validator 006 Worker",
     "ordinal": 6,
     "total": 8
   },
   "health": "active",
-  "summary": "Validator 006 FAIL: Runtime, Adapter, and dependency identities admit Unicode Cf zero-width control characters.",
-  "current_objective": "Formal Test adds exactly three Runtime factory identity-control leaves with every production file frozen.",
-  "next_action": "Require exact causal RED before releasing only the Runtime Port to a bounded Worker.",
+  "summary": "Validator 006 remediation TDD_READY: package 235/235, Runtime 82/86, E 317/321 fail only on three leaves plus one parent.",
+  "current_objective": "Formal Worker makes the minimum Runtime-only Unicode-control identity correction.",
+  "next_action": "Require Runtime/E GREEN with every Test frozen, then rerun affected/canonical regression and Test Asset Retirement.",
   "blockers": [],
   "milestones": [
     {
@@ -35,12 +35,12 @@
     {
       "id": "test_red",
       "label": "Test / RED",
-      "status": "active"
+      "status": "completed"
     },
     {
       "id": "implementation_green",
       "label": "实现 / GREEN",
-      "status": "blocked"
+      "status": "active"
     },
     {
       "id": "independent_validation",
@@ -77,14 +77,14 @@
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra · high (R2 automatic escalation)",
-      "status": "active",
+      "status": "complete",
       "activation": "Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra · high (R2 route)",
-      "status": "waiting",
+      "status": "active",
       "activation": "TDD_READY"
     },
     {
@@ -105,7 +105,7 @@
     {
       "id": "tests",
       "label": "Validator public probes encoded",
-      "done": 35,
+      "done": 38,
       "total": 38
     },
     {
@@ -117,7 +117,7 @@
     {
       "id": "decisions",
       "label": "Validator defect classes test-covered",
-      "done": 10,
+      "done": 11,
       "total": 11
     }
   ],
@@ -604,7 +604,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-24T09:39:07.642Z",
+  "updated_at": "2026-08-24T09:45:53.233Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-recovery-20260824"
