@@ -2,19 +2,22 @@
 
 ## Current Verdict
 
-`ARCHIVED — VALIDATOR 008 PASS — CONTROLLER ACCEPTED`
+`EXTERNAL REVIEW FAIL — ACCEPTANCE/ARCHIVE WITHDRAWN — TEST DESIGN ACTIVE`
 
-The accepted delta specification is published unchanged at
-`openspec/specs/model-pack-contract-enabler/spec.md`, and this complete evidence
-package is archived at
-`openspec/changes/archive/2026-08-24-model-pack-contract-enabler/`. E remains
-inactive: no Provider, Consumer, Profile, CLI, SDK, real model, data, network,
-or MLflow activation was introduced. The required E -> H -> P -> C -> A order
-remains intact, and this archive does not authorize any downstream Change.
-Post-archive Controller verification passed: the archived delta spec and
-canonical spec are byte-identical; `git diff --check` passed; package 235/235,
-Runtime 86/86, complete E 321/321, inactive 15/15, project board 12/12, and the
-canonical offline validation command all exited zero.
+External review of PR #14 invalidated the accepted candidate at Head
+`27ede0970a70984e87c295dbd76917fb5b8017b0` with two frozen-contract defect
+families: MP9 canonical local `file:` URI admission accepts percent-encoded
+path-separator, alias/latest, and unusable-control bypasses; and Runtime factory
+identity length uses UTF-16 code units rather than the manifest contract's
+1–256 Unicode scalar rule, rejecting the 200-supplementary-scalar counterexample.
+Controller classifies this as incomplete Test Design plus production defects
+inside the unchanged frozen contract. PR #14 is Draft; acceptance and archive
+are withdrawn; the Change is active again and the unmerged canonical-spec copy
+is removed. All earlier RED/GREEN/Validator/acceptance/archive evidence remains
+historical. Production is frozen while formal `juaner_test` may change only the
+two existing contract suites to establish causal RED and check equivalent
+boundaries. Any required identity-semantic change returns to Controller and
+must not be hidden by changing the Spec. M1 and H/P/C/A remain blocked.
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -174,7 +177,7 @@ Profile, authorize downstream H/P/C/A, or merge the Git branch.
 - Validator 008 PASS Head: `1ef1b66c0fac726d25034d83cc2a52e9c33ee81b`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 008 PASS; Controller accepted; archive authorized
+- Current lifecycle: external review FAIL; acceptance/archive withdrawn; Test Design active
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -188,14 +191,14 @@ Profile, authorize downstream H/P/C/A, or merge the Git branch.
 | inactive-loader/closed-graph R2 package and Test return | historical Controller Spec Gate PASS; exact Local Analysis correction complete; strict inactive Test still conflicts with Node v26 nested `openSync` | superseded as current Gate authority by this nested-loader-chain revision |
 | nested-loader-chain R2 package | Controller Spec Gate PASS | one bounded inactive Test correction only |
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
-| Test Design and driver health | PASS; package Test 625 lines/`4db0316d…`, Runtime Test 492 lines/`f2685ff8…`; all prior assertions retained | none unless a Test byte changes |
-| causal expected RED | PASS; package 235/235, Runtime 82/86, E 317/321 fail only on three leaves plus one parent | Runtime-only Worker repair |
-| implementation | PASS; package unchanged 251 lines/`c980a150…`; Runtime 148 lines/`991bd21b…` | none unless production bytes change |
-| GREEN and affected regression | PASS; package 235/235, Runtime 86/86, E 321/321, inactive/affected/typecheck/project-board/canonical healthy | none unless frozen bytes change |
-| Test Asset Retirement | PASS; three permanent table leaves retained, scans clean, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
-| independent verification | PASS; Validator 008 standard matrix, equivalent 84/84, Unicode 17/17, scope/trace/retirement/cleanliness | none |
-| Controller/user acceptance | PASS under explicit continue-to-completion instruction; inactive E only | archive current accepted package |
-| archive | authorized | merge current spec and archive Change; no Git merge |
+| Test Design and driver health | reopened; formal Test must encode both external defect families and equivalent boundaries without changing Spec semantics | causal RED with healthy helpers and frozen Test hashes |
+| causal expected RED | pending | fail only on the new URI and Unicode-scalar leaves plus existing aggregate parents |
+| implementation | historical PASS invalidated; both production files frozen | TDD_READY may release only the owning necessary production file(s) |
+| GREEN and affected regression | historical PASS invalidated | focused E/inactive/Local Analysis/canonical GREEN on the repaired candidate |
+| Test Asset Retirement | reopened by new Test assets | reconcile full Test delta and fresh ponytail after GREEN |
+| independent verification | Validator 008 historical PASS invalidated by external counterexamples | fresh R2 / standard / Sol-high Validator PASS on a new frozen Head |
+| Controller/user acceptance | withdrawn | new Validator PASS plus Controller re-review |
+| archive | withdrawn; Change restored active | only after renewed acceptance; no Git merge |
 
 ## Validations Actually Run During Spec
 

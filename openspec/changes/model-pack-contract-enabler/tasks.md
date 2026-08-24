@@ -6,16 +6,16 @@
 |---|---|---|---|
 | `TASK-001` Complete R2 decision package | `juaner_spec`; complete | this Change's OpenSpec files only; preserves the public surface, prior permission-oracle disposition, and completed closed-graph correction while distinguishing the exact paired Node v26 source-loader chains from product filesystem effects | REQ-MPC-001..005 |
 | `TASK-002` Repeat Spec Gate and lean review | Controller; PASS | nested `openSync` loader-chain root cause, paired-chain/no-mechanism disposition, full-package consistency, and mandatory complete-diff ponytail review | all |
-| `TASK-003` Package Test Design and RED | `juaner_test`; complete and frozen | 625-line/`4db0316d…` suite unchanged | REQ-MPC-001, 004 |
-| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 006 return complete | 492-line/`f2685ff8…` suite adds three exact causal leaves; every other Test frozen | REQ-MPC-003..005 |
-| `TASK-005` TDD_READY | Controller; PASS | Runtime 82/86 and E 317/321 fail only on three leaves plus one parent; Runtime-only release | all |
-| `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | package production remains frozen | REQ-MPC-001, 002, 005 |
-| `TASK-007` Implement Runtime Port | `juaner_worker`; complete and frozen | Runtime-only Unicode-control correction GREEN | REQ-MPC-003, 005 |
+| `TASK-003` Package Test Design and RED | `juaner_test`; external-review return active | add minimum permanent MP9 percent-encoded URI boundary leaves to the existing package suite; preserve all prior assertions | REQ-MPC-002, 004 |
+| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; external-review return active | add minimum permanent 1–256 Unicode-scalar identity consistency leaves to existing package/Runtime suites; preserve all prior assertions | REQ-MPC-001, 003, 004 |
+| `TASK-005` TDD_READY | Controller; pending | exact causal RED, Test hashes/counts, lifecycle ledger, and only necessary production release | all |
+| `TASK-006` Implement contracts | `juaner_worker`; historical complete, reopened | only `packages/contracts/model-pack.ts` if causal RED proves ownership | REQ-MPC-001, 002, 005 |
+| `TASK-007` Implement Runtime Port | `juaner_worker`; historical complete, reopened | only `packages/ports/analytical-model-runtime.ts` if causal RED proves ownership | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
-| `TASK-009` GREEN and regression | complete and frozen | package 235/235, Runtime 86/86, E 321/321, affected/canonical PASS | all |
-| `TASK-010` Test Asset Retirement Gate | PASS | three rows retained; scans clean; fresh ponytail `Lean already. Ship.` | REQ-MPC-004 |
-| `TASK-011` Independent verification | Validator 008 PASS | standard/adversarial/scope/traceability/retirement/cleanliness PASS on the frozen product/Test candidate | all |
-| `TASK-012` Accept, integrate, archive | Controller; complete | canonical spec published, Change archived, strict E-first integration preserved, and Controller-only project-control completed | all |
+| `TASK-009` GREEN and regression | reopened | focused package/Runtime/E/inactive plus Local Analysis and canonical evidence | all |
+| `TASK-010` Test Asset Retirement Gate | reopened | reconcile complete Test delta, scans, and fresh ponytail review after GREEN | REQ-MPC-004 |
+| `TASK-011` Independent verification | Validator 008 historical PASS invalidated | fresh R2 / standard / Sol-high Validator on new frozen Head | all |
+| `TASK-012` Accept, integrate, archive | withdrawn | PR #14 Draft; no acceptance/archive/M1/H/P/C/A until new Validator PASS and re-review | all |
 
 ## Test-owned Exact Paths
 
