@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 004 REMEDIATION GREEN + RETIREMENT PASS — VALIDATOR 005 CANDIDATE`
+`VALIDATOR 005 FAIL — BOUNDED TWO-SUITE TEST DESIGN RETURN`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -82,6 +82,17 @@ only, temporary marker, orphan, or duplicate helper/fixture/driver; a fresh
 read-only Test Asset Retirement ponytail review returned exactly
 `Lean already. Ship.` Production and Test bytes are now frozen for a new
 committed read-only R2/Sol-high Validator 005.
+Validator 005 confirmed the entire declared matrix, every Validator 001..004
+historical probe, scope, architecture, inactive integration, and clean frozen
+Head, but its fresh 36-leaf public-boundary matrix returned 32 PASS/4 FAIL.
+Two caller-minted public `modelPackError` carriers can cross package/Runtime
+contexts and select an unrelated stable code, and two array containers admit
+Symbol/non-enumerable extra own keys. These behaviors violate the already
+frozen sanitization, precedence, provenance, and closed all-own-key rules.
+Current semantic GREEN and Test Asset Retirement are reopened. With production
+frozen, formal Test may add only those four permanent leaves to the existing
+package and Runtime contract suites; no Spec, scope, dependency, architecture,
+or activation change is needed.
 
 ## Frozen References
 
@@ -89,10 +100,11 @@ committed read-only R2/Sol-high Validator 005.
 - Failed frozen candidate Head: `c0bdf3a158a81d45131862debc8e2b1a24f076c3`
 - Validator 002 frozen Head: `1d88e0dafe4f80119f20677f5688622f2656ab3f`
 - Validator 003 frozen Head: `60a7aa09764c274c527e04d39b7ac6986560ba5f`
+- Validator 005 frozen Head: `fc134d5e9663a7de396fb1532090d87aeddcc12b`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 004 remediation GREEN and Test Asset Retirement
-  PASS; production and Test bytes frozen for Validator 005
+- Current lifecycle: Validator 005 FAIL; production frozen and only the two
+  existing contract suites released to bounded formal Test Design
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -109,9 +121,9 @@ committed read-only R2/Sol-high Validator 005.
 | Test Design and driver health | PASS; package Test 608 lines/`0c1c969a…`, Runtime Test 466 lines/`efae6d30…`; all prior assertions retained | none unless a Test byte changes |
 | causal expected RED | PASS; package 228/233, Runtime 73/81, E 301/314 fail only on 11 leaves plus two parents | bounded two-file Worker repair |
 | implementation | PASS; package 242 lines/`9318bbd7…`, Runtime 143 lines/`41573c5b…`; only the two released production files changed | none unless production bytes change |
-| GREEN and affected regression | PASS; package 233/233, Runtime 81/81, E 314/314, inactive/affected/typecheck/project-board/canonical healthy | none unless frozen bytes change |
-| Test Asset Retirement | PASS; all 11 permanent leaves retained, scans clean, fresh ponytail `Lean already. Ship.` | none unless Test bytes change |
-| independent verification | Validator 001/002/003 historical FAIL; Validator 004 FAIL on 11 adversarial public probes | corrected committed clean Head plus another fresh read-only Validator PASS |
+| GREEN and affected regression | historical standard PASS; Validator 005 found four missing material leaves | causal four-leaf RED then bounded two-file Worker repair |
+| Test Asset Retirement | reopened; prior 11 leaves retained but four material leaves are missing | rerun after four new leaves reach GREEN |
+| independent verification | Validator 001..005 historical FAIL; Validator 005 standard matrix PASS but fresh probe 32/36 | corrected committed clean Head plus another fresh read-only Validator PASS |
 | Controller/user acceptance | blocked | fresh Validator PASS and complete current evidence |
 | archive | blocked | acceptance and integration |
 
@@ -745,6 +757,40 @@ authorized before its PASS.
   `Lean already. Ship.`
 - Freeze: any production or Test byte change reopens its owning Gate. The next
   authorized action is one fresh committed read-only R2/Sol-high Validator 005.
+
+## Independent Validator 005 — FAIL and Bounded Contract Return
+
+- Date: `2026-08-24`; fresh R2 / standard / Sol-high read-only context.
+- Frozen Head: `fc134d5e9663a7de396fb1532090d87aeddcc12b`; branch and
+  merge-base exact; start/end worktree, index, and untracked inventory clean.
+- Standard evidence PASS: package 233/233; Runtime 81/81; complete E 314/314;
+  inactive 15/15; typecheck; affected Local Analysis 198/198, 292/292, and E2E
+  133 PASS plus one authorized skip; project board 12/12; canonical exit 0.
+- All Validator 001..004 probes and genuine lower-boundary carrier preservation
+  passed. The fresh public-boundary matrix returned 32 PASS/4 FAIL:
+  1. a caller uses public `modelPackError` to mint a registry-trusted carrier
+     and injects predict-only `ANALYTICAL_MODEL_CANCELLED` through a manifest
+     license getter; package serialization preserves the unrelated code rather
+     than `MODEL_PACK_CONTRACT_INVALID`;
+  2. the same public factory injection through preflight Artifact observation
+     preserves `ANALYTICAL_MODEL_CANCELLED` rather than the owning package or
+     preflight error;
+  3. a Symbol own key on the `limitations` array is silently admitted; and
+  4. a non-enumerable own key on Runtime `dependencies` is silently admitted.
+- Root cause: public carrier provenance/context confusion plus array containers
+  that validate elements without closed all-own-key structure. Both are inside
+  already-frozen REQ-MPC-001/003/004 semantics and the same two production
+  paths; no product, Spec, architecture, scope, dependency, or re-slice change
+  is needed.
+- Return Gate: production remains frozen. Formal Test may edit only the two
+  existing contract suites to establish these four independent permanent
+  leaves. Causal RED may release only package and Runtime production.
+- Retirement: prior structure is healthy and all 11 Validator 004 leaves pass,
+  but the four missing material leaves reopen the Gate after correction.
+- Temporary `/tmp/juanerai-validator005-probe.ts` was removed and absence
+  verified; no network, provider/model, MLflow, Artifact, install, or repository
+  write occurred.
+- Verdict: `FAIL`.
 
 ## Controller Validator 003 Remediation TDD_READY
 

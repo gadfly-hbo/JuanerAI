@@ -44,6 +44,15 @@ repeated Test Asset Retirement Gate found no retirement candidate and a fresh
 complete-delta ponytail returned exactly `Lean already. Ship.` These bytes are
 frozen for Validator 005.
 
+Validator 005 passed that full matrix and all historical probes but returned
+FAIL on four missing material leaves: two public-factory-generated carrier
+injections across package/Runtime error contexts, one Symbol own key on a
+package array, and one non-enumerable own key on the Runtime dependencies
+array. Production remains frozen. Only the two existing contract suites are
+released to formal Test for those exact permanent leaves; all other Test,
+fixture, driver, integration, graph, runner, docs, and production bytes remain
+locked.
+
 ## Historical TDD_READY Assets — Reopened
 
 | Asset | Lines | SHA-256 |
@@ -372,6 +381,37 @@ hashes, diff/status, and retirement preflight are mandatory before TDD_READY.
   no skip/todo/only, temporary asset, orphan, duplicate helper/fixture/driver,
   or weakened assertion. Fresh ponytail returned exactly
   `Lean already. Ship.`
+
+## Validator 005 Test Design Return
+
+At clean frozen Head `fc134d5e9663a7de396fb1532090d87aeddcc12b`, Validator
+005 ran the complete standard matrix and historical probe set successfully,
+then produced 32 PASS/4 FAIL in a fresh public-boundary matrix. Formal Test may
+change only the existing package and Runtime contract suites and must preserve
+every prior identity/assertion:
+
+1. package serializer: a manifest getter throws a carrier minted through the
+   public `modelPackError`; require the owning
+   `MODEL_PACK_CONTRACT_INVALID`, not caller-selected
+   `ANALYTICAL_MODEL_CANCELLED`;
+2. Runtime preflight: Artifact observation access throws the same public-minted
+   carrier; require the owning lower-boundary/preflight classification, never
+   caller-selected cancellation;
+3. package array closure: a Symbol own key on `limitations` must be rejected as
+   `MODEL_PACK_CONTRACT_INVALID`; and
+4. Runtime array closure: a non-enumerable own key on `dependencies` must make
+   construction synchronously fail as `ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE`.
+
+Frozen Test inputs are package 608 lines/
+`0c1c969a6595fad4e019c3e667c436c7cbfd9eed715a917c73334c3045d46c0f`
+and Runtime 466 lines/
+`efae6d30c7915fa2156897a63cd0c5fd15714cea77c4020a301f9c14739697f8`.
+Frozen production is package 242 lines/
+`9318bbd7676da0b2cefd0aec53b00314633ca946155d0124235e7dc9dd946e69`
+and Runtime 143 lines/
+`41573c5bfe1465d6a3b8cf09167942ad1ec41d098b809190badf83dff17233b7`.
+Exact causal RED plus healthy boundary counts, hashes, diff/status, and
+retirement preflight are mandatory before renewed TDD_READY.
 
 ## Historical Node v26 Loader-chain Conflict and Resolution
 

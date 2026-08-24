@@ -6,15 +6,15 @@
 |---|---|---|---|
 | `TASK-001` Complete R2 decision package | `juaner_spec`; complete | this Change's OpenSpec files only; preserves the public surface, prior permission-oracle disposition, and completed closed-graph correction while distinguishing the exact paired Node v26 source-loader chains from product filesystem effects | REQ-MPC-001..005 |
 | `TASK-002` Repeat Spec Gate and lean review | Controller; PASS | nested `openSync` loader-chain root cause, paired-chain/no-mechanism disposition, full-package consistency, and mandatory complete-diff ponytail review | all |
-| `TASK-003` Package Test Design and RED | `juaner_test`; Validator 004 return complete | 608-line/`0c1c969a…` suite adds four exact causal leaves | REQ-MPC-001, 002, 004 |
-| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 004 return complete | 466-line/`efae6d30…` suite adds seven exact causal leaves; every other Test frozen | REQ-MPC-003..005 |
-| `TASK-005` TDD_READY | Controller; PASS | package 228/233, Runtime 73/81, E 301/314 fail only on 11 leaves plus two parents; two production paths released | all |
+| `TASK-003` Package Test Design and RED | `juaner_test`; Validator 005 return active | add only public-carrier injection and array Symbol-key leaves to the existing suite | REQ-MPC-001, 004 |
+| `TASK-004` Runtime/inactive Test Design and RED | `juaner_test`; Validator 005 return active | add only preflight carrier-injection and dependencies non-enumerable-key leaves; every other Test frozen | REQ-MPC-003..005 |
+| `TASK-005` TDD_READY | Controller; reopened | require exact four-leaf causal RED before releasing the same two production paths | all |
 | `TASK-006` Implement contracts | `juaner_worker`; complete and frozen | package production closed all four package leaves | REQ-MPC-001, 002, 005 |
 | `TASK-007` Implement Runtime Port | `juaner_worker`; complete and frozen | Runtime production closed all seven Runtime leaves | REQ-MPC-003, 005 |
 | `TASK-008` Integrate exact graphs | `juaner_worker`; complete and frozen | existing exact E entries in `tsconfig.json` and exact E commands in `tools/harness/validation/run`; no further edit | REQ-MPC-004, 005 |
-| `TASK-009` GREEN and regression | complete and frozen | package 233/233, Runtime 81/81, E 314/314, affected/canonical PASS | all |
-| `TASK-010` Test Asset Retirement Gate | PASS | all 11 leaves retained; scans clean; fresh ponytail `Lean already. Ship.` | REQ-MPC-004 |
-| `TASK-011` Independent verification | Validator 005 ready | fresh committed read-only R2/Sol-high Validator | all |
+| `TASK-009` GREEN and regression | historical PASS; reopened | Validator 005 found four missing material leaves | all |
+| `TASK-010` Test Asset Retirement Gate | historical PASS; reopened | repeat after all four new leaves reach GREEN | REQ-MPC-004 |
+| `TASK-011` Independent verification | Validator 005 FAIL | fresh Validator only after renewed RED/GREEN/retirement freeze | all |
 | `TASK-012` Accept, integrate, archive | Controller/user according to risk | acceptance, strict E-first integration, current spec merge and archive; Controller-only project-control | all |
 
 ## Test-owned Exact Paths
