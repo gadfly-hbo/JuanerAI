@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823235018425-G8XIVM",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-23T23:50:18.425Z",
+  "actor": {
+    "role": "controller",
+    "session": "model-pack-contract-enabler-controller"
+  },
+  "summary": "E advanced from Spec Gate PASS to Test Design and expected RED.",
+  "status_after": "active",
+  "evidence_refs": []
+}

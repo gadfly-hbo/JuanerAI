@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824014054627-UQ71AT",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-24T01:40:54.627Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-model-pack-e-recovery"
+  },
+  "summary": "Formal Terra/high Test returned TEST_CONFLICT before writing tests: OpenSpec lacks exact TypeScript signatures, error carrier semantics, and the Runtime predictor construction seam required to derive non-invented RED. Spec Gate is reopened; no Test or production asset was created.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

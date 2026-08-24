@@ -109,4 +109,6 @@ node --test tests/unit/xanthil-local-analysis/*.test.ts
 node --test tests/contract/xanthil-local-analysis/*.test.ts
 node --test tests/integration/xanthil-local-analysis/*.test.ts
 node --test tests/e2e/xanthil-local-analysis/*.test.ts
+node --test tests/contract/model-pack-contract-enabler/*.test.ts
+node --test tests/integration/model-pack-contract-enabler/*.test.ts
 node --test tools/harness/project-board/project-control.test.mjs tools/harness/project-board/status-cli.test.mjs

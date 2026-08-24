@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824061607412-EJC3AD",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-24T06:16:07.412Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-e-test-002"
+  },
+  "summary": "Formal R2 Terra-high Test started the bounded Validator 002 two-suite return with production frozen",
+  "status_after": "active",
+  "evidence_refs": []
+}

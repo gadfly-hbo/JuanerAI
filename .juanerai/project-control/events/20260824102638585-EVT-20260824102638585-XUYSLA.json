@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824102638585-XUYSLA",
+  "event_type": "accepted",
+  "occurred_at": "2026-08-24T10:26:38.585Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-recovery-20260824"
+  },
+  "summary": "CHG-model-pack-contract-enabler Validator 008 PASS; Controller acceptance PASS and archive authorized.",
+  "status_after": "active",
+  "evidence_refs": []
+}

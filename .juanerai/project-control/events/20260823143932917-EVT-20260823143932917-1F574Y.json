@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823143932917-1F574Y",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-23T14:39:32.917Z",
+  "actor": {
+    "role": "controller",
+    "session": "model-pack-contract-enabler-controller"
+  },
+  "summary": "Reset lifecycle ledger for E: approved product plan intake is complete.",
+  "status_after": "active",
+  "evidence_refs": []
+}

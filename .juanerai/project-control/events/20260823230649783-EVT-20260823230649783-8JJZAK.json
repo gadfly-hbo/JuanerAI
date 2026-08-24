@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823230649783-8JJZAK",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-23T23:06:49.783Z",
+  "actor": {
+    "role": "controller",
+    "session": "model-pack-contract-enabler-controller"
+  },
+  "summary": "Recovered E Specification with a fresh formal R2 standard Sol high juaner_spec dispatch.",
+  "status_after": "active",
+  "evidence_refs": []
+}

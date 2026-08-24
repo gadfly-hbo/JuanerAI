@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824050908330-KVQP12",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-24T05:09:08.330Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-recovery"
+  },
+  "summary": "Corrected the E role ledger before candidate freeze: Worker is the completed Terra-high route and the fresh Sol-high Validator remains waiting.",
+  "status_after": "active",
+  "evidence_refs": []
+}

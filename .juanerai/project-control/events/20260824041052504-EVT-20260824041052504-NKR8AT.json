@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824041052504-NKR8AT",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-24T04:10:52.504Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-recovery"
+  },
+  "summary": "E inactive-loader/closed-graph Spec correction passed ponytail and Controller Spec Gate; bounded Test correction released.",
+  "status_after": "active",
+  "evidence_refs": []
+}

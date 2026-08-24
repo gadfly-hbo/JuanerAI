@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "run_evidence_console_pr10_validator_pass",
-    "label": "Run Evidence Console：独立验证 PASS / 等待 MacBook 最终审核",
-    "ordinal": 7,
+    "id": "model_pack_contract_enabler_archive_complete",
+    "label": "Model Pack Contract Enabler：Accepted / Archived / Squash Merge Authorization Pending",
+    "ordinal": 8,
     "total": 8
   },
-  "health": "validating",
-  "summary": "Independent Validator PASS and GitHub Canonical SUCCESS are bound to fixed implementation/evidence head a06e8df3bf568da6379140d520782cbe96dcda81; this governance-only record awaits MacBook final review.",
-  "current_objective": "Land the Controller-owned Validator PASS record without changing the accepted Console contracts or implementation.",
-  "next_action": "MacBook final review and, only when authorized, squash merge PR #10; Mac mini must not merge.",
+  "health": "complete",
+  "summary": "CHG-model-pack-contract-enabler accepted and archived after Validator 011 and external re-review PASS; PR #14 remains unmerged.",
+  "current_objective": "Preserve the accepted inactive Model Pack contract baseline and strict E to H to P to C to A order.",
+  "next_action": "Await explicit user authorization for squash merge of PR #14; do not generate M1 or start H/P/C/A before merge authorization.",
   "blockers": [],
   "milestones": [
     {
@@ -83,7 +83,7 @@
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
-      "model": "gpt-5.6-sol · high (single automatic Worker upgrade)",
+      "model": "gpt-5.6-terra · high (R2 route)",
       "status": "complete",
       "activation": "TDD_READY"
     },
@@ -98,27 +98,27 @@
   "metrics": [
     {
       "id": "requirements",
-      "label": "Console 需求",
-      "done": 7,
-      "total": 7
+      "label": "E frozen Requirements retained without semantic change",
+      "done": 5,
+      "total": 5
     },
     {
       "id": "tests",
-      "label": "Focused 测试",
-      "done": 82,
-      "total": 82
+      "label": "Validator 010 equivalent-boundary Test return",
+      "done": 2,
+      "total": 2
     },
     {
       "id": "tasks",
-      "label": "本轮本地返修",
-      "done": 4,
-      "total": 4
+      "label": "E lifecycle tasks closed",
+      "done": 12,
+      "total": 12
     },
     {
       "id": "decisions",
-      "label": "已批准 REC",
-      "done": 5,
-      "total": 5
+      "label": "External re-review PASS and Controller acceptance",
+      "done": 1,
+      "total": 1
     }
   ],
   "evidence": [
@@ -601,12 +601,24 @@
       "label": "Run Evidence Console independent Validator PASS at a06e8df3",
       "path": "openspec/changes/archive/2026-08-23-run-evidence-console/verification.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-081",
+      "label": "Model Pack current specification",
+      "path": "openspec/specs/model-pack-contract-enabler/spec.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-082",
+      "label": "Model Pack Contract Enabler archive evidence",
+      "path": "openspec/changes/archive/2026-08-24-model-pack-contract-enabler/verification.md",
+      "status": "verified"
     }
   ],
   "risks": [],
-  "updated_at": "2026-08-23T01:54:33.360Z",
+  "updated_at": "2026-08-24T13:00:10.284Z",
   "updated_by": {
     "role": "controller",
-    "session": "status-cli"
+    "session": "codex-controller-archive"
   }
 }

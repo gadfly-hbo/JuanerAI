@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823144618714-OQ6HVY",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-23T14:46:18.714Z",
+  "actor": {
+    "role": "controller",
+    "session": "model-pack-contract-enabler-controller"
+  },
+  "summary": "E Spec dispatch blocked by juaner_spec model capacity after three pre-write attempts.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

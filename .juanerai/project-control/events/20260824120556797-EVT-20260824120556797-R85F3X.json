@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824120556797-R85F3X",
+  "event_type": "task_completed",
+  "occurred_at": "2026-08-24T12:05:56.797Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-pr14-validator010-tdd-ready-20260824"
+  },
+  "summary": "Validator 010 formal Test causal RED accepted; package-only TDD_READY released",
+  "status_after": "active",
+  "evidence_refs": []
+}

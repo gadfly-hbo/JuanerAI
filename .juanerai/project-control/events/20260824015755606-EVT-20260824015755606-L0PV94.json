@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824015755606-L0PV94",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-24T01:57:55.606Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-model-pack-e-recovery"
+  },
+  "summary": "Mandatory R2 ponytail review returned five deletion/shrink findings (estimated net -220 lines); findings returned to formal Sol/high Spec before any revised Gate or Test dispatch.",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824042021583-WDSOL6",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-24T04:20:21.583Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-recovery"
+  },
+  "summary": "E Test Gate stopped: Node v26 first TypeScript imports require exact nested openSync within approved readFileSync source loads; current Spec names only readFileSync.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

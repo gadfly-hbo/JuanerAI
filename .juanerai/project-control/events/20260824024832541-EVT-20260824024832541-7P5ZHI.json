@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824024832541-7P5ZHI",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-24T02:48:32.541Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-model-pack-e-recovery"
+  },
+  "summary": "Formal Sol/high Test returned TEST_CONFLICT: limitation/license/rollback and Artifact location authorization/store values occur only once, so valid alternatives cannot be compared as evidence mismatches. Controller selected the no-new-mechanism shrink return to Spec; Worker scope remains NONE RELEASED.",
+  "status_after": "active",
+  "evidence_refs": []
+}

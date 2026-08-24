@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823235141284-BX0WJ9",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-23T23:51:41.284Z",
+  "actor": {
+    "role": "controller",
+    "session": "model-pack-contract-enabler-controller"
+  },
+  "summary": "Fresh formal R2 standard Terra high juaner_test dispatched for E.",
+  "status_after": "active",
+  "evidence_refs": []
+}

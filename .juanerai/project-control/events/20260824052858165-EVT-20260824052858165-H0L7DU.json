@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824052858165-H0L7DU",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-24T05:28:58.165Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-recovery"
+  },
+  "summary": "Formal R2 Terra-high Test remediation started on the sole package contract test; production is frozen and Worker/Validator are locked.",
+  "status_after": "active",
+  "evidence_refs": []
+}

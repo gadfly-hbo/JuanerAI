@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824033009808-UDAQ1S",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-24T03:30:09.808Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller"
+  },
+  "summary": "CHG-model-pack-contract-enabler Worker stopped: identical widened-permission manifest was required to both fail and serialize; returned to Spec/Test owning Gates.",
+  "status_after": "active",
+  "evidence_refs": []
+}

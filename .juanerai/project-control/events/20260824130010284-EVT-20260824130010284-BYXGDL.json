@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824130010284-BYXGDL",
+  "event_type": "archived",
+  "occurred_at": "2026-08-24T13:00:10.284Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-archive"
+  },
+  "summary": "E Controller closeout complete; squash merge, M1, and H/P/C/A remain blocked pending explicit user authorization",
+  "status_after": "complete",
+  "evidence_refs": []
+}

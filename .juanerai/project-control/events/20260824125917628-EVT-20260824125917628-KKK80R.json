@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824125917628-KKK80R",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-24T12:59:17.628Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-archive"
+  },
+  "summary": "PR #14 external re-review PASS recorded on exact Head 0d08df8; Controller-only closeout released",
+  "status_after": "active",
+  "evidence_refs": []
+}

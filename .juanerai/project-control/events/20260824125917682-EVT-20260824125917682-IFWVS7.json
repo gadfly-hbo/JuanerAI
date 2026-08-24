@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824125917682-IFWVS7",
+  "event_type": "accepted",
+  "occurred_at": "2026-08-24T12:59:17.682Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-archive"
+  },
+  "summary": "Controller acceptance restored after Validator 011 and external re-review PASS; only current-spec publication and archive released",
+  "status_after": "active",
+  "evidence_refs": []
+}

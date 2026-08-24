@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824130010188-VB706V",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-24T13:00:10.188Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-archive"
+  },
+  "summary": "TASK-012 completed; current spec and archive evidence registered in project control",
+  "status_after": "active",
+  "evidence_refs": []
+}

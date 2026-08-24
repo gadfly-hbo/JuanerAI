@@ -115,6 +115,14 @@ const approvedTsconfig = Object.freeze({
     'tests/fixtures/run-evidence-console/run-evidence-reader-contract.ts',
     'tests/fixtures/run-evidence-console/console-harness.ts',
     'tests/fixtures/run-evidence-console/coverage-map.ts',
+    'packages/contracts/model-pack.ts',
+    'packages/ports/analytical-model-runtime.ts',
+    'tests/contract/model-pack-contract-enabler/model-pack-package.contract.test.ts',
+    'tests/contract/model-pack-contract-enabler/analytical-model-runtime.contract.test.ts',
+    'tests/integration/model-pack-contract-enabler/contracts-inactive.integration.test.ts',
+    'tests/fixtures/model-pack-contract-enabler/model-pack-fixtures.ts',
+    'tests/fixtures/model-pack-contract-enabler/model-pack-package-driver.ts',
+    'tests/fixtures/model-pack-contract-enabler/analytical-model-runtime-driver.ts',
   ]),
 });
 const forbiddenRepositoryConfigurationNames = new Set([

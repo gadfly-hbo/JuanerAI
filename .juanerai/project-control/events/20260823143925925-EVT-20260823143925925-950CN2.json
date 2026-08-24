@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260823143925925-950CN2",
+  "event_type": "change_started",
+  "occurred_at": "2026-08-23T14:39:25.925Z",
+  "actor": {
+    "role": "controller",
+    "session": "model-pack-contract-enabler-controller"
+  },
+  "summary": "Started CHG-model-pack-contract-enabler on the approved MacBook branch and exact baseline.",
+  "status_after": "active",
+  "evidence_refs": []
+}

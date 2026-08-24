@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824043300205-SHD9J1",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-24T04:33:00.205Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-recovery"
+  },
+  "summary": "E Node v26 paired loader-chain Spec passed ponytail and Controller Spec Gate; one inactive Test edit released.",
+  "status_after": "active",
+  "evidence_refs": []
+}
