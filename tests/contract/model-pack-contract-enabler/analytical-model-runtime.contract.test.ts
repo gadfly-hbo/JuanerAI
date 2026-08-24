@@ -69,7 +69,10 @@ type RuntimeSignatureAssertions = [
 void (0 as unknown as RuntimeSignatureAssertions);
 
 type RuntimeModule = Readonly<{ defineAnalyticalModelRuntime(input: unknown): AnalyticalModelRuntime }>;
-type ContractModule = Readonly<{ serializeModelPackManifest(input: unknown): Uint8Array }>;
+type ContractModule = Readonly<{
+  serializeModelPackManifest(input: unknown): Uint8Array;
+  modelPackError(code: ModelPackErrorCode): Error;
+}>;
 
 function assertError(error: unknown, code: ModelPackErrorCode): true {
   assert.equal(error instanceof Error, true);
@@ -181,6 +184,14 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
     });
   }
 
+  await t.test('TEST-MPC-005 factory:dependencies-non-enumerable-own-key-is-incompatible', () => {
+    const controlled = createControlledPredictor();
+    const binding = clone(bindingFixture());
+    Object.defineProperty(binding.dependencies as object, 'unexpected_dependency', { value: true });
+    assert.throws(() => runtimeModule.defineAnalyticalModelRuntime({ binding: binding as never, predictor: controlled.predictor }), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
+    assert.equal(controlled.control.issueCount(), 0);
+  });
+
   await t.test('TEST-MPC-005 factory:Runtime-binding-identity-256-accepted-and-257-rejected-synchronously', () => {
     const accepted = clone(bindingFixture()); (accepted.runtime as RecordValue).identity = 'r'.repeat(256);
     assert.doesNotThrow(() => runtimeModule.defineAnalyticalModelRuntime({ binding: accepted as never, predictor: async () => forecastFixture() }));
@@ -235,6 +246,18 @@ test('TEST-MPC-005..007 production Runtime target and every independent mutation
     const harness = createHarness(runtimeModule);
     const candidate = { ...preflightInput(contracts), get manifest_bytes(): never { throw spoofedOrdinaryError('MODEL_PACK_REVOKED'); } };
     await assert.rejects(assertPromiseCall(() => harness.runtime.preflight(candidate as never)), (error) => assertError(error, 'ANALYTICAL_MODEL_RUNTIME_INCOMPATIBLE'));
+    assert.equal(harness.control.issueCount(), 0);
+  });
+
+  await t.test('TEST-MPC-005 preflight:artifact-observation-public-modelPackError-getter-is-sanitized-to-owning-Artifact-mismatch', async () => {
+    const harness = createHarness(runtimeModule);
+    const artifactObservation = clone(artifactObservationFixture());
+    Object.defineProperty(artifactObservation, 'artifact_uri', {
+      enumerable: true,
+      get() { throw contracts.modelPackError('ANALYTICAL_MODEL_CANCELLED'); },
+    });
+    const candidate = { ...preflightInput(contracts), artifact_observation: artifactObservation };
+    await assert.rejects(assertPromiseCall(() => harness.runtime.preflight(candidate as never)), (error) => assertError(error, 'MODEL_PACK_ARTIFACT_MISMATCH'));
     assert.equal(harness.control.issueCount(), 0);
   });
 

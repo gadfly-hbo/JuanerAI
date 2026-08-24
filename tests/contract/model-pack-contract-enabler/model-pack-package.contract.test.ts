@@ -261,6 +261,23 @@ test('TEST-MPC-001..003 production package target and every independent mutation
   ];
   await runMutationCases(t, manifestCases, manifestFixture, (candidate) => fn(module, 'serializeModelPackManifest')(candidate));
 
+  await t.test('TEST-MPC-001 manifest:public-modelPackError-license-getter-is-sanitized-to-owning-contract-invalid', () => {
+    const candidate = clone(manifestFixture());
+    Object.defineProperty(candidate, 'license', {
+      enumerable: true,
+      get() { throw fn(module, 'modelPackError')('ANALYTICAL_MODEL_CANCELLED'); },
+    });
+    assert.throws(() => fn(module, 'serializeModelPackManifest')(candidate), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+  });
+
+  await t.test('TEST-MPC-001 lifecycle:limitations-Symbol-own-key-is-contract-invalid', () => {
+    const candidate = clone(manifestFixture());
+    const limitations = [...candidate.limitations as string[]];
+    Object.defineProperty(limitations, Symbol('unexpected-limitation'), { value: true });
+    candidate.limitations = limitations;
+    assert.throws(() => fn(module, 'serializeModelPackManifest')(candidate), (error) => assertError(error, 'MODEL_PACK_CONTRACT_INVALID'));
+  });
+
   await t.test('TEST-MPC-001 evaluation:interval-coverage-exact-ninety-valid-and-precision-above-rejected', () => {
     const exactNinety = mutateManifestChild(manifestFixture(), 'evaluation', (evaluation) => ({ ...evaluation, observed_interval_coverage: '0.90' }));
     assert.deepEqual(fn(module, 'serializeModelPackManifest')(exactNinety), canonicalBytes(exactNinety));

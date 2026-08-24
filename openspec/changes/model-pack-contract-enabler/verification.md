@@ -2,7 +2,7 @@
 
 ## Current Verdict
 
-`VALIDATOR 005 FAIL — BOUNDED TWO-SUITE TEST DESIGN RETURN`
+`VALIDATOR 005 REMEDIATION TDD_READY — TWO-FILE WORKER RELEASED`
 
 This file is the current evidence read model. Earlier Spec Gates, Test returns,
 TDD_READY, candidate GREEN, and Test Asset Retirement PASS remain historical
@@ -93,6 +93,14 @@ Current semantic GREEN and Test Asset Retirement are reopened. With production
 frozen, formal Test may add only those four permanent leaves to the existing
 package and Runtime contract suites; no Spec, scope, dependency, architecture,
 or activation change is needed.
+Formal Test changed only the two existing contract suites and retained every
+prior assertion. Controller independently confirmed package 235 total/232
+pass/3 fail, Runtime 83/80/3, and complete E 318/312/6: failures are exactly
+the four new leaves plus the two aggregate parents. Inactive, typecheck,
+affected Local Analysis, E2E, project-board, and Test Asset Retirement preflight
+remain healthy; canonical exits nonzero only on the same E RED. Renewed
+TDD_READY releases only the package and Runtime production files; all Test and
+every other path are frozen.
 
 ## Frozen References
 
@@ -103,8 +111,8 @@ or activation change is needed.
 - Validator 005 frozen Head: `fc134d5e9663a7de396fb1532090d87aeddcc12b`
 - Branch: `work/macbook/model-pack-contract-enabler`
 - Change: `CHG-model-pack-contract-enabler`
-- Current lifecycle: Validator 005 FAIL; production frozen and only the two
-  existing contract suites released to bounded formal Test Design
+- Current lifecycle: Validator 005 remediation TDD_READY; only package and
+  Runtime production are released to the bounded Worker
 - Product activation: absent and forbidden in E
 
 ## Evidence Matrix
@@ -118,8 +126,8 @@ or activation change is needed.
 | inactive-loader/closed-graph R2 package and Test return | historical Controller Spec Gate PASS; exact Local Analysis correction complete; strict inactive Test still conflicts with Node v26 nested `openSync` | superseded as current Gate authority by this nested-loader-chain revision |
 | nested-loader-chain R2 package | Controller Spec Gate PASS | one bounded inactive Test correction only |
 | complete-diff ponytail/root-cause lean review for this revision | PASS: `Lean already. Ship.` | none |
-| Test Design and driver health | PASS; package Test 608 lines/`0c1c969a…`, Runtime Test 466 lines/`efae6d30…`; all prior assertions retained | none unless a Test byte changes |
-| causal expected RED | PASS; package 228/233, Runtime 73/81, E 301/314 fail only on 11 leaves plus two parents | bounded two-file Worker repair |
+| Test Design and driver health | PASS; package Test 625 lines/`4db0316d…`, Runtime Test 489 lines/`1d8ae3d9…`; all prior assertions retained | none unless a Test byte changes |
+| causal expected RED | PASS; package 232/235, Runtime 80/83, E 312/318 fail only on four leaves plus two parents | bounded two-file Worker repair |
 | implementation | PASS; package 242 lines/`9318bbd7…`, Runtime 143 lines/`41573c5b…`; only the two released production files changed | none unless production bytes change |
 | GREEN and affected regression | historical standard PASS; Validator 005 found four missing material leaves | causal four-leaf RED then bounded two-file Worker repair |
 | Test Asset Retirement | reopened; prior 11 leaves retained but four material leaves are missing | rerun after four new leaves reach GREEN |
@@ -791,6 +799,33 @@ authorized before its PASS.
   verified; no network, provider/model, MLflow, Artifact, install, or repository
   write occurred.
 - Verdict: `FAIL`.
+
+## Controller Validator 005 Remediation TDD_READY
+
+- Date: `2026-08-24`; formal Test route R2 / standard / Terra high.
+- Sole Test writes:
+  - package Test 608 lines/`0c1c969a…d46c0f` to 625 lines/
+    `4db0316d78c66a43fff78f87339e0b7bda3c5dc094532e87380ad7bdc6272fbc`;
+  - Runtime Test 466 lines/`efae6d30…967f8` to 489 lines/
+    `1d8ae3d921beb316d1edf9b7aa4add93bc238abdf42dee2c676da83a504ff8a4`.
+- Frozen production remains package 242 lines/
+  `9318bbd7676da0b2cefd0aec53b00314633ca946155d0124235e7dc9dd946e69`
+  and Runtime 143 lines/
+  `41573c5bfe1465d6a3b8cf09167942ad1ec41d098b809190badf83dff17233b7`.
+- Four permanent public leaves cover package and Runtime public-factory carrier
+  injection with exact owning error precedence, package array Symbol-key
+  closure, and Runtime dependencies non-enumerable-key closure.
+- Controller causal RED: package 235 total/232 pass/3 fail; Runtime 83/80/3;
+  complete E 318/312/6. Failures are exactly four leaves plus two parents.
+- Healthy boundaries: inactive 15/15, typecheck, affected Local Analysis
+  198/198 and 292/292, E2E 133 PASS plus one authorized skip, project board
+  12/12; canonical reaches only the same E RED.
+- Retirement preflight: no existing assertion was removed or weakened; no new
+  fixture, driver, helper, dependency, temporary marker, skip/todo/only,
+  TODO/FIXME, orphan, or duplicate asset. `git diff --check` passes.
+- Worker authorization: only `packages/contracts/model-pack.ts` and
+  `packages/ports/analytical-model-runtime.ts`; every Test and all other paths
+  are frozen.
 
 ## Controller Validator 003 Remediation TDD_READY
 

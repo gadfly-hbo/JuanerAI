@@ -21,7 +21,7 @@
 | Evidence | Expected | Current Result | Source |
 |---|---|---|---|
 | Requirements and AC closure | five Requirements and 30 ACs with executable coverage | 11 Validator 004 leaves are GREEN; four Validator 005 leaves are missing | `traceability.md`, `verification.md` |
-| expected RED | every material frozen invariant fails causally before implementation | package 228/233, Runtime 73/81, E 301/314: exactly 11 leaves plus two parents | `test-plan.md`, `verification.md` |
+| expected RED | every material frozen invariant fails causally before implementation | latest return: package 232/235, Runtime 80/83, E 312/318; exactly four leaves plus two parents | `test-plan.md`, `verification.md` |
 | target GREEN | focused, affected, and canonical evidence PASS | standard 233/81/314 PASS but four fresh public probes FAIL | `verification.md` |
 | contract/regression | exact package/Runtime/inactive behavior plus affected baseline | carrier context and array closure remain open | `verification.md` |
 | real runtime or external proof | none in E | correctly absent | `proposal.md` |
