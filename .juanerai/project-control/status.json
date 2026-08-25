@@ -12,9 +12,9 @@
     "total": 8
   },
   "health": "active",
-  "summary": "User explicitly authorized the pre-Candidate archive move. Controller atomically moved the active Change to openspec/changes/archive/2026-08-26-dual-device-transition-foundation, confirmed the active path absent, archive present, canonical spec present, and canonical/archive spec SHA-256 equal at 139ec5107d0908ed1f3676cef6d877f26c76c2bcdeb076d411493375caa49d69.",
-  "current_objective": "Freeze the exact archived Foundation Candidate, push the branch, create/read back the PR Head, and run the single fresh Validator against that Candidate.",
-  "next_action": "Controller inventories and precisely stages only Foundation project-control, archive, canonical spec, production/reference and Test paths; commits/pushes, creates the PR, verifies exact Head, and activates one fresh juaner_validator.",
+  "summary": "The strictly bounded four-item safety revision is GREEN. Frozen coordinator.test.mjs SHA-256 is ca3ca84bba61b1ee58292cb056f4e15509a94883fdafaf49e638b8de36827733; repaired coordinator.mjs SHA-256 is ed2f195dda273049439e4cf97f6e10697361c3bd498f5d6a2e314da2aa3f0516. Focused 173/173, project-control show, project-board 9/9 and canonical runner all passed. Old Candidate e577e26 remains rejected and unmerged.",
+  "current_objective": "Create the repaired exact Candidate, push the same branch, update PR #15, bind local/remote/PR Heads, and run one new exact-Candidate fresh Validator.",
+  "next_action": "Controller precisely stages only the authorized project-control, coordinator.test.mjs and coordinator.mjs revision, commits and pushes, verifies PR #15 Head equality, then activates one fresh read-only Validator.",
   "blockers": [],
   "milestones": [
     {
@@ -763,6 +763,30 @@
       "label": "Rejected agent_run_changed draft preserved byte-for-byte at SHA-256 c73e2c6ee2fd49c3749ad5fee1c240081e0b12fe0def439cd9d8fa9c315e4eeb",
       "path": "openspec/changes/archive/2026-08-26-dual-device-transition-foundation/rejected-event-evidence/20260825173305000-EVT-20260825173305000-HOFASF.json",
       "status": "verified"
+    },
+    {
+      "id": "EVD-108",
+      "label": "Four-item safety causality RED Test SHA-256 ca3ca84bba61b1ee58292cb056f4e15509a94883fdafaf49e638b8de36827733",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-109",
+      "label": "Four-item safety repair production SHA-256 ed2f195dda273049439e4cf97f6e10697361c3bd498f5d6a2e314da2aa3f0516",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-110",
+      "label": "Four-item safety revision focused GREEN 173/173",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-111",
+      "label": "Post-repair canonical validation runner exit 0",
+      "path": "tools/harness/validation/run",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -773,7 +797,7 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-25T22:46:40.000Z",
+  "updated_at": "2026-08-25T23:16:24.000Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-reduced-v1-final-candidate"

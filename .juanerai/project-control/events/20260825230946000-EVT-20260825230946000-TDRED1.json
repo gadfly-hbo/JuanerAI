@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825230946000-TDRED1",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T23:09:46.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-four-safety-red"
+  },
+  "summary": "Controller accepted the four-item causal RED at coordinator.test.mjs SHA-256 ca3ca84bba61b1ee58292cb056f4e15509a94883fdafaf49e638b8de36827733. Baseline was 171/171 PASS. Revised focused result is 173 tests with 166 pass, four real safety leaf failures plus three parent aggregate failures, exit 1, and zero cancelled/skipped/todo. Only coordinator.test.mjs changed; the original-scope Worker is authorized only for coordinator.mjs.",
+  "status_after": "active",
+  "evidence_refs": [
+    ".juanerai/project-control/events/20260825230109000-EVT-20260825230109000-SRA001.json",
+    "tools/harness/change-coordinator/coordinator.test.mjs"
+  ]
+}

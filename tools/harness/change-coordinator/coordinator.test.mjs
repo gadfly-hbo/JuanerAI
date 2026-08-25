@@ -622,6 +622,25 @@ test('TEST-DTF-R1-002: every pointer-first crash window prevents WIP misclassifi
     assertExactResult(replay, { operation: 'applyControllerCommand', outcome: 'ALREADY_APPLIED', state: 'READY' });
     assert.equal(harness.count('state.writePointer'), 1);
   });
+  await t.test('OK admission readback with wrong event, Change, subject, or expected digest remains effect-free', async () => {
+    const receipt = { tip: GIT_SHA, commit_sha: GIT_SHA, tree_sha: GIT_SHA, event_id: 'event-001', event_hash: SHA256, sequence: 1, record_bytes_sha256: SHA256, idempotency_id: 'idem-001', linearized: true };
+    const cases = [
+      ['event identity', { ...receipt, event_id: 'event-other' }, null],
+      ['Change identity', { ...receipt, change_id: CHANGE_B }, null],
+      ['subject identity', { ...receipt, subject_sha: GIT_SHA }, null],
+      ['expected digest', receipt, 'b'.repeat(64)],
+    ];
+    const observed = [];
+    for (const [name, value, forcedDigest] of cases) {
+      const harness = await createCoordinatorUnderTest();
+      const admitted = await harness.coordinator.applyControllerCommand(signed());
+      const receiptSha = forcedDigest ?? sha256(bytes(value));
+      harness.fault('ledger.readRemoteAppend', { kind: 'OK', value, receipt_sha256: receiptSha });
+      const result = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: admitted.state_version, expected_state_hash: admitted.state_hash });
+      observed.push({ name, outcome: result.outcome, state: result.state, worktree_calls: harness.count('git.createOrReuseWorktree'), agent_action: result.outcome === 'AGENT_ACTION' });
+    }
+    assert.deepEqual(observed, cases.map(([name]) => ({ name, outcome: 'BLOCKED', state: 'BLOCKED', worktree_calls: 0, agent_action: false })), 'CAUSAL_RED: kind OK is not admission proof unless event/Change/subject/digest identity matches the accepted DISPATCH admission');
+  });
 });
 
 test('TEST-DTF-R1-005: no local Ledger artifact is durable evidence; only exact remote record readback may advance', async t => {
@@ -669,13 +688,30 @@ test('TEST-DTF-R1-007: exact Candidate, Validator, PR, and Handoff identity is r
       assert.equal(result.payload.next_action, 'MANUAL_CONTROLLER_STOP'); reached(harness, dependency); noCall(harness, forbidden);
     });
   }
-  await t.test('Handoff reference/hash mismatch', async () => {
-    const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'HANDOFF', candidate: makeCandidate(), delivery: makeDelivery({ handoff_sha256: null }) }); harness.fault('handoff.writeReadback', conflict('handoff-sha'));
+  await t.test('Candidate freeze re-reads local, remote, and Validator Heads and blocks every mismatch', async () => {
+    const cases = [
+      ['local Candidate Head', 'git.readCommit', { kind: 'OK', value: { sha: GIT_SHA, parent: GIT_SHA, tree: GIT_SHA, branch: 'work/mac-mini/dtf' } }, makeCandidate({ frozen: false })],
+      ['remote branch Head', 'git.readRemoteBranch', { kind: 'OK', value: { remote_head: GIT_SHA } }, makeCandidate({ frozen: false })],
+      ['Validator Head', null, null, makeCandidate({ frozen: false, validator_head: GIT_SHA })],
+    ];
+    const observed = [];
+    for (const [name, dependency, fault, candidate] of cases) {
+      const harness = await createCoordinatorUnderTest();
+      const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'CANDIDATE_FREEZE', candidate, delivery: makeDelivery({ pull_request: null, handoff_sha256: null }) });
+      if (dependency) harness.fault(dependency, fault);
+      const result = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+      observed.push({ name, outcome: result.outcome, state: result.state, fault_reached: dependency ? harness.count(dependency) === 1 : true, frozen: harness.stateStore.state.candidate?.frozen, canonical_diff_calls: harness.count('git.canonicalDiff'), pr_calls: harness.count('pull_request.createOrReuse') });
+    }
+    assert.deepEqual(observed, cases.map(([name]) => ({ name, outcome: 'BLOCKED', state: 'BLOCKED', fault_reached: true, frozen: false, canonical_diff_calls: 0, pr_calls: 0 })), 'CAUSAL_RED: freeze must re-read local/remote Candidate identity and bind the exact Validator Head before diff, freeze, or PR');
+  });
+  await t.test('format-valid wrong Handoff hash is durably BLOCKED without follow-on effects', async () => {
+    const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'HANDOFF', candidate: makeCandidate(), delivery: makeDelivery({ handoff_sha256: null }) }); const wrong = 'b'.repeat(64); harness.fault('handoff.writeReadback', { kind: 'OK', value: { handoff_sha256: wrong, delivery_id: 'delivery-001' }, receipt_sha256: SHA256 });
     const result = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
     assertExactResult(result, { operation: 'run', outcome: 'BLOCKED', state: 'BLOCKED' });
     assert.equal(result.payload.next_action, 'MANUAL_CONTROLLER_STOP'); reached(harness, 'handoff.writeReadback'); reached(harness, 'state.writeState');
+    const handoffCall = harness.calls.find(call => call.name === 'handoff.writeReadback'); assert.notEqual(handoffCall.request.expected_sha256, wrong, 'PRECONDITION_NOT_REACHED: returned hash must be well formed but different from this Handoff expected hash');
     const blockedWrite = harness.calls.filter(call => call.name === 'state.writeState').at(-1); assert.equal(blockedWrite.request.state.macro_state, 'BLOCKED'); assert.equal(harness.calls.slice(harness.calls.indexOf(blockedWrite) + 1).some(call => call.name === 'state.readState'), true, 'CAUSAL_RED: durable BLOCKED state must be read back');
-    assert.equal(harness.stateStore.state.macro_state, 'BLOCKED'); assert.equal(harness.count('handoff.writeReadback'), 1, 'CAUSAL_RED: identity conflict cannot trigger another Handoff external effect');
+    assert.equal(harness.stateStore.state.macro_state, 'BLOCKED'); assert.equal(harness.count('handoff.writeReadback'), 1, 'CAUSAL_RED: identity conflict cannot trigger another Handoff external effect'); assert.equal(harness.calls.some(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'HANDOFF_READY'), false, 'CAUSAL_RED: mismatched Handoff bytes cannot publish HANDOFF_READY');
   });
   await t.test('Validator settlement with a wrong Candidate subject blocks before branch push', async () => {
     const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'VALIDATOR', candidate: makeCandidate({ frozen: false, validator_head: null }), delivery: null });
@@ -714,9 +750,26 @@ test('TEST-DTF-R1-010: every RELEASE failure retains active pointer and exact re
       const other = await harness.coordinator.applyControllerCommand(signed({ change_id: CHANGE_B, command_id: 'command-b', idempotency_id: 'idem-b' })); assertExactResult(other, { operation: 'applyControllerCommand', outcome: 'REJECTED', code: 'WIP_AUTHORITY_INVALID' });
     });
   }
-  await t.test('CLOSED with retained pointer only clears pointer and never repeats sync or RELEASE event', async () => {
-    const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'CLOSED', phase: null, state_version: 9, candidate: makeCandidate(), delivery: makeDelivery() });
-    const result = await harness.coordinator.applyControllerCommand(releaseFor(identity)); assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'CLOSED', state: 'CLOSED' }); assert.equal(harness.count('git.syncMainFfOnly'), 0); assert.equal(harness.count('ledger.prepareAppend'), 0); assert.equal(harness.stateStore.pointer.active_change_id, null);
+  await t.test('CLOSED with retained pointer clears only for the exact already-persisted RELEASE', async () => {
+    const seed = await createCoordinatorUnderTest(); const awaiting = primeState(seed, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
+    const originalBody = makeDispatch({ command_kind: 'RELEASE', command_id: 'release-001', idempotency_id: 'release-idem-001', receipt_digest: 'c'.repeat(64), evidence_refs: [{ kind: 'controller_receipt', id: 'release-receipt-001', sha256: 'd'.repeat(64), subject_sha: CANDIDATE_SHA }], payload: { squash_sha: CANDIDATE_SHA, acceptance_ref: 'acceptance-001', merge_ref: 'merge-001', archive_ref: 'archive-001', origin_main_sha: CANDIDATE_SHA, macbook_main_sha: CANDIDATE_SHA }, expected_state_version: awaiting.expected_state_version, expected_state_hash: awaiting.expected_state_hash });
+    const originalRequest = { command_body_bytes: bytes(originalBody), signature_bytes: new Uint8Array([1, 2, 3]) };
+    const makeClosed = async () => { const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'CLOSED', phase: null, state_version: 9, candidate: makeCandidate(), delivery: makeDelivery(), last_controller_command_id: originalBody.command_id, evidence: { remote_tip: GIT_SHA, last_event_id: 'event-001', last_event_hash: SHA256, last_readback_sha256: sha256(originalRequest.command_body_bytes) } }); return { harness, identity }; };
+    const exact = await makeClosed(); const exactResult = await exact.harness.coordinator.applyControllerCommand(originalRequest);
+    const mutations = [
+      ['command', body => { body.command_id = 'release-002'; }],
+      ['body', body => { body.payload.archive_ref = 'archive-other'; }],
+      ['idempotency', body => { body.idempotency_id = 'release-idem-002'; }],
+      ['receipt', body => { body.receipt_digest = 'e'.repeat(64); }],
+      ['evidence', body => { body.evidence_refs = [{ kind: 'controller_receipt', id: 'release-receipt-002', sha256: 'f'.repeat(64), subject_sha: CANDIDATE_SHA }]; }],
+    ];
+    const observed = [{ name: 'exact', outcome: exactResult.outcome, pointer: exact.harness.stateStore.pointer.active_change_id, sync_calls: exact.harness.count('git.syncMainFfOnly'), ledger_calls: exact.harness.count('ledger.prepareAppend') }];
+    for (const [name, mutate] of mutations) {
+      const { harness, identity } = await makeClosed(); const body = structuredClone(originalBody); mutate(body); body.expected_state_version = identity.expected_state_version; body.expected_state_hash = identity.expected_state_hash;
+      const result = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: new Uint8Array([1, 2, 3]) });
+      observed.push({ name, outcome: result.outcome, pointer: harness.stateStore.pointer.active_change_id, sync_calls: harness.count('git.syncMainFfOnly'), ledger_calls: harness.count('ledger.prepareAppend') });
+    }
+    assert.deepEqual(observed, [{ name: 'exact', outcome: 'CLOSED', pointer: null, sync_calls: 0, ledger_calls: 0 }, ...mutations.map(([name]) => ({ name, outcome: 'REJECTED', pointer: CHANGE_ID, sync_calls: 0, ledger_calls: 0 }))], 'CAUSAL_RED: only the original persisted RELEASE bytes may finish the pointer-clear crash window; every different signed RELEASE must stop without business effects');
   });
   await t.test('CLOSED with cleared pointer returns ALREADY_APPLIED without a business effect', async () => {
     const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'CLOSED', phase: null, state_version: 9, candidate: makeCandidate(), delivery: makeDelivery() }); harness.stateStore.pointer.active_change_id = null;
