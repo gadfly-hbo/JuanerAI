@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825103929941-PRZJRV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-25T10:39:29.941Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "Bounded F1-F8 Spec revision and Controller readback completed; juaner_spec is locked and a brand-new independent read-only rereview is the only active next action.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825112213087-OBVYXU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-25T11:22:13.087Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "User froze the second fresh review as the Spec-stage hard stop. Minor wording and implementation-detail findings are non-blocking follow-up; only safety, state, WIP, or unrecoverable-data defects may block. No third Spec revision is authorized.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

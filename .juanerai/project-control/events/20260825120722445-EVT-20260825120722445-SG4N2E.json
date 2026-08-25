@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825120722445-SG4N2E",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-25T12:07:22.445Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "User explicitly authorized juaner_test to substantially rewrite or replace the existing contents of the four rejected old-contract Test/fixture files, while retaining the files and adding no new Test path. Test/RED resumes; every later Gate remains locked.",
+  "status_after": "active",
+  "evidence_refs": []
+}

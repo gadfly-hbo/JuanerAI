@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825124633645-IG4L4B",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T12:46:33.645Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-test-red-readback"
+  },
+  "summary": "Authorized Reduced V1 four-file Test rewrite produced causal RED but not the frozen exhaustive Test Plan matrix; Test Gate is waiting for the user completion-criterion decision.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

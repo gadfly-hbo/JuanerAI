@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825161457000-TDDR05",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T16:14:57.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-final-red-worker-resume"
+  },
+  "summary": "Controller accepted the final dual-axis-findings Test correction as TDD_READY. Independent rerun: 154 total, 127 pass, 27 fail; 20 independent causal leaves cover exact production composition, recursively closed commands, complete unprimed normal path, exact settlements, REVISION/RESUME, canonical state CAS/readback, closed gateway receipts, exact Ledger admission detail, independent RELEASE main worktree, truthful CLI status/ingress-unavailable, and raw canonical diff bytes/receipt. Test SHA-256: coordinator=c4615c4556c1ab6e707027e8803a5ef940b6201c6783abb5eef9a36e7eaad05d; cli=c976fd881a01904dbb2b15aae3b580125c012d355473e7055c56715651cdabda; git=b163b0df0f2ef3c70a6c64ccf4267e1fc539fe35d47ab22aee08a7bb51047640; fixtures=06240e867c14797a7348764dc76f2bd33da726383276ac2859d0ab3a921697e4. Static/no-marker checks passed. No further Standards or Spec Reviewer is authorized.",
+  "status_after": "active",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/cli.test.mjs",
+    "tools/harness/change-coordinator/git.integration.test.mjs",
+    "tools/harness/change-coordinator/fixtures.mjs",
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "tools/harness/change-coordinator/cli.mjs",
+    "tools/harness/change-coordinator/adapters.mjs"
+  ]
+}

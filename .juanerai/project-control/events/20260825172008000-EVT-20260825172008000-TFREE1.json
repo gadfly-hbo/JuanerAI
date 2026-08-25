@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825172008000-TFREE1",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T17:20:08.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-final-test-freeze"
+  },
+  "summary": "Controller permanently froze the final self-consistent Test set. The only last correction made two legacy canonicalDiff leaves consume the exact GatewayResultV1 value instead of contradictory top-level fields. Independent run: 171 total, 151 pass, 20 expected production failures, 0 cancelled/skipped/todo. Frozen SHA-256: coordinator=ea897d63d723d2b3ab70561061606ba69b60796bdf9b43c328be235d732c924c; cli=28dcc5911c337bf7c3920bc8606657acced5292d5996dba8f77a9d30dd79a84a; git=b56712c825a5891ffb1be329c2f5714d9457468c402da1c854aa07111d44e358; fixtures=ffe6774e23e591626d1a6cc046a483d4e78ee3dcf6ab87669344c8d16a634b76. Test role is closed. Only the same original Worker may perform one final four-file revision. Afterward Controller may only rerun the frozen suite, existing safety counterexamples, and last-review targeted source checks. Test Gate may reopen only for Controller authentication bypass, Global WIP misclassification/second Change admission, false Ledger durability, Candidate/Validator/remote/PR Head misbinding, RELEASE pointer-clear error, or unrecoverable data error. Other findings go to Regression, Mode Activation, or risk records.",
+  "status_after": "active",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/cli.test.mjs",
+    "tools/harness/change-coordinator/git.integration.test.mjs",
+    "tools/harness/change-coordinator/fixtures.mjs",
+    "openspec/changes/dual-device-transition-foundation/design.md",
+    "openspec/changes/dual-device-transition-foundation/specs/dual-device-transition-foundation/spec.md"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825045758096-CC006A",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-25T04:57:58.096Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "User approved bounded Contract Correction 006; formal Spec correction released, all later Gates remain frozen.",
+  "status_after": "active",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/DTF-CC006-001.json",
+    "openspec/changes/dual-device-transition-foundation/verification.md"
+  ]
+}

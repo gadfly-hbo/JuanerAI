@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824223423541-AU4AQ5",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-24T22:34:23.541Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-mode-switch"
+  },
+  "summary": "Fresh Sol-high Test replan returned TEST_CONFLICT on underspecified RevisionPackageV1; bounded Spec correction required.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

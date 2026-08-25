@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825063432450-CC008A",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-25T06:34:32.450Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "User approved DTF-CC008-001 option A; formal Spec may freeze the root-owned public trust anchor and dedicated MacBook signing-key protocol without provisioning it yet.",
+  "status_after": "active",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/DTF-CC008-001.json",
+    "openspec/changes/dual-device-transition-foundation/verification.md"
+  ]
+}

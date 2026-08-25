@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825120445738-KEBCQD",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T12:04:45.738Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "juaner_test was denied scoped permission to substantially replace the four rejected old-contract Test/fixture files. No file changed and no RED ran. SPEC_GATE_PASS remains valid; Test waits for explicit four-file replacement authorization and all later Gates remain locked.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

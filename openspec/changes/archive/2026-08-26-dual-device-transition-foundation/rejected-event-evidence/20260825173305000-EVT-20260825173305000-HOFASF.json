@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825173305000-HOFASF",
+  "event_type": "agent_run_changed",
+  "occurred_at": "2026-08-25T17:33:05.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-handoff-durability-worker"
+  },
+  "summary": "The same original juaner_worker retry was rejected at platform prompt admission before execution. Recorded as START_FAILED: no candidate was produced and no repository file was written. Controller retried the identical authorized one-file scope with a shorter brief; no authority, Test, production path, or completion criterion changed.",
+  "status_after": "active",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.mjs",
+    ".juanerai/project-control/events/20260825173045000-EVT-20260825173045000-HOFRED.json"
+  ]
+}

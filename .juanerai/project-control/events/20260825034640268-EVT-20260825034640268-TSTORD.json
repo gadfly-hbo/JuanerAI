@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825034640268-TSTORD",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T03:46:40.268Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "Worker stopped on a contradictory Final Handoff Test order; Test-only correction authorized.",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/dual-device-transition-foundation/design.md",
+    "openspec/changes/dual-device-transition-foundation/verification.md"
+  ]
+}

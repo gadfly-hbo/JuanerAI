@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825152702000-RVWF01",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T15:27:02.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-review-fail-test-return"
+  },
+  "summary": "Dual-axis code review rejected the current 115/115 focused result. Standards verdict FAIL with three P1 and one P2 finding; Spec verdict FAIL with four P0, four P1, and one P2 finding. Direct probes proved legacy seven-operation production exports, a separate test-only state machine, stale state CAS acceptance, non-durable manual stop across Coordinator reconstruction, incomplete Ledger/Agent/Candidate/PR/Handoff/RELEASE contracts, uncomposable production adapters, and fixed CLI status. These are frozen-contract Test and implementation defects; Controller returned the same Change to fresh Test-only causal correction without changing OpenSpec or scope.",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/dual-device-transition-foundation/design.md",
+    "openspec/changes/dual-device-transition-foundation/specs/dual-device-transition-foundation/spec.md",
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/adapters.mjs",
+    "tools/harness/change-coordinator/git.integration.test.mjs",
+    "tools/harness/change-coordinator/cli.mjs",
+    "tools/harness/change-coordinator/cli.test.mjs"
+  ]
+}

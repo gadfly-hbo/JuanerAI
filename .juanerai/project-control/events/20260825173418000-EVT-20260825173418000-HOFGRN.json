@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825173418000-HOFGRN",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T17:34:18.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-regression"
+  },
+  "summary": "DTF-HANDOFF-STATE-DURABILITY-001 GREEN. The same original Worker candidate changed only coordinator.mjs by removing the HANDOFF_IDENTITY_MISMATCH early-return special case. Controller applied candidate SHA-256 556deacf5265e2f6d8153585061e2cbbf878ae77509cd852f7c8dc47cdb65869 and verified directed R1-007 7/7 PASS, complete frozen suite 171/171 PASS, five existing safety counterexample groups 49/49 PASS, node syntax, diff check, exact Test hashes, and source readback. Handoff identity conflict now writes and reads back BLOCKED through the common path and does not repeat the Handoff effect. Regression is authorized by the user's standing instruction.",
+  "status_after": "active",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    ".juanerai/project-control/events/20260825173045000-EVT-20260825173045000-HOFRED.json"
+  ]
+}

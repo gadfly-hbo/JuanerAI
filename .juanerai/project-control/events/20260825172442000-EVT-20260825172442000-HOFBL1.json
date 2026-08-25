@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825172442000-HOFBL1",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T17:24:42.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-final-safety-readback"
+  },
+  "summary": "The same original Worker final candidate was applied exactly and independently passed the immutable 171/171 focused suite plus 49/49 existing safety counterexamples. Targeted source readback then found a hard-stop safety contradiction: coordinator.mjs special-cases HANDOFF_IDENTITY_MISMATCH by returning a new BLOCKED state/version/hash without state.writeState, while the frozen Handoff mismatch Test forbids state.writeState and still expects state BLOCKED. The durable state therefore remains DELIVERING/HANDOFF even though the result claims a persisted manual stop, allowing Handoff replay after re-entry. This meets the user-defined false-persistence or unrecoverable-data blocker threshold. Regression and all later Gates remain stopped; no Test or Worker expansion is authorized.",
+  "status_after": "blocked",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "openspec/changes/dual-device-transition-foundation/design.md",
+    "openspec/changes/dual-device-transition-foundation/specs/dual-device-transition-foundation/spec.md"
+  ]
+}

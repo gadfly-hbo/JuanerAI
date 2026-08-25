@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825070948354-CC8RV1",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T07:09:48.354Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "CC008 independent repeated Spec review returned NEEDS_CLARIFICATION; Test and Worker remain frozen while the same Spec Agent closes bounded no-choice contract gaps.",
+  "status_after": "validating",
+  "evidence_refs": [
+    "openspec/changes/dual-device-transition-foundation/verification.md",
+    "openspec/changes/dual-device-transition-foundation/design.md",
+    "openspec/changes/dual-device-transition-foundation/test-plan.md"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825165728000-TDDR08",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T16:57:28.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-findings-bound-red"
+  },
+  "summary": "Controller accepted the strictly findings-bound Test correction as TDD_READY. Only coordinator.test.mjs and git.integration.test.mjs changed. Independent full run: 171 total, 154 pass, 17 expected failures, 0 cancelled/skipped/todo; 13 direct causal leaves plus four parent aggregations. RED binds exact StateV1 and restart route authority, REQUESTED/STARTED Agent durability, VALIDATION_RESULT/BRANCH_PUSHED/HANDOFF ordering and complete Handoff bytes, no false durable BLOCKED claim, production Git GatewayResult composition, dirty/non-main RELEASE sync rejection, and canonical Git version/common-dir identity. Test SHA-256: coordinator=7be99e35052adeb4969191eccda5556ee5eae3f40420695feaf6d132fa5ee773; cli=28dcc5911c337bf7c3920bc8606657acced5292d5996dba8f77a9d30dd79a84a; git=c55565546dc9e516e70b9661e96b6bf5a07102c750caff447b4b9d238080e5d6; fixtures=06240e867c14797a7348764dc76f2bd33da726383276ac2859d0ab3a921697e4. The same original-scope Worker may resume; no new Reviewer or Validator started.",
+  "status_after": "active",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/cli.test.mjs",
+    "tools/harness/change-coordinator/git.integration.test.mjs",
+    "tools/harness/change-coordinator/fixtures.mjs",
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "tools/harness/change-coordinator/adapters.mjs"
+  ]
+}
