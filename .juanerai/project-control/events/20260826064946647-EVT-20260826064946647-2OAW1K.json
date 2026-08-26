@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826064946647-2OAW1K",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-26T06:49:46.647Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-fcr-validator"
+  },
+  "summary": "Fresh exact-Candidate Validator FAIL on four frozen safety boundaries; PR #16 preserved and merge stopped",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

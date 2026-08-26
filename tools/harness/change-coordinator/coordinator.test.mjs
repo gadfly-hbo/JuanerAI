@@ -588,6 +588,30 @@ test('TEST-DTF-R1-001: authentication bypass attempts through signed body and de
   }
 });
 
+test('TEST-FCR-SAFETY-001: an empty signed DISPATCH Change identity rejects before false WIP or protected effects', async () => {
+  const harness = await createCoordinatorUnderTest();
+  const result = await harness.coordinator.applyControllerCommand(signed({ change_id: '' }));
+  assert.deepEqual({
+    outcome: result.outcome,
+    error_code: result.error_code,
+    active_change_id: harness.stateStore.pointer.active_change_id,
+    durable_state: harness.stateStore.state,
+    pointer_writes: harness.count('state.writePointer'),
+    state_writes: harness.count('state.writeState'),
+    ledger_reads: harness.count('ledger.readRemote'),
+    worktree_creates: harness.count('git.createOrReuseWorktree'),
+  }, {
+    outcome: 'REJECTED',
+    error_code: 'INPUT_INVALID',
+    active_change_id: null,
+    durable_state: null,
+    pointer_writes: 0,
+    state_writes: 0,
+    ledger_reads: 0,
+    worktree_creates: 0,
+  }, 'CAUSAL_RED: an empty Change identity cannot occupy WIP, persist READY, append admission, or create a Worktree');
+});
+
 test('TEST-DTF-R1-002: every pointer-first crash window prevents WIP misclassification or Change B admission', async t => {
   const windows = [
     ['missing pointer', 'state.readPointer', unavailable({ stage: 'POINTER_READ' }), false],
@@ -913,6 +937,32 @@ test('TEST-FCR-002: an exact Frozen-Candidate AWAITING_CONTROLLER revision retur
     assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED' });
     assert.deepEqual({ state: harness.count('state.writeState'), ledger: harness.count('ledger.prepareAppend') }, before, 'CAUSAL_RED: mismatched revision Candidate cannot consume the exact Frozen Candidate review return');
   });
+  await t.test('an empty changes-requested reference cannot match an empty evidence identity or authorize revision effects', async () => {
+    const { harness, identity } = await awaiting();
+    const request = revisionFor(identity);
+    const body = JSON.parse(new TextDecoder().decode(request.command_body_bytes));
+    body.payload.changes_requested_ref = '';
+    body.evidence_refs = [{ ...reviewEvidence[0], id: '' }];
+    const before = {
+      state: harness.count('state.writeState'),
+      ledger: harness.count('ledger.prepareAppend'),
+      agent: harness.calls.filter(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN').length,
+    };
+    const result = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: request.signature_bytes });
+    assert.deepEqual({
+      outcome: result.outcome,
+      error_code: result.error_code,
+      effects: {
+        state: harness.count('state.writeState'),
+        ledger: harness.count('ledger.prepareAppend'),
+        agent: harness.calls.filter(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN').length,
+      },
+    }, {
+      outcome: 'REJECTED',
+      error_code: 'INPUT_INVALID',
+      effects: before,
+    }, 'CAUSAL_RED: empty Controller decision identities cannot satisfy REVISION evidence binding or mutate durable state');
+  });
 });
 
 test('TEST-FCR-003: later Candidates use the durable local parent and publication preserves first-versus-update boundaries', async t => {
@@ -955,7 +1005,7 @@ test('TEST-FCR-003: later Candidates use the durable local parent and publicatio
     await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
     const names = harness.calls.map(call => call.name);
     assert.ok(names.indexOf('git.readRemoteBranch') < names.indexOf('git.pushBranch'), 'CAUSAL_RED: a non-null durable delivery.remote_head requires exact pre-push readRemoteBranch');
-    assert.equal(harness.calls.find(call => call.name === 'git.pushBranch')?.request.prior_remote_head, CANDIDATE_SHA, 'CAUSAL_RED: normal push must carry the exact durable remote predecessor');
+    assert.equal(harness.calls.find(call => call.name === 'git.pushBranch')?.request.expected_remote_head, CANDIDATE_SHA, 'CAUSAL_RED: normal push must carry the exact durable remote predecessor');
   });
   await t.test('a mismatched old remote Head blocks the already-published branch before push', async () => {
     const harness = await createCoordinatorUnderTest();
@@ -1038,6 +1088,32 @@ test('TEST-FCR-004: settlements are the four canonical variants and NOT_STARTED 
       assertExactResult(result, { operation: 'settlement', outcome: 'REJECTED', code: 'SETTLEMENT_INVALID' }, `CAUSAL_RED: ${name}`);
       assert.equal(harness.stateStore.state.pending_agent?.correlation_id, binding.correlation_id, `CAUSAL_RED: ${name} cannot clear the pending Agent`);
     }
+  });
+  await t.test('START_FAILED rejects a wrong subject identity before AGENT_RUN or State mutation', async () => {
+    const harness = await createCoordinatorUnderTest(); const { action, binding } = await actionFor(harness);
+    const before = {
+      agent: harness.calls.filter(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN').length,
+      state: harness.count('state.writeState'),
+    };
+    const result = await harness.coordinator.settlement({
+      change_id: CHANGE_ID,
+      expected_state_version: action.state_version,
+      expected_state_hash: action.state_hash,
+      settlement: { ...binding, subject_sha: CANDIDATE_SHA, stage: 'START_FAILED', failure_code: 'SPAWN_REJECTED' },
+    });
+    assert.deepEqual({
+      outcome: result.outcome,
+      error_code: result.error_code,
+      pending_correlation_id: harness.stateStore.state.pending_agent?.correlation_id ?? null,
+      agent_events: harness.calls.filter(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN').length,
+      state_writes: harness.count('state.writeState'),
+    }, {
+      outcome: 'REJECTED',
+      error_code: 'SETTLEMENT_INVALID',
+      pending_correlation_id: binding.correlation_id,
+      agent_events: before.agent,
+      state_writes: before.state,
+    }, 'CAUSAL_RED: wrong-subject START_FAILED cannot append AGENT_RUN, block, or clear the pending Agent');
   });
   await t.test('legacy NOT_STARTED settlement is rejected without clearing the pending Agent', async () => {
     const harness = await createCoordinatorUnderTest(); const { action, binding } = await actionFor(harness);

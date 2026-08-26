@@ -3,13 +3,14 @@
 ## Current Read Model
 
 - Change: `CHG-foundation-compatibility-repair`
-- Baseline/Head read: `713350494df4fa1af587cb7bfef392aa1c06f067`
+- Baseline: `713350494df4fa1af587cb7bfef392aa1c06f067`
 - Branch read: `work/macbook/foundation-compatibility-repair`
-- Current verdict: `REGRESSION_AND_TEST_ASSET_RETIREMENT_PASS`
+- Prior Candidate: `419746cc45deeb21ebe2688bf1151b48919cedab`, preserved with fresh Validator `FAIL`
+- Current verdict: `SECURITY_REVISION_REGRESSION_AND_TEST_ASSET_RETIREMENT_PASS`
 - Controller Spec Gate: `PASS` on 2026-08-26
-- Test/RED, one-file Worker/GREEN, bounded Test causality correction, Regression and Test Asset Retirement are complete; Candidate/Validator/Acceptance/Archive remain locked and not run
+- Initial FCR and the later bounded safety revision have completed Test/RED, Worker/GREEN, Regression and Test Asset Retirement; replacement Candidate/Validator, Acceptance and lifecycle Archive Gate remain incomplete
 - Normative delta: none
-- Next Gate: Controller exact-scope Candidate preparation, followed by one fresh exact-Candidate Validator
+- Next Gate: Controller exact-scope replacement Candidate preparation and PR #16 update, followed by exactly one fresh exact-Candidate Validator
 
 ## Frozen Input Hashes
 
@@ -48,7 +49,7 @@ No fifth incompatibility is authorized by this Change. Other observed or later-d
 | public interfaces, macro states, events, gateways, locks and recovery boundaries unchanged by design | PASS at Spec readback |
 | archive rule keeps canonical spec byte-identical | PASS at Spec readback |
 | executable RED/GREEN/regression evidence | PASS; dated evidence appended below |
-| exact-Candidate Validator evidence | NOT RUN; later Gate |
+| exact-Candidate Validator evidence | prior Candidate FAIL preserved; replacement Candidate not yet validated |
 
 ## Controller Spec Gate — 2026-08-26
 
@@ -76,16 +77,16 @@ No fifth incompatibility is authorized by this Change. Other observed or later-d
 
 At Spec start, `.juanerai/project-control/status.json` was modified and three project-control event files were untracked. They are outside this Change, were not read as authority for FCR behavior, and were not modified. Controller must distinguish and preserve them during later scope review.
 
-## Residual Risks for Controller Review
+## Pre-Candidate Residual Risks for Controller Review (Historical)
 
 1. Candidate local parent and remote publication predecessor can differ after a pre-push Validator auto-repair. Test must prove the closed split: null `delivery.remote_head` uses the existing first push and post-readback with no pre-read; non-null `delivery.remote_head` requires exact old-Head pre-read before the existing non-force push.
 2. An `AWAITING_CONTROLLER` REVISION must prove decision evidence using only existing signed-body fields. Test must reject missing/wrong Candidate-subject evidence without inventing a new field or evidence kind.
 3. Coordinator-authored `NOT_STARTED` must be limited to a real pre-request dispatch failure. Test must prove it never appears after REQUESTED or as a host settlement substitute.
-4. Frozen `adapters.mjs` means all repair behavior must be expressible through its existing methods and normal non-force Git semantics. Any need to alter Adapter signatures or behavior is a blocker.
+4. The initial package froze `adapters.mjs`. The later Validator found that its existing `pushBranch` implementation ignored the already-defined predecessor value; a bounded user authorization allowed only that implementation correction without changing the signature or Gateway.
 
 ## Evidence Honesty
 
-This file records source/document readback, the passed Spec Gate, and the dated RED/GREEN/Regression/Test Asset Retirement evidence below. It does not yet claim Candidate, Validator, integration, Acceptance, archive, Mode Activation, or product Change authority. Later evidence must be appended as new dated sections while preserving earlier records.
+This file records source/document readback, the passed Spec Gate, dated RED/GREEN/Regression/Test Asset Retirement evidence, the preserved prior Candidate and Validator FAIL, and the later bounded safety revision. It does not claim replacement-Candidate validation, integration, Acceptance, lifecycle Archive Gate completion, Mode Activation, or product Change authority.
 
 ## Test/RED and TDD_READY — 2026-08-26
 
@@ -147,3 +148,38 @@ Because this repair follows discovery of released Foundation nonconformance, the
 - Legacy settlement shapes survived because prior tests admitted `NOT_STARTED` through the host settlement union and did not enumerate the canonical START_FAILED/INTERRUPTED variants. FCR-4 now covers the closed variants, extra/legacy rejection, and Coordinator-only pre-request `NOT_STARTED`.
 - Actual tracked repair remained within the two frozen paths: one production file and one Test file. Adapter, CLI, fixtures, runner, dependency, schema, public interface, macro state, Ledger event, Gateway, lock, recovery, canonical Spec, and host configuration were not expanded.
 - Rework evidence is the final frozen hashes and executable counts above. No follow-up contract or platform expansion is authorized by this retrospective.
+
+## Prior Candidate and Fresh Validator FAIL — 2026-08-26
+
+- Prior Candidate, local Head, remote branch Head and PR #16 Head were `419746cc45deeb21ebe2688bf1151b48919cedab`; GitHub Canonical validation was `SUCCESS`.
+- Its evidence was focused Coordinator `152/152 PASS`, full change-coordinator `197/197 PASS`, project-board `12/12 PASS`, and canonical runner exit `0`.
+- One fresh exact-Candidate Validator returned `FAIL`; merge stopped and PR #16 remained open.
+- Safety findings were: empty DISPATCH `change_id` was not rejected; empty `changes_requested_ref` was accepted; wrong-subject `START_FAILED` could be accepted and recorded; Coordinator/Adapter publication did not bind and enforce the existing `expected_remote_head` predecessor contract.
+- The Validator also found that evidence text conflated physical archive packaging with lifecycle Archive Gate completion. This record now distinguishes them.
+- The prior Candidate, CI result and Validator FAIL remain immutable historical evidence and must not appear as the current accepted delivery.
+
+## User-authorized Bounded Safety Revision — 2026-08-26
+
+- Test wrote only `tools/harness/change-coordinator/coordinator.test.mjs` and `tools/harness/change-coordinator/git.integration.test.mjs`; SHA-256 values are `b1f3bed829a6160747a9fe6514f7946b167594e9ca50ab043b3339094421f696` and `9374395e1ca8477e6baf6bed28071d21afe1e97c4b3a74f799f89c96b4c23cd4`.
+- Causal RED was `155` Coordinator tests with four failing leaves and `19` Git integration tests with one failing leaf. No unrelated assertion or Test support file changed.
+- Production wrote only `tools/harness/change-coordinator/coordinator.mjs` and `tools/harness/change-coordinator/adapters.mjs`; SHA-256 values are `2d221ce17a5c33d603320391daabf99f7cb80d85efe419dec2b6170399fb4a7b` and `9a3859c835f144a49d7b457f01271454686132b3e370ecd4881507083f8221be`.
+- The implementation reuses existing validation, settlement, `git.pushBranch`, and blocking paths. No interface, macro state, Ledger event, Gateway, Schema, lock, recovery mechanism, dependency, or compatibility mode was added.
+- Canonical Foundation Spec SHA-256 remains `139ec5107d0908ed1f3676cef6d877f26c76c2bcdeb076d411493375caa49d69`.
+
+## Safety Revision GREEN, Regression and Test Asset Retirement — 2026-08-26
+
+- `node --test tools/harness/change-coordinator/coordinator.test.mjs tools/harness/change-coordinator/git.integration.test.mjs`: `174/174 PASS`.
+- `node --test tools/harness/change-coordinator/*.test.mjs`: `201/201 PASS`.
+- `node --test tools/harness/project-board/*.test.mjs`: `12/12 PASS`.
+- `tools/harness/validation/run`: exit `0`.
+- `node --check` for both production and both Test files: PASS; `git diff --check`: PASS.
+- Project-control atomically recorded and read back the GREEN/Regression/Retirement release and the exact-Candidate-only validation path in `EVT-20260826073155072-H16QRI` and `EVT-20260826073225370-9NBRLY`; health is `validating`, Worker is complete, and exactly one Validator path is active.
+- All five causal leaves are permanent regressions under existing FCR objectives. No `.skip`, `.todo`, `.only`, fixture, helper, mock, snapshot, scratch evidence, or support file was added.
+- Mandatory lean disposition: `Lean already. Ship.` Test Asset Retirement: `PASS`; nothing is scheduled for deletion.
+- This releases only replacement Candidate preparation and one fresh exact-Candidate Validator. Another safety `FAIL` stops; it does not authorize further automatic repair, merge, Mode Activation, or a product Change.
+
+## Archive Packaging Clarification — 2026-08-26
+
+- Under explicit user authorization, the complete Change package was moved to `openspec/changes/archive/2026-08-26-foundation-compatibility-repair` before Candidate creation so it can enter the same PR.
+- The physical move is packaging evidence. It did not by itself grant Acceptance or complete the lifecycle Archive Gate.
+- Lifecycle Archive Gate completes only after the replacement exact Candidate passes the fresh Validator, PR #16 is accepted and squash-merged, the intended tree is on `origin/main`, and the canonical Spec hash remains byte-identical.

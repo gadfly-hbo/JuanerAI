@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "foundation_compatibility_repair",
-    "label": "Foundation Compatibility Repair: CANDIDATE_READY",
+    "label": "Foundation Compatibility Repair: FINAL_INTEGRATION_PIPELINE",
     "ordinal": 4,
     "total": 8
   },
   "health": "validating",
-  "summary": "FCR seven-file OpenSpec package archived at openspec/changes/archive/2026-08-26-foundation-compatibility-repair; canonical Foundation spec remains byte-identical and Regression/Retirement remain PASS.",
-  "current_objective": "Create one exact-scope FCR Candidate containing the one production file, one Test file, archived seven-file manifest and Controller project-control evidence; then obtain one fresh exact-Candidate Validator verdict.",
-  "next_action": "Precisely stage the authorized FCR paths, re-run final validation, commit and push the Candidate, create the PR, read back local/remote/PR Head equality, then dispatch the single fresh Validator.",
+  "summary": "Bounded safety revision GREEN and Regression are current: focused 174/174, complete change-coordinator 201/201, project-board 12/12 and canonical runner exit 0; prior Candidate 419746cc45deeb21ebe2688bf1151b48919cedab and Validator FAIL remain historical rejected evidence.",
+  "current_objective": "Freeze the exact replacement Candidate from the authorized two Test, two production, Controller evidence and project-control paths without changing the canonical Spec, then bind PR #16 and one fresh Validator to that exact Head.",
+  "next_action": "Controller performs exact staging, non-amend Candidate commit, same-branch push and PR #16 readback; only one fresh exact-Candidate juaner_validator may run, and another safety FAIL stops.",
   "blockers": [],
   "milestones": [
     {
@@ -91,7 +91,7 @@
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "locked",
+      "status": "active",
       "activation": "实现与证据冻结"
     }
   ],
@@ -827,9 +827,9 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-26T06:35:27.358Z",
+  "updated_at": "2026-08-26T07:32:25.370Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-fcr-candidate"
+    "session": "controller-fcr-security-revision"
   }
 }
