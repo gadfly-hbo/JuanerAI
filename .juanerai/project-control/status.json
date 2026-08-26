@@ -12,7 +12,7 @@
     "total": 8
   },
   "health": "active",
-  "summary": "The strictly bounded four-item safety revision is GREEN. Frozen coordinator.test.mjs SHA-256 is ca3ca84bba61b1ee58292cb056f4e15509a94883fdafaf49e638b8de36827733; repaired coordinator.mjs SHA-256 is ed2f195dda273049439e4cf97f6e10697361c3bd498f5d6a2e314da2aa3f0516. Focused 173/173, project-control show, project-board 9/9 and canonical runner all passed. Old Candidate e577e26 remains rejected and unmerged.",
+  "summary": "The final strictly bounded two-item safety closure is GREEN after exact causal RED and one objective normal-path Test-double correction. Frozen coordinator.test.mjs SHA-256 is c3d8c51358cfa1e435a566e26da17e55a607023699061332ada3314b8e0a3fa2; repaired coordinator.mjs SHA-256 is 79dc5e92378533b8b463eb32d3ee72d0a5bfc6f54436133845732ddf349ad7c4. Directed safety tests are 19/19, the focused set is 175/175, project-control and project-board pass, and canonical runner exits 0. Rejected Candidate fe58dd5 remains unmerged pending a new exact Candidate and fresh Validator.",
   "current_objective": "Create the repaired exact Candidate, push the same branch, update PR #15, bind local/remote/PR Heads, and run one new exact-Candidate fresh Validator.",
   "next_action": "Controller precisely stages only the authorized project-control, coordinator.test.mjs and coordinator.mjs revision, commits and pushes, verifies PR #15 Head equality, then activates one fresh read-only Validator.",
   "blockers": [],
@@ -787,6 +787,36 @@
       "label": "Post-repair canonical validation runner exit 0",
       "path": "tools/harness/validation/run",
       "status": "verified"
+    },
+    {
+      "id": "EVD-112",
+      "label": "Fresh exact-Candidate fe58dd560465109309f43bad3529d0f68b3ccfb4 Validator FAIL on initial admission identity and Worktree branch-tip authority",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-113",
+      "label": "Final two-item safety Test SHA-256 c3d8c51358cfa1e435a566e26da17e55a607023699061332ada3314b8e0a3fa2",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-114",
+      "label": "Final two-item safety production SHA-256 79dc5e92378533b8b463eb32d3ee72d0a5bfc6f54436133845732ddf349ad7c4",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-115",
+      "label": "Final two-item safety directed 19/19 and focused 175/175 GREEN",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-116",
+      "label": "Final two-item safety post-repair project-control, project-board and canonical runner PASS",
+      "path": "tools/harness/validation/run",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -797,9 +827,9 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-25T23:16:24.000Z",
+  "updated_at": "2026-08-26T01:34:58.000Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-reduced-v1-final-candidate"
+    "session": "controller-reduced-v1-final-two-safety-closure"
   }
 }

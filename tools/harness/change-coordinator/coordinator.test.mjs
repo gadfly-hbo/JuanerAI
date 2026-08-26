@@ -75,6 +75,11 @@ test('TEST-DTF-R1-001: every Controller command is exact and malformed structure
 
 test('TEST-DTF-R1-002: a fresh DISPATCH runs the complete normal path from Worktree through freeze and HANDOFF_READY', async () => {
   const harness = await createCoordinatorUnderTest();
+  harness.fault(
+    'git.inspectWorktree',
+    { kind: 'OK', value: { worktree_root: '/tmp/dtf-worktree', branch: 'work/mac-mini/dtf', head_sha: GIT_SHA, common_git_dir: '/tmp/dtf-repo/.git', status_entries: [], clean: true } },
+    { kind: 'OK', value: { worktree_root: '/tmp/dtf-worktree', branch: 'work/mac-mini/dtf', head_sha: CANDIDATE_SHA, common_git_dir: '/tmp/dtf-repo/.git', status_entries: [], clean: true } },
+  );
   const dispatch = await harness.coordinator.applyControllerCommand(signed());
   assertExactResult(dispatch, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
   let current = dispatch;
@@ -91,7 +96,7 @@ test('TEST-DTF-R1-002: a fresh DISPATCH runs the complete normal path from Workt
   }
   assertExactResult(current, { operation: 'run', outcome: 'AWAITING_CONTROLLER', state: 'AWAITING_CONTROLLER' });
   assert.ok(harness.count('git.createOrReuseWorktree') === 1, 'CAUSAL_RED: normal path must create/reuse Worktree before requesting the Spec Agent');
-  assert.ok(harness.count('git.inspectWorktree') === 1, 'CAUSAL_RED: Worktree creation requires branch/baseline/common-Git-dir/clean readback');
+  assert.ok(harness.count('git.inspectWorktree') === 2, 'CAUSAL_RED: Worktree admission and Candidate freeze each require branch/head/common-Git-dir/clean readback');
   const trace = harness.calls.map(call => call.name);
   for (const boundary of ['git.createOrReuseWorktree', 'git.inspectWorktree', 'git.stageExact', 'git.readStaged', 'git.commitCandidate', 'validation.execute', 'git.pushBranch', 'git.readRemoteBranch', 'pull_request.createOrReuse', 'pull_request.readback', 'handoff.writeReadback']) assert.ok(trace.includes(boundary), `CAUSAL_RED: full automatic path must eventually include ${boundary}`);
   assert.ok(trace.indexOf('git.pushBranch') < trace.indexOf('pull_request.createOrReuse'), 'CAUSAL_RED: Candidate freeze and push/readback precede PR');
@@ -641,6 +646,26 @@ test('TEST-DTF-R1-002: every pointer-first crash window prevents WIP misclassifi
     }
     assert.deepEqual(observed, cases.map(([name]) => ({ name, outcome: 'BLOCKED', state: 'BLOCKED', worktree_calls: 0, agent_action: false })), 'CAUSAL_RED: kind OK is not admission proof unless event/Change/subject/digest identity matches the accepted DISPATCH admission');
   });
+  await t.test('first DISPATCH cannot trust a stable wrong admission Ledger readback', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const wrongValue = { tip: GIT_SHA, commit_sha: GIT_SHA, tree_sha: GIT_SHA, event_id: 'event-wrong', event_hash: 'b'.repeat(64), sequence: 1, record_bytes_sha256: 'c'.repeat(64), idempotency_id: 'idem-wrong', linearized: true, change_id: CHANGE_B, subject_sha: GIT_SHA };
+    const wrong = { kind: 'OK', value: wrongValue, receipt_sha256: 'd'.repeat(64) };
+    harness.fault('ledger.readRemoteAppend', wrong, structuredClone(wrong));
+    const admitted = await harness.coordinator.applyControllerCommand(signed());
+    const readyWrite = harness.calls.find(call => call.name === 'state.writeState' && call.request.state?.macro_state === 'READY');
+    const prepared = harness.calls.find(call => call.name === 'ledger.prepareAppend');
+    const submitted = harness.calls.find(call => call.name === 'ledger.commitAndPush');
+    const firstReadback = harness.calls.find(call => call.name === 'ledger.readRemoteAppend');
+    const expected = firstReadback.request.expected;
+    assert.equal(prepared.request.change_id, CHANGE_ID, 'PRECONDITION_NOT_REACHED: the prepared admission event must bind this Change');
+    assert.equal(prepared.request.detail.ready_state_sha256, sha256(bytes(readyWrite.request.state)), 'PRECONDITION_NOT_REACHED: the prepared admission event subject must be the exact READY bytes');
+    assert.equal(submitted.request.prepared.event_id, 'event-001', 'PRECONDITION_NOT_REACHED: the submitted event identity must be fixed before readback');
+    assert.deepEqual({ event_id: expected.event_id, event_hash: expected.event_hash, idempotency_id: expected.idempotency_id }, { event_id: 'event-001', event_hash: SHA256, idempotency_id: 'idem-001' }, 'PRECONDITION_NOT_REACHED: readback must request the exact submitted event');
+    assert.equal(firstReadback.request.change_id, CHANGE_ID, 'PRECONDITION_NOT_REACHED: readback must bind the exact Change');
+    assert.notEqual(wrong.receipt_sha256, sha256(bytes(expected)), 'PRECONDITION_NOT_REACHED: the injected result must carry a different digest than the exact expected submission');
+    const later = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: admitted.state_version, expected_state_hash: admitted.state_hash });
+    assert.deepEqual({ apply_outcome: admitted.outcome, apply_state: admitted.state, readback_calls: harness.count('ledger.readRemoteAppend'), run_outcome: later.outcome, worktree_calls: harness.count('git.createOrReuseWorktree'), agent_action: later.outcome === 'AGENT_ACTION' }, { apply_outcome: 'BLOCKED', apply_state: 'BLOCKED', readback_calls: 1, run_outcome: 'BLOCKED', worktree_calls: 0, agent_action: false }, 'CAUSAL_RED: first admission must validate the exact prepared/submitted identity instead of caching and re-trusting a stable wrong readback');
+  });
 });
 
 test('TEST-DTF-R1-005: no local Ledger artifact is durable evidence; only exact remote record readback may advance', async t => {
@@ -703,6 +728,14 @@ test('TEST-DTF-R1-007: exact Candidate, Validator, PR, and Handoff identity is r
       observed.push({ name, outcome: result.outcome, state: result.state, fault_reached: dependency ? harness.count(dependency) === 1 : true, frozen: harness.stateStore.state.candidate?.frozen, canonical_diff_calls: harness.count('git.canonicalDiff'), pr_calls: harness.count('pull_request.createOrReuse') });
     }
     assert.deepEqual(observed, cases.map(([name]) => ({ name, outcome: 'BLOCKED', state: 'BLOCKED', fault_reached: true, frozen: false, canonical_diff_calls: 0, pr_calls: 0 })), 'CAUSAL_RED: freeze must re-read local/remote Candidate identity and bind the exact Validator Head before diff, freeze, or PR');
+  });
+  await t.test('Candidate freeze blocks when the clean Worktree branch tip advanced beyond the still-readable Candidate', async () => {
+    const harness = await createCoordinatorUnderTest(); const advancedHead = '3'.repeat(40);
+    const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'CANDIDATE_FREEZE', candidate: makeCandidate({ frozen: false }), delivery: makeDelivery({ pull_request: null, handoff_sha256: null }) });
+    harness.fault('git.inspectWorktree', { kind: 'OK', value: { worktree_root: '/tmp/dtf-worktree', branch: 'work/mac-mini/dtf', head_sha: advancedHead, common_git_dir: '/tmp/dtf-repo/.git', status_entries: [], clean: true } });
+    const result = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+    const inspection = harness.calls.find(call => call.name === 'git.inspectWorktree');
+    assert.deepEqual({ outcome: result.outcome, state: result.state, candidate_object_read: harness.count('git.readCommit') === 1, inspected_expected_branch: inspection?.request.expected_branch ?? null, inspected_expected_head: inspection?.request.expected_head ?? null, frozen: harness.stateStore.state.candidate?.frozen, canonical_diff_calls: harness.count('git.canonicalDiff'), pr_calls: harness.count('pull_request.createOrReuse') }, { outcome: 'BLOCKED', state: 'BLOCKED', candidate_object_read: true, inspected_expected_branch: 'work/mac-mini/dtf', inspected_expected_head: CANDIDATE_SHA, frozen: false, canonical_diff_calls: 0, pr_calls: 0 }, 'CAUSAL_RED: a readable Candidate object is not freeze authority after its clean Worktree branch tip advances');
   });
   await t.test('format-valid wrong Handoff hash is durably BLOCKED without follow-on effects', async () => {
     const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'HANDOFF', candidate: makeCandidate(), delivery: makeDelivery({ handoff_sha256: null }) }); const wrong = 'b'.repeat(64); harness.fault('handoff.writeReadback', { kind: 'OK', value: { handoff_sha256: wrong, delivery_id: 'delivery-001' }, receipt_sha256: SHA256 });
