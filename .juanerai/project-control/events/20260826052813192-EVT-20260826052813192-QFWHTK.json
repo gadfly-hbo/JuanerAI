@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826052813192-QFWHTK",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-26T05:28:13.192Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller"
+  },
+  "summary": "FCR Spec Gate PASS; Test RED released with downstream Gates locked",
+  "status_after": "active",
+  "evidence_refs": []
+}

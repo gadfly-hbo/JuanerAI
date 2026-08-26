@@ -303,12 +303,13 @@ test('TEST-DTF-R1-001: exact public surface, signed canonical DISPATCH, and clos
     ['noncanonical bytes', { command_body_bytes: new TextEncoder().encode('{ }'), signature_bytes: new Uint8Array([1]) }, 'INPUT_INVALID'],
     ['signature failure', signed(), 'COMMAND_SIGNATURE_INVALID'],
     ['expired command', signed({ expires_at: '2020-01-01T00:00:00.000Z' }), 'COMMAND_EXPIRED'],
-    ['foreign Change', signed({ change_id: CHANGE_B }), 'WIP_AUTHORITY_INVALID'],
+    ['second Change while slot occupied', signed({ change_id: CHANGE_B }), 'WIP_AUTHORITY_INVALID'],
     ['forbidden trust payload', signed({ public_key: 'injected' }), 'INPUT_INVALID'],
   ]) {
     await t.test(`rejects ${name} before protected effect`, async () => {
       const isolated = await createCoordinatorUnderTest();
       if (name === 'signature failure') isolated.fault('verifier.verify', { kind: 'REJECTED', error_code: code });
+      if (name === 'second Change while slot occupied') primeState(isolated, { macro_state: 'READY', phase: 'WORKTREE' });
       const result = await isolated.coordinator.applyControllerCommand(input);
       assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED', code });
       assert.equal(isolated.count('verifier.verify'), name === 'noncanonical bytes' ? 0 : 1);
@@ -823,5 +824,240 @@ test('TEST-DTF-R1-010: every RELEASE failure retains active pointer and exact re
   await t.test('CLOSED with cleared pointer returns ALREADY_APPLIED without a business effect', async () => {
     const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'CLOSED', phase: null, state_version: 9, candidate: makeCandidate(), delivery: makeDelivery() }); harness.stateStore.pointer.active_change_id = null;
     const result = await harness.coordinator.applyControllerCommand(releaseFor(identity)); assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'ALREADY_APPLIED', state: 'CLOSED' }); noCall(harness, 'git.syncMainFfOnly'); noCall(harness, 'ledger.prepareAppend');
+  });
+});
+
+test('TEST-FCR-001: canonical signed product Change admission remains pointer-first and global WIP remains one', async t => {
+  const productChange = 'CHG-foundation-compatibility-repair';
+  await t.test('a non-Foundation canonical product Change reaches the existing READY admission evidence', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const result = await harness.coordinator.applyControllerCommand(signed({ change_id: productChange, command_id: 'fcr-admission-001' }));
+    assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
+    assert.equal(harness.stateStore.pointer.active_change_id, productChange, 'CAUSAL_RED: canonical signed product Change must publish its own pointer before READY');
+    assert.equal(harness.stateStore.state.change_id, productChange);
+    reached(harness, 'state.writePointer'); reached(harness, 'state.writeState'); reached(harness, 'ledger.readRemoteAppend');
+  });
+  await t.test('a second valid Change remains effect-free while the first Change owns WIP', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const first = await harness.coordinator.applyControllerCommand(signed());
+    assertExactResult(first, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
+    const before = { pointer: harness.count('state.writePointer'), state: harness.count('state.writeState'), ledger: harness.count('ledger.prepareAppend'), worktree: harness.count('git.createOrReuseWorktree') };
+    const second = await harness.coordinator.applyControllerCommand(signed({ change_id: productChange, command_id: 'fcr-second-001', idempotency_id: 'fcr-second-idem-001' }));
+    assertExactResult(second, { operation: 'applyControllerCommand', outcome: 'REJECTED', code: 'WIP_AUTHORITY_INVALID' });
+    assert.deepEqual({ pointer: harness.count('state.writePointer'), state: harness.count('state.writeState'), ledger: harness.count('ledger.prepareAppend'), worktree: harness.count('git.createOrReuseWorktree') }, before, 'CAUSAL_RED: second Change rejection must precede pointer, State, Ledger, or Worktree effects');
+  });
+});
+
+test('TEST-FCR-002: an exact Frozen-Candidate AWAITING_CONTROLLER revision returns only to TEST_RED', async t => {
+  const reviewEvidence = [{ kind: 'controller_decision', id: 'changes-requested-001', sha256: SHA256, subject_sha: CANDIDATE_SHA }];
+  const revisionFor = (identity, evidence_refs = reviewEvidence) => signed({
+    command_kind: 'REVISION', command_id: 'fcr-revision-001', idempotency_id: 'fcr-revision-idem-001',
+    payload: { changes_requested_ref: 'changes-requested-001', revision_of_candidate_sha: CANDIDATE_SHA, resume_phase: 'TEST_RED' },
+    evidence_refs, expected_state_version: identity.expected_state_version, expected_state_hash: identity.expected_state_hash,
+  });
+  const awaiting = async () => {
+    const harness = await createCoordinatorUnderTest();
+    const admitted = await harness.coordinator.applyControllerCommand(signed());
+    assertExactResult(admitted, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
+    const identity = primeState(harness, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 7, admission: harness.stateStore.state.admission, candidate: makeCandidate(), delivery: makeDelivery(), blocked_reason: null, resume_target: null });
+    return { harness, identity };
+  };
+  await t.test('matching signed decision evidence binds the exact Frozen Candidate and preserves delivery predecessor identities', async () => {
+    const { harness, identity } = await awaiting();
+    const result = await harness.coordinator.applyControllerCommand(revisionFor(identity));
+    assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'EXECUTING' });
+    assert.equal(result.payload.phase, 'TEST_RED');
+    assert.deepEqual(harness.stateStore.state.authorization_cycle, { command_id: 'fcr-revision-001', command_kind: 'REVISION', auto_repair_attempt: 0 });
+    assert.equal(harness.stateStore.state.candidate.sha, CANDIDATE_SHA);
+    assert.equal(harness.stateStore.state.delivery.remote_head, CANDIDATE_SHA);
+    noCall(harness, 'git.createOrReuseWorktree'); noCall(harness, 'git.stageExact'); noCall(harness, 'git.pushBranch'); noCall(harness, 'pull_request.createOrReuse');
+  });
+  await t.test('wrong Candidate-subject decision evidence rejects before State, Ledger, or Agent activity', async () => {
+    const { harness, identity } = await awaiting();
+    const before = { state: harness.count('state.writeState'), ledger: harness.count('ledger.prepareAppend'), agent: harness.calls.filter(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN').length };
+    const result = await harness.coordinator.applyControllerCommand(revisionFor(identity, [{ ...reviewEvidence[0], subject_sha: GIT_SHA }]));
+    assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED' });
+    assert.deepEqual({ state: harness.count('state.writeState'), ledger: harness.count('ledger.prepareAppend'), agent: harness.calls.filter(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN').length }, before, 'CAUSAL_RED: non-Candidate decision evidence must reject before durable or Agent effects');
+  });
+  await t.test('same accepted DISPATCH and Frozen Candidate identities reject every valid-but-mismatched review return', async () => {
+    const cases = [
+      ['repository', body => { body.repository.canonical_root = '/tmp/other-repository'; }, null],
+      ['worktree root', body => { body.worktree.root = '/tmp/other-worktree'; }, null],
+      ['branch', body => { body.worktree.branch = 'work/mac-mini/other'; }, null],
+      ['baseline', body => { body.worktree.baseline_sha = CANDIDATE_SHA; }, null],
+      ['scope', body => { body.scope.allowed_paths = ['tools/harness/change-coordinator/other.mjs']; }, null],
+      ['unfrozen Candidate', null, state => { state.candidate.frozen = false; }],
+      ['Validator Head', null, state => { state.candidate.validator_head = GIT_SHA; }],
+      ['remote Head', null, state => { state.delivery.remote_head = GIT_SHA; }],
+      ['PR Head', null, state => { state.delivery.pull_request.head_sha = GIT_SHA; }],
+    ];
+    for (const [name, mutateBody, mutateState] of cases) {
+      const { harness, identity } = await awaiting();
+      if (mutateState) mutateState(harness.stateStore.state);
+      const current = mutateState ? primeState(harness, structuredClone(harness.stateStore.state)) : identity;
+      const request = revisionFor(current); const body = JSON.parse(new TextDecoder().decode(request.command_body_bytes));
+      if (mutateBody) mutateBody(body);
+      const before = { state: harness.count('state.writeState'), ledger: harness.count('ledger.prepareAppend') };
+      const result = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: request.signature_bytes });
+      assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED' }, `CAUSAL_RED: ${name}`);
+      assert.deepEqual({ state: harness.count('state.writeState'), ledger: harness.count('ledger.prepareAppend') }, before, `CAUSAL_RED: ${name} must reject before durable mutation`);
+    }
+  });
+  await t.test('a revision naming any Candidate other than the Frozen Candidate rejects before State or Ledger mutation', async () => {
+    const { harness, identity } = await awaiting();
+    const before = { state: harness.count('state.writeState'), ledger: harness.count('ledger.prepareAppend') };
+    const request = revisionFor(identity);
+    const body = JSON.parse(new TextDecoder().decode(request.command_body_bytes));
+    body.payload.revision_of_candidate_sha = GIT_SHA;
+    const result = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: request.signature_bytes });
+    assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED' });
+    assert.deepEqual({ state: harness.count('state.writeState'), ledger: harness.count('ledger.prepareAppend') }, before, 'CAUSAL_RED: mismatched revision Candidate cannot consume the exact Frozen Candidate review return');
+  });
+});
+
+test('TEST-FCR-003: later Candidates use the durable local parent and publication preserves first-versus-update boundaries', async t => {
+  const nextCandidate = '3'.repeat(40);
+  await t.test('STAGE binds inspectWorktree and stageExact to the baseline first Candidate or durable prior Candidate', async () => {
+    const cases = [
+      ['first Candidate', null, GIT_SHA],
+      ['later Candidate', makeCandidate({ frozen: true }), CANDIDATE_SHA],
+    ];
+    const observed = [];
+    for (const [name, candidate, expectedHead] of cases) {
+      const harness = await createCoordinatorUnderTest();
+      const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'STAGE', candidate, delivery: candidate ? makeDelivery() : null });
+      harness.fault('git.inspectWorktree', { kind: 'OK', value: { worktree_root: '/tmp/dtf-worktree', branch: 'work/mac-mini/dtf', head_sha: expectedHead, common_git_dir: '/tmp/dtf-repo/.git', status_entries: [], clean: true } });
+      const result = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+      assertExactResult(result, { operation: 'run', outcome: 'ADVANCED', state: 'DELIVERING' });
+      const inspected = harness.calls.find(call => call.name === 'git.inspectWorktree');
+      const staged = harness.calls.find(call => call.name === 'git.stageExact');
+      observed.push({ name, inspected_branch: inspected?.request.expected_branch ?? null, inspected_head: inspected?.request.expected_head ?? null, staged_head: staged?.request.expected_head ?? null });
+    }
+    assert.deepEqual(observed, cases.map(([name,, expectedHead]) => ({ name, inspected_branch: 'work/mac-mini/dtf', inspected_head: expectedHead, staged_head: expectedHead })), 'CAUSAL_RED: every STAGE cycle binds inspection and staging to its exact local predecessor');
+  });
+  await t.test('a later Candidate commit binds the exact durable prior Candidate rather than baseline', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'CANDIDATE_COMMIT', candidate: makeCandidate({ frozen: true }), delivery: makeDelivery() });
+    const committed = { sha: nextCandidate, parent: CANDIDATE_SHA, tree: GIT_SHA, branch: 'work/mac-mini/dtf' };
+    harness.fault('git.commitCandidate', { kind: 'OK', value: committed });
+    harness.fault('git.readCommit', { kind: 'OK', value: committed });
+    const result = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+    const commit = harness.calls.find(call => call.name === 'git.commitCandidate');
+    assert.equal(commit?.request.expected_parent, CANDIDATE_SHA, 'CAUSAL_RED: a revision or auto-repair Candidate must parent the durable prior local Candidate, never baseline');
+    assertExactResult(result, { operation: 'run', outcome: 'ADVANCED', state: 'DELIVERING' });
+  });
+  await t.test('a published branch reads the exact old remote Head before its non-force update', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const candidate = makeCandidate({ sha: nextCandidate, parent: CANDIDATE_SHA, frozen: false, validator_head: nextCandidate });
+    const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'BRANCH_PUSH', candidate, delivery: makeDelivery({ remote_head: CANDIDATE_SHA }) });
+    harness.fault('git.readRemoteBranch', { kind: 'OK', value: { remote_head: CANDIDATE_SHA } }, { kind: 'OK', value: { remote_head: nextCandidate } });
+    harness.fault('git.pushBranch', { kind: 'OK', value: { prior_remote_head: CANDIDATE_SHA, remote_head: nextCandidate, forced: false, deleted: false } });
+    await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+    const names = harness.calls.map(call => call.name);
+    assert.ok(names.indexOf('git.readRemoteBranch') < names.indexOf('git.pushBranch'), 'CAUSAL_RED: a non-null durable delivery.remote_head requires exact pre-push readRemoteBranch');
+    assert.equal(harness.calls.find(call => call.name === 'git.pushBranch')?.request.prior_remote_head, CANDIDATE_SHA, 'CAUSAL_RED: normal push must carry the exact durable remote predecessor');
+  });
+  await t.test('a mismatched old remote Head blocks the already-published branch before push', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const candidate = makeCandidate({ sha: nextCandidate, parent: CANDIDATE_SHA, frozen: false, validator_head: nextCandidate });
+    const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'BRANCH_PUSH', candidate, delivery: makeDelivery({ remote_head: CANDIDATE_SHA }) });
+    harness.fault('git.readRemoteBranch', { kind: 'OK', value: { remote_head: GIT_SHA } });
+    harness.fault('git.pushBranch', { kind: 'OK', value: { prior_remote_head: CANDIDATE_SHA, remote_head: nextCandidate, forced: false, deleted: false } });
+    const result = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+    assertExactResult(result, { operation: 'run', outcome: 'BLOCKED', state: 'BLOCKED' });
+    reached(harness, 'git.readRemoteBranch'); noCall(harness, 'git.pushBranch'); noCall(harness, 'pull_request.createOrReuse'); noCall(harness, 'handoff.writeReadback');
+  });
+  await t.test('a null remote predecessor retains first normal push and only post-push readback', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const candidate = makeCandidate({ sha: nextCandidate, parent: CANDIDATE_SHA, frozen: false, validator_head: nextCandidate });
+    const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'BRANCH_PUSH', candidate, delivery: null });
+    harness.fault('git.pushBranch', { kind: 'OK', value: { prior_remote_head: null, remote_head: nextCandidate, forced: false, deleted: false } });
+    harness.fault('git.readRemoteBranch', { kind: 'OK', value: { remote_head: nextCandidate } });
+    const result = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+    assertExactResult(result, { operation: 'run', outcome: 'ADVANCED', state: 'DELIVERING' });
+    const names = harness.calls.map(call => call.name);
+    assert.equal(harness.count('git.readRemoteBranch'), 1, 'CAUSAL_RED: first publication has no pre-push remote-absence gateway');
+    assert.ok(names.indexOf('git.pushBranch') < names.indexOf('git.readRemoteBranch'), 'CAUSAL_RED: first publication reads remote only after normal push');
+  });
+  await t.test('a current existing PR is reused for the new Candidate Head without replacement creation', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const candidate = makeCandidate({ sha: nextCandidate, parent: CANDIDATE_SHA, frozen: true, validator_head: nextCandidate });
+    const prior = makeDelivery({ remote_head: nextCandidate, pull_request: { number: 42, url: 'https://invalid.example/pr/42', base: 'main', head_branch: 'work/mac-mini/dtf', head_sha: CANDIDATE_SHA, review_ready: true } });
+    const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'PR', candidate, delivery: prior });
+    const current = { number: 42, url: 'https://invalid.example/pr/42', base: 'main', head_branch: 'work/mac-mini/dtf', head_sha: nextCandidate, review_ready: true };
+    harness.fault('pull_request.queryCurrent', { kind: 'OK', value: current });
+    harness.fault('pull_request.readback', { kind: 'OK', value: { number: 42, base: 'main', head_branch: 'work/mac-mini/dtf', head_sha: nextCandidate, review_ready: true } });
+    const result = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+    assertExactResult(result, { operation: 'run', outcome: 'ADVANCED', state: 'DELIVERING' });
+    noCall(harness, 'pull_request.createOrReuse');
+    assert.equal(harness.calls.find(call => call.name === 'pull_request.readback')?.request.expected_head, nextCandidate);
+  });
+});
+
+test('TEST-FCR-004: settlements are the four canonical variants and NOT_STARTED is Coordinator-only before REQUESTED', async t => {
+  const actionFor = async harness => {
+    const identity = primeState(harness, { macro_state: 'EXECUTING', phase: 'SPEC' });
+    const action = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+    assertExactResult(action, { operation: 'run', outcome: 'AGENT_ACTION', state: 'EXECUTING' });
+    const { action_kind, ...binding } = action.payload.action;
+    return { action, binding };
+  };
+  await t.test('REQUESTED is durable before the canonical STARTED and RESULT progression', async () => {
+    const harness = await createCoordinatorUnderTest(); const { action, binding } = await actionFor(harness);
+    const requested = harness.calls.find(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN' && call.request.detail.stage === 'REQUESTED');
+    assert.deepEqual(requested?.request.detail, { stage: 'REQUESTED', correlation_id: binding.correlation_id, role: binding.role, subject_sha: binding.subject_sha });
+    const started = await harness.coordinator.settlement({ change_id: CHANGE_ID, expected_state_version: action.state_version, expected_state_hash: action.state_hash, settlement: { ...binding, stage: 'STARTED', observed_child_id: 'fcr-started-child' } });
+    assertExactResult(started, { operation: 'settlement', outcome: 'WAITING', state: 'EXECUTING' });
+    const result = await harness.coordinator.settlement({ change_id: CHANGE_ID, expected_state_version: started.state_version, expected_state_hash: started.state_hash, settlement: { ...binding, stage: 'RESULT', observed_child_id: 'fcr-started-child', status: 'PASS', artifact_path: 'outputs/fcr-result.md', artifact_sha256: SHA256 } });
+    assertExactResult(result, { operation: 'settlement', outcome: 'ADVANCED', state: 'EXECUTING' });
+  });
+  await t.test('all canonical START_FAILED codes and INTERRUPTED reason codes settle through their existing stop boundaries', async () => {
+    const observed = []; const expected = [];
+    for (const [stage, field, codes] of [
+      ['START_FAILED', 'failure_code', ['SPAWN_REJECTED', 'ROUTE_UNAVAILABLE', 'SANDBOX_UNAVAILABLE', 'START_TIMEOUT']],
+      ['INTERRUPTED', 'reason_code', ['USER_INTERRUPTED', 'HOST_INTERRUPTED', 'AGENT_EXITED', 'RESULT_UNREADABLE']],
+    ]) for (const code of codes) {
+      const harness = await createCoordinatorUnderTest(); const { action, binding } = await actionFor(harness);
+      const settlement = { ...binding, stage, [field]: code, ...(stage === 'INTERRUPTED' ? { observed_child_id: null } : {}) };
+      const result = await harness.coordinator.settlement({ change_id: CHANGE_ID, expected_state_version: action.state_version, expected_state_hash: action.state_hash, settlement });
+      const detail = harness.calls.filter(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN').at(-1)?.request.detail ?? null;
+      observed.push({ stage, code, outcome: result.outcome, state: result.state, reason: result.payload?.blocked_reason ?? null, detail });
+      expected.push({ stage, code, outcome: 'BLOCKED', state: 'BLOCKED', reason: stage === 'START_FAILED' ? 'AGENT_START_FAILED' : 'AGENT_INTERRUPTED', detail: { ...binding, stage, observed_child_id: null, [field]: code } });
+    }
+    assert.deepEqual(observed, expected, 'CAUSAL_RED: only canonical START_FAILED and INTERRUPTED closed enums and exact Ledger details may settle');
+  });
+  await t.test('START_FAILED rejects extra and legacy settlement shapes without clearing the pending Agent', async () => {
+    const cases = [
+      ['extra observed child identity', binding => ({ ...binding, stage: 'START_FAILED', observed_child_id: null, failure_code: 'SPAWN_REJECTED' })],
+      ['extra unexpected field', binding => ({ ...binding, stage: 'START_FAILED', failure_code: 'SPAWN_REJECTED', unexpected: true })],
+      ['legacy failure code and shape', binding => ({ ...binding, stage: 'START_FAILED', failure_code: 'SPAWN_FAILED' })],
+    ];
+    for (const [name, build] of cases) {
+      const harness = await createCoordinatorUnderTest(); const { action, binding } = await actionFor(harness);
+      const result = await harness.coordinator.settlement({ change_id: CHANGE_ID, expected_state_version: action.state_version, expected_state_hash: action.state_hash, settlement: build(binding) });
+      assertExactResult(result, { operation: 'settlement', outcome: 'REJECTED', code: 'SETTLEMENT_INVALID' }, `CAUSAL_RED: ${name}`);
+      assert.equal(harness.stateStore.state.pending_agent?.correlation_id, binding.correlation_id, `CAUSAL_RED: ${name} cannot clear the pending Agent`);
+    }
+  });
+  await t.test('legacy NOT_STARTED settlement is rejected without clearing the pending Agent', async () => {
+    const harness = await createCoordinatorUnderTest(); const { action, binding } = await actionFor(harness);
+    const result = await harness.coordinator.settlement({ change_id: CHANGE_ID, expected_state_version: action.state_version, expected_state_hash: action.state_hash, settlement: { ...binding, stage: 'NOT_STARTED', precondition_code: 'PRECONDITION_UNMET' } });
+    assertExactResult(result, { operation: 'settlement', outcome: 'REJECTED', code: 'SETTLEMENT_INVALID' });
+    assert.equal(harness.stateStore.state.pending_agent?.correlation_id, binding.correlation_id, 'CAUSAL_RED: NOT_STARTED is never a host settlement');
+  });
+  await t.test('a real Worktree pre-request failure records exact Coordinator NOT_STARTED without REQUESTED or AGENT_ACTION', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const identity = await harness.coordinator.applyControllerCommand(signed());
+    assertExactResult(identity, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
+    harness.fault('git.inspectWorktree', { kind: 'OK', value: { worktree_root: '/tmp/dtf-worktree', branch: 'work/mac-mini/dtf', head_sha: GIT_SHA, common_git_dir: '/tmp/dtf-repo/.git', status_entries: [{ path: 'untracked' }], clean: false } });
+    const result = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: identity.state_version, expected_state_hash: identity.state_hash });
+    assertExactResult(result, { operation: 'run', outcome: 'BLOCKED', state: 'BLOCKED' });
+    const agentEvents = harness.calls.filter(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN').map(call => call.request.detail);
+    assert.equal(agentEvents.length, 1, 'CAUSAL_RED: a real pre-request failure appends exactly one NOT_STARTED fact and no REQUESTED fact');
+    const detail = agentEvents[0];
+    assert.deepEqual(Object.keys(detail ?? {}).sort(), ['agent', 'allowed_paths', 'brief_sha256', 'evaluation_id', 'idempotency_id', 'input_sha256', 'model', 'output_schema_sha256', 'phase', 'reason_code', 'reasoning', 'role', 'sandbox', 'stage', 'state_version', 'subject_sha'].sort(), 'CAUSAL_RED: NOT_STARTED has the canonical closed detail shape without correlation or child identity');
+    assert.deepEqual({ stage: detail?.stage, role: detail?.role, agent: detail?.agent, model: detail?.model, reasoning: detail?.reasoning, sandbox: detail?.sandbox, allowed_paths: detail?.allowed_paths, phase: detail?.phase, state_version: detail?.state_version, brief_sha256: detail?.brief_sha256, input_sha256: detail?.input_sha256, output_schema_sha256: detail?.output_schema_sha256, subject_sha: detail?.subject_sha, reason_code: detail?.reason_code }, { stage: 'NOT_STARTED', role: 'juaner_spec', agent: 'juaner_spec', model: 'gpt-5.6-terra', reasoning: 'high', sandbox: 'workspace-write', allowed_paths: ['openspec/changes/dual-device-transition-foundation/**'], phase: 'SPEC', state_version: 0, brief_sha256: SHA256, input_sha256: SHA256, output_schema_sha256: SHA256, subject_sha: GIT_SHA, reason_code: 'PRECONDITION_FAILED' });
+    assert.equal(typeof detail?.evaluation_id, 'string'); assert.ok(detail.evaluation_id.length > 0); assert.equal(typeof detail?.idempotency_id, 'string'); assert.ok(detail.idempotency_id.length > 0);
+    assert.equal(result.payload.action, undefined, 'CAUSAL_RED: pre-request failure cannot return AGENT_ACTION');
   });
 });

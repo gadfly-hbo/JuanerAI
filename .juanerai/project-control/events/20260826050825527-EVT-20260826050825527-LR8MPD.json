@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826050825527-LR8MPD",
+  "event_type": "change_started",
+  "occurred_at": "2026-08-26T05:08:25.527Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-foundation-compatibility-repair"
+  },
+  "summary": "Started the user-authorized Foundation Compatibility Repair FCR-1 through FCR-4; Mode Activation remains unauthorized.",
+  "status_after": "active",
+  "evidence_refs": []
+}

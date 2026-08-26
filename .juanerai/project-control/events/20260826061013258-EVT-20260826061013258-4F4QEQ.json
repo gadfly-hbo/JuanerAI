@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826061013258-4F4QEQ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-26T06:10:13.258Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller"
+  },
+  "summary": "FCR Worker stopped at three proven Test causality conflicts; exact temp proof is 152/152",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

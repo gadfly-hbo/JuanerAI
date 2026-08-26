@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826062918734-L80SK3",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-26T06:29:18.734Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-fcr-regression"
+  },
+  "summary": "FCR Test Gate corrected and frozen at 152/152 GREEN; entering existing Regression with no further Test or Worker scope",
+  "status_after": "active",
+  "evidence_refs": []
+}
