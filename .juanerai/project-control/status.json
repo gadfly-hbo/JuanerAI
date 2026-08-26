@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "mode_activation",
-    "label": "Mode Activation: HOST_PREFLIGHT_GREEN / CANDIDATE_REPLACE",
+    "label": "Mode Activation: SPEC_REGATE_PASS / HOST_CANARY_CONTINUE",
     "ordinal": 5,
     "total": 8
   },
   "health": "active",
-  "summary": "Real-host preflight corrected the macOS effective-write probe to /bin/test; Coordinator 221/221, project-board 12/12, canonical runner exit 0.",
-  "current_objective": "Publish the corrected exact Candidate before any root host installation.",
-  "next_action": "Commit and push the bounded installer/Test correction, update Mac mini staging from the new Candidate, then await the minimum PR credential and root install action.",
+  "summary": "R3 courier-only Spec accepted: prior real-signed rejection Canary retired inconclusive; read-only host status confirms active_change_id null and pointer EMPTY.",
+  "current_objective": "Complete remaining Mode Activation prerequisites and canaries without a disposable valid DISPATCH or transport-layer receipt platform.",
+  "next_action": "Re-run frozen repository gates, read back installed host evidence, then continue exact Candidate and Activation canaries; stop before any product Change.",
   "blockers": [],
   "milestones": [
     {
@@ -827,9 +827,9 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-26T11:16:54.705Z",
+  "updated_at": "2026-08-26T16:17:58.791Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-mode-activation"
+    "session": "controller-mode-activation-r3"
   }
 }

@@ -6,7 +6,7 @@
 MacBook product intake + one Product Plan Reviewer (D1-A)
 -> frozen Artifact Package + signed receipt
 -> Ed25519-signed Controller command
--> authenticated SSH submit/status
+-> best-effort Codex Remote courier for the exact Brief/task/signed envelope
 -> Mac mini CLI client
 -> root-owned Unix socket
 -> one launchd-supervised trusted host-loop process
@@ -24,6 +24,14 @@ The host loop is Activation-owned composition, not a new Foundation interface, s
 Before DISPATCH, MacBook freezes product behavior, boundaries, acceptance, paths, dependency policy, archive target, and stop lines. One fresh read-only Product Plan Reviewer returns the existing seven sections and classifies findings as `SPEC_BLOCKER`, `TEST_REQUIRED`, `IMPLEMENTATION_DETAIL`, `ACTIVATION_OR_HOST_VALIDATION`, or `NON_BLOCKING_FOLLOWUP`.
 
 At most one bounded semantic correction is allowed. The Controller then performs targeted readback; it does not automatically launch a second Reviewer. The signed intake receipt binds package/review/correction/disposition hashes. After DISPATCH, Mac mini still launches one fresh `juaner_spec` to create the actual OpenSpec. No post-DISPATCH Reviewer route exists.
+
+## Best-effort Remote Courier
+
+Codex Remote is only a best-effort courier for a Controller-selected Brief, task, or already signed submit envelope. It is not a message bus, exactly-once authority, transport receipt/outbox/queue/replay platform, Foundation component, or business-evidence authority. Controller signature protects authorization and exact content; the root-owned Host Loop executes; existing Foundation pointer, State, Ledger, and PR facts alone prove business effects.
+
+Before invoking the fixed local CLI, the courier proves the Controller-selected Remote route, exact repository top-level/origin, fixed CLI identity, and raw envelope SHA-256. It does not reinterpret the command, sign, reserialize, select recovery, infer admission, or write business state. Missing, late, or ambiguous Remote output never triggers automatic retry or SSH failover. The Controller reads pointer, State, Ledger, and when applicable PR: an admitted Change continues from durable state; a clearly not-admitted command permits only a new explicit Controller decision; any conflict or inconsistency is `BLOCKED`.
+
+SSH remains a fallback only for installation, rollback, emergency diagnosis, or an explicit Controller backup submission. No courier behavior adds a Foundation interface, state, event, Gateway, lock, or recovery boundary.
 
 ## Real Controller Trust
 
@@ -44,7 +52,7 @@ No real key, token, private material, full command, signature bytes, prompt, raw
 - `submit`: one bounded canonical signed-command transport on stdin;
 - `status`: no mutation body and one read-only response.
 
-Both work locally and through `ssh myhost /usr/local/bin/juanerai-coordinator <submit|status>`. Unknown commands, extra fields, oversized input, multiple frames, environment injection, unavailable socket, and malformed output fail with the frozen sanitized exit mapping. SSH credentials authenticate transport only; they never become Controller signing authority.
+Both work locally and through the Controller-selected best-effort Codex Remote courier. `ssh myhost /usr/local/bin/juanerai-coordinator <submit|status>` is reserved for installation, rollback, emergency diagnosis, or explicit backup submission. Unknown commands, extra fields, oversized input, multiple frames, environment injection, unavailable socket, and malformed output fail with the frozen sanitized exit mapping. Remote or SSH transport identity never becomes Controller signing authority.
 
 The LaunchDaemon plist, installed runtime files, trust/config/credential files, purpose bindings, owner/mode/ACL receipts, and service PID/executable hashes are read back before Activation. A second instance cannot bind the sole root-owned socket and exits without state/effect writes. This singleton property is process ownership, not a second Coordinator mutex.
 
@@ -86,11 +94,13 @@ signed DISPATCH -> pointer admission -> Worktree -> fresh Spec -> Test RED
 -> PR/readback -> Handoff -> AWAITING_CONTROLLER
 ```
 
+This positive production path begins only with the separately user-authorized first real product Change. Mode Activation never submits a disposable valid DISPATCH; it proves the path with deterministic Foundation/runtime tests plus installed trust, host, courier-integrity, and fail-closed negative evidence.
+
 Each DISPATCH or signed REVISION cycle permits at most one automatic Validator repair, only for clearly same-scope implementation defects after finding-specific causal RED. A second FAIL or any contract/scope/path/dependency/permission/host ambiguity enters BLOCKED.
 
 The first PR Candidate does not archive. After MacBook review, MacBook alone signs an archive REVISION whose existing `changes_requested_ref` package binds `ARCHIVE_REQUIRED`, current Frozen Candidate, exact active/archive/canonical paths, and unchanged scope. Mac mini executes Test RED and Worker mechanical archive, then creates a new Candidate whose parent is the current Candidate, fast-forwards the same branch, updates the same PR, reruns final validation/Validator, and produces a new Handoff. Mac mini never decides archive or Acceptance.
 
-Unexpected outcomes perform at most the existing deterministic readback. Unresolved Candidate, push, Ledger, PR/Handoff, identity, trust, credential, or host ambiguity is `BLOCKED / MANUAL_CONTROLLER_STOP`; later `run` does not reissue it. No fallback, replay platform, or fifth recovery boundary is added.
+Unexpected outcomes perform at most the existing deterministic readback. When Remote output is missing, the Controller reads the existing pointer, State, Ledger, and PR authorities: admitted continues from durable state, clearly not admitted permits a new explicit decision, and conflicting or inconsistent facts are `BLOCKED / MANUAL_CONTROLLER_STOP`. Unresolved Candidate, push, Ledger, PR/Handoff, identity, trust, credential, or host ambiguity is likewise blocked; later `run` and the courier do not reissue it. No transport receipt, outbox, queue, automatic replay, or fifth recovery boundary is added.
 
 ## Install, Backup, and Rollback
 
@@ -100,4 +110,4 @@ Rollback stops and unloads the host loop, disables mutating socket ingress, rest
 
 ## Completion Boundary
 
-All fourteen canaries, scope and secret scans, Test Asset Retirement, exact-Candidate Validator, archive/canonical readback, squash merge, dual-device synchronization, service readback, credential negatives, and rollback rehearsal must pass. Completion records `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`; no product DISPATCH is emitted.
+All fourteen canaries, scope and secret scans, Test Asset Retirement, exact-Candidate Validator, archive/canonical readback, squash merge, dual-device synchronization, service readback, credential negatives, and rollback rehearsal must pass without a production-valid DISPATCH. Completion records `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`; no product DISPATCH is emitted. The separately authorized first real product DISPATCH is also the durable positive Remote/real-signature acceptance proof through pointer, State, Ledger, and PR.

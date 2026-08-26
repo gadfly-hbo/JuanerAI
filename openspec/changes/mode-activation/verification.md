@@ -2,13 +2,14 @@
 
 ## Current Verdict
 
-- Verdict: `REPOSITORY_GREEN_HOST_CANARY_READY`
-- Meaning: Spec, causal Test, repository implementation, focused regression, canonical regression, scope readback, and Test Asset Retirement have passed. The exact repository tree is ready for Candidate creation and bounded real-host installation/canaries; no host canary, Validator, PR, archive, merge, RELEASE, Activation-ready state, or product-Change authority is claimed yet.
-- Baseline/HEAD/main/origin-main: `fec08a5300869d9f8411c406c2f4efd79af95467`
+- Verdict: `SPEC_REGATE_PASS_HOST_CANARY_CONTINUE`
+- Meaning: The Controller re-read the strictly bounded R3 seven-file package and issued Spec re-gate `PASS`. Codex Remote remains only a best-effort courier, Activation does not submit a disposable valid DISPATCH, and positive production admission remains deferred to the first separately authorized real product Change. Repository reruns and the current read-only host evidence below permit exact Candidate creation and remaining prerequisite/canary work; they do not claim all fourteen canaries, GitHub credential behavior, Validator, PR, archive, merge, RELEASE, Activation readiness, or product-Change authority.
+- Baseline/main/origin-main: `fec08a5300869d9f8411c406c2f4efd79af95467`
+- Current branch HEAD: `341a08ebfeb20b2b56ae911bd35f88e27f3b5018`
 - Branch: `work/macbook/mode-activation`
-- Next Gate: exact repository Candidate, then external prerequisites and `CAN-MA-01..14`
+- Next Gate: exact repository Candidate plus remaining external-prerequisite and `CAN-MA-01..14` evidence, without a production-valid DISPATCH
 
-## Frozen Read-only Facts
+## Historical Intake Facts
 
 ### MacBook
 
@@ -25,11 +26,54 @@
 - `/private/etc/juanerai` absent; no trusted host loop installed; `sudo -n` unavailable.
 - GitHub CLI authentication is invalid.
 
-These facts are intake evidence, not proof that prerequisites remain current at installation. Gate 4 must re-read them.
+These facts are preserved intake evidence and are superseded where the current host readback below records a later installed state.
 
-## Controller Spec Gate Evidence
+## R3 Courier and Positive Admission Decision
 
-- Controller verdict: `PASS` after complete readback of all seven files and comparison with the canonical Foundation.
+- Codex Remote is only a best-effort courier for a Controller-selected Brief, task, or exact signed envelope. It is not a message bus, exactly-once authority, receipt/outbox/queue/replay platform, Foundation component, or business-evidence authority.
+- Controller signature protects authorization/content; the root-owned Host Loop executes; only existing pointer, State, Ledger, and PR facts prove business effects.
+- Missing Remote output causes a Controller read of those existing authorities: admitted continues from durable state; clearly not admitted permits a new explicit decision; conflict or inconsistency is `BLOCKED`. No automatic retry, replay, or SSH failover is authorized.
+- The prior real-signed admission-precondition rejection canary is `RETIRED_INCONCLUSIVE` and must not be retried because it intentionally wrote no pointer, State, or Ledger fact and lost Remote output cannot prove its rejection reason.
+- `CAN-MA-01` now proves installed current-key/trust mathematics and forged-signature host rejection without taking WIP. `CAN-MA-02` keeps deterministic Foundation product-ID admission and Global-WIP safety evidence; neither submits a production-valid DISPATCH.
+- Activation stops at `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`. The first separately user-authorized real product DISPATCH is also the deferred durable positive Remote/real-signature acceptance proof through pointer, State, Ledger, and later PR.
+
+## Current Read-only Host Evidence
+
+These facts are readback only. They prove installed identities and current WIP absence, not completion of the fourteen-canary matrix.
+
+### Status, service, and socket
+
+- Fixed CLI `status` reported `active_change_id: null`, `pointer_status: EMPTY`, and no current State object. No WIP admission or product command was performed.
+- LaunchDaemon `system/com.juanerai.change-coordinator` is running as PID `15235`, program `/opt/homebrew/bin/node`, runtime `host-loop.mjs`.
+- Socket parent `/private/var/run/juanerai` is `root:wheel` mode `0755`; the active socket is `root:staff` mode `0660`.
+- A direct non-login SSH shell cannot resolve the CLI's `/usr/bin/env node`; explicit `/opt/homebrew/bin/node /usr/local/bin/juanerai-coordinator status` succeeds. This does not block the normal Remote courier path, but remains a `CAN-MA-14` invocation/readback risk.
+
+### Install receipt `install-receipt-341a08e.json`
+
+- Receipt file SHA-256: `36d118fa7c2f271eff6bbb04293d3e619a64ba39579d4d42474bd500eac16f7a`; service SHA-256: `53fb11ed4690a9741edc35390fb8028a8c25d9828935fa1ece113c924ce6fde9`; manifest SHA-256: `1d19a25d75fc50d75e6155e7a984071402c060169a0f762096aa9a563372e264`.
+- Pinned Git directory is `root:root` mode `0755`. Git is mode `0755`, SHA-256 `6b348e2246cd4566a129c34a918ff2381c37eda817797d5bdd64ce719ff068ab`, and non-root effective write is denied. `libintl.8.dylib` is mode `0444`, SHA-256 `9cf2cc193c7ee8db00d4a5df13f6f0f0277f6b83e45177dece6f9c99fc454dbd`, effective-write denied; `libpcre2-8.0.dylib` is mode `0444`, SHA-256 `0d3fcf6ef5dc2c42cbc6ce2326b5266715461892e4f635b4ebfbce646667e84d`, effective-write denied.
+- Controller trust is `root:root` mode `0600`, SHA-256 `073faa77e876673f60bec16843a4b573b66785a91f3ae6f45eab6a21dcd119c2`, ACL SHA-256 `a391804eaad04e843b9b8efa135186e4317a9e5f2ee2c02e5c77d323e33b6838`. Host config is `root:root` mode `0640`, SHA-256 `31f7164d5eac43d325e63d627f727fb738a5d8f6abe40d619547aef6f380efbe`.
+- Branch-push key is `root:root` mode `0640`, SHA-256 `826c136bf053448c4474b021b21d94d54579a44f062a08de2b1ab70ee2b39b61`; PR API credential is `root:root` mode `0600`, SHA-256 `d8d796b351098a401be2dec2a5f4d3db02b4fe7e9e6629ec4a50e7a9e129243a`. Receipt ACL/effective-write readback found no runtime-user write grant for the protected trust/config/credential targets. These are identity/ownership/permission readbacks only; no secret bytes were read or recorded.
+- State root is `root:root` mode `0700`; the active pointer is mode `0600` with non-root effective write denied.
+- Fixed CLI is `root:wheel` mode `0755`, SHA-256 `f5d0d9270c09ec51915bb755b0ac260cb130b396929870cd40e737cc5974cf93`. Runtime directory is `root:root` mode `0755`; installed files are `adapters.mjs` `ce8da4f6c72427a45e09b503436b6368672811b9d66db9b954c132ed0acacd53`, `coordinator.mjs` `2d221ce17a5c33d603320391daabf99f7cb80d85efe419dec2b6170399fb4a7b`, `host-loop.mjs` `8ef00f8a066142a12bd86908b51004fdb52016199334ace2d88f3671fd499c91`, and `production.mjs` `c11e9feee21903c085f0534a7a4a1b1a2a9bb610927593dfcce5829f46ce56bd`; non-root effective write is denied for each.
+
+### Trust binding and rollback
+
+- MacBook signer directory is mode `0700`; signer config and private key are mode `0600`, owned by `huangbo`. No private bytes are recorded here.
+- The derived public SPKI fingerprint is `ace797ad909a0373b771aec70c309daa3adce8de3653409b56cdc767725aa8a4`. It equals the staged trust active-key fingerprint, and staged trust bytes equal the installed receipt trust SHA-256 `073faa77e876673f60bec16843a4b573b66785a91f3ae6f45eab6a21dcd119c2`.
+- The bounded rollback-rehearsal receipt file SHA-256 is `eb2f55211fa5d70eb6fa37390cf114cf5211b721c097fb73df22c2f4a2a46974`; `rolled_back: true`; preserved classes are active pointer, State, Ledger, Handoff, canary evidence, and Git history; rollback readback SHA-256 is `08c320619613638dcf98d031de59cd3532bd714a251618f8661e87d838cfe03a`.
+
+### GitHub metadata, not `CAN-MA-07` PASS
+
+- Repository `gadfly-hbo/JuanerAI` has verified write-enabled deploy key ID `161370084`, title `juanerai-mode-activation-branch-2026-08-26`, `read_only: false`.
+- Active ruleset `main-protection` ID `21155736` applies to `~DEFAULT_BRANCH`, has `bypass_actors: []`, and includes deletion, non-fast-forward, required-linear-history, and pull-request rules.
+- Mac mini production-path branch push, PR-token positive use, merge rejection, and credential cross-use remain unproved. `CAN-MA-07`, the GitHub credential prerequisite, and all dependent Activation claims remain pending.
+
+## Prior Controller Spec Gate Evidence
+
+This section preserves the pre-R3 Spec Gate result as historical evidence; it is not the verdict for the revised bytes above.
+
+- Prior Controller verdict: `PASS` after complete readback of all seven files and comparison with the canonical Foundation.
 - Official GitHub permission correction: closed. Git transport and PR API credentials are separate and purpose-bound; the PR API credential has Metadata read, Contents read, and Pull Requests write but no Contents write.
 - Mandatory `ponytail-review`: `Lean already. Ship.` No persistent abstraction or dependency was identified for deletion.
 - `git diff --check -- openspec/changes/mode-activation`: PASS.
@@ -38,7 +82,7 @@ These facts are intake evidence, not proof that prerequisites remain current at 
 - Scope readback: every Spec write remained inside `openspec/changes/mode-activation/**`; pre-existing `.juanerai/project-control/**` changes remained untouched.
 - `openspec validate mode-activation --strict`: not run because the `openspec` CLI is unavailable locally.
 
-Spec Gate input file SHA-256 values, read back immediately before this verdict transition:
+Historical Spec Gate input file SHA-256 values, read back immediately before that verdict transition:
 
 | File | SHA-256 |
 |---|---|
@@ -69,17 +113,41 @@ shasum -a 256 openspec/changes/mode-activation/proposal.md \
 
 The current Spec Agent must also prove no write outside `openspec/changes/mode-activation/**` and preserve the pre-existing `.juanerai/project-control/**` dirty files unchanged.
 
+## R3 Spec Revision Evidence
+
+- Controller R3 Spec re-gate: `PASS`; the historical Spec result and `RETIRED_INCONCLUSIVE` canary disposition remain preserved rather than overwritten.
+- `git diff --check -- openspec/changes/mode-activation`: PASS.
+- Static inventory remains 7 files / 8 Requirements / 37 Acceptance Criteria / 14 unchanged canary IDs.
+- Current rerun `node --test tools/harness/change-coordinator/mode-activation.test.mjs tools/harness/change-coordinator/coordinator.test.mjs`: `171/171 PASS`, no fail/cancel/skip/todo.
+- Current rerun `node --test tools/harness/project-board/project-control.test.mjs tools/harness/project-board/status-cli.test.mjs`: `12/12 PASS`, no fail/cancel/skip/todo.
+- Current rerun `JUANERAI_TOOLCHAIN_BIN=/Users/huangbo/Dev/Env/homebrew/bin tools/harness/validation/run`: exit `0`.
+- `openspec validate mode-activation --strict`: not run because the `openspec` CLI remains unavailable locally.
+- Scope readback: all R3 writes are limited to the existing seven files under `openspec/changes/mode-activation/**`. Pre-existing `.codex/config.toml` and `.juanerai/project-control/**` dirty files remain outside this Spec Agent's writes.
+
+Current revised non-self-referential file SHA-256 values:
+
+| File | SHA-256 |
+|---|---|
+| `proposal.md` | `5a3de8a1da2825c7b2251f0c6b4d70881c17e835691236121dba20249753b303` |
+| `design.md` | `03718b5379fa5dd1eeab406c36efdd4fed5155d1ef38740922d20caecc797487` |
+| `specs/mode-activation/spec.md` | `3d60ec9a69aeb005b287dbad80e68dd29a011d346249a787a4def103b77a87c5` |
+| `tasks.md` | `2d113806dfe5dc00a13fe23ee34448e73060fd1a72f48ba9ef4c946241b79c49` |
+| `test-plan.md` | `6e578cc27cf5143b9d0fc63d7eab83bfbc3c787ab1fe0ec6a9d96f2ca42523d8` |
+| `traceability.md` | `ddf1eabfa70a39f533831ec6683b2e82b5daeb1ff076353fc194448862dee585` |
+
+`verification.md` cannot contain its own final SHA-256 without self-reference; the Spec handoff reports it after final readback.
+
 ## External Prerequisites — Current Status
 
 | Prerequisite | Current status | Release evidence |
 |---|---|---|
-| Mac mini administrator install/rollback authority | `BLOCKED_EXTERNAL` (`sudo -n` unavailable) | explicit approval plus root owner/mode/ACL/backup/readback receipts |
-| dual-host Git `2.54.0` same executable SHA | `BLOCKED_EXTERNAL` | executable artifact, version/hash/run proof on both devices; no `/usr/bin/git` replacement |
-| Mac mini compatible Node/Codex route | `BLOCKED_EXTERNAL` | absolute executable versions/hashes and exact four-role route canary |
-| isolated Mac mini GitHub credentials | `BLOCKED_EXTERNAL` | repository deploy-key Git transport receipt; PR API Metadata read/Contents read/Pull Requests write receipt; absent Contents write; transport cross-use rejection; protected-main no-bypass push rejection; PR merge rejection; no secret bytes |
-| real Ed25519 trust and host loop | `NOT_STARTED` | key fingerprint, trust ACL/effective-write, service/socket/PID/config hashes, rotation/revocation |
+| Mac mini administrator install/rollback authority | `READBACK_PRESENT` | install/manifest/service and rollback receipt hashes, owner/mode/ACL/effective-write readback; final canary/Validator review pending |
+| dual-host Git `2.54.0` same executable SHA | `READBACK_PRESENT` | installed Git SHA equals MacBook canonical `6b348e...`; executable/runtime closure read back; remaining dual-host canary evidence pending |
+| Mac mini compatible Node/Codex route | `PARTIAL` | LaunchDaemon runs exact Node/host-loop identity; exact four-role route canary remains pending |
+| isolated Mac mini GitHub credentials | `CAN-MA-07_PENDING` | installed credential identities plus verified deploy-key/ruleset metadata; production branch push, PR positive/merge rejection, and cross-use remain unproved |
+| real Ed25519 trust and host loop | `PARTIAL` | signer/trust fingerprint binding, owner/mode/ACL/effective-write, service/socket/PID/config hashes read back; remaining trust/rotation/revocation and host canaries pending |
 
-These do not block fresh Test Design and causal RED. They block host installation and every claim of Activation readiness.
+These facts permit exact Candidate and remaining bounded canary work. They do not establish all external prerequisites or Activation readiness.
 
 ## Repository GREEN and Test Asset Retirement
 
@@ -95,8 +163,8 @@ These do not block fresh Test Design and causal RED. They block host installatio
 
 ## Future Current-read-model Fields
 
-At each Gate this file must be updated with the exact current verdict, subject Candidate/config hashes, evidence matrix, Test Asset Retirement verdict, fourteen-canary results, Validator verdict/Head, PR/Handoff/archive/main identities, backup/rollback result, residual risk, and next Gate. Historical failures remain in immutable detailed evidence and are linked rather than overwritten.
+At each Gate this file must be updated with the exact current verdict, subject Candidate/config hashes, evidence matrix, Test Asset Retirement verdict, fourteen-canary results, Validator verdict/Head, PR/Handoff/archive/main identities, backup/rollback result, residual risk, and next Gate. It must preserve positive production admission as deferred until the first separately authorized real product Change and keep the retired inconclusive canary retired. Historical failures remain in immutable detailed evidence and are linked rather than overwritten.
 
 ## Stop Condition
 
-Any requirement to alter the canonical Foundation contract/interface/schema/state/event/Gateway/lock/recovery boundary, any unresolved secret exposure, or any unprovable host/GitHub/Git identity changes the current verdict to `BLOCKED` and returns to the Controller. The furthest success state for this Change is `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`.
+Any requirement to alter the canonical Foundation contract/interface/schema/state/event/Gateway/lock/recovery boundary, add transport receipts/outbox/queue/replay, submit a disposable valid DISPATCH, expose a secret, or accept unprovable host/GitHub/Git identity changes the current verdict to `BLOCKED` and returns to the Controller. The furthest success state for this Change is `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`; its first positive production admission proof remains part of the separately authorized first real product Change.

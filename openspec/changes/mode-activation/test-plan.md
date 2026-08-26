@@ -2,7 +2,7 @@
 
 ## Evidence Level
 
-R3 negative-first evidence is required. Deterministic repository tests precede host effects. Host canaries run only after TDD_READY, repository GREEN/regression, exact Candidate freeze, external prerequisites, backup, and explicit administrator approval.
+R3 negative-first evidence is required. Deterministic repository tests precede host effects. Host canaries run only after TDD_READY, repository GREEN/regression, exact Candidate freeze, external prerequisites, backup, and explicit administrator approval. Activation canaries SHALL NOT submit a production-valid DISPATCH or occupy Global WIP; the first positive production admission belongs to the separately authorized first real product Change.
 
 ## Commands to Freeze at Test Design
 
@@ -22,8 +22,8 @@ The existing Foundation suite is regression-only and must remain byte/behavior s
 
 | ID | Required positive evidence | Required negative/forbidden-effect evidence |
 |---|---|---|
-| `CAN-MA-01` | real current-key Ed25519 DISPATCH accepted | forged, expired, replay-conflicting, wrong-scope/state, unknown and revoked keys reject before pointer/state/Ledger/Worktree/PR; rotation overlap then revocation passes |
-| `CAN-MA-02` | non-Foundation product Change ID admits | second Change while pointer non-null rejects without cross-Change scan/effect |
+| `CAN-MA-01` | installed current-key/trust readback plus mathematical verification that the Controller signature matches exact inert canonical bytes, without calling Foundation admission | a forged signature submitted through the fixed host path rejects before pointer/State/Ledger/Worktree/PR; deterministic tests cover expired, replay-conflicting, wrong-scope/state, unknown, revoked, rotation-overlap, and post-revocation negatives without production WIP |
+| `CAN-MA-02` | deterministic Foundation tests prove a canonical non-Foundation product Change ID reaches pointer-first READY admission and that product IDs are not Foundation-special-cased; production positive admission is deferred | deterministic WIP tests prove a second Change while pointer non-null rejects without pointer/State/Ledger/Worktree or cross-Change effects |
 | `CAN-MA-03` | Worktree create/reuse reads exact baseline, branch, common Git-dir, clean status, and scope | wrong/dirty/extra path blocks before Agent/Candidate |
 | `CAN-MA-04` | host launches only exact AGENT_ACTION and returns STARTED/RESULT with matching child/artifact hashes | route/hash/sandbox/path mismatch and parent substitute do not advance |
 | `CAN-MA-05` | Foundation alone performs Git/Ledger/validation/PR/Handoff mechanics | host settlement cannot submit mechanical receipts or duplicate an effect |
@@ -35,7 +35,11 @@ The existing Foundation suite is regression-only and must remain byte/behavior s
 | `CAN-MA-11` | STARTED, RESULT, START_FAILED, and INTERRUPTED match canonical variants | old enums and `NOT_STARTED` settlement reject; Coordinator-only NOT_STARTED requires no REQUESTED/action |
 | `CAN-MA-12` | first same-scope Validator FAIL obtains causal RED, Worker fix, new Candidate, and second verdict | second FAIL or boundary ambiguity enters BLOCKED and does not reset repair budget |
 | `CAN-MA-13` | MacBook-signed archive REVISION produces exact archive/canonical bytes in a new same-PR Candidate; accepted RELEASE performs clean ff-only sync, CLOSED, pointer-clear-last | no initial archive, autonomous mini archive/Acceptance/merge/RELEASE, dirty/non-FF/wrong archive refs reject |
-| `CAN-MA-14` | D1-A Reviewer guard, fixed Handoff, SSH submit/status, service restart, backup, rollback, dual raw-byte diff hash, and final stop Gate all read back | extra Reviewer/role, raw secret log, missing durable route default, evidence deletion, automatic next Change, or rollback ambiguity fail closed |
+| `CAN-MA-14` | D1-A Reviewer guard, fixed Handoff, Controller-selected Remote route, exact repository/origin/fixed CLI, envelope SHA-256, service restart, backup, rollback, dual raw-byte diff hash, missing-output authority readback, and final stop Gate all read back | extra Reviewer/role, transport-as-business-evidence, SSH outside install/rollback/emergency/explicit backup, raw secret log, missing durable route default, automatic Remote retry/replay, evidence deletion, automatic next Change, or rollback ambiguity fail closed |
+
+`CAN-MA-01` and `CAN-MA-02` replace any requirement for Activation to accept a disposable valid production DISPATCH. The prior real-signed admission-precondition rejection canary is retired as inconclusive and SHALL NOT be retried: it intentionally produced no pointer, State, or Ledger fact, so lost Remote output cannot prove the rejection reason.
+
+If Remote output is missing, the Controller reads existing pointer, State, Ledger, and when applicable PR. An admitted Change continues from durable state; clearly not admitted permits only a new explicit Controller decision; conflict or inconsistency is `BLOCKED`. Remote is a best-effort courier, not a message bus, exactly-once authority, receipt/outbox/queue/replay platform, or business-evidence authority. SSH remains limited to install, rollback, emergency diagnosis, or explicit backup submission.
 
 ## Test Asset Retirement Ledger
 
@@ -50,4 +54,4 @@ After GREEN/regression the Controller reconciles the complete Test diff, runs `p
 
 ## Evidence Integrity
 
-Every result binds test/canary ID, repository Candidate SHA, configuration and command-definition SHA-256, host identity, executable version/hash, sanitized stdout/stderr hash, exit/signal/timeout, start/end time, and relevant Candidate/PR/Ledger/Handoff refs. Real secret bytes and raw prompts/output are excluded. Historical FAIL/INTERRUPTED evidence remains immutable; `verification.md` is only the current read model.
+Every result binds test/canary ID, repository Candidate SHA, configuration and command-definition SHA-256, host identity, executable version/hash, sanitized stdout/stderr hash, exit/signal/timeout, start/end time, and relevant Candidate/PR/Ledger/Handoff refs. Real secret bytes and raw prompts/output are excluded. Remote output is only best-effort transport observation and does not require or authorize a new transport receipt schema. Historical FAIL/INTERRUPTED evidence remains immutable; `verification.md` is only the current read model.
