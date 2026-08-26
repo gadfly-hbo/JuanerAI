@@ -409,6 +409,8 @@ test('TEST-MA-INSTALL-001 / AC-MA-003-01,02; AC-MA-005-01,02; AC-MA-007-04,05 / 
       && /ARTIFACT_MODE_MISMATCH/.test(source),
     child_acl_and_effective_write_checked: /aclReceipt\(os,\s*childTarget\)/.test(source)
       && /effectiveWriteDenied\(os,\s*plan\.runtime_user,\s*childTarget\)/.test(source),
+    effective_write_uses_real_macos_test: /'\/bin\/test',\s*'-w'/.test(source)
+      && !/'\/usr\/bin\/test',\s*'-w'/.test(source),
     no_binary_rewrite_or_ambient_dependency: !/(?:install_name_tool|brew\s+install|DYLD_|\/usr\/bin\/git)/.test(source),
   };
   assert.deepEqual(Object.entries(gitClosureObligations).filter(([, met]) => !met).map(([name]) => name), [],

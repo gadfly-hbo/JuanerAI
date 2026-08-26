@@ -189,7 +189,7 @@ async function aclReceipt(os, target) {
 }
 
 async function effectiveWriteDenied(os, runtimeUser, target) {
-  const result = await os.exec('/usr/bin/sudo', ['-n', '-u', runtimeUser, '/usr/bin/test', '-w', target]);
+  const result = await os.exec('/usr/bin/sudo', ['-n', '-u', runtimeUser, '/bin/test', '-w', target]);
   if (result.code === 0) throw new Error('EFFECTIVE_WRITE_ALLOWED');
   return true;
 }

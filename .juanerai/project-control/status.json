@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "mode_activation",
-    "label": "Mode Activation: REPOSITORY_GREEN / CANDIDATE_PREPARE",
+    "label": "Mode Activation: HOST_PREFLIGHT_GREEN / CANDIDATE_REPLACE",
     "ordinal": 5,
     "total": 8
   },
   "health": "active",
-  "summary": "Host Install Contract repair is GREEN: Coordinator 221/221, project-board 12/12, canonical runner exit 0; fixed Git closure and purpose-bound RELEASE transport are verified.",
-  "current_objective": "Freeze and push the replacement Mode Activation Candidate, then perform only the authorized real host installation and canaries.",
-  "next_action": "Create the exact replacement Candidate from the three authorized files plus project-control evidence, read back local/remote equality, then prepare bounded Mac mini installation.",
+  "summary": "Real-host preflight corrected the macOS effective-write probe to /bin/test; Coordinator 221/221, project-board 12/12, canonical runner exit 0.",
+  "current_objective": "Publish the corrected exact Candidate before any root host installation.",
+  "next_action": "Commit and push the bounded installer/Test correction, update Mac mini staging from the new Candidate, then await the minimum PR credential and root install action.",
   "blockers": [],
   "milestones": [
     {
@@ -827,7 +827,7 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-26T11:00:19.825Z",
+  "updated_at": "2026-08-26T11:16:54.705Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-mode-activation"
