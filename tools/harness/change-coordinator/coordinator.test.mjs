@@ -666,6 +666,22 @@ test('TEST-DTF-R1-002: every pointer-first crash window prevents WIP misclassifi
     const later = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: admitted.state_version, expected_state_hash: admitted.state_hash });
     assert.deepEqual({ apply_outcome: admitted.outcome, apply_state: admitted.state, readback_calls: harness.count('ledger.readRemoteAppend'), run_outcome: later.outcome, worktree_calls: harness.count('git.createOrReuseWorktree'), agent_action: later.outcome === 'AGENT_ACTION' }, { apply_outcome: 'BLOCKED', apply_state: 'BLOCKED', readback_calls: 1, run_outcome: 'BLOCKED', worktree_calls: 0, agent_action: false }, 'CAUSAL_RED: first admission must validate the exact prepared/submitted identity instead of caching and re-trusting a stable wrong readback');
   });
+  await t.test('identical DISPATCH replay after a wrong admission tuple and failed BLOCKED persistence cannot return READY', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const wrongValue = { tip: GIT_SHA, commit_sha: GIT_SHA, tree_sha: GIT_SHA, event_id: 'event-wrong', event_hash: 'b'.repeat(64), sequence: 1, record_bytes_sha256: 'c'.repeat(64), idempotency_id: 'idem-wrong', linearized: true, change_id: CHANGE_B, subject_sha: GIT_SHA };
+    const wrong = { kind: 'OK', value: wrongValue, receipt_sha256: sha256(bytes(wrongValue)) };
+    harness.fault('ledger.readRemoteAppend', wrong, structuredClone(wrong));
+    const writeState = harness.dependencies.state.writeState;
+    let blockedWriteAttempts = 0;
+    harness.dependencies.state.writeState = async request => {
+      if (request.state?.macro_state === 'BLOCKED' && blockedWriteAttempts++ === 0) return unavailable({ stage: 'BLOCKED_STATE_WRITE' });
+      return writeState(request);
+    };
+    const first = await harness.coordinator.applyControllerCommand(signed());
+    assert.deepEqual({ outcome: first.outcome, state: first.state, durable_state: harness.stateStore.state.macro_state, pointer: harness.stateStore.pointer.active_change_id, readback_calls: harness.count('ledger.readRemoteAppend'), blocked_write_attempts: blockedWriteAttempts }, { outcome: 'BLOCKED', state: null, durable_state: 'READY', pointer: CHANGE_ID, readback_calls: 1, blocked_write_attempts: 1 }, 'PRECONDITION_NOT_REACHED: the first wrong tuple must be rejected while the one failed BLOCKED write leaves the admitted READY scene durable');
+    const replay = await harness.coordinator.applyControllerCommand(signed());
+    assert.deepEqual({ outcome: replay.outcome, state: replay.state, next_action: replay.payload?.next_action ?? null, durable_state: harness.stateStore.state.macro_state, pointer: harness.stateStore.pointer.active_change_id, readback_calls: harness.count('ledger.readRemoteAppend'), blocked_write_attempts: blockedWriteAttempts, worktree_calls: harness.count('git.createOrReuseWorktree'), agent_events: harness.calls.filter(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN').length }, { outcome: 'BLOCKED', state: 'BLOCKED', next_action: 'MANUAL_CONTROLLER_STOP', durable_state: 'BLOCKED', pointer: CHANGE_ID, readback_calls: 2, blocked_write_attempts: 2, worktree_calls: 0, agent_events: 0 }, 'CAUSAL_RED: replay must revalidate the exact admission tuple and converge to durable BLOCKED instead of trusting READY as ALREADY_APPLIED');
+  });
 });
 
 test('TEST-DTF-R1-005: no local Ledger artifact is durable evidence; only exact remote record readback may advance', async t => {
