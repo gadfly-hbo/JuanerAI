@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "DTF-CC007-001",
+  "type": "STRUCTURE_CONTRACT",
+  "status": "resolved",
+  "title": "Transition Foundation cross-device Controller record transport",
+  "why_now": "The repeated CC006 Spec review proved that recordControllerEvent must update the one canonical Mac mini StateV1 and operation mutex, but the MacBook and Mac mini have different machine-local repository/state roots and the frozen seven dependencies define no transport or replica protocol. Test and Worker would otherwise have to invent the cross-device authority boundary.",
+  "prompt": "请选择 MacBook Controller 决策如何作用于 Mac mini 唯一 canonical state。推荐 A：MacBook 通过受控、一次性的远程调用在 Mac mini state root 上执行 record-controller；MacBook 仍是决定作者和 Ledger writer identity，Mac mini 不复制或猜测 Controller 决策。",
+  "options": [
+    {
+      "id": "approve_remote_controller_call",
+      "label": "批准远程调用",
+      "description": "推荐。复用现有七方法和单一 StateV1；Foundation 只冻结协议，Mode Activation 才验证真实受控远程调用，不新增共享数据库、RPC 服务或状态副本。"
+    },
+    {
+      "id": "approve_evidence_replica",
+      "label": "采用 Ledger 副本",
+      "description": "MacBook 直接写 Evidence Ref，Mac mini 再把 Controller 记录收敛到本地 StateV1；需要新增明确的跨端 replica/fold 协议，复杂度和恢复测试明显更高。"
+    },
+    {
+      "id": "stop_mode_switch",
+      "label": "停止本次切换",
+      "description": "保持当前 main 和旧开发模式；不接受跨端状态机制不明确的 Foundation，也不启动 Mode Activation。"
+    }
+  ],
+  "recommended_option_id": "approve_remote_controller_call",
+  "document_refs": [
+    {
+      "label": "当前设计",
+      "path": "openspec/changes/dual-device-transition-foundation/design.md"
+    },
+    {
+      "label": "验证与重复 Spec Gate",
+      "path": "openspec/changes/dual-device-transition-foundation/verification.md"
+    },
+    {
+      "label": "冻结需求",
+      "path": "openspec/changes/dual-device-transition-foundation/specs/dual-device-transition-foundation/spec.md"
+    }
+  ],
+  "cli_instruction": "正式决定请回复：批准 DTF-CC007-001 A；如选择 Ledger 副本，请回复批准 DTF-CC007-001 B；如停止，请回复停止本次模式切换。",
+  "created_at": "2026-08-25T05:35:13.431Z",
+  "updated_at": "2026-08-25T05:56:13.814Z",
+  "resolution_summary": "用户批准选项 A：MacBook 通过受控的一次性远程调用，在 Mac mini 唯一 state root 上执行 record-controller；MacBook 保持决定作者和 Ledger writer identity，不引入 State 副本、共享数据库、RPC 服务或新公共方法。"
+}

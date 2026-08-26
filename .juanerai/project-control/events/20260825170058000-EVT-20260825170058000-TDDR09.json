@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825170058000-TDDR09",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T17:00:58.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-gateway-result-correction"
+  },
+  "summary": "Controller accepted the single-leaf GatewayResult Test correction as TDD_READY. Only git.integration.test.mjs changed: the legacy syncMainFfOnly happy leaf now requires `{kind:'OK',value:{prior_local_main,local_main,origin_main,clean,fast_forward_only}}`, matching the existing production-vocabulary leaf. Independent run: 171 total, 153 pass, 18 expected production failures, 0 cancelled/skipped/todo. Test SHA-256: coordinator=7be99e35052adeb4969191eccda5556ee5eae3f40420695feaf6d132fa5ee773; cli=28dcc5911c337bf7c3920bc8606657acced5292d5996dba8f77a9d30dd79a84a; git=b8b014e74eea916771089a057c2abdd9dd6d190f8fdd1bcdc600afb6d0907a03; fixtures=06240e867c14797a7348764dc76f2bd33da726383276ac2859d0ab3a921697e4. Original-scope Worker continues; no Reviewer or Validator started.",
+  "status_after": "active",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/git.integration.test.mjs",
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/cli.test.mjs",
+    "tools/harness/change-coordinator/fixtures.mjs"
+  ]
+}

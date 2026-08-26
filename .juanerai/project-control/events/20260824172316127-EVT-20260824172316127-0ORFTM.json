@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824172316127-0ORFTM",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-24T17:23:16.127Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-mode-switch"
+  },
+  "summary": "Transition Foundation Spec Gate PASS; Test role released",
+  "status_after": "active",
+  "evidence_refs": []
+}

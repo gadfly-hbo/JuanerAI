@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825163554000-TDDR07",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T16:35:54.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-final-argv-causality-correction"
+  },
+  "summary": "Controller accepted the final one-token Test causality correction as TDD_READY. Only git.integration.test.mjs changed: producer_receipt.argv.slice(-3) became slice(-2), matching its two-item suffix expectation while the separate leaf retains the complete 20-entry argv requirement. Independent rerun: 154 total, 126 pass, 28 expected production failures, 0 cancelled/skipped/todo. Test SHA-256: coordinator=c4615c4556c1ab6e707027e8803a5ef940b6201c6783abb5eef9a36e7eaad05d; cli=28dcc5911c337bf7c3920bc8606657acced5292d5996dba8f77a9d30dd79a84a; git=9ca558e2e5fa04e8990122c56d671f139ea8578cec6699eb342490cc6a25e13b; fixtures=06240e867c14797a7348764dc76f2bd33da726383276ac2859d0ab3a921697e4. Original-scope Worker may resume; no Reviewer or Validator started.",
+  "status_after": "active",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/git.integration.test.mjs",
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/cli.test.mjs",
+    "tools/harness/change-coordinator/fixtures.mjs"
+  ]
+}

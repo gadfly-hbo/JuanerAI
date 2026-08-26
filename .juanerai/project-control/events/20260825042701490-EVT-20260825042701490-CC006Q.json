@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825042701490-CC006Q",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-25T04:27:01.490Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "SPEC_CONFLICT requires user decision on bounded Contract Correction 006 before mode-switch repair continues.",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/DTF-CC006-001.json",
+    "openspec/changes/dual-device-transition-foundation/verification.md"
+  ]
+}

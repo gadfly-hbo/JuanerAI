@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824164651304-2JZ8F5",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-24T16:46:51.304Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-mode-switch"
+  },
+  "summary": "PR #14 merge recorded and Transition Foundation started from the unique dual-device baseline",
+  "status_after": "active",
+  "evidence_refs": []
+}

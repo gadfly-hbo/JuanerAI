@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825053513431-CC007Q",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-25T05:35:13.431Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "Repeated CC006 Spec Gate found an unresolved cross-device Controller-record transport boundary; Test and Worker remain frozen pending DTF-CC007-001.",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/DTF-CC007-001.json",
+    "openspec/changes/dual-device-transition-foundation/verification.md"
+  ]
+}

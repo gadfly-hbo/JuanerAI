@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825091255980-71QSPV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-25T09:12:55.980Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "User approved the Transition Foundation artifact disposition checklist and lifted only the reduced-Spec pause; juaner_spec is active while Test, Worker, Validator, Mode Activation and product Changes remain locked.",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825041012093-CMPLX1",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T04:10:12.093Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "Second Final Handoff Test conflict triggered complexity root-cause return and Test-only consolidation.",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/dual-device-transition-foundation/design.md",
+    "openspec/changes/dual-device-transition-foundation/verification.md"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824173314281-0CN3BA",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-24T17:33:14.281Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-mode-switch"
+  },
+  "summary": "TEST_CONFLICT returned Transition Foundation to Spec for closed seam definitions",
+  "status_after": "active",
+  "evidence_refs": []
+}

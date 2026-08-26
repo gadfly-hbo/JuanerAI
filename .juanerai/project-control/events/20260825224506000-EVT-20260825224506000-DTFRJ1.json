@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825224506000-DTFRJ1",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-25T22:45:06.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-rejected-event-isolation"
+  },
+  "summary": "Schema-valid replacement record for rejected draft EVT-20260825172746000-HOFAU1. The uncommitted revision_authorized draft at .juanerai/project-control/events/20260825172746000-EVT-20260825172746000-HOFAU1.json was never admitted as a durable project-control event. Under explicit user authorization its original bytes were moved unchanged to openspec/changes/archive/2026-08-26-dual-device-transition-foundation/rejected-event-evidence/20260825172746000-EVT-20260825172746000-HOFAU1.json; pre/post SHA-256 is fef59e65b8d315973fd6ec281098ecc3954f9cc0fbeabd5bef65f509d949aa03. This new event records the user decision without impersonating or overwriting the rejected draft.",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/archive/2026-08-26-dual-device-transition-foundation/rejected-event-evidence/20260825172746000-EVT-20260825172746000-HOFAU1.json",
+    ".juanerai/project-control/events/20260825172442000-EVT-20260825172442000-HOFBL1.json"
+  ]
+}

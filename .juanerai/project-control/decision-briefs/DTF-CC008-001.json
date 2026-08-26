@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "DTF-CC008-001",
+  "type": "DATA_SECURITY",
+  "status": "resolved",
+  "title": "Transition Foundation Controller trust anchor",
+  "why_now": "DTF-CC007-001 approved a MacBook-originated one-shot remote record-controller call, but the existing Foundation has no trust anchor that a Mac mini invocation cannot replace. Read-only inspection confirms the dedicated SSH key works, while the current Mac mini authorized_keys entry has no forced-command/restrict options and the proposed root-owned trust-anchor path is absent.",
+  "prompt": "是否批准推荐的 dedicated signing trust anchor：Mode Activation 在 MacBook 创建仅 Controller host 可读的 Ed25519 signing private key，并在 Mac mini /private/etc/juanerai/controller-trust.json 安装 root-owned 只读 public trust record；Foundation 只读取该固定路径并验证 canonical ControllerInvocationV1 签名？",
+  "options": [
+    {
+      "id": "approve_root_owned_signing_anchor",
+      "label": "批准根信任锚",
+      "description": "推荐。私钥仅留在 MacBook host，Mac mini 只持有 root-owned 公钥记录；不新增 dependency/public method，Mode Activation 才执行安装、权限与真实远程 canary。"
+    },
+    {
+      "id": "accept_ssh_only_waiver",
+      "label": "仅信任 SSH",
+      "description": "把现有 SSH 会话和 runtime.device 当作来源证据，不做应用层签名；本地 Mac mini 进程可伪造 Controller 调用，需明确风险豁免。"
+    },
+    {
+      "id": "stop_mode_switch",
+      "label": "停止本次切换",
+      "description": "保持当前 main 和旧模式；不为双端 Controller 调用增加主机级 trust anchor。"
+    }
+  ],
+  "recommended_option_id": "approve_root_owned_signing_anchor",
+  "document_refs": [
+    {
+      "label": "Spec conflict and trust evidence",
+      "path": "openspec/changes/dual-device-transition-foundation/verification.md"
+    },
+    {
+      "label": "Current Foundation design",
+      "path": "openspec/changes/dual-device-transition-foundation/design.md"
+    },
+    {
+      "label": "Resolved remote-call decision",
+      "path": ".juanerai/project-control/decision-briefs/DTF-CC007-001.json"
+    }
+  ],
+  "cli_instruction": "正式决定请回复：批准 DTF-CC008-001 A；如接受弱化认证，请回复批准 DTF-CC008-001 B；如停止，请回复停止本次模式切换。",
+  "created_at": "2026-08-25T06:18:46.567Z",
+  "updated_at": "2026-08-25T06:34:32.450Z",
+  "resolution_summary": "用户批准选项 A：Mode Activation 在 MacBook 创建专用 Ed25519 signing private key，并在 Mac mini /private/etc/juanerai/controller-trust.json 安装 root-owned 只读 public trust record；Foundation 只冻结固定路径读取、canonical invocation 和验签协议。"
+}

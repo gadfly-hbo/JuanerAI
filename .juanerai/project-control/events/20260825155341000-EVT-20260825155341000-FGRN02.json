@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825155341000-FGRN02",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T15:53:41.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-focused-green-r2-review"
+  },
+  "summary": "Controller independently reproduced review-driven Reduced V1 focused GREEN: 125/125 pass with 0 fail/skip/todo. The module exports exactly COORDINATOR_SCHEMA_VERSION, createCoordinatorCore, and createTestCoordinator; the returned Core exposes only applyControllerCommand, run, settlement, and status. Frozen Test hashes remained coordinator=7af29c8ff74d49836ecc49410d737bb52d6f9ca5fe2471f0791b09f75a521e51, cli=c0c7f7ebb672f71cb55042a5c1df839f02865139155a53d408c5b7bbd02222b0, git=f3865ae1cdffe202bbfa1f5ee895882d3fd9d988d0572062bb861b164c281b14, fixtures=06240e867c14797a7348764dc76f2bd33da726383276ac2859d0ab3a921697e4. Production hashes: coordinator=03a1e0606d92a102dbf79ab04b39f05282f26e082960b6521f062af914b34be1; cli=f2a8d5be60ccd03c7026809a5fb7e96fea8451aaba003015fb4507858d7eb573; adapters=b11c1a3ecf91b57adbc3bf359cb21c3016a03d0bd6558361b8197b69edea6e0b; README=8eef35074642780c0f8cdd72756b09c1eeb1f7708154f1994e6cd20ecf549ef2. Syntax and whitespace checks passed; fresh dual-axis rereview remains required.",
+  "status_after": "validating",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/cli.test.mjs",
+    "tools/harness/change-coordinator/git.integration.test.mjs",
+    "tools/harness/change-coordinator/fixtures.mjs",
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "tools/harness/change-coordinator/cli.mjs",
+    "tools/harness/change-coordinator/adapters.mjs",
+    "tools/harness/change-coordinator/README.md"
+  ]
+}

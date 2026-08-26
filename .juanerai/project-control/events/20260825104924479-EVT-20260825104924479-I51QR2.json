@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825104924479-I51QR2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-25T10:49:24.479Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "Brand-new independent rereview returned NEEDS_CLARIFICATION: F4/F6/F7 are closed; F1/F2/F3/F5/F8 retain bounded implementability gaps. All later Gates remain locked.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

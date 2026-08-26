@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826015809208-ZIWZXA",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-26T01:58:09.208Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-admission-replay-closure"
+  },
+  "summary": "Fresh exact-Candidate Validator rejected c38de4b7f125a8a7a5a16a4e27899ffa20db8ff3 because an identical DISPATCH replay could trust a residual READY state after wrong admission Ledger identity and failed durable BLOCKED persistence; PR #15 remained open and unmerged.",
+  "status_after": "active",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "openspec/changes/archive/2026-08-26-dual-device-transition-foundation/test-plan.md"
+  ]
+}

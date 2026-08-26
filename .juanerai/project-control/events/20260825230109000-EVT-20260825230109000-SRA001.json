@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825230109000-SRA001",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-25T23:01:09.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-safety-revision"
+  },
+  "summary": "User authorized one strictly bounded four-item safety revision. juaner_test may modify only coordinator.test.mjs to create the four causal RED leaves; after Controller freezes the new Test hash, the original-scope Worker may modify only coordinator.mjs with existing state, Gateway and block paths. No other Test, OpenSpec, interface, state, event type, Gateway method, recovery mechanism, Mode Activation, host configuration or product Change is authorized.",
+  "status_after": "active",
+  "evidence_refs": [
+    ".juanerai/project-control/events/20260825230108000-EVT-20260825230108000-VFL001.json",
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/coordinator.mjs"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825174234000-ARCBLK",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T17:42:34.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-archive-authorization-stop"
+  },
+  "summary": "Canonical Reduced V1 spec publication succeeded and readback SHA-256 matches the active Change spec: 139ec5107d0908ed1f3676cef6d877f26c76c2bcdeb076d411493375caa49d69. The permission reviewer then rejected moving the active OpenSpec Change to openspec/changes/archive/2026-08-26-dual-device-transition-foundation before Candidate/Validator/PR, requiring explicit user authorization after disclosure of the authority-structure and rollback risk. Controller did not retry, copy/delete around the rejection, freeze Candidate, commit, push, create PR, or start Validator. The active Change remains present and the archive target remains absent.",
+  "status_after": "blocked",
+  "evidence_refs": [
+    "openspec/specs/dual-device-transition-foundation/spec.md",
+    "openspec/changes/dual-device-transition-foundation/specs/dual-device-transition-foundation/spec.md",
+    ".juanerai/project-control/events/20260825174116000-EVT-20260825174116000-REGPAS.json"
+  ]
+}

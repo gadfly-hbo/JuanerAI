@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825021643295-YKWMLS",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T02:16:43.295Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "Controller accepted cleanup-classifier corrected RED; same bounded Worker revision released on final production gaps.",
+  "status_after": "active",
+  "evidence_refs": []
+}

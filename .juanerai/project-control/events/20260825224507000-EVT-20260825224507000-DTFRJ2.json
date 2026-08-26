@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825224507000-DTFRJ2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-25T22:45:07.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-rejected-event-isolation"
+  },
+  "summary": "Schema-valid replacement record for rejected draft EVT-20260825173305000-HOFASF. The uncommitted agent_run_changed START_FAILED draft at .juanerai/project-control/events/20260825173305000-EVT-20260825173305000-HOFASF.json was never admitted as a durable project-control event. Under explicit user authorization its original bytes were moved unchanged to openspec/changes/archive/2026-08-26-dual-device-transition-foundation/rejected-event-evidence/20260825173305000-EVT-20260825173305000-HOFASF.json; pre/post SHA-256 is c73e2c6ee2fd49c3749ad5fee1c240081e0b12fe0def439cd9d8fa9c315e4eeb. This new event records the START_FAILED status without impersonating or overwriting the rejected draft.",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/archive/2026-08-26-dual-device-transition-foundation/rejected-event-evidence/20260825173305000-EVT-20260825173305000-HOFASF.json",
+    ".juanerai/project-control/events/20260825173045000-EVT-20260825173045000-HOFRED.json"
+  ]
+}

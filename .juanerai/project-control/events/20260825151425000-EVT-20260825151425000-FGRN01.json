@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825151425000-FGRN01",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T15:14:25.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-focused-green-review"
+  },
+  "summary": "Controller independently reproduced Reduced V1 focused GREEN: Coordinator, CLI, and Git integration suites passed 115/115 with 0 fail/skip/todo; four production/reference files passed syntax and git diff whitespace checks. Frozen Test hashes remained unchanged. Production SHA-256: coordinator=796eda0af3c4cfb33461546a1e274511166bf9cd06a4c0b013236e11f52fffda; cli=524c6d0922f5a8f2910c422b9057954f366e2042db414a54af12e290ec52cad5; adapters=5f487c36ee92fbd37becb74fecd19117529995529a46158516c6ec12e87fe017; README=8eef35074642780c0f8cdd72756b09c1eeb1f7708154f1994e6cd20ecf549ef2. GREEN remains under dual-axis Controller review before Regression.",
+  "status_after": "validating",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/cli.test.mjs",
+    "tools/harness/change-coordinator/git.integration.test.mjs",
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "tools/harness/change-coordinator/cli.mjs",
+    "tools/harness/change-coordinator/adapters.mjs",
+    "tools/harness/change-coordinator/README.md"
+  ]
+}

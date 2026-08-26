@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825111837644-UJYD4R",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-25T11:18:37.644Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "Second bounded F1/F2/F3/F5/F8 revision and Controller readback completed; juaner_spec is locked and another brand-new independent read-only review begins. All later Gates remain locked.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

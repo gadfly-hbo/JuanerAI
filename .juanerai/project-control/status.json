@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "model_pack_contract_enabler_archive_complete",
-    "label": "Model Pack Contract Enabler：Accepted / Archived / Squash Merge Authorization Pending",
-    "ordinal": 8,
+    "id": "dual_device_transition_foundation",
+    "label": "Development Mode Switch: VALIDATING / CANDIDATE_PREP",
+    "ordinal": 4,
     "total": 8
   },
-  "health": "complete",
-  "summary": "CHG-model-pack-contract-enabler accepted and archived after Validator 011 and external re-review PASS; PR #14 remains unmerged.",
-  "current_objective": "Preserve the accepted inactive Model Pack contract baseline and strict E to H to P to C to A order.",
-  "next_action": "Await explicit user authorization for squash merge of PR #14; do not generate M1 or start H/P/C/A before merge authorization.",
+  "health": "validating",
+  "summary": "The final admission replay safety closure is GREEN. Frozen coordinator.test.mjs SHA-256 is 17da2da0b81717acd53923613212aa12806a52b8ab5713f06226ba6ba0180a05 and coordinator.mjs SHA-256 is 82ff43a6112953ee586f5973acd7c2f2d669d3fec16c396ef725f536a8ee1326. Focused tests are 176/176, project-control readback and project-board 12/12 pass, and canonical runner exits 0. Candidate c38de4b remains rejected and unmerged.",
+  "current_objective": "Create one new exact Candidate for the admission replay closure, push the same branch, bind local/remote/PR Heads, and run exactly one new fresh read-only Validator.",
+  "next_action": "Controller stages only the authorized project-control records, coordinator.test.mjs, and coordinator.mjs; commits and pushes the new Candidate, verifies PR #15 Head equality and GitHub validation, then starts one exact-Candidate fresh Validator.",
   "blockers": [],
   "milestones": [
     {
@@ -45,17 +45,17 @@
     {
       "id": "independent_validation",
       "label": "独立验证",
-      "status": "completed"
+      "status": "active"
     },
     {
       "id": "user_acceptance",
       "label": "用户验收",
-      "status": "completed"
+      "status": "locked"
     },
     {
       "id": "archive",
       "label": "归档",
-      "status": "completed"
+      "status": "locked"
     }
   ],
   "agents": [
@@ -85,38 +85,38 @@
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra · high (R2 route)",
       "status": "complete",
-      "activation": "TDD_READY"
+      "activation": "TDD_READY + explicit exact production-file scope"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "complete",
+      "status": "locked",
       "activation": "实现与证据冻结"
     }
   ],
   "metrics": [
     {
       "id": "requirements",
-      "label": "E frozen Requirements retained without semantic change",
-      "done": 5,
-      "total": 5
+      "label": "Reduced V1 Spec Gate including final F2/F3 safety closure",
+      "done": 1,
+      "total": 1
     },
     {
       "id": "tests",
-      "label": "Validator 010 equivalent-boundary Test return",
-      "done": 2,
-      "total": 2
+      "label": "Reduced V1 Test Design and causal RED",
+      "done": 1,
+      "total": 1
     },
     {
       "id": "tasks",
-      "label": "E lifecycle tasks closed",
-      "done": 12,
-      "total": 12
+      "label": "Test Agent delivery and Controller TDD_READY readback",
+      "done": 1,
+      "total": 1
     },
     {
       "id": "decisions",
-      "label": "External re-review PASS and Controller acceptance",
+      "label": "Artifact disposition checklist approved",
       "done": 1,
       "total": 1
     }
@@ -613,12 +613,223 @@
       "label": "Model Pack Contract Enabler archive evidence",
       "path": "openspec/changes/archive/2026-08-24-model-pack-contract-enabler/verification.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-083",
+      "label": "Reduced V1 Coordinator causal safety RED SHA-256 eeb209c1b98562df24a8b9f58c54d23241cb6dad0b221b2af97fe8c6b605538d",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-084",
+      "label": "Reduced V1 CLI safety RED SHA-256 223a8ac227b7efc359e759a1e69713d0733e4663ee4ef7ba6ab8efb2c6b9d183",
+      "path": "tools/harness/change-coordinator/cli.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-085",
+      "label": "Reduced V1 Git safety RED SHA-256 925d97250d754847784af8757082436b95bf30a8105ac5618558ee09311dc1da",
+      "path": "tools/harness/change-coordinator/git.integration.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-086",
+      "label": "Reduced V1 fixture baseline SHA-256 06240e867c14797a7348764dc76f2bd33da726383276ac2859d0ab3a921697e4",
+      "path": "tools/harness/change-coordinator/fixtures.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-087",
+      "label": "Reduced V1 focused GREEN 115/115",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-088",
+      "label": "Reduced V1 Coordinator production SHA-256 796eda0af3c4cfb33461546a1e274511166bf9cd06a4c0b013236e11f52fffda",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-089",
+      "label": "Reduced V1 CLI production SHA-256 524c6d0922f5a8f2910c422b9057954f366e2042db414a54af12e290ec52cad5",
+      "path": "tools/harness/change-coordinator/cli.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-090",
+      "label": "Reduced V1 adapters production SHA-256 5f487c36ee92fbd37becb74fecd19117529995529a46158516c6ec12e87fe017",
+      "path": "tools/harness/change-coordinator/adapters.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-091",
+      "label": "Reduced V1 harness README SHA-256 8eef35074642780c0f8cdd72756b09c1eeb1f7708154f1994e6cd20ecf549ef2",
+      "path": "tools/harness/change-coordinator/README.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-092",
+      "label": "Reduced V1 review-driven focused GREEN 125/125",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-093",
+      "label": "Reduced V1 unified Core SHA-256 03a1e0606d92a102dbf79ab04b39f05282f26e082960b6521f062af914b34be1",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-094",
+      "label": "Reduced V1 read-only CLI SHA-256 f2a8d5be60ccd03c7026809a5fb7e96fea8451aaba003015fb4507858d7eb573",
+      "path": "tools/harness/change-coordinator/cli.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-095",
+      "label": "Reduced V1 Git adapters SHA-256 b11c1a3ecf91b57adbc3bf359cb21c3016a03d0bd6558361b8197b69edea6e0b",
+      "path": "tools/harness/change-coordinator/adapters.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-096",
+      "label": "Final frozen Coordinator Test SHA-256 a4e06b4b37defe32f09f60450001278e11e6e6f0e3da58536931dfc540738af5",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-097",
+      "label": "Final frozen CLI Test SHA-256 28dcc5911c337bf7c3920bc8606657acced5292d5996dba8f77a9d30dd79a84a",
+      "path": "tools/harness/change-coordinator/cli.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-098",
+      "label": "Final frozen Git integration Test SHA-256 b56712c825a5891ffb1be329c2f5714d9457468c402da1c854aa07111d44e358",
+      "path": "tools/harness/change-coordinator/git.integration.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-099",
+      "label": "Final frozen fixtures SHA-256 ffe6774e23e591626d1a6cc046a483d4e78ee3dcf6ab87669344c8d16a634b76",
+      "path": "tools/harness/change-coordinator/fixtures.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-100",
+      "label": "Final Coordinator production SHA-256 556deacf5265e2f6d8153585061e2cbbf878ae77509cd852f7c8dc47cdb65869",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-101",
+      "label": "Final CLI production SHA-256 aa61b6005a58827824dfed6c2642050d53d2ebdd98cb86a10147a547df810510",
+      "path": "tools/harness/change-coordinator/cli.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-102",
+      "label": "Final Git adapters SHA-256 05e7598ccc185eaf3b0ef27e9662c121efac76837debf83caedb2c5c0183568c",
+      "path": "tools/harness/change-coordinator/adapters.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-103",
+      "label": "Final harness README SHA-256 b804df7c1f18a8bf068859d894aee06589e36aca32102e727cf6d0c555e28243",
+      "path": "tools/harness/change-coordinator/README.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-104",
+      "label": "Canonical and archived spec identity SHA-256 139ec5107d0908ed1f3676cef6d877f26c76c2bcdeb076d411493375caa49d69",
+      "path": "openspec/specs/dual-device-transition-foundation/spec.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-105",
+      "label": "Pre-Candidate canonical validation runner exit 0 after archive and rejected-event isolation",
+      "path": "tools/harness/validation/run",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-106",
+      "label": "Rejected revision_authorized draft preserved byte-for-byte at SHA-256 fef59e65b8d315973fd6ec281098ecc3954f9cc0fbeabd5bef65f509d949aa03",
+      "path": "openspec/changes/archive/2026-08-26-dual-device-transition-foundation/rejected-event-evidence/20260825172746000-EVT-20260825172746000-HOFAU1.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-107",
+      "label": "Rejected agent_run_changed draft preserved byte-for-byte at SHA-256 c73e2c6ee2fd49c3749ad5fee1c240081e0b12fe0def439cd9d8fa9c315e4eeb",
+      "path": "openspec/changes/archive/2026-08-26-dual-device-transition-foundation/rejected-event-evidence/20260825173305000-EVT-20260825173305000-HOFASF.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-108",
+      "label": "Four-item safety causality RED Test SHA-256 ca3ca84bba61b1ee58292cb056f4e15509a94883fdafaf49e638b8de36827733",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-109",
+      "label": "Four-item safety repair production SHA-256 ed2f195dda273049439e4cf97f6e10697361c3bd498f5d6a2e314da2aa3f0516",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-110",
+      "label": "Four-item safety revision focused GREEN 173/173",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-111",
+      "label": "Post-repair canonical validation runner exit 0",
+      "path": "tools/harness/validation/run",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-112",
+      "label": "Fresh exact-Candidate fe58dd560465109309f43bad3529d0f68b3ccfb4 Validator FAIL on initial admission identity and Worktree branch-tip authority",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-113",
+      "label": "Final two-item safety Test SHA-256 c3d8c51358cfa1e435a566e26da17e55a607023699061332ada3314b8e0a3fa2",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-114",
+      "label": "Final two-item safety production SHA-256 79dc5e92378533b8b463eb32d3ee72d0a5bfc6f54436133845732ddf349ad7c4",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-115",
+      "label": "Final two-item safety directed 19/19 and focused 175/175 GREEN",
+      "path": "tools/harness/change-coordinator/coordinator.test.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-116",
+      "label": "Final two-item safety post-repair project-control, project-board and canonical runner PASS",
+      "path": "tools/harness/validation/run",
+      "status": "verified"
     }
   ],
-  "risks": [],
-  "updated_at": "2026-08-24T13:00:10.284Z",
+  "risks": [
+    {
+      "id": "DTF-RISK-TEST-HELPER-001",
+      "label": "Unused non-safety Test helper",
+      "level": "low",
+      "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
+    }
+  ],
+  "updated_at": "2026-08-26T01:58:27.165Z",
   "updated_by": {
     "role": "controller",
-    "session": "codex-controller-archive"
+    "session": "controller-reduced-v1-admission-replay-closure"
   }
 }

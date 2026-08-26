@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825061846567-CC008Q",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-25T06:18:46.567Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "CC007 formal Spec returned SPEC_CONFLICT because the approved remote Controller call lacks a non-replaceable trust anchor; DTF-CC008-001 requests the minimum host-level authority decision.",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/DTF-CC008-001.json",
+    "openspec/changes/dual-device-transition-foundation/verification.md"
+  ]
+}

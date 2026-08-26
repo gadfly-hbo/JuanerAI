@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825160458000-RVWF02",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T16:04:58.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-final-dual-axis-test-return"
+  },
+  "summary": "The final authorized dual-axis rereview completed. Standards verdict FAIL with six P1 and one P2 finding; Spec verdict FAIL with nine P1 findings. Direct probes proved production Core/Adapter vocabulary mismatch, recursively fail-open command and settlement inputs, skipped Worktree and missing CANDIDATE_FREEZE path, non-durable state/BLOCKED progress, absent formal Agent/Ledger events, unsafe RELEASE Worktree binding, text/hard-coded canonical diff evidence, and synthetic CLI status. Current 125/125 is rejected as Gate evidence. Findings are frozen as the sole final Test/Worker repair input; no further Standards or Spec Reviewer may start.",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/dual-device-transition-foundation/design.md",
+    "openspec/changes/dual-device-transition-foundation/specs/dual-device-transition-foundation/spec.md",
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/adapters.mjs",
+    "tools/harness/change-coordinator/git.integration.test.mjs",
+    "tools/harness/change-coordinator/cli.mjs",
+    "tools/harness/change-coordinator/cli.test.mjs"
+  ]
+}

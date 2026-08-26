@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825101906478-XLUO02",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-25T10:19:06.478Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "User approved one bounded Reduced V1 Spec-only revision for the eight independent-review findings; only juaner_spec is active and all later Gates remain locked.",
+  "status_after": "active",
+  "evidence_refs": []
+}

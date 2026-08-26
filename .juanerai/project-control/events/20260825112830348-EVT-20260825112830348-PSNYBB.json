@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825112830348-PSNYBB",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T11:28:30.348Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "The final fresh Reviewer returned NEEDS_CLARIFICATION under the user-frozen hard-stop threshold: pointer-last orphan admission can violate Global WIP=1, and high-value BLOCKED replay lacks executable request/CAS semantics. No third Spec revision or later Gate is authorized.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

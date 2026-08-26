@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260824224018092-UCVKXR",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-24T22:40:18.092Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-mode-switch"
+  },
+  "summary": "Contract Correction 004 passed repeated Spec Gate; fresh Test replan resumed, Worker remains unauthorized.",
+  "status_after": "active",
+  "evidence_refs": []
+}

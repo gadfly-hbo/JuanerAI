@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825115902055-TZNHMX",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-25T11:59:02.055Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "User froze MODE_ACTIVATION_INTAKE_GATE as the mandatory post-Foundation merge/archive/dual-main-sync stop. At that Gate Controller reports merge/sync/archive/workspace evidence and waits for the user's product-Change development-flow simplification plan; no Activation or first product Change is authorized.",
+  "status_after": "active",
+  "evidence_refs": []
+}

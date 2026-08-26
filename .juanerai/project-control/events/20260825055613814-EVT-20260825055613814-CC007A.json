@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825055613814-CC007A",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-25T05:56:13.814Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-switch"
+  },
+  "summary": "User approved DTF-CC007-001 option A; formal Spec may freeze the MacBook-originated remote record-controller protocol and the bounded review corrections.",
+  "status_after": "active",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/DTF-CC007-001.json",
+    "openspec/changes/dual-device-transition-foundation/verification.md"
+  ]
+}

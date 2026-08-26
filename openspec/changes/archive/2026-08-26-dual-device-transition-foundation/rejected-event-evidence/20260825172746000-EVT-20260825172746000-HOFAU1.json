@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825172746000-HOFAU1",
+  "event_type": "revision_authorized",
+  "occurred_at": "2026-08-25T17:27:46.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-handoff-durability-test-red"
+  },
+  "summary": "User authorized the only correction for DTF-HANDOFF-STATE-DURABILITY-001. juaner_test may modify only the existing Handoff identity mismatch leaf in coordinator.test.mjs to require successful BLOCKED state write/readback and no continuing Handoff external side effect. After a causal RED and new Test hash freeze, the same original Worker may modify only coordinator.mjs by deleting the HANDOFF_IDENTITY_MISMATCH skip-persistence special case and reusing the existing block path. No interface, field, event, state, recovery mechanism, other Test, or new completion criterion is permitted.",
+  "status_after": "active",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/coordinator.mjs",
+    ".juanerai/project-control/events/20260825172442000-EVT-20260825172442000-HOFBL1.json"
+  ]
+}

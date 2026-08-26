@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826013233000-VF2001",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-26T01:32:33.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-fresh-validator-fe58dd5"
+  },
+  "summary": "The fresh exact-Candidate Validator rejected fe58dd560465109309f43bad3529d0f68b3ccfb4 on two hard-safety findings: the first DISPATCH admission accepted a stable identity-wrong Ledger readback, and Candidate freeze proved Candidate-object reachability rather than the current Worktree branch tip. PR #15 remained open and unmerged; no Mode Activation or product Change began.",
+  "status_after": "blocked",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "https://github.com/gadfly-hbo/JuanerAI/pull/15"
+  ]
+}

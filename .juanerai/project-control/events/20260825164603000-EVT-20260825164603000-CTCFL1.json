@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825164603000-CTCFL1",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T16:46:03.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-targeted-readback"
+  },
+  "summary": "The original Worker candidate matched its four target hashes and passed the existing 154/154 focused suite, but Controller targeted readback and adversarial replay rejected GREEN. A temporary dirty-main probe showed syncMainFfOnly returned clean:true while `git status --porcelain` was non-empty. A fake Git 9.99.9 producer was recorded as 2.54.0 and a deliberately false common_git_dir was accepted. Production inspectWorktree returned head/common_dir with no clean readback and Git gateway results were not Core GatewayResult wrappers. A deterministic Core probe showed DISPATCH persisted dispatch_roles/dispatch_scope/dispatch_validations outside exact CoordinatorStateV1, the first Agent action added no AGENT_RUN/REQUESTED event, and failed BLOCKED state persistence still returned a result claiming BLOCKED while durable state remained READY. These are retained final-review findings, not new architecture. Focused GREEN is withdrawn; the same Test role must add only the missing causal leaves before the original Worker resumes. No Standards or Spec Reviewer may start.",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/dual-device-transition-foundation/design.md",
+    "openspec/changes/dual-device-transition-foundation/specs/dual-device-transition-foundation/spec.md",
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "tools/harness/change-coordinator/adapters.mjs",
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "tools/harness/change-coordinator/git.integration.test.mjs"
+  ]
+}

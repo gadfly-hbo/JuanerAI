@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825135605428-TSTCFL",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-25T13:56:05.428Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-worker-test-conflict"
+  },
+  "summary": "Fresh juaner_worker stopped before production edits. Frozen coordinator.test.mjs R1-003 and R1-006 demand AGENT_ACTION/EXECUTING and ADVANCED/DELIVERING respectively from the same fresh harness, same DISPATCH, and same run identity. R1-004, R1-007, R1-009, and R1-010 also target late phases without priming those phases. TDD_READY is withdrawn; production and all frozen asset hashes remain unchanged.",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "openspec/changes/dual-device-transition-foundation/design.md",
+    "openspec/changes/dual-device-transition-foundation/tasks.md"
+  ]
+}

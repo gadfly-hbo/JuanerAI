@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260825230108000-VFL001",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-25T23:01:08.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-reduced-v1-candidate-validation"
+  },
+  "summary": "The sole fresh Validator rejected exact Candidate e577e26bf62f1fc7962e0c29a431ab9a3e0c980a on four confirmed hard-safety findings: admission Ledger identity was not bound, Candidate freeze did not re-read local/remote/Validator Heads, Handoff readback hash was not compared with the generated expected hash, and CLOSED pointer-retained continuation did not prove an identical persisted RELEASE. PR #15 remains open and unmerged; no Mode Activation or product Change began.",
+  "status_after": "blocked",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "https://github.com/gadfly-hbo/JuanerAI/pull/15"
+  ]
+}
