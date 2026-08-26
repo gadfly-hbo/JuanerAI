@@ -1,60 +1,138 @@
 #!/usr/bin/env node
-import { readFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
-import path from 'node:path';
+import net from 'node:net';
 
-const canonical = value => Array.isArray(value) ? `[${value.map(canonical).join(',')}]` : value && typeof value === 'object' ? `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}` : JSON.stringify(value);
-const sha256 = value => createHash('sha256').update(value).digest('hex');
-const rejected = error_code => ({ schema_version: '1.0', operation: 'applyControllerCommand', outcome: 'REJECTED', error_code, change_id: null });
-const emit = (message, code) => { process.stdout.write(`${canonical(message)}\n`); process.exitCode = code; };
-const statusPayload = (pointer_status, active_change_id = null) => ({ pointer_status, active_change_id, macro_state: null, phase: null, pending_action: null, candidate: null, delivery: null, orphan_ready: null, local_pause: null });
+const SOCKET_PATH = '/private/var/run/juanerai/change-coordinator.sock';
+const MAX_FRAME_BYTES = 1024 * 1024;
+const FORBIDDEN_ENV = /^JUANERAI_/;
 
-async function status() {
-  const root = process.env.JUANERAI_COORDINATOR_STATE_ROOT;
-  if (!root) return emit({ schema_version: '1.0', operation: 'status', outcome: 'STATUS', change_id: null, state: null, state_version: null, state_hash: null, payload: statusPayload('EMPTY') }, 0);
-  try {
-    const bytes = await readFile(path.join(root, 'active-change.json'), 'utf8');
-    const pointer = JSON.parse(bytes);
-    if (canonical(pointer) !== bytes || pointer.schema_version !== '1.0' || typeof pointer.active_change_id !== 'string') throw new Error('invalid pointer');
-    const stateBytes = await readFile(path.join(root, 'changes', pointer.active_change_id, 'state.json'), 'utf8');
-    const state = JSON.parse(stateBytes);
-    if (canonical(state) !== stateBytes || state.schema_version !== '1.0' || state.change_id !== pointer.active_change_id || !state.admission || typeof state.admission.command_id !== 'string' || typeof state.admission.body_sha256 !== 'string') throw new Error('invalid state');
-    const ledgerBytes = await readFile(path.join(root, 'ledger-work', pointer.active_change_id, 'ledger.jsonl'), 'utf8');
-    const events = ledgerBytes.split('\n').filter(Boolean).map(line => { const event = JSON.parse(line); if (canonical(event) !== line) throw new Error('noncanonical evidence'); return event; });
-    const admission = events.find(event => event.event_class === 'CONTROLLER_COMMAND' && event.change_id === pointer.active_change_id && event.detail?.command_kind === 'DISPATCH' && event.detail?.command_id === state.admission.command_id && event.detail?.ready_state_sha256 === sha256(stateBytes));
-    if (!admission) throw new Error('missing admission evidence');
-    return emit({
-      schema_version: '1.0',
-      operation: 'status',
-      outcome: 'STATUS',
-      change_id: pointer.active_change_id,
-      state: state.macro_state,
-      state_version: state.state_version,
-      state_hash: sha256(stateBytes),
-      payload: {
-        ...statusPayload('ACTIVE', pointer.active_change_id),
-        macro_state: state.macro_state,
-        phase: state.phase,
-        pending_action: state.pending_agent ? { kind: 'AGENT_SETTLEMENT', correlation_id: state.pending_agent.correlation_id } : null,
-        candidate: state.candidate,
-        delivery: state.delivery,
-      },
-    }, 0);
-  } catch {
-    return emit({ schema_version: '1.0', operation: 'status', outcome: 'STATUS', change_id: null, state: null, state_version: null, state_hash: null, payload: statusPayload('INVALID') }, 0);
-  }
+const canonical = value => Array.isArray(value)
+  ? `[${value.map(canonical).join(',')}]`
+  : value && typeof value === 'object'
+    ? `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}`
+    : JSON.stringify(value);
+const closed = (value, keys) => value !== null
+  && typeof value === 'object'
+  && !Array.isArray(value)
+  && Object.keys(value).length === keys.length
+  && keys.every(key => Object.hasOwn(value, key));
+const rejected = operation => ({
+  schema_version: '1.0',
+  operation,
+  outcome: 'REJECTED',
+  error_code: 'INPUT_INVALID',
+  change_id: null,
+});
+const processFailure = operation => ({
+  schema_version: '1.0',
+  operation,
+  outcome: 'PROCESS_FAILURE',
+  error_code: 'INGRESS_UNAVAILABLE',
+  change_id: null,
+});
+const emit = (message, code) => {
+  process.stdout.write(`${canonical(message)}\n`);
+  process.exitCode = code;
+};
+
+async function readFrame() {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    let size = 0;
+    let timer = setTimeout(() => finish(resolve, Buffer.concat(chunks)), 100);
+    const finish = (callback, value) => {
+      clearTimeout(timer);
+      process.stdin.removeAllListeners();
+      process.stdin.pause();
+      process.stdin.unref?.();
+      callback(value);
+    };
+    process.stdin.on('data', chunk => {
+      size += chunk.length;
+      if (size > MAX_FRAME_BYTES) return finish(reject, new Error('FRAME_TOO_LARGE'));
+      chunks.push(Buffer.from(chunk));
+      clearTimeout(timer);
+      timer = setTimeout(() => finish(resolve, Buffer.concat(chunks)), 100);
+    });
+    process.stdin.once('end', () => finish(resolve, Buffer.concat(chunks)));
+    process.stdin.once('error', error => finish(reject, error));
+    process.stdin.resume();
+  });
+}
+
+function canonicalBase64(value) {
+  if (typeof value !== 'string' || value.length === 0 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value)) return null;
+  const bytes = Buffer.from(value, 'base64');
+  return bytes.toString('base64') === value ? bytes : null;
+}
+
+function parseSubmitFrame(bytes) {
+  if (bytes.length < 2 || bytes.at(-1) !== 0x0a || bytes.subarray(0, -1).includes(0x0a)) throw new Error('FRAME_INVALID');
+  const raw = bytes.subarray(0, -1).toString('utf8');
+  const envelope = JSON.parse(raw);
+  if (canonical(envelope) !== raw || !closed(envelope, ['command_body_base64', 'signature_base64'])) throw new Error('FRAME_INVALID');
+  const commandBody = canonicalBase64(envelope.command_body_base64);
+  const signature = canonicalBase64(envelope.signature_base64);
+  if (!commandBody || !signature) throw new Error('FRAME_INVALID');
+  const bodyText = commandBody.toString('utf8');
+  if (canonical(JSON.parse(bodyText)) !== bodyText) throw new Error('FRAME_INVALID');
+  return Buffer.from(`${raw}\n`);
+}
+
+async function exchange(frame) {
+  return new Promise((resolve, reject) => {
+    const socket = net.createConnection({ path: SOCKET_PATH });
+    const chunks = [];
+    let size = 0;
+    let settled = false;
+    const done = (callback, value) => {
+      if (settled) return;
+      settled = true;
+      socket.destroy();
+      callback(value);
+    };
+    socket.setTimeout(30_000, () => done(reject, new Error('SOCKET_TIMEOUT')));
+    socket.once('error', error => done(reject, error));
+    socket.once('connect', () => socket.end(frame));
+    socket.on('data', chunk => {
+      size += chunk.length;
+      if (size > MAX_FRAME_BYTES) return done(reject, new Error('RESPONSE_TOO_LARGE'));
+      chunks.push(Buffer.from(chunk));
+    });
+    socket.once('end', () => done(resolve, Buffer.concat(chunks)));
+  });
+}
+
+function parseResponse(bytes) {
+  if (bytes.length < 2 || bytes.at(-1) !== 0x0a || bytes.subarray(0, -1).includes(0x0a)) throw new Error('RESPONSE_INVALID');
+  const raw = bytes.subarray(0, -1).toString('utf8');
+  const value = JSON.parse(raw);
+  if (canonical(value) !== raw || !value || value.schema_version !== '1.0' || typeof value.operation !== 'string' || typeof value.outcome !== 'string') throw new Error('RESPONSE_INVALID');
+  return value;
 }
 
 const args = process.argv.slice(2);
-if (args.length === 1 && args[0] === 'status') await status();
-else if (args[0] !== 'submit' || args.some(value => /public-key|trust-path|verifier|gateway/.test(value)) || ['JUANERAI_PUBLIC_KEY', 'JUANERAI_TRUST_PATH', 'JUANERAI_VERIFIER', 'JUANERAI_GATEWAY'].some(key => Object.hasOwn(process.env, key))) emit(rejected('INPUT_INVALID'), 2);
-else {
-  const [, bodyFlag, bodyPath, signatureFlag, signature] = args;
+const command = args.length === 1 ? args[0] : null;
+const operation = command === 'status' ? 'status' : 'applyControllerCommand';
+const injected = Object.keys(process.env).some(key => FORBIDDEN_ENV.test(key));
+
+if (!['submit', 'status'].includes(command) || injected) {
+  emit(rejected(operation), 2);
+} else {
   try {
-    const body = await readFile(bodyPath, 'utf8');
-    if (bodyFlag !== '--command-body' || signatureFlag !== '--signature-base64' || !signature || canonical(JSON.parse(body)) !== body) throw new Error('malformed');
-    emit(rejected('INGRESS_UNAVAILABLE'), 3);
+    const input = await readFrame();
+    let request;
+    if (command === 'submit') request = parseSubmitFrame(input);
+    else {
+      if (input.length !== 0) throw new Error('STATUS_BODY_FORBIDDEN');
+      request = Buffer.from('{"operation":"status"}\n');
+    }
+    try {
+      const response = parseResponse(await exchange(request));
+      emit(response, response.outcome === 'REJECTED' ? 2 : response.outcome === 'BLOCKED' ? 3 : 0);
+    } catch {
+      emit(processFailure(operation), 70);
+    }
   } catch {
-    emit(rejected('INPUT_INVALID'), 2);
+    emit(rejected(operation), 2);
   }
 }

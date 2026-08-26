@@ -321,3 +321,43 @@ test('TEST-DTF-R1-009: Evidence bytes fixture retains exact JSONL framing and do
   assert.equal(Object.hasOwn(harness.dependencies.git, 'recover'), false);
   assert.equal(Object.hasOwn(harness.dependencies.ledger, 'recover'), false);
 });
+
+test('TEST-MA-GIT-001 / AC-MA-005-01,02 / CAN-MA-14: production Git is the frozen executable bytes under an empty environment', async t => {
+  const options = {
+    repository_root: '/tmp', state_root: '/tmp/juanerai-ma-git-state', device: 'mac-mini', process_run_id: 'ma-git-001',
+    git_executable: '/Users/huangbo/Dev/Env/homebrew/bin/git', pull_request_executable: '/usr/bin/false', base_environment: {},
+  };
+
+  await t.test('ambient PATH, HOME, Git config, attributes, replace, alternate, and shallow inputs are rejected at composition', () => {
+    assert.throws(() => createCoordinatorAdapters({
+      ...options,
+      base_environment: {
+        PATH: '/tmp/injected', HOME: '/tmp/injected', GIT_CONFIG_GLOBAL: '/tmp/injected-config',
+        GIT_ATTR_NOSYSTEM: '0', GIT_REPLACE_REF_BASE: 'refs/injected', GIT_ALTERNATE_OBJECT_DIRECTORIES: '/tmp/objects', GIT_SHALLOW_FILE: '/tmp/shallow',
+      },
+    }), /COORDINATOR_INPUT_INVALID/, 'EXPECTED_RED: current adapter accepts ambient production Git configuration');
+  });
+
+  await t.test('a wrapper that reports 2.54.0 but has the wrong executable SHA-256 rejects before diff bytes', async () => {
+    await withTemporaryRepository(async fixture => {
+      const wrapper = path.join(fixture.root, 'git-2.54.0-wrong-bytes');
+      await writeFile(wrapper, '#!/bin/sh\nif [ "$1" = "--version" ]; then echo "git version 2.54.0"; exit 0; fi\nexec /Users/huangbo/Dev/Env/homebrew/bin/git "$@"\n');
+      await chmod(wrapper, 0o755);
+      const wrapped = createCoordinatorAdapters({ ...options, repository_root: fixture.root, state_root: path.join(fixture.root, '.state'), git_executable: wrapper });
+      await assert.rejects(() => wrapped.git.canonicalDiff({
+        canonical_root: fixture.root, common_git_dir: fixture.common_git_dir, worktree_root: fixture.root,
+        baseline_sha: fixture.baseline, candidate_sha: fixture.candidate,
+      }), /COORDINATOR_INTERRUPTED/, 'EXPECTED_RED: version equality without frozen executable hash is insufficient');
+    });
+  });
+
+  await t.test('main, force syntax, deletion syntax, and non-current branch grammar are unavailable before transport', async () => {
+    const adapter = createCoordinatorAdapters(options);
+    const attempts = ['main', '+work/mac-mini/mode-activation', ':work/mac-mini/mode-activation', 'work/macbook/mode-activation'];
+    for (const branch of attempts) {
+      await assert.rejects(() => adapter.git.pushBranch({
+        canonical_root: '/tmp', branch, head_sha: '1'.repeat(40), expected_remote_head: '0'.repeat(40), idempotency_id: 'ma-push-denied',
+      }), /COORDINATOR_INTERRUPTED/, `${branch} must reject before Git transport`);
+    }
+  });
+});

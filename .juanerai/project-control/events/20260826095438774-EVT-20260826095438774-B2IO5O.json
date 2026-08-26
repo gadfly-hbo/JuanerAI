@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826095438774-B2IO5O",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-26T09:54:38.774Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation"
+  },
+  "summary": "Published Mode Activation REGRESSION / HOST_CANARY Gate after full repository GREEN",
+  "status_after": "active",
+  "evidence_refs": []
+}

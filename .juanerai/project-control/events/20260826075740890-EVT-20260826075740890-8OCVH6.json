@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826075740890-8OCVH6",
+  "event_type": "change_started",
+  "occurred_at": "2026-08-26T07:57:40.890Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation"
+  },
+  "summary": "Mode Activation authorized at fec08a53; entered R3 Spec intake with host mutation locked",
+  "status_after": "active",
+  "evidence_refs": []
+}

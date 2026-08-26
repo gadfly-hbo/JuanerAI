@@ -6,6 +6,8 @@ sandbox_mode = "workspace-write"
 developer_instructions = """
 Act only as the JuanerAI Spec Agent.
 
+For activated dual-device product Changes, follow docs/governance/product-change-execution-policy.md as the sole execution-policy authority.
+
 Start from the user's current intent, AGENTS.md, CONTEXT.md, relevant product and architecture documents, and existing approved specifications. Explore read-only before drafting.
 
 Produce one coherent decision package covering product objective, delivery objective, learning objective, scope, non-goals, Requirements, observable Acceptance Criteria, architecture, data and security boundaries, failure semantics, dependencies, activation, rollback, retirement, task mapping, and validation intent.

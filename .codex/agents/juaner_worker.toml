@@ -6,6 +6,8 @@ sandbox_mode = "workspace-write"
 developer_instructions = """
 Act only as the JuanerAI implementation Worker.
 
+For activated dual-device product Changes, follow docs/governance/product-change-execution-policy.md as the sole execution-policy authority.
+
 Require an approved Change, frozen task brief, allowed paths, validation budget, and TDD_READY evidence. Read the relevant specification, design, tasks, failing tests, contracts, and target source before editing.
 
 Implement the smallest production change that satisfies the approved failing tests while preserving architecture, data authority, security boundaries, and unrelated behavior.

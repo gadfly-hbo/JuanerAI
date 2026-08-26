@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "foundation_compatibility_repair",
-    "label": "Foundation Compatibility Repair: FINAL_INTEGRATION_PIPELINE",
-    "ordinal": 4,
+    "id": "mode_activation",
+    "label": "Mode Activation: REGRESSION / HOST_CANARY",
+    "ordinal": 5,
     "total": 8
   },
-  "health": "validating",
-  "summary": "Bounded safety revision GREEN and Regression are current: focused 174/174, complete change-coordinator 201/201, project-board 12/12 and canonical runner exit 0; prior Candidate 419746cc45deeb21ebe2688bf1151b48919cedab and Validator FAIL remain historical rejected evidence.",
-  "current_objective": "Freeze the exact replacement Candidate from the authorized two Test, two production, Controller evidence and project-control paths without changing the canonical Spec, then bind PR #16 and one fresh Validator to that exact Head.",
-  "next_action": "Controller performs exact staging, non-amend Candidate commit, same-branch push and PR #16 readback; only one fresh exact-Candidate juaner_validator may run, and another safety FAIL stops.",
+  "health": "active",
+  "summary": "Mode Activation repository implementation is GREEN: 221/221 coordinator tests, 12/12 project-board tests, canonical runner exit 0; entering bounded dual-host installation and canaries.",
+  "current_objective": "Install the exact approved trust, credentials, pinned Git, trusted host loop and reversible service on Mac mini, then pass CAN-MA-01..14 without dispatching a product Change.",
+  "next_action": "Prepare non-secret Activation artifacts, install with root authority on Mac mini, execute all real host/provider canaries, then freeze the exact Candidate for one fresh Validator.",
   "blockers": [],
   "milestones": [
     {
@@ -69,54 +69,54 @@
     {
       "id": "juaner_spec",
       "label": "Spec Agent",
-      "model": "gpt-5.6-sol · high (R2 route)",
+      "model": "gpt-5.6-sol · xhigh (R3 route)",
       "status": "complete",
-      "activation": "Spec Gate 前"
+      "activation": "Mode Activation Spec Gate 前"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
-      "model": "gpt-5.6-terra · high (R2 automatic escalation)",
+      "model": "gpt-5.6-sol · xhigh (R3 direct safety route)",
       "status": "complete",
-      "activation": "Spec Gate PASS"
+      "activation": "Mode Activation Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
-      "model": "gpt-5.6-terra · high (R2 route)",
-      "status": "complete",
-      "activation": "TDD_READY + explicit exact production-file scope"
+      "model": "gpt-5.6-sol · high (R3 route)",
+      "status": "active",
+      "activation": "TDD_READY + exact Activation production and host scope"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
-      "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "active",
-      "activation": "实现与证据冻结"
+      "model": "gpt-5.6-sol · xhigh (R3 route)",
+      "status": "locked",
+      "activation": "Activation Candidate and dual-host evidence frozen"
     }
   ],
   "metrics": [
     {
       "id": "requirements",
-      "label": "FCR-1 through FCR-4 implementation-conformance requirements",
-      "done": 4,
-      "total": 4
+      "label": "Frozen Mode Activation planning decisions",
+      "done": 12,
+      "total": 12
     },
     {
       "id": "tests",
-      "label": "FCR causal RED leaves",
-      "done": 4,
-      "total": 4
+      "label": "Activation canary contracts",
+      "done": 0,
+      "total": 14
     },
     {
       "id": "tasks",
-      "label": "FCR implementation corrections",
-      "done": 4,
-      "total": 4
+      "label": "Mode Activation implementation tasks",
+      "done": 0,
+      "total": 1
     },
     {
       "id": "decisions",
-      "label": "Frozen Mode Activation plan and FCR authorization",
+      "label": "Mode Activation implementation authorization",
       "done": 1,
       "total": 1
     }
@@ -827,9 +827,9 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-26T07:32:25.370Z",
+  "updated_at": "2026-08-26T09:54:38.774Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-fcr-security-revision"
+    "session": "controller-mode-activation"
   }
 }

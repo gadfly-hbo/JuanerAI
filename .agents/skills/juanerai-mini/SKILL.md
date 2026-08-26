@@ -5,6 +5,9 @@ description: 在 Mac mini 开始、继续或交付一次 JuanerAI 工作。
 
 # JuanerAI Mac mini
 
+Activated dual-device product Changes use the sole authority in
+`docs/governance/product-change-execution-policy.md`.
+
 Read `docs/governance/git-development-workflow.md`, then verify the repository
 root, worktree, branch, upstream, remote, and `juanerai.device`. Continue only
 when the configured device is `mac-mini`.

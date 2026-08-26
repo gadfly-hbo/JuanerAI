@@ -1,5 +1,9 @@
 # Change Complexity Control
 
+Activated dual-device product Changes also use the sole execution authority in
+`docs/governance/product-change-execution-policy.md`; this document does not
+redefine its WIP, repair, archive, release, or stop rules.
+
 Use this workflow when sizing a post-bootstrap Change, selecting its evidence level, or responding to repeated Spec, Test, or Worker corrections. It controls process complexity; it does not waive the OpenSpec, RED, GREEN, regression, Validator, acceptance, or archive gates.
 
 ## Classify Before Proposal
