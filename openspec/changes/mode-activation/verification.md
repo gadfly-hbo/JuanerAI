@@ -2,12 +2,12 @@
 
 ## Current Verdict
 
-- Verdict: `SPEC_REGATE_PASS_REPLACEMENT_CANDIDATE_AUTHORIZED`
-- Meaning: The Controller read back the exact strictly bounded R3 seven-file package and issued Spec re-gate `PASS`. The revision still defers only the production-positive Evidence Ref append/readback, product-branch push/readback, and PR create/update/readback obligations of `CAN-MA-07/08` to the first separately user-authorized real product Change; it adds no Canary interface, direct production-adapter invocation, or disposable Change, and every deferred failure is `BLOCKED` with no Acceptance. This verdict authorizes creation of a descendant replacement Candidate only; it does not claim that Candidate exists, Validator, PR/archive/merge, Activation readiness, or product-Change authority.
+- Verdict: `SPEC_REGATE_PASS_REPLACEMENT_CANDIDATE_CREATED`
+- Meaning: The Controller read back the exact strictly bounded R3 seven-file package, issued Spec re-gate `PASS`, and created the first authorized descendant replacement Candidate. The revision still defers only the production-positive Evidence Ref append/readback, product-branch push/readback, and PR create/update/readback obligations of `CAN-MA-07/08` to the first separately user-authorized real product Change; it adds no Canary interface, direct production-adapter invocation, or disposable Change, and every deferred failure is `BLOCKED` with no Acceptance. This evidence update follows that first Candidate and does not self-declare the final exact subject, final validation, Validator, PR/archive/merge, Activation readiness, or product-Change authority.
 - Baseline/main/origin-main: `fec08a5300869d9f8411c406c2f4efd79af95467`
-- Current branch HEAD / pre-revision Candidate: `09a38c7d3656189241e6226b64a1f5f76f802c59`
+- First replacement Candidate: `c4a4f4dca8c7c0a7970d6cc0901b39f1578baa93`; its local and remote branch readback were equal. This file is a post-`c4a4f4d` evidence-closure update; the final exact subject is frozen only by Controller local/remote HEAD readback after that update is committed and pushed, and is intentionally not self-referenced here.
 - Branch: `work/macbook/mode-activation`
-- Next Gate: create and read back a descendant replacement Candidate from `09a38c7d3656189241e6226b64a1f5f76f802c59`. Only after that readback may the prior Candidate be marked `SUPERSEDED` without erasing it, followed by final validation and a fresh exact-Candidate Validator.
+- Next Gate: after Controller commits, pushes, and reads back the evidence-closure descendant, run final validation against that post-commit exact local/remote HEAD, then dispatch a fresh read-only Validator against the same exact subject.
 
 ## Historical Intake Facts
 
@@ -130,12 +130,12 @@ The current Spec Agent must also prove no write outside `openspec/changes/mode-a
 
 ## Current R3 Deferral Revision
 
-- Result: `SPEC_REGATE_PASS_REPLACEMENT_CANDIDATE_AUTHORIZED`.
+- Result: `SPEC_REGATE_PASS_REPLACEMENT_CANDIDATE_CREATED`.
 - Controller exact re-gate input SHA-256 readback: `proposal.md=f5db31dcffd4651aaf4c5615343779f5ee5091e8b88fe826ee1cbb2920a5375b`; `design.md=ec8abe19c0aa46eb1b4ea6c4b336a20c70e013c5ecacbeecea9905a43861f67a`; `specs/mode-activation/spec.md=d670f17e1c123e4a5e19de9ddf0df590b81d9c4891e5becff7d863f6470a9775`; `tasks.md=e9b4cd17dc0d35a65a29f9974c99580203c7b54006abb8884aefa4e7251a25b3`; `test-plan.md=a48682ebca50a9e13f3f6af4167328e318a084204d05b457166c01cbf4272389`; `traceability.md=6c5e6bff72be883ebda72502c53818eccfb0b6586d04ffda6a057ad448a7cb06`; `verification.md=d3adec0eee9b565fd688a38d9983dca5f61625022f4e917d8228404f51fc4326`. The `verification.md` value is the exact Gate input before this evidence-only verdict update; its new final hash is reported by the Spec handoff.
 - Static inventory readback: 7 files / 8 Requirements / 37 Acceptance Criteria / 14 unchanged Canary IDs; `git diff --check -- openspec/changes/mode-activation` PASS.
 - The first sandboxed full-Coordinator run had one environment-only false failure because Unix socket `listen` returned `EPERM`. The same full command outside the sandbox, `node --test tools/harness/change-coordinator/*.test.mjs`, passed `222/222`, with no failure.
 - Project-board rerun passed `12/12`; the canonical runner exited `0`.
-- Controller authorization is limited to creating and reading back the descendant replacement Candidate. It has not been created; `09a38c7d3656189241e6226b64a1f5f76f802c59` remains `AWAITING_REPLACEMENT_CANDIDATE`, not `SUPERSEDED`.
+- Controller authorization produced and read back first descendant replacement Candidate `c4a4f4dca8c7c0a7970d6cc0901b39f1578baa93`; its local and remote branch refs matched. This post-Candidate evidence closure requires a new descendant commit and Controller HEAD/remote readback before any final exact subject exists; no final validation or Validator result is claimed.
 - Deferral is closed to exactly three first-product effects: Evidence Ref append/readback, product-branch push/readback, and PR create/update/readback.
 - No new Canary interface, direct production-adapter invocation, disposable Change, Foundation/interface/state/event/Gateway/lock/recovery delta, or real-product merge call is authorized.
 - All deferred effects use existing Foundation/Host Loop execution and exact readback; any unavailable, ambiguous, conflicting, or mismatched evidence is `BLOCKED` and forbids Acceptance.
@@ -156,8 +156,8 @@ Current revised non-self-referential file SHA-256 values:
 
 ## Candidate Lineage
 
-- `09a38c7d3656189241e6226b64a1f5f76f802c59` is the preserved pre-revision Candidate, parent `341a08ebfeb20b2b56ae911bd35f88e27f3b5018`, status `AWAITING_REPLACEMENT_CANDIDATE`.
-- It SHALL be marked `SUPERSEDED` only after a descendant replacement Candidate containing this exact revision is created and read back. Its commit, prior validation, host evidence, and historical Gate records remain immutable and are never deleted or rewritten.
+- `09a38c7d3656189241e6226b64a1f5f76f802c59` is the preserved pre-revision Candidate, parent `341a08ebfeb20b2b56ae911bd35f88e27f3b5018`, status `SUPERSEDED` by `c4a4f4dca8c7c0a7970d6cc0901b39f1578baa93`. Its commit, prior validation, host evidence, and historical Gate records remain immutable and are never deleted or rewritten.
+- `c4a4f4dca8c7c0a7970d6cc0901b39f1578baa93` is the first descendant replacement Candidate; its direct parent is `09a38c7d3656189241e6226b64a1f5f76f802c59`, its committed `verification.md` SHA-256 is `7d66d5245ea24bee0c0061253412a0128a108c5503a3a6e512270e84bbd4fd37`, and its local/remote branch readback was exact. The evidence-closure commit after it becomes the final validation subject only after Controller post-commit local/remote HEAD readback; that future SHA is not written here.
 
 ## External Prerequisites — Current Status
 
@@ -170,7 +170,7 @@ Current revised non-self-referential file SHA-256 values:
 | Evidence Ref production append/readback | `CAN-MA-08_DEFERRED_POSITIVE` | deterministic append-only/readback safety preserved; exact production append/readback deferred to first authorized product Change and blocks Acceptance on any non-exact result |
 | real Ed25519 trust and host loop | `PARTIAL` | signer/trust fingerprint binding, owner/mode/ACL/effective-write, service/socket/PID/config hashes read back; remaining trust/rotation/revocation and host canaries pending |
 
-The current Controller re-gate authorizes creation of the replacement Candidate; these facts do not establish all external prerequisites or Activation readiness.
+The current Controller re-gate authorized the first replacement Candidate and its exact local/remote readback is complete; these facts do not establish the post-evidence-closure exact subject, all external prerequisites, or Activation readiness.
 
 ## Repository GREEN and Test Asset Retirement
 
