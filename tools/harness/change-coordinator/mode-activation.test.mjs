@@ -437,9 +437,19 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
   const aclReadbackTargets = new Set();
   const launchctlCalls = [];
   const runtimeDirectoryReadbacks = [];
+  let boundaryMutationCount = 0;
+  let readinessMutationBaseline = null;
+  let readinessMutationObserved = false;
   let aclGrantTarget = null;
   let effectiveWriteAllowedTarget = null;
   let bootstrapFailure = false;
+  let socketScenario = 'exact';
+  let socketIsSocket = true;
+  let socketUid = 0;
+  let socketGid = 20;
+  let socketMode = 0o660;
+  let socketReadbackAmbiguous = false;
+  let socketAppearanceError = null;
   const runtimeDirectoryTarget = '/private/var/run/juanerai';
   const socketTarget = '/private/var/run/juanerai/change-coordinator.sock';
   const translate = target => ['/private/', '/Library/', '/usr/local/', '/Users/huangbo/Dev/Env/homebrew'].some(prefix => target.startsWith(prefix))
@@ -448,13 +458,20 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
   const socketPath = translate(socketTarget);
   const ownerStat = async target => {
     const resolved = translate(target);
+    if (target === socketTarget && readinessMutationBaseline !== null
+      && boundaryMutationCount !== readinessMutationBaseline) readinessMutationObserved = true;
+    if (target === socketTarget && socketReadbackAmbiguous) {
+      const error = new Error('injected ambiguous socket readback');
+      error.code = 'EACCES';
+      throw error;
+    }
     const stat = await lstat(resolved);
     const owner = owners.get(resolved) ?? { uid: stat.uid, gid: stat.gid };
     return new Proxy(stat, {
       get(value, key) {
         if (key === 'uid' || key === 'gid') return owner[key];
         if (key === 'mode' && modeOverrides.has(resolved)) return (value.mode & ~0o777) | modeOverrides.get(resolved);
-        if (key === 'isSocket' && resolved === socketPath) return () => true;
+        if (key === 'isSocket' && resolved === socketPath) return () => socketIsSocket;
         const member = Reflect.get(value, key, value);
         return typeof member === 'function' ? member.bind(value) : member;
       },
@@ -463,11 +480,12 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
   const osBoundary = {
     readFile: target => readFile(translate(target)),
     readdir: target => readdir(translate(target)),
-    writeFile: (target, bytes, options) => writeFile(translate(target), bytes, options),
-    mkdir: (target, options) => mkdir(translate(target), options),
+    writeFile: (target, bytes, options) => { boundaryMutationCount += 1; return writeFile(translate(target), bytes, options); },
+    mkdir: (target, options) => { boundaryMutationCount += 1; return mkdir(translate(target), options); },
     lstat: ownerStat,
     realpath: target => realpath(translate(target)),
     async rename(from, to) {
+      boundaryMutationCount += 1;
       const source = translate(from); const target = translate(to);
       await rename(source, target);
       for (const [ownedPath, owner] of [...owners]) {
@@ -477,10 +495,10 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
         }
       }
     },
-    copyFile: (from, to) => copyFile(translate(from), translate(to)),
-    chmod: (target, mode) => chmod(translate(target), mode),
-    async chown(target, uid, gid) { owners.set(translate(target), { uid, gid }); },
-    rm: (target, options) => rm(translate(target), options),
+    copyFile: (from, to) => { boundaryMutationCount += 1; return copyFile(translate(from), translate(to)); },
+    chmod: (target, mode) => { boundaryMutationCount += 1; return chmod(translate(target), mode); },
+    async chown(target, uid, gid) { boundaryMutationCount += 1; owners.set(translate(target), { uid, gid }); },
+    rm: (target, options) => { boundaryMutationCount += 1; return rm(translate(target), options); },
     open: (target, flags) => open(translate(target), flags),
     async exec(executable, args) {
       if (executable === '/bin/ls') {
@@ -497,7 +515,10 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
       }
       if (executable !== '/bin/launchctl') throw new Error('UNEXPECTED_EXECUTABLE');
       launchctlCalls.push([...args]);
-      if (args[0] === 'bootout') return { code: 3, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
+      if (args[0] === 'bootout') {
+        readinessMutationBaseline = null;
+        return { code: 3, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
+      }
       if (args[0] === 'bootstrap') {
         let runtimeDirectoryStat;
         try { runtimeDirectoryStat = await ownerStat(runtimeDirectoryTarget); }
@@ -510,9 +531,19 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
           gid: runtimeDirectoryStat.gid, mode: runtimeDirectoryStat.mode & 0o777,
         });
         if (bootstrapFailure) return { code: 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.from('injected bootstrap failure') };
-        await writeFile(socketPath, Buffer.alloc(0));
-        await chmod(socketPath, 0o660);
-        owners.set(socketPath, { uid: 0, gid: 20 });
+        socketReadbackAmbiguous = socketScenario === 'ambiguous';
+        readinessMutationBaseline = boundaryMutationCount;
+        if (socketScenario === 'exact' || socketScenario === 'wrong-authority') {
+          setTimeout(() => {
+            void (async () => {
+              try {
+                await writeFile(socketPath, Buffer.alloc(0));
+                await chmod(socketPath, socketMode);
+                owners.set(socketPath, { uid: socketUid, gid: socketGid });
+              } catch (error) { socketAppearanceError = error; }
+            })();
+          }, 25);
+        }
         return { code: 0, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
       }
       if (args[0] === 'print') return { code: 0, signal: null, stdout: Buffer.from('state = running\n'), stderr: Buffer.alloc(0) };
@@ -661,7 +692,17 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
     await assert.rejects(() => ownerStat(runtimeDirectoryTarget), { code: 'ENOENT' },
       'success path begins with no externally pre-created runtime directory');
     runtimeDirectoryReadbacks.length = 0;
-    const receipt = await hostInstaller.install(plan);
+    socketScenario = 'exact';
+    socketIsSocket = true; socketUid = 0; socketGid = plan.runtime_gid; socketMode = 0o660;
+    socketReadbackAmbiguous = false; socketAppearanceError = null; readinessMutationObserved = false;
+    const bootstrapCallsBeforeSuccess = launchctlCalls.filter(args => args[0] === 'bootstrap').length;
+    let receipt;
+    await assert.doesNotReject(async () => { receipt = await hostInstaller.install(plan); },
+      'CAUSAL_RED: installer waits read-only for the asynchronously appearing socket instead of exposing immediate lstat failure');
+    assert.equal(launchctlCalls.filter(args => args[0] === 'bootstrap').length - bootstrapCallsBeforeSuccess, 1,
+      'Socket readiness never retries launchctl bootstrap');
+    assert.equal(readinessMutationObserved, false, 'Socket readiness performs only readback while waiting');
+    assert.equal(socketAppearanceError, null, 'test-owned asynchronous socket appearance succeeds');
     assert.equal((await ownerStat(runtimeTarget)).isDirectory(), true, 'runtime install target is a directory, never one renamed file');
     for (const name of ['host-loop.mjs', 'production.mjs', 'coordinator.mjs', 'adapters.mjs']) {
       assert.deepEqual(await readFile(path.join(translate(runtimeTarget), name)), await readFile(path.join(runtimeSource, name)));
@@ -696,6 +737,58 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
     assert.deepEqual({ uid: socketStat.uid, gid: socketStat.gid, mode: socketStat.mode & 0o777 }, { uid: 0, gid: 20, mode: 0o660 });
     assert.equal(effectiveWriteDenials.has(stateTarget), true, 'runtime client cannot write Coordinator state');
     assert.equal(effectiveWriteDenials.has(trustTarget), true, 'runtime client cannot write Controller trust');
+
+    await hostInstaller.rollback({
+      manifest_path: receipt.manifest_path, manifest_sha256: receipt.manifest_sha256,
+      revocation_receipt_sha256: '0'.repeat(64), emergency_pre_activation: true,
+    });
+    await assert.rejects(() => ownerStat(runtimeDirectoryTarget), { code: 'ENOENT' });
+    await assert.rejects(() => ownerStat(socketTarget), { code: 'ENOENT' });
+
+    socketScenario = 'wrong-authority';
+    socketIsSocket = false; socketUid = 501; socketGid = 0; socketMode = 0o666;
+    socketReadbackAmbiguous = false; socketAppearanceError = null; readinessMutationObserved = false;
+    let bootstrapCallsBeforeFailure = launchctlCalls.filter(args => args[0] === 'bootstrap').length;
+    let bootoutCallsBeforeFailure = launchctlCalls.filter(args => args[0] === 'bootout').length;
+    await assert.rejects(() => hostInstaller.install(plan), /SOCKET_READBACK_FAILED/,
+      'wrong socket type, owner, group, and mode fail closed');
+    assert.equal(launchctlCalls.filter(args => args[0] === 'bootstrap').length - bootstrapCallsBeforeFailure, 1);
+    assert.equal(launchctlCalls.filter(args => args[0] === 'bootout').length - bootoutCallsBeforeFailure, 2,
+      'failed readiness performs one pre-load unload and one rollback unload');
+    assert.equal(readinessMutationObserved, false, 'wrong authority is observed read-only before rollback');
+    assert.equal(socketAppearanceError, null);
+    await assert.rejects(() => ownerStat(runtimeDirectoryTarget), { code: 'ENOENT' }, 'wrong authority triggers rollback');
+    await assert.rejects(() => ownerStat(socketTarget), { code: 'ENOENT' }, 'rollback removes wrong socket');
+
+    socketScenario = 'never';
+    socketIsSocket = true; socketUid = 0; socketGid = plan.runtime_gid; socketMode = 0o660;
+    socketReadbackAmbiguous = false; socketAppearanceError = null; readinessMutationObserved = false;
+    bootstrapCallsBeforeFailure = launchctlCalls.filter(args => args[0] === 'bootstrap').length;
+    bootoutCallsBeforeFailure = launchctlCalls.filter(args => args[0] === 'bootout').length;
+    const neverAppearsStartedAt = Date.now();
+    await assert.rejects(() => hostInstaller.install(plan), /SOCKET_READBACK_FAILED/,
+      'a socket that never appears fails at the fixed readiness boundary');
+    const neverAppearsElapsedMs = Date.now() - neverAppearsStartedAt;
+    assert.equal(launchctlCalls.filter(args => args[0] === 'bootstrap').length - bootstrapCallsBeforeFailure, 1);
+    assert.equal(launchctlCalls.filter(args => args[0] === 'bootout').length - bootoutCallsBeforeFailure, 2);
+    assert.equal(readinessMutationObserved, false, 'missing-socket polling remains read-only until rollback');
+    assert.equal(neverAppearsElapsedMs >= 4500 && neverAppearsElapsedMs <= 5500, true,
+      `fixed Socket readiness boundary is five seconds, observed ${neverAppearsElapsedMs}ms`);
+    await assert.rejects(() => ownerStat(runtimeDirectoryTarget), { code: 'ENOENT' }, 'timeout triggers rollback');
+    await assert.rejects(() => ownerStat(socketTarget), { code: 'ENOENT' });
+
+    socketScenario = 'ambiguous';
+    socketReadbackAmbiguous = false; socketAppearanceError = null; readinessMutationObserved = false;
+    bootstrapCallsBeforeFailure = launchctlCalls.filter(args => args[0] === 'bootstrap').length;
+    bootoutCallsBeforeFailure = launchctlCalls.filter(args => args[0] === 'bootout').length;
+    await assert.rejects(() => hostInstaller.install(plan), /SOCKET_READBACK_FAILED/,
+      'ambiguous socket readback is normalized and fails closed');
+    socketReadbackAmbiguous = false;
+    assert.equal(launchctlCalls.filter(args => args[0] === 'bootstrap').length - bootstrapCallsBeforeFailure, 1);
+    assert.equal(launchctlCalls.filter(args => args[0] === 'bootout').length - bootoutCallsBeforeFailure, 2);
+    assert.equal(readinessMutationObserved, false, 'ambiguous readback performs no repair write before rollback');
+    await assert.rejects(() => ownerStat(runtimeDirectoryTarget), { code: 'ENOENT' }, 'ambiguous readback triggers rollback');
+    await assert.rejects(() => ownerStat(socketTarget), { code: 'ENOENT' });
 
     const ownershipSource = `${await readRequired(hostLoopPath, 'host socket ownership')}${await readRequired(installerPath, 'installed socket ownership')}`;
     assert.match(ownershipSource, /0o660[\s\S]{0,800}runtime_gid|runtime_gid[\s\S]{0,800}0o660/,

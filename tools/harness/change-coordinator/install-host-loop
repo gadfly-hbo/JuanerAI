@@ -32,6 +32,9 @@ const MAX_FILE_BYTES = 16 * 1024 * 1024;
 const RUNTIME_TARGET = '/usr/local/libexec/juanerai-change-coordinator';
 const STATE_TARGET = '/private/var/db/juanerai/change-coordinator';
 const RUNTIME_DIRECTORY_TARGET = '/private/var/run/juanerai';
+const SOCKET_TARGET = '/private/var/run/juanerai/change-coordinator.sock';
+const SOCKET_READBACK_TIMEOUT_MS = 5_000;
+const SOCKET_READBACK_INTERVAL_MS = 25;
 export const PINNED_GIT_INSTALL = Object.freeze({
   executable: Object.freeze({
     target_directory: '/Users/huangbo/Dev/Env/homebrew/bin', name: 'git',
@@ -233,6 +236,22 @@ async function effectiveWriteDenied(os, runtimeUser, target) {
   return true;
 }
 
+async function waitForSocketReadiness(os, runtime_gid) {
+  const deadline = Date.now() + SOCKET_READBACK_TIMEOUT_MS;
+  while (true) {
+    try {
+      const socket = await os.lstat(SOCKET_TARGET);
+      if (socket.isSocket() && socket.uid === 0 && socket.gid === runtime_gid
+        && (socket.mode & 0o777) === 0o660) return;
+    } catch (error) {
+      if (error?.code !== 'ENOENT') throw new Error('SOCKET_READBACK_FAILED');
+    }
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) throw new Error('SOCKET_READBACK_FAILED');
+    await new Promise(resolve => setTimeout(resolve, Math.min(SOCKET_READBACK_INTERVAL_MS, remaining)));
+  }
+}
+
 export function createHostInstaller(osBoundary) {
   const os = osBoundary ?? realOsBoundary();
   const required = ['readFile', 'writeFile', 'mkdir', 'lstat', 'readdir', 'realpath', 'rename', 'copyFile', 'chmod', 'chown', 'rm', 'open', 'exec', 'uid', 'gid', 'now'];
@@ -354,11 +373,9 @@ export function createHostInstaller(osBoundary) {
         if (![0, 3, 113].includes(unloaded.code)) throw new Error('SERVICE_UNLOAD_FAILED');
         const loaded = await os.exec('/bin/launchctl', ['bootstrap', 'system', '/Library/LaunchDaemons/com.juanerai.change-coordinator.plist']);
         if (loaded.code !== 0) throw new Error('SERVICE_LOAD_FAILED');
+        await waitForSocketReadiness(os, plan.runtime_gid);
         const service = await os.exec('/bin/launchctl', ['print', 'system/' + SERVICE_LABEL]);
         if (service.code !== 0) throw new Error('SERVICE_READBACK_FAILED');
-        const socket = await os.lstat('/private/var/run/juanerai/change-coordinator.sock');
-        if (!socket.isSocket() || socket.uid !== 0 || socket.gid !== plan.runtime_gid
-          || (socket.mode & 0o777) !== 0o660) throw new Error('SOCKET_READBACK_FAILED');
         return { manifest_path: manifestPath, manifest_sha256: sha256(manifestBytes), installed, service_sha256: sha256(service.stdout) };
       } catch (error) {
         await this.rollback({
