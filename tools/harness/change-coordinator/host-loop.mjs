@@ -335,7 +335,7 @@ export function createTrustedHostLoop(options) {
 
 export async function serveTrustedHostLoop(hostLoop, socketPath = HOST_SOCKET_PATH, runtime_gid = null) {
   if (socketPath !== HOST_SOCKET_PATH) throw new Error('INPUT_INVALID');
-  const server = net.createServer(socket => {
+  const server = net.createServer({ allowHalfOpen: true }, socket => {
     const chunks = [];
     let size = 0;
     socket.on('data', chunk => {

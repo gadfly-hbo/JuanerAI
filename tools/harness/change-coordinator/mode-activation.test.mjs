@@ -245,6 +245,92 @@ test('TEST-MA-HOST-002 / AC-MA-003-01,04; AC-MA-004-01,02 / CAN-MA-04,05,11: pro
     'CAUSAL_RED: production main must install real absolute Codex spawn/drop-uid bindings, not callback placeholders');
 });
 
+test('TEST-MA-HOST-003 / AC-MA-003-03,05 / CAN-MA-04: status half-close preserves one asynchronous canonical response', async () => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  const nodeNet = (await import('node:net')).default;
+  const nodeFs = (await import('node:fs')).default;
+  const { syncBuiltinESMExports } = await import('node:module');
+  const temporary = await mkdtemp('/tmp/jma-half-close-');
+  const testSocketPath = path.join(temporary, 'change-coordinator.sock');
+  const originalCreateServer = nodeNet.createServer;
+  const originalChown = nodeFs.promises.chown;
+  const originalChmod = nodeFs.promises.chmod;
+  const originalLstat = nodeFs.promises.lstat;
+  let server = null;
+  let socketAuthority = null;
+
+  nodeNet.createServer = (...args) => {
+    const created = originalCreateServer(...args);
+    const originalListen = created.listen.bind(created);
+    created.listen = (...listenArgs) => {
+      assert.equal(listenArgs[0], host.HOST_SOCKET_PATH, 'production binds only its fixed socket identity');
+      listenArgs[0] = testSocketPath;
+      return originalListen(...listenArgs);
+    };
+    server = created;
+    return created;
+  };
+  nodeFs.promises.chown = async (target, uid, gid) => {
+    if (target !== host.HOST_SOCKET_PATH) return originalChown(target, uid, gid);
+    socketAuthority = { uid, gid };
+  };
+  nodeFs.promises.chmod = (target, mode) => originalChmod(
+    target === host.HOST_SOCKET_PATH ? testSocketPath : target, mode,
+  );
+  nodeFs.promises.lstat = async target => {
+    if (target !== host.HOST_SOCKET_PATH) return originalLstat(target);
+    const stat = await originalLstat(testSocketPath);
+    return new Proxy(stat, {
+      get(value, key) {
+        if (key === 'uid' || key === 'gid') return socketAuthority?.[key];
+        const member = Reflect.get(value, key, value);
+        return typeof member === 'function' ? member.bind(value) : member;
+      },
+    });
+  };
+  syncBuiltinESMExports();
+
+  try {
+    const expected = { schema_version: '1.0', operation: 'status', outcome: 'WAITING', change_id: null };
+    const expectedFrame = Buffer.from(`${canonicalJson(expected)}\n`);
+    let readStatusCalls = 0;
+    let resolveReadStatusReturned;
+    const readStatusReturned = new Promise(resolve => { resolveReadStatusReturned = resolve; });
+    const hostLoop = {
+      async submit() { throw new Error('UNREACHABLE'); },
+      async readStatus() {
+        readStatusCalls += 1;
+        await new Promise(resolve => setImmediate(resolve));
+        resolveReadStatusReturned();
+        return expected;
+      },
+    };
+    await host.serveTrustedHostLoop(hostLoop, host.HOST_SOCKET_PATH, 20);
+
+    const response = await new Promise((resolve, reject) => {
+      const client = nodeNet.createConnection({ path: testSocketPath });
+      const chunks = [];
+      client.setTimeout(2_000, () => { client.destroy(); reject(new Error('TEST_SOCKET_TIMEOUT')); });
+      client.once('error', reject);
+      client.once('connect', () => client.end(Buffer.from('{"operation":"status"}\n')));
+      client.on('data', chunk => chunks.push(Buffer.from(chunk)));
+      client.once('end', () => resolve(Buffer.concat(chunks)));
+    });
+    await readStatusReturned;
+    assert.equal(readStatusCalls, 1, 'one canonical status frame invokes readStatus exactly once');
+    assert.deepEqual(response, expectedFrame,
+      'CAUSAL_RED: default allowHalfOpen:false must not close the writable side before asynchronous readStatus returns its one canonical response');
+  } finally {
+    if (server?.listening) await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
+    nodeNet.createServer = originalCreateServer;
+    nodeFs.promises.chown = originalChown;
+    nodeFs.promises.chmod = originalChmod;
+    nodeFs.promises.lstat = originalLstat;
+    syncBuiltinESMExports();
+    await rm(temporary, { recursive: true, force: true });
+  }
+});
+
 test('TEST-MA-LEDGER-001 / AC-MA-005-02,04; AC-MA-006-01,02,04 / CAN-MA-07,08,14: Evidence append and product push use exact refs, keys, and remote readback identity', async () => {
   const production = await loadRequired(productionPath, ['EVIDENCE_REF', 'GITHUB_CREDENTIAL_POLICY'], 'production Evidence transport is required');
   assert.equal(production.EVIDENCE_REF, 'refs/heads/evidence/agent-runs');
