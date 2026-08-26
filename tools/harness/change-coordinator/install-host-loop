@@ -16,6 +16,7 @@ export const HOST_INSTALL_TARGETS = Object.freeze([
   '/usr/local/bin/juanerai-coordinator',
   '/usr/local/libexec/juanerai-change-coordinator',
   '/private/var/db/juanerai/change-coordinator',
+  '/private/var/run/juanerai',
   '/private/var/run/juanerai/change-coordinator.sock',
   '/private/var/log/juanerai/change-coordinator.log',
   '/Users/huangbo/Dev/Env/homebrew/bin',
@@ -30,6 +31,7 @@ const BACKUP_ROOT = '/private/var/db/juanerai/change-coordinator-install-backups
 const MAX_FILE_BYTES = 16 * 1024 * 1024;
 const RUNTIME_TARGET = '/usr/local/libexec/juanerai-change-coordinator';
 const STATE_TARGET = '/private/var/db/juanerai/change-coordinator';
+const RUNTIME_DIRECTORY_TARGET = '/private/var/run/juanerai';
 export const PINNED_GIT_INSTALL = Object.freeze({
   executable: Object.freeze({
     target_directory: '/Users/huangbo/Dev/Env/homebrew/bin', name: 'git',
@@ -53,6 +55,7 @@ const PINNED_GIT_ARTIFACTS = Object.freeze([
 const DIRECTORY_FILES = Object.freeze({
   [RUNTIME_TARGET]: Object.freeze(['adapters.mjs', 'coordinator.mjs', 'host-loop.mjs', 'production.mjs']),
   [STATE_TARGET]: Object.freeze(['active-change.json']),
+  [RUNTIME_DIRECTORY_TARGET]: Object.freeze([]),
   ...Object.fromEntries(PINNED_GIT_ARTIFACTS.map(artifact => [artifact.target_directory, Object.freeze([artifact.name])])),
 });
 
@@ -180,6 +183,42 @@ async function atomicReplaceDirectory(os, target, source, mode, { fileModes = nu
   }
 }
 
+async function atomicReplaceEmptyDirectory(os, target, mode, uid, gid) {
+  if (target !== RUNTIME_DIRECTORY_TARGET) throw new Error('DIRECTORY_TARGET_INVALID');
+  await os.mkdir(path.dirname(target), { recursive: true, mode: 0o755 });
+  const stage = `${target}.stage-${process.pid}`;
+  await os.rm(stage, { recursive: true, force: true });
+  await os.mkdir(stage, { recursive: false, mode });
+  await os.chown(stage, uid, gid);
+  await os.chmod(stage, mode);
+  await syncPath(os, stage);
+  const displaced = `${target}.prior-${process.pid}`;
+  let hadPrior = false;
+  try {
+    const prior = await os.lstat(target);
+    if (!prior.isDirectory() || prior.isSymbolicLink()) throw new Error('SYMLINK_FORBIDDEN');
+    if ((await os.readdir(target)).length !== 0) throw new Error('DIRECTORY_CONTENT_MISMATCH');
+    await os.rm(displaced, { recursive: true, force: true });
+    await os.rename(target, displaced);
+    hadPrior = true;
+  } catch (error) {
+    if (error?.code !== 'ENOENT') throw error;
+  }
+  try {
+    await os.rename(stage, target);
+    await syncPath(os, target);
+    const stat = await os.lstat(target);
+    if (!stat.isDirectory() || stat.isSymbolicLink() || stat.uid !== uid || stat.gid !== gid
+      || (stat.mode & 0o777) !== mode || (await os.readdir(target)).length !== 0) throw new Error('READBACK_MISMATCH');
+    if (hadPrior) await os.rm(displaced, { recursive: true, force: true });
+    return { sha256: sha256(canonical([])), mode, uid: stat.uid, gid: stat.gid, files: [] };
+  } catch (error) {
+    await os.rm(target, { recursive: true, force: true });
+    if (hadPrior) await os.rename(displaced, target);
+    throw error;
+  }
+}
+
 async function aclReceipt(os, target) {
   const result = await os.exec('/bin/ls', ['-lde', target]);
   if (result.code !== 0) throw new Error('ACL_READBACK_FAILED');
@@ -256,6 +295,8 @@ export function createHostInstaller(osBoundary) {
         || !closed(plan.sources, Object.keys(plan.sources)) || !closed(plan.modes, Object.keys(plan.modes))
         || Object.keys(plan.sources).some(target => !exactTarget(target))
         || Object.keys(plan.modes).some(target => !exactTarget(target))
+        || Object.hasOwn(plan.sources, RUNTIME_DIRECTORY_TARGET)
+        || Object.hasOwn(plan.modes, RUNTIME_DIRECTORY_TARGET)
         || !PINNED_GIT_ARTIFACTS.every(artifact => Object.hasOwn(plan.sources, artifact.target_directory)
           && plan.modes[artifact.target_directory] === 0o755)
         || typeof plan.runtime_user !== 'string' || !Number.isSafeInteger(plan.runtime_uid)
@@ -302,6 +343,13 @@ export function createHostInstaller(osBoundary) {
           }
           installed.push({ target, ...receipt, acl_sha256, child_authority });
         }
+        const runtimeDirectory = await atomicReplaceEmptyDirectory(os, RUNTIME_DIRECTORY_TARGET, 0o755, 0, 0);
+        const runtimeDirectoryAcl = await aclReceipt(os, RUNTIME_DIRECTORY_TARGET);
+        await effectiveWriteDenied(os, plan.runtime_user, RUNTIME_DIRECTORY_TARGET);
+        installed.push({
+          target: RUNTIME_DIRECTORY_TARGET, ...runtimeDirectory,
+          acl_sha256: runtimeDirectoryAcl, child_authority: [],
+        });
         const unloaded = await os.exec('/bin/launchctl', ['bootout', 'system/' + SERVICE_LABEL]);
         if (![0, 3, 113].includes(unloaded.code)) throw new Error('SERVICE_UNLOAD_FAILED');
         const loaded = await os.exec('/bin/launchctl', ['bootstrap', 'system', '/Library/LaunchDaemons/com.juanerai.change-coordinator.plist']);
@@ -342,6 +390,17 @@ export function createHostInstaller(osBoundary) {
       for (const prior of [...manifest.prior].reverse()) {
         if (!exactTarget(prior.target)) throw new Error('MANIFEST_INVALID');
         if (prior.target === STATE_TARGET) {
+          continue;
+        }
+        if (prior.target === RUNTIME_DIRECTORY_TARGET) {
+          if (!prior.present) {
+            await os.rm(prior.target, { recursive: true, force: true });
+            continue;
+          }
+          if (prior.type !== 'directory' || !Array.isArray(prior.directory_files)
+            || prior.directory_files.length !== 0) throw new Error('BACKUP_MISMATCH');
+          await atomicReplaceEmptyDirectory(os, prior.target, prior.mode, prior.uid, prior.gid);
+          await aclReceipt(os, prior.target);
           continue;
         }
         if (prior.type === 'directory' || DIRECTORY_FILES[prior.target]) {

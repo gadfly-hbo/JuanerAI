@@ -392,7 +392,8 @@ test('TEST-MA-INSTALL-001 / AC-MA-003-01,02; AC-MA-005-01,02; AC-MA-007-04,05 / 
     '/private/etc/juanerai/controller-trust.json', '/private/etc/juanerai/host-loop.json',
     '/private/etc/juanerai/github-branch-push-key', '/private/etc/juanerai/github-pr-api-credential',
     '/Library/LaunchDaemons/com.juanerai.change-coordinator.plist', '/usr/local/bin/juanerai-coordinator',
-    '/private/var/db/juanerai/change-coordinator', '/private/var/run/juanerai/change-coordinator.sock',
+    '/private/var/db/juanerai/change-coordinator', '/private/var/run/juanerai',
+    '/private/var/run/juanerai/change-coordinator.sock',
     installer.PINNED_GIT_INSTALL.executable.target_directory,
     ...installer.PINNED_GIT_INSTALL.libraries.map(value => value.target_directory),
   ];
@@ -433,16 +434,18 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
   const owners = new Map();
   const modeOverrides = new Map();
   const effectiveWriteDenials = new Set();
+  const aclReadbackTargets = new Set();
   const launchctlCalls = [];
+  const runtimeDirectoryReadbacks = [];
   let aclGrantTarget = null;
   let effectiveWriteAllowedTarget = null;
   let bootstrapFailure = false;
+  const runtimeDirectoryTarget = '/private/var/run/juanerai';
   const socketTarget = '/private/var/run/juanerai/change-coordinator.sock';
-  const socketPath = path.join(temporary, 'coordinator.sock');
-  const translate = target => target === socketTarget
-    ? socketPath
-    : ['/private/', '/Library/', '/usr/local/', '/Users/huangbo/Dev/Env/homebrew'].some(prefix => target.startsWith(prefix))
+  const translate = target => ['/private/', '/Library/', '/usr/local/', '/Users/huangbo/Dev/Env/homebrew'].some(prefix => target.startsWith(prefix))
       ? path.join(targetRoot, target.slice(1)) : target;
+  const runtimeDirectoryPath = translate(runtimeDirectoryTarget);
+  const socketPath = translate(socketTarget);
   const ownerStat = async target => {
     const resolved = translate(target);
     const stat = await lstat(resolved);
@@ -480,11 +483,14 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
     rm: (target, options) => rm(translate(target), options),
     open: (target, flags) => open(translate(target), flags),
     async exec(executable, args) {
-      if (executable === '/bin/ls') return {
-        code: 0, signal: null,
-        stdout: Buffer.from(args.at(-1) === aclGrantTarget ? `${args.at(-1)}\n 0: user:test allow read,write\n` : `${args.at(-1)}\n`),
-        stderr: Buffer.alloc(0),
-      };
+      if (executable === '/bin/ls') {
+        aclReadbackTargets.add(args.at(-1));
+        return {
+          code: 0, signal: null,
+          stdout: Buffer.from(args.at(-1) === aclGrantTarget ? `${args.at(-1)}\n 0: user:test allow read,write\n` : `${args.at(-1)}\n`),
+          stderr: Buffer.alloc(0),
+        };
+      }
       if (executable === '/usr/bin/sudo') {
         effectiveWriteDenials.add(args.at(-1));
         return { code: args.at(-1) === effectiveWriteAllowedTarget ? 0 : 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
@@ -493,8 +499,17 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
       launchctlCalls.push([...args]);
       if (args[0] === 'bootout') return { code: 3, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
       if (args[0] === 'bootstrap') {
+        let runtimeDirectoryStat;
+        try { runtimeDirectoryStat = await ownerStat(runtimeDirectoryTarget); }
+        catch (error) {
+          if (error?.code !== 'ENOENT') throw error;
+          return { code: 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.from('runtime directory missing') };
+        }
+        runtimeDirectoryReadbacks.push({
+          isDirectory: runtimeDirectoryStat.isDirectory(), uid: runtimeDirectoryStat.uid,
+          gid: runtimeDirectoryStat.gid, mode: runtimeDirectoryStat.mode & 0o777,
+        });
         if (bootstrapFailure) return { code: 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.from('injected bootstrap failure') };
-        await mkdir(path.dirname(socketPath), { recursive: true });
         await writeFile(socketPath, Buffer.alloc(0));
         await chmod(socketPath, 0o660);
         owners.set(socketPath, { uid: 0, gid: 20 });
@@ -610,6 +625,12 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
     bootstrapFailure = true;
     await assert.rejects(() => hostInstaller.install(plan), /SERVICE_LOAD_FAILED/, 'a late host failure rolls the whole pinned Git closure back');
     bootstrapFailure = false;
+    assert.deepEqual(runtimeDirectoryReadbacks, [{ isDirectory: true, uid: 0, gid: 0, mode: 0o755 }],
+      'CAUSAL_RED: installer creates and root-governs /private/var/run/juanerai before service load without external pre-creation');
+    assert.equal(aclReadbackTargets.has(runtimeDirectoryTarget), true, 'runtime directory ACL is read back before activation');
+    assert.equal(effectiveWriteDenials.has(runtimeDirectoryTarget), true, 'runtime user cannot write the root-owned runtime directory');
+    await assert.rejects(() => ownerStat(runtimeDirectoryTarget), { code: 'ENOENT' },
+      'rollback deletes the installer-created runtime directory when it was originally absent');
     for (const artifact of priorArtifacts) {
       const file = path.join(translate(artifact.directory), artifact.name);
       const stat = await ownerStat(path.join(artifact.directory, artifact.name));
@@ -617,6 +638,29 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
       assert.deepEqual({ uid: stat.uid, gid: stat.gid, mode: stat.mode & 0o777 }, { uid: 0, gid: 0, mode: artifact.mode });
     }
 
+    await mkdir(runtimeDirectoryPath, { recursive: true });
+    await chmod(runtimeDirectoryPath, 0o711);
+    owners.set(runtimeDirectoryPath, { uid: 0, gid: 0 });
+    runtimeDirectoryReadbacks.length = 0;
+    bootstrapFailure = true;
+    await assert.rejects(() => hostInstaller.install(plan), /SERVICE_LOAD_FAILED/,
+      'a late host failure rolls a pre-existing runtime directory back');
+    bootstrapFailure = false;
+    assert.deepEqual(runtimeDirectoryReadbacks, [{ isDirectory: true, uid: 0, gid: 0, mode: 0o755 }],
+      'pre-existing runtime directory is governed before service load');
+    const restoredRuntimeDirectory = await ownerStat(runtimeDirectoryTarget);
+    assert.deepEqual(
+      { isDirectory: restoredRuntimeDirectory.isDirectory(), uid: restoredRuntimeDirectory.uid,
+        gid: restoredRuntimeDirectory.gid, mode: restoredRuntimeDirectory.mode & 0o777 },
+      { isDirectory: true, uid: 0, gid: 0, mode: 0o711 },
+      'rollback restores the exact prior runtime directory owner and mode',
+    );
+    assert.deepEqual(await readdir(runtimeDirectoryPath), [], 'rollback restores the prior empty runtime directory inventory');
+    await rm(runtimeDirectoryPath, { recursive: true, force: true });
+    owners.delete(runtimeDirectoryPath);
+    await assert.rejects(() => ownerStat(runtimeDirectoryTarget), { code: 'ENOENT' },
+      'success path begins with no externally pre-created runtime directory');
+    runtimeDirectoryReadbacks.length = 0;
     const receipt = await hostInstaller.install(plan);
     assert.equal((await ownerStat(runtimeTarget)).isDirectory(), true, 'runtime install target is a directory, never one renamed file');
     for (const name of ['host-loop.mjs', 'production.mjs', 'coordinator.mjs', 'adapters.mjs']) {
@@ -638,6 +682,16 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
     assert.equal(launchctlCalls.some(args => args[0] === 'bootstrap'), true);
     assert.equal(launchctlCalls.some(args => args[0] === 'print'), true, 'launchd target is started and read back');
 
+    assert.deepEqual(runtimeDirectoryReadbacks, [{ isDirectory: true, uid: 0, gid: 0, mode: 0o755 }],
+      'install succeeds from an absent runtime directory because installer prepares it before service load');
+    const runtimeDirectoryStat = await ownerStat(runtimeDirectoryTarget);
+    assert.deepEqual(
+      { isDirectory: runtimeDirectoryStat.isDirectory(), uid: runtimeDirectoryStat.uid,
+        gid: runtimeDirectoryStat.gid, mode: runtimeDirectoryStat.mode & 0o777 },
+      { isDirectory: true, uid: 0, gid: 0, mode: 0o755 },
+    );
+    assert.equal(aclReadbackTargets.has(runtimeDirectoryTarget), true);
+    assert.equal(effectiveWriteDenials.has(runtimeDirectoryTarget), true);
     const socketStat = await ownerStat(socketTarget);
     assert.deepEqual({ uid: socketStat.uid, gid: socketStat.gid, mode: socketStat.mode & 0o777 }, { uid: 0, gid: 20, mode: 0o660 });
     assert.equal(effectiveWriteDenials.has(stateTarget), true, 'runtime client cannot write Coordinator state');
