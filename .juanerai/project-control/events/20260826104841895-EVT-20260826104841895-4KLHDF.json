@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826104841895-4KLHDF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-26T10:48:41.895Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation"
+  },
+  "summary": "Host Install Contract Test reached causal RED and TDD_READY",
+  "status_after": "active",
+  "evidence_refs": []
+}

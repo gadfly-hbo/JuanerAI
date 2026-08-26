@@ -12,6 +12,7 @@ import {
 export const CONTROLLER_TRUST_PATH = '/private/etc/juanerai/controller-trust.json';
 export const HOST_CONFIG_PATH = '/private/etc/juanerai/host-loop.json';
 export const EVIDENCE_REF = 'refs/heads/evidence/agent-runs';
+const PINNED_PRODUCTION_GIT_PATH = '/Users/huangbo/Dev/Env/homebrew/bin/git';
 export const GITHUB_CREDENTIAL_POLICY = Object.freeze({
   branch_push: Object.freeze({
     path: '/private/etc/juanerai/github-branch-push-key',
@@ -205,7 +206,7 @@ function exactGitEnvironment() {
 }
 
 function gitTransportArguments(keyPath) {
-  return `/usr/bin/ssh -F /dev/null -i ${keyPath} -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes`;
+  return `/usr/bin/ssh -F /dev/null -i ${keyPath} -o IdentitiesOnly=yes -o IdentityAgent=none -o BatchMode=yes -o PasswordAuthentication=no -o KbdInteractiveAuthentication=no -o StrictHostKeyChecking=yes`;
 }
 
 function createBranchTransport({ gitExecutable, repositoryRoot, branchKeyPath, runtime_uid, runtime_gid }) {
@@ -361,6 +362,44 @@ function createHandoffGateway(stateRoot) {
   });
 }
 
+function createPurposeBoundMainSync({ gitExecutable, mainWorktreeRoot, branchKeyPath, runtime_uid, repository }) {
+  if (typeof repository !== 'string' || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository)) throw new Error('INPUT_INVALID');
+  const remoteUrl = `git@github.com:${repository}.git`;
+  return async ({ canonical_root, main_worktree_root, squash_sha, expected_origin_main }) => {
+    const root = main_worktree_root ?? canonical_root;
+    if (root !== mainWorktreeRoot || !/^[0-9a-f]{40}$/.test(squash_sha)
+      || expected_origin_main !== squash_sha) throw new Error('FORBIDDEN_TARGET');
+    await readAuthorityFile(branchKeyPath, 0o640);
+    const transport = [
+      '-c', `core.sshCommand=${gitTransportArguments(branchKeyPath)}`,
+      '-c', 'credential.helper=',
+    ];
+    const git = async args => {
+      const result = await executeProcess(gitExecutable, args, {
+        cwd: root, environment: exactGitEnvironment(), runtime_uid, runtime_gid: 0,
+      });
+      if (result.code !== 0) throw new Error('REMOTE_AMBIGUOUS');
+      return result.stdout.toString('utf8').trim();
+    };
+    if (await git(['branch', '--show-current']) !== 'main'
+      || await git(['status', '--porcelain=v1', '-z']) !== '') throw new Error('WORKTREE_NOT_CLEAN');
+    const prior_local_main = await git(['rev-parse', 'HEAD']);
+    const advertised = await git([...transport, 'ls-remote', remoteUrl, 'refs/heads/main']);
+    const advertisedHead = advertised.split(/\s+/)[0];
+    if (advertisedHead !== squash_sha) throw new Error('REMOTE_CONFLICT');
+    await git([...transport, 'fetch', '--no-tags', '--no-write-fetch-head',
+      remoteUrl, 'refs/heads/main:refs/remotes/origin/main']);
+    const origin_main = await git(['rev-parse', 'refs/remotes/origin/main']);
+    if (origin_main !== squash_sha) throw new Error('READBACK_MISMATCH');
+    await git(['merge', '--ff-only', squash_sha]);
+    const local_main = await git(['rev-parse', 'HEAD']);
+    const readback_origin = await git(['rev-parse', 'refs/remotes/origin/main']);
+    const clean = await git(['status', '--porcelain=v1', '-z']) === '';
+    if (local_main !== squash_sha || readback_origin !== squash_sha || !clean) throw new Error('READBACK_MISMATCH');
+    return ok({ prior_local_main, local_main, origin_main: readback_origin, clean, fast_forward_only: true });
+  };
+}
+
 function createLedgerGateway({ repositoryRoot, stateRoot, gitExecutable, branchKeyPath, runtime_uid, runtime_gid }) {
   const work = change => path.join(stateRoot, 'ledger-work', change);
   let prepared = null;
@@ -509,6 +548,7 @@ function parseHostConfig(bytes) {
       'repository_root', 'main_worktree_root', 'state_root', 'git_executable',
       'node_executable', 'codex_executable', 'runtime_home', 'codex_home', 'artifact_root',
     ].every(key => path.isAbsolute(config[key]))
+    || config.git_executable !== PINNED_PRODUCTION_GIT_PATH
     || !Number.isSafeInteger(config.runtime_uid) || !Number.isSafeInteger(config.runtime_gid)
     || typeof config.runtime_user !== 'string') throw new Error('HOST_CONFIG_INVALID');
   return config;
@@ -546,7 +586,19 @@ export async function createProductionComposition(input = {}) {
     runtime_uid: config.runtime_uid,
     runtime_gid: config.runtime_gid,
   });
-  const git = Object.freeze({ ...base.git, pushBranch: branchTransport, readRemoteBranch: branchReadback });
+  const mainSync = createPurposeBoundMainSync({
+    gitExecutable: config.git_executable,
+    mainWorktreeRoot: config.main_worktree_root,
+    branchKeyPath: GITHUB_CREDENTIAL_POLICY.branch_push.path,
+    runtime_uid: config.runtime_uid,
+    repository: config.github_repository,
+  });
+  const git = Object.freeze({
+    ...base.git,
+    pushBranch: branchTransport,
+    readRemoteBranch: branchReadback,
+    syncMainFfOnly: mainSync,
+  });
   const verifier = Object.freeze({
     async verify(request) {
       const body = parseCanonical(request.command_body_bytes);

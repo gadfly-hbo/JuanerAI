@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "mode_activation",
-    "label": "Mode Activation: REGRESSION / HOST_CANARY",
+    "label": "Mode Activation: REPOSITORY_GREEN / CANDIDATE_PREPARE",
     "ordinal": 5,
     "total": 8
   },
   "health": "active",
-  "summary": "Mode Activation repository implementation is GREEN: 221/221 coordinator tests, 12/12 project-board tests, canonical runner exit 0; entering bounded dual-host installation and canaries.",
-  "current_objective": "Install the exact approved trust, credentials, pinned Git, trusted host loop and reversible service on Mac mini, then pass CAN-MA-01..14 without dispatching a product Change.",
-  "next_action": "Prepare non-secret Activation artifacts, install with root authority on Mac mini, execute all real host/provider canaries, then freeze the exact Candidate for one fresh Validator.",
+  "summary": "Host Install Contract repair is GREEN: Coordinator 221/221, project-board 12/12, canonical runner exit 0; fixed Git closure and purpose-bound RELEASE transport are verified.",
+  "current_objective": "Freeze and push the replacement Mode Activation Candidate, then perform only the authorized real host installation and canaries.",
+  "next_action": "Create the exact replacement Candidate from the three authorized files plus project-control evidence, read back local/remote equality, then prepare bounded Mac mini installation.",
   "blockers": [],
   "milestones": [
     {
@@ -827,7 +827,7 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-26T09:54:38.774Z",
+  "updated_at": "2026-08-26T11:00:19.825Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-mode-activation"

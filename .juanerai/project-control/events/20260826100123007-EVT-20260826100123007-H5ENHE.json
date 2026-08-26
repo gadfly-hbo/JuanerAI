@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826100123007-H5ENHE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-26T10:01:23.007Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation"
+  },
+  "summary": "Blocked Mode Activation before host mutation on two post-GREEN installation contract gaps",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

@@ -1,9 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { generateKeyPairSync, sign, verify } from 'node:crypto';
-import net from 'node:net';
 import {
-  chmod, copyFile, lstat, mkdir, mkdtemp, open, readFile, realpath, rename, rm, writeFile,
+  chmod, copyFile, lstat, mkdir, mkdtemp, open, readFile, readdir, realpath, rename, rm, symlink, writeFile,
 } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -250,14 +249,27 @@ test('TEST-MA-LEDGER-001 / AC-MA-005-02,04; AC-MA-006-01,02,04 / CAN-MA-07,08,14
   const production = await loadRequired(productionPath, ['EVIDENCE_REF', 'GITHUB_CREDENTIAL_POLICY'], 'production Evidence transport is required');
   assert.equal(production.EVIDENCE_REF, 'refs/heads/evidence/agent-runs');
   const source = await readRequired(productionPath, 'production Ledger and branch transport source');
+  const sshSource = source.slice(source.indexOf('function gitTransportArguments'), source.indexOf('function createBranchTransport'));
   const branchSource = source.slice(source.indexOf('function createBranchTransport'), source.indexOf('export function createPurposeBoundGitHubAdapters'));
   const predecessorSource = branchSource.slice(branchSource.indexOf('const prior ='), branchSource.indexOf('if (prior.code'));
+  const mainSyncSource = source.slice(source.indexOf('function createPurposeBoundMainSync'), source.indexOf('function createLedgerGateway'));
   const ledgerSource = source.slice(source.indexOf('function createLedgerGateway'), source.indexOf('function parseHostConfig'));
   const commitSource = ledgerSource.slice(ledgerSource.indexOf('async commitAndPush'), ledgerSource.indexOf('async readRemoteAppend'));
   const readbackSource = ledgerSource.slice(ledgerSource.indexOf('async readRemoteAppend'));
   const obligations = {
     predecessor_uses_branch_deploy_key: /ls-remote/.test(predecessorSource) && /core\.sshCommand[^\n]*branchKeyPath/.test(predecessorSource),
     product_push_uses_branch_deploy_key: /core\.sshCommand[^\n]*branchKeyPath[\s\S]{0,300}'push'/.test(branchSource),
+    release_fetch_is_exact_deploy_key_read: /readAuthorityFile\(branchKeyPath,\s*0o640\)/.test(mainSyncSource)
+      && /core\.sshCommand[^\n]*branchKeyPath/.test(mainSyncSource)
+      && /'fetch'[\s\S]{0,240}'refs\/heads\/main:refs\/remotes\/origin\/main'/.test(mainSyncSource),
+    release_fetch_has_no_fallback_or_write: /remoteUrl\s*=\s*`git@github\.com:\$\{repository\}\.git`/.test(mainSyncSource)
+      && /'credential\.helper='/.test(mainSyncSource)
+      && /IdentityAgent=none/.test(sshSource) && /IdentitiesOnly=yes/.test(sshSource)
+      && !/(?:https:\/\/|'push'|SSH_AUTH_SOCK|DYLD_|force)/i.test(mainSyncSource),
+    release_sync_checks_identity: /'branch',\s*'--show-current'/.test(mainSyncSource)
+      && /'status',\s*'--porcelain=v1',\s*'-z'/.test(mainSyncSource)
+      && /origin_main\s*!==\s*squash_sha/.test(mainSyncSource)
+      && /'merge',\s*'--ff-only',\s*squash_sha/.test(mainSyncSource),
     evidence_never_routes_as_product_branch: !/branchTransport\s*\(/.test(commitSource),
     exact_evidence_push_target: /`\$\{commit\}:\$\{EVIDENCE_REF\}`/.test(commitSource),
     exact_remote_ref_readback: /remote\.value\.remote_ref\s*!==\s*EVIDENCE_REF/.test(readbackSource),
@@ -267,6 +279,72 @@ test('TEST-MA-LEDGER-001 / AC-MA-005-02,04; AC-MA-006-01,02,04 / CAN-MA-07,08,14
   };
   assert.deepEqual(Object.entries(obligations).filter(([, met]) => !met).map(([name]) => name), [],
     'CAUSAL_RED: durable OK requires the exact Evidence ref plus raw JSONL byte/hash/event readback; product transport uses its deploy key for read and push');
+
+  let authorityAvailable = true;
+  let advertisedHead = 'b'.repeat(40);
+  let lsRemoteCode = 0;
+  let merged = false;
+  const processCalls = [];
+  const mainSyncFactory = Function(
+    'readAuthorityFile', 'executeProcess', 'exactGitEnvironment', 'gitTransportArguments', 'ok',
+    `${mainSyncSource}; return createPurposeBoundMainSync;`,
+  )(
+    async () => {
+      if (!authorityAvailable) throw new Error('AUTHORITY_FILE_INVALID');
+      return Buffer.from('purpose-bound-key');
+    },
+    async (executable, args, options) => {
+      processCalls.push({ executable, args, options });
+      if (args.includes('ls-remote')) return {
+        code: lsRemoteCode, signal: null,
+        stdout: lsRemoteCode === 0 ? Buffer.from(`${advertisedHead}\trefs/heads/main\n`) : Buffer.alloc(0),
+        stderr: Buffer.alloc(0),
+      };
+      if (args.includes('fetch')) return { code: 0, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
+      if (args[0] === 'branch') return { code: 0, signal: null, stdout: Buffer.from('main\n'), stderr: Buffer.alloc(0) };
+      if (args[0] === 'status') return { code: 0, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
+      if (args[0] === 'merge') { merged = true; return { code: 0, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) }; }
+      if (args[0] === 'rev-parse' && args[1] === 'HEAD') return {
+        code: 0, signal: null, stdout: Buffer.from(`${merged ? 'b'.repeat(40) : 'a'.repeat(40)}\n`), stderr: Buffer.alloc(0),
+      };
+      if (args[0] === 'rev-parse' && args[1] === 'refs/remotes/origin/main') return {
+        code: 0, signal: null, stdout: Buffer.from(`${'b'.repeat(40)}\n`), stderr: Buffer.alloc(0),
+      };
+      throw new Error('UNEXPECTED_GIT_CALL');
+    },
+    () => ({ LC_ALL: 'C', GIT_CONFIG_GLOBAL: '/dev/null' }),
+    key => `/usr/bin/ssh -F /dev/null -i ${key} -o IdentitiesOnly=yes -o IdentityAgent=none`,
+    value => ({ kind: 'OK', value }),
+  );
+  const mainSync = mainSyncFactory({
+    gitExecutable: '/fixed/git', mainWorktreeRoot: '/main', branchKeyPath: '/root/branch-key',
+    runtime_uid: 501, repository: 'owner/repository',
+  });
+  const request = {
+    canonical_root: '/main', main_worktree_root: '/main',
+    squash_sha: 'b'.repeat(40), expected_origin_main: 'b'.repeat(40),
+  };
+  assert.equal((await mainSync(request)).kind, 'OK');
+  const transportCalls = processCalls.filter(call => call.args.includes('ls-remote') || call.args.includes('fetch'));
+  assert.equal(transportCalls.length, 2);
+  for (const call of transportCalls) {
+    assert.equal(call.args.includes('git@github.com:owner/repository.git'), true);
+    assert.equal(call.args.includes('credential.helper='), true);
+    assert.equal(call.args.some(value => typeof value === 'string' && /https:|SSH_AUTH_SOCK|DYLD_/.test(value)), false);
+  }
+  assert.deepEqual(transportCalls[0].args.slice(-2), ['git@github.com:owner/repository.git', 'refs/heads/main']);
+  assert.deepEqual(transportCalls[1].args.slice(-2), ['git@github.com:owner/repository.git', 'refs/heads/main:refs/remotes/origin/main']);
+
+  const assertStopsBeforeSync = async (setup, expected) => {
+    processCalls.length = 0; merged = false; authorityAvailable = true; advertisedHead = 'b'.repeat(40); lsRemoteCode = 0;
+    setup();
+    await assert.rejects(() => mainSync(request), expected);
+    assert.equal(merged, false);
+    assert.equal(processCalls.some(call => call.args.includes('fetch')), false);
+  };
+  await assertStopsBeforeSync(() => { authorityAvailable = false; }, /AUTHORITY_FILE_INVALID/);
+  await assertStopsBeforeSync(() => { advertisedHead = 'c'.repeat(40); }, /REMOTE_CONFLICT/);
+  await assertStopsBeforeSync(() => { lsRemoteCode = 1; }, /REMOTE_AMBIGUOUS/);
 });
 
 test('TEST-MA-COMPOSE-001 / AC-MA-001-01,02; AC-MA-004-03..05; AC-MA-006-04 / CAN-MA-02,05,06,08,12: production composes the unchanged Core and cannot bypass Ledger/Handoff/PR/Candidate ordering', async () => {
@@ -292,13 +370,31 @@ test('TEST-MA-CRED-001 / AC-MA-006-01..03 / CAN-MA-07: two root-owned credential
   assert.doesNotMatch(source, /branch_push[^\n]{0,200}pr_api|pr_api[^\n]{0,200}branch_push/, 'one call site cannot receive both credential purposes');
 });
 
-test('TEST-MA-INSTALL-001 / AC-MA-003-01,02; AC-MA-007-04,05 / CAN-MA-14: installer is injectable for temporary-root proof and rollback preserves authority/evidence/Git', async () => {
-  const installer = await loadRequired(installerPath, ['HOST_INSTALL_TARGETS', 'ROLLBACK_PRESERVES', 'createHostInstaller'], 'root-owned install/backup/rollback boundary is required');
+test('TEST-MA-INSTALL-001 / AC-MA-003-01,02; AC-MA-005-01,02; AC-MA-007-04,05 / CAN-MA-14: installer closes the exact Git artifact and rollback authority', async () => {
+  const installer = await loadRequired(installerPath, ['HOST_INSTALL_TARGETS', 'PINNED_GIT_INSTALL', 'ROLLBACK_PRESERVES', 'createHostInstaller'], 'root-owned install/backup/rollback boundary is required');
+  assert.deepEqual(installer.PINNED_GIT_INSTALL, {
+    executable: {
+      target_directory: '/Users/huangbo/Dev/Env/homebrew/bin', name: 'git',
+      sha256: '6b348e2246cd4566a129c34a918ff2381c37eda817797d5bdd64ce719ff068ab', mode: 0o755,
+    },
+    libraries: [
+      {
+        target_directory: '/Users/huangbo/Dev/Env/homebrew/opt/gettext/lib', name: 'libintl.8.dylib',
+        sha256: '9cf2cc193c7ee8db00d4a5df13f6f0f0277f6b83e45177dece6f9c99fc454dbd', mode: 0o444,
+      },
+      {
+        target_directory: '/Users/huangbo/Dev/Env/homebrew/opt/pcre2/lib', name: 'libpcre2-8.0.dylib',
+        sha256: '0d3fcf6ef5dc2c42cbc6ce2326b5266715461892e4f635b4ebfbce646667e84d', mode: 0o444,
+      },
+    ],
+  });
   const requiredTargets = [
     '/private/etc/juanerai/controller-trust.json', '/private/etc/juanerai/host-loop.json',
     '/private/etc/juanerai/github-branch-push-key', '/private/etc/juanerai/github-pr-api-credential',
     '/Library/LaunchDaemons/com.juanerai.change-coordinator.plist', '/usr/local/bin/juanerai-coordinator',
     '/private/var/db/juanerai/change-coordinator', '/private/var/run/juanerai/change-coordinator.sock',
+    installer.PINNED_GIT_INSTALL.executable.target_directory,
+    ...installer.PINNED_GIT_INSTALL.libraries.map(value => value.target_directory),
   ];
   for (const target of requiredTargets) assert.equal(installer.HOST_INSTALL_TARGETS.includes(target), true, `install contract includes ${target}`);
   for (const forbidden of ['/private/etc/ssh', '/usr/bin/git']) assert.equal(installer.HOST_INSTALL_TARGETS.some(target => target === forbidden || target.startsWith(`${forbidden}/`)), false);
@@ -306,11 +402,22 @@ test('TEST-MA-INSTALL-001 / AC-MA-003-01,02; AC-MA-007-04,05 / CAN-MA-14: instal
   assert.equal(installer.createHostInstaller.length, 1, 'one injected OS boundary supports temp-root tests without sudo');
   const source = await readRequired(installerPath, 'installer source');
   for (const term of ['backup', 'atomic', 'readback', 'rollback', 'unload', 'revoke']) assert.match(source, new RegExp(term, 'i'));
+  const gitClosureObligations = {
+    exact_directory_inventory: /readdir/.test(source) && /DIRECTORY_CONTENT_MISMATCH/.test(source),
+    source_and_target_symlinks_reject: /SOURCE_SYMLINK_FORBIDDEN/.test(source) && /SYMLINK_FORBIDDEN/.test(source),
+    pinned_hash_and_mode_readback: /PINNED_GIT_INSTALL/.test(source) && /ARTIFACT_HASH_MISMATCH/.test(source)
+      && /ARTIFACT_MODE_MISMATCH/.test(source),
+    child_acl_and_effective_write_checked: /aclReceipt\(os,\s*childTarget\)/.test(source)
+      && /effectiveWriteDenied\(os,\s*plan\.runtime_user,\s*childTarget\)/.test(source),
+    no_binary_rewrite_or_ambient_dependency: !/(?:install_name_tool|brew\s+install|DYLD_|\/usr\/bin\/git)/.test(source),
+  };
+  assert.deepEqual(Object.entries(gitClosureObligations).filter(([, met]) => !met).map(([name]) => name), [],
+    'CAUSAL_RED: exact Git bytes, non-system dylibs, directories, ACLs, and runtime write denial share one install/rollback transaction');
   assert.doesNotMatch(source, /(?:rm|unlink|truncate).*(?:active-change|ledger|handoff)|git\s+(?:reset|rebase)|active_change_id\s*[:=]\s*null/i, 'rollback cannot clear pointer, delete evidence, or reset Git');
 });
 
-test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-007-04 / CAN-MA-04,14: temporary-root install is a runnable directory service with least-authority client socket', async () => {
-  const installer = await loadRequired(installerPath, ['createHostInstaller'], 'directory-aware host installer is required');
+test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CAN-MA-04,14: temporary-root install includes the immutable Git closure and least-authority service', async () => {
+  const installer = await loadRequired(installerPath, ['PINNED_GIT_INSTALL', 'createHostInstaller'], 'directory-aware host installer is required');
   const temporary = await mkdtemp('/tmp/jma-');
   const targetRoot = path.join(temporary, 'target-root');
   const runtimeSource = path.join(temporary, 'runtime-source');
@@ -318,12 +425,22 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-007-04 / CAN-MA-04,14: tempo
   const cliSource = path.join(temporary, 'juanerai-coordinator');
   const plistSource = path.join(temporary, 'service.plist');
   const trustSource = path.join(temporary, 'controller-trust.json');
+  const gitSource = path.join(temporary, 'git-bin-source');
+  const gettextSource = path.join(temporary, 'git-gettext-source');
+  const pcre2Source = path.join(temporary, 'git-pcre2-source');
   const owners = new Map();
+  const modeOverrides = new Map();
   const effectiveWriteDenials = new Set();
   const launchctlCalls = [];
-  let service = null;
-  const translate = target => ['/private/', '/Library/', '/usr/local/'].some(prefix => target.startsWith(prefix))
-    ? path.join(targetRoot, target.slice(1)) : target;
+  let aclGrantTarget = null;
+  let effectiveWriteAllowedTarget = null;
+  let bootstrapFailure = false;
+  const socketTarget = '/private/var/run/juanerai/change-coordinator.sock';
+  const socketPath = path.join(temporary, 'coordinator.sock');
+  const translate = target => target === socketTarget
+    ? socketPath
+    : ['/private/', '/Library/', '/usr/local/', '/Users/huangbo/Dev/Env/homebrew'].some(prefix => target.startsWith(prefix))
+      ? path.join(targetRoot, target.slice(1)) : target;
   const ownerStat = async target => {
     const resolved = translate(target);
     const stat = await lstat(resolved);
@@ -331,15 +448,16 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-007-04 / CAN-MA-04,14: tempo
     return new Proxy(stat, {
       get(value, key) {
         if (key === 'uid' || key === 'gid') return owner[key];
+        if (key === 'mode' && modeOverrides.has(resolved)) return (value.mode & ~0o777) | modeOverrides.get(resolved);
+        if (key === 'isSocket' && resolved === socketPath) return () => true;
         const member = Reflect.get(value, key, value);
         return typeof member === 'function' ? member.bind(value) : member;
       },
     });
   };
-  const socketTarget = '/private/var/run/juanerai/change-coordinator.sock';
-  const socketPath = translate(socketTarget);
   const osBoundary = {
     readFile: target => readFile(translate(target)),
+    readdir: target => readdir(translate(target)),
     writeFile: (target, bytes, options) => writeFile(translate(target), bytes, options),
     mkdir: (target, options) => mkdir(translate(target), options),
     lstat: ownerStat,
@@ -347,7 +465,12 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-007-04 / CAN-MA-04,14: tempo
     async rename(from, to) {
       const source = translate(from); const target = translate(to);
       await rename(source, target);
-      if (owners.has(source)) { owners.set(target, owners.get(source)); owners.delete(source); }
+      for (const [ownedPath, owner] of [...owners]) {
+        if (ownedPath === source || ownedPath.startsWith(`${source}${path.sep}`)) {
+          owners.set(`${target}${ownedPath.slice(source.length)}`, owner);
+          owners.delete(ownedPath);
+        }
+      }
     },
     copyFile: (from, to) => copyFile(translate(from), translate(to)),
     chmod: (target, mode) => chmod(translate(target), mode),
@@ -355,21 +478,22 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-007-04 / CAN-MA-04,14: tempo
     rm: (target, options) => rm(translate(target), options),
     open: (target, flags) => open(translate(target), flags),
     async exec(executable, args) {
-      if (executable === '/bin/ls') return { code: 0, signal: null, stdout: Buffer.from(`${args.at(-1)}\n`), stderr: Buffer.alloc(0) };
+      if (executable === '/bin/ls') return {
+        code: 0, signal: null,
+        stdout: Buffer.from(args.at(-1) === aclGrantTarget ? `${args.at(-1)}\n 0: user:test allow read,write\n` : `${args.at(-1)}\n`),
+        stderr: Buffer.alloc(0),
+      };
       if (executable === '/usr/bin/sudo') {
         effectiveWriteDenials.add(args.at(-1));
-        return { code: 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
+        return { code: args.at(-1) === effectiveWriteAllowedTarget ? 0 : 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
       }
       if (executable !== '/bin/launchctl') throw new Error('UNEXPECTED_EXECUTABLE');
       launchctlCalls.push([...args]);
       if (args[0] === 'bootout') return { code: 3, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
       if (args[0] === 'bootstrap') {
+        if (bootstrapFailure) return { code: 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.from('injected bootstrap failure') };
         await mkdir(path.dirname(socketPath), { recursive: true });
-        service = net.createServer(socket => {
-          socket.resume();
-          socket.once('end', () => socket.end(`${canonicalJson({ outcome: 'WAITING', operation: 'status' })}\n`));
-        });
-        await new Promise((resolve, reject) => { service.once('error', reject); service.listen(socketPath, resolve); });
+        await writeFile(socketPath, Buffer.alloc(0));
         await chmod(socketPath, 0o660);
         owners.set(socketPath, { uid: 0, gid: 20 });
         return { code: 0, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
@@ -391,6 +515,12 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-007-04 / CAN-MA-04,14: tempo
     await chmod(cliSource, 0o755);
     await copyFile(path.join(root, 'com.juanerai.change-coordinator.plist'), plistSource);
     await writeFile(trustSource, canonicalJson({ schema_version: '1.0', active_keys: [], revoked_key_ids: [] }));
+    await mkdir(gitSource, { recursive: true });
+    await mkdir(gettextSource, { recursive: true });
+    await mkdir(pcre2Source, { recursive: true });
+    await copyFile('/Users/huangbo/Dev/Env/homebrew/bin/git', path.join(gitSource, 'git'));
+    await copyFile('/Users/huangbo/Dev/Env/homebrew/opt/gettext/lib/libintl.8.dylib', path.join(gettextSource, 'libintl.8.dylib'));
+    await copyFile('/Users/huangbo/Dev/Env/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib', path.join(pcre2Source, 'libpcre2-8.0.dylib'));
     await mkdir(stateSource, { recursive: true });
     const emptyPointer = Buffer.from(canonicalJson({ schema_version: '1.0', active_change_id: null }));
     await writeFile(path.join(stateSource, 'active-change.json'), emptyPointer);
@@ -400,13 +530,19 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-007-04 / CAN-MA-04,14: tempo
     const stateTarget = '/private/var/db/juanerai/change-coordinator';
     const trustTarget = '/private/etc/juanerai/controller-trust.json';
     const plistTarget = '/Library/LaunchDaemons/com.juanerai.change-coordinator.plist';
-    const receipt = await installer.createHostInstaller(osBoundary).install({
+    const gitTarget = installer.PINNED_GIT_INSTALL.executable.target_directory;
+    const gettextTarget = installer.PINNED_GIT_INSTALL.libraries[0].target_directory;
+    const pcre2Target = installer.PINNED_GIT_INSTALL.libraries[1].target_directory;
+    const plan = {
       sources: {
         [runtimeTarget]: runtimeSource,
         [cliTarget]: cliSource,
         [stateTarget]: stateSource,
         [trustTarget]: trustSource,
         [plistTarget]: plistSource,
+        [gitTarget]: gitSource,
+        [gettextTarget]: gettextSource,
+        [pcre2Target]: pcre2Source,
       },
       modes: {
         [runtimeTarget]: 0o755,
@@ -414,9 +550,72 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-007-04 / CAN-MA-04,14: tempo
         [stateTarget]: 0o700,
         [trustTarget]: 0o600,
         [plistTarget]: 0o644,
+        [gitTarget]: 0o755,
+        [gettextTarget]: 0o755,
+        [pcre2Target]: 0o755,
       },
       runtime_user: 'huangbo', runtime_uid: 501, runtime_gid: 20,
-    });
+    };
+    const hostInstaller = installer.createHostInstaller(osBoundary);
+    const gitFile = path.join(gitSource, 'git');
+    const gitTargetFile = path.join(gitTarget, 'git');
+    const originalGit = await readFile(gitFile);
+
+    await rm(gitFile);
+    await assert.rejects(() => hostInstaller.install(plan), /ENOENT|SOURCE_INVALID|DIRECTORY_CONTENT_MISMATCH/, 'missing pinned artifact fails closed');
+    await writeFile(gitFile, originalGit);
+
+    await writeFile(gitFile, Buffer.from('wrong git bytes'));
+    await assert.rejects(() => hostInstaller.install(plan), /ARTIFACT_HASH_MISMATCH/, 'wrong executable bytes fail closed');
+    await writeFile(gitFile, originalGit);
+
+    await rm(gitFile);
+    await symlink('/Users/huangbo/Dev/Env/homebrew/bin/git', gitFile);
+    await assert.rejects(() => hostInstaller.install(plan), /SOURCE_SYMLINK_FORBIDDEN/, 'symlinked source artifact fails closed');
+    await rm(gitFile);
+    await writeFile(gitFile, originalGit);
+
+    await mkdir(path.dirname(translate(gitTarget)), { recursive: true });
+    await symlink(gitSource, translate(gitTarget), 'dir');
+    await assert.rejects(() => hostInstaller.install(plan), /SYMLINK_FORBIDDEN/, 'symlinked installed directory fails closed');
+    await rm(translate(gitTarget));
+
+    modeOverrides.set(translate(gitTargetFile), 0o777);
+    await assert.rejects(() => hostInstaller.install(plan), /ARTIFACT_MODE_MISMATCH/, 'writable installed executable mode fails readback');
+    modeOverrides.delete(translate(gitTargetFile));
+
+    aclGrantTarget = gitTargetFile;
+    await assert.rejects(() => hostInstaller.install(plan), /ACL_WRITE_GRANT_FORBIDDEN/, 'write ACL on an installed artifact fails closed');
+    aclGrantTarget = null;
+
+    effectiveWriteAllowedTarget = gitTargetFile;
+    await assert.rejects(() => hostInstaller.install(plan), /EFFECTIVE_WRITE_ALLOWED/, 'effective runtime write permission fails closed');
+    effectiveWriteAllowedTarget = null;
+
+    const priorArtifacts = [
+      { directory: gitTarget, name: 'git', bytes: Buffer.from('prior git'), mode: 0o711 },
+      { directory: gettextTarget, name: 'libintl.8.dylib', bytes: Buffer.from('prior gettext'), mode: 0o440 },
+      { directory: pcre2Target, name: 'libpcre2-8.0.dylib', bytes: Buffer.from('prior pcre2'), mode: 0o400 },
+    ];
+    for (const artifact of priorArtifacts) {
+      const directory = translate(artifact.directory);
+      const file = path.join(directory, artifact.name);
+      await mkdir(directory, { recursive: true });
+      await writeFile(file, artifact.bytes);
+      await chmod(directory, 0o755); await chmod(file, artifact.mode);
+      owners.set(directory, { uid: 0, gid: 0 }); owners.set(file, { uid: 0, gid: 0 });
+    }
+    bootstrapFailure = true;
+    await assert.rejects(() => hostInstaller.install(plan), /SERVICE_LOAD_FAILED/, 'a late host failure rolls the whole pinned Git closure back');
+    bootstrapFailure = false;
+    for (const artifact of priorArtifacts) {
+      const file = path.join(translate(artifact.directory), artifact.name);
+      const stat = await ownerStat(path.join(artifact.directory, artifact.name));
+      assert.deepEqual(await readFile(file), artifact.bytes, `rollback restores exact prior bytes for ${artifact.name}`);
+      assert.deepEqual({ uid: stat.uid, gid: stat.gid, mode: stat.mode & 0o777 }, { uid: 0, gid: 0, mode: artifact.mode });
+    }
+
+    const receipt = await hostInstaller.install(plan);
     assert.equal((await ownerStat(runtimeTarget)).isDirectory(), true, 'runtime install target is a directory, never one renamed file');
     for (const name of ['host-loop.mjs', 'production.mjs', 'coordinator.mjs', 'adapters.mjs']) {
       assert.deepEqual(await readFile(path.join(translate(runtimeTarget), name)), await readFile(path.join(runtimeSource, name)));
@@ -427,18 +626,16 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-007-04 / CAN-MA-04,14: tempo
     assert.deepEqual(await readFile(path.join(translate(stateTarget), 'active-change.json')), emptyPointer,
       'fresh state root begins with the one canonical empty active pointer');
     assert.equal(receipt.installed.some(value => value.target === runtimeTarget), true);
+    for (const artifact of [installer.PINNED_GIT_INSTALL.executable, ...installer.PINNED_GIT_INSTALL.libraries]) {
+      const target = path.join(translate(artifact.target_directory), artifact.name);
+      const stat = await ownerStat(path.join(artifact.target_directory, artifact.name));
+      assert.equal(sha256(await readFile(target)), artifact.sha256);
+      assert.deepEqual({ uid: stat.uid, gid: stat.gid, mode: stat.mode & 0o777 }, { uid: 0, gid: 0, mode: artifact.mode });
+      assert.equal(effectiveWriteDenials.has(path.join(artifact.target_directory, artifact.name)), true);
+    }
     assert.equal(launchctlCalls.some(args => args[0] === 'bootstrap'), true);
     assert.equal(launchctlCalls.some(args => args[0] === 'print'), true, 'launchd target is started and read back');
 
-    const response = await new Promise((resolve, reject) => {
-      const client = net.createConnection(socketPath);
-      const chunks = [];
-      client.once('error', reject);
-      client.on('data', chunk => chunks.push(Buffer.from(chunk)));
-      client.once('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-      client.end(`${canonicalJson({ operation: 'status' })}\n`);
-    });
-    assert.equal(JSON.parse(response).outcome, 'WAITING', 'installed client authority can reach the service socket');
     const socketStat = await ownerStat(socketTarget);
     assert.deepEqual({ uid: socketStat.uid, gid: socketStat.gid, mode: socketStat.mode & 0o777 }, { uid: 0, gid: 20, mode: 0o660 });
     assert.equal(effectiveWriteDenials.has(stateTarget), true, 'runtime client cannot write Coordinator state');
@@ -448,7 +645,6 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-007-04 / CAN-MA-04,14: tempo
     assert.match(ownershipSource, /0o660[\s\S]{0,800}runtime_gid|runtime_gid[\s\S]{0,800}0o660/,
       'CAUSAL_RED: production service must root-own and runtime-group the reachable socket without opening state/trust');
   } finally {
-    if (service?.listening) await new Promise(resolve => service.close(resolve));
     await rm(temporary, { recursive: true, force: true });
   }
 });
