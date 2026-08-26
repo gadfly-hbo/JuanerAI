@@ -2,12 +2,12 @@
 
 ## Current Verdict
 
-- Verdict: `SPEC_REGATE_PASS_HOST_CANARY_CONTINUE`
-- Meaning: The Controller re-read the strictly bounded R3 seven-file package and issued Spec re-gate `PASS`. Codex Remote remains only a best-effort courier, Activation does not submit a disposable valid DISPATCH, and positive production admission remains deferred to the first separately authorized real product Change. Repository reruns and the current read-only host evidence below permit exact Candidate creation and remaining prerequisite/canary work; they do not claim all fourteen canaries, GitHub credential behavior, Validator, PR, archive, merge, RELEASE, Activation readiness, or product-Change authority.
+- Verdict: `SPEC_REGATE_PASS_REPLACEMENT_CANDIDATE_AUTHORIZED`
+- Meaning: The Controller read back the exact strictly bounded R3 seven-file package and issued Spec re-gate `PASS`. The revision still defers only the production-positive Evidence Ref append/readback, product-branch push/readback, and PR create/update/readback obligations of `CAN-MA-07/08` to the first separately user-authorized real product Change; it adds no Canary interface, direct production-adapter invocation, or disposable Change, and every deferred failure is `BLOCKED` with no Acceptance. This verdict authorizes creation of a descendant replacement Candidate only; it does not claim that Candidate exists, Validator, PR/archive/merge, Activation readiness, or product-Change authority.
 - Baseline/main/origin-main: `fec08a5300869d9f8411c406c2f4efd79af95467`
-- Current branch HEAD: `341a08ebfeb20b2b56ae911bd35f88e27f3b5018`
+- Current branch HEAD / pre-revision Candidate: `09a38c7d3656189241e6226b64a1f5f76f802c59`
 - Branch: `work/macbook/mode-activation`
-- Next Gate: exact repository Candidate plus remaining external-prerequisite and `CAN-MA-01..14` evidence, without a production-valid DISPATCH
+- Next Gate: create and read back a descendant replacement Candidate from `09a38c7d3656189241e6226b64a1f5f76f802c59`. Only after that readback may the prior Candidate be marked `SUPERSEDED` without erasing it, followed by final validation and a fresh exact-Candidate Validator.
 
 ## Historical Intake Facts
 
@@ -63,11 +63,15 @@ These facts are readback only. They prove installed identities and current WIP a
 - The derived public SPKI fingerprint is `ace797ad909a0373b771aec70c309daa3adce8de3653409b56cdc767725aa8a4`. It equals the staged trust active-key fingerprint, and staged trust bytes equal the installed receipt trust SHA-256 `073faa77e876673f60bec16843a4b573b66785a91f3ae6f45eab6a21dcd119c2`.
 - The bounded rollback-rehearsal receipt file SHA-256 is `eb2f55211fa5d70eb6fa37390cf114cf5211b721c097fb73df22c2f4a2a46974`; `rolled_back: true`; preserved classes are active pointer, State, Ledger, Handoff, canary evidence, and Git history; rollback readback SHA-256 is `08c320619613638dcf98d031de59cd3532bd714a251618f8661e87d838cfe03a`.
 
-### GitHub metadata, not `CAN-MA-07` PASS
+### GitHub metadata and closed deferral, not `CAN-MA-07/08` PASS
 
 - Repository `gadfly-hbo/JuanerAI` has verified write-enabled deploy key ID `161370084`, title `juanerai-mode-activation-branch-2026-08-26`, `read_only: false`.
 - Active ruleset `main-protection` ID `21155736` applies to `~DEFAULT_BRANCH`, has `bypass_actors: []`, and includes deletion, non-fast-forward, required-linear-history, and pull-request rules.
-- Mac mini production-path branch push, PR-token positive use, merge rejection, and credential cross-use remain unproved. `CAN-MA-07`, the GitHub credential prerequisite, and all dependent Activation claims remain pending.
+- The installed PR credential is a fine-grained PAT whose source file SHA-256 remains `d8d796b351098a401be2dec2a5f4d3db02b4fe7e9e6629ec4a50e7a9e129243a`. Read-only API probes returned `200` for repository Metadata read, `200` for `contents/README.md` with Contents read, and `200` for Pull Requests read; no credential bytes are recorded.
+- Controller GitHub UI readback shows `Access on gadfly-hbo`; repository access is limited to `gadfly-hbo/JuanerAI`; User permissions are absent; Repository permissions are exactly `Read access to code and metadata` and `Read and Write access to pull requests`, with no Contents write displayed. The token has no expiration date; this is a residual credential-lifetime risk, not security PASS evidence.
+- MacBook `gh` first read back Foundation PR `#16` as already merged at `2026-08-26T07:43:07Z`, merge SHA `fec08a5300869d9f8411c406c2f4efd79af95467`. The installed PAT was then used once against only that already-merged Foundation PR for a deterministic no-merge-side-effect permission negative: HTTP `403`, accepted permission `contents=write`, message `Resource not accessible by personal access token`, sanitized response SHA-256 `4f12f19a7a726a59f1b55ab5395f93e52c30fa24a45d2b5155e79f19c63233a9`. No product PR merge endpoint was called. This closes the pre-Activation PR-credential no-merge-authority prerequisite without claiming a positive PR mutation path.
+- Structural credential isolation, deterministic safety, and ruleset metadata remain preserved. No real product PR merge endpoint may be called.
+- Only production-positive Evidence Ref append/readback, product-branch push/readback, and PR create/update/readback are deferred to the first authorized real product Change through the existing Foundation/Host Loop route. Any absence, ambiguity, conflict, or mismatch is `BLOCKED` and prevents Acceptance. `CAN-MA-07/08` are not yet PASS.
 
 ## Prior Controller Spec Gate Evidence
 
@@ -113,9 +117,9 @@ shasum -a 256 openspec/changes/mode-activation/proposal.md \
 
 The current Spec Agent must also prove no write outside `openspec/changes/mode-activation/**` and preserve the pre-existing `.juanerai/project-control/**` dirty files unchanged.
 
-## R3 Spec Revision Evidence
+## Prior Courier-only R3 Re-gate Evidence
 
-- Controller R3 Spec re-gate: `PASS`; the historical Spec result and `RETIRED_INCONCLUSIVE` canary disposition remain preserved rather than overwritten.
+- Prior Controller R3 Spec re-gate: `PASS` for the courier-only bytes that preceded this `CAN-MA-07/08` deferral revision. The result and `RETIRED_INCONCLUSIVE` canary disposition remain historical evidence rather than being overwritten.
 - `git diff --check -- openspec/changes/mode-activation`: PASS.
 - Static inventory remains 7 files / 8 Requirements / 37 Acceptance Criteria / 14 unchanged canary IDs.
 - Current rerun `node --test tools/harness/change-coordinator/mode-activation.test.mjs tools/harness/change-coordinator/coordinator.test.mjs`: `171/171 PASS`, no fail/cancel/skip/todo.
@@ -124,18 +128,36 @@ The current Spec Agent must also prove no write outside `openspec/changes/mode-a
 - `openspec validate mode-activation --strict`: not run because the `openspec` CLI remains unavailable locally.
 - Scope readback: all R3 writes are limited to the existing seven files under `openspec/changes/mode-activation/**`. Pre-existing `.codex/config.toml` and `.juanerai/project-control/**` dirty files remain outside this Spec Agent's writes.
 
+## Current R3 Deferral Revision
+
+- Result: `SPEC_REGATE_PASS_REPLACEMENT_CANDIDATE_AUTHORIZED`.
+- Controller exact re-gate input SHA-256 readback: `proposal.md=f5db31dcffd4651aaf4c5615343779f5ee5091e8b88fe826ee1cbb2920a5375b`; `design.md=ec8abe19c0aa46eb1b4ea6c4b336a20c70e013c5ecacbeecea9905a43861f67a`; `specs/mode-activation/spec.md=d670f17e1c123e4a5e19de9ddf0df590b81d9c4891e5becff7d863f6470a9775`; `tasks.md=e9b4cd17dc0d35a65a29f9974c99580203c7b54006abb8884aefa4e7251a25b3`; `test-plan.md=a48682ebca50a9e13f3f6af4167328e318a084204d05b457166c01cbf4272389`; `traceability.md=6c5e6bff72be883ebda72502c53818eccfb0b6586d04ffda6a057ad448a7cb06`; `verification.md=d3adec0eee9b565fd688a38d9983dca5f61625022f4e917d8228404f51fc4326`. The `verification.md` value is the exact Gate input before this evidence-only verdict update; its new final hash is reported by the Spec handoff.
+- Static inventory readback: 7 files / 8 Requirements / 37 Acceptance Criteria / 14 unchanged Canary IDs; `git diff --check -- openspec/changes/mode-activation` PASS.
+- The first sandboxed full-Coordinator run had one environment-only false failure because Unix socket `listen` returned `EPERM`. The same full command outside the sandbox, `node --test tools/harness/change-coordinator/*.test.mjs`, passed `222/222`, with no failure.
+- Project-board rerun passed `12/12`; the canonical runner exited `0`.
+- Controller authorization is limited to creating and reading back the descendant replacement Candidate. It has not been created; `09a38c7d3656189241e6226b64a1f5f76f802c59` remains `AWAITING_REPLACEMENT_CANDIDATE`, not `SUPERSEDED`.
+- Deferral is closed to exactly three first-product effects: Evidence Ref append/readback, product-branch push/readback, and PR create/update/readback.
+- No new Canary interface, direct production-adapter invocation, disposable Change, Foundation/interface/state/event/Gateway/lock/recovery delta, or real-product merge call is authorized.
+- All deferred effects use existing Foundation/Host Loop execution and exact readback; any unavailable, ambiguous, conflicting, or mismatched evidence is `BLOCKED` and forbids Acceptance.
+- PR no-merge authority was satisfied before Activation-ready by the deterministic, no-merge-side-effect permission negative recorded above; the positive PR create/update/read path remains deferred and `CAN-MA-07` remains not PASS.
+
 Current revised non-self-referential file SHA-256 values:
 
 | File | SHA-256 |
 |---|---|
-| `proposal.md` | `5a3de8a1da2825c7b2251f0c6b4d70881c17e835691236121dba20249753b303` |
-| `design.md` | `03718b5379fa5dd1eeab406c36efdd4fed5155d1ef38740922d20caecc797487` |
-| `specs/mode-activation/spec.md` | `3d60ec9a69aeb005b287dbad80e68dd29a011d346249a787a4def103b77a87c5` |
-| `tasks.md` | `2d113806dfe5dc00a13fe23ee34448e73060fd1a72f48ba9ef4c946241b79c49` |
-| `test-plan.md` | `6e578cc27cf5143b9d0fc63d7eab83bfbc3c787ab1fe0ec6a9d96f2ca42523d8` |
-| `traceability.md` | `ddf1eabfa70a39f533831ec6683b2e82b5daeb1ff076353fc194448862dee585` |
+| `proposal.md` | `f5db31dcffd4651aaf4c5615343779f5ee5091e8b88fe826ee1cbb2920a5375b` |
+| `design.md` | `ec8abe19c0aa46eb1b4ea6c4b336a20c70e013c5ecacbeecea9905a43861f67a` |
+| `specs/mode-activation/spec.md` | `d670f17e1c123e4a5e19de9ddf0df590b81d9c4891e5becff7d863f6470a9775` |
+| `tasks.md` | `758a5ca1abc58505095a9921dfbad3c38759e0ccb05f9c1aa8bec023e60922c7` |
+| `test-plan.md` | `a48682ebca50a9e13f3f6af4167328e318a084204d05b457166c01cbf4272389` |
+| `traceability.md` | `6c5e6bff72be883ebda72502c53818eccfb0b6586d04ffda6a057ad448a7cb06` |
 
 `verification.md` cannot contain its own final SHA-256 without self-reference; the Spec handoff reports it after final readback.
+
+## Candidate Lineage
+
+- `09a38c7d3656189241e6226b64a1f5f76f802c59` is the preserved pre-revision Candidate, parent `341a08ebfeb20b2b56ae911bd35f88e27f3b5018`, status `AWAITING_REPLACEMENT_CANDIDATE`.
+- It SHALL be marked `SUPERSEDED` only after a descendant replacement Candidate containing this exact revision is created and read back. Its commit, prior validation, host evidence, and historical Gate records remain immutable and are never deleted or rewritten.
 
 ## External Prerequisites — Current Status
 
@@ -144,15 +166,16 @@ Current revised non-self-referential file SHA-256 values:
 | Mac mini administrator install/rollback authority | `READBACK_PRESENT` | install/manifest/service and rollback receipt hashes, owner/mode/ACL/effective-write readback; final canary/Validator review pending |
 | dual-host Git `2.54.0` same executable SHA | `READBACK_PRESENT` | installed Git SHA equals MacBook canonical `6b348e...`; executable/runtime closure read back; remaining dual-host canary evidence pending |
 | Mac mini compatible Node/Codex route | `PARTIAL` | LaunchDaemon runs exact Node/host-loop identity; exact four-role route canary remains pending |
-| isolated Mac mini GitHub credentials | `CAN-MA-07_PENDING` | installed credential identities plus verified deploy-key/ruleset metadata; production branch push, PR positive/merge rejection, and cross-use remain unproved |
+| isolated Mac mini GitHub credentials | `NO_MERGE_CLOSED; CAN-MA-07_PENDING_DEFERRED_POSITIVE` | installed identities, repository-scoped UI permission readback, structural isolation, verified deploy-key/ruleset metadata, and deterministic no-side-effect `403` merge-permission negative preserved; no-expiration token remains a lifetime risk; production branch/PR positive readbacks deferred to first authorized product Change |
+| Evidence Ref production append/readback | `CAN-MA-08_DEFERRED_POSITIVE` | deterministic append-only/readback safety preserved; exact production append/readback deferred to first authorized product Change and blocks Acceptance on any non-exact result |
 | real Ed25519 trust and host loop | `PARTIAL` | signer/trust fingerprint binding, owner/mode/ACL/effective-write, service/socket/PID/config hashes read back; remaining trust/rotation/revocation and host canaries pending |
 
-These facts permit exact Candidate and remaining bounded canary work. They do not establish all external prerequisites or Activation readiness.
+The current Controller re-gate authorizes creation of the replacement Candidate; these facts do not establish all external prerequisites or Activation readiness.
 
 ## Repository GREEN and Test Asset Retirement
 
 - Foundation Core SHA-256 remained `2d221ce17a5c33d603320391daabf99f7cb80d85efe419dec2b6170399fb4a7b`; canonical Foundation Spec SHA-256 remained `139ec5107d0908ed1f3676cef6d877f26c76c2bcdeb076d411493375caa49d69`.
-- `node --test tools/harness/change-coordinator/*.test.mjs`: `221/221 PASS`, no fail/cancel/skip/todo.
+- `node --test tools/harness/change-coordinator/*.test.mjs`: `222/222 PASS`, no fail/cancel/skip/todo.
 - `node --test tools/harness/project-board/project-control.test.mjs tools/harness/project-board/status-cli.test.mjs`: `12/12 PASS`.
 - `JUANERAI_TOOLCHAIN_BIN=/Users/huangbo/Dev/Env/homebrew/bin tools/harness/validation/run`: exit `0`.
 - `node --check` passed for every changed Coordinator runtime/CLI/installer module; `plutil -lint` passed for the LaunchDaemon; `git diff --check` passed.
@@ -163,8 +186,8 @@ These facts permit exact Candidate and remaining bounded canary work. They do no
 
 ## Future Current-read-model Fields
 
-At each Gate this file must be updated with the exact current verdict, subject Candidate/config hashes, evidence matrix, Test Asset Retirement verdict, fourteen-canary results, Validator verdict/Head, PR/Handoff/archive/main identities, backup/rollback result, residual risk, and next Gate. It must preserve positive production admission as deferred until the first separately authorized real product Change and keep the retired inconclusive canary retired. Historical failures remain in immutable detailed evidence and are linked rather than overwritten.
+At each Gate this file must be updated with the exact current verdict, subject Candidate/config hashes, evidence matrix, Test Asset Retirement verdict, fourteen-canary results, Validator verdict/Head, PR/Handoff/archive/main identities, backup/rollback result, residual risk, and next Gate. It must preserve only the exact three `CAN-MA-07/08` production-positive effects as deferred until the first separately authorized real product Change, keep the retired inconclusive canary retired, and retain `09a38c7d3656189241e6226b64a1f5f76f802c59` as superseded history after replacement. Historical failures remain in immutable detailed evidence and are linked rather than overwritten.
 
 ## Stop Condition
 
-Any requirement to alter the canonical Foundation contract/interface/schema/state/event/Gateway/lock/recovery boundary, add transport receipts/outbox/queue/replay, submit a disposable valid DISPATCH, expose a secret, or accept unprovable host/GitHub/Git identity changes the current verdict to `BLOCKED` and returns to the Controller. The furthest success state for this Change is `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`; its first positive production admission proof remains part of the separately authorized first real product Change.
+Any requirement to alter the canonical Foundation contract/interface/schema/state/event/Gateway/lock/recovery boundary, add a Canary interface, directly invoke a production adapter, add transport receipts/outbox/queue/replay, submit a disposable valid DISPATCH, call merge on a real product PR, expose a secret, or accept unprovable host/GitHub/Git identity changes the current verdict to `BLOCKED` and returns to the Controller. The furthest success state for this Change is `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`; the exact three deferred positive effects remain part of the separately authorized first real product Change and block its Acceptance until exact readback.

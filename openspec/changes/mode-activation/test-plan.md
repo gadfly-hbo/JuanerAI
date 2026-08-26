@@ -2,7 +2,7 @@
 
 ## Evidence Level
 
-R3 negative-first evidence is required. Deterministic repository tests precede host effects. Host canaries run only after TDD_READY, repository GREEN/regression, exact Candidate freeze, external prerequisites, backup, and explicit administrator approval. Activation canaries SHALL NOT submit a production-valid DISPATCH or occupy Global WIP; the first positive production admission belongs to the separately authorized first real product Change.
+R3 negative-first evidence is required. Deterministic repository tests precede host effects. Host canaries run only after TDD_READY, repository GREEN/regression, exact Candidate freeze, external prerequisites, backup, and explicit administrator approval. Activation canaries SHALL NOT submit a production-valid DISPATCH, occupy Global WIP, add a Canary interface, or directly invoke a production adapter. Only the named `CAN-MA-07/08` production-positive effects are deferred to the separately authorized first real product Change.
 
 ## Commands to Freeze at Test Design
 
@@ -28,8 +28,8 @@ The existing Foundation suite is regression-only and must remain byte/behavior s
 | `CAN-MA-04` | host launches only exact AGENT_ACTION and returns STARTED/RESULT with matching child/artifact hashes | route/hash/sandbox/path mismatch and parent substitute do not advance |
 | `CAN-MA-05` | Foundation alone performs Git/Ledger/validation/PR/Handoff mechanics | host settlement cannot submit mechanical receipts or duplicate an effect |
 | `CAN-MA-06` | local Candidate, Validator, remote branch, PR Head, and Handoff all bind one SHA | any one-Head drift blocks before freeze/Handoff |
-| `CAN-MA-07` | branch-push deploy key can normally push only the current branch; separate PR API credential with Metadata read, Contents read, and Pull Requests write can create/update/read only the current PR | PR credential merge fails for absent Contents write; deploy key push-main fails under the no-bypass ruleset; cross-use, Agent/CLI exposure, approve/close/delete/Issue/Project/other repo/force/delete paths reject |
-| `CAN-MA-08` | Ledger append/readback is exact, append-only, contiguous, and remote-authoritative | hash/predecessor/path/readback conflict stops; no false durable BLOCKED on Ledger outage |
+| `CAN-MA-07` | before Activation-ready, installed purpose bindings, verified deploy-key/ruleset metadata, structural negatives, and reliable permission metadata or a deterministic no-merge-side-effect method prove PR no-merge authority; product-branch push/readback and PR create/update/readback are deferred to the first authorized real product Change | never call merge on a real product PR; deploy key push-main, cross-use, Agent/CLI exposure, approve/close/delete/Issue/Project/other repo/force/delete paths reject; any deferred-result absence, ambiguity, conflict, or mismatch is BLOCKED with no Acceptance |
+| `CAN-MA-08` | deterministic append-only/contiguous/identity safety passes before Activation-ready; production Evidence Ref append and exact remote bytes/hash readback are deferred to the first authorized real product Change | hash/predecessor/path/readback conflict stops; no false durable BLOCKED on Ledger outage; any deferred-result absence, ambiguity, conflict, or mismatch is BLOCKED with no Acceptance |
 | `CAN-MA-09` | exact signed `AWAITING_CONTROLLER` REVISION returns same Change/Worktree to TEST_RED | wrong Candidate/scope/evidence/state/hash rejects effect-free |
 | `CAN-MA-10` | automatic repair, ordinary PR REVISION, and archive REVISION create descendant Candidates and fast-forward the same branch/PR | baseline re-parent, non-FF, replacement PR, or historical evidence overwrite blocks |
 | `CAN-MA-11` | STARTED, RESULT, START_FAILED, and INTERRUPTED match canonical variants | old enums and `NOT_STARTED` settlement reject; Coordinator-only NOT_STARTED requires no REQUESTED/action |
@@ -40,6 +40,12 @@ The existing Foundation suite is regression-only and must remain byte/behavior s
 `CAN-MA-01` and `CAN-MA-02` replace any requirement for Activation to accept a disposable valid production DISPATCH. The prior real-signed admission-precondition rejection canary is retired as inconclusive and SHALL NOT be retried: it intentionally produced no pointer, State, or Ledger fact, so lost Remote output cannot prove the rejection reason.
 
 If Remote output is missing, the Controller reads existing pointer, State, Ledger, and when applicable PR. An admitted Change continues from durable state; clearly not admitted permits only a new explicit Controller decision; conflict or inconsistency is `BLOCKED`. Remote is a best-effort courier, not a message bus, exactly-once authority, receipt/outbox/queue/replay platform, or business-evidence authority. SSH remains limited to install, rollback, emergency diagnosis, or explicit backup submission.
+
+## Deferred First-product Positive Evidence
+
+The deferral is closed to exactly three effects: Evidence Ref append/readback, product-branch push/readback, and PR create/update/readback. The separately user-authorized first real product Change exercises them only through the existing Foundation/Host Loop lifecycle after durable admission. No direct adapter call, one-off canary gateway, alternate credential path, or disposable Change is allowed. Every effect must read back its exact existing identity; unavailable, ambiguous, conflicting, or mismatched evidence is `BLOCKED` and forbids Acceptance. No other Canary obligation is deferred.
+
+PR no-merge authority is not deferred. Before Activation-ready it must be proved through reliable permission metadata or a deterministic method with no merge side effect; no real product PR merge endpoint may be called.
 
 ## Test Asset Retirement Ledger
 

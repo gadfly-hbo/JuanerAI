@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826164418802-7FACOV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-26T16:44:18.802Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-canary-boundary"
+  },
+  "summary": "Mode Activation seven-file Spec re-gate passed; replacement Candidate authorized",
+  "status_after": "active",
+  "evidence_refs": []
+}

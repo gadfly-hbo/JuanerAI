@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826163255028-KWPZZ9",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-26T16:32:55.028Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-canary-boundary"
+  },
+  "summary": "User resolved the CAN-MA-07/08 authority blocker by deferring Evidence Ref, product branch and PR positive production proof to the first separately authorized product Change, fail closed before Acceptance.",
+  "status_after": "active",
+  "evidence_refs": []
+}

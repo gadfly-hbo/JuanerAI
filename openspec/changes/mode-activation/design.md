@@ -69,11 +69,21 @@ If exact route capacity, Codex authentication, child identity, artifact readback
 GitHub transport uses two root-owned, repository-limited credentials with separate configuration slots and call sites:
 
 - the branch-push credential is preferably a write-enabled repository deploy key and is available only to the exact Git transport child for the current signed `work/mac-mini/<slug>` ref; the adapter exposes no force/delete/main target, and the existing protected-`main` ruleset has no deploy-key bypass;
-- the PR API credential is a fine-grained PAT or GitHub App credential with only Metadata read, Contents read, and Pull Requests write. It is available only to current-PR query/create/update/readback/ready calls. It has no Contents write, so GitHub's merge endpoint must reject it.
+- the PR API credential is a fine-grained PAT or GitHub App credential with only Metadata read, Contents read, and Pull Requests write. It is available only to current-PR query/create/update/readback/ready calls. It has no Contents write, so the permission model does not authorize merge.
 
-The host composition never gives either credential to Agent children or CLI callers and never supplies the PR API credential to Git transport or the branch-push credential to the PR API. Negative canaries prove cross-use is unavailable; merge/approve/close/delete/Issue/Project methods are absent; direct `main` push is rejected by the ruleset; force/delete are unavailable; and another repository/Change cannot be addressed. Provider metadata, permission readback, or any negative-canary mismatch blocks Activation rather than widening a credential.
+The host composition never gives either credential to Agent children or CLI callers and never supplies the PR API credential to Git transport or the branch-push credential to the PR API. Negative canaries prove cross-use is unavailable; merge/approve/close/delete/Issue/Project methods are absent; direct `main` push is rejected by the ruleset; force/delete are unavailable; and another repository/Change cannot be addressed. Before Activation-ready, PR no-merge authority is proved by reliable provider permission metadata or a deterministic no-merge-side-effect method; no real product PR merge endpoint is called. Any metadata, permission, ruleset, or negative-canary mismatch blocks Activation rather than widening a credential.
 
 Ledger remains `refs/heads/evidence/agent-runs` and `ledger/<change_id>.jsonl`; PR remains base `main`, exact head branch, create-or-reuse/update/readback/ready only. Secret-bearing process output is redacted before bounded receipt creation. Gateway ambiguity follows only the existing four readback boundaries and existing BLOCKED/local-pause disposition.
+
+## Deferred First-product Positive Evidence
+
+Mode Activation adds no Canary interface and never directly invokes a production adapter. Without a disposable Change, only these `CAN-MA-07/08` production-positive effects are deferred to the separately user-authorized first real product Change:
+
+1. append the Change's Evidence Ref record and read back the exact remote bytes/hash;
+2. push the exact product branch through the purpose-bound deploy key and read back the remote Head;
+3. create or update the exact product PR through the purpose-bound PR credential and read back its base/head/ready identity.
+
+The existing Foundation and root-owned Host Loop execute those effects in their normal order after durable DISPATCH admission. No direct gateway call, one-off canary harness, alternate credential path, or new recovery boundary is authorized. Each effect must return the existing exact identity/readback proof; unavailable, ambiguous, conflicting, or mismatched evidence enters `BLOCKED`, performs no Acceptance, and does not infer success. All other trust, host, credential-isolation, ruleset, forged-signature, deterministic lifecycle, rollback, and security-negative obligations remain pre-Activation requirements.
 
 ## Deterministic Git and Canonical Diff
 
@@ -110,4 +120,4 @@ Rollback stops and unloads the host loop, disables mutating socket ingress, rest
 
 ## Completion Boundary
 
-All fourteen canaries, scope and secret scans, Test Asset Retirement, exact-Candidate Validator, archive/canonical readback, squash merge, dual-device synchronization, service readback, credential negatives, and rollback rehearsal must pass without a production-valid DISPATCH. Completion records `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`; no product DISPATCH is emitted. The separately authorized first real product DISPATCH is also the durable positive Remote/real-signature acceptance proof through pointer, State, Ledger, and PR.
+Every non-deferred obligation in the fourteen-canary matrix, scope and secret scans, Test Asset Retirement, exact-Candidate Validator, archive/canonical readback, squash merge, dual-device synchronization, service readback, PR no-merge proof, credential negatives, and rollback rehearsal must pass without a production-valid DISPATCH. Completion records `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`; no product DISPATCH is emitted. The separately authorized first real product DISPATCH supplies the durable positive Remote/real-signature proof and the three deferred `CAN-MA-07/08` effects; Acceptance is forbidden until all three exact readbacks succeed.

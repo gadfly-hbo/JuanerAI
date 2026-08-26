@@ -10,7 +10,7 @@
 - Controller: MacBook Integration Controller
 - Execution host: Mac mini `myhost`
 - `greenfield_fast_path`: forbidden
-- Current result: `SPEC_READY`, not Controller Spec Gate PASS
+- Current result: `SPEC_READY_CONTROLLER_REGATE_REQUIRED`, not Controller Spec Gate PASS
 
 This Change activates the already released Dual-device Transition Foundation without changing it. It installs one real Controller trust boundary, one trusted Mac mini host loop, a fixed local CLI with best-effort Codex Remote courier ingress, production gateway composition, and the evidence needed to prove route, repository, exact-envelope, trust, host, and deterministic lifecycle safety. It does not submit a production-valid DISPATCH or occupy Global WIP; it stops before authorization of the first product Change.
 
@@ -31,7 +31,7 @@ Make the personal dual-device execution mode trustworthy and usable while keepin
 
 ### Delivery objective
 
-Prove that a separately authorized product-valid signed DISPATCH can automatically reach exact Candidate freeze, a review-ready PR, fixed-reference Handoff, and `AWAITING_CONTROLLER`; permit at most one same-scope Validator automatic repair per DISPATCH/REVISION cycle; fail closed on every ambiguity. Activation itself proves this capability through deterministic/runtime evidence and security negatives, not by admitting a disposable Change.
+Prove that a separately authorized product-valid signed DISPATCH can automatically reach exact Candidate freeze, a review-ready PR, fixed-reference Handoff, and `AWAITING_CONTROLLER`; permit at most one same-scope Validator automatic repair per DISPATCH/REVISION cycle; fail closed on every ambiguity. Activation itself proves this capability through deterministic/runtime evidence and security negatives, not by admitting a disposable Change. Only the production-positive Evidence Ref append/readback, product-branch push/readback, and PR create/update/readback obligations of `CAN-MA-07/08` are deferred to that first real product Change.
 
 ### Learning objective
 
@@ -95,7 +95,7 @@ These writes occur only after repository RED/GREEN/regression and an administrat
 - `/private/etc/ssh/**`, branch protection mutation, arbitrary SSH setup, global Git/Codex config, and system `/usr/bin/git` replacement;
 - GitHub Issues/Projects, workflow mutation, merge/approve/close/delete authority, push to `main`, force push, branch deletion, or next-Change dispatch;
 - any key/token/secret content in Git, Tests, logs, Ledger, Handoff, Agent brief, receipt, or prompt;
-- any transport message bus, receipt schema, outbox, queue, exactly-once authority, automatic replay, second lock, scheduler, poller, cross-Change concurrency, general gateway, compatibility mode, or fifth recovery boundary.
+- any new Canary interface, direct production-adapter invocation, disposable Change, transport message bus, receipt schema, outbox, queue, exactly-once authority, automatic replay, second lock, scheduler, poller, cross-Change concurrency, general gateway, compatibility mode, or fifth recovery boundary.
 
 ## Device Ownership
 
@@ -117,4 +117,4 @@ Missing or failed prerequisites keep Activation `BLOCKED`; they do not authorize
 
 ## Activation and Stop Line
 
-Merge alone does not authorize a product Change. Activation becomes operational only after all fourteen canaries, Test Asset Retirement, exact Candidate Validator PASS, archive/canonical publication, squash merge, dual-main synchronization, host configuration readback, and rollback evidence pass without admitting a disposable valid DISPATCH. It then stops at `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`. The first positively accepted production signed DISPATCH occurs only in the separately user-authorized first real product Change; its pointer, State, Ledger, and later PR facts are also the durable positive proof of Remote delivery and real-signature acceptance.
+Merge alone does not authorize a product Change. Activation becomes operational only after every non-deferred obligation in the fourteen-canary matrix, Test Asset Retirement, exact Candidate Validator PASS, archive/canonical publication, squash merge, dual-main synchronization, host configuration readback, rollback evidence, and PR-credential no-merge proof pass without admitting a disposable valid DISPATCH. No-merge authority must be proved through reliable permission metadata or a deterministic method with no merge side effect; a real product PR merge endpoint is never called. Activation then stops at `ACTIVATION_READY_AWAITING_FIRST_PRODUCT_CHANGE_AUTHORIZATION`. The separately user-authorized first real product Change alone executes the three deferred `CAN-MA-07/08` positive effects through the existing Foundation/Host Loop route; any missing, ambiguous, or mismatched readback is `BLOCKED` and forbids Acceptance.
