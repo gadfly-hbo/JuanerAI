@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826073225370-9NBRLY",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-26T07:32:25.370Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-fcr-security-revision"
+  },
+  "summary": "Exact replacement Candidate and single fresh Validator pipeline is now the only active FCR path",
+  "status_after": "validating",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826054901000-WSETSN",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-26T05:49:01.000Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller"
+  },
+  "summary": "FCR Worker stopped before edit; explicit named production authorization required",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

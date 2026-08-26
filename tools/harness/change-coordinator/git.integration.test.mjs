@@ -174,6 +174,56 @@ test('TEST-DTF-R1-008: production adapter exposes exactly the Design eleven Git 
       }
     });
   });
+  await t.test('pushBranch binds the exact remote predecessor for non-force updates and preserves remote on mismatch', async () => {
+    await withTemporaryRepository(async fixture => {
+      const fixtureAdapters = createCoordinatorAdapters({
+        repository_root: fixture.root, state_root: path.join(fixture.root, '.dtf-state'), device: 'mac-mini', process_run_id: 'push-predecessor-001',
+        git_executable: '/Users/huangbo/Dev/Env/homebrew/bin/git', pull_request_executable: '/usr/bin/false', base_environment: {},
+      });
+      const remote = `${fixture.root}-predecessor-origin.git`;
+      const branch = 'work/mac-mini/dtf-predecessor';
+      try {
+        await git(fixture.root, 'init', '--bare', remote);
+        await git(fixture.root, 'remote', 'add', 'origin', remote);
+        await git(fixture.root, 'checkout', '-b', branch);
+        await git(fixture.root, 'push', '-u', 'origin', branch);
+        const predecessor = fixture.candidate;
+
+        await writeFile(path.join(fixture.root, 'tracked.txt'), 'matching update\n');
+        await git(fixture.root, 'add', '--', 'tracked.txt');
+        await git(fixture.root, 'commit', '-m', 'matching update');
+        const matchingHead = await git(fixture.root, 'rev-parse', 'HEAD');
+        const matching = await fixtureAdapters.git.pushBranch({
+          canonical_root: fixture.root, branch, head_sha: matchingHead, expected_remote_head: predecessor, idempotency_id: 'push-predecessor-match-001',
+        });
+        assert.deepEqual(matching, { kind: 'OK', value: { branch, head_sha: matchingHead } });
+        assert.equal((await fixtureAdapters.git.readRemoteBranch({ canonical_root: fixture.root, branch })).value.head_sha, matchingHead, 'CAUSAL_RED: an exact predecessor permits the normal non-force update');
+
+        await writeFile(path.join(fixture.root, 'tracked.txt'), 'mismatched update\n');
+        await git(fixture.root, 'add', '--', 'tracked.txt');
+        await git(fixture.root, 'commit', '-m', 'mismatched update');
+        const mismatchedHead = await git(fixture.root, 'rev-parse', 'HEAD');
+        let mismatchError = null;
+        try {
+          await fixtureAdapters.git.pushBranch({
+            canonical_root: fixture.root, branch, head_sha: mismatchedHead, expected_remote_head: predecessor, idempotency_id: 'push-predecessor-mismatch-001',
+          });
+        } catch (error) {
+          mismatchError = error;
+        }
+        const remoteAfterMismatch = await fixtureAdapters.git.readRemoteBranch({ canonical_root: fixture.root, branch });
+        assert.deepEqual({
+          rejected: /COORDINATOR_INTERRUPTED/.test(String(mismatchError)),
+          remote_head: remoteAfterMismatch.value.head_sha,
+        }, {
+          rejected: true,
+          remote_head: matchingHead,
+        }, 'CAUSAL_RED: stale expected_remote_head must reject before push and leave the remote branch unchanged');
+      } finally {
+        await rm(remote, { recursive: true, force: true });
+      }
+    });
+  });
   await t.test('syncMainFfOnly rejects dirty or non-main worktrees before any move and then proves all three heads', async () => {
     await withTemporaryOrigin(async ({ macmini, squash_sha }) => {
       const syncAdapters = createCoordinatorAdapters({ repository_root: macmini, state_root: path.join(macmini, '.dtf-state'), device: 'mac-mini', process_run_id: 'sync-dirty-001', git_executable: '/Users/huangbo/Dev/Env/homebrew/bin/git', pull_request_executable: '/usr/bin/false', base_environment: {} });

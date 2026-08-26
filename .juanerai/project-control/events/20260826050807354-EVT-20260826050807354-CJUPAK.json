@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826050807354-CJUPAK",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-26T05:08:07.354Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-foundation-compatibility-repair"
+  },
+  "summary": "Reconciled project-control from stale pre-merge Candidate state to the actual MODE_ACTIVATION_INTAKE_GATE after Foundation squash merge.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

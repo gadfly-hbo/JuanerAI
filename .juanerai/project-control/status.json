@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "dual_device_transition_foundation",
-    "label": "Development Mode Switch: VALIDATING / CANDIDATE_PREP",
+    "id": "foundation_compatibility_repair",
+    "label": "Foundation Compatibility Repair: FINAL_INTEGRATION_PIPELINE",
     "ordinal": 4,
     "total": 8
   },
   "health": "validating",
-  "summary": "The final admission replay safety closure is GREEN. Frozen coordinator.test.mjs SHA-256 is 17da2da0b81717acd53923613212aa12806a52b8ab5713f06226ba6ba0180a05 and coordinator.mjs SHA-256 is 82ff43a6112953ee586f5973acd7c2f2d669d3fec16c396ef725f536a8ee1326. Focused tests are 176/176, project-control readback and project-board 12/12 pass, and canonical runner exits 0. Candidate c38de4b remains rejected and unmerged.",
-  "current_objective": "Create one new exact Candidate for the admission replay closure, push the same branch, bind local/remote/PR Heads, and run exactly one new fresh read-only Validator.",
-  "next_action": "Controller stages only the authorized project-control records, coordinator.test.mjs, and coordinator.mjs; commits and pushes the new Candidate, verifies PR #15 Head equality and GitHub validation, then starts one exact-Candidate fresh Validator.",
+  "summary": "Bounded safety revision GREEN and Regression are current: focused 174/174, complete change-coordinator 201/201, project-board 12/12 and canonical runner exit 0; prior Candidate 419746cc45deeb21ebe2688bf1151b48919cedab and Validator FAIL remain historical rejected evidence.",
+  "current_objective": "Freeze the exact replacement Candidate from the authorized two Test, two production, Controller evidence and project-control paths without changing the canonical Spec, then bind PR #16 and one fresh Validator to that exact Head.",
+  "next_action": "Controller performs exact staging, non-amend Candidate commit, same-branch push and PR #16 readback; only one fresh exact-Candidate juaner_validator may run, and another safety FAIL stops.",
   "blockers": [],
   "milestones": [
     {
@@ -69,7 +69,7 @@
     {
       "id": "juaner_spec",
       "label": "Spec Agent",
-      "model": "gpt-5.6-sol · high (R2 automatic escalation)",
+      "model": "gpt-5.6-sol · high (R2 route)",
       "status": "complete",
       "activation": "Spec Gate 前"
     },
@@ -91,32 +91,32 @@
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · high (R2 route)",
-      "status": "locked",
+      "status": "active",
       "activation": "实现与证据冻结"
     }
   ],
   "metrics": [
     {
       "id": "requirements",
-      "label": "Reduced V1 Spec Gate including final F2/F3 safety closure",
-      "done": 1,
-      "total": 1
+      "label": "FCR-1 through FCR-4 implementation-conformance requirements",
+      "done": 4,
+      "total": 4
     },
     {
       "id": "tests",
-      "label": "Reduced V1 Test Design and causal RED",
-      "done": 1,
-      "total": 1
+      "label": "FCR causal RED leaves",
+      "done": 4,
+      "total": 4
     },
     {
       "id": "tasks",
-      "label": "Test Agent delivery and Controller TDD_READY readback",
-      "done": 1,
-      "total": 1
+      "label": "FCR implementation corrections",
+      "done": 4,
+      "total": 4
     },
     {
       "id": "decisions",
-      "label": "Artifact disposition checklist approved",
+      "label": "Frozen Mode Activation plan and FCR authorization",
       "done": 1,
       "total": 1
     }
@@ -827,9 +827,9 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-26T01:58:27.165Z",
+  "updated_at": "2026-08-26T07:32:25.370Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-reduced-v1-admission-replay-closure"
+    "session": "controller-fcr-security-revision"
   }
 }
