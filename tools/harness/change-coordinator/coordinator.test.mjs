@@ -888,6 +888,75 @@ test('TEST-DTF-R1-008: PR routing uses only the same-process verified DISPATCH r
 
 test('TEST-DTF-R1-010: every RELEASE failure retains active pointer and exact replay clears it only after CLOSED', async t => {
   const releaseFor = identity => signed({ command_kind: 'RELEASE', payload: { squash_sha: CANDIDATE_SHA, acceptance_ref: 'acceptance-001', merge_ref: 'merge-001', archive_ref: 'archive-001', origin_main_sha: CANDIDATE_SHA, macbook_main_sha: CANDIDATE_SHA }, expected_state_version: identity.expected_state_version, expected_state_hash: identity.expected_state_hash });
+  await t.test('first RELEASE rejects a foreign active Change before sync or durable effect and preserves pointer bytes', async () => {
+    const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
+    harness.stateStore.pointer = { schema_version: '1.0', active_change_id: CHANGE_B };
+    const pointerBefore = bytes(harness.stateStore.pointer);
+    const stateBefore = structuredClone(harness.stateStore.state);
+    const result = await harness.coordinator.applyControllerCommand(releaseFor(identity));
+    assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED' });
+    assert.deepEqual(bytes(harness.stateStore.pointer), pointerBefore, 'CAUSAL_RED: a RELEASE for another Change must leave the active pointer byte-identical');
+    assert.deepEqual(harness.stateStore.state, stateBefore, 'CAUSAL_RED: foreign pointer ownership must reject before State mutation');
+    for (const effect of ['git.syncMainFfOnly', 'ledger.readRemote', 'ledger.prepareAppend', 'ledger.commitAndPush', 'ledger.readRemoteAppend', 'state.writeState', 'state.writePointer']) noCall(harness, effect);
+  });
+
+  await t.test('CLOSED replay rejects when the retained pointer belongs to another Change and cannot clear it', async () => {
+    const seed = await createCoordinatorUnderTest(); const awaiting = primeState(seed, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
+    const originalBody = makeDispatch({ command_kind: 'RELEASE', command_id: 'release-foreign-pointer', idempotency_id: 'release-foreign-pointer-idem', receipt_digest: 'c'.repeat(64), payload: { squash_sha: CANDIDATE_SHA, acceptance_ref: 'acceptance-001', merge_ref: 'merge-001', archive_ref: 'archive-001', origin_main_sha: CANDIDATE_SHA, macbook_main_sha: CANDIDATE_SHA }, expected_state_version: awaiting.expected_state_version, expected_state_hash: awaiting.expected_state_hash });
+    const originalRequest = { command_body_bytes: bytes(originalBody), signature_bytes: new Uint8Array([1, 2, 3]) };
+    const harness = await createCoordinatorUnderTest(); primeState(harness, { macro_state: 'CLOSED', phase: null, state_version: 9, candidate: makeCandidate(), delivery: makeDelivery(), last_controller_command_id: originalBody.command_id, evidence: { remote_tip: GIT_SHA, last_event_id: 'event-001', last_event_hash: SHA256, last_readback_sha256: sha256(originalRequest.command_body_bytes) } });
+    harness.stateStore.pointer = { schema_version: '1.0', active_change_id: CHANGE_B };
+    const pointerBefore = bytes(harness.stateStore.pointer);
+    const stateBefore = structuredClone(harness.stateStore.state);
+    const result = await harness.coordinator.applyControllerCommand(originalRequest);
+    assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED' });
+    assert.deepEqual(bytes(harness.stateStore.pointer), pointerBefore, 'CAUSAL_RED: CLOSED replay cannot clear a retained pointer owned by another Change');
+    assert.deepEqual(harness.stateStore.state, stateBefore);
+    for (const effect of ['git.syncMainFfOnly', 'ledger.readRemote', 'ledger.prepareAppend', 'ledger.commitAndPush', 'ledger.readRemoteAppend', 'state.writeState', 'state.writePointer']) noCall(harness, effect);
+  });
+
+  await t.test('every non-equal MacBook/origin/squash SHA combination rejects before sync and all business effects', async t => {
+    const thirdSha = '3'.repeat(40);
+    const combinations = [
+      ['macbook differs', GIT_SHA, CANDIDATE_SHA, CANDIDATE_SHA],
+      ['origin differs', CANDIDATE_SHA, GIT_SHA, CANDIDATE_SHA],
+      ['squash differs', CANDIDATE_SHA, CANDIDATE_SHA, GIT_SHA],
+      ['macbook and origin agree away from squash', GIT_SHA, GIT_SHA, CANDIDATE_SHA],
+      ['macbook and squash agree away from origin', GIT_SHA, CANDIDATE_SHA, GIT_SHA],
+      ['origin and squash agree away from macbook', CANDIDATE_SHA, GIT_SHA, GIT_SHA],
+      ['all three differ', CANDIDATE_SHA, GIT_SHA, thirdSha],
+    ];
+    for (const [name, macbook_main_sha, origin_main_sha, squash_sha] of combinations) {
+      await t.test(name, async () => {
+        const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
+        const pointerBefore = bytes(harness.stateStore.pointer);
+        const stateBefore = structuredClone(harness.stateStore.state);
+        const result = await harness.coordinator.applyControllerCommand(signed({ command_kind: 'RELEASE', payload: { squash_sha, acceptance_ref: 'acceptance-001', merge_ref: 'merge-001', archive_ref: 'archive-001', origin_main_sha, macbook_main_sha }, expected_state_version: identity.expected_state_version, expected_state_hash: identity.expected_state_hash }));
+        assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED' });
+        assert.deepEqual(bytes(harness.stateStore.pointer), pointerBefore, 'CAUSAL_RED: unequal signed RELEASE evidence must retain the exact active pointer bytes');
+        assert.deepEqual(harness.stateStore.state, stateBefore, 'CAUSAL_RED: unequal signed RELEASE evidence must reject before State mutation');
+        for (const effect of ['git.syncMainFfOnly', 'ledger.readRemote', 'ledger.prepareAppend', 'ledger.commitAndPush', 'ledger.readRemoteAppend', 'state.writeState', 'state.writePointer']) noCall(harness, effect);
+      });
+    }
+  });
+
+  await t.test('pointer is re-read immediately before clear and an ownership change enters manual stop without clearing', async () => {
+    const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
+    const writeState = harness.dependencies.state.writeState;
+    harness.dependencies.state.writeState = async request => {
+      const result = await writeState(request);
+      if (result?.kind === 'OK' && request.state?.macro_state === 'CLOSED') harness.stateStore.pointer = { schema_version: '1.0', active_change_id: CHANGE_B };
+      return result;
+    };
+    const result = await harness.coordinator.applyControllerCommand(releaseFor(identity));
+    assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'BLOCKED', state: 'BLOCKED' });
+    assert.equal(result.payload.next_action, 'MANUAL_CONTROLLER_STOP');
+    assert.equal(harness.stateStore.pointer.active_change_id, CHANGE_B, 'CAUSAL_RED: a pointer ownership change before clear must be retained');
+    assert.equal(harness.count('state.writePointer'), 0, 'CAUSAL_RED: stale RELEASE ownership must never attempt pointer clear');
+    const names = harness.calls.map(call => call.name);
+    assert.ok(names.lastIndexOf('state.readPointer') > names.indexOf('state.writeState'), 'CAUSAL_RED: pointer ownership must be re-read after CLOSED persistence and immediately before any clear');
+  });
+
   await t.test('first valid RELEASE syncs, appends evidence, persists CLOSED, then clears the active pointer', async () => {
     const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
     const result = await harness.coordinator.applyControllerCommand(releaseFor(identity));
