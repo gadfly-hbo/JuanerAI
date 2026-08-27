@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827033409647-FLBBYX",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-27T03:34:09.647Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation"
+  },
+  "summary": "Mode Activation Host Install evidence frozen: manifest abdb5981, empty pointer 811f872c, Git 6b348e22, canonical status de94a7b9, runtime and Socket authority PASS",
+  "status_after": "active",
+  "evidence_refs": [
+    "openspec/changes/mode-activation/verification.md"
+  ]
+}

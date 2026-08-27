@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827021157169-1TCKP4",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-27T02:11:57.169Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation"
+  },
+  "summary": "Mode Activation host install waiting for local administrator authorization",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

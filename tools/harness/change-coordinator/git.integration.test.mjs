@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { chmod, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { chmod, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { createCoordinatorAdapters } from './adapters.mjs';
@@ -8,6 +8,8 @@ import {
   GIT_METHODS, LEDGER_METHODS, assertHelperHealth, assertTemporaryGitFixtureHealthy,
   makeTestDependencies, run, sha256,
 } from './fixtures.mjs';
+
+const productionPath = new URL('./production.mjs', import.meta.url);
 
 const git = async (cwd, ...args) => {
   const result = await run('/Users/huangbo/Dev/Env/homebrew/bin/git', args, { cwd, env: { LC_ALL: 'C', PATH: process.env.PATH } });
@@ -360,4 +362,65 @@ test('TEST-MA-GIT-001 / AC-MA-005-01,02 / CAN-MA-14: production Git is the froze
       }), /COORDINATOR_INTERRUPTED/, `${branch} must reject before Git transport`);
     }
   });
+});
+
+test('TEST-MA-GIT-002 / AC-MA-005-04; AC-MA-006-02,03 / CAN-MA-06,07: production push binds the exact local Candidate before remote effects', async () => {
+  const source = await readFile(productionPath, 'utf8');
+  const branchSource = source.slice(source.indexOf('function createBranchTransport'), source.indexOf('function createBranchReadback'));
+  assert.match(branchSource, /function createBranchTransport/, 'production branch transport seam is required');
+  const branch = 'work/mac-mini/mode-activation';
+  const predecessor = '1'.repeat(40);
+  const candidate = '2'.repeat(40);
+  const advanced = '3'.repeat(40);
+  const exercise = async localHead => {
+    const calls = [];
+    let remoteHead = predecessor;
+    let pushCount = 0;
+    const executeProcess = async (executable, args, options) => {
+      calls.push({ executable, args: [...args], options });
+      const operation = args.find(value => ['rev-parse', 'ls-remote', 'push'].includes(value));
+      if (operation === 'rev-parse') return { code: 0, signal: null, stdout: Buffer.from(`${localHead}\n`), stderr: Buffer.alloc(0) };
+      if (operation === 'ls-remote') return { code: 0, signal: null, stdout: Buffer.from(`${remoteHead}\trefs/heads/${branch}\n`), stderr: Buffer.alloc(0) };
+      if (operation === 'push') {
+        pushCount += 1;
+        const refspec = args.at(-1);
+        remoteHead = refspec.startsWith(`${candidate}:`) ? candidate : localHead;
+        return { code: 0, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
+      }
+      throw new Error('UNEXPECTED_GIT_CALL');
+    };
+    const transport = Function(
+      'safeBranch', 'readAuthorityFile', 'executeProcess', 'gitTransportArguments', 'exactGitEnvironment', 'ok',
+      `${branchSource}; return createBranchTransport;`,
+    )(
+      value => typeof value === 'string' && /^work\/mac-mini\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value),
+      async () => Buffer.from('purpose-bound-key'), executeProcess,
+      key => `/usr/bin/ssh -F /dev/null -i ${key} -o IdentitiesOnly=yes -o IdentityAgent=none`,
+      () => ({ LC_ALL: 'C', GIT_CONFIG_GLOBAL: '/dev/null' }), value => ({ kind: 'OK', value }),
+    )({ gitExecutable: '/fixed/git', repositoryRoot: '/repo', branchKeyPath: '/root/key', runtime_uid: 501, runtime_gid: 20 });
+    let result = null; let error = null;
+    try {
+      result = await transport({ branch, candidate_sha: candidate, expected_remote_head: predecessor, idempotency_id: 'push-candidate-001' });
+    } catch (caught) { error = caught; }
+    return {
+      result_kind: result?.kind ?? null,
+      rejected: error !== null,
+      operations: calls.map(call => call.args.find(value => ['rev-parse', 'ls-remote', 'push'].includes(value))),
+      push_refspec: calls.find(call => call.args.includes('push'))?.args.at(-1) ?? null,
+      push_count: pushCount,
+      remote_head: remoteHead,
+    };
+  };
+  assert.deepEqual({ matching: await exercise(candidate), advanced: await exercise(advanced) }, {
+    matching: {
+      result_kind: 'OK', rejected: false,
+      operations: ['rev-parse', 'ls-remote', 'push', 'ls-remote'],
+      push_refspec: `${candidate}:refs/heads/${branch}`,
+      push_count: 1, remote_head: candidate,
+    },
+    advanced: {
+      result_kind: null, rejected: true,
+      operations: ['rev-parse'], push_refspec: null, push_count: 0, remote_head: predecessor,
+    },
+  }, 'CAUSAL_RED: local branch tip must equal Candidate before predecessor read/push, exact Candidate refspec, and remote Candidate readback');
 });

@@ -7,6 +7,7 @@ import { spawn } from 'node:child_process';
 
 export const CHANGE_ID = 'CHG-dual-device-transition-foundation';
 export const CHANGE_B = 'CHG-second-change';
+export const REPOSITORY_ID = 'gadfly-hbo/JuanerAI';
 export const GIT_SHA = '1'.repeat(40);
 export const CANDIDATE_SHA = '2'.repeat(40);
 export const SHA256 = 'a'.repeat(64);
@@ -175,7 +176,7 @@ export function makeDispatch(overrides = {}) {
   const role = (roleName, sandbox, allowed_paths) => ({ role: roleName, agent: roleName, model: 'gpt-5.6-terra', reasoning: 'high', sandbox, allowed_paths, brief_sha256: SHA256, input_sha256: SHA256, output_schema_sha256: SHA256 });
   return {
     schema_version: '1.0', command_id: 'command-001', key_id: 'test-key',
-    repository: { canonical_root: '/tmp/dtf-repo', origin: 'origin', integration_branch: 'main' }, change_id: CHANGE_ID, command_kind: 'DISPATCH',
+    repository: { repository_id: REPOSITORY_ID, canonical_root: '/tmp/dtf-repo', origin: 'origin', integration_branch: 'main' }, change_id: CHANGE_ID, command_kind: 'DISPATCH',
     payload: {
       acceptance_ids: ['AC-DTF-001-01'],
       roles: [role('juaner_spec', 'workspace-write', ['openspec/changes/dual-device-transition-foundation/**']), role('juaner_test', 'workspace-write', ['tools/harness/change-coordinator/**']), role('juaner_worker', 'workspace-write', ['tools/harness/change-coordinator/coordinator.mjs']), role('juaner_validator', 'read-only', [])],

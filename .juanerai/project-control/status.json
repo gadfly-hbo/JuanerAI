@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "mode_activation",
-    "label": "Mode Activation: REPLACEMENT_CANDIDATE_EVIDENCE_CLOSURE",
+    "label": "Mode Activation: CANDIDATE_PREPARE",
     "ordinal": 5,
     "total": 8
   },
   "health": "active",
-  "summary": "Replacement Candidate c4a4f4dca8c7c0a7970d6cc0901b39f1578baa93 was committed, pushed, and read back local==remote; prior 09a38c7 is superseded with history retained.",
-  "current_objective": "Commit the non-self-referential Candidate lineage evidence, freeze the resulting exact Head, then run final validation and one fresh exact-Candidate Validator.",
-  "next_action": "Commit verification/project-control evidence only, push and read back exact Head, then dispatch fresh read-only Validator.",
+  "summary": "Host Install and all non-deferred pre-Candidate canaries PASS; three first-product positive effects remain deferred",
+  "current_objective": "Create exact Mode Activation Candidate and run one fresh exact-Candidate Validator",
+  "next_action": "Stage only authorized Mode Activation/Foundation/project-control paths, commit, push, read back exact Head, then validate",
   "blockers": [],
   "milestones": [
     {
@@ -827,9 +827,9 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-26T16:49:17.522Z",
+  "updated_at": "2026-08-27T03:41:34.715Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-mode-activation-canary-boundary"
+    "session": "controller-mode-activation"
   }
 }

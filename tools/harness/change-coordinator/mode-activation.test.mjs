@@ -521,6 +521,10 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
   const modeOverrides = new Map();
   const effectiveWriteDenials = new Set();
   const aclReadbackTargets = new Set();
+  const aclEntries = new Map();
+  const preexistingAclEntries = new Map();
+  const aclMutationCalls = [];
+  const runtimeGitExecutionCalls = [];
   const launchctlCalls = [];
   const runtimeDirectoryReadbacks = [];
   let boundaryMutationCount = 0;
@@ -536,9 +540,25 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
   let socketMode = 0o660;
   let socketReadbackAmbiguous = false;
   let socketAppearanceError = null;
+  let aclMetadataVariant = false;
+  let aclWhitespaceVariant = false;
+  let aclReadCount = 0;
+  let failAclGrantAt = null;
+  let aclGrantAttempt = 0;
+  let serviceLoaded = false;
+  let otherAclRemovalAttempted = false;
   const runtimeDirectoryTarget = '/private/var/run/juanerai';
   const socketTarget = '/private/var/run/juanerai/change-coordinator.sock';
-  const translate = target => ['/private/', '/Library/', '/usr/local/', '/Users/huangbo/Dev/Env/homebrew'].some(prefix => target.startsWith(prefix))
+  const traversalTargets = [
+    '/Users/huangbo',
+    '/Users/huangbo/Dev',
+    '/Users/huangbo/Dev/Env',
+    '/Users/huangbo/Dev/Env/homebrew',
+    '/Users/huangbo/Dev/Env/homebrew/opt',
+    '/Users/huangbo/Dev/Env/homebrew/opt/gettext',
+    '/Users/huangbo/Dev/Env/homebrew/opt/pcre2',
+  ];
+  const translate = target => ['/private/', '/Library/', '/usr/local/', '/Users/'].some(prefix => target.startsWith(prefix))
       ? path.join(targetRoot, target.slice(1)) : target;
   const runtimeDirectoryPath = translate(runtimeDirectoryTarget);
   const socketPath = translate(socketTarget);
@@ -589,19 +609,54 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
     async exec(executable, args) {
       if (executable === '/bin/ls') {
         aclReadbackTargets.add(args.at(-1));
+        const installedAcl = aclEntries.get(args.at(-1));
+        const existingAcl = preexistingAclEntries.get(args.at(-1)) ?? [];
+        const semanticEntries = [...existingAcl, ...(installedAcl ? [installedAcl] : [])];
+        const metadata = aclMetadataVariant
+          ? `drwx------ ${2 + aclReadCount} owner group ${100 + aclReadCount} Aug 27 0${aclReadCount}:0${aclReadCount} ${args.at(-1)}`
+          : args.at(-1);
+        aclReadCount += 1;
+        const renderedEntries = semanticEntries.map((entry, index) => aclWhitespaceVariant
+          ? `  ${index + 7}:   ${entry.replace(/\s+/g, '   ')}   `
+          : ` ${index}: ${entry}`);
         return {
           code: 0, signal: null,
-          stdout: Buffer.from(args.at(-1) === aclGrantTarget ? `${args.at(-1)}\n 0: user:test allow read,write\n` : `${args.at(-1)}\n`),
+          stdout: Buffer.from(args.at(-1) === aclGrantTarget
+            ? `${args.at(-1)}\n 0: user:test allow read,write\n`
+            : `${metadata}\n${renderedEntries.length ? `${renderedEntries.join('\n')}\n` : ''}`),
           stderr: Buffer.alloc(0),
         };
       }
+      if (executable === '/bin/chmod') {
+        aclMutationCalls.push([...args]);
+        const [operation, entry, target] = args;
+        if (operation === '+a' && typeof entry === 'string' && typeof target === 'string') {
+          aclGrantAttempt += 1;
+          if (failAclGrantAt === aclGrantAttempt) {
+            aclMetadataVariant = true;
+            return { code: 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.from('injected partial traversal failure') };
+          }
+          aclEntries.set(target, entry);
+        }
+        else if (operation === '-a' && aclEntries.get(target) === entry) aclEntries.delete(target);
+        else {
+          otherAclRemovalAttempted = true;
+          return { code: 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.from('unsupported ACL mutation') };
+        }
+        return { code: 0, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
+      }
       if (executable === '/usr/bin/sudo') {
+        if (args.at(-2) === '/Users/huangbo/Dev/Env/homebrew/bin/git' && args.at(-1) === '--version') {
+          runtimeGitExecutionCalls.push([...args]);
+          return { code: 0, signal: null, stdout: Buffer.from('git version 2.54.0\n'), stderr: Buffer.alloc(0) };
+        }
         effectiveWriteDenials.add(args.at(-1));
         return { code: args.at(-1) === effectiveWriteAllowedTarget ? 0 : 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
       }
       if (executable !== '/bin/launchctl') throw new Error('UNEXPECTED_EXECUTABLE');
       launchctlCalls.push([...args]);
       if (args[0] === 'bootout') {
+        serviceLoaded = false;
         readinessMutationBaseline = null;
         return { code: 3, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
       }
@@ -617,6 +672,7 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
           gid: runtimeDirectoryStat.gid, mode: runtimeDirectoryStat.mode & 0o777,
         });
         if (bootstrapFailure) return { code: 1, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.from('injected bootstrap failure') };
+        serviceLoaded = true;
         socketReadbackAmbiguous = socketScenario === 'ambiguous';
         readinessMutationBaseline = boundaryMutationCount;
         if (socketScenario === 'exact' || socketScenario === 'wrong-authority') {
@@ -640,7 +696,37 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
     now: () => '2026-08-26T10:00:00.000Z',
   };
 
+  const snapshotPath = async target => {
+    try {
+      const stat = await ownerStat(target);
+      const common = { uid: stat.uid, gid: stat.gid, mode: stat.mode & 0o777 };
+      if (stat.isDirectory()) {
+        const names = (await readdir(translate(target))).sort();
+        return {
+          target, type: 'directory', ...common,
+          children: await Promise.all(names.map(name => snapshotPath(path.join(target, name)))),
+        };
+      }
+      if (stat.isFile()) return {
+        target, type: 'file', ...common,
+        bytes_base64: (await readFile(translate(target))).toString('base64'),
+      };
+      return { target, type: 'other', ...common };
+    } catch (error) {
+      if (error?.code === 'ENOENT') return { target, type: 'absent' };
+      throw error;
+    }
+  };
+  const snapshotPaths = targets => Promise.all([...targets].sort().map(snapshotPath));
+
   try {
+    for (const target of traversalTargets) {
+      const resolved = translate(target);
+      await mkdir(resolved, { recursive: true });
+      const mode = target === '/Users/huangbo' ? 0o700 : 0o755;
+      await chmod(resolved, mode);
+      owners.set(resolved, { uid: 502, gid: 20 });
+    }
     await mkdir(runtimeSource, { recursive: true });
     for (const name of ['host-loop.mjs', 'production.mjs', 'coordinator.mjs', 'adapters.mjs']) {
       await copyFile(path.join(root, name), path.join(runtimeSource, name));
@@ -806,6 +892,38 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
       assert.deepEqual({ uid: stat.uid, gid: stat.gid, mode: stat.mode & 0o777 }, { uid: 0, gid: 0, mode: artifact.mode });
       assert.equal(effectiveWriteDenials.has(path.join(artifact.target_directory, artifact.name)), true);
     }
+    const manifest = JSON.parse((await osBoundary.readFile(receipt.manifest_path)).toString('utf8'));
+    const traversalReadback = await Promise.all(traversalTargets.map(async target => {
+      const prior = manifest.prior.find(value => value.target === target);
+      return {
+        target,
+        backed_up: Boolean(prior),
+        prior_owner: prior ? [prior.uid, prior.gid] : null,
+        prior_mode: prior?.mode ?? null,
+        owner_after: owners.has(translate(target)) ? [owners.get(translate(target)).uid, owners.get(translate(target)).gid] : null,
+        mode_after: modeOverrides.get(translate(target)) ?? ((await ownerStat(target)).mode & 0o777),
+        acl_read_back: aclReadbackTargets.has(target),
+        effective_write_denied: effectiveWriteDenials.has(target),
+        granted_acl: aclEntries.get(target) ?? null,
+      };
+    }));
+    assert.deepEqual(traversalReadback, traversalTargets.map(target => ({
+      target,
+      backed_up: true,
+      prior_owner: [502, 20],
+      prior_mode: target === '/Users/huangbo' ? 0o700 : 0o755,
+      owner_after: [502, 20],
+      mode_after: target === '/Users/huangbo' ? 0o700 : 0o755,
+      acl_read_back: true,
+      effective_write_denied: true,
+      granted_acl: `user:${plan.runtime_user} allow search`,
+    })), 'CAUSAL_RED: every fixed-Git ancestor is backed up and read back with unchanged owner/mode plus only runtime search traversal');
+    assert.deepEqual(aclMutationCalls.filter(args => args[0] === '+a'),
+      traversalTargets.map(target => ['+a', `user:${plan.runtime_user} allow search`, target]),
+      'runtime traversal grants search only, never list/read/write/ownership');
+    assert.deepEqual(runtimeGitExecutionCalls,
+      [['-n', '-u', plan.runtime_user, '/Users/huangbo/Dev/Env/homebrew/bin/git', '--version']],
+      'real runtime identity executes the exact frozen Git after traversal authority is installed');
     assert.equal(launchctlCalls.some(args => args[0] === 'bootstrap'), true);
     assert.equal(launchctlCalls.some(args => args[0] === 'print'), true, 'launchd target is started and read back');
 
@@ -828,6 +946,14 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
       manifest_path: receipt.manifest_path, manifest_sha256: receipt.manifest_sha256,
       revocation_receipt_sha256: '0'.repeat(64), emergency_pre_activation: true,
     });
+    assert.deepEqual(await Promise.all(traversalTargets.map(async target => ({
+      target,
+      acl: aclEntries.get(target) ?? null,
+      owner: [owners.get(translate(target)).uid, owners.get(translate(target)).gid],
+      mode: (await ownerStat(target)).mode & 0o777,
+    }))), traversalTargets.map(target => ({
+      target, acl: null, owner: [502, 20], mode: target === '/Users/huangbo' ? 0o700 : 0o755,
+    })), 'rollback restores every ancestor ACL, owner, and mode exactly');
     await assert.rejects(() => ownerStat(runtimeDirectoryTarget), { code: 'ENOENT' });
     await assert.rejects(() => ownerStat(socketTarget), { code: 'ENOENT' });
 
@@ -875,6 +1001,101 @@ test('TEST-MA-INSTALL-002 / AC-MA-003-01..03; AC-MA-005-01,02; AC-MA-007-04 / CA
     assert.equal(readinessMutationObserved, false, 'ambiguous readback performs no repair write before rollback');
     await assert.rejects(() => ownerStat(runtimeDirectoryTarget), { code: 'ENOENT' }, 'ambiguous readback triggers rollback');
     await assert.rejects(() => ownerStat(socketTarget), { code: 'ENOENT' });
+
+    const semanticAclEntries = [
+      'user:auditor allow readattr',
+      'group:operators deny delete',
+    ];
+    for (const target of traversalTargets) preexistingAclEntries.set(target, [...semanticAclEntries]);
+    aclMetadataVariant = true;
+    aclWhitespaceVariant = true;
+    aclReadCount = 0;
+    socketScenario = 'exact';
+    socketIsSocket = true; socketUid = 0; socketGid = plan.runtime_gid; socketMode = 0o660;
+    socketReadbackAmbiguous = false; socketAppearanceError = null;
+    let semanticReceipt = null;
+    let semanticError = null;
+    try {
+      semanticReceipt = await hostInstaller.install(plan);
+      await hostInstaller.rollback({
+        manifest_path: semanticReceipt.manifest_path, manifest_sha256: semanticReceipt.manifest_sha256,
+        revocation_receipt_sha256: '0'.repeat(64), emergency_pre_activation: true,
+      });
+    } catch (error) {
+      semanticError = String(error?.message ?? error);
+    }
+    const semanticOutcome = {
+      error: semanticError,
+      entry_order_and_content_preserved: traversalTargets.every(target => (
+        JSON.stringify(preexistingAclEntries.get(target)) === JSON.stringify(semanticAclEntries)
+      )),
+      temporary_entries_removed: traversalTargets.every(target => !aclEntries.has(target)),
+    };
+    preexistingAclEntries.clear();
+    aclEntries.clear();
+    aclMetadataVariant = false;
+    aclWhitespaceVariant = false;
+    aclReadCount = 0;
+
+    const ledgerTarget = '/private/var/db/juanerai/install-attempt-evidence/ledger.jsonl';
+    const historyTarget = '/private/var/db/juanerai/install-attempt-evidence/history.bin';
+    await mkdir(path.dirname(translate(ledgerTarget)), { recursive: true });
+    await writeFile(translate(ledgerTarget), Buffer.from('{"event":"historical"}\n'));
+    await writeFile(translate(historyTarget), Buffer.from([0, 255, 17, 34, 51]));
+    const installedSnapshotTargets = [...Object.keys(plan.sources), runtimeDirectoryTarget];
+    const protectedSnapshotTargets = [
+      path.join(stateTarget, 'active-change.json'), ledgerTarget, historyTarget,
+    ];
+    const installedBeforePartialFailure = await snapshotPaths(installedSnapshotTargets);
+    const protectedBeforePartialFailure = await snapshotPaths(protectedSnapshotTargets);
+    const serviceBeforePartialFailure = serviceLoaded;
+    failAclGrantAt = 2;
+    aclGrantAttempt = 0;
+    aclMetadataVariant = false;
+    aclWhitespaceVariant = false;
+    otherAclRemovalAttempted = false;
+    socketScenario = 'exact';
+    socketReadbackAmbiguous = false; socketAppearanceError = null;
+    let partialFailureError = null;
+    try {
+      await hostInstaller.install(plan);
+    } catch (error) {
+      partialFailureError = String(error?.message ?? error);
+    }
+    const installedAfterPartialFailure = await snapshotPaths(installedSnapshotTargets);
+    const protectedAfterPartialFailure = await snapshotPaths(protectedSnapshotTargets);
+    const partialRollbackOutcome = {
+      error: partialFailureError,
+      grant_attempts: aclGrantAttempt,
+      remaining_temporary_acl_targets: traversalTargets.filter(target => aclEntries.has(target)),
+      installed_targets_restored: JSON.stringify(installedAfterPartialFailure) === JSON.stringify(installedBeforePartialFailure),
+      state_pointer_ledger_history_byte_exact: JSON.stringify(protectedAfterPartialFailure) === JSON.stringify(protectedBeforePartialFailure),
+      service_restored: serviceLoaded === serviceBeforePartialFailure,
+      other_acl_removal_attempted: otherAclRemovalAttempted,
+    };
+    failAclGrantAt = null;
+    aclMetadataVariant = false;
+    aclWhitespaceVariant = false;
+
+    assert.deepEqual({
+      acl_semantic_receipt: semanticOutcome,
+      partial_acl_failure_rollback: partialRollbackOutcome,
+    }, {
+      acl_semantic_receipt: {
+        error: null,
+        entry_order_and_content_preserved: true,
+        temporary_entries_removed: true,
+      },
+      partial_acl_failure_rollback: {
+        error: 'ACL_WRITE_GRANT_FAILED',
+        grant_attempts: 2,
+        remaining_temporary_acl_targets: [],
+        installed_targets_restored: true,
+        state_pointer_ledger_history_byte_exact: true,
+        service_restored: true,
+        other_acl_removal_attempted: false,
+      },
+    }, 'CAUSAL_RED: ACL receipts ignore volatile metadata while preserving ordered semantics, and every partial traversal grant rolls back without evidence loss');
 
     const ownershipSource = `${await readRequired(hostLoopPath, 'host socket ownership')}${await readRequired(installerPath, 'installed socket ownership')}`;
     assert.match(ownershipSource, /0o660[\s\S]{0,800}runtime_gid|runtime_gid[\s\S]{0,800}0o660/,

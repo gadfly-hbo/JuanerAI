@@ -215,6 +215,11 @@ function createBranchTransport({ gitExecutable, repositoryRoot, branchKeyPath, r
       || request.expected_remote_head === undefined) throw new Error('FORBIDDEN_TARGET');
     await readAuthorityFile(branchKeyPath, 0o640);
     const head = request.head_sha ?? request.candidate_sha;
+    const local = await executeProcess(gitExecutable, [
+      'rev-parse', '--verify', `refs/heads/${request.branch}`,
+    ], { cwd: repositoryRoot, environment: exactGitEnvironment(), runtime_uid, runtime_gid: 0 });
+    const localHead = local.stdout.toString('utf8').trim();
+    if (local.code !== 0 || local.signal !== null || localHead !== head) throw new Error('LOCAL_REF_CONFLICT');
     const prior = await executeProcess(gitExecutable, [
       '-c', `core.sshCommand=${gitTransportArguments(branchKeyPath)}`,
       '-c', 'url.git@github.com:.insteadOf=https://github.com/',
@@ -228,10 +233,20 @@ function createBranchTransport({ gitExecutable, repositoryRoot, branchKeyPath, r
     const pushed = await executeProcess(gitExecutable, [
       '-c', `core.sshCommand=${gitTransportArguments(branchKeyPath)}`,
       '-c', 'url.git@github.com:.insteadOf=https://github.com/',
-      'push', 'origin', `refs/heads/${request.branch}:refs/heads/${request.branch}`,
+      'push', 'origin', `${head}:refs/heads/${request.branch}`,
     ], { cwd: repositoryRoot, environment: exactGitEnvironment(), runtime_uid, runtime_gid: 0 });
     if (pushed.code !== 0) throw new Error('REMOTE_AMBIGUOUS');
-    return ok({ prior_remote_head: priorHead, remote_head: head, forced: false, deleted: false });
+    const readback = await executeProcess(gitExecutable, [
+      '-c', `core.sshCommand=${gitTransportArguments(branchKeyPath)}`,
+      '-c', 'url.git@github.com:.insteadOf=https://github.com/',
+      'ls-remote', 'origin', `refs/heads/${request.branch}`,
+    ], {
+      cwd: repositoryRoot, environment: exactGitEnvironment(), runtime_uid, runtime_gid: 0,
+    });
+    if (readback.code !== 0) throw new Error('REMOTE_AMBIGUOUS');
+    const remoteHead = readback.stdout.toString('utf8').trim().split(/\s+/)[0] || null;
+    if (remoteHead !== head) throw new Error('READBACK_MISMATCH');
+    return ok({ prior_remote_head: priorHead, remote_head: remoteHead, forced: false, deleted: false });
   };
 }
 

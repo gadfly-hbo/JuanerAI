@@ -21,6 +21,21 @@ Before an admitted effect, input/schema/path validation precedes command authent
 
 Invalid or forged input SHALL return only the stable sanitized error named in Design and SHALL NOT mutate pointer, state, Worktree, Candidate, Ledger, PR, Handoff, `main`, product, project-control, host, or Agent state. An admitted execution ambiguity SHALL enter `BLOCKED` only when the local state and durable Ledger write are themselves provable. Ledger failure SHALL NOT be reported as a durable `BLOCKED` event.
 
+## Canonical Controller Repository Identity
+
+For all four signed command kinds `DISPATCH`, `REVISION`, `RESUME`, and `RELEASE`, `ControllerCommandBodyV1.repository` SHALL be exactly the following closed four-field object:
+
+```text
+{
+  repository_id: 'gadfly-hbo/JuanerAI',
+  canonical_root,
+  origin: 'origin',
+  integration_branch: 'main'
+}
+```
+
+All four fields are required and are part of the complete canonical UTF-8 body signed as one byte string. Exact-schema validation SHALL reject a missing, extra, renamed, aliased, or noncanonical field and any `repository_id` other than `gadfly-hbo/JuanerAI` before protected effects. This current canonical four-field definition replaces the historical archived Design's three-field `ControllerCommandBodyV1.repository` definition. The historical three-field shape SHALL NOT be accepted as a compatibility form. This correction adds no State field, event, Gateway, lock, recovery boundary, or alternate command shape.
+
 ## Requirements
 
 ### REQ-DTF-001 — Controller Authority, WIP, and Public Surface
@@ -29,7 +44,7 @@ The Foundation SHALL expose one inactive four-interface Coordinator and enforce 
 
 - **AC-DTF-001-01:** The public Coordinator library SHALL expose only `applyControllerCommand`, `run`, `settlement`, and `status`; internal stage, Gate-advance, recovery, revision, publish, cleanup, raw Git, and raw GitHub operations SHALL be uncallable. A production mutating CLI SHALL only submit canonical signed bytes to the Activation-owned host-loop ingress or remain unavailable, plus query read-only `status` locally or through authenticated SSH. It SHALL NOT construct a production Coordinator, expose `run`/`settlement` mutation commands, open the state root, inject verifier/gateways, or preserve Tests asserting those bypasses.
 - **AC-DTF-001-02:** The one initialized Mac mini `active-change.json` with exact field `active_change_id` SHALL be the only WIP authority. A missing, malformed, conflicting, or multiply interpreted pointer SHALL block; no Ledger/Evidence Ref/branch/PR scan SHALL infer WIP=0.
-- **AC-DTF-001-03:** `applyControllerCommand` SHALL accept only `DISPATCH`, `REVISION`, `RESUME`, or `RELEASE` whose complete canonical body contains every field frozen in Design and is signed as one byte string; only signature bytes may be outside that body. Invalid binding, time, nonce, replay identity, state version/hash, receipt digest, evidence, or signature SHALL fail before protected effect.
+- **AC-DTF-001-03:** `applyControllerCommand` SHALL accept only `DISPATCH`, `REVISION`, `RESUME`, or `RELEASE` whose complete canonical body contains every field frozen in Design as amended by the canonical four-field repository definition above and is signed as one byte string; only signature bytes may be outside that body. Invalid repository identity/schema, binding, time, nonce, replay identity, state version/hash, receipt digest, evidence, or signature SHALL fail before protected effect.
 - **AC-DTF-001-04:** Foundation SHALL use only a deterministic verifier contract and SHALL reject any public key or trust source injected through command payload, environment, ordinary CLI argument, repository/state file, or Mac mini-writable path. Real keys and production trust are Activation-only.
 - **AC-DTF-001-05:** `applyControllerCommand`, `run`, and `settlement` SHALL serialize state/effect writes through exactly one process-owned short operation mutex; `status` SHALL be read-only. The mutex SHALL be released while awaiting a future Agent settlement or Controller command, and no file lock, long Change lock, stale-lock protocol, or automatic stealing SHALL exist.
 - **AC-DTF-001-06:** The Coordinator SHALL not poll, schedule, auto-admit, or launch the next Change and SHALL not use GitHub Issues/Projects, daemon, queue, background worker, project-control v2, or cross-Change parallelism.

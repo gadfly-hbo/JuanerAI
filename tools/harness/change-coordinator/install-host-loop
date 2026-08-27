@@ -19,6 +19,13 @@ export const HOST_INSTALL_TARGETS = Object.freeze([
   '/private/var/run/juanerai',
   '/private/var/run/juanerai/change-coordinator.sock',
   '/private/var/log/juanerai/change-coordinator.log',
+  '/Users/huangbo',
+  '/Users/huangbo/Dev',
+  '/Users/huangbo/Dev/Env',
+  '/Users/huangbo/Dev/Env/homebrew',
+  '/Users/huangbo/Dev/Env/homebrew/opt',
+  '/Users/huangbo/Dev/Env/homebrew/opt/gettext',
+  '/Users/huangbo/Dev/Env/homebrew/opt/pcre2',
   '/Users/huangbo/Dev/Env/homebrew/bin',
   '/Users/huangbo/Dev/Env/homebrew/opt/gettext/lib',
   '/Users/huangbo/Dev/Env/homebrew/opt/pcre2/lib',
@@ -35,6 +42,15 @@ const RUNTIME_DIRECTORY_TARGET = '/private/var/run/juanerai';
 const SOCKET_TARGET = '/private/var/run/juanerai/change-coordinator.sock';
 const SOCKET_READBACK_TIMEOUT_MS = 5_000;
 const SOCKET_READBACK_INTERVAL_MS = 25;
+const GIT_TRAVERSAL_TARGETS = Object.freeze([
+  '/Users/huangbo',
+  '/Users/huangbo/Dev',
+  '/Users/huangbo/Dev/Env',
+  '/Users/huangbo/Dev/Env/homebrew',
+  '/Users/huangbo/Dev/Env/homebrew/opt',
+  '/Users/huangbo/Dev/Env/homebrew/opt/gettext',
+  '/Users/huangbo/Dev/Env/homebrew/opt/pcre2',
+]);
 export const PINNED_GIT_INSTALL = Object.freeze({
   executable: Object.freeze({
     target_directory: '/Users/huangbo/Dev/Env/homebrew/bin', name: 'git',
@@ -222,12 +238,65 @@ async function atomicReplaceEmptyDirectory(os, target, mode, uid, gid) {
   }
 }
 
-async function aclReceipt(os, target) {
+async function readAcl(os, target) {
   const result = await os.exec('/bin/ls', ['-lde', target]);
   if (result.code !== 0) throw new Error('ACL_READBACK_FAILED');
-  const text = result.stdout.toString('utf8');
-  if (text.split('\n').slice(1).some(line => line.trim() !== '')) throw new Error('ACL_WRITE_GRANT_FORBIDDEN');
-  return sha256(result.stdout);
+  return result.stdout;
+}
+
+function canonicalAclEntries(bytes) {
+  return bytes.toString('utf8').split('\n').slice(1)
+    .map(line => line.replace(/^\s*\d+:\s*/, '').trim().replace(/\s+/g, ' '))
+    .filter(Boolean);
+}
+
+function aclEvidence(bytes) {
+  return sha256(Buffer.from(canonical(canonicalAclEntries(bytes))));
+}
+
+async function aclReceipt(os, target) {
+  const bytes = await readAcl(os, target);
+  if (canonicalAclEntries(bytes).length !== 0) throw new Error('ACL_WRITE_GRANT_FORBIDDEN');
+  return aclEvidence(bytes);
+}
+
+function hasAclEntry(bytes, entry) {
+  const normalized = entry.trim().replace(/\s+/g, ' ');
+  return canonicalAclEntries(bytes).some(candidate => candidate === normalized);
+}
+
+async function grantTraversal(os, target, prior, runtimeUser) {
+  if (!prior.present || prior.type !== 'directory') throw new Error('TRAVERSAL_TARGET_INVALID');
+  const before = await os.lstat(target);
+  if (!before.isDirectory() || before.isSymbolicLink() || before.uid !== prior.uid || before.gid !== prior.gid
+    || (before.mode & 0o777) !== prior.mode) throw new Error('TRAVERSAL_AUTHORITY_MISMATCH');
+  const beforeAcl = await readAcl(os, target);
+  if (aclEvidence(beforeAcl) !== prior.acl_sha256) throw new Error('ACL_READBACK_FAILED');
+  const entry = `user:${runtimeUser} allow search`;
+  if (hasAclEntry(beforeAcl, entry)) throw new Error('ACL_WRITE_GRANT_FORBIDDEN');
+  const granted = await os.exec('/bin/chmod', ['+a', entry, target]);
+  if (granted.code !== 0) throw new Error('ACL_WRITE_GRANT_FAILED');
+  const afterAcl = await readAcl(os, target);
+  if (!hasAclEntry(afterAcl, entry)) throw new Error('ACL_READBACK_FAILED');
+  const after = await os.lstat(target);
+  if (!after.isDirectory() || after.isSymbolicLink() || after.uid !== prior.uid || after.gid !== prior.gid
+    || (after.mode & 0o777) !== prior.mode) throw new Error('TRAVERSAL_AUTHORITY_MISMATCH');
+  await effectiveWriteDenied(os, runtimeUser, target);
+  return { entry, acl_sha256: aclEvidence(afterAcl), uid: after.uid, gid: after.gid, mode: after.mode & 0o777 };
+}
+
+async function verifyRuntimeGit(os, runtimeUser) {
+  const executable = path.join(PINNED_GIT_INSTALL.executable.target_directory, PINNED_GIT_INSTALL.executable.name);
+  const before = await os.readFile(executable);
+  if (sha256(before) !== PINNED_GIT_INSTALL.executable.sha256) throw new Error('ARTIFACT_HASH_MISMATCH');
+  const result = await os.exec('/usr/bin/sudo', ['-n', '-u', runtimeUser, executable, '--version']);
+  if (result.code !== 0 || result.signal !== null || result.stdout.toString('utf8') !== 'git version 2.54.0\n') {
+    throw new Error('RUNTIME_GIT_EXECUTION_FAILED');
+  }
+  const after = await os.readFile(executable);
+  if (sha256(after) !== PINNED_GIT_INSTALL.executable.sha256 || !Buffer.from(after).equals(Buffer.from(before))) {
+    throw new Error('ARTIFACT_HASH_MISMATCH');
+  }
 }
 
 async function effectiveWriteDenied(os, runtimeUser, target) {
@@ -261,7 +330,9 @@ export function createHostInstaller(osBoundary) {
     try {
       const stat = await os.lstat(target);
       if (stat.isSymbolicLink()) throw new Error('SYMLINK_FORBIDDEN');
-      if (stat.uid !== 0 || stat.gid !== 0) throw new Error('AUTHORITY_FILE_INVALID');
+      if (!GIT_TRAVERSAL_TARGETS.includes(target) && (stat.uid !== 0 || stat.gid !== 0)) {
+        throw new Error('AUTHORITY_FILE_INVALID');
+      }
       if (stat.isDirectory() && DIRECTORY_FILES[target]) {
         const actualNames = (await os.readdir(target)).sort();
         if (!sameArray(actualNames, [...DIRECTORY_FILES[target]].sort())) throw new Error('DIRECTORY_CONTENT_MISMATCH');
@@ -296,7 +367,9 @@ export function createHostInstaller(osBoundary) {
             };
           })) : [],
         uid: stat.uid, gid: stat.gid, mode: stat.mode & 0o777,
-        acl_sha256: await aclReceipt(os, target),
+        acl_sha256: GIT_TRAVERSAL_TARGETS.includes(target)
+          ? aclEvidence(await readAcl(os, target))
+          : await aclReceipt(os, target),
       };
     } catch (error) {
       if (error?.code === 'ENOENT') return {
@@ -316,17 +389,23 @@ export function createHostInstaller(osBoundary) {
         || Object.keys(plan.modes).some(target => !exactTarget(target))
         || Object.hasOwn(plan.sources, RUNTIME_DIRECTORY_TARGET)
         || Object.hasOwn(plan.modes, RUNTIME_DIRECTORY_TARGET)
+        || GIT_TRAVERSAL_TARGETS.some(target => Object.hasOwn(plan.sources, target) || Object.hasOwn(plan.modes, target))
         || !PINNED_GIT_ARTIFACTS.every(artifact => Object.hasOwn(plan.sources, artifact.target_directory)
           && plan.modes[artifact.target_directory] === 0o755)
         || typeof plan.runtime_user !== 'string' || !Number.isSafeInteger(plan.runtime_uid)
-        || !Number.isSafeInteger(plan.runtime_gid)) throw new Error('INPUT_INVALID');
+        || plan.runtime_uid !== 501 || !Number.isSafeInteger(plan.runtime_gid)) throw new Error('INPUT_INVALID');
       const installationId = sha256(canonical({ at: os.now(), sources: plan.sources })).slice(0, 32);
       const backupDirectory = path.join(BACKUP_ROOT, installationId);
       await os.mkdir(backupDirectory, { recursive: true, mode: 0o700 });
       await os.chown(backupDirectory, 0, 0);
       await os.chmod(backupDirectory, 0o700);
       const prior = [];
-      for (const target of HOST_INSTALL_TARGETS) prior.push(await backup(target, backupDirectory));
+      for (const target of HOST_INSTALL_TARGETS) {
+        const receipt = await backup(target, backupDirectory);
+        prior.push(GIT_TRAVERSAL_TARGETS.includes(target)
+          ? { ...receipt, temporary_acl_entry: `user:${plan.runtime_user} allow search` }
+          : receipt);
+      }
       const manifest = {
         schema_version: '1.0', installation_id: installationId, created_at: os.now(),
         service_label: SERVICE_LABEL, prior, preserves: [...ROLLBACK_PRESERVES],
@@ -376,6 +455,11 @@ export function createHostInstaller(osBoundary) {
         await waitForSocketReadiness(os, plan.runtime_gid);
         const service = await os.exec('/bin/launchctl', ['print', 'system/' + SERVICE_LABEL]);
         if (service.code !== 0) throw new Error('SERVICE_READBACK_FAILED');
+        for (const target of GIT_TRAVERSAL_TARGETS) {
+          const authority = await grantTraversal(os, target, prior.find(value => value.target === target), plan.runtime_user);
+          installed.push({ target, ...authority, effective_write_denied: true });
+        }
+        await verifyRuntimeGit(os, plan.runtime_user);
         return { manifest_path: manifestPath, manifest_sha256: sha256(manifestBytes), installed, service_sha256: sha256(service.stdout) };
       } catch (error) {
         await this.rollback({
@@ -418,6 +502,25 @@ export function createHostInstaller(osBoundary) {
             || prior.directory_files.length !== 0) throw new Error('BACKUP_MISMATCH');
           await atomicReplaceEmptyDirectory(os, prior.target, prior.mode, prior.uid, prior.gid);
           await aclReceipt(os, prior.target);
+          continue;
+        }
+        if (GIT_TRAVERSAL_TARGETS.includes(prior.target)) {
+          if (!prior.present || prior.type !== 'directory' || typeof prior.temporary_acl_entry !== 'string') {
+            throw new Error('BACKUP_MISMATCH');
+          }
+          const currentAcl = await readAcl(os, prior.target);
+          if (aclEvidence(currentAcl) !== prior.acl_sha256) {
+            if (!hasAclEntry(currentAcl, prior.temporary_acl_entry)) throw new Error('ACL_READBACK_FAILED');
+            const removed = await os.exec('/bin/chmod', ['-a', prior.temporary_acl_entry, prior.target]);
+            if (removed.code !== 0) throw new Error('ACL_RESTORE_FAILED');
+          }
+          await os.chown(prior.target, prior.uid, prior.gid);
+          await os.chmod(prior.target, prior.mode);
+          const restored = await os.lstat(prior.target);
+          const restoredAcl = await readAcl(os, prior.target);
+          if (!restored.isDirectory() || restored.isSymbolicLink() || restored.uid !== prior.uid
+            || restored.gid !== prior.gid || (restored.mode & 0o777) !== prior.mode
+            || aclEvidence(restoredAcl) !== prior.acl_sha256) throw new Error('READBACK_MISMATCH');
           continue;
         }
         if (prior.type === 'directory' || DIRECTORY_FILES[prior.target]) {

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827033409601-K8RISA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-27T03:34:09.601Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation"
+  },
+  "summary": "Host Install Gate PASS; Host Install-only MANUAL_CONTROLLER_STOP resolved after exact evidence readback",
+  "status_after": "active",
+  "evidence_refs": []
+}

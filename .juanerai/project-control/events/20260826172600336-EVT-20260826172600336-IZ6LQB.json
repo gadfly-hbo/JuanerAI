@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826172600336-IZ6LQB",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-26T17:26:00.336Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-foundation-repository-identity"
+  },
+  "summary": "Authorized bounded Foundation repository identity contract correction",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827012254397-WRAXYD",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-27T01:22:54.397Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-regate"
+  },
+  "summary": "Mode Activation Spec re-gate blocked only on verification.md evidence-write authority",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

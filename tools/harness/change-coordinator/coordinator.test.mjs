@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  CHANGE_B, CHANGE_ID, CANDIDATE_SHA, GIT_SHA, SHA256, AGENT_STAGES, EVENT_CLASSES,
+  CHANGE_B, CHANGE_ID, CANDIDATE_SHA, GIT_SHA, SHA256, REPOSITORY_ID, AGENT_STAGES, EVENT_CLASSES,
   MACRO_STATES, PHASES, absent, ambiguous, assertExactResult, assertHelperHealth, bytes,
   conflict, createCoordinatorUnderTest, makeCandidate, makeDelivery, makeDispatch,
   primeState, sha256, unavailable,
@@ -71,6 +71,58 @@ test('TEST-DTF-R1-001: every Controller command is exact and malformed structure
       for (const effect of ['state.writePointer', 'state.writeState', 'ledger.readRemote', 'git.createOrReuseWorktree']) noCall(harness, effect);
     });
   }
+});
+
+test('TEST-DTF-R1-001: all signed Controller commands bind the exact canonical repository identity', async t => {
+  const canonicalRepository = { repository_id: REPOSITORY_ID, canonical_root: '/tmp/dtf-repo', origin: 'origin', integration_branch: 'main' };
+  const historicalRepository = { canonical_root: '/tmp/dtf-repo', origin: 'origin', integration_branch: 'main' };
+  const command = command_kind => {
+    if (command_kind === 'REVISION') return makeDispatch({ command_kind, payload: { changes_requested_ref: 'changes-requested-001', revision_of_candidate_sha: null, resume_phase: 'TEST_RED' }, expected_state_version: 7, expected_state_hash: SHA256 });
+    if (command_kind === 'RESUME') return makeDispatch({ command_kind, payload: { resume_target: { macro_state: 'DELIVERING', phase: 'PR' } }, expected_state_version: 7, expected_state_hash: SHA256 });
+    if (command_kind === 'RELEASE') return makeDispatch({ command_kind, payload: { squash_sha: CANDIDATE_SHA, acceptance_ref: 'acceptance-001', merge_ref: 'merge-001', archive_ref: 'archive-001', origin_main_sha: CANDIDATE_SHA, macbook_main_sha: CANDIDATE_SHA }, expected_state_version: 7, expected_state_hash: SHA256 });
+    return makeDispatch();
+  };
+  const protectedEffects = ['state.writePointer', 'state.writeState', 'ledger.readRemote', 'git.createOrReuseWorktree', 'pull_request.queryCurrent', 'pull_request.createOrReuse', 'handoff.writeReadback'];
+
+  for (const command_kind of ['DISPATCH', 'REVISION', 'RESUME', 'RELEASE']) {
+    await t.test(`${command_kind} accepts the exact four-field repository as signed command input`, async () => {
+      const body = command(command_kind);
+      assert.deepEqual(body.repository, canonicalRepository);
+      const commandBytes = bytes(body);
+      const harness = await createCoordinatorUnderTest();
+      const result = await harness.coordinator.applyControllerCommand({ command_body_bytes: commandBytes, signature_bytes: new Uint8Array([1, 2, 3]) });
+      if (command_kind === 'DISPATCH') {
+        assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
+        assert.equal(harness.stateStore.state.admission.body_sha256, sha256(commandBytes), 'CAUSAL_RED: repository_id must be covered by the admitted canonical signed-body hash');
+      } else {
+        assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED', code: 'STATE_CONFLICT' });
+      }
+      assert.deepEqual(harness.calls.find(call => call.name === 'verifier.verify')?.request.command_body_bytes, commandBytes, 'CAUSAL_RED: the verifier must receive the complete canonical bytes including repository_id');
+    });
+
+    for (const [shape, repository] of [
+      ['a missing required repository field', { repository_id: REPOSITORY_ID, origin: 'origin', integration_branch: 'main' }],
+      ['historical three-field repository (missing repository_id)', historicalRepository],
+      ['wrong repository_id', { ...canonicalRepository, repository_id: 'attacker/Other' }],
+      ['extra repository field', { ...canonicalRepository, inferred_repository: REPOSITORY_ID }],
+    ]) {
+      await t.test(`${command_kind} rejects ${shape} before protected effect`, async () => {
+        const harness = await createCoordinatorUnderTest();
+        const body = { ...command(command_kind), repository };
+        const result = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: new Uint8Array([1, 2, 3]) });
+        assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED', code: 'INPUT_INVALID' });
+        assert.equal(harness.count('verifier.verify'), 1, 'CAUSAL_RED: exact repository schema is checked only after canonical signature verification');
+        for (const effect of protectedEffects) noCall(harness, effect);
+      });
+    }
+  }
+
+  await t.test('repository_id changes the canonical signed body identity', () => {
+    const canonicalBytes = bytes(makeDispatch());
+    const wrongBytes = bytes(makeDispatch({ repository: { ...canonicalRepository, repository_id: 'attacker/Other' } }));
+    assert.notDeepEqual(canonicalBytes, wrongBytes);
+    assert.notEqual(sha256(canonicalBytes), sha256(wrongBytes), 'CAUSAL_RED: repository_id cannot sit outside the canonical signed body');
+  });
 });
 
 test('TEST-DTF-R1-002: a fresh DISPATCH runs the complete normal path from Worktree through freeze and HANDOFF_READY', async () => {
@@ -799,6 +851,38 @@ test('TEST-DTF-R1-007: exact Candidate, Validator, PR, and Handoff identity is r
     const result = await harness.coordinator.settlement({ change_id: CHANGE_ID, expected_state_version: started.state_version, expected_state_hash: started.state_hash, settlement: { ...binding, subject_sha: GIT_SHA, stage: 'RESULT', observed_child_id: 'validator-child-identity', status: 'PASS', artifact_path: 'outputs/validator.md', artifact_sha256: SHA256 } });
     assertExactResult(result, { operation: 'settlement', outcome: 'BLOCKED', state: 'BLOCKED' });
     noCall(harness, 'git.pushBranch');
+  });
+});
+
+test('TEST-DTF-R1-008: PR routing uses only the same-process verified DISPATCH repository identity', async t => {
+  await t.test('query and create receive the exact signed repository_id instead of Change or inferred identity', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const admitted = await harness.coordinator.applyControllerCommand(signed());
+    assertExactResult(admitted, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
+    const identity = primeState(harness, {
+      macro_state: 'DELIVERING', phase: 'PR', state_version: 7,
+      admission: harness.stateStore.state.admission,
+      candidate: makeCandidate(), delivery: makeDelivery({ pull_request: null, handoff_sha256: null }),
+    });
+    const result = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+    assertExactResult(result, { operation: 'run', outcome: 'ADVANCED', state: 'DELIVERING' });
+    const query = harness.calls.find(call => call.name === 'pull_request.queryCurrent')?.request;
+    const create = harness.calls.find(call => call.name === 'pull_request.createOrReuse')?.request;
+    assert.deepEqual({ query_repository: query?.repository, create_repository: create?.repository }, { query_repository: REPOSITORY_ID, create_repository: REPOSITORY_ID }, 'CAUSAL_RED: PR authority comes only from acceptedDispatch.body.repository.repository_id');
+    assert.notEqual(query?.repository, CHANGE_ID, 'CAUSAL_RED: Change identity is never repository identity');
+    assert.notEqual(create?.repository, CHANGE_ID, 'CAUSAL_RED: Change identity is never repository identity');
+  });
+
+  await t.test('restart without complete accepted DISPATCH authority blocks before every PR side effect', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'PR', state_version: 7, candidate: makeCandidate(), delivery: makeDelivery({ pull_request: null, handoff_sha256: null }) });
+    const restarted = productionCoordinatorModule.createCoordinatorCore(harness.dependencies);
+    const result = await restarted.run({ change_id: CHANGE_ID, ...identity });
+    assertExactResult(result, { operation: 'run', outcome: 'BLOCKED', state: 'BLOCKED' });
+    assert.equal(result.payload.blocked_reason, 'ADMISSION_EVIDENCE_UNAVAILABLE');
+    noCall(harness, 'pull_request.queryCurrent');
+    noCall(harness, 'pull_request.createOrReuse');
+    noCall(harness, 'pull_request.readback');
   });
 });
 
