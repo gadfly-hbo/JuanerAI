@@ -4,13 +4,13 @@ JuanerAI is a commercial AI decision product family for data analysts and enterp
 
 Data -> Decision -> Action -> Outcome
 
-Xanthil is the first JuanerAI product. The first planned surface is Xanthil CLI, built on a Pi-based Agent Runtime Adapter. Desktop and enterprise editions are deferred until the CLI product and its contracts mature.
+Xanthil is the first JuanerAI product. Its current product direction is desktop-first for macOS and Windows; continued CLI product development is paused while the approved CLI local-analysis behavior remains a compatibility baseline. Enterprise capability remains future work.
 
 ## Current State
 
-This repository is at cold-start documentation stage. No product stack, executable schema, dependency, or first feature Change has been approved.
+The repository has an approved Xanthil CLI local-analysis slice and reusable Product Core/Application/Port/Adapter/Profile boundaries. The current Controller candidate revises the product roadmap toward Xanthil Desktop and a later two-phase Model Pack; it does not activate a Desktop Profile or authorize a new product Change.
 
-The next product-development gate is receipt and review of the user's detailed Xanthil plan.
+The next product gate is completion of the fresh Development-Readiness Review and explicit user approval of the [`2026-08-27` planning package](docs/planning/2026-08-27/README.md). After that, the static Desktop Demo is reviewed before any productization Change.
 
 ## Start Here
 
@@ -18,6 +18,7 @@ The next product-development gate is receipt and review of the user's detailed X
 - CONTEXT.md: product language.
 - Orchestration.md: Controller-Domain Isolation.
 - docs/product/product-brief.md: current product intent.
+- docs/planning/README.md: current and historical product-plan authority.
 - docs/architecture/system-context.md: system boundaries.
 - .ai-coding/workflow.md: OpenSpec, SDD, and TDD flow.
 - openspec/changes/README.md: Change requirements.
@@ -33,4 +34,3 @@ The next product-development gate is receipt and review of the user's detailed X
 - docs/: product, architecture, contracts, governance, and decisions.
 - tests/: executable verification organized by level.
 - tools/harness/: future deterministic gate automation.
-

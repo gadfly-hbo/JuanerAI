@@ -9,8 +9,8 @@ The highest-level commercial project and product family.
 _Avoid_: using JuanerAI as a synonym for Xanthil
 
 **Xanthil**:
-The first JuanerAI commercial product, planned in CLI, desktop, and enterprise editions.
-_Avoid_: JuanerAI platform, Pi wrapper
+The first JuanerAI commercial product. Its current product direction is desktop-first for macOS and Windows, with future enterprise capability; continued CLI product development is paused.
+_Avoid_: JuanerAI platform, Pi wrapper, CLI-first product
 
 **Product Module**:
 A reusable JuanerAI capability that may begin as a monorepo module and later become an independently versioned subproject.
@@ -56,21 +56,37 @@ _Avoid_: suggestion, tool call
 An observed result attributed to an Action with stated evidence and uncertainty.
 _Avoid_: output, completion
 
-## Semantic Capabilities
+## Foundational Authorities
 
-**Ontology**:
-The governed model of business entities, relationships, states, constraints, and available actions.
-_Avoid_: database schema, knowledge graph
+**Data Authority**:
+The authoritative chain from originating data through approved derived analytical evidence, preserving source, time, transformation, and lineage. JuanerAI does not become the owner of an external source merely by importing or analyzing it.
+_Avoid_: truth, knowledge, LLM output
 
-**Knowledge**:
-Provenance-bearing facts and interpretations available for analysis and decision support.
-_Avoid_: source data, memory
+**Ontology Authority**:
+The governed, versioned meaning of business entities, relationships, states, constraints, metrics, and available actions.
+_Avoid_: database schema, knowledge graph, latest local copy
 
-**Memory**:
-Retained user, session, workflow, or agent context that can inform later work but is not authoritative business truth.
-_Avoid_: knowledge base, audit log
+## Long-term Assets
 
-## Capability Packs
+**Hypothesis Asset**:
+A governed, versioned, reusable, and falsifiable explanation pattern with applicability and evidence requirements. A run-specific hypothesis or accepted root cause does not automatically become a reusable Hypothesis Asset.
+_Avoid_: prompt, one-off guess, root cause, model output
+
+**Strategy Asset**:
+A governed, versioned, reusable action pattern with applicability, exclusions, parameters, risk, reversal, and evaluation requirements. A recommendation, task, execution receipt, or observed outcome is not itself a Strategy Asset.
+_Avoid_: action, task, SOP text, LLM recommendation
+
+## Background Capabilities
+
+**Knowledge Capability**:
+The background capability that organizes, retrieves, relates, and presents provenance-bearing material for analysis and decision support without becoming an independent product or foundational authority.
+_Avoid_: Knowledge product, source data, unified knowledge base
+
+**Memory Capability**:
+The background capability that retains user, Session, workflow, or agent context for later work but never promotes context into authoritative business fact by itself.
+_Avoid_: Memory product, knowledge base, audit log, business truth
+
+## Executable Capability Packs
 
 **Domain Pack**:
 A versioned industry capability package containing approved analysis methods, data expectations, skills, tools, workflows, and supporting knowledge.
@@ -78,5 +94,4 @@ _Avoid_: plugin, prompt bundle
 
 **Model Pack**:
 A versioned executable business-model package with declared inputs, outputs, runtime needs, provenance, evaluation evidence, and compatibility.
-_Avoid_: model file, algorithm script
-
+_Avoid_: model file, algorithm script, decision authority, knowledge base

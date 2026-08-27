@@ -1,34 +1,29 @@
 # JuanerAI Roadmap
 
-## Phase 0: Cold Start
+## Phase 0: Executable Baseline and Plan Revision
 
-Establish product language, architecture boundaries, OpenSpec/SDD/TDD governance, CDI roles, data authority, security boundaries, and module skeleton.
+Preserve the approved CLI local-analysis slice and its reusable Product Core/Application/Port/Adapter/Profile contracts. Freeze the revised product language, Asset and Model Capability Architecture, Xanthil Desktop plan, and two-phase Model Pack plan through fresh Development-Readiness Review and explicit user approval.
 
-## Phase 1: Product and Feasibility Freeze
+## Phase 1: Xanthil Desktop Static Demo
 
-Review the detailed Xanthil plan. Define the first user-valued scenario. Run bounded feasibility Changes for Pi and Semantica only where the product scenario requires them.
+Review a synthetic product-manager Demo using Codex app as the mandatory UI/interaction baseline, pi-xanthil as the business-function source, and Xanthil branding/semantics. Approval freezes product surface and journey as productization input, not implementation authority.
 
-## Phase 2: Xanthil CLI Walking Skeleton
+## Phase 2: Xanthil Desktop Data Analyst Required Workflow
 
-Deliver one end-to-end path through CLI, Application, Ports, real Adapters, evidence, Action Recommendation, and traceable output. Build vertically rather than completing one architecture layer at a time.
+After productization decisions and explicit Change authorization, deliver Data preparation, local cleaning/aggregation, Free analysis, report output, and execution feedback on macOS and Windows. Reuse the first-slice architecture while treating CLI presentation and slice-specific facts as compatibility history.
 
-## Phase 3: Reusable Capability Packs
+## Phase 3: Model Pack Phase One and First Middle/Back-office Capability
 
-Extract validated Domain Pack and Model Pack contracts from real product needs. Add manifests, compatibility rules, provenance, permission declarations, and contract tests.
+Only after `DA_REQUIRED_COMPLETE` and explicit start authorization, produce one locally trained/evaluated/released Model Pack, installable SDK, independent Consumer, and Xanthil Desktop Consumer. Model Pack is the first middle/back-office product program; its supply chain does not redefine the analyst workflow or Data/Ontology authority.
 
 ## Phase 4: Control Plane
 
-Add the Console for model/runtime configuration, policy, permissions, runs, logs, traces, audit, and governance after runtime semantics are stable.
+Build the broader middle/back-office Console from proven Model Pack and Xanthil needs: model/runtime configuration, policy, permissions, Runs, logs, traces, audit, asset governance, and operational visibility. Do not prebuild a generic platform.
 
-## Phase 5: Desktop
+## Phase 5: Model Pack Phase Two and Enterprise Profile
 
-Build the desktop product against Application capabilities rather than wrapping the Pi terminal interface.
+Run the same accepted Model Pack behind a thin Xanthil Enterprise Backend Adapter to MLflow OSS Model Serving, then add the separately approved enterprise identity, tenancy, policy, storage, isolation, audit, deployment, migration, recovery, and rollback contracts.
 
-## Phase 6: Enterprise Profile
+## Phase 6: Additional Domain Packs, Model Packs, and Products
 
-Add identity, tenancy, policy enforcement, isolated Agent Runtime, PostgreSQL control state, enterprise storage and semantic backends, audit, deployment, migration, recovery, and contract parity.
-
-## Phase 7: Additional Products
-
-Create new JuanerAI products by reusing stable capability contracts while preserving product-specific domain language and OpenSpec behavior.
-
+Expand through real product demand while preserving product-specific language, authority, and OpenSpec behavior. Knowledge and Memory remain background capabilities rather than new standalone products unless a future explicit product decision changes that direction.

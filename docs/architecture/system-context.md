@@ -4,20 +4,27 @@
 
 Enterprise internal/external Data
 -> governed ingestion and lineage
--> Ontology-grounded analysis
--> evidence and model-supported Decision
--> Action Recommendation
+-> version-bound Ontology-grounded analysis
+-> run-scoped Evidence and Hypothesis
+-> evidence- and model-supported Decision
+-> governed Strategy and Action Recommendation
 -> authorized Action
 -> observed Outcome
--> learning and updated context
+-> separate Hypothesis evidence and Strategy effect writeback
+-> explicit long-term asset candidate/version governance
+
+Knowledge Capability supports material organization and retrieval across the loop. Memory Capability retains non-authoritative user, Session, workflow, and Agent context. Neither is an independent product or foundational authority.
 
 ## Product Planes
 
 | Plane | Responsibility |
 |---|---|
-| experience | Xanthil CLI, future desktop, and operator Console |
+| experience | Xanthil Desktop for macOS and Windows, future enterprise surfaces, and operator Console; continued CLI product development is paused |
 | product core | business concepts, decision rules, and use cases |
-| capability | Domain Packs and Model Packs |
+| foundational authority | Data and Ontology authority contracts |
+| long-term asset | governed Hypothesis and Strategy assets |
+| executable capability | Domain Packs and Model Packs |
+| background capability | Knowledge and Memory capabilities |
 | execution and data | agent, model, data, storage, semantic, and LLM Adapters |
 | control | configuration, policy, identity, permissions, runs, logs, traces, and audit |
 | deployment | personal and future enterprise composition Profiles |
@@ -34,4 +41,4 @@ External systems are never Product Core dependencies. Every interaction crosses 
 
 ## Current Boundary
 
-Current approved behavior is the Xanthil local-analysis capability in `openspec/specs/local-analysis/spec.md`. Its Personal Profile activates the Pi-backed Agent Analysis Runtime and approved local Adapters under the specified gates. No second Runtime, enterprise integration, action connector, or automated decision behavior is active.
+Current approved behavior remains the Xanthil local-analysis capability in `openspec/specs/local-analysis/spec.md`. Its Personal Profile activates the Pi-backed Agent Analysis Runtime and approved local Adapters under the specified gates. The desktop-first product plan and revised capability map change planning authority only; they do not activate a Desktop Runtime, second Runtime, enterprise integration, action connector, asset store, or automated decision behavior.

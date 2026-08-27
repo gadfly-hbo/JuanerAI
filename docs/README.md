@@ -3,8 +3,9 @@
 ## Product
 
 - product/product-brief.md: durable product intent and current unknowns.
-- product/mvp.md: Xanthil CLI readiness and stop line.
+- product/mvp.md: Xanthil Desktop productization readiness and stop line.
 - product/roadmap.md: sequenced product evolution.
+- planning/README.md: current planning package and frozen historical packages.
 
 ## Architecture
 
@@ -12,6 +13,7 @@
 - architecture/ports-and-adapters.md: dependency model.
 - architecture/data-authority.md: authority and lifecycle of each data class.
 - architecture/package-contracts.md: Domain Pack and Model Pack requirements.
+- architecture/asset-and-model-capability-architecture.md: Data/Ontology authority, Hypothesis/Strategy assets, capability packs, and background capabilities.
 - architecture/security-boundaries.md: personal and enterprise trust boundaries.
 - architecture/deployment-profiles.md: replaceable deployment composition.
 

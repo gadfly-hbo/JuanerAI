@@ -2,7 +2,7 @@
 
 ## Product
 
-JuanerAI is the commercial project family. Xanthil is its first product and is planned as CLI, desktop, and enterprise editions. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
+JuanerAI is the commercial project family. Xanthil is its first product; its current product direction is desktop-first for macOS and Windows, continued CLI product development is paused, and enterprise capability remains future work. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
 
 The product intent is to help data analysts and enterprise decision users move through Data -> Decision -> Action -> Outcome. It should produce actionable, traceable decisions rather than stop at BI reports or dashboards.
 
@@ -56,6 +56,7 @@ Reviewer PASS does not approve product intent, replace explicit user decisions, 
 - Select Adapters only in a deployment Profile or composition root.
 - Treat SQLite operational state and DuckDB analytical data as different responsibilities.
 - Keep Ontology, Knowledge, and Memory as distinct domain capabilities even if one infrastructure product implements several of them.
+- Treat Data and Ontology as foundational authorities, Hypothesis and Strategy as governed long-term assets, Domain Pack and Model Pack as executable capability packages, and Knowledge and Memory as background capabilities rather than independent products. Read `docs/architecture/asset-and-model-capability-architecture.md` before changing these roles, asset promotion, or their authority relationships.
 - CLI, desktop, console, and future APIs call Application capabilities; they do not become the business core.
 - Cross-language and cross-module communication uses versioned contracts.
 - Enterprise-ready means preserving the minimum Product Core, Application, Port, Adapter, Profile, versioned-contract, and provenance boundaries needed to keep future replacement possible. It does not authorize enterprise identity, tenancy, policy, isolation, storage, audit, deployment, migration, concurrency, or recovery behavior in a personal/local Change. Review both missing preparation and premature enterprise implementation.
