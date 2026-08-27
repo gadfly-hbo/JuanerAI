@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "FOUNDATION_RELEASE_SAFETY_GREEN",
-    "label": "Foundation RELEASE safety GREEN / Candidate prepare",
+    "id": "EXACT_CANDIDATE_VALIDATION_GATE",
+    "label": "Exact Candidate validation Gate",
     "ordinal": 5,
     "total": 8
   },
-  "health": "active",
-  "summary": "Foundation RELEASE safety GREEN: directed 23/23, coordinator 191/191, full Coordinator 259/259, project-board 12/12, canonical exit 0; repaired coordinator SHA c04193f05a704890be51a22938123c527d0157f0f6270ad2324fc4b65415e996",
-  "current_objective": "Form and push descendant code Candidate while explicitly preserving installed runtime as stale",
-  "next_action": "Stage only coordinator.mjs, coordinator.test.mjs, verification.md and Controller-owned project-control records; commit/push descendant Candidate, then stop for separate Host Runtime replacement authorization",
+  "health": "validating",
+  "summary": "Rollback-first Host Runtime replacement PASS: installed Coordinator c04193f05a704890be51a22938123c527d0157f0f6270ad2324fc4b65415e996 now equals repaired repository bytes; pointer remains empty and governed targets are intact",
+  "current_objective": "Freeze replacement evidence in a final descendant Candidate and obtain one fresh exact-Candidate Validator verdict",
+  "next_action": "Precisely stage verification and project-control evidence, commit and push the descendant Candidate, confirm local/remote equality, then start exactly one fresh Validator; PR, archive, merge, main sync, RELEASE and product Change remain locked",
   "blockers": [],
   "milestones": [
     {
@@ -84,14 +84,14 @@
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-sol · high (R3 route)",
-      "status": "active",
+      "status": "complete",
       "activation": "TDD_READY + exact Activation production and host scope"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol · xhigh (R3 route)",
-      "status": "locked",
+      "status": "active",
       "activation": "Activation Candidate and dual-host evidence frozen"
     }
   ],
@@ -817,6 +817,48 @@
       "label": "Final two-item safety post-repair project-control, project-board and canonical runner PASS",
       "path": "tools/harness/validation/run",
       "status": "verified"
+    },
+    {
+      "id": "EVD-117",
+      "label": "Host Runtime replacement preflight PASS receipt SHA-256 79aab423592aae3a6a986eebdeb86b6ce35ddccce2e043cf1d05dab93b988597",
+      "path": "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/preflight-receipt.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-118",
+      "label": "Manifest-bound rollback receipt SHA-256 5f7e72fe370d71a6fba0447e6deff9352bde5c0ae275661eb69a6e12609d1c9c",
+      "path": "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/rollback-receipt-abdb5981.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-119",
+      "label": "Rollback audit PASS receipt SHA-256 814239de6823b5c0fec50d179130422e0c1ff1c44e44c2a64a3bed9b6017bb33",
+      "path": "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/rollback-audit-receipt.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-120",
+      "label": "Clean replacement install receipt SHA-256 961d7a1a12d9506e80f3a23b718489e1a5fdd9c2fbc3f1bf1bfb278c0ffbb2a4",
+      "path": "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/install-receipt.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-121",
+      "label": "Replacement manifest SHA-256 c88291bc466cb970a9ed75c75bd7bb3ca2dab506f06a3bb290635c07f2ef7e36",
+      "path": "/private/var/db/juanerai/change-coordinator-install-backups/208b5df591a784d0c75c5e19e1ffde5a/manifest.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-122",
+      "label": "Host Runtime replacement postflight PASS receipt SHA-256 e8b38bac53366059e947d5b366b94d5d35c008edab5a3ce6d1db869d6216dd8e",
+      "path": "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/postflight-receipt.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-123",
+      "label": "Installed Coordinator exact source/runtime equality SHA-256 c04193f05a704890be51a22938123c527d0157f0f6270ad2324fc4b65415e996",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -827,7 +869,7 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-27T05:09:56.191Z",
+  "updated_at": "2026-08-27T06:00:09.234Z",
   "updated_by": {
     "role": "controller",
     "session": "controller-mode-activation-20260827"
