@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826170515417-8LMWG6",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-26T17:05:15.417Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-final-validator"
+  },
+  "summary": "Fresh Validator BLOCKED exact Candidate 10ba759e: archive route and production execution defects",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

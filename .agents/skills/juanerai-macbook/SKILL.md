@@ -5,6 +5,9 @@ description: 在 MacBook 同步 main、审核或合并 JuanerAI Pull Request。
 
 # JuanerAI MacBook
 
+Activated dual-device product Changes use the sole authority in
+`docs/governance/product-change-execution-policy.md`.
+
 Read `docs/governance/git-development-workflow.md`, then verify the repository
 root, worktree, branch, upstream, remote, and `juanerai.device`. Continue only
 when the configured device is `macbook`.

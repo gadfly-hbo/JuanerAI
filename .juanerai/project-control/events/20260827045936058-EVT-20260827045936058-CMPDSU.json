@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827045936058-CMPDSU",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-27T04:59:36.058Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-20260827"
+  },
+  "summary": "User authorized bounded RELEASE safety repair: Test only coordinator.test.mjs, Worker only coordinator.mjs, descendant Candidate only; installed runtime becomes stale and fresh Validator remains locked until separately authorized runtime replacement",
+  "status_after": "active",
+  "evidence_refs": []
+}

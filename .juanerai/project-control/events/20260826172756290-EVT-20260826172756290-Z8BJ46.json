@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826172756290-Z8BJ46",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-26T17:27:56.290Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-foundation-repository-identity"
+  },
+  "summary": "Foundation repository identity Spec Gate PASS; entered Test RED",
+  "status_after": "active",
+  "evidence_refs": []
+}

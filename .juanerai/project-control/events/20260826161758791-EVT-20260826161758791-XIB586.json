@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826161758791-XIB586",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-26T16:17:58.791Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-r3"
+  },
+  "summary": "User authorized the courier-only R3 decision, retired the inconclusive signed rejection Canary, and resumed remaining Mode Activation without retry or transport-platform expansion.",
+  "status_after": "active",
+  "evidence_refs": []
+}

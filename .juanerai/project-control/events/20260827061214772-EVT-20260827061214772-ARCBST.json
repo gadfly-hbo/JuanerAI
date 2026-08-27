@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827061214772-ARCBST",
+  "event_type": "archived",
+  "occurred_at": "2026-08-27T06:12:14.772Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-20260827"
+  },
+  "summary": "After PR #17 initial review and Canonical validation SUCCESS, the one-time MacBook bootstrap mechanic moved the seven-file Mode Activation package byte-identically to openspec/changes/archive/2026-08-26-mode-activation and published canonical spec SHA-256 6b468718cdc6582233f57270a73d8898645446c75a8218a1aeb5de82898d5df4 without Foundation REVISION, active pointer, DISPATCH or Mac mini archive execution",
+  "status_after": "validating",
+  "evidence_refs": [
+    "openspec/changes/archive/2026-08-26-mode-activation/",
+    "openspec/specs/mode-activation/spec.md",
+    "https://github.com/gadfly-hbo/JuanerAI/pull/17"
+  ]
+}

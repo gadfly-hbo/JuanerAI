@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827020139400-G6ATDQ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-27T02:01:39.400Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation"
+  },
+  "summary": "Mode Activation repository GREEN and Test Asset Retirement PASS",
+  "status_after": "active",
+  "evidence_refs": []
+}

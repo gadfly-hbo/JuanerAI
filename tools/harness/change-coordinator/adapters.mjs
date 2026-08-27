@@ -3,6 +3,9 @@ import { mkdir, open, readFile, realpath, rename, writeFile } from 'node:fs/prom
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 
+export const PINNED_GIT_VERSION = '2.54.0';
+export const PINNED_GIT_EXECUTABLE_SHA256 = '6b348e2246cd4566a129c34a918ff2381c37eda817797d5bdd64ce719ff068ab';
+
 const sha256 = value => createHash('sha256').update(value).digest('hex');
 const canonical = value => Array.isArray(value)
   ? `[${value.map(canonical).join(',')}]`
@@ -25,10 +28,16 @@ function inputInvalid() {
   return Object.assign(new Error('COORDINATOR_INPUT_INVALID'), { code: 'COORDINATOR_INPUT_INVALID' });
 }
 
-async function run(executable, args, { cwd, environment = {}, timeout_ms = 60_000 } = {}) {
+async function run(executable, args, {
+  cwd, environment = {}, timeout_ms = 60_000, runtime_uid = undefined, runtime_gid = undefined,
+} = {}) {
   const physicalCwd = await realpath(cwd).catch(() => cwd);
+  const options = { runtime_uid, runtime_gid };
   return new Promise((resolve, reject) => {
-    const child = spawn(executable, args, { cwd: physicalCwd, env: { ...environment, LC_ALL: 'C' }, shell: false });
+    const child = spawn(executable, args, {
+      cwd: physicalCwd, env: { ...environment, LC_ALL: 'C' }, shell: false,
+      uid: options.runtime_uid, gid: options.runtime_gid,
+    });
     let stdout = '';
     let stderr = '';
     let settled = false;
@@ -68,10 +77,16 @@ async function run(executable, args, { cwd, environment = {}, timeout_ms = 60_00
   });
 }
 
-async function runBuffer(executable, args, { cwd, environment = {}, timeout_ms = 60_000 } = {}) {
+async function runBuffer(executable, args, {
+  cwd, environment = {}, timeout_ms = 60_000, runtime_uid = undefined, runtime_gid = undefined,
+} = {}) {
   const physicalCwd = await realpath(cwd).catch(() => cwd);
+  const options = { runtime_uid, runtime_gid };
   return new Promise((resolve, reject) => {
-    const child = spawn(executable, args, { cwd: physicalCwd, env: { ...environment, LC_ALL: 'C' }, shell: false });
+    const child = spawn(executable, args, {
+      cwd: physicalCwd, env: { ...environment, LC_ALL: 'C' }, shell: false,
+      uid: options.runtime_uid, gid: options.runtime_gid,
+    });
     const stdout = []; const stderr = []; let settled = false; let timedOut = false;
     const finish = (callback, value) => { if (settled) return; settled = true; clearTimeout(timer); callback(value); };
     const timer = setTimeout(() => { timedOut = true; child.kill('SIGTERM'); }, timeout_ms);
@@ -92,11 +107,17 @@ async function command(executable, args, options) {
 }
 
 function gitCommand(options, cwd, args) {
-  return command(options.git_executable, args, { cwd, environment: options.base_environment });
+  return command(options.git_executable, args, {
+    cwd, environment: options.base_environment,
+    runtime_uid: options.runtime_uid, runtime_gid: options.runtime_gid,
+  });
 }
 
 async function gitBytes(options, cwd, args) {
-  const result = await run(options.git_executable, args, { cwd, environment: options.base_environment });
+  const result = await run(options.git_executable, args, {
+    cwd, environment: options.base_environment,
+    runtime_uid: options.runtime_uid, runtime_gid: options.runtime_gid,
+  });
   if (result.code !== 0) throw interrupted();
   return result.stdout;
 }
@@ -120,20 +141,23 @@ function parseNameStatus(raw) {
 }
 
 function requireSafeChangeBranch(branch) {
-  if (typeof branch !== 'string' || !/^work\/mac-mini\/[A-Za-z0-9][A-Za-z0-9._/-]*$/.test(branch)) throw interrupted();
+  if (typeof branch !== 'string' || !/^work\/mac-mini\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(branch)) throw interrupted();
 }
 
 export function createCoordinatorAdapters(options) {
-  const optionKeys = [
+  const baseOptionKeys = [
     'repository_root', 'state_root', 'device', 'process_run_id',
     'git_executable', 'pull_request_executable', 'base_environment',
   ];
+  const hasRuntimeIdentity = Object.hasOwn(options ?? {}, 'runtime_uid') || Object.hasOwn(options ?? {}, 'runtime_gid');
+  const optionKeys = hasRuntimeIdentity ? [...baseOptionKeys, 'runtime_uid', 'runtime_gid'] : baseOptionKeys;
   const environment = options?.base_environment;
   const validEnvironment = environment !== null
     && typeof environment === 'object'
     && !Array.isArray(environment)
     && Object.getPrototypeOf(environment) === Object.prototype
-    && Object.entries(environment).every(([key, value]) => typeof key === 'string' && typeof value === 'string');
+    && Object.entries(environment).every(([key, value]) => typeof key === 'string' && typeof value === 'string')
+    && Object.keys(environment).length === 0;
   const validOptions = closed(options, optionKeys)
     && path.isAbsolute(options.repository_root)
     && path.isAbsolute(options.state_root)
@@ -142,11 +166,32 @@ export function createCoordinatorAdapters(options) {
     && ['macbook', 'mac-mini'].includes(options.device)
     && typeof options.process_run_id === 'string'
     && options.process_run_id
+    && (!hasRuntimeIdentity || Number.isSafeInteger(options.runtime_uid) && Number.isSafeInteger(options.runtime_gid)
+      && options.runtime_uid > 0 && options.runtime_gid >= 0)
     && validEnvironment;
   if (!validOptions) {
     throw Object.assign(new Error('COORDINATOR_INPUT_INVALID'), { code: 'COORDINATOR_INPUT_INVALID' });
   }
   const opt = { ...options, base_environment: { ...(options.base_environment ?? {}) } };
+  let pinReceipt = null;
+  const assertPinnedGit = async () => {
+    if (pinReceipt) return pinReceipt;
+    const executable_sha256 = sha256(await readFile(opt.git_executable));
+    const version = await command(opt.git_executable, ['--version'], {
+      cwd: opt.repository_root,
+      environment: {
+        LC_ALL: 'C', LANG: 'C', TZ: 'UTC', GIT_CONFIG_NOSYSTEM: '1',
+        GIT_CONFIG_GLOBAL: '/dev/null', GIT_ATTR_NOSYSTEM: '1',
+        GIT_PAGER: 'cat', PAGER: 'cat', GIT_TERMINAL_PROMPT: '0',
+        GIT_NO_REPLACE_OBJECTS: '1',
+      },
+      runtime_uid: opt.runtime_uid,
+      runtime_gid: opt.runtime_gid,
+    });
+    if (version !== `git version ${PINNED_GIT_VERSION}` || executable_sha256 !== PINNED_GIT_EXECUTABLE_SHA256) throw interrupted();
+    pinReceipt = { version: PINNED_GIT_VERSION, executable_sha256 };
+    return pinReceipt;
+  };
   const filesystem = {
     writeBytesAtomic: async ({ path: value, bytes }) => {
       await mkdir(path.dirname(value), { recursive: true });
@@ -208,13 +253,31 @@ export function createCoordinatorAdapters(options) {
     canonicalDiff: async request => {
       const environment = { LC_ALL: 'C', LANG: 'C', TZ: 'UTC', GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: '/dev/null', GIT_ATTR_NOSYSTEM: '1', GIT_PAGER: 'cat', PAGER: 'cat', GIT_TERMINAL_PROMPT: '0', GIT_NO_REPLACE_OBJECTS: '1' };
       const cwd = request.worktree_root ?? opt.repository_root;
-      if (await gitCommand(opt, cwd, ['--version']) !== 'git version 2.54.0') throw interrupted();
+      const pinned = await assertPinnedGit();
       const actualCommon = await realpath(path.resolve(cwd, await gitCommand(opt, cwd, ['rev-parse', '--git-common-dir'])));
       const expectedCommon = await realpath(request.common_git_dir).catch(() => null);
       if (actualCommon !== expectedCommon) throw interrupted();
+      const forbiddenFiles = [
+        path.join(actualCommon, 'info', 'attributes'),
+        path.join(actualCommon, 'info', 'grafts'),
+        path.join(actualCommon, 'shallow'),
+        path.join(actualCommon, 'objects', 'info', 'alternates'),
+      ];
+      for (const candidate of forbiddenFiles) {
+        if (await readFile(candidate).then(() => true, error => error?.code === 'ENOENT' ? false : Promise.reject(error))) throw interrupted();
+      }
+      const replaceRefs = await gitCommand(opt, cwd, ['for-each-ref', '--format=%(refname)', 'refs/replace/']);
+      if (replaceRefs !== '') throw interrupted();
+      const forbiddenConfig = await run(opt.git_executable, [
+        'config', '--local', '--name-only', '--get-regexp',
+        '^(diff\\.|core\\.attributesFile$|core\\.pager$|pager\\.|interactive\\.diffFilter$|submodule\\.|include\\.)',
+      ], { cwd, environment, runtime_uid: opt.runtime_uid, runtime_gid: opt.runtime_gid });
+      if (![0, 1].includes(forbiddenConfig.code) || forbiddenConfig.code === 0 && forbiddenConfig.stdout.trim() !== '') throw interrupted();
       const args = ['--no-pager', '-c', 'color.ui=false', '-c', 'core.quotePath=true', '-c', 'diff.algorithm=myers', '-c', 'diff.mnemonicPrefix=false', '-c', 'diff.noprefix=false', 'diff', '--binary', '--full-index', '--no-ext-diff', '--no-textconv', '--no-renames', '--src-prefix=a/', '--dst-prefix=b/', `${request.baseline_sha}..${request.candidate_sha}`, '--'];
-      const raw = await runBuffer(opt.git_executable, args, { cwd, environment }); if (raw.code !== 0) throw interrupted(); const raw_stdout = raw.stdout;
-      return ok({ producer_receipt: { executable: opt.git_executable, executable_sha256: sha256(await readFile(opt.git_executable)), version: '2.54.0', environment, shell: false, argv: [...args], repository_root: request.canonical_root, common_git_dir: request.common_git_dir, worktree_root: cwd }, raw_stdout, byte_length: raw_stdout.length, stdout_sha256: sha256(raw_stdout) });
+      const raw = await runBuffer(opt.git_executable, args, {
+        cwd, environment, runtime_uid: opt.runtime_uid, runtime_gid: opt.runtime_gid,
+      }); if (raw.code !== 0) throw interrupted(); const raw_stdout = raw.stdout;
+      return ok({ producer_receipt: { executable: opt.git_executable, executable_sha256: pinned.executable_sha256, version: pinned.version, environment, shell: false, argv: [...args], repository_root: request.canonical_root, common_git_dir: request.common_git_dir, worktree_root: cwd }, raw_stdout, byte_length: raw_stdout.length, stdout_sha256: sha256(raw_stdout) });
     },
     syncMainFfOnly: async ({ canonical_root, main_worktree_root, squash_sha, expected_origin_main }) => {
       const repository_root = main_worktree_root ?? canonical_root ?? opt.repository_root;

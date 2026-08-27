@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827061214771-VALPAS",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-27T06:12:14.771Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-20260827"
+  },
+  "summary": "Fresh exact-Candidate Validator PASS for Candidate 3a3a80073b9d442112470e15f24b44522de85bd7 tree 7732fc428fbd27d63d63eb5b473d62cc898ad702: RELEASE 24/24, Coordinator 259/259, project-control 12/12, canonical exit 0, and installed/source Coordinator c04193f0 equality",
+  "status_after": "validating",
+  "evidence_refs": [
+    "tools/harness/change-coordinator/coordinator.mjs",
+    "tools/harness/change-coordinator/coordinator.test.mjs",
+    "openspec/changes/archive/2026-08-26-mode-activation/verification.md"
+  ]
+}

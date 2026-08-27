@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827060009234-HRTRDY",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-27T06:00:09.234Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-20260827"
+  },
+  "summary": "Rollback-first Host Runtime replacement PASS: preflight, manifest-bound rollback, rollback audit, one clean install and postflight all passed; installed Coordinator now exactly equals c04193f05a704890be51a22938123c527d0157f0f6270ad2324fc4b65415e996, pointer remains empty, and the final descendant Candidate may enter one fresh exact-Candidate validation",
+  "status_after": "validating",
+  "evidence_refs": [
+    "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/preflight-receipt.json",
+    "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/rollback-receipt-abdb5981.json",
+    "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/rollback-audit-receipt.json",
+    "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/install-receipt.json",
+    "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/postflight-receipt.json",
+    "tools/harness/change-coordinator/coordinator.mjs"
+  ]
+}

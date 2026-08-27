@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826111654705-A3AK70",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-26T11:16:54.705Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation"
+  },
+  "summary": "Closed real macOS effective-write probe before host installation",
+  "status_after": "active",
+  "evidence_refs": []
+}

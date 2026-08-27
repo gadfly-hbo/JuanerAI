@@ -1,0 +1,587 @@
+#!/usr/bin/env node
+import { createHash } from 'node:crypto';
+import { spawn } from 'node:child_process';
+import {
+  chmod, chown, copyFile, lstat, mkdir, open, readFile, readdir, realpath, rename, rm, writeFile,
+} from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+export const HOST_INSTALL_TARGETS = Object.freeze([
+  '/private/etc/juanerai/controller-trust.json',
+  '/private/etc/juanerai/host-loop.json',
+  '/private/etc/juanerai/github-branch-push-key',
+  '/private/etc/juanerai/github-pr-api-credential',
+  '/Library/LaunchDaemons/com.juanerai.change-coordinator.plist',
+  '/usr/local/bin/juanerai-coordinator',
+  '/usr/local/libexec/juanerai-change-coordinator',
+  '/private/var/db/juanerai/change-coordinator',
+  '/private/var/run/juanerai',
+  '/private/var/run/juanerai/change-coordinator.sock',
+  '/private/var/log/juanerai/change-coordinator.log',
+  '/Users/huangbo',
+  '/Users/huangbo/Dev',
+  '/Users/huangbo/Dev/Env',
+  '/Users/huangbo/Dev/Env/homebrew',
+  '/Users/huangbo/Dev/Env/homebrew/opt',
+  '/Users/huangbo/Dev/Env/homebrew/opt/gettext',
+  '/Users/huangbo/Dev/Env/homebrew/opt/pcre2',
+  '/Users/huangbo/Dev/Env/homebrew/bin',
+  '/Users/huangbo/Dev/Env/homebrew/opt/gettext/lib',
+  '/Users/huangbo/Dev/Env/homebrew/opt/pcre2/lib',
+]);
+export const ROLLBACK_PRESERVES = Object.freeze([
+  'active-pointer', 'state', 'ledger', 'handoff', 'canary-evidence', 'git-history',
+]);
+const SERVICE_LABEL = 'com.juanerai.change-coordinator';
+const BACKUP_ROOT = '/private/var/db/juanerai/change-coordinator-install-backups';
+const MAX_FILE_BYTES = 16 * 1024 * 1024;
+const RUNTIME_TARGET = '/usr/local/libexec/juanerai-change-coordinator';
+const STATE_TARGET = '/private/var/db/juanerai/change-coordinator';
+const RUNTIME_DIRECTORY_TARGET = '/private/var/run/juanerai';
+const SOCKET_TARGET = '/private/var/run/juanerai/change-coordinator.sock';
+const SOCKET_READBACK_TIMEOUT_MS = 5_000;
+const SOCKET_READBACK_INTERVAL_MS = 25;
+const GIT_TRAVERSAL_TARGETS = Object.freeze([
+  '/Users/huangbo',
+  '/Users/huangbo/Dev',
+  '/Users/huangbo/Dev/Env',
+  '/Users/huangbo/Dev/Env/homebrew',
+  '/Users/huangbo/Dev/Env/homebrew/opt',
+  '/Users/huangbo/Dev/Env/homebrew/opt/gettext',
+  '/Users/huangbo/Dev/Env/homebrew/opt/pcre2',
+]);
+export const PINNED_GIT_INSTALL = Object.freeze({
+  executable: Object.freeze({
+    target_directory: '/Users/huangbo/Dev/Env/homebrew/bin', name: 'git',
+    sha256: '6b348e2246cd4566a129c34a918ff2381c37eda817797d5bdd64ce719ff068ab', mode: 0o755,
+  }),
+  libraries: Object.freeze([
+    Object.freeze({
+      target_directory: '/Users/huangbo/Dev/Env/homebrew/opt/gettext/lib', name: 'libintl.8.dylib',
+      sha256: '9cf2cc193c7ee8db00d4a5df13f6f0f0277f6b83e45177dece6f9c99fc454dbd', mode: 0o444,
+    }),
+    Object.freeze({
+      target_directory: '/Users/huangbo/Dev/Env/homebrew/opt/pcre2/lib', name: 'libpcre2-8.0.dylib',
+      sha256: '0d3fcf6ef5dc2c42cbc6ce2326b5266715461892e4f635b4ebfbce646667e84d', mode: 0o444,
+    }),
+  ]),
+});
+const PINNED_GIT_ARTIFACTS = Object.freeze([
+  PINNED_GIT_INSTALL.executable,
+  ...PINNED_GIT_INSTALL.libraries,
+]);
+const DIRECTORY_FILES = Object.freeze({
+  [RUNTIME_TARGET]: Object.freeze(['adapters.mjs', 'coordinator.mjs', 'host-loop.mjs', 'production.mjs']),
+  [STATE_TARGET]: Object.freeze(['active-change.json']),
+  [RUNTIME_DIRECTORY_TARGET]: Object.freeze([]),
+  ...Object.fromEntries(PINNED_GIT_ARTIFACTS.map(artifact => [artifact.target_directory, Object.freeze([artifact.name])])),
+});
+
+const sha256 = value => createHash('sha256').update(value).digest('hex');
+const canonical = value => Array.isArray(value)
+  ? `[${value.map(canonical).join(',')}]`
+  : value && typeof value === 'object'
+    ? `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}`
+    : JSON.stringify(value);
+const closed = (value, keys) => value !== null && typeof value === 'object'
+  && !Array.isArray(value) && Object.keys(value).length === keys.length
+  && keys.every(key => Object.hasOwn(value, key));
+
+function exactTarget(target) {
+  return typeof target === 'string' && HOST_INSTALL_TARGETS.includes(target);
+}
+
+function defaultExec(executable, args) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(executable, args, { env: {}, shell: false, stdio: ['ignore', 'pipe', 'pipe'] });
+    const stdout = []; const stderr = [];
+    child.stdout.on('data', chunk => stdout.push(Buffer.from(chunk)));
+    child.stderr.on('data', chunk => stderr.push(Buffer.from(chunk)));
+    child.once('error', reject);
+    child.once('close', (code, signal) => resolve({
+      code, signal, stdout: Buffer.concat(stdout), stderr: Buffer.concat(stderr),
+    }));
+  });
+}
+
+function realOsBoundary() {
+  return {
+    readFile, writeFile, mkdir, lstat, readdir, realpath, rename, copyFile, chmod, chown, rm, open,
+    exec: defaultExec,
+    uid: () => process.getuid(),
+    gid: () => process.getgid(),
+    now: () => new Date().toISOString(),
+  };
+}
+
+async function syncPath(os, target) {
+  const file = await os.open(target, 'r'); await file.sync(); await file.close();
+  const directory = await os.open(path.dirname(target), 'r'); await directory.sync(); await directory.close();
+}
+
+async function atomicReplace(os, target, bytes, mode) {
+  await os.mkdir(path.dirname(target), { recursive: true, mode: 0o755 });
+  const stage = `${target}.stage-${process.pid}`;
+  await os.writeFile(stage, bytes, { mode });
+  await os.chown(stage, 0, 0);
+  await os.chmod(stage, mode);
+  await syncPath(os, stage);
+  await os.rename(stage, target);
+  await syncPath(os, target);
+  const readback = await os.readFile(target);
+  const stat = await os.lstat(target);
+  if (!Buffer.from(readback).equals(Buffer.from(bytes)) || stat.uid !== 0 || stat.gid !== 0
+    || (stat.mode & 0o777) !== mode || stat.isSymbolicLink()) throw new Error('READBACK_MISMATCH');
+  return { sha256: sha256(readback), mode, uid: stat.uid, gid: stat.gid };
+}
+
+function artifactFor(target, name) {
+  return PINNED_GIT_ARTIFACTS.find(candidate => candidate.target_directory === target && candidate.name === name) ?? null;
+}
+
+async function atomicReplaceDirectory(os, target, source, mode, { fileModes = null, enforcePins = true } = {}) {
+  const names = DIRECTORY_FILES[target];
+  if (!names) throw new Error('DIRECTORY_TARGET_INVALID');
+  const sourceStat = await os.lstat(source);
+  if (!sourceStat.isDirectory() || sourceStat.isSymbolicLink()) throw new Error('SOURCE_SYMLINK_FORBIDDEN');
+  const sourceNames = (await os.readdir(source)).sort();
+  if (!sameArray(sourceNames, [...names].sort())) throw new Error('DIRECTORY_CONTENT_MISMATCH');
+  await os.mkdir(path.dirname(target), { recursive: true, mode: 0o755 });
+  const stage = `${target}.stage-${process.pid}`;
+  await os.rm(stage, { recursive: true, force: true });
+  await os.mkdir(stage, { recursive: false, mode });
+  await os.chown(stage, 0, 0);
+  await os.chmod(stage, mode);
+  const files = [];
+  for (const name of names) {
+    const sourceFile = path.join(source, name);
+    const sourceFileStat = await os.lstat(sourceFile);
+    if (!sourceFileStat.isFile() || sourceFileStat.isSymbolicLink()) throw new Error('SOURCE_SYMLINK_FORBIDDEN');
+    const bytes = await os.readFile(sourceFile);
+    if (bytes.length === 0 || bytes.length > MAX_FILE_BYTES) throw new Error('SOURCE_INVALID');
+    const artifact = artifactFor(target, name);
+    if (enforcePins && artifact && sha256(bytes) !== artifact.sha256) throw new Error('ARTIFACT_HASH_MISMATCH');
+    const fileMode = fileModes?.[name] ?? artifact?.mode ?? (target === STATE_TARGET ? 0o600 : 0o644);
+    const staged = path.join(stage, name);
+    await os.writeFile(staged, bytes, { mode: fileMode });
+    await os.chown(staged, 0, 0);
+    await os.chmod(staged, fileMode);
+    await syncPath(os, staged);
+    files.push({ name, sha256: sha256(bytes), mode: fileMode });
+  }
+  await syncPath(os, stage);
+  const displaced = `${target}.prior-${process.pid}`;
+  let hadPrior = false;
+  try {
+    await os.lstat(target);
+    await os.rm(displaced, { recursive: true, force: true });
+    await os.rename(target, displaced);
+    hadPrior = true;
+  } catch (error) {
+    if (error?.code !== 'ENOENT') throw error;
+  }
+  try {
+    await os.rename(stage, target);
+    await syncPath(os, target);
+    const stat = await os.lstat(target);
+    if (!stat.isDirectory() || stat.uid !== 0 || stat.gid !== 0 || (stat.mode & 0o777) !== mode) throw new Error('READBACK_MISMATCH');
+    for (const file of files) {
+      const childTarget = path.join(target, file.name);
+      const bytes = await os.readFile(childTarget);
+      const child = await os.lstat(childTarget);
+      if (sha256(bytes) !== file.sha256 || !child.isFile() || child.isSymbolicLink()
+        || child.uid !== 0 || child.gid !== 0 || (child.mode & 0o777) !== file.mode) throw new Error('ARTIFACT_MODE_MISMATCH');
+    }
+    if (hadPrior) await os.rm(displaced, { recursive: true, force: true });
+    return { sha256: sha256(canonical(files)), mode, uid: stat.uid, gid: stat.gid, files };
+  } catch (error) {
+    await os.rm(target, { recursive: true, force: true });
+    if (hadPrior) await os.rename(displaced, target);
+    throw error;
+  }
+}
+
+async function atomicReplaceEmptyDirectory(os, target, mode, uid, gid) {
+  if (target !== RUNTIME_DIRECTORY_TARGET) throw new Error('DIRECTORY_TARGET_INVALID');
+  await os.mkdir(path.dirname(target), { recursive: true, mode: 0o755 });
+  const stage = `${target}.stage-${process.pid}`;
+  await os.rm(stage, { recursive: true, force: true });
+  await os.mkdir(stage, { recursive: false, mode });
+  await os.chown(stage, uid, gid);
+  await os.chmod(stage, mode);
+  await syncPath(os, stage);
+  const displaced = `${target}.prior-${process.pid}`;
+  let hadPrior = false;
+  try {
+    const prior = await os.lstat(target);
+    if (!prior.isDirectory() || prior.isSymbolicLink()) throw new Error('SYMLINK_FORBIDDEN');
+    if ((await os.readdir(target)).length !== 0) throw new Error('DIRECTORY_CONTENT_MISMATCH');
+    await os.rm(displaced, { recursive: true, force: true });
+    await os.rename(target, displaced);
+    hadPrior = true;
+  } catch (error) {
+    if (error?.code !== 'ENOENT') throw error;
+  }
+  try {
+    await os.rename(stage, target);
+    await syncPath(os, target);
+    const stat = await os.lstat(target);
+    if (!stat.isDirectory() || stat.isSymbolicLink() || stat.uid !== uid || stat.gid !== gid
+      || (stat.mode & 0o777) !== mode || (await os.readdir(target)).length !== 0) throw new Error('READBACK_MISMATCH');
+    if (hadPrior) await os.rm(displaced, { recursive: true, force: true });
+    return { sha256: sha256(canonical([])), mode, uid: stat.uid, gid: stat.gid, files: [] };
+  } catch (error) {
+    await os.rm(target, { recursive: true, force: true });
+    if (hadPrior) await os.rename(displaced, target);
+    throw error;
+  }
+}
+
+async function readAcl(os, target) {
+  const result = await os.exec('/bin/ls', ['-lde', target]);
+  if (result.code !== 0) throw new Error('ACL_READBACK_FAILED');
+  return result.stdout;
+}
+
+function canonicalAclEntries(bytes) {
+  return bytes.toString('utf8').split('\n').slice(1)
+    .map(line => line.replace(/^\s*\d+:\s*/, '').trim().replace(/\s+/g, ' '))
+    .filter(Boolean);
+}
+
+function aclEvidence(bytes) {
+  return sha256(Buffer.from(canonical(canonicalAclEntries(bytes))));
+}
+
+async function aclReceipt(os, target) {
+  const bytes = await readAcl(os, target);
+  if (canonicalAclEntries(bytes).length !== 0) throw new Error('ACL_WRITE_GRANT_FORBIDDEN');
+  return aclEvidence(bytes);
+}
+
+function hasAclEntry(bytes, entry) {
+  const normalized = entry.trim().replace(/\s+/g, ' ');
+  return canonicalAclEntries(bytes).some(candidate => candidate === normalized);
+}
+
+async function grantTraversal(os, target, prior, runtimeUser) {
+  if (!prior.present || prior.type !== 'directory') throw new Error('TRAVERSAL_TARGET_INVALID');
+  const before = await os.lstat(target);
+  if (!before.isDirectory() || before.isSymbolicLink() || before.uid !== prior.uid || before.gid !== prior.gid
+    || (before.mode & 0o777) !== prior.mode) throw new Error('TRAVERSAL_AUTHORITY_MISMATCH');
+  const beforeAcl = await readAcl(os, target);
+  if (aclEvidence(beforeAcl) !== prior.acl_sha256) throw new Error('ACL_READBACK_FAILED');
+  const entry = `user:${runtimeUser} allow search`;
+  if (hasAclEntry(beforeAcl, entry)) throw new Error('ACL_WRITE_GRANT_FORBIDDEN');
+  const granted = await os.exec('/bin/chmod', ['+a', entry, target]);
+  if (granted.code !== 0) throw new Error('ACL_WRITE_GRANT_FAILED');
+  const afterAcl = await readAcl(os, target);
+  if (!hasAclEntry(afterAcl, entry)) throw new Error('ACL_READBACK_FAILED');
+  const after = await os.lstat(target);
+  if (!after.isDirectory() || after.isSymbolicLink() || after.uid !== prior.uid || after.gid !== prior.gid
+    || (after.mode & 0o777) !== prior.mode) throw new Error('TRAVERSAL_AUTHORITY_MISMATCH');
+  await effectiveWriteDenied(os, runtimeUser, target);
+  return { entry, acl_sha256: aclEvidence(afterAcl), uid: after.uid, gid: after.gid, mode: after.mode & 0o777 };
+}
+
+async function verifyRuntimeGit(os, runtimeUser) {
+  const executable = path.join(PINNED_GIT_INSTALL.executable.target_directory, PINNED_GIT_INSTALL.executable.name);
+  const before = await os.readFile(executable);
+  if (sha256(before) !== PINNED_GIT_INSTALL.executable.sha256) throw new Error('ARTIFACT_HASH_MISMATCH');
+  const result = await os.exec('/usr/bin/sudo', ['-n', '-u', runtimeUser, executable, '--version']);
+  if (result.code !== 0 || result.signal !== null || result.stdout.toString('utf8') !== 'git version 2.54.0\n') {
+    throw new Error('RUNTIME_GIT_EXECUTION_FAILED');
+  }
+  const after = await os.readFile(executable);
+  if (sha256(after) !== PINNED_GIT_INSTALL.executable.sha256 || !Buffer.from(after).equals(Buffer.from(before))) {
+    throw new Error('ARTIFACT_HASH_MISMATCH');
+  }
+}
+
+async function effectiveWriteDenied(os, runtimeUser, target) {
+  const result = await os.exec('/usr/bin/sudo', ['-n', '-u', runtimeUser, '/bin/test', '-w', target]);
+  if (result.code === 0) throw new Error('EFFECTIVE_WRITE_ALLOWED');
+  return true;
+}
+
+async function waitForSocketReadiness(os, runtime_gid) {
+  const deadline = Date.now() + SOCKET_READBACK_TIMEOUT_MS;
+  while (true) {
+    try {
+      const socket = await os.lstat(SOCKET_TARGET);
+      if (socket.isSocket() && socket.uid === 0 && socket.gid === runtime_gid
+        && (socket.mode & 0o777) === 0o660) return;
+    } catch (error) {
+      if (error?.code !== 'ENOENT') throw new Error('SOCKET_READBACK_FAILED');
+    }
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) throw new Error('SOCKET_READBACK_FAILED');
+    await new Promise(resolve => setTimeout(resolve, Math.min(SOCKET_READBACK_INTERVAL_MS, remaining)));
+  }
+}
+
+export function createHostInstaller(osBoundary) {
+  const os = osBoundary ?? realOsBoundary();
+  const required = ['readFile', 'writeFile', 'mkdir', 'lstat', 'readdir', 'realpath', 'rename', 'copyFile', 'chmod', 'chown', 'rm', 'open', 'exec', 'uid', 'gid', 'now'];
+  if (!closed(os, required) || required.some(name => typeof os[name] !== 'function')) throw new Error('INPUT_INVALID');
+
+  const backup = async (target, backupDirectory) => {
+    try {
+      const stat = await os.lstat(target);
+      if (stat.isSymbolicLink()) throw new Error('SYMLINK_FORBIDDEN');
+      if (!GIT_TRAVERSAL_TARGETS.includes(target) && (stat.uid !== 0 || stat.gid !== 0)) {
+        throw new Error('AUTHORITY_FILE_INVALID');
+      }
+      if (stat.isDirectory() && DIRECTORY_FILES[target]) {
+        const actualNames = (await os.readdir(target)).sort();
+        if (!sameArray(actualNames, [...DIRECTORY_FILES[target]].sort())) throw new Error('DIRECTORY_CONTENT_MISMATCH');
+      }
+      const prior = stat.isFile() ? await os.readFile(target) : null;
+      if (prior && prior.length > MAX_FILE_BYTES) throw new Error('BACKUP_TOO_LARGE');
+      const backupPath = prior ? path.join(backupDirectory, sha256(Buffer.from(target))) : null;
+      if (backupPath) {
+        await os.writeFile(backupPath, prior, { mode: 0o600 });
+        await os.chown(backupPath, 0, 0);
+        await os.chmod(backupPath, 0o600);
+        await syncPath(os, backupPath);
+      }
+      return {
+        target, present: true, type: stat.isDirectory() ? 'directory' : 'file',
+        backup_path: backupPath, sha256: prior ? sha256(prior) : null,
+        directory_files: stat.isDirectory() && DIRECTORY_FILES[target]
+          ? await Promise.all(DIRECTORY_FILES[target].map(async name => {
+            const childTarget = path.join(target, name);
+            const child = await os.lstat(childTarget);
+            if (!child.isFile() || child.isSymbolicLink()) throw new Error('SYMLINK_FORBIDDEN');
+            if (child.uid !== 0 || child.gid !== 0) throw new Error('AUTHORITY_FILE_INVALID');
+            const bytes = await os.readFile(childTarget);
+            const directory = path.join(backupDirectory, sha256(Buffer.from(target)));
+            await os.mkdir(directory, { recursive: true, mode: 0o700 });
+            const saved = path.join(directory, name);
+            await os.writeFile(saved, bytes, { mode: 0o600 });
+            await os.chown(saved, 0, 0); await os.chmod(saved, 0o600); await syncPath(os, saved);
+            return {
+              name, backup_path: saved, sha256: sha256(bytes), mode: child.mode & 0o777,
+              uid: child.uid, gid: child.gid, acl_sha256: await aclReceipt(os, childTarget),
+            };
+          })) : [],
+        uid: stat.uid, gid: stat.gid, mode: stat.mode & 0o777,
+        acl_sha256: GIT_TRAVERSAL_TARGETS.includes(target)
+          ? aclEvidence(await readAcl(os, target))
+          : await aclReceipt(os, target),
+      };
+    } catch (error) {
+      if (error?.code === 'ENOENT') return {
+        target, present: false, type: null, backup_path: null, sha256: null,
+        uid: null, gid: null, mode: null, acl_sha256: null,
+      };
+      throw error;
+    }
+  };
+
+  return Object.freeze({
+    async install(plan) {
+      if (os.uid() !== 0 || os.gid() !== 0) throw new Error('ROOT_REQUIRED');
+      if (!closed(plan, ['sources', 'modes', 'runtime_user', 'runtime_uid', 'runtime_gid'])
+        || !closed(plan.sources, Object.keys(plan.sources)) || !closed(plan.modes, Object.keys(plan.modes))
+        || Object.keys(plan.sources).some(target => !exactTarget(target))
+        || Object.keys(plan.modes).some(target => !exactTarget(target))
+        || Object.hasOwn(plan.sources, RUNTIME_DIRECTORY_TARGET)
+        || Object.hasOwn(plan.modes, RUNTIME_DIRECTORY_TARGET)
+        || GIT_TRAVERSAL_TARGETS.some(target => Object.hasOwn(plan.sources, target) || Object.hasOwn(plan.modes, target))
+        || !PINNED_GIT_ARTIFACTS.every(artifact => Object.hasOwn(plan.sources, artifact.target_directory)
+          && plan.modes[artifact.target_directory] === 0o755)
+        || typeof plan.runtime_user !== 'string' || !Number.isSafeInteger(plan.runtime_uid)
+        || plan.runtime_uid !== 501 || !Number.isSafeInteger(plan.runtime_gid)) throw new Error('INPUT_INVALID');
+      const installationId = sha256(canonical({ at: os.now(), sources: plan.sources })).slice(0, 32);
+      const backupDirectory = path.join(BACKUP_ROOT, installationId);
+      await os.mkdir(backupDirectory, { recursive: true, mode: 0o700 });
+      await os.chown(backupDirectory, 0, 0);
+      await os.chmod(backupDirectory, 0o700);
+      const prior = [];
+      for (const target of HOST_INSTALL_TARGETS) {
+        const receipt = await backup(target, backupDirectory);
+        prior.push(GIT_TRAVERSAL_TARGETS.includes(target)
+          ? { ...receipt, temporary_acl_entry: `user:${plan.runtime_user} allow search` }
+          : receipt);
+      }
+      const manifest = {
+        schema_version: '1.0', installation_id: installationId, created_at: os.now(),
+        service_label: SERVICE_LABEL, prior, preserves: [...ROLLBACK_PRESERVES],
+      };
+      const manifestBytes = Buffer.from(canonical(manifest));
+      const manifestPath = path.join(backupDirectory, 'manifest.json');
+      await atomicReplace(os, manifestPath, manifestBytes, 0o600);
+
+      const installed = [];
+      try {
+        for (const [target, source] of Object.entries(plan.sources)) {
+          if (!path.isAbsolute(source) || !exactTarget(target)) throw new Error('INPUT_INVALID');
+          const targetMode = plan.modes[target];
+          if (![0o600, 0o640, 0o700, 0o644, 0o755].includes(targetMode)) throw new Error('MODE_INVALID');
+          const sourceStat = await os.lstat(source);
+          if (sourceStat.isSymbolicLink()) throw new Error('SOURCE_SYMLINK_FORBIDDEN');
+          if (Boolean(DIRECTORY_FILES[target]) !== sourceStat.isDirectory()) throw new Error('SOURCE_INVALID');
+          const receipt = sourceStat.isDirectory()
+            ? await atomicReplaceDirectory(os, target, source, targetMode)
+            : await (async () => {
+              const sourceBytes = await os.readFile(source);
+              if (sourceBytes.length === 0 || sourceBytes.length > MAX_FILE_BYTES) throw new Error('SOURCE_INVALID');
+              return atomicReplace(os, target, sourceBytes, targetMode);
+            })();
+          const acl_sha256 = await aclReceipt(os, target);
+          await effectiveWriteDenied(os, plan.runtime_user, target);
+          const child_authority = [];
+          for (const file of receipt.files ?? []) {
+            const childTarget = path.join(target, file.name);
+            const child_acl_sha256 = await aclReceipt(os, childTarget);
+            await effectiveWriteDenied(os, plan.runtime_user, childTarget);
+            child_authority.push({ path: childTarget, acl_sha256: child_acl_sha256, effective_write_denied: true });
+          }
+          installed.push({ target, ...receipt, acl_sha256, child_authority });
+        }
+        const runtimeDirectory = await atomicReplaceEmptyDirectory(os, RUNTIME_DIRECTORY_TARGET, 0o755, 0, 0);
+        const runtimeDirectoryAcl = await aclReceipt(os, RUNTIME_DIRECTORY_TARGET);
+        await effectiveWriteDenied(os, plan.runtime_user, RUNTIME_DIRECTORY_TARGET);
+        installed.push({
+          target: RUNTIME_DIRECTORY_TARGET, ...runtimeDirectory,
+          acl_sha256: runtimeDirectoryAcl, child_authority: [],
+        });
+        const unloaded = await os.exec('/bin/launchctl', ['bootout', 'system/' + SERVICE_LABEL]);
+        if (![0, 3, 113].includes(unloaded.code)) throw new Error('SERVICE_UNLOAD_FAILED');
+        const loaded = await os.exec('/bin/launchctl', ['bootstrap', 'system', '/Library/LaunchDaemons/com.juanerai.change-coordinator.plist']);
+        if (loaded.code !== 0) throw new Error('SERVICE_LOAD_FAILED');
+        await waitForSocketReadiness(os, plan.runtime_gid);
+        const service = await os.exec('/bin/launchctl', ['print', 'system/' + SERVICE_LABEL]);
+        if (service.code !== 0) throw new Error('SERVICE_READBACK_FAILED');
+        for (const target of GIT_TRAVERSAL_TARGETS) {
+          const authority = await grantTraversal(os, target, prior.find(value => value.target === target), plan.runtime_user);
+          installed.push({ target, ...authority, effective_write_denied: true });
+        }
+        await verifyRuntimeGit(os, plan.runtime_user);
+        return { manifest_path: manifestPath, manifest_sha256: sha256(manifestBytes), installed, service_sha256: sha256(service.stdout) };
+      } catch (error) {
+        await this.rollback({
+          manifest_path: manifestPath,
+          manifest_sha256: sha256(manifestBytes),
+          revocation_receipt_sha256: '0'.repeat(64),
+          emergency_pre_activation: true,
+        });
+        throw error;
+      }
+    },
+
+    async rollback(request) {
+      // Activated rollback requires a provider revoke receipt before local restoration.
+      if (os.uid() !== 0 || os.gid() !== 0) throw new Error('ROOT_REQUIRED');
+      if (!closed(request, ['manifest_path', 'manifest_sha256', 'revocation_receipt_sha256', 'emergency_pre_activation'])
+        || !path.isAbsolute(request.manifest_path)
+        || !/^[0-9a-f]{64}$/.test(request.manifest_sha256)
+        || !/^[0-9a-f]{64}$/.test(request.revocation_receipt_sha256)
+        || typeof request.emergency_pre_activation !== 'boolean') throw new Error('INPUT_INVALID');
+      if (!request.emergency_pre_activation && request.revocation_receipt_sha256 === '0'.repeat(64)) throw new Error('REVOCATION_REQUIRED');
+      const manifestBytes = await os.readFile(request.manifest_path);
+      if (sha256(manifestBytes) !== request.manifest_sha256) throw new Error('MANIFEST_MISMATCH');
+      const manifest = JSON.parse(manifestBytes.toString('utf8'));
+      if (canonical(manifest) !== manifestBytes.toString('utf8') || manifest.service_label !== SERVICE_LABEL
+        || !Array.isArray(manifest.prior) || !sameArray(manifest.preserves, ROLLBACK_PRESERVES)) throw new Error('MANIFEST_INVALID');
+      const unloaded = await os.exec('/bin/launchctl', ['bootout', 'system/' + SERVICE_LABEL]);
+      if (![0, 3, 113].includes(unloaded.code)) throw new Error('SERVICE_UNLOAD_FAILED');
+      for (const prior of [...manifest.prior].reverse()) {
+        if (!exactTarget(prior.target)) throw new Error('MANIFEST_INVALID');
+        if (prior.target === STATE_TARGET) {
+          continue;
+        }
+        if (prior.target === RUNTIME_DIRECTORY_TARGET) {
+          if (!prior.present) {
+            await os.rm(prior.target, { recursive: true, force: true });
+            continue;
+          }
+          if (prior.type !== 'directory' || !Array.isArray(prior.directory_files)
+            || prior.directory_files.length !== 0) throw new Error('BACKUP_MISMATCH');
+          await atomicReplaceEmptyDirectory(os, prior.target, prior.mode, prior.uid, prior.gid);
+          await aclReceipt(os, prior.target);
+          continue;
+        }
+        if (GIT_TRAVERSAL_TARGETS.includes(prior.target)) {
+          if (!prior.present || prior.type !== 'directory' || typeof prior.temporary_acl_entry !== 'string') {
+            throw new Error('BACKUP_MISMATCH');
+          }
+          const currentAcl = await readAcl(os, prior.target);
+          if (aclEvidence(currentAcl) !== prior.acl_sha256) {
+            if (!hasAclEntry(currentAcl, prior.temporary_acl_entry)) throw new Error('ACL_READBACK_FAILED');
+            const removed = await os.exec('/bin/chmod', ['-a', prior.temporary_acl_entry, prior.target]);
+            if (removed.code !== 0) throw new Error('ACL_RESTORE_FAILED');
+          }
+          await os.chown(prior.target, prior.uid, prior.gid);
+          await os.chmod(prior.target, prior.mode);
+          const restored = await os.lstat(prior.target);
+          const restoredAcl = await readAcl(os, prior.target);
+          if (!restored.isDirectory() || restored.isSymbolicLink() || restored.uid !== prior.uid
+            || restored.gid !== prior.gid || (restored.mode & 0o777) !== prior.mode
+            || aclEvidence(restoredAcl) !== prior.acl_sha256) throw new Error('READBACK_MISMATCH');
+          continue;
+        }
+        if (prior.type === 'directory' || DIRECTORY_FILES[prior.target]) {
+          if (!prior.present) {
+            await os.rm(prior.target, { recursive: true, force: true });
+            continue;
+          }
+          const restoreSource = path.dirname(prior.directory_files[0]?.backup_path ?? '');
+          if (!restoreSource || prior.directory_files.length !== DIRECTORY_FILES[prior.target]?.length) throw new Error('BACKUP_MISMATCH');
+          for (const file of prior.directory_files) {
+            const bytes = await os.readFile(file.backup_path);
+            if (sha256(bytes) !== file.sha256) throw new Error('BACKUP_MISMATCH');
+          }
+          await atomicReplaceDirectory(os, prior.target, restoreSource, prior.mode, {
+            fileModes: Object.fromEntries(prior.directory_files.map(file => [file.name, file.mode])),
+            enforcePins: false,
+          });
+          continue;
+        }
+        if (prior.present) {
+          const bytes = await os.readFile(prior.backup_path);
+          if (sha256(bytes) !== prior.sha256) throw new Error('BACKUP_MISMATCH');
+          await atomicReplace(os, prior.target, bytes, prior.mode);
+        } else if (prior.target === '/private/var/run/juanerai/change-coordinator.sock') {
+          await os.rm(prior.target, { force: true });
+        } else {
+          await os.rm(prior.target, { force: true });
+        }
+      }
+      return {
+        rolled_back: true,
+        preserves: [...ROLLBACK_PRESERVES],
+        revocation_receipt_sha256: request.revocation_receipt_sha256,
+        readback_sha256: sha256(canonical(manifest.prior)),
+      };
+    },
+  });
+}
+
+const sameArray = (left, right) => Array.isArray(left) && left.length === right.length
+  && left.every((value, index) => value === right[index]);
+
+async function main() {
+  if (process.argv.length !== 3) throw new Error('INPUT_INVALID');
+  const requestBytes = await readFile(process.argv[2]);
+  const request = JSON.parse(requestBytes.toString('utf8'));
+  if (canonical(request) !== requestBytes.toString('utf8')) throw new Error('INPUT_INVALID');
+  const installer = createHostInstaller(realOsBoundary());
+  const result = request.operation === 'rollback'
+    ? await installer.rollback(request.payload)
+    : request.operation === 'install'
+      ? await installer.install(request.payload)
+      : (() => { throw new Error('INPUT_INVALID'); })();
+  process.stdout.write(`${canonical(result)}\n`);
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  try {
+    await main();
+  } catch (error) {
+    process.stderr.write(`${canonical({ outcome: 'FAILED', error_code: String(error?.message ?? 'INSTALL_FAILED').replace(/[^A-Z0-9_]/g, '_') })}\n`);
+    process.exitCode = 70;
+  }
+}

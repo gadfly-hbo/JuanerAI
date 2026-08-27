@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  CHANGE_B, CHANGE_ID, CANDIDATE_SHA, GIT_SHA, SHA256, AGENT_STAGES, EVENT_CLASSES,
+  CHANGE_B, CHANGE_ID, CANDIDATE_SHA, GIT_SHA, SHA256, REPOSITORY_ID, AGENT_STAGES, EVENT_CLASSES,
   MACRO_STATES, PHASES, absent, ambiguous, assertExactResult, assertHelperHealth, bytes,
   conflict, createCoordinatorUnderTest, makeCandidate, makeDelivery, makeDispatch,
   primeState, sha256, unavailable,
@@ -71,6 +71,58 @@ test('TEST-DTF-R1-001: every Controller command is exact and malformed structure
       for (const effect of ['state.writePointer', 'state.writeState', 'ledger.readRemote', 'git.createOrReuseWorktree']) noCall(harness, effect);
     });
   }
+});
+
+test('TEST-DTF-R1-001: all signed Controller commands bind the exact canonical repository identity', async t => {
+  const canonicalRepository = { repository_id: REPOSITORY_ID, canonical_root: '/tmp/dtf-repo', origin: 'origin', integration_branch: 'main' };
+  const historicalRepository = { canonical_root: '/tmp/dtf-repo', origin: 'origin', integration_branch: 'main' };
+  const command = command_kind => {
+    if (command_kind === 'REVISION') return makeDispatch({ command_kind, payload: { changes_requested_ref: 'changes-requested-001', revision_of_candidate_sha: null, resume_phase: 'TEST_RED' }, expected_state_version: 7, expected_state_hash: SHA256 });
+    if (command_kind === 'RESUME') return makeDispatch({ command_kind, payload: { resume_target: { macro_state: 'DELIVERING', phase: 'PR' } }, expected_state_version: 7, expected_state_hash: SHA256 });
+    if (command_kind === 'RELEASE') return makeDispatch({ command_kind, payload: { squash_sha: CANDIDATE_SHA, acceptance_ref: 'acceptance-001', merge_ref: 'merge-001', archive_ref: 'archive-001', origin_main_sha: CANDIDATE_SHA, macbook_main_sha: CANDIDATE_SHA }, expected_state_version: 7, expected_state_hash: SHA256 });
+    return makeDispatch();
+  };
+  const protectedEffects = ['state.writePointer', 'state.writeState', 'ledger.readRemote', 'git.createOrReuseWorktree', 'pull_request.queryCurrent', 'pull_request.createOrReuse', 'handoff.writeReadback'];
+
+  for (const command_kind of ['DISPATCH', 'REVISION', 'RESUME', 'RELEASE']) {
+    await t.test(`${command_kind} accepts the exact four-field repository as signed command input`, async () => {
+      const body = command(command_kind);
+      assert.deepEqual(body.repository, canonicalRepository);
+      const commandBytes = bytes(body);
+      const harness = await createCoordinatorUnderTest();
+      const result = await harness.coordinator.applyControllerCommand({ command_body_bytes: commandBytes, signature_bytes: new Uint8Array([1, 2, 3]) });
+      if (command_kind === 'DISPATCH') {
+        assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
+        assert.equal(harness.stateStore.state.admission.body_sha256, sha256(commandBytes), 'CAUSAL_RED: repository_id must be covered by the admitted canonical signed-body hash');
+      } else {
+        assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED', code: 'STATE_CONFLICT' });
+      }
+      assert.deepEqual(harness.calls.find(call => call.name === 'verifier.verify')?.request.command_body_bytes, commandBytes, 'CAUSAL_RED: the verifier must receive the complete canonical bytes including repository_id');
+    });
+
+    for (const [shape, repository] of [
+      ['a missing required repository field', { repository_id: REPOSITORY_ID, origin: 'origin', integration_branch: 'main' }],
+      ['historical three-field repository (missing repository_id)', historicalRepository],
+      ['wrong repository_id', { ...canonicalRepository, repository_id: 'attacker/Other' }],
+      ['extra repository field', { ...canonicalRepository, inferred_repository: REPOSITORY_ID }],
+    ]) {
+      await t.test(`${command_kind} rejects ${shape} before protected effect`, async () => {
+        const harness = await createCoordinatorUnderTest();
+        const body = { ...command(command_kind), repository };
+        const result = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: new Uint8Array([1, 2, 3]) });
+        assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED', code: 'INPUT_INVALID' });
+        assert.equal(harness.count('verifier.verify'), 1, 'CAUSAL_RED: exact repository schema is checked only after canonical signature verification');
+        for (const effect of protectedEffects) noCall(harness, effect);
+      });
+    }
+  }
+
+  await t.test('repository_id changes the canonical signed body identity', () => {
+    const canonicalBytes = bytes(makeDispatch());
+    const wrongBytes = bytes(makeDispatch({ repository: { ...canonicalRepository, repository_id: 'attacker/Other' } }));
+    assert.notDeepEqual(canonicalBytes, wrongBytes);
+    assert.notEqual(sha256(canonicalBytes), sha256(wrongBytes), 'CAUSAL_RED: repository_id cannot sit outside the canonical signed body');
+  });
 });
 
 test('TEST-DTF-R1-002: a fresh DISPATCH runs the complete normal path from Worktree through freeze and HANDOFF_READY', async () => {
@@ -802,8 +854,109 @@ test('TEST-DTF-R1-007: exact Candidate, Validator, PR, and Handoff identity is r
   });
 });
 
+test('TEST-DTF-R1-008: PR routing uses only the same-process verified DISPATCH repository identity', async t => {
+  await t.test('query and create receive the exact signed repository_id instead of Change or inferred identity', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const admitted = await harness.coordinator.applyControllerCommand(signed());
+    assertExactResult(admitted, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
+    const identity = primeState(harness, {
+      macro_state: 'DELIVERING', phase: 'PR', state_version: 7,
+      admission: harness.stateStore.state.admission,
+      candidate: makeCandidate(), delivery: makeDelivery({ pull_request: null, handoff_sha256: null }),
+    });
+    const result = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+    assertExactResult(result, { operation: 'run', outcome: 'ADVANCED', state: 'DELIVERING' });
+    const query = harness.calls.find(call => call.name === 'pull_request.queryCurrent')?.request;
+    const create = harness.calls.find(call => call.name === 'pull_request.createOrReuse')?.request;
+    assert.deepEqual({ query_repository: query?.repository, create_repository: create?.repository }, { query_repository: REPOSITORY_ID, create_repository: REPOSITORY_ID }, 'CAUSAL_RED: PR authority comes only from acceptedDispatch.body.repository.repository_id');
+    assert.notEqual(query?.repository, CHANGE_ID, 'CAUSAL_RED: Change identity is never repository identity');
+    assert.notEqual(create?.repository, CHANGE_ID, 'CAUSAL_RED: Change identity is never repository identity');
+  });
+
+  await t.test('restart without complete accepted DISPATCH authority blocks before every PR side effect', async () => {
+    const harness = await createCoordinatorUnderTest();
+    const identity = primeState(harness, { macro_state: 'DELIVERING', phase: 'PR', state_version: 7, candidate: makeCandidate(), delivery: makeDelivery({ pull_request: null, handoff_sha256: null }) });
+    const restarted = productionCoordinatorModule.createCoordinatorCore(harness.dependencies);
+    const result = await restarted.run({ change_id: CHANGE_ID, ...identity });
+    assertExactResult(result, { operation: 'run', outcome: 'BLOCKED', state: 'BLOCKED' });
+    assert.equal(result.payload.blocked_reason, 'ADMISSION_EVIDENCE_UNAVAILABLE');
+    noCall(harness, 'pull_request.queryCurrent');
+    noCall(harness, 'pull_request.createOrReuse');
+    noCall(harness, 'pull_request.readback');
+  });
+});
+
 test('TEST-DTF-R1-010: every RELEASE failure retains active pointer and exact replay clears it only after CLOSED', async t => {
   const releaseFor = identity => signed({ command_kind: 'RELEASE', payload: { squash_sha: CANDIDATE_SHA, acceptance_ref: 'acceptance-001', merge_ref: 'merge-001', archive_ref: 'archive-001', origin_main_sha: CANDIDATE_SHA, macbook_main_sha: CANDIDATE_SHA }, expected_state_version: identity.expected_state_version, expected_state_hash: identity.expected_state_hash });
+  await t.test('first RELEASE rejects a foreign active Change before sync or durable effect and preserves pointer bytes', async () => {
+    const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
+    harness.stateStore.pointer = { schema_version: '1.0', active_change_id: CHANGE_B };
+    const pointerBefore = bytes(harness.stateStore.pointer);
+    const stateBefore = structuredClone(harness.stateStore.state);
+    const result = await harness.coordinator.applyControllerCommand(releaseFor(identity));
+    assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED' });
+    assert.deepEqual(bytes(harness.stateStore.pointer), pointerBefore, 'CAUSAL_RED: a RELEASE for another Change must leave the active pointer byte-identical');
+    assert.deepEqual(harness.stateStore.state, stateBefore, 'CAUSAL_RED: foreign pointer ownership must reject before State mutation');
+    for (const effect of ['git.syncMainFfOnly', 'ledger.readRemote', 'ledger.prepareAppend', 'ledger.commitAndPush', 'ledger.readRemoteAppend', 'state.writeState', 'state.writePointer']) noCall(harness, effect);
+  });
+
+  await t.test('CLOSED replay rejects when the retained pointer belongs to another Change and cannot clear it', async () => {
+    const seed = await createCoordinatorUnderTest(); const awaiting = primeState(seed, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
+    const originalBody = makeDispatch({ command_kind: 'RELEASE', command_id: 'release-foreign-pointer', idempotency_id: 'release-foreign-pointer-idem', receipt_digest: 'c'.repeat(64), payload: { squash_sha: CANDIDATE_SHA, acceptance_ref: 'acceptance-001', merge_ref: 'merge-001', archive_ref: 'archive-001', origin_main_sha: CANDIDATE_SHA, macbook_main_sha: CANDIDATE_SHA }, expected_state_version: awaiting.expected_state_version, expected_state_hash: awaiting.expected_state_hash });
+    const originalRequest = { command_body_bytes: bytes(originalBody), signature_bytes: new Uint8Array([1, 2, 3]) };
+    const harness = await createCoordinatorUnderTest(); primeState(harness, { macro_state: 'CLOSED', phase: null, state_version: 9, candidate: makeCandidate(), delivery: makeDelivery(), last_controller_command_id: originalBody.command_id, evidence: { remote_tip: GIT_SHA, last_event_id: 'event-001', last_event_hash: SHA256, last_readback_sha256: sha256(originalRequest.command_body_bytes) } });
+    harness.stateStore.pointer = { schema_version: '1.0', active_change_id: CHANGE_B };
+    const pointerBefore = bytes(harness.stateStore.pointer);
+    const stateBefore = structuredClone(harness.stateStore.state);
+    const result = await harness.coordinator.applyControllerCommand(originalRequest);
+    assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED' });
+    assert.deepEqual(bytes(harness.stateStore.pointer), pointerBefore, 'CAUSAL_RED: CLOSED replay cannot clear a retained pointer owned by another Change');
+    assert.deepEqual(harness.stateStore.state, stateBefore);
+    for (const effect of ['git.syncMainFfOnly', 'ledger.readRemote', 'ledger.prepareAppend', 'ledger.commitAndPush', 'ledger.readRemoteAppend', 'state.writeState', 'state.writePointer']) noCall(harness, effect);
+  });
+
+  await t.test('every non-equal MacBook/origin/squash SHA combination rejects before sync and all business effects', async t => {
+    const thirdSha = '3'.repeat(40);
+    const combinations = [
+      ['macbook differs', GIT_SHA, CANDIDATE_SHA, CANDIDATE_SHA],
+      ['origin differs', CANDIDATE_SHA, GIT_SHA, CANDIDATE_SHA],
+      ['squash differs', CANDIDATE_SHA, CANDIDATE_SHA, GIT_SHA],
+      ['macbook and origin agree away from squash', GIT_SHA, GIT_SHA, CANDIDATE_SHA],
+      ['macbook and squash agree away from origin', GIT_SHA, CANDIDATE_SHA, GIT_SHA],
+      ['origin and squash agree away from macbook', CANDIDATE_SHA, GIT_SHA, GIT_SHA],
+      ['all three differ', CANDIDATE_SHA, GIT_SHA, thirdSha],
+    ];
+    for (const [name, macbook_main_sha, origin_main_sha, squash_sha] of combinations) {
+      await t.test(name, async () => {
+        const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
+        const pointerBefore = bytes(harness.stateStore.pointer);
+        const stateBefore = structuredClone(harness.stateStore.state);
+        const result = await harness.coordinator.applyControllerCommand(signed({ command_kind: 'RELEASE', payload: { squash_sha, acceptance_ref: 'acceptance-001', merge_ref: 'merge-001', archive_ref: 'archive-001', origin_main_sha, macbook_main_sha }, expected_state_version: identity.expected_state_version, expected_state_hash: identity.expected_state_hash }));
+        assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'REJECTED' });
+        assert.deepEqual(bytes(harness.stateStore.pointer), pointerBefore, 'CAUSAL_RED: unequal signed RELEASE evidence must retain the exact active pointer bytes');
+        assert.deepEqual(harness.stateStore.state, stateBefore, 'CAUSAL_RED: unequal signed RELEASE evidence must reject before State mutation');
+        for (const effect of ['git.syncMainFfOnly', 'ledger.readRemote', 'ledger.prepareAppend', 'ledger.commitAndPush', 'ledger.readRemoteAppend', 'state.writeState', 'state.writePointer']) noCall(harness, effect);
+      });
+    }
+  });
+
+  await t.test('pointer is re-read immediately before clear and an ownership change enters manual stop without clearing', async () => {
+    const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
+    const writeState = harness.dependencies.state.writeState;
+    harness.dependencies.state.writeState = async request => {
+      const result = await writeState(request);
+      if (result?.kind === 'OK' && request.state?.macro_state === 'CLOSED') harness.stateStore.pointer = { schema_version: '1.0', active_change_id: CHANGE_B };
+      return result;
+    };
+    const result = await harness.coordinator.applyControllerCommand(releaseFor(identity));
+    assertExactResult(result, { operation: 'applyControllerCommand', outcome: 'BLOCKED', state: 'BLOCKED' });
+    assert.equal(result.payload.next_action, 'MANUAL_CONTROLLER_STOP');
+    assert.equal(harness.stateStore.pointer.active_change_id, CHANGE_B, 'CAUSAL_RED: a pointer ownership change before clear must be retained');
+    assert.equal(harness.count('state.writePointer'), 0, 'CAUSAL_RED: stale RELEASE ownership must never attempt pointer clear');
+    const names = harness.calls.map(call => call.name);
+    assert.ok(names.lastIndexOf('state.readPointer') > names.indexOf('state.writeState'), 'CAUSAL_RED: pointer ownership must be re-read after CLOSED persistence and immediately before any clear');
+  });
+
   await t.test('first valid RELEASE syncs, appends evidence, persists CLOSED, then clears the active pointer', async () => {
     const harness = await createCoordinatorUnderTest(); const identity = primeState(harness, { macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 8, candidate: makeCandidate(), delivery: makeDelivery() });
     const result = await harness.coordinator.applyControllerCommand(releaseFor(identity));

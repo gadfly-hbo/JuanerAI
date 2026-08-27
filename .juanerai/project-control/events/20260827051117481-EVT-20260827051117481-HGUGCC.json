@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827051117481-HGUGCC",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-27T05:11:17.481Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-20260827"
+  },
+  "summary": "Descendant code Candidate eb090800d85672470f6b6b950b2c99a14665e21b tree d04986e552ea0f27ced0a364805b9a1c8002fdc0 pushed with local/remote equality; installed Coordinator 4efc2f28 is stale versus repaired c04193f0, so lifecycle stops before fresh Validator and PR",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

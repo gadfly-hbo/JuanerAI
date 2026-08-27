@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827015114347-8JQ7M4",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-27T01:51:14.347Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation"
+  },
+  "summary": "Mode Activation two-cause Test Gate reached TDD_READY with exact frozen hashes",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260827034902947-VETL40",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-08-27T03:49:02.947Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-20260827"
+  },
+  "summary": "Fresh exact-Candidate Validator rejected 716c0ac7809f118e54c741645fd25ec4962c7c98: RELEASE can clear another Change pointer, macbook_main_sha is not bound to squash_sha, and current Candidate evidence is stale; lifecycle stopped before PR",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

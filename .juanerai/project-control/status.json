@@ -6,15 +6,15 @@
     "product": "Xanthil CLI"
   },
   "phase": {
-    "id": "foundation_compatibility_repair",
-    "label": "Foundation Compatibility Repair: FINAL_INTEGRATION_PIPELINE",
-    "ordinal": 4,
+    "id": "ARCHIVE_DESCENDANT_VALIDATION_GATE",
+    "label": "Archive descendant validation Gate",
+    "ordinal": 5,
     "total": 8
   },
   "health": "validating",
-  "summary": "Bounded safety revision GREEN and Regression are current: focused 174/174, complete change-coordinator 201/201, project-board 12/12 and canonical runner exit 0; prior Candidate 419746cc45deeb21ebe2688bf1151b48919cedab and Validator FAIL remain historical rejected evidence.",
-  "current_objective": "Freeze the exact replacement Candidate from the authorized two Test, two production, Controller evidence and project-control paths without changing the canonical Spec, then bind PR #16 and one fresh Validator to that exact Head.",
-  "next_action": "Controller performs exact staging, non-amend Candidate commit, same-branch push and PR #16 readback; only one fresh exact-Candidate juaner_validator may run, and another safety FAIL stops.",
+  "summary": "Candidate 3a3a80073b9d442112470e15f24b44522de85bd7 passed fresh exact-Candidate validation and PR #17 initial review/CI; one-time MacBook bootstrap archive and byte-equal canonical spec publication are complete",
+  "current_objective": "Form the same-PR archive descendant Candidate and obtain the required fresh exact-Candidate Validator verdict",
+  "next_action": "Precisely stage the seven byte-identical archive moves, canonical spec and Controller evidence; commit/push, verify PR Head equality, run final validation and one fresh archive-descendant Validator; merge, main sync, RELEASE and product Change remain locked",
   "blockers": [],
   "milestones": [
     {
@@ -55,7 +55,7 @@
     {
       "id": "archive",
       "label": "归档",
-      "status": "locked"
+      "status": "active"
     }
   ],
   "agents": [
@@ -69,54 +69,54 @@
     {
       "id": "juaner_spec",
       "label": "Spec Agent",
-      "model": "gpt-5.6-sol · high (R2 route)",
+      "model": "gpt-5.6-sol · xhigh (R3 route)",
       "status": "complete",
-      "activation": "Spec Gate 前"
+      "activation": "Mode Activation Spec Gate 前"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
-      "model": "gpt-5.6-terra · high (R2 automatic escalation)",
+      "model": "gpt-5.6-sol · xhigh (R3 direct safety route)",
       "status": "complete",
-      "activation": "Spec Gate PASS"
+      "activation": "Mode Activation Spec Gate PASS"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
-      "model": "gpt-5.6-terra · high (R2 route)",
+      "model": "gpt-5.6-sol · high (R3 route)",
       "status": "complete",
-      "activation": "TDD_READY + explicit exact production-file scope"
+      "activation": "TDD_READY + exact Activation production and host scope"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
-      "model": "gpt-5.6-sol · high (R2 route)",
+      "model": "gpt-5.6-sol · xhigh (R3 route)",
       "status": "active",
-      "activation": "实现与证据冻结"
+      "activation": "Activation Candidate and dual-host evidence frozen"
     }
   ],
   "metrics": [
     {
       "id": "requirements",
-      "label": "FCR-1 through FCR-4 implementation-conformance requirements",
-      "done": 4,
-      "total": 4
+      "label": "Frozen Mode Activation planning decisions",
+      "done": 12,
+      "total": 12
     },
     {
       "id": "tests",
-      "label": "FCR causal RED leaves",
-      "done": 4,
-      "total": 4
+      "label": "Activation canary contracts",
+      "done": 0,
+      "total": 14
     },
     {
       "id": "tasks",
-      "label": "FCR implementation corrections",
-      "done": 4,
-      "total": 4
+      "label": "Mode Activation implementation tasks",
+      "done": 0,
+      "total": 1
     },
     {
       "id": "decisions",
-      "label": "Frozen Mode Activation plan and FCR authorization",
+      "label": "Mode Activation implementation authorization",
       "done": 1,
       "total": 1
     }
@@ -817,6 +817,72 @@
       "label": "Final two-item safety post-repair project-control, project-board and canonical runner PASS",
       "path": "tools/harness/validation/run",
       "status": "verified"
+    },
+    {
+      "id": "EVD-117",
+      "label": "Host Runtime replacement preflight PASS receipt SHA-256 79aab423592aae3a6a986eebdeb86b6ce35ddccce2e043cf1d05dab93b988597",
+      "path": "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/preflight-receipt.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-118",
+      "label": "Manifest-bound rollback receipt SHA-256 5f7e72fe370d71a6fba0447e6deff9352bde5c0ae275661eb69a6e12609d1c9c",
+      "path": "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/rollback-receipt-abdb5981.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-119",
+      "label": "Rollback audit PASS receipt SHA-256 814239de6823b5c0fec50d179130422e0c1ff1c44e44c2a64a3bed9b6017bb33",
+      "path": "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/rollback-audit-receipt.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-120",
+      "label": "Clean replacement install receipt SHA-256 961d7a1a12d9506e80f3a23b718489e1a5fdd9c2fbc3f1bf1bfb278c0ffbb2a4",
+      "path": "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/install-receipt.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-121",
+      "label": "Replacement manifest SHA-256 c88291bc466cb970a9ed75c75bd7bb3ca2dab506f06a3bb290635c07f2ef7e36",
+      "path": "/private/var/db/juanerai/change-coordinator-install-backups/208b5df591a784d0c75c5e19e1ffde5a/manifest.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-122",
+      "label": "Host Runtime replacement postflight PASS receipt SHA-256 e8b38bac53366059e947d5b366b94d5d35c008edab5a3ce6d1db869d6216dd8e",
+      "path": "/Users/bendandebaba/.juanerai/mode-activation-runtime-replacement-eb090800/postflight-receipt.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-123",
+      "label": "Installed Coordinator exact source/runtime equality SHA-256 c04193f05a704890be51a22938123c527d0157f0f6270ad2324fc4b65415e996",
+      "path": "tools/harness/change-coordinator/coordinator.mjs",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-124",
+      "label": "Fresh exact-Candidate Validator PASS for 3a3a80073b9d442112470e15f24b44522de85bd7 tree 7732fc428fbd27d63d63eb5b473d62cc898ad702",
+      "path": "openspec/changes/archive/2026-08-26-mode-activation/verification.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-125",
+      "label": "PR #17 initial review Head 3a3a80073b9d442112470e15f24b44522de85bd7 mergeable with GitHub Canonical validation SUCCESS",
+      "path": "https://github.com/gadfly-hbo/JuanerAI/pull/17",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-126",
+      "label": "Mode Activation active package atomically moved byte-identical to bootstrap archive 2026-08-26-mode-activation",
+      "path": "openspec/changes/archive/2026-08-26-mode-activation/",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-127",
+      "label": "Published canonical Mode Activation spec byte-equal SHA-256 6b468718cdc6582233f57270a73d8898645446c75a8218a1aeb5de82898d5df4",
+      "path": "openspec/specs/mode-activation/spec.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -827,9 +893,9 @@
       "mitigation": "fixtures.mjs exports unused helper `already`; the frozen post-Test hard stop defers the one-line removal to Mode Activation or a later authorized test-only cleanup."
     }
   ],
-  "updated_at": "2026-08-26T07:32:25.370Z",
+  "updated_at": "2026-08-27T06:12:14.772Z",
   "updated_by": {
     "role": "controller",
-    "session": "controller-fcr-security-revision"
+    "session": "controller-mode-activation-20260827"
   }
 }

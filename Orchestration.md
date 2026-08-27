@@ -33,6 +33,9 @@ The configured project agents are juaner_spec, juaner_test, juaner_worker, and j
 
 ## Dispatch Rule
 
+Activated dual-device product Changes use the signed authority package and
+execution boundary in `docs/governance/product-change-execution-policy.md`.
+
 Decompose by vertical user value first, then give each role or domain a bounded slice. Every dispatch includes:
 
 - Change and Requirement IDs.

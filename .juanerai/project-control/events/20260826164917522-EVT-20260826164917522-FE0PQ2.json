@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826164917522-FE0PQ2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-26T16:49:17.522Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-canary-boundary"
+  },
+  "summary": "Replacement Candidate c4a4f4d created and read back; lineage evidence closure prepared",
+  "status_after": "active",
+  "evidence_refs": []
+}

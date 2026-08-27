@@ -66,6 +66,9 @@ Before proposing a new Agent Runtime, Model Pack runtime, Runtime Port, or Runti
 
 ## Change Workflow
 
+Activated dual-device product Changes follow the sole execution authority in
+`docs/governance/product-change-execution-policy.md`.
+
 Observable behavior changes follow:
 
 Request -> Explore -> Proposal -> Specification -> Design -> Tasks -> Spec Gate -> Test Design -> RED -> Implementation -> GREEN -> Regression -> Independent Verification -> Acceptance -> Archive.

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260826162710258-JIEQ2N",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-26T16:27:10.258Z",
+  "actor": {
+    "role": "controller",
+    "session": "controller-mode-activation-r3"
+  },
+  "summary": "Stopped before PR/Validator because no supported production entry can run CAN-MA-07/08 positive GitHub/Ledger effects without a valid DISPATCH; direct adapter invocation would bypass Host Loop/Foundation.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}
