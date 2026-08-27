@@ -1,5 +1,5 @@
 model = "gpt-5.6-sol"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 sandbox_mode = "workspace-write"
 [agents]
@@ -9,6 +9,100 @@ default_subagent_model = "gpt-5.6-terra"
 default_subagent_reasoning_effort = "high"
 interrupt_message = true
 
-
 [sandbox_workspace_write]
 network_access = true
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-agents-md-optimize/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-cdi-init/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-codex-leader/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-codex-validator/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-handoff-self-audit/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-memory-review/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-process-observe/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-product-iteration/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-project-bootstrap/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-project-lifecycle/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-task-bus/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-task-create/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-task-handoff/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-task-next/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-task-review/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentops-task-status/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/modelevol-controller/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/modelevol-flow/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/modelevol-model-application/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/modelevol-product-upgrade/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/modelevol-review/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/agentharness-structure-grill/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/cdi-session-end/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/huangbo/.codex/skills/cdi-session-start/SKILL.md"
+enabled = false
