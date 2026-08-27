@@ -33,6 +33,8 @@ A Model Pack will eventually declare:
 
 Deterministic Model Pack inference crosses its own business `AnalyticalModelRuntime` Port. An Agent Harness may support an Agent scenario but is not an implicit Model Pack runtime dependency. Runtime selection and provenance follow `docs/adr/0003-business-runtime-port-strategy.md`.
 
+Domain Packs and Model Packs consume declared Data and Ontology snapshots. A Pack may provide methods or model evidence that supports a run-scoped Hypothesis, Decision, or Strategy evaluation, but it does not own foundational authority or silently create, mutate, promote, or activate a long-term asset.
+
 ## Governance
 
 - Manifests use a closed, versioned schema once approved.
@@ -40,6 +42,7 @@ Deterministic Model Pack inference crosses its own business `AnalyticalModelRunt
 - Capability negotiation is explicit; unknown versions fail closed.
 - Package code cannot gain permissions merely because it is installed.
 - Package outputs are evidence or recommendations until a separate Decision and Action contract authorizes effects.
+- Package outputs may support an asset candidate only through the explicit draft, review, immutable-version, and activation path defined by the asset domain.
 - Contract tests verify every package surface.
 
 No package schema or default field value is frozen during cold start.

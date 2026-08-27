@@ -13,7 +13,7 @@ Controller work with sufficient authority and evidence is completed directly. A 
 | Domain | Owns | Does Not Own |
 |---|---|---|
 | product-governance | product docs, terminology, OpenSpec, architecture, shared decisions | product implementation |
-| experience | apps/cli, apps/console, future user surfaces | Product Core or infrastructure SDK behavior |
+| experience | Xanthil Desktop, compatibility-preserved CLI, operator Console, and later user surfaces | Product Core or infrastructure SDK behavior |
 | core | packages/product-core, application, ports, contracts | concrete infrastructure |
 | capability-packs | Domain Pack and Model Pack SDKs and package-private logic | product-wide contracts |
 | runtime-data | adapters and deployment profiles | product intent or business rules |
