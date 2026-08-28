@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "brief_id": "D05-XD-001",
+  "type": "STRUCTURE_CONTRACT",
+  "status": "resolved",
+  "title": "Xanthil Desktop D0.5 产品化与持久结构整体确认",
+  "why_now": "双模式 UI 已由用户人工接受；Desktop 技术、本地 Python、持久化、独立会话 Runtime、跨平台验收和首个 Application-led Change 已完成两轮开发就绪审查，修订包在 Review 002 获得 PASS。进入任何 Product Change 前必须由用户整体确认这些产品级边界。",
+  "prompt": "是否整体批准 D05-XD-001 产品化决策包与 D05-XD-STRUCT-001 的 S01-S23，使 Controller 仅可进入 CHG-xanthil-desktop-session-bootstrap 的独立 D1-A intake？",
+  "options": [
+    {
+      "id": "approve_package",
+      "label": "整体批准",
+      "description": "推荐。只解锁首个 Change 的 D1-A 与 fresh review；不授权 Spec、DISPATCH、依赖、Schema、测试、实现、真实模型或 Model Pack。"
+    },
+    {
+      "id": "approve_with_changes",
+      "label": "带编号修改",
+      "description": "列出 D05 或 S 项号及替代决定；Controller 修订后重新执行受影响的开发就绪 Gate。"
+    },
+    {
+      "id": "hold",
+      "label": "暂缓",
+      "description": "保持 D0.5 停线，不创建 Product Change 或任何可执行合同。"
+    }
+  ],
+  "recommended_option_id": "approve_package",
+  "document_refs": [
+    {
+      "label": "D0.5 产品化决策包",
+      "path": "docs/planning/2026-08-28/xanthil-desktop-d05-productization-decision-package.md"
+    },
+    {
+      "label": "D0.5 持久结构决策账本",
+      "path": "docs/planning/2026-08-28/xanthil-desktop-d05-structure-decision-ledger.md"
+    },
+    {
+      "label": "开发就绪 Review 002 PASS",
+      "path": "docs/planning/2026-08-28/reviews/d05-development-readiness-review-002.md"
+    },
+    {
+      "label": "开发就绪 Review 001 停线记录",
+      "path": "docs/planning/2026-08-28/reviews/d05-development-readiness-review-001.md"
+    },
+    {
+      "label": "当前基线证明",
+      "path": "docs/planning/2026-08-28/xanthil-desktop-current-baseline-attestation.md"
+    }
+  ],
+  "cli_instruction": "正式决定请在 Codex CLI 回复：批准 D05-XD-001 与 D05-XD-STRUCT-001 全部 S01-S23；如需修改，请列出对应 D05/S 项号。项目板不会提交或执行选择。",
+  "created_at": "2026-08-28T12:30:00+08:00",
+  "updated_at": "2026-08-28T11:37:35.186Z",
+  "resolution_summary": "User approved D05-XD-001 and D05-XD-STRUCT-001 S01-S23 as one package on 2026-08-28; approval unlocks D1-A only."
+}

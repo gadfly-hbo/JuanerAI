@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828112021478-KRHRJT",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-28T11:20:21.478Z",
+  "actor": {
+    "role": "controller",
+    "session": "d05-xanthil-desktop-productization"
+  },
+  "summary": "Accepted Xanthil Desktop dual-mode handoff and entered D0.5 development-readiness review",
+  "status_after": "validating",
+  "evidence_refs": []
+}

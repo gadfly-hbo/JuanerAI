@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828113141621-7GK0AA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-28T11:31:41.621Z",
+  "actor": {
+    "role": "controller",
+    "session": "d05-xanthil-desktop-productization"
+  },
+  "summary": "D0.5 Review 002 PASS 后请求用户整体确认产品化与结构包",
+  "status_after": "validating",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/D05-XD-001.json"
+  ]
+}

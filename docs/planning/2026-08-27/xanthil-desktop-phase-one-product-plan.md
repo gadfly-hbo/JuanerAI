@@ -1,6 +1,6 @@
 # Xanthil Desktop First-Phase Product Plan
 
-> Status: frozen product input; independent Development-Readiness Review PASS; explicit user approval recorded 2026-08-27; product Change authority not granted
+> Status: frozen product input; D0.5 package approved; amended by user-approved `D05-XD-PRG-001`; first Product Change authority is conditional on D1-A prerequisite closure
 > Date: 2026-08-27
 > Platforms: macOS + Windows
 > Boundary: this plan creates no OpenSpec Change, implementation, dependency, Schema, test, model/data call, deployment, or project-control authority
@@ -9,7 +9,7 @@
 
 Xanthil pauses continued CLI product development and becomes desktop-first. Its first Desktop product is a Data Analyst assistant that carries a user from Data preparation through evidence-bound analysis, report output, and execution feedback. It preserves the reusable Product Core/Application/Port/Adapter/Profile and evidence discipline fixed by the first local-analysis slice, while replacing CLI presentation and historical first-Change sequencing with a macOS and Windows Desktop experience.
 
-The first delivery is not production code. It is a static product-manager Demo reviewed against [`attachments/xanthil-desktop-static-demo-brief.md`](attachments/xanthil-desktop-static-demo-brief.md). Productization planning starts only after that Demo is approved.
+The first delivery was a static product-manager Demo reviewed against [`attachments/xanthil-desktop-static-demo-brief.md`](attachments/xanthil-desktop-static-demo-brief.md). The user accepted the dual-mode UI on 2026-08-28, which opened D0.5 productization planning but did not itself authorize a Product Change.
 
 ## 2. Product-source hierarchy
 
@@ -55,7 +55,7 @@ On both macOS and Windows, one approved synthetic Project/Session completes:
 ```text
 Data preparation
   -> local cleaning/aggregation
-  -> Free analysis with Hypothesis/Evidence/Refutation
+  -> Evidence-based Analysis (循证分析) with Hypothesis/Evidence/Refutation
   -> report review and lock
   -> execution feedback and separate asset writeback proposals
 ```
@@ -76,11 +76,11 @@ Xanthil combines business-requirement intake with source/raw/prepared/aggregate 
 
 Extraction, validation, transformation, and aggregate computation occur locally through an approved Python boundary. Source/raw and unapproved prepared detail do not enter an LLM. Admitted aggregate Evidence still requires privacy and purpose checks.
 
-The user-provided local-Python technical proposal is a mandatory input before any Python-introducing productization Change. This plan does not select the process topology, dependency environment, IPC, persistence, or security mechanism.
+The D0.5 package at [`../2026-08-28/xanthil-desktop-d05-productization-decision-package.md`](../2026-08-28/xanthil-desktop-d05-productization-decision-package.md) supplies the user-approved local-Python technical proposal and product-level process, dependency, IPC, persistence, resource, cancellation, and security boundaries. It passed fresh Development-Readiness Review 002; executable contracts belong to the later Python Change.
 
-### 5.3 Free analysis
+### 5.3 Evidence-based Analysis (循证分析)
 
-Free analysis is the core capability:
+Evidence-based Analysis is the core capability:
 
 - run-scoped Hypotheses must be falsifiable;
 - supporting, refuting, inconclusive, and missing Evidence remain visible;
@@ -140,7 +140,7 @@ The required contract is [`attachments/asset-promotion-and-writeback-gates.md`](
 
 Every productization Change names the exact reused current contract, the intended delta, compatibility, activation, rollback, and tests. “Reuse the existing architecture” is not enough.
 
-The first productized vertical is not an implementer choice: it must use the re-adopted `member-orders-v2` source fixture and oracle named in the required-capabilities attachment. Replacing that baseline requires an explicit user product decision and plan revision before a different Change can be drafted.
+The first integrated productized vertical is not an implementer choice: it must use the re-adopted `member-orders-v2` source fixture and oracle named in the required-capabilities attachment. It is completed across the ordered Phase-One Changes and is not the acceptance scenario of the earlier Session-bootstrap foundation Change. Replacing that baseline requires an explicit user product decision and plan revision before a different integrated vertical can be drafted.
 
 ## 8. Desktop application shape
 
@@ -154,7 +154,7 @@ The planned product shell contains:
 - visible run and blocking state;
 - dialogs/drawers for confirmation, comparison, review, and scoped settings.
 
-This shape is product intent, not a component or state-management specification. The static Demo must be accepted before productization chooses HTML-first packaging, Electron, Tauri, native shells, embedded browser technology, or another Desktop approach. The chosen technology must support macOS and Windows and preserve Application/business boundaries.
+This shape is product intent, not a component or state-management specification. The accepted Demo opened the D0.5 technology decision; the candidate package selects Electron subject to its own Review and user Gate. The chosen technology must support macOS and Windows and preserve Application/business boundaries.
 
 ## 9. Data and LLM boundary
 
@@ -176,11 +176,12 @@ Model/provider authorization is separate from data admission. A future real-mode
 | D0.5 productization decisions | desktop technology, reuse/delta, local Python technical boundary, first Change shape | Demo approved | user approves complete productization input |
 | D1 foundation vertical | Project/Session shell and one reusable Application-led path | new Change explicitly authorized | scoped acceptance and archive |
 | D2 Data preparation/cleaning | confirmed local data-to-aggregate path | required contracts approved | positive/negative/cancellation/recovery evidence |
-| D3 Free analysis | Hypothesis/Evidence/Refutation, Fork, bounded Subagent, offline evidence-bound mode, Skill/Prompt provenance | D2 accepted | scoped acceptance and archive |
+| D3 Evidence-based Analysis (循证分析) | Hypothesis/Evidence/Refutation, Fork, bounded Subagent, offline evidence-bound mode, Skill/Prompt provenance | D2 accepted | scoped acceptance and archive |
 | D4 Report output | candidate/review/lock and reproducibility | D3 accepted | scoped acceptance and archive |
 | D5 Execution feedback | task/receipt/outcome distinction and draft writeback proposal | D4 accepted | integrated acceptance |
-| `DA_REQUIRED_COMPLETE` | five-capability cross-platform journey accepted | D1–D5 evidence complete | explicit user acceptance |
+| `DA_REQUIRED_COMPLETE` | five-capability development journey accepted with macOS packaged replay and Windows hosted CI evidence | D1–D5 evidence complete | explicit user acceptance; not public-release readiness |
 | Model Pack intake | revised two-phase plan may be activated | `DA_REQUIRED_COMPLETE` | separate user authorization |
+| `JUANERAI_PUBLIC_RELEASE_GATE` | same frozen Release Candidate passes final Windows 11 x64 installed acceptance, macOS Developer ID signing/notarization, Windows Authenticode signing, and cross-platform install/rollback verification | explicit user command to prepare formal JuanerAI release | explicit public-release decision |
 
 Stages do not pre-authorize a fixed number of Changes or allow concurrent work. After D0.5, the Controller chooses the smallest Change topology that preserves a usable vertical slice and the governance workflow.
 
@@ -213,22 +214,23 @@ No hidden retry, fallback, repair, latest-version substitution, partial-success 
 - background autonomous agents, automatic Fork merge, self-changing Skills/Prompts, or hidden repair loops;
 - a production promise of absolute “zero hallucination.”
 
-## 13. Productization decisions still required after the static Demo
+## 13. D0.5 productization decision status
 
-These are deliberate Gates, not permission for an implementer to guess:
+The D0.5 package passed fresh Review 002 and was approved as one whole on 2026-08-28. The following decisions are frozen product input rather than permission for an implementer to guess:
 
 1. Desktop technology and packaging approach for macOS and Windows;
 2. exact first product Change and which existing Runtime/Port/test contracts it reuses;
-3. user-provided local Python technical proposal and its cross-platform, security, dependency, and lifecycle implications;
+3. local Python technical proposal and its cross-platform, security, dependency, and lifecycle implications;
 4. Project/Session persistence, identity, retention, deletion, recovery, and migration scope;
 5. exact Fork/Subagent Runtime, concurrency, cancellation, sandbox, and merge boundaries;
 6. exact Skill/Prompt administration surface and version authority;
 7. first writeback scope: read-only asset snapshot only or draft candidate creation;
 8. real-model/provider and data-egress contract, if any;
 9. exact accessibility, keyboard, responsive, performance, resource, and packaging acceptance;
-10. activation and rollback from current CLI behavior to the first Desktop behavior without rewriting historical Runs.
+10. development activation and rollback from current CLI behavior to the first Desktop behavior without rewriting historical Runs;
+11. `D05-XD-PRG-001`: final Windows real-host acceptance and both platform signing requirements are deferred to `JUANERAI_PUBLIC_RELEASE_GATE`, without weakening development test/CI evidence or permitting public distribution.
 
-Until these are resolved in the productization input, the only authorized next product artifact is the static Demo and its review.
+The current authorized artifacts are the D0.5 decision package, Structure Decision Ledger, baseline attestation, independent review, and project-control records. No OpenSpec Change, dependency, schema, test, implementation, provider/model call, or DISPATCH is authorized before D0.5 approval and the later D1-A/Gates.
 
 ## 14. Success definition
 

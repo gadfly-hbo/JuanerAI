@@ -37,11 +37,13 @@ current plan candidate
   -> D0.5 Desktop technology/reuse/Python/first-Change decisions
   -> explicit first product Change authorization
   -> D1–D5 bounded Xanthil Desktop delivery
-  -> integrated macOS + Windows acceptance
+  -> integrated development acceptance: macOS packaged replay + Windows hosted CI
   -> DA_REQUIRED_COMPLETE + explicit user acceptance
   -> explicit Model Pack start authorization
   -> Model Pack contracts/provider/consumer/activation
   -> phase-one acceptance
+  -> explicit user command to prepare formal JuanerAI release
+  -> JUANERAI_PUBLIC_RELEASE_GATE against one frozen Release Candidate
   -> separate phase-two enterprise decision
 ```
 
@@ -120,12 +122,13 @@ Stop and return to Controller/user decision for:
 
 - static Demo not approved or product surface materially changed;
 - missing local-Python technical input;
-- no real Windows acceptance environment before a cross-platform implementation claim;
+- any attempt to label hosted Windows CI as final Windows product acceptance;
 - contract/schema/ownership/data/Runtime/permission expansion;
 - current CLI compatibility or historical Run migration conflict;
 - Data/Ontology mismatch, prohibited egress, unavailable Evidence, or silent latest/fallback requirement;
 - Model Pack attempted before `DA_REQUIRED_COMPLETE` or without explicit authorization;
 - Provider/Consumer Pack identity mismatch or future-actuals custody breach;
+- public distribution or production-release-ready claim before the user activates and all requirements pass `JUANERAI_PUBLIC_RELEASE_GATE`;
 - dirty worktree, unexpected path, divergent device branch, validation regression, or Validator finding;
 - any request to proceed because budget, schedule, or an external tool result is “close enough.”
 

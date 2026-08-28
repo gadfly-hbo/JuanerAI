@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828115229857-CM221P",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-28T11:52:29.857Z",
+  "actor": {
+    "role": "controller",
+    "session": "d05-xanthil-desktop-productization"
+  },
+  "summary": "用户授权提交推送并创建不合并 PR；Mac mini 当前 main 干净且 WIP 指针 EMPTY；Windows 主机和 Windows 签名不可用，macOS 签名待核验",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

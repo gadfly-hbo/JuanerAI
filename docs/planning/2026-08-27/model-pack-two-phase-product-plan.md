@@ -47,7 +47,7 @@ A Model Pack output is identified analytical Evidence or a prediction. A separat
 Model Pack intake is forbidden until all are true:
 
 1. Xanthil Desktop static Demo was accepted and productized;
-2. Data preparation, local cleaning/aggregation, Free analysis, report output, and execution feedback passed integrated macOS/Windows acceptance;
+2. Data preparation, local cleaning/aggregation, Evidence-based Analysis (循证分析), report output, and execution feedback passed integrated macOS/Windows acceptance;
 3. `DA_REQUIRED_COMPLETE` received explicit user acceptance;
 4. the local Data and Ontology snapshot contracts needed by Model Pack can be referenced without inventing a parallel contract;
 5. the user explicitly authorizes Model Pack product work after seeing the completed Xanthil result.

@@ -25,7 +25,7 @@ The Demo must let a reviewer navigate one coherent Project and Session through t
 
 1. **Data preparation:** business requirement, source-data inventory, prepared and aggregated-data state.
 2. **Data cleaning:** extraction and aggregate computation plan, with an explicit boundary that local detail is processed locally and only admitted aggregate evidence may enter an LLM context.
-3. **Free analysis:** hypothesis → evidence → refutation, alternative branches/Forks, bounded Subagent contributions, evidence references, Skills, Prompts, limitations, and offline evidence-bound state.
+3. **Evidence-based Analysis (循证分析):** hypothesis → evidence → refutation, alternative branches/Forks, bounded Subagent contributions, evidence references, Skills, Prompts, limitations, and offline evidence-bound state.
 4. **Report output:** report candidate, evidence citations, limitations, provenance, review, and lock state.
 5. **Execution feedback:** recommendation, authorization boundary, task/receipt/outcome distinction, and separate Hypothesis/Strategy writeback proposals.
 

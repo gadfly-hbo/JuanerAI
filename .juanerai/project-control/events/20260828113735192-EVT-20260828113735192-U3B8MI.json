@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828113735192-U3B8MI",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-08-28T11:37:35.192Z",
+  "actor": {
+    "role": "controller",
+    "session": "d05-xanthil-desktop-productization"
+  },
+  "summary": "用户整体批准 D05-XD-001 与 D05-XD-STRUCT-001 S01-S23；仅解锁首个 Change 的 D1-A",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/D05-XD-001.json"
+  ]
+}
