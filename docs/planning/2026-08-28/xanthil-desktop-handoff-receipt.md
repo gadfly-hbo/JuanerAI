@@ -30,7 +30,7 @@ The proposed first Change candidate is `CHG-xanthil-desktop-session-bootstrap`. 
 ## Current Gate and responsibility
 
 - Current Gate: `D1_A_PREREQUISITE_CLOSURE`.
-- Current responsibility: Controller/user close the six remaining prerequisites: integrate the approved D0.5 branch, freeze the exact dependency policy, provide a controlled real Windows host, verify macOS signing/notarization, provide Windows signing, and establish the post-merge clean Mac mini baseline. The current Mac mini WIP pointer is verified empty at the pre-merge baseline; the unique D1-A review and one bounded targeted correction are recorded.
+- Current responsibility: Controller closes the three remaining development prerequisites: integrate the approved D0.5 branch, freeze the exact dependency policy, and establish the post-merge clean Mac mini baseline plus empty-WIP freshness. The current Mac mini WIP pointer is verified empty at the pre-merge baseline; the unique D1-A review and one bounded targeted correction are recorded. Real Windows final acceptance and both signing resources are deferred to `JUANERAI_PUBLIC_RELEASE_GATE` by `D05-XD-PRG-001` and do not block DISPATCH.
 - Next responsibility after all prerequisite readbacks: MacBook Controller may freeze and sign an exact DISPATCH; the Mac mini remains locked until then.
 - Next lifecycle step: after this no-merge PR is integrated by separate user authorization and every remaining prerequisite is verified, the MacBook Controller re-reads the empty WIP pointer and exact integrated baseline, freezes the signed authority package, and only then may DISPATCH allow the configured `juaner_spec` route on the Mac mini executor.
 
@@ -38,7 +38,7 @@ The proposed first Change candidate is `CHG-xanthil-desktop-session-bootstrap`. 
 
 - No Product Change, OpenSpec, test, implementation, dependency, schema, real provider/model call, real user data, external write, packaging credential, or deployment before D0.5 user approval and exact Change authorization.
 - Any executable persistence layout, manifest schema, Port, IPC message, error vocabulary, Runtime delta, concurrency contract, or shared identity requires the Structure/OpenSpec Gate.
-- No Windows completion claim without a real Windows 11 x64 packaged-app run; GitHub-hosted Windows CI is supporting evidence, not final product acceptance.
+- Before `JUANERAI_PUBLIC_RELEASE_GATE`, GitHub-hosted Windows build/smoke may be reported only as Windows CI evidence, never final Windows product acceptance. No public distribution or production-release-ready claim is allowed.
 - No strong sandbox claim for the first Personal Profile: the planned Python sidecar is trusted packaged code with a narrow capability contract, not an arbitrary-code sandbox.
 - No professional-mode completion claim until the PX-2026-004 interaction set is implemented and re-proved in the production stack.
 - No Model Pack work before `DA_REQUIRED_COMPLETE`, explicit user acceptance, and a separate Model Pack start authorization.

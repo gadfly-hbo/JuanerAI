@@ -19,7 +19,7 @@
 
 Deliver the smallest packaged Xanthil Desktop behavior that proves a reusable Application-led Project/Session path on both supported platforms without pretending that analysis exists.
 
-On a packaged macOS Apple Silicon build and a controlled real Windows 11 x64 build, the user can:
+On a packaged macOS Apple Silicon build, with the same frozen behavior contract built and smoke-tested in hosted Windows CI, the user can:
 
 1. choose a writable local Project root and create a Project, or open an existing supported Project;
 2. use the persistent top selector to show quick or professional mode without converting an existing Session;
@@ -39,7 +39,7 @@ The visible Session state is `not_started`. The Change must not display a fake R
 | `AC-XDSB-003` | Session publication exposes the manifest and all three required directories only after atomic rename plus exact readback; repeating one operation is idempotent and a distinct operation never overwrites an existing identity. |
 | `AC-XDSB-004` | One OS-user application instance routes a second launch to the first; each Project admits one active plus one pending mutation; overflow rejects before identity/side effects; cancellation before rename wins, committed rename wins over late cancellation, and crash remnants move to retained non-discoverable quarantine. |
 | `AC-XDSB-005` | Restart preserves identity/mode; existing CLI history remains read-only and unchanged; rollback/uninstall preserves Desktop Project data and never downgrades a newer manifest. |
-| `AC-XDSB-006` | The same acceptance runs in packaged form on Apple Silicon macOS and a controlled real Windows 11 x64 host; hosted Windows CI is supporting build/smoke evidence only. |
+| `AC-XDSB-006` | The acceptance runs in packaged form on Apple Silicon macOS; hosted Windows CI builds the distributable and runs the approved automated smoke/contracts against the same frozen source and contract identity. Final installed Windows 11 x64 replay and both platform signing requirements belong only to `JUANERAI_PUBLIC_RELEASE_GATE` and are not this Change's completion evidence. |
 
 Exact serialized error strings, manifest fields, temp names, fsync mechanics, and UI component names are not acceptance semantics and remain later Gate outputs.
 
@@ -121,7 +121,7 @@ All other production, test, fixture, OpenSpec, governance, architecture, CLI, Ru
 - Packaged Electron E2E for top selector, explicit Session creation, no implicit conversion/creation, close/reopen, visible failure, and `not_started` truthfulness.
 - Fault injection must establish causal RED before production implementation for rename/readback failure, concurrent creator, cancellation boundary, and crash recovery.
 - Test Design must record the environment-health evidence separately from RED evidence. At least one causal RED leaf in each Product Core/Application, Port/Adapter, and Desktop/preload acceptance class must be executable after dependency health and before Worker starts; a missing package, missing runner, or non-starting Electron binary cannot satisfy this requirement.
-- macOS Apple Silicon packaged replay, hosted Windows build/smoke, and controlled real Windows 11 x64 packaged replay are separate evidence tiers.
+- macOS Apple Silicon packaged replay and hosted Windows build/smoke are required Change evidence and remain separately labeled. Controlled real Windows 11 x64 packaged replay and signing are deferred to `JUANERAI_PUBLIC_RELEASE_GATE`; hosted CI must never be relabeled as final Windows acceptance.
 - Canonical offline regression remains `tools/harness/validation/run`; no real provider/model gate is enabled.
 
 ## 9. Route and execution boundary
@@ -144,12 +144,12 @@ MacBook remains Controller and integration authority. Mac mini is the sole curre
 | Approved D0.5 package on integration authority | reviewed commit/PR/squash on `origin/main`, followed by exact MacBook readback | user authorized commit/push/PR creation without merge; integration readback still absent | signed baseline and DISPATCH blocked |
 | Frozen dependency policy | content-addressed exact direct-dependency manifest plus reviewed registry/integrity/license/install-script/Node boundary and Test provisioning contract | package families approved; exact manifest and review absent | signed Artifact Package and DISPATCH blocked |
 | Global WIP authority | live Mac mini `active-change.json` readback proves `active_change_id: null` and expected empty-pointer hash | verified empty at `2a59fc7c…`; evidence `EVD-D1A-MINI-001`; must be re-read immediately before signing | current observation PASS; freshness required before DISPATCH |
-| Real Windows acceptance host | named owner, controlled Windows 11 x64 VM/physical host, install/run access, evidence return path | product owner reports unavailable | DISPATCH blocked |
-| macOS signing/notarization | named owner, credential availability, secure non-repository custody, CI/local use boundary | product owner reports pending verification | DISPATCH blocked |
-| Windows signing | named owner, credential availability, secure non-repository custody, CI/local use boundary | product owner reports unavailable | DISPATCH blocked |
+| Real Windows acceptance host | controlled Windows 11 x64 VM/physical host, install/run access, evidence return path | product owner reports unavailable; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
+| macOS signing/notarization | credential availability, secure non-repository custody, CI/local use boundary | product owner reports pending verification; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
+| Windows signing | credential availability, secure non-repository custody, CI/local use boundary | product owner reports unavailable; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
 | Mac mini executable baseline | clean supported worktree created from the eventual integrated D0.5 `origin/main` SHA | current pre-merge `main` is clean and equals live origin at `2a59fc7c…`; eventual integrated baseline does not exist | DISPATCH blocked until post-merge readback |
 
-The D1-A Review may complete while these are open. The Controller must not produce or transmit a signed DISPATCH until every row has a verified disposition. The repository must not contain credentials, private keys, signature bytes, or raw secret material.
+The D1-A Review may complete while these are open. The Controller must not produce or transmit a signed DISPATCH until every row whose effect is explicitly blocking has a verified disposition; the three `JUANERAI_PUBLIC_RELEASE_GATE` rows do not block development dispatch. The repository must not contain credentials, private keys, signature bytes, or raw secret material. No artifact may be publicly distributed or described as production/public-release ready until all three deferred resources and same-Release-Candidate cross-platform acceptance pass the separately activated `JUANERAI_PUBLIC_RELEASE_GATE`.
 
 ## 11. D1-A review brief
 

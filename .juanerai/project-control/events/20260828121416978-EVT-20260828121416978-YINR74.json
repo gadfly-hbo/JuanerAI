@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828121416978-YINR74",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-28T12:14:16.978Z",
+  "actor": {
+    "role": "controller",
+    "session": "d05-xanthil-desktop-productization"
+  },
+  "summary": "Approved JUANERAI_PUBLIC_RELEASE_GATE amendment passed fresh readiness review; three release-resource blockers removed",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

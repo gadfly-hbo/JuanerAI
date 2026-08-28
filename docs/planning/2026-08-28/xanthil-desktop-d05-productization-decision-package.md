@@ -196,16 +196,16 @@ The first Change and the local-Python Change use synthetic data and no real mode
 
 | Change | macOS Apple Silicon | Windows hosted CI | Real Windows 11 x64 | Allowed completion claim |
 |---|---|---|---|---|
-| Session bootstrap | signed/development-packaged create, collision, crash quarantine, close/reopen, fixed-mode selector | distributable build plus automated packaged smoke for the same contract | required before Validator/Acceptance: install and replay create/open, atomic fault cases, second-launch routing, selector, close/reopen | fixed-mode local Project/Session bootstrap on both supported platforms |
-| Local data preparation | packaged Python/DuckDB deterministic scenario, limits, cancellation, quarantine, offline | Windows sidecar build and automated contract/process tests | required before Change Acceptance for path, process-tree, memory/stream limits, cancellation, quarantine, offline run | bounded local preparation on both platforms; no model/provider claim |
-| Evidence analysis through feedback | focused packaged scenario for each Change | build and focused automation | real-host replay is required for every platform-sensitive behavior added by that Change; a non-platform-sensitive contract-only Change may cite the last unchanged host baseline only when D1-A explicitly proves no host surface changed | only the behavior accepted by that Change |
-| Phase-one activation | full integrated journey and signed rollback | release build verification | full installed `member-orders-v2` journey and signed rollback | `DA_REQUIRED_COMPLETE` candidate only after both real-host journeys pass |
+| Session bootstrap | development-packaged create, collision, crash quarantine, close/reopen, fixed-mode selector | distributable build plus automated packaged smoke for the same contract | deferred to `JUANERAI_PUBLIC_RELEASE_GATE` | macOS packaged acceptance plus Windows hosted build/smoke; no final Windows or public-release claim |
+| Local data preparation | packaged Python/DuckDB deterministic scenario, limits, cancellation, quarantine, offline | Windows sidecar build and automated contract/process tests | deferred to `JUANERAI_PUBLIC_RELEASE_GATE` | accepted bounded local-preparation contracts with exact platform evidence labels; no final Windows or provider claim |
+| Evidence analysis through feedback | focused packaged scenario for each Change | build, deterministic contracts, and focused automation | deferred to `JUANERAI_PUBLIC_RELEASE_GATE` | only the behavior and evidence tier accepted by that Change |
+| Phase-one integrated acceptance | full integrated development journey and rollback | integrated release-shape build/smoke verification | deferred to `JUANERAI_PUBLIC_RELEASE_GATE` | `DA_REQUIRED_COMPLETE` candidate; explicitly not public-release readiness |
 
-The owner and availability of the real Windows host and signing/notarization credentials must be recorded in the signed authority package before DISPATCH of the first affected Change. If unavailable, D1-A may complete but DISPATCH is blocked; CI evidence cannot waive this prerequisite.
+Per user-approved decision `D05-XD-PRG-001`, real Windows 11 x64 final acceptance, macOS signing/notarization, and Windows code signing are not D1-A, Product Change, `DA_REQUIRED_COMPLETE`, or Model Pack-development prerequisites. They become mandatory only when the user explicitly activates `JUANERAI_PUBLIC_RELEASE_GATE`. Hosted CI never becomes real-host evidence, and development completion never becomes a public-release claim.
 
 ### Integrated product evidence
 
-A controlled Windows 11 x64 VM or physical host must install and run the packaged app. Integrated phase acceptance replays Session provisioning, reload, cancellation/process-tree termination, file/path rules, Python processing, keyboard/focus, and the exact integrated `member-orders-v2` scenario. If that host is unavailable, Windows acceptance and `DA_REQUIRED_COMPLETE` remain blocked.
+A controlled Windows 11 x64 VM or physical host must install and run the frozen public Release Candidate only at `JUANERAI_PUBLIC_RELEASE_GATE`. Before then, integrated development acceptance replays Session provisioning, reload, cancellation/process-tree termination, file/path rules, Python processing, keyboard/focus, and the exact integrated `member-orders-v2` scenario on packaged macOS plus Windows hosted build/smoke and deterministic cross-platform contracts. This may satisfy `DA_REQUIRED_COMPLETE`, but it does not satisfy final Windows acceptance.
 
 The same acceptance runs on a supported Apple Silicon Mac. CI screenshots or a browser-only Demo do not substitute for a packaged Electron run.
 
@@ -217,10 +217,10 @@ GitHub currently documents `windows-2025` hosted runners, while PyInstaller requ
 ## 11. D05-10 — Activation and rollback
 
 - Desktop installs alongside the current CLI. It does not replace the `xanthil` CLI command, reuse the CLI run root for writes, or migrate historical Runs.
-- First-phase activation is an explicit Desktop Profile flag/install channel after signed/notarized artifact verification and platform acceptance. Auto-update is deferred.
+- First-phase development activation is an explicit non-public Desktop Profile flag/install channel after the applicable development artifact and platform evidence passes. Public distribution activation requires the separate `JUANERAI_PUBLIC_RELEASE_GATE`. Auto-update is deferred.
 - Rollback disables/uninstalls the Desktop build while preserving its Project data. The previous signed build may be reinstalled; no downgrade writes to a newer manifest schema are permitted.
 - A failed activation never rewrites CLI history or declares Desktop records compatible without readback.
-- Signing/notarization certificates and a real Windows acceptance host are external prerequisites, not repository assumptions.
+- Signing/notarization certificates and a real Windows acceptance host are `JUANERAI_PUBLIC_RELEASE_GATE` resources, not repository assumptions or development blockers.
 
 ## 12. D05-11 — First Product Change candidate
 
@@ -230,7 +230,7 @@ GitHub currently documents `windows-2025` hosted runners, while PyInstaller requ
 
 ### Smallest user-observable result
 
-On packaged macOS and real Windows 11 Desktop builds, a user opens or creates a synthetic Project, selects quick or professional mode, creates a fixed-mode Session, sees the three required directories provisioned as one completeness Gate, closes the app, reopens it, and observes the same Project/Session identity and immutable mode.
+On a packaged macOS Desktop build, with the same contract built and smoke-tested in hosted Windows CI, a user opens or creates a synthetic Project, selects quick or professional mode, creates a fixed-mode Session, sees the three required directories provisioned as one completeness Gate, closes the app, reopens it, and observes the same Project/Session identity and immutable mode. Final installed Windows replay is deferred to `JUANERAI_PUBLIC_RELEASE_GATE`.
 
 The persistent top selector controls which mode workspace is shown; it never converts the active Session. Selecting the other mode while viewing a Session switches to that mode's most recently opened Session in the same Project. If none exists, it shows that mode's empty home and opens/preselects the new-Session flow only after the user chooses `New Session`; creation is never implicit. The prior Session remains durable and any background state remains visible through its normal status. A newly created Session defaults to the currently selected mode and records that mode immutably.
 
@@ -279,7 +279,7 @@ Global WIP remains one. Each Change is a separate reviewed PR and archive cycle.
 4. `CHG-xanthil-desktop-independent-conversations` — Fork/Subagent independent conversations, scheduling, return/adoption, provenance, interruption.
 5. `CHG-xanthil-desktop-report-lock` — report draft/version/review/lock and reproducibility.
 6. `CHG-xanthil-desktop-feedback-drafts` — manual task/receipt/outcome separation and draft-only asset candidates.
-7. `CHG-xanthil-desktop-phase-one-activation` — integrated macOS + Windows acceptance, signed artifacts, rollback, and `DA_REQUIRED_COMPLETE` user Gate.
+7. `CHG-xanthil-desktop-phase-one-activation` — integrated development acceptance, macOS packaged replay, hosted Windows build/smoke, rollback, and `DA_REQUIRED_COMPLETE` user Gate; signing and real-Windows final acceptance remain outside this Change unless the user separately activates Public Release preparation.
 
 The order is dependency intent, not blanket authorization. A later D1-A may combine or split a Change only when the user-visible result remains bounded and the complexity-control rule permits it.
 
@@ -287,6 +287,6 @@ The order is dependency intent, not blanket authorization. A later D1-A may comb
 
 ## 14. Gate result
 
-After independent Development-Readiness Review 002 PASS, the user approved this package and the Structure Decision Ledger S01-S23 as one whole on 2026-08-28. The approval authorized only D1-A intake for `CHG-xanthil-desktop-session-bootstrap`. The separate fresh D1-A Product Plan Reviewer required by `product-change-execution-policy.md` then returned one bounded dependency/RED-order blocker; the Controller applied the policy's single bounded correction and completed targeted readback. D1-A semantics are now ready after prerequisites, but integration, exact dependency policy, real Windows host, signing/notarization, and the post-merge Mac mini baseline still block any signed DISPATCH. The D0.5 review does not replace D1-A review.
+After independent Development-Readiness Review 002 PASS, the user approved this package and the Structure Decision Ledger S01-S23 as one whole on 2026-08-28. The approval authorized only D1-A intake for `CHG-xanthil-desktop-session-bootstrap`. The separate fresh D1-A Product Plan Reviewer required by `product-change-execution-policy.md` then returned one bounded dependency/RED-order blocker; the Controller applied the policy's single bounded correction and completed targeted readback. User-approved amendment `D05-XD-PRG-001` later moved real Windows final acceptance and both platform signing requirements to `JUANERAI_PUBLIC_RELEASE_GATE`. D1-A remains blocked only by integration, exact dependency policy, and the post-merge Mac mini baseline/WIP freshness. The D0.5 review does not replace D1-A review, and this amendment creates no DISPATCH.
 
 Spec, tests, implementation, dependencies, executable manifests, Port/schema/IPC contracts, and dispatch remain locked until their own Gates. The current D0.5 branch is MacBook Controller planning state only and creates no Mac mini WIP or active Change.

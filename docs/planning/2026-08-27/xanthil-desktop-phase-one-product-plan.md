@@ -1,6 +1,6 @@
 # Xanthil Desktop First-Phase Product Plan
 
-> Status: frozen product input amended by the user-approved `Evidence-based Analysis (循证分析)` terminology on 2026-08-28; D0.5 Review 002 PASS; overall package approval pending; product Change authority not granted
+> Status: frozen product input; D0.5 package approved; amended by user-approved `D05-XD-PRG-001`; first Product Change authority is conditional on D1-A prerequisite closure
 > Date: 2026-08-27
 > Platforms: macOS + Windows
 > Boundary: this plan creates no OpenSpec Change, implementation, dependency, Schema, test, model/data call, deployment, or project-control authority
@@ -76,7 +76,7 @@ Xanthil combines business-requirement intake with source/raw/prepared/aggregate 
 
 Extraction, validation, transformation, and aggregate computation occur locally through an approved Python boundary. Source/raw and unapproved prepared detail do not enter an LLM. Admitted aggregate Evidence still requires privacy and purpose checks.
 
-The D0.5 package at [`../2026-08-28/xanthil-desktop-d05-productization-decision-package.md`](../2026-08-28/xanthil-desktop-d05-productization-decision-package.md) supplies the local-Python technical proposal and product-level process, dependency, IPC, persistence, resource, cancellation, and security boundaries. It passed fresh Development-Readiness Review 002 and remains candidate input until overall user approval; executable contracts belong to the later Python Change.
+The D0.5 package at [`../2026-08-28/xanthil-desktop-d05-productization-decision-package.md`](../2026-08-28/xanthil-desktop-d05-productization-decision-package.md) supplies the user-approved local-Python technical proposal and product-level process, dependency, IPC, persistence, resource, cancellation, and security boundaries. It passed fresh Development-Readiness Review 002; executable contracts belong to the later Python Change.
 
 ### 5.3 Evidence-based Analysis (循证分析)
 
@@ -179,8 +179,9 @@ Model/provider authorization is separate from data admission. A future real-mode
 | D3 Evidence-based Analysis (循证分析) | Hypothesis/Evidence/Refutation, Fork, bounded Subagent, offline evidence-bound mode, Skill/Prompt provenance | D2 accepted | scoped acceptance and archive |
 | D4 Report output | candidate/review/lock and reproducibility | D3 accepted | scoped acceptance and archive |
 | D5 Execution feedback | task/receipt/outcome distinction and draft writeback proposal | D4 accepted | integrated acceptance |
-| `DA_REQUIRED_COMPLETE` | five-capability cross-platform journey accepted | D1–D5 evidence complete | explicit user acceptance |
+| `DA_REQUIRED_COMPLETE` | five-capability development journey accepted with macOS packaged replay and Windows hosted CI evidence | D1–D5 evidence complete | explicit user acceptance; not public-release readiness |
 | Model Pack intake | revised two-phase plan may be activated | `DA_REQUIRED_COMPLETE` | separate user authorization |
+| `JUANERAI_PUBLIC_RELEASE_GATE` | same frozen Release Candidate passes final Windows 11 x64 installed acceptance, macOS Developer ID signing/notarization, Windows Authenticode signing, and cross-platform install/rollback verification | explicit user command to prepare formal JuanerAI release | explicit public-release decision |
 
 Stages do not pre-authorize a fixed number of Changes or allow concurrent work. After D0.5, the Controller chooses the smallest Change topology that preserves a usable vertical slice and the governance workflow.
 
@@ -215,7 +216,7 @@ No hidden retry, fallback, repair, latest-version substitution, partial-success 
 
 ## 13. D0.5 productization decision status
 
-The D0.5 package now recommends values for these decisions as one approval package and has passed fresh Review 002. Until it receives overall user approval, they remain deliberate Gates rather than permission for an implementer to guess:
+The D0.5 package passed fresh Review 002 and was approved as one whole on 2026-08-28. The following decisions are frozen product input rather than permission for an implementer to guess:
 
 1. Desktop technology and packaging approach for macOS and Windows;
 2. exact first product Change and which existing Runtime/Port/test contracts it reuses;
@@ -226,7 +227,8 @@ The D0.5 package now recommends values for these decisions as one approval packa
 7. first writeback scope: read-only asset snapshot only or draft candidate creation;
 8. real-model/provider and data-egress contract, if any;
 9. exact accessibility, keyboard, responsive, performance, resource, and packaging acceptance;
-10. activation and rollback from current CLI behavior to the first Desktop behavior without rewriting historical Runs.
+10. development activation and rollback from current CLI behavior to the first Desktop behavior without rewriting historical Runs;
+11. `D05-XD-PRG-001`: final Windows real-host acceptance and both platform signing requirements are deferred to `JUANERAI_PUBLIC_RELEASE_GATE`, without weakening development test/CI evidence or permitting public distribution.
 
 The current authorized artifacts are the D0.5 decision package, Structure Decision Ledger, baseline attestation, independent review, and project-control records. No OpenSpec Change, dependency, schema, test, implementation, provider/model call, or DISPATCH is authorized before D0.5 approval and the later D1-A/Gates.
 

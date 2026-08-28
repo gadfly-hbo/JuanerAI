@@ -18,7 +18,7 @@ Business requirement
   -> separate Hypothesis and Strategy writeback proposals
 ```
 
-The five required capabilities are one product journey, not five unrelated tools. A later Change may deliver them as bounded vertical slices, but `DA_REQUIRED_COMPLETE` is reached only when their integrated acceptance succeeds on macOS and Windows.
+The five required capabilities are one product journey, not five unrelated tools. A later Change may deliver them as bounded vertical slices. `DA_REQUIRED_COMPLETE` is reached when their integrated development acceptance succeeds with packaged macOS replay, hosted Windows build/smoke and deterministic cross-platform contracts, independent verification, and explicit user acceptance. Final installed Windows 11 x64 acceptance and platform signing belong to `JUANERAI_PUBLIC_RELEASE_GATE`, not this development Gate.
 
 [`pi-xanthil-business-function-transfer-matrix.md`](pi-xanthil-business-function-transfer-matrix.md) is the complete transfer decision for D0 and D1. These requirements do not depend on reading the pi-xanthil repository, and no unlisted pi-xanthil function is implicitly required.
 
@@ -219,7 +219,7 @@ The first vertical acceptance must demonstrate in Xanthil Desktop:
 8. create a manual verification task only after explicit approval, record a synthetic Execution Receipt and later aggregate Outcome, and keep receipt/effect separate;
 9. propose separate draft Hypothesis/Strategy writebacks without activation;
 10. reload the Project/Session and preserve visible lineage and terminal meaning under the approved persistence contract;
-11. complete equivalent user-visible behavior on macOS and Windows.
+11. complete equivalent user-visible behavior against the supported macOS and Windows contracts, with packaged macOS replay and hosted Windows build/smoke before public-release preparation.
 
 The future Change reuses the exact `member-orders-v2` source fixture and oracle unchanged. Any additional synthetic feedback/Outcome fixture, error vocabulary, UI automation, persistence, and executable contracts must be frozen by that Change and cannot alter the source oracle or turn descriptive contribution into causality.
 
@@ -229,12 +229,14 @@ The future Change reuses the exact `member-orders-v2` source fixture and oracle 
 
 - the approved static Demo product surface has been translated into production Design;
 - all five capabilities pass their positive, negative, cancellation, and recovery acceptance;
-- the first vertical scenario passes on macOS and Windows;
+- the first vertical scenario passes packaged macOS replay plus hosted Windows build/smoke and deterministic cross-platform contracts;
 - local detail-to-aggregate-to-LLM boundaries are executable and fail closed;
 - Evidence, Fork, Subagent, report, feedback, and asset-candidate lineage are visible and reproducible;
 - no first-phase behavior depends on continued CLI product development;
 - no Knowledge or Memory independent product has been introduced;
 - independent validation and explicit user acceptance complete under the Change workflow.
+
+`DA_REQUIRED_COMPLETE` means the Xanthil Desktop required workflow is functionally development-complete and internally accepted. It does not mean final Windows product acceptance, signed/notarized distribution, public release, or production-release readiness. Those claims require a later user-authorized `JUANERAI_PUBLIC_RELEASE_GATE` against one frozen Release Candidate.
 
 Only after `DA_REQUIRED_COMPLETE` may the Controller request authorization to start Model Pack product work. The Gate does not itself start Model Pack.
 

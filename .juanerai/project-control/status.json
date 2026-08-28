@@ -12,14 +12,14 @@
     "total": 7
   },
   "health": "blocked",
-  "summary": "D0.5/D1-A PR #21 is open without merge and current Mac mini WIP is verified empty; integration, dependency, Windows-host, signing, and post-merge baseline prerequisites still block DISPATCH",
+  "summary": "D05-XD-PRG-001 and its fresh Review PASS remove release-resource blockers; PR #21 integration, exact dependency policy, and post-merge Mac mini baseline/WIP freshness still block DISPATCH",
   "current_objective": "Close and verify every signed-DISPATCH prerequisite for CHG-xanthil-desktop-session-bootstrap without starting the Change",
-  "next_action": "User reviews PR #21 and separately decides whether to merge; meanwhile resolve exact dependency, Windows-host, signing/notarization, and post-merge baseline prerequisites",
+  "next_action": "Validate and push the reviewed JUANERAI_PUBLIC_RELEASE_GATE amendment to PR #21, then squash merge only after CI, scope, and review remain PASS",
   "blockers": [
     {
       "id": "BLK-D1A-001",
       "label": "Approved D0.5 PR not integrated",
-      "detail": "PR #21 is open from commit d60e958 without merge; merge is not authorized and no origin/main baseline can yet bind a signed DISPATCH",
+      "detail": "PR #21 is open without merge; user authorized squash merge only after the amended head has Reviewer PASS, CI PASS, and no scope drift",
       "owner": "Controller"
     },
     {
@@ -27,24 +27,6 @@
       "label": "Exact dependency policy not frozen",
       "detail": "No content-addressed exact package/version/integrity/license/install-script/Node manifest or reviewed Test provisioning contract exists",
       "owner": "Controller and user"
-    },
-    {
-      "id": "BLK-D1A-003",
-      "label": "Real Windows host unavailable",
-      "detail": "The product owner reports no controlled Windows 11 x64 install/run acceptance environment; CI cannot substitute for this evidence",
-      "owner": "product owner"
-    },
-    {
-      "id": "BLK-D1A-004",
-      "label": "macOS signing and notarization pending",
-      "detail": "The product owner reports macOS signing/notarization availability is still unverified; no credential content belongs in repository evidence",
-      "owner": "product owner"
-    },
-    {
-      "id": "BLK-D1A-005",
-      "label": "Windows signing unavailable",
-      "detail": "The product owner reports no Windows signing resource; unsigned CI artifacts cannot satisfy the approved activation claim",
-      "owner": "product owner"
     },
     {
       "id": "BLK-D1A-006",
@@ -113,11 +95,18 @@
       "activation": "Unique review completed; one bounded correction closed by Controller targeted readback"
     },
     {
+      "id": "public_release_gate_reviewer",
+      "label": "Fresh Public Release Gate Development-Readiness Reviewer",
+      "model": "fresh material-isolated read-only support context",
+      "status": "complete",
+      "activation": "D05-XD-PRG-001 seven-part review PASS"
+    },
+    {
       "id": "juaner_spec",
       "label": "Spec Agent",
       "model": "gpt-5.6-sol / R2 high when dispatched",
       "status": "locked",
-      "activation": "D0.5 approval and D1-A completion"
+      "activation": "PR #21 integration, exact dependency freeze, Mac mini baseline/WIP freshness, and valid signed DISPATCH"
     },
     {
       "id": "juaner_test",
@@ -157,7 +146,13 @@
     {
       "id": "product_changes",
       "label": "Authorized Product Changes",
-      "done": 0,
+      "done": 1,
+      "total": 1
+    },
+    {
+      "id": "public_release_gate_review",
+      "label": "Public Release Gate amendment readiness reviews",
+      "done": 1,
       "total": 1
     }
   ],
@@ -233,6 +228,18 @@
       "label": "Mac mini clean baseline and empty WIP readback",
       "path": "docs/planning/2026-08-28/d1a/evidence/mac-mini-pre-dispatch-readback-001.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-D05-009",
+      "label": "User-approved JUANERAI_PUBLIC_RELEASE_GATE amendment",
+      "path": "docs/planning/2026-08-28/xanthil-desktop-public-release-gate-amendment.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-D05-010",
+      "label": "Fresh Public Release Gate Development-Readiness Review PASS",
+      "path": "docs/planning/2026-08-28/reviews/public-release-gate-development-readiness-review-001.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -247,9 +254,15 @@
       "label": "Python sidecar is not a hostile-code sandbox",
       "level": "high",
       "mitigation": "No user-authored Python; narrow operations; no shell; offline acceptance; separate future sandbox Change for hostile code"
+    },
+    {
+      "id": "RSK-D05-003",
+      "label": "Development evidence may be overstated as public-release readiness",
+      "level": "high",
+      "mitigation": "Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
     }
   ],
-  "updated_at": "2026-08-28T11:57:04.476Z",
+  "updated_at": "2026-08-28T12:14:16.974Z",
   "updated_by": {
     "role": "controller",
     "session": "d05-xanthil-desktop-productization"
