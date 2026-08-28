@@ -12,14 +12,14 @@
     "total": 7
   },
   "health": "blocked",
-  "summary": "The D1-A plan blocker is closed and current Mac mini WIP is verified empty; integration, dependency, Windows-host, signing, and post-merge baseline prerequisites still block DISPATCH",
+  "summary": "D0.5/D1-A PR #21 is open without merge and current Mac mini WIP is verified empty; integration, dependency, Windows-host, signing, and post-merge baseline prerequisites still block DISPATCH",
   "current_objective": "Close and verify every signed-DISPATCH prerequisite for CHG-xanthil-desktop-session-bootstrap without starting the Change",
-  "next_action": "Commit, push, and open the authorized no-merge PR; then resolve exact dependency, Windows-host, signing/notarization, and post-merge baseline prerequisites",
+  "next_action": "User reviews PR #21 and separately decides whether to merge; meanwhile resolve exact dependency, Windows-host, signing/notarization, and post-merge baseline prerequisites",
   "blockers": [
     {
       "id": "BLK-D1A-001",
-      "label": "Approved D0.5 branch not integrated",
-      "detail": "Commit/push/PR creation is authorized but not yet complete; merge is not authorized and no origin/main baseline can yet bind a signed DISPATCH",
+      "label": "Approved D0.5 PR not integrated",
+      "detail": "PR #21 is open from commit d60e958 without merge; merge is not authorized and no origin/main baseline can yet bind a signed DISPATCH",
       "owner": "Controller"
     },
     {
@@ -249,7 +249,7 @@
       "mitigation": "No user-authored Python; narrow operations; no shell; offline acceptance; separate future sandbox Change for hostile code"
     }
   ],
-  "updated_at": "2026-08-28T11:52:29.855Z",
+  "updated_at": "2026-08-28T11:57:04.476Z",
   "updated_by": {
     "role": "controller",
     "session": "d05-xanthil-desktop-productization"

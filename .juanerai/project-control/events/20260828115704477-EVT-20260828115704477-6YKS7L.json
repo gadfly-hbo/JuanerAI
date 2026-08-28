@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828115704477-6YKS7L",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-28T11:57:04.477Z",
+  "actor": {
+    "role": "controller",
+    "session": "d05-xanthil-desktop-productization"
+  },
+  "summary": "Opened D0.5/D1-A PR #21 without merge; DISPATCH remains blocked",
+  "status_after": "blocked",
+  "evidence_refs": []
+}
