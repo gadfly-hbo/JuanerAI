@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828123048465-JI9PVK",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-28T12:30:48.465Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-d1a"
+  },
+  "summary": "Hosted Windows CI acceptance lacked an allowed workflow path; exact Test-role path closure is required before DISPATCH",
+  "status_after": "blocked",
+  "evidence_refs": []
+}
