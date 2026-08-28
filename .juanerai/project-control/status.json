@@ -12,21 +12,15 @@
     "total": 7
   },
   "health": "blocked",
-  "summary": "PR #21 and dependency authority are integrated; a targeted readback found the hosted Windows CI acceptance path missing from signed scope, so exact CI ownership integration and renewed three-checkout/WIP freshness block DISPATCH",
+  "summary": "D1-A product/dependency/Windows-CI authority and three-checkout EMPTY-pointer freshness are closed, but the production Coordinator cannot execute its Regression Gate and would strand the sole WIP; DISPATCH remains unsigned",
   "current_objective": "Close and verify every signed-DISPATCH prerequisite for CHG-xanthil-desktop-session-bootstrap without starting the Change",
-  "next_action": "Integrate the one-path Windows CI Test-role closure, align MacBook, Mac mini developer checkout, and Host Loop canonical main, then repeat EMPTY-pointer freshness before signing DISPATCH",
+  "next_action": "Await explicit authority for a separate bounded Change Coordinator regression-gateway repair; after its verified deployment, regenerate the Desktop authority package and repeat all freshness checks",
   "blockers": [
     {
-      "id": "BLK-D1A-007",
-      "label": "Hosted Windows CI path not yet integrated",
-      "detail": "AC-XDSB-006 requires a Windows hosted build/smoke, but the integrated workflow is Ubuntu-only and the prior signed-scope candidate excluded .github/workflows/ci.yml; EVD-D1A-007 grants only that exact Test-role path pending integration",
-      "owner": "Controller"
-    },
-    {
-      "id": "BLK-D1A-006",
-      "label": "Final pre-DISPATCH freshness pending",
-      "detail": "The MacBook, Mac mini developer checkout, Host Loop canonical main, and EMPTY pointer must be read back at the eventual CI-authority integration SHA immediately before DISPATCH",
-      "owner": "Controller"
+      "id": "BLK-D1A-008",
+      "label": "Production Coordinator Regression Gate is not executable",
+      "detail": "Coordinator REGRESSION passes only validation_scope plus the pre-Change baseline SHA, while the production validation gateway requires argv/cwd/timeout and a correctly bound subject; the first call throws INPUT_INVALID before Candidate creation. Repair is outside the authorized Desktop Change.",
+      "owner": "Controller and product owner"
     }
   ],
   "milestones": [
@@ -100,7 +94,7 @@
       "label": "Spec Agent",
       "model": "gpt-5.6-sol / R2 high when dispatched",
       "status": "locked",
-      "activation": "PR #21 integration, exact dependency freeze, Mac mini baseline/WIP freshness, and valid signed DISPATCH"
+      "activation": "Verified separate Coordinator regression-gateway repair, regenerated authority package, renewed baseline/WIP freshness, and valid signed DISPATCH"
     },
     {
       "id": "juaner_test",
@@ -251,7 +245,13 @@
       "id": "EVD-D1A-007",
       "label": "Hosted Windows CI scope targeted readback",
       "path": "docs/planning/2026-08-28/d1a/evidence/windows-ci-scope-targeted-readback-001.md",
-      "status": "present"
+      "status": "verified"
+    },
+    {
+      "id": "EVD-D1A-008",
+      "label": "Coordinator Regression pre-DISPATCH blocker",
+      "path": "docs/planning/2026-08-28/d1a/evidence/coordinator-regression-pre-dispatch-blocker-001.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -274,7 +274,7 @@
       "mitigation": "Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
     }
   ],
-  "updated_at": "2026-08-28T12:30:48.464Z",
+  "updated_at": "2026-08-28T12:34:25.704Z",
   "updated_by": {
     "role": "controller",
     "session": "codex-controller-d1a"

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828123425708-3ZGZ9G",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-28T12:34:25.708Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-d1a"
+  },
+  "summary": "Pre-DISPATCH production readback found Coordinator Regression definitions rejected by the pinned gateway and misbound to baseline; Desktop DISPATCH remains unsigned and WIP empty",
+  "status_after": "blocked",
+  "evidence_refs": []
+}
