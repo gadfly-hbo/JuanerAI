@@ -10,7 +10,7 @@ Review a synthetic product-manager Demo using Codex app as the mandatory UI/inte
 
 ## Phase 2: Xanthil Desktop Data Analyst Required Workflow
 
-After productization decisions and explicit Change authorization, deliver Data preparation, local cleaning/aggregation, Free analysis, report output, and execution feedback on macOS and Windows. Reuse the first-slice architecture while treating CLI presentation and slice-specific facts as compatibility history.
+After productization decisions and explicit Change authorization, deliver Data preparation, local cleaning/aggregation, Evidence-based Analysis (循证分析), report output, and execution feedback on macOS and Windows. Reuse the first-slice architecture while treating CLI presentation and slice-specific facts as compatibility history.
 
 ## Phase 3: Model Pack Phase One and First Middle/Back-office Capability
 

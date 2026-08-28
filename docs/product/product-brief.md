@@ -23,7 +23,7 @@ A product grounded in an enterprise Ontology can connect evidence, business enti
 
 ## First Product Direction
 
-Xanthil Desktop is the current product-development surface. It is a Data Analyst assistant whose required journey covers Data preparation, local cleaning/aggregation, Free analysis, report output, and execution feedback. A static product-manager Demo is reviewed before productization. The approved Pi-backed CLI local-analysis slice remains current executable evidence and an architecture reuse baseline, not the active roadmap entry.
+Xanthil Desktop is the current product-development surface. It is a Data Analyst assistant whose required journey covers Data preparation, local cleaning/aggregation, Evidence-based Analysis (循证分析), report output, and execution feedback. A static product-manager Demo is reviewed before productization. The approved Pi-backed CLI local-analysis slice remains current executable evidence and an architecture reuse baseline, not the active roadmap entry.
 
 ## Asset and Model Capability Architecture
 

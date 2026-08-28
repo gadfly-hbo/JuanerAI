@@ -10,7 +10,7 @@
 - Product loop: Data -> Decision -> Action -> Outcome.
 - Delivery direction: local-first and enterprise-ready.
 - First product artifact: static Desktop Demo reviewed before productization.
-- Required product workflow: Data preparation, local cleaning/aggregation, Free analysis, report output, and execution feedback.
+- Required product workflow: Data preparation, local cleaning/aggregation, Evidence-based Analysis (循证分析), report output, and execution feedback.
 - Product order: Model Pack starts only after `DA_REQUIRED_COMPLETE` and explicit user authorization.
 
 ## Not Yet Frozen

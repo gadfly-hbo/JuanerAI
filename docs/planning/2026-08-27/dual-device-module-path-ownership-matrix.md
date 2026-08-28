@@ -7,7 +7,7 @@
 ## 1. Ownership principles
 
 - `origin/main` is integration authority; local `main` is a read-only mirror.
-- MacBook hosts the Integration Controller and owns product intent, architecture, shared contracts, Xanthil Desktop consumer experience, final integration, and user communication.
+- MacBook hosts the Integration Controller and owns product intent, architecture, shared contracts, Xanthil Desktop consumer experience, final integration, and user communication. Under the activated Product Change execution policy, this semantic/path ownership does not make the MacBook the current-Change implementation executor.
 - Mac mini is the default implementation device for a later approved Model Pack Provider, Pack-private production logic, and non-Xanthil-private shared infrastructure Adapters.
 - One branch and one writing device own a task at a time. Cross-device work uses GitHub branches and PRs; no shared working-directory coordination is assumed.
 - Product authority is not inferred from the device that implements a module.
@@ -36,7 +36,7 @@ MacBook owns future approved changes to:
 - Project, Session, central workspace, Inspector, command entry, run/status presentation, and cross-platform product behavior;
 - Xanthil Product Core/Application and scenario-owned business Ports;
 - Desktop Profile/composition root and Xanthil-private Adapters;
-- Data preparation/cleaning, Free analysis, report, feedback, and asset-candidate consumer behavior;
+- Data preparation/cleaning, Evidence-based Analysis (循证分析), report, feedback, and asset-candidate consumer behavior;
 - Model Pack Desktop Consumer and local/serving product integration;
 - Xanthil tests, fixtures, Design, acceptance, and activation/rollback evidence.
 
@@ -99,7 +99,7 @@ No future path is created or approved by this document. If later Changes use the
 | current documentation-governance revision | `CONTEXT.md`, `docs/adr/**`, `docs/architecture/**`, `docs/planning/**` | MacBook |
 | D0 static Demo | separate approved research/demo workspace; no JuanerAI production paths | assigned by user outside this plan |
 | D0.5 productization package | JuanerAI planning/Design/Change proposal after authorization | MacBook Controller |
-| D1–D5 Xanthil Desktop | exact paths per approved Change | MacBook unless explicitly reassigned |
+| D1–D5 Xanthil Desktop | MacBook-owned exact product paths; implementation only through the activated current-Change workflow | Mac mini executor under `product-change-execution-policy.md`; MacBook Controller owns decisions and integration |
 | Model Pack contract enabler | shared contract paths only | MacBook Controller |
 | Provider/SDK/independent Consumer | exact Pack-private paths | Mac mini |
 | Xanthil Desktop Consumer | exact Xanthil paths | MacBook |

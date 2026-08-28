@@ -12,7 +12,7 @@ The Data Analyst starts from a business question and finishes with a reviewable,
 Business requirement
   -> Data preparation
   -> local Data cleaning and aggregate Evidence
-  -> Free analysis: Hypothesis -> Evidence -> Refutation
+  -> Evidence-based Analysis (循证分析): Hypothesis -> Evidence -> Refutation
   -> Report candidate and human lock
   -> Action Recommendation / task / Execution Receipt / Outcome feedback
   -> separate Hypothesis and Strategy writeback proposals
@@ -81,7 +81,7 @@ Raw rows, row identities, credentials, source paths, prohibited free text, and u
 
 ### Technical-input Gate
 
-The user will provide a dedicated technical proposal for local Python processing. No productization Change that introduces or changes Python execution may start until the Controller reconciles that proposal with:
+The D0.5 package at `../../2026-08-28/xanthil-desktop-d05-productization-decision-package.md` is the dedicated local-Python technical proposal received for productization review. No Change that introduces or changes Python execution may start until the user approves that package and the later Python Change freezes its executable contracts against:
 
 - the first-slice Product Core/Application/Port/Adapter/Profile boundaries;
 - TypeScript-first direction and the approved Python exception boundary;
@@ -90,7 +90,7 @@ The user will provide a dedicated technical proposal for local Python processing
 - cross-platform macOS and Windows support;
 - deterministic validation and data-egress enforcement.
 
-The product plan fixes the behavior and data boundary, not the Python topology.
+This product input fixes the behavior and data boundary. The approved D0.5 package may additionally fix the Python topology and resource/cancellation terminals; executable process and IPC contracts still belong to the later Python Change.
 
 ### Required negative behavior
 
@@ -98,9 +98,9 @@ The product plan fixes the behavior and data boundary, not the Python topology.
 - LLM refusal or unavailability does not prevent deterministic local preparation and Evidence inspection from being reported accurately.
 - The product never hides arbitrary shell, Python, SQL, or filesystem execution behind a generic tool contract.
 
-## 5. Free analysis
+## 5. Evidence-based Analysis (循证分析)
 
-Free analysis is the core Data Analyst capability. “Free” means the analyst can explore competing explanations and branch the investigation; it does not remove Data, Ontology, Evidence, permission, provenance, or human Gates.
+Evidence-based Analysis is the core Data Analyst capability. The analyst can explore competing explanations and branch the investigation, but Data, Ontology, Evidence, permission, provenance, and human Gates always remain in force.
 
 ### 5.1 Hypothesis → Evidence → Refutation
 
@@ -126,7 +126,7 @@ Correlation, decomposition, prediction, and causal claims remain distinct. A hig
 - The parent analysis treats its result as a provenance-bearing contribution requiring Evidence review, not as authority.
 - Cancellation, failure, or disagreement remains visible and does not get repaired by an undisclosed replacement result.
 
-Exact orchestration, concurrency, persistence, sandboxing, and Runtime selection require later product and OpenSpec decisions.
+The approved D0.5 package fixes product-level Conversation grain, Runtime binding, queue bounds, overflow, terminal, return, and adoption race semantics. Exact orchestration implementation, persistence schema, process selection, event messages, and Runtime Port delta require the later Structure/OpenSpec Gates.
 
 ### 5.4 Offline evidence-bound mode
 
@@ -205,7 +205,7 @@ It cannot silently update or activate an asset. The complete promotion contract 
 
 ## 8. First productized vertical acceptance scenario
 
-The current plan selects the existing closed synthetic `member-orders-v2` scenario in `../../2026-08-23/attachments/xanthil-first-change-scenario-contracts.md` as the mandatory first Desktop productized vertical baseline. After this plan is approved, only an explicit user product decision and corresponding plan revision may replace it; a Spec author, implementer, platform constraint, or Demo result cannot silently select another fixture or oracle.
+The current plan selects the existing closed synthetic `member-orders-v2` scenario in `../../2026-08-23/attachments/xanthil-first-change-scenario-contracts.md` as the mandatory first integrated Desktop productized vertical baseline. It is completed across the ordered Phase-One Changes; it is not the acceptance scenario for the earlier Session-bootstrap foundation Change. After this plan is approved, only an explicit user product decision and corresponding plan revision may replace it; a Spec author, implementer, platform constraint, or Demo result cannot silently select another fixture or oracle.
 
 The first vertical acceptance must demonstrate in Xanthil Desktop:
 

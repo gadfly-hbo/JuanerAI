@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828113219036-X6H4FK",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-08-28T11:32:19.036Z",
+  "actor": {
+    "role": "controller",
+    "session": "d05-xanthil-desktop-productization"
+  },
+  "summary": "D0.5 Review 002 PASS；切换到用户整体确认 Gate，首个 Product Change 仍未创建",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

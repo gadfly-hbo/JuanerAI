@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828113931471-DKZP23",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-28T11:39:31.471Z",
+  "actor": {
+    "role": "controller",
+    "session": "d05-xanthil-desktop-productization"
+  },
+  "summary": "用户批准 D0.5 与 S01-S23；进入首个 Change D1-A，只读 Reviewer 已启动，DISPATCH 保持阻断",
+  "status_after": "validating",
+  "evidence_refs": []
+}

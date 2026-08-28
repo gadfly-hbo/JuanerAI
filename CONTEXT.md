@@ -28,6 +28,10 @@ _Avoid_: dashboard viewer
 
 ## Decision Loop
 
+**Evidence-based Analysis (循证分析)**:
+An analyst-led investigation that keeps Hypotheses, supporting and refuting Evidence, alternatives, uncertainty, Forks, and bounded Subagent contributions traceable before a Finding is accepted.
+_Avoid_: Free analysis, 自由分析, unconstrained analysis
+
 **Decision Loop**:
 The traceable progression from Data through Decision and Action to Outcome.
 _Avoid_: reporting pipeline

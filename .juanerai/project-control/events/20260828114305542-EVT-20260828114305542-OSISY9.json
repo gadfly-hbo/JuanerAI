@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828114305542-OSISY9",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-08-28T11:43:05.542Z",
+  "actor": {
+    "role": "controller",
+    "session": "d05-xanthil-desktop-productization"
+  },
+  "summary": "D1-A 唯一 Reviewer 的 dependency/RED 顺序 blocker 已经一次有界修正和 targeted readback 关闭；六项外部/集成 prerequisite 继续阻断 DISPATCH",
+  "status_after": "blocked",
+  "evidence_refs": []
+}
