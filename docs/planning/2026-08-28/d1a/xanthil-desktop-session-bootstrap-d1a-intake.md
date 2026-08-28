@@ -78,6 +78,7 @@ No path below exists or is writable under this intake alone. The D1-A Reviewer m
 
 ### Test role
 
+- `.github/workflows/ci.yml`
 - `package-lock.json`
 - `package.json`
 - `tests/contract/xanthil-desktop-session/**`
@@ -100,7 +101,7 @@ No path below exists or is writable under this intake alone. The D1-A Reviewer m
 - `.juanerai/project-control/**`
 - `docs/planning/2026-08-28/**`
 
-All other production, test, fixture, OpenSpec, governance, architecture, CLI, Runtime, Python, model, data, and Model Pack paths are forbidden. A required out-of-scope path produces a Contract Change Request and blocks; it does not widen automatically.
+The existing CI workflow path is allowed only to add the hosted Windows x64 build and automated Desktop smoke required by `AC-XDSB-006`; unrelated jobs, permissions, triggers, release/upload behavior, signing, and deployment remain forbidden. All other production, test, fixture, OpenSpec, governance, architecture, CI, CLI, Runtime, Python, model, data, and Model Pack paths are forbidden. A required out-of-scope path produces a Contract Change Request and blocks; it does not widen automatically.
 
 ## 7. Dependency policy candidate
 
