@@ -2,7 +2,7 @@
 
 > Intake ID: `D1A-XDSB-001`
 > Change ID: `CHG-xanthil-desktop-session-bootstrap`
-> Status: Review 001 `NEEDS_CLARIFICATION`; one bounded correction closed by Controller targeted readback; DISPATCH blocked on prerequisites
+> Status: Review 001 `NEEDS_CLARIFICATION`; one bounded correction closed by Controller targeted readback; dependency policy frozen; DISPATCH blocked on final authority integration and freshness
 > Date: 2026-08-28
 > Controller device: MacBook
 > Current-Change executor after valid signed DISPATCH: Mac mini
@@ -141,13 +141,13 @@ MacBook remains Controller and integration authority. Mac mini is the sole curre
 
 | Prerequisite | Required disposition | Current state | Effect |
 |---|---|---|---|
-| Approved D0.5 package on integration authority | reviewed commit/PR/squash on `origin/main`, followed by exact MacBook readback | user authorized commit/push/PR creation without merge; integration readback still absent | signed baseline and DISPATCH blocked |
-| Frozen dependency policy | content-addressed exact direct-dependency manifest plus reviewed registry/integrity/license/install-script/Node boundary and Test provisioning contract | package families approved; exact manifest and review absent | signed Artifact Package and DISPATCH blocked |
-| Global WIP authority | live Mac mini `active-change.json` readback proves `active_change_id: null` and expected empty-pointer hash | verified empty at `2a59fc7c…`; evidence `EVD-D1A-MINI-001`; must be re-read immediately before signing | current observation PASS; freshness required before DISPATCH |
+| Approved D0.5 package on integration authority | reviewed commit/PR/squash on `origin/main`, followed by exact MacBook readback | PR #21 squash `103bd88216d7f397967bdabb7fbfb250eea3f996`; MacBook and Mac mini exact clean readback in `EVD-D1A-005` | PASS |
+| Frozen dependency policy | content-addressed exact direct-dependency manifest plus reviewed registry/integrity/license/install-script/Node boundary and Test provisioning contract | `D1A-XDSB-DEP-001` freezes all direct packages, provisioning commands, Electron checksums, Node/npm boundary, network and forbidden capabilities; final integrated file hash still required | authority-package branch integration blocks signing |
+| Global WIP authority | live Mac mini `active-change.json` readback proves `active_change_id: null` and expected empty-pointer hash | verified empty at PR #21 integration SHA `103bd882…`; evidence `EVD-D1A-005`; must be re-read immediately before signing | current observation PASS; freshness required before DISPATCH |
 | Real Windows acceptance host | controlled Windows 11 x64 VM/physical host, install/run access, evidence return path | product owner reports unavailable; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
 | macOS signing/notarization | credential availability, secure non-repository custody, CI/local use boundary | product owner reports pending verification; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
 | Windows signing | credential availability, secure non-repository custody, CI/local use boundary | product owner reports unavailable; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
-| Mac mini executable baseline | clean supported worktree created from the eventual integrated D0.5 `origin/main` SHA | current pre-merge `main` is clean and equals live origin at `2a59fc7c…`; eventual integrated baseline does not exist | DISPATCH blocked until post-merge readback |
+| Mac mini executable baseline | clean supported main plus an empty global pointer immediately before signed DISPATCH; Coordinator creates the bounded Change worktree only after admission | PR #21 baseline is exact and clean at `103bd882…`, pointer `EMPTY`; must repeat after the authority-package branch is integrated | freshness blocks signing, not product intent |
 
 The D1-A Review may complete while these are open. The Controller must not produce or transmit a signed DISPATCH until every row whose effect is explicitly blocking has a verified disposition; the three `JUANERAI_PUBLIC_RELEASE_GATE` rows do not block development dispatch. The repository must not contain credentials, private keys, signature bytes, or raw secret material. No artifact may be publicly distributed or described as production/public-release ready until all three deferred resources and same-Release-Candidate cross-platform acceptance pass the separately activated `JUANERAI_PUBLIC_RELEASE_GATE`.
 

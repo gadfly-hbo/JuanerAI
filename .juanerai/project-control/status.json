@@ -12,27 +12,21 @@
     "total": 7
   },
   "health": "blocked",
-  "summary": "D05-XD-PRG-001 and its fresh Review PASS remove release-resource blockers; PR #21 integration, exact dependency policy, and post-merge Mac mini baseline/WIP freshness still block DISPATCH",
+  "summary": "PR #21 is merged and exact on both devices; D1A-XDSB-DEP-001 freezes the dependency/install boundary; authority-package integration and immediate Mac mini baseline/WIP freshness still block DISPATCH",
   "current_objective": "Close and verify every signed-DISPATCH prerequisite for CHG-xanthil-desktop-session-bootstrap without starting the Change",
-  "next_action": "Validate and push the reviewed JUANERAI_PUBLIC_RELEASE_GATE amendment to PR #21, then squash merge only after CI, scope, and review remain PASS",
+  "next_action": "Validate and integrate the D1-A dependency/authority evidence branch, then repeat exact Mac mini baseline and EMPTY-pointer freshness before signing DISPATCH",
   "blockers": [
     {
-      "id": "BLK-D1A-001",
-      "label": "Approved D0.5 PR not integrated",
-      "detail": "PR #21 is open without merge; user authorized squash merge only after the amended head has Reviewer PASS, CI PASS, and no scope drift",
+      "id": "BLK-D1A-002",
+      "label": "Frozen dependency policy not yet integrated",
+      "detail": "D1A-XDSB-DEP-001 now fixes exact package/version/integrity/license/install-script/Node/npm/network boundaries, but its integration SHA and canonical file hash do not exist until this authority branch passes validation and merge",
       "owner": "Controller"
     },
     {
-      "id": "BLK-D1A-002",
-      "label": "Exact dependency policy not frozen",
-      "detail": "No content-addressed exact package/version/integrity/license/install-script/Node manifest or reviewed Test provisioning contract exists",
-      "owner": "Controller and user"
-    },
-    {
       "id": "BLK-D1A-006",
-      "label": "Mac mini executable baseline absent",
-      "detail": "Current Mac mini main is clean at the pre-merge SHA with empty WIP, but no clean current-Change worktree exists at the eventual integrated D0.5 origin/main SHA",
-      "owner": "Controller and user"
+      "label": "Final pre-DISPATCH freshness pending",
+      "detail": "PR #21 is exact and clean on both devices with EMPTY WIP; the Mac mini main/pointer readback must be repeated against the eventual integrated authority-package SHA immediately before DISPATCH",
+      "owner": "Controller"
     }
   ],
   "milestones": [
@@ -240,6 +234,18 @@
       "label": "Fresh Public Release Gate Development-Readiness Review PASS",
       "path": "docs/planning/2026-08-28/reviews/public-release-gate-development-readiness-review-001.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-D1A-005",
+      "label": "PR #21 merge and dual-device exact readback",
+      "path": "docs/planning/2026-08-28/d1a/evidence/pr21-merge-dual-device-readback-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-D1A-006",
+      "label": "Frozen Desktop bootstrap dependency policy",
+      "path": "docs/planning/2026-08-28/d1a/xanthil-desktop-session-bootstrap-dependency-policy.md",
+      "status": "present"
     }
   ],
   "risks": [
@@ -262,9 +268,9 @@
       "mitigation": "Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
     }
   ],
-  "updated_at": "2026-08-28T12:14:16.974Z",
+  "updated_at": "2026-08-28T12:23:33.638Z",
   "updated_by": {
     "role": "controller",
-    "session": "d05-xanthil-desktop-productization"
+    "session": "codex-controller-d1a"
   }
 }
