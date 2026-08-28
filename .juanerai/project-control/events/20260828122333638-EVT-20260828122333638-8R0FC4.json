@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260828122333638-8R0FC4",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-28T12:23:33.638Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-d1a"
+  },
+  "summary": "PR #21 merged on both devices; exact dependency and install policy frozen pending authority integration",
+  "status_after": "blocked",
+  "evidence_refs": []
+}
