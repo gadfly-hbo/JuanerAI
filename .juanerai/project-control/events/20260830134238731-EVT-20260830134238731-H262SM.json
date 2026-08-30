@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260830134238731-H262SM",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-30T13:42:38.731Z",
+  "actor": {
+    "role": "controller",
+    "session": "pcrr-psp-controller"
+  },
+  "summary": "PCRR-PSP Test evidence and independent validation completed; Acceptance and integration remain unauthorized",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

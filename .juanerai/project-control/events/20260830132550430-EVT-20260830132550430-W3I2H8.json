@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260830132550430-W3I2H8",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-30T13:25:50.430Z",
+  "actor": {
+    "role": "controller",
+    "session": "pcrr-psp-controller"
+  },
+  "summary": "PCRR-PSP Test evidence, isolated candidate, regressions, canonical validation, and Test Asset Retirement PASS; Validator pending",
+  "status_after": "active",
+  "evidence_refs": []
+}

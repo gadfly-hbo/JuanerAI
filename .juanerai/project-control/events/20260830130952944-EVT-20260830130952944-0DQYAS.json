@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260830130952944-0DQYAS",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-30T13:09:52.944Z",
+  "actor": {
+    "role": "controller",
+    "session": "pcrr-psp-controller"
+  },
+  "summary": "PCRR-PSP mandatory ponytail review and Controller Spec Gate PASS; released Test-only phase",
+  "status_after": "active",
+  "evidence_refs": []
+}

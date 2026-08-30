@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260830134238586-U5O6FT",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-30T13:42:38.586Z",
+  "actor": {
+    "role": "controller",
+    "session": "pcrr-psp-controller"
+  },
+  "summary": "PCRR-PSP sole independent Validator PASS recorded; Change awaits separate user Acceptance/integration decision",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}
