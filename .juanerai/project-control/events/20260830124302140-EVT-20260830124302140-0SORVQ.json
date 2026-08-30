@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260830124302140-0SORVQ",
+  "event_type": "change_started",
+  "occurred_at": "2026-08-30T12:43:02.140Z",
+  "actor": {
+    "role": "controller",
+    "session": "psp-controller-001"
+  },
+  "summary": "Started pre-Candidate revision public-source-proof Change after exact branch and dirty-worktree continuity readback",
+  "status_after": "active",
+  "evidence_refs": []
+}

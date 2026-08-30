@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260830142308503-IV7P1X",
+  "event_type": "accepted",
+  "occurred_at": "2026-08-30T14:23:08.503Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-psp-acceptance"
+  },
+  "summary": "User formally accepted change-coordinator-pre-candidate-revision-public-source-proof, binding independent Validator PASS, production ac81f5b44cbca2e9984edf92620fc15da9af91712a3a936fb35b7b1ceb352927, Test c429a21b3c6e1693cb58d44f12e4d4e3444b40c6724289a43805ed38dfb72ef1, and 19-path manifest 3ba21f4905c32adb9203f6cec3805c99ba97cc847ed2e2a4f02a5cb4bf338dfb; selective staging and integration remain separately locked",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260830124302303-UX1HE4",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-08-30T12:43:02.303Z",
+  "actor": {
+    "role": "controller",
+    "session": "psp-controller-001"
+  },
+  "summary": "Public-source-proof Spec Gate activated; Test and production remain locked",
+  "status_after": "active",
+  "evidence_refs": []
+}

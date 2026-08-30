@@ -11,6 +11,61 @@ const signed = overrides => ({ command_body_bytes: bytes(makeDispatch(overrides)
 const stateIdentity = { expected_state_version: 0, expected_state_hash: SHA256 };
 const noCall = (harness, name) => assert.equal(harness.count(name), 0, `${name} must not be called`);
 const reached = (harness, name) => assert.ok(harness.count(name) > 0, `PRECONDITION_NOT_REACHED: ${name} was not called`);
+const publicStatus = async (harness) => harness.coordinator.status({ change_id: CHANGE_ID });
+const revisionEffects = harness => ({
+  state: harness.count('state.writeState'),
+  ledger: harness.count('ledger.prepareAppend'),
+  agent_events: harness.calls.filter(call => call.name === 'ledger.prepareAppend' && call.request.event_class === 'AGENT_RUN').length,
+  worktree: harness.count('git.createOrReuseWorktree'),
+  stage: harness.count('git.stageExact'),
+  commit: harness.count('git.commitCandidate'),
+  push: harness.count('git.pushBranch'),
+  validation: harness.count('validation.execute'),
+  pull_request: harness.count('pull_request.createOrReuse'),
+  handoff: harness.count('handoff.writeReadback'),
+});
+const revisionFor = (identity, subject_sha = GIT_SHA, overrides = {}) => signed({
+  command_kind: 'REVISION',
+  command_id: 'pcrr-revision-001',
+  idempotency_id: 'pcrr-revision-idem-001',
+  nonce: 'B'.repeat(43) + '=',
+  payload: { changes_requested_ref: 'changes-requested-001', revision_of_candidate_sha: null, resume_phase: 'TEST_RED' },
+  evidence_refs: [{ kind: 'controller_decision', id: 'changes-requested-001', sha256: SHA256, subject_sha }],
+  expected_state_version: identity.state_version,
+  expected_state_hash: identity.state_hash,
+  ...overrides,
+});
+const bindingFor = action => {
+  const { action_kind, ...binding } = action.payload.action;
+  assert.equal(action_kind, 'LAUNCH_AGENT');
+  return binding;
+};
+const settle = async (harness, action, status, child) => {
+  const binding = bindingFor(action);
+  const started = await harness.coordinator.settlement({
+    change_id: CHANGE_ID,
+    expected_state_version: action.state_version,
+    expected_state_hash: action.state_hash,
+    settlement: { ...binding, stage: 'STARTED', observed_child_id: child },
+  });
+  return harness.coordinator.settlement({
+    change_id: CHANGE_ID,
+    expected_state_version: started.state_version,
+    expected_state_hash: started.state_hash,
+    settlement: { ...binding, stage: 'RESULT', observed_child_id: child, status, artifact_path: `outputs/${child}.md`, artifact_sha256: SHA256 },
+  });
+};
+const dispatchToTest = async harness => {
+  const dispatch = await harness.coordinator.applyControllerCommand(signed());
+  const spec = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: dispatch.state_version, expected_state_hash: dispatch.state_hash });
+  const specPass = await settle(harness, spec, 'PASS', 'pcrr-spec-pass');
+  return harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: specPass.state_version, expected_state_hash: specPass.state_hash });
+};
+const dispatchToWorker = async harness => {
+  const testAction = await dispatchToTest(harness);
+  const testPass = await settle(harness, testAction, 'PASS', 'pcrr-test-pass');
+  return harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: testPass.state_version, expected_state_hash: testPass.state_hash });
+};
 
 test('helper health: canonical bytes, closed map, fault queues, and one-operation mutex are production-independent', async () => {
   await assertHelperHealth();
@@ -179,12 +234,14 @@ test('TEST-DTF-R1-003: settlement variants are exact closed unions and reject un
 });
 
 test('TEST-DTF-R1-004: exact REVISION and RESUME commands admit only their named lifecycle transitions', async t => {
-  await t.test('same-scope REVISION resets a blocked Change to EXECUTING/TEST_RED with a fresh authorization cycle', async () => {
+  await t.test('a valid Candidate-bound Validator REVISION resets a blocked Change to EXECUTING/TEST_RED with a fresh authorization cycle', async () => {
     const harness = await createCoordinatorUnderTest();
-    const identity = primeState(harness, { macro_state: 'BLOCKED', phase: null, state_version: 7, candidate: null, blocked_reason: 'VALIDATOR_SECOND_FAIL' });
+    const identity = primeState(harness, { macro_state: 'BLOCKED', phase: null, state_version: 7, candidate: makeCandidate({ frozen: false, validator_head: null }), delivery: null, blocked_reason: 'VALIDATOR_SECOND_FAIL' });
     const revision = signed({
       command_kind: 'REVISION',
-      payload: { changes_requested_ref: 'changes-requested-001', revision_of_candidate_sha: null, resume_phase: 'TEST_RED' },
+      nonce: 'C'.repeat(43) + '=',
+      payload: { changes_requested_ref: 'changes-requested-001', revision_of_candidate_sha: CANDIDATE_SHA, resume_phase: 'TEST_RED' },
+      evidence_refs: [{ kind: 'controller_decision', id: 'changes-requested-001', sha256: SHA256, subject_sha: CANDIDATE_SHA }],
       expected_state_version: identity.expected_state_version, expected_state_hash: identity.expected_state_hash,
     });
     const result = await harness.coordinator.applyControllerCommand(revision);
@@ -1029,6 +1086,7 @@ test('TEST-FCR-002: an exact Frozen-Candidate AWAITING_CONTROLLER revision retur
   const reviewEvidence = [{ kind: 'controller_decision', id: 'changes-requested-001', sha256: SHA256, subject_sha: CANDIDATE_SHA }];
   const revisionFor = (identity, evidence_refs = reviewEvidence) => signed({
     command_kind: 'REVISION', command_id: 'fcr-revision-001', idempotency_id: 'fcr-revision-idem-001',
+    nonce: 'D'.repeat(43) + '=',
     payload: { changes_requested_ref: 'changes-requested-001', revision_of_candidate_sha: CANDIDATE_SHA, resume_phase: 'TEST_RED' },
     evidence_refs, expected_state_version: identity.expected_state_version, expected_state_hash: identity.expected_state_hash,
   });
@@ -1289,4 +1347,413 @@ test('TEST-FCR-004: settlements are the four canonical variants and NOT_STARTED 
     assert.equal(typeof detail?.evaluation_id, 'string'); assert.ok(detail.evaluation_id.length > 0); assert.equal(typeof detail?.idempotency_id, 'string'); assert.ok(detail.idempotency_id.length > 0);
     assert.equal(result.payload.action, undefined, 'CAUSAL_RED: pre-request failure cannot return AGENT_ACTION');
   });
+});
+
+test('TEST-PCRR-001: public Spec FAIL settles SPEC_FAILURE, remains manually stopped, and cannot enter nullable-Candidate REVISION', async () => {
+  const harness = await createCoordinatorUnderTest();
+  const dispatch = await harness.coordinator.applyControllerCommand(signed());
+  const action = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: dispatch.state_version, expected_state_hash: dispatch.state_hash });
+  const failed = await settle(harness, action, 'FAIL', 'pcrr-spec-fail');
+  const status = await publicStatus(harness);
+  const repeated = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: failed.state_version, expected_state_hash: failed.state_hash });
+  const effects = revisionEffects(harness);
+  const revision = await harness.coordinator.applyControllerCommand(revisionFor(failed));
+  assert.deepEqual({
+    failed: { outcome: failed.outcome, state: failed.state, reason: failed.payload?.blocked_reason, next_action: failed.payload?.next_action },
+    status: { state: status.state, phase: status.payload.phase, pending_action: status.payload.pending_action, candidate: status.payload.candidate, delivery: status.payload.delivery },
+    repeated: { outcome: repeated.outcome, reason: repeated.payload?.blocked_reason, next_action: repeated.payload?.next_action },
+    revision: { outcome: revision.outcome, error_code: revision.error_code },
+    effects_unchanged: revisionEffects(harness),
+  }, {
+    failed: { outcome: 'BLOCKED', state: 'BLOCKED', reason: 'SPEC_FAILURE', next_action: 'MANUAL_CONTROLLER_STOP' },
+    status: { state: 'BLOCKED', phase: null, pending_action: null, candidate: null, delivery: null },
+    repeated: { outcome: 'BLOCKED', reason: 'SPEC_FAILURE', next_action: 'MANUAL_CONTROLLER_STOP' },
+    revision: { outcome: 'REJECTED', error_code: 'STATE_CONFLICT' },
+    effects_unchanged: effects,
+  }, 'PCRR-AC-001-01/002-03: Spec FAIL is a frozen-Spec Controller stop, never a correction source');
+});
+
+test('TEST-PCRR-002: public Test FAIL freezes production until a signed classified same-scope nullable-Candidate REVISION returns to TEST_RED', async () => {
+  const harness = await createCoordinatorUnderTest();
+  const action = await dispatchToTest(harness);
+  assert.equal(action.payload.action.role, 'juaner_test');
+  const failed = await settle(harness, action, 'FAIL', 'pcrr-test-fail');
+  const blockedStatus = await publicStatus(harness);
+  const revision = await harness.coordinator.applyControllerCommand(revisionFor(failed));
+  const afterStatus = await publicStatus(harness);
+  const next = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: revision.state_version, expected_state_hash: revision.state_hash });
+  assert.deepEqual({
+    failed: { outcome: failed.outcome, state: failed.state, reason: failed.payload?.blocked_reason, next_action: failed.payload?.next_action },
+    blocked: { state: blockedStatus.state, phase: blockedStatus.payload.phase, pending_action: blockedStatus.payload.pending_action, candidate: blockedStatus.payload.candidate, delivery: blockedStatus.payload.delivery },
+    revision: { outcome: revision.outcome, state: revision.state, phase: revision.payload?.phase },
+    after: { state: afterStatus.state, phase: afterStatus.payload.phase, pending_action: afterStatus.payload.pending_action, candidate: afterStatus.payload.candidate, delivery: afterStatus.payload.delivery },
+    next: { outcome: next.outcome, state: next.state, role: next.payload?.action?.role ?? null, phase: next.payload?.action?.phase ?? null },
+    production_effects: { worker: harness.count('git.stageExact'), regression: harness.count('validation.execute'), candidate: harness.count('git.commitCandidate') },
+  }, {
+    failed: { outcome: 'BLOCKED', state: 'BLOCKED', reason: 'TEST_CAUSAL_RED_UNAVAILABLE', next_action: 'MANUAL_CONTROLLER_STOP' },
+    blocked: { state: 'BLOCKED', phase: null, pending_action: null, candidate: null, delivery: null },
+    revision: { outcome: 'APPLIED', state: 'EXECUTING', phase: 'TEST_RED' },
+    after: { state: 'EXECUTING', phase: 'TEST_RED', pending_action: null, candidate: null, delivery: null },
+    next: { outcome: 'AGENT_ACTION', state: 'EXECUTING', role: 'juaner_test', phase: 'TEST_RED' },
+    production_effects: { worker: 0, regression: 0, candidate: 0 },
+  }, 'PCRR-AC-001-02/002-01: only an externally classified signed Test-asset correction re-enters Test RED');
+});
+
+test('TEST-PCRR-003: public Worker FAIL exposes REVISION and re-establishes Test RED before another Worker attempt', async () => {
+  const harness = await createCoordinatorUnderTest();
+  const action = await dispatchToWorker(harness);
+  assert.equal(action.payload.action.role, 'juaner_worker');
+  const failed = await settle(harness, action, 'FAIL', 'pcrr-worker-fail');
+  const blockedStatus = await publicStatus(harness);
+  const revision = await harness.coordinator.applyControllerCommand(revisionFor(failed));
+  const afterStatus = await publicStatus(harness);
+  const next = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: revision.state_version, expected_state_hash: revision.state_hash });
+  assert.deepEqual({
+    failed: { outcome: failed.outcome, state: failed.state, reason: failed.payload?.blocked_reason, next_action: failed.payload?.next_action },
+    blocked: { state: blockedStatus.state, phase: blockedStatus.payload.phase, pending_action: blockedStatus.payload.pending_action, candidate: blockedStatus.payload.candidate, delivery: blockedStatus.payload.delivery },
+    revision: { outcome: revision.outcome, state: revision.state, phase: revision.payload?.phase },
+    after: { state: afterStatus.state, phase: afterStatus.payload.phase, pending_action: afterStatus.payload.pending_action, candidate: afterStatus.payload.candidate, delivery: afterStatus.payload.delivery },
+    next: { outcome: next.outcome, state: next.state, role: next.payload?.action?.role ?? null, phase: next.payload?.action?.phase ?? null },
+    forbidden_progress: { regression: harness.count('validation.execute'), candidate: harness.count('git.commitCandidate'), delivery: harness.count('git.pushBranch') },
+  }, {
+    failed: { outcome: 'BLOCKED', state: 'BLOCKED', reason: 'WORKER_GREEN_FAILURE', next_action: 'REVISION' },
+    blocked: { state: 'BLOCKED', phase: null, pending_action: null, candidate: null, delivery: null },
+    revision: { outcome: 'APPLIED', state: 'EXECUTING', phase: 'TEST_RED' },
+    after: { state: 'EXECUTING', phase: 'TEST_RED', pending_action: null, candidate: null, delivery: null },
+    next: { outcome: 'AGENT_ACTION', state: 'EXECUTING', role: 'juaner_test', phase: 'TEST_RED' },
+    forbidden_progress: { regression: 0, candidate: 0, delivery: 0 },
+  }, 'PCRR-AC-001-03/002-02: Worker correction returns to the original Test route, not Regression or Candidate');
+});
+
+test('TEST-PCRR-006: Test REVISION exact and changed-byte replay identities are fail-closed', async t => {
+  const establishAcceptedRevision = async () => {
+    const harness = await createCoordinatorUnderTest();
+    const action = await dispatchToTest(harness);
+    const failed = await settle(harness, action, 'FAIL', 'pcrr-test-replay');
+    const blocked = await publicStatus(harness);
+    assert.deepEqual({ outcome: failed.outcome, state: failed.state, reason: failed.payload?.blocked_reason, public_state: blocked.state, public_phase: blocked.payload.phase }, { outcome: 'BLOCKED', state: 'BLOCKED', reason: 'TEST_CAUSAL_RED_UNAVAILABLE', public_state: 'BLOCKED', public_phase: null });
+    const request = revisionFor(failed);
+    const first = await harness.coordinator.applyControllerCommand(request);
+    assertExactResult(first, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'EXECUTING' });
+    return { harness, request, first };
+  };
+  await t.test('exact canonical replay returns the original result with zero additional effect', async () => {
+    const { harness, request, first } = await establishAcceptedRevision();
+    const beforeEffects = revisionEffects(harness);
+    const replay = await harness.coordinator.applyControllerCommand(request);
+    assert.deepEqual({ replay, effects: revisionEffects(harness) }, { replay: first, effects: beforeEffects }, 'PCRR-AC-002-01: exact Test REVISION replay must return the original result with zero additional durable, Agent, or production effect');
+  });
+  for (const [name, mutate] of [
+    ['command_id', body => { body.command_id = 'pcrr-revision-001'; body.receipt_digest = 'e'.repeat(64); }],
+    ['nonce', body => { body.nonce = 'B'.repeat(43) + '='; body.receipt_digest = 'e'.repeat(64); }],
+    ['idempotency_id', body => { body.idempotency_id = 'pcrr-revision-idem-001'; body.receipt_digest = 'e'.repeat(64); }],
+  ]) {
+    await t.test(`changed-byte reuse of accepted Test REVISION ${name} rejects without effect`, async () => {
+      const { harness, request } = await establishAcceptedRevision();
+      const beforeStatus = await publicStatus(harness);
+      const beforeEffects = revisionEffects(harness);
+      const body = JSON.parse(new TextDecoder().decode(request.command_body_bytes));
+      mutate(body);
+      const outcome = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: request.signature_bytes });
+      const afterStatus = await publicStatus(harness);
+      assert.deepEqual({ outcome: outcome.outcome, error_code: outcome.error_code, status: afterStatus.payload, effects: revisionEffects(harness) }, { outcome: 'REJECTED', error_code: 'COMMAND_REPLAY_CONFLICT', status: beforeStatus.payload, effects: beforeEffects }, `PCRR-AC-002-01: changed-byte Test REVISION ${name} reuse must leave State/Ledger/Agent/Git/stage/commit/push/validation/PR/Handoff unchanged`);
+    });
+  }
+});
+
+test('TEST-PCRR-007: Worker REVISION exact and changed-byte replay identities are fail-closed', async t => {
+  const establishAcceptedRevision = async () => {
+    const harness = await createCoordinatorUnderTest();
+    const action = await dispatchToWorker(harness);
+    const failed = await settle(harness, action, 'FAIL', 'pcrr-worker-replay');
+    const blocked = await publicStatus(harness);
+    assert.deepEqual({ outcome: failed.outcome, state: failed.state, reason: failed.payload?.blocked_reason, public_state: blocked.state, public_phase: blocked.payload.phase }, { outcome: 'BLOCKED', state: 'BLOCKED', reason: 'WORKER_GREEN_FAILURE', public_state: 'BLOCKED', public_phase: null });
+    const request = revisionFor(failed);
+    const first = await harness.coordinator.applyControllerCommand(request);
+    assertExactResult(first, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'EXECUTING' });
+    return { harness, request, first };
+  };
+  await t.test('exact canonical replay returns the original result with zero additional effect', async () => {
+    const { harness, request, first } = await establishAcceptedRevision();
+    const beforeEffects = revisionEffects(harness);
+    const replay = await harness.coordinator.applyControllerCommand(request);
+    assert.deepEqual({ replay, effects: revisionEffects(harness) }, { replay: first, effects: beforeEffects }, 'PCRR-AC-002-02: exact Worker REVISION replay must return the original result with zero additional durable, Agent, or production effect');
+  });
+  for (const [name, mutate] of [
+    ['command_id', body => { body.command_id = 'pcrr-revision-001'; body.receipt_digest = 'e'.repeat(64); }],
+    ['nonce', body => { body.nonce = 'B'.repeat(43) + '='; body.receipt_digest = 'e'.repeat(64); }],
+    ['idempotency_id', body => { body.idempotency_id = 'pcrr-revision-idem-001'; body.receipt_digest = 'e'.repeat(64); }],
+  ]) {
+    await t.test(`changed-byte reuse of accepted Worker REVISION ${name} rejects without effect`, async () => {
+      const { harness, request } = await establishAcceptedRevision();
+      const beforeStatus = await publicStatus(harness);
+      const beforeEffects = revisionEffects(harness);
+      const body = JSON.parse(new TextDecoder().decode(request.command_body_bytes));
+      mutate(body);
+      const outcome = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: request.signature_bytes });
+      const afterStatus = await publicStatus(harness);
+      assert.deepEqual({ outcome: outcome.outcome, error_code: outcome.error_code, status: afterStatus.payload, effects: revisionEffects(harness) }, { outcome: 'REJECTED', error_code: 'COMMAND_REPLAY_CONFLICT', status: beforeStatus.payload, effects: beforeEffects }, `PCRR-AC-002-02: changed-byte Worker REVISION ${name} reuse must leave State/Ledger/Agent/Git/stage/commit/push/validation/PR/Handoff unchanged`);
+    });
+  }
+});
+
+test('TEST-PCRR-004/005: every malformed pre-Candidate Test or Worker REVISION is fail-closed with no public progress or gateway effect', async t => {
+  const cases = [
+    ['wrong blocked reason', state => { state.blocked_reason = 'SPEC_FAILURE'; }, null],
+    ['wrong route macro', state => { state.macro_state = 'EXECUTING'; state.phase = 'TEST_RED'; state.blocked_reason = null; }, null],
+    ['non-null Candidate', state => { state.candidate = makeCandidate({ frozen: false, validator_head: null }); }, null],
+    ['non-null delivery', state => { state.delivery = makeDelivery(); }, null],
+    ['revision Candidate reference', null, body => { body.payload.revision_of_candidate_sha = CANDIDATE_SHA; }],
+    ['resume phase', null, body => { body.payload.resume_phase = 'WORKER_GREEN'; }],
+    ['Change identity', null, body => { body.change_id = CHANGE_B; }],
+    ['repository id', null, body => { body.repository.repository_id = 'attacker/Other'; }],
+    ['repository root', null, body => { body.repository.canonical_root = '/tmp/pcrr-wrong-repository'; }],
+    ['repository origin', null, body => { body.repository.origin = 'upstream'; }],
+    ['repository integration branch', null, body => { body.repository.integration_branch = 'release'; }],
+    ['worktree root', null, body => { body.worktree.root = '/tmp/pcrr-wrong-worktree'; }],
+    ['worktree branch', null, body => { body.worktree.branch = 'work/mac-mini/pcrr-wrong'; }],
+    ['baseline identity', null, body => { body.worktree.baseline_sha = CANDIDATE_SHA; }],
+    ['allowed scope', null, body => { body.scope.allowed_paths = ['tools/harness/change-coordinator/other.mjs']; }],
+    ['forbidden scope', null, body => { body.scope.forbidden_paths = ['tools/harness/change-coordinator/coordinator.mjs']; }],
+    ['persisted repository root', state => { state.repository.worktree_root = '/tmp/pcrr-persisted-wrong'; }, null],
+    ['persisted repository branch', state => { state.repository.branch = 'work/mac-mini/pcrr-persisted-wrong'; }, null],
+    ['persisted baseline', state => { state.repository.baseline_sha = CANDIDATE_SHA; }, null],
+    ['persisted admission identity', state => { state.admission.body_sha256 = 'b'.repeat(64); }, null],
+    ['stale assignment claim', state => { state.pending_agent = { correlation_id: 'stale-pcrr-agent', role: 'juaner_worker' }; }, null],
+    ['extra role claim', null, body => { body.payload.role = 'juaner_worker'; }],
+    ['state version CAS', null, body => { body.expected_state_version += 1; }],
+    ['state hash CAS', null, body => { body.expected_state_hash = 'c'.repeat(64); }],
+    ['signature rejection', null, null, harness => { harness.fault('verifier.verify', { kind: 'REJECTED', error_code: 'COMMAND_SIGNATURE_INVALID' }); }],
+    ['missing changes_requested evidence', null, body => { body.evidence_refs = []; }],
+    ['malformed changes_requested evidence', null, body => { body.evidence_refs = [{ kind: 'controller_decision', id: 'changes-requested-001', sha256: 'not-a-hash', subject_sha: GIT_SHA }]; }],
+    ['extra changes_requested evidence', null, body => { body.evidence_refs = [{ kind: 'controller_decision', id: 'changes-requested-001', sha256: SHA256, subject_sha: GIT_SHA }, { kind: 'controller_decision', id: 'z-extra', sha256: SHA256, subject_sha: GIT_SHA }]; }],
+    ['wrong changes_requested reference', null, body => { body.payload.changes_requested_ref = 'changes-requested-other'; }],
+    ['wrong evidence subject', null, body => { body.evidence_refs[0].subject_sha = CANDIDATE_SHA; }],
+    ['wrong evidence hash', null, body => { body.evidence_refs[0].sha256 = 'd'.repeat(64); }],
+  ];
+  for (const [route, blocked_reason] of [['Test', 'TEST_CAUSAL_RED_UNAVAILABLE'], ['Worker', 'WORKER_GREEN_FAILURE']]) for (const [name, mutateState, mutateBody, prepare] of cases) {
+    await t.test(`${route}: ${name}`, async () => {
+      const harness = await createCoordinatorUnderTest();
+      const action = route === 'Test' ? await dispatchToTest(harness) : await dispatchToWorker(harness);
+      const failed = await settle(harness, action, 'FAIL', `pcrr-${route.toLowerCase()}-${name.replaceAll(' ', '-')}`);
+      assert.deepEqual(
+        { outcome: failed.outcome, state: failed.state, reason: failed.payload?.blocked_reason, next_action: failed.payload?.next_action },
+        { outcome: 'BLOCKED', state: 'BLOCKED', reason: blocked_reason, next_action: route === 'Test' ? 'MANUAL_CONTROLLER_STOP' : 'REVISION' },
+        `PCRR-AC-001-02/03: ${route} public FAIL must establish the exact source before ${name} is isolated`,
+      );
+      let identity = { state_version: failed.state_version, state_hash: failed.state_hash };
+      let beforeStatus;
+      if (mutateState) {
+        const sourceStatus = await publicStatus(harness);
+        assert.deepEqual(
+          { state: sourceStatus.state, state_version: sourceStatus.state_version, state_hash: sourceStatus.state_hash, payload: sourceStatus.payload },
+          { state: failed.state, state_version: failed.state_version, state_hash: failed.state_hash, payload: { pointer_status: 'ACTIVE', active_change_id: CHANGE_ID, macro_state: 'BLOCKED', phase: null, pending_action: null, candidate: null, delivery: null, orphan_ready: null, local_pause: null } },
+          `PCRR-PSP-AC-002-02: ${route} ${name} must publicly bind the authentic blocked source before isolation`,
+        );
+        const state = structuredClone(harness.stateStore.state);
+        mutateState(state);
+        const primed = primeState(harness, state);
+        identity = { state_version: primed.expected_state_version, state_hash: primed.expected_state_hash };
+        beforeStatus = await publicStatus(harness);
+        assert.deepEqual(
+          { state: beforeStatus.state, state_version: beforeStatus.state_version, state_hash: beforeStatus.state_hash, payload: beforeStatus.payload },
+          { state: primed.state.macro_state, state_version: primed.expected_state_version, state_hash: primed.expected_state_hash, payload: { pointer_status: 'ACTIVE', active_change_id: CHANGE_ID, macro_state: primed.state.macro_state, phase: primed.state.phase, pending_action: primed.state.pending_agent ? { kind: 'AGENT_SETTLEMENT', correlation_id: primed.state.pending_agent.correlation_id } : null, candidate: primed.state.candidate, delivery: primed.state.delivery, orphan_ready: null, local_pause: null } },
+          `PCRR-PSP-AC-002-03: ${route} ${name} must publicly bind the one primed mutation before REVISION`,
+        );
+        identity = { state_version: beforeStatus.state_version, state_hash: beforeStatus.state_hash };
+      } else {
+        beforeStatus = await publicStatus(harness);
+      }
+      if (prepare) prepare(harness);
+      const beforeEffects = revisionEffects(harness);
+      const request = revisionFor(identity);
+      const body = JSON.parse(new TextDecoder().decode(request.command_body_bytes));
+      if (mutateBody) mutateBody(body);
+      const outcome = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: request.signature_bytes });
+      const afterStatus = await publicStatus(harness);
+      assert.equal(outcome.outcome, 'REJECTED', `PCRR-AC-002-03: ${route} ${name} must reject`);
+      if (mutateState) assert.deepEqual(afterStatus, beforeStatus, `PCRR-PSP-AC-002-04: ${route} ${name} cannot change public status`);
+      else assert.deepEqual(afterStatus.payload, beforeStatus.payload, `PCRR-AC-002-03: ${route} ${name} cannot change public status`);
+      assert.deepEqual(revisionEffects(harness), beforeEffects, `PCRR-AC-002-03: ${route} ${name} cannot write State/Ledger, request an Agent, or reach production gateways`);
+    });
+  }
+});
+
+test('TEST-PCRR-008: public Test and Worker failure routes reject original DISPATCH replay identities without effect', async t => {
+  for (const [route, blocked_reason] of [['Test', 'TEST_CAUSAL_RED_UNAVAILABLE'], ['Worker', 'WORKER_GREEN_FAILURE']]) for (const [name, mutate] of [
+    ['original DISPATCH command identity', body => { body.command_id = 'command-001'; }],
+    ['original DISPATCH nonce', body => { body.nonce = 'A'.repeat(43) + '='; }],
+    ['original DISPATCH idempotency identity', body => { body.idempotency_id = 'idem-001'; }],
+  ]) {
+    await t.test(`${route}: ${name}`, async () => {
+      const harness = await createCoordinatorUnderTest();
+      const action = route === 'Test' ? await dispatchToTest(harness) : await dispatchToWorker(harness);
+      const failed = await settle(harness, action, 'FAIL', `pcrr-${route.toLowerCase()}-replay-identity`);
+      assert.deepEqual({ outcome: failed.outcome, state: failed.state, reason: failed.payload?.blocked_reason, next_action: failed.payload?.next_action }, { outcome: 'BLOCKED', state: 'BLOCKED', reason: blocked_reason, next_action: route === 'Test' ? 'MANUAL_CONTROLLER_STOP' : 'REVISION' }, `PCRR-AC-001-02/03: ${route} public FAIL must establish its exact correction source`);
+      const beforeStatus = await publicStatus(harness);
+      const beforeEffects = revisionEffects(harness);
+      const request = revisionFor(failed);
+      const body = JSON.parse(new TextDecoder().decode(request.command_body_bytes));
+      mutate(body);
+      const outcome = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: request.signature_bytes });
+      const afterStatus = await publicStatus(harness);
+      assert.deepEqual({ outcome: outcome.outcome, error_code: outcome.error_code, status: afterStatus.payload, effects: revisionEffects(harness) }, { outcome: 'REJECTED', error_code: 'COMMAND_REPLAY_CONFLICT', status: beforeStatus.payload, effects: beforeEffects }, `PCRR-AC-002-03: ${route} ${name} must be the exact replay conflict with zero State/Ledger/Agent/Git/validation/PR/Handoff effect`);
+    });
+  }
+});
+
+test('TEST-PCRR-009: Candidate-bound Validator REVISION shares the complete replay predicate', async t => {
+  const establishSecondValidatorFailure = async () => {
+    const harness = await createCoordinatorUnderTest();
+    const admitted = await harness.coordinator.applyControllerCommand(signed());
+    assertExactResult(admitted, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
+    const identity = primeState(harness, {
+      macro_state: 'DELIVERING', phase: 'VALIDATOR', state_version: 7,
+      admission: harness.stateStore.state.admission,
+      repository: structuredClone(harness.stateStore.state.repository),
+      candidate: makeCandidate({ frozen: false, validator_head: null }), delivery: null,
+      authorization_cycle: { command_id: 'command-001', command_kind: 'DISPATCH', auto_repair_attempt: 1 },
+    });
+    const action = await harness.coordinator.run({ change_id: CHANGE_ID, ...identity });
+    assertExactResult(action, { operation: 'run', outcome: 'AGENT_ACTION', state: 'DELIVERING' });
+    assert.equal(action.payload.action.role, 'juaner_validator');
+    const failed = await settle(harness, action, 'FAIL', 'pcrr-validator-second-fail');
+    assert.deepEqual(
+      { outcome: failed.outcome, state: failed.state, reason: failed.payload?.blocked_reason, next_action: failed.payload?.next_action },
+      { outcome: 'BLOCKED', state: 'BLOCKED', reason: 'VALIDATOR_SECOND_FAIL', next_action: 'REVISION' },
+      'PCRR-AC-002-03: public Validator second FAIL must establish the Candidate-bound correction source',
+    );
+    return { harness, failed };
+  };
+  const candidateRevisionFor = failed => signed({
+    command_kind: 'REVISION', command_id: 'pcrr-validator-revision-001', idempotency_id: 'pcrr-validator-revision-idem-001', nonce: 'C'.repeat(43) + '=',
+    payload: { changes_requested_ref: 'changes-requested-001', revision_of_candidate_sha: CANDIDATE_SHA, resume_phase: 'TEST_RED' },
+    evidence_refs: [{ kind: 'controller_decision', id: 'changes-requested-001', sha256: SHA256, subject_sha: CANDIDATE_SHA }],
+    expected_state_version: failed.state_version, expected_state_hash: failed.state_hash,
+  });
+  const assertConflict = async ({ harness, request, mutate, name }) => {
+    const beforeStatus = await publicStatus(harness);
+    const beforeEffects = revisionEffects(harness);
+    const body = JSON.parse(new TextDecoder().decode(request.command_body_bytes));
+    mutate(body);
+    const outcome = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: request.signature_bytes });
+    const afterStatus = await publicStatus(harness);
+    assert.deepEqual(
+      { outcome: outcome.outcome, error_code: outcome.error_code, status: afterStatus.payload, effects: revisionEffects(harness) },
+      { outcome: 'REJECTED', error_code: 'COMMAND_REPLAY_CONFLICT', status: beforeStatus.payload, effects: beforeEffects },
+      `PCRR-AC-002-03: Candidate-bound Validator ${name} must fail closed before State/Ledger/Agent/Git/validation/PR/Handoff progress`,
+    );
+  };
+  await t.test('exact canonical replay returns the first result before the next public run, with no new effect', async () => {
+    const { harness, failed } = await establishSecondValidatorFailure();
+    const request = candidateRevisionFor(failed);
+    const first = await harness.coordinator.applyControllerCommand(request);
+    assertExactResult(first, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'EXECUTING' });
+    const beforeEffects = revisionEffects(harness);
+    const replay = await harness.coordinator.applyControllerCommand(request);
+    assert.deepEqual({ replay, effects: revisionEffects(harness) }, { replay: first, effects: beforeEffects }, 'PCRR-AC-002-03: exact Candidate-bound Validator REVISION replay returns its original result with zero additional effect');
+    const next = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: first.state_version, expected_state_hash: first.state_hash });
+    assertExactResult(next, { operation: 'run', outcome: 'AGENT_ACTION', state: 'EXECUTING' });
+    const settled = await settle(harness, next, 'PASS', 'pcrr-validator-replay-test-pass');
+    assertExactResult(settled, { operation: 'settlement', outcome: 'ADVANCED', state: 'EXECUTING' });
+    const status = await publicStatus(harness);
+    assert.equal(status.payload.phase, 'WORKER_GREEN');
+  });
+  for (const [name, mutate] of [
+    ['original DISPATCH command_id', body => { body.command_id = 'command-001'; }],
+    ['original DISPATCH nonce', body => { body.nonce = 'A'.repeat(43) + '='; }],
+    ['original DISPATCH idempotency_id', body => { body.idempotency_id = 'idem-001'; }],
+  ]) {
+    await t.test(`first application reusing ${name} rejects exactly without effect`, async () => {
+      const { harness, failed } = await establishSecondValidatorFailure();
+      await assertConflict({ harness, request: candidateRevisionFor(failed), mutate, name });
+    });
+  }
+  for (const [name, mutate] of [
+    ['applied REVISION command_id', body => { body.command_id = 'pcrr-validator-revision-001'; body.receipt_digest = 'e'.repeat(64); }],
+    ['applied REVISION nonce', body => { body.nonce = 'C'.repeat(43) + '='; body.receipt_digest = 'e'.repeat(64); }],
+    ['applied REVISION idempotency_id', body => { body.idempotency_id = 'pcrr-validator-revision-idem-001'; body.receipt_digest = 'e'.repeat(64); }],
+  ]) {
+    await t.test(`changed-byte reuse of ${name} rejects exactly without effect`, async () => {
+      const { harness, failed } = await establishSecondValidatorFailure();
+      const request = candidateRevisionFor(failed);
+      const first = await harness.coordinator.applyControllerCommand(request);
+      assertExactResult(first, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'EXECUTING' });
+      await assertConflict({ harness, request, mutate, name });
+    });
+  }
+});
+
+test('TEST-PCRR-010: Frozen-Candidate review return shares the complete replay predicate', async t => {
+  const establishAwaitingController = async () => {
+    const harness = await createCoordinatorUnderTest();
+    const admitted = await harness.coordinator.applyControllerCommand(signed());
+    assertExactResult(admitted, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'READY' });
+    const identity = primeState(harness, {
+      macro_state: 'AWAITING_CONTROLLER', phase: null, state_version: 7,
+      admission: harness.stateStore.state.admission,
+      repository: structuredClone(harness.stateStore.state.repository),
+      candidate: makeCandidate(), delivery: makeDelivery(), blocked_reason: null, resume_target: null,
+    });
+    const status = await publicStatus(harness);
+    assert.deepEqual({ state: status.state, phase: status.payload.phase, candidate: status.payload.candidate?.sha, delivery: status.payload.delivery?.remote_head }, { state: 'AWAITING_CONTROLLER', phase: null, candidate: CANDIDATE_SHA, delivery: CANDIDATE_SHA });
+    return { harness, identity };
+  };
+  const frozenRevisionFor = identity => signed({
+    command_kind: 'REVISION', command_id: 'pcrr-frozen-revision-001', idempotency_id: 'pcrr-frozen-revision-idem-001', nonce: 'D'.repeat(43) + '=',
+    payload: { changes_requested_ref: 'changes-requested-001', revision_of_candidate_sha: CANDIDATE_SHA, resume_phase: 'TEST_RED' },
+    evidence_refs: [{ kind: 'controller_decision', id: 'changes-requested-001', sha256: SHA256, subject_sha: CANDIDATE_SHA }],
+    expected_state_version: identity.expected_state_version, expected_state_hash: identity.expected_state_hash,
+  });
+  const assertConflict = async ({ harness, request, mutate, name }) => {
+    const beforeStatus = await publicStatus(harness);
+    const beforeEffects = revisionEffects(harness);
+    const body = JSON.parse(new TextDecoder().decode(request.command_body_bytes));
+    mutate(body);
+    const outcome = await harness.coordinator.applyControllerCommand({ command_body_bytes: bytes(body), signature_bytes: request.signature_bytes });
+    const afterStatus = await publicStatus(harness);
+    assert.deepEqual(
+      { outcome: outcome.outcome, error_code: outcome.error_code, status: afterStatus.payload, effects: revisionEffects(harness) },
+      { outcome: 'REJECTED', error_code: 'COMMAND_REPLAY_CONFLICT', status: beforeStatus.payload, effects: beforeEffects },
+      `PCRR-AC-002-03: Frozen-Candidate ${name} must fail closed before State/Ledger/Agent/Git/validation/PR/Handoff progress`,
+    );
+  };
+  await t.test('exact canonical replay returns the first result before the next public run, with no new effect', async () => {
+    const { harness, identity } = await establishAwaitingController();
+    const request = frozenRevisionFor(identity);
+    const first = await harness.coordinator.applyControllerCommand(request);
+    assertExactResult(first, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'EXECUTING' });
+    const beforeEffects = revisionEffects(harness);
+    const replay = await harness.coordinator.applyControllerCommand(request);
+    assert.deepEqual({ replay, effects: revisionEffects(harness) }, { replay: first, effects: beforeEffects }, 'PCRR-AC-002-03: exact Frozen-Candidate REVISION replay returns its original result with zero additional effect');
+    const next = await harness.coordinator.run({ change_id: CHANGE_ID, expected_state_version: first.state_version, expected_state_hash: first.state_hash });
+    assertExactResult(next, { operation: 'run', outcome: 'AGENT_ACTION', state: 'EXECUTING' });
+    const settled = await settle(harness, next, 'PASS', 'pcrr-frozen-replay-test-pass');
+    assertExactResult(settled, { operation: 'settlement', outcome: 'ADVANCED', state: 'EXECUTING' });
+    const status = await publicStatus(harness);
+    assert.equal(status.payload.phase, 'WORKER_GREEN');
+  });
+  for (const [name, mutate] of [
+    ['original DISPATCH command_id', body => { body.command_id = 'command-001'; }],
+    ['original DISPATCH nonce', body => { body.nonce = 'A'.repeat(43) + '='; }],
+    ['original DISPATCH idempotency_id', body => { body.idempotency_id = 'idem-001'; }],
+  ]) {
+    await t.test(`first application reusing ${name} rejects exactly without effect`, async () => {
+      const { harness, identity } = await establishAwaitingController();
+      await assertConflict({ harness, request: frozenRevisionFor(identity), mutate, name });
+    });
+  }
+  for (const [name, mutate] of [
+    ['applied REVISION command_id', body => { body.command_id = 'pcrr-frozen-revision-001'; body.receipt_digest = 'e'.repeat(64); }],
+    ['applied REVISION nonce', body => { body.nonce = 'D'.repeat(43) + '='; body.receipt_digest = 'e'.repeat(64); }],
+    ['applied REVISION idempotency_id', body => { body.idempotency_id = 'pcrr-frozen-revision-idem-001'; body.receipt_digest = 'e'.repeat(64); }],
+  ]) {
+    await t.test(`changed-byte reuse of ${name} rejects exactly without effect`, async () => {
+      const { harness, identity } = await establishAwaitingController();
+      const request = frozenRevisionFor(identity);
+      const first = await harness.coordinator.applyControllerCommand(request);
+      assertExactResult(first, { operation: 'applyControllerCommand', outcome: 'APPLIED', state: 'EXECUTING' });
+      await assertConflict({ harness, request, mutate, name });
+    });
+  }
 });
