@@ -6,12 +6,12 @@
 - Authority package: `PCRR-PSP-R2-ROUTE-001`
 - Repository baseline: `64536195f69364f731375ecc19980a9f5e62c004`
 - Change class: R2 Test-evidence-only adoption correction; no production behavior or contract delta
-- Current verdict: `TEST_EVIDENCE_FROZEN_PENDING_VALIDATOR`
+- Current verdict: `ACCEPTED_AND_MERGED_AWAITING_ARCHIVE_MERGE`
 - `greenfield_fast_path`: forbidden
 
 This Change adopts only an immutable production candidate whose pre-Candidate REVISION behavior is already GREEN but unaccepted, then repairs the order and identity strength of eighteen existing public-source Test leaves. It does not reopen `change-coordinator-pre-candidate-revision-routing` (PCRR) or any of the four terminated Candidate Changes. Those Changes are historical evidence only.
 
-Controller completed the mandatory ponytail review and full-package readback; Spec Gate is `PASS`. The bounded Test delta, isolated adoption candidate, executable evidence, and Test Asset Retirement Gate are `PASS` and frozen. No Validator, Acceptance, or integration result is claimed by this package.
+Controller completed the mandatory ponytail review and full-package readback; Spec Gate is `PASS`. The bounded Test delta, isolated adoption candidate, executable evidence, Test Asset Retirement Gate, and independent Validator are `PASS`. The user accepted the exact production/Test candidates, selective integration produced tree `3dfcb00881a54e3b14f717eef70c7dc8101e206a`, and PR #25 squash-merged that tree as `aae20f2cf4ecf01b80c823f2ac7d7bae68c52dbb`. This package is an archive candidate only; it is not `ARCHIVED` until a separately authorized archive PR merges and is read back from `main`.
 
 ## Objective
 
@@ -124,4 +124,4 @@ Stop for Controller decision if any of the following is required or observed:
 - a second same-kind Test correction;
 - Validator `FAIL` or `BLOCKED`.
 
-This Change grants no integration authority. Even after Validator PASS, Acceptance and any selective staging or commit remain separate Controller decisions.
+The Change granted no integration authority. Separate user decisions authorized Acceptance, exact selective staging, one commit, PR #25, and its squash merge. Archive staging, commit, push, PR, merge, final `ARCHIVED` status, local-main synchronization, branch deletion, and any future Change remain separately locked.

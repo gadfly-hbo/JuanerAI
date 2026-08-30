@@ -2,12 +2,14 @@
 
 ## Current Verdict
 
-- Verdict: `TEST_EVIDENCE_FROZEN_PENDING_VALIDATOR`
-- Current Gate: Test evidence/order/scope and Test Asset Retirement `PASS`; sole fresh Validator pending
+- Verdict: `ACCEPTED_AND_MERGED_AWAITING_ARCHIVE_MERGE`
+- Current Gate: independent Validator, Acceptance, and selective integration `PASS`; archive candidate ready, archive merge pending
 - Test execution: Controller independently verified
 - Test Asset Retirement Gate: `PASS`
-- Validator: not dispatched
-- Acceptance / integration / archive: not reached
+- Validator: independent read-only `PASS`
+- Acceptance: explicit user Acceptance bound to the exact production/Test candidates
+- Integration: PR #25 squash commit `aae20f2cf4ecf01b80c823f2ac7d7bae68c52dbb`, tree `3dfcb00881a54e3b14f717eef70c7dc8101e206a`
+- Archive: candidate prepared under the actual date `2026-08-31`; merge/readback not reached
 - Worker: explicitly waived and forbidden
 
 ## Frozen References
@@ -52,7 +54,8 @@ Test inheritance excludes the pre-PCRR `TEST-DTF-R1-005` two-line net DTF/CICV r
 | related retention regression | physical-worktree production `31/31`; Git integration `40/40` | PASS | frozen |
 | canonical validation | exit 0 from approved offline harness | PASS on isolated candidate | frozen |
 | Test Asset Retirement | reconciled lifecycle ledger and complete Test diff | PASS; `Lean already. Ship.` | frozen |
-| independent verification | exact candidate, public proof, scope, counts, exclusions, and non-authorization | not dispatched | one fresh read-only Validator PASS |
+| independent verification | exact candidate, public proof, scope, counts, exclusions, and non-authorization | PASS | frozen independent verdict |
+| selective integration | exact 20-path manifest, two candidate blobs, isolated validation, excluded residue continuity | PASS; PR #25 merged exact tree | frozen merge evidence |
 
 ## Required Controller Order Readback
 
@@ -90,10 +93,10 @@ The frozen retirement evidence shows:
 - no skip/todo/only/temp/correction marker remains; and
 - the complete Test diff simplification review returned `Lean already. Ship.` and the Controller Gate returned `PASS`.
 
-## Pending Final Check
+## Final Check and Merge Evidence
 
-One fresh Test role produced the bounded delta. Controller executable, line-order, scope, candidate-isolation, and retirement Gates froze the final Test blob and exact candidate tree. One fresh independent Validator is now the sole final check. `FAIL` or `BLOCKED` stops; it does not authorize Test correction, Worker, or integration automatically.
+One fresh Test role produced the bounded delta. Controller executable, line-order, scope, candidate-isolation, and retirement Gates froze the final Test blob and exact candidate tree. The fresh independent Validator returned `PASS`. The user then separately authorized Acceptance, exact selective staging, one integration commit, PR #25, and one squash merge. The merged tree is exactly `3dfcb00881a54e3b14f717eef70c7dc8101e206a`; production/Test Git OIDs remain `55ac2d06baac6c8b86e416551e4ab09215508bb3` and `fc85353da40da28a2be45a285c216b60f0c0b21d`; 331 terminated/mixed retention paths were excluded.
 
-## Integration Non-authorization
+## Archive Non-authorization
 
-This read model records no stage, commit, push, PR, merge, archive, release, or canonical-spec merge authority. A future Controller decision must separately authorize integration and prove exact staged blob identities; whole-file adoption from current physical files is forbidden.
+The completed integration approvals do not authorize archive staging, commit, push, PR, merge, final `ARCHIVED` state, local-main synchronization, branch deletion, release, future Candidate work, or cleanup. Canonical mapping is complete with zero canonical bytes changed: replay/binding, settlement, and pre-Candidate REVISION behavior remain anchored by `AC-DTF-001-03`, `AC-DTF-002-05`, `AC-DTF-003-01/04/06`, and the closed Foundation Design disposition table.

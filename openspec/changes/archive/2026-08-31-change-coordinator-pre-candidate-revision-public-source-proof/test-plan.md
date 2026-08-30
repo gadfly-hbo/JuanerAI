@@ -2,7 +2,7 @@
 
 ## Status and Isolation
 
-- Status: bounded Test delta, Controller order/scope/executable Gate, and Test Asset Retirement Gate `PASS`; Validator pending.
+- Status: bounded Test delta, Controller order/scope/executable Gate, Test Asset Retirement Gate, and independent Validator `PASS`; accepted selective candidate merged by PR #25.
 - Test owner after Spec Gate: one fresh `juaner_test`.
 - Only write path: `tools/harness/change-coordinator/coordinator.test.mjs`.
 - Production candidate: frozen and read-only.
@@ -96,6 +96,8 @@ git diff --check
 ```
 
 Controller independently read back matrix `63/63` and focused `290/290`, each with zero fail/skip/todo, from the exact isolated adoption candidate. Related physical-worktree retention regressions were production `31/31` and Git integration `40/40`; canonical validation on the isolated candidate exited `0` after replacing a diagnostic `node_modules` symlink with an ordinary project-local dependency copy.
+
+The accepted staged candidate retained production SHA-256 `ac81f5b44cbca2e9984edf92620fc15da9af91712a3a936fb35b7b1ceb352927` / Git OID `55ac2d06baac6c8b86e416551e4ab09215508bb3` and Test SHA-256 `c429a21b3c6e1693cb58d44f12e4d4e3444b40c6724289a43805ed38dfb72ef1` / Git OID `fc85353da40da28a2be45a285c216b60f0c0b21d`. Its 20-path manifest was `2f4356b12ffee83f1a142f060ceb2c19d4c72875b5572e27637ff859954d8cb8`, its tree was `3dfcb00881a54e3b14f717eef70c7dc8101e206a`, and PR #25 merged that exact tree without adopting the 331 excluded retention paths.
 
 ## Test Asset Retirement Lifecycle Ledger
 

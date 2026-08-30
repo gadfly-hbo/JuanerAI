@@ -4,10 +4,10 @@
 
 - Change: `CHG-change-coordinator-pre-candidate-revision-public-source-proof`
 - Authority package: `PCRR-PSP-R2-ROUTE-001`
-- Current Gate: Test evidence and retirement `PASS`; Validator pending
-- Completed Gates: mandatory ponytail review, Controller Spec Gate, Test evidence/order/scope Gate, isolated candidate validation, and Test Asset Retirement Gate
+- Current Gate: Acceptance and selective integration merged; archive candidate prepared, archive merge pending
+- Completed Gates: mandatory ponytail review, Controller Spec Gate, Test evidence/order/scope Gate, isolated candidate validation, Test Asset Retirement Gate, independent Validator PASS, Acceptance, selective staging validation, and PR #25 squash merge
 - Worker route: explicitly waived and forbidden
-- Integration authority: absent
+- Integration result: PR #25 squash commit `aae20f2cf4ecf01b80c823f2ac7d7bae68c52dbb`; archive authority remains separate
 
 ## Ordered Tasks
 
@@ -25,7 +25,7 @@
 
 There is no Worker task. Discovery of a production defect does not insert one; it stops this Change for Controller decision.
 
-Tasks 001..007 are complete. Task 008 is the sole next release; Task 009 remains locked.
+Tasks 001..009 are complete. Task 008 returned independent `PASS`; Task 009 completed through explicit user Acceptance and separately authorized selective integration. Archive merge and final archive readback are outside these tasks and remain locked.
 
 ## Gate Order
 
@@ -45,7 +45,7 @@ SPEC_DRAFT
 -> separately authorized integration, if any
 ```
 
-No Gate is inferred. Any Test edit invalidates the Test hash and repeats the Controller order, executable, and retirement checks. Any candidate-tree mismatch invalidates all executable evidence. Validator `FAIL` or `BLOCKED` stops.
+No Gate was inferred. The independent Validator returned `PASS`, the user accepted the exact candidates, and the selectively assembled 20-path tree `3dfcb00881a54e3b14f717eef70c7dc8101e206a` passed the frozen validation package before PR #25 squash-merged it. Archive merge remains a separate Gate.
 
 ## Test Ownership and Path
 
@@ -83,6 +83,6 @@ Controller independently observed matrix `63/63`, focused Coordinator `290/290`,
 
 An invalid or incomplete first Test return SHALL return to Test Design. A second same-kind correction returns to Controller root-cause review.
 
-## Integration Stop
+## Archive Stop
 
-No task here authorizes stage, commit, push, PR, merge, archive, branch deletion, or canonical-spec merge. If later authorized, the Controller must prove the staged production blob equals the frozen production adoption identity and the staged Test blob equals the final Validator-bound Test identity; whole-file staging from the mixed physical worktree is forbidden.
+Separate user approvals authorized the exact 20-path integration only. The merged production blob remains Git OID `55ac2d06baac6c8b86e416551e4ab09215508bb3`; the merged Test blob remains `fc85353da40da28a2be45a285c216b60f0c0b21d`; neither mixed physical file was adopted whole. This archive candidate does not authorize archive staging, commit, push, PR, merge, final `ARCHIVED` state, local-main synchronization, branch deletion, or cleanup.

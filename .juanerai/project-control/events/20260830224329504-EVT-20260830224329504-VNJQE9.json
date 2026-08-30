@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260830224329504-VNJQE9",
+  "event_type": "status_updated",
+  "occurred_at": "2026-08-30T22:43:29.504Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-psp-archive-candidate"
+  },
+  "summary": "ARCHIVE_CANDIDATE_READY: PSP seven-file package moved to the 2026-08-31 archive candidate path from squash main; canonical delta is zero bytes; archive merge and final ARCHIVED state remain unauthorized",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}
