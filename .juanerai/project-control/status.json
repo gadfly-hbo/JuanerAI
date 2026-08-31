@@ -6,15 +6,15 @@
     "product": "Xanthil Desktop"
   },
   "phase": {
-    "id": "D1_A_PREREQUISITE_CLOSURE",
-    "label": "First Product Change D1-A prerequisite closure",
-    "ordinal": 3,
+    "id": "PRE_CANDIDATE_REVISION_PUBLIC_SOURCE_PROOF_ARCHIVE_CANDIDATE_READY",
+    "label": "Pre-Candidate revision public-source proof ARCHIVE_CANDIDATE_READY",
+    "ordinal": 7,
     "total": 7
   },
-  "health": "blocked",
-  "summary": "D1-A product/dependency/Windows-CI authority and three-checkout EMPTY-pointer freshness are closed, but the production Coordinator cannot execute its Regression Gate and would strand the sole WIP; DISPATCH remains unsigned",
-  "current_objective": "Close and verify every signed-DISPATCH prerequisite for CHG-xanthil-desktop-session-bootstrap without starting the Change",
-  "next_action": "Await explicit authority for a separate bounded Change Coordinator regression-gateway repair; after its verified deployment, regenerate the Desktop authority package and repeat all freshness checks",
+  "health": "waiting_user",
+  "summary": "PSP selective adoption merged by PR #25 as squash aae20f2cf4ecf01b80c823f2ac7d7bae68c52dbb; exact archive candidate prepared with zero-byte canonical delta and 331 retention paths excluded; not archived",
+  "current_objective": "Freeze the PSP archive candidate from the merged main identity without changing canonical requirements, acceptance criteria, or design",
+  "next_action": "Await separate authorization for selective archive staging, commit, push, PR, merge, and post-merge ARCHIVED readback",
   "blockers": [
     {
       "id": "BLK-D1A-008",
@@ -274,9 +274,9 @@
       "mitigation": "Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
     }
   ],
-  "updated_at": "2026-08-28T12:34:25.704Z",
+  "updated_at": "2026-08-30T22:43:29.504Z",
   "updated_by": {
     "role": "controller",
-    "session": "codex-controller-d1a"
+    "session": "codex-controller-psp-archive-candidate"
   }
 }
