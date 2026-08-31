@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260831111442495-H5D9YF",
+  "event_type": "archived",
+  "occurred_at": "2026-08-31T11:14:42.495Z",
+  "actor": {
+    "role": "controller",
+    "session": "codex-controller-psp-archive-closure"
+  },
+  "summary": "ARCHIVED: PSP archive PR #26 squash fe2ece082237e43699c7281e30ff6a4aa703c42f with tree b74b5c99d5ebbfd95cf2df02ce367add41acf3c9 was read back from live main; PSP lifecycle is closed; local main synchronization and branch/worktree disposition remain separately authorized",
+  "status_after": "blocked",
+  "evidence_refs": []
+}
