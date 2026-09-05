@@ -5,14 +5,14 @@
 | 项 | 当前值 |
 |---|---|
 | 计划 | JUANERAI-AUTOMATION-REPAIR-20260905 / v1，用户已同意路线与规则 |
-| 主阶段 | M1/B0：Controller组件Acceptance与机械归档/规范提升已完成；完整质量与替代提交Gate通过，进入精确提交集成 |
-| 主阻塞 | B0–B5未关闭；S01–S06均CLOSED_RETURNED；剩精确提交/独立集成核验/PR合并和live-main |
-| 本步交付 | [Acceptance001](reviews/m1-acceptance-001.md)与[集成Gate001](reviews/m1-integration-gate-001.md)：387/757/canonical通过，代码/Test未变，七文件归档与规范原文一致 |
-| 下一验收点 | 原M1精确提交→归档集成身份核验→PR/CI/合并→archive/live-main；B0关闭前不进入M2 |
-| 当前角色 | 原行为Test/Worker/Validator均已停止；Controller进行收尾，提交后仅配置默认只读Validator做机械集成身份核验 |
+| 主阶段 | M1 COMPLETE / B0 CLOSED：组件Acceptance、独立精确集成核验、PR #28合并、归档和live-main均通过；本轮停在M1终点 |
+| 主阻塞 | B1–B5仍OPEN；B0已关闭；S01–S06均CLOSED_RETURNED，无开放支线 |
+| 本步交付 | [M1关闭001](reviews/m1-closure-001.md)：已验候选tree与merge/main完全一致；本卡R018记录返回点，不把局部PASS或手动集成当完整自动链 |
+| 下一验收点 | M2一次性下游合同包C2–C7及必要用户选择；获准续接后再按B1→B5和原两检查点推进，本轮不启动 |
+| 当前角色 | 行为Test/Worker/Validator004及机械集成Validator001均已完成停止；无运行或待恢复Agent |
 | 生产/Test | Test f1b6e89c5c45415ff71ef493e15e2af51f1e050b0c78da0d05b2995cad988a4d；snapshot a4415cc8de12743bad8f1dc30cd3d1411530e90a5ea2564a76c75300cf01d210；production 57b32d5b471f32b8c611f138579fcea3502c81d348d7be30e4077bf49b273240；完整身份见Worker005 Gate |
-| 下一步 | 只提交已审明确路径；完成M1原收尾Gate与回执后停止；本次M1索引豁免已批准并通过替代核验，不重试或修复工具 |
-| 最新回执 | [R017：S06返回原提交Gate，M1收尾继续](#progress-receipt-r017)；前一份[R016](#progress-receipt-r016) |
+| 下一步 | M1收尾完成后停止等待用户决定；不自动进入M2、不重查B0、不扩修工具；本次M1索引豁免不自动延伸为后续阶段豁免 |
+| 最新回执 | [R018：M1/B0关闭，停止等待决定](#progress-receipt-r018)；前一份[R017](#progress-receipt-r017) |
 
 ## 必要支线
 
@@ -26,9 +26,11 @@
 | S06 | M1/B0 | M1集成提交前fresh-index Gate | [预检001](reviews/m1-integration-preflight-001.md)：full/persistence=false两次worker崩溃；前后工作树指纹相同 | Controller/用户 | 只解决本次Gate证据或临时豁免；不修工具、不改Skill/配置/生产 | exact Branch/file/fingerprint索引Gate通过，或用户明确仅本次M1索引豁免且替代Git/path/SHA/源码核验通过 | 原M1 Acceptance/集成准备及提交前Gate，随后原合并/归档/live-main；不沿工具另起路线 | CLOSED_RETURNED；本次M1索引豁免明确批准且直接Git/path/SHA/源码核验PASS，已返回原提交Gate；工具未修复 |
 
 
-S04/S05已在原完整WVEB freshValidator004验收PASS并由Controller接受，按原规则CLOSED_RETURNED，准确返回M1 Acceptance/集成准备。原getter与root修复不重开；当前有界授权已执行至终点，所有角色停止。B0仍须Acceptance/合并/归档/live-main；不提前M2、不扩修或新增范围。
+S04/S05已在原完整WVEB freshValidator004验收PASS并由Controller接受，按原规则CLOSED_RETURNED，准确返回M1 Acceptance/集成准备。随后S06通过替代Gate返回原提交点，M1原Acceptance/合并/归档/live-main均已完成，B0关闭。原getter、root与工具支线不重开；当前M1有界授权已执行至终点，所有角色停止。不提前M2、不扩修或新增范围。
 
 ## 进展记录
+
+- 2026-09-05（R017后）：46路径精确提交d11625699eb4c0eb501623612c6b9ac58058e30d；fresh configured-default机械集成Validator001 PASS；PR #28完整diff读回与CI PASS后squash合并155b649291fe9c8c86778bf73b041efb62452f16。live origin/main、本地main和干净读回工作树SHA全等，tree与已验候选全等，46文件SHA与七文件归档核验通过。Controller关闭M1/B0；本轮只补此现有回执并停止，M2未启动。
 
 - 2026-09-05（R015后）：用户明确授权只做M1收尾。Controller核对Git/验收规则、原PASS身份和live origin/main；提交Skill要求full-index Gate。工具两次同参崩溃，前后1242文件/状态/diff指纹相同；登记S06/M1/B0，仅暂停该Gate，不扩修工具。未Acceptance/归档/stage/commit/push/merge或派发Agent。
 
@@ -52,6 +54,15 @@ S04/S05已在原完整WVEB freshValidator004验收PASS并由Controller接受，�
 - 2026-09-05：用户批准冻结 379 adoption 及本次临时 terra/high Test；输入身份与 TypeScript 5.9.3 已核对，实际派发 /root/wveb_test_correction_010 并读回 running。本轮从 R003 未通过点继续；当前执行变化以本卡顶部为准，R003 保留为上次暂停回执。
 - 2026-09-05：Controller root-cause return：新增 Test 自检与指定 hidden-index mutation 冲突；分类 invalid/incomplete Test，归 S02，生产冻结，R2 分类和角色路由不变。同一获批 Test 实例修本次追加段后，必须重过原 Readiness 点；日志 /private/tmp/juanerai-test010-testrole-20260905/focused-final.stdout.tap 保留，319/60 不是因果 RED 接受结论。
 - 2026-09-05：Test 返回后停止写入；Controller 在同一冻结 SHA 上独立重跑 379（322 PASS/57 因果 RED），原279全PASS，接受 Readiness 与 pre-Worker Test Retirement。S02 通过原验收点并返回 M1。后续 Worker GREEN/final Retirement/Validator 均未完成。
+
+## Progress receipt R018
+
+触发：M1阶段完成与会话停止交接。前一份：[R017](#progress-receipt-r017)。恢复时先核对本卡、MASTER_PLAN及[关闭001](reviews/m1-closure-001.md)的PR/live-main证据；不得重开已完成M1。
+
+1. 阻塞关闭：本轮关闭B0。依据为原完整独立Validator/Retirement PASS、Controller Acceptance、精确提交集成Validator PASS、PR #28 CI及squash合并、七文件归档和live-main精确tree/46文件SHA读回；不是测试数量或角色返回替代关闭。B1–B5仍开放。
+2. 链路位置：WVEB组件真实Worker→Regression/Retirement→Validator→Acceptance→PR合并/归档/live-main已完成。自动化Worker→Regression/Retirement→STAGE→Candidate/readback→Final Validation→Validator→PR/Handoff尚未贯通；下一未过验收点为M2完整下游合同决策包，而非重新验证WVEB。
+3. 支线回归：S01–S06均CLOSED_RETURNED，无开放支线；S04/S05重过原完整Validator，S06以本次明确索引豁免及替代核验重过原提交点，随后均返回主线并完成M1。没有沿工具支线另起修复。
+4. 距离M4：剩M2一次性C2–C7必要合同选择→B1–B5修复及两段完整链证明；M3下游验收集成/运行主机就绪/D1刷新；M4逐项核销。下一项仅在用户决定续接后处理M2合同包；均原计划范围，本轮不执行M2/主机/Desktop动作。
 
 ## Progress receipt R017
 
