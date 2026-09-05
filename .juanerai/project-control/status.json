@@ -11,10 +11,10 @@
     "ordinal": 3,
     "total": 7
   },
-  "health": "active",
-  "summary": "M1 component accepted; exact mechanical archive/canonical promotion and fresh quality PASS; S06 task-only index waiver plus direct checks PASS, returned to original commit Gate. B0 open.",
+  "health": "waiting_user",
+  "summary": "M1 COMPLETE / B0 CLOSED: accepted WVEB component, independent committed integration PASS, PR #28 CI/squash merge, exact archive/live-main readback. B1–B5 OPEN; all S01–S06 returned; stop before M2.",
   "current_objective": "按 JUANERAI-AUTOMATION-REPAIR-20260905 固定 M0–M4 主计划完成 Desktop 重启前自动化修复。",
-  "next_action": "Exact reviewed commit, fresh read-only mechanical integration check, PR/CI/squash merge and archive/live-main readback; stop after M1, no M2/tool repair.",
+  "next_action": "Wait for user decision after M1 closure. Resume existing NEXT_ACTION R018 at M2 one complete downstream C2–C7 contract package; do not reopen WVEB, repair tooling, install hosts or start Desktop.",
   "blockers": [
     {
       "id": "BLK-D1A-008",
@@ -115,7 +115,7 @@
       "label": "Validator",
       "model": "gpt-5.6-sol / medium (configured default; R2 high when dispatched)",
       "status": "complete",
-      "activation": "Fresh /root/wveb_validator_004 completed full WVEB PASS and stopped; Controller reconciled20/20 frozen inputs, full logs/probes/Retirement. Temporary exception ended, config unchanged; no next dispatch."
+      "activation": "Behavioral sol/high Validator004 complete; fresh configured-default /root/wveb_integration_identity_001 committed mechanical verification PASS and stopped. No active role or next dispatch; M1 closed."
     }
   ],
   "metrics": [
@@ -288,6 +288,12 @@
       "label": "M1 component Acceptance and archive/integration Gate",
       "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-integration-gate-001.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-WVEB-M1-CLOSED",
+      "label": "M1/B0 closed: PR28 accepted-tree integration, archive/live-main and R018 stop",
+      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-closure-001.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -310,7 +316,7 @@
       "mitigation": "Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
     }
   ],
-  "updated_at": "2026-09-05T11:00:46.135Z",
+  "updated_at": "2026-09-05T11:17:57.866Z",
   "updated_by": {
     "role": "controller",
     "session": "automation-repair-controller-20260905"
