@@ -1,8 +1,10 @@
 import { createHash, createPublicKey, verify } from 'node:crypto';
 import { spawn } from 'node:child_process';
-import { lstat, mkdir, open, readFile, realpath, rename, writeFile } from 'node:fs/promises';
+import { createReadStream } from 'node:fs';
+import { lstat, mkdir, open, readFile, readlink, realpath, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { createCoordinatorCore } from './coordinator.mjs';
+import { evaluateWorktreeSnapshotObservationV1 } from './worktree-snapshot-contract.mjs';
 import {
   PINNED_GIT_EXECUTABLE_SHA256,
   PINNED_GIT_VERSION,
@@ -331,35 +333,251 @@ export function createPurposeBoundGitHubAdapters({
   return Object.freeze({ queryCurrent, createOrReuse, readback });
 }
 
-function createValidationGateway({ nodeExecutable }) {
+const WORKTREE_SUBJECT_KEYS = ['kind', 'repository_root', 'worktree_root', 'branch', 'head_sha', 'common_git_dir', 'allowed_paths', 'forbidden_paths'];
+const WORKTREE_DEFINITION_KEYS = ['id', 'validation_kind', 'validation_scope', 'subject', 'argv', 'cwd', 'environment', 'timeout_ms'];
+const closedDataObject = (value, keys) => {
+  if (value === null || typeof value !== 'object' || Array.isArray(value) || Object.getPrototypeOf(value) !== Object.prototype) return false;
+  const ownKeys = Reflect.ownKeys(value);
+  if (ownKeys.length !== keys.length || !keys.every(key => ownKeys.includes(key))) return false;
+  return keys.every(key => {
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+    return descriptor?.enumerable === true && Object.hasOwn(descriptor, 'value') && !Object.hasOwn(descriptor, 'get') && !Object.hasOwn(descriptor, 'set');
+  });
+};
+const closedStringArray = value => {
+  if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype) return false;
+  const length = Object.getOwnPropertyDescriptor(value, 'length');
+  if (!length || length.enumerable !== false || !Object.hasOwn(length, 'value') || !Number.isSafeInteger(length.value) || length.value < 0) return false;
+  const ownKeys = Reflect.ownKeys(value);
+  if (ownKeys.length !== length.value + 1 || !ownKeys.includes('length')) return false;
+  for (let index = 0; index < length.value; index += 1) {
+    const descriptor = Object.getOwnPropertyDescriptor(value, String(index));
+    if (descriptor?.enumerable !== true || !Object.hasOwn(descriptor, 'value') || Object.hasOwn(descriptor, 'get') || Object.hasOwn(descriptor, 'set')) return false;
+  }
+  return true;
+};
+const validScopeRule = value => {
+  if (typeof value !== 'string' || Buffer.byteLength(value, 'utf8') < 1 || Buffer.byteLength(value, 'utf8') > 4096
+    || value.startsWith('/') || value.includes('\0') || value.includes('\\')) return false;
+  const prefix = value.endsWith('/**');
+  const base = prefix ? value.slice(0, -3) : value;
+  if (!base || (!prefix && value.endsWith('/')) || /[*?\[\]{}]/.test(base)
+    || (prefix && (value.indexOf('*') !== value.length - 2 || value.lastIndexOf('*') !== value.length - 1))) return false;
+  return base.split('/').every(segment => segment.length > 0 && segment !== '.' && segment !== '..');
+};
+const validScope = subject => {
+  if (!closedStringArray(subject.allowed_paths) || !closedStringArray(subject.forbidden_paths)) return false;
+  const seenAllowed = new Set(); const seenForbidden = new Set();
+  for (const item of subject.allowed_paths) {
+    if (!validScopeRule(item)) return false;
+    const identity = Buffer.from(item, 'utf8').toString('hex');
+    if (seenAllowed.has(identity)) return false;
+    seenAllowed.add(identity);
+  }
+  for (const item of subject.forbidden_paths) {
+    if (!validScopeRule(item)) return false;
+    const identity = Buffer.from(item, 'utf8').toString('hex');
+    if (seenForbidden.has(identity) || seenAllowed.has(identity)) return false;
+    seenForbidden.add(identity);
+  }
+  return Buffer.byteLength(canonical({ allowed_paths: subject.allowed_paths, forbidden_paths: subject.forbidden_paths }), 'utf8') <= MAX_CONTROL_BYTES;
+};
+const worktreeScopeSha256 = subject => sha256(Buffer.from(canonical({ allowed_paths: subject.allowed_paths, forbidden_paths: subject.forbidden_paths }), 'utf8'));
+const contained = (target, root) => target === root || (root === '/' ? target.startsWith('/') : target.startsWith(`${root}/`));
+const validSubjectPath = value => typeof value === 'string' && path.isAbsolute(value) && !value.includes('\0')
+  && Buffer.byteLength(value, 'utf8') >= 1 && Buffer.byteLength(value, 'utf8') <= 4096
+  && (value === '/' || (!value.endsWith('/') && !value.includes('//')
+    && !value.split('/').slice(1).some(segment => segment === '.' || segment === '..')));
+const validWorktreeSubject = subject => closedDataObject(subject, WORKTREE_SUBJECT_KEYS)
+  && subject.kind === 'WORKTREE' && ['repository_root', 'worktree_root', 'common_git_dir'].every(key => validSubjectPath(subject[key]))
+  && typeof subject.branch === 'string' && Buffer.byteLength(subject.branch, 'utf8') <= 255
+  && /^work\/mac-mini\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(subject.branch)
+  && typeof subject.head_sha === 'string' && /^[0-9a-f]{40}$/.test(subject.head_sha)
+  && validScope(subject);
+
+function validateDefinition(definition, nodeExecutable) {
+  if (!closedDataObject(definition, WORKTREE_DEFINITION_KEYS) || !['regression-affected-suite', 'regression-test-asset-retirement'].includes(definition.id)
+    || definition.validation_kind !== 'REGRESSION' || definition.subject !== 'WORKTREE'
+    || (definition.id === 'regression-affected-suite' && definition.validation_scope !== 'AFFECTED_SUITE')
+    || (definition.id === 'regression-test-asset-retirement' && definition.validation_scope !== 'TEST_ASSET_RETIREMENT')
+    || !closedStringArray(definition.argv) || definition.argv.length < 1 || !definition.argv.every(item => typeof item === 'string')
+    || definition.argv[0] !== nodeExecutable || typeof definition.cwd !== 'string' || !path.isAbsolute(definition.cwd) || !closedDataObject(definition.environment, [])
+    || !Number.isSafeInteger(definition.timeout_ms) || definition.timeout_ms < 1) throw new Error('INPUT_INVALID');
+}
+
+function statObservation(stat) {
+  const type = stat.isFile() ? 'FILE'
+    : stat.isSymbolicLink() ? 'SYMLINK'
+      : stat.isDirectory() ? 'DIRECTORY'
+        : stat.isSocket() ? 'SOCKET'
+          : stat.isFIFO() ? 'FIFO'
+            : stat.isBlockDevice() ? 'BLOCK_DEVICE'
+              : stat.isCharacterDevice() ? 'CHARACTER_DEVICE' : 'OTHER';
+  const values = [stat.mode, stat.dev, stat.ino, stat.size, stat.mtimeNs, stat.ctimeNs];
+  if (!values.every(value => typeof value === 'bigint' && value >= 0n)) throw new Error('SUBJECT_MISMATCH');
+  return { kind: 'PRESENT', type, mode: values[0], dev: values[1], ino: values[2], size: values[3], mtime_ns: values[4], ctime_ns: values[5] };
+}
+
+function missingObservation() { return { kind: 'MISSING' }; }
+
+async function hashRegularFile(target) {
+  return new Promise((resolve, reject) => {
+    const digest = createHash('sha256');
+    const source = createReadStream(target);
+    source.on('data', chunk => digest.update(chunk));
+    source.once('error', reject);
+    source.once('end', () => resolve(digest.digest('hex')));
+  });
+}
+
+function parseCollectorStatus(bytes) {
+  const records = []; let start = 0;
+  for (let index = 0; index < bytes.length; index += 1) {
+    if (bytes[index] !== 0) continue;
+    const record = bytes.subarray(start, index); start = index + 1;
+    if (record.length < 4 || record[2] !== 0x20 || ![' M', ' D', ' T', '??'].includes(record.subarray(0, 2).toString('ascii'))) throw new Error('SUBJECT_MISMATCH');
+    const pathBytes = record.subarray(3);
+    if (pathBytes.length === 0 || pathBytes[0] === 0x2f || pathBytes.includes(0x5c)) throw new Error('SUBJECT_MISMATCH');
+    let segmentStart = 0;
+    for (let cursor = 0; cursor <= pathBytes.length; cursor += 1) {
+      if (cursor !== pathBytes.length && pathBytes[cursor] !== 0x2f) continue;
+      const segment = pathBytes.subarray(segmentStart, cursor);
+      if (segment.length === 0 || segment.equals(Buffer.from('.')) || segment.equals(Buffer.from('..'))) throw new Error('SUBJECT_MISMATCH');
+      segmentStart = cursor + 1;
+    }
+    records.push({ xy: record.subarray(0, 2).toString('ascii'), path_bytes: Buffer.from(pathBytes) });
+  }
+  if (start !== bytes.length) throw new Error('SUBJECT_MISMATCH');
+  return records;
+}
+
+async function runPinnedGit(cwd, args) {
+  const result = await executeProcess(PINNED_PRODUCTION_GIT_PATH, args, { cwd, environment: {} });
+  if (result.code !== 0 || result.signal !== null) throw new Error('SUBJECT_MISMATCH');
+  return result;
+}
+
+async function collectWorktreeSnapshotObservationV1(subject) {
+  const cwd = subject.worktree_root;
+  const [status, ignored, index, branch, head, common] = await Promise.all([
+    runPinnedGit(cwd, ['status', '--porcelain=v1', '-z', '--untracked-files=all', '--no-renames']),
+    runPinnedGit(cwd, ['status', '--porcelain=v1', '-z', '--untracked-files=all', '--no-renames', '--ignored=matching']),
+    executeProcess(PINNED_PRODUCTION_GIT_PATH, ['diff', '--cached', '--quiet', subject.head_sha, '--'], { cwd, environment: {} }),
+    runPinnedGit(cwd, ['branch', '--show-current']),
+    runPinnedGit(cwd, ['rev-parse', 'HEAD']),
+    runPinnedGit(cwd, ['rev-parse', '--path-format=absolute', '--git-common-dir']),
+  ]);
+  const branchValue = branch.stdout.toString('utf8').trim();
+  const headValue = head.stdout.toString('ascii').trim();
+  const commonValue = await realpath(common.stdout.toString('utf8').trim());
+  if (branchValue !== subject.branch || headValue !== subject.head_sha || commonValue !== subject.common_git_dir) throw new Error('SUBJECT_MISMATCH');
+  const entries = [];
+  for (const record of parseCollectorStatus(status.stdout)) {
+    const target = Buffer.concat([Buffer.from(subject.worktree_root, 'utf8'), Buffer.from('/'), record.path_bytes]);
+    const split = record.path_bytes.lastIndexOf(0x2f);
+    const parent = split < 0 ? Buffer.from(subject.worktree_root, 'utf8') : Buffer.concat([Buffer.from(subject.worktree_root, 'utf8'), Buffer.from('/'), record.path_bytes.subarray(0, split)]);
+    const parent_realpath = await realpath(parent);
+    if (!contained(parent_realpath, subject.worktree_root)) throw new Error('SUBJECT_MISMATCH');
+    if (record.xy === ' D') {
+      try { await lstat(target, { bigint: true }); throw new Error('SUBJECT_MISMATCH'); } catch (error) { if (error?.code !== 'ENOENT') throw error; }
+      entries.push({ path_bytes: record.path_bytes, parent_realpath, before: missingObservation(), content: missingObservation(), after: missingObservation() });
+      continue;
+    }
+    const before = statObservation(await lstat(target, { bigint: true }));
+    let content;
+    if (before.type === 'FILE') content = { kind: 'FILE', sha256: await hashRegularFile(target) };
+    else if (before.type === 'SYMLINK') content = { kind: 'SYMLINK', target_sha256: sha256(await readlink(target, 'buffer')) };
+    else throw new Error('SUBJECT_MISMATCH');
+    const after = statObservation(await lstat(target, { bigint: true }));
+    entries.push({ path_bytes: record.path_bytes, parent_realpath, before, content, after });
+  }
+  return {
+    repository_root_realpath: subject.repository_root, worktree_root_realpath: subject.worktree_root,
+    common_git_dir_realpath: subject.common_git_dir, branch: subject.branch, head_sha: subject.head_sha,
+    status_stdout: status.stdout, ignored_status_stdout: ignored.stdout,
+    index_probe: { exit_code: index.code, signal: index.signal, stdout: index.stdout, stderr: index.stderr }, entries,
+  };
+}
+
+async function validateSubjectIdentityAndCwd(subject, definition) {
+  const [repository_root, worktree_root, common_git_dir] = await Promise.all([
+    realpath(subject.repository_root), realpath(subject.worktree_root), realpath(subject.common_git_dir),
+  ]);
+  if (repository_root !== subject.repository_root || worktree_root !== subject.worktree_root || common_git_dir !== subject.common_git_dir) throw new Error('SUBJECT_MISMATCH');
+  const executionCwd = await realpath(definition.cwd);
+  if (!contained(executionCwd, worktree_root)) throw new Error('INPUT_INVALID');
+}
+
+function receiptFor(subject, definition, scope_sha256, tuple, execution_cwd, worktree_snapshot_sha256, stdout, stderr) {
+  const receipt = {
+    validation_id: definition.id, validation_kind: definition.validation_kind, validation_scope: definition.validation_scope,
+    status: tuple.status, verdict: tuple.verdict, failure_code: tuple.failure_code,
+    command_definition_sha256: sha256(canonical(definition)), receipt_sha256: null,
+    subject_kind: 'WORKTREE', subject_sha: subject.head_sha, repository_root: subject.repository_root,
+    worktree_root: subject.worktree_root, branch: subject.branch, head_sha: subject.head_sha,
+    common_git_dir: subject.common_git_dir, execution_cwd, scope_sha256, worktree_snapshot_sha256,
+    candidate_sha: null, candidate_tree: null, stdout_sha256: sha256(stdout), stderr_sha256: sha256(stderr),
+    validator_head: null, idempotency_id: definition.id,
+  };
+  const { receipt_sha256, ...other23 } = receipt;
+  receipt.receipt_sha256 = sha256(canonical(other23));
+  return ok(receipt);
+}
+
+async function executeValidationChild(executable, args, cwd, timeout_ms) {
+  return new Promise(resolve => {
+    let timedOut = false; let settled = false; const stdout = []; const stderr = [];
+    let child;
+    const finish = result => { if (!settled) { settled = true; clearTimeout(timer); resolve(result); } };
+    const timer = setTimeout(() => { timedOut = true; child?.kill('SIGKILL'); }, timeout_ms);
+    try {
+      child = spawn(executable, args, { cwd, env: {}, shell: false, stdio: ['ignore', 'pipe', 'pipe'] });
+      child.stdout.on('data', chunk => stdout.push(Buffer.from(chunk)));
+      child.stderr.on('data', chunk => stderr.push(Buffer.from(chunk)));
+      child.once('error', () => finish({ kind: 'START_FAILED', stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) }));
+      child.once('close', (code, signal) => finish({ kind: 'TERMINAL', code, signal, timedOut, stdout: Buffer.concat(stdout), stderr: Buffer.concat(stderr) }));
+    } catch {
+      finish({ kind: 'START_FAILED', stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) });
+    }
+  });
+}
+
+export function createValidationGateway(input) {
+  if (!closedDataObject(input, ['nodeExecutable']) || typeof input.nodeExecutable !== 'string' || !path.isAbsolute(input.nodeExecutable)) throw new Error('INPUT_INVALID');
+  const { nodeExecutable } = input;
   const gateway = {
-    async execute({ definition, subject_sha }) {
-      if (!definition || !Array.isArray(definition.argv) || definition.argv.length < 1
-        || !path.isAbsolute(definition.cwd) || !Number.isSafeInteger(definition.timeout_ms)
-        || definition.timeout_ms < 1 || !closed(definition.environment ?? {}, Object.keys(definition.environment ?? {}))
-        || !/^[0-9a-f]{40}$/.test(subject_sha)) throw new Error('INPUT_INVALID');
-      const [declared, ...args] = definition.argv;
-      if (declared !== nodeExecutable) throw new Error('FORBIDDEN_TARGET');
-      const result = await executeProcess(nodeExecutable, args, {
-        cwd: definition.cwd,
-        environment: { ...(definition.environment ?? {}) },
-        timeout_ms: definition.timeout_ms,
-      });
-      const status = result.signal ? 'INTERRUPTED' : 'COMPLETED';
-      const verdict = status === 'COMPLETED' ? result.code === 0 ? 'PASS' : 'FAIL' : null;
-      const compact = {
-        validation_id: definition.id,
-        validation_kind: definition.validation_kind,
-        validation_scope: definition.validation_scope,
-        status,
-        verdict,
-        failure_code: status === 'INTERRUPTED' ? 'SIGNAL_EXIT' : result.code === 0 ? null : 'NONZERO_EXIT',
-        command_definition_sha256: sha256(canonical(definition)),
-        subject_sha,
-        stdout_sha256: sha256(result.stdout),
-        stderr_sha256: sha256(result.stderr),
-      };
-      return ok({ ...compact, receipt_sha256: sha256(canonical(compact)), candidate_sha: null, validator_head: null, idempotency_id: definition.id });
+    async execute(request) {
+      if (!closedDataObject(request, ['definition', 'subject']) || !validWorktreeSubject(request.subject)) throw new Error('INPUT_INVALID');
+      const { definition, subject } = request;
+      validateDefinition(definition, nodeExecutable);
+      const scope_sha256 = worktreeScopeSha256(subject);
+      let pre;
+      try {
+        await validateSubjectIdentityAndCwd(subject, definition);
+        const observation = await collectWorktreeSnapshotObservationV1(subject);
+        pre = evaluateWorktreeSnapshotObservationV1({ schema_version: '1.0', subject, observation });
+        if (pre.kind !== 'OK') throw new Error('SUBJECT_MISMATCH');
+      } catch (error) {
+        if (error?.message === 'INPUT_INVALID') throw error;
+        return receiptFor(subject, definition, scope_sha256, { status: 'START_FAILED', verdict: null, failure_code: 'SUBJECT_MISMATCH' }, null, null, Buffer.alloc(0), Buffer.alloc(0));
+      }
+      const child = await executeValidationChild(nodeExecutable, definition.argv.slice(1), definition.cwd, definition.timeout_ms);
+      let post;
+      try {
+        const observation = await collectWorktreeSnapshotObservationV1(subject);
+        post = evaluateWorktreeSnapshotObservationV1({ schema_version: '1.0', subject, observation });
+      } catch {
+        post = { kind: 'REJECTED', reason: 'SUBJECT_MISMATCH' };
+      }
+      if (post.kind !== 'OK' || post.value.scope_sha256 !== pre.value.scope_sha256 || post.value.worktree_snapshot_sha256 !== pre.value.worktree_snapshot_sha256) {
+        return receiptFor(subject, definition, pre.value.scope_sha256, { status: 'INTERRUPTED', verdict: null, failure_code: 'SUBJECT_MISMATCH' }, definition.cwd, pre.value.worktree_snapshot_sha256, child.stdout, child.stderr);
+      }
+      if (child.kind === 'START_FAILED') return receiptFor(subject, definition, pre.value.scope_sha256, { status: 'START_FAILED', verdict: null, failure_code: 'PROCESS_START_FAILED' }, definition.cwd, pre.value.worktree_snapshot_sha256, child.stdout, child.stderr);
+      if (child.timedOut) return receiptFor(subject, definition, pre.value.scope_sha256, { status: 'INTERRUPTED', verdict: null, failure_code: 'TIMEOUT' }, definition.cwd, pre.value.worktree_snapshot_sha256, child.stdout, child.stderr);
+      if (child.signal !== null) return receiptFor(subject, definition, pre.value.scope_sha256, { status: 'INTERRUPTED', verdict: null, failure_code: 'SIGNAL_EXIT' }, definition.cwd, pre.value.worktree_snapshot_sha256, child.stdout, child.stderr);
+      return receiptFor(subject, definition, pre.value.scope_sha256, child.code === 0
+        ? { status: 'COMPLETED', verdict: 'PASS', failure_code: null }
+        : { status: 'COMPLETED', verdict: 'FAIL', failure_code: 'NONZERO_EXIT' }, definition.cwd, pre.value.worktree_snapshot_sha256, child.stdout, child.stderr);
     },
   };
   return Object.freeze(gateway);

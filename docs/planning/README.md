@@ -1,5 +1,9 @@
 # JuanerAI Product Planning Index
 
+## Automation repair before Desktop restart
+
+For the active automation repair, read [the fixed M0–M4 master plan](2026-09-05/automation-repair/MASTER_PLAN.md) and [its next-action card](2026-09-05/automation-repair/NEXT_ACTION.md) before continuing a repair or opening a necessary dependency fix. This is the user-approved repair route, separate from the product-planning package below; Gate status is recorded in the action card and formal evidence.
+
 ## Current revision package
 
 The current frozen product-planning input is [`2026-08-27/`](2026-08-27/README.md). It records the desktop-first Xanthil direction, the revised Asset and Model Capability Architecture, and the retained two-phase Model Pack direction.

@@ -11,10 +11,10 @@
     "ordinal": 3,
     "total": 7
   },
-  "health": "blocked",
-  "summary": "D1-A product/dependency/Windows-CI authority and three-checkout EMPTY-pointer freshness are closed, but the production Coordinator cannot execute its Regression Gate and would strand the sole WIP; DISPATCH remains unsigned",
-  "current_objective": "Close and verify every signed-DISPATCH prerequisite for CHG-xanthil-desktop-session-bootstrap without starting the Change",
-  "next_action": "Await explicit authority for a separate bounded Change Coordinator regression-gateway repair; after its verified deployment, regenerate the Desktop authority package and repeat all freshness checks",
+  "health": "active",
+  "summary": "M1 component accepted; exact mechanical archive/canonical promotion and fresh quality PASS; S06 task-only index waiver plus direct checks PASS, returned to original commit Gate. B0 open.",
+  "current_objective": "按 JUANERAI-AUTOMATION-REPAIR-20260905 固定 M0–M4 主计划完成 Desktop 重启前自动化修复。",
+  "next_action": "Exact reviewed commit, fresh read-only mechanical integration check, PR/CI/squash merge and archive/live-main readback; stop after M1, no M2/tool repair.",
   "blockers": [
     {
       "id": "BLK-D1A-008",
@@ -52,7 +52,7 @@
     {
       "id": "spec_gate",
       "label": "Spec Gate",
-      "status": "locked"
+      "status": "completed"
     },
     {
       "id": "implementation",
@@ -93,29 +93,29 @@
       "id": "juaner_spec",
       "label": "Spec Agent",
       "model": "gpt-5.6-sol / R2 high when dispatched",
-      "status": "locked",
-      "activation": "Verified separate Coordinator regression-gateway repair, regenerated authority package, renewed baseline/WIP freshness, and valid signed DISPATCH"
+      "status": "complete",
+      "activation": "Temporary /root/wveb_spec_admission_379 sol/high completed; Controller Spec Gate 001 PASS. Temporary exception ended, no future role dispatch authorized."
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
-      "model": "gpt-5.6-terra / R2 high when dispatched",
-      "status": "locked",
-      "activation": "Spec Gate PASS"
+      "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
+      "status": "complete",
+      "activation": "Test012 complete/stopped, Controller corrected-manifest387/386PASS/1causalRED Readiness accepted. Temporary exception ended."
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
-      "model": "gpt-5.6-terra / R2 high when dispatched",
-      "status": "locked",
-      "activation": "TDD_READY"
+      "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
+      "status": "complete",
+      "activation": "Worker005 complete/stopped; exactly two private predicates;387GREEN and Controller full quality/finalRetirement PASS. Temporary exception ended."
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
-      "model": "gpt-5.6-sol / R2 high when dispatched",
-      "status": "locked",
-      "activation": "frozen implementation and evidence"
+      "model": "gpt-5.6-sol / medium (configured default; R2 high when dispatched)",
+      "status": "complete",
+      "activation": "Fresh /root/wveb_validator_004 completed full WVEB PASS and stopped; Controller reconciled20/20 frozen inputs, full logs/probes/Retirement. Temporary exception ended, config unchanged; no next dispatch."
     }
   ],
   "metrics": [
@@ -252,6 +252,42 @@
       "label": "Coordinator Regression pre-DISPATCH blocker",
       "path": "docs/planning/2026-08-28/d1a/evidence/coordinator-regression-pre-dispatch-blocker-001.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-WVEB-VALIDATOR002-FAIL",
+      "label": "Validator002 FAIL and M1/B0 bounded return",
+      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-validator-002-gate.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-WVEB-TEST011-MANIFEST",
+      "label": "S04 approved bounded Test supplement, role substitution pending",
+      "path": "docs/planning/2026-09-05/automation-repair/m1-test-correction-011-brief.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-WVEB-TEST011-RED",
+      "label": "Test011 independent causalRED / Readiness, Worker pending",
+      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-test-correction-011-gate.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-WVEB-WORKER004-GREEN",
+      "label": "Worker004 snapshot fix and current Controller quality/final Retirement PASS; fresh Validator pending",
+      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-worker-revision-004-gate.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-WVEB-VALIDATOR003-FAIL",
+      "label": "Validator003 FAIL, original getter fixed, bounded root containment return at R012",
+      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-validator-003-gate.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-WVEB-M1-ACCEPTANCE",
+      "label": "M1 component Acceptance and archive/integration Gate",
+      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-integration-gate-001.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -274,9 +310,9 @@
       "mitigation": "Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
     }
   ],
-  "updated_at": "2026-08-31T11:14:42.495Z",
+  "updated_at": "2026-09-05T11:00:46.135Z",
   "updated_by": {
     "role": "controller",
-    "session": "codex-controller-psp-archive-closure"
+    "session": "automation-repair-controller-20260905"
   }
 }
