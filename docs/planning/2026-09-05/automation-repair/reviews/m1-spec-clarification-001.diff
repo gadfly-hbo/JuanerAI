@@ -1,0 +1,538 @@
+--- a/openspec/changes/change-coordinator-worktree-validation-execution-boundary/design.md
++++ b/openspec/changes/change-coordinator-worktree-validation-execution-boundary/design.md
+@@ -1,11 +1,13 @@
+ # Design: Worktree Validation Execution Boundary
+ 
+-## 0. Validator-failure disposition and current stop
++## 0. Current clarification and stop
+ 
+-`WVEB-VALIDATOR-FAIL-DISPOSITION-001` accepts independent Validator 001 `FAIL` and clarifies two boundaries under frozen route `WVEB-R2-ROUTE-001`: strict L2 closed-input/scope admission and the terminal timeout race. It does not change the approved Request, twenty-four-field receipt, snapshot-hash field set or algorithm, receipt-hash field set or algorithm, environment contract, path boundaries, or role permissions. This clarification passed the Controller Spec Gate. The Change remains `MANUAL_CONTROLLER_STOP`: Test Correction 005 still requires separate user approval, and a later bounded Worker revision remains locked until the corrected Test has passed its required readiness Gates and the user has re-confirmed a new `TDD_READY` bound to that Test identity.
++This six-file clarification closes the remaining caller-owned input-admission contract identified after Worker Revision 002: primitive scalar type admission, the six current-realm Array descriptor boundaries, and lexical root admission before real-identity classification. It retains `REQ-WVEB-001`, `AC-WVEB-001..006`, the Request, twenty-four-field receipt, snapshot-hash and receipt-hash field sets and algorithms, environment contract, timeout race, dependencies, path boundaries, role permissions, and L1/L2-only scope.
+ 
+-The unchanged `proposal.md` records the original intake and initial draft state. This section and `verification.md` are the current read model after Validator 001. Historical RED, Readiness, TDD_READY, implementation GREEN, canonical, retirement, ponytail, and retrospective results remain historical evidence; Validator 001 `FAIL` supersedes them as release authority.
++Worker Revision 002 and its focused/regression/canonical results are valid historical partial-GREEN evidence for the prior closed-input, scope, bigint, and timeout defects. Validator 001 `FAIL` predates that revision but remains the latest completed independent verdict; it is not an assertion that the current blobs still contain every defect observed at its stage. Worker Revision 002 does not close the newly confirmed admission defects, establish current Test Asset Readiness or Retirement, provide a fresh Validator verdict, or authorize release. The Change therefore remains `MANUAL_CONTROLLER_STOP`. This role returns only `SPEC_READY / PENDING_CONTROLLER_SPEC_GATE`; Test Correction 010, a renewed `TDD_READY`, Worker Revision 003, a new Validator, Acceptance, integration, archive, and the L3 successor remain locked.
+ 
++The unchanged `proposal.md` records the original intake and initial draft state. Historical Validator 001 `FAIL`, prior Corrections 005..007, earlier RED/Readiness/TDD_READY, Worker Revision 002 GREEN, regression, canonical, retirement, ponytail, and retrospective records remain historical evidence and are not rewritten as the current release result.
++
+ ## 1. Boundary and dependency direction
+ 
+ The Change has exactly two production layers:
+@@ -57,11 +59,12 @@
+ Rules:
+ 
+ - all eight fields are required and no other field is allowed;
+-- `repository_root`, `worktree_root`, and `common_git_dir` are absolute UTF-8 strings of 1..4096 encoded bytes, contain no NUL, and are already lexical-normal forms;
++- `repository_root`, `worktree_root`, and `common_git_dir` are primitive strings of 1..4096 UTF-8 encoded bytes, contain no NUL, and are absolute lexical-normal forms: `/` alone is valid; otherwise there is no trailing slash, repeated slash, `.` segment, or `..` segment. A nonconforming input string is `INPUT_INVALID` and is never normalized into an admitted value. Only after lexical admission may a real filesystem/identity disagreement become `SUBJECT_MISMATCH`;
+ - `branch` is a UTF-8 string of 1..255 encoded bytes matching `work/mac-mini/<slug>`, where `<slug>` is one or more lowercase ASCII alphanumeric groups separated by single hyphens; a `work/macbook/...` development branch is never an execution subject;
+-- `head_sha` is exactly forty lowercase hexadecimal ASCII bytes;
++- `head_sha` is a primitive string and exactly forty lowercase hexadecimal ASCII bytes; primitive type is checked before regex or any other consumption;
+ - `allowed_paths` and `forbidden_paths` are arrays of strings and MUST equal the signed subject scope as ordered, unique arrays; neither array is normalized, reordered, inferred, or sorted by the evaluator or production collector;
+-- each scope array is closed: it is an actual Array whose only own keys are the dense string indices `0` through `length - 1` plus the built-in non-enumerable data property `length`; it has no holes, symbol keys, extra string keys, or accessor indices. Read-only/frozen data indices are allowed;
++- each scope array is an actual Array whose prototype is exactly the executing module's current-realm built-in `Array.prototype`; its own keys are exactly dense string indices `0` through `length - 1` plus the built-in non-enumerable data-property form of `length`; every index is an own enumerable data property, with no hole, symbol key, extra string key, getter, or setter. Index and length writability/configurability are not authority, so valid frozen and read-only arrays are allowed;
++- prototype and descriptor qualification is completed before reading an input array method, iterating it, consuming an item, or serializing it. A custom or null prototype is rejected rather than copied, repaired, normalized, or consumed;
+ - each scope item encodes to 1..4096 UTF-8 bytes and is either one repository-relative exact path or one repository-relative prefix ending in the single suffix `/**`;
+ - a scope item has no leading slash, trailing slash other than `/**`, empty segment, `.` segment, `..` segment, NUL, backslash, second glob, or other wildcard;
+ - each array is unique by raw UTF-8 bytes; the same rule in both arrays is a scope conflict and is rejected;
+@@ -95,7 +98,7 @@
+ - observed `branch` and `head_sha` use the subject grammar;
+ - `status_stdout`, `ignored_status_stdout`, and index-probe `stdout`/`stderr` are `Uint8Array` values; each of the two status streams is at most 1 MiB;
+ - `index_probe` is a plain exact four-field object; `exit_code` is either a safe integer or `null`, `signal` is either `null` or a non-empty string, and both output byte arrays MUST be empty;
+-- `entries` is an array whose length exactly equals the number of records in `status_stdout`; that count is naturally bounded by the 1 MiB status limit and receives no second limit;
++- `entries` obeys the same current-realm built-in `Array.prototype`, dense own enumerable data-index, and built-in `length` descriptor rule as the subject scope arrays. Its qualification precedes input method lookup, iteration, entry consumption, or serialization. Its length exactly equals the number of records in `status_stdout`; that count is naturally bounded by the 1 MiB status limit and receives no second limit;
+ - each entry is a plain exact five-field object; `path_bytes` is a `Uint8Array` of 1..4096 raw bytes and is never decoded for hashing, sorting, or identity; `parent_realpath` is an absolute canonical UTF-8 string of 1..4096 encoded bytes;
+ - `before` and `after` are each exactly `{kind:'MISSING'}` or `{kind:'PRESENT',type,mode,dev,ino,size,mtime_ns,ctime_ns}`; a present `type` is exactly one of `FILE`, `SYMLINK`, `DIRECTORY`, `SOCKET`, `FIFO`, `BLOCK_DEVICE`, `CHARACTER_DEVICE`, or `OTHER`;
+ - in every present stat, `mode`, `dev`, `ino`, `size`, `mtime_ns`, and `ctime_ns` are primitive JavaScript `bigint` values exactly as returned by `lstat({bigint:true})`; each MUST be nonnegative, and a Number, string, boxed bigint, or mixed representation is `INPUT_INVALID`;
+@@ -167,6 +170,8 @@
+ 
+ `production.mjs` imports and calls the evaluator. Its collector is private and has no injection seam. It uses the existing `PINNED_PRODUCTION_GIT_PATH` and starts each Git process with an exact environment object having zero own fields, never inheriting, merging, or passing through a parent or caller environment.
+ 
++Before any realpath or identity operation, production applies the L1 lexical root rule independently to `repository_root`, `worktree_root`, and `common_git_dir`. A non-primitive, out-of-range, relative, NUL-bearing, trailing-slash (except `/`), repeated-slash, dot-segment, or dot-dot-segment value is `INPUT_INVALID` with no receipt. For an admitted lexical root, a realpath/canonical identity failure or disagreement remains `SUBJECT_MISMATCH`; `/` is not rejected merely because it is the filesystem root.
++
+ For an admitted subject it executes these observation commands with the exact worktree cwd and no extra argument:
+ 
+ 1. `status --porcelain=v1 -z --untracked-files=all --no-renames`;
+@@ -213,8 +218,12 @@
+ 
+ The request, its `subject`, its `definition`, and the definition's `environment` all obey the shared strict data-object rule in section 2.1. The empty environment therefore has prototype `Object.prototype` and `Reflect.ownKeys(environment).length === 0`; symbol, non-enumerable, accessor, inherited-authority, or ordinary extra fields are invalid. `WorktreeSubjectV1.allowed_paths` and `forbidden_paths` independently pass the complete L1 closed-array, item grammar, raw-byte uniqueness, cross-array conflict, and combined 1 MiB canonical-scope limit before any `realpath`, Git, snapshot, or validation-process operation. Production does not normalize, repair, reorder, or partially accept scope.
+ 
+-For either tuple, `argv` is a non-empty array of strings and `argv[0]` exactly equals the factory `nodeExecutable`; `cwd` is absolute and, after realpath, is the worktree root or its descendant on a component boundary; `environment` is the exact plain, closed object `{}` with zero own fields; and `timeout_ms` is a positive safe integer. The field grants no environment authority: production never inherits, merges, or passes through any parent or caller environment value. Any invalid factory input, request, subject, definition, environment, or scope rejects with the stable `INPUT_INVALID` error, without a receipt and before any realpath, Git, snapshot, or validation-process work. In particular `../escape` and every other invalid scope item are admission failures, not `SUBJECT_MISMATCH` receipts.
++For either tuple, `argv` is a non-empty array of strings and `argv[0]` exactly equals the factory `nodeExecutable`; `cwd` is a primitive absolute string and, after realpath, is the worktree root or its descendant on a component boundary; `environment` is the exact plain, closed object `{}` with zero own fields; and `timeout_ms` is a positive safe integer. `cwd` primitive type is checked before any path API. It retains its existing absolute-path and realpath-containment rules and gains neither the root lexical-normal rule nor another length limit. `head_sha` primitive type is likewise checked before regex, serialization, or any other consumption.
+ 
++The three L2 input arrays—`definition.argv`, `subject.allowed_paths`, and `subject.forbidden_paths`—obey the same current-realm built-in `Array.prototype`, dense own enumerable data-index, built-in `length`, and frozen/read-only allowance as the three L1 arrays. Their prototype/descriptor qualification precedes method lookup, iteration, item consumption, canonicalization, or serialization. A rejected input invokes no inherited conversion, iterator, getter-method, returned method, `toString`, `valueOf`, or `Symbol.toPrimitive` callback.
++
++The environment field grants no environment authority: production never inherits, merges, or passes through any parent or caller environment value. Any invalid factory input, request, subject, definition, environment, scalar, array, scope, or lexical root rejects with the stable `INPUT_INVALID` error, without a receipt and before any realpath, Git, snapshot, or validation-process work. In particular `../escape`, every other invalid scope item, and every non-lexical-normal root are admission failures, not `SUBJECT_MISMATCH` receipts.
++
+ ### 4.2 Execution sequence
+ 
+ The sequence is fixed:
+--- a/openspec/changes/change-coordinator-worktree-validation-execution-boundary/specs/dual-device-transition-foundation/spec.md
++++ b/openspec/changes/change-coordinator-worktree-validation-execution-boundary/specs/dual-device-transition-foundation/spec.md
+@@ -8,9 +8,9 @@
+ - Baseline authority: `openspec/specs/dual-device-transition-foundation/spec.md`
+ - Change class: R2 boundary Change
+ - Current Change state: `MANUAL_CONTROLLER_STOP`
+-- Current Spec disposition: `WVEB-VALIDATOR-FAIL-DISPOSITION-001` passed Controller Spec Gate under `WVEB-R2-ROUTE-001`
++- Current Spec disposition: `SPEC_READY / PENDING_CONTROLLER_SPEC_GATE` for the bounded 379-leaf admission clarification under `WVEB-R2-ROUTE-001`
+ 
+-This delta closes only L1 snapshot observation and L2 production validation execution. L3 Coordinator Regression orchestration, Ledger adoption, Candidate, Final Validation, and Regression-to-STAGE remain deferred.
++This delta closes only L1 snapshot observation and L2 production validation execution. The current clarification adds no Requirement or Acceptance Criterion: it makes the existing fail-closed contract explicit for primitive scalar admission, six caller-owned current-realm Arrays, and lexical-root versus real-identity classification. L3 Coordinator Regression orchestration, Ledger adoption, Candidate, Final Validation, and Regression-to-STAGE remain deferred.
+ 
+ ## ADDED Requirements
+ 
+@@ -47,6 +47,10 @@
+ 
+ `observation` is exactly `SnapshotObservationV1`. `status_stdout`, `ignored_status_stdout`, index stdout/stderr, and every `path_bytes` are `Uint8Array`. `before` and `after` are exactly `{kind:'MISSING'}` or `{kind:'PRESENT',type:'FILE'|'SYMLINK'|'DIRECTORY'|'SOCKET'|'FIFO'|'BLOCK_DEVICE'|'CHARACTER_DEVICE'|'OTHER',mode,dev,ino,size,mtime_ns,ctime_ns}`. `content` is exactly `{kind:'FILE',sha256}`, `{kind:'SYMLINK',target_sha256}`, or `{kind:'MISSING'}`.
+ 
++The six caller-owned arrays are L1 `subject.allowed_paths`, `subject.forbidden_paths`, and `observation.entries`, plus L2 `definition.argv`, `subject.allowed_paths`, and `subject.forbidden_paths`. Each MUST satisfy `Array.isArray(value) === true` and have prototype exactly equal to the executing module's current-realm built-in `Array.prototype`. Own keys MUST be exactly dense indices `"0".."length-1"` plus the built-in non-enumerable data-property form of `length`; every index MUST be an own enumerable data property, with no hole, symbol, extra string key, getter, or setter. Writability and configurability are not authority, so valid frozen and read-only arrays remain admitted. Prototype and descriptor qualification MUST occur before input method lookup, iteration, item consumption, canonicalization, or serialization; rejected inputs MUST NOT be copied, repaired, normalized, or invoke inherited/caller conversion or iteration callbacks.
++
++`repository_root`, `worktree_root`, and `common_git_dir` MUST be primitive strings, absolute, NUL-free, 1..4096 UTF-8 bytes, and lexical-normal: `/` alone is valid; otherwise trailing slash, repeated slash, `.` segments, and `..` segments are invalid. Non-lexical input is `INPUT_INVALID` and MUST NOT be normalized into acceptance. Only a lexically admitted root whose real filesystem/canonical identity fails or disagrees is `SUBJECT_MISMATCH`.
++
+ For every present stat, `mode`, `dev`, `ino`, `size`, `mtime_ns`, and `ctime_ns` are exact nonnegative primitive JavaScript `bigint` values returned directly by `lstat({bigint:true})`. Number, string, boxed bigint, and mixed representations are invalid. Pre/post comparison is strict bigint equality for all six fields, and the executable mask is exactly `0o111n`. These representation rules do not add a snapshot field and do not change the existing normalized mode bytes or any snapshot-hash field or byte algorithm.
+ 
+ The only results are:
+@@ -67,10 +71,12 @@
+ | `regression-affected-suite` | `REGRESSION` | `AFFECTED_SUITE` | `WORKTREE` |
+ | `regression-test-asset-retirement` | `REGRESSION` | `TEST_ASSET_RETIREMENT` | `WORKTREE` |
+ 
+-`argv` is a non-empty string array whose first value exactly equals the factory Node executable; `cwd` is an absolute contained Worktree path; `environment` is exactly the plain, closed, zero-own-field object `{}`; and `timeout_ms` is a positive safe integer. Production starts the exact Node with a newly constructed environment object having zero own fields and MUST NOT inherit, merge, or pass through parent or caller environment fields. Candidate, cross-subject, `subject_sha`, missing, extra, or other values are `INPUT_INVALID` before Git/process work and produce no receipt.
++`argv` is a non-empty string array whose first value exactly equals the factory Node executable; `cwd` is a primitive absolute string and, after realpath, a contained Worktree path; `environment` is exactly the plain, closed, zero-own-field object `{}`; and `timeout_ms` is a positive safe integer. `cwd` MUST be type-checked before a path API, but retains its existing absolute/containment rules and gains no root lexical-normal rule or additional length limit. `subject.head_sha` MUST be a primitive string before regex or any other consumption and then exactly forty lowercase hexadecimal ASCII characters. Invalid scalar types return `INPUT_INVALID`, no receipt, no child, and invoke no `toString`, `valueOf`, or `Symbol.toPrimitive` callback.
+ 
+-Every L2 factory input, execute request, subject, definition, and empty-environment object is a strict plain closed data object. Its prototype is exactly `Object.prototype`; `Reflect.ownKeys` is exactly the frozen string-field set with no symbol or extra key; every required field is an own enumerable data property rather than a getter or setter; and writable/configurable flags may be either value so frozen data remains valid. Descriptors are checked before values are read. Both signed-scope arrays independently use the L1 dense closed-array and complete item-grammar rules, including uniqueness, cross-array conflict, and the combined 1 MiB canonical-byte limit, before any realpath, Git, snapshot, or process operation. Invalid scope such as `../escape` is `INPUT_INVALID`, produces no receipt, and reaches none of those operations.
++Production starts the exact Node with a newly constructed environment object having zero own fields and MUST NOT inherit, merge, or pass through parent or caller environment fields. Candidate, cross-subject, `subject_sha`, missing, extra, or other values are `INPUT_INVALID` before Git/process work and produce no receipt.
+ 
++Every L2 factory input, execute request, subject, definition, and empty-environment object is a strict plain closed data object. Its prototype is exactly `Object.prototype`; `Reflect.ownKeys` is exactly the frozen string-field set with no symbol or extra key; every required field is an own enumerable data property rather than a getter or setter; and writable/configurable flags may be either value so frozen data remains valid. Descriptors are checked before values are read. L2 `argv` and both signed-scope arrays independently use the complete six-array rule above; the scopes retain their item grammar, uniqueness, cross-array conflict, and combined 1 MiB canonical-byte limit. All qualification occurs before realpath, Git, snapshot, process, or serialization. Invalid scope such as `../escape`, invalid array authority, or a non-lexical-normal root is `INPUT_INVALID`, produces no receipt, and reaches none of those operations.
++
+ Darwin/Node may create `__CF_USER_TEXT_ENCODING` in the child even though the spawn request carried zero environment fields. This named platform injection is not caller authority and is not part of the definition signature, execute request, receipt, snapshot hash, or receipt hash. Test may explicitly observe and remove only this named key before proving that no other child key remains, and SHALL separately prove that a parent sentinel is absent. This exception is not an open allowlist and does not permit caller environment fields.
+ 
+ An admitted request returns the existing OK envelope whose `value` is exactly this twenty-four-field execution receipt:
+@@ -107,6 +113,8 @@
+ 
+ ## Current Gate
+ 
+-The Change remains `MANUAL_CONTROLLER_STOP`. This clarification passed Controller review, mandatory ponytail review, and Spec Gate. The user may separately decide whether to authorize `WVEB-TEST-CORRECTION-005`; this Gate does not authorize that write. Before the Test's first write, the Controller freezes the complete L2 closed-input, dual-scope grammar, and signal-resistant-timeout leaf manifest specified in `test-plan.md`. The correction must then re-establish causal production RED, Test Asset Readiness, Test Asset Retirement, and applicable regressions, after which the user must re-confirm a new `TDD_READY` bound to the new Test identity before bounded Worker Revision 002.
++The Change remains `MANUAL_CONTROLLER_STOP`. This six-file clarification returns `SPEC_READY / PENDING_CONTROLLER_SPEC_GATE`; it does not claim Controller correctness review, mandatory ponytail review, or Spec Gate `PASS`, and it does not authorize Test Correction 010.
+ 
+-The current frozen Test is SHA-256 `ab54a4e144d0a167b6f2a89be45b96712e10a3298accb994d9ba63aee0a69fad`, 166 leaves, and historically passed `166/166`. Current production identities are `43e72532f3e68069fdc6be8198dcc706c9961ba33457d5c1fde61cd53a4563b0` for the snapshot evaluator and `9585838ba60e55cc48c4c93cb1bc040355f7b6499073cdcf5bdb59ad21309f99` for `production.mjs`. Historical RED, Readiness, TDD_READY, implementation GREEN, canonical, retirement, and ponytail evidence remains historical fact; independent Validator 001 `FAIL` supersedes it as release authority. No second Validator, Acceptance, integration, archive, or successor authority is claimed.
++The current physical Test is SHA-256 `19941a032cbe4645055401123aa316df4fbdc13d1cfab9ec536becbaefea442a`, 1,326 lines, 111,031 bytes, with exactly 279 retained stable IDs. The current production identities are `43e72532f3e68069fdc6be8198dcc706c9961ba33457d5c1fde61cd53a4563b0` for the snapshot evaluator and `757591c734ac997d65d941893910e413fc6c64535753170ffd45c12abd1033fc` for `production.mjs`. Worker Revision 002 historically produced focused `279/279`, Coordinator `358/358`, Board `12/12`, and canonical `1410 PASS / 0 FAIL / 1 expected real-Pi skip`; those are partial-GREEN evidence only because the current admission defects lack adopted tests and fixes. Current Test Asset Readiness has not passed, Test Asset Retirement is not closed, and no fresh Validator covers this clarified contract.
++
++After Controller review, ponytail review, and Spec Gate, the exact Test adoption remains 279 retained leaves plus N114..N213, zero replace/delete, for 379 total leaves. Only a separately authorized Test Correction 010 may write that adoption. A new accepted Test identity and causal RED/Readiness/Retirement evidence are required before any renewed `TDD_READY` or bounded Worker Revision 003. No new Validator, Acceptance, integration, archive, or successor authority is claimed.
+--- a/openspec/changes/change-coordinator-worktree-validation-execution-boundary/test-plan.md
++++ b/openspec/changes/change-coordinator-worktree-validation-execution-boundary/test-plan.md
+@@ -3,15 +3,11 @@
+ ## Status and asset boundary
+ 
+ - Current Change state: `MANUAL_CONTROLLER_STOP`.
+-- Historical last Test Asset Readiness identity: SHA-256 `ab54a4e144d0a167b6f2a89be45b96712e10a3298accb994d9ba63aee0a69fad`, 166 leaves, historical focused result `166/166 PASS`. It is not the current physical Test and grants no current release, Worker, or integration authority.
+-- Historical physical Test after Correction 005: SHA-256 `fce1d0711d98a473f7d2d199126c4d05ffa8d9608d6665cc840818635393d981`, 899 lines, 75,986 bytes, exactly 279 stable IDs. It has no current release or Worker authority.
+-- Current physical post-Correction-006 Test observed at this Spec entry: SHA-256 `12ee964917251904eb0f5b3535bcc04c1821200d81c34b285c19ec1e8dcadfda`, 1,178 lines, 92,135 bytes, exactly the same 279 stable IDs. It remains unaccepted and not integration-ready; this clarification does not validate it or authorize a Worker.
+-- Independent Validator 001 returned `FAIL`: L2 admission did not reject hidden/accessor own properties or the complete signed-scope grammar, and a signal-resistant child could outlive the single `SIGTERM` timeout action.
+-- `WVEB-TIMEOUT-EVIDENCE-ALLOCATION-001` is the approved input for this evidence allocation. Encoding it in these four evidence files is not a new Spec clarification or a second Spec result.
+-- `WVEB-STRUCTURAL-ORACLE-PARSER-001` approved only the Test-side parser boundary. It did not and does not authorize Correction 007, production work, or any dependency change.
+-- `WVEB-STRUCTURAL-EVIDENCE-LIFECYCLE-002` clarifies only how Test and Validator bind structural source identity and prove the repository-wide sole-consumer claim. It changes no Requirement, AC, Design/runtime semantic, production byte, dependency, path, or authority.
+-- This four-file revision is `PRE_REVIEW`: the Controller Spec Gate for the revised evidence allocation is still pending read-only review. It authorizes no Test or production write.
+-- The unchanged Design/delta references to Correction 005 record their prior Gate context only; they grant no current execution authority. The next possible Test write is Correction 007, which remains unauthorized pending this clarification's Controller review and separate user approval.
++- Current physical Test: SHA-256 `19941a032cbe4645055401123aa316df4fbdc13d1cfab9ec536becbaefea442a`, 1,326 lines, 111,031 bytes, exactly 279 stable IDs (`C001..C166` and `N001..N113`). It is the immutable input to this clarification and has no current Test-write or renewed Worker authority.
++- Worker Revision 002 historically passed focused `279/279`, Coordinator `358/358`, Board `12/12`, and canonical `1410 PASS / 0 FAIL / 1 expected real-Pi skip`. Those results remain partial-GREEN evidence for the prior contract only. Current Test Asset Readiness has not passed, Test Asset Retirement is not closed, and no fresh Validator covers the scalar/array/root admission defects now clarified.
++- Validator 001 `FAIL` predates Worker Revision 002 but remains the latest completed independent verdict. It is preserved with prior Corrections 005..007 and earlier RED/Readiness/TDD_READY/PASS evidence; it does not assert that the current blobs still contain every defect observed at that Validator stage, and no later partial GREEN becomes Acceptance without fresh independent revalidation.
++- This six-file revision is `SPEC_READY / PENDING_CONTROLLER_SPEC_GATE`. It changes no Requirement/AC ID, receipt, hash, timeout, dependency, path boundary, or L3 authority and authorizes no Test or production write.
++- Test Correction 010 is the next possible Test adoption only after Controller correctness review, mandatory ponytail review, Spec Gate, and separate authorization. A renewed `TDD_READY`, Worker Revision 003, fresh Validator, Acceptance, integration, archive, and successor release remain locked.
+ - Sole planned Test path: `tools/harness/change-coordinator/worktree-validation-execution-boundary.test.mjs`.
+ - Existing Tests, fixtures, helpers, doubles, and snapshots are read-only.
+ - The planned Test is a permanent regression asset owned by `REQ-WVEB-001` / `AC-WVEB-001..006`; temporary repositories, scripts, probes, and evidence live only under the operating-system temporary directory and are removed by Test cleanup.
+@@ -20,10 +16,35 @@
+ 
+ The production factory has no observation injection. L1 alone constructs synthetic `SnapshotObservationV1` values. L2 derives expected inventory/snapshot/receipt bytes independently from a real temporary Git worktree and compares them with production output while inducing only real Git, filesystem, cwd, identity, and Node-process conditions.
+ 
+-## Approved evidence allocation and proposed Correction 007 adoption contract
++## Exact Test Correction 010 adoption contract
+ 
+-Correction 007 is not started or authorized by this clarification. Its proposed adoption manifest preserves all 279 stable IDs and every leaf body except `C164`; preserves both production files byte-for-byte; removes the historical production-length/SHA constants and every permanent comparison against them; revises the shared `productionAst` single-read lifecycle; deletes or fully replaces the broad recursive `.includes()` consumer helper and only imports made unused by that replacement; and revises `C164` to call the repository-wide AST inventory. It adds no Test path, fixture, production seam, dependency, or runtime authority.
++The per-ID mutations and positive-oracle assignments are frozen by the [formal 379 attachment](../../../docs/planning/2026-09-05/automation-repair/attachments/wveb-379-candidate.md). The adoption is exact and additive:
+ 
++```text
++279 retain: C001..C166 and N001..N113, same IDs, registration order, bodies, helpers, and evidence purposes
+++ 28 scalar leaves: N114..N141
+++ 42 array leaves: N142..N183
+++ 30 root leaves: N184..N213
++= 379 total leaves
++
++replace = 0
++delete = 0
++renumber or merge = 0
++registration order = current 279 order, then N114..N141, N142..N183, N184..N213
++```
++
++The 28 scalar leaves mutate `definition.cwd` (`N114..N126`) and `subject.head_sha` (`N127..N141`) exactly as listed in the formal 379 attachment: null; present undefined; Number; boolean; bigint; Symbol; boxed valid string; plain object; one-element array containing the valid string; function; `toString` returning a valid string; `toString` returning an object with `valueOf` returning the valid string; and `Symbol.toPrimitive` returning the valid string. Head additionally covers a 40-digit primitive bigint and `toString` returning an invalid Head. Each is an independent `INPUT_INVALID`, no-receipt, no-child, zero-callback leaf; already-correct production cases may PASS and are not forced into the causal RED count.
++
++The 42 array leaves cover, independently for L1 `allowed_paths`, `forbidden_paths`, and `entries`, and L2 `argv`, `allowed_paths`, and `forbidden_paths`: null prototype; hook-free custom prototype; prototype data-method hook; prototype getter-method hook; existing index 0 changed only to non-enumerable; valid frozen array; and valid read-only non-frozen array. Method hooks use `every` for all L1 arrays and L2 `argv`, and `Symbol.iterator` for L2 scope arrays. Getter-hook leaves count both getter and returned-method calls, both of which must remain zero. Negative cases reject at admission; positive frozen/read-only cases use independent L1 snapshot or real L2 execution oracles.
++
++The 30 root leaves cover `.`, `..`, repeated slash, trailing slash, and valid `/` independently for `repository_root`, `worktree_root`, and `common_git_dir` at both L1 and L2. Negative strings preserve the same normalized target but must return `INPUT_INVALID` without normalization. L1 `/` uses a matching empty observation and independent empty-snapshot oracle. L2 `/` proves lexical admission and then uses another valid root as an ordering trap to produce a complete pre-snapshot `SUBJECT_MISMATCH` receipt; it does not claim successful validation execution.
++
++Every mutation starts from a proved-valid control, changes one target field or descriptor only, and verifies strict value/descriptor identity for everything else. Expected values are computed from Test-owned normal values before installing a hostile prototype or callback. Tests never spread, map, iterate, serialize, or copy the mutated array to build expected values. Callback counts are zero before and after the public call. L2 negative leaves additionally prove no receipt, no child sentinel, and unchanged temporary-worktree Head, index, and status. L2 frozen/read-only positive leaves run a real child and assert the full twenty-four-field `COMPLETED/PASS/null` receipt.
++
++## Historical retained evidence allocation
++
++Correction 007 and its 279-leaf structural-evidence adoption are historical inputs retained byte-for-byte by the 279-retain rule. Its single-read `productionAst`, repository-wide AST inventory, `C164`, signal-resistant-child, admission, scope, bigint, timeout, sole-consumer, and compatibility evidence remain owned by their existing stable IDs. This clarification does not reopen or replace them.
++
+ The public L2 closed-input matrix covers each of these five strict data-object surfaces independently: factory input, execute request, `WorktreeSubjectV1`, eight-field definition, and empty environment. For each applicable surface it includes separate symbol-extra, non-enumerable-extra, required-field-non-enumerable, getter, setter-only, non-plain, missing, extra-enumerable, and wrong-value/type leaves. Empty environment has no required-field mutation, but separately rejects symbol, non-enumerable, accessor, inherited/non-plain, and enumerable fields. Every accessor leaf proves the accessor callback is never invoked.
+ 
+ For each of `allowed_paths` and `forbidden_paths`, separate public L2 leaves cover closed-array symbol key, extra string key, hole, accessor index, wrong element type, item underflow/overflow, leading slash, trailing slash, empty segment, dot segment, dot-dot segment, NUL, backslash, second `/**`, and every other wildcard form. Separate leaves cover raw-byte duplicate items, cross-array identical-rule conflict, and the combined canonical scope size over 1 MiB. Every invalid leaf is its own stable-ID subtest and returns `INPUT_INVALID` with no receipt, no validation-child sentinel, and no later Test-observable state effect.
+@@ -56,11 +77,11 @@
+ 
+ The exact target is `tools/harness/change-coordinator/worktree-snapshot-contract.mjs`. The inventory must find exactly one resolving production module-reference site in exactly one production-consumer path, and that path must be `tools/harness/change-coordinator/production.mjs`; zero or multiple sites or production-consumer paths fail. Test assets are excluded from the production-consumer count, and any target match in another excluded nonproduction/governance/harness path fails rather than being hidden by classification. `C164` MUST call this repository-wide inventory and assert the exact result. A `production.mjs`-only AST query cannot satisfy sole-consumer evidence, and the broad recursive text `.includes()` helper must not remain, even unused.
+ 
+-Correction 007, if separately authorized, writes only the sole Test file and only the adoption-manifest items above. It adds no new file, fixture, double, snapshot, process/filesystem/Git observer, OS tracing, production seam, dependency, public method, gateway method, State/Event, or runtime authority. It preserves every other stable-ID body, including `C148/N085`, and both production files. Test Asset Readiness must prove the revised lifecycle and repository-wide inventory against the then-current worktree before any later Test-bound `TDD_READY` can be considered.
++The historical Correction 007 boundary remains frozen inside the retained 279 leaves. Test Correction 010 may append only N114..N213 and their local construction/self-check support in the sole Test file. It adds no new file, fixture, double, snapshot, process/filesystem/Git observer, OS tracing, production seam, dependency, public method, gateway method, State/Event, or runtime authority. It preserves every existing stable-ID body, including `C148/N085` and `C164`, and both production files. Test Asset Readiness must prove the complete 379-leaf identity against the then-current worktree before any later Test-bound `TDD_READY` can be considered.
+ 
+ ## Historical causal RED gates
+ 
+-The two independent causal REDs below were established historically and remain preserved evidence. The historical 166-leaf Readiness identity retained their purposes through Correction 004; later corrections retained exactly 279 stable IDs. Correction 007 MUST preserve those 279 IDs and every leaf body except the frozen `C164` structural-evidence body. A new TDD_READY, if later authorized, binds only a Controller-accepted Test identity and its honest Validator-finding causal frontier.
++The two independent causal REDs below were established historically and remain preserved evidence. The historical 166-leaf Readiness identity retained their purposes through Correction 004; later corrections produced exactly 279 stable IDs. Test Correction 010 MUST preserve all 279 IDs, bodies, registration order, helpers, and evidence purposes, and append only N114..N213 plus their local support. A new TDD_READY, if later authorized, binds only a Controller-accepted 379-leaf Test identity and its honest scalar/array/root causal frontier.
+ 
+ | RED | Causal missing behavior | Required assertion | Disallowed substitute |
+ |---|---|---|---|
+@@ -105,6 +126,8 @@
+ - parent realpath escape, unsupported/special/directory leaf, status/content mismatch, followed symlink representation, and each independently changed before/after identity field return `SUBJECT_MISMATCH`;
+ - each of `mode`, `dev`, `ino`, `size`, `mtime_ns`, and `ctime_ns` independently rejects a Number representation and independently rejects a negative bigint as `INPUT_INVALID`; a mixed present-stat representation is never accepted;
+ - no mutation throws, performs I/O, observes environment/clock/network, or invokes a supplied callback because no callback field is admitted.
++- `subject.allowed_paths`, `subject.forbidden_paths`, and `observation.entries` independently reject null/custom prototypes, inherited data-method hooks, inherited getter-method hooks, and non-enumerable own index 0 before any callback or input method is invoked; valid frozen and valid read-only non-frozen arrays produce the independent expected snapshot.
++- each subject root independently rejects `.`, `..`, repeated slash, and trailing slash as `INPUT_INVALID`; `/` remains a valid lexical root and succeeds when observation identity and the independent empty-snapshot oracle match.
+ 
+ ### `TEST-WVEB-003` — Factory, request, definitions, and receipt
+ 
+@@ -112,6 +135,9 @@
+ 
+ - factory input, execute request, subject, definition, and environment each receive independent stable-ID leaves for every applicable closed-object shape, descriptor, missing/extra, and value/type mutation; each leaf returns only `INPUT_INVALID`, contains no receipt, does not invoke an accessor, creates no child sentinel, and leaves all Test-observable downstream state unchanged;
+ - `allowed_paths` and `forbidden_paths` each receive the complete independent closed-array and item-grammar leaf set, plus independent uniqueness, cross-array conflict, and combined-size leaves; each uses the ordering trap and produces only the same `INPUT_INVALID`/no-receipt/no-child/no-state-effect vector;
++- `definition.argv`, `subject.allowed_paths`, and `subject.forbidden_paths` independently receive the seven exact prototype/descriptor/readonly cases N163..N183; negative cases invoke zero inherited callbacks and positive frozen/read-only cases complete one real child with the full twenty-four-field `COMPLETED/PASS/null` receipt;
++- `definition.cwd` and `subject.head_sha` receive N114..N141 as exact primitive-type/order mutations. Every invalid value is `INPUT_INVALID` with no receipt or child and zero conversion callbacks, including cases whose current production already rejects correctly;
++- all three subject roots receive the exact L2 lexical cases N199..N213. Non-lexical strings are `INPUT_INVALID` before identity work; `/` passes lexical admission and is then distinguished by a separate valid-root ordering trap that yields the complete pre-snapshot `SUBJECT_MISMATCH` receipt without claiming validation success;
+ - the ordering trap distinguishes admission rejection from later identity/snapshot failure without asserting an internal read-only syscall count; bounded source structure and independent Validator review own the stronger before-`realpath`/Git/snapshot/process ordering proof;
+ - both exact validation definitions execute successfully against a clean valid subject after production GREEN; before Worker, the corresponding downstream assertions remain executable and may be causal RED for missing production bigint support;
+ - the existing three-field OK envelope contains `value` with exactly the twenty-four receipt fields, exact subject/scope/snapshot/output values, null Candidate/tree/Validator fields, and independent command/inner-receipt/outer-envelope hashes;
+@@ -163,7 +189,7 @@
+ 
+ ## GREEN, regression, and retirement
+ 
+-After this evidence-lifecycle clarification passes the pending Controller Spec Gate and Correction 007 is separately authorized, the Controller must freeze the proposed adoption manifest before its first Test write. After Correction 007, before any renewed TDD_READY, the Controller must prove exactly 279 unchanged stable IDs, byte-identical bodies for every leaf except `C164`, removal of the old production identity constants/comparisons and recursive `.includes()` residue, `C164` use of the repository-wide AST inventory, both production files unchanged, Test Asset Readiness, Test Asset Retirement, and applicable regressions. The evidence freeze records the accepted Test identity, command/results/environment, each run's dynamically observed production `{absolute_path,byte_length,sha256}`, TypeScript `5.9.3`, repository inventory and import-resolution result, and Controller-frozen external production identities for the applicable stage. Historical or current physical Test and production identities alone authorize no Worker.
++After this clarification passes Controller correctness review, mandatory ponytail review, and Spec Gate, Test Correction 010 still requires separate authorization. Before its first write, the Controller freezes the exact 279-retain plus N114..N213 append-only manifest. Before any renewed TDD_READY, the Controller must prove exactly 379 stable IDs; byte-identical original 279 IDs, bodies, helpers, purposes, and registration order; exact N114..N213 ordering and mutation/oracle mapping; no replace/delete/renumber/merge; both production files unchanged during Test work; Test Asset Readiness; Test Asset Retirement; and applicable regressions. The evidence freeze records the accepted Test identity, command/results/environment, complete leaf inventory and causal RED set, each run's dynamically observed production `{absolute_path,byte_length,sha256}`, TypeScript `5.9.3`, repository inventory and import-resolution result, and Controller-frozen external production identities for the applicable stage. Historical or current physical Test and production identities alone authorize no Worker.
+ 
+ After the later bounded Worker return, run the focused suite from the newly frozen Test/production tree, then the canonical offline validation command:
+ 
+@@ -177,4 +203,4 @@
+ 
+ ## Stop conditions
+ 
+-No Correction 007 Test write or new TDD_READY is possible before the pending Controller Spec Gate, separate user authorization, the frozen adoption manifest, Test Asset Readiness, Test Asset Retirement, applicable regressions, and separate user re-confirmation bound to an accepted Test identity. Any stable-ID change, any leaf-body change other than `C164`, any retained permanent historical production identity comparison, or any second Test path, fixture, production edit/seam, dependency, or runtime authority is an immediate contract blocker. The mandatory `RETRO-WVEB-VALIDATOR-CLOSED-INPUT-TIMEOUT-001` must be completed and read back before Validator 002 dispatch. A parser outside the sole Test, transpile/emit/eval/source rewrite, OS tracing, process-group authority, relaxed assertion, Coordinator change, configurable signal/grace policy, retry/recovery, or widened runtime authority returns to Controller root-cause review.
++The first Test Correction 010 write requires completed Controller correctness review, mandatory ponytail review, Controller Spec Gate `PASS`, specific Test authorization, and Controller freeze of the append-only 379-leaf manifest. Test Asset Readiness, Test Asset Retirement, applicable regressions, the accepted new Test identity, and separate user re-confirmation bound to that identity are later prerequisites for renewed `TDD_READY`, not prerequisites for the first Test write. Any change to the retained 279 IDs, order, bodies, helpers, or evidence purposes; any missing/reordered/merged N114..N213 leaf; or any second Test path, fixture, production edit/seam, dependency, receipt/hash/timeout change, or runtime authority is an immediate contract blocker. The applicable retrospective and new Validator dispatch remain later Controller Gates. A parser outside the sole Test, transpile/emit/eval/source rewrite, OS tracing, process-group authority, relaxed assertion, Coordinator change, configurable signal/grace policy, retry/recovery, or widened runtime authority returns to Controller root-cause review.
+--- a/openspec/changes/change-coordinator-worktree-validation-execution-boundary/tasks.md
++++ b/openspec/changes/change-coordinator-worktree-validation-execution-boundary/tasks.md
+@@ -2,13 +2,48 @@
+ 
+ ## Gate discipline
+ 
+-The Change remains `MANUAL_CONTROLLER_STOP` under `WVEB-R2-ROUTE-001`. Validator 001 `FAIL` remains the current release result, and the closed-input and timeout production defects remain valid and unfixed. `WVEB-STRUCTURAL-EVIDENCE-LIFECYCLE-002` clarifies Test/Validator structural-evidence lifecycle only; this four-file encoding is `PRE_REVIEW` and still awaits the Controller Spec Gate. It changes no product or Design contract and grants no Correction 007, TDD_READY, Worker, second Validator, Git, integration, or role-dispatch authority. Spec, Test, Worker, and Validator do not write project-control or historical/terminated records. The Controller retains its existing CLI authority at authorized lifecycle transitions. Remaining tasks execute serially and only after their named Gate.
++The Change remains `MANUAL_CONTROLLER_STOP` under `WVEB-R2-ROUTE-001`. This six-file role result is `SPEC_READY / PENDING_CONTROLLER_SPEC_GATE`; it grants no Test Correction 010, renewed `TDD_READY`, Worker Revision 003, new Validator, Git, integration, archive, successor, or project-control authority. Validator 001 `FAIL` predates Worker Revision 002 but remains the latest completed independent verdict; it describes that frozen stage rather than asserting that current blobs retain every old defect. Corrections 005..007, earlier RED/Readiness/TDD_READY, Worker Revision 002, and all PASS/FAIL evidence remain historical. Worker Revision 002's focused `279/279`, Coordinator `358/358`, Board `12/12`, and canonical `1410 PASS / 0 FAIL / 1 expected real-Pi skip` are partial GREEN only: current Test Asset Readiness has not passed, Test Asset Retirement is not closed, and no fresh Validator covers the clarified scalar/array/root contract. Remaining roles execute serially only after their named Gates.
+ 
+-## TASK-WVEB-001 — Proposed Correction 007 structural-evidence adoption and renewed Test readiness
++## TASK-WVEB-001 — Test Correction 010 exact 379 adoption and causal RED
+ 
+-- Historical last Readiness-passing Test is SHA-256 `ab54a4e144d0a167b6f2a89be45b96712e10a3298accb994d9ba63aee0a69fad`, 166 leaves, historical `166/166 PASS`; it has no current release authority. The historical Correction 005 Test was `fce1d0711d98a473f7d2d199126c4d05ffa8d9608d6665cc840818635393d981`, 899 lines, 75,986 bytes, with exactly 279 stable IDs. The current physical post-Correction-006 Test observed at this Spec entry is `12ee964917251904eb0f5b3535bcc04c1821200d81c34b285c19ec1e8dcadfda`, 1,178 lines, 92,135 bytes, with those same 279 IDs; it is unaccepted and not integration-ready.
+-- Owner only after this exact four-file clarification passes Controller review and the user separately authorizes Correction 007 under the then-approved instance route.
++- Owner only after Controller correctness review, mandatory ponytail review, Spec Gate `PASS`, and separate Test authorization.
+ - Write only `tools/harness/change-coordinator/worktree-validation-execution-boundary.test.mjs`.
++- Preserve immutable input SHA-256 `19941a032cbe4645055401123aa316df4fbdc13d1cfab9ec536becbaefea442a`, 1,326 lines, 111,031 bytes: `C001..C166` and `N001..N113` retain identical IDs, registration order, bodies, helpers, and evidence purposes.
++- Append exactly N114..N213 in order: 28 scalar, 42 six-array, and 30 root leaves. Final identity is 379 leaves; replace/delete/renumber/merge are zero.
++- Implement the exact control, mutation, descriptor, callback-zero, independent-oracle, real-child, twenty-four-field receipt, and ordering-trap rules frozen in `test-plan.md` and the formal 379 attachment. Already-correct cases may PASS and are not forced into the RED count.
++- Add only local support required by those 100 leaves. Do not change global `entry`, `validL1`, `changedL1`, any retained helper, or any retained leaf body.
++- Release condition: Controller accepts the 379 Test identity and causal RED/Readiness/Retirement evidence; the user separately re-confirms `TDD_READY` bound to that identity.
++
++## TASK-WVEB-002 — Bounded Worker Revision 003
++
++- Owner only after renewed `TDD_READY` bound to the accepted 379 Test.
++- Write only `tools/harness/change-coordinator/worktree-snapshot-contract.mjs` and `tools/harness/change-coordinator/production.mjs`.
++- Pre-Test credentials: snapshot SHA-256 `43e72532f3e68069fdc6be8198dcc706c9961ba33457d5c1fde61cd53a4563b0`, 12,512 bytes; production SHA-256 `757591c734ac997d65d941893910e413fc6c64535753170ffd45c12abd1033fc`, 49,283 bytes.
++- Make only causally required private-guard changes: L1 `closedArray` prototype/enumerable-data-index qualification; L2 equivalent qualification for `argv` and both scope arrays; primitive `cwd`/`head_sha` guards before consumption; and lexical-normal admission for the three roots before real identity.
++- Preserve valid frozen/read-only arrays, `/`, cwd's existing absolute/containment rules, Worker Revision 002 behavior, receipt/hash/timeout/environment contracts, public methods, and fixed Git authority. Add no shared guard change, third production path, dependency, seam, new field/outcome, recovery, or L3 behavior.
++- Release condition: Controller confirms minimum scope and complete GREEN evidence.
++
++## TASK-WVEB-003 — Regression, retirement, and evidence freeze
++
++- Owner: Controller; Test may receive only a specifically authorized Test-only correction while production remains frozen.
++- Prove focused 379 results, 279-retain/100-add identity, scalar callback-zero rejection, six-array negative and frozen/read-only positive evidence, root `/` distinction, real-child receipts, and exact forbidden-path scope.
++- Run affected Coordinator/Board suites, canonical offline validation, diff/import/export review, and Test Asset Retirement. Preserve the expected real-Pi skip; invoke no provider/model.
++- Freeze exact Test/production blobs, commands, outputs, counts, environment, branch/Head, scope, traceability, and current verification read model.
++- A second same-kind Test or Worker correction returns to Controller root-cause review.
++
++## TASK-WVEB-004 — Independent verification and Controller decision
++
++- After evidence freeze and the applicable dispatch Gate, one fresh read-only Validator independently replays the scalar, six-array, and root contract, focused/canonical checks, exact receipts/outcomes, sole-consumer boundary, scope, retirement, and historical-evidence preservation.
++- Validator returns `PASS`, `FAIL`, or `BLOCKED`, writes no file, and approves no Gate.
++- Controller alone decides Acceptance, integration, archive, live-main readback, and successor release.
++
++## Historical task record retained for provenance
++
++### Historical TASK-WVEB-001 — Correction 007 structural-evidence adoption
++
++- At that stage, the last Readiness-passing Test was SHA-256 `ab54a4e144d0a167b6f2a89be45b96712e10a3298accb994d9ba63aee0a69fad`, 166 leaves, historical `166/166 PASS`; the Correction 005 Test was `fce1d0711d98a473f7d2d199126c4d05ffa8d9608d6665cc840818635393d981`, 899 lines, 75,986 bytes, with exactly 279 stable IDs; and the post-Correction-006 Test was `12ee964917251904eb0f5b3535bcc04c1821200d81c34b285c19ec1e8dcadfda`, 1,178 lines, 92,135 bytes, with those same 279 IDs. None has current release authority.
++- At that stage, ownership was conditioned on the four-file clarification passing Controller review and separate Correction 007 authorization under the then-approved route.
++- Write only `tools/harness/change-coordinator/worktree-validation-execution-boundary.test.mjs`.
+ - Before first Test write, Controller freezes all 279 stable IDs and this complete adoption manifest: remove the old production byte-length/SHA constants and permanent comparisons; revise the shared `productionAst` single-read lifecycle; delete or fully replace the recursive `.includes()` consumer helper; revise only `C164` to call the repository-wide AST inventory; preserve every other stable-ID body and both production files byte-for-byte.
+ - On each Test run, `productionAst` resolves the exact absolute `production.mjs` path, reads it once, dynamically computes and records its byte length and SHA-256, proves exact UTF-8 roundtrip, asserts TypeScript `5.9.3`, parses one `SourceFile`, and shares that source record across every structural leaf. It never compares the observed identity to a historical production credential.
+ - Implement the exact NUL-safe repository inventory from `test-plan.md`: separate tracked and untracked exclude-standard Git path streams, raw-path de-duplication and `Buffer.compare` order, repository-relative `.mjs` restriction, exact Test/nonproduction classification, at-most-once candidate read/parse, reuse of the shared `productionAst` record for the production candidate, and fail-closed path/read/UTF-8/syntax/ambiguity handling.
+@@ -19,18 +54,18 @@
+ - Run focused Test, Test Asset Readiness, Test Asset Retirement, and applicable regressions only after authorization; return exact Test hash, command, unchanged 279-ID inventory, complete results, lifecycle/import manifest, unchanged unrelated evidence, and any blocker.
+ - Release condition: Controller verifies all Test Gates and freezes the new Test identity, then the user separately re-confirms a new `TDD_READY` bound to that identity.
+ 
+-## TASK-WVEB-002 — Bounded L2 production revision 002
++### Historical TASK-WVEB-002 — Bounded L2 production revision 002
+ 
+ - Current read-only implementation at this pre-Worker stage: `worktree-snapshot-contract.mjs` is 12,512 bytes with SHA-256 `43e72532f3e68069fdc6be8198dcc706c9961ba33457d5c1fde61cd53a4563b0`; `production.mjs` is 46,568 bytes with SHA-256 `9585838ba60e55cc48c4c93cb1bc040355f7b6499073cdcf5bdb59ad21309f99`. These are Controller-frozen external stage credentials, not permanent Test expected values.
+ - Owner only after the user re-confirms a new TDD_READY bound to the corrected Test identity under the then-approved Worker instance route.
+-- The existing two-path production boundary remains unchanged: `tools/harness/change-coordinator/worktree-snapshot-contract.mjs` and `tools/harness/change-coordinator/production.mjs`. Worker Revision 002 is expected to need only the minimum `production.mjs` hunk; any proposed snapshot-module write must be justified by causal RED and separately frozen before work, without adding a path.
++- The historical plan retained the same two-path production boundary and expected Worker Revision 002 to need only the minimum `production.mjs` hunk; any snapshot-module write was to require causal RED and a separate freeze.
+ - Make the minimum revision for strict L2 closed data-object descriptors, complete signed-scope admission before realpath/Git/snapshot/process, and exactly one direct literal `SIGKILL` send when the timeout callback wins.
+ - Preserve `createProductionComposition({})`, every public Coordinator and gateway method name, fixed Git/host authority, and all forbidden contracts.
+ - Run the frozen focused Test without altering it; return exact production hashes, diff, command/output/count, and any residual failure.
+ - Preserve only the two frozen linearization exits: close-before-timeout retains the normal result; timeout-before-close marks `timedOut`, sends the sole `SIGKILL`, waits for close, then performs post-snapshot. Do not add `SIGTERM`, a grace/second timer, fallback signal, replacement child, process-group interface, retry, recovery, caller configuration, dependency, or cross into Coordinator/Ledger/State/Candidate/Final Validation/L3 behavior.
+ - Release condition: Controller confirms minimum scope and GREEN evidence.
+ 
+-## TASK-WVEB-003 — Regression, retirement, and evidence freeze
++### Historical TASK-WVEB-003 — Regression, retirement, and evidence freeze
+ 
+ - Owner: Controller; Test may receive only a named Test-only correction while production remains frozen.
+ - Run the focused suite, canonical offline validation, diff check, import/export and forbidden-path review.
+@@ -40,13 +75,13 @@
+ - Reconcile the one Test asset, run required Test-diff `ponytail-review`, and record Test Asset Retirement Gate verdict.
+ - Freeze exact Test/production blobs, commands, outputs, counts, environment, branch/Head, scope diff, traceability, and `verification.md` read model.
+ - Re-run the project-local canonical offline validation and preserve the real-Pi acceptance skip; do not invoke a real provider/model.
+-- Complete and read back mandatory `RETRO-WVEB-VALIDATOR-CLOSED-INPUT-TIMEOUT-001` before Validator 002 dispatch.
++- The historical plan required `RETRO-WVEB-VALIDATOR-CLOSED-INPUT-TIMEOUT-001` readback before its Validator 002 dispatch.
+ - Any further same-kind Test or Worker correction returns to Controller root-cause review.
+ - Release condition: implementation and evidence are internally consistent and frozen.
+ 
+-## TASK-WVEB-004 — Independent verification and Controller decision
++### Historical TASK-WVEB-004 — Independent verification and Controller decision
+ 
+-- Owner only after evidence freeze and separate user authorization: one fresh read-only Validator 002 under the frozen R2 route.
++- At that stage, one fresh read-only Validator 002 was conditioned on evidence freeze and separate authorization under the frozen R2 route.
+ - Recompute L1 hashes; independently rerun every public invalid-admission trap and both signal-resistant timeout/post-mutation cases; verify ready PID, no recorded catchable signal, dead child, exact output/post-snapshot/receipt evidence, and watchdog non-rescue; then rerun canonical regression.
+ - Independently inspect the bounded production source for pre-effect strict validation, the single literal timeout-winner `SIGKILL` send point, absence of SIGTERM/grace/second timer/fallback/replacement/configuration, and only the close-before-timeout and timeout-before-close exits. Structural inspection supplements and does not replace the real-child L2 execution.
+ - Recompute and freeze the Validator-stage production byte lengths/SHA-256 as external identity credentials. Verify the Test run's dynamic single-read AST record and repository-wide `C164` inventory, but independently enumerate repository-wide consumers and inspect production source rather than treating parser output as the Validator verdict. Independently rerun `C148/N085`; AST evidence cannot substitute for it.
+@@ -54,7 +89,7 @@
+ - Return `PASS`, `FAIL`, or `BLOCKED` with exact evidence; do not write any file or approve Acceptance.
+ - Controller alone decides Acceptance, integration, archive, live-main readback, and whether the successor's start condition is satisfied.
+ 
+-`WVEB-STRUCTURAL-EVIDENCE-LIFECYCLE-002` remains `PRE_REVIEW / MANUAL_CONTROLLER_STOP`. Correction 007 has not started and is unauthorized. No Test correction, TDD_READY, Worker revision, Validator 002 dispatch, Acceptance, integration, archive, or successor authority exists at this stop.
++The sections above preserve the then-current Correction 007/Worker Revision 002 plan and do not grant current authority. Current authority is the four tasks before this historical record. No Test Correction 010, renewed TDD_READY, Worker Revision 003, new Validator, Acceptance, integration, archive, or successor authority exists at this stop.
+ 
+ ## Requirement allocation
+ 
+--- a/openspec/changes/change-coordinator-worktree-validation-execution-boundary/traceability.md
++++ b/openspec/changes/change-coordinator-worktree-validation-execution-boundary/traceability.md
+@@ -4,12 +4,12 @@
+ 
+ | Requirement | Acceptance Criterion | Test evidence | Task | Production path | Current result |
+ |---|---|---|---|---|---|
+-| `REQ-WVEB-001` | `AC-WVEB-001` closed pure algorithm | historical `RED-WVEB-001`; current `TEST-WVEB-001`, `002`; 12 bigint leaves GREEN | `TASK-WVEB-001`, `002`, `003`, `004` | `worktree-snapshot-contract.mjs` | historical GREEN retained; no Validator 001 L1 defect |
+-| `REQ-WVEB-001` | `AC-WVEB-002` sole production consumer and authority isolation | public invalid-admission trap leaves in `TEST-WVEB-003`, `004`; per-run dynamic single-read TypeScript AST oracle; `C164` repository-wide tracked+untracked NUL-safe AST consumer inventory; independent Validator replay/review | `TASK-WVEB-001`, `002`, `003`, `004` | `production.mjs`, `worktree-snapshot-contract.mjs` | `PRE_REVIEW`; Correction 007 unauthorized, production defects retained |
+-| `REQ-WVEB-001` | `AC-WVEB-003` exact request, two definitions, 24-field receipt | independent factory/request/subject/definition/environment/scope leaves in `TEST-WVEB-003`; public `INPUT_INVALID`/no-receipt/no-child/no-state vector | `TASK-WVEB-001`, `002`, `003`, `004` | `production.mjs` | `PRE_REVIEW`; strict admission execution pending |
+-| `REQ-WVEB-001` | `AC-WVEB-004` identity/pre/process/post/receipt order and outcomes | `C148/N085` real resistant-child public L2 evidence; TypeScript AST one-`SIGKILL`/two-exit oracle for applicable `N086..N094`/structure-owned leaves; independent Validator rerun/review | `TASK-WVEB-001`, `002`, `003`, `004` | `production.mjs` | `PRE_REVIEW`; AST cannot replace dynamic or Validator evidence |
+-| `REQ-WVEB-001` | `AC-WVEB-005` fail-closed mutations and zero downstream effects | public trap/sentinel/state leaves in `TEST-WVEB-003`, `004`; exact-source-bound AST ordering in applicable structure-owned leaves; no internal syscall-count claim | `TASK-WVEB-001`, `002`, `003`, `004` | both production paths | `PRE_REVIEW`; causal RED and new Test-bound TDD_READY still required |
+-| `REQ-WVEB-001` | `AC-WVEB-006` compatibility and successor lock | current `TEST-WVEB-005`, `006`; forbidden-path diff | `TASK-WVEB-001`, `002`, `003`, `004` | `production.mjs` | successor remains locked; no new path or authority authorized |
++| `REQ-WVEB-001` | `AC-WVEB-001` closed pure algorithm | retained C/N L1 evidence plus N142..N162 six-array cases and N184..N198 L1 root cases in `TEST-WVEB-002` | `TASK-WVEB-001..004` | `worktree-snapshot-contract.mjs` | prior L1/bigint GREEN retained; prototype/enumerable-index/root additions pending Test Correction 010 |
++| `REQ-WVEB-001` | `AC-WVEB-002` sole production consumer and authority isolation | retained sole-consumer/AST/real-child evidence plus N114..N183 callback-zero and six-array admission evidence | `TASK-WVEB-001..004` | `production.mjs`, `worktree-snapshot-contract.mjs` | Worker Revision 002 partial GREEN retained; new private guards pending |
++| `REQ-WVEB-001` | `AC-WVEB-003` exact request, two definitions, 24-field receipt | retained request/definition/receipt leaves plus N114..N141 scalar and N163..N183 L2 array leaves in `TEST-WVEB-003` | `TASK-WVEB-001..004` | `production.mjs` | `SPEC_READY / PENDING_CONTROLLER_SPEC_GATE`; 379 adoption not authorized |
++| `REQ-WVEB-001` | `AC-WVEB-004` identity/pre/process/post/receipt order and outcomes | retained process/timeout evidence plus N199..N213 root ordering and `/` admission distinction | `TASK-WVEB-001..004` | `production.mjs` | prior timeout GREEN retained; new root admission evidence pending |
++| `REQ-WVEB-001` | `AC-WVEB-005` fail-closed mutations and zero downstream effects | all N114..N213 negatives prove exact rejection/no receipt/no child/callback zero/unchanged Test state; positives use independent L1 or real L2 receipt oracle | `TASK-WVEB-001..004` | both production paths | current input defects open; Test RED/Readiness/Retirement and fresh Validator pending |
++| `REQ-WVEB-001` | `AC-WVEB-006` compatibility and successor lock | retained `TEST-WVEB-005`, `006`, C164, forbidden-path diff, and 279-retain/100-add manifest | `TASK-WVEB-001..004` | `production.mjs` | no new path/authority; successor locked |
+ 
+ Paths in the production column are relative to `tools/harness/change-coordinator/`.
+ 
+@@ -17,25 +17,35 @@
+ 
+ | Role | Allowed write paths | Forbidden boundary |
+ |---|---|---|
+-| Spec | this Change directory only; this allocation substitute is further restricted to `test-plan.md`, `tasks.md`, `traceability.md`, and `verification.md` | Test, production, canonical baseline, project-control, historical/terminated records |
++| Spec | only existing `design.md`, delta `spec.md`, `test-plan.md`, `tasks.md`, `traceability.md`, and `verification.md` in this Change | `proposal.md`, Test, production, canonical baseline, project-control, historical/terminated records, every other/new path |
+ | Test | `worktree-validation-execution-boundary.test.mjs` only; may use project-local directly locked `typescript@5.9.3` as a read-only AST oracle | production, existing Tests/fixtures/helpers, package/lockfile, OpenSpec, project-control, historical/terminated records |
+ | Worker | `worktree-snapshot-contract.mjs`, `production.mjs` only | Test, Coordinator/adapters/fixtures/host-loop, OpenSpec, project-control, historical/terminated records |
+ | Validator | none | every write, including project-control and historical/terminated records |
+ 
+ The Controller alone retains the existing `status-cli.mjs` project-control writer at authorized lifecycle transitions. WVEB adds no project-board method, route, or authority.
+ 
+-## Evidence state
++## Current evidence state
+ 
++- Current Spec result: `SPEC_READY / PENDING_CONTROLLER_SPEC_GATE`; complete seven-file Controller correctness review and mandatory ponytail review remain pending.
++- Exact planned Test identity: 279 retained (`C001..C166`, `N001..N113`) plus 100 appended (`N114..N213`) equals 379; replace/delete/renumber/merge are zero.
++- Current immutable Test: SHA-256 `19941a032cbe4645055401123aa316df4fbdc13d1cfab9ec536becbaefea442a`, 1,326 lines, 111,031 bytes, exactly 279 IDs.
++- Current production: snapshot SHA-256 `43e72532f3e68069fdc6be8198dcc706c9961ba33457d5c1fde61cd53a4563b0`, 12,512 bytes; production SHA-256 `757591c734ac997d65d941893910e413fc6c64535753170ffd45c12abd1033fc`, 49,283 bytes.
++- Worker Revision 002 historical partial GREEN: focused `279/279`, Coordinator `358/358`, Board `12/12`, canonical `1410 PASS / 0 FAIL / 1 expected real-Pi skip`. Current scalar/array/root admission defects coexist with those results.
++- Current Test Asset Readiness: not passed. Test Asset Retirement: not closed. Fresh Validator over this clarification: absent.
++- Test Correction 010, renewed TDD_READY, Worker Revision 003, new Validator, Acceptance/integration/archive, and successor release are locked behind their explicit Gates.
++
++## Historical evidence retained
++
+ - Product authority: bound by `RGE-VALIDATION-BOUNDARY-RESLICE-001` and intake SHA-256 `bd9647f750ea765c438150cb441f134181838c8db58d01fef405d43677a173ec`.
+-- Spec: the product/Design contract remains the already-approved `WVEB-VALIDATOR-FAIL-DISPOSITION-001`; `WVEB-STRUCTURAL-EVIDENCE-LIFECYCLE-002` only clarifies Test/Validator structural-evidence lifecycle for that unchanged contract. This four-file encoding is `PRE_REVIEW` and its Controller Spec Gate is pending.
++- Spec: `WVEB-VALIDATOR-FAIL-DISPOSITION-001` and `WVEB-STRUCTURAL-EVIDENCE-LIFECYCLE-002` record prior cycles only; they do not override the current six-file clarification or grant current authority.
+ - Historical last Readiness-passing Test: SHA-256 `ab54a4e144d0a167b6f2a89be45b96712e10a3298accb994d9ba63aee0a69fad`; 166 leaves; historical `166/166 PASS`; no current release authority.
+ - Historical physical Correction 005 Test: SHA-256 `fce1d0711d98a473f7d2d199126c4d05ffa8d9608d6665cc840818635393d981`; 899 lines; 75,986 bytes; exactly 279 stable IDs; no current release authority.
+-- Current physical post-Correction-006 Test observed at this Spec entry: SHA-256 `12ee964917251904eb0f5b3535bcc04c1821200d81c34b285c19ec1e8dcadfda`; 1,178 lines; 92,135 bytes; the same 279 stable IDs; unaccepted, not integration-ready, and no Worker authority.
+-- Validator 001: `FAIL`; strict L2 own-key/descriptor/scope admission and a signal-resistant timeout child are not closed by current Test/production.
+-- Proposed Correction 007: preserve exactly 279 stable IDs and every leaf body except `C164`; remove historical production identity constants/permanent comparisons; revise shared `productionAst` to dynamically record one exact read and one shared `SourceFile` per Test run; replace the recursive `.includes()` helper with the frozen repository-wide AST inventory; make `C164` call it; preserve both production files. Correction 007 is unauthorized pending Controller review and separate user approval.
+-- Current pre-Worker production credentials: snapshot 12,512 bytes / SHA-256 `43e72532f3e68069fdc6be8198dcc706c9961ba33457d5c1fde61cd53a4563b0`; production 46,568 bytes / SHA-256 `9585838ba60e55cc48c4c93cb1bc040355f7b6499073cdcf5bdb59ad21309f99`. Historical/pre-Worker, later post-Worker, and Validator identities are Controller-frozen external stage credentials only; the Test dynamically computes its run identity and never permanently expects a historical value.
++- Post-Correction-006 Test at that historical Spec stage: SHA-256 `12ee964917251904eb0f5b3535bcc04c1821200d81c34b285c19ec1e8dcadfda`; 1,178 lines; 92,135 bytes; 279 stable IDs; it had no release authority at that stage.
++- Validator 001: `FAIL`; at that Validator stage, strict L2 own-key/descriptor/scope admission and signal-resistant timeout termination were not closed. Worker Revision 002 later supplied partial GREEN for those prior findings, but Validator 001 remains the latest completed independent verdict until a fresh Validator evaluates the current blobs and clarified contract.
++- Correction 007: its resulting 279 stable IDs, source lifecycle, and C164 repository-wide inventory are retained historical inputs and remain byte-identical under the current adoption.
++- Pre-Worker Revision 002 production credentials included snapshot 12,512 bytes / SHA-256 `43e72532f3e68069fdc6be8198dcc706c9961ba33457d5c1fde61cd53a4563b0` and production 46,568 bytes / SHA-256 `9585838ba60e55cc48c4c93cb1bc040355f7b6499073cdcf5bdb59ad21309f99`; later identities superseded only their stage, not their historical truth.
+ - Canonical offline validation: historical `1410 PASS / 0 FAIL / 1 expected real-Pi skip / 0 todo`; must be rerun from the later frozen implementation without invoking real Pi/provider/model behavior.
+-- Retrospective: `RETRO-WVEB-VALIDATOR-CLOSED-INPUT-TIMEOUT-001` is mandatory before Validator 002 dispatch and is not authorized in this clarification.
++- Retrospective: the historical plan required `RETRO-WVEB-VALIDATOR-CLOSED-INPUT-TIMEOUT-001` before its Validator 002 dispatch. The current applicable retrospective and fresh-Validator release remain later Controller Gates.
+ - Acceptance/integration/archive: not performed and locked.
+ - Successor: `change-coordinator-regression-to-stage` locked through WVEB Acceptance, merge, archive, and live-main readback.
+ 
+--- a/openspec/changes/change-coordinator-worktree-validation-execution-boundary/verification.md
++++ b/openspec/changes/change-coordinator-worktree-validation-execution-boundary/verification.md
+@@ -2,13 +2,13 @@
+ 
+ ## Current verdict
+ 
+-`PRE_REVIEW / MANUAL_CONTROLLER_STOP`
++`SPEC_READY / PENDING_CONTROLLER_SPEC_GATE / MANUAL_CONTROLLER_STOP`
+ 
+-Independent Validator 001 returned `FAIL`. The product and Design response is already fixed by `WVEB-VALIDATOR-FAIL-DISPOSITION-001`; `WVEB-STRUCTURAL-EVIDENCE-LIFECYCLE-002` authorizes only the structural-evidence lifecycle clarification encoded in `test-plan.md`, `tasks.md`, `traceability.md`, and this file. It changes no Requirement, AC, runtime semantic, delta product contract, path, role permission, or authority. The closed-input and timeout production defects remain valid and unfixed.
++This six-file clarification encodes the complete 379-leaf admission contract: 279 retained leaves plus 28 scalar, 42 six-array, and 30 root additions. It changes no Requirement/AC ID, receipt, hash, timeout, environment, dependency, path boundary, role permission, or L3 authority.
+ 
+-This is the returning Spec Agent's pre-review read model. The Controller has not yet performed the read-only Spec Gate for this four-file revision. No Controller Spec Gate `PASS` is claimed. Correction 007 has not started and is unauthorized; TDD_READY, Worker Revision 002, Validator 002, Acceptance, integration, and archive remain locked.
++This is the returning Spec Agent's current read model. The Controller has not yet completed correctness review, mandatory ponytail review, or Spec Gate over the full seven-file package. No Gate `PASS` is claimed. Test Correction 010, renewed `TDD_READY`, Worker Revision 003, a fresh Validator, Acceptance, integration, archive, and successor release remain locked.
+ 
+-The unchanged Design and delta spec still name Correction 005 in their prior Gate context. Those references do not authorize a current Test write; the only proposed next Test revision is the bounded Correction 007 adoption manifest, and it remains unauthorized.
++Worker Revision 002 and its focused `279/279`, Coordinator `358/358`, Board `12/12`, and canonical `1410 PASS / 0 FAIL / 1 expected real-Pi skip` are retained as historical partial GREEN for prior defects. Validator 001 `FAIL` predates that revision but remains the latest completed independent verdict; its findings describe the blobs frozen at that stage rather than proving the current blobs still contain every old defect. The newly confirmed scalar/array/root admission defects coexist with the partial GREEN. Current Test Asset Readiness has not passed, Test Asset Retirement is not closed, and no fresh Validator covers this clarification.
+ 
+ ## Frozen references
+ 
+@@ -23,76 +23,77 @@
+ - Structural-evidence lifecycle clarification: `WVEB-STRUCTURAL-EVIDENCE-LIFECYCLE-002`
+ - Frozen route: `WVEB-R2-ROUTE-001`
+ - Canonical baseline: `openspec/specs/dual-device-transition-foundation/spec.md`
++- Formal adoption manifest: [wveb-379-candidate.md](../../../docs/planning/2026-09-05/automation-repair/attachments/wveb-379-candidate.md)
++- Current physical Test: `tools/harness/change-coordinator/worktree-validation-execution-boundary.test.mjs`, SHA-256 `19941a032cbe4645055401123aa316df4fbdc13d1cfab9ec536becbaefea442a`, 1,326 lines, 111,031 bytes, exactly 279 retained stable IDs
++- Current snapshot evaluator: SHA-256 `43e72532f3e68069fdc6be8198dcc706c9961ba33457d5c1fde61cd53a4563b0`, 12,512 bytes
++- Current production composition: SHA-256 `757591c734ac997d65d941893910e413fc6c64535753170ffd45c12abd1033fc`, 49,283 bytes
++- Planned final Test set: `C001..C166` and `N001..N213`, 379 total; retain 279, add 100, replace/delete/renumber/merge zero
++- Conditional paths: none
++
++### Historical frozen references
++
+ - Historical last Readiness-passing Test: `tools/harness/change-coordinator/worktree-validation-execution-boundary.test.mjs`, SHA-256 `ab54a4e144d0a167b6f2a89be45b96712e10a3298accb994d9ba63aee0a69fad`, 166 leaves, historical `166/166 PASS`; no current release authority
+ - Historical physical Correction 005 Test: same path, SHA-256 `fce1d0711d98a473f7d2d199126c4d05ffa8d9608d6665cc840818635393d981`, 899 lines, 75,986 bytes, exactly 279 stable IDs; no current release authority
+-- Current physical post-Correction-006 Test observed at this Spec entry: same path, SHA-256 `12ee964917251904eb0f5b3535bcc04c1821200d81c34b285c19ec1e8dcadfda`, 1,178 lines, 92,135 bytes, exactly the same 279 stable IDs; unaccepted, not integration-ready, and no Worker authority
+-- Current pre-Worker production credentials: `tools/harness/change-coordinator/worktree-snapshot-contract.mjs`, 12,512 bytes, SHA-256 `43e72532f3e68069fdc6be8198dcc706c9961ba33457d5c1fde61cd53a4563b0`; `tools/harness/change-coordinator/production.mjs`, 46,568 bytes, SHA-256 `9585838ba60e55cc48c4c93cb1bc040355f7b6499073cdcf5bdb59ad21309f99`. They are Controller-frozen external stage identities, not permanent Test expected values.
+-- Conditional paths: none
++- Post-Correction-006 Test at that historical stage: same path, SHA-256 `12ee964917251904eb0f5b3535bcc04c1821200d81c34b285c19ec1e8dcadfda`, 1,178 lines, 92,135 bytes, 279 IDs
++- Pre-Worker Revision 002 production credential: `production.mjs`, 46,568 bytes, SHA-256 `9585838ba60e55cc48c4c93cb1bc040355f7b6499073cdcf5bdb59ad21309f99`
+ 
+ ### Current package identity handling
+ 
+-The substitute returns exact final line counts, byte counts, and SHA-256 values out of band because this file cannot contain its own resulting digest. Those identities are review inputs only; the Controller may freeze them only after the pending read-only Spec Gate. `proposal.md`, `design.md`, and the delta spec are unchanged by this allocation.
++The Spec role returns exact final line counts, byte counts, and SHA-256 values out of band because this file cannot contain its own resulting digest. Those identities are review inputs only; the Controller may freeze them after the pending full-package review. `proposal.md`, the Test, both production files, and every forbidden path remain immutable inputs.
+ 
+ ## Gate read model
+ 
+ | Gate | Status | Evidence / release condition |
+ |---|---|---|
+-| Product / Design boundary | unchanged | strict closed data-object admission, complete dual-scope grammar, pre-effect `INPUT_INVALID`, and one timeout-winner `SIGKILL` remain normative |
+-| Validator 001 | `FAIL` | strict L2 admission and signal-resistant timeout termination remain release blockers |
+-| Evidence allocation | approved inputs / encoded `PRE_REVIEW` | public dynamic evidence, Test-side AST structure evidence, and independent Validator review have separate non-substitutable ownership |
+-| Structural AST lifecycle | clarified / not adopted | each Test run dynamically records one exact absolute `production.mjs` read and one shared TypeScript `5.9.3` `SourceFile`; historical stage identities are never permanent Test expectations |
+-| Repository-wide sole-consumer | clarified / not adopted | `C164` must call the tracked+untracked, exclude-standard, NUL-safe per-candidate AST inventory; production-only or textual `.includes()` evidence is insufficient |
+-| Local seven-file consistency | substitute self-check pending final identities | verify unchanged Requirement/AC/Design/delta/path/authority plus four-file evidence-only diff |
+-| Controller Spec Gate | pending | fresh read-only review of the final seven-file package and returned identities; no PASS claimed here |
+-| Correction 007 authorization | unauthorized / locked | separate user approval required after Controller Spec Gate; this clarification does not start Test work |
+-| Correction 007 first write | locked | Controller first freezes 279 unchanged IDs, only `C164` as a permitted leaf-body edit, shared `productionAst`/inventory helper changes, removal of permanent production identity assertions and recursive `.includes()` residue, and both production files unchanged |
+-| Test Asset Readiness / Retirement / regressions | locked | corrected Test must pass each applicable Gate and freeze a new exact identity and causal RED set |
+-| renewed TDD_READY / Worker Revision 002 | locked | user re-confirms TDD_READY bound to corrected Test identity; historical authority is insufficient |
+-| GREEN / Regression | locked | minimum existing-path production revision and complete evidence; Test remains frozen during Worker work |
+-| Canonical offline validation | locked | rerun required after Worker Revision 002; no runtime suite is executed by this Spec substitute |
+-| Mandatory post-Validator retrospective | locked | `RETRO-WVEB-VALIDATOR-CLOSED-INPUT-TIMEOUT-001` must complete before Validator 002 |
+-| Independent Validator 002 | locked | corrected Test, implementation, evidence, and retrospective must first be frozen; separate user authorization required |
++| Product / Design boundary | clarified / pending Gate | primitive cwd/Head, six current-realm Array descriptors, and lexical-root/real-identity classification are normative; receipt/hash/timeout/L3 boundaries unchanged |
++| Historical evidence | retained / partial | Validator 001 FAIL and prior corrections remain history; Worker Revision 002 results are partial GREEN, not current release authority |
++| Exact 379 adoption | frozen in Spec / not adopted | 279 retain plus N114..N213; zero replace/delete/renumber/merge; per-ID mapping in the formal attachment |
++| Local seven-file consistency | Spec self-check pending final identities | verify six-file delta plus byte-identical `proposal.md`, Test, two production inputs, and forbidden paths |
++| Controller correctness and ponytail review | pending | complete seven-file review and mandatory high-reasoning ponytail review; no PASS claimed here |
++| Controller Spec Gate | pending | Controller alone decides whether this package releases Test planning |
++| Test Correction 010 first write | locked | requires Spec Gate PASS, specific Test authorization, and Controller-frozen append-only 379 manifest |
++| Test RED / Readiness / Retirement / regressions | locked | accepted 379 Test identity, honest causal frontier, complete Gates, and immutable production during Test work |
++| renewed TDD_READY / Worker Revision 003 | locked | user re-confirms TDD_READY bound to the accepted Test identity; historical authority is insufficient |
++| GREEN / Regression / canonical | locked | minimum private guards in two existing production paths; Test remains frozen |
++| Fresh independent Validator | locked | corrected Test, implementation, evidence, and applicable retrospective must first be frozen |
+ | Acceptance / integration / archive | locked | Controller decisions only after Validator |
+ | successor Change | locked | WVEB Acceptance, merge, archive, and live-main readback |
+ 
+ ## Required future evidence
+ 
+-1. Pending Controller read-only Spec Gate over this exact seven-file package; only after it passes may separate user approval of Correction 007 and its 279-ID, shared-helper, `C164`-only leaf-body adoption manifest be considered.
+-2. Corrected public L2 causal RED: every invalid factory/request/subject/definition/environment/scope leaf returns `INPUT_INVALID`, no receipt, no child sentinel, and no Test-observable later state effect. A valid-but-nonexistent/inaccessible absolute-root trap must make accidental identity/snapshot progression distinct and diagnosable, without claiming internal read-only syscall counts.
+-3. Corrected public timeout RED: a ready, uniquely identified child installs recording handlers for every host/runtime-supported catchable signal; production must settle before watchdog rescue, record no catchable signal, leave the PID dead, complete stdout/stderr and post-snapshot evidence, and return exactly `INTERRUPTED/null/TIMEOUT` or the higher-priority post-mutation `SUBJECT_MISMATCH`.
+-4. Supplemental structural Test evidence: each Test run uses project-local directly locked `typescript@5.9.3` against one read of the exact absolute `production.mjs` path, dynamically records byte length/SHA-256 from that read, proves exact UTF-8 roundtrip, constructs one shared `SourceFile`, and fails closed on parser/version/syntax/zero/multiple/ambiguity errors. It never requires the dynamic identity to equal a historical production credential and never transpiles, emits, evaluates, executes, rewrites, normalizes, or formats source.
+-5. Permanent sole-consumer Test evidence: `C164` calls the exact repository-wide tracked-plus-untracked exclude-standard NUL-safe `.mjs` inventory; every candidate is read/parsed at most once, the exact Test/nonproduction categories and relative import/re-export/literal-dynamic-import resolution rules apply, and only `production.mjs` may be the single production consumer. Unreadable, syntax-invalid, ambiguous, zero, or multiple results fail closed; the old recursive `.includes()` helper is absent.
+-6. Non-substitution: the AST oracle cannot replace `C148/N085` real signal-resistant-child public L2 evidence or the fresh independent Validator's repository-wide consumer, production-source, and dynamic-timeout checks. It is not injected into production/runtime and grants no parser, observer, filesystem, process, Git, callback, or other authority.
+-7. Correction 007 preserves all 279 stable IDs and every leaf body except `C164`; changes only the shared source lifecycle/inventory helpers plus that leaf; removes old production identity constants/permanent comparisons and textual helper residue; and preserves both production files. Then Test Asset Readiness, Test Asset Retirement, applicable regressions, frozen new Test/source/parser/inventory identities and RED set, and separate user re-confirmation of a new TDD_READY are required.
+-8. Bounded Worker Revision 002 inside existing production paths, then mandatory retrospective, complete GREEN/regression/canonical/diff/scope evidence, and one separately authorized fresh read-only Validator 002 bound to exact identities.
++1. Controller correctness review and mandatory ponytail review over this exact seven-file package, followed by the Controller's Spec Gate decision.
++2. After Spec Gate, a specifically authorized Test Correction 010 whose first write is bound to the frozen append-only manifest: all current 279 IDs/order/bodies/helpers/purposes retained, then N114..N213 exactly as the formal attachment defines.
++3. Scalar evidence N114..N141: proved-valid controls, unique field mutation, primitive-type guard before path/regex/serialization, exact `INPUT_INVALID`, no receipt/child, zero conversion callbacks, and no forced RED count for already-correct cases.
++4. Six-array evidence N142..N183: current-realm prototype plus dense own enumerable data-index/built-in-length qualification before method/iteration/item/serialization; callback-zero negative leaves; independent L1 oracle and real-child full-receipt positive frozen/read-only leaves.
++5. Root evidence N184..N213: `.`, `..`, repeated slash, and trailing slash are `INPUT_INVALID` without normalization; `/` is lexically admitted; L2 `/` uses another root as the mismatch trap and does not claim successful validation.
++6. Test Asset Readiness, Test Asset Retirement, applicable regressions, exact 379 identity, honest causal RED frontier, unchanged production during Test work, and user-confirmed renewed `TDD_READY` bound to the accepted Test.
++7. Worker Revision 003 changes only the two existing production files' private guards and preserves receipt/hash/timeout/environment/path/L3 contracts, followed by complete GREEN/regression/canonical/diff/scope evidence.
++8. One fresh independent read-only Validator bound to exact Test/production/evidence identities; Controller then alone decides Acceptance and later integration/archive/successor Gates.
+ 
+ ## Current evidence matrix
+ 
+ | AC | Spec text | RED | GREEN | Regression / retirement | Validator |
+ |---|---|---|---|---|---|
+-| `AC-WVEB-001` | L1 contract unchanged | historical double-RED and 166-leaf Readiness identity retained without current authority; current physical Test has 279 stable IDs and is unaccepted | bigint evaluator/collector evidence historically GREEN | renewed Gates pending | Validator 001 found no L1 defect |
+-| `AC-WVEB-002` | unchanged strict L2 data-object/scope admission and sole production consumer | public invalid trap matrix plus dynamic single-read AST and `C164` repository-wide AST inventory pending Correction 007 | current blocker retained | renewed Gates pending | public rerun plus independent repository-wide/source review pending |
+-| `AC-WVEB-003` | unchanged Request, definition, environment, 24-field receipt, and hashes | independent factory/request/subject/definition/environment/scope leaves pending | current blocker retained | renewed Gates pending | exact matrix replay pending |
+-| `AC-WVEB-004` | unchanged one-`SIGKILL` timeout race | `C148/N085` real resistant-child plus `N086..N094`/applicable AST structure RED pending | current blocker retained | renewed Gates pending | real-child rerun and independent source review pending |
+-| `AC-WVEB-005` | unchanged pre-effect invalid admission | public no-receipt/no-child/no-state trap leaves plus applicable AST order pending | current blocker retained | renewed Gates pending | no internal syscall-count inference allowed |
+-| `AC-WVEB-006` | compatibility, paths, and successor lock unchanged | current structural coverage retained | no L3 work authorized | renewed Gates pending | fresh scope/lock review pending |
++| `AC-WVEB-001` | L1 six-array and root lexical contract clarified | N142..N162 and N184..N198 pending adoption | prior hash/bigint GREEN retained; new guards missing | renewed Gates pending | fresh replay pending |
++| `AC-WVEB-002` | sole-consumer/authority contract retained; callback order clarified | N114..N183 plus retained C164/real-child evidence | Worker Revision 002 partial GREEN; prototype/scalar guards missing | renewed Gates pending | independent callback/source/runtime review pending |
++| `AC-WVEB-003` | Request/definitions/24-field receipt retained; scalar and array admission clarified | N114..N141 and N163..N183 pending | current blocker confirmed | renewed Gates pending | exact matrix/receipt replay pending |
++| `AC-WVEB-004` | execution order retained; lexical root distinction clarified | N199..N213 plus retained process/timeout leaves | timeout GREEN retained; L2 root admission missing | renewed Gates pending | root `/` and mismatch-order replay pending |
++| `AC-WVEB-005` | pre-effect invalid admission clarified | N114..N213 callback/no-receipt/no-child/state evidence pending | current blocker confirmed | renewed Gates pending | no internal syscall-count inference allowed |
++| `AC-WVEB-006` | compatibility, paths, and successor lock unchanged | current structural coverage plus exact append-only manifest | no L3 work authorized | renewed Gates pending | fresh scope/lock review pending |
+ 
+ ## Residual risks and blockers
+ 
+-- Validator 001 proved that enumerable string-key checks are not a strict closed-input boundary: symbol, non-enumerable, and accessor fields were admitted, including an accessor invoked three times. Corrected admission must inspect descriptors before reading values.
+-- Validator 001's `allowed_paths:["../escape"]` probe returned a `START_FAILED/null/SUBJECT_MISMATCH` receipt after entering snapshot/Git work. The contract requires immediate `INPUT_INVALID`, no receipt, and admission before realpath/Git/snapshot/process for every invalid scope grammar class. Public traps prove the diagnosable failure frontier and no Test-observable later effect; structural Test and Validator review prove the internal ordering without claiming read-only syscall counts from the public result.
+-- Current timeout sends one `SIGTERM` but resolves only on `error` or `close`; a child handling that signal can keep the producer pending. The approved clarification uses exactly one direct `SIGKILL` when the timer wins, then awaits close and runs post-snapshot. It adds no grace timer, retry, recovery, second child, process-group interface, or caller configuration.
+-- The Test's outer watchdog marks an unconditional failure if production does not settle; any rescue kill occurs only in `finally` against the exact ready PID. It cannot be passed into or treated as production authority.
+-- TypeScript is an already directly locked project-local Test tool only. Any need to change `package.json` or a lockfile, resolve a different version, parse another production path for the shared production AST, transpile/emit/eval/execute/rewrite source, or inject parser/AST/results into production/runtime is a blocker.
+-- The current Test hard-codes the historical 46,568-byte/`958583...` production identity and its `snapshotConsumerInventory()` uses recursive directory traversal plus textual `.includes()`, while `C164` checks only the production AST. Those are Test evidence-lifecycle defects allocated only to proposed Correction 007; they do not repair or weaken the separate production defects.
+-- AST evidence is structurally bounded. `C148/N085` remains mandatory public dynamic evidence, and the Validator must still independently enumerate repository consumers, inspect source, and rerun the timeout behavior.
+-- The historical `ab54...`/166-leaf/`166/166` Readiness identity and `fce1...` Correction 005 identity have no current release authority. The current physical `12ee...`/1,178-line/92,135-byte Test retains 279 stable IDs but is unaccepted and cannot be integrated.
+-- Correction 007 may revise only the shared source lifecycle/inventory helpers and `C164`; any stable-ID change, any other leaf-body change, or any production change is a blocker.
++- L1 `closedArray` currently lacks the current-realm prototype and index-enumerability checks; L2 arrays lack the prototype check. Inherited methods/getters can therefore execute before rejection.
++- L2 `definition.cwd` reaches a path API without a primitive string guard; `subject.head_sha` reaches regex/serialization without one. Correct error results do not excuse conversion callbacks.
++- L2 subject roots currently accept non-lexical strings into real-identity handling. The clarified frontier is non-lexical `INPUT_INVALID`, then lexical real-identity `SUBJECT_MISMATCH`; `/` remains valid.
++- The 379 total is a planned adoption identity, not a Test result. Existing correct cases may PASS, so no total causal-RED count is predicted.
++- Historical Test and production credentials remain stage evidence only and grant no current authority. The current immutable Test has 279 IDs and cannot be integrated as proof of the clarified contract.
++- Retained AST and real-child evidence remain non-substitutable: structural review cannot replace dynamic callback/child/receipt evidence or a fresh Validator.
+ - The current Coordinator is deliberately not changed and is not L3 evidence. Any need to make it consume the new request in this Change is a scope blocker.
+ - A process may physically mutate the worktree before post-snapshot rejection. The boundary preserves the pre-snapshot identity and forbids acceptance/downstream effects; it does not roll back the mutation.
+-- No process/filesystem/Git observer seam, OS tracing, new file, fixture, helper, second Test path, dependency, public Coordinator/gateway method, State/Event, network, recovery, runtime authority, Ledger, Candidate, Final Validation, or L3 behavior is authorized.
+-- Validator 001 `FAIL` is final for that frozen cycle. No second Validator, Acceptance, integration, or archive authority exists.
++- No new file, fixture, second Test path, dependency, schema/receipt/hash/timeout/environment change, public Coordinator/gateway method, State/Event, network, recovery, runtime authority, Ledger, Candidate, Final Validation, or L3 behavior is authorized.
++- Validator 001 `FAIL` is final for its historical cycle. No fresh Validator, Acceptance, integration, or archive authority exists now.
+ 
+ ## Next Gate
+ 
+-The next Gate is a fresh Controller read-only Spec review of this exact seven-file package. This pre-review file does not claim or record Controller Spec Gate `PASS`. Correction 007 has not started and remains unauthorized. No Test or production dispatch, new TDD_READY, Worker Revision 002, Validator 002, Acceptance, integration, or archive is authorized by this file.
++The next Gate is Controller correctness review plus mandatory ponytail review of this exact seven-file package, followed by the Controller Spec Gate decision. This file claims only `SPEC_READY / PENDING_CONTROLLER_SPEC_GATE`. Test Correction 010 has not started and remains unauthorized. No Test or production dispatch, renewed TDD_READY, Worker Revision 003, fresh Validator, Acceptance, integration, archive, or successor release is authorized by this file.
