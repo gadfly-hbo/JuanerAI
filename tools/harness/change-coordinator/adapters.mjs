@@ -29,7 +29,7 @@ function inputInvalid() {
 }
 
 async function run(executable, args, {
-  cwd, environment = {}, timeout_ms = 60_000, runtime_uid = undefined, runtime_gid = undefined,
+  cwd, environment = {}, timeout_ms = 60_000, runtime_uid = undefined, runtime_gid = undefined, input = undefined,
 } = {}) {
   const physicalCwd = await realpath(cwd).catch(() => cwd);
   const options = { runtime_uid, runtime_gid };
@@ -38,6 +38,7 @@ async function run(executable, args, {
       cwd: physicalCwd, env: { ...environment, LC_ALL: 'C' }, shell: false,
       uid: options.runtime_uid, gid: options.runtime_gid,
     });
+    child.stdin?.end(input);
     let stdout = '';
     let stderr = '';
     let settled = false;
@@ -78,7 +79,7 @@ async function run(executable, args, {
 }
 
 async function runBuffer(executable, args, {
-  cwd, environment = {}, timeout_ms = 60_000, runtime_uid = undefined, runtime_gid = undefined,
+  cwd, environment = {}, timeout_ms = 60_000, runtime_uid = undefined, runtime_gid = undefined, input = undefined,
 } = {}) {
   const physicalCwd = await realpath(cwd).catch(() => cwd);
   const options = { runtime_uid, runtime_gid };
@@ -87,6 +88,7 @@ async function runBuffer(executable, args, {
       cwd: physicalCwd, env: { ...environment, LC_ALL: 'C' }, shell: false,
       uid: options.runtime_uid, gid: options.runtime_gid,
     });
+    child.stdin?.end(input);
     const stdout = []; const stderr = []; let settled = false; let timedOut = false;
     const finish = (callback, value) => { if (settled) return; settled = true; clearTimeout(timer); callback(value); };
     const timer = setTimeout(() => { timedOut = true; child.kill('SIGTERM'); }, timeout_ms);
@@ -140,8 +142,47 @@ function parseNameStatus(raw) {
   return entries;
 }
 
+function parseWorktreeStatus(raw) {
+  const entries = [];
+  for (const row of raw.split('\0').filter(Boolean)) {
+    const match = /^(.)(.) (.*)$/su.exec(row);
+    if (!match) throw interrupted();
+    const [, index, worktree, value] = match;
+    if (index !== ' ' && !(index === '?' && worktree === '?')) throw interrupted();
+    const status = worktree === 'M' ? 'MODIFIED'
+      : worktree === 'D' ? 'DELETED'
+        : worktree === 'T' ? 'TYPE_CHANGED'
+          : index === '?' && worktree === '?' ? 'UNTRACKED' : null;
+    if (!status || !value || path.isAbsolute(value) || value === '.' || value === '..' || value.includes('\0') || value.includes('\\') || value.split('/').some(part => part === '..' || part === '.')) throw interrupted();
+    entries.push({ path: value, status, mode: null, object_sha: null });
+  }
+  entries.sort((left, right) => Buffer.compare(Buffer.from(left.path), Buffer.from(right.path)));
+  if (entries.some((entry, index) => index && entry.path === entries[index - 1].path)) throw interrupted();
+  return entries;
+}
+
 function requireSafeChangeBranch(branch) {
   if (typeof branch !== 'string' || !/^work\/mac-mini\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(branch)) throw interrupted();
+}
+
+function readPhysicalCommit(raw, sha) {
+  if (typeof raw !== 'string' || Buffer.from(raw, 'utf8').toString('utf8') !== raw) throw interrupted();
+  const separator = raw.indexOf('\n\n');
+  if (separator < 0) throw interrupted();
+  const header = raw.slice(0, separator).split('\n');
+  if (!/^tree [0-9a-f]{40}$/.test(header[0] ?? '')) throw interrupted();
+  const parents = header.filter(line => line.startsWith('parent'));
+  if (parents.some(line => !/^parent [0-9a-f]{40}$/.test(line) || line.slice('parent '.length) === '0'.repeat(40) || line.slice('parent '.length) === sha)) throw interrupted();
+  if (!header.some(line => /^author .+ [0-9]+ [+-][0-9]{4}$/.test(line)) || !header.some(line => /^committer .+ [0-9]+ [+-][0-9]{4}$/.test(line))) throw interrupted();
+  return { tree: header[0].slice('tree '.length), parents: parents.map(line => line.slice('parent '.length)), message: raw.slice(separator + 2) };
+}
+
+async function readPhysicalCommitBytes(options, cwd, sha) {
+  const result = await run(options.git_executable, ['cat-file', 'commit', sha], {
+    cwd, environment: options.base_environment, runtime_uid: options.runtime_uid, runtime_gid: options.runtime_gid,
+  });
+  if (result.code !== 0 || result.stderr !== '') throw interrupted();
+  return result.stdout;
 }
 
 export function createCoordinatorAdapters(options) {
@@ -172,8 +213,20 @@ export function createCoordinatorAdapters(options) {
   if (!validOptions) {
     throw Object.assign(new Error('COORDINATOR_INPUT_INVALID'), { code: 'COORDINATOR_INPUT_INVALID' });
   }
-  const opt = { ...options, base_environment: { ...(options.base_environment ?? {}) } };
+  const opt = { ...options, base_environment: {
+    LC_ALL: 'C', LANG: 'C', TZ: 'UTC', GIT_CONFIG_NOSYSTEM: '1',
+    GIT_CONFIG_GLOBAL: '/dev/null', GIT_ATTR_NOSYSTEM: '1', GIT_PAGER: 'cat',
+    PAGER: 'cat', GIT_TERMINAL_PROMPT: '0', GIT_NO_REPLACE_OBJECTS: '1',
+  } };
   let pinReceipt = null;
+  // A Candidate retry is only meaningful inside the same live Adapter
+  // invocation chain.  The transient entry is created before its first
+  // mutation and records the exact object plus the consumed CAS budget.  A
+  // duplicate request can therefore converge, or finish one known-absent CAS,
+  // without creating another object or moving a ref after prior success.  A
+  // different Candidate request evicts the old worktree entry; nothing is
+  // persisted or exposed.
+  const candidateContinuations = new Map();
   const assertPinnedGit = async () => {
     if (pinReceipt) return pinReceipt;
     const executable_sha256 = sha256(await readFile(opt.git_executable));
@@ -208,7 +261,7 @@ export function createCoordinatorAdapters(options) {
     },
   };
 
-  const ok = value => ({ kind: 'OK', value });
+  const ok = value => ({ kind: 'OK', value, receipt_sha256: sha256(canonical(value)) });
   const stagedReceipt = async worktree_root => {
     const entries = parseNameStatus(await gitBytes(opt, worktree_root, ['diff', '--cached', '--name-status', '-z', '--no-renames']));
     const staged_paths = entries.map(entry => entry.path).sort();
@@ -230,8 +283,13 @@ export function createCoordinatorAdapters(options) {
       const head_sha = await gitCommand(opt, worktree_root, ['rev-parse', 'HEAD']);
       if ((expected_branch !== undefined && branch !== expected_branch) || (expected_head !== undefined && head_sha !== expected_head)) throw interrupted();
       const common_git_dir = await realpath(path.resolve(worktree_root, await gitCommand(opt, worktree_root, ['rev-parse', '--git-common-dir'])));
-      const status = await gitBytes(opt, worktree_root, ['status', '--porcelain=v1', '-z']);
-      return ok({ worktree_root, branch, head_sha, common_git_dir, status_entries: status.split('\0').filter(Boolean), clean: status.length === 0 });
+      const status = await gitBytes(opt, worktree_root, ['status', '--porcelain=v1', '-z', '--untracked-files=all', '--no-renames']);
+      const ignored = await gitBytes(opt, worktree_root, ['status', '--porcelain=v1', '-z', '--untracked-files=all', '--ignored=matching', '--no-renames']);
+      if (status !== ignored) throw interrupted();
+      const index = await run(opt.git_executable, ['diff', '--cached', '--quiet', ...(expected_head === undefined ? [] : [expected_head]), '--'], { cwd: worktree_root, environment: opt.base_environment, runtime_uid: opt.runtime_uid, runtime_gid: opt.runtime_gid });
+      if (index.code !== 0 || index.stdout !== '' || index.stderr !== '') throw interrupted();
+      const status_entries = parseWorktreeStatus(status);
+      return ok({ worktree_root, branch, head_sha, common_git_dir, status_entries, clean: status_entries.length === 0 });
     },
     stageExact: async ({ worktree_root, expected_head = undefined, paths }) => {
       if (!Array.isArray(paths) || !paths.length || paths.some((entry, index) => index && paths[index - 1] >= entry)) throw interrupted();
@@ -241,15 +299,94 @@ export function createCoordinatorAdapters(options) {
     },
     readStaged: async ({ worktree_root }) => stagedReceipt(worktree_root),
     commitCandidate: async ({ worktree_root, expected_parent, expected_tree, message_bytes, idempotency_id }) => {
-      if (typeof idempotency_id !== 'string' || !idempotency_id || await gitCommand(opt, worktree_root, ['rev-parse', 'HEAD']) !== expected_parent || await gitCommand(opt, worktree_root, ['write-tree']) !== expected_tree) throw interrupted();
-      const message = message_bytes instanceof Uint8Array ? new TextDecoder().decode(message_bytes) : 'candidate';
-      await gitCommand(opt, worktree_root, ['commit', '-m', message]);
-      const sha = await gitCommand(opt, worktree_root, ['rev-parse', 'HEAD']);
-      return ok({ sha, parent: expected_parent, tree: expected_tree, branch: await gitCommand(opt, worktree_root, ['branch', '--show-current']) });
+      if (typeof idempotency_id !== 'string' || !/^candidate-[0-9a-f]{64}$/.test(idempotency_id) || !(message_bytes instanceof Uint8Array)) throw interrupted();
+      const requiredMessage = `JuanerAI Candidate\n\nJuanerAI-Idempotency-ID: ${idempotency_id}\n`;
+      if (!Buffer.from(message_bytes).equals(Buffer.from(requiredMessage))) {
+        if (Buffer.from(message_bytes).toString('utf8').startsWith('JuanerAI Candidate\n\nJuanerAI-Idempotency-ID:')) return { kind: 'CONFLICT', reason: 'READBACK_MISMATCH', observed_identity: null };
+        throw interrupted();
+      }
+      const expectedMessage = requiredMessage;
+      const retained = candidateContinuations.get(idempotency_id);
+      if (retained) {
+        if (retained.worktree_root !== worktree_root || retained.expected_parent !== expected_parent || retained.expected_tree !== expected_tree || retained.message !== expectedMessage) return { kind: 'AMBIGUOUS', reason: 'READBACK_MISMATCH', partial_receipt: null };
+        const currentHead = await gitCommand(opt, worktree_root, ['rev-parse', 'HEAD']);
+        const currentBranch = await gitCommand(opt, worktree_root, ['branch', '--show-current']);
+        if (currentBranch !== retained.value.branch) return { kind: 'AMBIGUOUS', reason: 'READBACK_MISMATCH', partial_receipt: null };
+        const observed = readPhysicalCommit(await readPhysicalCommitBytes(opt, worktree_root, retained.value.sha), retained.value.sha);
+        if (observed.parents.length !== 1 || observed.parents[0] !== expected_parent || observed.tree !== expected_tree || observed.message !== expectedMessage) return { kind: 'AMBIGUOUS', reason: 'READBACK_MISMATCH', partial_receipt: null };
+        if (currentHead === retained.value.sha) { candidateContinuations.delete(idempotency_id); return ok(retained.value); }
+        if (currentHead !== expected_parent || retained.cas_succeeded || retained.cas_continuation_used) return { kind: 'AMBIGUOUS', reason: 'READBACK_MISMATCH', partial_receipt: null };
+        retained.cas_continuation_used = true;
+        const continued = await run(opt.git_executable, ['update-ref', `refs/heads/${retained.value.branch}`, retained.value.sha, expected_parent], { cwd: worktree_root, environment: opt.base_environment, runtime_uid: opt.runtime_uid, runtime_gid: opt.runtime_gid });
+        if (continued.code !== 0 || continued.signal) return { kind: 'AMBIGUOUS', reason: 'READBACK_MISMATCH', partial_receipt: null };
+        retained.cas_succeeded = true;
+        if (await gitCommand(opt, worktree_root, ['rev-parse', 'HEAD']) !== retained.value.sha || await gitCommand(opt, worktree_root, ['branch', '--show-current']) !== retained.value.branch) return { kind: 'AMBIGUOUS', reason: 'READBACK_MISMATCH', partial_receipt: null };
+        candidateContinuations.delete(idempotency_id);
+        return ok(retained.value);
+      }
+      for (const [key, value] of candidateContinuations.entries()) if (value.worktree_root === worktree_root) candidateContinuations.delete(key);
+      const head = await gitCommand(opt, worktree_root, ['rev-parse', 'HEAD']);
+      const branch = await gitCommand(opt, worktree_root, ['branch', '--show-current']);
+      requireSafeChangeBranch(branch);
+      if (head !== expected_parent) {
+        try {
+          const observed = readPhysicalCommit(await readPhysicalCommitBytes(opt, worktree_root, head), head);
+          const observedParent = await gitCommand(opt, worktree_root, ['rev-parse', `${head}^`]);
+          const observedTree = await gitCommand(opt, worktree_root, ['rev-parse', `${head}^{tree}`]);
+          const observedBranch = await gitCommand(opt, worktree_root, ['branch', '--show-current']);
+          if (observed.parents.length === 1 && observed.parents[0] === expected_parent && observedParent === expected_parent && observed.tree === expected_tree && observedTree === expected_tree && observed.message === expectedMessage && observedBranch === branch) return ok({ sha: head, parent: expected_parent, tree: expected_tree, branch });
+        } catch {}
+        return { kind: 'CONFLICT', reason: 'READBACK_MISMATCH', observed_identity: null };
+      }
+      if (await gitCommand(opt, worktree_root, ['write-tree']) !== expected_tree) return { kind: 'CONFLICT', reason: 'DIRTY_WORKTREE', observed_identity: null };
+      const created = await run(opt.git_executable, ['commit-tree', expected_tree, '-p', expected_parent], { cwd: worktree_root, environment: opt.base_environment, runtime_uid: opt.runtime_uid, runtime_gid: opt.runtime_gid, input: Buffer.from(message_bytes) });
+      if (created.code !== 0 || created.signal || !/^[0-9a-f]{40}\n?$/.test(created.stdout)) throw interrupted();
+      const sha = created.stdout.trim();
+      const committed = readPhysicalCommit(await readPhysicalCommitBytes(opt, worktree_root, sha), sha);
+      if (committed.parents.length !== 1 || committed.parents[0] !== expected_parent || committed.tree !== expected_tree || committed.message !== expectedMessage || !committed.message.includes(`JuanerAI-Idempotency-ID: ${idempotency_id}\n`)) throw interrupted();
+      const value = { sha, parent: expected_parent, tree: expected_tree, branch };
+      const continuation = { worktree_root, expected_parent, expected_tree, message: expectedMessage, value, cas_succeeded: false, cas_continuation_used: false };
+      candidateContinuations.set(idempotency_id, continuation);
+      let updated = await run(opt.git_executable, ['update-ref', `refs/heads/${branch}`, sha, expected_parent], { cwd: worktree_root, environment: opt.base_environment, runtime_uid: opt.runtime_uid, runtime_gid: opt.runtime_gid });
+      if ((updated.code !== 0 || updated.signal) && await gitCommand(opt, worktree_root, ['rev-parse', 'HEAD']) === expected_parent) { continuation.cas_continuation_used = true; updated = await run(opt.git_executable, ['update-ref', `refs/heads/${branch}`, sha, expected_parent], { cwd: worktree_root, environment: opt.base_environment, runtime_uid: opt.runtime_uid, runtime_gid: opt.runtime_gid }); }
+      if (updated.code !== 0 || updated.signal) return { kind: 'AMBIGUOUS', reason: 'READBACK_MISMATCH', partial_receipt: null };
+      continuation.cas_succeeded = true;
+      if (await gitCommand(opt, worktree_root, ['rev-parse', 'HEAD']) !== sha || await gitCommand(opt, worktree_root, ['rev-parse', `${sha}^`]) !== expected_parent || await gitCommand(opt, worktree_root, ['rev-parse', `${sha}^{tree}`]) !== expected_tree || await gitCommand(opt, worktree_root, ['branch', '--show-current']) !== branch) return { kind: 'AMBIGUOUS', reason: 'READBACK_MISMATCH', partial_receipt: null };
+      return ok(value);
     },
-    readCommit: async ({ canonical_root = opt.repository_root, sha }) => ok({ sha, parent: await gitCommand(opt, canonical_root, ['rev-parse', `${sha}^`]), tree: await gitCommand(opt, canonical_root, ['rev-parse', `${sha}^{tree}`]), branch: (await gitCommand(opt, canonical_root, ['for-each-ref', '--format=%(refname:short)', '--contains', sha, 'refs/heads/'])).split('\n').find(name => /^work\/mac-mini\//.test(name)) ?? null }),
-    pushBranch: async ({ canonical_root = opt.repository_root, branch, head_sha, expected_remote_head = undefined, idempotency_id }) => { requireSafeChangeBranch(branch); if (typeof idempotency_id !== 'string' || !idempotency_id || await gitCommand(opt, canonical_root, ['rev-parse', `refs/heads/${branch}`]) !== head_sha) throw interrupted(); if (expected_remote_head !== undefined && expected_remote_head !== null) { const remote_head = (await gitCommand(opt, canonical_root, ['ls-remote', 'origin', `refs/heads/${branch}`])).split(/\s+/)[0]; if (remote_head !== expected_remote_head) throw interrupted(); } await gitCommand(opt, canonical_root, ['push', 'origin', `refs/heads/${branch}:refs/heads/${branch}`]); return ok({ branch, head_sha }); },
-    readRemoteBranch: async ({ canonical_root = opt.repository_root, branch }) => { if (branch !== 'main') requireSafeChangeBranch(branch); const head_sha = (await gitCommand(opt, canonical_root, ['ls-remote', 'origin', `refs/heads/${branch}`])).split(/\s+/)[0]; if (!/^[0-9a-f]{40}$/.test(head_sha)) throw interrupted(); return ok({ branch, head_sha }); },
+    readCommit: async ({ canonical_root = opt.repository_root, sha }) => {
+      if (typeof sha !== 'string' || !/^[0-9a-f]{40}$/.test(sha)) throw interrupted();
+      const commit = readPhysicalCommit(await readPhysicalCommitBytes(opt, canonical_root, sha), sha);
+      const branch = (await gitCommand(opt, canonical_root, ['for-each-ref', '--format=%(refname:short)', '--contains', sha, 'refs/heads/'])).split('\n').find(name => /^work\/mac-mini\//.test(name)) ?? null;
+      if (branch === null) throw interrupted();
+      return ok({ sha, parent: commit.parents[0] ?? null, tree: commit.tree, branch });
+    },
+    pushBranch: async request => {
+      if (!closed(request, ['canonical_root', 'branch', 'candidate_sha', 'expected_remote_head', 'idempotency_id'])) throw interrupted();
+      const { canonical_root, branch, candidate_sha, expected_remote_head, idempotency_id } = request;
+      requireSafeChangeBranch(branch);
+      const candidate = candidate_sha;
+      if (canonical_root !== opt.repository_root || !/^[0-9a-f]{40}$/.test(candidate)
+        || (expected_remote_head !== null && !/^[0-9a-f]{40}$/.test(expected_remote_head))
+        || typeof idempotency_id !== 'string' || !idempotency_id
+        || await gitCommand(opt, canonical_root, ['rev-parse', `refs/heads/${branch}`]) !== candidate) throw interrupted();
+      const prior_remote_head = (await gitCommand(opt, canonical_root, ['ls-remote', 'origin', `refs/heads/${branch}`])).split(/\s+/)[0] || null;
+      if (prior_remote_head !== expected_remote_head) return { kind: 'CONFLICT', reason: 'REMOTE_CONFLICT', observed_identity: prior_remote_head };
+      await gitCommand(opt, canonical_root, ['push', 'origin', `refs/heads/${branch}:refs/heads/${branch}`]);
+      const remote_head = (await gitCommand(opt, canonical_root, ['ls-remote', 'origin', `refs/heads/${branch}`])).split(/\s+/)[0] || null;
+      if (remote_head !== candidate) throw interrupted();
+      return ok({ prior_remote_head, remote_head, forced: false, deleted: false });
+    },
+    readRemoteBranch: async request => {
+      if (!closed(request, ['canonical_root', 'origin', 'branch'])
+        || request.canonical_root !== opt.repository_root || request.origin !== 'origin') throw interrupted();
+      const { canonical_root, branch } = request;
+      if (branch !== 'main') requireSafeChangeBranch(branch);
+      const remote_head = (await gitCommand(opt, canonical_root, ['ls-remote', 'origin', `refs/heads/${branch}`])).split(/\s+/)[0];
+      if (remote_head === '') return { kind: 'ABSENT', reason: 'EXPECTED_IDENTITY_ABSENT', expected_identity: { canonical_root, origin: request.origin, branch } };
+      if (!/^[0-9a-f]{40}$/.test(remote_head)) throw interrupted();
+      return ok({ remote_head });
+    },
     canonicalDiff: async request => {
       const environment = { LC_ALL: 'C', LANG: 'C', TZ: 'UTC', GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: '/dev/null', GIT_ATTR_NOSYSTEM: '1', GIT_PAGER: 'cat', PAGER: 'cat', GIT_TERMINAL_PROMPT: '0', GIT_NO_REPLACE_OBJECTS: '1' };
       const cwd = request.worktree_root ?? opt.repository_root;
@@ -276,8 +413,42 @@ export function createCoordinatorAdapters(options) {
       const args = ['--no-pager', '-c', 'color.ui=false', '-c', 'core.quotePath=true', '-c', 'diff.algorithm=myers', '-c', 'diff.mnemonicPrefix=false', '-c', 'diff.noprefix=false', 'diff', '--binary', '--full-index', '--no-ext-diff', '--no-textconv', '--no-renames', '--src-prefix=a/', '--dst-prefix=b/', `${request.baseline_sha}..${request.candidate_sha}`, '--'];
       const raw = await runBuffer(opt.git_executable, args, {
         cwd, environment, runtime_uid: opt.runtime_uid, runtime_gid: opt.runtime_gid,
-      }); if (raw.code !== 0) throw interrupted(); const raw_stdout = raw.stdout;
-      return ok({ producer_receipt: { executable: opt.git_executable, executable_sha256: pinned.executable_sha256, version: pinned.version, environment, shell: false, argv: [...args], repository_root: request.canonical_root, common_git_dir: request.common_git_dir, worktree_root: cwd }, raw_stdout, byte_length: raw_stdout.length, stdout_sha256: sha256(raw_stdout) });
+      }); if (raw.code !== 0 || raw.stderr.length !== 0) throw interrupted(); const raw_stdout = Buffer.from(raw.stdout);
+      const path_argv = ['--no-pager', '-c', 'color.ui=false', '-c', 'core.quotePath=true', '-c', 'diff.algorithm=myers', '-c', 'diff.mnemonicPrefix=false', '-c', 'diff.noprefix=false', 'diff', '--name-status', '-z', '--no-ext-diff', '--no-textconv', '--no-renames', `${request.baseline_sha}..${request.candidate_sha}`, '--'];
+      const paths = await runBuffer(opt.git_executable, path_argv, {
+        cwd, environment, runtime_uid: opt.runtime_uid, runtime_gid: opt.runtime_gid,
+      });
+      if (paths.code !== 0 || paths.stderr.length !== 0 || (paths.stdout.length > 0 && paths.stdout.at(-1) !== 0)) throw interrupted();
+      const path_raw_stdout = Buffer.from(paths.stdout);
+      const tokens = []; let start = 0;
+      for (let index = 0; index < path_raw_stdout.length; index += 1) {
+        if (path_raw_stdout[index] !== 0) continue;
+        tokens.push(path_raw_stdout.subarray(start, index)); start = index + 1;
+      }
+      if (start !== path_raw_stdout.length || tokens.length % 2 !== 0) throw interrupted();
+      const changedPathBytes = [];
+      for (let index = 0; index < tokens.length; index += 2) {
+        const status = tokens[index].toString('ascii'); const pathBytes = tokens[index + 1];
+        const value = pathBytes.toString('utf8');
+        if (tokens[index].length !== 1 || !['A', 'M', 'D', 'T'].includes(status) || pathBytes.length === 0 || !Buffer.from(value, 'utf8').equals(pathBytes)
+          || value.startsWith('/') || value.includes('\\') || /[\n\r]/.test(value)
+          || value.split('/').some(part => part.length === 0 || part === '.' || part === '..')) throw interrupted();
+        changedPathBytes.push(pathBytes);
+      }
+      changedPathBytes.sort(Buffer.compare);
+      if (changedPathBytes.some((value, index) => index > 0 && value.equals(changedPathBytes[index - 1]))) throw interrupted();
+      const changed_paths = changedPathBytes.map(value => value.toString('utf8'));
+      const result = {
+        producer_receipt: {
+          executable: opt.git_executable, executable_sha256: pinned.executable_sha256, version: pinned.version,
+          environment, shell: false, argv: [...args], path_argv, path_stdout_sha256: sha256(path_raw_stdout),
+          repository_root: request.canonical_root, common_git_dir: request.common_git_dir, worktree_root: cwd,
+        },
+        raw_stdout, byte_length: raw_stdout.length, stdout_sha256: sha256(raw_stdout),
+        path_raw_stdout, path_byte_length: path_raw_stdout.length, changed_paths,
+      };
+      const receiptValue = { ...result, raw_stdout: raw_stdout.toString('base64'), path_raw_stdout: path_raw_stdout.toString('base64') };
+      return { kind: 'OK', value: result, receipt_sha256: sha256(canonical(receiptValue)) };
     },
     syncMainFfOnly: async ({ canonical_root, main_worktree_root, squash_sha, expected_origin_main }) => {
       const repository_root = main_worktree_root ?? canonical_root ?? opt.repository_root;
