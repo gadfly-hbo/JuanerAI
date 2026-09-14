@@ -773,7 +773,7 @@ R158 Test两处源码验收重绑，非目标原SHA完整还原；生产不变�
 
 ## R158 TEST_ACTIVE / AUTHORIZED_CARRIER
 
-R158隔离Test terra/high已派发，仅T-a/T-b SOURCE_ONLY；无行为验证。[R158 TEST_ACTIVE / AUTHORIZED_CARRIER](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-batch-r158/current-receipt.md)。1. 阻塞关闭：本轮未关闭B阻塞；本次承载缺口解除，B0 CLOSED/B1–B5 OPEN。 2. 链路位置：R152 K1原基线及R155受控健康链保持；完整K2仍12FAIL，下一未过为原010/011，当前仅Test源码修正。 3. 支线回归：M2/B5 T-a/T-b正在隔离修正，须源码验收/重绑和原叶健康后回W-a/W-b；四事项最终原叶及同fullK2通过后回普通H/F真实一小时。L15/T1 CLOSED_RETURNED，S09 USER_WAIVED/NOT_VERIFIED。 4. 距离M4：Test两处→验收重绑/健康→原Worker两组→010→011→fullK2→普通H/F真实一小时→最终质量/Retirement→Validator→M3→M4。不重问已批准范围/承载。 
+R158隔离Test terra/high已派发，仅T-a/T-b SOURCE_ONLY；无行为验证。[R158 TEST_ACTIVE / AUTHORIZED_CARRIER](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-batch-r158/current-receipt.md)。1. 阻塞关闭：本轮未关闭B阻塞；本次承载缺口解除，B0 CLOSED/B1–B5 OPEN。 2. 链路位置：R152 K1原基线及R155受控健康链保持；完整K2仍12FAIL，下一未过为原010/011，当前仅Test源码修正。 3. 支线回归：M2/B5 T-a/T-b正在隔离修正，须源码验收/重绑和原叶健康后回W-a/W-b；四事项最终原叶及同fullK2通过后回普通H/F真实一小时。L15/T1 CLOSED_RETURNED，S09 USER_WAIVED/NOT_VERIFIED。 4. 距离M4：Test两处→验收重绑/健康→原Worker两组→010→011→fullK2→普通H/F真实一小时→最终质量/Retirement→Validator→M3→M4。不重问已批准范围/承载。
 
 
 ## R157 Controller — SIX_STEPS_AUTHORIZED / CURRENT_R2_CARRIER_PENDING
