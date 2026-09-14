@@ -1,4 +1,6 @@
-# Traceability: Change Coordinator Production Delivery Chain
+# Verification: Change Coordinator Production Delivery Chain
+
+> Archive history (2026-09-14): Controller accepted the applicable local repair under R242/R248 and authorized mechanical archive in R258. Historical Gate/task/evidence text below is preserved, not a current pending verdict. S09/A2 remains USER_WAIVED / NOT_VERIFIED; target-host deployment, EMPTY/D1 and BLK-D1A-008 remain pending. This archive does not authorize Desktop or a product DISPATCH.
 
 <!-- R240_CONTROLLER_BEGIN -->
 ## R240 — 当前固定 Regression/Retirement PASS，按授权停止
@@ -197,36 +199,45 @@ Test R2须terra/high，但当前专用工具固定medium且禁止覆盖。本次
 <!-- R216_CONTROLLER_END -->
 
 <!-- R216_SPEC_BEGIN -->
-## R216 — F1/F2 corrective traceability
+## R216 — finite Spec return verification
 
-This additive map does not create Requirement, Acceptance Criterion, Test parent, task, state, event, Gateway method, or lifecycle identity.
+Status: `SPEC_READY / CONTROLLER_GATE_PENDING_R217`. This is a source-only specification correction under the same bounded temporary Spec authority. It records no Spec Gate PASS, Test write/run, causal RED, TDD_READY, production change, GREEN, regression, Retirement, fresh Validator, F1/F2 closure, B1–B5 closure, M3/M4 advance, credential use, Git write, or external action.
 
-| Contract / acceptance | R216 design clause | Frozen Test evidence | Existing task | Current state |
-|---|---|---|---|---|
-| `REQ-M2-005 / AC-M2-005-03`; `REQ-DTF-005 / AC-DTF-005-07` — local evidence commit changes only authoritative Ledger path and carries complete publication receipt facts | exact named builder; fourteen-field/byte snapshots; prepared prefix and canonical tail bound to physical old blob; exact Git output/header/error rules; recursive raw preserved-entry equality; private writer one-publication reuse | `TEST-M2-002 / R216-L01..L05` (read back unused before this Spec); entry and behavior RED are separate; independent real Git oracle | `TASK-M2-010..012`, `TASK-M2-033..034`, `TASK-M2-040..045` | `SPEC_READY / CONTROLLER_GATE_PENDING_R217`; F1 open |
-| Foundation Ledger first append and later append publication | null/path-absent -> empty prefix/sequence one; existing target -> exact old blob/prefix and prior-last-sequence + 1; empty index/zero-parent or exact tree/one parent; no local success is remote authority | `R216-L02` positive matrix and independent prefix/tail/target/blob/commit readback | `TASK-M2-033`, `TASK-M2-040` | not run |
-| Foundation failure/no-false-publication | closed input -> process availability -> proven physical conflict priority; no ref/remote call; bounded local residue explicitly allowed | `R216-L03,L04,L05`; real index lock, missing object, target conflict, old-blob mismatch, filesystem obstacle; malformed-success/signal/overflow branches source-only | `TASK-M2-011..012`, `TASK-M2-034` | not run; named branches not dynamically forced |
-| R214 shared-body access without credential expansion | Test/private writer use one body; construct only at null publication; non-OK uncached/current call no push/later caller may re-enter; after one OK same-prepared calls reuse it; no builder-internal retry/cache/full private factory/credential/transport/general Git seam | `R216-L01,L05` plus temporary Controller preimage/source-wiring review | `TASK-M2-012`, `TASK-M2-033` | interface not implemented; entry RED not run |
-| two-stage TDD causality | final contract frozen before absent entry; mechanical old-body extraction; real shared-body behavior RED; separate final correction authority | `RED-R216-F1-ENTRY`, then `RED-R216-F1-BEHAVIOR`; suffixes frozen before first Worker | `TASK-M2-011..012`, `TASK-M2-033` | neither RED nor TDD_READY claimed |
-| Foundation `AC-DTF-001-01,05,08` and `AC-DTF-002-02,08`; existing `REQ-M2-006 / AC-M2-006-01,02,04,07,08` — exact read-only STATUS/READY authority | no new F2 normative clause; exact eleven-field STATUS; `INVALID` only with separate sixteen-field persisted pause; without one exact existing `CoordinatorErrorV1/status/REJECTED/WIP_AUTHORITY_INVALID`; existing Core/State/strict Ledger Port and reauthentication only | bounded `coordinator.test.mjs` F2 group: two exact payload oracles; six `TEST-DTF-R1-002` meanings with compliant strict-read/request/outcome/call rebinding; fresh Core/process restart, real persisted pause, Host readStatus | `TASK-M2-010..012`, `TASK-M2-034`, `TASK-M2-040..043` | F2 open; old short request/exact-two-call oracle not retained |
-| A2/S09 | exact prior privileged fixed-profile/sealed-proof and dependent leaves only | recorded `USER_WAIVED / NOT_VERIFIED`, never PASS or substitute evidence | unchanged prior task mapping | unchanged |
-| A3 | K1/K2/true-hour/WVEB prior evidence identity | version-bound reuse only; repaired current full-M2/focused/affected sequence still required | `TASK-M2-040..043` | unchanged, not current-version PASS |
-| F3 | withdrawn full private-factory dynamic Gate | no Test or task consumer restored | none | withdrawn |
+### Contract completeness review
 
-### Source and path ownership
+| R214/R213 obligation | R216 disposition |
+|---|---|
+| exact shared local production entry | closed as `createUnpublishedLedgerEvidenceCommitBuilder({repositoryRoot,stateRoot,gitExecutable,runtime_uid,runtime_gid}) -> Object.freeze({construct})` in existing `production.mjs` |
+| closed call and identity | exact pre-await snapshots of `{prepared_receipt,prepared_bytes}`; fourteen-field receipt; new bytes/hash/length; prior prefix/hash/length; physical old blob; canonical final JSON+LF Change/event/hash/sequence/idempotency equality; Change ID recovered only from and rederives the authoritative path |
+| local-only success | exact eleven-field `publication_status:'UNPUBLISHED'` object plus canonical receipt hash; no remote ref/status/linearization or authority |
+| process/object proof | existing reader completion/header rules; exact empty-output, OID-line, type-line and target-record grammar; allowed leaf pairs; parent/blob/tree/target/commit physical reread; null-parent empty index and zero-parent commit; closed input/process/conflict error priority; no trimmed-output acceptance |
+| preserved entries | recursively flattened raw NUL leaf records, unsigned raw-path sort, exact target exclusion, ancestor/descendant/type collision refusal, byte equality plus before/after SHA-256 |
+| failures/partial effects | invalid input pre-effect throws; physical uncertainty unavailable; proven disagreement conflict; no publishable success/remote call; bounded local file/index/unreferenced objects may remain without rollback claim |
+| private writer | construct only while `prepared.publication` is null; non-OK uncached/current-call no push/later caller may re-enter; after one OK all same-prepared calls reuse it; no builder-internal retry; unchanged credentials/ref/push/readback/four signatures and complete receipt |
+| prohibited expansion | no full Ledger factory, arbitrary ref/path/argv/env, runner/fs/parser/result callback, legacy/test mode, new State/lock/retry/recovery/persistent schema or general Git API |
+| two RED/TDD stages | absent-entry RED -> mechanical extraction only -> source/fixture health -> real shared-body behavior RED -> separate final TDD_READY |
+| F2 | no normative change; existing Core/State/strict Port, two exact STATUS payload oracles and six retained pointer-first crash windows |
+| compatibility | proposal and existing Core/Ledger signatures stay unchanged; F3 remains withdrawn; no migration/backfill/history rewrite |
 
-| Phase | Allowed path | Forbidden companion change |
-|---|---|---|
-| isolated Test | `tools/harness/change-coordinator/production-delivery-chain.test.mjs` only for F1 group/import; `tools/harness/change-coordinator/coordinator.test.mjs` only for F2 group/import | fixtures, mode, CLI, WVEB, Git Test, source rewrite/evaluation, mock runner/result, full private factory |
-| entry Worker | `tools/harness/change-coordinator/production.mjs` only | F1 behavior fix, `coordinator.mjs`, Test, transport/receipt change, new file |
-| final Worker | `tools/harness/change-coordinator/production.mjs` for final F1 body/receipt consumption; `tools/harness/change-coordinator/coordinator.mjs` for existing-contract F2 projection/strict request | adapters, host, State writer/CAS, signatures, persistent schema, another production/Test path |
-| regression/retirement | existing fixed R213 command owners and Test Asset ledger; preserve formal inventories/readbacks/source-Test identities/inner-outer logs/session/exit/freeze references; clean only uncited Test-owned non-formal scratch | evidence deletion/truncation, new cleanup Gate, remote/privileged action, history rewrite, automatic Validator/acceptance |
+The final contract and the mechanical intermediate are deliberately different. The intermediate is directly observable because the isolated Test calls the newly extracted shared body with a real repository and valid receipt, while the private writer also delegates to it only at a null publication slot. Its temporary result is the old internal `{tree,commit}`. Before fault injection, independent Git readback must prove that result names a healthy physical publication; it has no public legacy selector and cannot be released or counted as F1 correctness. Controller's source comparison must show the old body moved without its defect being fixed and the old same-publication reuse retained; otherwise the second RED is not authorized.
 
-### Preservation and return boundary
+### Required future evidence and honest failure frontier
 
-The existing Core four public methods, Ledger four signatures, complete remote receipts, credential/SSH/protected transport, remote readback linearization, State/pause writes, locks, retry/recovery, Candidate/Validator budgets, PR/Handoff, Host trust, deployment/profile and project authority remain owned by their prior clauses. The local builder is additive and UNPUBLISHED; it cannot be used as evidence of remote durability or M2 completion. Proposal scope remains compatible and unchanged because both final production paths and the two Test paths are already within its allowed set.
+The entry RED is dynamically reachable by healthy module import plus missing named export. After extraction, a real derived `index.lock` with a healthy separate-index control is the primary causal behavior frontier. The RED must show both the actual failed child and an independently read physical bad publication—empty/unresolvable identity, missing target, lost preserved entries, or wrong parent/tree/path/blob/bytes—not merely a temporary-versus-final result-shape difference. Real missing predecessor/object, physically constructible parent target/ancestor/descendant/type collision, old-blob/prefix mismatch, valid empty/nonempty parent trees and a local filesystem obstacle are also reachable in current-user temporary roots. Independent pinned-Git commands calculate prefix/tail identity, parent/tree/blob/message and raw preserved bytes; Test-created control objects establish health but cannot replace the production builder's output.
 
-Final evidence order remains the R213 order with current full M2 exactly once and fixed suffix/Retirement. The mechanical health run and lock-failure RED each retain independent physical publication readback; return-shape mismatch alone has no causal status. Unforceable Git result branches stay source-reviewed/not dynamically forced without mock or waiver. A fresh independent Validator must assess the frozen repaired identity before Controller acceptance can close the sole R212 branch and return to M3. This Spec return stops at Controller Gate; B0 remains CLOSED, B1–B5 and F1/F2 remain open, F3 remains withdrawn, and no downstream role is dispatched.
+Without a forbidden process-result/runner seam, pinned Git cannot reliably be commanded to produce an OS signal, product timeout, output overflow, syntactically malformed successful OID/type/commit/`ls-tree` stdout, duplicate corrupt tree records, or post-creation mutation of content-addressed objects. Those branches remain mandatory source-contract checks and may receive incidental evidence only if naturally observed; they are `NOT_DYNAMICALLY_FORCED`, never fabricated PASS and never a new waiver. Real credentials, SSH, protected push, remote ACK/readback and full private factory execution remain outside this local F1 evidence; existing nonwaived remote completion requirements are not silently satisfied.
+
+F2 future evidence must hit public signed DISPATCH/status/run on real FileState and strict Ledger Port behavior. It independently proves exact eleven-field EMPTY and READY/ACTIVE `StatusDiagnosticsV1` payloads and, separately, the exact sixteen-field `LocalPauseDiagnosticV1` only when physically persisted. It retains the six original crash-window meanings, Change-B rejection and forbidden-effect refusals while rebinding their faults, requests, outcomes and call observations to the compliant strict `readRemote`/Ledger-record/readback chain; the old short request, old incorrect STATUS outcome and exactly-two-same-dependency count are not product requirements. Only a genuinely persisted diagnostic may yield `pointer_status:'INVALID'`; without one, status returns exact existing `{schema_version:'1.0',operation:'status',outcome:'REJECTED',error_code:'WIP_AUTHORITY_INVALID',change_id:null|string}` and fabricates neither STATUS nor pause. It also proves fresh-Core no-reauth stop/exact-tuple reauth health and passes real-Core healthy STATUS through Host `readStatus`. It may not use a primed Core, compatibility signature, post-OK mutation, fake pause, or production-Ledger claim for a Port double.
+
+### Activation, rollback, retirement and return
+
+Activation remains gated in this order: Controller correctness plus mandatory complete-diff ponytail review -> fresh isolated Test freeze -> entry RED -> `TDD_READY-ENTRY` -> mechanical `production.mjs` extraction and source stop -> behavior/F2 RED -> second TDD_READY -> minimum `production.mjs` F1 and `coordinator.mjs` F2 correction -> focused GREEN -> fixed R213 regression order -> Test Asset Retirement -> fresh independent Validator -> Controller acceptance. No later step is implied by the earlier one.
+
+Rollback before either Worker pass is removal of that candidate source delta, not deletion of existing WIP, State, Ledger, evidence, or history. A failed local build may leave bounded local artifacts or unreachable Git objects; rollback does not promise object garbage collection. There is no migration/backfill. Permanent consumers are F1 `R216-L01..L05` and the bounded F2 group; the mechanical preimage comparison must not become a compatibility implementation or retained fixture. Formal runs retain pre/post inventory, independent readbacks, exact source/Test identity, complete inner/outer stdout/stderr, session, exit/code/signal/timeout and frozen references. Only Test-owned, recoverable, non-formal scratch execution resources may be cleaned after confirming they are uncited; no formal evidence is deleted and no cleanup Gate is created.
+
+A3 permits only version-bound reuse of its recorded K1, K2, true-hour and WVEB evidence. The repaired version still requires focused F1/F2, health, CLI, current full M2 exactly once, complete Coordinator, Git, ordinary mode, WVEB, canonical/diff and Retirement as fixed by R213; source overlap can require Controller to expand that set. A2/S09 remains `USER_WAIVED / NOT_VERIFIED` only for its exact prior privileged leaves and does not cover ordinary F1/F2 or remote obligations.
+
+Current lifecycle truth remains: B0 CLOSED; B1–B5 OPEN; the sole corrective branch is `VALIDATOR-R212 / M2`; F1 and F2 remain FAIL/open; F3 is withdrawn. The next owner is Controller for the complete six-file correctness/ponytail Spec Gate. This temporary Spec authority expires on return and dispatches nobody.
 <!-- R216_SPEC_END -->
 
 <!-- R215_CONTROLLER_BEGIN -->
@@ -613,24 +624,22 @@ Controller已完整审查六个Spec增补块与proposal零差异，mandatory pon
 <!-- R174_CONTROLLER_END -->
 
 <!-- R174_STATE_FIRST_WRITE_BEGIN -->
-## R174 — State first-write traceability addendum
+## R174 Specification return — SPEC_READY / CONTROLLER_GATE_PENDING_R174
 
-R174 preserves the existing six Requirements, forty Acceptance Criteria, and all prior Test/task identities. Existing Coordinator test `#56` is an `applyControllerCommand` signed-DISPATCH failure connection; it is not the `run`-owned `TEST-M2-011 / 011-L08,L09` pair, which remains unchanged.
+The six bounded addenda encode the user-approved R172 State seam and no other decision. Normative ownership is existing `REQ-M2-006 / AC-M2-006-01,02,04,07,08`; Requirement/AC/Test/task identities remain unchanged. The original Coordinator `#56` is explicitly the signed `applyControllerCommand` DISPATCH connection and is not rebound to `TEST-M2-011 / 011-L08,L09`.
 
-| Approved obligation | Existing AC owner | Test evidence owner | Existing task path |
-|---|---|---|---|
-| same synchronous trusted-local `createFileState(stateRoot)` export; same six-method gateway and fixed composition | `AC-M2-006-08` | new local import/entry control in `coordinator.test.mjs`; suffix `NOT_REACHED` until export | `TASK-M2-010..012`, export-only part of `TASK-M2-034` |
-| absent pause + null expectation first-creates by existing atomic write/readback | `AC-M2-006-01,07,08` | real temporary filesystem positive plus fresh-factory readback | pause-private part of `TASK-M2-034`, then `TASK-M2-040..043` |
-| present + null rejects without overwrite and reports old identity | `AC-M2-006-01,02,07` | real target and sentinel negative | same |
-| present + wrong non-null hash rejects without overwrite | `AC-M2-006-01,02,07` | real target and sentinel negative | same |
-| present + correct non-null hash retains replacement/readback | `AC-M2-006-07,08` | real replacement control | same |
-| absent + non-null hash retains `ABSENT` and zero create | `AC-M2-006-01,02,07` | real absence negative | same |
-| non-`ENOENT` obstacle retains `UNAVAILABLE`; no post-rename rollback promise | `AC-M2-006-01,02,07` | real temporary type/filesystem failure and effect boundary | same |
-| single root/process mutex only; no new lock, retry, recovery, schema, lifecycle, or durability | `AC-M2-006-04,07` | source-boundary review plus existing concurrency regression | `TASK-M2-001..003,043` |
-| public signed DISPATCH Core connection with only Ledger `PRIOR_TIP_READ` fault and real pause methods | `AC-M2-006-01,02,08` | supplementary connection for existing Coordinator `#56`: original identities/16 fields, null public result `state`/`state_version`/`state_hash`, preserved READY bytes/version/hash at the declared existing State double and their diagnostic binding, zero prepare-commit-Worktree, plus real-filesystem pause persistence/readback only | `TASK-M2-010..012,040..043` |
-| permanent Test retention and fixed downstream return | `AC-M2-006-08` | no-retirement entry; health -> CLI -> full M2 -> same Coordinator -> fixed suffix | `TASK-M2-040..045` |
+Contract preservation for the Controller Gate:
 
-The causal chain is exact: entry RED -> export-only TDD_READY/Worker/source Gate -> temporary-filesystem health -> real first-write RED -> pause-private TDD_READY/Worker/source Gate -> seven groups plus original #56 GREEN -> fixed regression/Retirement/Validator return. Missing export is never the first-write RED; no old PASS is rewritten, no permanent skip is added, and B1-B5 remain open until their original evidence closes them.
+- only the same synchronous trusted-local `createFileState(stateRoot)` is exportable; its six methods and existing request/result/byte/hash/receipt/sixteen-field diagnostic contracts remain fixed;
+- only absent pause plus null expected hash gains first-create through existing atomic write/readback; the other five CAS/error rows retain their existing outcomes and effects;
+- fixed empty-object production composition, all Core bytes/exports, shared State helpers, pointer/State behavior, one-process/single-root mutex context, four recovery boundaries, reasons, schema, lifecycle, A2/A3, and M3/M4 stop lines remain unchanged;
+- future Test is only one local block/import in `coordinator.test.mjs`; future Worker is only two sequential bounded regions in `production.mjs`, with separate reachability and behavior RED/TDD_READY Gates;
+- the #56 public result retains its existing null `state`/`state_version`/`state_hash` fields while already-published READY bytes/version/hash remain preserved and diagnostic-bound at the declared existing State double; only pause-file persistence/readback is real-filesystem proof, and no Core, Test seed/prime, or other-State-method rewrite is authorized;
+- no Test, behavior import, filesystem probe, RED, implementation, GREEN, regression, Retirement, Validator, Host, credential, provider, network, Git write, PR/Handoff, or lifecycle action is claimed by this document return.
+
+Controller must perform the complete six-block correctness review and mandatory high-route `ponytail-review`, verify proposal byte identity and additive-marker scope, then either record Spec Gate PASS or return one bounded same-scope correction. Downstream evidence remains pending. After eventual original #56 and real-adapter GREEN, the return is exactly health -> CLI -> full M2 once -> same Coordinator -> Git -> ordinary mode with A3 hour reuse -> WVEB -> canonical -> diff -> Retirement -> fresh independent Validator -> M3 -> M4; K1/K2/HF/hour are not reset and A2 remains `USER_WAIVED / NOT_VERIFIED`.
+
+Unresolved specification issues: none inside the approved R174 seam. This is `SPEC_READY`, not Spec Gate PASS, TDD_READY, implementation authority, or evidence of corrected behavior.
 <!-- R174_STATE_FIRST_WRITE_END -->
 
 ## R172 FINAL — MINIMAL_STATE_SEAM_AND_IMPACT_DEFINED / EXPORT_CONTRACT_PENDING
@@ -1015,29 +1024,29 @@ Current user explicitly approved one temporary default-carried gpt-5.6-terra/hig
 
 [Controller final Readiness and four-point receipt](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-test-r111/final-review.md) accepts the original isolated009→010→011 Test closure and causal RED evidence, not GREEN/TDD_READY/fullK2/B5 closure. Source005 Test SHA256 d8cb4ccc4fe46a297424aee4c111989233b829949f2aef217154521a78d820f5 binds final sequential run002: 009=64PASS, 010=41PASS/21FAIL, 011=5PASS/5FAIL; 136 tests/110PASS/26 production first-failure RED, zero skip/cancel/todo, complete session/exit/identity/closure evidence. Failed suffixes remain NOT_REACHED; C2 shared-reader behavior and later frozen-Worker-head private wiring are not verified. Ordinary controlled continuous Handoff reaches AWAITING_CONTROLLER; fresh-Core/cross-cycle/recovery/fullK2/fresh Validator are not complete. R109 normative Spec and production stay frozen. Temporary Test stage ends; no Worker or TDD_READY dispatch this turn. NEXT_ACTION remains sole recovery cursor; next only frozen-Test TDD_READY/original Worker handoff under applicable current R2 authority. Historical R103/source004 evidence is never rebound; A2/S09 remains USER_WAIVED/NOT_VERIFIED. Final recovery inventory is controller-test-r111/final-freeze.json/final-audit.json.
 
-## R109 Controller FINAL — SAME_SPEC_GATE_PASS / ORIGINAL_TEST_RETURN
+## R109 Controller FINAL — SPEC_GATE_PASS / ROLE_STOPPED
 
 Controller has completed the full seven-file correctness and mandatory ponytail review: **SPEC_GATE_PASS_R109**, contract-only. C2 is closed at AC-M2-005-03 / original010-L13 / TASK-M2-033; C1/C3 and all other AC text remain unchanged. [Final review and four-point receipt](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-c2-spec-r109/final-review.md) owns the current verdict. The temporary Spec returned frozen and stopped; no Test/Worker or behavior run follows this turn. Next is the original isolated009→010→011/Readiness/rebind under applicable current R2 role authority, not production. Original R103 runtime and A2/S09 remain unchanged. return001-document-audit.json preserves role-return hashes before these Controller headers; final-freeze.json owns final recovery hashes. All pending/Gate/role markers below are historical submission states, not current authority.
 
-## R109 SPEC RETURN — C2_CONTRACT_FROZEN / CONTROLLER_GATE_PENDING / NO_DOWNSTREAM
+## R109 SPEC RETURN — SPEC_READY / CONTROLLER_GATE_PENDING / NO_BEHAVIOR_RUN
 
-The user-approved R107 contract is now frozen only at `AC-M2-005-03` -> original `TEST-M2-010 / 010-L13` -> `TASK-M2-033`: one credential-free `createLedgerObjectReader(...).read(...)` is shared by the private production Ledger gateway and the Test's real commit-A/tree-B Adapter proof, while protected transport, the full factory, and Core's independent receipt/byte/slice/ref/current-delivery checks remain unchanged. Request, existing result union, fixed Git commands, conflict/unavailable distinction, existing first-parent merge meaning, production wiring, permitted manual diagnostic, and zero delivery progress are closed in the seven files. C1/C3 and all other original mappings remain unchanged. Status: `SPEC_READY / CONTROLLER_GATE_PENDING_R109`; no Test write, behavior run, production work, Spec Gate PASS, TDD_READY, or lifecycle advance is claimed. Historical entries follow.
+The seven-file Specification package now freezes the user-approved R107 C2 boundary at `AC-M2-005-03` -> original `TEST-M2-010 / 010-L13` -> `TASK-M2-033`. Exact constructor/read requests, the existing `GatewayResultV1<LedgerRemoteReadReceiptV2>` union, fixed type/physical-commit/tree/path/blob commands, conflict versus unavailable mapping, existing first-parent merge meaning, private production wiring, real commit-A/tree-B Test refusal, permitted persisted manual diagnostic, and zero delivery progress are synchronized. The complete Ledger factory, protected credentials/transport, public Core request, State/Event/Delivery contracts, and original Core-owned negative matrix remain unchanged. Status is `SPEC_READY / CONTROLLER_GATE_PENDING_R109`; this is document-only evidence, not Spec Gate PASS, Test authority, RED, implementation, GREEN, or lifecycle completion. Historical entries follow.
 
-## R108 Controller CURRENT — C2_INPUT_APPROVED / SAME_SPEC_RETURN / NO_DOWNSTREAM
+## R108 Controller CURRENT — C2_CONTRACT_APPROVED / SPEC_CARRIER_AUTHORIZATION_PENDING
 
-R107具体C2接入合同已获当前用户批准，仍仅AC-M2-005-03→原010-L13→TASK-M2-033；C1/C3及十四项其余归属不变。内容选择解决不是Spec Gate；当前唯一派发前提为本次等职责临时sol/high Spec承载授权，不能降为工具固定medium或重放R106批准。[当前批准/释放条件](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-c2-approved-r108/decision-record.md)。无Agent、Test/生产或规范性合同改动，无行为运行。当前NEXT_ACTION R108及controller-c2-approved-r108/final-freeze.json；准确返回C2七文件/同Spec Gate，再原009→010→011/Readiness与同fullK2，M4终点不变。下方为历史。
+用户已批准[R107具体C2接入合同](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-c2-contract-r107/contract-change-request.md)作为原Spec有界输入；内容不再待决。[R108批准/承载记录](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-c2-approved-r108/decision-record.md)控制当前状态：当前juaner_spec工具固定sol/medium不满足原R2 sol/high，R106临时承载已结束，本次等职责临时承载尚待明确授权。未派发或恢复角色、未改规范性合同/Test/生产、未运行行为，无Spec Gate PASS。当前恢复NEXT_ACTION R108及controller-c2-approved-r108/final-freeze.json；原R103实际结果及A2/S09不变。下方待批准语句和角色批准只代表各自历史时点。
 
-## R107 Controller CURRENT — C2_ACCESS_DECISION_ONLY / SAME_RETURN_POINT
+## R107 Controller CURRENT — C2_ACCESS_PROPOSED / USER_DECISION_PENDING / NO_BEHAVIOR_RUN
 
-[R107提案](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-c2-contract-r107/contract-change-request.md)仍只归AC-M2-005-03→原TEST-M2-010/010-L13→TASK-M2-033：生产和Test共享真实对象读取/拒绝，原privileged transport保持私有，原Core path/bytes/ref等负例保留。新增受限Interface为待批准选择，不是现有能力、Spec Gate或TDD_READY；C1/C3和原十四项其余归属不变。无Test/生产/规范性合同变更，无Agent、运行或新豁免。唯一恢复游标NEXT_ACTION R107；批准后返回原七文件Spec/同Gate，再原009→010→011/Readiness与同fullK2，终点M4不变。下方均历史。
+本轮仅完成[原C2最小离线接入合同提案](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-c2-contract-r107/contract-change-request.md)：原production.mjs内单一只读对象证明入口供生产/Test共用，原凭证与远端装配不变，真实wrong-tree负例在证明前注入。提案尚未批准或写成规范性合同，完整Spec Gate继续BLOCKED；R106 C1/C3不重开，Test/生产不变。启动1373路径与R106 final-freeze全等；本次仅Controller提案/恢复记录，无Agent或行为运行。下一仅具体C2选择→原Spec/同Gate；R106临时承载授权不复用。NEXT_ACTION R107、controller-c2-contract-r107/final-freeze.json为当前恢复依据，原R103执行结果与A2/S09不变。下方历史不得当当前派发批准。
 
-## R106 Controller FINAL — SAME_C2_SPEC_GATE / NO_DOWNSTREAM_AUTHORITY
+## R106 Controller FINAL — SPEC_GATE_BLOCKED_C2 / ROLE_STOPPED
 
-Current closure map remains C1→AC-M2-005-08/010-L01,L05/TASK-M2-033; C2→AC-M2-005-03/010-L13/TASK-M2-033; C3→AC-M2-006-01/011-L08,L09/TASK-M2-034. Controller reviewed all seven returned diffs; C1/C3 specification text is complete but unverified in execution, while full Spec Gate is BLOCKED on C2's minimum non-privileged production-proof Test-access contract. No new interface is approved; unchanged export is insufficient. [R106 review/release condition](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-spec-r106/final-review.md), NEXT_ACTION R106, and controller-spec-r106/final-freeze.json are the current recovery references. All later old CURRENT, Unresolved Items prose, Gate and Worker return statements are retained history only. Original 14-case ownership and fixed 009→010→011/Readiness→authorized Worker→fixed reruns/fullK2→H/F/real hour→quality/Retirement→fresh Validator→M3→M4 remain unchanged.
+Controller read the complete seven-file returned delta and completed correctness plus mandatory ponytail review. C1/C3 are bounded specification clarifications, not behavior PASS. C2 remains the sole current package contract blocker: unchanged Ledger factory export cannot satisfy current-user offline access because the production authority path retains root-owned key/root-group requirements. No replacement interface is approved. [Current review and four-point receipt](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-spec-r106/final-review.md) owns the verdict; returned Spec hashes and document-only checks are in controller-spec-r106/document-audit.json, before this Controller-only review header. The temporary Spec role is stopped; no Test/Worker dispatch, behavior run, or Gate PASS follows. All older CURRENT/Gate/next-owner statements below are historical and do not override this header or NEXT_ACTION. Final recovery hashes: controller-spec-r106/final-freeze.json.
 
-## R106 CURRENT — C1_C3_SPEC_CLOSED / C2_TEST_ACCESS_BLOCKED / ALL_DOWNSTREAM_FROZEN
+## R106 CURRENT — BOUNDED_SPEC_RETURN_BLOCKED_ON_C2 / NO_BEHAVIOR_RUN / ALL_DOWNSTREAM_FROZEN
 
-> User-approved R104 C1-C3 are mapped without new Requirement, AC, Test, task, or waiver identity. C1 modifies `AC-M2-005-08` -> original `TEST-M2-010 / 010-L01,L05` -> `TASK-M2-033`: unchanged public-entry fresh-Core reauthentication uses original complete signed DISPATCH, exact current Base State/admission, and the last complete authoritative Ledger DISPATCH-or-REVISION cycle record; it refuses any local pause, returns exact existing `ALREADY_APPLIED` over unchanged State with original idempotency/body SHA, writes nothing, and only later `run` resumes. C2 modifies `AC-M2-005-03` -> original `TEST-M2-010 / 010-L13` -> `TASK-M2-033`: production Adapter proves real fixed tip/tree/path/bytes while Core independently verifies the closed evidence; Core-double proof is not Adapter proof. The actual Adapter test remains blocked because its factory is private and its authority path retains root-owned key/root-group remote-read requirements. Unchanged export is insufficient; R106 proposes no new interface. C3 modifies `AC-M2-006-01` -> original `TEST-M2-011 / 011-L08,L09` -> `TASK-M2-034`: durable `REGRESSION_FAILURE / REVISION` is preserved; State-CAS loss returns/diagnoses `POINTER_STATE_CONFLICT / MANUAL_CONTROLLER_STOP` using the public `run` request hash, original State, and real event tip/ID/hash, with no claimed local-pause ID if its persistence fails and no automatic retry/bypass. Verdict: `BLOCKED / C2_PRODUCTION_LEDGER_TEST_ACCESS_CONTRACT_REQUIRED / CONTROLLER_GATE_PENDING_R106`. No Spec Gate or downstream authority/result is claimed.
+> Seven-file Specification clarification only. C1 is closed in `AC-M2-005-08`, original `TEST-M2-010 / 010-L01,L05`, and `TASK-M2-033`: exact original signed-DISPATCH reauthentication through the unchanged public entry at PR/HANDOFF, last complete authoritative Ledger authorization-cycle proof (including REVISION provenance), exact unchanged-State `ALREADY_APPLIED` payload, existing-local-pause refusal, and zero writes/effects before later `run`. C3 is closed in `AC-M2-006-01`, original `TEST-M2-011 / 011-L08,L09`, and `TASK-M2-034`: preserve durable business `REGRESSION_FAILURE / REVISION`; on State-CAS loss use `POINTER_STATE_CONFLICT / MANUAL_CONTROLLER_STOP`, canonical public-run request hash, original State, real event tip/ID/hash, `local_pause_id:null` if pause persistence fails, and no restart/reauth bypass. C2 remains one precise blocker in `AC-M2-005-03`, original `TEST-M2-010 / 010-L13`, and `TASK-M2-033`: the actual production Ledger producer is private behind fixed credential/config composition and retains root-owned key/root-group remote-read requirements, so its real-Git wrong-tree proof has no approved Test entry. Core-double checks are not Adapter proof, unchanged export is insufficient, and R106 proposes no new interface; explicit user decision and bounded Spec review are required. Verdict: `BLOCKED / C2_PRODUCTION_LEDGER_TEST_ACCESS_CONTRACT_REQUIRED / CONTROLLER_GATE_PENDING_R106`. No Test/production files or behavior were run, and no Spec Gate/downstream result is claimed.
 
 ## R105 CURRENT — USER_DECISIONS_APPROVED / SPEC_ROUTING_AUTHORIZATION_PENDING / ALL_STOPPED
 
@@ -1127,9 +1136,9 @@ Worker最终SOURCE_FROZEN后，Controller source006完整捕获与Worker最终so
 
 原010-L04/L09/L12已用真实公共DISPATCH→原AWAITING/REVISION编排替换手工历史，单文件141+/35-，Test SHA c36c2e6d7d8fd30367a6469830aecaa3218ffa7dab13ce609e21801438f0e62c。双方窄010各0PASS/1FAIL、fullGit19PASS/7FAIL、00901038PASS/69FAIL，均0skip/exit1/null；六运行逐项、17份外层回执、完整日志/哈希/进程关闭及1348路径无漂移已核验。合法输入的实际DISPATCH事件0版本为AC-M2-005-01因果RED，双周期/REVISION选择仍NOT_REACHED；普通受控链止于BRANCH_PUSH，模拟Validator回执不等于独立Validator。原V2/empty、typed push、Handoff JSON仍归既有B5，三个Git对齐不重开。Controller按R089接受本次有界Test输入/RED Readiness，不要求先生产GREEN；不是TDD_READY、Worker rebind、B5关闭或完整链路PASS。B1–B5/S21 OPEN，A2 USER_WAIVED/NOT_VERIFIED。下一仅精确Test-bound TDD_READY／原Worker009交接→原固定路线；本轮临时Test结束，无Worker。恢复由NEXT_ACTION当前R091、[最终裁决](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-test-r091/final-review.md)及final-freeze.json控制；source-freeze-003绑定实际运行，下方CURRENT/ACTIVE均为历史。
 
-## R091 CURRENT — REQ005 / ORIGINAL010 TEST INPUT RETURN
+## R091 CURRENT — TEMPORARY_TEST_AUTHORIZED / ORIGINAL010_SOURCE_ONLY / PRODUCTION_FROZEN
 
-REQ-M2-005 / AC-M2-005-01,03,04,07,08 → 原010-L04/L09/L12 → R089真实DISPATCH前周期/REVISION当前周期公共producer → 本次获准新鲜临时terra/high等职责Test单文件SOURCE_ONLY。生产冻结、无新行为RED、B1–B5/S21 OPEN、无Worker。下一Controller源码读回/冻结后回同叶预检和同一Readiness；三个Git项不重开。NEXT_ACTION R091及[职责](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-test-r091/test-brief.md)为当前入口，下方为历史。
+当前用户明确批准本次新鲜临时terra/high等职责Test，仅落实R089原010-L04/L09/L12单文件公共输入边界，先SOURCE_ONLY供Controller读回/冻结；无行为运行、无Worker。R085 Spec Gate及R088三个Git已验收项复用，B1–B5/S21 OPEN，A2 USER_WAIVED/NOT_VERIFIED。恢复见NEXT_ACTION R091及[本次职责](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-test-r091/test-brief.md)。R089边界不变，下方状态为历史；本次授权不是Readiness或旧PASS转绑。
 
 ## R089 CURRENT — INPUT_BOUNDARY_DEFINED / ORIGINAL_TEST_READINESS_PENDING / NO_ROLE_DISPATCH
 
@@ -1147,23 +1156,23 @@ Final source004 Git6d27465455ffc73a37bc9955b5c58f4654d5eddf1e1f8f396b6cd41654b60
 
 > R085 CONTROLLER CURRENT: **SPEC_GATE_PASS_S21_R085 / TEST_AND_PRODUCTION_FROZEN / ALL_ROLES_STOPPED / NOT_K2**. 完整七文件增量读回、正确性/ponytail及1338路径精确范围检查通过，三项同范围反馈闭合；下方Spec返回/ACTIVE为历史。仅原009/010合同子项完成，B1–B5/S21 OPEN，无行为测试或旧PASS转绑。下一原009/010隔离Test/实际RED/完整后缀/Readiness/rebind；仅本次临时terra/high等职责Test承载待决定，已批准范围不重问。接受后才返回原Worker009→010→011/012及原固定验证/M3/M4。A2 USER_WAIVED/NOT_VERIFIED不变。恢复读NEXT当前R085及[Controller Gate/四点回执](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-spec-r085/final-review.md)，身份为同目录final-freeze.json。
 
-> R085 SPEC RETURN: **SPEC_READY / CONTROLLER_GATE_PENDING_S21_R085 / PRODUCTION_AND_TEST_FROZEN / NOT_K2**. `AC-M2-005-05` retains exact raw patch Buffer and adds the exact NUL path stdout Buffer, lengths/full hashes, explicit fresh byte-normalized receipt hashing, Core-owned independent copy/recompute/A-M-D-T parse/path derivation, healthy empty output, and reached mismatch zero-later-effects. Original009→010 proves exactly two observations; a valid-but-different second diff remains `EVIDENCE_CONFLICT` with zero Handoff, while actual PR/Handoff ambiguity retains its existing mapping. Fresh-Core Handoff reconstructs from immutable objects/fixed producer and compares only existing persisted `canonical_diff_sha256` plus unchanged delivery preimage/ID, without claiming an old path receipt was stored or adding Candidate/Delivery state. Directly affected consumers are original009 in `git.integration.test.mjs` and original009/010 in `production-delivery-chain.test.mjs`; the pre-Worker causal RED is the actual missing path-byte/interface behavior, while unreachable mutation/parser suffixes stay frozen `NOT_REACHED`. TEST-009/010 and TASK-033 are the exact return map. Controller correctness/ponytail Gate, isolated Test causal RED/Readiness/rebind, then original Worker009 remain pending; no behavior run or old PASS rebind occurred.
+> R085 SPEC RETURN / SPEC_READY / CONTROLLER_GATE_PENDING_S21_R085 / PRODUCTION_AND_TEST_FROZEN: 七文件原009/010补口已形成。`CanonicalDiffResultV2`保留既有raw stdout Buffer并新增同机制NUL path stdout Buffer、各自length/full SHA及明确的fresh byte-normalized receipt preimage；Core以own data descriptor独立复制/重算/解析A/M/D/T并逐项核对sorted unique paths，保留健康空输出。Freeze/Handoff仍恰好两次观察；合法但不同的第二diff仍为`EVIDENCE_CONFLICT`/两次读/零Handoff，真实PR/Handoff歧义仍用原映射。fresh Core只从同一immutable对象/固定producer重建，并与既有持久`canonical_diff_sha256`及不变delivery preimage/ID对照，不宣称旧path receipt已持久化，不加Candidate/Delivery字段。后续Test仅可重绑`git.integration.test.mjs`直接受影响009和`production-delivery-chain.test.mjs`直接受影响009/010；实际缺失接口/行为是pre-Worker causal RED，未有真实健康前缀的mutation/parser后缀如实`NOT_REACHED`。未运行行为测试，旧PASS不转绑。下一Controller完整正确性/ponytail Gate→隔离Test/RED/Readiness/rebind→原Worker009；S21/B5/K2仍OPEN。
 
-> R085 ACTIVE: 原REQ005/TASK033/TEST009-L05及既有009/010一致性→本次当前授权临时sol/high等职责Spec七文件补口。S21 OPEN；Spec Gate/新Test证据未完成，生产/Test/MASTER冻结，1337路径全等R084，无旧SHA PASS转绑。只闭合字节/完整哈希/路径清单及Freeze–Handoff同一包→完整正确性/ponytail Gate→隔离Test/RED/Readiness/rebind→原Worker009，原主计划不变。NEXT最新R085及[有界职责](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-spec-r085/spec-brief.md)控制恢复。
+> R085 ACTIVE / CURRENT_TEMPORARY_SPEC_AUTHORIZED: 用户明确批准本次sol/high等职责Spec，仅S21/M2/B5/009七文件合同包及同范围反馈；生产/Test/MASTER冻结，1337路径启动全等R084。完整正确性/ponytail Spec Gate未过，无新行为验证。B1–B5 OPEN、S21 OPEN、S14–S20 CLOSED_RETURNED、A2 USER_WAIVED/NOT_VERIFIED。仅补路径原始字节/完整哈希/路径清单及Freeze–Handoff对照，适用Gate/RED/Readiness/rebind后回原Worker009，固定主路线不变。NEXT最新R085和[职责](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-spec-r085/spec-brief.md)为入口；R084待承载为历史。
 
-> R084 CURRENT: 用户已批准原REQ005/TASK033/TEST009-L05路径字节/完整哈希消费及Freeze–Handoff对照的有界Test/Spec补口；S21/M2/B5 OPEN，只待本次临时sol/high等职责Spec承载，专用工具固定medium而R2需high，不降级/改配置/重放旧批准。1336路径全等R083冻结，无规范/Test/生产变更或行为运行。适用Spec/Test Gate、RED/Readiness/精确rebind后回原Worker009→010→011/012，源变002起原顺序/独立K1→同K2。B1–B5 OPEN、S14–S20 CLOSED_RETURNED、A2未验证；全部角色停止，NEXT最新R084及[范围批准与唯一待决](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-spec-r084/final-review.md)为恢复入口。
+> R084 CURRENT / 009_SCOPE_AUTHORIZED / SPEC_CARRIER_AUTHORIZATION_REQUIRED / ALL_ROLES_STOPPED: 当前用户已授权仅原009有界Test/Spec补口，范围不再询问；S21/M2/B5 OPEN，专用Spec固定sol/medium不可覆盖而R2需high，待仅本次临时sol/high等职责Spec承载。1336路径启动全等R083最终冻结；未改规范/Test/生产/MASTER、无行为运行。B1–B5 OPEN、S14–S20 CLOSED_RETURNED、A2 USER_WAIVED/NOT_VERIFIED。补口同包闭合路径字节/哈希/路径清单/Freeze–Handoff对照，适用Gate/RED/Readiness/rebind后立即回原Worker009→010→011/012，生产改后002起固定序列/独立K1→同K2→后续原M3/M4。NEXT最新R084及[批准/承载/回执](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-spec-r084/final-review.md)控制恢复；R083范围待批为历史。
 
-> R083 FINAL: 原REQ005/TASK033/Design10.1/TEST009-L05→路径原始字节/完整哈希消费权威合同未决；当前全零特判已移除，不以测试特判替代校验。009–012部分生产源码不接受，未跑行为测试；1335路径完整保全、四syntax/diff-check仅静态通过。B1–B5 OPEN，S14–S20 CLOSED_RETURNED，A2未验证；旧R082 PASS不转绑当前源码。下一仅原009有界合同补口决定，未重开Test/Spec/F01–F05；适用Gate/精确rebind后回原Worker009→010→011/012，002起重验/独立K1后回同K2，主计划终点不变。全部角色停止，NEXT最新R083及[未批准合同请求/完整证据](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-worker-r083/final-review.md)为恢复入口。
+> R083 FINAL / BLOCKED_AT_ORIGINAL_009_L05 / PARTIAL_SOURCE_NOT_ACCEPTED / NO_BEHAVIOR_RUN / ALL_ROLES_STOPPED: V2封闭返回缺路径命令原始字节，当前Core不能独立重算任意path_stdout_sha256；全零特判已拒绝并移除。仅三生产文件部分修改，1335路径全等Worker冻结、四syntax及diff-check通过，不是SOURCE_READY/GREEN。Test/Spec/MASTER/Host未改，B1–B5 OPEN、S14–S20 CLOSED_RETURNED、A2 USER_WAIVED/NOT_VERIFIED。仅请求原M2/B5/009有界合同补口决定，未派Test/Spec；补口适用Gate/精确rebind后回原Worker009→010→011/012，源变002起固定序列/独立K1→同K2→普通H/F真实一小时→完整质量/Retirement→Validator→M3→M4。NEXT最新R083及[合同请求/实际差异/静态保全](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-worker-r083/final-review.md)控制恢复；下方ACTIVE为历史。
 
-> R083 ACTIVE: 原TASK033/REQ005/TEST009–010→canonicalDiff/PR/Handoff；原TASK034/REQ006/TEST011–012→共用失败/恢复/等待边界。用户已授权原Worker有界续接，冻结Test/Spec/MASTER/既有S20关闭证据；源变后002起固定重验，不将旧SHA PASS转绑新代码。B1–B5 OPEN，A2未验证，无新支线。NEXT R083及controller-worker-r083/worker-brief.md为当前恢复入口。
+> R083 ACTIVE / ORIGINAL_B5_CURRENTLY_AUTHORIZED: 用户本次明确原Worker009→010→011/012及后续固定Gate路线；同一sol/high等职责Worker只该有限包，Test/Spec/MASTER不改。1334路径启动全等R082最终身份，复用K2原77PASS/50FAIL/6skip，先源码读回再002起原序列。B1–B5 OPEN，S14–S20 CLOSED_RETURNED，A2 USER_WAIVED/NOT_VERIFIED。NEXT最新R083及[本次职责](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-worker-r083/worker-brief.md)控制恢复；下方R082待用户决定为历史。
 
-> R082 FINAL: REQ-M2-004/AC-M2-004-02/Design6.4→原006-H03三损坏及全部零副作用真实通过；当前源码原002起序列与独立K1/B4/WVEB重新绑定，S20已实际回同K2并CLOSED_RETURNED。K2实际77PASS/50FAIL/6skip，原009→010→011/012仍未过；49失败叶/1父组不等于50缺陷，5NOT_REACHED不等于A2。B1–B5 OPEN、A2 USER_WAIVED/NOT_VERIFIED，不是整Change Retirement/Validator或完整PR-Handoff PASS。下一仅原B5有限包，角色停止/生产Test规范MASTER冻结，恢复见NEXT最新R082与[完整映射/有限清单](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-worker-r082/final-review.md)。
+> R082 FINAL / B4_FOCUSED_CHECKPOINT_VERIFIED / S20_CLOSED_RETURNED / K2_NOT_PASSED / ALL_ROLES_STOPPED: 当前Host d9470869397877c4de3c3afa8aa4f24485f959aa5c04063b133ccf0d0f1d4c49；原002起固定序列及独立fullK1/005/006/007–008/sharedHost/WVEB完整通过适用项，sharedHost61PASS/19A2skip。实际返回原完整K2=77PASS/50FAIL/6skip、exit1；50为49失败叶+1父组，6skip含5NOT_REACHED+1A2。B1–B5仍OPEN，原TEST012未过不能宣称整B4关闭。下一仅原B5有限包009→010→011/012，Test/规范/MASTER冻结、无新支线。所有会话/退出/1333身份完整核验；本次临时Worker期限结束，下一阶段待用户决定。NEXT最新R082及[最终有限清单](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-worker-r082/final-review.md)控制恢复；下方较早ACTIVE/READY为历史。
 
-> R082 SOURCE_READY_FOR_RUNTIME: REQ-M2-004/AC-M2-004-02/Design6.4→006-H03三项输入损坏及零副作用→Hostd9470869397877c4de3c3afa8aa4f24485f959aa5c04063b133ccf0d0f1d4c49局部catch。只静态通过，下一002起原完整序列，旧SHA PASS不转绑。Test/Spec/MASTER及A2不变，B1–B5/S20 OPEN。
+> R082 SOURCE_READY_FOR_RUNTIME: Hostd9470869397877c4de3c3afa8aa4f24485f959aa5c04063b133ccf0d0f1d4c49，只有三项launcher输入读取局部错误映射；完整21行差异、syntax/diff及1332路径独立核验。Test/规范/MASTER不变，非GREEN。下一002→003→004/fullK1→Controller独立K1；A2/B1–B5/S20状态不变。NEXT R082与controller-worker-r082/source-readiness-001.md控制恢复。
 
-> R082 ACTIVE / CURRENT_WORKER_CARRIER_AUTHORIZED: 原B4/006-H03→Design6.4 input/schema START_FAILED/SPAWN_REJECTED，当前用户授权原sol/high Worker仅此Host范围，Test/Spec/MASTER不改。R081输入接受/rebind保持，1331路径启动全等；生产变后002起固定序列与独立K1/B4，不转绑旧SHA PASS。B1–B5/S20 OPEN，A2 USER_WAIVED/NOT_VERIFIED。NEXT R082及[本次职责](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-worker-r082/worker-brief.md)控制恢复。
+> R082 ACTIVE / CURRENT_WORKER_CARRIER_AUTHORIZED: 用户本次授权原sol/high等职责Worker仅006-H03 launcher输入读/hash错误归类；Test44534c3e770f2577d13e8ae4f14a65ec71078c22160da278c080f97edafe354a及Spec冻结。1331路径启动全等R081，复用真实RED60PASS/1FAIL/19A2skip，不新写Test。先源码读回/冻结，再002起固定序列；B1–B5/S20 OPEN，A2 USER_WAIVED/NOT_VERIFIED。[当前职责](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-worker-r082/worker-brief.md)。NEXT R082唯一恢复；下方R081待承载文字为历史。
 
-> R081 FINAL / BOUNDED_TEST_INPUT_ACCEPTED / EXISTING_TDD_READY_INPUT_REBOUND / NOT_B4_GREEN: REQ-M2-004/AC-M2-004-03→TEST007共享fixture/C02/H01/H02/H04永久回归资产，原树变异保留A2、动作candidate_sha负向真实通过。Test44534c3e770f2577d13e8ae4f14a65ec71078c22160da278c080f97edafe354a，完整sharedHost双运行各60PASS/1原006-H03 FAIL/19A2skip；完整1330路径/退出/进程核验。只有输入接受/rebind，B1–B5/S20 OPEN，最终Retirement/独立Validator未过。下一原Worker006-H03承载授权，不重放旧临时批准、不重开F01–F05。NEXT R081及[接受/映射/实际证据](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-test-r081/test-input-acceptance.md)控制恢复；以下保留历史。
+> R081 FINAL / BOUNDED_TEST_INPUT_ACCEPTED / EXISTING_TDD_READY_INPUT_REBOUND / NOT_B4_GREEN: Test44534c3e770f2577d13e8ae4f14a65ec71078c22160da278c080f97edafe354a，完整sharedHost双方各80项60PASS/1原006-H03 FAIL/19A2skip，1330路径及完整raw/exit/close/进程关闭核验。H02动作身份真实通过，原树proof规范体保留A2；无生产/Spec/MASTER改动。输入接受并回原Worker交接点，尚未恢复Worker；下一仅本阶段原sol/high等职责承载授权，再006-H03→生产变后002起固定序列。B1–B5/S20 OPEN，A2 USER_WAIVED/NOT_VERIFIED，非整Change Retirement/Validator/PR-Handoff。NEXT最新R081及[接受记录](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-test-r081/test-input-acceptance.md)控制恢复；下面旧ACTIVE及首轮预测仅历史。
 
 > R081 ACTIVE / USER_TEMPORARY_TEST_CARRIER_APPROVED / PRODUCTION_FROZEN: 本次terra/high等职责Test仅共享repair上下文/scope派生和直接H01/H02/H04、既有A2逐叶输入返回；1329路径启动全等，无新行为结果。006-H03生产RED保留，不改Spec/MASTER/F01–F05；验收rebind后回原Worker同一B4。B1–B5/S20 OPEN，A2 USER_WAIVED/NOT_VERIFIED。[本次职责](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-test-r081/test-brief.md)。NEXT R081控制恢复，R080待承载文字为历史。
 
@@ -1225,9 +1234,9 @@ Final source004 Git6d27465455ffc73a37bc9955b5c58f4654d5eddf1e1f8f396b6cd41654b60
 
 > R063 CURRENT: USER_CARRIER_AUTHORIZED / SPEC_RETURN_PENDING / NOT_K1. Current user authorized this temporary sol/high Spec and only post-Spec-Gate terra/high Test, with full role duties and bounded CCR004 scope. All1277 paths matched R062 final before write; [current dispatch and exact preimage](</Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-s19-r063/dispatch.md>). Test/production remain frozen; no new runtime success. NEXT_ACTION R063 is the current recovery cursor. Older carrier-pending statements are historical, not a new approval request.
 
-> R063 SPEC RETURN: `SPEC_READY / CONTROLLER_GATE_PENDING_S19_R063 / NOT_K1`. CCR004 is encoded only in the existing B2 `readCommit` success parent: physical zero-parent commit bytes permit null; nonroot remains full 40-hex; failures are not root success; Candidate remains exact one-parent/non-null/full-40 across creation, result, event, State, convergence, and readback. The original 6 REQ/40 AC identities and every unrelated body remain. Test/production are frozen and historical results are unchanged. Controller correctness/mandatory ponytail/Spec Gate is next; conditional Test authority does not activate before that Gate.
+> R063 SPEC RETURN: **SPEC_READY / CONTROLLER_GATE_PENDING_S19_R063 / PRODUCTION_AND_TEST_FROZEN / NOT_K1**. CCR004 is now encoded as the sole current semantic delta: the existing four-key `readCommit` success permits `parent:null` only when successful physical commit-object bytes prove zero parent headers. Nonroot reads remain accurate full-40; failures/uncertainty are never root success; Candidate creation/result/event/State/convergence/readback remains exactly one-parent, non-null, full-40. The 6 REQ/40 AC identities and every unrelated body remain unchanged. [Durable Spec handoff, hashes, mapping, and scope](</Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/spec-s19-r063/handoff.md>). This is not a Spec Gate PASS or executable result.
 
-> R062 CURRENT: USER_ROOT_PARENT_DECISION_ACCEPTED / SPEC_RETURN_PENDING / NOT_K1. User accepted only the root-only readCommit parent:null meaning, preserving nonnull exact Candidate parent and one-parent Candidate proof; [CCR004](../../../docs/planning/2026-09-05/automation-repair/m2-contract-change-request-004.md). R061 final1275-path identity reread is exact. No normative Spec/Test/production change or new executable result; original00231PASS/1FAIL and independentL01 failure remain the current frontier. Prepared S19 seven-file brief waits for this run's temporary sol/high Spec carrier; proposed terra/high Test is conditional on its Spec Gate and separately frozen Test scope. Configured fixed-medium roles cannot meet R2 as exposed; no role/configuration change or dispatch was attempted. NEXT_ACTION R062 is the recovery cursor. Older pending-user-semantic/current-role statements below are historical, not a request to reapprove CCR004.
+> R062 CURRENT: USER_ROOT_PARENT_DECISION_ACCEPTED / SPEC_RETURN_PENDING / NOT_K1. User accepted only the root-only readCommit parent:null meaning, preserving nonnull exact Candidate parent and one-parent Candidate proof; [CCR004](../../../../docs/planning/2026-09-05/automation-repair/m2-contract-change-request-004.md). R061 final1275-path identity reread is exact. No normative Spec/Test/production change or new executable result; original00231PASS/1FAIL and independentL01 failure remain the current frontier. Prepared S19 seven-file brief waits for this run's temporary sol/high Spec carrier; proposed terra/high Test is conditional on its Spec Gate and separately frozen Test scope. Configured fixed-medium roles cannot meet R2 as exposed; no role/configuration change or dispatch was attempted. NEXT_ACTION R062 is the recovery cursor. Older pending-user-semantic/current-role statements below are historical, not a request to reapprove CCR004.
 
 > R061 FINAL: PRODUCTION_FROZEN / NOT_K1 / S19_ROOT_PARENT_CONTRACT_RETURN_REQUIRED. Original Worker changed only coordinator/adapters, then current002 failed31PASS/1FAIL atL01; Controller same-freeze originalL01 independently failed and actual root/nonroot Adapter probe confirms readCommit cannot express a zero-parent root under frozen full40-parent contract. Current003/004/fullK1 and later chain remain unverified; earlier00232/32 applies only to earlier source. [Exact evidence, recommendation, limits and return](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-worker-r061/final-review.md). S18 Test input acceptance remains; Test SHA95b069694301858e0ca4a12572d6c9dce9bf40dabd5d33d6e221e5716f370a4e. All roles stopped; S19 is originalB2 necessary contract return, nullable-root recommendation NOT_APPROVED. B1–B5/S14–S19 OPEN; A2 USER_WAIVED/NOT_VERIFIED. NEXT_ACTION R061 is the recovery cursor; older current/active declarations below are historical.
 
@@ -1239,186 +1248,344 @@ Final source004 Git6d27465455ffc73a37bc9955b5c58f4654d5eddf1e1f8f396b6cd41654b60
 
 > R060 current execution: user explicitly authorizes original Worker B2 continuation. R059 exact Test/Spec input acceptance retained, full1270-path prewrite equality confirmed. Original002→003→004/full K1 remains unpassed; no new GREEN/AC/B closure. [Bounded continuation](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-worker-r060/continuation-brief.md); NEXT_ACTION R060 is the sole cursor. R059 stopped-role statements below remain historical for that completed input-return stage.
 
-> R059 CONTROLLER FINAL TEST INPUT: S17 Spec/Test return and exact binding accepted; [decision and execution identity](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-s17-r059/readiness-and-rebind.md). AC-M2-002-04..05 → TEST-M2-003 → TASK-M2-021: C09 real oracle HEALTH_PASS; production raw-command frontier still fails; new post-stage one/two-call observations NOT_REACHED. TEST_READINESS_RECONFIRMED / TDD_READY_INPUT_REBOUND is an input Gate, not full AC/GREEN/K1/B closure. Original Worker remains stopped, next original002→003→004/fullK1; R049/R054/R056 unaffected input acceptance retained. Earlier R059 pending text is preserved checkpoint history. NEXT_ACTION R059 is the sole cursor.
+## R063 Specification Return
 
-> R059 CONTROLLER SPEC GATE: SPEC_GATE_PASS_S17 after complete-diff correctness/ponytail and scope/identity readback. AC-M2-002-04..05 → TEST-M2-003 → TASK-M2-021 remains contract-only; S17 Test return/Readiness/rebind is next. R049/R054/R056 unchanged inputs remain accepted; no F01-F05 reopen, GREEN/K1/B closure. [Gate and identities](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-s17-r059/spec-gate.md). Submission PENDING markers below are historical for this Gate only.
-
-> R059 CURRENT SPEC RETURN: the user approved the S17 cached-raw command clarification. Design 5.2 now adds only `--no-abbrev` after `--full-index` in the existing `stageExact` command and the `readStaged` repeat. `TEST-M2-003` and `TASK-M2-021` preserve full-40/zero-OID/exact-blob equality and every NUL/status/path/blob/type/mode/content negative. Current state is `SPEC_READY / CONTROLLER_GATE_PENDING_S17_R059`; R047 `SPEC_GATE_PASS_AFTER_CCR003`, R049 unaffected complete Test Readiness, and R054/R056 accepted Test corrections remain historical accepted inputs outside this local reopen. Original F01-F05 are not reopened. No Test/production run, new Test authority, GREEN, K1/K2, B closure, new schema/API/State/parser/fallback/config, or validation waiver is claimed.
-
-> R047 CONTROLLER FINAL: [review006](../../../docs/planning/2026-09-05/automation-repair/reviews/m2-spec-review-006.md) accepts complete correctness/ponytail and SPEC_GATE_PASS_AFTER_CCR003. H/F contract SPEC_CLOSED only; no runtime/AC result promoted. Original R044 Test Readiness NOT_PASSED, S11/B1–B5 OPEN, A2 unchanged. Spec frozen/stopped; no Test/Worker this turn. Return to original S11/F03 Test Design/RED/Readiness at NEXT_ACTION R047. The following submission PENDING markers are historical, not the current Spec Gate.
-
-> R047 CURRENT SPEC RETURN: the user-approved CCR003 H/F delta is now expressed in the same seven-file Change as one shared purpose-bound Host launcher and export of the existing purpose-bound Handoff factory. Current state is `SPEC_READY / CONTROLLER_REVIEW_PENDING_AFTER_CCR003`; the prior Spec Gate PASS remains historical and does not approve this delta. R044 Test Readiness remains NOT PASSED, its original finite gaps remain, S11 and B1-B5 remain OPEN, and no Test/Worker authority or behavior result is claimed. A2 retains exactly its approved privileged sealed-proof/dependent repair-K2 `USER_WAIVED / NOT_VERIFIED` leaves and does not waive ordinary Host/Handoff evidence.
-
-> R046 HISTORICAL FINAL: CCR003 H/F user-approved; fresh independent development-readiness PASS accepted. Spec had not yet been dispatched due to configured immutable sol/medium versus required R2 sol/high; only this run's equal-duty carrier exception was pending. No H/F reapproval, new Spec Gate, or AC/runtime/Test/production/waiver result followed in R046. Original finite Test gaps and R044 NOT_PASSED remained; S11 and B1–B5 stayed OPEN.
-
-> R045 HISTORICAL: [CCR003](../../../docs/planning/2026-09-05/automation-repair/m2-contract-change-request-003.md) then proposed only ordinary Host/Handoff testability under original S11/F03/B4+B5 and was PENDING_USER_DESIGN_DECISION. No runtime/AC/Test/production/waiver change, role dispatch, or Worker followed in R045.
-
-> R044 FINAL: complete Readiness NOT PASSED; final independent17 leaves=7 controlsPASS/4 original causal failures/6 B5 NOT_REACHED, no parent/timeout/cancel/skip. Original Test asset gaps and ordinary Host/private Handoff decisions remain, A2 unchanged. No whole AC, TDD_READY or Worker. Test stopped; exact finite return in existing Readiness report/controller-readiness-r044/final-review.md and NEXT_ACTION R044. Earlier group records below are historical; role circular release wording is not adopted.
-
-> R044 latest009/010 bounded checkpoint: independent17 leaves=12 component controls PASS/2 producer causal failures/3B5 NOT_REACHED plus1 failed parent. Original negative asset gaps and ordinary Host/Handoff choices remain; no whole AC or Readiness promoted. Same Test next011/012→complete Readiness; NEXT_ACTION R044 sole cursor. Historical checkpoints follow.
-
-> R044 latest checkpoint:006/007/008 bounded return; independent9 leaves=2 controls PASS/2 courier component causal failures/5 B5 NOT_REACHED. No whole AC/Readiness promoted. Withdrawn007 invalid matrix receives no credit; ordinary Host/private Handoff remain unwaived, exact A2 proof subsets unchanged. Original004 full-Core termination,008 isolated adjacency/secondFAIL gaps remain. Same Test next009/010→011/012→complete Readiness. NEXT_ACTION R044 sole cursor; prior group records below are historical.
-
-> R044 latest group: shared002/003/004 bounded source correction return accepted at a0012b7f4e0963f236c50a232f6e9f53d9abe23b0590bb8160b7980dac2fad6d; independent12 leaves =4 controls PASS/1 causal dirty-index failure/7 B5 NOT_REACHED, plus1 failed parent. No whole AC or Readiness promoted. Original004-L15 full-Core-process termination gap retained, no waiver. Same Test next006/007/008; NEXT_ACTION R044 is sole cursor. Earlier current statements are historical checkpoints.
-
-> R044 current correction:002 actual component evidence retained, affected pause/partial asset acceptance withdrawn after004 revealed shared Test helper deviations from frozen Foundation signatures. Original S11 returns to shared helper→affected002→003/004验收; no AC promoted or new contract/waiver/Worker. Earlier002 asset-checkpoint wording below is historical for these subcases; sole cursor remains NEXT_ACTION R044.
-
-> R044 current: fresh sol/high equal-duty Test, original S11 only. TEST002 source checkpoint accepted; independent7 Node results =2PASS/5FAIL including one parent (6 leaves), four failed suffixes remain upstream B5 NOT_REACHED. No AC promoted, no Readiness/TDD_READY, new waiver or Worker. Same Test continues003/004; latest receipt and sole cursor are NEXT_ACTION R044. Earlier current-state statements below are historical.
-
-> R043 current: NOT_PASSED / TEST_ROUTING_DECISION_PENDING. Final source bfc19aa401c50bceb24a1f6cfbc46aa7fabd9329cc6bfe969cafa6160891aa8c; independent10=1PASS/9FAIL including one parent. Seven002 leaves fail Test setup (extra local helper controls leaked into closed Core dependencies), one010 stops at B5,012 mutex/release PASS.008/010 source improvements are unexecuted,002-L08..12 draft withdrawn, original NW/partial remain; no whole AC promoted. Test stopped with routing escalation; no missing error-envelope contract accepted, no new role or Worker. Host/private Handoff choices and A2 unchanged. Sole cursor NEXT_ACTION R043; all earlier current entries below are historical.
-
-> R042: [full Readiness review](../../../docs/planning/2026-09-05/automation-repair/reviews/m2-test-005-readiness.md#r042--完整-readiness-结论与有限返回清单) is NOT PASSED; final independent6=1PASS/5FAIL, normal close/absence. Final source and separate role112/00614 runs are recorded there. Appendix-A planned IDs map to actual assets, NW/partial, written-but-B5-unreached and exact boundaries; 176 is not a TAP count. No whole AC is promoted. 008 temporal proof and010 independent fixed-tip/combined evidence assertions remain incomplete; ordinary private Host/Handoff producer is NOT_VERIFIED, not automatically A2-waived. S11 OPEN, Test stopped, no Worker. NEXT_ACTION R042 is the sole cursor. All earlier current entries below are historical.
-
-> R038 current result: [Gate004](../../../docs/planning/2026-09-05/automation-repair/reviews/m2-test-004-gate.md) records selected TEST001/002 additions and independent9 = 8PASS/1 upstream DISPATCH FAIL. AC001-02/03 have admission/oracle controls only; AC001-04/05 have real Adapter controls and unexecuted Core/remote suffix. No complete AC row is promoted. Original001/002 remaining leaves stay pending; next asset batch is003–004 then005–006/007–012/full Readiness. Test frozen/stopped, S11 OPEN, no Worker. Prior current entries are historical.
-
-> R037 current result: [Gate003](../../../docs/planning/2026-09-05/automation-repair/reviews/m2-test-003-gate.md) independently reran the exact frozen34: 14 PASS /20 FAIL /0 skip/cancel. Five admission controls, two real WORKTREE-kind controls, six invalid Candidate-union controls and one courier hash control passed; no complete AC is promoted. 002 still stops at DISPATCH before Worker/Regression; 003/005/006/009 are limited Adapter/courier frontiers. Original TEST001–012 asset gaps remain explicit; private Host is NOT_VERIFIED, A2 only its mapped subsets. Test stopped, S11 OPEN, no TDD_READY/Worker. R035 and earlier "current" entries below are historical.
-
-> R035 current result: [Gate002](../../../docs/planning/2026-09-05/automation-repair/reviews/m2-test-002-gate.md) / exact frozen15 registered leaves independently rerun to exit1; no full causalRED/Readiness acceptance. 002 is blocked upstream at DISPATCH, 003 health assertions unreached, 006 courier component only. All unexecuted behavior-result rows stay PENDING; A2 only its explicit subsets. Role stopped; no Worker release. Earlier six-case and process-blocked rows are historical.
-
-> R034 current execution position: the four stale Test processes were removed by explicitly authorized one-shot TERM and absence readback. Return to the same Test001 for Gate001 F01–F05; S11/Readiness remain OPEN/NOT_PASSED. [Cleanup evidence](/private/tmp/juanerai-m2-test001.gC26fB/controller-cleanup-001.md). No behavior-result row is promoted; A2 unchanged. The denied-cleanup statement below is historical.
-
-> Test001 current execution result (2026-09-06): only six draft cases registered; complete Test Design/causal RED/Readiness NOT PASSED. Existing health717/0 is not M2 coverage. [Controller Gate001](../../../docs/planning/2026-09-05/automation-repair/reviews/m2-test-001-gate.md) preserves finite Test corrections and denied task-process cleanup; all behavior-result rows remain unverified/PENDING, A2-specific evidence remains USER_WAIVED / NOT_VERIFIED. No Worker release follows.
-
-> Historical pre-CCR003 Controller authority: the prior Spec Gate PASS and bounded S09 USER_WAIVED / NOT_VERIFIED disposition remain inputs, but only [MASTER_PLAN A2's exact AC/Test/task mapping](../../../docs/planning/2026-09-05/automation-repair/MASTER_PLAN.md#用户风险豁免-a2s09-环境验证不再阻塞2026-09-06) survives unchanged. R047 requires a fresh revised Spec Gate. Do not promote a whole AC/Test to PASS or waive its runnable leaves.
-
-## Status and Legend
-
-- Current verdict: `SPEC_READY / CONTROLLER_GATE_PENDING_R109 / NO_NEW_TEST_OR_WORKER`; behavior completion remains PENDING. R047/R059/R063/S21 remain accepted history for unaffected contracts. C1/C2/C3 are specification-closed; the Controller's complete correctness and mandatory ponytail Gate remains pending. The following older accounts are historical.
-
-Controller review004 accepted F01-R's existing Candidate ambiguity/manual-stop closure and identified F03-R as the only prior blocker. The user then approved CCR002; Design 7.4 now maps one Host-owned sealed-content rerun and proof artifact without treating JSONL or post-close observations as causal proof. All PENDING mappings below remain planned executable evidence, not Gate closure or implementation.
-- Change: `change-coordinator-production-delivery-chain`
-- `C`: adopted M2 contract decision; `B`: Master Plan blocker; `K1/K2`: internal evidence checkpoint.
-- Test IDs refer to the stable parents in `test-plan.md`; Task IDs refer to `tasks.md`.
-- Every result is `PENDING` until the later role supplies executable evidence and the Controller accepts it. A document, mapping, or Test count is not a PASS.
-
-## 1. Decision and Blocker Map
-
-| Decision | Blocker | Checkpoint | Delta owner | Primary Test | Planned task | Result |
-|---|---|---|---|---|---|---|
-| C2 fixed purpose map and signed-to-execution derivation | B1 | K1 | `REQ-M2-001` | 001-002 | 020 | PENDING |
-| C3 legal dirty tree, empty index, fresh lossless content | B2 | K1 | `AC-M2-002-01..05` | 002-003 | 021 | PENDING |
-| C4 increment/cumulative path and content identity | B2+B5 | K1+K2 | `REQ-M2-002`, `AC-M2-005-05` | 003-004, 009 | 021-022, 033 | PENDING |
-| C5 closed Candidate branch in the same execute | B3 | K2 | `REQ-M2-003` | 005-006 | 030 | PENDING |
-| C6 artifact-backed Validator and one causal repair | B4 | K2 | `REQ-M2-004` | 006-008 | 004-005, 031-032 | CONTRACT PRESENT; EXECUTION PENDING |
-| C7 Ledger/receipt/evidence/delivery/failure closure | B1+B3+B5 | K1+K2 | `AC-M2-001-05`, `AC-M2-003-05`, `REQ-M2-005..006` | 002, 004, 006-012 | 004-005, 020, 022, 030, 033-034 | CONTRACT PRESENT; EXECUTION PENDING |
-| CCR003 H/F reachability within C6-C7 | B4+B5 / S11/F03 | K2 | `AC-M2-004-02`, `AC-M2-005-07..08`, `AC-M2-006-05/08` | 006, 010, 012 | 001-003, 010-012, 031, 033-034, 040-045 | CONTRACT PRESENT; CONTROLLER REVIEW PENDING |
-| CCR004 physical root representation within C3-C4 | B2 / S19 | K1 | `AC-M2-002-04`, `AC-M2-002-06` | 002-004 | 001-003, 010-012, 021-023 | CONTRACT PRESENT; CONTROLLER REVIEW PENDING |
-| S21 exact canonicalDiff bytes and restart reconstruction within C4-C7 | B5 / S21 | K2 | `AC-M2-005-05..06` | 009-010 | 001-003, 010-012, 033 | CONTRACT PRESENT; CONTROLLER REVIEW PENDING |
-
-## 2. Every Acceptance Criterion to Test and Task
-
-| Requirement / AC | C / B / checkpoint | Primary executable evidence | Production target | Task | Result |
-|---|---|---|---|---|---|
-| `AC-M2-001-01` six-field admission | C2 / B1 / K1 | TEST-001 admission negative matrix and zero effects | coordinator | 020 | PENDING |
-| `AC-M2-001-02` fixed purpose/order | C2 / B1 / K1 | TEST-001 permutations and observed execution order | coordinator | 020 | PENDING |
-| `AC-M2-001-03` eight-field derivation/hash | C2 / B1 / K1 | TEST-001 independent canonical hashes | coordinator, production | 020 | PENDING |
-| `AC-M2-001-04` post-Worker subject | C2+C3 / B1+B2 / K1 | TEST-002 fresh real Worktree subject; repair Head | coordinator, production | 020-021 | PENDING |
-| `AC-M2-001-05` two-receipt gate | C2+C7 / B1 / K1 | TEST-002 two real children, receipt/Ledger/content failures | coordinator, production | 020 | PENDING |
-| `AC-M2-002-01` legal dirty tree | C3 / B2 / K1 | TEST-003 real dirty/empty-index positive and rejection set | production, adapters | 021 | PENDING |
-| `AC-M2-002-02` lossless observed paths | C3+C4 / B2 / K1 | TEST-003 spaces/Unicode/pathspec/status/UTF-8 matrix | production, adapters | 021 | PENDING |
-| `AC-M2-002-03` scope not stage list | C3 / B2 / K1 | TEST-003 unused scope rule and literal path transport | production, adapters | 021 | PENDING |
-| `AC-M2-002-04` content drift fence | C3+C4 / B2 / K1 | TEST-002/003 canonical-root cwd; physical root `readCommit.parent:null`; nonroot nonzero full-40; failed/graph/zero-OID/self-parent not root success; parent-tree pre-commit rejection; exact cached raw `--full-index --no-abbrev`; full-40/zero-OID/blob equality; explicit-tree selection; post-commit stop | coordinator, production, adapters | 021-022 | CCR004 CONTRACT PRESENT; EXECUTION PENDING |
-| `AC-M2-002-05` staged readback | C3+C4 / B2 / K1 | TEST-003 stageExact/readStaged full list/hash/tree/content/remainder and exact repeated cached-raw command | coordinator, production, adapters | 021 | CONTRACT CLARIFIED; EXECUTION PENDING |
-| `AC-M2-002-06` Candidate commit/readback | C3+C4 / B2 / K1 | TEST-004 fresh root/nonroot STAGE path; Candidate null/zero/self/missing/multiple/wrong-parent rejection; exact one-parent/nonzero/full-40 success, same-invocation convergence, and restart manual-stop despite self-consistent observed commit | coordinator, production, adapters | 022 | CCR004 CONTRACT PRESENT; EXECUTION PENDING |
-| `AC-M2-002-07` K1 completion | C3+C7 / B2 / K1 | TEST-004 remote Candidate event and exact State bytes | coordinator, production | 022-023 | PENDING |
-| `AC-M2-003-01` closed request union | C5 / B3 / K2 | TEST-005 cross-kind matrix plus retained WVEB suite | production | 030 | PENDING |
-| `AC-M2-003-02` Candidate subject | C5 / B3 / K2 | TEST-005 real pre/post Candidate identity observations | production, adapters | 030 | PENDING |
-| `AC-M2-003-03` 24-field branch table | C5+C7 / B3 / K2 | TEST-005 exact keys/nullability/seven tuples/hashes | production | 030 | PENDING |
-| `AC-M2-003-04` process/mismatch order | C5 / B3 / K2 | TEST-005 real child exit/start/signal/timeout/mutation | production | 030 | PENDING |
-| `AC-M2-003-05` Candidate-only refs | C5+C7 / B3 / K2 | TEST-005-006 remote receipt then exact two-ref ordering | coordinator, production | 030-031 | PENDING |
-| `AC-M2-004-01` closed Validator artifact | C6 / B4 / K2 | TEST-006 canonical artifact/schema/hash shape matrix | host-loop, coordinator | 031 | PENDING |
-| `AC-M2-004-02` host courier/shared launcher | C6 / B4 / K2 | TEST-006 separate factory reachability RED then frozen real child/input/process suffix; pre-spawn absent-or-safe-existing output identity, post-close physical-path/parser/inventory/Host reread; construction INPUT_INVALID, per-call START_FAILED, ordinary AGENT_EXITED vs repair RESULT_UNREADABLE precedence | host-loop | 010-012, 031, 034 | CONTRACT PRESENT; EXECUTION PENDING |
-| `AC-M2-004-03` Coordinator binding | C6 / B4 / K2 | TEST-006 settlement/change/Head/verdict/findings binding | coordinator | 031 | PENDING |
-| `AC-M2-004-04` eligible repair | C6+C7 / B4 / K2 | TEST-007 remote pair and canonical derived/base/effective bytes before budget | coordinator, host-loop | 004-005, 032 | CONTRACT PRESENT; PENDING |
-| `AC-M2-004-05` causal cycle | C6 / B4 / K2 | TEST-007 real Host sealed-content rerun/proof plus A-to-B and modify/restore negatives | coordinator, host-loop | 005, 032 | CCR002 CONTRACT PRESENT; PENDING |
-| `AC-M2-004-06` budget/immediate stops | C6 / B4 / K2 | TEST-008 pre-consumption eligibility; post-transition consumed/no-retry failures; Worker only after proof readback | coordinator, host-loop | 005, 032 | CONTRACT PRESENT; PENDING |
-| `AC-M2-004-07` second failure | C6 / B4 / K2 | TEST-008 attempt-one FAIL and no reset matrix | coordinator | 032 | PENDING |
-| `AC-M2-005-01` seven real-context events | C7 / B1+B3+B5 / K1+K2 | TEST-002/004/006/010 exact records and no placeholders | coordinator, production | 020, 022, 030-033 | PENDING |
-| `AC-M2-005-02` closed receipt union | C7 / B1+B3+B5 / K1+K2 | TEST-002/006/010 12-vs-24 discriminator negatives | coordinator, production | 020, 030-033 | PENDING |
-| `AC-M2-005-03` canonical remote bytes/shared object reader | C7 / B1+B3+B5 / K1+K2 | TEST-002/010 Core base64/length/hash/JSONL/slice readback plus original 010-L13 real commit-A/tree-B shared-reader conflict, independent oracle, permitted manual diagnostic, and zero delivery progress | coordinator, production | 020, 033 | R109 CONTRACT PRESENT; TEST/IMPLEMENTATION PENDING |
-| `AC-M2-005-04` evidence ownership | C7 / B3+B5 / K2 | TEST-006-007/010 Candidate refs; repair Handoff selects Host proof AGENT_RUN/receipt and attempt-zero source pair | coordinator, host-loop | 004-005, 030-033 | CONTRACT PRESENT; PENDING |
-| `AC-M2-005-05` canonical byte/path evidence | C4+C7 / B2+B5 / S21 / K1+K2 | TEST-003 plus TEST-009 exact raw/path Buffers, lengths/full hashes, explicit byte-normalized receipt, A/M/D/T parser/path derivation, empty no-op; actual missing-interface RED, frozen suffixes `NOT_REACHED` until healthy prefix, then nonzero mutation zero-effects | coordinator, production, adapters | 021-022, 033 | S21 CONTRACT PRESENT; EXECUTION/REBIND PENDING |
-| `AC-M2-005-06` stable delivery identity | C7 / B5 / S21 / K2 | TEST-010 exactly two observations; uninterrupted full equality; fresh-Core same-object/fixed-producer reconstruction against persisted raw hash and unchanged delivery preimage/ID; response-loss stability | coordinator, production | 033 | S21 CONSISTENCY PRESENT; EXECUTION/REBIND PENDING |
-| `AC-M2-005-07` complete Handoff | C4+C6+C7 / B5 / K2 | TEST-010 Core exact Handoff/provenance/default negatives plus existing factory export reachability | coordinator, production | 010-012, 033 | CONTRACT PRESENT; EXECUTION PENDING |
-| `AC-M2-005-08` Handoff ordering/stop | C7 / B5 / K2 | TEST-010 Core validation then gateway minimum canonical-JSON/safe-change/full-hash/formatted-equal-ID checks, actual target/replacement/readback, static same-atomicWrite relation, fixed tip/order/State | coordinator, production | 010-012, 033-035 | CONTRACT PRESENT; EXECUTION PENDING |
-| `AC-M2-006-01` failure evidence vs progress | C7 / B1-B5 / K1+K2 | TEST-011 Ledger-available BLOCKED vs unavailable pause | coordinator, production | 034 | PENDING |
-| `AC-M2-006-02` existing error vocabulary | C7 / B1-B5 / K1+K2 | TEST-008/011 exact reason/action and throw mapping | coordinator, production, adapters, host-loop | 034 | PENDING |
-| `AC-M2-006-03` four recovery boundaries | C7 / B2+B5 / K1+K2 | TEST-004/011 converge/absence/conflict/exhaustion | coordinator, production, adapters | 022, 033-034 | PENDING |
-| `AC-M2-006-04` public-call concurrency | C7 / B1-B5 / K1+K2 | TEST-012 mutex/CAS winner and zero-effect losers | coordinator | 034 | PENDING |
-| `AC-M2-006-05` cancellation/timeout/late facts | C5+C6+C7 / B1+B3+B4 / K1+K2 | TEST-005/008/012 real child and late settlement; separate true-hour 012-L06 proves deadline-fired zero/signal-null close still ordinary INTERRUPTED/AGENT_EXITED and never RESULT/PASS | coordinator, production, host-loop | 010-012, 030-034 | CONTRACT PRESENT; EXECUTION PENDING |
-| `AC-M2-006-06` partial/permitted writes | C7 / B2+B5 / K1+K2 | TEST-009/011/012 acknowledgement and post-freeze matrix | coordinator, production, adapters | 033-034 | PENDING |
-| `AC-M2-006-07` linearization points | C3+C4+C7 / B1-B5 / K1+K2 | TEST-003-004/009-012 exact readback visibility | coordinator, production, adapters | 021-023, 033-035 | PENDING |
-| `AC-M2-006-08` offline proof/stop line | C2-C7 / B1-B5 / K1+K2 | TEST-001..012 real Core/files/Git/validation; ordinary shared-launcher/Handoff suffixes remain mandatory; A2 maps only privileged root/runtime-uid sealed-proof/dependent repair-K2 positives to USER_WAIVED/NOT_VERIFIED; effect audit | all four | 010, 012, 040-045 | CONTRACT PRESENT; RUNNABLE EVIDENCE PENDING; A2 LEAVES WAIVED/NOT_VERIFIED |
-
-## 3. Canonical Foundation Anchor Map
-
-This delta preserves the canonical anchors and supplies the missing production composition/evidence; it does not rewrite the canonical files.
-
-| Blocker | Canonical Foundation acceptance anchors | M2 delta/tests that supply the missing evidence | Result |
-|---|---|---|---|
-| B1 | `AC-DTF-002-03`, `AC-DTF-002-07`, `AC-DTF-005-02`, `AC-DTF-005-08` | REQ-001, REQ-005-01..03; TEST-001-002 | PENDING |
-| B2 | `AC-DTF-004-01`, `AC-DTF-005-03`, `AC-DTF-005-04` | REQ-002, REQ-005-05; TEST-002-004 | PENDING |
-| B3 | `AC-DTF-004-02`, `AC-DTF-005-08` | REQ-003, REQ-005-02..04; TEST-005-006, 010 | PENDING |
-| B4 | `AC-DTF-003-02`, `AC-DTF-003-03`, `AC-DTF-003-04`, `AC-DTF-004-02` | REQ-004; TEST-006-008 | PENDING |
-| B5 | `AC-DTF-001-08`, `AC-DTF-003-06`, `AC-DTF-004-03..08`, `AC-DTF-005-01..08` | REQ-005..006; TEST-009-012 | PENDING |
-
-## 4. Baseline Compatibility Trace
-
-| Baseline contract | M2 treatment | Executable guard | Result |
-|---|---|---|---|
-| WVEB `WORKTREE / REGRESSION` request, L1 snapshot, 24 fields, seven tuples, hashing, process behavior | unchanged; its Candidate rejection remains inside this branch | byte-identical WVEB Test plus TEST-005 cross-kind matrix | PENDING |
-| old unconditional Candidate rejection in `AC-WVEB-003` | narrowly replaced only for exact `final-validation-candidate / CANDIDATE`; every other Candidate/cross-kind input still rejects | TEST-005 exact positive branch and zero-child negatives | PENDING |
-| Candidate V1 State fields | unchanged; no changed-path field added | TEST-004 exact State keys; TEST-009 separate diff path evidence | PENDING |
-| raw canonical diff `JUANERAI_GIT_DIFF_V1` | raw argv/bytes/hash unchanged; V2 producer adds separately hashed name-status path evidence | TEST-009 independent raw oracle and path parser | PENDING |
-| four public methods, six macro states, seven event classes, one mutex, four recovery boundaries, WIP one | unchanged | TEST-011-012 public-chain/effect inventory | PENDING |
-| Foundation/PSP release, pointer, STARTED/INTERRUPTED, one repair budget | retained; M2 supplies closed evidence and eligibility | retained tests plus TEST-006-008/011-012 | PENDING |
-| archived/canonical records and historical Ledger bytes | immutable; no migration or rewrite | scope diff and runtime temp-repo inspection | PENDING |
-
-## 5. File and Asset Trace
-
-### Production responsibility
-
-| File | Contract responsibility | Requirements | Tests | Result |
-|---|---|---|---|---|
-| `coordinator.mjs` | admission/order, lifecycle, repair Test proof summary and repair Worker binding/delivery consumers, receipt/event selection, delivery/Handoff | REQ-001..006 | TEST-001..012 | PENDING |
-| `production.mjs` | Candidate execute, sole-evaluator exact stage/readback factory, production composition, Ledger bytes, delivery gateways, and exported existing Handoff factory with minimum boundary checks while Core retains full Handoff validation | REQ-001..003, REQ-005..006 | TEST-001..006, 009-012 | CONTRACT PRESENT; PENDING |
-| `adapters.mjs` | fresh Git/status inspection, Candidate commit/readback, canonical path evidence | REQ-002..003, REQ-005-05, REQ-006 | TEST-003-005, 009, 011-012 | PENDING |
-| `host-loop.mjs` | one shared purpose-bound launcher for ordinary/repair launches with fixed production preparation, exact input/process/output physical-path/parser/inventory/re-read logic; Validator courier; repair-only input/proof and fixed-profile branch; JSONL/post-close data excluded | REQ-004, REQ-006-02/05/08 | TEST-006-008, 012 | CONTRACT PRESENT; PENDING |
-
-There is no conditional production path. Any fifth production file is a Controller blocker.
-
-### Test asset inheritance
-
-| Test asset | Relation to M2 | Planned disposition | Successor/consumer evidence | Result |
-|---|---|---|---|---|
-| `coordinator.test.mjs` | retained Foundation/PCRR public lifecycle and M2 public leaves | retain; amend only superseded placeholder assertions | TEST-001-002, 004, 006-008, 010-012 | PENDING |
-| `git.integration.test.mjs` | retained eleven Git methods/raw diff plus exact stage/path leaves | retain | TEST-003-004, 009, 011 | PENDING |
-| `mode-activation.test.mjs` | retained host route/isolation plus shared-launcher/Validator/input/proof tests; ordinary command uses Node negative name filter and separate 012-L06 command supplies the true-hour result, merged without counting exclusion as PASS | retain | TEST-006-008, 012 | PENDING; A2 LEAVES WAIVED/NOT_VERIFIED |
-| `fixtures.mjs` | placeholder definition/receipt/event builders conflict with closed M2 shapes | replace only obsolete forms; retain unrelated builders | exact named M2 consumers above | PENDING |
-| `worktree-validation-execution-boundary.test.mjs` | authoritative accepted WORKTREE behavior | byte-identical retain | WVEB suite and TEST-005 compatibility guard | PENDING |
-| `production-delivery-chain.test.mjs` | optional single visible continuous public-chain Test | add only after Test preflight proves need; otherwise not-created | TEST-001..012 or named existing-file successor | PENDING |
-| tracked temporary data/source rewrite/mock Core/new framework | no valid consumer | forbidden, do not create | scope inspection | PENDING |
-
-## 6. Evidence Gate Map
-
-| Gate | Required evidence | Current status |
+| Surface | Bounded result | Gate state |
 |---|---|---|
-| Review001/002/003 | complete correctness plus mandatory ponytail review | HISTORICAL NEEDS_REVISION / NOT PASSED |
-| Repair evidence authority | `DECISION-M2-REPAIR-EVIDENCE-001` | USER APPROVED; SPECIFIED, NOT IMPLEMENTED |
-| Repair execution-content authority | `DECISION-M2-REPAIR-RUNTIME-CONTENT-002` | USER APPROVED FOR DESIGN; SPECIFIED, NOT IMPLEMENTED |
-| CCR003 H/F authority/readiness | user-approved bounded design plus Controller-accepted fresh input-only readiness PASS | ADOPTED SPEC INPUT; NOT IMPLEMENTED; NO GATE RESULT |
-| Spec Gate | bounded S19 CCR004 root-parent delta over the R059-accepted seven-file package | SPEC_READY; CONTROLLER CORRECTNESS/PONYTAIL GATE PENDING; R047/R059 UNAFFECTED CONTRACTS RETAINED |
-| A2 privileged offline proof evidence | exact privileged fixed-profile/sealed-proof and dependent repair-K2 positives only | USER_WAIVED / NOT_VERIFIED; NOT A TDD_READY PREREQUISITE; RESIDUAL RISK RETAINED |
-| Test Design / RED | R049 complete Readiness plus R054/R056/R059/R061 accepted corrections are retained; only original002-L01/003-L19 root/nonroot/read-failure/Candidate-parent evidence is locally reopened after this Spec Gate | S19 TEST RETURN PENDING; ORIGINAL F01-F05 NOT REOPENED |
-| TDD_READY | retained frozen input binding must be replaced only by the exact post-S19 Test hash/health/RED/Readiness rebind before original Worker | S19 EXACT REBIND PENDING; NO WORKER YET |
-| K1 | actual dirty Worker tree through two Regressions, exact stage, real Candidate and readbacks | NOT_RUN |
-| K2 | K1 Candidate through Final/Validator/publication/PR/Handoff plus second-fail cases; A2-mapped repair positive separately risk-accounted | NOT_RUN; A2-MAPPED REPAIR POSITIVE WAIVED/NOT_VERIFIED |
-| GREEN / Regression / Retirement | focused/full/canonical commands and Test Asset Retirement PASS | NOT_RUN |
-| Independent Verification | fresh fixed-head read-only Validator | NOT_DISPATCHED |
-| Acceptance / M3 / M4 | Controller/user decisions under later authority | NOT_AUTHORIZED |
+| `readCommit` success shape | same request, same `{sha,parent,tree,branch}` keys, same GatewayResult and receipt rules; only physically proven zero-parent root uses literal null | SPECIFIED; CONTROLLER REVIEW PENDING |
+| root proof | successful `git cat-file commit <sha>` at existing `canonical_root` cwd has physical header bytes with zero literal parent headers; failed `<sha>^`, empty/graph output, zero-OID/self-parent, malformed/wrong-type/failed/uncertain reads cannot synthesize success | SPECIFIED; TEST/IMPLEMENTATION PENDING |
+| nonroot compatibility | existing actual nonzero full 40-hex parent distinct from the commit SHA remains; no parents array or merge-policy change | PRESERVED |
+| Candidate boundary | `expected_parent`, `commitCandidate`, physical Candidate object, success, `CANDIDATE_COMMITTED`, Candidate State, convergence, and readback remain exact one-parent/non-null/full-40 | PRESERVED; TEST/IMPLEMENTATION PENDING |
+| affected mapping | `AC-M2-002-04 -> TEST-M2-002/003 -> TASK-M2-021/022`; `AC-M2-002-06 -> TEST-M2-004 -> TASK-M2-022`; gate work remains TASK-M2-001..003 | COMPLETE CONTRACT MAP; NO EXECUTION |
+| historical evidence | original002 current 31PASS/1FAIL and independent L01 FAIL remain current frontier; current003/004/fullK1 remain unverified; earlier PASS stays bound to earlier source | UNCHANGED |
+| next owner | Controller complete-delta correctness and mandatory ponytail review, then Spec Gate; only PASS activates the separately conditional Test return | CONTROLLER GATE PENDING |
 
-## 7. Unresolved Items
+No load-bearing product fact is open in this bounded return. It adds no method, result key, parents collection, generic parser/service, persistent state, event, lock, retry, side channel, recovery boundary, root-baseline prohibition, merge policy, Test waiver, or external authority. A2 remains `USER_WAIVED / NOT_VERIFIED`; B1-B5 and S14-S19 remain open until their original executable closure points.
 
-There is no unresolved C2 product/design-authority choice. Any request to expose the full Ledger factory, add credential/transport/process/parser injection, change public Core/State/Event/Delivery contracts, add cache/retry/recovery/deadline machinery, use a privileged real remote, or treat a Core double as Adapter proof is `BLOCKED / CONTRACT_CHANGE_REQUIRED`.
+## Historical Verdicts
 
-The finite immediate return is the Controller's complete correctness and mandatory ponytail review of this same seven-file package. Only a subsequent Spec Gate PASS authorizes a fresh Test role for the original 009 -> 010 -> 011/readiness sequence, including the existing `RED-M2-006` interface frontier and frozen 010-L13 suffix. A2 remains exactly `USER_WAIVED / NOT_VERIFIED`; K1 then K2 and M3/M4 remain fixed. No Test/Worker authority follows from this Spec return itself, and no runtime PASS, install, fallback, new mechanism, or lifecycle advance is claimed.
+R059 CONTROLLER FINAL TEST INPUT: **S17_SPEC_TEST_RETURN_ACCEPTED / TEST_READINESS_RECONFIRMED / TDD_READY_INPUT_REBOUND / NOT_GREEN / NOT_K1**. [Exact binding, independent runs and limits](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-s17-r059/readiness-and-rebind.md). Final Test SHA `7f50e0bacd2156d3104913a1f29f5d3a1ccfb86c878a8dbd25a1dfa2e2cbc1ad`; Test and Controller each original002 Node31PASS/1FAIL and original003 Node13PASS/37FAIL. C09 real full-OID/index-blob health passes; the existing old-argv/raw-parser production frontier remains exposed, but new one/two-call post-stage assertions are NOT_REACHED. Input readiness does not promote any whole behavioral AC or K1. Spec/Test stopped, original Worker not resumed; return to original002→003→004/fullK1 under R050 plus R059 binding. Subsequent Controller current-result annotations change documentation hashes only; final map distinguishes these from execution inputs. Earlier R059 pending statements below are historical checkpoints, not current Gates.
+
+R059 CONTROLLER SPEC GATE: **SPEC_GATE_PASS_S17 / TEST_RETURN_NEXT / PRODUCTION_FROZEN / NOT_K1**. Complete seven-file diff against the R058 freeze reviewed for correctness and mandatory ponytail; original6 REQ/40AC body byte-identical, exact command/full-OID semantics consistent, scope clean. [Gate and frozen identities](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-s17-r059/spec-gate.md). R049 unaffected Readiness and R054/R056 corrections remain accepted; only S17 Test command/oracle health/RED/Readiness/rebind is pending before original Worker. Spec stopped. Submission-level SPEC_READY/PENDING text below and in companions is historical for this Gate; no behavioral row is promoted. Current execution position remains NEXT_ACTION R059.
+
+R059 CURRENT: **SPEC_READY / CONTROLLER_GATE_PENDING_S17_R059 / PRODUCTION_FROZEN / NOT_K1**.
+
+The user approved the bounded S17 command choice recorded in the R058 decision: Design 5.2's existing cached-raw command now adds only `--no-abbrev` after `--full-index`, including the `readStaged` repeat. `TEST-M2-003` and `TASK-M2-021` remain the owning evidence/task, mapped to `AC-M2-002-04..05`; they preserve full lowercase 40-hex Git OIDs, the full zero OID, exact index-blob equality, and all NUL/status/path/blob/type/mode/content and malformed/mismatch negatives. There is no prefix admission, fallback/config flag, new parser/API/State, or waiver.
+
+R047 `SPEC_GATE_PASS_AFTER_CCR003` below remains historical accepted authority for every unaffected contract. This S17 return reopens only the command delta and necessary current references; it does not rewrite older PASS/failure evidence or claim a new Gate PASS. The complete package is ready for the Controller's bounded correctness/ponytail Gate. Only after that Gate may the already-authorized fresh Test role align the existing command observation and independent raw oracle, re-establish health/expected RED/Readiness, and rebind exact identities before the original Worker.
+
+### R059 frozen inputs and read-only checks
+
+| Input / check | SHA-256 / result |
+|---|---|
+| R059 Spec brief | `58055de11eb052d1ebc5dd1cb17a732b94ef37c275eb7bf34773263e08eea14d` |
+| R058 accepted decision | `23240969a5be9ad70cce3bd6cd4ca592eb867e801b4a2e0b8e8cbd368e6af61c` |
+| R057 contract request | `5af386eefbff68f8745b75488e0c988053df4126f4bb1881ef8103cbc255475d` |
+| R057 isolated raw-OID probe result | `8044e779a8f86b8a04c63cfc9bef5bcb32cbe6389fff58cc0292e3a4798c668a` / reused, not rerun |
+| R059 before readback | `8a862bc729be2810037e94b6fcfa60dc1d10d08f404976ddfb2ae22c324185f0` / all 1267 path hashes equal R058 final freeze; no added/changed/violation |
+| Git identity | Head `1fe517a1b820ae4bae1e5dede6a8f69a6bffabbd`; branch `work/macbook/automation-repair-m2-contracts`; index empty |
+
+Static seven-file identity/traceability/diff checks and final hashes are recorded in the R059 Spec handoff evidence. No Node/Test, raw probe, production process, Git mutation, external action, or historical suite rerun belongs to this Spec result.
+
+### R059 exact return point and remaining work
+
+- Immediate next Gate: Controller correctness/ponytail review of this bounded delta, then the authorized fresh Test command/oracle change and exact Readiness/rebind.
+- Original acceptance return: original Worker on one new freeze, then `TEST002 -> TEST003 -> TEST004/full K1`; only afterward original K2, ordinary H/F, true-hour evidence, complete Regression/Retirement, fresh Validator, and separately authorized M3/M4.
+- Remaining original B2 work is unchanged: Design 5.1 signed canonical-root and lossless raw NUL/fatal UTF-8 admission; the rest of Design 5.2 path/status/type/mode/blob/pre-observation and ordered post-stage fences; Core stage/readback identity and interval-correct failure closure; explicit-tree commit and complete Candidate readback. The flag cannot close these defects by itself.
+- B0 remains CLOSED; B1-B5 and S14-S17 remain OPEN until their original return conditions. S09 remains `USER_WAIVED / NOT_VERIFIED`. No GREEN, K1, B/S closure, production write, Test result, or lifecycle advance is reported.
+
+All R047 and earlier entries below are preserved historical evidence. They do not override this R059 current status or turn their recorded results into current execution proof.
+
+R047 CONTROLLER FINAL: **SPEC_GATE_PASS_AFTER_CCR003**. Controller accepted the frozen seven-file return after complete correctness and mandatory ponytail review; [review006](../../../../docs/planning/2026-09-05/automation-repair/reviews/m2-spec-review-006.md) records scope, hashes, bounded consistency corrections and limits. H/F are SPEC_CLOSED only. R044 Test Readiness remains NOT_PASSED; S11 and B1–B5 remain OPEN, A2 unchanged. No new runtime/Test/production result, TDD_READY or Worker authority. Spec stopped; this run's temporary carrier ended. Return to original S11/F03 Test Design/RED/complete Readiness; this turn dispatches no Test/Worker. [NEXT_ACTION R047](../../../../docs/planning/2026-09-05/automation-repair/NEXT_ACTION.md#progress-receipt-r047) is the sole recovery cursor. All submission-level SPEC_READY/PENDING markers below and in companion files are preserved history, superseded only for this Controller Spec Gate decision; no behavior-result row is promoted.
+
+R047 CURRENT: `SPEC_READY / CONTROLLER_REVIEW_PENDING_AFTER_CCR003`.
+
+The user-approved CCR003 H/F design and Controller-accepted fresh input-only readiness PASS are now expressed as a minimum bounded delta in the original seven-file Change. The prior Spec Gate PASS remains historical authority only and does not approve this revision. No Test/production file was changed, no Test or process was run, and no RED, TDD_READY, Worker authority, GREEN, K1/K2, independent Validator, acceptance, archive, integration, deployment, or external action is claimed.
+
+### R047 frozen inputs and boundary
+
+| Input | SHA-256 / status |
+|---|---|
+| CCR003 | `d7f3159d501cc9929b374d0e70053b86809ef645d19b0642d3f8bb6809968a8c` / USER APPROVED |
+| CCR003 readiness review | `f50296542b3325941e80922f1fc90e1bcbc4543684554e5b9170f85f24d281bf` / Controller-accepted PASS input |
+| R047 Spec brief | `1e227abfab5cf11f79b2bbce7c63d98c9697282354e0f95bc0fc4f4928b3efc1` / current role authority |
+| Original C2-C7, M0-M4, S11/F03/B4+B5 | retained |
+| A2 | exact privileged fixed-profile/sealed-proof and directly dependent repair-K2 positive evidence only: USER_WAIVED / NOT_VERIFIED |
+| R044 Readiness | NOT PASSED; original finite Test gaps retained |
+
+The owned package remains exactly `proposal.md`, `design.md`, `test-plan.md`, `tasks.md`, `traceability.md`, `verification.md`, and `specs/dual-device-transition-foundation/spec.md`. No canonical/archive, production, Test/fixture/helper, role/configuration, planning/project-control, dependency, Git, provider, host, or external path is owned by this return.
+
+### R047 contract closure
+
+| CCR003 surface | Bounded closure | Current result |
+|---|---|---|
+| H ordinary Host reachability | one exported `createHostAgentLauncher({resultRoot,prepareResultRoot})` in existing `host-loop.mjs`; same input/process/parser/inventory/re-read/settlement logic; only root/preparation vary | CONTRACT PRESENT; CONTROLLER REVIEW PENDING |
+| H path/preparation/error order | invalid construction is synchronous INPUT_INVALID/no settlement; valid-call read/prep/pre-spawn absent-or-safe-existing artifact identity precedes spawn; post-close physical identity precedes parse; Host reread follows; ordinary deadline/signal AGENT_EXITED and repair-specific RESULT_UNREADABLE precedence are exact | CONTRACT PRESENT; CONTROLLER REVIEW PENDING |
+| H true-hour evidence | separate offline `012-L06`, actual 3,600,000 ms, SIGTERM and real close, exact ordinary INTERRUPTED/AGENT_EXITED even for handled signal/zero exit; no fake clock/hook/value | CONTRACT PRESENT; NOT RUN |
+| F Handoff reachability | export only existing `createHandoffGateway(stateRoot)`; retain same `atomicWrite`; gateway checks only canonical JSON/safe Change/full hash/formatted equal delivery identity and actual target/readback; Core retains full Handoff/Ledger/evidence validation | CONTRACT PRESENT; CONTROLLER REVIEW PENDING |
+| Causal readiness | exactly two CCR003 interface reachability REDs; frozen dependent suffixes are NOT_REACHED until entry exists; controls must be independently healthy; no post-production Test authoring | CONTRACT PRESENT; R044 TEST READINESS STILL NOT PASSED |
+| A2 | no environment prerequisite restored; waived positives remain NOT_VERIFIED and all ordinary/runnable evidence remains mandatory | EXACT PRIOR WAIVER RETAINED |
+
+### R047 Gate and finite unresolved items
+
+| Gate | Current state |
+|---|---|
+| Complete seven-file Spec delta | SPEC_READY |
+| Controller correctness review | PENDING |
+| Mandatory complete-diff ponytail review | PENDING |
+| Revised Spec Gate | NOT PASSED; Controller decision pending |
+| Test Design / causal RED / TDD_READY | NOT AUTHORIZED / NOT RUN / NOT GRANTED; original R044 finite gaps retained |
+| Production / GREEN / K1 / K2 / verification / acceptance | NOT AUTHORIZED / NOT RUN |
+
+There is no unresolved product or design-authority decision in the Spec package. The complete finite return is: Controller correctness review, mandatory ponytail review, and revised Spec Gate; after a PASS, return to the original R044 Test asset/readiness corrections plus the two CCR003 reachability REDs and their already-frozen suffixes. A2's mapped evidence remains waived/not verified with its recorded residual risk; it is not a new blocker and cannot be reported PASS. Any requested new seam, file, framework, default, environment prerequisite, or broader production scope is `BLOCKED / CONTRACT_CHANGE_REQUIRED`.
+
+### R047 read-only Specification checks
+
+| Check | Actual result |
+|---|---|
+| owned inventory | PASS: exactly the seven original Change files; no eighth Change file |
+| requirement identifiers | PASS: 6 unique REQs and 40 unique ACs |
+| traceability equality | PASS: all 40 AC IDs occur in both delta Spec and traceability with no missing/extra ID |
+| planned evidence identifiers | PASS: 12 unique Test parents and 6 unique RED groups |
+| task identifiers | PASS: 24 unique Task IDs |
+| Markdown fences | PASS: even count in every owned file |
+| whitespace/diff-format scan | PASS: zero trailing-whitespace findings; `git diff --no-index --check` clean for each owned file |
+| governing input hashes | PASS: CCR003, accepted readiness review, and R047 brief match the values above |
+| runtime/Test execution | NOT RUN by Spec: no Node/Test, provider, privilege, sandbox proof, production process, Git mutation, or external action |
+
+These are static document checks, not a Spec Gate, Test Readiness, runtime behavior, or environment proof.
+
+All entries below beginning with R046 are retained historical evidence. They do not override the R047 state, A2 disposition, scope, or next Gate above.
+
+R046 HISTORICAL FINAL: user approved CCR003 H/F; fresh independent input-only readiness Reviewer `/root/ccr003_readiness_r046` returned PASS, Controller accepted and role stopped. No new product decision or plan addition is required. Bounded Spec delta had not yet been dispatched because configured callable juaner_spec was immutable sol/medium while project R2 required sol/high. Exact authority, review and prepared seven-file brief: [R046 Gate](../../../../docs/planning/2026-09-05/automation-repair/reviews/m2-ccr003-readiness-001.md). No Test/production/behavior Spec change, runtime, new waiver, Spec Gate, Test Readiness PASS or Worker followed in R046. Original finite F01–F05 gaps, S11/B1–B5 OPEN, A2 and R044 runtime NOT_PASSED remained.
+
+R045 HISTORICAL: [CCR003](../../../../docs/planning/2026-09-05/automation-repair/m2-contract-change-request-003.md) was then a Controller-only two-item testability proposal, PENDING_USER_DESIGN_DECISION / NOT_DEVELOPMENT_READY. The user authorized preparation, retaining real verification and no new waiver, not the then-proposed exports/seam or implementation. Existing Spec Gate was historical authority for its unchanged scope; it did not approve CCR003. No new runtime evidence, role dispatch, Test/production edit or Worker authority followed in R045.
+
+R044 FINAL: complete Readiness reviewed and NOT PASSED; original Test assets remain incomplete, ordinary Host/private production Handoff remain unwaived, exact A2 unchanged. Final production-delivery-chain.test.mjs SHA fe5a01a1192f5a607e740a787ba61a267290d83f492afa5a47c2a8f76911ca06. Independent17 leaves=7 controlsPASS/4 original causal failures/6 B5 NOT_REACHED; no parent/timeout/cancel/skip. All49 recorded R044 runner owners/groups absent. No production change, full GREEN/regression, final Retirement, implementation Validator, AC completion or Worker authority. Test carrier stopped. Controller does NOT adopt the role report's circular repaired-production-before-RED or final-Retirement-before-TDD_READY release wording. Current finite return and exact original Gates: existing Readiness report and controller-readiness-r044/final-review.md; sole recovery cursor NEXT_ACTION R044. All group records below are historical.
+
+R044 latest009/010 checkpoint: independent17 leaves=12 component controls PASS/2 producer causal failures/3B5 NOT_REACHED, plus1 failed parent; normal close and source/protected identity confirmed. Source hashes and full evidence: controller-readiness-r044/009-010-review.md. No whole AC/Readiness promoted. Original009/010 negative asset gaps remain explicitly pending; compound helper record damage is not isolated role-selection evidence. Same Test next011/012 then complete Readiness. No production/waiver/Worker change; NEXT_ACTION R044 sole cursor. Below are historical checkpoints.
+
+R044 latest checkpoint:006/007/008 bounded asset return at integration721fc959f713930798b120b75823666740d9949e03610adda425051912aae55a and modea0f0c85799e8e61ac7c550423e9b0241e68888114861aeab483a21a575f4e401. Controller independent9 leaves=2 controls PASS/2 courier causal failures/5 upstream B5 NOT_REACHED; normal close, no timeout/cancellation, source and five owner/group readbacks confirmed. Invalid007 placeholder-schema/path matrix withdrawn; ordinary private-Host consumers remain unwaived NOT_VERIFIED.008 composite adjacency and real secondFAIL gaps retained, as is004 full-Core termination. No full Readiness/AC or Worker. Same Test next original009/010 then011/012 and complete Readiness. NEXT_ACTION R044 and controller-readiness-r044/006-008-review.md are current; earlier group records below are historical.
+
+R044 latest group: Controller accepted the bounded shared002/003/004 Test-asset correction return at source a0012b7f4e0963f236c50a232f6e9f53d9abe23b0590bb8160b7980dac2fad6d. Independent13 Node results =4PASS/9FAIL incl1 parent:12 leaves =4 controls PASS/1 causal dirty-index failure/7 upstream B5 failures, normal close and source/owner readback. No suffix causal RED or full Readiness. Original004-L15 full-Core-process termination remains an unverified asset/evidence gap, not waived; stage-child plus Core reconstruction is narrower. Next original006/007/008 under the same approved Test carrier; no Worker/AC completion. See NEXT_ACTION R044 and controller-readiness-r044/003-004-review.md. Earlier current descriptions below are historical group records.
+
+R044 current correction: the002 component run remains valid, but full asset acceptance of its pause/partial failure subcases is withdrawn. Shared Test helper uses non-contract State pause inputs and incomplete/non-Ledger partial receipts (frozen Foundation Design574/576/771–778). Same Test returns within original S11 to correct that helper, rerun affected002, and finish003/004 before the next fixed group. No production/Spec change, new waiver, B closure, Readiness or Worker. The following002 checkpoint wording is historical for the affected subcases; NEXT_ACTION and the existing Readiness report carry the exact return point.
+
+R044 current: the user authorized the fresh sol/high equal-duty Test carrier for original S11 only. Controller accepted the TEST002 source checkpoint at f248c7552424fcca03f6342d2b9400987efa2461a040eb6075095b83265e7fb3; independent7 Node results =2PASS/5FAIL including one failed parent, zero timeout/cancel/skip, owner/group44421 ESRCH. Four failure leaves stop at upstream B5, not downstream causal RED. Same Test continues original003/004 and fixed remaining groups. No whole AC, Readiness, TDD_READY, Worker, contract, configuration, permission or A2-waiver change. Current receipt and execution cursor: NEXT_ACTION R044. R043 and earlier descriptions below are historical.
+
+R043 current: **TEST_READINESS_NOT_PASSED / TEST_ROUTING_DECISION_PENDING**. Final integration SHA bfc19aa401c50bceb24a1f6cfbc46aa7fabd9329cc6bfe969cafa6160891aa8c; mode unchanged. Controller independent10=1PASS/9FAIL, one failed parent, zero cancelled/skipped, normal close. Seven002 leaves fail Test dependency-shape setup, not B5 or causal RED; one010 leaf stops at actual DISPATCH B5;012 mutex/release passes.008/010 source oracles improved but unexecuted;002 defects and original NW/partial remain. The same Test stopped with routing escalation; Controller rejects its alleged missing envelope contract (fixtures already has complete ambiguous/unavailable helpers) and proposes user-approved fresh sol/high equal-duty Test only. No new role dispatched, new A2 waiver, TDD_READY, Worker, production edit or whole AC completion. Ordinary Host/private Handoff choices remain separate. See the existing full Readiness review and NEXT_ACTION R043. All R042 and earlier current-state descriptions below are historical.
+
+R042 current: [full Readiness review](../../../../docs/planning/2026-09-05/automation-repair/reviews/m2-test-005-readiness.md#r042--完整-readiness-结论与有限返回清单) is **TEST_READINESS_NOT_PASSED**. Final integration SHA d7cf022ef9cfc82b19fd62d10d76be2ddf7ef1a433d789d8a633d02744951598; mode SHA 1d2d343fbc5b36affd2ef3e8aa23db291ca72dc09a1b527e6ca518de4dd2cd2e. Controller independent6=1PASS/5FAIL, normal close and owner/group absence; role integration112=31PASS/81FAIL and focused00614=1PASS/13FAIL are separate, include parent aggregates, and are not independent acceptance. Real public chain remains at DISPATCH B5 before Worker. Original NW/partial Test assets, 008 source-before-budget/010 independent evidence oracle gaps, and ordinary private Host/Handoff unwaived boundaries remain open. A2 unchanged. S11 OPEN; Test frozen/stopped, no active runner, no TDD_READY/Worker, no final Retirement/Validator/AC completion. Sole cursor is NEXT_ACTION R042; production and behavior contracts are unchanged.
+
+### Historical group and recovery records (not current position)
+
+Execution in progress after R038: the user authorized the fixed TEST003–004 →005–006→007–012→full Readiness sequence. Same-package terra/high Test is continuing003–004 first under the current continuation brief, with Controller review between groups. R038 remains the latest completed receipt; no TDD_READY, Worker or additional environment authority follows.
+
+`SPEC_GATE_PASS / S09_USER_WAIVED_NOT_VERIFIED / TEST_READINESS_NOT_PASSED / R038_TEST001_002_ASSETS_FROZEN`
+
+Current R038 result: [Controller Gate004](../../../../docs/planning/2026-09-05/automation-repair/reviews/m2-test-004-gate.md) accepts only this selected TEST001/002 asset addition. Independent focused run: 9 = 8 PASS /1 upstream DISPATCH FAIL, zero skip/cancel, real close and PID/group ESRCH. Six permutations prove admission; hash substitution proves oracle health; two real Adapter children prove component receipts, not Core ordering. Core-derived requests and full dual-receipt/remote-readback suffix remain unexecuted. Integration SHA256 `584665093f9a743a1ce65ce55a8ad1641e72924322b4b99c5ac0486791355be5`; other Tests/production/behavior Spec/MASTER_PLAN unchanged. Same Test stopped; S11 remains OPEN, B1–B5 OPEN, no TDD_READY/Worker. Next is the original TEST003–004 asset batch, then005–006/007–012/full Readiness; remaining001/002 unverified or unwritten leaves stay in the original F01–F05 map. [NEXT_ACTION R038](../../../../docs/planning/2026-09-05/automation-repair/NEXT_ACTION.md#progress-receipt-r038) is the sole current cursor. All earlier current/next statements below are historical. A2 remains bounded; ordinary private Host is not automatically waived.
+
+### Controller 2026-09-06 — original F01–F05 continuation after R036 recovery
+
+Current result is [Controller Gate003](../../../../docs/planning/2026-09-05/automation-repair/reviews/m2-test-003-gate.md) and [NEXT_ACTION R037](../../../../docs/planning/2026-09-05/automation-repair/NEXT_ACTION.md#progress-receipt-r037). The same-package terra/high Test carrier completed a bounded partial correction and stopped. Controller independently reran the frozen 34 registrations: 14 PASS / 20 FAIL / zero skip/cancel, normal close, no timeout. One failure remains upstream DISPATCH, not the prescribed Regression RED; the others are limited admission/Adapter/courier frontiers. Two real WORKTREE validation-kind controls passed, not the full Core Regression or Retirement Gate. No whole F01–F05 closure, TDD_READY or Worker is accepted.
+
+Integration SHA256 `148e5ed61087bb03f5a6156a195cc44c5ad430e5563b07f16c813e41463ee29c`; mode SHA256 `a3102d3dacb8dfb03882bebc8daf63c33278f2c2fb5d374a596394eba1db92af`. Source/complete output/final process and scope evidence are in Gate003. Test-only fixture and future action/artifact order were corrected; partial dual receipt and stage readback suffixes remain unexecuted. TEST001–012 includes unwritten assets, not merely production-unreachable evidence. Next is Gate003's finite original Test order, beginning with TEST001 ordering/derivation and TEST002 receipt oracles. Ordinary private Host child-close/schema execution remains NOT_VERIFIED, not automatically A2-waived. No new privilege/seam/waiver decision was made. B0/M1 remains closed; B1–B5 and S11 remain open. MASTER_PLAN/behavior Spec/production/WVEB/snapshot unchanged. All earlier "current" and stop statements below are historical, superseded only for this R037 execution position.
+
+### Controller 2026-09-06 — R035 partial correction return, no TDD_READY
+
+[Gate002](../../../../docs/planning/2026-09-05/automation-repair/reviews/m2-test-002-gate.md) records cleanup completion, exact two-file frozen identity and Controller's independent15-leaf run (exit1,15FAIL,0PASS/skip/cancel), not15 accepted causal REDs. Real public Core/local bare-Ledger stops during DISPATCH identity readback before Worker/Regression; 003 health assertions remain after its missing-factory guard; Host courier is component-only and does not cover schema/Core/private child-close. All limitations and original F01–F05 remaining work are finite in that Gate. Same Test role has stopped, no active runner; S11/Readiness and B1–B5 remain open. [NEXT_ACTION R035](../../../../docs/planning/2026-09-05/automation-repair/NEXT_ACTION.md#progress-receipt-r035) is current. No route, behavior contract, A2, Worker or external authority changes.
+
+### Controller 2026-09-06 — R034 authorized cleanup return
+
+User authorized one sandbox-external SIGTERM, no sudo. Fresh identity checks matched the four exact Test processes; the command returned exit0 and targeted ps/lsof confirmed all four absent. [Cleanup evidence](/private/tmp/juanerai-m2-test001.gC26fB/controller-cleanup-001.md) preserves the scope and original draft. The cleanup-only blocker is removed; S11 remains OPEN for the same authorized Test001's finite F01–F05 corrections and original full Readiness. No B closes. Current cursor: [R034](../../../../docs/planning/2026-09-05/automation-repair/NEXT_ACTION.md#progress-receipt-r034). Earlier process-blocked statements below are historical. Production, behavior contracts, A2 and Worker lock remain unchanged.
+
+### Controller 2026-09-06 — Test001 return, original Test Gate not passed
+
+The user-approved temporary terra/high Test001 was dispatched and has now stopped. [Controller Gate001](../../../../docs/planning/2026-09-05/automation-repair/reviews/m2-test-001-gate.md) records the finite F01–F05 Test-design/execution corrections and exact task-process cleanup blocker; [NEXT_ACTION R033](../../../../docs/planning/2026-09-05/automation-repair/NEXT_ACTION.md#progress-receipt-r033) is the current recovery cursor.
+
+Existing-suite health was restored with a link to already-installed matching dependencies (no install): 717 PASS/0 FAIL, not M2 evidence. Only one new Test file was written, six cases registered, and full coverage/causal RED Readiness was not established. The draft uses inappropriate constant Git/validation/Ledger successes for its claimed integration boundary, obsolete prefix inputs and unbound artifact evidence; initial final cases fail helper ordering. Subsequent unbounded Test invocations remain alive because ordinary scoped termination was denied. No further test run or Worker is permitted until exact task-child cleanup and return to Test Design. The new Test's current frozen SHA is `22c7cfcef1a7fd15747886bd3644c9b21e8cde70aed7dacc0412a8f91c69d968`; that version was not accepted as the executed RED set.
+
+S10 is CLOSED_RETURNED by actual dispatch. S11 is the original M2/B1–B5 Test Design/RED/Readiness correction branch, not a Spec/VM/model change. B1–B5 remain OPEN, A2/S09 remains USER_WAIVED / NOT_VERIFIED, and all production plus proposal/design/delta contracts remain unchanged. No TDD_READY, implementation, K1/K2, Retirement, independent Validator, PR/Handoff or M4 success is claimed. Historical R031 prerequisite wording below is superseded only by this current execution receipt, not by reapproving any environment action.
+
+### Controller 2026-09-06 — bounded user environment-verification waiver
+
+Current authority is the user's explicit risk waiver recorded in [MASTER_PLAN A2](../../../../docs/planning/2026-09-05/automation-repair/MASTER_PLAN.md#用户风险豁免-a2s09-环境验证不再阻塞2026-09-06), with the recovery cursor in [NEXT_ACTION R031](../../../../docs/planning/2026-09-05/automation-repair/NEXT_ACTION.md#progress-receipt-r031). S09 is **WAIVED_RETURNED / NOT_VERIFIED**, not a test PASS or verified closure. No VM preparation, installation, privilege use, or VM test is authorized or required to advance the current repair.
+
+Only the mapped environment-dependent evidence Gates are overridden: the privileged fixed-profile preflight before TDD_READY, actual isolation/content proof in that environment, and dependent production Host proof / repair K2 positives. This does not waive the implementation contract, other executable RED/GREEN/Regression/Retirement, Candidate/readback, Final Validation, fresh independent Validator, PR/Handoff, or unwaived failure handling. Test must distinguish executable leaves from directly dependent waived leaves; no fake owner/Core/proof, mock, early rejection, or component PASS may supply the missing real positive. Precise AC/Test/task mapping and residual compatibility/isolation/full-run risks are in A2, not a second state system.
+
+M4 may use the explicit waiver together with all other applicable evidence to form Desktop startup-decision material, but may not claim all original checks passed or authorize Desktop startup. Do not turn future VM construction into a new blocker or automatically restore this prerequisite at M3; any renewed verification needs a concrete reason and separate authorization. Actual production deployment retains its separate authority Gate.
+
+Spec Gate PASS is retained. B0 remains CLOSED; B1–B5 remain OPEN. This record itself claims no Test execution, RED, TDD_READY, implementation, K1/K2, or Validator result. The configured Test role's R2 dispatch capability is checked separately at the original Test entry; see R031 for the current role/stop point. All prior prerequisite and permission statements below describe their historical turn, not current authority.
+
+### Controller review005 — historical Spec Gate authority
+
+2026-09-05: Controller accepted the final seven-file CCR002 submission after complete correctness and mandatory ponytail review. See [review005](../../../../docs/planning/2026-09-05/automation-repair/reviews/m2-spec-review-005.md). F01-R remains SPEC_CLOSED; F03-R is now SPEC_CLOSED; the complete Spec Gate is PASS. S08 is CLOSED_RETURNED to the original M2 Test Design point. These are specification-only conclusions; B1–B5 remain OPEN.
+
+The remaining `M2_PRIVILEGED_PROOF_ENV_REQUIRED` prerequisite is recorded as S09 in the existing NEXT_ACTION R027. A compatible existing isolated macOS environment and separate exact offline execution authority are not yet established. Real root/runtime-uid/fixed-profile positive preflight is mandatory before TDD_READY; production Host proof and the complete repair K2 positive remain mandatory after implementation. Unprivileged negatives and M3 activation cannot substitute. This is a planning prerequisite label, not a new runtime error/state/event.
+
+The current authorization ends at this design/Gate receipt. No Test/Worker/Validator dispatch, Test write, privilege use, sandbox proof, installation, provider/model execution, Git integration, or production-host action was performed or granted by this result. The Spec role is complete/stopped. Continue only from NEXT_ACTION R027; do not reopen B0/F01 or either design approval.
+
+The submission sections below and companion-file DRAFT/review-pending markers are preserved as the role's pre-Controller submission history, not the current Gate. [Final submission identities](/private/tmp/juanerai-m2-spec001-evidence.qKwqcm/review005-spec-return.json) were captured before this annotation. This Controller section supersedes the historical Gate/next-owner wording below.
+
+## Historical final Spec submission
+
+Controller review004 accepted F01-R as specification-only closure and returned F03-R as the sole contract blocker. The user then approved `DECISION-M2-REPAIR-RUNTIME-CONTENT-002` through `m2-spec-runtime-content-approval-002.md`. This revision expresses that bounded design only. Spec Gate remains NOT PASS and requires fresh complete Controller correctness/ponytail review.
+
+F01-R remains frozen: restart after physical stage/ref movement without the independently verified tree manual-stops, while normal fresh STAGE entry remains legal. F03-R now uses one new Host-owned proof generated by rerunning final captured Test bytes against an independently materialized immutable Candidate tree; it does not promote old command events or post-close observations. Both user approvals are design inputs only. No Test or Worker is authorized; these revisions are not Controller acceptance.
+
+This file records Specification-package checks only. It does not claim Spec Gate PASS, RED, TDD_READY, implementation, K1, K2, GREEN, Regression, Test Asset Retirement, independent Validator PASS, acceptance, integration, host installation, external action, archive, or M3/M4 completion.
+
+Controller reviews `m2-spec-review-001.md` through `m2-spec-review-004.md` did not pass the Spec Gate and remain historical evidence. The user explicitly approved both repair decisions. This draft preserves the first and specifies the second without claiming implementation, runtime capability, or Gate closure. Only the Controller may decide the Spec Gate.
+
+## 1. Frozen Input Identity
+
+| Input | Identity / status |
+|---|---|
+| Worktree | `/private/tmp/juanerai-m2-contracts.pmf2G7` |
+| Branch | `work/macbook/automation-repair-m2-contracts` |
+| Starting Head | `1fe517a1b820ae4bae1e5dede6a8f69a6bffabbd` |
+| Spec brief | `docs/planning/2026-09-05/automation-repair/m2-spec-001-brief.md` |
+| Spec brief SHA-256 | `1970a07cbd7f924f1f026b055fd7dc0fe5bef00df17abdc6cc0e46bfa46f8e44` |
+| Review002 SHA-256 | `4091937876146e157df0e997e7540cfb52c1445b51ee5b85dde8f2209f7e8c9b` |
+| Review003 SHA-256 | `464b7249afadf128f7242ef451dc3d848285460861fa0f77365e5c94b3dc6308` |
+| Review003 return brief SHA-256 | `0861aada497b749a5ad490e2cbd7dc3ff8579efd8de02c54261dd3faebf5609b` |
+| Repair evidence approval SHA-256 | `47eec5fbe3d2efc579f8777f6e3da971b6fa6fd46cd2400f855b16d8c8783a0d` |
+| Review004 SHA-256 | `6a2752a1158700d79f5e21e597cfc112d7f1233747f87f09c500d432d07ab559` |
+| CCR002 SHA-256 | `7e973d84a8775f234a1c4e9e7bd79f8b06e37d36d813d2fd3f3d7afc35606c34` |
+| Runtime-content approval SHA-256 | `b49ab568a729c5fdc8862bead99467673cbc49ed7f45ddcb8e6f47ea20bf6b88` |
+| Adopted C2-C7 approval body SHA-256 | `121787ec1532d7df805c323aa4f39a8f2f0e634f47367e3a57d347089d0a8c4c` |
+| Product plan readiness | `m2-plan-readiness-001.md`: Controller-accepted fresh `PASS` input |
+| Change ID | `change-coordinator-production-delivery-chain` |
+| Route | one R2 boundary Change, K1 then K2, B1 through B5 |
+
+The readiness result is an input to Spec, not an implementation or acceptance verdict.
+
+## 2. Specification Package
+
+The complete owned package is exactly:
+
+1. `proposal.md`
+2. `specs/dual-device-transition-foundation/spec.md`
+3. `design.md`
+4. `test-plan.md`
+5. `tasks.md`
+6. `traceability.md`
+7. `verification.md`
+
+No canonical specification, archive, production source, Test/fixture/helper, planning, project-control, role/configuration, dependency, Git index, branch, or external system is owned by this Spec task.
+
+## 3. Contract Closure Checklist
+
+| Contract surface | Package location | Draft check |
+|---|---|---|
+| C2 exact IDs, six-field admission, fixed purpose/order, eight-field derivation/hash, first/repair Worktree Head | delta REQ-001; Design 3; Test 001-002 | PRESENT |
+| C3 legal dirty tree, empty index, lossless path/status/content, exact literal stage and drift fence | delta REQ-002; Design 5; Test 002-004 | F01-R CLOSED IN DRAFT: EXPLICIT TREE + RESTART MANUAL STOP |
+| C4 Candidate increment versus cumulative Handoff paths; raw canonical diff unchanged | delta REQ-002 and 005-05; Design 5 and 10.1; Test 003-004, 009 | PRESENT |
+| C5 same execute with only one Candidate branch, exact 24-field table/tuples/nullability/real child/pre-post checks | delta REQ-003; Design 4; Test 005 | PRESENT |
+| WVEB compatibility | delta modified AC-WVEB-003; Design 4.1; Test 005 plus byte-identical retained WVEB suite | PRESENT |
+| C6 closed Validator artifact/RESULT, schema/hash/Head/findings/notes and courier host | delta REQ-004; Design 7.1-7.2; Test 006 | REVISED FOR REVIEW001 F03 |
+| C6 one causal repair input/artifact proof | delta AC-M2-004-04..06; Design 7.3-7.5; Test 007-008 | BOTH DECISIONS APPROVED; CLOSED DESIGN PRESENT; EXECUTION NOT RUN |
+| C7 seven event details, 12/24 receipt union, canonical remote bytes, PASS-chain evidence, stable delivery/PR/Handoff and no self-reference | delta REQ-005; Design 6 and 8-10; Test 002, 004, 006, 009-010 | REVISED FOR REVIEW001 F04 |
+| C7 repair-attempt Handoff evidence | delta AC-M2-005-04; Design 7.3-7.5 and 9; Test 007, 010 | CLOSED DESIGN PRESENT; ATTEMPT-ONE EVIDENCE NOT RUN |
+| failure evidence versus forbidden progress | delta REQ-006-01; Design 11.1; Test 011 | PRESENT |
+| concurrency/cancel/timeout/late/partial/terminal writes/linearization | delta REQ-006; Design 11-12; Test 011-012 | PRESENT |
+| offline real frontier and M3/M4 stop line | proposal; delta REQ-006-08; Design 14; Test 1-2/8-9; Tasks 2/5 | M2 ROOT/RUNTIME-UID POSITIVE RETAINED; ENVIRONMENT/AUTHORITY NOT VERIFIED |
+
+The two easily conflicting rules are intentionally explicit across the package:
+
+- the prior unconditional Candidate rejection in `AC-WVEB-003` is replaced only for the exact new `final-validation-candidate / CANDIDATE` branch; the accepted WORKTREE branch and its cross-kind rejection behavior remain unchanged;
+- failed evidence never authorizes dependent progress. Durable BLOCKED is claimed only after authoritative failure/BLOCKED Ledger and BLOCKED State readback; Ledger unavailability or ambiguity instead preserves the prior phase, writes/readbacks only the exact local pause, and claims neither a durable BLOCKED event nor macro-state.
+
+## 3.1 Review001-003 Disposition
+
+| Finding | Bounded response | Current status |
+|---|---|---|
+| F01 cross-call/content-selection binding | One public call plus explicit `commit-tree <verified-tree>`, exact message, old-parent ref CAS, and distinct pre-object/pre-ref/post-ref stops prevent mutable index selection without pretending to exclude an external writer | REVISED FOR REVIEW002 |
+| F02 dynamic signed input | Approved repair-only binding carries actual canonical derived bytes/base64/hash and fixed effective framing while signed base bytes/hash stay immutable; no publisher/path/network is added | APPROVED / SPECIFIED |
+| F03 role evidence and actual host producer | Validator courier remains exact; CCR002 adds one Host-owned sealed Candidate/final-Test rerun and distinct proof artifact, while JSONL/post-close observations remain excluded. CCR002 alone owns repair Test RESULT `repair_proof`, repair Worker binding `repair_proof`, and Worker RESULT `repair_delivery`; 001 did not approve those fields | REVISED FOR CONTROLLER REVIEW |
+| F04 cycle/attempt association | Current cycle and attempts are reconstructed from existing command/Agent/receipt/Candidate sequence with exact adjacency/ref slicing and conflict rules | REVISED |
+| F05 commands/frontiers/time | Exact Git argv/ordering, Candidate admission-versus-observation frontiers, and non-absolute timeout semantics are synchronized | REVISED |
+| P01 stage hash protocol | Removed `JUANERAI_M2_STAGE_CONTENT_V1` and two exposed hashes; direct retained WVEB-record versus index-blob comparison is used | REVISED / NET SIMPLIFICATION |
+| F01-R restart independence | A fresh STAGE entry remains legal only at unchanged parent/empty index after re-reading the two Regression receipts and freshly proving the snapshot. Restart after surviving physical stage or moved Head has lost independent `expected_tree` and manual-stops even if the observed commit/tree/trailer is self-consistent | CLOSED IN DRAFT / CONTROLLER REVIEW PENDING |
+| F03-R execution-time content identity | Host accepts only an Agent plan, captures final Test bytes, independently materializes/seals the immutable Candidate plus overlay, and performs new exact per-finding RED/control executions under one fixed sandbox profile. Protected-path proof summary plus proof-bound Worker/post-Worker snapshot closes Candidate delivery; old logs cannot attest A-to-B or modify/restore histories | CCR002 SPECIFIED / CONTROLLER REVIEW PENDING |
+
+## 4. Requirement and Evidence Accounting
+
+| Item | Count / status |
+|---|---|
+| Added requirements | 6 |
+| Added acceptance criteria | 40 (`5 + 7 + 5 + 7 + 8 + 8`) |
+| Adopted decisions mapped | C2-C7 |
+| Master Plan blockers mapped | B1-B5 |
+| Internal checkpoints mapped | K1 and K2 |
+| Stable Test parents planned | TEST-M2-001..012 |
+| Independent causal RED groups planned | RED-M2-001..006 including actual repair proof isolation/content negatives |
+| Task IDs | 24 (`TASK-M2-001..005`, `010..012`, `020..023`, `030..035`, `040..045`) |
+| Production paths | 4 existing files only |
+| Conditional production paths | none |
+| Event classes | existing 7 only |
+| Recovery boundaries | existing 4 only |
+| Public Coordinator methods / macro states / process mutex / Global WIP | existing 4 / 6 / 1 / 1 |
+
+Every AC is mapped to C/B/K, a primary Test, a production target, and a task in `traceability.md`. All executable results remain `PENDING`.
+
+## 5. Path and Retirement Boundary
+
+Future production eligibility, only after TDD_READY, is exactly:
+
+- `tools/harness/change-coordinator/coordinator.mjs`
+- `tools/harness/change-coordinator/production.mjs`
+- `tools/harness/change-coordinator/adapters.mjs`
+- `tools/harness/change-coordinator/host-loop.mjs`
+
+There is no conditional production path. The snapshot evaluator and accepted WVEB Test body are forbidden. The planned Test set is bounded to the four existing Test/support files plus at most one new visible integration Test after Test preflight.
+
+Retirement policy retains every existing behavior Test, preserves the WVEB Test byte-identically, replaces only named obsolete placeholder fixture forms with exact closed M2 builders, and forbids unexplained mass deletion, tracked temporary evidence, a new fixture framework, source rewrite, or mock Core. Final Test Asset Retirement remains a later Controller Gate after GREEN/regression.
+
+## 6. Read-only Specification Checks
+
+Executed after all seven files existed:
+
+| Check | Actual result |
+|---|---|
+| `shasum -a 256` on the governing brief | PASS: `1970a07cbd7f924f1f026b055fd7dc0fe5bef00df17abdc6cc0e46bfa46f8e44` |
+| exact owned-file inventory | PASS: exactly the seven paths listed in section 2 |
+| draft001 Node read-only identifier/cross-reference check | PASS at frozen draft001: 6 REQs, 40 unique ACs, all 40 present in traceability with no missing/extra AC, 12 Test parents, 6 RED groups, and 22 Task IDs |
+| Markdown fence parity | PASS: every owned file has an even fence count |
+| trailing whitespace scan | PASS: zero findings in the seven owned files |
+| `git status --short` scope observation | PASS for Spec ownership: the new Change directory is untracked; separately present planning/project-control modifications remain Controller-owned and were not changed or reverted by Spec |
+| installed offline OpenSpec validator discovery | NOT RUN: `command -v openspec` returned no executable; no tool was downloaded or installed |
+| review001 revision identifier/cross-reference check | PASS: exactly 7 files, 6 REQs, 40 unique ACs with all 40 in traceability and no extra AC, 12 Test parents, 6 RED groups, 23 Task IDs, no malformed `REQ-M2-nnn-nn` references |
+| review001 revision Markdown/retired-protocol check | PASS: balanced fences, zero trailing whitespace, no old second-FAIL/manual mapping, no live `RepairTestInputV1` schema, no live stage-content hash fields, and no absolute-timeout claim |
+| review003 bounded-return identifier/cross-reference check | PASS: exactly 7 files, 6 REQs, 40 unique ACs with all 40 in traceability and no extra AC, 12 Test parents, 6 RED groups, and 24 Task IDs |
+| review003 bounded-return status/format check | PASS: all seven files carry `BLOCKED / DECISION-M2-REPAIR-RUNTIME-CONTENT-002_REQUIRED`; all fences are balanced and trailing whitespace is zero |
+| rejected F03-R producer-claim scan | PASS: no live `host-matched real`, JSONL command-proof matcher, repair-only verifier, host-observed-check, or exact repair PASS-branch claim remains; rejected examples remain only as explicit negatives |
+| CCR002 governing hashes | PASS: review004, CCR002, and runtime-content approval hashes equal the values recorded in section 1 |
+| CCR002 seven-file frozen-draft check | PASS: exactly 7 owned files; all current headers are `DRAFT / CONTROLLER_REVIEW_PENDING_AFTER_CCR002`; 6 REQs, 40 unique ACs, all 40 traced, 12 Test parents, 6 RED groups, 24 unique Task IDs; balanced fences and zero trailing whitespace |
+| CCR002 M2 runtime/profile/root positive | NOT_RUN / OPEN PREREQUISITE: this Specification task performed no sandbox child or root/uid/gid action. A future explicitly authorized isolated privileged offline macOS environment must pass the real positive before TDD_READY and full production proof/K2 after implementation. Unprivileged negatives and M3 do not substitute |
+| Current local environment suitability | NOT SATISFIED: current uid is 501 and the observed Homebrew toolchain is not the required root-owned/runtime-nonwritable privileged environment; no installation, privilege use, or host change was attempted |
+
+No Test suite, canonical runtime validation, `git diff --check` over future tracked production/Test changes, Git mutation, network, Agent/provider/model child, GitHub, host, product, or external action was run. Those are outside this Spec verification or require later lifecycle authority.
+
+## 7. Gate State and Next Owner
+
+R109 supersedes submission-level current markers only. The user-approved C2 object-reader contract is now present; the Controller must complete correctness and mandatory ponytail review over the same seven files. Current authority permits no Test dispatch, Worker work, behavior execution, privileged/real remote effect, A2 expansion, or Gate claim. All historical evidence remains bound to its original file hashes and status.
+
+| Gate | State |
+|---|---|
+| Product semantics C2-C7 | adopted input |
+| Development readiness review | Controller-accepted PASS input |
+| Complete Spec package | seven owned files synchronized through R109; C1/C2/C3 contracts present |
+| Controller correctness review | pending for frozen R109 package |
+| Mandatory ponytail review | fresh complete-package review pending; no self-signed result |
+| Repair derived-input authority | `DECISION-M2-REPAIR-EVIDENCE-001` USER APPROVED; NOT IMPLEMENTED |
+| Repair execution-content authority | `DECISION-M2-REPAIR-RUNTIME-CONTENT-002` USER APPROVED FOR DESIGN; NOT IMPLEMENTED/RUN |
+| Spec Gate | CONTROLLER_GATE_PENDING_R109; NOT PASSED; no self-signed Gate |
+| M2 privileged offline environment/authority | A2 USER_WAIVED / NOT_VERIFIED for its mapped leaves; not a current TDD_READY prerequisite and not C2 evidence |
+| Test Design / RED / TDD_READY | NOT AUTHORIZED / NOT RUN / NOT GRANTED |
+| Production implementation / K1 / K2 | NOT AUTHORIZED / NOT RUN / NOT RUN |
+| GREEN / Regression / Test Asset Retirement | NOT RUN |
+| Independent verification | NOT DISPATCHED |
+| Acceptance / M3 / M4 / external action | NOT AUTHORIZED |
+
+Next owner is the Controller for one complete correctness and mandatory ponytail review of the same seven-file package. The C2 content choice is resolved. After a Spec Gate PASS, the existing standing workflow may dispatch a fresh Test role to the original 009 -> 010 -> 011/readiness sequence; A2-mapped leaves remain waived/not verified and do not become PASS. No Test role, RED, privileged execution, production work, host action, or lifecycle advance is currently authorized.

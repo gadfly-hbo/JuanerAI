@@ -1,5 +1,7 @@
 # Tasks: Change Coordinator Production Delivery Chain
 
+> Archive history (2026-09-14): Controller accepted the applicable local repair under R242/R248 and authorized mechanical archive in R258. Historical Gate/task/evidence text below is preserved, not a current pending verdict. S09/A2 remains USER_WAIVED / NOT_VERIFIED; target-host deployment, EMPTY/D1 and BLK-D1A-008 remain pending. This archive does not authorize Desktop or a product DISPATCH.
+
 <!-- R216_SPEC_BEGIN -->
 ## R216 — finite F1/F2 correction task application
 
@@ -41,7 +43,7 @@ R174 applies existing tasks without creating or renumbering a task:
 No box is checked by this Spec return. Spec Gate, Test Design, RED, either TDD_READY, implementation, GREEN, regression, Retirement, Validator, acceptance, external action, and lifecycle advance remain separate. Any need for another Test/production path, new Core export, composition input, State/error/schema/lifecycle behavior, lock/retry/recovery/durability machinery, real Host/credential/network action, or changed exact test mapping returns `BLOCKED / CONTRACT_CHANGE_REQUIRED` to Controller.
 <!-- R174_STATE_FIRST_WRITE_END -->
 
-> Current R109 Specification return (2026-09-09): the user-approved R107 C2 object-reader contract is synchronized with the original S21/R085 and unaffected R047/R059/R063 contracts. [Verification](verification.md) and [MASTER_PLAN A2](../../../docs/planning/2026-09-05/automation-repair/MASTER_PLAN.md#用户风险豁免-a2s09-环境验证不再阻塞2026-09-06) remain authoritative. Production/Test are frozen and S09 stays USER_WAIVED / NOT_VERIFIED. The current return point is the Controller's complete correctness/ponytail Gate, not Test Design, production, or VM preparation.
+> Current R109 Specification return (2026-09-09): the user-approved R107 C2 object-reader contract is synchronized with the original S21/R085 and unaffected R047/R059/R063 contracts. [Verification](verification.md) and [MASTER_PLAN A2](../../../../docs/planning/2026-09-05/automation-repair/MASTER_PLAN.md#用户风险豁免-a2s09-环境验证不再阻塞2026-09-06) remain authoritative. Production/Test are frozen and S09 stays USER_WAIVED / NOT_VERIFIED. The current return point is the Controller's complete correctness/ponytail Gate, not Test Design, production, or VM preparation.
 
 ## Status and Ordering
 

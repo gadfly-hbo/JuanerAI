@@ -1,5 +1,7 @@
 # Design: Change Coordinator Production Delivery Chain
 
+> Archive history (2026-09-14): Controller accepted the applicable local repair under R242/R248 and authorized mechanical archive in R258. Historical Gate/task/evidence text below is preserved, not a current pending verdict. S09/A2 remains USER_WAIVED / NOT_VERIFIED; target-host deployment, EMPTY/D1 and BLK-D1A-008 remain pending. This archive does not authorize Desktop or a product DISPATCH.
+
 <!-- R216_SPEC_BEGIN -->
 ## R216 — F1 unpublished Ledger evidence-object builder
 
