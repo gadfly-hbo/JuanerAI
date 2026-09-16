@@ -1185,8 +1185,352 @@ export function createTrustedHostLoop(options) {
   });
 }
 
-export async function serveTrustedHostLoop(hostLoop, socketPath = HOST_SOCKET_PATH, runtime_gid = null) {
+const STARTUP_DIRECTORY = path.dirname(HOST_SOCKET_PATH);
+const STARTUP_PARENT_CHAIN = Object.freeze([
+  ['/private', 0, 0, 0o755],
+  ['/private/var', 0, 0, 0o755],
+  ['/private/var/run', 0, 1, 0o775],
+]);
+const STARTUP_MUTATING_ACL_RIGHTS = new Set([
+  'write', 'append', 'delete', 'delete_child', 'add_file', 'add_subdirectory',
+  'writeattr', 'writeextattr', 'writesecurity', 'chown',
+]);
+const STARTUP_KNOWN_ACL_RIGHTS = new Set([
+  'read', 'write', 'execute', 'delete', 'append', 'readattr', 'writeattr',
+  'readextattr', 'writeextattr', 'readsecurity', 'writesecurity', 'chown',
+  'delete_child', 'add_file', 'add_subdirectory', 'list', 'search', 'noinherit',
+]);
+const STARTUP_CREDENTIAL_PROBE = String.raw`
+import { access, constants } from 'node:fs/promises';
+const [target, uidText, gidText] = process.argv.slice(1);
+const uid = Number(uidText);
+const gid = Number(gidText);
+process.initgroups(uid, gid);
+process.setgid(gid);
+process.setuid(uid);
+if (process.getuid() !== uid || process.geteuid() !== uid
+  || process.getgid() !== gid || process.getegid() !== gid) throw new Error('CREDENTIAL_MISMATCH');
+const groups = [...new Set(process.getgroups())].sort((left, right) => left - right);
+let search = true;
+let write = true;
+try { await access(target, constants.X_OK); } catch { search = false; }
+try { await access(target, constants.W_OK); } catch { write = false; }
+process.stdout.write(JSON.stringify({ gid, groups, search, uid, write }) + '\n');
+`;
+
+const startupError = code => new Error(code);
+const sameStartupIdentity = (left, right) => left.dev === right.dev && left.ino === right.ino;
+const startupFailure = (code, work) => Promise.resolve().then(work).catch(error => {
+  if (['STARTUP_DIRECTORY_INPUT_INVALID', 'STARTUP_DIRECTORY_PARENT_INVALID', 'STARTUP_DIRECTORY_TARGET_INVALID',
+    'STARTUP_DIRECTORY_CREATE_FAILED', 'STARTUP_DIRECTORY_RACE', 'STARTUP_DIRECTORY_READBACK_FAILED'].includes(error?.message)) throw error;
+  throw startupError(code);
+});
+
+function startupDirectoryMatches(entry, { uid, gid, mode }) {
+  return entry && typeof entry.isDirectory === 'function' && typeof entry.isSymbolicLink === 'function'
+    && entry.isDirectory() && !entry.isSymbolicLink() && entry.uid === uid && entry.gid === gid
+    && (entry.mode & 0o7777) === mode;
+}
+
+function validStartupInput(startup, runtimeGid) {
+  return closed(startup, ['runtime_uid', 'runtime_gid', 'node_executable', 'os'])
+    && Number.isSafeInteger(startup.runtime_uid) && startup.runtime_uid >= 0
+    && Number.isSafeInteger(startup.runtime_gid) && startup.runtime_gid >= 0
+    && startup.runtime_gid === runtimeGid && typeof startup.node_executable === 'string'
+    && path.isAbsolute(startup.node_executable) && closed(startup.os, ['lstat', 'realpath', 'mkdir', 'open', 'exec'])
+    && Object.values(startup.os).every(value => typeof value === 'function');
+}
+
+function validStartupChild(result) {
+  return closed(result, ['code', 'signal', 'timed_out', 'overflow', 'child_error', 'stdout', 'stderr'])
+    && result.code === 0 && result.signal === null && result.timed_out === false && result.overflow === false
+    && result.child_error === null && Buffer.isBuffer(result.stdout) && Buffer.isBuffer(result.stderr) && result.stderr.length === 0;
+}
+
+function validStartupAcl(bytes) {
+  const text = bytes.toString('utf8');
+  if (!Buffer.from(text, 'utf8').equals(bytes) || !text.endsWith('\n')) return false;
+  const lines = text.slice(0, -1).split('\n');
+  if (lines.length === 0 || lines[0].length === 0) return false;
+  const indexes = new Set();
+  for (const line of lines.slice(1)) {
+    const match = /^\s*(\d+):\s+(\S+)\s+(allow|deny)\s+([a-z_]+(?:,[a-z_]+)*)\s*$/.exec(line);
+    const index = Number(match?.[1]);
+    if (!match || !Number.isSafeInteger(index) || indexes.has(index)) return false;
+    indexes.add(index);
+    const rights = match[4].split(',');
+    if (rights.some(right => !STARTUP_KNOWN_ACL_RIGHTS.has(right))
+      || (match[3] === 'allow' && rights.some(right => STARTUP_MUTATING_ACL_RIGHTS.has(right)))) return false;
+  }
+  return true;
+}
+
+async function observeStartupAcl(startup, target) {
+  const result = await startup.os.exec('/bin/ls', ['-led', target], {
+    shell: false, cwd: '/', env: { LANG: 'C', LC_ALL: 'C', TZ: 'UTC' }, timeout_ms: 5_000,
+    max_stdout_bytes: 65_536, max_stderr_bytes: 65_536,
+  });
+  return validStartupChild(result) && result.stdout.length <= 65_536 && validStartupAcl(result.stdout);
+}
+
+async function observeStartupAccess(startup, target, { requireSearch = true } = {}) {
+  const result = await startup.os.exec(startup.node_executable, ['--input-type=module', '-e', STARTUP_CREDENTIAL_PROBE, '--',
+    target, String(startup.runtime_uid), String(startup.runtime_gid)], {
+    shell: false, cwd: '/', env: { LANG: 'C', LC_ALL: 'C', TZ: 'UTC' }, timeout_ms: 5_000,
+    max_stdout_bytes: 4_096, max_stderr_bytes: 4_096,
+  });
+  if (!validStartupChild(result) || result.stdout.length > 4_096) return false;
+  const text = result.stdout.toString('utf8');
+  if (!Buffer.from(text, 'utf8').equals(result.stdout) || !text.endsWith('\n') || text.indexOf('\n') !== text.length - 1) return false;
+  try {
+    const receipt = JSON.parse(text);
+    return canonical(receipt) === text.slice(0, -1) && closed(receipt, ['gid', 'groups', 'search', 'uid', 'write'])
+      && receipt.uid === startup.runtime_uid && receipt.gid === startup.runtime_gid
+      && typeof receipt.search === 'boolean' && (!requireSearch || receipt.search === true) && receipt.write === false
+      && Array.isArray(receipt.groups) && receipt.groups.length > 0 && receipt.groups.includes(startup.runtime_gid)
+      && receipt.groups.every((group, index) => Number.isSafeInteger(group) && group >= 0
+        && (index === 0 || receipt.groups[index - 1] < group));
+  } catch { return false; }
+}
+
+async function readStartupPath(startup, target) {
+  const entry = await startup.os.lstat(target);
+  return { entry, physical: await startup.os.realpath(target) };
+}
+
+function startupPathMatches(observation, target, expected) {
+  return observation.physical === target && startupDirectoryMatches(observation.entry, expected);
+}
+
+async function readStartupBoundPath(startup, target, expectedIdentity, failureCode) {
+  const entry = await startupFailure(failureCode, () => startup.os.lstat(target));
+  if (expectedIdentity !== null && !sameStartupIdentity(expectedIdentity, entry)) throw startupError('STARTUP_DIRECTORY_RACE');
+  return startupFailure(failureCode, async () => ({ entry, physical: await startup.os.realpath(target) }));
+}
+
+async function startupParentChain(startup, previous = null) {
+  const observed = [];
+  for (const [index, [target, uid, gid, mode]] of STARTUP_PARENT_CHAIN.entries()) {
+    const expected = { uid, gid, mode };
+    const initialEntry = await startup.os.lstat(target);
+    if (previous !== null && !sameStartupIdentity(previous[index], initialEntry)) throw startupError('STARTUP_DIRECTORY_RACE');
+    const initial = { entry: initialEntry, physical: await startup.os.realpath(target) };
+    if (!startupPathMatches(initial, target, expected)) return null;
+    if (!await observeStartupAcl(startup, target) || !await observeStartupAccess(startup, target)) return null;
+    const finalEntry = await startup.os.lstat(target);
+    if (!sameStartupIdentity(initial.entry, finalEntry)
+      || (previous !== null && !sameStartupIdentity(previous[index], finalEntry))) throw startupError('STARTUP_DIRECTORY_RACE');
+    const final = { entry: finalEntry, physical: await startup.os.realpath(target) };
+    if (!startupPathMatches(final, target, expected)) return null;
+    observed.push(final.entry);
+  }
+  return observed;
+}
+
+async function startupDirectoryOsChild(executable, argv, options) {
+  return new Promise(resolve => {
+    let childError = null; let timedOut = false; let overflow = false; let done = false; let timer = null;
+    const stdout = []; const stderr = []; let stdoutBytes = 0; let stderrBytes = 0;
+    const child = spawn(executable, argv, { shell: false, stdio: ['ignore', 'pipe', 'pipe'], cwd: options.cwd, env: options.env });
+    const finish = (code, signal) => {
+      if (done) return;
+      done = true;
+      if (timer !== null) clearTimeout(timer);
+      resolve({ code, signal, timed_out: timedOut, overflow, child_error: childError,
+        stdout: Buffer.concat(stdout), stderr: Buffer.concat(stderr) });
+    };
+    const terminate = () => {
+      try { child.kill('SIGTERM'); } catch {}
+      try { child.kill('SIGKILL'); } catch {}
+      try { child.stdout.destroy(); } catch {}
+      try { child.stderr.destroy(); } catch {}
+      try { child.unref(); } catch {}
+    };
+    const stop = () => { if (done) return; terminate(); finish(null, null); };
+    const collect = (sink, kind) => chunk => {
+      if (done) return;
+      if (kind === 'stdout') stdoutBytes += chunk.length; else stderrBytes += chunk.length;
+      if (stdoutBytes > options.max_stdout_bytes || stderrBytes > options.max_stderr_bytes) { overflow = true; stop(); return; }
+      sink.push(Buffer.from(chunk));
+    };
+    child.once('error', error => { childError ??= error; stop(); });
+    child.stdout.on('data', collect(stdout, 'stdout'));
+    child.stderr.on('data', collect(stderr, 'stderr'));
+    child.stdout.once('error', error => { childError ??= error; stop(); });
+    child.stderr.once('error', error => { childError ??= error; stop(); });
+    timer = setTimeout(() => { timedOut = true; stop(); }, options.timeout_ms);
+    child.once('close', (code, signal) => finish(code, signal));
+  });
+}
+
+function nativeStartupDirectoryOs() {
+  return Object.freeze({
+    lstat,
+    realpath,
+    mkdir,
+    async open(target, flags) {
+      const descriptor = await open(target, flags);
+      return Object.freeze({
+        stat: () => descriptor.stat(),
+        chown: (uid, gid) => descriptor.chown(uid, gid),
+        chmod: mode => descriptor.chmod(mode),
+        close: () => descriptor.close(),
+      });
+    },
+    exec: startupDirectoryOsChild,
+  });
+}
+
+async function prepareStartupDirectory(startup, runtimeGid) {
+  if (!validStartupInput(startup, runtimeGid)) throw startupError('STARTUP_DIRECTORY_INPUT_INVALID');
+  const parents = await startupFailure('STARTUP_DIRECTORY_PARENT_INVALID', () => startupParentChain(startup));
+  if (!parents) throw startupError('STARTUP_DIRECTORY_PARENT_INVALID');
+  let initialEntry;
+  try { initialEntry = await startup.os.lstat(STARTUP_DIRECTORY); }
+  catch (error) {
+    if (error?.code !== 'ENOENT') throw startupError('STARTUP_DIRECTORY_TARGET_INVALID');
+    return prepareMissingStartupDirectory(startup, parents);
+  }
+  const initial = await startupFailure('STARTUP_DIRECTORY_TARGET_INVALID', async () => ({
+    entry: initialEntry, physical: await startup.os.realpath(STARTUP_DIRECTORY),
+  }));
+  return prepareExistingStartupDirectory(startup, parents, initial);
+}
+
+async function closeStartupDescriptor(descriptor, primary, fallbackCode) {
+  if (descriptor === null) return primary;
+  try { await descriptor.close(); }
+  catch { return primary ?? startupError(fallbackCode); }
+  return primary;
+}
+
+async function prepareExistingStartupDirectory(startup, parents, initial) {
+  let descriptor = null; let primary = null;
+  try {
+    if (!startupPathMatches(initial, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_TARGET_INVALID');
+    descriptor = await startup.os.open(STARTUP_DIRECTORY, fsConstants.O_RDONLY | fsConstants.O_DIRECTORY | fsConstants.O_NOFOLLOW);
+    const bound = await descriptor.stat();
+    if (!sameStartupIdentity(initial.entry, bound)) throw startupError('STARTUP_DIRECTORY_RACE');
+    const afterOpen = await readStartupBoundPath(startup, STARTUP_DIRECTORY, initial.entry, 'STARTUP_DIRECTORY_TARGET_INVALID');
+    if (!startupDirectoryMatches(bound, { uid: 0, gid: 0, mode: 0o755 })
+      || !startupPathMatches(afterOpen, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_TARGET_INVALID');
+    if (!await startupFailure('STARTUP_DIRECTORY_TARGET_INVALID', () => observeStartupAcl(startup, STARTUP_DIRECTORY))
+      || !await startupFailure('STARTUP_DIRECTORY_TARGET_INVALID', () => observeStartupAccess(startup, STARTUP_DIRECTORY))) {
+      throw startupError('STARTUP_DIRECTORY_TARGET_INVALID');
+    }
+    const afterProbe = await readStartupBoundPath(startup, STARTUP_DIRECTORY, initial.entry, 'STARTUP_DIRECTORY_TARGET_INVALID');
+    const rebound = await descriptor.stat();
+    if (!sameStartupIdentity(initial.entry, rebound)) throw startupError('STARTUP_DIRECTORY_RACE');
+    if (!startupDirectoryMatches(rebound, { uid: 0, gid: 0, mode: 0o755 })
+      || !startupPathMatches(afterProbe, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_TARGET_INVALID');
+  } catch (error) { primary = ['STARTUP_DIRECTORY_RACE', 'STARTUP_DIRECTORY_TARGET_INVALID'].includes(error?.message)
+    ? error : startupError('STARTUP_DIRECTORY_TARGET_INVALID'); }
+  primary = await closeStartupDescriptor(descriptor, primary, 'STARTUP_DIRECTORY_TARGET_INVALID');
+  if (primary) throw primary;
+  const finalParents = await startupFailure('STARTUP_DIRECTORY_PARENT_INVALID', () => startupParentChain(startup, parents));
+  if (!finalParents) throw startupError('STARTUP_DIRECTORY_PARENT_INVALID');
+  const finalTarget = await readStartupBoundPath(startup, STARTUP_DIRECTORY, initial.entry, 'STARTUP_DIRECTORY_TARGET_INVALID');
+  if (!startupPathMatches(finalTarget, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_TARGET_INVALID');
+  if (!await startupFailure('STARTUP_DIRECTORY_TARGET_INVALID', () => observeStartupAcl(startup, STARTUP_DIRECTORY))
+    || !await startupFailure('STARTUP_DIRECTORY_TARGET_INVALID', () => observeStartupAccess(startup, STARTUP_DIRECTORY))) {
+    throw startupError('STARTUP_DIRECTORY_TARGET_INVALID');
+  }
+  const afterFinalProbe = await readStartupBoundPath(startup, STARTUP_DIRECTORY, initial.entry, 'STARTUP_DIRECTORY_TARGET_INVALID');
+  if (!startupPathMatches(afterFinalProbe, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_TARGET_INVALID');
+  const afterAllProbesParents = await startupFailure('STARTUP_DIRECTORY_PARENT_INVALID', () => startupParentChain(startup, finalParents));
+  if (!afterAllProbesParents) throw startupError('STARTUP_DIRECTORY_PARENT_INVALID');
+  const afterAllProbesTarget = await readStartupBoundPath(startup, STARTUP_DIRECTORY, initial.entry, 'STARTUP_DIRECTORY_TARGET_INVALID');
+  if (!startupPathMatches(afterAllProbesTarget, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_TARGET_INVALID');
+  return afterAllProbesParents;
+}
+
+async function prepareMissingStartupDirectory(startup, parents) {
+  const currentParents = await startupFailure('STARTUP_DIRECTORY_PARENT_INVALID', () => startupParentChain(startup, parents));
+  if (!currentParents) throw startupError('STARTUP_DIRECTORY_PARENT_INVALID');
+  if (process.getuid() !== 0 || process.geteuid() !== 0 || process.getgid() !== 0 || process.getegid() !== 0
+    || (process.umask() & 0o700) !== 0) throw startupError('STARTUP_DIRECTORY_INPUT_INVALID');
+  try { await startup.os.mkdir(STARTUP_DIRECTORY, { mode: 0o700 }); }
+  catch (error) { throw startupError(error?.code === 'EEXIST' ? 'STARTUP_DIRECTORY_RACE' : 'STARTUP_DIRECTORY_CREATE_FAILED'); }
+  let descriptor = null; let first = null; let primary = null;
+  try {
+    first = await readStartupPath(startup, STARTUP_DIRECTORY);
+    const initialGid = first.entry.gid;
+    if (!Number.isSafeInteger(initialGid) || initialGid < 0
+      || !startupPathMatches(first, STARTUP_DIRECTORY, { uid: 0, gid: initialGid, mode: 0o700 })) throw startupError('STARTUP_DIRECTORY_CREATE_FAILED');
+    if (!await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => observeStartupAcl(startup, STARTUP_DIRECTORY))
+      || !await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => observeStartupAccess(startup, STARTUP_DIRECTORY, { requireSearch: false }))) {
+      throw startupError('STARTUP_DIRECTORY_READBACK_FAILED');
+    }
+    descriptor = await startup.os.open(STARTUP_DIRECTORY, fsConstants.O_RDONLY | fsConstants.O_DIRECTORY | fsConstants.O_NOFOLLOW);
+    const bound = await descriptor.stat();
+    if (!sameStartupIdentity(first.entry, bound)) throw startupError('STARTUP_DIRECTORY_RACE');
+    const boundPath = await readStartupBoundPath(startup, STARTUP_DIRECTORY, first.entry, 'STARTUP_DIRECTORY_CREATE_FAILED');
+    if (!startupDirectoryMatches(bound, { uid: 0, gid: initialGid, mode: 0o700 })
+      || !startupPathMatches(boundPath, STARTUP_DIRECTORY, { uid: 0, gid: initialGid, mode: 0o700 })) throw startupError('STARTUP_DIRECTORY_CREATE_FAILED');
+    if (!await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => observeStartupAcl(startup, STARTUP_DIRECTORY))
+      || !await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => observeStartupAccess(startup, STARTUP_DIRECTORY, { requireSearch: false }))) {
+      throw startupError('STARTUP_DIRECTORY_READBACK_FAILED');
+    }
+    const boundAfterProbeEntry = await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => startup.os.lstat(STARTUP_DIRECTORY));
+    if (!sameStartupIdentity(first.entry, boundAfterProbeEntry)) throw startupError('STARTUP_DIRECTORY_RACE');
+    const boundAfterProbe = await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', async () => ({
+      entry: boundAfterProbeEntry, physical: await startup.os.realpath(STARTUP_DIRECTORY),
+    }));
+    const reboundBeforeMutation = await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => descriptor.stat());
+    if (!sameStartupIdentity(first.entry, reboundBeforeMutation)) throw startupError('STARTUP_DIRECTORY_RACE');
+    if (!startupPathMatches(boundAfterProbe, STARTUP_DIRECTORY, { uid: 0, gid: initialGid, mode: 0o700 })
+      || !startupDirectoryMatches(reboundBeforeMutation, { uid: 0, gid: initialGid, mode: 0o700 })) throw startupError('STARTUP_DIRECTORY_READBACK_FAILED');
+    if (!await startupFailure('STARTUP_DIRECTORY_PARENT_INVALID', () => startupParentChain(startup, currentParents))) {
+      throw startupError('STARTUP_DIRECTORY_PARENT_INVALID');
+    }
+    await descriptor.chown(0, 0);
+    const afterChown = await descriptor.stat();
+    if (!sameStartupIdentity(first.entry, afterChown)) throw startupError('STARTUP_DIRECTORY_RACE');
+    const afterChownPath = await readStartupBoundPath(startup, STARTUP_DIRECTORY, first.entry, 'STARTUP_DIRECTORY_CREATE_FAILED');
+    if (!startupDirectoryMatches(afterChown, { uid: 0, gid: 0, mode: 0o700 })
+      || !startupPathMatches(afterChownPath, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o700 })) throw startupError('STARTUP_DIRECTORY_CREATE_FAILED');
+    await descriptor.chmod(0o755);
+    const afterChmod = await descriptor.stat();
+    if (!sameStartupIdentity(first.entry, afterChmod)) throw startupError('STARTUP_DIRECTORY_RACE');
+    const afterChmodPath = await readStartupBoundPath(startup, STARTUP_DIRECTORY, first.entry, 'STARTUP_DIRECTORY_CREATE_FAILED');
+    if (!startupDirectoryMatches(afterChmod, { uid: 0, gid: 0, mode: 0o755 })
+      || !startupPathMatches(afterChmodPath, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_CREATE_FAILED');
+    if (!await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => observeStartupAcl(startup, STARTUP_DIRECTORY))
+      || !await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => observeStartupAccess(startup, STARTUP_DIRECTORY))) {
+      throw startupError('STARTUP_DIRECTORY_READBACK_FAILED');
+    }
+    const afterProbeEntry = await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => startup.os.lstat(STARTUP_DIRECTORY));
+    if (!sameStartupIdentity(first.entry, afterProbeEntry)) throw startupError('STARTUP_DIRECTORY_RACE');
+    const afterProbe = await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', async () => ({
+      entry: afterProbeEntry, physical: await startup.os.realpath(STARTUP_DIRECTORY),
+    }));
+    const rebound = await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => descriptor.stat());
+    if (!sameStartupIdentity(first.entry, rebound)) throw startupError('STARTUP_DIRECTORY_RACE');
+    if (!startupDirectoryMatches(rebound, { uid: 0, gid: 0, mode: 0o755 })
+      || !startupPathMatches(afterProbe, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_READBACK_FAILED');
+  } catch (error) { primary = ['STARTUP_DIRECTORY_PARENT_INVALID', 'STARTUP_DIRECTORY_RACE', 'STARTUP_DIRECTORY_READBACK_FAILED', 'STARTUP_DIRECTORY_CREATE_FAILED'].includes(error?.message)
+    ? error : startupError('STARTUP_DIRECTORY_CREATE_FAILED'); }
+  primary = await closeStartupDescriptor(descriptor, primary, 'STARTUP_DIRECTORY_CREATE_FAILED');
+  if (primary) throw primary;
+  const finalParents = await startupFailure('STARTUP_DIRECTORY_PARENT_INVALID', () => startupParentChain(startup, parents));
+  if (!finalParents) throw startupError('STARTUP_DIRECTORY_PARENT_INVALID');
+  const finalTarget = await readStartupBoundPath(startup, STARTUP_DIRECTORY, first.entry, 'STARTUP_DIRECTORY_READBACK_FAILED');
+  if (!startupPathMatches(finalTarget, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_READBACK_FAILED');
+  if (!await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => observeStartupAcl(startup, STARTUP_DIRECTORY))
+    || !await startupFailure('STARTUP_DIRECTORY_READBACK_FAILED', () => observeStartupAccess(startup, STARTUP_DIRECTORY))) {
+    throw startupError('STARTUP_DIRECTORY_READBACK_FAILED');
+  }
+  const afterFinalProbe = await readStartupBoundPath(startup, STARTUP_DIRECTORY, first.entry, 'STARTUP_DIRECTORY_READBACK_FAILED');
+  if (!startupPathMatches(afterFinalProbe, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_READBACK_FAILED');
+  const afterAllProbesParents = await startupFailure('STARTUP_DIRECTORY_PARENT_INVALID', () => startupParentChain(startup, finalParents));
+  if (!afterAllProbesParents) throw startupError('STARTUP_DIRECTORY_PARENT_INVALID');
+  const afterAllProbesTarget = await readStartupBoundPath(startup, STARTUP_DIRECTORY, first.entry, 'STARTUP_DIRECTORY_READBACK_FAILED');
+  if (!startupPathMatches(afterAllProbesTarget, STARTUP_DIRECTORY, { uid: 0, gid: 0, mode: 0o755 })) throw startupError('STARTUP_DIRECTORY_READBACK_FAILED');
+}
+
+export async function serveTrustedHostLoop(hostLoop, socketPath = HOST_SOCKET_PATH, runtime_gid = null, startup = null) {
   if (socketPath !== HOST_SOCKET_PATH) throw new Error('INPUT_INVALID');
+  await prepareStartupDirectory(startup, runtime_gid);
   const server = net.createServer({ allowHalfOpen: true }, socket => {
     const chunks = [];
     let size = 0;
@@ -1262,7 +1606,12 @@ async function main() {
       runtime_gid: config.runtime_gid,
     }),
   });
-  await serveTrustedHostLoop(loop, HOST_SOCKET_PATH, config.runtime_gid);
+  await serveTrustedHostLoop(loop, HOST_SOCKET_PATH, config.runtime_gid, {
+    runtime_uid: config.runtime_uid,
+    runtime_gid: config.runtime_gid,
+    node_executable: config.node_executable,
+    os: nativeStartupDirectoryOs(),
+  });
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

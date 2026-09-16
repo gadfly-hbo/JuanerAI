@@ -1429,90 +1429,1227 @@ test('RED-M2-005 / TEST-M2-006 / 006-L07..L12: controlled courier rejects the co
   });
 });
 
-test('TEST-MA-HOST-003 / AC-MA-003-03,05 / CAN-MA-04: status half-close preserves one asynchronous canonical response', async () => {
-  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+const SDP_FIXED_TARGET = '/private/var/run/juanerai';
+const SDP_FIXED_SOCKET = `${SDP_FIXED_TARGET}/change-coordinator.sock`;
+
+const SDP_HELPER_PROBE_SCRIPT = String.raw`
+import { access, constants } from 'node:fs/promises';
+const [target, uidText, gidText] = process.argv.slice(1);
+const uid = Number(uidText);
+const gid = Number(gidText);
+process.initgroups(uid, gid);
+process.setgid(gid);
+process.setuid(uid);
+if (process.getuid() !== uid || process.geteuid() !== uid
+  || process.getgid() !== gid || process.getegid() !== gid) throw new Error('CREDENTIAL_MISMATCH');
+const groups = [...new Set(process.getgroups())].sort((left, right) => left - right);
+let search = true;
+let write = true;
+try { await access(target, constants.X_OK); } catch { search = false; }
+try { await access(target, constants.W_OK); } catch { write = false; }
+process.stdout.write(JSON.stringify({ gid, groups, search, uid, write }) + '\n');
+`;
+
+async function executeSdpCredentialScript(script, {
+  argv, target, runtime_uid, runtime_gid, phase = 'final', fault = null,
+} = {}) {
+  const vm = await import('node:vm');
+  const calls = [];
+  let uid = 0; let gid = 0; let groups = [0]; let stdout = Buffer.alloc(0);
+  assert.deepEqual(argv, [process.execPath, target, String(runtime_uid), String(runtime_gid)],
+    'credential VM receives the same argv shape as node -e -- target uid gid');
+  const processMembers = {
+    argv: Object.freeze([...argv]),
+    initgroups(candidateUid, candidateGid) {
+      calls.push(['initgroups', candidateUid, candidateGid]);
+      groups = [44, candidateGid, candidateGid];
+    },
+    setgid(candidateGid) {
+      calls.push(['setgid', candidateGid]);
+      gid = candidateGid;
+      if (!groups.includes(gid)) groups.push(gid);
+    },
+    setuid(candidateUid) {
+      calls.push(['setuid', candidateUid]);
+      uid = candidateUid;
+    },
+    getuid() { calls.push(['getuid']); return fault === 'identity-mismatch' ? runtime_uid + 1 : uid; },
+    geteuid() { calls.push(['geteuid']); return uid; },
+    getgid() { calls.push(['getgid']); return gid; },
+    getegid() { calls.push(['getegid']); return gid; },
+    getgroups() { calls.push(['getgroups']); return [...groups]; },
+    stdout: Object.freeze({ write(value) { stdout = Buffer.concat([stdout, Buffer.from(value)]); } }),
+  };
+  if (fault === 'missing-initgroups') delete processMembers.initgroups;
+  if (fault === 'missing-setgid') delete processMembers.setgid;
+  if (fault === 'missing-setuid') delete processMembers.setuid;
+  const processDouble = Object.freeze(processMembers);
+  const access = async (candidatePath, mode) => {
+    calls.push(['access', candidatePath, mode]);
+    if (candidatePath !== target || (mode !== 1 && mode !== 2)) throw new Error('TEST_SDP_ACCESS_INPUT');
+    if (mode === 1 && (phase === 'initial-0700' || fault === 'search-denied')) throw new Error('TEST_SDP_SEARCH_DENIED');
+    if (mode === 2 && fault !== 'write-allowed') throw new Error('TEST_SDP_WRITE_DENIED');
+  };
+  const context = vm.createContext({ Buffer, JSON, process: processDouble, console: Object.freeze({ log() {}, error() {} }) });
+  const fsDefault = Object.freeze({ access, constants: Object.freeze({ X_OK: 1, W_OK: 2 }) });
+  const fsModule = new vm.SyntheticModule(['access', 'constants', 'default'], function initialize() {
+    this.setExport('access', access); this.setExport('constants', fsDefault.constants); this.setExport('default', fsDefault);
+  }, { context });
+  const resolveModule = async specifier => {
+    if (specifier === 'node:fs/promises' || specifier === 'node:fs') return fsModule;
+    throw new Error(`TEST_SDP_FORBIDDEN_IMPORT:${specifier}`);
+  };
+  const module = new vm.SourceTextModule(script, { context, importModuleDynamically: resolveModule });
+  let child_error = null;
+  try {
+    await module.link(resolveModule);
+    await module.evaluate();
+  } catch (error) {
+    child_error = error;
+  }
+  return {
+    result: {
+      code: child_error ? null : 0, signal: null, timed_out: false, overflow: false,
+      child_error, stdout, stderr: Buffer.alloc(0),
+    },
+    audit: { argv: [...argv], calls, phase, fault },
+  };
+}
+
+function assertHealthySdpCredentialAudit({ result, audit }, { target, runtime_uid, runtime_gid, phase }) {
+  assert.equal(result.child_error, null, 'healthy credential helper script completes');
+  assert.deepEqual(audit.calls.slice(0, 3), [
+    ['initgroups', runtime_uid, runtime_gid], ['setgid', runtime_gid], ['setuid', runtime_uid],
+  ], 'credential script performs the exact numeric identity drop in order');
+  for (const name of ['getuid', 'geteuid', 'getgid', 'getegid', 'getgroups']) {
+    assert.equal(audit.calls.some(call => call[0] === name), true, `credential script reads ${name}`);
+  }
+  assert.deepEqual(audit.calls.filter(call => call[0] === 'access').map(call => call.slice(1)),
+    [[target, 1], [target, 2]], 'credential script probes search then write through the controlled native seam');
+  const expected = canonicalJson({
+    gid: runtime_gid, groups: [runtime_gid, 44], search: phase !== 'initial-0700', uid: runtime_uid, write: false,
+  });
+  assert.equal(result.stdout.toString('utf8'), `${expected}\n`,
+    'healthy credential receipt is derived, sorted, unique and canonical');
+}
+
+function sdpStat(stat, overrides = {}) {
+  return new Proxy(stat, {
+    get(value, key) {
+      if (['uid', 'gid', 'dev', 'ino'].includes(key) && Object.hasOwn(overrides, key)) return overrides[key];
+      if (key === 'mode' && Object.hasOwn(overrides, 'mode')) return (stat.mode & ~0o7777) | overrides.mode;
+      const type = overrides.type;
+      if (type && key === 'isDirectory') return () => type === 'directory';
+      if (type && key === 'isSymbolicLink') return () => type === 'symlink';
+      if (type && key === 'isFile') return () => type === 'file';
+      if (type && key === 'isSocket') return () => type === 'socket';
+      const member = Reflect.get(value, key, value);
+      return typeof member === 'function' ? member.bind(value) : member;
+    },
+  });
+}
+
+async function withStartupDirectoryScenario({
+  target = 'existing', mutate = null, hostLoop: suppliedHostLoop = null,
+} = {}, body) {
   const nodeNet = (await import('node:net')).default;
   const nodeFs = (await import('node:fs')).default;
   const { syncBuiltinESMExports } = await import('node:module');
-  const temporary = await mkdtemp('/tmp/jma-half-close-');
-  const testSocketPath = path.join(temporary, 'change-coordinator.sock');
+  const actual = { ...nodeFs.promises };
+  const temporary = await mkdtemp('/tmp/jma-sdp-');
+  const physical = path.join(temporary, 'private', 'var', 'run');
+  const physicalTarget = path.join(physical, 'juanerai');
+  const physicalSocket = path.join(physicalTarget, 'change-coordinator.sock');
+  assert.ok(Buffer.byteLength(physicalSocket) < 104, 'exclusive temporary socket path stays below the native Unix-domain path limit');
+  await actual.mkdir(physical, { recursive: true, mode: 0o755 });
+  await actual.chmod(physical, 0o775);
+  const allocatedRoot = await actual.lstat(temporary).then(stat => ({ dev: stat.dev, ino: stat.ino }));
+  const protectedRoot = path.join(temporary, 'protected-state');
+  await actual.mkdir(protectedRoot, { mode: 0o700 });
+  for (const name of ['State', 'pointer', 'WIP', 'Ledger', 'Handoff']) await actual.writeFile(path.join(protectedRoot, name), `${name}-before\n`);
+  if (target === 'existing') {
+    await actual.mkdir(physicalTarget, { mode: 0o755 });
+    await actual.chmod(physicalTarget, 0o755);
+    await writeFile(path.join(physicalTarget, 'protected.fixture'), 'unchanged\n');
+  }
+
+  const logicalPath = targetPath => {
+    if (targetPath === '/private') return path.join(temporary, 'private');
+    if (targetPath === '/private/var') return path.join(temporary, 'private', 'var');
+    if (targetPath === '/private/var/run') return physical;
+    if (targetPath === SDP_FIXED_TARGET) return physicalTarget;
+    if (targetPath === SDP_FIXED_SOCKET) return physicalSocket;
+    throw new Error(`TEST_SDP_UNEXPECTED_PATH:${targetPath}`);
+  };
+  const metadata = new Map([
+    ['/private', { uid: 0, gid: 0 }],
+    ['/private/var', { uid: 0, gid: 0 }],
+    ['/private/var/run', { uid: 0, gid: 1 }],
+  ]);
+  if (target === 'existing') metadata.set(SDP_FIXED_TARGET, { uid: 0, gid: 0 });
+  const lstatCounts = new Map();
+  const handleStatCounts = new Map();
+  const calls = {
+    createServer: 0, listen: 0, observations: [], handleObservations: [], lstat: [], mkdir: [],
+    open: [], chown: [], chmod: [], close: [], exec: [], credentialAudits: [], host: [], identity: [],
+    events: [], invocationMutations: [],
+  };
   const originalCreateServer = nodeNet.createServer;
   const originalChown = nodeFs.promises.chown;
   const originalChmod = nodeFs.promises.chmod;
   const originalLstat = nodeFs.promises.lstat;
-  let server = null;
+  const servers = new Set();
+  const clients = new Set();
+  const handles = new Set();
   let socketAuthority = null;
-
+  let createdTarget = false;
+  let targetOpened = false;
+  let targetChowned = false;
+  let targetChmodded = false;
+  let targetClosed = false;
+  let currentInvocation = 'scenario-1';
+  const beginInvocation = name => {
+    currentInvocation = name;
+    createdTarget = false;
+    targetOpened = false;
+    targetChowned = false;
+    targetChmodded = false;
+    targetClosed = false;
+    lstatCounts.clear();
+    handleStatCounts.clear();
+  };
+  const phase = (logical, source = 'path') => {
+    if (logical !== SDP_FIXED_TARGET) return createdTarget ? 'ancestor-created' : 'ancestor-initial';
+    if (target === 'existing') return source === 'fd' ? 'existing-fd' : targetOpened ? 'existing-readback' : 'existing-initial';
+    if (!createdTarget) return 'missing-initial';
+    if (targetClosed) return 'created-final';
+    if (targetChmodded) return source === 'fd' ? 'created-fd-post-chmod' : 'created-path-post-chmod';
+    if (targetChowned) return source === 'fd' ? 'created-fd-post-chown' : 'created-path-post-chown';
+    if (targetOpened) return source === 'fd' ? 'created-fd-initial' : 'created-path-bound';
+    return 'created-path-initial';
+  };
+  const fireHook = async (name, context = {}) => {
+    await mutate?.hook?.(name, {
+      actual, physical, physicalTarget, physicalSocket, temporary,
+      createExternalServer: (...args) => { const server = originalCreateServer(...args); servers.add(server); return server; },
+      readControlledAuthority: logical => structuredClone(metadata.get(logical) ?? null),
+      ...context,
+    });
+  };
+  const observed = async logical => {
+    calls.lstat.push(logical);
+    calls.events.push(`lstat:${logical}`);
+    const count = (lstatCounts.get(logical) ?? 0) + 1;
+    lstatCounts.set(logical, count);
+    const currentPhase = phase(logical, 'path');
+    const override = mutate?.observe?.({ logical, source: 'path', phase: currentPhase, count })
+      ?? mutate?.lstat?.(logical, count) ?? null;
+    if (override?.error) throw override.error;
+    const stat = await actual.lstat(logicalPath(logical));
+    const result = sdpStat(stat, { ...(metadata.get(logical) ?? {}), ...(override ?? {}) });
+    calls.observations.push({ invocation: currentInvocation, logical, phase: currentPhase, count, uid: result.uid, gid: result.gid, mode: result.mode & 0o7777, dev: result.dev, ino: result.ino });
+    return result;
+  };
+  const startup = {
+    runtime_uid: 501,
+    runtime_gid: 20,
+    node_executable: process.execPath,
+    os: {
+      lstat: observed,
+      async realpath(logical) {
+        await actual.realpath(logicalPath(logical));
+        calls.events.push(`realpath:${logical}`);
+        const replacement = mutate?.realpath?.({ logical, phase: phase(logical, 'path'), invocation: currentInvocation });
+        if (replacement instanceof Error) throw replacement;
+        if (replacement) return replacement;
+        return logical;
+      },
+      async mkdir(logical, options) {
+        calls.mkdir.push({ logical, options });
+        calls.invocationMutations.push({ invocation: currentInvocation, kind: 'mkdir', logical });
+        calls.events.push(`mkdir:${logical}:${options?.mode}`);
+        if (mutate?.mkdirError) throw mutate.mkdirError;
+        await actual.mkdir(logicalPath(logical), options);
+        createdTarget = logical === SDP_FIXED_TARGET;
+        targetOpened = false;
+        targetChowned = false;
+        targetChmodded = false;
+        targetClosed = false;
+        metadata.set(logical, { uid: 0, gid: metadata.get('/private/var/run').gid });
+        await fireHook('after-target-mkdir', { logical });
+      },
+      async open(logical, flags) {
+        calls.open.push({ logical, flags });
+        calls.events.push(`open:${logical}`);
+        if (mutate?.openError) throw mutate.openError;
+        assert.equal(flags, nodeFs.constants.O_RDONLY | nodeFs.constants.O_DIRECTORY | nodeFs.constants.O_NOFOLLOW,
+          'created/existing target is bound through O_RDONLY|O_DIRECTORY|O_NOFOLLOW');
+        const handle = await actual.open(logicalPath(logical), flags);
+        const openedIdentity = await handle.stat().then(stat => ({ dev: stat.dev, ino: stat.ino }));
+        const boundMetadata = { ...(metadata.get(logical) ?? {}) };
+        handles.add(handle);
+        targetOpened = logical === SDP_FIXED_TARGET;
+        await fireHook('after-target-open', { logical, handle });
+        return {
+          async stat() {
+            const count = (handleStatCounts.get(logical) ?? 0) + 1;
+            handleStatCounts.set(logical, count);
+            const failure = mutate?.handleStatError?.(logical, count);
+            if (failure) throw failure;
+            const currentPhase = phase(logical, 'fd');
+            const override = mutate?.observe?.({ logical, source: 'fd', phase: currentPhase, count }) ?? {};
+            const result = sdpStat(await handle.stat(), { ...boundMetadata, ...override });
+            calls.handleObservations.push({ invocation: currentInvocation, logical, phase: currentPhase, count, uid: result.uid, gid: result.gid, mode: result.mode & 0o7777, dev: result.dev, ino: result.ino });
+            return result;
+          },
+          async chown(uid, gid) {
+            if (mutate?.chownError) throw mutate.chownError;
+            calls.chown.push({ logical, uid, gid });
+            calls.invocationMutations.push({ invocation: currentInvocation, kind: 'chown', logical });
+            calls.events.push(`chown:${logical}:${uid}:${gid}`);
+            Object.assign(boundMetadata, { uid, gid });
+            const currentPath = await actual.lstat(logicalPath(logical)).catch(() => null);
+            if (currentPath?.dev === openedIdentity.dev && currentPath?.ino === openedIdentity.ino) {
+              metadata.set(logical, { ...(metadata.get(logical) ?? {}), uid, gid });
+            }
+            targetChowned = logical === SDP_FIXED_TARGET;
+            await fireHook('after-target-chown', { logical, handle });
+          },
+          async chmod(mode) {
+            if (mutate?.chmodError) throw mutate.chmodError;
+            calls.chmod.push({ logical, mode });
+            calls.invocationMutations.push({ invocation: currentInvocation, kind: 'chmod', logical });
+            calls.events.push(`chmod:${logical}:${mode}`);
+            await handle.chmod(mode);
+            targetChmodded = logical === SDP_FIXED_TARGET;
+            await fireHook('after-target-chmod', { logical, handle });
+          },
+          async close() {
+            calls.close.push(logical);
+            calls.invocationMutations.push({ invocation: currentInvocation, kind: 'close', logical });
+            calls.events.push(`close:${logical}`);
+            await handle.close();
+            handles.delete(handle);
+            targetClosed = logical === SDP_FIXED_TARGET;
+            await fireHook('after-target-close', { logical });
+            if (mutate?.closeError) throw mutate.closeError;
+          },
+        };
+      },
+      async exec(command, args, options) {
+        calls.exec.push({ command, args: structuredClone(args), options: structuredClone(options) });
+        calls.events.push(`exec:${command}:${args.at(-1)}`);
+        assert.deepEqual(options, {
+          shell: false, cwd: '/', env: { LANG: 'C', LC_ALL: 'C', TZ: 'UTC' }, timeout_ms: 5_000,
+          max_stdout_bytes: command === '/bin/ls' ? 65_536 : 4_096,
+          max_stderr_bytes: command === '/bin/ls' ? 65_536 : 4_096,
+        }, 'startup child observations use the closed bounded command environment');
+        const logical = command === '/bin/ls' ? args[1] : args.at(-3);
+        const currentPhase = phase(logical, 'exec');
+        const injected = mutate?.execResult?.({ command, args, options, calls, logical, phase: currentPhase }) ?? null;
+        if (injected) return injected;
+        if (command === '/bin/ls') {
+          assert.equal(args.length, 2);
+          assert.equal(args[0], '-led');
+          assert.equal(['/private', '/private/var', '/private/var/run', SDP_FIXED_TARGET].includes(args[1]), true,
+            'ACL observation has no caller-selected target');
+          const result = { code: 0, signal: null, timed_out: false, overflow: false, child_error: null,
+            stdout: Buffer.from('drwxr-xr-x  2 root  wheel  64 Jan 1 00:00 juanerai\n0: user:501 allow read\n'), stderr: Buffer.alloc(0) };
+          if (logical === '/private/var/run') await fireHook('after-parent-acl', { logical, phase: currentPhase });
+          if (logical === SDP_FIXED_TARGET) await fireHook(`after-target-acl:${currentPhase}`, { logical, phase: currentPhase });
+          return result;
+        }
+        assert.equal(command, process.execPath, 'credential probe uses only the configured absolute Node executable');
+        assert.equal(['/private', '/private/var', '/private/var/run', SDP_FIXED_TARGET].includes(args.at(-3)), true,
+          'credential probe has no caller-selected target');
+        assert.deepEqual(args.slice(-2), ['501', '20'], 'the same numeric UID and GID bind the closed credential probe');
+        assert.equal(args[0], '--input-type=module', 'credential probe is a module eval');
+        assert.equal(args[1], '-e', 'credential probe has only its fixed script');
+        assert.equal(args[3], '--', 'credential probe terminates fixed flags before data');
+        const script = args[2];
+        const probeStat = await actual.lstat(logicalPath(args.at(-3)));
+        const helperPhase = args.at(-3) === SDP_FIXED_TARGET && (probeStat.mode & 0o7777) === 0o700 ? 'initial-0700' : 'final';
+        const requestedFault = mutate?.credentialFault;
+        const fault = requestedFault && requestedFault.logical === logical
+          && requestedFault.phase === currentPhase ? requestedFault.kind : null;
+        const execution = await executeSdpCredentialScript(script, {
+          argv: [process.execPath, ...args.slice(4)],
+          target: args.at(-3), runtime_uid: 501, runtime_gid: 20,
+          phase: helperPhase, fault,
+        });
+        calls.credentialAudits.push({ logical, phase: currentPhase, fault, ...execution.audit });
+        if (!fault) assertHealthySdpCredentialAudit(execution, {
+          target: logical, runtime_uid: 501, runtime_gid: 20, phase: helperPhase,
+        });
+        if (logical === '/private/var/run') await fireHook('after-parent-access', { logical, phase: currentPhase });
+        if (logical === SDP_FIXED_TARGET) await fireHook(`after-target-access:${currentPhase}`, { logical, phase: currentPhase });
+        return execution.result;
+      },
+    },
+  };
   nodeNet.createServer = (...args) => {
+    calls.createServer += 1;
+    calls.events.push('createServer');
     const created = originalCreateServer(...args);
     const originalListen = created.listen.bind(created);
     created.listen = (...listenArgs) => {
-      assert.equal(listenArgs[0], host.HOST_SOCKET_PATH, 'production binds only its fixed socket identity');
-      listenArgs[0] = testSocketPath;
+      calls.listen += 1;
+      calls.events.push('listen');
+      assert.equal(listenArgs[0], SDP_FIXED_SOCKET, 'the real listener retains its fixed production socket identity');
+      listenArgs[0] = physicalSocket;
       return originalListen(...listenArgs);
     };
-    server = created;
+    servers.add(created);
     return created;
   };
-  nodeFs.promises.chown = async (target, uid, gid) => {
-    if (target !== host.HOST_SOCKET_PATH) return originalChown(target, uid, gid);
+  nodeFs.promises.chown = async (targetPath, uid, gid) => {
+    if (targetPath !== SDP_FIXED_SOCKET) return originalChown(targetPath, uid, gid);
     socketAuthority = { uid, gid };
   };
-  nodeFs.promises.chmod = (target, mode) => originalChmod(
-    target === host.HOST_SOCKET_PATH ? testSocketPath : target, mode,
-  );
-  nodeFs.promises.lstat = async target => {
-    if (target !== host.HOST_SOCKET_PATH) return originalLstat(target);
-    const stat = await originalLstat(testSocketPath);
-    return new Proxy(stat, {
-      get(value, key) {
-        if (key === 'uid' || key === 'gid') return socketAuthority?.[key];
-        const member = Reflect.get(value, key, value);
-        return typeof member === 'function' ? member.bind(value) : member;
-      },
-    });
+  nodeFs.promises.chmod = (targetPath, mode) => originalChmod(targetPath === SDP_FIXED_SOCKET ? physicalSocket : targetPath, mode);
+  nodeFs.promises.lstat = async targetPath => {
+    if (targetPath !== SDP_FIXED_SOCKET) return originalLstat(targetPath);
+    return sdpStat(await originalLstat(physicalSocket), { uid: socketAuthority?.uid, gid: socketAuthority?.gid, type: 'socket' });
   };
+  const originalGetuid = process.getuid;
+  const originalGeteuid = process.geteuid;
+  const originalGetgid = process.getgid;
+  const originalGetegid = process.getegid;
+  const originalUmask = process.umask;
+  process.getuid = () => { calls.identity.push('getuid'); return mutate?.identity?.uid ?? 0; };
+  process.geteuid = () => { calls.identity.push('geteuid'); return mutate?.identity?.euid ?? 0; };
+  process.getgid = () => { calls.identity.push('getgid'); return mutate?.identity?.gid ?? 0; };
+  process.getegid = () => { calls.identity.push('getegid'); return mutate?.identity?.egid ?? 0; };
+  process.umask = () => { calls.identity.push('umask'); return mutate?.identity?.umask ?? 0o077; };
   syncBuiltinESMExports();
-
+  const rawHostLoop = suppliedHostLoop ?? {
+    async submit() { throw new Error('UNREACHABLE'); },
+    async readStatus() { return { schema_version: '1.0', operation: 'status', outcome: 'WAITING', change_id: null }; },
+  };
+  const hostLoop = new Proxy(rawHostLoop, { get(value, key, receiver) {
+    const member = Reflect.get(value, key, receiver);
+    if (typeof member !== 'function') return member;
+    return async (...args) => { calls.host.push(String(key)); return member.apply(value, args); };
+  } });
+  const snapshot = async () => ({
+    ancestors: await Promise.all([path.join(temporary, 'private'), path.join(temporary, 'private', 'var'), physical].map(async item => {
+      const stat = await actual.lstat(item); return { path: item, dev: stat.dev, ino: stat.ino, mode: stat.mode & 0o7777, type: stat.isDirectory() ? 'directory' : 'other' };
+    })),
+    target: await actual.lstat(physicalTarget).then(stat => ({ dev: stat.dev, ino: stat.ino, mode: stat.mode & 0o7777, type: stat.isDirectory() ? 'directory' : 'other' }), error => error?.code === 'ENOENT' ? null : Promise.reject(error)),
+    socket: await actual.lstat(physicalSocket).then(stat => ({ dev: stat.dev, ino: stat.ino, mode: stat.mode & 0o7777, type: stat.isSocket() ? 'socket' : 'other' }), error => error?.code === 'ENOENT' ? null : Promise.reject(error)),
+    target_entries: await actual.readdir(physicalTarget).catch(error => error?.code === 'ENOENT' ? [] : Promise.reject(error)),
+    fixture: await actual.readFile(path.join(physicalTarget, 'protected.fixture'), 'utf8').catch(error => error?.code === 'ENOENT' ? null : Promise.reject(error)),
+    protected_state: Object.fromEntries(await Promise.all(['State', 'pointer', 'WIP', 'Ledger', 'Handoff'].map(async name => [name, await actual.readFile(path.join(protectedRoot, name), 'utf8')]))),
+    authority: {
+      metadata: [...metadata.entries()].sort(([left], [right]) => left.localeCompare(right)),
+      runtime_uid: startup.runtime_uid, runtime_gid: startup.runtime_gid, node_executable: startup.node_executable,
+      acl_fixture: '0: user:501 allow read',
+    },
+  });
+  const status = async () => new Promise((resolve, reject) => {
+    const client = nodeNet.createConnection({ path: physicalSocket });
+    clients.add(client);
+    const chunks = [];
+    client.setTimeout(2_000, () => { client.destroy(); reject(new Error('TEST_SOCKET_TIMEOUT')); });
+    client.once('error', reject);
+    client.once('connect', () => client.end(Buffer.from('{"operation":"status"}\n')));
+    client.on('data', chunk => chunks.push(Buffer.from(chunk)));
+    client.once('end', () => { clients.delete(client); resolve(Buffer.concat(chunks)); });
+  });
   try {
-    const expected = { schema_version: '1.0', operation: 'status', outcome: 'WAITING', change_id: null };
-    const expectedFrame = Buffer.from(`${canonicalJson(expected)}\n`);
-    let readStatusCalls = 0;
-    let resolveReadStatusReturned;
-    const readStatusReturned = new Promise(resolve => { resolveReadStatusReturned = resolve; });
-    const hostLoop = {
-      async submit() { throw new Error('UNREACHABLE'); },
-      async readStatus() {
-        readStatusCalls += 1;
-        await new Promise(resolve => setImmediate(resolve));
-        resolveReadStatusReturned();
-        return expected;
-      },
-    };
-    await host.serveTrustedHostLoop(hostLoop, host.HOST_SOCKET_PATH, 20);
-
-    const response = await new Promise((resolve, reject) => {
-      const client = nodeNet.createConnection({ path: testSocketPath });
-      const chunks = [];
-      client.setTimeout(2_000, () => { client.destroy(); reject(new Error('TEST_SOCKET_TIMEOUT')); });
-      client.once('error', reject);
-      client.once('connect', () => client.end(Buffer.from('{"operation":"status"}\n')));
-      client.on('data', chunk => chunks.push(Buffer.from(chunk)));
-      client.once('end', () => resolve(Buffer.concat(chunks)));
+    await body({
+      startup, hostLoop, calls, snapshot, status, servers, physicalTarget, physicalSocket, beginInvocation,
+      physical, temporary, actual,
     });
-    await readStatusReturned;
-    assert.equal(readStatusCalls, 1, 'one canonical status frame invokes readStatus exactly once');
-    assert.deepEqual(response, expectedFrame,
-      'CAUSAL_RED: default allowHalfOpen:false must not close the writable side before asynchronous readStatus returns its one canonical response');
   } finally {
-    if (server?.listening) await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
+    const cleanupErrors = [];
+    const boundedCleanup = (promise, label) => new Promise(resolve => {
+      const timer = setTimeout(() => resolve(new Error(`TEST_SDP_CLEANUP_TIMEOUT:${label}`)), 2_000);
+      Promise.resolve(promise).then(
+        () => { clearTimeout(timer); resolve(null); },
+        error => { clearTimeout(timer); resolve(error); },
+      );
+    });
+    for (const client of clients) client.destroy();
+    for (const handle of handles) {
+      const error = await boundedCleanup(handle.close(), 'handle-close');
+      if (error) cleanupErrors.push(error);
+    }
+    for (const server of servers) if (server.listening) {
+      const error = await boundedCleanup(new Promise((resolve, reject) => server.close(closeError => closeError ? reject(closeError) : resolve())), 'server-close');
+      if (error) cleanupErrors.push(error);
+    }
     nodeNet.createServer = originalCreateServer;
     nodeFs.promises.chown = originalChown;
     nodeFs.promises.chmod = originalChmod;
     nodeFs.promises.lstat = originalLstat;
+    process.getuid = originalGetuid;
+    process.geteuid = originalGeteuid;
+    process.getgid = originalGetgid;
+    process.getegid = originalGetegid;
+    process.umask = originalUmask;
     syncBuiltinESMExports();
-    await rm(temporary, { recursive: true, force: true });
+    const cleanupIdentity = await actual.lstat(temporary).then(stat => ({ dev: stat.dev, ino: stat.ino }), error => { cleanupErrors.push(error); return null; });
+    if (!cleanupIdentity || cleanupIdentity.dev !== allocatedRoot.dev || cleanupIdentity.ino !== allocatedRoot.ino) cleanupErrors.push(new Error('TEST_SDP_ROOT_IDENTITY_MISMATCH'));
+    else await rm(temporary, { recursive: true, force: true }).catch(error => cleanupErrors.push(error));
+    if (cleanupErrors.length) throw new AggregateError(cleanupErrors, 'TEST_SDP_CLEANUP_FAILED');
   }
+}
+
+function assertSdpProtectedSnapshot(before, after, { socket = 'absent' } = {}) {
+  assert.deepEqual(after.ancestors, before.ancestors, 'independent real ancestor metadata is unchanged');
+  assert.deepEqual(after.target, before.target, 'independent real target metadata is unchanged');
+  assert.equal(after.fixture, before.fixture, 'independent protected fixture bytes are unchanged');
+  assert.deepEqual(after.protected_state, before.protected_state, 'State/pointer/WIP/Ledger/Handoff fixture bytes are unchanged');
+  assert.deepEqual(after.authority, before.authority, 'controlled authority and ACL fixture are unchanged');
+  assert.deepEqual(after.target_entries.slice().sort(), socket === 'added'
+    ? [...before.target_entries, 'change-coordinator.sock'].sort()
+    : before.target_entries.slice().sort(), 'only an explicitly authorized new socket entry may be added');
+  if (socket === 'added') {
+    assert.equal(after.socket?.type, 'socket', 'independent filesystem read sees a real socket');
+    assert.equal(after.socket?.mode, 0o660, 'independent filesystem read sees the preserved socket mode');
+  } else assert.deepEqual(after.socket, before.socket, 'socket identity is unchanged on non-addition paths');
+}
+
+function assertNoSdpPreparationMutation(calls) {
+  assert.deepEqual(calls.mkdir, [], 'no target or ancestor creation occurred');
+  assert.deepEqual(calls.chown, [], 'no target or ancestor ownership mutation occurred');
+  assert.deepEqual(calls.chmod, [], 'no target or ancestor mode mutation occurred');
+}
+
+function sdpAncestorAuthority(snapshot) {
+  return {
+    metadata: snapshot.authority.metadata.filter(([logical]) => logical !== SDP_FIXED_TARGET),
+    runtime_uid: snapshot.authority.runtime_uid,
+    runtime_gid: snapshot.authority.runtime_gid,
+    node_executable: snapshot.authority.node_executable,
+    acl_fixture: snapshot.authority.acl_fixture,
+  };
+}
+
+function assertSdpAncestorsProtected(before, after, { parentReplaced = false } = {}) {
+  if (parentReplaced) {
+    assert.deepEqual(after.ancestors.slice(0, 2), before.ancestors.slice(0, 2),
+      'unreplaced /private and /private/var objects are unchanged');
+    assert.notDeepEqual(
+      { dev: after.ancestors[2].dev, ino: after.ancestors[2].ino },
+      { dev: before.ancestors[2].dev, ino: before.ancestors[2].ino },
+      'the one injected parent replacement has a distinct real identity',
+    );
+    assert.deepEqual(
+      { mode: after.ancestors[2].mode, type: after.ancestors[2].type },
+      { mode: before.ancestors[2].mode, type: before.ancestors[2].type },
+      'the qualifying replacement parent retains the declared type and mode',
+    );
+  } else {
+    assert.deepEqual(after.ancestors, before.ancestors, 'all real ancestors are unchanged');
+  }
+  assert.deepEqual(sdpAncestorAuthority(after), sdpAncestorAuthority(before),
+    'controlled ancestor authority, ACL fixture and credential identity are unchanged');
+}
+
+function assertSdpTargetMutationCalls(calls, { mkdir: mkdirCount = 0, open: openCount, chown: chownCount = 0, chmod: chmodCount = 0, close: closeCount } = {}) {
+  assert.equal(calls.mkdir.length, mkdirCount, 'exact target mkdir count');
+  assert.equal(calls.chown.length, chownCount, 'exact target descriptor-chown count');
+  assert.equal(calls.chmod.length, chmodCount, 'exact target descriptor-chmod count');
+  if (openCount !== undefined) assert.equal(calls.open.length, openCount, 'exact target descriptor-open count');
+  if (closeCount !== undefined) assert.equal(calls.close.length, closeCount, 'exact target descriptor-close count');
+  for (const call of calls.mkdir) assert.deepEqual(call, { logical: SDP_FIXED_TARGET, options: { mode: 0o700 } }, 'mkdir is only the fixed target with exact 0700');
+  for (const call of calls.open) assert.equal(call.logical, SDP_FIXED_TARGET, 'open is only the fixed target');
+  for (const call of calls.chown) assert.deepEqual(call, { logical: SDP_FIXED_TARGET, uid: 0, gid: 0 }, 'descriptor chown is only fixed target root:wheel');
+  for (const call of calls.chmod) assert.deepEqual(call, { logical: SDP_FIXED_TARGET, mode: 0o755 }, 'descriptor chmod is only fixed target 0755');
+  for (const logical of calls.close) assert.equal(logical, SDP_FIXED_TARGET, 'descriptor close is only the fixed target');
+}
+
+async function sdpRealObjectSnapshot(actual, objectPath) {
+  const stat = await actual.lstat(objectPath);
+  const entries = stat.isDirectory() ? (await actual.readdir(objectPath)).sort() : [];
+  const files = {};
+  for (const name of ['protected.fixture', 'replacement.marker']) {
+    files[name] = await actual.readFile(path.join(objectPath, name), 'utf8').catch(error => error?.code === 'ENOENT' ? null : Promise.reject(error));
+  }
+  return {
+    dev: stat.dev, ino: stat.ino, type: stat.isDirectory() ? 'directory' : 'other',
+    mode: stat.mode & 0o7777, entries, files,
+  };
+}
+
+const SDP_MUTATING_ACL_RIGHTS = Object.freeze([
+  'write', 'append', 'delete', 'delete_child', 'add_file', 'add_subdirectory',
+  'writeattr', 'writeextattr', 'writesecurity', 'chown',
+]);
+
+function sdpChildResult(overrides = {}) {
+  return {
+    code: 0, signal: null, timed_out: false, overflow: false, child_error: null,
+    stdout: Buffer.alloc(0), stderr: Buffer.alloc(0), ...overrides,
+  };
+}
+
+function sdpAclResult(line = '0: user:501 allow read') {
+  return sdpChildResult({ stdout: Buffer.from(`drwxr-xr-x  2 root  wheel  64 Jan 1 00:00 object\n${line}\n`) });
+}
+
+function sdpCredentialResult(overrides = {}) {
+  return sdpChildResult({
+    stdout: Buffer.from(`${canonicalJson({ gid: 20, groups: [20, 44], search: true, uid: 501, write: false, ...overrides })}\n`),
+  });
+}
+
+test('TEST-SDP-HELPER-000 / TEST-ASSET-HEALTH: credential VM is healthy and sensitive to one fault at a time', async () => {
+  const input = {
+    argv: [process.execPath, SDP_FIXED_TARGET, '501', '20'], target: SDP_FIXED_TARGET,
+    runtime_uid: 501, runtime_gid: 20, phase: 'final',
+  };
+  const healthy = await executeSdpCredentialScript(SDP_HELPER_PROBE_SCRIPT, input);
+  assertHealthySdpCredentialAudit(healthy, { target: SDP_FIXED_TARGET, runtime_uid: 501, runtime_gid: 20, phase: 'final' });
+
+  const initial = await executeSdpCredentialScript(SDP_HELPER_PROBE_SCRIPT, { ...input, phase: 'initial-0700' });
+  assert.equal(initial.result.child_error, null);
+  assert.equal(initial.result.stdout.toString('utf8'),
+    `${canonicalJson({ gid: 20, groups: [20, 44], search: false, uid: 501, write: false })}\n`,
+    'initial 0700 phase differs only by denied search');
+
+  for (const [fault, expected] of [
+    ['missing-initgroups', 'child-error'],
+    ['missing-setgid', 'child-error'],
+    ['missing-setuid', 'child-error'],
+    ['identity-mismatch', 'child-error'],
+    ['search-denied', canonicalJson({ gid: 20, groups: [20, 44], search: false, uid: 501, write: false })],
+    ['write-allowed', canonicalJson({ gid: 20, groups: [20, 44], search: true, uid: 501, write: true })],
+  ]) {
+    const observed = await executeSdpCredentialScript(SDP_HELPER_PROBE_SCRIPT, { ...input, fault });
+    if (expected === 'child-error') {
+      assert.equal(typeof observed.result.child_error?.message, 'string', `${fault} is observed through actual script behavior`);
+      assert.equal(observed.result.stdout.length, 0, `${fault} cannot emit a healthy receipt`);
+    } else {
+      assert.equal(observed.result.child_error, null);
+      assert.equal(observed.result.stdout.toString('utf8'), `${expected}\n`, `${fault} changes only its intended access result`);
+    }
+  }
+});
+
+test('TEST-SDP-001 / REQ-SDP-001,002,005 / AC-SDP-001-01..03,002-01..03,005-01: safe existing directory is read-only and reaches real status', async () => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  const aclVariants = [
+    ['allow-read entry', null],
+    ['no ACL entries', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === SDP_FIXED_TARGET
+      ? sdpChildResult({ stdout: Buffer.from('drwxr-xr-x  2 root  wheel  64 Jan 1 00:00 target\n') }) : null }],
+    ['known non-mutating deny entry', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === SDP_FIXED_TARGET
+      ? sdpAclResult('0: user:501 deny write') : null }],
+  ];
+  for (const [label, mutate] of aclVariants) {
+    await withStartupDirectoryScenario({ target: 'existing', mutate }, async scenario => {
+      const before = await scenario.snapshot();
+      await host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup);
+      assert.deepEqual(await scenario.status(), Buffer.from('{"change_id":null,"operation":"status","outcome":"WAITING","schema_version":"1.0"}\n'), `${label} reaches canonical status`);
+      assertSdpTargetMutationCalls(scenario.calls, { mkdir: 0, chown: 0, chmod: 0 });
+      assertSdpProtectedSnapshot(before, await scenario.snapshot(), { socket: 'added' });
+      assertNoSdpPreparationMutation(scenario.calls);
+      assert.deepEqual(scenario.calls.host, ['readStatus'], `${label} calls only the explicitly requested status method`);
+    });
+  }
+});
+
+test('RED-SDP-F1-001 / TEST-SDP-009A / REQ-SDP-002,004,005 / AC-SDP-002-01..03,004-01,005-02: existing target setuid rejects through the public listener without mutation', async () => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  const mutate = { observe: ({ logical, source, phase, count }) => logical === SDP_FIXED_TARGET && source === 'path'
+    && phase === 'existing-initial' && count === 1 ? { mode: 0o4755 } : null };
+  await withStartupDirectoryScenario({ target: 'existing', mutate }, async scenario => {
+    const before = await scenario.snapshot();
+    assert.equal(before.target?.mode, 0o755, 'independent real target snapshot retains the safe physical mode');
+    await assert.rejects(
+      () => host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup),
+      error => error?.message === 'STARTUP_DIRECTORY_TARGET_INVALID',
+    );
+    assert.equal(scenario.calls.observations.some(item => item.logical === SDP_FIXED_TARGET && item.phase === 'existing-initial'
+      && item.count === 1 && item.mode === 0o4755), true,
+    'the public startup path records exact setuid 04755 instead of discarding special bits');
+    assert.equal(scenario.calls.createServer, 0, 'setuid target rejection creates no listener');
+    assert.equal(scenario.calls.listen, 0, 'setuid target rejection never attempts listen');
+    assert.deepEqual(scenario.calls.host, [], 'setuid target rejection calls no Host Loop method');
+    assertNoSdpPreparationMutation(scenario.calls);
+    assertSdpProtectedSnapshot(before, await scenario.snapshot());
+  });
+});
+
+test('TEST-SDP-009B / REQ-SDP-001,002,003,005 / AC-SDP-001-02,002-01..03,003-02..03,005-02: remaining special bits reject at each material startup mode observation', async t => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  const specialBits = [
+    ['setuid', 0o4000],
+    ['setgid', 0o2000],
+    ['sticky', 0o1000],
+  ];
+  const points = [
+    { label: 'parent initial pathname count1', target: 'existing', logical: '/private/var/run', source: 'path', phase: 'ancestor-initial', count: 1,
+      baseMode: 0o775, expected: 'STARTUP_DIRECTORY_PARENT_INVALID' },
+    { label: 'parent final pathname count6', target: 'existing', logical: '/private/var/run', source: 'path', phase: 'ancestor-initial', count: 6,
+      baseMode: 0o775, expected: 'STARTUP_DIRECTORY_PARENT_INVALID' },
+    { label: 'existing initial pathname count1', target: 'existing', logical: SDP_FIXED_TARGET, source: 'path', phase: 'existing-initial', count: 1,
+      baseMode: 0o755, expected: 'STARTUP_DIRECTORY_TARGET_INVALID' },
+    { label: 'existing bound descriptor count1', target: 'existing', logical: SDP_FIXED_TARGET, source: 'fd', phase: 'existing-fd', count: 1,
+      baseMode: 0o755, expected: 'STARTUP_DIRECTORY_TARGET_INVALID' },
+    { label: 'existing final pathname count6', target: 'existing', logical: SDP_FIXED_TARGET, source: 'path', phase: 'existing-readback', count: 6,
+      baseMode: 0o755, expected: 'STARTUP_DIRECTORY_TARGET_INVALID' },
+    { label: 'created initial pathname count2', target: 'missing', logical: SDP_FIXED_TARGET, source: 'path', phase: 'created-path-initial', count: 2,
+      baseMode: 0o700, expected: 'STARTUP_DIRECTORY_CREATE_FAILED', retainedMode: 0o700, open: 0, chown: 0, chmod: 0 },
+    { label: 'created initial descriptor count1', target: 'missing', logical: SDP_FIXED_TARGET, source: 'fd', phase: 'created-fd-initial', count: 1,
+      baseMode: 0o700, expected: 'STARTUP_DIRECTORY_CREATE_FAILED', retainedMode: 0o700, open: 1, chown: 0, chmod: 0 },
+    { label: 'created final descriptor count5', target: 'missing', logical: SDP_FIXED_TARGET, source: 'fd', phase: 'created-fd-post-chmod', count: 5,
+      baseMode: 0o755, expected: 'STARTUP_DIRECTORY_READBACK_FAILED', retainedMode: 0o755, open: 1, chown: 1, chmod: 1 },
+    { label: 'created final pathname count10', target: 'missing', logical: SDP_FIXED_TARGET, source: 'path', phase: 'created-final', count: 10,
+      baseMode: 0o755, expected: 'STARTUP_DIRECTORY_READBACK_FAILED', retainedMode: 0o755, open: 1, chown: 1, chmod: 1 },
+  ];
+  const cases = points.flatMap(point => specialBits.map(([bitLabel, bit]) => ({ point, bitLabel, bit })))
+    .filter(({ point, bitLabel }) => !(point.label === 'existing initial pathname count1' && bitLabel === 'setuid'));
+  for (const { point, bitLabel, bit } of cases) await t.test(`${point.label} / ${bitLabel}`, async () => {
+    const mode = point.baseMode | bit;
+    const scenarioOptions = { target: point.target,
+      mutate: { observe: ({ logical, source, phase, count }) => logical === point.logical && source === point.source
+        && phase === point.phase && count === point.count ? { mode } : null } };
+    await withStartupDirectoryScenario(scenarioOptions, async scenario => {
+      const before = await scenario.snapshot();
+      if (point.logical === '/private/var/run') assert.equal(before.ancestors[2].mode, 0o775,
+        `${point.label} independent parent snapshot retains the safe physical mode`);
+      if (point.target === 'existing' && point.logical === SDP_FIXED_TARGET) assert.equal(before.target?.mode, 0o755,
+        `${point.label} independent target snapshot retains the safe physical mode`);
+      await assert.rejects(
+        () => host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup),
+        error => error?.message === point.expected,
+      );
+      const observations = point.source === 'fd' ? scenario.calls.handleObservations : scenario.calls.observations;
+      assert.equal(observations.some(item => item.logical === point.logical && item.phase === point.phase
+        && item.count === point.count && item.mode === mode), true,
+      `${point.label} records the exact ${bitLabel} mode without discarding special bits`);
+      assert.equal(scenario.calls.createServer, 0, `${point.label} rejects before server creation`);
+      assert.equal(scenario.calls.listen, 0, `${point.label} rejects before listen`);
+      assert.deepEqual(scenario.calls.host, [], `${point.label} calls no Host Loop method`);
+      const after = await scenario.snapshot();
+      assertSdpAncestorsProtected(before, after);
+      assert.deepEqual(after.protected_state, before.protected_state, `${point.label} preserves protected State/pointer/WIP/Ledger/Handoff fixtures`);
+      assert.equal(after.socket, null, `${point.label} creates no socket`);
+      if (point.target === 'existing') {
+        assertNoSdpPreparationMutation(scenario.calls);
+        assertSdpProtectedSnapshot(before, after);
+      } else {
+        assert.equal(after.target?.type, 'directory', `${point.label} retains the created diagnostic object`);
+        assert.equal(after.target?.mode, point.retainedMode, `${point.label} retains the exact reached physical mode`);
+        assertSdpTargetMutationCalls(scenario.calls, {
+          mkdir: 1, open: point.open, chown: point.chown, chmod: point.chmod,
+        });
+      }
+    });
+  });
+});
+
+test('RED-SDP-001 / TEST-SDP-002 / REQ-SDP-001,003,005 / AC-SDP-001-01,003-01..04,005-01: actual listener creates a distinctly absent real temporary parent before status', async () => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  await withStartupDirectoryScenario({ target: 'missing' }, async scenario => {
+    const before = await scenario.snapshot();
+    await host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup);
+    assert.equal(scenario.calls.mkdir.length, 1, 'one exact non-recursive target creation follows exact absence');
+    assert.deepEqual(scenario.calls.mkdir[0], { logical: SDP_FIXED_TARGET, options: { mode: 0o700 } });
+    const mkdir = scenario.calls.events.indexOf(`mkdir:${SDP_FIXED_TARGET}:448`);
+    const firstTargetCapture = scenario.calls.events.indexOf(`lstat:${SDP_FIXED_TARGET}`, mkdir + 1);
+    const open = scenario.calls.events.indexOf(`open:${SDP_FIXED_TARGET}`);
+    const chown = scenario.calls.events.indexOf(`chown:${SDP_FIXED_TARGET}:0:0`);
+    const chmod = scenario.calls.events.indexOf(`chmod:${SDP_FIXED_TARGET}:493`);
+    const createServer = scenario.calls.events.indexOf('createServer');
+    assert.equal(firstTargetCapture > mkdir && mkdir >= 0, true, 'created target is first observed after mkdir');
+    assert.equal(open > firstTargetCapture, true, 'created target is bound through a descriptor before mutation');
+    assert.equal(chown > open && chmod > chown && createServer > chmod, true, '0700 observation, bound mutation, final 0755 and listener creation stay ordered');
+    assert.deepEqual([...new Set(scenario.calls.identity)].sort(), ['getegid', 'geteuid', 'getgid', 'getuid', 'umask'],
+      'missing-target creation observes root real/effective identity and a safe umask without changing host credentials');
+    const close = scenario.calls.events.indexOf(`close:${SDP_FIXED_TARGET}`);
+    assert.equal(close > chmod && createServer > close, true, 'bound descriptor closes before the final pre-listener readback and listener creation');
+    const targetObservations = scenario.calls.observations.filter(item => item.logical === SDP_FIXED_TARGET);
+    const preChownPathObservations = targetObservations.filter(item => ['created-path-initial', 'created-path-bound'].includes(item.phase));
+    const preChownHandleObservations = scenario.calls.handleObservations.filter(item => item.logical === SDP_FIXED_TARGET && item.phase === 'created-fd-initial');
+    assert.equal(preChownPathObservations.length > 0, true, 'pre-chown pathname observations are present');
+    assert.equal(preChownHandleObservations.length > 0, true, 'pre-chown descriptor observations are present');
+    assert.equal(preChownPathObservations.every(item => item.mode === 0o700 && item.uid === 0 && item.gid === 1), true,
+      'all pre-chown pathname observations retain the parent-derived daemon GID with root-owned exact 0700');
+    assert.equal(preChownHandleObservations.every(item => item.mode === 0o700 && item.uid === 0 && item.gid === 1), true,
+      'all pre-chown descriptor observations retain the same parent-derived daemon GID');
+    const postChownPathObservations = targetObservations.filter(item => ['created-path-post-chown', 'created-path-post-chmod', 'created-final'].includes(item.phase));
+    const postChownHandleObservations = scenario.calls.handleObservations.filter(item => item.logical === SDP_FIXED_TARGET
+      && ['created-fd-post-chown', 'created-fd-post-chmod'].includes(item.phase));
+    assert.equal(postChownPathObservations.length > 0 && postChownPathObservations.every(item => item.gid === 0), true,
+      'all post-chown pathname observations switch to wheel only after the bound descriptor chown');
+    assert.equal(postChownHandleObservations.length > 0 && postChownHandleObservations.every(item => item.gid === 0), true,
+      'all post-chown descriptor observations retain the bound chown wheel authority');
+    assert.equal(targetObservations.at(-1)?.uid, 0, 'final readback remains root-owned');
+    assert.equal(targetObservations.at(-1)?.gid, 0, 'final readback is wheel-owned');
+    assert.equal(targetObservations.at(-1)?.mode, 0o755, 'final readback is exact mode 0755 before listener creation');
+    assert.deepEqual(await scenario.status(), Buffer.from('{"change_id":null,"operation":"status","outcome":"WAITING","schema_version":"1.0"}\n'));
+    const physicalTarget = await lstat(scenario.physicalTarget);
+    assert.equal(physicalTarget.isDirectory(), true, 'independent real filesystem oracle sees the created temporary parent');
+    assert.equal(physicalTarget.mode & 0o7777, 0o755, 'independent real filesystem oracle sees final exact mode 0755');
+    const after = await scenario.snapshot();
+    assertSdpAncestorsProtected(before, after);
+    assertSdpTargetMutationCalls(scenario.calls, { mkdir: 1, open: 1, chown: 1, chmod: 1, close: 1 });
+  });
+});
+
+test('TEST-SDP-010 / REQ-SDP-003,004,005 / AC-SDP-003-02..03,004-01,005-02: pre-chown parent-derived GID drift rejects at path and descriptor readback', async t => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  const cases = [
+    { label: 'created first bound descriptor count1 GID drift', source: 'fd', phase: 'created-fd-initial', count: 1,
+      expected: 'STARTUP_DIRECTORY_CREATE_FAILED', requiresPriorFd: false },
+    { label: 'created first bound pathname count3 GID drift', source: 'path', phase: 'created-path-bound', count: 3,
+      expected: 'STARTUP_DIRECTORY_CREATE_FAILED', requiresPriorFd: true },
+    { label: 'created later pre-chown pathname count4 GID drift', source: 'path', phase: 'created-path-bound', count: 4,
+      expected: 'STARTUP_DIRECTORY_READBACK_FAILED', requiresPriorFd: true },
+    { label: 'created later pre-chown descriptor count2 GID drift', source: 'fd', phase: 'created-fd-initial', count: 2,
+      expected: 'STARTUP_DIRECTORY_READBACK_FAILED', requiresPriorFd: true },
+  ];
+  for (const item of cases) await t.test(item.label, async () => {
+    const mutate = { observe: ({ logical, source, phase, count }) => logical === SDP_FIXED_TARGET && source === item.source
+      && phase === item.phase && count === item.count ? { gid: 20 } : null };
+    await withStartupDirectoryScenario({ target: 'missing', mutate }, async scenario => {
+      const before = await scenario.snapshot();
+      await assert.rejects(
+        () => host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup),
+        error => error?.message === item.expected,
+      );
+      const pathInitial = scenario.calls.observations.filter(entry => entry.logical === SDP_FIXED_TARGET
+        && ['created-path-initial', 'created-path-bound'].includes(entry.phase)
+        && (item.source !== 'path' || entry.count < item.count));
+      const fdInitial = scenario.calls.handleObservations.filter(entry => entry.logical === SDP_FIXED_TARGET
+        && entry.phase === 'created-fd-initial' && (item.source !== 'fd' || entry.count < item.count));
+      assert.equal(pathInitial.length > 0 && pathInitial.every(entry => entry.gid === 1), true,
+        `${item.label} first records stable parent-derived GID1 pathname authority`);
+      assert.equal(fdInitial.length > 0, item.requiresPriorFd,
+        `${item.label} has exactly the applicable prior descriptor-agreement frontier`);
+      if (item.requiresPriorFd) assert.equal(fdInitial.every(entry => entry.gid === 1), true,
+        `${item.label} first records stable matching GID1 descriptor authority`);
+      const observations = item.source === 'fd' ? scenario.calls.handleObservations : scenario.calls.observations;
+      assert.equal(observations.some(entry => entry.logical === SDP_FIXED_TARGET && entry.phase === item.phase
+        && entry.count === item.count && entry.gid === 20), true,
+      `${item.label} reaches exactly the one scheduled GID mutation`);
+      assert.equal(scenario.calls.createServer, 0, `${item.label} creates no listener`);
+      assert.equal(scenario.calls.listen, 0, `${item.label} never attempts listen`);
+      assert.deepEqual(scenario.calls.host, [], `${item.label} calls no Host Loop method`);
+      assertSdpTargetMutationCalls(scenario.calls, { mkdir: 1, open: 1, chown: 0, chmod: 0 });
+      const after = await scenario.snapshot();
+      assertSdpAncestorsProtected(before, after);
+      assert.equal(after.target?.type, 'directory', `${item.label} retains the created diagnostic object`);
+      assert.equal(after.target?.mode, 0o700, `${item.label} retains the pre-mutation exact 0700 object`);
+      assert.equal(after.socket, null, `${item.label} creates no socket`);
+      assert.deepEqual(after.protected_state, before.protected_state, `${item.label} preserves protected State/pointer/WIP/Ledger/Handoff fixtures`);
+    });
+  });
+});
+
+test('TEST-SDP-003 / REQ-SDP-003,005 / AC-SDP-003-04,005-01: a later distinct absence repeats through a fresh public listener entry', async () => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  await withStartupDirectoryScenario({ target: 'missing' }, async scenario => {
+    const before = await scenario.snapshot();
+    scenario.beginInvocation('first-absence');
+    await host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup);
+    const [first] = scenario.servers;
+    await new Promise((resolve, reject) => first.close(error => error ? reject(error) : resolve()));
+    await rm(scenario.physicalTarget, { recursive: true, force: true });
+    scenario.beginInvocation('second-absence');
+    await host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup);
+    assert.equal(scenario.calls.mkdir.length, 2, 'a newly absent parent is prepared again by the same public entry');
+    for (const invocation of ['first-absence', 'second-absence']) {
+      assert.equal(scenario.calls.observations.some(item => item.invocation === invocation && item.logical === SDP_FIXED_TARGET
+        && item.phase === 'created-path-initial' && item.mode === 0o700 && item.uid === 0 && item.gid === 1), true,
+      `${invocation} has its own parent-derived daemon-GID initial 0700 pathname evidence without constraining extra readbacks`);
+      assert.equal(scenario.calls.handleObservations.some(item => item.invocation === invocation && item.logical === SDP_FIXED_TARGET
+        && item.phase === 'created-fd-initial' && item.mode === 0o700 && item.uid === 0 && item.gid === 1), true,
+      `${invocation} has its own matching parent-derived daemon-GID initial 0700 descriptor evidence without constraining extra readbacks`);
+      assert.deepEqual(scenario.calls.invocationMutations.filter(item => item.invocation === invocation).map(item => [item.kind, item.logical]), [
+        ['mkdir', SDP_FIXED_TARGET], ['chown', SDP_FIXED_TARGET], ['chmod', SDP_FIXED_TARGET], ['close', SDP_FIXED_TARGET],
+      ], `${invocation} independently creates and finalizes exactly one fixed target`);
+    }
+    assertSdpTargetMutationCalls(scenario.calls, { mkdir: 2, open: 2, chown: 2, chmod: 2, close: 2 });
+    assert.deepEqual(await scenario.status(), Buffer.from('{"change_id":null,"operation":"status","outcome":"WAITING","schema_version":"1.0"}\n'));
+    assertSdpAncestorsProtected(before, await scenario.snapshot());
+  });
+});
+
+test('TEST-SDP-004 / REQ-SDP-001,004,005 / AC-SDP-001-02,004-01,004-03,005-02: unsafe parent rejects before server creation and status', async t => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  const parent = '/private/var/run';
+  const laterParentError = error => {
+    let armed = false;
+    return {
+      hook(name) { if (name === 'after-parent-access') armed = true; },
+      observe({ logical }) { return armed && logical === parent ? { error } : null; },
+    };
+  };
+  const cases = [
+    ['wrong mode', { lstat: logical => logical === '/private/var/run' ? { mode: 0o755 } : null }],
+    ['wrong type', { lstat: logical => logical === '/private/var/run' ? { type: 'symlink' } : null }],
+    ['wrong owner', { lstat: logical => logical === parent ? { uid: 501 } : null }],
+    ['wrong group', { lstat: logical => logical === parent ? { gid: 20 } : null }],
+    ['ancestor ENOENT', { lstat: logical => logical === parent ? { error: Object.assign(new Error('ENOENT'), { code: 'ENOENT' }) } : null }],
+    ['ancestor lstat EIO', { lstat: logical => logical === parent ? { error: Object.assign(new Error('EIO'), { code: 'EIO' }) } : null }],
+    ['later ancestor ENOENT after named access boundary', laterParentError(Object.assign(new Error('ENOENT'), { code: 'ENOENT' }))],
+    ['parent physical path mismatch', { realpath: ({ logical }) => logical === parent ? '/private/var/replaced-run' : null }],
+    ...SDP_MUTATING_ACL_RIGHTS.map(right => [`ACL allow ${right}`, {
+      execResult: ({ command, logical }) => command === '/bin/ls' && logical === parent ? sdpAclResult(`0: user:501 allow ${right}`) : null,
+    }]),
+    ['unknown ACL token', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === parent ? sdpAclResult('0: user:501 allow future_right') : null }],
+    ['malformed ACL', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === parent ? sdpAclResult('0: malformed') : null }],
+    ['duplicate ACL index', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === parent
+      ? sdpChildResult({ stdout: Buffer.from('drwxrwxr-x  2 root  daemon  64 Jan 1 00:00 run\n0: user:501 allow read\n0: user:502 allow read\n') }) : null }],
+    ['runtime search denied', { execResult: ({ command, logical }) => command === process.execPath && logical === parent ? sdpCredentialResult({ search: false }) : null }],
+    ['runtime write allowed', { execResult: ({ command, logical }) => command === process.execPath && logical === parent ? sdpCredentialResult({ write: true }) : null }],
+  ];
+  for (const [label, mutate] of cases) await t.test(label, async () => {
+    await withStartupDirectoryScenario({ target: 'missing', mutate }, async scenario => {
+      const before = await scenario.snapshot();
+      await assert.rejects(() => host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup), error => error?.message === 'STARTUP_DIRECTORY_PARENT_INVALID');
+      assert.equal(scenario.calls.createServer, 0, 'preparation rejection never creates a listener');
+      assert.equal(scenario.calls.listen, 0, 'preparation rejection never attempts listen');
+      assert.deepEqual(scenario.calls.host, [], 'preparation rejection never calls any Host Loop method');
+      assertNoSdpPreparationMutation(scenario.calls);
+      assertSdpProtectedSnapshot(before, await scenario.snapshot());
+    });
+  });
+});
+
+test('TEST-SDP-005 / REQ-SDP-002,004,005 / AC-SDP-002-01..03,004-01,004-03,005-02: unsafe existing target rejects without repair', async t => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  const target = SDP_FIXED_TARGET;
+  const io = Object.assign(new Error('EIO'), { code: 'EIO' });
+  const validCredential = sdpCredentialResult();
+  const cases = [
+    ['link', { lstat: logical => logical === SDP_FIXED_TARGET ? { type: 'symlink' } : null }],
+    ['regular file', { lstat: logical => logical === SDP_FIXED_TARGET ? { type: 'file' } : null }],
+    ['socket', { lstat: logical => logical === SDP_FIXED_TARGET ? { type: 'socket' } : null }],
+    ['wrong owner', { lstat: logical => logical === SDP_FIXED_TARGET ? { uid: 501 } : null }],
+    ['wrong group', { lstat: logical => logical === SDP_FIXED_TARGET ? { gid: 20 } : null }],
+    ['wrong mode', { lstat: logical => logical === SDP_FIXED_TARGET ? { mode: 0o700 } : null }],
+    ['target lstat error', { lstat: logical => logical === SDP_FIXED_TARGET ? { error: Object.assign(new Error('EIO'), { code: 'EIO' }) } : null }],
+    ['realpath mismatch', { realpath: ({ logical }) => logical === SDP_FIXED_TARGET ? '/untrusted/replacement' : null }],
+    ['existing descriptor open failure', { openError: io }],
+    ['existing descriptor stat failure', { handleStatError: () => io }],
+    ['existing descriptor close failure', { closeError: io }],
+    ['later existing-path ENOENT', { observe: ({ logical, source, phase }) => logical === target && source === 'path' && phase === 'existing-readback'
+      ? { error: Object.assign(new Error('ENOENT'), { code: 'ENOENT' }) } : null }],
+    ...SDP_MUTATING_ACL_RIGHTS.map(right => [`ACL allow ${right}`, {
+      execResult: ({ command, logical }) => command === '/bin/ls' && logical === target ? sdpAclResult(`0: user:501 allow ${right}`) : null,
+    }]),
+    ['ACL unknown token', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === target ? sdpAclResult('0: user:501 allow future_right') : null }],
+    ['ACL malformed line', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === target ? sdpAclResult('0: user malformed') : null }],
+    ['ACL duplicate index', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === target
+      ? sdpChildResult({ stdout: Buffer.from('drwxr-xr-x  2 root  wheel  64 Jan 1 00:00 target\n0: user:501 allow read\n0: user:502 allow read\n') }) : null }],
+    ['ACL nonzero exit only', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === target ? { ...sdpAclResult(), code: 1 } : null }],
+    ['ACL stderr only', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === target ? { ...sdpAclResult(), stderr: Buffer.from('acl stderr') } : null }],
+    ['ACL invalid UTF-8 only', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === target ? { ...sdpAclResult(), stdout: Buffer.from([0xff]) } : null }],
+    ['ACL signal only', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === target ? { ...sdpAclResult(), signal: 'SIGTERM' } : null }],
+    ['ACL timeout only', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === target ? { ...sdpAclResult(), timed_out: true } : null }],
+    ['ACL overflow only', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === target ? { ...sdpAclResult(), overflow: true } : null }],
+    ['ACL child error only', { execResult: ({ command, logical }) => command === '/bin/ls' && logical === target ? { ...sdpAclResult(), child_error: new Error('acl child') } : null }],
+    ['runtime search denied', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? sdpCredentialResult({ search: false }) : null }],
+    ['runtime write allowed', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? sdpCredentialResult({ write: true }) : null }],
+    ['runtime malformed JSON', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? { ...validCredential, stdout: Buffer.from('{') } : null }],
+    ['runtime extra output', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? { ...validCredential, stdout: Buffer.concat([validCredential.stdout, Buffer.from('extra\n')]) } : null }],
+    ['runtime UID mismatch', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? sdpCredentialResult({ uid: 502 }) : null }],
+    ['runtime GID mismatch', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? sdpCredentialResult({ gid: 21 }) : null }],
+    ['runtime groups omit effective GID', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? sdpCredentialResult({ groups: [44] }) : null }],
+    ['runtime groups unsorted', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? sdpCredentialResult({ groups: [44, 20] }) : null }],
+    ['runtime groups duplicate', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? sdpCredentialResult({ groups: [20, 20, 44] }) : null }],
+    ...['missing-initgroups', 'missing-setgid', 'missing-setuid', 'identity-mismatch', 'search-denied', 'write-allowed'].map(kind => [
+      `credential script ${kind}`,
+      { credentialFault: { logical: target, phase: 'existing-readback', kind } },
+    ]),
+    ['runtime nonzero exit only', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? { ...validCredential, code: 1 } : null }],
+    ['runtime stderr only', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? { ...validCredential, stderr: Buffer.from('credential stderr') } : null }],
+    ['runtime invalid UTF-8 only', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? { ...validCredential, stdout: Buffer.from([0xff]) } : null }],
+    ['runtime signal only', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? { ...validCredential, signal: 'SIGTERM' } : null }],
+    ['runtime timeout only', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? { ...validCredential, timed_out: true } : null }],
+    ['runtime output overflow only', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? { ...validCredential, overflow: true } : null }],
+    ['runtime child error only', { execResult: ({ command, logical }) => command === process.execPath && logical === target ? { ...validCredential, child_error: new Error('credential child') } : null }],
+  ];
+  for (const [label, mutate] of cases) await t.test(label, async () => {
+    await withStartupDirectoryScenario({ target: 'existing', mutate }, async scenario => {
+      const before = await scenario.snapshot();
+      await assert.rejects(() => host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup), error => error?.message === 'STARTUP_DIRECTORY_TARGET_INVALID');
+      assert.equal(scenario.calls.createServer, 0);
+      assert.equal(scenario.calls.listen, 0);
+      assert.deepEqual(scenario.calls.host, []);
+      assert.equal(scenario.calls.mkdir.length, 0);
+      assert.equal(scenario.calls.chown.filter(call => call.logical === SDP_FIXED_TARGET).length, 0);
+      assert.equal(scenario.calls.chmod.filter(call => call.logical === SDP_FIXED_TARGET).length, 0);
+      assertNoSdpPreparationMutation(scenario.calls);
+      assertSdpProtectedSnapshot(before, await scenario.snapshot());
+    });
+  });
+});
+
+test('TEST-SDP-006 / REQ-SDP-002,003,004,005 / AC-SDP-002-02,003-01..03,004-01,004-03,005-02: finite observed races reject without adopting replacements', async t => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  const exists = Object.assign(new Error('EEXIST'), { code: 'EEXIST' });
+  const replaceParentAt = (hookName, { withTarget = false } = {}) => {
+    const evidence = {};
+    return { evidence, async hook(name, { actual, physical, readControlledAuthority }) {
+      if (evidence.replaced || name !== hookName) return;
+      evidence.replaced = true;
+      evidence.original = `${physical}.original`;
+      const candidate = `${physical}.candidate`;
+      await actual.mkdir(candidate, { mode: 0o775 });
+      await actual.chmod(candidate, 0o775);
+      if (withTarget) {
+        await actual.mkdir(path.join(candidate, 'juanerai'), { mode: 0o755 });
+        await actual.chmod(path.join(candidate, 'juanerai'), 0o755);
+      }
+      await actual.writeFile(`${candidate}/replacement.marker`, 'parent replacement\n');
+      await actual.rename(physical, evidence.original);
+      await actual.rename(candidate, physical);
+      evidence.originalSnapshot = await sdpRealObjectSnapshot(actual, evidence.original);
+      evidence.replacementSnapshot = await sdpRealObjectSnapshot(actual, physical);
+      evidence.authority = readControlledAuthority('/private/var/run');
+      if (withTarget) {
+        evidence.originalTargetSnapshot = await sdpRealObjectSnapshot(actual, path.join(evidence.original, 'juanerai'));
+        evidence.replacementTargetSnapshot = await sdpRealObjectSnapshot(actual, path.join(physical, 'juanerai'));
+        evidence.targetAuthority = readControlledAuthority(SDP_FIXED_TARGET);
+      }
+    } };
+  };
+  const replaceTargetAt = (hookName, mode) => {
+    const evidence = {};
+    return { evidence, async hook(name, { actual, physicalTarget, readControlledAuthority }) {
+      if (evidence.replaced || name !== hookName) return;
+      evidence.replaced = true;
+      evidence.original = `${physicalTarget}.original`;
+      const replacement = `${physicalTarget}.replacement`;
+      await actual.mkdir(replacement, { mode });
+      await actual.chmod(replacement, mode);
+      await actual.writeFile(`${replacement}/replacement.marker`, 'target replacement\n');
+      await actual.rename(physicalTarget, evidence.original);
+      await actual.rename(replacement, physicalTarget);
+      evidence.originalSnapshot = await sdpRealObjectSnapshot(actual, evidence.original);
+      evidence.replacementSnapshot = await sdpRealObjectSnapshot(actual, physicalTarget);
+      evidence.authority = readControlledAuthority(SDP_FIXED_TARGET);
+    } };
+  };
+  const cases = [
+    { label: 'mkdir EEXIST', target: 'missing', mutate: { mkdirError: exists }, mkdir: 1, open: 0, chown: 0, chmod: 0 },
+    { label: 'existing path and descriptor identity mismatch', target: 'existing', mutate: { observe: ({ logical, source }) => logical === SDP_FIXED_TARGET && source === 'fd' ? { dev: 900001 } : null }, mkdir: 0, open: 1, chown: 0, chmod: 0 },
+    { label: 'created path and descriptor identity mismatch', target: 'missing', mutate: { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'fd' && phase === 'created-fd-initial' ? { ino: 900002 } : null }, mkdir: 1, open: 1, chown: 0, chmod: 0 },
+    { label: 'actual parent replacement after ACL boundary', target: 'missing', mutate: replaceParentAt('after-parent-acl'), mkdir: 0, open: 0, chown: 0, chmod: 0 },
+    { label: 'actual created target replacement after no-follow open', target: 'missing', mutate: replaceTargetAt('after-target-open', 0o700), mkdir: 1, open: 1, chown: 0, chmod: 0 },
+    { label: 'actual created target replacement after descriptor chown', target: 'missing', mutate: replaceTargetAt('after-target-chown', 0o700), mkdir: 1, open: 1, chown: 1, chmod: 0 },
+    { label: 'actual created target replacement after descriptor chmod', target: 'missing', mutate: replaceTargetAt('after-target-chmod', 0o700), mkdir: 1, open: 1, chown: 1, chmod: 1 },
+    { label: 'actual created target replacement after final access observation', target: 'missing', mutate: replaceTargetAt('after-target-access:created-path-post-chmod', 0o755), mkdir: 1, open: 1, chown: 1, chmod: 1 },
+    { label: 'actual created target replacement after descriptor close', target: 'missing', mutate: replaceTargetAt('after-target-close', 0o755), mkdir: 1, open: 1, chown: 1, chmod: 1 },
+    { label: 'actual parent replacement at final-close boundary', target: 'missing', mutate: replaceParentAt('after-target-close', { withTarget: true }), mkdir: 1, open: 1, chown: 1, chmod: 1 },
+    { label: 'actual existing target replacement after no-follow open', target: 'existing', mutate: replaceTargetAt('after-target-open', 0o755), mkdir: 0, open: 1, chown: 0, chmod: 0 },
+    { label: 'actual existing target replacement after access observation', target: 'existing', mutate: replaceTargetAt('after-target-access:existing-readback', 0o755), mkdir: 0, open: 1, chown: 0, chmod: 0 },
+  ];
+  for (const item of cases) await t.test(item.label, async () => {
+    await withStartupDirectoryScenario({ target: item.target, mutate: item.mutate }, async scenario => {
+      const before = await scenario.snapshot();
+      await assert.rejects(() => host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup), error => error?.message === 'STARTUP_DIRECTORY_RACE');
+      assert.equal(scenario.calls.createServer, 0);
+      assert.equal(scenario.calls.listen, 0);
+      assert.deepEqual(scenario.calls.host, []);
+      assert.equal(scenario.calls.mkdir.length, item.mkdir, `${item.label} has its exact creation count`);
+      assert.equal(scenario.calls.open.length, item.open, `${item.label} has its exact descriptor-open count`);
+      assert.equal(scenario.calls.chown.length, item.chown, `${item.label} has its exact descriptor-chown count`);
+      assert.equal(scenario.calls.chmod.length, item.chmod, `${item.label} has its exact descriptor-chmod count`);
+      assertSdpTargetMutationCalls(scenario.calls, {
+        mkdir: item.mkdir, open: item.open, chown: item.chown, chmod: item.chmod,
+      });
+      const after = await scenario.snapshot();
+      assert.deepEqual(after.protected_state, before.protected_state, `${item.label} preserves protected State/pointer/WIP/Ledger/Handoff fixtures`);
+      assert.equal(after.socket, null, `${item.label} creates no socket`);
+      assertSdpAncestorsProtected(before, after, { parentReplaced: item.label.includes('parent replacement') });
+      if (item.mutate.evidence?.replaced && item.mutate.evidence.original) {
+        assert.deepEqual(await sdpRealObjectSnapshot(scenario.actual, item.mutate.evidence.original), item.mutate.evidence.originalSnapshot,
+          `${item.label} preserves the exact displaced original identity, type, mode and contents from injection`);
+        if (item.label.includes('target replacement')) {
+          assert.deepEqual(await sdpRealObjectSnapshot(scenario.actual, scenario.physicalTarget), item.mutate.evidence.replacementSnapshot,
+            `${item.label} preserves the exact replacement identity, type, mode and marker from injection`);
+          assert.deepEqual(after.authority.metadata.find(([logical]) => logical === SDP_FIXED_TARGET)?.[1], item.mutate.evidence.authority,
+            `${item.label} preserves controlled target authority from injection`);
+        } else {
+          assert.deepEqual(await sdpRealObjectSnapshot(scenario.actual, scenario.physical), item.mutate.evidence.replacementSnapshot,
+            `${item.label} preserves the exact replacement parent identity, type, mode and marker from injection`);
+          assert.deepEqual(after.authority.metadata.find(([logical]) => logical === '/private/var/run')?.[1], item.mutate.evidence.authority,
+            `${item.label} preserves controlled parent authority from injection`);
+          if (item.mutate.evidence.replacementTargetSnapshot) {
+            assert.deepEqual(await sdpRealObjectSnapshot(scenario.actual, path.join(item.mutate.evidence.original, 'juanerai')),
+              item.mutate.evidence.originalTargetSnapshot,
+              `${item.label} preserves the exact target under the displaced parent`);
+            assert.deepEqual(await sdpRealObjectSnapshot(scenario.actual, scenario.physicalTarget),
+              item.mutate.evidence.replacementTargetSnapshot,
+              `${item.label} preserves the exact target under the replacement parent`);
+            assert.deepEqual(after.authority.metadata.find(([logical]) => logical === SDP_FIXED_TARGET)?.[1], item.mutate.evidence.targetAuthority,
+              `${item.label} preserves controlled target authority from injection`);
+          }
+        }
+      }
+    });
+  });
+});
+
+test('TEST-SDP-007 / REQ-SDP-003,004,005 / AC-SDP-003-02,004-01..04,005-02: closed input/create/readback failures retain only post-create diagnostics', async t => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  const io = Object.assign(new Error('EIO'), { code: 'EIO' });
+  const input = (label, setup, mutate = null) => ({ label, setup, mutate, expected: 'STARTUP_DIRECTORY_INPUT_INVALID', retained: false, mkdir: 0, chown: 0, chmod: 0 });
+  const created = (label, mutate, expected = 'STARTUP_DIRECTORY_CREATE_FAILED', counts = {}) => ({
+    label, mutate, setup: null, expected, retained: true, mkdir: 1,
+    open: counts.open ?? 1, chown: counts.chown ?? 0, chmod: counts.chmod ?? 0,
+  });
+  // Design §5 treats a created object that is wrong before/opened through the descriptor,
+  // or disagrees immediately around descriptor mutation, as CREATE_FAILED. ACL/access and
+  // the final pathname authority pass are created-object readbacks and map to READBACK_FAILED.
+  const cases = [
+    input('runtime GID mismatch', scenario => { scenario.startup.runtime_gid = 21; }),
+    input('missing runtime UID', scenario => { delete scenario.startup.runtime_uid; }),
+    input('relative Node executable', scenario => { scenario.startup.node_executable = 'node'; }),
+    input('extra startup field', scenario => { scenario.startup.extra = true; }),
+    input('missing OS method', scenario => { scenario.startup.os.lstat = null; }),
+    input('extra OS method', scenario => { scenario.startup.os.remove = async () => {}; }),
+    input('non-root real UID', null, { identity: { uid: 501 } }),
+    input('non-root effective UID', null, { identity: { euid: 501 } }),
+    input('non-wheel real GID', null, { identity: { gid: 20 } }),
+    input('non-wheel effective GID', null, { identity: { egid: 20 } }),
+    input('unsafe creation umask', null, { identity: { umask: 0o700 } }),
+    { label: 'non-EEXIST mkdir failure', mutate: { mkdirError: io }, setup: null, expected: 'STARTUP_DIRECTORY_CREATE_FAILED', retained: false, mkdir: 1, chown: 0, chmod: 0 },
+    created('created path is not a directory', { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'path' && phase === 'created-path-initial' ? { type: 'file' } : null }, 'STARTUP_DIRECTORY_CREATE_FAILED', { open: 0 }),
+    created('created path wrong owner', { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'path' && phase === 'created-path-initial' ? { uid: 501 } : null }, 'STARTUP_DIRECTORY_CREATE_FAILED', { open: 0 }),
+    created('created path not exact 0700', { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'path' && phase === 'created-path-initial' ? { mode: 0o755 } : null }, 'STARTUP_DIRECTORY_CREATE_FAILED', { open: 0 }),
+    created('first-path created ACL unsafe before open', { execResult: ({ command, logical, phase }) => command === '/bin/ls' && logical === SDP_FIXED_TARGET && phase === 'created-path-initial' ? sdpAclResult('0: user:501 allow write') : null }, 'STARTUP_DIRECTORY_READBACK_FAILED', { open: 0 }),
+    created('first-path created runtime write allowed before open', { credentialFault: { logical: SDP_FIXED_TARGET, phase: 'created-path-initial', kind: 'write-allowed' } }, 'STARTUP_DIRECTORY_READBACK_FAILED', { open: 0 }),
+    created('descriptor open failure', { openError: io }),
+    created('descriptor stat failure', { handleStatError: () => io }),
+    created('created descriptor wrong owner', { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'fd' && phase === 'created-fd-initial' ? { uid: 501 } : null }),
+    created('created descriptor not exact 0700', { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'fd' && phase === 'created-fd-initial' ? { mode: 0o755 } : null }),
+    created('created descriptor wrong type', { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'fd' && phase === 'created-fd-initial' ? { type: 'file' } : null }),
+    created('bound created ACL unsafe before mutation', { execResult: ({ command, logical, phase }) => command === '/bin/ls' && logical === SDP_FIXED_TARGET && phase === 'created-path-bound' ? sdpAclResult('0: user:501 allow write') : null }, 'STARTUP_DIRECTORY_READBACK_FAILED'),
+    created('bound created runtime write allowed before mutation', { credentialFault: { logical: SDP_FIXED_TARGET, phase: 'created-path-bound', kind: 'write-allowed' } }, 'STARTUP_DIRECTORY_READBACK_FAILED'),
+    created('descriptor chown failure', { chownError: io }),
+    created('post-chown authority readback failure', { observe: ({ logical, phase }) => logical === SDP_FIXED_TARGET && phase.includes('post-chown') ? { gid: 20 } : null }, 'STARTUP_DIRECTORY_CREATE_FAILED', { chown: 1 }),
+    created('descriptor chmod failure', { chmodError: io }, 'STARTUP_DIRECTORY_CREATE_FAILED', { chown: 1 }),
+    created('post-chmod authority readback failure', { observe: ({ logical, phase }) => logical === SDP_FIXED_TARGET && phase.includes('post-chmod') ? { mode: 0o700 } : null }, 'STARTUP_DIRECTORY_CREATE_FAILED', { chown: 1, chmod: 1 }),
+    created('descriptor close failure', { closeError: io }, 'STARTUP_DIRECTORY_CREATE_FAILED', { chown: 1, chmod: 1 }),
+    created('later target ENOENT', { observe: ({ logical, phase }) => logical === SDP_FIXED_TARGET && phase === 'created-final'
+      ? { error: Object.assign(new Error('ENOENT'), { code: 'ENOENT' }) } : null }, 'STARTUP_DIRECTORY_READBACK_FAILED', { chown: 1, chmod: 1 }),
+    created('final target type invalid', { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'path' && phase === 'created-final' ? { type: 'file' } : null }, 'STARTUP_DIRECTORY_READBACK_FAILED', { chown: 1, chmod: 1 }),
+    created('final target owner invalid', { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'path' && phase === 'created-final' ? { uid: 501 } : null }, 'STARTUP_DIRECTORY_READBACK_FAILED', { chown: 1, chmod: 1 }),
+    created('final target group invalid', { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'path' && phase === 'created-final' ? { gid: 20 } : null }, 'STARTUP_DIRECTORY_READBACK_FAILED', { chown: 1, chmod: 1 }),
+    created('final target mode invalid', { observe: ({ logical, source, phase }) => logical === SDP_FIXED_TARGET && source === 'path' && phase === 'created-final' ? { mode: 0o700 } : null }, 'STARTUP_DIRECTORY_READBACK_FAILED', { chown: 1, chmod: 1 }),
+    created('final target physical path mismatch', { realpath: ({ logical, phase }) => logical === SDP_FIXED_TARGET && phase === 'created-final' ? '/untrusted/final-target' : null }, 'STARTUP_DIRECTORY_READBACK_FAILED', { chown: 1, chmod: 1 }),
+    created('final ACL unsafe only', { execResult: ({ command, logical, phase }) => command === '/bin/ls' && logical === SDP_FIXED_TARGET && ['created-path-post-chmod', 'created-final'].includes(phase)
+      ? sdpAclResult('0: user:501 allow delete') : null }, 'STARTUP_DIRECTORY_READBACK_FAILED', { chown: 1, chmod: 1 }),
+    created('final credential search denied only', { credentialFault: { logical: SDP_FIXED_TARGET, phase: 'created-path-post-chmod', kind: 'search-denied' } }, 'STARTUP_DIRECTORY_READBACK_FAILED', { chown: 1, chmod: 1 }),
+    created('final credential timeout only', { execResult: ({ command, logical, phase }) => command === process.execPath && logical === SDP_FIXED_TARGET && ['created-path-post-chmod', 'created-final'].includes(phase)
+      ? { ...sdpCredentialResult(), timed_out: true } : null }, 'STARTUP_DIRECTORY_READBACK_FAILED', { chown: 1, chmod: 1 }),
+    created('final credential malformed only', { execResult: ({ command, logical, phase }) => command === process.execPath && logical === SDP_FIXED_TARGET && ['created-path-post-chmod', 'created-final'].includes(phase)
+      ? { ...sdpCredentialResult(), stdout: Buffer.from('{') } : null }, 'STARTUP_DIRECTORY_READBACK_FAILED', { chown: 1, chmod: 1 }),
+  ];
+  for (const item of cases) await t.test(item.label, async () => {
+    await withStartupDirectoryScenario({ target: 'missing', mutate: item.mutate }, async scenario => {
+      item.setup?.(scenario);
+      const before = await scenario.snapshot();
+      let error = null;
+      try { await host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup); }
+      catch (caught) { error = caught; }
+      assert.ok(error instanceof Error, `${item.label} rejects`);
+      assert.equal(error.message, item.expected, `${item.label} maps to its exact closed code`);
+      assert.equal(scenario.calls.createServer, 0, `${item.label} creates no listener`);
+      assert.equal(scenario.calls.listen, 0, `${item.label} never attempts listen`);
+      assert.deepEqual(scenario.calls.host, [], `${item.label} calls no Host Loop method`);
+      assert.equal(scenario.calls.mkdir.length, item.mkdir, `${item.label} has exact mkdir count`);
+      if (item.open !== undefined) assert.equal(scenario.calls.open.length, item.open, `${item.label} has exact descriptor-open count`);
+      assert.equal(scenario.calls.chown.length, item.chown, `${item.label} has exact descriptor-chown count`);
+      assert.equal(scenario.calls.chmod.length, item.chmod, `${item.label} has exact descriptor-chmod count`);
+      assertSdpTargetMutationCalls(scenario.calls, {
+        mkdir: item.mkdir, open: item.open, chown: item.chown, chmod: item.chmod,
+      });
+      const targetRetained = await lstat(scenario.physicalTarget).then(stat => stat.isDirectory(), error => error?.code === 'ENOENT' ? false : Promise.reject(error));
+      assert.equal(targetRetained, item.retained,
+        `${item.label} retains exactly the post-mkdir diagnostic object`);
+      assert.doesNotMatch(String(error.message), /secret|acl\/user/i, `${item.label} emits no raw ACL or credential text`);
+      const after = await scenario.snapshot();
+      assertSdpAncestorsProtected(before, after);
+      assert.deepEqual(after.protected_state, before.protected_state, `${item.label} preserves protected State/pointer/WIP/Ledger/Handoff fixtures`);
+      assert.equal(after.socket, null, `${item.label} creates no socket`);
+    });
+  });
+});
+
+test('TEST-SDP-008 / REQ-SDP-001,004,005 / AC-SDP-001-03,004-02,005-02: occupied sockets preserve existing or newly created directories without stale cleanup', async t => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  await t.test('pre-existing safe target and first listener remain unchanged', async () => {
+    await withStartupDirectoryScenario({ target: 'existing' }, async scenario => {
+      await host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup);
+      const before = await scenario.snapshot();
+      await assert.rejects(() => host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup), /EADDRINUSE/);
+      assertSdpProtectedSnapshot(before, await scenario.snapshot(), { socket: 'unchanged' });
+      assert.deepEqual(await scenario.status(), Buffer.from('{"change_id":null,"operation":"status","outcome":"WAITING","schema_version":"1.0"}\n'),
+        'the first listener remains live after the second-instance rejection');
+    });
+  });
+  await t.test('directory created by the rejected invocation remains with the occupied socket untouched', async () => {
+    const evidence = {};
+    const mutation = { evidence, async hook(name, { actual, physicalSocket, createExternalServer }) {
+      if (name !== 'after-target-close' || evidence.server) return;
+      const server = createExternalServer();
+      await new Promise((resolve, reject) => {
+        server.once('error', reject);
+        server.listen(physicalSocket, resolve);
+      });
+      evidence.server = server;
+      evidence.socket = await actual.lstat(physicalSocket).then(stat => ({ dev: stat.dev, ino: stat.ino }));
+    } };
+    await withStartupDirectoryScenario({ target: 'missing', mutate: mutation }, async scenario => {
+      const before = await scenario.snapshot();
+      await assert.rejects(() => host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup), /EADDRINUSE/);
+      const target = await scenario.actual.lstat(scenario.physicalTarget);
+      const socket = await scenario.actual.lstat(scenario.physicalSocket);
+      assert.equal(target.isDirectory(), true, 'listener failure retains the invocation-created directory');
+      assert.equal(target.mode & 0o7777, 0o755, 'retained created directory keeps its accepted exact final mode');
+      assert.equal(socket.isSocket(), true, 'occupied socket remains a real socket');
+      assert.deepEqual({ dev: socket.dev, ino: socket.ino }, mutation.evidence.socket,
+        'listener failure does not unlink or replace the occupied socket');
+      assert.equal(mutation.evidence.server.listening, true, 'the independently occupied listener remains live');
+      assert.equal(scenario.calls.mkdir.length, 1);
+      assert.equal(scenario.calls.chown.length, 1);
+      assert.equal(scenario.calls.chmod.length, 1);
+      assert.equal(scenario.calls.close.length, 1);
+      assert.equal(scenario.calls.createServer, 1, 'only the product listener attempt is counted');
+      assert.equal(scenario.calls.listen, 1, 'only the product listen attempt is counted');
+      assert.deepEqual(scenario.calls.host, [], 'occupied listener failure accepts no request');
+      const after = await scenario.snapshot();
+      assertSdpAncestorsProtected(before, after);
+      assertSdpTargetMutationCalls(scenario.calls, { mkdir: 1, open: 1, chown: 1, chmod: 1, close: 1 });
+      assert.deepEqual(after.protected_state, before.protected_state,
+        'listener failure preserves State/pointer/WIP/Ledger/Handoff fixtures');
+    });
+  });
+});
+
+test('TEST-MA-HOST-003 / AC-MA-003-03,05; AC-SDP-005-03 / CAN-MA-04: status half-close preserves one asynchronous canonical response', async () => {
+  const host = await loadRequired(hostLoopPath, ['HOST_SOCKET_PATH', 'serveTrustedHostLoop'], 'production socket server is required');
+  const expected = { schema_version: '1.0', operation: 'status', outcome: 'WAITING', change_id: null };
+  const expectedFrame = Buffer.from(`${canonicalJson(expected)}\n`);
+  let readStatusCalls = 0;
+  let resolveReadStatusReturned;
+  const readStatusReturned = new Promise(resolve => { resolveReadStatusReturned = resolve; });
+  await withStartupDirectoryScenario({ target: 'existing', hostLoop: {
+    async submit() { throw new Error('UNREACHABLE'); },
+    async readStatus() {
+      readStatusCalls += 1;
+      await new Promise(resolve => setImmediate(resolve));
+      resolveReadStatusReturned();
+      return expected;
+    },
+  } }, async scenario => {
+    await host.serveTrustedHostLoop(scenario.hostLoop, host.HOST_SOCKET_PATH, 20, scenario.startup);
+    const response = await scenario.status();
+    await readStatusReturned;
+    assert.equal(readStatusCalls, 1, 'one canonical status frame invokes readStatus exactly once');
+    assert.deepEqual(response, expectedFrame,
+      'CAUSAL_RED: default allowHalfOpen:false must not close the writable side before asynchronous readStatus returns its one canonical response');
+  });
 });
 
 test('TEST-MA-LEDGER-001 / AC-MA-005-02,04; AC-MA-006-01,02,04 / CAN-MA-07,08,14: Evidence append and product push use exact refs, keys, and remote readback identity', async () => {
