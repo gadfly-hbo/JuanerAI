@@ -134,6 +134,13 @@ Read docs/governance/agent-model-routing.md before spawning a project subagent o
 
 Read docs/architecture/data-authority.md and docs/architecture/security-boundaries.md before data, model, agent-tool, action, or enterprise work.
 
+## Development Material Preservation
+
+- Store source, permanent tests, product plans, OpenSpec, designs, formal decisions, and acceptance conclusions in their canonical repository locations on a normal work branch. They are preserved only after Git integration appropriate to their lifecycle; an uncommitted working-tree copy is not a preserved project asset.
+- Store raw logs, complete command output, exit results, frozen inputs, and diagnostic source needed for acceptance, attribution, or resumption under one device-local persistent artifact root organized by Change or task ID. Continue an already approved evidence location instead of creating a second authority. Record the actual root and owning device in the handoff; keep shared rules device-independent.
+- Use `/private/tmp` only for reproducible material that carries no acceptance, recovery, or historical-attribution duty. When a temporary probe becomes evidence, copy rather than move its source, inputs, and results to persistent storage after writes stop; record byte length and SHA-256, read the copy back independently, and retain historical failures. A digest without an accessible file is not a completed handoff.
+- Use the existing project status, `NEXT_ACTION`, or handoff record for the unmet acceptance point, exact return point, and evidence locator. `docs/templates/HANDOFF_BACK.template.md` carries the required device, identity, and receiver-availability fields. Keep credentials and unapproved sensitive data out of evidence; same-device persistence is not a cross-device backup.
+
 ## Scope and Contracts
 
 - Domain-private changes stay inside the approved domain.
