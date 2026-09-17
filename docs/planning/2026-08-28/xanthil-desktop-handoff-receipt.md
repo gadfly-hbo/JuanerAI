@@ -42,3 +42,16 @@ The proposed first Change candidate is `CHG-xanthil-desktop-session-bootstrap`. 
 - No strong sandbox claim for the first Personal Profile: the planned Python sidecar is trusted packaged code with a narrow capability contract, not an arbitrary-code sandbox.
 - No professional-mode completion claim until the PX-2026-004 interaction set is implemented and re-proved in the production stack.
 - No Model Pack work before `DA_REQUIRED_COMPLETE`, explicit user acceptance, and a separate Model Pack start authorization.
+
+## MacBook material-preservation checkpoint — 2026-09-18
+
+- Evidence class: raw Controller startup evidence; not lifecycle authority or DISPATCH authority.
+- Owning device: MacBook (`juanerai.device=macbook`).
+- Persistent locator: `/Users/huangbo/JuanerAI-artifacts/CHG-xanthil-desktop-session-bootstrap/2026-09-18-controller-startup/`.
+- Bundle manifest: `MANIFEST.txt`, 421 bytes, SHA-256 `a7565d6f0ec80e0c2f67c253444734011f6ee8c58d651139a354a01754add6b2`.
+- Readback: five files were copied without removing their temporary staging sources; byte lengths and SHA-256 values matched, and byte-for-byte `cmp` readback passed. Files were quiescent before identity capture.
+- Commit preflight: two generic and one project-specific `full`/`persistence=false` codebase-memory index attempts returned the same contained worker crash. Exact outputs are preserved as `commit-preflight-index.txt`, 1,053 bytes, SHA-256 `c82538166f4d69df4f62488d736b6c9cece11907f484bdde1f84d3519d2e3287`, and `commit-preflight-index-project-entry.txt`, 690 bytes, SHA-256 `8a255159e2844c8d907c21dfb9efcd6ddc6a159f63c8d1064399e1d842264105`; the workflow stopped before staging, commit, or push and reused no historical exception.
+- One-time alternative Gate: after those three fresh same-class crashes, the user explicitly authorized this governance branch to substitute direct Git, worktree-root, branch, base-HEAD, exact-path, complete-diff, file-SHA, staging-state, and `diff --check` verification, then complete local commit, push, PR, squash merge, and Mac mini ff-only synchronization. The authorization is exhausted by this governance integration, is not reusable by another Change or failure, and does not authorize Desktop DISPATCH.
+- Temporary-path disposition: `/private/tmp/JuanerAI-xanthil-desktop-session-bootstrap` was absent and retained only a prunable Git worktree registration; no current D1-A record identifies raw acceptance evidence available only from that missing path. The completed repair archive remains unchanged and contains no new Desktop material.
+- Receiver availability: the MacBook Controller can locate, read, and hash-verify the bundle. It has not been copied to Mac mini, is not a shared-host path, contains no credential, and does not claim cross-device backup.
+- Current unmet acceptance point and return: `D1_A_PREREQUISITE_CLOSURE`, waiting for explicit first-product-execution authorization. No Desktop DISPATCH, OpenSpec, dependency installation, product implementation, or host mutation was started by this checkpoint.

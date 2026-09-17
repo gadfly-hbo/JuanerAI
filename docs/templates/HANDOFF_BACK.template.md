@@ -27,6 +27,28 @@
 | Check | Result | Minimal Evidence |
 |---|---|---|
 
+## Evidence Preservation
+
+Follow `AGENTS.md` Development Material Preservation; do not restate or fork that policy here.
+
+- evidence class: formal project asset / raw evidence / discardable intermediate
+- persistent evidence locator:
+- owning device and local owner:
+- original temporary locator, if any:
+- frozen or still-writing status and capture window:
+- existing authority location reused, if any:
+
+| File or Bundle | Byte Length | SHA-256 | Source/Input Binding | Receiver Readback |
+|---|---:|---|---|---|
+| | | | | located / readable / hash-verified / unavailable |
+
+- receiver identity and access result:
+- missing or lost evidence and acceptance impact:
+- current unmet acceptance point:
+- exact return point:
+- existing status, `NEXT_ACTION`, or handoff record updated:
+- temporary/generated material confirmed discardable:
+
 ## Attempt Ledger
 
 | Attempt | Exact Command | Environment/Entrypoint | Result | Post-Failure Mutation |
