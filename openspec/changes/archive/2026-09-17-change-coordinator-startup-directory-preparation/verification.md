@@ -1,3 +1,7 @@
+> Archive note (R378, 2026-09-17): the complete original text below is the
+> frozen Spec-stage record, including its historical pending/NOT_RUN status.
+> Current completion and limits are in [the archive acceptance record](verification.md#archive-acceptance-and-evidence--r378-2026-09-17).
+
 # Verification: Change Coordinator Startup Directory Preparation
 
 ## Current Verdict
@@ -109,3 +113,92 @@ Controller evidence:
 [R342 acceptance](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-startup-spec-r342/review.md),
 [final Spec freeze](/Users/huangbo/JuanerAI/.recovery/m2-20260906/evidence/controller-startup-spec-r342/spec-freeze.json).
 Role returns and NEEDS_FIX history are retained, not overwritten.
+
+## Archive acceptance and evidence — R378 (2026-09-17)
+
+Status: ACCEPTED_FOR_ARCHIVE / D1_FINALIZATION_PENDING. This completion record
+supersedes the historical status assertions above, not the approved contracts.
+R378 explicit user authority covers this documentation archive, canonical merge,
+review and Git/PR integration only. It grants no new host, provider or Desktop
+action.
+
+### Frozen implementation and local acceptance
+
+- PR #31: https://github.com/gadfly-hbo/JuanerAI/pull/31
+- Accepted integration: ebb93de91db083b8f46f8e5a15baeaea65bbb20a;
+  tree 4201653aed3b25c86fe254c90dce34e0a4d7fb5e.
+- Production host-loop.mjs: 114685 bytes; SHA256
+  c0f23d7462fa3ae8e94d98f2c530c13d680fadc711628e81c41f7077592bff7a.
+- Test mode-activation.test.mjs: 284510 bytes; SHA256
+  81e92381fedd6d2a13fe5aed7e45f2f58c6633923581a4bcb96acaf7ba7a3e6f.
+- Approved seven-file Spec package identity:
+  59b8df5a13a43535b2bd402d7d1e4556fcdc0c2b4a28f894468299db279e1e17.
+- Final R349 validation-freeze.json SHA256:
+  7378dd9e565929b04e31fec9ede16f94150a058f135b1a31849a0bad522fa8fd.
+- R348 valid F1/F2 RED/TDD record SHA256:
+  d8929bf266f5f57ebac3544a44148bb3be14ad16dd58e163f00035c208f25f57.
+- R349 final runs: helper 1 PASS; health 2 PASS; causal GREEN 2 PASS;
+  startup 173 PASS; ordinary mode 273 PASS/19 A2 skips;
+  canonical offline 1410 PASS/1 provider skip. Retirement PASS.
+  Node v26.0.0; command-local environment and complete raw streams/exit
+  results remain in the frozen record.
+- R350 fresh independent Validator PASS and Controller local acceptance.
+  Earlier R347 F1/F2 findings, invalid preliminary RED and auxiliary failures
+  remain historical evidence, not erased or represented as successful runs.
+
+The Controller-retained evidence root is
+.recovery/m2-20260906/evidence/ (local, deliberately not published in Git).
+Exact relative locators: controller-startup-test-r344/final-review.md,
+controller-startup-correction-r348/tdd-ready.json,
+controller-startup-worker-r349/validation-freeze.json,
+controller-startup-validator-r350/acceptance.md,
+controller-startup-integration-r351/integration.json, and
+controller-d1-acceptance-r377/R377_ACCEPTANCE_AND_CLOSEOUT.md.
+The full logs referenced by those records remain local; these citations are
+not a claim that a public checkout alone contains raw host evidence.
+
+### Real host acceptance and return to D1
+
+R363 single-file replacement/stopped readback was accepted at R364. R367 proved
+the safely-created directory startup, status and planned stop. Its residual
+socket STOP was preserved. R369 separately authorized operator maintenance;
+R371 precisely removed that old socket once, retained the RUN directory and
+completed safe-existing startup. R368/R372 accepted these bounded observations.
+
+R374 full environment and R376 PRE → five Git steps → POST were accepted at
+R375/R377. R376 POST at 2026-09-17T14:03:29.838982Z–14:03:33.012932Z proved all
+three host repository roles at ebb93de91db083b8f46f8e5a15baeaea65bbb20a,
+live origin, strict STATUS/EMPTY, fresh WIP and complete protection/transport
+binding. Two worktrees were clean; canonical was bare (clean not applicable).
+MacBook's clean acceptance worktree readback matched that integration as recorded
+in R377. This is window-bound evidence, not a continuous availability promise.
+
+Raw host report: 40948494 bytes, SHA256
+ee14e3bddda00d92465552daaa09b7ced13f5a9af4015af3c9775ade3d2646fc.
+Controller independent nested-capture review:
+controller-d1-acceptance-r377/raw-review.json, SHA256
+850fd68c1ca98a9536a460f0bf24838d2a236132b982126bc598e9ea69193727.
+The original failures, full command/input/source bindings, raw streams and exit
+results remain in that append-only report.
+
+### Reuse, explicit limits and remaining endpoint
+
+This archive changes documentation only. Its mechanical checks must show every
+original seven-file body retained, canonical's prior content unchanged and the
+approved normative delta copied exactly. Production/Test/tools bytes must remain
+equal to ebb93de9. Their original R349/R350 evidence is reused by demonstrated
+no-impact equivalence, not relabeled as newly executed tests. K1/K2/hour remain
+their separately accepted baselines; final applicable gates are not waived.
+
+Real host evidence is maintenance-assisted stop/start. It is not real reboot,
+automatic stale-socket recovery, old installer repair or rollback proof.
+S09/A2 remain USER_WAIVED / NOT_VERIFIED. No external provider or real product
+DISPATCH positive full run is inferred from local tests or STATUS/EMPTY.
+No new waiver is introduced.
+
+The startup/helper/baseline sub-branches are CLOSED_RETURNED at the original D1
+acceptance point. BLK-D1A-008 overall release and M4 are not issued by this
+archive: final documentation integration must first exist, D1 sources must bind
+that exact identity and required final baseline/WIP readback must be accepted.
+The Controller records that continuation in the existing MASTER_PLAN and
+NEXT_ACTION, not a parallel state system. Desktop remains separately authorized.

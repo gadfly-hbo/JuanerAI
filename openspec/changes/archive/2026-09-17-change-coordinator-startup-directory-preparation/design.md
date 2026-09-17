@@ -1,3 +1,7 @@
+> Archive note (R378, 2026-09-17): the complete original text below is the
+> frozen Spec-stage record, including its historical pending/NOT_RUN status.
+> Current completion and limits are in [the archive acceptance record](verification.md#archive-acceptance-and-evidence--r378-2026-09-17).
+
 # Design: Change Coordinator Startup Directory Preparation
 
 ## 1. Reused Boundary and Sequence

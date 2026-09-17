@@ -1,3 +1,7 @@
+> Archive note (R378, 2026-09-17): the complete original text below is the
+> frozen Spec-stage record, including its historical pending/NOT_RUN status.
+> Current completion and limits are in [the archive acceptance record](verification.md#archive-acceptance-and-evidence--r378-2026-09-17).
+
 # Traceability: Change Coordinator Startup Directory Preparation
 
 ## Requirement Matrix
@@ -57,3 +61,21 @@ TASK-SDP-030..032 -> TASK-SDP-040..042 -> TASK-SDP-050..052`.
 
 No later result exists. Spec drafting authorizes no Test, production, Git,
 integration, deployment, host operation, acceptance, D1, M4, or Desktop action.
+
+## Accepted evidence mapping — R378 (2026-09-17)
+
+The earlier NOT_RUN table is the retained Spec-intake snapshot. The mapping
+below records completed evidence without reclassifying waived/unverified items.
+
+| Requirement | Accepted evidence and limit |
+|---|---|
+| REQ-SDP-001 | R344 real-listener RED → R349 final startup matrix; R367 safely-created host startup and R371 maintenance-assisted safe-existing startup, accepted by R368/R372. |
+| REQ-SDP-002 | R349 existing-target, identity/ACL/access, race and forbidden-side-effect matrix; R371 retained RUN directory and safely-existing startup. No automatic socket removal is implemented or claimed. |
+| REQ-SDP-003 | R348 F1/F2 causal RED → R349 minimum fix and 173-leaf startup matrix; R367 actual creation/startup. No new reboot observation is claimed. |
+| REQ-SDP-004 | R349 negative/race/failure/protection matrix; R367 real residual-socket STOP retained. Subsequent manual cleanup required distinct R369 authority. |
+| REQ-SDP-005 | R349 six complete runs, exact Test/source/spec binding and Retirement PASS; R350 independent read-only acceptance. Production and Test remain logically isolated. |
+| REQ-SDP-006 | R350 local acceptance → R351 PR31 → R363/R364 replacement → R367/R371 and Controller host acceptance → R374/R376 full environment and D1 observation, accepted at R377. Final docs-integration D1 identity still pending. |
+| Modified AC-RIC-004-01 | Canonical receives the exact approved delta. No other repair-boundary rule, installer, recovery behavior, socket contract, credential policy or runtime module is changed by this archive. |
+
+Exact identities, evidence locations, original failures and applicability limits
+are recorded in [verification.md](verification.md#archive-acceptance-and-evidence--r378-2026-09-17).
