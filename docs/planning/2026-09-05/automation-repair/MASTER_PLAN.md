@@ -1,5 +1,15 @@
 # JuanerAI 自动化修复主计划
 
+## 最终状态 — 2026-09-18 / R382 接受、R383 文档归档
+
+已批准的 M0–M4 自动化修复适用范围完成；B0–B5 在原限定范围 CLOSED，BLK-D1A-008 在既有 S09/A2 豁免边界内 CLOSED，相关支线已返回原验收点。M4 结论为“可进入 Desktop 启动决策”，不是 Desktop 实施或 DISPATCH 授权。
+
+唯一当前动作卡仍为 [NEXT_ACTION.md](NEXT_ACTION.md)；可随 Git 传递的完成依据、最终修复 SHA、三方读回窗口和保留限制集中在[最终关闭报告](reviews/final-closure-r382.md)。R019–R382 详细会话、原始日志及失败历史由 Controller 保留，不把整个本地恢复目录发布到 Git。下文是原主计划及历史阶段文字，路线和完成判据保持；其中旧 OPEN／“下一阶段”不能覆盖本段最终状态。
+
+本次 R383 只归档三个文档，生产、Test、Spec、工具和部署对象不变；不会因此清零 K1/K2/hour 或重新安装、停启。新的文档集成 SHA 由包含本报告的 `origin/main` 确定，和报告所绑定的已验修复代码 SHA 分别记录，避免为回填自身提交号反复提交。
+
+当前修复任务 STOP。Desktop 另用新 session 恢复既有产品计划和权限；MacBook工作分支仅承载获准的Controller intake/计划/文档准备，不承载已激活产品Change的实现。正式产品执行另由signed DISPATCH绑定Mac mini精确Worktree/branch，遵守[唯一执行政策](../../../governance/product-change-execution-policy.md)。不复用旧修复分支，不在main开发。S09/A2仍为USER_WAIVED / NOT_VERIFIED；首次真实产品外部正向链、正式签名与DISPATCH保持独立边界。
+
 ## 身份、当前授权与终点
 
 - 计划 ID：`JUANERAI-AUTOMATION-REPAIR-20260905`；路线版本：v1。
