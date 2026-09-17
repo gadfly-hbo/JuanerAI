@@ -1,3 +1,7 @@
+> Archive note (R378, 2026-09-17): the complete original text below is the
+> frozen Spec-stage record, including its historical pending/NOT_RUN status.
+> Current completion and limits are in [the archive acceptance record](verification.md#archive-acceptance-and-evidence--r378-2026-09-17).
+
 # Tasks: Change Coordinator Startup Directory Preparation
 
 ## Status and Fixed Order
@@ -81,3 +85,30 @@
   cannot safely start. Record stop/start and real reboot evidence distinctly.
   On PASS, return to the same `SERVICE_BEFORE`/complete-environment window and
   then original D1; do not infer `BLK-D1A-008`, M4, or Desktop completion.
+
+## Archive completion record — R378 (2026-09-17)
+
+The original checkboxes above preserve the R342 Spec-stage record. They are not
+the current completion state. The following evidence disposition supersedes only
+those historical status fields; it does not change the approved task contracts.
+
+| Tasks | Actual completion and evidence |
+|---|---|
+| 001–003 | R342 complete seven-file Spec Gate and ponytail review accepted. |
+| 010–012 | R344 isolated Test source/health and valid real-listener causal RED accepted; TDD_READY bound the frozen Test. The observed listener error was EACCES, not an invented ENOENT result. |
+| 020–021 | Minimum Worker changed only host-loop.mjs. R347 found F1/F2; R348 established both causal REDs, followed by the bounded R349 production correction. |
+| 030–032 | R349 helper 1/1, health 2/2, causal GREEN 2/2, startup matrix 173/173, ordinary mode 273 PASS/19 A2 skips, canonical 1410 PASS/1 provider skip. Retirement PASS after the isolated R346 cleanup; R349 final identities supersede earlier intermediate passes. |
+| 040–042 | R349 frozen source/Test/spec and complete logs; fresh independent R350 Validator PASS and Controller local acceptance, within the recorded evidence levels. |
+| 050 | R351 exact integration through PR #31 and host package; R363 single-file deployment and stopped readback accepted at R364. Original predecessor and failure history retained. |
+| 051 | R367 safely-created startup plus status and planned stop; residual socket correctly stopped further execution. Separately authorized R369 manual maintenance was completed at R371: one precise old-socket unlink followed by safe-existing startup and status. R368/R372 Controller acceptances preserve this limitation; this is maintenance-assisted stop/start, not automatic residual recovery or reboot proof. |
+| 052 | No unapproved rollback or old-installer revival. R374/R376 complete environment, live origin, repository and fresh-WIP windows accepted at R375/R377; the startup and baseline branches returned to original D1. |
+
+The task's prohibition on automatic deletion remains unchanged. The separately
+approved operator maintenance is not production behavior and is not evidence
+that an occupied/nonempty target passes the startup gate.
+
+Current archive disposition: ACCEPTED_FOR_ARCHIVE / D1_FINALIZATION_PENDING.
+R378 authorizes the documentation-only archive and canonical merge. Final D1
+release and M4 remain contingent on the final integration identity and its
+required baseline/readback evidence; Desktop is not authorized. See
+[verification.md](verification.md#archive-acceptance-and-evidence--r378-2026-09-17).
