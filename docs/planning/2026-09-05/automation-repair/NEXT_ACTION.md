@@ -1,5 +1,32 @@
 # 自动化修复动作卡
 
+## 当前状态 — R382 关闭／R383 最小 Git 归档
+
+先读 [MASTER_PLAN.md](MASTER_PLAN.md) 与[最终关闭报告](reviews/final-closure-r382.md)。本段是当前恢复入口；下方 R018 及以前的内容是完整保留的历史，不再据其旧 OPEN 状态恢复修复。
+
+| 项 | 当前值 |
+|---|---|
+| 计划 | JUANERAI-AUTOMATION-REPAIR-20260905 / v1；已批准适用范围完成 |
+| 阶段／阻塞 | M0–M4 COMPLETE；B0–B5 原限定 CLOSED，BLK-D1A-008 带既有 S09/A2 边界 CLOSED；无开放修复支线 |
+| 最终证据 | R382 Controller 接受；适用本地链、独立验收、真实修复集成／归档、主机部署及 D1 基线／EMPTY／WIP已接受，详见关闭报告 |
+| Git 身份 | 已验修复代码基线 7afc4ec7f775fc43a9c3f48c3494e6bd09feb0d6；文档归档版本使用包含本记录的 origin/main，合并与双端同步以实际 Git 读回为准 |
+| 豁免／未验证 | S09/A2 USER_WAIVED / NOT_VERIFIED；真实产品外部全链路、reboot／自动残留恢复、旧安装器／回滚不冒充已验证 |
+| 当前动作 | STOP；不重启修复、不恢复旧额度或 Agent，不把本记录当作 signed authority |
+| 下一任务 | 用户单独决定 Desktop；新session先只读恢复产品计划；MacBook分支仅用于获准的Controller准备/文档，正式实现仍由signed DISPATCH绑定Mac mini执行分支 |
+
+### 最新四点回执
+
+1. **阻塞关闭：** R382已关闭BLK-D1A-008及最后M3身份接续；本轮未新增关闭B0–B5，R383只把既有关闭结论纳入版本控制，依据不是文档数量。
+2. **链路位置：** Worker真实修改→Regression/Retirement→STAGE→Candidate/readback→Final Validation→独立Validator→PR/Handoff的适用受控链已接受，真实修复集成、人工部署/启动和D1观察完成；真实产品外部正向链尚未运行。
+3. **支线回归：** 无开放修复支线；helper、启动、三方基线接续均经各自原验收点CLOSED_RETURNED。K1/K2/hour按影响分析复用，不因文档提交重新全跑。
+4. **距离M4：** 修复余项为零，M4决策材料已完成。R383仅按本次授权归档/合并三个文档并双端同步；不会因产生文档SHA回填循环另开修复。Desktop仍未授权。
+
+### 后续工作入口
+
+新session先读仓库AGENTS、CONTEXT、Orchestration及既有[Desktop D1A intake](../../2026-08-28/d1a/xanthil-desktop-session-bootstrap-d1a-intake.md)，确认用户详细产品计划、MVP/非目标、首个验收场景及数据/技术约束。原产品计划与Gate可复用，不重新泛化调查；缺失的实质产品决定才询问用户。仅在获准Controller intake/计划/文档修改时，从干净main创建 `work/macbook/xanthil-desktop-d1a`（若被占用先核对所有权和状态）；该分支不承载已激活产品Change的实现。正式产品执行另须signed DISPATCH绑定Mac mini精确Worktree/branch，遵守[唯一执行政策](../../../governance/product-change-execution-policy.md)。不复用旧修复分支；创建session/分支不授予产品实施、DISPATCH或外部调用权限。
+
+## 历史快照 — R018 及以前（原文保留，非当前动作）
+
 先读 [MASTER_PLAN.md](MASTER_PLAN.md)、本卡和最新回执；续接时核对上一回执，从未通过的验收点继续。本卡只记录当前恢复位置，Gate 由正式证据与 Controller 决定。
 
 | 项 | 当前值 |
