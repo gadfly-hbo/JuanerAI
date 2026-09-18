@@ -6,16 +6,23 @@
     "product": "Xanthil Desktop"
   },
   "phase": {
-    "id": "D1_A_AUTHORITY_INTEGRATION_AND_FRESHNESS",
-    "label": "First Product Change authority integration and fresh host/WIP proof",
-    "ordinal": 3,
+    "id": "D1_A_SEMIAUTOMATIC_EXECUTION_PACKAGE",
+    "label": "双端旧执行已隔离；待首次半自动产品执行包",
+    "ordinal": 4,
     "total": 7
   },
-  "health": "active",
-  "summary": "CHG-xanthil-desktop-session-bootstrap is the authorized first Product Change. D0.5, D1-A review/correction, dependency policy, release deferrals, and automation-repair closure are reusable and closed; no Desktop DISPATCH or product implementation has started.",
-  "current_objective": "Integrate the bounded D1-A authority refresh, prove the exact clean final Mac mini baseline and empty global WIP pointer, then freeze and transmit one exact signed DISPATCH for CHG-xanthil-desktop-session-bootstrap.",
-  "next_action": "Complete this governance branch through squash integration and dual-device ff-only synchronization; then perform the fresh host/WIP and signer/artifact identity readbacks required immediately before signing.",
-  "blockers": [],
+  "health": "waiting_user",
+  "summary": "PR #36 已固化半自动长期流程。Mac mini 旧 Host Loop 已禁用并卸载，MacBook 完整保全旧修复 WIP 后已归位 clean main；旧执行资产仅作历史参考。产品决策、OpenSpec 和质量 Gate 保留，未启动新的产品执行。",
+  "current_objective": "返回 CHG-xanthil-desktop-session-bootstrap：最小 Project／固定模式 Session 创建、打开和重启读回，真实 not_started；不继续自动化工具返修。",
+  "next_action": "完成本次入口文档的 Git 集成和双端接收，然后准备同一 Desktop Change 的精确半自动执行包，绑定 Mac mini 用户仓库下的新 worktree/branch、新鲜基线、唯一写入端、阶段 Gate 委托与整批权限。不得进入旧 canonical/candidate/修复快照，不消费旧签名；本状态不授权角色派发或依赖安装。",
+  "blockers": [
+    {
+      "id": "SEMIAUTOMATIC_EXECUTION_PACKAGE_PENDING",
+      "label": "首次半自动产品执行包尚未精确绑定及授权",
+      "detail": "双端隔离及 Git 文档收尾有授权；产品执行没有由此获权。旧 active pointer 保留同一 Change，不是空槽或 CLOSED；旧 Host Loop 不得重启，当前执行按 product-change-execution-policy.md。",
+      "owner": "controller/user"
+    }
+  ],
   "milestones": [
     {
       "id": "handoff_intake",
@@ -59,7 +66,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "D1-A authority integration, pre-sign freshness, exact DISPATCH, and lifecycle Gate ownership"
+      "activation": "半自动整批任务包、精确执行身份与权限、产品/契约决定和最终接受；不以自动恢复为前置。"
     },
     {
       "id": "d05_reviewer",
@@ -87,14 +94,14 @@
       "label": "Spec Agent",
       "model": "gpt-5.6-sol / R2 high when dispatched",
       "status": "waiting",
-      "activation": "Eligible only after exact signed DISPATCH admission by the Mac mini Host Loop; no Desktop Spec Gate has run"
+      "activation": "仅在首次半自动执行包明确授权且输入完整后，由 Mac mini 执行协调会话派发；未启动 Desktop Spec Gate。"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
       "status": "locked",
-      "activation": "Locked until Desktop Spec Gate PASS; then owns environment health, permanent tests, and causal RED within signed scope"
+      "activation": "Desktop Spec Gate PASS 后，在明确批准的路径和依赖边界内证明环境健康、永久测试与有效 RED。"
     },
     {
       "id": "juaner_worker",
@@ -126,7 +133,7 @@
     },
     {
       "id": "product_changes",
-      "label": "Authorized Product Changes",
+      "label": "Approved first Product Change scope; execution package pending",
       "done": 1,
       "total": 1
     },
@@ -206,7 +213,7 @@
     },
     {
       "id": "EVD-D1A-004",
-      "label": "Mac mini clean baseline and empty WIP readback",
+      "label": "Historical Mac mini empty-WIP readback — not current pointer state",
       "path": "docs/planning/2026-08-28/d1a/evidence/mac-mini-pre-dispatch-readback-001.md",
       "status": "verified"
     },
@@ -242,7 +249,7 @@
     },
     {
       "id": "EVD-D1A-008",
-      "label": "Coordinator Regression pre-DISPATCH blocker",
+      "label": "Historical automatic-route regression blocker — not a semi-automatic prerequisite",
       "path": "docs/planning/2026-08-28/d1a/evidence/coordinator-regression-pre-dispatch-blocker-001.md",
       "status": "verified"
     },
@@ -293,6 +300,12 @@
       "label": "Final automation-repair closure and Desktop return baseline",
       "path": "docs/planning/2026-09-05/automation-repair/reviews/final-closure-r382.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-SEMIAUTO-DUAL-ISOLATION",
+      "label": "Current dual-device isolation and receiver-verified evidence locators",
+      "path": "docs/planning/2026-08-28/xanthil-desktop-handoff-receipt.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -315,9 +328,9 @@
       "mitigation": "Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
     }
   ],
-  "updated_at": "2026-09-17T23:25:24.273Z",
+  "updated_at": "2026-09-18T12:06:40.686Z",
   "updated_by": {
     "role": "controller",
-    "session": "xanthil-desktop-controller-20260918"
+    "session": "desktop-entry-isolation-controller"
   }
 }

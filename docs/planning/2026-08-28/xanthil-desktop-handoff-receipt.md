@@ -5,7 +5,7 @@
 > Receiving repository: `/Users/huangbo/JuanerAI`
 > Receiving branch: `work/macbook/d05-xanthil-desktop-productization`
 > Baseline: `2a59fc7cc964ee7d966e91339eb475cb81d02b77`
-> Status: received; D0.5/D1-A inputs closed; first-product execution authorized; authority integration and fresh host/WIP readback pending; Product Change not dispatched
+> Status: product inputs retained; semi-automatic policy integrated by PR #36; old execution isolated; exact product execution package pending
 
 ## Received input
 
@@ -25,9 +25,21 @@ The accepted UI evidence is split by product area:
 
 The received task is D0.5 productization convergence and first Product Change narrowing. It is not authorization to copy Demo code, create executable contracts from mock state, install dependencies, access real data, invoke a real model/provider, or implement the five-phase product journey.
 
-The proposed first Change candidate is `CHG-xanthil-desktop-session-bootstrap`. No `openspec/changes/<change-id>/` directory, DISPATCH, dependency, test, or implementation exists yet.
+The first Change remains `CHG-xanthil-desktop-session-bootstrap`. The earlier automatic launch and stopped repair are historical attempts, not product completion or reusable execution authority. No Desktop Spec Gate or product implementation is accepted.
 
-## Current Gate and responsibility
+## Current Gate and responsibility — semi-automatic
+
+- Gate: `D1_A_SEMIAUTOMATIC_EXECUTION_PACKAGE`; follow `docs/governance/product-change-execution-policy.md`.
+- MacBook Controller entry: `/Users/huangbo/JuanerAI`, restored to clean main at `a15d2d90ab6b537051e581285e50207f9a8f9fdd` before this entry-document change. The isolated governance branch is not a product execution branch.
+- Mac mini product repository entry: `/Users/bendandebaba/JuanerAI`, independently verified clean main at the same policy baseline. Refresh both identities after integration; create/bind the product worktree only under the approved batch package.
+- Next action: prepare the same Desktop Change's bounded package with precise repo/worktree/branch/baseline, single writer, role Gate delegations, frozen dependency identity, validation budget and exact permissions; obtain the still-required first semi-automatic execution authorization. User relays the package once, Mac mini coordinates isolated roles, and returns one completion/exception receipt.
+- Mac mini `system/com.juanerai.change-coordinator` is disabled and unloaded; PID 283 and exact Host Loop process were absent on independent readback. The old canonical main at `7f64b14fc8cb772bd937e183d83276a92a852fc3`, detached candidate `341a08ebfeb20b2b56ae911bd35f88e27f3b5018` and root-owned state remain historical assets, not product development entries. Do not update, restart, clear or use them to execute this package.
+- The protected pointer retains `CHG-xanthil-desktop-session-bootstrap` (83 bytes, SHA256 `8e469f1239b10021cd5cbe358cd5ff986ec399f078468f9e4078cdde10c7ddef`). Its post-stop administrator readback is in the accessible Mini transcript, independently hash-verified by MacBook; this is not a new direct privileged read from MacBook. No empty-slot or CLOSED claim is made. The remote authoritative Ledger was not reverified; it was not changed and is not evidence of semi-automatic progression.
+- MacBook stopped-repair preservation: `/Users/huangbo/JuanerAI-artifacts/CHG-xanthil-desktop-session-bootstrap/dual-device-isolation-20260918-001/macbook-stopped-repair/`. `MANIFEST.json` binds 1,206 tracked plus 56 untracked source entries, six modified files, complete Git bundle and readback; `RESTORE-RECEIPT.json` records bounded restoration. Untracked originals remain recoverable in `relocated-originals/`. This is STOPPED/UNACCEPTED reference material, not a development folder. The earlier repair archive is unchanged.
+- Mac mini raw evidence: `/Users/bendandebaba/JuanerAI-artifacts/CHG-xanthil-desktop-session-bootstrap/dual-device-isolation-20260918-001/run-20260918T115032Z/`. MacBook can retrieve/read it over the existing SSH connection; six transcript sizes/SHA256 values matched the Mini receipt. Files remain owned/stored on Mini, not assumed backed up by Git. `postflight.transcript`: 5,652 bytes, SHA256 `ea10ce965a0007e9b103a971bbf1526271b4b4ff65179489e8c9aea0939f4030`; `protected-state-readonly.transcript`: 3,284 bytes, SHA256 `7d33ae28b6d6962dff7e1712e4eca015586986b7437b4a248aa080580638246d`.
+- Product decisions, reviews, exact dependency manifest and quality Gates remain unchanged. S09/A2 remains USER_WAIVED / NOT_VERIFIED; no expanded waiver, provider access or product execution follows from isolation.
+
+## Historical automatic-route Gate and authority — superseded, not replayable
 
 - Current Gate: `D1_A_AUTHORITY_INTEGRATION_AND_FRESHNESS`.
 - Current responsibility: the MacBook Controller integrates this bounded authority refresh, then proves the final MacBook/Mac mini integration SHA, clean Mac mini user/canonical/main state, and empty global WIP pointer. The unique D1-A review, one bounded correction, frozen dependency policy, and completed automation-repair closure are reused; none is reopened.
