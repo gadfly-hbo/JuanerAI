@@ -144,6 +144,11 @@ At every material transition:
 3. Update traceability and the project board.
 4. Verify all three agree before dispatching the next role.
 
+For semi-automatic remote batches, apply the board-update timing in
+`product-change-execution-policy.md`; local verdicts and traceability remain
+required at every transition, while the board identifies the last confirmed
+handoff rather than claiming live remote progress.
+
 Before archive, prove that the top verdict, final Validator verdict, Controller acceptance, baseline hash, archive path, and project-board references agree.
 
 ## Retrospective Trigger

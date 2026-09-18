@@ -67,7 +67,8 @@ Before proposing a new Agent Runtime, Model Pack runtime, Runtime Port, or Runti
 
 ## Change Workflow
 
-Activated dual-device product Changes follow the sole execution authority in
+Dual-device product Changes follow the long-term semi-automatic default,
+delegated stage checks and authority boundaries in
 `docs/governance/product-change-execution-policy.md`.
 
 Observable behavior changes follow:
@@ -159,5 +160,7 @@ No Change is complete without approved specification, expected RED, GREEN tests,
 The human project board is a read-only observability surface. Formal user decisions remain in the Codex CLI conversation; the board may present decision briefs and local browser notes but never submits approvals, starts agents, executes commands, or grants authority.
 
 The Controller owns `.juanerai/project-control/` and updates it at meaningful lifecycle transitions: Change start, phase transition, task completion, blocker discovery, user-decision request or resolution, RED/GREEN/verification changes, acceptance, and archive. Workers and validators return evidence to the Controller rather than writing project-control state unless their approved brief explicitly grants that path.
+
+For semi-automatic remote batches, follow the stage-recording and board-update timing in `docs/governance/product-change-execution-policy.md`; the board is the last confirmed handoff, not a live remote-state claim.
 
 Use `node tools/harness/project-board/status-cli.mjs` for state changes. `status.json` is the sole current-state authority and is atomically replaced; `events/` is best-effort non-authoritative history, and `decision-briefs/` is display-only context. The Controller is the only supported writer; concurrent Controller writes are outside the board contract. A board display never overrides OpenSpec, tests, Task Bus state, repository evidence, or an explicit user decision in the CLI.
