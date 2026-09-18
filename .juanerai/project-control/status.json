@@ -6,15 +6,15 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_WIP_DISPOSITION_REQUIRED",
-    "label": "首个 Desktop Change WIP 前置核对异常／最小处置待授权",
+    "id": "FIRST_DESKTOP_WIP_READONLY_INSPECTION_DISPATCHED",
+    "label": "首个 Desktop Change WIP 特权只读核验已派发",
     "ordinal": 6,
     "total": 8
   },
   "health": "blocked",
-  "summary": "Mac mini 已返回 WIP_PREFLIGHT_EXCEPTION：任务包 Git 身份全部匹配且零写入，但当前用户无权读取唯一 WIP 权威 active-change.json，因此不能证明槽位可用，OpenSpec 与全部生产角色继续锁定。",
-  "current_objective": "处理 PKG-XANTHIL-DESKTOP-001 的 Stage 1 异常；先取得一次有特权但只读的当前 pointer、State、pause、Ledger/evidence 与 ownership 核验授权。",
-  "next_action": "等待用户明确授权 Mac mini 使用 sudo 仅做当前 WIP 状态只读核验；读回前不清理 pointer、不写旧状态、不恢复 Host Loop、不创建 OpenSpec。",
+  "summary": "用户已授权一次 sudo 特权只读核验；MacBook Controller 已将精确范围直接发送至原 Mac mini 任务“纵切-1.0”。核验期间禁止任何文件写入、旧 WIP 处置、服务操作、OpenSpec 或角色派发。",
+  "current_objective": "等待 Mac mini 只读读回 current pointer、对应 State、local-pause、Ledger/evidence locator、ownership 与服务/进程事实。",
+  "next_action": "Mac mini 返回只读回执后，Controller 判断是否需要另行请求旧 WIP 最小精确处置授权；在此之前不做任何处置或生产推进。",
   "blockers": [
     {
       "id": "GLOBAL_WIP_AUTHORITY_UNREADABLE",
@@ -443,9 +443,9 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-18T16:54:00.132Z",
+  "updated_at": "2026-09-18T17:00:15.754Z",
   "updated_by": {
     "role": "controller",
-    "session": "macbook-controller-wip-receipt"
+    "session": "macbook-controller"
   }
 }
