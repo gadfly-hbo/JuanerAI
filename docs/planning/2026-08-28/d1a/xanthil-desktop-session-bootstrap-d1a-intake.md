@@ -2,10 +2,28 @@
 
 > Intake ID: `D1A-XDSB-001`
 > Change ID: `CHG-xanthil-desktop-session-bootstrap`
-> Status: D1-A review/correction closed; dependency policy frozen; first-product execution authorized 2026-09-18; DISPATCH pending final authority integration and fresh host/WIP readback
+> Status: D1-A review/correction closed; dependency policy frozen; semi-automatic execution package pending; old signed route is historical, not current execution authority
 > Date: 2026-08-28
 > Controller device: MacBook
-> Current-Change executor after valid signed DISPATCH: Mac mini
+> Current-Change executor after explicit bounded semi-automatic authorization: Mac mini
+
+## Current execution disposition — 2026-09-18
+
+Use `docs/governance/product-change-execution-policy.md` and the current section
+of `../xanthil-desktop-handoff-receipt.md`. The old Host Loop is disabled and
+unloaded; its pointer still reserves this same Desktop Change and is preserved,
+not cleared or represented as CLOSED. Its canonical checkout and old candidate
+are historical execution assets, not the semi-automatic product workspace.
+
+The earlier signed authorization below is retained history and must not be
+replayed. References below to signed packages describe the old automatic route;
+the semi-automatic package must instead explicitly bind the same path, role,
+dependency, data and validation limits. Existing exact dependency identities and
+environment-health-before-RED remain required; no installation is authorized by
+this disposition. Product objectives and ACs below are unchanged. Fresh user
+repository/worktree identity and absence of competing execution remain required;
+successful automatic recovery, emptying the old pointer and updating Host Loop
+canonical/main are not semi-automatic prerequisites.
 
 ## 1. Authorization chain
 
@@ -14,7 +32,7 @@
 - The user approved `D05-XD-001` and `D05-XD-STRUCT-001` S01-S23 as one package on 2026-08-28.
 - The D0.5 approval authorized this D1-A intake only; it did not by itself authorize execution.
 - This D1-A requires its own fresh read-only Product Plan Reviewer. Its result does not replace Spec Gate, causal RED, TDD_READY, Validator, Controller Acceptance, or archive.
-- On 2026-09-18 the user separately authorized this exact first-product execution sequence: integrate the refreshed Controller authority record; prove the final clean Mac mini baseline and empty global WIP pointer; then freeze, sign, and transmit one exact DISPATCH for this Change. That authorization permits the Test role's single mechanical dependency materialization only under `D1A-XDSB-DEP-001`; it does not authorize provider/model calls, real data, public release/signing, a second Runtime, Model Pack work, or scope expansion.
+- Historical automatic-route approval on 2026-09-18 authorized this exact sequence: integrate the refreshed Controller authority record; prove the final clean Mac mini baseline and empty global WIP pointer; then freeze, sign, and transmit one exact DISPATCH for this Change. Its Test-role dependency boundary was `D1A-XDSB-DEP-001`, excluding provider/model calls, real data, public release/signing, a second Runtime, Model Pack work and scope expansion. This record is not reusable authorization for the current semi-automatic package.
 
 ## 2. Product objective
 
@@ -130,7 +148,7 @@ The existing CI workflow path is allowed only to add the hosted Windows x64 buil
 
 The Change is R2 because it introduces persistent identity/file formats, crash recovery, concurrency/idempotency/cancellation, IPC/security boundaries, cross-module Port/Adapter/Profile seams, and cross-platform packaging.
 
-After a valid signed DISPATCH only:
+After explicit authorization of the current bounded semi-automatic package (or separately authorized automatic operation) and each applicable Gate:
 
 1. `juaner_spec`: `gpt-5.6-sol/high`, workspace-write, Spec-role paths only;
 2. `juaner_test`: `gpt-5.6-terra/high`, after Spec Gate PASS, Test-role paths only;
@@ -145,13 +163,13 @@ MacBook remains Controller and integration authority. Mac mini is the sole curre
 |---|---|---|---|
 | Approved D0.5 package on integration authority | reviewed commit/PR/squash on `origin/main`, followed by exact MacBook readback | PR #21 squash `103bd88216d7f397967bdabb7fbfb250eea3f996`; MacBook and Mac mini exact clean readback in `EVD-D1A-005` | PASS |
 | Frozen dependency policy | content-addressed exact direct-dependency manifest plus reviewed registry/integrity/license/install-script/Node boundary and Test provisioning contract | `D1A-XDSB-DEP-001` freezes all direct packages, provisioning commands, Electron checksums, Node/npm boundary, network and forbidden capabilities; file SHA-256 `786e78e1990bb17d6c00240dad068a22b8b6a123b26844c1852f7fbf0d992b4b` was re-read at pre-authority baseline `798b2fcb1511f011334e750e8844dc177c263de4` and must match after final integration | PASS subject to final exact readback |
-| Global WIP authority | live Mac mini `active-change.json` readback proves `active_change_id: null` and expected empty-pointer SHA-256 `811f872ce38df88357395b2a438eb1c96504f1b583dd77724867f6dc0eaf32a9` | historical observations are preserved; a new bounded readback is required immediately before signing | freshness blocks signing |
+| Global WIP authority | preserve the reserved same Change; verify a single current writer and no competing execution before semi-automatic work | retained pointer is `CHG-xanthil-desktop-session-bootstrap`; disabled/unloaded Host Loop evidence is in the handoff; recheck execution ownership before starting | not an empty slot or CLOSED claim; no automatic restart or pointer clearing |
 | Real Windows acceptance host | controlled Windows 11 x64 VM/physical host, install/run access, evidence return path | product owner reports unavailable; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
 | macOS signing/notarization | credential availability, secure non-repository custody, CI/local use boundary | product owner reports pending verification; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
 | Windows signing | credential availability, secure non-repository custody, CI/local use boundary | product owner reports unavailable; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
-| Mac mini executable baseline | clean supported user main and Host Loop canonical/main at the final integrated SHA plus an empty global pointer immediately before signed DISPATCH; Coordinator creates the bounded Change worktree only after admission | pre-authority governance baseline `798b2fcb1511f011334e750e8844dc177c263de4` was synchronized clean; must repeat after this authority-package branch is squash-integrated | freshness blocks signing, not product intent |
+| Mac mini executable baseline | clean user repository at integrated main; bind exact product worktree/branch, baseline and owning session in the semi-automatic package | policy baseline `a15d2d90ab6b537051e581285e50207f9a8f9fdd` was independently read back; refresh after entry-document integration | exact identity blocks execution until checked; old Host Loop canonical/main is not the product workspace |
 
-The D1-A Review may complete while these are open. The Controller must not produce or transmit a signed DISPATCH until every row whose effect is explicitly blocking has a verified disposition; the three `JUANERAI_PUBLIC_RELEASE_GATE` rows do not block development dispatch. The repository must not contain credentials, private keys, signature bytes, or raw secret material. No artifact may be publicly distributed or described as production/public-release ready until all three deferred resources and same-Release-Candidate cross-platform acceptance pass the separately activated `JUANERAI_PUBLIC_RELEASE_GATE`.
+The applicable completed D1-A Review is reused. The Controller must not release a semi-automatic execution package until its exact identity, ownership, dependency and permission conditions are verified. Automatic signed operation is separately authorized under the execution policy, not resumed by this intake. The three `JUANERAI_PUBLIC_RELEASE_GATE` rows do not block development execution. The repository must not contain credentials, private keys, signature bytes, or raw secret material. No artifact may be publicly distributed or described as production/public-release ready until all three deferred resources and same-Release-Candidate cross-platform acceptance pass the separately activated `JUANERAI_PUBLIC_RELEASE_GATE`.
 
 ## 11. D1-A review brief
 

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918120640687-PNV6JU",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-09-18T12:06:40.687Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-entry-isolation-controller"
+  },
+  "summary": "双端旧执行已隔离，MacBook 旧修复 WIP 已保全并原目录归位；当前指引转为半自动包准备，不重放 signed DISPATCH。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

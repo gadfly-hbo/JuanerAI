@@ -1,6 +1,6 @@
 # Xanthil Desktop D0.5 Productization Intake
 
-> Status: Development-Readiness Review PASS and user approval recorded; D1-A active; no DISPATCH or Product Change implementation authority
+> Status: approved product inputs retained; semi-automatic default; old repair/Host Loop isolated; exact product execution package still pending
 > Date: 2026-08-28
 > Controller task: `D05-XD-001`
 
@@ -23,6 +23,16 @@ This package records JuanerAI's receipt of the accepted Xanthil Desktop dual-mod
 
 ## Current Gate
 
-`D1_A_PREREQUISITE_CLOSURE`
+`D1_A_SEMIAUTOMATIC_EXECUTION_PACKAGE`
 
-Review 001 stopped with `NEEDS_CLARIFICATION`; the corrected package received a new fresh Review 002 `PASS`; the user then approved the D0.5 decision package and Structure Decision Ledger S01-S23 as one whole. The separate D1-A Reviewer found one dependency/RED ordering blocker; the Controller used the policy's one bounded correction and targeted readback to close it without launching a second Reviewer. User-approved `D05-XD-PRG-001` moves final Windows 11 x64 real-host acceptance, macOS signing/notarization, and Windows signing to `JUANERAI_PUBLIC_RELEASE_GATE`; they no longer block development. D1-A remains blocked by PR integration, exact dependency policy, and post-merge Mac mini baseline/WIP freshness. This does not permit premature DISPATCH, public distribution, production-release claims, or automatic Model Pack work.
+Review 001 stopped with `NEEDS_CLARIFICATION`; the corrected package received a new fresh Review 002 `PASS`; the user then approved the D0.5 decision package and Structure Decision Ledger S01-S23 as one whole. The separate D1-A Reviewer found one dependency/RED ordering blocker; the Controller used the policy's one bounded correction and targeted readback to close it without launching a second Reviewer. User-approved `D05-XD-PRG-001` moves final Windows 11 x64 real-host acceptance, macOS signing/notarization, and Windows signing to `JUANERAI_PUBLIC_RELEASE_GATE`; they no longer block development.
+
+The approved semi-automatic policy in `docs/governance/product-change-execution-policy.md`
+now governs execution. Read the current section of the linked handoff receipt
+for both device entries and preserved old evidence; historical signed-DISPATCH
+instructions are not current authority. Reuse the approved product decisions,
+reviews and exact dependency policy. The remaining step is a fresh, bounded
+Mac mini execution package for the same Change, with one writer and explicit
+batch permissions. Isolation does not authorize product implementation or clear
+the retained old WIP pointer. Do not restart the Host Loop or repair automation
+to prepare this package.
