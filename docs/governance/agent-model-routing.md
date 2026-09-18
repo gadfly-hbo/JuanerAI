@@ -80,3 +80,7 @@ Parallel subagents are used only for independent read-heavy investigation or non
 Role configuration is the default. The Controller may automatically select R2 from the approved matrix without asking the user for each dispatch. The user is asked only when product authority, risk acceptance, scope, contract, external effect, or another real Gate requires a decision.
 
 Every R2 override records the reason, evidence, evaluation target, duration, trigger, and rollback. The project board shows the actual dispatched model and reasoning when a role is active, then returns to the configured default after the run. Sandbox, write scope, role separation, Gate order, and user authority remain authoritative at both routing levels.
+
+For semi-automatic remote batches, the execution coordinator records this routing
+metadata locally and follows `product-change-execution-policy.md` for delegated
+stage checks and the project board's confirmed-handoff update timing.
