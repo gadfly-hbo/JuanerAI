@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918153655877-WWNDWY",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-18T15:36:55.877Z",
+  "actor": {
+    "role": "controller",
+    "session": "whitepaper-blueprint-v1-controller"
+  },
+  "summary": "User accepted directly reused PX-2026-004/006 clickable UI Contract v1.1; production capability claims remain locked",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

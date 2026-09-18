@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918161256073-AD6RT8",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-18T16:12:56.073Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "精简设备派发防线：保留 Controller 规则与角色本机自拒绝，移除逐次七字段 Gate",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

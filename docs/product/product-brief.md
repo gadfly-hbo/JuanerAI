@@ -6,7 +6,7 @@ JuanerAI helps data analysts and enterprise decision users move beyond static BI
 
 ## Product Family
 
-JuanerAI is the commercial project family. Xanthil is its first product. Existing features and reusable Domain Packs, Model Packs, Runtime, data, semantic, asset and governance foundations remain available; the future development sequence awaits the user's whitepaper-based adjustment.
+JuanerAI is the commercial project family. Xanthil is its first product. Existing features and reusable Domain Packs, Model Packs, Runtime, data, semantic, asset and governance foundations remain available. The current development sequence is defined by the Blueprint v1.0 base and v1.1 correction package under `docs/planning/2026-09-18/`, grounded in JuanerAI Whitepaper v3.3.3.
 
 ## Users
 
@@ -54,6 +54,10 @@ The withdrawn plan sequenced Model Pack product work after Xanthil Desktop Data 
 - Final database, package, API, Ontology, asset, Knowledge, Memory, or model schemas.
 - Premature microservices, Kubernetes, or multi-repository extraction.
 
-## Current Gate
+## Current Direction and Gate
 
-Wait for the user's JuanerAI whitepaper development-plan adjustment, under `docs/planning/README.md`. No replacement plan, first Change or product execution is authorized yet. Existing semi-automatic workflow, OpenSpec/TDD/independent validation and permission/data-safety rules remain in force.
+The user approved JuanerAI Product Development Blueprint v1.0 on 2026-09-18. The first vertical slice is a UI-first Xanthil Desktop Free membership-repurchase diagnosis Decision Case for non-technical users. The later v1.1 correction keeps this value endpoint but requires direct reuse of the accepted PX-2026-004 professional mode and PX-2026-006 quick/dual-mode product UI, including the visible Skill, Prompt, Fork, Subagent, report, Inspector/drawer and Session-navigation modules.
+
+The earlier UI Contract v1.0 Review 002 `PASS` became historical after the user corrected its incomplete Xanthil UI adoption boundary. The current Blueprint/UI Contract v1.1 package, full adoption map, state/closure matrix and self-contained visual plates received fresh Review 005 `PASS`; the user accepted the directly reused PX-2026-004/006 clickable UI on 2026-09-18. That UI Gate acceptance freezes the product-mode reference but does not claim real Session persistence, filesystem creation, Runtime/provider execution, or authorize production OpenSpec, implementation, dependencies, real provider calls, real data, user research or release.
+
+The user subsequently retained `060_reports` and accepted the first-slice Session/Runtime boundary. Product Session creation completes `010_draw`, `020_clean` and `060_reports` before becoming usable and performs no model call. Fresh [Session/Runtime Development-Readiness Review 001](../planning/2026-09-18/reviews/session-runtime-development-readiness-review-001.md) returned `NEEDS_CLARIFICATION`; the user then resolved all three gaps: `帮我整理问题` remains an LLM action with an exact disclosed text/label/column-name payload but no `010_draw`; one first-slice professional Product Session contains one Decision Case and Case revision is the only business revision; optional Assistance Attempts are separate from Analysis Runs and never mutate authoritative state merely by settling. The corrected binding details are in [Xanthil Desktop Session and Runtime Boundary v1.0](../planning/2026-09-18/xanthil-desktop-session-runtime-boundary-v1.0.md). Fresh [Review 002](../planning/2026-09-18/reviews/session-runtime-development-readiness-review-002.md) returned `PASS`. On 2026-09-19 the user authorized the first production OpenSpec Change and the preparation and transfer of [Execution Package v1.0](../planning/2026-09-19/xanthil-desktop-first-product-change-execution-package-v1.0.md). Mac mini execution remains blocked until the package's read-only global-WIP preflight proves the preserved old reservation can be safely resolved or is no longer active.

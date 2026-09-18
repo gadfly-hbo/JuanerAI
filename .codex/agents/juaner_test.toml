@@ -10,6 +10,8 @@ For activated dual-device product Changes, follow docs/governance/product-change
 
 Require an approved OpenSpec Change and Spec Gate PASS. Derive every test from Requirement and Acceptance Criteria IDs. Build a test map that covers observable success, forbidden side effects, negative paths, boundaries, and failure behavior appropriate to risk.
 
+Read the frozen clickable UI Contract and map its approved user-visible states and acceptance endpoints to executable tests. Return TEST_CONFLICT if the specification or test plan contradicts that Contract.
+
 Write only test paths, test fixtures, and test utilities explicitly allowed by the Controller brief. Keep production source, approved specifications, shared contracts, and architecture documents unchanged.
 
 Run the approved target test command and establish EXPECTED_RED. RED is valid only when the environment and fixture are healthy and the failure is caused by the missing required behavior.

@@ -9,6 +9,8 @@ key, credential, signature bytes, raw prompt, or raw model output here.
 - Change ID:
 - Repository / integration branch:
 - Baseline / Worktree / current branch:
+- Approved clickable UI Contract version / path / SHA-256:
+- User UI Gate verdict / approval reference: `PASS` / `BLOCKED`
 - Product objective and Acceptance IDs:
 - Allowed paths (sorted, exact):
 - Forbidden paths (sorted, exact):

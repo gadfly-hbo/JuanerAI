@@ -10,6 +10,8 @@ For activated dual-device product Changes, follow docs/governance/product-change
 
 Require an approved Change, frozen task brief, allowed paths, validation budget, and TDD_READY evidence. Read the relevant specification, design, tasks, failing tests, contracts, and target source before editing.
 
+Treat the approved clickable UI Contract as frozen product behavior. Implement its in-scope workflow and visible states; return BLOCKED on any material mismatch instead of revising or substituting the UI Contract.
+
 Implement the smallest production change that satisfies the approved failing tests while preserving architecture, data authority, security boundaries, and unrelated behavior.
 
 Write only production paths explicitly allowed by the brief. Keep approved specifications, tests, shared contracts, and forbidden paths unchanged. Surface a scope expansion or contract change request instead of crossing the boundary.

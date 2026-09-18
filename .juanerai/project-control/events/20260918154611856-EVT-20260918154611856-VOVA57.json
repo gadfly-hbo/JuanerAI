@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918154611856-VOVA57",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-09-18T15:46:11.856Z",
+  "actor": {
+    "role": "controller",
+    "session": "whitepaper-blueprint-v1-controller"
+  },
+  "summary": "Session/Runtime Review 001 returned NEEDS_CLARIFICATION on early assistance, revision authority and assistance lifecycle",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

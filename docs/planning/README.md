@@ -1,11 +1,29 @@
 # JuanerAI Product Planning Index
 
-## Current decision — VOID / 用户作废（2026-09-18）
+## Current product input — Blueprint v1.1 package（2026-09-18）
+
+The user approved [JuanerAI Product Development Blueprint v1.0](2026-09-18/juanerai-product-development-blueprint-v1.0.md) as the first versioned product-development blueprint, grounded in JuanerAI Whitepaper v3.3.3. The user's later UI correction is recorded in [Blueprint v1.1](2026-09-18/juanerai-product-development-blueprint-v1.1.md): the first-slice value endpoint is unchanged, but the accepted PX-2026-004/006 Xanthil UI product mode must be reused rather than replaced.
+
+The first vertical slice is a UI-first Xanthil Desktop Free membership-repurchase diagnosis Decision Case for non-technical users. The current planning package is the v1.0 base plus [Xanthil Desktop UI Contract v1.1](2026-09-18/xanthil-desktop-ui-contract-v1.1.md), the binding [PX-2026-004/006 adoption map](2026-09-18/xanthil-ui-reference-adoption-map-v1.0.md), and the user-confirmed [Session and Runtime Boundary v1.0](2026-09-18/xanthil-desktop-session-runtime-boundary-v1.0.md). It keeps the accepted quick/professional shell and full visible module set, while the first real integrated path remains the narrower professional membership-repurchase Case.
+
+Review 001 returned `NEEDS_CLARIFICATION`; the corrected v1.0 package then received [Review 002 PASS](2026-09-18/reviews/ui-contract-development-readiness-review-002.md). Review 002 is historical because it reviewed the later-corrected assumption that quick/pro mode and Fork/Subagent could be excluded. Fresh [Review 003](2026-09-18/reviews/ui-contract-development-readiness-review-003.md) and [Review 004](2026-09-18/reviews/ui-contract-development-readiness-review-004.md) closed bounded state and completion gaps. Fresh [Review 005](2026-09-18/reviews/ui-contract-development-readiness-review-005.md) returned `PASS`. The user accepted the directly reused PX-2026-004/006 clickable UI on 2026-09-18; this closes the UI Gate for product mode and interaction, without claiming that simulated Desktop persistence, filesystem, Runtime or provider behavior is implemented. The later Session/Runtime supplement is a material plan addition; fresh [Session/Runtime Review 001](2026-09-18/reviews/session-runtime-development-readiness-review-001.md) returned `NEEDS_CLARIFICATION`. The user resolved its three gaps by retaining LLM-backed question organization without `010_draw`, selecting Case revision as the sole business revision in a one-Session/one-Case first slice, and defining Assistance Attempts separately from Analysis Runs. Fresh [Review 002](2026-09-18/reviews/session-runtime-development-readiness-review-002.md) returned `PASS`.
+
+On 2026-09-19 the user authorized the first production OpenSpec Change and then authorized preparation and transfer of its execution package. [Execution Package v1.0](2026-09-19/xanthil-desktop-first-product-change-execution-package-v1.0.md) freezes the first-slice outcome, accepted UI and Session/Runtime decisions, role sequence, path and safety boundaries, Git authority, and evidence receipts. MacBook does not dispatch production roles. The Mac mini execution coordinator must first perform the package's read-only global-WIP preflight; the preserved old active pointer is not assumed empty and must not be cleared or modified without a separate minimum disposition authorization.
+
+Current research-reference scope:
+
+- PX-2026-001/002: hypothesis-first AnalysisOps human-workbench and real local vertical-integration principles;
+- PX-2026-004/006: accepted Xanthil Desktop product UI mode, interaction semantics and visible capability inventory, with exact adoption recorded in the current attachment;
+- Semantica/PX-2026-003 is not part of the first slice.
+
+No product implementation, dependency installation, real provider call, real user study, or release is authorized by the blueprint alone.
+
+## Historical withdrawal — remains VOID（2026-09-18）
 
 The user withdrew all previously approved, not-yet-executed Xanthil Desktop
 and Model Pack development plans. Their status is **VOID**, not paused or
-awaiting dispatch. The next action is to wait for the user's JuanerAI whitepaper
-development-plan adjustment; no replacement roadmap or first Change is selected.
+awaiting dispatch. The new Blueprint v1.0/v1.1 package does not reactivate their roadmap,
+fixtures, Changes, execution packages, or development sequence.
 
 ### Scope of withdrawal
 
@@ -38,9 +56,9 @@ historical failure or acceptance record is rewritten by this decision.
 The semi-automatic dual-device workflow, OpenSpec/TDD/independent validation,
 permissions and data-safety rules remain in force. Withdrawal of a future release
 plan is not a waiver permitting public release. Research Demos and the whitepaper
-remain reference inputs until their precise scope is adopted into a newly
-approved plan. Wait for the user's adjustment rather than infer its version,
-scope, sequence or implementation authority.
+remain reference inputs unless their precise scope is adopted by the versioned
+blueprint and its approved attachments. Demo evidence never becomes production
+acceptance or execution authority by being referenced.
 
 Old repair evidence and isolated Host Loop assets stay preserved. This decision
 does not restart automation, clear the retained active pointer, mark the old

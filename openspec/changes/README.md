@@ -2,6 +2,11 @@
 
 Each non-trivial observable change receives one directory named by a stable change slug.
 
+Before creating that directory for a product Change, freeze the exact
+change-scoped clickable UI Contract and the user's UI Gate PASS under
+`.ai-coding/state-machine.md`. The Proposal references both artifacts. Backend,
+Runtime, Adapter, and infrastructure scope does not bypass this prerequisite.
+
 Required artifacts:
 
 - proposal.md

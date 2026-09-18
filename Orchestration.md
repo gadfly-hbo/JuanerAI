@@ -4,7 +4,7 @@ JuanerAI uses CDI, Controller-Domain Isolation, the 总控域隔离工程法. Op
 
 ## Controller
 
-Codex is the Controller. The Controller owns product clarification, CONTEXT.md, architecture, cross-domain contracts, OpenSpec gates, task slicing, assignment, integration review, acceptance, archive, and user communication.
+Codex is the Controller. The Controller owns product clarification, CONTEXT.md, change-scoped clickable UI Contracts, user UI Gates, architecture, cross-domain contracts, OpenSpec gates, task slicing, assignment, integration review, acceptance, archive, and user communication.
 
 Controller work with sufficient authority and evidence is completed directly. A self-assigned Task is not used to replace Controller judgment or independent validation.
 
@@ -37,6 +37,11 @@ Dual-device product Changes follow the current execution mode and authority
 boundary in `docs/governance/product-change-execution-policy.md`. Controller-
 organized semi-automatic role progression is distinct from signed Host Loop
 execution; changing mode does not waive the role or product Gates below.
+
+Every product Change also requires the exact approved UI Contract and user UI
+Gate PASS in the dispatch package. UI work and its user Gate occur on MacBook
+before the package handoff; Spec does not begin and Mac mini does not invent or
+revise the product UI contract.
 
 Decompose by vertical user value first, then give each role or domain a bounded slice. Every dispatch includes:
 

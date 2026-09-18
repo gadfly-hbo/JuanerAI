@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Xanthil Desktop Free 首个产品纵切的高保真可点击 UI Contract。" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Xanthil · 会员复购诊断 UI Contract</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235b7cfa'/%3E%3Cpath d='M8 9l8 7 8-7M8 23l8-7 8 7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="prototype-banner" role="status">
+      <strong>交互原型</strong>
+      <span>所有数据、计算、模型调用与持久化均为模拟，用于确认产品流程。</span>
+    </div>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-block">
+          <button class="icon-button mobile-menu" type="button" aria-label="打开步骤导航" data-action="toggle-nav">
+            <span aria-hidden="true">☰</span>
+          </button>
+          <div class="brand-mark" aria-hidden="true">X</div>
+          <div>
+            <div class="product-name">Xanthil</div>
+            <div class="product-tier">Desktop Free · UI Contract v1.0</div>
+          </div>
+        </div>
+        <div class="case-context">
+          <span class="context-label">当前分析案例</span>
+          <strong id="case-name-top">会员复购变化诊断</strong>
+        </div>
+        <div class="topbar-actions">
+          <span class="status-chip status-local"><span class="status-dot"></span>本地模式</span>
+          <button class="button button-quiet" type="button" data-action="open-scenarios">场景检查</button>
+          <button class="icon-button" type="button" aria-label="切换明暗主题" data-action="toggle-theme">
+            <span aria-hidden="true">◐</span>
+          </button>
+          <button class="button button-secondary" type="button" data-action="toggle-evidence">技术详情</button>
+        </div>
+      </header>
+
+      <aside class="left-rail" aria-label="分析案例导航">
+        <section class="case-switcher">
+          <div class="rail-section-label">分析案例</div>
+          <button class="case-card is-active" type="button">
+            <span class="case-icon" aria-hidden="true">复</span>
+            <span class="case-card-copy">
+              <strong>会员复购变化诊断</strong>
+              <small id="case-status-label">草稿</small>
+            </span>
+          </button>
+        </section>
+
+        <nav class="step-nav" aria-label="分析步骤">
+          <div class="rail-section-label">分析进度</div>
+          <ol id="step-list"></ol>
+        </nav>
+
+        <div class="rail-footer">
+          <div class="privacy-note">
+            <span class="privacy-icon" aria-hidden="true">⌂</span>
+            <div><strong>原始数据默认留在本机</strong><small>任何外部发送都需逐次确认</small></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="workspace" id="workspace" tabindex="-1"></main>
+
+      <aside class="evidence-drawer" id="evidence-drawer" aria-label="技术详情" aria-hidden="true">
+        <div class="drawer-header">
+          <div><span class="eyebrow">可选查看</span><h2>技术详情</h2></div>
+          <button class="icon-button" type="button" aria-label="关闭技术详情" data-action="close-evidence">×</button>
+        </div>
+        <div id="evidence-content" class="drawer-content"></div>
+      </aside>
+
+      <footer class="statusbar">
+        <div class="run-status"><span class="status-dot"></span><span id="bottom-status">案例已在本机自动保存（模拟）</span></div>
+        <div class="statusbar-meta"><span>Asia/Shanghai</span><span>CNY</span><span id="revision-label">修订 01 · 草稿</span></div>
+      </footer>
+    </div>
+
+    <div class="overlay" id="overlay" hidden></div>
+    <section class="scenario-panel" id="scenario-panel" aria-label="UI 验收场景" aria-hidden="true"></section>
+    <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true"></section>
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

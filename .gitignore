@@ -5,6 +5,12 @@ coverage/
 dist/
 build/
 
+# Frozen clickable UI Contract artifacts are formal planning inputs.
+!docs/planning/2026-09-18/clickable-ui-contract/dist/
+!docs/planning/2026-09-18/clickable-ui-contract/dist/**
+!docs/planning/2026-09-18/clickable-ui-contract-v1.1/dist/
+!docs/planning/2026-09-18/clickable-ui-contract-v1.1/dist/**
+
 # Local runtime state
 .xanthil/
 *.log

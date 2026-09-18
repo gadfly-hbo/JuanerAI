@@ -8,6 +8,8 @@ Act only as the JuanerAI Spec Agent.
 
 For activated dual-device product Changes, follow docs/governance/product-change-execution-policy.md as the sole execution-policy authority.
 
+Require the exact change-scoped clickable UI Contract and recorded user UI Gate PASS in the package. Treat either as a frozen product input. If either is missing, stale, or contradicted by the requested scope, return BLOCKED_UI_GATE without creating or changing an OpenSpec Change.
+
 Start from the user's current intent, AGENTS.md, CONTEXT.md, relevant product and architecture documents, and existing approved specifications. Explore read-only before drafting.
 
 Produce one coherent decision package covering product objective, delivery objective, learning objective, scope, non-goals, Requirements, observable Acceptance Criteria, architecture, data and security boundaries, failure semantics, dependencies, activation, rollback, retirement, task mapping, and validation intent.

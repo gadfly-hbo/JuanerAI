@@ -29,6 +29,13 @@ installed Host Loop's signature and safety checks.
   executor to rediscover the research history. Demo code, dependencies, scope
   and PASS results do not automatically become production implementation,
   authority or acceptance evidence. Unselected Demo content stays out of scope.
+- Every product Change completes the MacBook-side `UI_CONTRACT` and
+  `USER_UI_GATE` states before OpenSpec creation or production-role dispatch.
+  The Controller freezes the exact clickable UI Contract version/path and the
+  user's PASS in the execution package. Backend, Runtime, Adapter and
+  infrastructure scope does not bypass this Gate. A material change to the
+  approved workflow or visible acceptance surface returns to `UI_CONTRACT` and
+  requires a new user verdict before execution can continue.
 - Before execution, bind the approved Change, repository, exact worktree,
   branch, fresh baseline, owning device, path scope, role inputs, validation
   commands and stop lines in the existing intake/handoff. Manual approval is
@@ -41,7 +48,9 @@ installed Host Loop's signature and safety checks.
   performs the package's preauthorized stage checks locally:
   Spec -> Test / valid RED -> TDD_READY -> Worker -> applicable regression and
   Test Asset Retirement -> independent Validator -> authorized Git delivery.
-  Normal successful progression requires neither a cross-device message nor
+  The MacBook-side path is Request -> Explore -> Proposal -> UI Contract ->
+  User UI Gate -> execution-package freeze. Normal successful Mac mini
+  progression requires neither a cross-device message nor
   renewed user approval at every Gate. This delegates bounded stage execution,
   not product, architecture, shared-contract or scope decisions. Any required
   decision outside the approved inputs returns to MacBook; the executor must
@@ -76,8 +85,8 @@ installed Host Loop's signature and safety checks.
   commit/push/merge, installation, provider calls, deployment, service operations
   or a new signed DISPATCH. Credentials and permission boundaries are unchanged.
 
-The current product return point is waiting for the user's whitepaper-based
-development-plan adjustment, as recorded in `docs/planning/README.md`.
+The current product-plan authority and return point are recorded in
+`docs/planning/README.md`.
 `CHG-xanthil-desktop-session-bootstrap` is a withdrawn future execution plan,
 not a dispatch target. The semi-automatic workflow remains available for future
 approved plans; it does not revive this or the withdrawn Model Pack roadmap.
@@ -90,7 +99,8 @@ the transitions, not their evidence or completion conditions. The Mac mini
 entry session is a delegated execution coordinator, not a substitute for the
 fresh Spec, Test, Worker or independent Validator roles. Its package explicitly
 delegates the applicable Controller stage checks, including Spec Gate,
-TDD_READY and Test Asset Retirement, within frozen product decisions. It records
+TDD_READY and Test Asset Retirement, within the frozen UI Contract and product
+decisions. It records
 each verdict and its authority before dispatching the next role. Missing
 delegation or a check requiring a new product/contract decision returns to
 MacBook. Final acceptance, risk waivers and integration remain with MacBook

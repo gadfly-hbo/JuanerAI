@@ -2,7 +2,7 @@
 
 ## Product
 
-JuanerAI is the commercial project family. Xanthil is its first product; existing functionality and reusable foundations remain preserved. The pending Xanthil Desktop and Model Pack development plans were withdrawn by the user on 2026-09-18; read `docs/planning/README.md` before product planning or dispatch and wait for the user's whitepaper-based development adjustment. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
+JuanerAI is the commercial project family. Xanthil is its first product; existing functionality and reusable foundations remain preserved. The pending Xanthil Desktop and Model Pack development plans were withdrawn by the user on 2026-09-18 and remain void. `docs/planning/README.md` is the current product-planning entry; it points to the approved Blueprint v1.0 base and the current v1.1 correction package. The first-slice UI Contract must directly reuse the accepted PX-2026-004/006 Xanthil product UI mode and its visible capability inventory rather than invent a replacement UI. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
 
 The product intent is to help data analysts and enterprise decision users move through Data -> Decision -> Action -> Outcome. It should produce actionable, traceable decisions rather than stop at BI reports or dashboards.
 
@@ -23,7 +23,7 @@ Product terminology is owned by CONTEXT.md. Cross-domain orchestration is owned 
 
 ## Startup Stop Line
 
-Before creating the first behavior-changing Xanthil Change, ask the user for the promised detailed Xanthil plan. Review that plan and resolve its product goal, MVP scope, non-goals, first acceptance scenario, data boundaries, and technical constraints before implementation.
+The approved Blueprint v1.0 base and current v1.1 first-slice package are referenced from `docs/planning/README.md`. Review 002 applies only to the superseded v1.0 UI-adoption input. Before revising the retained clickable draft, the v1.1 package must pass a fresh Product Plan Development-Readiness Gate. Every product Change must then produce or revise a change-scoped high-fidelity clickable UI Contract and receive the user's UI Gate PASS before OpenSpec creation or `juaner_spec` dispatch. The UI Contract must make the workflow and visible acceptance surface directly evaluable by a non-technical user; backend, Runtime, Adapter, or infrastructure scope does not bypass this Gate. A review PASS authorizes only the next stated planning or UI-contract Gate; it does not authorize OpenSpec, dependency installation, production implementation, external data access, provider calls, or schema creation.
 
 Cold-start documents and empty module boundaries do not authorize product implementation, dependency installation, external data access, or schema creation.
 
@@ -73,7 +73,7 @@ delegated stage checks and authority boundaries in
 
 Observable behavior changes follow:
 
-Request -> Explore -> Proposal -> Specification -> Design -> Tasks -> Spec Gate -> Test Design -> RED -> Implementation -> GREEN -> Regression -> Independent Verification -> Acceptance -> Archive.
+Request -> Explore -> Proposal -> UI Contract -> User UI Gate -> Specification -> Design -> Tasks -> Spec Gate -> Test Design -> RED -> Implementation -> GREEN -> Regression -> Independent Verification -> Acceptance -> Archive.
 
 Each non-trivial change belongs to openspec/changes/<change-id>/ and declares allowed, conditional, and forbidden paths. Use greenfield_fast_path only when there is no compatibility, migration, replay, or irreversible-side-effect obligation; it still requires closed contracts, security boundaries, negative tests, activation, rollback, and real verification.
 
@@ -109,16 +109,18 @@ When a Change adds, changes, or removes tests, fixtures, helpers, doubles, mocks
 
 ### Standing Delegation Authority
 
-The user grants standing authority to dispatch the configured project subagents when their lifecycle Gate is satisfied. Do not request per-dispatch confirmation for work already inside the approved Change, role boundary, model-routing policy, and path scope.
+The user grants standing authority to dispatch the configured project subagents when their lifecycle Gate is satisfied. Agent invocation and formal lifecycle-role activation are distinct: the Controller may call any configured role for bounded support, while only a role activated with the approved production brief and lifecycle authority may write formal Change artifacts or advance a Gate.
 
-- After product intent and all required product or structure decisions are available, the Controller must dispatch `juaner_spec` to draft or revise the complete OpenSpec package before Spec Gate.
+The MacBook Controller prepares and reviews the complete package and may use configured roles for bounded support; those support calls do not constitute production execution, create lifecycle evidence, or grant Change-write authority. After the user forwards the package, the Mac mini execution session activates the formal Spec, Test, Worker, and Validator stages. On the MacBook, user wording such as “启动” or “授权启动” a Change starts package preparation and handoff unless the user explicitly changes the dual-device execution policy.
+
+- After product intent, all required product or structure decisions, and the exact user-approved UI Contract are available, the Mac mini execution coordinator must dispatch `juaner_spec` to draft or revise the complete OpenSpec package before Spec Gate.
 - After Spec Gate PASS, the Controller must dispatch `juaner_test` to derive executable tests and establish expected RED before production implementation.
 - After TDD_READY, the Controller must dispatch `juaner_worker` to make the minimum production change inside the frozen allowed paths.
 - After implementation and evidence are frozen, the Controller must dispatch `juaner_validator` in an independent read-only context before acceptance.
 - Each role returns evidence to the Controller. Dispatch does not transfer product authority, approve a Gate, or unlock the next role early.
 - The Controller must not replace a required role dispatch with direct execution. An explicit user waiver, an unavailable role, or a genuine authority/evidence blocker must be recorded with the affected Gate and release condition.
 
-This section is persistent delegation authority across sessions. A new user command is required only to waive a role, change authority or scope, override routing, or proceed despite a blocker.
+This section is persistent delegation authority across sessions. A new user command is required only to waive a role, change authority or scope, change the designated execution device, override routing, or proceed despite a blocker. Product approval, UI acceptance, OpenSpec authorization, and lifecycle progression never implicitly change the designated execution device.
 
 Use Orchestration.md and docs/templates/ for multi-domain or multi-agent work.
 

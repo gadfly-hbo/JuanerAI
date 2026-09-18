@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918161022346-N9J3GW",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-18T16:10:22.346Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "半自动状态机新增每个产品 Change 必经的 UI_CONTRACT 与 USER_UI_GATE 前置状态",
+  "status_after": "blocked",
+  "evidence_refs": [
+    ".ai-coding/state-machine.md",
+    ".ai-coding/workflow.md",
+    ".ai-coding/definition-of-done.md",
+    "docs/governance/product-change-execution-policy.md"
+  ]
+}

@@ -3,23 +3,23 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "JuanerAI — 待白皮书开发计划调整"
+    "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "PLAN_WITHDRAWN_AWAITING_WHITEPAPER",
-    "label": "旧 Desktop / Model Pack 待执行方案作废；等待白皮书计划调整",
-    "ordinal": 1,
-    "total": 1
+    "id": "FIRST_DESKTOP_CHANGE_WIP_PREFLIGHT",
+    "label": "首个 Desktop Change 执行包转发／全局 WIP 前置核对",
+    "ordinal": 6,
+    "total": 8
   },
-  "health": "waiting_user",
-  "summary": "2026-09-18 用户将已批准但尚待执行的 Xanthil Desktop 与 Model Pack 开发方案全部作废；已实现功能、底层代码、已验收 OpenSpec 和有效历史验证保留。没有新的产品执行目标。",
-  "current_objective": "保留并复用现有 JuanerAI 成果，等待用户提供白皮书相关开发计划调整；仅按后续批准需求做必要迭代。",
-  "next_action": "等待用户提供 JuanerAI 白皮书开发计划调整；不再准备或派发旧 Desktop/Model Pack 执行包，不自行制定替代路线。半自动双端流程与质量、安全 Gate 保留。",
+  "health": "blocked",
+  "summary": "首个 Xanthil Desktop 生产执行包已冻结，MacBook 不派发生产角色；Mac mini 接收精确 Git 提交后必须先做旧 pointer/State/Ledger 的只读全局 WIP 前置核对。",
+  "current_objective": "转发 PKG-XANTHIL-DESKTOP-001 的精确分支与提交，并等待 Mac mini 返回 WIP_PREFLIGHT_EXCEPTION 或可继续证据。",
+  "next_action": "Mac mini 验证任务包 Git 身份并执行只读 WIP 前置核对；旧 pointer 未证明可用或未获最小处置授权前，不创建 OpenSpec Change、不派发生产角色。",
   "blockers": [
     {
-      "id": "WHITEPAPER_DEVELOPMENT_ADJUSTMENT_PENDING",
-      "label": "等待用户提供白皮书开发计划调整",
-      "detail": "旧产品方案已作废而非暂缓；旧 Host Loop 指针与证据仍保留，未清空或标为 CLOSED。新计划审批与将来的 WIP 处置不得由旧授权推导。",
+      "id": "GLOBAL_WIP_RESERVED_BY_WITHDRAWN_CHANGE",
+      "label": "Mac mini 旧 active_change_id 仍占用唯一全局 WIP",
+      "detail": "旧 Change 已被用户作废但指针被保留，不能假装 CLOSED、清空或用新 Change 绕过。需要先只读核对实际 pointer/State/Ledger，再由用户授权最小处置。",
       "owner": "user/controller"
     }
   ],
@@ -58,6 +58,46 @@
       "id": "implementation",
       "label": "历史／旧计划已作废：RED / 实现 / 验证",
       "status": "locked"
+    },
+    {
+      "id": "blueprint_v1",
+      "label": "当前：Blueprint v1.0 用户确认",
+      "status": "completed"
+    },
+    {
+      "id": "ui_contract_readiness",
+      "label": "当前：UI Contract 独立开发就绪审查",
+      "status": "completed"
+    },
+    {
+      "id": "clickable_ui_contract",
+      "label": "当前：高保真可点击 UI Contract",
+      "status": "completed"
+    },
+    {
+      "id": "user_ui_gate",
+      "label": "当前：用户 UI Gate",
+      "status": "completed"
+    },
+    {
+      "id": "current_openspec_gate",
+      "label": "当前：OpenSpec / Spec Gate",
+      "status": "locked"
+    },
+    {
+      "id": "current_tdd",
+      "label": "当前：Test Design / RED",
+      "status": "locked"
+    },
+    {
+      "id": "current_implementation",
+      "label": "当前：生产 UI 与能力集成",
+      "status": "locked"
+    },
+    {
+      "id": "current_acceptance",
+      "label": "当前：独立验证与用户真实 UI 验收",
+      "status": "locked"
     }
   ],
   "agents": [
@@ -66,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "等待白皮书计划调整；维护撤销状态并保留已有成果，不派发旧计划角色。"
+      "activation": "首个生产 Change 已获产品授权；因旧 pointer/WIP 保留，Spec 派发在 host 只读核对与最小处置前锁定。"
     },
     {
       "id": "d05_reviewer",
@@ -90,32 +130,53 @@
       "activation": "历史结果保留；不构成新计划批准。 D05-XD-PRG-001 seven-part review PASS"
     },
     {
+      "id": "ui_contract_reviewer",
+      "label": "Fresh UI Contract Development-Readiness Reviewer",
+      "model": "gpt-5.6-terra / high, fresh read-only support context",
+      "status": "complete",
+      "activation": "Review 001 NEEDS_CLARIFICATION；bounded correction 后由全新 Reviewer 完成 Review 002 PASS，仅放行可点击 UI Contract。"
+    },
+    {
       "id": "juaner_spec",
       "label": "Spec Agent",
       "model": "gpt-5.6-sol / R2 high when dispatched",
       "status": "locked",
-      "activation": "旧 Desktop/Model Pack 方案作废，禁止依旧包激活；新工作须有新的批准输入及适用 Gate。"
+      "activation": "产品输入与 OpenSpec 启动授权已具备，但 Mac mini 唯一全局 WIP 仍被旧 pointer 保留；完成经授权的最小 WIP 处置后才派发。"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
       "status": "locked",
-      "activation": "旧 Desktop/Model Pack 方案作废，禁止依旧包激活；新工作须有新的批准输入及适用 Gate。"
+      "activation": "锁定；仅在新 OpenSpec Spec Gate PASS 后派发，用于 Test Design 与有效 RED。"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
       "status": "locked",
-      "activation": "旧 Desktop/Model Pack 方案作废，禁止依旧包激活；新工作须有新的批准输入及适用 Gate。"
+      "activation": "锁定；仅在新 Change 达到 TDD_READY 后实施冻结范围。"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol / medium (configured default; R2 high when dispatched)",
       "status": "locked",
-      "activation": "旧 Desktop/Model Pack 方案作废，禁止依旧包激活；新工作须有新的批准输入及适用 Gate。"
+      "activation": "锁定；仅在生产实现和证据冻结后进行独立验证。"
+    },
+    {
+      "id": "session_runtime_reviewer",
+      "label": "Fresh Session/Runtime Development-Readiness Reviewer",
+      "model": "gpt-6-astra / high (R2: persistence and Agent Runtime boundary)",
+      "status": "complete",
+      "activation": "Fresh Review 001 completed with NEEDS_CLARIFICATION; no writes or external study."
+    },
+    {
+      "id": "session_runtime_reviewer_002",
+      "label": "Fresh Session/Runtime Development-Readiness Reviewer 002",
+      "model": "gpt-6-astra / high (R2: persistence, recovery, Agent Runtime and provider-call lifecycle)",
+      "status": "complete",
+      "activation": "Fresh Review 002 PASS; no writes, external study, OpenSpec or implementation authority."
     }
   ],
   "metrics": [
@@ -142,6 +203,12 @@
       "label": "历史统计／非当前授权：Public Release Gate amendment readiness reviews",
       "done": 1,
       "total": 1
+    },
+    {
+      "id": "blueprint_ui_plan_gates",
+      "label": "当前：Blueprint 用户确认与 UI Contract 开发就绪 Gate",
+      "done": 2,
+      "total": 2
     }
   ],
   "evidence": [
@@ -312,6 +379,36 @@
       "label": "用户撤销待执行 Desktop / Model Pack 计划，保留已有成果",
       "path": "docs/planning/README.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-BLUEPRINT-V1-20260918",
+      "label": "用户确认的 JuanerAI Product Development Blueprint v1.0",
+      "path": "docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.0.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-UI-CONTRACT-V1-20260918",
+      "label": "冻结用于可点击 UI 制作的 Xanthil Desktop UI Contract v1.0",
+      "path": "docs/planning/2026-09-18/xanthil-desktop-ui-contract-v1.0.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-UI-READINESS-001-20260918",
+      "label": "UI Contract Development-Readiness Review 001 NEEDS_CLARIFICATION",
+      "path": "docs/planning/2026-09-18/reviews/ui-contract-development-readiness-review-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-UI-READINESS-002-20260918",
+      "label": "Fresh UI Contract Development-Readiness Review 002 PASS",
+      "path": "docs/planning/2026-09-18/reviews/ui-contract-development-readiness-review-002.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-SESSION-RUNTIME-REVIEW-002",
+      "label": "Fresh Session/Runtime Development-Readiness Review 002 PASS",
+      "path": "docs/planning/2026-09-18/reviews/session-runtime-development-readiness-review-002.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -338,11 +435,17 @@
       "label": "旧批准与主机保留指针被误读为可继续执行",
       "level": "high",
       "mitigation": "以 docs/planning/README.md 作废决定为准；等待新计划，不重放旧权限或清空证据。"
+    },
+    {
+      "id": "RSK-CLICKABLE-UI-OVERCLAIM",
+      "label": "可点击 UI 的模拟状态被误读为真实产品能力",
+      "level": "high",
+      "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-18T12:54:49.794Z",
+  "updated_at": "2026-09-18T16:28:19.439Z",
   "updated_by": {
     "role": "controller",
-    "session": "plan-withdrawal-controller"
+    "session": "macbook-controller-whitepaper-blueprint-v1"
   }
 }
