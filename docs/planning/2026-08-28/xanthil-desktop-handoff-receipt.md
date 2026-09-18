@@ -1,5 +1,7 @@
 # Xanthil Desktop Dual-mode Formal-development Handoff Receipt
 
+> **VOID / 用户作废（2026-09-18）**：本方案及其待执行授权已撤销。见[统一作废决定](../README.md)。以下正文、原审批和状态仅保留为历史，不得用于启动开发；已实现功能、代码及有效历史证据保留。
+
 > Receipt ID: `XDESK-HANDOFF-20260828-001`
 > Controller task: `D05-XD-001`
 > Receiving repository: `/Users/huangbo/JuanerAI`
@@ -27,7 +29,7 @@ The received task is D0.5 productization convergence and first Product Change na
 
 The first Change remains `CHG-xanthil-desktop-session-bootstrap`. The earlier automatic launch and stopped repair are historical attempts, not product completion or reusable execution authority. No Desktop Spec Gate or product implementation is accepted.
 
-## Current Gate and responsibility — semi-automatic
+## Historical Gate and responsibility — semi-automatic package withdrawn
 
 - Gate: `D1_A_SEMIAUTOMATIC_EXECUTION_PACKAGE`; follow `docs/governance/product-change-execution-policy.md`.
 - MacBook Controller entry: `/Users/huangbo/JuanerAI`, restored to clean main at `a15d2d90ab6b537051e581285e50207f9a8f9fdd` before this entry-document change. The isolated governance branch is not a product execution branch.

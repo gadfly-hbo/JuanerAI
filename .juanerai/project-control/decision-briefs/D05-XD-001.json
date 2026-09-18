@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "brief_id": "D05-XD-001",
   "type": "STRUCTURE_CONTRACT",
-  "status": "resolved",
+  "status": "superseded",
   "title": "Xanthil Desktop D0.5 产品化与持久结构整体确认",
   "why_now": "双模式 UI 已由用户人工接受；Desktop 技术、本地 Python、持久化、独立会话 Runtime、跨平台验收和首个 Application-led Change 已完成两轮开发就绪审查，修订包在 Review 002 获得 PASS。进入任何 Product Change 前必须由用户整体确认这些产品级边界。",
   "prompt": "是否整体批准 D05-XD-001 产品化决策包与 D05-XD-STRUCT-001 的 S01-S23，使 Controller 仅可进入 CHG-xanthil-desktop-session-bootstrap 的独立 D1-A intake？",
@@ -48,6 +48,6 @@
   ],
   "cli_instruction": "正式决定请在 Codex CLI 回复：批准 D05-XD-001 与 D05-XD-STRUCT-001 全部 S01-S23；如需修改，请列出对应 D05/S 项号。项目板不会提交或执行选择。",
   "created_at": "2026-08-28T12:30:00+08:00",
-  "updated_at": "2026-08-28T11:37:35.186Z",
-  "resolution_summary": "User approved D05-XD-001 and D05-XD-STRUCT-001 S01-S23 as one package on 2026-08-28; approval unlocks D1-A only."
+  "updated_at": "2026-09-18T12:54:49.890Z",
+  "resolution_summary": "Historical: user approved D05-XD-001 and D05-XD-STRUCT-001 S01-S23 on 2026-08-28, unlocking D1-A only. On 2026-09-18 user withdrew all pending Desktop and Model Pack plans; this approval is no longer future execution authority. See docs/planning/README.md. Existing implemented assets and historical evidence are retained."
 }

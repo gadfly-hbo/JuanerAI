@@ -9,7 +9,7 @@ The highest-level commercial project and product family.
 _Avoid_: using JuanerAI as a synonym for Xanthil
 
 **Xanthil**:
-The first JuanerAI commercial product. Its current product direction is desktop-first for macOS and Windows, with future enterprise capability; continued CLI product development is paused.
+The first JuanerAI commercial product. Existing capabilities remain reusable; its pending Desktop development plan is withdrawn. The future development sequence awaits the user's whitepaper-based adjustment in `docs/planning/README.md`; the name itself grants no execution authority.
 _Avoid_: JuanerAI platform, Pi wrapper, CLI-first product
 
 **Product Module**:

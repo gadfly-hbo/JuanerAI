@@ -1,5 +1,7 @@
 # CHG-xanthil-desktop-session-bootstrap — D1-A Intake Candidate
 
+> **VOID / 用户作废（2026-09-18）**：本方案及其待执行授权已撤销。见[统一作废决定](../../README.md)。以下正文、原审批和状态仅保留为历史，不得用于启动开发；已实现功能、代码及有效历史证据保留。
+
 > Intake ID: `D1A-XDSB-001`
 > Change ID: `CHG-xanthil-desktop-session-bootstrap`
 > Status: D1-A review/correction closed; dependency policy frozen; semi-automatic execution package pending; old signed route is historical, not current execution authority
@@ -7,7 +9,7 @@
 > Controller device: MacBook
 > Current-Change executor after explicit bounded semi-automatic authorization: Mac mini
 
-## Current execution disposition — 2026-09-18
+## Historical execution disposition — superseded by plan withdrawal on 2026-09-18
 
 Use `docs/governance/product-change-execution-policy.md` and the current section
 of `../xanthil-desktop-handoff-receipt.md`. The old Host Loop is disabled and

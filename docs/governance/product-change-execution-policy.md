@@ -65,8 +65,9 @@ installed Host Loop's signature and safety checks.
   final validation budget stops the repair rather than starting another round.
 - Global WIP remains one. Preserve the existing active pointer, State, pause,
   Ledger and evidence; a parked automation incident does not imply an empty
-  slot. Continue the same approved Desktop Change, not a second Change to evade
-  its reservation. Verify current ownership and absence of competing execution
+  slot. A retained reservation does not authorize continuing a withdrawn plan;
+  use `docs/planning/README.md` for current product-plan authority. Do not create
+  a second Change to evade the reservation. Verify current ownership and absence of competing execution
   before writing. A different Change requires explicit disposition of any
   reserved earlier WIP. Manual progress/acceptance must not be represented as
   Host Loop READY/CLOSED, signed RELEASE or pointer clearing.
@@ -75,10 +76,11 @@ installed Host Loop's signature and safety checks.
   commit/push/merge, installation, provider calls, deployment, service operations
   or a new signed DISPATCH. Credentials and permission boundaries are unchanged.
 
-The current product return point is `CHG-xanthil-desktop-session-bootstrap`:
-minimum Project / fixed-mode Session creation, opening and restart readback,
-with truthful `not_started`. No new product plan or repeated completed review
-is required solely because the execution mode changed.
+The current product return point is waiting for the user's whitepaper-based
+development-plan adjustment, as recorded in `docs/planning/README.md`.
+`CHG-xanthil-desktop-session-bootstrap` is a withdrawn future execution plan,
+not a dispatch target. The semi-automatic workflow remains available for future
+approved plans; it does not revive this or the withdrawn Model Pack roadmap.
 
 ### Retained Gates and Stage Records
 

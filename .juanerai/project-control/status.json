@@ -3,60 +3,60 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "Xanthil Desktop"
+    "product": "JuanerAI — 待白皮书开发计划调整"
   },
   "phase": {
-    "id": "D1_A_SEMIAUTOMATIC_EXECUTION_PACKAGE",
-    "label": "双端旧执行已隔离；待首次半自动产品执行包",
-    "ordinal": 4,
-    "total": 7
+    "id": "PLAN_WITHDRAWN_AWAITING_WHITEPAPER",
+    "label": "旧 Desktop / Model Pack 待执行方案作废；等待白皮书计划调整",
+    "ordinal": 1,
+    "total": 1
   },
   "health": "waiting_user",
-  "summary": "PR #36 已固化半自动长期流程。Mac mini 旧 Host Loop 已禁用并卸载，MacBook 完整保全旧修复 WIP 后已归位 clean main；旧执行资产仅作历史参考。产品决策、OpenSpec 和质量 Gate 保留，未启动新的产品执行。",
-  "current_objective": "返回 CHG-xanthil-desktop-session-bootstrap：最小 Project／固定模式 Session 创建、打开和重启读回，真实 not_started；不继续自动化工具返修。",
-  "next_action": "完成本次入口文档的 Git 集成和双端接收，然后准备同一 Desktop Change 的精确半自动执行包，绑定 Mac mini 用户仓库下的新 worktree/branch、新鲜基线、唯一写入端、阶段 Gate 委托与整批权限。不得进入旧 canonical/candidate/修复快照，不消费旧签名；本状态不授权角色派发或依赖安装。",
+  "summary": "2026-09-18 用户将已批准但尚待执行的 Xanthil Desktop 与 Model Pack 开发方案全部作废；已实现功能、底层代码、已验收 OpenSpec 和有效历史验证保留。没有新的产品执行目标。",
+  "current_objective": "保留并复用现有 JuanerAI 成果，等待用户提供白皮书相关开发计划调整；仅按后续批准需求做必要迭代。",
+  "next_action": "等待用户提供 JuanerAI 白皮书开发计划调整；不再准备或派发旧 Desktop/Model Pack 执行包，不自行制定替代路线。半自动双端流程与质量、安全 Gate 保留。",
   "blockers": [
     {
-      "id": "SEMIAUTOMATIC_EXECUTION_PACKAGE_PENDING",
-      "label": "首次半自动产品执行包尚未精确绑定及授权",
-      "detail": "双端隔离及 Git 文档收尾有授权；产品执行没有由此获权。旧 active pointer 保留同一 Change，不是空槽或 CLOSED；旧 Host Loop 不得重启，当前执行按 product-change-execution-policy.md。",
-      "owner": "controller/user"
+      "id": "WHITEPAPER_DEVELOPMENT_ADJUSTMENT_PENDING",
+      "label": "等待用户提供白皮书开发计划调整",
+      "detail": "旧产品方案已作废而非暂缓；旧 Host Loop 指针与证据仍保留，未清空或标为 CLOSED。新计划审批与将来的 WIP 处置不得由旧授权推导。",
+      "owner": "user/controller"
     }
   ],
   "milestones": [
     {
       "id": "handoff_intake",
-      "label": "双模式 Handoff 接收",
+      "label": "历史／旧计划已作废：双模式 Handoff 接收",
       "status": "completed"
     },
     {
       "id": "d05_decisions",
-      "label": "D0.5 产品化决策",
+      "label": "历史／旧计划已作废：D0.5 产品化决策",
       "status": "completed"
     },
     {
       "id": "development_readiness",
-      "label": "开发就绪审查",
+      "label": "历史／旧计划已作废：开发就绪审查",
       "status": "completed"
     },
     {
       "id": "user_approval",
-      "label": "用户整体确认",
+      "label": "历史／旧计划已作废：用户整体确认",
       "status": "completed"
     },
     {
       "id": "d1a_intake",
-      "label": "首个 Change D1-A",
-      "status": "active"
+      "label": "历史／旧计划已作废：首个 Change D1-A",
+      "status": "locked"
     },
     {
       "id": "spec_gate",
-      "label": "Spec Gate",
-      "status": "pending"
+      "label": "历史／旧计划已作废：Spec Gate",
+      "status": "locked"
     },
     {
       "id": "implementation",
-      "label": "RED / 实现 / 验证",
+      "label": "历史／旧计划已作废：RED / 实现 / 验证",
       "status": "locked"
     }
   ],
@@ -66,80 +66,80 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "半自动整批任务包、精确执行身份与权限、产品/契约决定和最终接受；不以自动恢复为前置。"
+      "activation": "等待白皮书计划调整；维护撤销状态并保留已有成果，不派发旧计划角色。"
     },
     {
       "id": "d05_reviewer",
       "label": "Fresh Product Plan Reviewer",
       "model": "fresh read-only support context",
       "status": "complete",
-      "activation": "Review 002 PASS after bounded correction"
+      "activation": "历史结果保留；不构成新计划批准。 Review 002 PASS after bounded correction"
     },
     {
       "id": "d1a_reviewer",
       "label": "Fresh D1-A Product Plan Reviewer",
       "model": "fresh read-only support context",
       "status": "complete",
-      "activation": "Unique review completed; one bounded correction closed by Controller targeted readback"
+      "activation": "历史结果保留；不构成新计划批准。 Unique review completed; one bounded correction closed by Controller targeted readback"
     },
     {
       "id": "public_release_gate_reviewer",
       "label": "Fresh Public Release Gate Development-Readiness Reviewer",
       "model": "fresh material-isolated read-only support context",
       "status": "complete",
-      "activation": "D05-XD-PRG-001 seven-part review PASS"
+      "activation": "历史结果保留；不构成新计划批准。 D05-XD-PRG-001 seven-part review PASS"
     },
     {
       "id": "juaner_spec",
       "label": "Spec Agent",
       "model": "gpt-5.6-sol / R2 high when dispatched",
-      "status": "waiting",
-      "activation": "仅在首次半自动执行包明确授权且输入完整后，由 Mac mini 执行协调会话派发；未启动 Desktop Spec Gate。"
+      "status": "locked",
+      "activation": "旧 Desktop/Model Pack 方案作废，禁止依旧包激活；新工作须有新的批准输入及适用 Gate。"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
       "status": "locked",
-      "activation": "Desktop Spec Gate PASS 后，在明确批准的路径和依赖边界内证明环境健康、永久测试与有效 RED。"
+      "activation": "旧 Desktop/Model Pack 方案作废，禁止依旧包激活；新工作须有新的批准输入及适用 Gate。"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
       "status": "locked",
-      "activation": "Locked until Desktop TDD_READY; then owns the minimum production change within frozen Worker paths"
+      "activation": "旧 Desktop/Model Pack 方案作废，禁止依旧包激活；新工作须有新的批准输入及适用 Gate。"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol / medium (configured default; R2 high when dispatched)",
       "status": "locked",
-      "activation": "Locked until Desktop implementation and evidence are frozen after regression and Test Asset Retirement"
+      "activation": "旧 Desktop/Model Pack 方案作废，禁止依旧包激活；新工作须有新的批准输入及适用 Gate。"
     }
   ],
   "metrics": [
     {
       "id": "d05_decisions",
-      "label": "D0.5 decision areas drafted",
+      "label": "历史统计／非当前授权：D0.5 decision areas drafted",
       "done": 11,
       "total": 11
     },
     {
       "id": "structure_decisions",
-      "label": "User-approved persistent structure decisions",
+      "label": "历史统计／非当前授权：User-approved persistent structure decisions",
       "done": 23,
       "total": 23
     },
     {
       "id": "product_changes",
-      "label": "Approved first Product Change scope; execution package pending",
+      "label": "历史统计／非当前授权：旧首 Change 范围批准记录（现已作废）",
       "done": 1,
       "total": 1
     },
     {
       "id": "public_release_gate_review",
-      "label": "Public Release Gate amendment readiness reviews",
+      "label": "历史统计／非当前授权：Public Release Gate amendment readiness reviews",
       "done": 1,
       "total": 1
     }
@@ -147,190 +147,202 @@
   "evidence": [
     {
       "id": "EVD-D05-001",
-      "label": "Target-side Handoff receipt",
+      "label": "历史证据：Target-side Handoff receipt",
       "path": "docs/planning/2026-08-28/xanthil-desktop-handoff-receipt.md",
       "status": "present"
     },
     {
       "id": "EVD-D05-002",
-      "label": "D0.5 productization decision package",
+      "label": "历史证据：D0.5 productization decision package",
       "path": "docs/planning/2026-08-28/xanthil-desktop-d05-productization-decision-package.md",
       "status": "present"
     },
     {
       "id": "EVD-D05-003",
-      "label": "D0.5 Structure Decision Ledger",
+      "label": "历史证据：D0.5 Structure Decision Ledger",
       "path": "docs/planning/2026-08-28/xanthil-desktop-d05-structure-decision-ledger.md",
       "status": "present"
     },
     {
       "id": "EVD-D05-004",
-      "label": "Current Desktop product plan",
+      "label": "历史证据：Current Desktop product plan",
       "path": "docs/planning/2026-08-27/xanthil-desktop-phase-one-product-plan.md",
       "status": "present"
     },
     {
       "id": "EVD-D05-005",
-      "label": "Current baseline TypeScript attestation",
+      "label": "历史证据：Current baseline TypeScript attestation",
       "path": "docs/planning/2026-08-28/xanthil-desktop-current-baseline-attestation.md",
       "status": "verified"
     },
     {
       "id": "EVD-D05-006",
-      "label": "Development-readiness Review 001 stop",
+      "label": "历史证据：Development-readiness Review 001 stop",
       "path": "docs/planning/2026-08-28/reviews/d05-development-readiness-review-001.md",
       "status": "verified"
     },
     {
       "id": "EVD-D05-007",
-      "label": "Fresh Development-readiness Review 002 PASS",
+      "label": "历史证据：Fresh Development-readiness Review 002 PASS",
       "path": "docs/planning/2026-08-28/reviews/d05-development-readiness-review-002.md",
       "status": "verified"
     },
     {
       "id": "EVD-D05-008",
-      "label": "D0.5 user decision brief",
+      "label": "历史证据：D0.5 user decision brief",
       "path": ".juanerai/project-control/decision-briefs/D05-XD-001.json",
       "status": "verified"
     },
     {
       "id": "EVD-D1A-001",
-      "label": "First Change D1-A intake candidate",
+      "label": "历史证据：First Change D1-A intake candidate",
       "path": "docs/planning/2026-08-28/d1a/xanthil-desktop-session-bootstrap-d1a-intake.md",
       "status": "verified"
     },
     {
       "id": "EVD-D1A-002",
-      "label": "Unique fresh D1-A review",
+      "label": "历史证据：Unique fresh D1-A review",
       "path": "docs/planning/2026-08-28/d1a/reviews/d1a-product-plan-review-001.md",
       "status": "verified"
     },
     {
       "id": "EVD-D1A-003",
-      "label": "D1-A bounded correction targeted readback",
+      "label": "历史证据：D1-A bounded correction targeted readback",
       "path": "docs/planning/2026-08-28/d1a/reviews/d1a-targeted-readback-001.md",
       "status": "verified"
     },
     {
       "id": "EVD-D1A-004",
-      "label": "Historical Mac mini empty-WIP readback — not current pointer state",
+      "label": "历史证据：Historical Mac mini empty-WIP readback — not current pointer state",
       "path": "docs/planning/2026-08-28/d1a/evidence/mac-mini-pre-dispatch-readback-001.md",
       "status": "verified"
     },
     {
       "id": "EVD-D05-009",
-      "label": "User-approved JUANERAI_PUBLIC_RELEASE_GATE amendment",
+      "label": "历史证据：User-approved JUANERAI_PUBLIC_RELEASE_GATE amendment",
       "path": "docs/planning/2026-08-28/xanthil-desktop-public-release-gate-amendment.md",
       "status": "verified"
     },
     {
       "id": "EVD-D05-010",
-      "label": "Fresh Public Release Gate Development-Readiness Review PASS",
+      "label": "历史证据：Fresh Public Release Gate Development-Readiness Review PASS",
       "path": "docs/planning/2026-08-28/reviews/public-release-gate-development-readiness-review-001.md",
       "status": "verified"
     },
     {
       "id": "EVD-D1A-005",
-      "label": "PR #21 merge and dual-device exact readback",
+      "label": "历史证据：PR #21 merge and dual-device exact readback",
       "path": "docs/planning/2026-08-28/d1a/evidence/pr21-merge-dual-device-readback-001.md",
       "status": "verified"
     },
     {
       "id": "EVD-D1A-006",
-      "label": "Frozen Desktop bootstrap dependency policy",
+      "label": "历史证据：Frozen Desktop bootstrap dependency policy",
       "path": "docs/planning/2026-08-28/d1a/xanthil-desktop-session-bootstrap-dependency-policy.md",
       "status": "verified"
     },
     {
       "id": "EVD-D1A-007",
-      "label": "Hosted Windows CI scope targeted readback",
+      "label": "历史证据：Hosted Windows CI scope targeted readback",
       "path": "docs/planning/2026-08-28/d1a/evidence/windows-ci-scope-targeted-readback-001.md",
       "status": "verified"
     },
     {
       "id": "EVD-D1A-008",
-      "label": "Historical automatic-route regression blocker — not a semi-automatic prerequisite",
+      "label": "历史证据：Historical automatic-route regression blocker — not a semi-automatic prerequisite",
       "path": "docs/planning/2026-08-28/d1a/evidence/coordinator-regression-pre-dispatch-blocker-001.md",
       "status": "verified"
     },
     {
       "id": "EVD-WVEB-VALIDATOR002-FAIL",
-      "label": "Validator002 FAIL and M1/B0 bounded return",
+      "label": "历史证据：Validator002 FAIL and M1/B0 bounded return",
       "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-validator-002-gate.md",
       "status": "present"
     },
     {
       "id": "EVD-WVEB-TEST011-MANIFEST",
-      "label": "S04 approved bounded Test supplement, role substitution pending",
+      "label": "历史证据：S04 approved bounded Test supplement, role substitution pending",
       "path": "docs/planning/2026-09-05/automation-repair/m1-test-correction-011-brief.md",
       "status": "present"
     },
     {
       "id": "EVD-WVEB-TEST011-RED",
-      "label": "Test011 independent causalRED / Readiness, Worker pending",
+      "label": "历史证据：Test011 independent causalRED / Readiness, Worker pending",
       "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-test-correction-011-gate.md",
       "status": "present"
     },
     {
       "id": "EVD-WVEB-WORKER004-GREEN",
-      "label": "Worker004 snapshot fix and current Controller quality/final Retirement PASS; fresh Validator pending",
+      "label": "历史证据：Worker004 snapshot fix and current Controller quality/final Retirement PASS; fresh Validator pending",
       "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-worker-revision-004-gate.md",
       "status": "present"
     },
     {
       "id": "EVD-WVEB-VALIDATOR003-FAIL",
-      "label": "Validator003 FAIL, original getter fixed, bounded root containment return at R012",
+      "label": "历史证据：Validator003 FAIL, original getter fixed, bounded root containment return at R012",
       "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-validator-003-gate.md",
       "status": "present"
     },
     {
       "id": "EVD-WVEB-M1-ACCEPTANCE",
-      "label": "M1 component Acceptance and archive/integration Gate",
+      "label": "历史证据：M1 component Acceptance and archive/integration Gate",
       "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-integration-gate-001.md",
       "status": "verified"
     },
     {
       "id": "EVD-WVEB-M1-CLOSED",
-      "label": "M1/B0 closed: PR28 accepted-tree integration, archive/live-main and R018 stop",
+      "label": "历史证据：M1/B0 closed: PR28 accepted-tree integration, archive/live-main and R018 stop",
       "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-closure-001.md",
       "status": "verified"
     },
     {
       "id": "EVD-AUTOMATION-REPAIR-FINAL-CLOSURE",
-      "label": "Final automation-repair closure and Desktop return baseline",
+      "label": "历史证据：Final automation-repair closure and Desktop return baseline",
       "path": "docs/planning/2026-09-05/automation-repair/reviews/final-closure-r382.md",
       "status": "verified"
     },
     {
       "id": "EVD-SEMIAUTO-DUAL-ISOLATION",
-      "label": "Current dual-device isolation and receiver-verified evidence locators",
+      "label": "历史证据：Current dual-device isolation and receiver-verified evidence locators",
       "path": "docs/planning/2026-08-28/xanthil-desktop-handoff-receipt.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-PLAN-WITHDRAWAL-20260918",
+      "label": "用户撤销待执行 Desktop / Model Pack 计划，保留已有成果",
+      "path": "docs/planning/README.md",
       "status": "verified"
     }
   ],
   "risks": [
     {
       "id": "RSK-D05-001",
-      "label": "Selected stack not yet proved in-package",
+      "label": "历史旧计划风险：Selected stack not yet proved in-package",
       "level": "high",
-      "mitigation": "First Change is foundation/R2 and requires early macOS/Windows feasibility and fault-injection probes"
+      "mitigation": "旧计划已作废；以下原风险处置仅供后续重新评估，不授权执行：First Change is foundation/R2 and requires early macOS/Windows feasibility and fault-injection probes"
     },
     {
       "id": "RSK-D05-002",
-      "label": "Python sidecar is not a hostile-code sandbox",
+      "label": "历史旧计划风险：Python sidecar is not a hostile-code sandbox",
       "level": "high",
-      "mitigation": "No user-authored Python; narrow operations; no shell; offline acceptance; separate future sandbox Change for hostile code"
+      "mitigation": "旧计划已作废；以下原风险处置仅供后续重新评估，不授权执行：No user-authored Python; narrow operations; no shell; offline acceptance; separate future sandbox Change for hostile code"
     },
     {
       "id": "RSK-D05-003",
-      "label": "Development evidence may be overstated as public-release readiness",
+      "label": "历史旧计划风险：Development evidence may be overstated as public-release readiness",
       "level": "high",
-      "mitigation": "Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
+      "mitigation": "旧计划已作废；以下原风险处置仅供后续重新评估，不授权执行：Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
+    },
+    {
+      "id": "RSK-WITHDRAWN-PLAN-REPLAY",
+      "label": "旧批准与主机保留指针被误读为可继续执行",
+      "level": "high",
+      "mitigation": "以 docs/planning/README.md 作废决定为准；等待新计划，不重放旧权限或清空证据。"
     }
   ],
-  "updated_at": "2026-09-18T12:06:40.686Z",
+  "updated_at": "2026-09-18T12:54:49.794Z",
   "updated_by": {
     "role": "controller",
-    "session": "desktop-entry-isolation-controller"
+    "session": "plan-withdrawal-controller"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918125449796-1G1SRG",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-18T12:54:49.796Z",
+  "actor": {
+    "role": "controller",
+    "session": "plan-withdrawal-controller"
+  },
+  "summary": "用户撤销待执行 Desktop / Model Pack 方案；已有成果保留，等待白皮书计划调整。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

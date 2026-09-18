@@ -2,7 +2,7 @@
 
 ## Product
 
-JuanerAI is the commercial project family. Xanthil is its first product; its current product direction is desktop-first for macOS and Windows, continued CLI product development is paused, and enterprise capability remains future work. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
+JuanerAI is the commercial project family. Xanthil is its first product; existing functionality and reusable foundations remain preserved. The pending Xanthil Desktop and Model Pack development plans were withdrawn by the user on 2026-09-18; read `docs/planning/README.md` before product planning or dispatch and wait for the user's whitepaper-based development adjustment. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
 
 The product intent is to help data analysts and enterprise decision users move through Data -> Decision -> Action -> Outcome. It should produce actionable, traceable decisions rather than stop at BI reports or dashboards.
 

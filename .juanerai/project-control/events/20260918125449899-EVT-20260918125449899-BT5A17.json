@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918125449899-BT5A17",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-18T12:54:49.899Z",
+  "actor": {
+    "role": "controller",
+    "session": "plan-withdrawal-controller"
+  },
+  "summary": "D05-XD-001 原审批保留为历史，待执行授权已由用户作废决定取代。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    ".juanerai/project-control/decision-briefs/D05-XD-001.json"
+  ]
+}
