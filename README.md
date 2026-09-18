@@ -4,13 +4,13 @@ JuanerAI is a commercial AI decision product family for data analysts and enterp
 
 Data -> Decision -> Action -> Outcome
 
-Xanthil is the first JuanerAI product. Its current product direction is desktop-first for macOS and Windows; continued CLI product development is paused while the approved CLI local-analysis behavior remains a compatibility baseline. Enterprise capability remains future work.
+Xanthil is the first JuanerAI product. Existing JuanerAI features and foundations remain reusable; the next product-development sequence awaits the user's whitepaper-based plan adjustment.
 
 ## Current State
 
-The repository has an approved Xanthil CLI local-analysis slice and reusable Product Core/Application/Port/Adapter/Profile boundaries. The current Controller candidate revises the product roadmap toward Xanthil Desktop and a later two-phase Model Pack; it does not activate a Desktop Profile or authorize a new product Change.
+The repository retains its approved Xanthil CLI local-analysis slice, TypeScript migration, Model Pack contract-enabler and reusable Product Core/Application/Port/Adapter/Profile boundaries.
 
-The next product gate is completion of the fresh Development-Readiness Review and explicit user approval of the [`2026-08-27` planning package](docs/planning/2026-08-27/README.md). After that, the static Desktop Demo is reviewed before any productization Change.
+On 2026-09-18 the user made all pending Xanthil Desktop and Model Pack development plans **VOID**. See [the current planning decision](docs/planning/README.md). Wait for the user's whitepaper-based adjustment; no old plan, review PASS or execution package is current start authority.
 
 ## Start Here
 

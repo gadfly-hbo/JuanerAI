@@ -1,5 +1,7 @@
 # pi-xanthil Business-Function Transfer Matrix
 
+> **VOID / 用户作废（2026-09-18）**：本方案及其待执行授权已撤销。见[统一作废决定](../../README.md)。以下正文、原审批和状态仅保留为历史，不得用于启动开发；已实现功能、代码及有效历史证据保留。
+
 > Status: frozen product input; no implementation or external-study authority
 > Purpose: close the Xanthil Desktop D0/D1 business-function scope without making pi-xanthil an implementation or research dependency
 > Boundary: product semantics only; no UI copying, repository migration, Change, Schema, dependency, test, production code, data access, or model call is authorized

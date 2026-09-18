@@ -1,5 +1,7 @@
 # Plan Supersession Matrix
 
+> **VOID / 用户作废（2026-09-18）**：本方案及其待执行授权已撤销。见[统一作废决定](../README.md)。以下正文、原审批和状态仅保留为历史，不得用于启动开发；已实现功能、代码及有效历史证据保留。
+
 > Status: frozen product input; explicit user approval recorded 2026-08-27
 > Purpose: make the active authority and retained history explicit without rewriting the 2026-08-23 package
 

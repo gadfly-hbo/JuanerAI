@@ -1,15 +1,48 @@
 # JuanerAI Product Planning Index
 
-## Automation repair before Desktop restart
+## Current decision — VOID / 用户作废（2026-09-18）
 
-For the active automation repair, read [the fixed M0–M4 master plan](2026-09-05/automation-repair/MASTER_PLAN.md) and [its next-action card](2026-09-05/automation-repair/NEXT_ACTION.md) before continuing a repair or opening a necessary dependency fix. This is the user-approved repair route, separate from the product-planning package below; Gate status is recorded in the action card and formal evidence.
+The user withdrew all previously approved, not-yet-executed Xanthil Desktop
+and Model Pack development plans. Their status is **VOID**, not paused or
+awaiting dispatch. The next action is to wait for the user's JuanerAI whitepaper
+development-plan adjustment; no replacement roadmap or first Change is selected.
 
-## Current revision package
+### Scope of withdrawal
 
-The current frozen product-planning input is [`2026-08-27/`](2026-08-27/README.md). It records the desktop-first Xanthil direction, the revised Asset and Model Capability Architecture, and the retained two-phase Model Pack direction.
+- [`2026-08-27/`](2026-08-27/README.md): the Xanthil Desktop phase-one plan,
+  two-phase Model Pack plan, sequencing, ownership/integration plans and all
+  package attachments are historical reference only. The old
+  `DA_REQUIRED_COMPLETE` -> Model Pack sequence is no longer the active roadmap.
+- [`2026-08-28/`](2026-08-28/README.md): D0.5 decisions `D05-XD-001`, structure
+  decisions `D05-XD-STRUCT-001`, release-timing amendment `D05-XD-PRG-001`,
+  D1-A `D1A-XDSB-001`, dependency/provisioning policy `D1A-XDSB-DEP-001` and
+  the pending `CHG-xanthil-desktop-session-bootstrap` execution plan are void
+  as future development authority, including preparation/release of its
+  semi-automatic execution package. Historical approvals do not reactivate them.
+- Historical reviews, readbacks, Demo acceptance and baseline attestations
+  remain evidence of what was checked then, not authorization for new work.
+  The older [`2026-08-23/`](2026-08-23/) plans remain retired; withdrawal does
+  not revive them. The full pre-withdrawal package, including bytes referenced
+  by historical hashes, remains in Git at
+  `e905d4b8b05b7fcceebb611d3c138197e0b8655a`.
 
-The package passed a fresh independent Development-Readiness Review and received explicit user product approval on 2026-08-27. It is frozen product input, not implementation authority. It does not authorize an OpenSpec Change, branch beyond its documentation-governance work, implementation, dependency, Schema, test, data access, model call, deployment, or project-control update.
+### Retained assets and next input
 
-## Historical frozen package
+Already developed JuanerAI features, source, permanent tests, accepted OpenSpec
+and underlying architecture remain available for continued use. In particular,
+completed CLI/local-analysis, TypeScript migration and Model Pack contract-enabler
+work are not invalidated or removed. New whitepaper-driven work should reuse
+them and revise only what an approved new requirement needs. No test verdict,
+historical failure or acceptance record is rewritten by this decision.
 
-[`2026-08-23/`](2026-08-23/) is preserved as the frozen historical CLI-first planning package and its evidence. It remains useful for decision provenance and any behavior explicitly re-adopted by the current package, but it is not the current product roadmap. Current executable behavior remains governed by approved OpenSpec specifications until a separately authorized Change replaces it.
+The semi-automatic dual-device workflow, OpenSpec/TDD/independent validation,
+permissions and data-safety rules remain in force. Withdrawal of a future release
+plan is not a waiver permitting public release. Research Demos and the whitepaper
+remain reference inputs until their precise scope is adopted into a newly
+approved plan. Wait for the user's adjustment rather than infer its version,
+scope, sequence or implementation authority.
+
+Old repair evidence and isolated Host Loop assets stay preserved. This decision
+does not restart automation, clear the retained active pointer, mark the old
+Change accepted/CLOSED, or authorize service/host changes. Any later execution
+must explicitly resolve reserved WIP under the existing execution policy.

@@ -1,5 +1,7 @@
 # Xanthil Desktop D0.5 Productization Intake
 
+> **VOID / 用户作废（2026-09-18）**：本方案及其待执行授权已撤销。见[统一作废决定](../README.md)。以下正文、原审批和状态仅保留为历史，不得用于启动开发；已实现功能、代码及有效历史证据保留。
+
 > Status: approved product inputs retained; semi-automatic default; old repair/Host Loop isolated; exact product execution package still pending
 > Date: 2026-08-28
 > Controller task: `D05-XD-001`
@@ -21,7 +23,7 @@ This package records JuanerAI's receipt of the accepted Xanthil Desktop dual-mod
 - [`d1a/reviews/d1a-targeted-readback-001.md`](d1a/reviews/d1a-targeted-readback-001.md) — the one permitted bounded correction and Controller disposition; no second Reviewer.
 - [`d1a/evidence/mac-mini-pre-dispatch-readback-001.md`](d1a/evidence/mac-mini-pre-dispatch-readback-001.md) — user-authorized clean-baseline and empty-WIP readback; no remote write.
 
-## Current Gate
+## Historical Gate — withdrawn
 
 `D1_A_SEMIAUTOMATIC_EXECUTION_PACKAGE`
 
