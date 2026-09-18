@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260917232524274-L3U569",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-17T23:25:24.274Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-desktop-controller-20260918"
+  },
+  "summary": "First-product execution authorization recorded; D1-A authority integration and pre-sign freshness are active without reopening automation repair",
+  "status_after": "active",
+  "evidence_refs": []
+}

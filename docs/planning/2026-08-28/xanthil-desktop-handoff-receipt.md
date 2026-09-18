@@ -5,7 +5,7 @@
 > Receiving repository: `/Users/huangbo/JuanerAI`
 > Receiving branch: `work/macbook/d05-xanthil-desktop-productization`
 > Baseline: `2a59fc7cc964ee7d966e91339eb475cb81d02b77`
-> Status: received; D0.5 approved; D1-A corrected and targeted-readback complete; prerequisite closure pending; Product Change not dispatched
+> Status: received; D0.5/D1-A inputs closed; first-product execution authorized; authority integration and fresh host/WIP readback pending; Product Change not dispatched
 
 ## Received input
 
@@ -29,10 +29,10 @@ The proposed first Change candidate is `CHG-xanthil-desktop-session-bootstrap`. 
 
 ## Current Gate and responsibility
 
-- Current Gate: `D1_A_PREREQUISITE_CLOSURE`.
-- Current responsibility: Controller closes the three remaining development prerequisites: integrate the approved D0.5 branch, freeze the exact dependency policy, and establish the post-merge clean Mac mini baseline plus empty-WIP freshness. The current Mac mini WIP pointer is verified empty at the pre-merge baseline; the unique D1-A review and one bounded targeted correction are recorded. Real Windows final acceptance and both signing resources are deferred to `JUANERAI_PUBLIC_RELEASE_GATE` by `D05-XD-PRG-001` and do not block DISPATCH.
-- Next responsibility after all prerequisite readbacks: MacBook Controller may freeze and sign an exact DISPATCH; the Mac mini remains locked until then.
-- Next lifecycle step: after this no-merge PR is integrated by separate user authorization and every remaining prerequisite is verified, the MacBook Controller re-reads the empty WIP pointer and exact integrated baseline, freezes the signed authority package, and only then may DISPATCH allow the configured `juaner_spec` route on the Mac mini executor.
+- Current Gate: `D1_A_AUTHORITY_INTEGRATION_AND_FRESHNESS`.
+- Current responsibility: the MacBook Controller integrates this bounded authority refresh, then proves the final MacBook/Mac mini integration SHA, clean Mac mini user/canonical/main state, and empty global WIP pointer. The unique D1-A review, one bounded correction, frozen dependency policy, and completed automation-repair closure are reused; none is reopened.
+- Authorization received: on 2026-09-18 the user authorized normal local commit, push, PR, squash merge, dual-device fast-forward synchronization, and—only after every exact pre-sign readback passes—one signed DISPATCH bound to the precise Mac mini worktree/branch. The Test role may mechanically materialize only the dependencies frozen by `D1A-XDSB-DEP-001`.
+- Next lifecycle step: after admission the Host Loop may launch only the configured `juaner_spec` route. Spec Gate, Test/environment health and causal RED, TDD_READY, Worker, regression/Test Asset Retirement, independent Validator, Controller Acceptance, and archive remain mandatory in order.
 
 ## Stop lines
 
@@ -54,4 +54,11 @@ The proposed first Change candidate is `CHG-xanthil-desktop-session-bootstrap`. 
 - One-time alternative Gate: after those three fresh same-class crashes, the user explicitly authorized this governance branch to substitute direct Git, worktree-root, branch, base-HEAD, exact-path, complete-diff, file-SHA, staging-state, and `diff --check` verification, then complete local commit, push, PR, squash merge, and Mac mini ff-only synchronization. The authorization is exhausted by this governance integration, is not reusable by another Change or failure, and does not authorize Desktop DISPATCH.
 - Temporary-path disposition: `/private/tmp/JuanerAI-xanthil-desktop-session-bootstrap` was absent and retained only a prunable Git worktree registration; no current D1-A record identifies raw acceptance evidence available only from that missing path. The completed repair archive remains unchanged and contains no new Desktop material.
 - Receiver availability: the MacBook Controller can locate, read, and hash-verify the bundle. It has not been copied to Mac mini, is not a shared-host path, contains no credential, and does not claim cross-device backup.
-- Current unmet acceptance point and return: `D1_A_PREREQUISITE_CLOSURE`, waiting for explicit first-product-execution authorization. No Desktop DISPATCH, OpenSpec, dependency installation, product implementation, or host mutation was started by this checkpoint.
+- Current unmet acceptance point and return: `D1_A_AUTHORITY_INTEGRATION_AND_FRESHNESS`. The exact execution authorization now exists, but no Desktop DISPATCH, OpenSpec, dependency installation, or product implementation had started at this checkpoint. The Controller must return here if integration identity, clean-state, empty-WIP, signer identity, content hashes, or receiver availability does not read back exactly.
+
+## D1-A authority-integration commit preflight — 2026-09-18
+
+- Branch and base: `work/macbook/xanthil-desktop-d1a` at `798b2fcb1511f011334e750e8844dc177c263de4`; the intended write set is limited to this receipt, the D1-A intake, current project-control status, and the Controller decision events produced by the supported status CLI.
+- Fresh-index result: three independently named `full` / `persistence=false` codebase-memory attempts returned the same contained worker crash before staging. No stale graph was treated as current evidence.
+- Persistent raw evidence: MacBook path `/Users/huangbo/JuanerAI-artifacts/CHG-xanthil-desktop-session-bootstrap/2026-09-18-d1a-authority-preflight-blocked/`; the original stopped-state manifest remains immutable, and `full-index-attempt-002.txt`, `full-index-attempt-003.txt`, and `CONTINUATION.txt` record the later attempts and exact continuation boundary.
+- One-time substitute Gate: after the third same-class crash, the user explicitly authorized this branch only to substitute exact Git root/device/remote/branch/base-HEAD, complete path/diff/content-hash/staging-state, and `diff --check` verification, then continue the already authorized commit, PR, squash integration, dual-device ff-only synchronization, pre-sign freshness, and exact DISPATCH sequence. This exception cannot be reused for another branch, failure, or product-scope expansion.

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918011833566-K6QSNP",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-18T01:18:33.566Z",
+  "actor": {
+    "role": "controller",
+    "session": "xanthil-desktop-controller-20260918"
+  },
+  "summary": "Three fresh full-index attempts crashed identically; user authorized a one-time exact Git/path/SHA/diff substitute Gate for work/macbook/xanthil-desktop-d1a only",
+  "status_after": "active",
+  "evidence_refs": [
+    "docs/planning/2026-08-28/xanthil-desktop-handoff-receipt.md"
+  ]
+}
