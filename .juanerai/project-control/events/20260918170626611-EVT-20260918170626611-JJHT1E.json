@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918170626611-JJHT1E",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-18T17:06:26.611Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "Mac mini 特权只读核验确认旧 WIP 为 CHG-xanthil-desktop-session-bootstrap：BLOCKED / DISPATCH_ORPHAN_READY、无活动执行且未 CLOSED；Controller 等待用户对最小人工异常释放作独立授权。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

@@ -6,20 +6,20 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_WIP_READONLY_INSPECTION_DISPATCHED",
-    "label": "首个 Desktop Change WIP 特权只读核验已派发",
+    "id": "FIRST_DESKTOP_WIP_DISPOSITION_AUTHORIZATION_REQUIRED",
+    "label": "首个 Desktop Change 旧 WIP 最小处置待授权",
     "ordinal": 6,
     "total": 8
   },
   "health": "blocked",
-  "summary": "用户已授权一次 sudo 特权只读核验；MacBook Controller 已将精确范围直接发送至原 Mac mini 任务“纵切-1.0”。核验期间禁止任何文件写入、旧 WIP 处置、服务操作、OpenSpec 或角色派发。",
-  "current_objective": "等待 Mac mini 只读读回 current pointer、对应 State、local-pause、Ledger/evidence locator、ownership 与服务/进程事实。",
-  "next_action": "Mac mini 返回只读回执后，Controller 判断是否需要另行请求旧 WIP 最小精确处置授权；在此之前不做任何处置或生产推进。",
+  "summary": "Mac mini 特权只读核验完成：current pointer 确认占用 CHG-xanthil-desktop-session-bootstrap；旧 State 为 BLOCKED / DISPATCH_ORPHAN_READY，无 pending agent、Candidate、Delivery、resume target、Ledger event 或活动 Host Loop。旧 Change 未完成、未 CLOSED，当前等待用户另行授权最小异常处置。",
+  "current_objective": "为已撤回且未完成的旧 Change 定义一次最小、可核验、pointer-last 的异常释放；保留 State、pause、Ledger locator、日志、旧工作树和 Git 历史，不伪造 RELEASE、Acceptance、CLOSED 或完成状态。",
+  "next_action": "等待用户明确授权 Mac mini 对精确旧哈希执行一次人工异常释放：先保存前置证据并复核无竞争执行，再以 CAS 原子清空 active pointer，独立读回后停止；不改 State/pause/Ledger，不恢复 Host Loop，不进入 OpenSpec。",
   "blockers": [
     {
-      "id": "GLOBAL_WIP_AUTHORITY_UNREADABLE",
-      "label": "Mac mini 当前唯一 WIP 权威对执行用户不可读",
-      "detail": "active-change.json 及相关 State/pause/Ledger 路径的只读 stat、hash 和最小解析均 Permission denied。历史记录中的 CHG-xanthil-desktop-session-bootstrap 不能替代 2026-09-19 当前权威读回。",
+      "id": "GLOBAL_WIP_OCCUPIED_BY_WITHDRAWN_UNFINISHED_CHANGE",
+      "label": "全局 WIP 被已撤回但未完成的旧 Change 占用",
+      "detail": "active-change.json 当前 SHA-256 为 8e469f1239b10021cd5cbe358cd5ff986ec399f078468f9e4078cdde10c7ddef，指向 CHG-xanthil-desktop-session-bootstrap；State SHA-256 为 19474e2db8d4ae3956f9b718b1e3d223575aa55b7ccdb78c42def8ff9b5b1446，状态 BLOCKED / DISPATCH_ORPHAN_READY。服务 disabled/unloaded、无精确 Host Loop 进程或 pending agent，但该 Change 不是 CLOSED，必须经用户明确授权后才能异常释放 pointer。",
       "owner": "user/controller"
     }
   ],
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "已收到 WIP_PREFLIGHT_EXCEPTION；等待用户对一次有特权但只读的当前 WIP 核验作明确授权。"
+      "activation": "特权只读核验已完成；正在等待用户对旧 WIP 最小人工异常释放作明确授权。"
     },
     {
       "id": "d05_reviewer",
@@ -141,7 +141,7 @@
       "label": "Spec Agent",
       "model": "gpt-5.6-sol / R2 high when dispatched",
       "status": "locked",
-      "activation": "锁定；当前 WIP 权威尚不可读，必须先完成经用户授权的有特权只读核验与后续最小精确处置。"
+      "activation": "锁定；旧 WIP 已确认由撤回且未完成的 Change 占用，必须先完成经用户授权的最小人工异常释放。"
     },
     {
       "id": "juaner_test",
@@ -443,7 +443,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-18T17:00:15.754Z",
+  "updated_at": "2026-09-18T17:06:26.610Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"
