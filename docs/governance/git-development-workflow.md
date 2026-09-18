@@ -83,6 +83,13 @@ Before changing devices, the current device must have a clean worktree and push
 all branch commits. Record the branch name, latest commit, validation result,
 and next action in the normal Controller handoff or conversation.
 
+For a semi-automatic product execution package, the user's package-transfer
+authorization plus the recorded dedicated new Mac mini task dispatch is the
+handoff confirmation. MacBook creates that task only after remote Git readback
+and stops writing the branch; no second per-device confirmation is required.
+If task creation or delivery is not verified, ownership does not transfer and
+the workflow stops for the manual create/open-and-forward fallback.
+
 On the receiving device:
 
 ```sh

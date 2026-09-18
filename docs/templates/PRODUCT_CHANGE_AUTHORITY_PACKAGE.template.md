@@ -31,6 +31,14 @@ key, credential, signature bytes, raw prompt, or raw model output here.
 
 ## DISPATCH
 
+- New Mac mini execution task required: `true`
+- Saved Mac mini project / expected repository:
+- New task title:
+- New task or client-task ID / host ID / project ID:
+- Task status: `PENDING` / `ACTIVE_READY` / `BLOCKED_SESSION_DISPATCH`
+- Initial-message package branch / commit / tree / path / SHA-256:
+- Delivery readback / timestamp:
+- Manual fallback, if required: exact failure and user create/open-and-forward receipt
 - Command ID / key ID / nonce / validity / idempotency ID:
 - Exact repository, scope, Worktree, routes, and validations:
 - Expected empty-pointer SHA-256:

@@ -43,6 +43,13 @@ Gate PASS in the dispatch package. UI work and its user Gate occur on MacBook
 before the package handoff; Spec does not begin and Mac mini does not invent or
 revise the product UI contract.
 
+After package-transfer authorization, MacBook freezes and publishes the exact
+package, then creates a dedicated new Codex task on the saved Mac mini JuanerAI
+project with the package as its initial message. Dispatch records the new task,
+host, project, repository and package identities. It does not choose an
+existing task by recency or ambient UI; creation or delivery failure stops for
+the bounded manual create/open-and-forward fallback.
+
 Decompose by vertical user value first, then give each role or domain a bounded slice. Every dispatch includes:
 
 - Change and Requirement IDs.

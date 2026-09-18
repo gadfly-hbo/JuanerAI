@@ -7,6 +7,8 @@
 | PROPOSAL | pre-OpenSpec product Change brief | goal and boundaries testable |
 | UI_CONTRACT | change-scoped clickable UI Contract and state/closure matrix | complete proposed user flow, user-visible states, failures, cancellation, retry/recovery, and acceptance endpoints are directly exercisable |
 | USER_UI_GATE | exact UI Contract version/path/hash and user-verdict reference | PASS |
+| EXECUTION_PACKAGE_FREEZE | complete bounded Mac mini execution package on a published work branch, with exact branch, commit, tree, package path/hash, permissions, stop lines, role sequence, and receipt contracts | remote branch readback matches the frozen package commit and MacBook stops writing that branch |
+| MAC_MINI_SESSION_DISPATCH | one newly created Mac mini Codex task bound to the saved JuanerAI project, with the frozen package as its initial message and a recorded task/thread, host, project, repository, and delivery receipt | the new task is active/ready on Mac mini and has received the exact package identity |
 | SPECIFICATION | delta spec with REQ and AC IDs | behavior unambiguous |
 | DESIGN | design.md | interfaces and failure semantics covered |
 | TASK_PLAN | tasks.md | requirements mapped to work |
@@ -24,10 +26,20 @@
 Every product Change passes `UI_CONTRACT` and `USER_UI_GATE`; a backend,
 runtime, adapter, or infrastructure label does not bypass them. These are
 MacBook Controller states completed before the production execution package is
-forwarded to Mac mini. `juaner_spec` and OpenSpec creation remain locked until
-the exact UI Contract receives the user's PASS. A material change to the
-approved product workflow or visible acceptance surface returns to
-`UI_CONTRACT` and requires a new `USER_UI_GATE` verdict.
+frozen and dispatched. After the user authorizes package transfer, MacBook
+completes `EXECUTION_PACKAGE_FREEZE`, creates a dedicated new Mac mini task, and
+uses the package as that task's initial message. Dispatch never selects an
+existing task by recency or ambient UI state. An existing task may be used only
+when the user identifies it explicitly. Session creation or delivery failure
+enters `BLOCKED_SESSION_DISPATCH`; the manual fallback is for the user to
+create/open the Mac mini task and forward the same frozen package once.
+
+`juaner_spec` and OpenSpec creation remain locked until the exact UI Contract
+has the user's PASS and `MAC_MINI_SESSION_DISPATCH` has completed. A material
+change to the approved product workflow or visible acceptance surface returns
+to `UI_CONTRACT` and requires a new `USER_UI_GATE` verdict. One new execution
+task owns one execution batch; normal in-batch stage progression and exception
+handling remain in that task rather than creating another task per Gate.
 
 BLOCKED preserves evidence and names one concrete release condition. UI, spec,
 test, implementation, or contract conflict returns to the owning earlier state.

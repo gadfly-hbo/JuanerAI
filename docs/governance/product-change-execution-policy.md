@@ -9,6 +9,8 @@ On 2026-09-18 the user approved manual authorization and Controller-organized
 role progression, without successful automatic recovery as a prerequisite for
 product development. The user confirmed this as the long-term default for
 JuanerAI product development; changing that default requires explicit approval.
+On 2026-09-19 the user made dedicated new-session creation and initial-message
+package delivery the default MacBook-to-Mac-mini dispatch mechanism.
 The signed automatic execution, release and recovery mechanics below apply
 only to separately authorized automatic operation; they are not prerequisites
 for this manual path. This policy does not reconfigure a host or bypass the
@@ -42,26 +44,49 @@ installed Host Loop's signature and safety checks.
   not a signed command and must not be submitted as one. Do not derive current
   execution authority from expired signatures or historical one-use approvals.
 - MacBook Controller authorizes one complete bounded execution package, including
-  stage-entry checks, stop conditions and exact Git permissions. The user
-  initially opens/creates the Mac mini execution session and forwards that
-  package once. The Mac mini session coordinates fresh isolated roles and
-  performs the package's preauthorized stage checks locally:
+  stage-entry checks, stop conditions and exact Git permissions. After the user
+  authorizes package transfer, MacBook commits and pushes the package branch,
+  reads back the exact remote branch, commit, tree and package hash, and stops
+  writing that branch. It then creates one new Codex task bound to the saved
+  Mac mini JuanerAI project and sends the complete package as that task's first
+  message. New-task creation and first-message delivery are standing-authorized
+  parts of package transfer; they do not require the user to create the task by
+  hand. The Mac mini task coordinates fresh isolated roles and performs the
+  package's preauthorized stage checks locally:
   Spec -> Test / valid RED -> TDD_READY -> Worker -> applicable regression and
   Test Asset Retirement -> independent Validator -> authorized Git delivery.
   The MacBook-side path is Request -> Explore -> Proposal -> UI Contract ->
-  User UI Gate -> execution-package freeze. Normal successful Mac mini
-  progression requires neither a cross-device message nor
+  User UI Gate -> execution-package freeze -> new Mac mini task dispatch.
+  Normal successful Mac mini progression requires neither a cross-device message nor
   renewed user approval at every Gate. This delegates bounded stage execution,
   not product, architecture, shared-contract or scope decisions. Any required
   decision outside the approved inputs returns to MacBook; the executor must
   not invent it or waive a Gate.
+- A newly authorized execution batch gets a dedicated new Mac mini task. The
+  Controller resolves the saved Mac mini JuanerAI project and expected familiar
+  repository from current project configuration and uses that saved-project
+  checkout directly unless the user or package explicitly requires a managed
+  worktree. It never resolves the destination from task recency, foreground
+  state, or ambient UI. The initial message binds the exact package branch,
+  commit, tree, path and hash. Record the returned task/thread identity, host,
+  project, repository and active/ready status before treating dispatch as
+  complete. A pending task remains at `MAC_MINI_SESSION_DISPATCH`. An existing
+  task is eligible only when the user explicitly identifies that exact task.
+  If new-task creation, connectivity, project resolution, or delivery cannot be
+  verified, enter `BLOCKED_SESSION_DISPATCH` and preserve the frozen package;
+  the fallback is one user-created/opened Mac mini task and one manual forward,
+  not delivery to an arbitrary existing task. One task then retains the whole
+  execution batch, including normal Gates and bounded exception handling.
+  Do not duplicate or migrate a batch that was already delivered and is active
+  when this rule is adopted; the dedicated-new-task default begins with the
+  next authorized package dispatch.
 - At completion, Mac mini stops and emits one delivery receipt; the user
   forwards it once to MacBook. MacBook obtains the code through Git and owns
   review, final acceptance, authorized merge and archive. An unresolved failure,
   changed scope/contract or missing authority causes an early exception handoff
-  instead. Existing session tools may replace message copying only when their
-  use is explicitly authorized and connectivity is verified; they are not a
-  prerequisite and do not justify new automation development. Reuse approved
+  instead. The dedicated new-session dispatch above is the approved default;
+  its failure uses the bounded manual fallback and does not justify new
+  automation development. Reuse approved
   product decisions, D1-A reviews and valid evidence; refresh only facts that
   require freshness or have materially changed.
 - Exceptions stop safely with preserved code, raw outputs and accurate results.
