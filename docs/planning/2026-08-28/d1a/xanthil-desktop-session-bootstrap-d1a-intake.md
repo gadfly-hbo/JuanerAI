@@ -2,7 +2,7 @@
 
 > Intake ID: `D1A-XDSB-001`
 > Change ID: `CHG-xanthil-desktop-session-bootstrap`
-> Status: Review 001 `NEEDS_CLARIFICATION`; one bounded correction closed by Controller targeted readback; dependency policy frozen; DISPATCH blocked on final authority integration and freshness
+> Status: D1-A review/correction closed; dependency policy frozen; first-product execution authorized 2026-09-18; DISPATCH pending final authority integration and fresh host/WIP readback
 > Date: 2026-08-28
 > Controller device: MacBook
 > Current-Change executor after valid signed DISPATCH: Mac mini
@@ -12,8 +12,9 @@
 - The user accepted the dual-mode UI evidence and requested formal-development preparation.
 - D0.5 Review 001 returned `NEEDS_CLARIFICATION`; the corrected package received fresh Review 002 `PASS`.
 - The user approved `D05-XD-001` and `D05-XD-STRUCT-001` S01-S23 as one package on 2026-08-28.
-- That approval authorizes this D1-A intake only. It does not authorize OpenSpec creation, dependency installation, tests, implementation, DISPATCH, provider/model calls, real data, a second Runtime, or Model Pack work.
+- The D0.5 approval authorized this D1-A intake only; it did not by itself authorize execution.
 - This D1-A requires its own fresh read-only Product Plan Reviewer. Its result does not replace Spec Gate, causal RED, TDD_READY, Validator, Controller Acceptance, or archive.
+- On 2026-09-18 the user separately authorized this exact first-product execution sequence: integrate the refreshed Controller authority record; prove the final clean Mac mini baseline and empty global WIP pointer; then freeze, sign, and transmit one exact DISPATCH for this Change. That authorization permits the Test role's single mechanical dependency materialization only under `D1A-XDSB-DEP-001`; it does not authorize provider/model calls, real data, public release/signing, a second Runtime, Model Pack work, or scope expansion.
 
 ## 2. Product objective
 
@@ -143,12 +144,12 @@ MacBook remains Controller and integration authority. Mac mini is the sole curre
 | Prerequisite | Required disposition | Current state | Effect |
 |---|---|---|---|
 | Approved D0.5 package on integration authority | reviewed commit/PR/squash on `origin/main`, followed by exact MacBook readback | PR #21 squash `103bd88216d7f397967bdabb7fbfb250eea3f996`; MacBook and Mac mini exact clean readback in `EVD-D1A-005` | PASS |
-| Frozen dependency policy | content-addressed exact direct-dependency manifest plus reviewed registry/integrity/license/install-script/Node boundary and Test provisioning contract | `D1A-XDSB-DEP-001` freezes all direct packages, provisioning commands, Electron checksums, Node/npm boundary, network and forbidden capabilities; final integrated file hash still required | authority-package branch integration blocks signing |
-| Global WIP authority | live Mac mini `active-change.json` readback proves `active_change_id: null` and expected empty-pointer hash | verified empty at PR #21 integration SHA `103bd882…`; evidence `EVD-D1A-005`; must be re-read immediately before signing | current observation PASS; freshness required before DISPATCH |
+| Frozen dependency policy | content-addressed exact direct-dependency manifest plus reviewed registry/integrity/license/install-script/Node boundary and Test provisioning contract | `D1A-XDSB-DEP-001` freezes all direct packages, provisioning commands, Electron checksums, Node/npm boundary, network and forbidden capabilities; file SHA-256 `786e78e1990bb17d6c00240dad068a22b8b6a123b26844c1852f7fbf0d992b4b` was re-read at pre-authority baseline `798b2fcb1511f011334e750e8844dc177c263de4` and must match after final integration | PASS subject to final exact readback |
+| Global WIP authority | live Mac mini `active-change.json` readback proves `active_change_id: null` and expected empty-pointer SHA-256 `811f872ce38df88357395b2a438eb1c96504f1b583dd77724867f6dc0eaf32a9` | historical observations are preserved; a new bounded readback is required immediately before signing | freshness blocks signing |
 | Real Windows acceptance host | controlled Windows 11 x64 VM/physical host, install/run access, evidence return path | product owner reports unavailable; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
 | macOS signing/notarization | credential availability, secure non-repository custody, CI/local use boundary | product owner reports pending verification; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
 | Windows signing | credential availability, secure non-repository custody, CI/local use boundary | product owner reports unavailable; deferred by `D05-XD-PRG-001` | observed release-resource gap; not a D1-A or DISPATCH blocker |
-| Mac mini executable baseline | clean supported main plus an empty global pointer immediately before signed DISPATCH; Coordinator creates the bounded Change worktree only after admission | PR #21 baseline is exact and clean at `103bd882…`, pointer `EMPTY`; must repeat after the authority-package branch is integrated | freshness blocks signing, not product intent |
+| Mac mini executable baseline | clean supported user main and Host Loop canonical/main at the final integrated SHA plus an empty global pointer immediately before signed DISPATCH; Coordinator creates the bounded Change worktree only after admission | pre-authority governance baseline `798b2fcb1511f011334e750e8844dc177c263de4` was synchronized clean; must repeat after this authority-package branch is squash-integrated | freshness blocks signing, not product intent |
 
 The D1-A Review may complete while these are open. The Controller must not produce or transmit a signed DISPATCH until every row whose effect is explicitly blocking has a verified disposition; the three `JUANERAI_PUBLIC_RELEASE_GATE` rows do not block development dispatch. The repository must not contain credentials, private keys, signature bytes, or raw secret material. No artifact may be publicly distributed or described as production/public-release ready until all three deferred resources and same-Release-Candidate cross-platform acceptance pass the separately activated `JUANERAI_PUBLIC_RELEASE_GATE`.
 

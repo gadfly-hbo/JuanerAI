@@ -6,23 +6,16 @@
     "product": "Xanthil Desktop"
   },
   "phase": {
-    "id": "D1_A_PREREQUISITE_CLOSURE",
-    "label": "First Product Change D1-A prerequisite closure",
+    "id": "D1_A_AUTHORITY_INTEGRATION_AND_FRESHNESS",
+    "label": "First Product Change authority integration and fresh host/WIP proof",
     "ordinal": 3,
     "total": 7
   },
-  "health": "waiting_user",
-  "summary": "M1 COMPLETE / B0 CLOSED: accepted WVEB component, independent committed integration PASS, PR #28 CI/squash merge, exact archive/live-main readback. B1–B5 OPEN; all S01–S06 returned; stop before M2.",
-  "current_objective": "按 JUANERAI-AUTOMATION-REPAIR-20260905 固定 M0–M4 主计划完成 Desktop 重启前自动化修复。",
-  "next_action": "Wait for user decision after M1 closure. Resume existing NEXT_ACTION R018 at M2 one complete downstream C2–C7 contract package; do not reopen WVEB, repair tooling, install hosts or start Desktop.",
-  "blockers": [
-    {
-      "id": "BLK-D1A-008",
-      "label": "Production Coordinator Regression Gate is not executable",
-      "detail": "Coordinator REGRESSION passes only validation_scope plus the pre-Change baseline SHA, while the production validation gateway requires argv/cwd/timeout and a correctly bound subject; the first call throws INPUT_INVALID before Candidate creation. Repair is outside the authorized Desktop Change.",
-      "owner": "Controller and product owner"
-    }
-  ],
+  "health": "active",
+  "summary": "CHG-xanthil-desktop-session-bootstrap is the authorized first Product Change. D0.5, D1-A review/correction, dependency policy, release deferrals, and automation-repair closure are reusable and closed; no Desktop DISPATCH or product implementation has started.",
+  "current_objective": "Integrate the bounded D1-A authority refresh, prove the exact clean final Mac mini baseline and empty global WIP pointer, then freeze and transmit one exact signed DISPATCH for CHG-xanthil-desktop-session-bootstrap.",
+  "next_action": "Complete this governance branch through squash integration and dual-device ff-only synchronization; then perform the fresh host/WIP and signer/artifact identity readbacks required immediately before signing.",
+  "blockers": [],
   "milestones": [
     {
       "id": "handoff_intake",
@@ -47,12 +40,12 @@
     {
       "id": "d1a_intake",
       "label": "首个 Change D1-A",
-      "status": "blocked"
+      "status": "active"
     },
     {
       "id": "spec_gate",
       "label": "Spec Gate",
-      "status": "completed"
+      "status": "pending"
     },
     {
       "id": "implementation",
@@ -66,7 +59,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "D0.5 intake and Gate ownership"
+      "activation": "D1-A authority integration, pre-sign freshness, exact DISPATCH, and lifecycle Gate ownership"
     },
     {
       "id": "d05_reviewer",
@@ -93,29 +86,29 @@
       "id": "juaner_spec",
       "label": "Spec Agent",
       "model": "gpt-5.6-sol / R2 high when dispatched",
-      "status": "complete",
-      "activation": "Temporary /root/wveb_spec_admission_379 sol/high completed; Controller Spec Gate 001 PASS. Temporary exception ended, no future role dispatch authorized."
+      "status": "waiting",
+      "activation": "Eligible only after exact signed DISPATCH admission by the Mac mini Host Loop; no Desktop Spec Gate has run"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
-      "status": "complete",
-      "activation": "Test012 complete/stopped, Controller corrected-manifest387/386PASS/1causalRED Readiness accepted. Temporary exception ended."
+      "status": "locked",
+      "activation": "Locked until Desktop Spec Gate PASS; then owns environment health, permanent tests, and causal RED within signed scope"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
-      "status": "complete",
-      "activation": "Worker005 complete/stopped; exactly two private predicates;387GREEN and Controller full quality/finalRetirement PASS. Temporary exception ended."
+      "status": "locked",
+      "activation": "Locked until Desktop TDD_READY; then owns the minimum production change within frozen Worker paths"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-5.6-sol / medium (configured default; R2 high when dispatched)",
-      "status": "complete",
-      "activation": "Behavioral sol/high Validator004 complete; fresh configured-default /root/wveb_integration_identity_001 committed mechanical verification PASS and stopped. No active role or next dispatch; M1 closed."
+      "status": "locked",
+      "activation": "Locked until Desktop implementation and evidence are frozen after regression and Test Asset Retirement"
     }
   ],
   "metrics": [
@@ -294,6 +287,12 @@
       "label": "M1/B0 closed: PR28 accepted-tree integration, archive/live-main and R018 stop",
       "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-closure-001.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-AUTOMATION-REPAIR-FINAL-CLOSURE",
+      "label": "Final automation-repair closure and Desktop return baseline",
+      "path": "docs/planning/2026-09-05/automation-repair/reviews/final-closure-r382.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -316,9 +315,9 @@
       "mitigation": "Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
     }
   ],
-  "updated_at": "2026-09-05T11:17:57.866Z",
+  "updated_at": "2026-09-17T23:25:24.273Z",
   "updated_by": {
     "role": "controller",
-    "session": "automation-repair-controller-20260905"
+    "session": "xanthil-desktop-controller-20260918"
   }
 }
