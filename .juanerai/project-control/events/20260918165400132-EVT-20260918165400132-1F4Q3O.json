@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918165400132-1F4Q3O",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-18T16:54:00.132Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller-wip-receipt"
+  },
+  "summary": "Mac mini returned WIP_PREFLIGHT_EXCEPTION: Git intake matched, zero writes, current WIP authority unreadable without privilege",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

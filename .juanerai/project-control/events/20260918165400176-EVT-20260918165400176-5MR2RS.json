@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918165400176-5MR2RS",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-18T16:54:00.176Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller-wip-receipt"
+  },
+  "summary": "Mac mini durable evidence locator received from user; bytes are not independently readable on MacBook",
+  "status_after": "blocked",
+  "evidence_refs": [
+    "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001"
+  ]
+}

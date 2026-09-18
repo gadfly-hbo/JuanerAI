@@ -6,20 +6,20 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_CHANGE_WIP_PREFLIGHT",
-    "label": "首个 Desktop Change 执行包转发／全局 WIP 前置核对",
+    "id": "FIRST_DESKTOP_WIP_DISPOSITION_REQUIRED",
+    "label": "首个 Desktop Change WIP 前置核对异常／最小处置待授权",
     "ordinal": 6,
     "total": 8
   },
   "health": "blocked",
-  "summary": "首个 Xanthil Desktop 生产执行包已冻结，MacBook 不派发生产角色；Mac mini 接收精确 Git 提交后必须先做旧 pointer/State/Ledger 的只读全局 WIP 前置核对。",
-  "current_objective": "转发 PKG-XANTHIL-DESKTOP-001 的精确分支与提交，并等待 Mac mini 返回 WIP_PREFLIGHT_EXCEPTION 或可继续证据。",
-  "next_action": "Mac mini 验证任务包 Git 身份并执行只读 WIP 前置核对；旧 pointer 未证明可用或未获最小处置授权前，不创建 OpenSpec Change、不派发生产角色。",
+  "summary": "Mac mini 已返回 WIP_PREFLIGHT_EXCEPTION：任务包 Git 身份全部匹配且零写入，但当前用户无权读取唯一 WIP 权威 active-change.json，因此不能证明槽位可用，OpenSpec 与全部生产角色继续锁定。",
+  "current_objective": "处理 PKG-XANTHIL-DESKTOP-001 的 Stage 1 异常；先取得一次有特权但只读的当前 pointer、State、pause、Ledger/evidence 与 ownership 核验授权。",
+  "next_action": "等待用户明确授权 Mac mini 使用 sudo 仅做当前 WIP 状态只读核验；读回前不清理 pointer、不写旧状态、不恢复 Host Loop、不创建 OpenSpec。",
   "blockers": [
     {
-      "id": "GLOBAL_WIP_RESERVED_BY_WITHDRAWN_CHANGE",
-      "label": "Mac mini 旧 active_change_id 仍占用唯一全局 WIP",
-      "detail": "旧 Change 已被用户作废但指针被保留，不能假装 CLOSED、清空或用新 Change 绕过。需要先只读核对实际 pointer/State/Ledger，再由用户授权最小处置。",
+      "id": "GLOBAL_WIP_AUTHORITY_UNREADABLE",
+      "label": "Mac mini 当前唯一 WIP 权威对执行用户不可读",
+      "detail": "active-change.json 及相关 State/pause/Ledger 路径的只读 stat、hash 和最小解析均 Permission denied。历史记录中的 CHG-xanthil-desktop-session-bootstrap 不能替代 2026-09-19 当前权威读回。",
       "owner": "user/controller"
     }
   ],
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "首个生产 Change 已获产品授权；因旧 pointer/WIP 保留，Spec 派发在 host 只读核对与最小处置前锁定。"
+      "activation": "已收到 WIP_PREFLIGHT_EXCEPTION；等待用户对一次有特权但只读的当前 WIP 核验作明确授权。"
     },
     {
       "id": "d05_reviewer",
@@ -141,7 +141,7 @@
       "label": "Spec Agent",
       "model": "gpt-5.6-sol / R2 high when dispatched",
       "status": "locked",
-      "activation": "产品输入与 OpenSpec 启动授权已具备，但 Mac mini 唯一全局 WIP 仍被旧 pointer 保留；完成经授权的最小 WIP 处置后才派发。"
+      "activation": "锁定；当前 WIP 权威尚不可读，必须先完成经用户授权的有特权只读核验与后续最小精确处置。"
     },
     {
       "id": "juaner_test",
@@ -443,9 +443,9 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-18T16:28:19.439Z",
+  "updated_at": "2026-09-18T16:54:00.132Z",
   "updated_by": {
     "role": "controller",
-    "session": "macbook-controller-whitepaper-blueprint-v1"
+    "session": "macbook-controller-wip-receipt"
   }
 }
