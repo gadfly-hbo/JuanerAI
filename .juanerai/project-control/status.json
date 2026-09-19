@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_P1_CONFIG_RETRY_AUTHORIZED",
-    "label": "首个 Desktop 工具健康 PASS／P1 配置修正与一次重跑已授权",
+    "id": "FIRST_DESKTOP_SOURCE_AND_EXECUTION_AMENDMENT_AUTHORIZED",
+    "label": "P1 命令成功／精确来源例外与有界自修正已批准，待 Mini 接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "blocked",
-  "summary": "Mini 已接收 ebbd16bc9f883a914b8b91f0d31947d11e0ef3fe，四工具准备/独立读回 PASS；P1 因 user/global npm 配置同指 /dev/null 失败，未解析新依赖图。正式 Spec 已停止且未改文件，P2/P3、Spec Gate 及后续未运行。用户授权两份独立空配置、无安装配置预检及一次 P1 重跑；待手动转发，尚无执行成功证据。",
-  "current_objective": "发布最小 P1 配置修正授权，保留既有 candidate/baseline 和失败历史，由 Mini 同任务完成一次配置预检和至多一次原 P1 重跑。",
-  "next_action": "用户转发固定 Git 补充到纵切-1.0。Mini 保留十二份草案 ff-only 接收，核对候选和基线 hash，建立两份不同的空 npmrc，配置预检通过后仅执行一次原 P1 npm 命令；不重放含 fresh-candidate 检查的旧脚本。成功按原包完整审查后继续，失败停止回传。",
+  "summary": "Mini 已接收 e93acbfcaf29adf112f6b8ff73668428a55d94cc；配置预检与唯一 P1 重跑均退出 0。现有 lock 来源审查停止于固定 Electron node-gyp Git 来源；npm 已获取其 HTTPS 归档，历史越界下载如实保留。用户批准精确来源例外及有界执行自修正；待同任务手动接收，P1 完整审查、P2/P3 和 Spec Gate 未通过。",
+  "current_objective": "发布精确来源及执行自修正补充；Mini 保留已生成 lock，从 P1 图审查恢复，符合条件的普通执行错误在三轮内有界纠正。",
+  "next_action": "用户将固定 Git 回执转发至纵切-1.0；Mini 在原分支保留十二草案 ff-only 接收，复核现有 lock 后完成 P1 图审查，再按原 P2/P3 和生命周期 Gates 连续推进。不重跑成功的 P1、不重做 WIP；权限/合同问题或自修正无进展/耗尽返回 Controller。",
   "blockers": [
     {
-      "id": "DEPENDENCY_PREFLIGHT_BLOCKED_P1",
-      "label": "P1 npm 配置路径冲突，有限重跑待执行",
-      "detail": "工具健康已 PASS；原 P1 在配置解析阶段失败。用户已授权最小修正与一次重跑，未证明依赖图或兼容性。",
-      "owner": "Mac mini 执行协调者；MacBook 发布授权"
+      "id": "DEPENDENCY_PREFLIGHT_BLOCKED_NON_REGISTRY_SOURCE",
+      "label": "精确来源已获用户批准，Mini 待接收后继续 P1 图审查",
+      "detail": "Controller 已核对回执及锁定来源；批准不等于 P1 图审查或 Spec Gate PASS。此前下载事实保留；发布后仍需原任务接收与阶段证据。",
+      "owner": "MacBook 发布；Mac mini 同任务接收并执行"
     }
   ],
   "milestones": [
@@ -486,8 +486,20 @@
     },
     {
       "id": "EVD-P1-CONFIG-RETRY-001",
-      "label": "用户已授权独立空 npm 配置、预检及一次 P1 重跑；Mini 执行尚未验证",
+      "label": "Mini 已 ff-only 接收；配置预检及唯一 P1 重跑退出 0，图审查因来源停止",
       "path": "docs/planning/2026-09-19/xanthil-desktop-p1-config-retry-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-P1-NON-REGISTRY-EXCEPTION-001",
+      "label": "MacBook 只读核对 P1 Config Retry 回执原文/大小/hash；配置修正成功与来源停止分别保留",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/dependency-preflight-001/p1-config-retry-001/P1_CONFIG_RETRY_001_EXCEPTION.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-SOURCE-AND-EXECUTION-AMENDMENT-001",
+      "label": "用户批准精确 Electron node-gyp 来源及有界自修正；Mini 采纳/后续审查待验证",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-source-and-execution-amendment-001.md",
       "status": "present"
     }
   ],
@@ -523,7 +535,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-19T02:58:16.309Z",
+  "updated_at": "2026-09-19T03:30:37.483Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

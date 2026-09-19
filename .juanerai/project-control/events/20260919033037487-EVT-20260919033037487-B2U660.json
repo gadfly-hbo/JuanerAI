@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919033037487-B2U660",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T03:30:37.487Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户批准固定 Electron node-gyp HTTPS 来源例外与半自动有界执行自修正；待同任务接收，从现有 lock 审查恢复，不重跑 P1。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

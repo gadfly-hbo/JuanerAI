@@ -89,8 +89,10 @@ installed Host Loop's signature and safety checks.
   automation development. Reuse approved
   product decisions, D1-A reviews and valid evidence; refresh only facts that
   require freshness or have materially changed.
-- Exceptions stop safely with preserved code, raw outputs and accurate results.
-  Controller proposes the minimum manual disposition; tool repair, expanded
+- Execution errors first use the bounded self-correction rule below when all
+  its conditions hold. Other exceptions stop safely with preserved code, raw
+  outputs and accurate results. Controller proposes the minimum disposition;
+  expanded tool repair,
   tests or automatic recovery is not the default response. The stopped
   ERA-MIN-001 repair is not reopened or accepted by this policy.
   Any separately approved development-tool repair names its product acceptance
@@ -115,6 +117,43 @@ The current product-plan authority and return point are recorded in
 `CHG-xanthil-desktop-session-bootstrap` is a withdrawn future execution plan,
 not a dispatch target. The semi-automatic workflow remains available for future
 approved plans; it does not revive this or the withdrawn Model Pack roadmap.
+
+### Bounded Execution Self-correction
+
+On 2026-09-19 the user approved this standing permission for semi-automatic
+batches. Within an already authorized stage, the Mac mini coordinator may fix
+command arguments, task-local paths/configuration and task-local diagnostic or
+validation scripts, then repeat the affected authorized operation, when:
+
+- the cause is an execution mistake, not a product defect or unresolved
+  requirement, failed acceptance assertion, incompatible dependency or new
+  architecture/contract decision;
+- approved inputs, dependency versions/sources, script permissions, write paths,
+  assertions, evidence requirements and lifecycle/role Gates remain unchanged;
+- the operation is read-only or task-local, reversible and known safe to repeat;
+  its previous side effects are understood before another attempt.
+
+Allow at most three correction-and-verification rounds for the same issue,
+counted in the existing stage record across sessions and amendments; each round
+must narrow the cause or resolve it. Stop on no progress, exhaustion, unknown
+side effects or any condition above becoming false. A successful operation is
+not rerun merely because its subsequent review stopped. Preserve failed inputs
+and outputs; record cause, change, attempt count, result and return point in
+the existing verification/traceability/tasks or handoff records. A resolved
+execution error stays in its current stage and requires no separate package,
+new task, per-attempt user relay, scheduler or repair framework.
+
+Return to MacBook for product/contract changes, dependency version/source or
+script-permission changes, real data/provider access, host privileges,
+destructive actions or unknown state. This permission does not let a coordinator
+write production code or permanent tests in place of a required role, weaken
+tests/Gates, replay non-idempotent business operations or change the product's
+own retry policy. It does not apply to signed Host Loop recovery.
+
+New packages inherit this rule unless they explicitly narrow it. An already
+frozen batch adopts it through a user-approved amendment naming that batch;
+historical one-use or exhausted approvals do not silently reopen. Other
+explicit validation budgets and scope stop lines remain binding.
 
 ### Retained Gates and Stage Records
 
