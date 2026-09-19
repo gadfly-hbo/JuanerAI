@@ -71,7 +71,7 @@ a standing budget increase or reset. Technical delegation stays effective;
 TDD_READY/Worker remain locked until the actual evidence passes. The same task
 awaited manual intake; the next receipt supersedes that pending status.
 
-Latest confirmed handoff: Mini adopted `ab752834aefa966924f69c834027525c826a737e`
+Preceding handoff: Mini adopted `ab752834aefa966924f69c834027525c826a737e`
 and recorded the targeted Spec closure, complete ponytail and affected Spec Gate
 PASS. Test stopped at `TEST_RECOVERY_STOPPED_EXECUTION_EVIDENCE_UNKNOWN` after
 one of the two recovery corrections; its matrix remains NOT RUN and material
@@ -83,7 +83,32 @@ one correction, and allow scoped offline syntax/fixture checks during authoring
 with complete command evidence. No budget reset, product reapproval, Spec restart
 or standing-policy change. Manual intake by the original task is pending;
 TDD_READY/Worker remain locked, and WIP, installs and successful preparation are
-not replayed.
+not replayed. The later receipt below supersedes that pending intake status.
+
+Latest confirmed handoff: Mini adopted
+`f5e4f62bd632360c282b5b93c5f2664498e311c6` and exhausted Recovery 2/2, stopping at
+`TEST_RESUME_STOPPED_INVALID_EVIDENCE_BUDGET_EXHAUSTED`. Syntax PASS was withdrawn
+for missing command/environment evidence; the coverage command used the wrong
+tool path and exited 127. Material behavior-test gaps remain. MacBook read the
+original receipt, matched its index/file identities and inspected concrete test
+defects; preservation is not RED or product acceptance. No Worker has started.
+The user first agreed to preparation of the
+[Execution Reslice Proposal v0.1](2026-09-19/xanthil-desktop-execution-reslice-proposal-v0.1.md).
+It proposes smaller UI-led behavior loops inside the same Change, preserves the
+final product/UI and all acceptance obligations, and explicitly identifies the
+required staged TDD_READY and P4/P5 configuration amendments. It is a discussion
+draft, not an approved execution package, new budget or permission to resume.
+The user then confirmed that proposal on 2026-09-19. MacBook prepared
+[Execution Reslice Amendment 001](2026-09-19/xanthil-desktop-execution-reslice-amendment-001.md)
+to carry the scoped Gate/configuration changes and bounded budget. Fresh read-only
+[Readiness Review 001](2026-09-19/reviews/execution-reslice-readiness-review-001.md)
+returned PASS for supplement preparation only. The user subsequently authorized
+publication, manual forwarding and bounded exception resumption on 2026-09-19,
+including the disclosed residual UNKNOWN and the separately counted new budget.
+The supplement becomes active only after the original Mini task verifies and
+adopts its fixed Git identity; publication alone is not delivery or a role Gate.
+Until that intake, the original task remains stopped. The prior exhausted
+recovery is not reopened. No product-plan version or accepted UI is superseded.
 
 Current research-reference scope:
 

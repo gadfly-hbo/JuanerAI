@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919122750341-OGQQIL",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-09-19T12:27:50.341Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户仅批准制作执行拆分讨论稿；登记Mini恢复2/2用尽、无有效RED和生产冻结，等待方案确认，不授予续执行。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919124854935-DEE2IO",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T12:48:54.935Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户授权Execution Reslice Amendment 001发布、手动转发及有界续接；历史UNKNOWN与预算保留，固定接收前Mini仍停止。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919124251264-XPXEWS",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T12:42:51.264Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户确认拆分方案；正式补充及独立准备就绪审查PASS，待发布/转发与异常续接授权；Mini生产仍停止。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

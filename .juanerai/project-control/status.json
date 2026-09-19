@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_TEST_RESUME_PUBLICATION_BLOCKED",
-    "label": "Test续接已批准；MacBook发布因fresh full-index崩溃暂停",
+    "id": "FIRST_DESKTOP_RESLICE_AMENDMENT_AWAITING_RELEASE",
+    "label": "拆分补充已获发布与续接授权；待固定发布及Mini接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "blocked",
-  "summary": "用户已批准保留诊断UNKNOWN/偏差并恢复剩余1轮，续接文档完成。Mini仍停于ab752834及Test未就绪。MacBook发布前full-index连续两次exit_nonzero，未暂存/提交/推送；前后指纹相同，九份冻结输入未改，不复用旧索引或豁免。",
-  "current_objective": "发布 Test Resume Disposition 001；Mini从保全的Test现场恢复剩余一轮，以真实行为断言和有效RED关闭TDD_READY，而非补造诊断历史。",
-  "next_action": "MacBook等待索引恢复或用户对本次精确文档/状态范围另授一次性full-index豁免后完成发布；当前不可把本地草稿当已交付任务包。Mini维持停止，不重做WIP/安装/P4，不派发下游。",
+  "summary": "用户已授权Execution Reslice Amendment 001发布、手动转发及有界续接，含已披露残余UNKNOWN和单列新预算；独立准备就绪审查PASS。Mini最后确认仍停于f5e4f62及Test恢复2/2用尽，无有效RED或TDD_READY；固定Git接收前补充未激活，不代表产品通过。",
+  "current_objective": "准备发布docs/planning/2026-09-19/xanthil-desktop-execution-reslice-amendment-001.md；用范围限定TDD_READY和有限开发配置落实四单元，保留最终UI及91项验收。",
+  "next_action": "MacBook执行本批验证及fresh full-index Gate，提交推送并生成固定身份手动转发内容；用户转发原Mini任务纵切-1.0。Mini核对接收后先做一次正式Spec收口及受影响Gate，再按冻结小循环推进；不重做WIP/安装/P4，不复用index豁免。",
   "blockers": [
     {
-      "id": "TEST_RECOVERY_STOPPED_EXECUTION_EVIDENCE_UNKNOWN",
-      "label": "已批准异常处置；剩余一轮待接收，Test/TDD_READY未关闭",
-      "detail": "诊断历史路径/环境/退出/stderr仍UNKNOWN且排除验证价值；不重放、不追认。恢复预算已用1/2，本次仅授权剩余1轮。Spec阶段记录保留，测试覆盖与正式RED仍待证明，不允许Worker迎合错误测试。",
-      "owner": "MacBook发布处置；Mac mini原协调者控制第2轮及TDD_READY"
+      "id": "TEST_RESUME_STOPPED_INVALID_EVIDENCE_BUDGET_EXHAUSTED",
+      "label": "续接授权已取得；固定发布与原Mini任务接收尚待完成",
+      "detail": "用户已批准残余UNKNOWN保留及新增有界额度，不追认历史偏差，不重置历史四次及Recovery2/2。补充须固定Git接收后激活；Mini先正式Spec收口与受影响Gate，未形成范围限定TDD_READY前Worker仍锁定。",
+      "owner": "MacBook固定发布；用户手动转发；Mac mini原任务核对接收"
     }
   ],
   "milestones": [
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "仅在MacBook处置已披露诊断证据缺口、发布固定补充和审查交付；不写Mini产品测试或派发生产角色。"
+      "activation": "MacBook获准发布正式拆分补充并生成手动转发内容；不自动发送，不写Mini规范/测试，不派发生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -148,7 +148,7 @@
       "label": "Test Agent",
       "model": "gpt-5.6-terra / R2 xhigh",
       "status": "waiting",
-      "activation": "正式Test已停止。用户批准解除本次诊断异常等待并恢复第2/2轮，待Mini接收；允许范围内离线辅助检查，仍须补齐实质断言并取得有效RED，不重置历史或增加首次补全额度。"
+      "activation": "正式Test已停止；Recovery2/2耗尽。新批次额度尚未激活；必须经固定补充接收、正式Spec收口和受影响Gate，再逐小循环派发，不重置历史。"
     },
     {
       "id": "juaner_worker",
@@ -191,6 +191,13 @@
       "model": "default support Agent / inherited model / requested xhigh",
       "status": "complete",
       "activation": "PASS：定向读取现行政策后撤销错误的新任务 finding；仅规划支持，无生产权限。"
+    },
+    {
+      "id": "reslice_readiness_reviewer_001",
+      "label": "Fresh Execution Reslice Readiness Reviewer 001",
+      "model": "default support Agent / inherited model / requested xhigh",
+      "status": "complete",
+      "activation": "PASS，仅正式补充准备就绪；只读、无Mini/Research补充调查，不授予产品角色Gate、发布或执行权限。"
     }
   ],
   "metrics": [
@@ -558,9 +565,33 @@
     },
     {
       "id": "EVD-TEST-RESUME-DISPOSITION-001",
-      "label": "用户批准保留UNKNOWN/偏差并恢复仅剩一轮；范围内离线辅助检查可在编写期间进行，待Mini接收",
+      "label": "Mini已固定接收并消耗最后一轮；该授权已用尽，不能重放",
       "path": "docs/planning/2026-09-19/xanthil-desktop-test-resume-disposition-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-TEST-RESUME-STOP-001",
+      "label": "MacBook读取Mini原件并核对停止索引及213项文件身份引用；只是保全核对，不是RED/验收",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/test-resume-stop-index-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-EXECUTION-RESLICE-PROPOSAL-001",
+      "label": "用户已确认执行拆分方案v0.1，保留原文；正式续接以已授权补充及固定接收为准",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-execution-reslice-proposal-v0.1.md",
       "status": "present"
+    },
+    {
+      "id": "EVD-EXECUTION-RESLICE-AMENDMENT-001",
+      "label": "正式拆分补充准备就绪PASS；发布/手动转发及异常续接已授权，固定接收前Mini未激活",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-execution-reslice-amendment-001.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-EXECUTION-RESLICE-REVIEW-001",
+      "label": "独立只读Readiness Review001 PASS及Controller边界注记；非Spec Gate或产品验收",
+      "path": "docs/planning/2026-09-19/reviews/execution-reslice-readiness-review-001.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -595,7 +626,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-19T11:09:46.643Z",
+  "updated_at": "2026-09-19T12:48:54.934Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"
