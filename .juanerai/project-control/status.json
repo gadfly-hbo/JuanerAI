@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_SOURCE_AND_EXECUTION_AMENDMENT_AUTHORIZED",
-    "label": "P1 命令成功／精确来源例外与有界自修正已批准，待 Mini 接收",
+    "id": "FIRST_DESKTOP_BASELINE_INTEGRITY_AMENDMENT_AUTHORIZED",
+    "label": "六个 Pi 基线归档核验／candidate 六字段补全已批准，待 Mini 接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "blocked",
-  "summary": "Mini 已接收 e93acbfcaf29adf112f6b8ff73668428a55d94cc；配置预检与唯一 P1 重跑均退出 0。现有 lock 来源审查停止于固定 Electron node-gyp Git 来源；npm 已获取其 HTTPS 归档，历史越界下载如实保留。用户批准精确来源例外及有界执行自修正；待同任务手动接收，P1 完整审查、P2/P3 和 Spec Gate 未通过。",
-  "current_objective": "发布精确来源及执行自修正补充；Mini 保留已生成 lock，从 P1 图审查恢复，符合条件的普通执行错误在三轮内有界纠正。",
-  "next_action": "用户将固定 Git 回执转发至纵切-1.0；Mini 在原分支保留十二草案 ff-only 接收，复核现有 lock 后完成 P1 图审查，再按原 P2/P3 和生命周期 Gates 连续推进。不重跑成功的 P1、不重做 WIP；权限/合同问题或自修正无进展/耗尽返回 Controller。",
+  "summary": "Mini 已 ff-only 接收 0b75194d1646b20b1c087863570009431d9e22ea；精确来源例外匹配，P1 报告无 peer/Node 26 引擎冲突，停止于六个 Pi 0.84.2 子包缺归档 integrity。官方 registry 六个 SHA-512 已只读核对；用户批准精确归档核验及 candidate lock 六字段补全，未执行归档校验或 P2/P3，Spec Gate 未通过。",
+  "current_objective": "发布最小 Baseline Integrity Amendment 001；Mini 核验六归档，只新增 candidate lock 六个 integrity，保留其余全部图信息和旧 lock，再审查 P1。",
+  "next_action": "用户将固定提交回执转发至纵切-1.0；Mini 保全十二草案 ff-only 接收，按冻结 SHA-512 核验六份原归档，再做六字段定点补全与完整只读 P1 审查。通过后按原 P2/P3 和后续 Gates 继续；不重跑 npm 解析、不提前修改仓库 lock、不重做 WIP。",
   "blockers": [
     {
-      "id": "DEPENDENCY_PREFLIGHT_BLOCKED_NON_REGISTRY_SOURCE",
-      "label": "精确来源已获用户批准，Mini 待接收后继续 P1 图审查",
-      "detail": "Controller 已核对回执及锁定来源；批准不等于 P1 图审查或 Spec Gate PASS。此前下载事实保留；发布后仍需原任务接收与阶段证据。",
-      "owner": "MacBook 发布；Mac mini 同任务接收并执行"
+      "id": "DEPENDENCY_PREFLIGHT_BLOCKED_BASELINE_INTEGRITY",
+      "label": "六个基线子包校验缺口已获定点处置授权，执行待确认",
+      "detail": "用户已批准核验六个精确 0.84.2 归档及补齐 candidate 六字段；元数据匹配不代表归档已验证，P1 Gate 仍待 Mini 证据。",
+      "owner": "MacBook 发布；Mac mini 原任务执行"
     }
   ],
   "milestones": [
@@ -498,8 +498,20 @@
     },
     {
       "id": "EVD-SOURCE-AND-EXECUTION-AMENDMENT-001",
-      "label": "用户批准精确 Electron node-gyp 来源及有界自修正；Mini 采纳/后续审查待验证",
+      "label": "Mini 已固定提交采纳来源/自修正补充；来源匹配，P1 后续停止于六个基线 integrity 缺口",
       "path": "docs/planning/2026-09-19/xanthil-desktop-source-and-execution-amendment-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-BASELINE-INTEGRITY-EXCEPTION-001",
+      "label": "MacBook 已只读核对完整回执及索引大小/hash；非 P1 PASS",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/dependency-preflight-001/source-and-execution-001/SOURCE_EXECUTION_001_EXCEPTION.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-BASELINE-INTEGRITY-AMENDMENT-001",
+      "label": "用户批准六归档核验及隔离 candidate 六字段补全；Mini 执行待确认",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-baseline-integrity-amendment-001.md",
       "status": "present"
     }
   ],
@@ -535,7 +547,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-19T03:30:37.483Z",
+  "updated_at": "2026-09-19T03:59:40.743Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

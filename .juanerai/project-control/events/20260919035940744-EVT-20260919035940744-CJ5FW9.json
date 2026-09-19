@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919035940744-CJ5FW9",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T03:59:40.744Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户批准六个 Pi 0.84.2 精确归档核验及 candidate lock 六字段补全；版本/来源/图不变，P1 与后续 Gate 待 Mini 执行。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}
