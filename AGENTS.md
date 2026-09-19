@@ -2,7 +2,11 @@
 
 ## Product
 
-JuanerAI is the commercial project family. Xanthil is its first product; existing functionality and reusable foundations remain preserved. The pending Xanthil Desktop and Model Pack development plans were withdrawn by the user on 2026-09-18; read `docs/planning/README.md` before product planning or dispatch and wait for the user's whitepaper-based development adjustment. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
+JuanerAI is the commercial project family. Xanthil is its first product; existing functionality and reusable foundations remain preserved. The pending Xanthil Desktop and Model Pack development plans were withdrawn by the user on 2026-09-18 and remain void. `docs/planning/README.md` is the current product-planning entry; it points to the approved [Product Development Blueprint v1.3](docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.3.md), JuanerAI's highest product-development execution guideline. JuanerAI Whitepaper v3.3.4 is its core product reference and the commercialization charter; Whitepaper changes enter development only after the user explicitly notifies JuanerAI, approves a versioned Blueprint revision, that revision passes a fresh Product Plan Development-Readiness Gate, and the result is integrated here. Blueprint v1.0/v1.1/v1.2 remain immutable history.
+
+OSM owns goals, measures, gaps, strategies, actions and business review. PIM owns questions, requirement clarification, analysis framing, investigation, evidence judgment and insight follow-up. Xanthil Desktop is their unified workbench; both reuse one analysis and execution core. The Blueprint's six product lines plus two cross-cutting capabilities are a Change-coverage map, not eight products or serial build phases.
+
+The first-slice UI Contract must directly reuse the accepted PX-2026-004/006 Xanthil product UI mode and its visible capability inventory rather than invent a replacement UI. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
 
 The product intent is to help data analysts and enterprise decision users move through Data -> Decision -> Action -> Outcome. It should produce actionable, traceable decisions rather than stop at BI reports or dashboards.
 
@@ -11,7 +15,7 @@ The product intent is to help data analysts and enterprise decision users move t
 Use this precedence when sources conflict:
 
 1. Current explicit user approval.
-2. This file and the project constitution.
+2. This file, the project constitution, and the current approved Product Development Blueprint; the Blueprint owns product-development execution sequence and Change selection.
 3. Approved OpenSpec specification.
 4. Approved design.
 5. Tests derived from the approved specification.
@@ -19,11 +23,11 @@ Use this precedence when sources conflict:
 7. Existing implementation.
 8. Chat history.
 
-Product terminology is owned by CONTEXT.md. Cross-domain orchestration is owned by Orchestration.md.
+Product terminology is owned by CONTEXT.md. Product route and Change-selection rules are owned by the current Blueprint referenced from `docs/planning/README.md`. Cross-domain orchestration is owned by Orchestration.md.
 
 ## Startup Stop Line
 
-Before creating the first behavior-changing Xanthil Change, ask the user for the promised detailed Xanthil plan. Review that plan and resolve its product goal, MVP scope, non-goals, first acceptance scenario, data boundaries, and technical constraints before implementation.
+The approved Blueprint v1.3 and its retained first-slice attachments are referenced from `docs/planning/README.md`. It preserves the frozen first production Change; its repeated-use path is a candidate, not an authorized Change. Every product Change must produce or revise a change-scoped high-fidelity clickable UI Contract and receive the user's UI Gate PASS before OpenSpec creation or `juaner_spec` dispatch. The UI Contract must make the workflow and visible acceptance surface directly evaluable by a non-technical user; backend, Runtime, Adapter or infrastructure scope does not bypass this Gate. A Blueprint or development-readiness PASS authorizes only its stated planning result; it does not authorize OpenSpec, dependency installation, production implementation, external data access, provider calls or schema creation.
 
 Cold-start documents and empty module boundaries do not authorize product implementation, dependency installation, external data access, or schema creation.
 
@@ -66,6 +70,8 @@ Read docs/architecture/ before changing boundaries, persistence, package formats
 Before proposing a new Agent Runtime, Model Pack runtime, Runtime Port, or Runtime-selecting Profile, read `docs/adr/0003-business-runtime-port-strategy.md`. A second Runtime remains a separate OpenSpec Change; this direction does not authorize a registry, fallback, hot switching, or universal Runtime interface.
 
 ## Change Workflow
+
+Before selecting a product Change, revising priorities, or reviewing scope and module responsibility, read Blueprint v1.3's four core views (sections 4, 5, 10 and 11) and its selection rule (section 8). In the existing proposal, connect the user outcome, six-plus-two coverage and deferred return points, affected modules, competitive-value hypothesis and required evidence. Preserve the full approved capability landscape while delivering its smallest unmet outcomes; these views add no separate Gate or execution authority.
 
 Dual-device product Changes follow the long-term semi-automatic default,
 delegated stage checks and authority boundaries in
