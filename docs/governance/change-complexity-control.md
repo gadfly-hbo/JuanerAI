@@ -35,7 +35,7 @@ The target is one Spec package, one Test return, one Worker implementation, and 
 The Controller MUST run `ponytail-review` on the complete OpenSpec diff before
 Spec Gate when any of these triggers applies:
 
-- the Spec role used high or xhigh reasoning instead of its default medium;
+- the Spec role used high or xhigh reasoning (including the ordinary high default);
 - a non-core, internal, support, or governance Change introduces persistence,
   transactions, concurrency, recovery, retry, audit, a new protocol, multiple
   runtime modes, or background work;

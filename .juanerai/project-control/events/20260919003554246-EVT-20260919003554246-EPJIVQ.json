@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919003554246-EPJIVQ",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-19T00:35:54.246Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "Routing Amendment 001：五份 TOML 解析及角色最小差异、冻结包哈希和历史记录保留检查通过；project-board 12/12，diff check PASS。strict-config features 探测不受支持，失败记录保留。未派发生产角色，远端路由未验证。",
+  "status_after": "blocked",
+  "evidence_refs": [
+    "docs/planning/2026-09-19/xanthil-desktop-first-product-change-routing-amendment-001.md"
+  ]
+}

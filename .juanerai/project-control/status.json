@@ -6,16 +6,23 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_STAGE1_DISPOSITION_ACCEPTED",
-    "label": "首个 Desktop Change 旧 WIP 处置已核验／续执行待人工转发",
+    "id": "FIRST_DESKTOP_STAGE2_ROUTE_CORRECTION_PENDING",
+    "label": "首个 Desktop Change 路由修正已授权／待 Mac mini 采纳验证",
     "ordinal": 6,
     "total": 8
   },
-  "health": "waiting_user",
-  "summary": "MacBook Controller 已通过 SSH 只读核对 Mac mini 封存脚本、处置回执、独立读回和完整性记录，大小与 SHA-256 匹配。接受 WIP_DISPOSITION_COMPLETE：已授权的旧 WIP 处置满足 PKG-XANTHIL-DESKTOP-001 Stage 1 的处置后继续条件；旧 State 保持 BLOCKED / DISPATCH_ORPHAN_READY，未 CLOSED。看板仅记录已确认回执，不表示远端已进入 Stage 2。",
-  "current_objective": "用户将续执行指令转发至原 Mac mini 任务“纵切-1.0”；接收方复核原任务包身份、处置证据与当前分支所有权后，按原任务包连续推进 Stage 2 及后续已授权 Gate。",
-  "next_action": "沿用人工转发，不重试自动消息或新建任务。按任务包 Stage 1 的已授权处置路径采用完成证据，不重复 sudo 或改动 pointer；如发现新的竞争执行、Git 身份冲突或证据不匹配则停止返回异常，否则进入 Stage 2。",
-  "blockers": [],
+  "health": "blocked",
+  "summary": "已接收并核对 STAGE2_ROUTE_PREFLIGHT_BLOCKED_R2_ROLE_UNAVAILABLE：Stage 0/1 PASS，Stage 2 未进入。用户已授权普通任务 high、R2 xhigh；MacBook 修正角色 effort 固定值及派发说明，原冻结包不变。远端尚未采纳或验证新路由，不宣称已解除阻塞或派发角色。",
+  "current_objective": "发布 Routing Amendment 001，由用户手动转发至原 Mac mini 任务；采纳精确 Git 修订并确认实际可用的 R2 xhigh 路由后续接 Stage 2。",
+  "next_action": "按路由补充说明核对并 ff-only 采纳固定提交；复核实际加载的四个角色允许 xhigh，满足后从 Stage 2 继续。若元数据仍旧则停止并在原任务重新加载／续接，不降级、不创建替代角色或新任务、不重复 WIP sudo 或 pointer 处置。",
+  "blockers": [
+    {
+      "id": "STAGE2_ROUTE_PREFLIGHT_BLOCKED_R2_ROLE_UNAVAILABLE",
+      "label": "远端 R2 路由待修订采纳与实际可用性核验",
+      "detail": "已定位角色 TOML 将 effort 固定为 medium。已授权移除固定值，普通 high / R2 xhigh；当前仅修订配置，Mac mini 有效路由未验证。Stage 0/1 的既有 PASS 保留。",
+      "owner": "MacBook Controller / Mac mini execution coordinator"
+    }
+  ],
   "milestones": [
     {
       "id": "handoff_intake",
@@ -99,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "已核验并接受旧 WIP 最小处置；续执行条件已明确，等待用户向原 Mac mini 任务转发。不宣称已派发。"
+      "activation": "配置与说明修正由 MacBook 完成；待 Git 发布后人工转发。MacBook 不执行正式生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -132,28 +139,28 @@
     {
       "id": "juaner_spec",
       "label": "Spec Agent",
-      "model": "gpt-5.6-sol / R2 high when dispatched",
+      "model": "gpt-5.6-sol / high default; R2 xhigh (not dispatched)",
       "status": "locked",
-      "activation": "等待原 Mac mini 任务接收续执行指令并完成包身份、处置证据及分支所有权核对；随后按原 R2 路由激活，MacBook 不执行正式 Spec。"
+      "activation": "Stage 0/1 PASS；等待原 Mac mini 任务采纳 Routing Amendment 001 并确认实际可用的 R2 xhigh 路由，随后才可进入 Stage 2。"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
-      "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
+      "model": "gpt-5.6-terra / high default; R2 xhigh (not dispatched)",
       "status": "locked",
       "activation": "锁定；仅在新 OpenSpec Spec Gate PASS 后派发，用于 Test Design 与有效 RED。"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
-      "model": "gpt-5.6-terra / medium (configured default; R2 high when dispatched)",
+      "model": "gpt-5.6-terra / high default; R2 xhigh (not dispatched)",
       "status": "locked",
       "activation": "锁定；仅在新 Change 达到 TDD_READY 后实施冻结范围。"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
-      "model": "gpt-5.6-sol / medium (configured default; R2 high when dispatched)",
+      "model": "gpt-5.6-sol / high default; R2 xhigh (not dispatched)",
       "status": "locked",
       "activation": "锁定；仅在生产实现和证据冻结后进行独立验证。"
     },
@@ -408,6 +415,18 @@
       "label": "Mac mini WIP_DISPOSITION_COMPLETE：MacBook 已只读读取原文并复算哈希；只证明该次处置，非持续在线状态",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/WIP_DISPOSITION_COMPLETE-20260919T000420Z.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-STAGE2-ROUTE-EXCEPTION-20260919",
+      "label": "Mac mini 路由异常：MacBook 已只读读取并核对大小及 SHA-256；不表示新路由已通过",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/STAGE2_ROUTING_EXCEPTION-20260919T001847Z.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-ROUTING-AMENDMENT-001",
+      "label": "用户批准：普通 high / R2 xhigh；配置修正与原批次最小续执行说明，远端未验证",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-first-product-change-routing-amendment-001.md",
+      "status": "present"
     }
   ],
   "risks": [
@@ -442,7 +461,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-19T00:13:48.079Z",
+  "updated_at": "2026-09-19T00:32:40.297Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

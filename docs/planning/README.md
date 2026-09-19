@@ -10,6 +10,13 @@ Review 001 returned `NEEDS_CLARIFICATION`; the corrected v1.0 package then recei
 
 On 2026-09-19 the user authorized the first production OpenSpec Change and then authorized preparation and transfer of its execution package. [Execution Package v1.0](2026-09-19/xanthil-desktop-first-product-change-execution-package-v1.0.md) freezes the first-slice outcome, accepted UI and Session/Runtime decisions, role sequence, path and safety boundaries, Git authority, and evidence receipts. MacBook does not dispatch production roles. The Mac mini execution coordinator must first perform the package's read-only global-WIP preflight; the preserved old active pointer is not assumed empty and must not be cleared or modified without a separate minimum disposition authorization.
 
+The same execution batch also uses the user-approved
+[Routing Amendment 001](2026-09-19/xanthil-desktop-first-product-change-routing-amendment-001.md):
+ordinary tasks use `high`, R2 tasks use `xhigh`, with no role-local effort pin.
+The original v1.0 package bytes remain frozen. The latest confirmed receipt
+has Stage 0 and Stage 1 PASS and Stage 2 not entered; continuation requires
+Mac mini to adopt the amendment and expose the correct effective role route.
+
 Current research-reference scope:
 
 - PX-2026-001/002: hypothesis-first AnalysisOps human-workbench and real local vertical-integration principles;

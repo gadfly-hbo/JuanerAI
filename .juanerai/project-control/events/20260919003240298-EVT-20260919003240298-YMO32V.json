@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919003240298-YMO32V",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T00:32:40.298Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "处理 Stage 2 路由异常：用户授权普通 high / R2 xhigh，保留 Stage 0/1 PASS；远端采纳及有效路由待验证。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}
