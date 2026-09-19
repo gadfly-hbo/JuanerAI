@@ -42,7 +42,7 @@ The preceding Mini receipt confirmed ff-only adoption of `e93acbfcaf29adf112f6b8
 
 The preceding receipt confirms ff-only adoption of `0b75194d1646b20b1c087863570009431d9e22ea` and the exact source exception. P1 reported no peer/Node 26 engine conflict, then stopped at `DEPENDENCY_PREFLIGHT_BLOCKED_BASELINE_INTEGRITY`: six retained Pi 0.84.2 child archives lack independent integrity values. Official registry metadata supplies all six SHA-512 values, but archive verification is not yet complete. The user approved [Baseline Integrity Amendment 001](2026-09-19/xanthil-desktop-baseline-integrity-amendment-001.md): verify only those exact archives and add only their six integrity fields to the isolated candidate lock, preserving every other field and the original lock. MacBook publishes this for manual intake by the same task; Mini then repeats read-only P1 review and continues the original stages when their Gates pass. No npm re-resolution, dependency upgrade or integrity waiver is authorized; repository lock adoption remains at P4.
 
-Latest confirmed handoff: Mini adopted `672f2b23d60248f817fe0b845761f61a125dbf37`
+Preceding handoff: Mini adopted `672f2b23d60248f817fe0b845761f61a125dbf37`
 and reported six-archive/six-field and P1/P2/P3 PASS, then stopped at
 `BLOCKED_CONTRACT_DECISION_REQUIRED`: the old fixture/model-bound Run Store cannot
 truthfully hold the approved dual-CSV, no-model Run. MacBook read the receipt and
@@ -56,6 +56,20 @@ Exact schema/version/path decisions inside approved modules no longer require
 individual MacBook approval. Intake by the same task is pending; Spec Gate, P4
 and product Test/RED/Worker remain unpassed. Original inputs and WIP history stay
 preserved; no new session or successful dependency-stage replay is required.
+
+Latest confirmed handoff: Mini adopted `944bbcdbd07a2677b2d8354d9666dea3c070de0f`,
+closed the Run adaptation through Spec and reported P4 PASS, then stopped at
+`EXECUTION_CORRECTION_BUDGET_EXCEEDED`. Product Test remains incomplete; a
+testability Spec revision was interrupted without a fresh Gate. MacBook matched
+the exception index and all 31 working files/frozen copies and inspected the
+test defects, without rerunning P4 or accepting product RED. The user approved
+[Test Recovery Amendment 001](2026-09-19/xanthil-desktop-test-recovery-amendment-001.md):
+retain the overrun history, finish one targeted Spec closure, then use a fresh
+formal Test context for one complete authoring/initial-verification batch and at most two additional
+correction/verification rounds. This is a one-time exception disposition, not
+a standing budget increase or reset. Technical delegation stays effective;
+TDD_READY/Worker remain locked until the actual evidence passes. The same task
+awaits manual intake; WIP, installs and successful preparation are not replayed.
 
 Current research-reference scope:
 

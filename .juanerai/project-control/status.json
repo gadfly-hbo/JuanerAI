@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_TECHNICAL_DECISION_AMENDMENT_AUTHORIZED",
-    "label": "范围内技术决策权已批准；Run 适配交由 Mini 原任务，接收待确认",
+    "id": "FIRST_DESKTOP_TEST_RECOVERY_AUTHORIZED",
+    "label": "Test 超限处置已批准：一次 Spec 收口、完整 Test 补全及最多两轮纠正，待 Mini 接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "blocked",
-  "summary": "Mini 已接收 672f2b23d60248f817fe0b845761f61a125dbf37，报告六归档/六字段及 P1/P2/P3 PASS；停止于 BLOCKED_CONTRACT_DECISION_REQUIRED。MacBook 已只读核对完整回执大小/hash及同 HEAD Run 源码冲突，未独立重跑依赖探针。用户已批准长期范围内技术决策权及当前最小兼容 Run 适配；补充包接收待确认，非 Spec Gate 或产品 PASS。",
-  "current_objective": "发布 Technical Decision Amendment 001；Mini 在批准模块内自主闭合双 CSV、无模型 Run 的最小合同/版本/路径，保留独立证据及旧 CLI/历史兼容，通过原 Spec/TDD/验证流程继续。",
-  "next_action": "用户转发固定提交到原任务纵切-1.0；Mini 保全十二草案 ff-only 接收，登记技术决策委托，再由正式 Spec 完成适配及整包 ponytail/Spec Gate。原 P1–P3 证据不因本授权重做；P4/Test/RED/Worker 按原 Gate。后续符合委托的设计选择在 Mini 内解决，越界或无法安全解决再回传。",
+  "summary": "Mini 已接收 944bbcdbd07a2677b2d8354d9666dea3c070de0f 并报告 P4 PASS，随后因 Test 纠正超限及测试不完整停止。MacBook 已只读核对异常索引与31份当前文件/副本及关键测试问题，未重跑P4。用户批准一次定向Spec收口、新上下文正式Test完整补全及最多两轮新增纠正；旧超限保留，TDD_READY未通过，Worker未启动。",
+  "current_objective": "发布 Test Recovery Amendment 001，保留 P4 与失败/超限历史；Mini 先闭合 testability 并刷新受影响 Spec Gate，再补全有效测试和 RED，达到 TDD_READY 后续原流程。",
+  "next_action": "用户将固定提交转发到原任务纵切-1.0；Mini 保全31份改动ff-only接收，一次定向Spec收口及整包ponytail/affected Spec Gate，通过后派发新上下文正式Test。一轮完整补全，另最多两轮纠正总额度；每轮执行前核对根因、预期变化及余额，无进展即停。不重做WIP、安装、P4或成功探针。",
   "blockers": [
     {
-      "id": "BLOCKED_CONTRACT_DECISION_REQUIRED",
-      "label": "Run 技术适配与长期委托已获批准，Mini 采纳/Spec 闭合待确认",
-      "detail": "只解除缺少 Controller 技术决定这一权限原因；双源/无模型独立 Run、旧 1.0/2.0/CLI 兼容和精确路径仍须正式 Spec 与测试闭合。当前不宣称 Spec Gate/P4 已通过。",
-      "owner": "MacBook 发布；Mac mini 原任务续接"
+      "id": "EXECUTION_CORRECTION_BUDGET_EXCEEDED",
+      "label": "已批准一次有界恢复，接收与合格 Test/TDD_READY 待完成",
+      "detail": "不追认原四次纠正，不清零旧预算。31份现场保留，三份中断Spec文件未获新Gate；需完成定向澄清、纠正夹具/断言与真实AC覆盖。此授权不构成产品RED、TDD_READY或Worker放行。",
+      "owner": "MacBook 发布；Mac mini 原协调者执行前控额"
     }
   ],
   "milestones": [
@@ -87,7 +87,7 @@
     {
       "id": "current_tdd",
       "label": "当前：Test Design / RED",
-      "status": "locked"
+      "status": "pending"
     },
     {
       "id": "current_implementation",
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "MacBook 仅发布长期技术委托和批次补充、审查最终交付；不替 Mini 执行生产角色。"
+      "activation": "仅在MacBook登记超限处置、发布固定补充和审查最终交付；不写Mini产品Spec/测试或派发生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -141,14 +141,14 @@
       "label": "Spec Agent",
       "model": "requested gpt-5.6-sol / xhigh; runtime configuration not independently echoed",
       "status": "waiting",
-      "activation": "Mini 已报告正式 Spec 修订十二草案并因 Run 合同停止；本补充授权范围内技术适配，接收后由原任务协调正式 Spec 续接。未宣称正在运行或 Spec Gate PASS。"
+      "activation": "Mini上一轮testability续修被中止，design/path-contract/test-plan部分改动未获正式返回及新Gate；接收补充后允许一次定向收口。"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
-      "model": "gpt-5.6-terra / high default; R2 xhigh (not dispatched)",
-      "status": "locked",
-      "activation": "锁定；仅在新 OpenSpec Spec Gate PASS 后派发，用于 Test Design 与有效 RED。"
+      "model": "gpt-5.6-terra / R2 xhigh; fresh context required for recovery",
+      "status": "waiting",
+      "activation": "此前正式Test返回TEST_CONFLICT且披露四次纠正超限；补充接收及受影响Spec Gate PASS后才派发新上下文正式Test，一轮完整补全另最多两轮纠正，不重置历史。"
     },
     {
       "id": "juaner_worker",
@@ -522,8 +522,26 @@
     },
     {
       "id": "EVD-TECHNICAL-DECISION-AMENDMENT-001",
-      "label": "用户批准长期范围内技术决策权及当前Run兼容适配；Mini接收待确认",
+      "label": "Mini已固定采纳并报告Run适配/Spec及P4通过；之后Test预算异常另行保留，非产品验收",
       "path": "docs/planning/2026-09-19/xanthil-desktop-technical-decision-amendment-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-P4-REPORTED-PASS-001",
+      "label": "Mini报告P4 canonical1410 PASS/1未授权真实Pi跳过、Console82 PASS；MacBook核对记录hash，未重跑或接受产品",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/p4-complete-001.json",
+      "status": "present"
+    },
+    {
+      "id": "EVD-TEST-BUDGET-EXCEPTION-001",
+      "label": "MacBook独立核对异常索引59777bytes/SHA256及31份当前文件和31份副本；保留越界/测试质量问题",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/execution-budget-exception-index-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-TEST-RECOVERY-AMENDMENT-001",
+      "label": "用户批准一次Spec收口+一轮完整Test补全+最多两轮纠正；待Mini采纳，不追认旧超限",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-test-recovery-amendment-001.md",
       "status": "present"
     }
   ],
@@ -559,7 +577,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-19T05:20:55.853Z",
+  "updated_at": "2026-09-19T09:08:25.827Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

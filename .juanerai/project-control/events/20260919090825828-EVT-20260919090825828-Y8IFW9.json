@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919090825828-Y8IFW9",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T09:08:25.828Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户批准Test超限的一次有界恢复：Spec收口+完整Test补全+最多两轮纠正；旧超限保留，TDD_READY仍待证",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

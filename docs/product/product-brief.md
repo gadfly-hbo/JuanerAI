@@ -56,15 +56,18 @@ The withdrawn plan sequenced Model Pack product work after Xanthil Desktop Data 
 
 ## Current Direction and Gate
 
-Current return point: Mini adopted `672f2b23d60248f817fe0b845761f61a125dbf37`,
-reported P1/P2/P3 PASS and stopped before Spec Gate on the Run contract conflict.
-The user approved [Technical Decision Amendment 001](../planning/2026-09-19/xanthil-desktop-technical-decision-amendment-001.md):
-the batch adopts standing in-scope technical authority, including minimum
-compatible support for dual-CSV, no-model Run evidence. Product/UI semantics,
-separate Run artifacts, old CLI/history compatibility and all lifecycle Gates
-remain. MacBook verified the receipt identity and source conflict, not the full
-dependency evidence or product acceptance. The supplement awaits manual intake
-by the original Mini task; the chronology below is retained history.
+Current return point: Mini adopted `944bbcdbd07a2677b2d8354d9666dea3c070de0f`
+and reported P4 PASS after the delegated Run adaptation. Product Test then
+stopped on a correction-budget overrun and incomplete test quality; an affected
+Spec revision is not yet approved and TDD_READY/Worker remain locked. The user
+approved [Test Recovery Amendment 001](../planning/2026-09-19/xanthil-desktop-test-recovery-amendment-001.md):
+one targeted Spec closure, one complete fresh-context Test batch and at most two
+additional correction rounds, preserving failure history and prior stages.
+MacBook verified the frozen index and 31 files/copies, not full product quality.
+Manual intake by the original task is pending. Standing technical delegation,
+product/UI meaning, compatibility and safety boundaries remain unchanged; this
+does not reset old budgets or authorize Worker before TDD_READY. The chronology
+below is retained history.
 
 The user approved JuanerAI Product Development Blueprint v1.0 on 2026-09-18. The first vertical slice is a UI-first Xanthil Desktop Free membership-repurchase diagnosis Decision Case for non-technical users. The later v1.1 correction keeps this value endpoint but requires direct reuse of the accepted PX-2026-004 professional mode and PX-2026-006 quick/dual-mode product UI, including the visible Skill, Prompt, Fork, Subagent, report, Inspector/drawer and Session-navigation modules.
 
