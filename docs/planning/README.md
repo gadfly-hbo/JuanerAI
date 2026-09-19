@@ -85,7 +85,7 @@ or standing-policy change. Manual intake by the original task is pending;
 TDD_READY/Worker remain locked, and WIP, installs and successful preparation are
 not replayed. The later receipt below supersedes that pending intake status.
 
-Latest confirmed handoff: Mini adopted
+Preceding handoff: Mini adopted
 `f5e4f62bd632360c282b5b93c5f2664498e311c6` and exhausted Recovery 2/2, stopping at
 `TEST_RESUME_STOPPED_INVALID_EVIDENCE_BUDGET_EXHAUSTED`. Syntax PASS was withdrawn
 for missing command/environment evidence; the coverage command used the wrong
@@ -109,6 +109,29 @@ The supplement becomes active only after the original Mini task verifies and
 adopts its fixed Git identity; publication alone is not delivery or a role Gate.
 Until that intake, the original task remains stopped. The prior exhausted
 recovery is not reopened. No product-plan version or accepted UI is superseded.
+
+Latest confirmed handoff: Mini adopted
+`d04925d0b7a145f24a033019693d82cfc1cbba0d`, preserved all 31 intake files and
+completed Reslice 001's single Spec return. It stopped at
+`BLOCKED_EXECUTION_RESLICE_CONTRACT_CONFLICT_001`; affected Spec Gate did not pass.
+The permitted build-file subsets did not close the whole-interface/factory
+dependencies of a real U1 app. Assistance was already nullable and is not itself
+a mandatory early U4 dependency. MacBook read the contract chain and independently
+matched the stopped index, 31 sources and 31 copies; this is not product proof.
+Reslice Spec 1/1 is consumed, extra Test remains 0/2; no new Test/Worker started.
+
+The user authorized [Incremental Contract Amendment 001](2026-09-19/xanthil-desktop-incremental-contract-amendment-001.md)
+preparation, independent readiness review, publication and manual forwarding to
+the same task, including one additional directed Spec return. It distinguishes
+exact intermediate internal contracts from final complete contracts, preserves
+the public IPC facade, defines non-active operation refusal, and closes the
+cross-layer and earlier/later Project boundaries. It does not change final UI,
+91 AC, persisted schema/Run semantics or Test budget.
+[Independent Readiness Review 001](2026-09-19/reviews/incremental-contract-readiness-review-001.md)
+returned PASS for the supplement only, not actual buildability or Spec Gate.
+It becomes active only after fixed publication and verified intake; the receipt
+will supply publication identities. No generic runtime stage system or second
+application is authorized.
 
 Current research-reference scope:
 
