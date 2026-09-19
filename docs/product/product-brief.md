@@ -56,18 +56,18 @@ The withdrawn plan sequenced Model Pack product work after Xanthil Desktop Data 
 
 ## Current Direction and Gate
 
-Current return point: Mini adopted `944bbcdbd07a2677b2d8354d9666dea3c070de0f`
-and reported P4 PASS after the delegated Run adaptation. Product Test then
-stopped on a correction-budget overrun and incomplete test quality; an affected
-Spec revision is not yet approved and TDD_READY/Worker remain locked. The user
-approved [Test Recovery Amendment 001](../planning/2026-09-19/xanthil-desktop-test-recovery-amendment-001.md):
-one targeted Spec closure, one complete fresh-context Test batch and at most two
-additional correction rounds, preserving failure history and prior stages.
-MacBook verified the frozen index and 31 files/copies, not full product quality.
-Manual intake by the original task is pending. Standing technical delegation,
-product/UI meaning, compatibility and safety boundaries remain unchanged; this
-does not reset old budgets or authorize Worker before TDD_READY. The chronology
-below is retained history.
+Current return point: Mini adopted `ab752834aefa966924f69c834027525c826a737e`
+and recorded targeted Spec/ponytail/affected Spec Gate PASS, then stopped Test
+at `TEST_RECOVERY_STOPPED_EXECUTION_EVIDENCE_UNKNOWN`. One of two recovery
+corrections is used; the formal matrix is NOT RUN and behavior coverage remains
+incomplete. The user approved [Test Resume Disposition 001](../planning/2026-09-19/xanthil-desktop-test-resume-disposition-001.md):
+retain the diagnostic UNKNOWN/deviation history, restore only the remaining
+one correction and permit scoped offline syntax/fixture checks during authoring
+with complete evidence. MacBook verified the stopped index and 31 files/copies,
+not product quality. Manual intake by the original task is pending. No budget
+reset, product/Spec restart or standing-policy change; TDD_READY/Worker stay
+locked until actual proof passes. Product/UI meaning, technical delegation,
+compatibility and safety remain unchanged. The chronology below is history.
 
 The user approved JuanerAI Product Development Blueprint v1.0 on 2026-09-18. The first vertical slice is a UI-first Xanthil Desktop Free membership-repurchase diagnosis Decision Case for non-technical users. The later v1.1 correction keeps this value endpoint but requires direct reuse of the accepted PX-2026-004 professional mode and PX-2026-006 quick/dual-mode product UI, including the visible Skill, Prompt, Fork, Subagent, report, Inspector/drawer and Session-navigation modules.
 

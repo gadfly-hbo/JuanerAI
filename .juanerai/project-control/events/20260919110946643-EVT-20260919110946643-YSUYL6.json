@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919110946643-YSUYL6",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-19T11:09:46.643Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "本次续接发布Gate：fresh full-index两次worker crash，未暂存提交；保留文档与失败证据，等待明确处置，不沿用旧豁免。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

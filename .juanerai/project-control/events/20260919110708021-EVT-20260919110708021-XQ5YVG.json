@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919110708021-XQ5YVG",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T11:07:08.021Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户批准Test诊断UNKNOWN局部处置、恢复剩余1轮及离线辅助检查；保留历史，不重置预算，待Mini手动接收。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

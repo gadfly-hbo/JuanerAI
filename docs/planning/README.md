@@ -57,7 +57,7 @@ individual MacBook approval. Intake by the same task is pending; Spec Gate, P4
 and product Test/RED/Worker remain unpassed. Original inputs and WIP history stay
 preserved; no new session or successful dependency-stage replay is required.
 
-Latest confirmed handoff: Mini adopted `944bbcdbd07a2677b2d8354d9666dea3c070de0f`,
+Preceding handoff: Mini adopted `944bbcdbd07a2677b2d8354d9666dea3c070de0f`,
 closed the Run adaptation through Spec and reported P4 PASS, then stopped at
 `EXECUTION_CORRECTION_BUDGET_EXCEEDED`. Product Test remains incomplete; a
 testability Spec revision was interrupted without a fresh Gate. MacBook matched
@@ -69,7 +69,21 @@ formal Test context for one complete authoring/initial-verification batch and at
 correction/verification rounds. This is a one-time exception disposition, not
 a standing budget increase or reset. Technical delegation stays effective;
 TDD_READY/Worker remain locked until the actual evidence passes. The same task
-awaits manual intake; WIP, installs and successful preparation are not replayed.
+awaited manual intake; the next receipt supersedes that pending status.
+
+Latest confirmed handoff: Mini adopted `ab752834aefa966924f69c834027525c826a737e`
+and recorded the targeted Spec closure, complete ponytail and affected Spec Gate
+PASS. Test stopped at `TEST_RECOVERY_STOPPED_EXECUTION_EVIDENCE_UNKNOWN` after
+one of the two recovery corrections; its matrix remains NOT RUN and material
+behavior coverage is incomplete. MacBook verified the receipt, stopped index,
+31 working files/copies and associated evidence, not product RED. The user
+approved [Test Resume Disposition 001](2026-09-19/xanthil-desktop-test-resume-disposition-001.md):
+preserve and exclude the unknown diagnostic result, resume only the remaining
+one correction, and allow scoped offline syntax/fixture checks during authoring
+with complete command evidence. No budget reset, product reapproval, Spec restart
+or standing-policy change. Manual intake by the original task is pending;
+TDD_READY/Worker remain locked, and WIP, installs and successful preparation are
+not replayed.
 
 Current research-reference scope:
 
