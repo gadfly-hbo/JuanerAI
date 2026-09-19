@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_INCREMENTAL_CONTRACT_AWAITING_RELEASE",
-    "label": "分段合同补充审查PASS，已授权发布；Mini待固定接收",
+    "id": "FIRST_DESKTOP_DIRECTED_SPEC_HANDOFF",
+    "label": "已授权一次F1–F6 Spec收口；待手动转发与Mini接收",
     "ordinal": 6,
     "total": 8
   },
-  "health": "blocked",
-  "summary": "Mini已接收d04925d0并完成Reslice唯一Spec返回，因完整接口与中间构建冲突停在Spec Gate之前；Spec1/1已用，额外Test0/2，Worker未启动。用户已授权Incremental Contract Amendment001制作、独立审查、发布及手动转发；新审查PASS仅为文档就绪，固定接收前仍不激活。",
-  "current_objective": "闭合UI→Main/IPC→Application/Profile→Port/Adapter的精确中间接口、拒绝及重开边界，保留最终完整合同、UI和91项验收。",
-  "next_action": "MacBook完成相关验证和fresh full-index后固定发布；用户手动转发原纵切-1.0。Mini核对31现场后接收，新增一次正式Spec收口整个调用链和有限元组；Spec Gate和范围TDD_READY通过前不派发下游。不重做WIP/安装/P1–P4。",
+  "health": "waiting_user",
+  "summary": "用户授权Directed Spec Closure001：只修F1–F6并做整包审查/Spec Gate，随后回传停止。Mini最新只读核对仍为0cdc3c2，31现场及副本匹配，尚未接收本补充。历史UNKNOWN与失败保留；新Spec额度0/1，Test0/2暂停，未启动下游。",
+  "current_objective": "将已批准的F1–F6最小修订交给原Mini任务完成一次正式Spec返回；保持现有产品/UI、最终91AC和十九份非Spec资产不变。",
+  "next_action": "MacBook完成固定Git发布后，用户手动转发至原任务纵切-1.0；Mini核验非重叠ff-only接收，再派发一次正式juaner_spec/R2 xhigh。整包审查和受影响Spec Gate后必须回传停止，不启动Test/Worker/Validator。",
   "blockers": [
     {
-      "id": "BLOCKED_EXECUTION_RESLICE_CONTRACT_CONFLICT_001",
-      "label": "真实U1与完整接口的阶段冲突；定向合同补充待固定接收",
-      "detail": "上一补充仅放开配置未闭合整个调用链；Assistance允许null，不要求提前实施U4。此次授权精确内部子集、Main拒绝及数据重开边界，保留最终合同；另授一次Spec返回，旧Spec1/1和Test0/2分列，不放宽数据、工具或历史UNKNOWN。",
-      "owner": "MacBook固定发布；用户手动转发；Mac mini原任务核对接收"
+      "id": "DIRECTED_SPEC_CLOSURE_INTAKE_PENDING",
+      "label": "定向Spec已授权，等待固定包手动转发/接收",
+      "detail": "MacBook不宣称Mini已恢复。接收后仅放行一次F1–F6 Spec收口及整包审查/Spec Gate；既有未知残余风险按Controller处置保留。Gate PASS也不自动恢复Test。",
+      "owner": "MacBook发布；用户转发；原Mini任务核验接收后执行限定Spec阶段"
     }
   ],
   "milestones": [
@@ -81,7 +81,7 @@
     },
     {
       "id": "current_openspec_gate",
-      "label": "当前：Reslice受影响Spec Gate BLOCKED，需合同收口",
+      "label": "当前：一次F1–F6收口已授权，Spec Gate尚未通过",
       "status": "pending"
     },
     {
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "MacBook获准制作/独立审查/发布分段合同补充并生成手动转发内容；不自动发送，不写Mini规范/测试，不派发生产角色。"
+      "activation": "制作并审查一次定向Spec补充包，固定Git发布后由用户手动转发；不派发生产角色、不自动发送、不写Mini分支。"
     },
     {
       "id": "d05_reviewer",
@@ -140,15 +140,15 @@
       "id": "juaner_spec",
       "label": "Spec Agent",
       "model": "requested gpt-5.6-sol / xhigh; runtime configuration not independently echoed",
-      "status": "complete",
-      "activation": "Mini完成Reslice1/1返回但Spec Gate BLOCKED；此次补充获准另授一次定向返回，固定接收前不派发。旧PASS不覆盖当前字节。"
+      "status": "waiting",
+      "activation": "Reslice1/1与Incremental1/1已消费；新Directed Spec Closure001额度0/1，仅原Mini任务验证固定包后启用，当前尚未派发。"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra / R2 xhigh",
       "status": "waiting",
-      "activation": "Test保持停止；Reslice额外纠正0/2，未因Spec阻塞消费或重置。补充固定接收及正式Spec Gate PASS后才逐小循环派发；旧四次和Recovery2/2保留。"
+      "activation": "保持停止，额外纠正0/2未用；本补充即使Spec Gate PASS也不释放Test，须后续明确续接。"
     },
     {
       "id": "juaner_worker",
@@ -205,6 +205,27 @@
       "model": "default support Agent / inherited model / requested xhigh",
       "status": "complete",
       "activation": "PASS，无承重补充项；仅静态规划审查，不证明实际可构建或Spec Gate，无写入或Mini/Research外部调查。"
+    },
+    {
+      "id": "incremental_contract_static_review_001",
+      "label": "U1 / Contract Read-only Support Review",
+      "model": "default support Agent / inherited model / requested R2 xhigh; effective tuple not echoed",
+      "status": "complete",
+      "activation": "只读支持审查NEEDS_FIX；非正式Spec/Test/Worker/Validator，无Change写入或Gate放行权限。"
+    },
+    {
+      "id": "incremental_contract_test_complexity_review_001",
+      "label": "TDD / Whole-package Complexity Read-only Support Review",
+      "model": "default support Agent / inherited model / requested R2 xhigh; effective tuple not echoed",
+      "status": "complete",
+      "activation": "只读支持审查NEEDS_FIX；非正式Spec/Test/Worker/Validator，无Change写入或Gate放行权限。"
+    },
+    {
+      "id": "directed_spec_closure_readiness_001",
+      "label": "Fresh Directed Spec Closure Readiness Reviewer",
+      "model": "default support Agent / inherited model / requested R2 xhigh; effective tuple not echoed",
+      "status": "complete",
+      "activation": "PASS，限一次F1–F6 Spec收口交接准备；无写入或Mini/Research补充调查，不代替Spec Gate。"
     }
   ],
   "metrics": [
@@ -608,7 +629,7 @@
     },
     {
       "id": "EVD-INCREMENTAL-CONTRACT-AMENDMENT-001",
-      "label": "分段内部合同、完整IPC拒绝和重开边界已获用户授权，独立审查PASS；待固定发布和接收",
+      "label": "Mini已接收0cdc3c2；Spec1/1停止，新诊断处置与只读审查见后续记录",
       "path": "docs/planning/2026-09-19/xanthil-desktop-incremental-contract-amendment-001.md",
       "status": "present"
     },
@@ -616,6 +637,42 @@
       "id": "EVD-INCREMENTAL-CONTRACT-REVIEW-001",
       "label": "Fresh Readiness Review001 PASS；不代替Mini完整调用链收口、Spec Gate或实际构建",
       "path": "docs/planning/2026-09-19/reviews/incremental-contract-readiness-review-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-INCREMENTAL-DIAGNOSTIC-DISPOSITION-001",
+      "label": "上一轮风险接受/证据更正及F1–F6只读NEEDS_FIX；后续定向Spec授权见新补充，不追认历史PASS",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-incremental-contract-diagnostic-disposition-001.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-INCREMENTAL-RECOVERED-TOOLS-001",
+      "label": "历史工具记录部分找回、独立读回；仍缺写前身份，非重放或PASS",
+      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/recovered-historical-tool-records-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-INCREMENTAL-FROZEN-INTAKE-001",
+      "label": "31现场/31副本与最新停止索引匹配；仅身份核对",
+      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/frozen-intake-readback-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-DIRECTED-SPEC-CLOSURE-001",
+      "label": "用户授权一次F1–F6定向Spec及审查/Gate后停止；待Mini固定接收",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-directed-spec-closure-001.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-DIRECTED-SPEC-CLOSURE-INTAKE-001",
+      "label": "本次只读核对Mini0cdc3c2、31现场与31副本匹配；未远端写入",
+      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/directed-spec-closure-intake-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-DIRECTED-SPEC-CLOSURE-REVIEW-001",
+      "label": "独立就绪审查PASS，仅交接准备；不证明Spec Gate或产品行为",
+      "path": "docs/planning/2026-09-19/reviews/directed-spec-closure-readiness-review-001.md",
       "status": "verified"
     }
   ],
@@ -651,7 +708,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-19T13:54:07.218Z",
+  "updated_at": "2026-09-19T15:26:38.632Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

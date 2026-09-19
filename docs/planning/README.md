@@ -133,6 +133,33 @@ It becomes active only after fixed publication and verified intake; the receipt
 will supply publication identities. No generic runtime stage system or second
 application is authorized.
 
+Latest exception and Controller disposition: Mini safely adopted
+`0cdc3c2dfa8e3482dd3c7e6b6e55aa6bb12c0cdf`, then stopped at
+`BLOCKED_NEW_DIAGNOSTIC_EFFECT_UNKNOWN`; Incremental Spec 1/1 is consumed and
+extra Test remains 0/2. The user accepted the disclosed residual uncertainty
+about prior contents at the two temporary paths and authorized evidence
+correction plus a read-only review, not another Spec return or execution.
+Existing historical tool records partially recover the missing command/exit/
+output evidence; the original receipt and remaining UNKNOWN are preserved.
+
+[Diagnostic Disposition and Read-only Review 001](2026-09-19/xanthil-desktop-incremental-contract-diagnostic-disposition-001.md)
+records six bounded findings: U1 request-envelope/owner-read/prefix closure,
+causal E2E package prerequisites, final-restoration RED, and command-envelope
+consistency. Static review is `NEEDS_FIX`; the complexity-only review found no
+additional over-engineering deletion. Neither is Spec Gate or product PASS.
+No product/UI/schema decision is reopened.
+
+The user then authorized [Directed Spec Closure 001](2026-09-19/xanthil-desktop-directed-spec-closure-001.md):
+one formal Mini Spec return correcting only F1–F6 and current-status consistency,
+followed by whole-package review, the affected Spec Gate and a receipt. The
+Controller prepares its Git publication for manual forwarding to the original
+task; Mini has not yet adopted or resumed it. This narrower supplement stops
+before Test even if Spec Gate passes. Test remains 0/2 unused; historical budgets,
+UNKNOWN and failures remain. No new task, automatic message, dependency/WIP
+replay, product/UI reapproval or implementation is authorized.
+[Independent Readiness Review 001](2026-09-19/reviews/directed-spec-closure-readiness-review-001.md)
+passed for this bounded handoff; no corrected-OpenSpec or Spec Gate PASS is implied.
+
 Current research-reference scope:
 
 - PX-2026-001/002: hypothesis-first AnalysisOps human-workbench and real local vertical-integration principles;

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919152638633-12306W",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-19T15:26:38.633Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户授权一次F1–F6定向Spec；独立就绪PASS，待固定Git发布/手动转发，Spec Gate后仍停止Test",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}
