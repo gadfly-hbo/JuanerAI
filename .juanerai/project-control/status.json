@@ -6,23 +6,16 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_INTERRUPTED_SPEC_RESUMPTION",
-    "label": "误停已归因；授权剩余Spec续接，待固定包接收",
+    "id": "FIRST_DESKTOP_SPEC_GATE_PASSED_AWAITING_MINI_INTAKE",
+    "label": "受影响Spec Gate通过；等待原Mini任务固定接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "waiting_user",
-  "summary": "Mini已接收942b670并因协调者误停形成INCOMPLETE/Spec Gate FAIL：F1/F2部分、F3表静态PASS、F4–F6未完成。31现场/副本匹配，19非Spec未变。用户授权固化计数/误停规则并完成原被中断Spec的补充回执；历史1/1不重置，Test0/2暂停，尚未在Mini激活新处置。",
-  "current_objective": "完成原任务剩余F1/F2/F4–F6合同收口，保留F3、产品/UI/91AC和十九份非Spec资产；整包审查与Spec Gate后回传停止。",
-  "next_action": "MacBook固定发布最小处置及政策/状态机引用后，用户手动转发原纵切-1.0。Mini使用directed-spec-final-001.json保护31现场后ff-only接收，由正式Spec完成一次被误停工作续接；不进入Test/Worker/Validator。",
-  "blockers": [
-    {
-      "id": "INTERRUPTED_SPEC_RESUMPTION_INTAKE_PENDING",
-      "label": "续接已授权，Mini待固定接收；Spec Gate仍FAIL",
-      "detail": "剩余内容不需要重批产品。以实际纠正轮次及时间顺序处理误停；历史Directed1/1保留，本次只完成原被中断任务的补充回执，不增加实质返工额度；完整收口/真实阻塞后停止。新未知影响、无进展或真实额度耗尽仍返回。",
-      "owner": "MacBook发布；用户转发；原Mini任务执行已限定续接"
-    }
-  ],
+  "summary": "用户已接受MacBook事故披露的残余证据缺口；不清理、不重跑、不追认。Controller完成十二文件增量与受影响合同复核，F1–F6及受影响Spec Gate PASS。已新鲜核对Mini31源/31副本；额外Test仍0/2。续接以固定Git发布和原Mini任务接收为准，尚未启动Test。",
+  "current_objective": "发布当前最小治理/处置/审查补充，交回原Mini纵切-1.0；从U1.1 Test开始，逐段有效RED和TDD_READY后才进入独立Worker。",
+  "next_action": "用户将固定发布回执转发原任务纵切-1.0 / 01a0b45a-13ad-7b92-a2b4-cdde980558e1；Mini核对固定提交、全diff/hash、不重叠及31文件不变，ff-only接收，追加Gate记录，再正式派发U1.1 Test。不得新建任务或重放WIP/安装。",
+  "blockers": [],
   "milestones": [
     {
       "id": "handoff_intake",
@@ -81,8 +74,8 @@
     },
     {
       "id": "current_openspec_gate",
-      "label": "当前：Directed Spec未完成/Spec Gate FAIL，剩余续接已获授权",
-      "status": "pending"
+      "label": "当前：冻结Spec受影响Gate PASS；不是Test或产品验收",
+      "status": "completed"
     },
     {
       "id": "current_tdd",
@@ -106,7 +99,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "修订唯一执行政策与状态机引用，制作R0最小续接文档；发布后手动转发，不写Mini正式规范或派发生产角色。"
+      "activation": "用户风险处置后直接完成只读Spec复核和治理补充；不派发生产角色。发布后由用户转发原Mini任务，Mini接收未确认。"
     },
     {
       "id": "d05_reviewer",
@@ -141,14 +134,14 @@
       "label": "Spec Agent",
       "model": "requested gpt-5.6-sol / xhigh; runtime configuration not independently echoed",
       "status": "waiting",
-      "activation": "Reslice/Incremental/Directed各1/1保留；授权Interrupted Spec Resumption001完成原被中断assignment的补充回执。待固定接收后fresh调用同一正式Spec角色/R2 xhigh；无新实质返工额度。"
+      "activation": "Interrupted补充已完成；Mini报告静态闭合，原历史1/1不变。没有新增Spec派发权限。"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra / R2 xhigh",
       "status": "waiting",
-      "activation": "额外纠正0/2未用且暂停；本次续接仅到Spec Gate及回执，PASS也不释放Test。"
+      "activation": "仅原Mini任务核对并采纳本固定补充后可派发U1.1 Test；额外纠正0/2全批共享，不重置旧FOUR/Recovery2/2；无当前运行声明。"
     },
     {
       "id": "juaner_worker",
@@ -233,6 +226,13 @@
       "model": "default support Agent / inherited model / requested R2 xhigh; effective tuple not echoed",
       "status": "complete",
       "activation": "原NEEDS_FIX仅续接计数表述；Controller定向改为保留原BLOCKED/1/1并追加完成回执，已读回闭合。其余范围检查通过，ponytail无新增机制；非Product Plan Gate或Spec Gate。"
+    },
+    {
+      "id": "static_disposition_spec_review_001",
+      "label": "Read-only support review — interrupted",
+      "model": "default support Agent / inherited model / requested R2 xhigh",
+      "status": "blocked",
+      "activation": "只读边界被错误shell引用破坏，实际触发本机node --test/npm run；已停止，无内容/Gate结论。Controller负责新事故处置。 用户已接受披露缺口并授权Controller直接完成后续复核；该Agent结果仍不提供PASS，未重新派发。"
     }
   ],
   "metrics": [
@@ -693,6 +693,30 @@
       "label": "Controller匹配当前942b670、最新31源/副本及19保护资产；只读身份核对",
       "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/interrupted-spec-resumption-intake-001.json",
       "status": "verified"
+    },
+    {
+      "id": "EVD-STATIC-DIAGNOSTIC-CONTROLLER-INCIDENT-001",
+      "label": "MacBook误执行、精确进程止损及未决影响；不是验证PASS",
+      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/static-diagnostic-controller-incident-001.json",
+      "status": "present"
+    },
+    {
+      "id": "EVD-STATIC-DIAGNOSTIC-INTAKE-001",
+      "label": "新鲜31源/副本和19保护资产匹配，仅身份核验",
+      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/static-diagnostic-disposition-intake-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-STATIC-DIAGNOSTIC-DISPOSITION-001",
+      "label": "用户事故残余风险接受、Mini超额处置及后续边界；需固定接收",
+      "path": "docs/planning/2026-09-20/xanthil-desktop-static-diagnostic-disposition-001.md",
+      "status": "present"
+    },
+    {
+      "id": "EVD-STATIC-DIAGNOSTIC-SPEC-REVIEW-001",
+      "label": "Controller受影响Spec Gate PASS；静态内容审查，不是RED/GREEN或产品PASS",
+      "path": "docs/planning/2026-09-20/reviews/static-diagnostic-spec-review-001.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -725,9 +749,15 @@
       "label": "可点击 UI 的模拟状态被误读为真实产品能力",
       "level": "high",
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
+    },
+    {
+      "id": "RSK-CONTROLLER-STATIC-REVIEW-INCIDENT",
+      "label": "MacBook误执行的历史环境/完整测试结果及旧日志身份未知",
+      "level": "medium",
+      "mitigation": "用户已接受披露的残余证据缺口并结束有界调查；原记录和现场保留，不清理、不重放、不宣称全部副作用为零、不把事故结果作为Gate证据。"
     }
   ],
-  "updated_at": "2026-09-19T16:17:42.498Z",
+  "updated_at": "2026-09-19T23:36:16.534Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

@@ -133,7 +133,8 @@ validation scripts, then repeat the affected authorized operation, when:
 - the operation is read-only or task-local, reversible and known safe to repeat;
   its previous side effects are understood before another attempt.
 
-Allow at most three correction-and-verification rounds for the same issue,
+Except for the low-risk static reading defined below, allow at most three
+correction-and-verification rounds for the same issue,
 counted in the existing stage record across sessions and amendments; each round
 must narrow the cause or resolve it. Stop on no progress, exhaustion, unknown
 side effects or any condition above becoming false. A successful operation is
@@ -157,6 +158,42 @@ frozen batch adopts it through a user-approved amendment naming that batch;
 historical one-use or exhausted approvals do not silently reopen. Other
 explicit validation budgets and scope stop lines remain binding.
 
+### Low-risk Static Reading
+
+On 2026-09-20 the user approved a risk distinction for command syntax, quoting,
+text-location and extraction corrections. The coordinator may resolve these
+locally, without a fixed three-attempt escalation or charging a substantive
+Spec/Test/Worker rework allowance, only when the entire operation:
+
+- reads already authorized local text or metadata with ordinary utilities or
+  a reviewed text-only parser/hash; it does not import or execute project code;
+- has understood effects and no writes except already authorized evidence
+  recording, no network/provider call, privilege, host/configuration change,
+  temporary-file mutation, product execution or test/build/install operation;
+- preserves the input authority, required assertion and evidence standard.
+
+Classify by actual commands and effects, not a "diagnostic" label. Project
+syntax checks (such as `node --check`), fixture-health, contract, RED/GREEN,
+integration and GUI validation commands
+remain subject to their existing validation/correction budgets. A text-table
+comparison is static evidence only; empty extraction or an outer exit zero is
+not proof of the intended assertion or product behavior. A real content
+difference remains a finding; correcting extraction cannot narrow the required
+comparison to conceal it.
+
+Use the existing role brief and stage/evidence records; the executing role must
+know this boundary before it starts. Record failed attempts and their outcomes,
+then return to the original task when resolved. Repeated guesses without a
+narrowing cause or new evidence are no progress: stop and escalate rather than
+loop indefinitely. Unknown effects, authority changes or genuine content/Gate
+findings still stop. Do not replay a successful check or lost historical process
+to repair its record. No new tool, ledger or approval per static read is required.
+
+This classification applies prospectively. Frozen packages adopt it explicitly;
+past excess and exhausted allowances keep their original records and require
+their stated disposition. It never retroactively makes an unauthorized attempt
+compliant or relaxes product tests, assertions, role isolation or safety Gates.
+
 ### Execution Accounting and Mistaken Pauses
 
 On 2026-09-20 the user approved the following clarification. Keep the three
@@ -168,8 +205,9 @@ categories separate in the existing stage record; no new ledger is required.
 | Execution correction round | An actual correction of the same identified execution issue plus its verification attempt. Record cause, change, result and progress, cumulatively under the existing limit. Similar wording in old errors does not prove the same issue or consumed rounds. |
 | Substantive role return/rework | A completed work-package return or an actual revision after review under the role budget. Progress messages, evidence clarification and a coordinator-forced partial return are not automatically a new substantive revision. |
 
-The existing three-round execution limit and no-progress/unknown-effect stop
-lines remain. Before declaring exhaustion or no progress, the coordinator
+The three-round limit applies outside Low-risk Static Reading; the
+no-progress/unknown-effect stop lines apply to both. Before declaring
+exhaustion or no progress, the coordinator
 checks the retained sequence, actual correction attempts and latest result.
 A corrected read that already succeeded is progress, not a reason to rerun it
 or to terminate an otherwise authorized stage. A brief deviation remains

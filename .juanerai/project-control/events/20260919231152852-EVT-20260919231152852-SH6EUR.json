@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919231152852-SH6EUR",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-19T23:11:52.852Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "MacBook只读审查误执行已精确止损；新影响未决，草稿不发布，Spec Gate和Test保持锁定",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

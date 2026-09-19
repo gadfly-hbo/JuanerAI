@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919233616535-2KFVOX",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T23:36:16.535Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户接受披露残余未知；Controller受影响Spec Gate PASS，待固定发布及原Mini手动接收，Test尚未运行",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

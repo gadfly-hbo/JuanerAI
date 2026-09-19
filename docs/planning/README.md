@@ -176,6 +176,22 @@ awaits fixed publication/manual forwarding and verified Mini intake. After the
 completion addendum, whole-package review and affected Spec Gate, stop even on
 PASS: Test/Worker/Validator are not released. No new product or UI Gate is needed.
 
+Mini subsequently adopted `f2cd897a6829ce6879d12057a3cf8e42b0708a08` and
+completed F1–F6 static closure, but retained Spec Gate BLOCKED because five
+actual static-extraction corrections exceeded the then-applicable limit.
+The user authorized [Static Diagnostic Disposition 001](2026-09-20/xanthil-desktop-static-diagnostic-disposition-001.md),
+including prospective risk-based static-reading handling without resetting
+substantive allowances. During MacBook review a separate accidental local
+test/npm execution occurred; its original evidence and unknowns remain. After
+a bounded read-only audit, the user explicitly accepted the disclosed residual
+uncertainty and authorized governance/review/package completion without cleanup
+or replay. [Resumed Controller review](2026-09-20/reviews/static-diagnostic-spec-review-001.md)
+records affected Spec Gate PASS for the exact frozen input, not product PASS.
+The supplement awaits fixed Git publication and manual intake by the original
+Mini task. Only verified unchanged intake and current Gate adoption release
+U1.1 Test; no new Spec return, historical-budget reset, early Worker, new task,
+automatic message, old-WIP operation or replay of successful preparation.
+
 Current research-reference scope:
 
 - PX-2026-001/002: hypothesis-first AnalysisOps human-workbench and real local vertical-integration principles;

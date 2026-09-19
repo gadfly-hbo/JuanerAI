@@ -41,7 +41,9 @@ to `UI_CONTRACT` and requires a new `USER_UI_GATE` verdict. One new execution
 task owns one execution batch; normal in-batch stage progression and exception
 handling remain in that task rather than creating another task per Gate.
 
-Within a semi-automatic stage, eligible execution mistakes use
+Within a semi-automatic stage, first classify pure static reading under
+`docs/governance/product-change-execution-policy.md#low-risk-static-reading`.
+Other eligible execution mistakes use
 `docs/governance/product-change-execution-policy.md#bounded-execution-self-correction`.
 Successful bounded correction returns to the interrupted check in the same
 state; it creates no new lifecycle state or Gate waiver. Before charging a
