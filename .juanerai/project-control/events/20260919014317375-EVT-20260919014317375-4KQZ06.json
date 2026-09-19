@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919014317375-4KQZ06",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-09-19T01:43:17.375Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "已确认 Mini Spec 异常回执并完成依赖/结构整体决策包及独立 Readiness PASS；等待用户整体批准，未执行准备或生产。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

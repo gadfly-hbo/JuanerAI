@@ -14,8 +14,27 @@ The same execution batch also uses the user-approved
 [Routing Amendment 001](2026-09-19/xanthil-desktop-first-product-change-routing-amendment-001.md):
 ordinary tasks use `high`, R2 tasks use `xhigh`, with no role-local effort pin.
 The original v1.0 package bytes remain frozen. The latest confirmed receipt
-has Stage 0 and Stage 1 PASS and Stage 2 not entered; continuation requires
-Mac mini to adopt the amendment and expose the correct effective role route.
+records Stage 0 and Stage 1 PASS, adoption of commit `ed3ac662`, and completion
+of a formally dispatched `juaner_spec / xhigh` draft. The tool did not
+independently echo actual runtime configuration; that evidence limit remains.
+Stage 2 is now stopped at `DEPENDENCY_DECISION_REQUIRED`, not a routing blocker.
+The twelve Mac mini OpenSpec drafts are uncommitted and have not passed Spec Gate.
+
+The user agreed to the Controller's Forge/Vite, local arm64 `.app`, SQLite plus
+immutable-artifact, current-projection/history and opaque Session-root directions,
+including the proposed 300/30-second budgets and zero automatic retries.
+[Dependency and Structure Decision Package v1.0](2026-09-19/xanthil-desktop-dependency-structure-decision-v1.0.md)
+consolidates the remaining exact dependencies, logical records, publication and
+recovery contract, packaged E2E driver and staged lock/install permissions for
+one overall approval. Fresh [Readiness Review 002](2026-09-19/reviews/dependency-structure-readiness-review-002.md)
+returned PASS after withdrawing an incorrect new-task finding on formal-policy
+readback. On 2026-09-19 the user explicitly confirmed all twelve decisions,
+including the bounded P1–P5 preparation permissions and their stop lines.
+This is not Spec Gate PASS or immediate implementation authority. MacBook
+records and publishes the supplement for manual forwarding to the existing
+`纵切-1.0` task; Mac mini adopts it by fixed-commit ff-only intake while preserving
+its twelve drafts, then resumes Stage 2. The accepted old-WIP disposition is not
+replayed and does not make the old Change CLOSED.
 
 Current research-reference scope:
 

@@ -6,23 +6,16 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_STAGE2_ROUTE_CORRECTION_PENDING",
-    "label": "首个 Desktop Change 路由修正已授权／待 Mac mini 采纳验证",
+    "id": "FIRST_DESKTOP_DECISION_APPROVED_AWAITING_INTAKE",
+    "label": "首个 Desktop 决策已整体批准／待固定 Git 补充接收",
     "ordinal": 6,
     "total": 8
   },
-  "health": "blocked",
-  "summary": "已接收并核对 STAGE2_ROUTE_PREFLIGHT_BLOCKED_R2_ROLE_UNAVAILABLE：Stage 0/1 PASS，Stage 2 未进入。用户已授权普通任务 high、R2 xhigh；MacBook 修正角色 effort 固定值及派发说明，原冻结包不变。远端尚未采纳或验证新路由，不宣称已解除阻塞或派发角色。",
-  "current_objective": "发布 Routing Amendment 001，由用户手动转发至原 Mac mini 任务；采纳精确 Git 修订并确认实际可用的 R2 xhigh 路由后续接 Stage 2。",
-  "next_action": "按路由补充说明核对并 ff-only 采纳固定提交；复核实际加载的四个角色允许 xhigh，满足后从 Stage 2 继续。若元数据仍旧则停止并在原任务重新加载／续接，不降级、不创建替代角色或新任务、不重复 WIP sudo 或 pointer 处置。",
-  "blockers": [
-    {
-      "id": "STAGE2_ROUTE_PREFLIGHT_BLOCKED_R2_ROLE_UNAVAILABLE",
-      "label": "远端 R2 路由待修订采纳与实际可用性核验",
-      "detail": "已定位角色 TOML 将 effort 固定为 medium。已授权移除固定值，普通 high / R2 xhigh；当前仅修订配置，Mac mini 有效路由未验证。Stage 0/1 的既有 PASS 保留。",
-      "owner": "MacBook Controller / Mac mini execution coordinator"
-    }
-  ],
+  "health": "active",
+  "summary": "用户于 2026-09-19 明确确认 XDESK-DECISION-001 第 1–12 项；独立 Readiness Review 002 PASS。MacBook 登记批准并发布补充，供手动转发。Mini 最近确认仍在 ed3ac662，只有本 Change 12 份未跟踪草案、无 tracked/staged 改动；尚未采纳本补充，未证明依赖/SQLite/E2E 兼容性，Spec Gate 未过。",
+  "current_objective": "冻结并发布已批准决策补充，供用户手动转发至原 Mini 任务；接收端保留全部草案，按同批次固定提交 ff-only 接收后继续 Stage 2。",
+  "next_action": "用户转发 MacBook 发布回执到纵切-1.0（01a0b45a-13ad-7b92-a2b4-cdde980558e1）。Mini 按决策包 §15 核对身份及 12 份草案 hash，安全 ff-only 接收后按 §11 进行正式 Spec 修订与 P1–P3；成功则沿原包继续正常 Gates，异常返回 MacBook。不要新建任务或重复 WIP 处置。",
+  "blockers": [],
   "milestones": [
     {
       "id": "handoff_intake",
@@ -82,7 +75,7 @@
     {
       "id": "current_openspec_gate",
       "label": "当前：OpenSpec / Spec Gate",
-      "status": "locked"
+      "status": "pending"
     },
     {
       "id": "current_tdd",
@@ -106,7 +99,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "配置与说明修正由 MacBook 完成；待 Git 发布后人工转发。MacBook 不执行正式生产角色。"
+      "activation": "仅在 MacBook 登记整体批准、Git 发布与人工转发回执；不执行 Mini 的安装、探针或正式生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -139,9 +132,9 @@
     {
       "id": "juaner_spec",
       "label": "Spec Agent",
-      "model": "gpt-5.6-sol / high default; R2 xhigh (not dispatched)",
-      "status": "locked",
-      "activation": "Stage 0/1 PASS；等待原 Mac mini 任务采纳 Routing Amendment 001 并确认实际可用的 R2 xhigh 路由，随后才可进入 Stage 2。"
+      "model": "requested gpt-5.6-sol / xhigh; runtime configuration not independently echoed",
+      "status": "waiting",
+      "activation": "最近 Mini 正式 draft return 已确认；等待接收固定 Git 决策补充，再在原任务修订 Spec。不是正在运行或 Spec Gate PASS。"
     },
     {
       "id": "juaner_test",
@@ -177,6 +170,20 @@
       "model": "gpt-6-astra / high (R2: persistence, recovery, Agent Runtime and provider-call lifecycle)",
       "status": "complete",
       "activation": "Fresh Review 002 PASS; no writes, external study, OpenSpec or implementation authority."
+    },
+    {
+      "id": "dependency_structure_reviewer_001",
+      "label": "Dependency/Structure Readiness Reviewer 001",
+      "model": "default support Agent / inherited model / requested xhigh",
+      "status": "complete",
+      "activation": "NEEDS_CLARIFICATION：Electron 二进制校验锚；Controller 已补，原 verdict 保留。"
+    },
+    {
+      "id": "dependency_structure_reviewer_002",
+      "label": "Fresh Dependency/Structure Readiness Reviewer 002",
+      "model": "default support Agent / inherited model / requested xhigh",
+      "status": "complete",
+      "activation": "PASS：定向读取现行政策后撤销错误的新任务 finding；仅规划支持，无生产权限。"
     }
   ],
   "metrics": [
@@ -424,9 +431,33 @@
     },
     {
       "id": "EVD-ROUTING-AMENDMENT-001",
-      "label": "用户批准：普通 high / R2 xhigh；配置修正与原批次最小续执行说明，远端未验证",
+      "label": "Routing Amendment 001 已由 Mini ff-only 采纳；正式 Spec xhigh 请求接受并返回，运行配置无独立回显",
       "path": "docs/planning/2026-09-19/xanthil-desktop-first-product-change-routing-amendment-001.md",
-      "status": "present"
+      "status": "verified"
+    },
+    {
+      "id": "EVD-STAGE2-DEPENDENCY-EXCEPTION-20260919",
+      "label": "Mac mini Stage 2 依赖异常：MacBook 只读原文及大小/hash 核对；非持续在线证明",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/STAGE2_DEPENDENCY_EXCEPTION-20260919T010800Z.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-XDESK-DECISION-001",
+      "label": "用户整体批准 XDESK-DECISION-001 第 1–12 项；待 Git 补充接收，非 Spec Gate PASS",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-dependency-structure-decision-v1.0.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-XDESK-DECISION-REVIEW-001",
+      "label": "Readiness Review 001 NEEDS_CLARIFICATION 历史及最小修订",
+      "path": "docs/planning/2026-09-19/reviews/dependency-structure-readiness-review-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-XDESK-DECISION-REVIEW-002",
+      "label": "Fresh Readiness Review 002 PASS，错误身份 finding 已撤销；非 Spec Gate",
+      "path": "docs/planning/2026-09-19/reviews/dependency-structure-readiness-review-002.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -461,7 +492,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-19T00:32:40.297Z",
+  "updated_at": "2026-09-19T01:48:20.779Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"
