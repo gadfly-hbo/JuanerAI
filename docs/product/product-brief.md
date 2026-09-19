@@ -6,7 +6,7 @@ JuanerAI helps data analysts and enterprise decision users move beyond static BI
 
 ## Product Family
 
-JuanerAI is the commercial project family. Xanthil is its first product. Existing features and reusable Domain Packs, Model Packs, Runtime, data, semantic, asset and governance foundations remain available. [Product Development Blueprint v1.2](../planning/2026-09-19/juanerai-product-development-blueprint-v1.2.md) is the current highest development-execution guideline, grounded in JuanerAI Whitepaper v3.3.4 as its core product reference and the commercialization charter.
+JuanerAI is the commercial project family. Xanthil is its first product. Existing features and reusable Domain Packs, Model Packs, Runtime, data, semantic, asset and governance foundations remain available. [Product Development Blueprint v1.3](../planning/2026-09-19/juanerai-product-development-blueprint-v1.3.md) is the current highest development-execution guideline, grounded in JuanerAI Whitepaper v3.3.4 as its core product reference and the commercialization charter.
 
 ## Users
 
@@ -65,7 +65,9 @@ The withdrawn plan sequenced Model Pack product work after Xanthil Desktop Data 
 
 ## Current Direction and Gate
 
-Blueprint v1.2 preserves the existing first vertical slice and frozen production batch. It adds the Whitepaper v3.3.4 adoption mechanism, OSM/PIM positioning, value-evidence layers and the rule for selecting later Changes from the smallest unmet user outcome. The default later candidate is repeated use of the same Decision Case with a new authorized period, new revision, rerun, evidence comparison and versioned report. That candidate is not an authorized Change and cannot start before current technical acceptance, separately approved value validation and its own UI/OpenSpec/TDD Gates.
+Blueprint v1.3 preserves the existing first vertical slice and frozen production batch. Its four core views refine later development: full six-plus-two capability coverage, phased vertical-slice delivery, front-end/shared-business/back-end responsibility, and competitive-value hypotheses with evidence. Business-analysis compilation through Analysis Plan IR is explicit across these views. Deferred capabilities retain a target and revisit point; claimed competitive advantage requires comparison, not feature presence.
+
+Change selection combines the smallest unmet user outcome, full-landscape gaps, dependency readiness and value evidence. The default later candidate remains reuse of the same Decision Case with a new authorized period, new revision, rerun, evidence comparison and versioned report. It is not an authorized Change; current technical acceptance, separately approved value validation and its own UI/OpenSpec/TDD Gates remain applicable. Save/reopen/rerun foundations are reused, not built a second time. The following execution checkpoint is retained history, not a live Mini observation by this Blueprint task.
 
 Current return point: Mini adopted `672f2b23d60248f817fe0b845761f61a125dbf37`,
 reported P1/P2/P3 PASS and stopped before Spec Gate on the Run contract conflict.

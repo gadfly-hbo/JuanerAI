@@ -13,7 +13,7 @@ The product-definition and commercialization charter and the core reference for 
 _Avoid_: executable roadmap, implementation authorization, proof of completion
 
 **Product Development Blueprint**:
-JuanerAI's highest product-development execution guideline. It translates approved Whitepaper direction into product phases, vertical-slice selection, Gates and evidence for advancement. Blueprint v1.2 is current; v1.0/v1.1 remain history.
+JuanerAI's highest product-development execution guideline. Its four core views connect capability coverage, phased vertical delivery, module responsibility and competitive-value evidence. Blueprint v1.3 is current; v1.0/v1.1/v1.2 remain history.
 _Avoid_: Whitepaper copy, OpenSpec, automatic Change authorization
 
 **Xanthil**:
@@ -55,6 +55,10 @@ _Avoid_: unrestricted browsing, source-free synthesis
 **Autonomous Exploration**:
 An analysis mode that identifies candidate anomalies, structures or opportunities for later confirmation without silently promoting them to accepted Findings or Objectives.
 _Avoid_: automatic truth, automatic target creation
+
+**Analysis Plan IR (Intermediate Representation)**:
+The structured execution-and-verification contract for an analysis, constrained by its Analysis Contract and permitted versioned Context/Binding. It expresses how the task is executed, checked and delivered; the user inspects its meaning through readable UI. Business-analysis compilation turns business intent into this enforceable plan and its executable materialization.
+_Avoid_: CPU machine language, prompt, generated SQL alone, cosmetic JSON, automatic execution authority
 
 ## Decision Loop
 
