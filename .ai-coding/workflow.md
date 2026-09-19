@@ -10,7 +10,7 @@
 6. Execution Package Freeze: MacBook creates the complete bounded package, commits and pushes its work branch, reads back the exact remote branch/commit/tree/package hash, and stops writing that branch.
 7. New Mac mini Session Dispatch: after transfer authorization, MacBook creates one new Codex task on the saved Mac mini JuanerAI project and sends the frozen package as the initial message. Record the new task/thread, host, project, repository, and delivery status. A pending task remains in this step; failed or ambiguous delivery becomes `BLOCKED_SESSION_DISPATCH`.
 8. Specification: the new Mac mini execution task dispatches `juaner_spec` and defines atomic Requirements and observable Acceptance Criteria from the approved UI Contract and product decisions.
-9. Design: define boundaries, contracts, failures, security, compatibility, and rollback.
+9. Design: define boundaries, contracts, failures, security, compatibility, and rollback. The Mac mini coordinator resolves eligible technical choices under `docs/governance/product-change-execution-policy.md#in-scope-technical-decision-authority`; decisions outside that boundary return to MacBook.
 10. Tasks: map every Task to Requirements, tests, allowed paths, and the approved UI Contract.
 11. Spec Gate: Controller-delegated coordinator verdict within the frozen package is `PASS`.
 12. Test Design: derive test cases from Acceptance Criteria and approved UI states.

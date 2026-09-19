@@ -40,7 +40,22 @@ Mac mini subsequently confirmed fixed-commit ff-only adoption of `10c1df3785cdfe
 
 The preceding Mini receipt confirmed ff-only adoption of `e93acbfcaf29adf112f6b8ff73668428a55d94cc`, configuration precheck and the sole P1 retry exit 0. The existing candidate lock is preserved; P1 source review stopped at `DEPENDENCY_PREFLIGHT_BLOCKED_NON_REGISTRY_SOURCE` for the fixed Electron node-gyp Git dependency. npm had already fetched its HTTPS codeload archive; that historical out-of-bound download remains disclosed. The user approved [Source and Execution Amendment 001](2026-09-19/xanthil-desktop-source-and-execution-amendment-001.md): only that repository/commit/HTTPS archive is excepted, and the batch adopts bounded execution self-correction under the durable execution policy. That supplement was published for manual intake and resumed review of the existing lock, not P1 regeneration. P1 graph review, P2/P3 and Spec Gate remain unverified; normal stage progression follows the original package after its checks pass.
 
-The latest receipt confirms ff-only adoption of `0b75194d1646b20b1c087863570009431d9e22ea` and the exact source exception. P1 reported no peer/Node 26 engine conflict, then stopped at `DEPENDENCY_PREFLIGHT_BLOCKED_BASELINE_INTEGRITY`: six retained Pi 0.84.2 child archives lack independent integrity values. Official registry metadata supplies all six SHA-512 values, but archive verification is not yet complete. The user approved [Baseline Integrity Amendment 001](2026-09-19/xanthil-desktop-baseline-integrity-amendment-001.md): verify only those exact archives and add only their six integrity fields to the isolated candidate lock, preserving every other field and the original lock. MacBook publishes this for manual intake by the same task; Mini then repeats read-only P1 review and continues the original stages when their Gates pass. No npm re-resolution, dependency upgrade or integrity waiver is authorized; repository lock adoption remains at P4.
+The preceding receipt confirms ff-only adoption of `0b75194d1646b20b1c087863570009431d9e22ea` and the exact source exception. P1 reported no peer/Node 26 engine conflict, then stopped at `DEPENDENCY_PREFLIGHT_BLOCKED_BASELINE_INTEGRITY`: six retained Pi 0.84.2 child archives lack independent integrity values. Official registry metadata supplies all six SHA-512 values, but archive verification is not yet complete. The user approved [Baseline Integrity Amendment 001](2026-09-19/xanthil-desktop-baseline-integrity-amendment-001.md): verify only those exact archives and add only their six integrity fields to the isolated candidate lock, preserving every other field and the original lock. MacBook publishes this for manual intake by the same task; Mini then repeats read-only P1 review and continues the original stages when their Gates pass. No npm re-resolution, dependency upgrade or integrity waiver is authorized; repository lock adoption remains at P4.
+
+Latest confirmed handoff: Mini adopted `672f2b23d60248f817fe0b845761f61a125dbf37`
+and reported six-archive/six-field and P1/P2/P3 PASS, then stopped at
+`BLOCKED_CONTRACT_DECISION_REQUIRED`: the old fixture/model-bound Run Store cannot
+truthfully hold the approved dual-CSV, no-model Run. MacBook read the receipt and
+matched its hash, and checked the source conflict; it has not independently
+rerun the dependency probes or accepted the product. The user approved standing
+in-scope technical decision authority and its application through
+[Technical Decision Amendment 001](2026-09-19/xanthil-desktop-technical-decision-amendment-001.md).
+Mini may close the minimal compatible Run adaptation through its existing
+Spec/Design/Gates, preserving separate Run evidence and old CLI/history behavior.
+Exact schema/version/path decisions inside approved modules no longer require
+individual MacBook approval. Intake by the same task is pending; Spec Gate, P4
+and product Test/RED/Worker remain unpassed. Original inputs and WIP history stay
+preserved; no new session or successful dependency-stage replay is required.
 
 Current research-reference scope:
 

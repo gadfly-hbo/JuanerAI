@@ -56,6 +56,16 @@ The withdrawn plan sequenced Model Pack product work after Xanthil Desktop Data 
 
 ## Current Direction and Gate
 
+Current return point: Mini adopted `672f2b23d60248f817fe0b845761f61a125dbf37`,
+reported P1/P2/P3 PASS and stopped before Spec Gate on the Run contract conflict.
+The user approved [Technical Decision Amendment 001](../planning/2026-09-19/xanthil-desktop-technical-decision-amendment-001.md):
+the batch adopts standing in-scope technical authority, including minimum
+compatible support for dual-CSV, no-model Run evidence. Product/UI semantics,
+separate Run artifacts, old CLI/history compatibility and all lifecycle Gates
+remain. MacBook verified the receipt identity and source conflict, not the full
+dependency evidence or product acceptance. The supplement awaits manual intake
+by the original Mini task; the chronology below is retained history.
+
 The user approved JuanerAI Product Development Blueprint v1.0 on 2026-09-18. The first vertical slice is a UI-first Xanthil Desktop Free membership-repurchase diagnosis Decision Case for non-technical users. The later v1.1 correction keeps this value endpoint but requires direct reuse of the accepted PX-2026-004 professional mode and PX-2026-006 quick/dual-mode product UI, including the visible Skill, Prompt, Fork, Subagent, report, Inspector/drawer and Session-navigation modules.
 
 The earlier UI Contract v1.0 Review 002 `PASS` became historical after the user corrected its incomplete Xanthil UI adoption boundary. The current Blueprint/UI Contract v1.1 package, full adoption map, state/closure matrix and self-contained visual plates received fresh Review 005 `PASS`; the user accepted the directly reused PX-2026-004/006 clickable UI on 2026-09-18. That UI Gate acceptance freezes the product-mode reference but does not claim real Session persistence, filesystem creation, Runtime/provider execution, or authorize production OpenSpec, implementation, dependencies, real provider calls, real data, user research or release.
@@ -64,4 +74,4 @@ The user subsequently retained `060_reports` and accepted the first-slice Sessio
 
 Preceding handoff: Mini received `e93acbfcaf29adf112f6b8ff73668428a55d94cc`; configuration precheck and the sole P1 retry exited 0. Review of the generated lock stopped on the fixed Electron node-gyp Git source, whose HTTPS archive npm had already downloaded outside the then registry-only boundary. The user approved [Source and Execution Amendment 001](../planning/2026-09-19/xanthil-desktop-source-and-execution-amendment-001.md), covering only that exact source and bounded development-execution self-correction. After that intake Mini resumed the existing lock review; P1 review, P2/P3 and Spec Gate are not yet PASS. This changes neither the product retry policy nor its UI, data, role or acceptance boundaries.
 
-Latest confirmed handoff: Mini received `0b75194d1646b20b1c087863570009431d9e22ea`, matched the source exception and stopped before P1 PASS on six baseline Pi child-package integrity omissions. The user approved [Baseline Integrity Amendment 001](../planning/2026-09-19/xanthil-desktop-baseline-integrity-amendment-001.md): verify the six exact 0.84.2 archives and add only their integrity fields to the isolated candidate lock. All versions, sources and dependency relationships stay fixed; repository lock adoption remains at P4. Archive verification and the later Gates await Mini evidence. This is not a new product plan or a validation waiver.
+Preceding handoff: Mini received `0b75194d1646b20b1c087863570009431d9e22ea`, matched the source exception and stopped before P1 PASS on six baseline Pi child-package integrity omissions. The user approved [Baseline Integrity Amendment 001](../planning/2026-09-19/xanthil-desktop-baseline-integrity-amendment-001.md): verify the six exact 0.84.2 archives and add only their integrity fields to the isolated candidate lock. All versions, sources and dependency relationships stay fixed; repository lock adoption remains at P4. Archive verification and the later Gates await Mini evidence. This is not a new product plan or a validation waiver.

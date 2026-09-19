@@ -58,10 +58,10 @@ installed Host Loop's signature and safety checks.
   The MacBook-side path is Request -> Explore -> Proposal -> UI Contract ->
   User UI Gate -> execution-package freeze -> new Mac mini task dispatch.
   Normal successful Mac mini progression requires neither a cross-device message nor
-  renewed user approval at every Gate. This delegates bounded stage execution,
-  not product, architecture, shared-contract or scope decisions. Any required
-  decision outside the approved inputs returns to MacBook; the executor must
-  not invent it or waive a Gate.
+  renewed user approval at every Gate. This delegates bounded stage execution
+  and the in-scope technical decisions defined below, not new product meaning
+  or architecture/safety boundaries. Decisions outside that authority return
+  to MacBook; the executor must not invent them or waive a Gate.
 - A newly authorized execution batch gets a dedicated new Mac mini task. The
   Controller resolves the saved Mac mini JuanerAI project and expected familiar
   repository from current project configuration and uses that saved-project
@@ -83,7 +83,7 @@ installed Host Loop's signature and safety checks.
 - At completion, Mac mini stops and emits one delivery receipt; the user
   forwards it once to MacBook. MacBook obtains the code through Git and owns
   review, final acceptance, authorized merge and archive. An unresolved failure,
-  changed scope/contract or missing authority causes an early exception handoff
+  out-of-scope decision or missing authority causes an early exception handoff
   instead. The dedicated new-session dispatch above is the approved default;
   its failure uses the bounded manual fallback and does not justify new
   automation development. Reuse approved
@@ -143,9 +143,11 @@ the existing verification/traceability/tasks or handoff records. A resolved
 execution error stays in its current stage and requires no separate package,
 new task, per-attempt user relay, scheduler or repair framework.
 
-Return to MacBook for product/contract changes, dependency version/source or
-script-permission changes, real data/provider access, host privileges,
-destructive actions or unknown state. This permission does not let a coordinator
+Technical design or contract decisions use the separate delegation below;
+they are not execution-script corrections. Return to MacBook for decisions
+outside that delegation, dependency version/source or script-permission changes,
+real data/provider access, host privileges, destructive actions or unknown state.
+This permission does not let a coordinator
 write production code or permanent tests in place of a required role, weaken
 tests/Gates, replay non-idempotent business operations or change the product's
 own retry policy. It does not apply to signed Host Loop recovery.
@@ -154,6 +156,58 @@ New packages inherit this rule unless they explicitly narrow it. An already
 frozen batch adopts it through a user-approved amendment naming that batch;
 historical one-use or exhausted approvals do not silently reopen. Other
 explicit validation budgets and scope stop lines remain binding.
+
+### In-scope Technical Decision Authority
+
+On 2026-09-19 the user approved standing authority for the Mac mini execution
+coordinator to decide how to implement an already approved product outcome.
+A contract/schema/Port label alone is not a MacBook escalation trigger.
+The coordinator may approve necessary internal types, fields, versioning,
+interfaces, storage mappings and minimal Port/Adapter adaptations, including
+additive shared-contract deltas, when all of the following hold:
+
+- the decision implements named approved Requirements/AC and preserves the
+  approved UI workflow, business meaning, defaults, failure/recovery semantics,
+  data/evidence authority and acceptance obligations;
+- existing supported behavior, consumers, CLI and historical records remain
+  compatible; the new path is explicit and does not silently replace an old
+  contract, fabricate provenance, require historical migration or delete data;
+- it stays within the approved architecture and module roots, dependencies,
+  permissions and external effects, and introduces only what this Change needs.
+
+Exact filenames inside approved candidate roots may be selected and frozen by
+Spec and the coordinator before the relevant role is dispatched. This cannot
+override an explicit forbidden path or widen to another module, runtime,
+product or enterprise capability. Missing business meaning is not an internal
+field-design choice. Incompatibility, migration, changed product/UI or evidence
+semantics, security/architecture boundaries, new dependency versions/sources or
+scripts, real data/provider access and host/destructive operations outside the
+package still require MacBook/user approval.
+
+Use the existing Spec/Design and verification/traceability/task records: identify
+the approved need, minimum delta, affected consumers/paths, compatibility and
+required evidence, then record the coordinator's delegated decision. No new
+approval document, ledger, user relay or MacBook amendment is required for each
+eligible choice. The fresh Spec role writes formal specification; the
+coordinator does not substitute for Spec, Test, Worker or Validator.
+
+Before implementation, close the delta through the existing ponytail review
+when applicable and Spec Gate, then Test/valid RED and TDD_READY. If a later
+role discovers a contract gap, freeze affected implementation and return to
+Spec/Design locally; refresh affected Gate verdicts, tests and frozen briefs
+before resuming. Preserve failed evidence and required assertions. This is not
+permission for a Worker to change its contract, a Test role to weaken acceptance,
+or a coordinator to count tool failure as RED. Compatibility is proved by the
+affected old/new contract suites and independent Validator, not asserted by the
+word "additive". Existing correction/complexity budgets and stop lines remain.
+
+Routine in-scope implementation defects use the existing Test/Worker correction
+path, not automatic MacBook escalation. Only unresolved or out-of-authority
+decisions and exhausted/unsafe correction return. MacBook retains final review,
+acceptance, risk waivers, integration and authority expansion. Signed Host Loop
+operation is unchanged. New semi-automatic packages inherit this rule unless
+explicitly narrowed; an already frozen batch adopts it through an approved
+amendment naming that batch, without rewriting its historical inputs.
 
 ### Retained Gates and Stage Records
 
@@ -166,7 +220,7 @@ delegates the applicable Controller stage checks, including Spec Gate,
 TDD_READY and Test Asset Retirement, within the frozen UI Contract and product
 decisions. It records
 each verdict and its authority before dispatching the next role. Missing
-delegation or a check requiring a new product/contract decision returns to
+delegation or a decision outside the in-scope technical authority returns to
 MacBook. Final acceptance, risk waivers and integration remain with MacBook
 Controller and the user as applicable.
 
@@ -215,8 +269,9 @@ Acceptance must not rely on a locator the receiving reviewer cannot access.
 
 ## Authority and Global WIP
 
-The MacBook Controller is the sole decision authority and the Mac mini is the
-sole current-Change executor. Global WIP is exactly 1.
+The MacBook Controller retains product and final-acceptance authority; Mac mini
+is the sole current-Change executor and exercises only the delegated technical
+authority above in semi-automatic mode. Global WIP is exactly 1.
 `active-change.json.active_change_id` is the sole WIP authority. Task-tracker
 records, scheduling facilities, Ledger, Evidence Ref, branches, PRs, and scans
 are observational only and never infer an empty slot.

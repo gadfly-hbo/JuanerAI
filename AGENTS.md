@@ -103,6 +103,7 @@ When a Change adds, changes, or removes tests, fixtures, helpers, doubles, mocks
 ## Roles
 
 - Controller owns product intent, architecture, terminology, shared contracts, task boundaries, integration, acceptance, and user communication.
+- In semi-automatic batches, the Mac mini coordinator exercises the delegated in-scope technical decision authority in `docs/governance/product-change-execution-policy.md#in-scope-technical-decision-authority`; MacBook retains decisions outside that boundary and final acceptance.
 - Worker implements only an approved brief and allowed paths.
 - Validator uses an independent read-only context and returns evidence and a verdict; it does not implement or approve.
 - Test author and implementation worker remain logically isolated.
@@ -147,8 +148,8 @@ Read docs/architecture/data-authority.md and docs/architecture/security-boundari
 ## Scope and Contracts
 
 - Domain-private changes stay inside the approved domain.
-- Shared types, package manifests, APIs, schemas, events, identities, persistence, and deployment contracts require Controller approval before implementation.
-- Contract drift produces docs/templates/CONTRACT_CHANGE_REQUEST.template.md and blocks dependent work.
+- Shared types, package manifests, APIs, schemas, events, identities, persistence, and deployment contracts require approval before implementation. The delegated Mac mini coordinator may approve eligible technical deltas under the execution policy; this does not expand dependency or external-operation permissions.
+- Contract drift stops dependent implementation and returns to Spec/Design. Eligible technical deltas are resolved locally under that policy; out-of-scope decisions use docs/templates/CONTRACT_CHANGE_REQUEST.template.md and return to MacBook.
 - Unknown business facts, fields, enum values, labels, IDs, thresholds, defaults, and model behavior remain pending rather than invented.
 
 ## Validation and Completion

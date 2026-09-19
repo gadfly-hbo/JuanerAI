@@ -27,7 +27,7 @@ Domains are boundaries, not permanent assignees or repositories. A Product Modul
 - Test role may write tests derived from approved Acceptance Criteria, not production implementation or approved specs.
 - Worker may write only production paths named in an approved brief, not tests or specs unless explicitly granted for a low-risk exception.
 - Validator is independent and read-only, runs approved checks, and returns evidence plus PASS, FAIL, or BLOCKED.
-- Controller is the only role that accepts contract changes and the final handoff.
+- The Mac mini coordinator may accept in-scope technical contract deltas under the execution policy; formal roles propose, test, implement or verify them within their separate permissions. MacBook Controller accepts the final handoff.
 
 The configured project agents are juaner_spec, juaner_test, juaner_worker, and juaner_validator. Their models, reasoning effort, sandbox, activation states, and override rules are owned by docs/governance/agent-model-routing.md and .codex/agents/.
 
@@ -72,7 +72,7 @@ Task Bus work must reference an approved Change and may not redefine Requirement
 
 ## Cross-Domain Changes
 
-Shared contracts are Controller-owned. A domain that discovers contract drift stops the dependent branch and submits docs/templates/CONTRACT_CHANGE_REQUEST.template.md.
+Shared contracts remain Controller-owned. Contract drift stops dependent implementation and returns to Spec/Design. Apply `docs/governance/product-change-execution-policy.md#in-scope-technical-decision-authority`: the delegated Mac mini coordinator resolves eligible deltas locally; decisions outside that authority return to MacBook with docs/templates/CONTRACT_CHANGE_REQUEST.template.md.
 
 Parallel work requires frozen contracts and non-overlapping write paths. Same-worktree implementation is serial by default. Independent validation uses a fresh role context and a frozen implementation reference.
 

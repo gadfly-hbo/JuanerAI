@@ -44,9 +44,13 @@ handling remain in that task rather than creating another task per Gate.
 Within a semi-automatic stage, eligible execution mistakes use
 `docs/governance/product-change-execution-policy.md#bounded-execution-self-correction`.
 Successful bounded correction returns to the interrupted check in the same
-state; it creates no new lifecycle state or Gate waiver. Ineligible errors,
-unknown effects, no progress or an exhausted budget enter BLOCKED and return
-to MacBook with the existing stage records and preserved evidence.
+state; it creates no new lifecycle state or Gate waiver. Technical decisions
+use `docs/governance/product-change-execution-policy.md#in-scope-technical-decision-authority`:
+eligible contract gaps return to SPECIFICATION/DESIGN in the same Mac mini task,
+with dependent implementation frozen and affected Gates repeated before resuming.
+A contract label alone does not require MacBook handoff. Out-of-authority
+decisions, unknown effects, no progress or an exhausted applicable budget enter
+BLOCKED and return to MacBook with the existing records and preserved evidence.
 
 BLOCKED preserves evidence and names one concrete release condition. UI, spec,
 test, implementation, or contract conflict returns to the owning earlier state.

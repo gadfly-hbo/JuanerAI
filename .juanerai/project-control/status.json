@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_BASELINE_INTEGRITY_AMENDMENT_AUTHORIZED",
-    "label": "六个 Pi 基线归档核验／candidate 六字段补全已批准，待 Mini 接收",
+    "id": "FIRST_DESKTOP_TECHNICAL_DECISION_AMENDMENT_AUTHORIZED",
+    "label": "范围内技术决策权已批准；Run 适配交由 Mini 原任务，接收待确认",
     "ordinal": 6,
     "total": 8
   },
   "health": "blocked",
-  "summary": "Mini 已 ff-only 接收 0b75194d1646b20b1c087863570009431d9e22ea；精确来源例外匹配，P1 报告无 peer/Node 26 引擎冲突，停止于六个 Pi 0.84.2 子包缺归档 integrity。官方 registry 六个 SHA-512 已只读核对；用户批准精确归档核验及 candidate lock 六字段补全，未执行归档校验或 P2/P3，Spec Gate 未通过。",
-  "current_objective": "发布最小 Baseline Integrity Amendment 001；Mini 核验六归档，只新增 candidate lock 六个 integrity，保留其余全部图信息和旧 lock，再审查 P1。",
-  "next_action": "用户将固定提交回执转发至纵切-1.0；Mini 保全十二草案 ff-only 接收，按冻结 SHA-512 核验六份原归档，再做六字段定点补全与完整只读 P1 审查。通过后按原 P2/P3 和后续 Gates 继续；不重跑 npm 解析、不提前修改仓库 lock、不重做 WIP。",
+  "summary": "Mini 已接收 672f2b23d60248f817fe0b845761f61a125dbf37，报告六归档/六字段及 P1/P2/P3 PASS；停止于 BLOCKED_CONTRACT_DECISION_REQUIRED。MacBook 已只读核对完整回执大小/hash及同 HEAD Run 源码冲突，未独立重跑依赖探针。用户已批准长期范围内技术决策权及当前最小兼容 Run 适配；补充包接收待确认，非 Spec Gate 或产品 PASS。",
+  "current_objective": "发布 Technical Decision Amendment 001；Mini 在批准模块内自主闭合双 CSV、无模型 Run 的最小合同/版本/路径，保留独立证据及旧 CLI/历史兼容，通过原 Spec/TDD/验证流程继续。",
+  "next_action": "用户转发固定提交到原任务纵切-1.0；Mini 保全十二草案 ff-only 接收，登记技术决策委托，再由正式 Spec 完成适配及整包 ponytail/Spec Gate。原 P1–P3 证据不因本授权重做；P4/Test/RED/Worker 按原 Gate。后续符合委托的设计选择在 Mini 内解决，越界或无法安全解决再回传。",
   "blockers": [
     {
-      "id": "DEPENDENCY_PREFLIGHT_BLOCKED_BASELINE_INTEGRITY",
-      "label": "六个基线子包校验缺口已获定点处置授权，执行待确认",
-      "detail": "用户已批准核验六个精确 0.84.2 归档及补齐 candidate 六字段；元数据匹配不代表归档已验证，P1 Gate 仍待 Mini 证据。",
-      "owner": "MacBook 发布；Mac mini 原任务执行"
+      "id": "BLOCKED_CONTRACT_DECISION_REQUIRED",
+      "label": "Run 技术适配与长期委托已获批准，Mini 采纳/Spec 闭合待确认",
+      "detail": "只解除缺少 Controller 技术决定这一权限原因；双源/无模型独立 Run、旧 1.0/2.0/CLI 兼容和精确路径仍须正式 Spec 与测试闭合。当前不宣称 Spec Gate/P4 已通过。",
+      "owner": "MacBook 发布；Mac mini 原任务续接"
     }
   ],
   "milestones": [
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "仅在 MacBook 登记整体批准、Git 发布与人工转发回执；不执行 Mini 的安装、探针或正式生产角色。"
+      "activation": "MacBook 仅发布长期技术委托和批次补充、审查最终交付；不替 Mini 执行生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -141,7 +141,7 @@
       "label": "Spec Agent",
       "model": "requested gpt-5.6-sol / xhigh; runtime configuration not independently echoed",
       "status": "waiting",
-      "activation": "最近 Mini 正式 draft return 已确认；等待接收固定 Git 决策补充，再在原任务修订 Spec。不是正在运行或 Spec Gate PASS。"
+      "activation": "Mini 已报告正式 Spec 修订十二草案并因 Run 合同停止；本补充授权范围内技术适配，接收后由原任务协调正式 Spec 续接。未宣称正在运行或 Spec Gate PASS。"
     },
     {
       "id": "juaner_test",
@@ -510,8 +510,20 @@
     },
     {
       "id": "EVD-BASELINE-INTEGRITY-AMENDMENT-001",
-      "label": "用户批准六归档核验及隔离 candidate 六字段补全；Mini 执行待确认",
+      "label": "Mini 已固定接收并报告六归档/六字段及 P1–P3 PASS；MacBook核对回执身份，未独立重跑全部探针",
       "path": "docs/planning/2026-09-19/xanthil-desktop-baseline-integrity-amendment-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-RUN-CONTRACT-EXCEPTION-001",
+      "label": "MacBook只读完整回执并核对10960 bytes及SHA-256，源码冲突复核；非产品验收",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/dependency-preflight-001/baseline-integrity-001/controller-exception-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-TECHNICAL-DECISION-AMENDMENT-001",
+      "label": "用户批准长期范围内技术决策权及当前Run兼容适配；Mini接收待确认",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-technical-decision-amendment-001.md",
       "status": "present"
     }
   ],
@@ -547,7 +559,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-19T03:59:40.743Z",
+  "updated_at": "2026-09-19T05:20:55.853Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

@@ -18,6 +18,7 @@ key, credential, signature bytes, raw prompt, or raw model output here.
 - Archive active / archive / canonical paths:
 - Stop lines and external prerequisites:
 - Bounded execution self-correction: inherit `docs/governance/product-change-execution-policy.md#bounded-execution-self-correction`, or record the explicit narrower limit; adoption reference for an already frozen batch:
+- In-scope technical decisions (semi-automatic only): inherit `docs/governance/product-change-execution-policy.md#in-scope-technical-decision-authority`, or record an explicit narrower limit; approved module roots / compatibility obligations / adoption reference for an already frozen batch:
 - Artifact Package SHA-256:
 
 ## D1-A Receipt
