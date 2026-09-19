@@ -157,6 +157,41 @@ frozen batch adopts it through a user-approved amendment naming that batch;
 historical one-use or exhausted approvals do not silently reopen. Other
 explicit validation budgets and scope stop lines remain binding.
 
+### Execution Accounting and Mistaken Pauses
+
+On 2026-09-20 the user approved the following clarification. Keep the three
+categories separate in the existing stage record; no new ledger is required.
+
+| Category | What is counted |
+|---|---|
+| Read/command error | The failed operation and its observed effects; an occurrence is not itself a correction round or a substantive role return. |
+| Execution correction round | An actual correction of the same identified execution issue plus its verification attempt. Record cause, change, result and progress, cumulatively under the existing limit. Similar wording in old errors does not prove the same issue or consumed rounds. |
+| Substantive role return/rework | A completed work-package return or an actual revision after review under the role budget. Progress messages, evidence clarification and a coordinator-forced partial return are not automatically a new substantive revision. |
+
+The existing three-round execution limit and no-progress/unknown-effect stop
+lines remain. Before declaring exhaustion or no progress, the coordinator
+checks the retained sequence, actual correction attempts and latest result.
+A corrected read that already succeeded is progress, not a reason to rerun it
+or to terminate an otherwise authorized stage. A brief deviation remains
+disclosed even when it has been safely corrected.
+
+Pause immediately when effects or authority are uncertain. If retained evidence
+then establishes that the coordinator's own pause was mistaken, the coordinator
+records the reason and may resume the interrupted work in the same task when
+all original authority, scope, role isolation and safe-resumption conditions
+still hold. The pause itself does not create a new substantive rework charge.
+A user-requested stop, an actual exhausted budget, a genuine unresolved blocker,
+or a frozen package that explicitly closes the allowance still requires its
+stated release authority. A real failed assertion or substantive Gate finding
+cannot be relabeled a mistaken pause to bypass review or a limit.
+
+Future briefs must distinguish a temporary pause from a completed substantive
+return; they must not force a consumed BLOCKED return merely to inspect a safe
+read error. Preserve historical counts/verdicts as recorded. Already frozen
+one-shot packages adopt this clarification through explicit amendment, not a
+retroactive reset. Successful operations and lost historical evidence are not
+replayed; unknown effects and out-of-scope decisions still return to MacBook.
+
 ### In-scope Technical Decision Authority
 
 On 2026-09-19 the user approved standing authority for the Mac mini execution

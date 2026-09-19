@@ -160,6 +160,22 @@ replay, product/UI reapproval or implementation is authorized.
 [Independent Readiness Review 001](2026-09-19/reviews/directed-spec-closure-readiness-review-001.md)
 passed for this bounded handoff; no corrected-OpenSpec or Spec Gate PASS is implied.
 
+Mini subsequently adopted `942b6702925f38754246b27aca6c7ccd4c98c273`.
+Directed Spec Closure001 ended `INCOMPLETE / Spec Gate FAIL`: F1/F2 partial,
+F3 prefix-table static PASS, F4–F6 unfinished. Directed Spec1/1 remains recorded;
+Test0/2 is unused. The coordinator acknowledged that a successful local correction
+and partial edit preceded its mistaken pause; error occurrences did not establish
+three exhausted correction rounds. MacBook matched the receipt/index and31 current
+files/final copies, with all19 non-Spec assets unchanged; evidence limits remain.
+
+On 2026-09-20 the user authorized [Interrupted Spec Resumption 001](2026-09-20/xanthil-desktop-interrupted-spec-resumption-001.md)
+and durable accounting/mistaken-pause clarification in the existing execution
+policy. It permits completion of only the unfinished closure in the original
+Mini task; retain F3, historical counts and UNKNOWN. The small Git supplement
+awaits fixed publication/manual forwarding and verified Mini intake. After the
+completion addendum, whole-package review and affected Spec Gate, stop even on
+PASS: Test/Worker/Validator are not released. No new product or UI Gate is needed.
+
 Current research-reference scope:
 
 - PX-2026-001/002: hypothesis-first AnalysisOps human-workbench and real local vertical-integration principles;

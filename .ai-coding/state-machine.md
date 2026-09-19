@@ -44,7 +44,12 @@ handling remain in that task rather than creating another task per Gate.
 Within a semi-automatic stage, eligible execution mistakes use
 `docs/governance/product-change-execution-policy.md#bounded-execution-self-correction`.
 Successful bounded correction returns to the interrupted check in the same
-state; it creates no new lifecycle state or Gate waiver. Technical decisions
+state; it creates no new lifecycle state or Gate waiver. Before charging a
+correction/role budget or finalizing a coordinator pause, apply
+`docs/governance/product-change-execution-policy.md#execution-accounting-and-mistaken-pauses`;
+documented mistaken pauses return to the same state only within its retained
+authority. Historical closed allowances still need their explicit release.
+Technical decisions
 use `docs/governance/product-change-execution-policy.md#in-scope-technical-decision-authority`:
 eligible contract gaps return to SPECIFICATION/DESIGN in the same Mac mini task,
 with dependent implementation frozen and affected Gates repeated before resuming.
