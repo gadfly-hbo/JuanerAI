@@ -1,10 +1,46 @@
 # JuanerAI Product Planning Index
 
-## Current product input — Blueprint v1.1 package（2026-09-18）
+## Current product-development authority — Blueprint v1.2（2026-09-19）
+
+[JuanerAI Product Development Blueprint v1.2](2026-09-19/juanerai-product-development-blueprint-v1.2.md)
+is the current highest product-development execution guideline. JuanerAI
+Whitepaper v3.3.4 is its core product reference and the commercialization
+charter. Whitepaper updates enter JuanerAI development only after explicit user
+notification, versioned Blueprint adoption, user approval, a fresh Product Plan
+Development-Readiness PASS and project-rule integration.
+
+Blueprint v1.2 consolidates the still-valid v1.0/v1.1 rules and adopts the
+Whitepaper's OSM/PIM dual business lines and six-lines-plus-two-capabilities
+coverage map without changing the personal-to-team-to-enterprise route. The
+current membership-repurchase slice is a PIM, hypothesis-first personal
+workflow; full OSM is not its prerequisite. Coverage areas classify selected
+Changes and do not become parallel products or a horizontal platform backlog.
+
+[Review 001](2026-09-19/reviews/blueprint-v1.2-development-readiness-review-001.md)
+returned `NEEDS_CLARIFICATION` because the review package omitted the retained
+UI Contract v1.0 and frozen execution package. Blueprint v1.2 then bound both
+inputs by canonical path and fingerprint. A new fresh
+[Review 002](2026-09-19/reviews/blueprint-v1.2-development-readiness-review-002.md)
+returned `PASS` with no required additions. The historical verdict remains
+preserved.
+
+v1.2 does not expand, cancel or restart the frozen first production Change.
+After its real integrated UI technical acceptance and a separately authorized
+real-user/value-validation plan, the default later candidate is a repeated-use
+PIM vertical: reopen the existing Case, import a new authorized period, create
+a new revision, rerun, compare evidence/judgment changes and produce a new
+versioned report. This is a candidate, not an authorized Change; it still needs
+its own UI Contract, user UI Gate and OpenSpec/TDD lifecycle.
+
+Blueprint v1.0 and v1.1 remain immutable decision history. Their first-slice UI,
+Session/Runtime and execution attachments continue to bind the current Change
+where v1.2 explicitly retains them.
+
+## Current first-slice package and execution state
 
 The user approved [JuanerAI Product Development Blueprint v1.0](2026-09-18/juanerai-product-development-blueprint-v1.0.md) as the first versioned product-development blueprint, grounded in JuanerAI Whitepaper v3.3.3. The user's later UI correction is recorded in [Blueprint v1.1](2026-09-18/juanerai-product-development-blueprint-v1.1.md): the first-slice value endpoint is unchanged, but the accepted PX-2026-004/006 Xanthil UI product mode must be reused rather than replaced.
 
-The first vertical slice is a UI-first Xanthil Desktop Free membership-repurchase diagnosis Decision Case for non-technical users. The current planning package is the v1.0 base plus [Xanthil Desktop UI Contract v1.1](2026-09-18/xanthil-desktop-ui-contract-v1.1.md), the binding [PX-2026-004/006 adoption map](2026-09-18/xanthil-ui-reference-adoption-map-v1.0.md), and the user-confirmed [Session and Runtime Boundary v1.0](2026-09-18/xanthil-desktop-session-runtime-boundary-v1.0.md). It keeps the accepted quick/professional shell and full visible module set, while the first real integrated path remains the narrower professional membership-repurchase Case.
+The first vertical slice is a UI-first Xanthil Desktop Free membership-repurchase diagnosis Decision Case for non-technical users. The binding first-slice package retained by v1.2 is the v1.0 base plus [Xanthil Desktop UI Contract v1.1](2026-09-18/xanthil-desktop-ui-contract-v1.1.md), the binding [PX-2026-004/006 adoption map](2026-09-18/xanthil-ui-reference-adoption-map-v1.0.md), and the user-confirmed [Session and Runtime Boundary v1.0](2026-09-18/xanthil-desktop-session-runtime-boundary-v1.0.md). It keeps the accepted quick/professional shell and full visible module set, while the first real integrated path remains the narrower professional membership-repurchase Case.
 
 Review 001 returned `NEEDS_CLARIFICATION`; the corrected v1.0 package then received [Review 002 PASS](2026-09-18/reviews/ui-contract-development-readiness-review-002.md). Review 002 is historical because it reviewed the later-corrected assumption that quick/pro mode and Fork/Subagent could be excluded. Fresh [Review 003](2026-09-18/reviews/ui-contract-development-readiness-review-003.md) and [Review 004](2026-09-18/reviews/ui-contract-development-readiness-review-004.md) closed bounded state and completion gaps. Fresh [Review 005](2026-09-18/reviews/ui-contract-development-readiness-review-005.md) returned `PASS`. The user accepted the directly reused PX-2026-004/006 clickable UI on 2026-09-18; this closes the UI Gate for product mode and interaction, without claiming that simulated Desktop persistence, filesystem, Runtime or provider behavior is implemented. The later Session/Runtime supplement is a material plan addition; fresh [Session/Runtime Review 001](2026-09-18/reviews/session-runtime-development-readiness-review-001.md) returned `NEEDS_CLARIFICATION`. The user resolved its three gaps by retaining LLM-backed question organization without `010_draw`, selecting Case revision as the sole business revision in a one-Session/one-Case first slice, and defining Assistance Attempts separately from Analysis Runs. Fresh [Review 002](2026-09-18/reviews/session-runtime-development-readiness-review-002.md) returned `PASS`.
 
@@ -69,7 +105,7 @@ No product implementation, dependency installation, real provider call, real use
 
 The user withdrew all previously approved, not-yet-executed Xanthil Desktop
 and Model Pack development plans. Their status is **VOID**, not paused or
-awaiting dispatch. The new Blueprint v1.0/v1.1 package does not reactivate their roadmap,
+awaiting dispatch. The current Blueprint v1.2 does not reactivate their roadmap,
 fixtures, Changes, execution packages, or development sequence.
 
 ### Scope of withdrawal

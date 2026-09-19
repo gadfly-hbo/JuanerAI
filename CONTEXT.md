@@ -8,8 +8,16 @@ JuanerAI is a product family centered on turning data into traceable business de
 The highest-level commercial project and product family.
 _Avoid_: using JuanerAI as a synonym for Xanthil
 
+**JuanerAI Whitepaper**:
+The product-definition and commercialization charter and the core reference for the Product Development Blueprint. A Whitepaper revision changes development only after explicit user notification and adoption through an approved, reviewed Blueprint revision.
+_Avoid_: executable roadmap, implementation authorization, proof of completion
+
+**Product Development Blueprint**:
+JuanerAI's highest product-development execution guideline. It translates approved Whitepaper direction into product phases, vertical-slice selection, Gates and evidence for advancement. Blueprint v1.2 is current; v1.0/v1.1 remain history.
+_Avoid_: Whitepaper copy, OpenSpec, automatic Change authorization
+
 **Xanthil**:
-The first JuanerAI commercial product. Existing capabilities remain reusable; its pending Desktop development plan is withdrawn. The future development sequence awaits the user's whitepaper-based adjustment in `docs/planning/README.md`; the name itself grants no execution authority.
+The first JuanerAI commercial product. Xanthil Desktop is the unified user workbench for PIM and applicable OSM workflows; it reuses JuanerAI's shared analysis, execution and governance capabilities. The name itself grants no execution authority.
 _Avoid_: JuanerAI platform, Pi wrapper, CLI-first product
 
 **Product Module**:
@@ -25,6 +33,28 @@ _Avoid_: BI operator
 **Decision User**:
 An enterprise user who relies on data to choose or authorize business action.
 _Avoid_: dashboard viewer
+
+## Business Lines and Analysis Modes
+
+**OSM (Objective & Strategy Management System)**:
+The business line that owns goals, measures, gaps, strategy combinations, actions and business review. It may request analysis but does not own analysis methods, semantic binding or Runtime implementation.
+_Avoid_: dashboard, mandatory precondition for every analysis, second analysis core
+
+**PIM (Problem & Insight Management)**:
+The business line that organizes questions, requirement clarification, analysis framing, investigation, evidence judgment, bounded insight and follow-up. A PIM Case may complete without an OSM Objective or Gap.
+_Avoid_: new Runtime, parallel workbench, automatic action authority
+
+**Hypothesis-first Analysis**:
+An analysis mode that states falsifiable candidate explanations and tests supporting and refuting evidence before accepting a Finding.
+_Avoid_: predetermined conclusion, PIM as a whole
+
+**Deep Research**:
+An analysis mode that develops a bounded question through governed multi-source evidence and citation verification.
+_Avoid_: unrestricted browsing, source-free synthesis
+
+**Autonomous Exploration**:
+An analysis mode that identifies candidate anomalies, structures or opportunities for later confirmation without silently promoting them to accepted Findings or Objectives.
+_Avoid_: automatic truth, automatic target creation
 
 ## Decision Loop
 
