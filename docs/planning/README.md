@@ -13,11 +13,11 @@ On 2026-09-19 the user authorized the first production OpenSpec Change and then 
 The same execution batch also uses the user-approved
 [Routing Amendment 001](2026-09-19/xanthil-desktop-first-product-change-routing-amendment-001.md):
 ordinary tasks use `high`, R2 tasks use `xhigh`, with no role-local effort pin.
-The original v1.0 package bytes remain frozen. The latest confirmed receipt
+The original v1.0 package bytes remain frozen. The earlier confirmed receipt
 records Stage 0 and Stage 1 PASS, adoption of commit `ed3ac662`, and completion
 of a formally dispatched `juaner_spec / xhigh` draft. The tool did not
 independently echo actual runtime configuration; that evidence limit remains.
-Stage 2 is now stopped at `DEPENDENCY_DECISION_REQUIRED`, not a routing blocker.
+Stage 2 then stopped at `DEPENDENCY_DECISION_REQUIRED`, not a routing blocker.
 The twelve Mac mini OpenSpec drafts are uncommitted and have not passed Spec Gate.
 
 The user agreed to the Controller's Forge/Vite, local arm64 `.app`, SQLite plus
@@ -35,6 +35,8 @@ records and publishes the supplement for manual forwarding to the existing
 `纵切-1.0` task; Mac mini adopts it by fixed-commit ff-only intake while preserving
 its twelve drafts, then resumes Stage 2. The accepted old-WIP disposition is not
 replayed and does not make the old Change CLOSED.
+
+Mac mini subsequently confirmed fixed-commit ff-only adoption of `10c1df3785cdfe591f20b205fcd7d8b874f9e74d`, preserving all twelve drafts and Stage 0/1 PASS. Its latest exception is `DEPENDENCY_PREFLIGHT_BLOCKED_TOOLCHAIN`: the configured entry is absent, the inspected local Node is 25.9.0 rather than 26.0.0, and DuckDB is missing at that entry. P1–P3 and the new formal Spec revision have not started. The user explicitly approved [Toolchain Amendment 001](2026-09-19/xanthil-desktop-toolchain-amendment-001.md): prepare only a task-local pinned Node/DuckDB toolchain, reuse matching existing npm/Python, change no global installation/PATH or host services, and resume the same Stage 2 after health checks. MacBook publishes the supplement for manual forwarding to the original task; Mini preparation and compatibility remain unverified.
 
 Current research-reference scope:
 

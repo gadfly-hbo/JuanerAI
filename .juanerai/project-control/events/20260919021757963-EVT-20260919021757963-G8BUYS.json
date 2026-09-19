@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919021757963-G8BUYS",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T02:17:57.963Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "Mini 决策采纳已核验；用户批准任务本地工具链准备，现等待同任务接收执行，非 Gate PASS",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

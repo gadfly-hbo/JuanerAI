@@ -78,6 +78,8 @@ experimental；必须固定版本并证明打包后相对资源路径可用，�
 
 ## 2. 交付物与工具链：真实本机 `.app`，不冒充可分发安装包
 
+后续有限补充：Mini 接收本决定后发现现有工具链不足，用户另行批准 [Toolchain Amendment 001](xanthil-desktop-toolchain-amendment-001.md) 的任务本地 Node/DuckDB 准备。下述全局/系统工具禁改及产品行为不变；不能把该开发准备权限变成 Desktop 自动安装能力。
+
 建议 A：只生成 Mac mini 的 macOS arm64 本地 `.app`；正常 macOS 入口打开。
 替代 B：DMG、ZIP、x64/universal、签名、公证、自动更新或公开分发，另立授权。
 理由：当前验收对象是用户可操作的桌面产品，不是发行基础设施。

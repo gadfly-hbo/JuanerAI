@@ -6,16 +6,23 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_DECISION_APPROVED_AWAITING_INTAKE",
-    "label": "首个 Desktop 决策已整体批准／待固定 Git 补充接收",
+    "id": "FIRST_DESKTOP_TOOLCHAIN_APPROVED_AWAITING_INTAKE",
+    "label": "首个 Desktop 工具链有限准备已批准／待 Mini 执行",
     "ordinal": 6,
     "total": 8
   },
-  "health": "active",
-  "summary": "用户于 2026-09-19 明确确认 XDESK-DECISION-001 第 1–12 项；独立 Readiness Review 002 PASS。MacBook 登记批准并发布补充，供手动转发。Mini 最近确认仍在 ed3ac662，只有本 Change 12 份未跟踪草案、无 tracked/staged 改动；尚未采纳本补充，未证明依赖/SQLite/E2E 兼容性，Spec Gate 未过。",
-  "current_objective": "冻结并发布已批准决策补充，供用户手动转发至原 Mini 任务；接收端保留全部草案，按同批次固定提交 ff-only 接收后继续 Stage 2。",
-  "next_action": "用户转发 MacBook 发布回执到纵切-1.0（01a0b45a-13ad-7b92-a2b4-cdde980558e1）。Mini 按决策包 §15 核对身份及 12 份草案 hash，安全 ff-only 接收后按 §11 进行正式 Spec 修订与 P1–P3；成功则沿原包继续正常 Gates，异常返回 MacBook。不要新建任务或重复 WIP 处置。",
-  "blockers": [],
+  "health": "blocked",
+  "summary": "Mini 已 ff-only 接收 10c1df3785cdfe591f20b205fcd7d8b874f9e74d，Stage 0/1 PASS 与十二份草案保留；当前 DEPENDENCY_PREFLIGHT_BLOCKED_TOOLCHAIN，P1–P3、新正式 Spec 及后续 Gate 未开始。MacBook 只读确认 Node 25.9.0 不符、所查入口缺 DuckDB，npm 11.12.1/Python 3.14.4 可复用。用户已批准 Toolchain Amendment 001 的任务本地准备，待手动转发；未安装或证明兼容性。",
+  "current_objective": "发布最小工具链补充；由 Mini 在现有证据根内准备固定 Node 26.0.0 / DuckDB 1.5.2，复用 npm/Python，不改系统环境，核验后返回同一 Stage 2。",
+  "next_action": "用户将固定 Git 补充及本机工具根指令转发到原任务纵切-1.0。Mini 保留草案、ff-only 接收后按 Toolchain Amendment 001 核对官方 pin、准备和独立读回；健康后按原包连续完成正式 Spec/P1–P3 和后续满足的 Gate，失败停止回传。无重复 WIP、主机服务或真实 Provider 操作。",
+  "blockers": [
+    {
+      "id": "DEPENDENCY_PREFLIGHT_BLOCKED_TOOLCHAIN",
+      "label": "Mini 批准版本工具链尚未就绪",
+      "detail": "最小任务本地准备已获用户授权；尚无 Mini 补充接收/准备成功证据。缺工具不是有效 RED。",
+      "owner": "Mac mini 执行协调者；MacBook 提供冻结补充"
+    }
+  ],
   "milestones": [
     {
       "id": "handoff_intake",
@@ -443,7 +450,7 @@
     },
     {
       "id": "EVD-XDESK-DECISION-001",
-      "label": "用户整体批准 XDESK-DECISION-001 第 1–12 项；待 Git 补充接收，非 Spec Gate PASS",
+      "label": "用户整体批准 XDESK-DECISION-001 第 1–12 项且 Mini 已固定提交接收；非 Spec Gate PASS",
       "path": "docs/planning/2026-09-19/xanthil-desktop-dependency-structure-decision-v1.0.md",
       "status": "verified"
     },
@@ -458,6 +465,18 @@
       "label": "Fresh Readiness Review 002 PASS，错误身份 finding 已撤销；非 Spec Gate",
       "path": "docs/planning/2026-09-19/reviews/dependency-structure-readiness-review-002.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-TOOLCHAIN-EXCEPTION-20260919",
+      "label": "Mini 工具链异常原文/hash及 HEAD 已由 MacBook 只读核对；仅当次观察",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/DECISION_001_TOOLCHAIN_EXCEPTION-20260919T020500Z.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-TOOLCHAIN-AMENDMENT-001",
+      "label": "用户批准任务本地固定工具准备，Mini 执行与健康尚未验证",
+      "path": "docs/planning/2026-09-19/xanthil-desktop-toolchain-amendment-001.md",
+      "status": "present"
     }
   ],
   "risks": [
@@ -492,7 +511,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-19T01:48:20.779Z",
+  "updated_at": "2026-09-19T02:17:57.962Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"
