@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919001348081-F5RGEU",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T00:13:48.081Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "Controller 已实际读取并核对 WIP 处置证据，接受 WIP_DISPOSITION_COMPLETE；依据原包 Stage 1 的已授权最小处置路径解除占位异常。用户选择人工转发，续执行尚未投递；不重复 sudo、pointer 写入或旧 Host Loop，不将旧 Change 写成 CLOSED。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

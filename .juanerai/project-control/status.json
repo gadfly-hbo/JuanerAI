@@ -6,23 +6,16 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_WIP_DISPOSITION_AUTHORIZATION_REQUIRED",
-    "label": "首个 Desktop Change 旧 WIP 最小处置待授权",
+    "id": "FIRST_DESKTOP_STAGE1_DISPOSITION_ACCEPTED",
+    "label": "首个 Desktop Change 旧 WIP 处置已核验／续执行待人工转发",
     "ordinal": 6,
     "total": 8
   },
-  "health": "blocked",
-  "summary": "Mac mini 特权只读核验完成：current pointer 确认占用 CHG-xanthil-desktop-session-bootstrap；旧 State 为 BLOCKED / DISPATCH_ORPHAN_READY，无 pending agent、Candidate、Delivery、resume target、Ledger event 或活动 Host Loop。旧 Change 未完成、未 CLOSED，当前等待用户另行授权最小异常处置。",
-  "current_objective": "为已撤回且未完成的旧 Change 定义一次最小、可核验、pointer-last 的异常释放；保留 State、pause、Ledger locator、日志、旧工作树和 Git 历史，不伪造 RELEASE、Acceptance、CLOSED 或完成状态。",
-  "next_action": "等待用户明确授权 Mac mini 对精确旧哈希执行一次人工异常释放：先保存前置证据并复核无竞争执行，再以 CAS 原子清空 active pointer，独立读回后停止；不改 State/pause/Ledger，不恢复 Host Loop，不进入 OpenSpec。",
-  "blockers": [
-    {
-      "id": "GLOBAL_WIP_OCCUPIED_BY_WITHDRAWN_UNFINISHED_CHANGE",
-      "label": "全局 WIP 被已撤回但未完成的旧 Change 占用",
-      "detail": "active-change.json 当前 SHA-256 为 8e469f1239b10021cd5cbe358cd5ff986ec399f078468f9e4078cdde10c7ddef，指向 CHG-xanthil-desktop-session-bootstrap；State SHA-256 为 19474e2db8d4ae3956f9b718b1e3d223575aa55b7ccdb78c42def8ff9b5b1446，状态 BLOCKED / DISPATCH_ORPHAN_READY。服务 disabled/unloaded、无精确 Host Loop 进程或 pending agent，但该 Change 不是 CLOSED，必须经用户明确授权后才能异常释放 pointer。",
-      "owner": "user/controller"
-    }
-  ],
+  "health": "waiting_user",
+  "summary": "MacBook Controller 已通过 SSH 只读核对 Mac mini 封存脚本、处置回执、独立读回和完整性记录，大小与 SHA-256 匹配。接受 WIP_DISPOSITION_COMPLETE：已授权的旧 WIP 处置满足 PKG-XANTHIL-DESKTOP-001 Stage 1 的处置后继续条件；旧 State 保持 BLOCKED / DISPATCH_ORPHAN_READY，未 CLOSED。看板仅记录已确认回执，不表示远端已进入 Stage 2。",
+  "current_objective": "用户将续执行指令转发至原 Mac mini 任务“纵切-1.0”；接收方复核原任务包身份、处置证据与当前分支所有权后，按原任务包连续推进 Stage 2 及后续已授权 Gate。",
+  "next_action": "沿用人工转发，不重试自动消息或新建任务。按任务包 Stage 1 的已授权处置路径采用完成证据，不重复 sudo 或改动 pointer；如发现新的竞争执行、Git 身份冲突或证据不匹配则停止返回异常，否则进入 Stage 2。",
+  "blockers": [],
   "milestones": [
     {
       "id": "handoff_intake",
@@ -106,7 +99,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "特权只读核验已完成；正在等待用户对旧 WIP 最小人工异常释放作明确授权。"
+      "activation": "已核验并接受旧 WIP 最小处置；续执行条件已明确，等待用户向原 Mac mini 任务转发。不宣称已派发。"
     },
     {
       "id": "d05_reviewer",
@@ -141,7 +134,7 @@
       "label": "Spec Agent",
       "model": "gpt-5.6-sol / R2 high when dispatched",
       "status": "locked",
-      "activation": "锁定；旧 WIP 已确认由撤回且未完成的 Change 占用，必须先完成经用户授权的最小人工异常释放。"
+      "activation": "等待原 Mac mini 任务接收续执行指令并完成包身份、处置证据及分支所有权核对；随后按原 R2 路由激活，MacBook 不执行正式 Spec。"
     },
     {
       "id": "juaner_test",
@@ -409,6 +402,12 @@
       "label": "Fresh Session/Runtime Development-Readiness Review 002 PASS",
       "path": "docs/planning/2026-09-18/reviews/session-runtime-development-readiness-review-002.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-WIP-DISPOSITION-20260919",
+      "label": "Mac mini WIP_DISPOSITION_COMPLETE：MacBook 已只读读取原文并复算哈希；只证明该次处置，非持续在线状态",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/WIP_DISPOSITION_COMPLETE-20260919T000420Z.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -434,7 +433,7 @@
       "id": "RSK-WITHDRAWN-PLAN-REPLAY",
       "label": "旧批准与主机保留指针被误读为可继续执行",
       "level": "high",
-      "mitigation": "以 docs/planning/README.md 作废决定为准；等待新计划，不重放旧权限或清空证据。"
+      "mitigation": "以 docs/planning/README.md 作废决定为准；旧 pointer 已通过用户授权的最小人工异常释放改为空值，旧 State/pause/Ledger locator/日志/工作树/Git 历史继续保留且不得被解释为 CLOSED 或完成。"
     },
     {
       "id": "RSK-CLICKABLE-UI-OVERCLAIM",
@@ -443,7 +442,7 @@
       "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
     }
   ],
-  "updated_at": "2026-09-18T17:06:26.610Z",
+  "updated_at": "2026-09-19T00:13:48.079Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"
