@@ -192,6 +192,19 @@ Mini task. Only verified unchanged intake and current Gate adoption release
 U1.1 Test; no new Spec return, historical-budget reset, early Worker, new task,
 automatic message, old-WIP operation or replay of successful preparation.
 
+Latest confirmed handoff: Mini safely adopted `434e8fd810c2e19953f084b67ddfaf465f0f2ae8`,
+accepted the affected Spec Gate, and resumed formal U1.1 Test. It stopped at
+`STATIC_DIAGNOSTIC_U1_1_TEST_HEALTH_BLOCKED_BUDGET_EXHAUSTED`; Reslice extra-Test
+2/2 is consumed. H-MAP misread an existing multiline manual-acceptance comment;
+no product RED/TDD_READY or Worker exists. On 2026-09-20 the user authorized
+[U1.1 Map Health Disposition001](2026-09-20/xanthil-desktop-u11-map-health-disposition-001.md):
+one separately counted, single-file matcher correction and its syntax/H-MAP
+verification, then the three still-unexecuted U1.1 commands if health passes.
+Historical budgets and failures remain; no Spec/product/policy change or general
+budget reset. MacBook matched the latest31 sources/copies and publishes the small
+supplement for manual fixed intake by the same Mini task. Test remains stopped
+until that intake; the matching diagnosis is not a validation PASS.
+
 Current research-reference scope:
 
 - PX-2026-001/002: hypothesis-first AnalysisOps human-workbench and real local vertical-integration principles;

@@ -6,16 +6,23 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_SPEC_GATE_PASSED_AWAITING_MINI_INTAKE",
-    "label": "受影响Spec Gate通过；等待原Mini任务固定接收",
+    "id": "FIRST_DESKTOP_U11_MAP_HEALTH_DISPOSITION",
+    "label": "U1.1健康匹配误报；定向一次修正已授权，待Mini接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "waiting_user",
-  "summary": "用户已接受MacBook事故披露的残余证据缺口；不清理、不重跑、不追认。Controller完成十二文件增量与受影响合同复核，F1–F6及受影响Spec Gate PASS。已新鲜核对Mini31源/31副本；额外Test仍0/2。续接以固定Git发布和原Mini任务接收为准，尚未启动Test。",
-  "current_objective": "发布当前最小治理/处置/审查补充，交回原Mini纵切-1.0；从U1.1 Test开始，逐段有效RED和TDD_READY后才进入独立Worker。",
-  "next_action": "用户将固定发布回执转发原任务纵切-1.0 / 01a0b45a-13ad-7b92-a2b4-cdde980558e1；Mini核对固定提交、全diff/hash、不重叠及31文件不变，ff-only接收，追加Gate记录，再正式派发U1.1 Test。不得新建任务或重放WIP/安装。",
-  "blockers": [],
+  "summary": "Mini已接收434e8fd并开始正式U1.1 Test；Reslice额外纠正2/2用尽。H-MAP因人工验收注释换行误报失败，尚无有效RED/TDD_READY。用户已授权一个单独计数的定向匹配修正及语法/H-MAP验证，通过后继续三项未执行命令；不重置历史或改Spec。",
+  "current_objective": "发布U1.1 Map Health Disposition001：限定coverage-map.test.ts人工标记匹配，健康通过后返回H-TUPLE/H-RUNNER/R-U1.1，保持Worker到TDD_READY才启动。",
+  "next_action": "将固定提交和转发全文给原纵切-1.0任务；Mini按static-diagnostic-u11-stop-index-001.json保护31现场，固定ff-only接收，再由正式Test执行唯一获准修正轮。其他已成功检查不重跑，失败即停。",
+  "blockers": [
+    {
+      "id": "U11_MAP_HEALTH_FIXED_INTAKE_PENDING",
+      "label": "H-MAP未通过；定向修正获准但Mini尚未接收",
+      "detail": "完整AC-XDESK-012-05人工义务仍在，单行匹配误报；原2/2保留。新Map Health001额度0/1，只有一次修正及指定验证，无新通用预算。",
+      "owner": "MacBook发布；用户转发；原Mini协调者/正式Test执行"
+    }
+  ],
   "milestones": [
     {
       "id": "handoff_intake",
@@ -79,8 +86,8 @@
     },
     {
       "id": "current_tdd",
-      "label": "当前：Test Design / RED",
-      "status": "pending"
+      "label": "当前：U1.1健康检查停止；尚无有效RED/TDD_READY",
+      "status": "blocked"
     },
     {
       "id": "current_implementation",
@@ -99,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "用户风险处置后直接完成只读Spec复核和治理补充；不派发生产角色。发布后由用户转发原Mini任务，Mini接收未确认。"
+      "activation": "只读核对Mini最新31源/31副本、匹配根因及命令记录；制作发布R0定向一次额度补充，不在MacBook改测试或派发生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -141,7 +148,7 @@
       "label": "Test Agent",
       "model": "gpt-5.6-terra / R2 xhigh",
       "status": "waiting",
-      "activation": "仅原Mini任务核对并采纳本固定补充后可派发U1.1 Test；额外纠正0/2全批共享，不重置旧FOUR/Recovery2/2；无当前运行声明。"
+      "activation": "Mini正式Test已停止，原Reslice额外2/2用尽。Map Health001定向0/1待固定接收，仅coverage-map.test.ts修正及指定健康验证；通过后继续原未运行命令。"
     },
     {
       "id": "juaner_worker",
@@ -717,6 +724,18 @@
       "label": "Controller受影响Spec Gate PASS；静态内容审查，不是RED/GREEN或产品PASS",
       "path": "docs/planning/2026-09-20/reviews/static-diagnostic-spec-review-001.md",
       "status": "verified"
+    },
+    {
+      "id": "EVD-U11-MAP-HEALTH-STOP-001",
+      "label": "Mini最新停止索引192478bytes/SHA256核对，31源/31副本匹配；H-MAP失败不是RED",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/static-diagnostic-u11-stop-index-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-U11-MAP-HEALTH-DISPOSITION-001",
+      "label": "用户授权定向单文件一次修正及验证；Mini接收和执行待确认",
+      "path": "docs/planning/2026-09-20/xanthil-desktop-u11-map-health-disposition-001.md",
+      "status": "present"
     }
   ],
   "risks": [
@@ -757,7 +776,7 @@
       "mitigation": "用户已接受披露的残余证据缺口并结束有界调查；原记录和现场保留，不清理、不重放、不宣称全部副作用为零、不把事故结果作为Gate证据。"
     }
   ],
-  "updated_at": "2026-09-19T23:36:16.534Z",
+  "updated_at": "2026-09-20T01:32:51.060Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"
