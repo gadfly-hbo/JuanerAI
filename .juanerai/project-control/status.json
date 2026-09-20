@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_B2_TEST_CONTRACT_DISPOSITION",
-    "label": "B1受限完成；B2集中Test修正已授权，待Mini固定接收",
+    "id": "FIRST_DESKTOP_B2_COMMAND_CONTEXT",
+    "label": "B2上下文传递及证据分级已授权；待Mini固定接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "waiting_user",
-  "summary": "Mini已接收5f05bd1，B1 Bridge/Entry/Safety及IPC受限GREEN；B2首次编写因四项Test合同缺口停止，八封套未执行。Controller只读匹配34源/34副本并核对实际design/Test。用户批准B2集中修正及精确历史证据限制处置；不是产品验收。",
-  "current_objective": "按既定合同集中闭合B2 F1–F4，新增两轮共享Test内容纠正；冻结调用恢复按同根因累计至多三轮。保留B1、全部历史消耗/偏差/UNKNOWN，不重开Spec或修改产品/UI。",
-  "next_action": "用户将固定补充转发原纵切-1.0；Mini核对最新34现场和完整固定ff-only接收后，正式Test登记B2内容修正第1/2轮、闭合F1–F4并做既定健康/有效RED。受影响B1回归按需，TDD_READY前无B2 Worker；不重做WIP/P1–P4。",
+  "summary": "Mini已接收8078b9ab；B2内容第1/2轮返回TEST_CONFLICT，五份Test未修且验证未运行。Controller确认capture未传命令证据目录的合同缺口，匹配34源/34副本。用户批准单一显式上下文字段、精确历史证据限制处置及后续证据分级；不是产品PASS。",
+  "current_objective": "闭合冻结command.env→capture→Test确切证据目录，只有具名emitting命令增加一个字段；保留原capture及B1成果，用剩余第2/2轮完成上下文健康和F1–F4，不新增额度。",
+  "next_action": "用户转发B2 Command Context001固定补充到原纵切-1.0；Mini核对34现场后ff-only接收。正式Test在剩余2/2轮定向派生capture、冻结十一字段上下文及最小正反向健康控制、修复F1–F4，再按既有健康/有效RED/TDD_READY推进；普通浏览不强制完整API元数据，Gate/身份/写入证据仍完整保留。",
   "blockers": [
     {
-      "id": "B2_TEST_CONTRACT_DISPOSITION_INTAKE_PENDING",
-      "label": "B2 F1–F4待修正；集中处置已批准，Mini固定接收未确认",
-      "detail": "B2原八封套/24输出槽未执行；无B2 RED/TDD_READY。新Test内容0/2，首轮集中修正即计用；已披露B2引号纠正仍为越界并保留实际1轮；同根因调用纠正不重置。历史API/env/stderr限制仅按新补充精确接受。",
-      "owner": "MacBook发布／用户转发；原Mini正式Test及协调者"
+      "id": "B2_COMMAND_CONTEXT_INTAKE_PENDING",
+      "label": "B2确切证据目录尚未传给子进程；新补充待固定接收",
+      "detail": "B2内容1/2已用，0文件修订/0验证；剩余1轮未使用。用户批准上下文传递与限定新证据限制处置，不追认历史摘要PASS，不重置消耗。B2仍无RED/TDD_READY，当前停止。",
+      "owner": "MacBook发布／用户手动转发；原Mini正式Test及协调者"
     }
   ],
   "milestones": [
@@ -86,7 +86,7 @@
     },
     {
       "id": "current_tdd",
-      "label": "B1受限RED/GREEN完成；B2 Test合同缺口待修，无B2 RED/TDD_READY",
+      "label": "B1受限GREEN保留；B2上下文合同冲突待修，内容1/2已用",
       "status": "blocked"
     },
     {
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "核对Mini34源/34副本和实际design/Test/Gate；发布用户批准的B2集中修正及历史限制处置，待原任务手动固定接收；MacBook不派生产角色。"
+      "activation": "只读匹配Mini34源/34副本，承认上一补充漏审传递链路；发布定向执行合同及证据分级补充，待用户转发；不在MacBook派生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -148,7 +148,7 @@
       "label": "Test Agent",
       "model": "gpt-5.6-terra / R2 xhigh",
       "status": "waiting",
-      "activation": "B2首次返回BLOCKED，F1–F4未修、八封套未运行。固定接收后新B2内容0/2从首轮计用；冻结调用纠正另按同根因累计三轮，历史不重置。"
+      "activation": "B2第1/2轮TEST_CONFLICT，未修改五份Test/未执行验证。固定接收后用仅剩第2/2轮闭合显式上下文、最小正反向健康控制和F1–F4；不重置历史。"
     },
     {
       "id": "juaner_worker",
@@ -817,8 +817,20 @@
     },
     {
       "id": "EVD-B2-TEST-CONTRACT-DISPOSITION-001",
-      "label": "用户批准B2内容两轮、冻结调用有界恢复及精确历史限制处置；待固定Git接收",
+      "label": "Mini已接收8078b9ab；第1/2轮返回上下文TEST_CONFLICT，无Test修订或验证；最新处置见B2 Command Context001",
       "path": "docs/planning/2026-09-20/xanthil-desktop-b2-test-contract-disposition-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-B2-CONTEXT-INTAKE-001",
+      "label": "Controller匹配最新34源/34副本及8078b9ab身份；仅读回，非历史补证或产品验证",
+      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/b2-command-context-001/controller-intake-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-B2-COMMAND-CONTEXT-001",
+      "label": "用户批准单一测试证据目录字段、最小capture派生、精确新限制处置及证据分级；剩余1轮，接收未确认",
+      "path": "docs/planning/2026-09-20/xanthil-desktop-b2-command-context-001.md",
       "status": "present"
     }
   ],
@@ -876,9 +888,15 @@
       "label": "B2原API返回元数据/历史环境及stderr独立分离不可恢复",
       "level": "medium",
       "mitigation": "用户仅接受u11-b2-original-records-001对应的披露限制；保留UNKNOWN、失败和额外引号纠正，不追认、不补跑、不证明全部副作用为零。新执行需完整原始结果，新增未知不在豁免内。"
+    },
+    {
+      "id": "RSK-B2-CONTEXT-ROLE-EVIDENCE-GAP",
+      "label": "最新Test manifest/比较/工具定位native记录缺失，patch-result为摘要",
+      "level": "medium",
+      "mitigation": "仅按B2 Command Context001接受精确披露限制；原件/UNKNOWN保留，不把当前34/201读回当作历史补证。后续普通浏览分级，身份/Gate/写入证据仍须足以证明调用与完成；未知效果仍停。"
     }
   ],
-  "updated_at": "2026-09-20T14:35:16.035Z",
+  "updated_at": "2026-09-20T15:23:38.654Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

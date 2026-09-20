@@ -285,9 +285,24 @@ of frozen B2 invocations, and limited acceptance of precisely disclosed historic
 API/environment/stderr observability gaps. The extra quotation correction stays
 a deviation, not retroactive authorization; all historical counts remain.
 No new Spec/product decision or loader framework. Fixed manual intake by the
-original task is pending; unaffected B1 evidence remains and shared-fixture
+original task is now confirmed below; unaffected B1 evidence remains and shared-fixture
 changes require only affected health/regression. MacBook does not execute Test
 or Worker and this publication is not Mini adoption or product PASS.
+
+Latest confirmed handoff: Mini adopted `8078b9ab3d09ee8cf9507c5718a1e366be0fa84b`
+and returned TEST_CONFLICT / U1.1_B2_TEST_EVIDENCE_CONTEXT_BLOCKED. B2 content
+round1/2 is used, with zero Test edits or test execution: the frozen capture
+did not transmit the exact per-command evidence directory to its child. The
+Controller's previous review missed this channel conflict. The user approved
+[B2 Command Context001](2026-09-20/xanthil-desktop-b2-command-context-001.md):
+one explicit frozen Test-only environment field for the named emitting commands,
+a minimally derived capture preserving its original, precise acceptance of the
+newly disclosed historical record limitation, and prospective risk-based
+evidence retention. Ordinary browsing need not archive every API metadata field;
+identity/Gate/write-effect evidence and unknown-effect stop lines stay binding.
+No new Test allowance: the remaining round2/2 closes context health and F1-F4.
+Current34 sources/copies matched on Controller readback; B1 scoped GREEN stays,
+not product PASS. Fixed publication/manual intake of this supplement is pending.
 
 Current research-reference scope:
 
