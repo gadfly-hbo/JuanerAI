@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260920071234691-6976LT",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-20T07:12:34.691Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户授权B1 H2有限退出码缺口处置及原剩余纠正；保留Spec PASS与H1，待固定补充手动接收",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -238,6 +238,22 @@ all earlier verdicts, spent allowances and UNKNOWN remain preserved.
 [Independent readiness Review001](2026-09-20/reviews/u11-spec-consistency-readiness-001.md)
 returned PASS for this bounded supplement only, not the Mini Spec Gate or product.
 
+Latest confirmed handoff: Mini safely adopted
+`a4ab8d9b5405d51e39b66d069edee143d3e72ede`, closed F1/F2 and recorded affected
+Spec Gate PASS. B1 Test then used correction1/2 and stopped at
+`U1.1_B1_TEST_BLOCKED_NEW_OUTER_EXIT_UNKNOWN`: H1 syntax health passed, but H2's
+outer source transport failed before capture and its numeric tool exit was
+lost. No new behavior RED/TDD_READY or Worker was reached. MacBook read the
+native error/command freeze/Gate/H1 result and matched latest33 sources/copies
+and five key evidence identities. The user authorized
+[B1 Capture Disposition001](2026-09-20/xanthil-desktop-u11-b1-capture-disposition-001.md):
+retain that precise UNKNOWN, consume only the remaining correction on file-based
+capture transport with its necessary argv offset adaptation, refresh bounded
+non-overwriting envelopes and continue from H2 without replaying H1. This R0
+execution disposition changes no product plan/Spec/assertion and adds no budget.
+Fixed manual intake and actual Test evidence remain pending; Spec PASS is
+retained, not a product or build/GUI PASS.
+
 Current research-reference scope:
 
 - PX-2026-001/002: hypothesis-first AnalysisOps human-workbench and real local vertical-integration principles;
