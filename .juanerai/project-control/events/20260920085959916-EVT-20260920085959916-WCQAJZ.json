@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260920085959916-WCQAJZ",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-20T08:59:59.916Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户授权剩余B1冻结调用统一有界纠错；保留准备及H1/H2，待Mini从H3续接",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_U11_B1_ENVELOPE_PREPARATION",
-    "label": "目录封套准备处置已授权；待Mini固定接收",
+    "id": "FIRST_DESKTOP_B1_FROZEN_INVOCATION",
+    "label": "B1冻结调用统一纠错已授权；待Mini固定接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "waiting_user",
-  "summary": "Mini已接收0cfdcaf，capture文件正确；创建attempt前漏建command父目录，ENOENT退出1，七项命令均未运行。Admission2/2已用。Controller核对33源/33副本及4证据，用户授权本次准备问题另有最多三轮有界自纠错。",
-  "current_objective": "只闭合本次目录/封套准备，再从原H2继续七项命令；保留Spec PASS、H1及既有产品边界。",
-  "next_action": "用户将固定补充转发原纵切-1.0；Mini核对最新33现场和不重叠ff-only接收，正式Test在原证据根完成准备（新增0/3，七项共用），通过后执行原未运行命令。Test修订额度仍0，未知/无进展/超限/真实健康失败按边界停止。",
+  "summary": "Mini已接收bbb08f0，准备PASS（2/3已用）、H2健康PASS；H3实际缓存路径漏段，capture在子进程前拒绝，外层退出1。Controller核对最新33源/33副本及4证据。用户授权剩余B1调用恢复冻结值的统一有界纠错。",
+  "current_objective": "从冻结命令记录提取并比对实际调用，修正H3环境值后继续剩余B1；保留准备及H1/H2，不重开Spec或修改捕获检查/测试断言。",
+  "next_action": "用户转发固定补充至原纵切-1.0；Mini核对最新33现场及固定ff-only接收，再由正式Test从H3恢复。实际调用恢复冻结值按同根因至多三轮跨命令/会话累计；历史不重置，测试本身失败、未知、无进展或越界仍停止。",
   "blockers": [
     {
-      "id": "U11_B1_ENVELOPE_PREPARATION_INTAKE_PENDING",
-      "label": "封套创建失败；准备处置固定接收及执行未确认",
-      "detail": "原Admission2/2历史保留；新增至多三轮仅本次目录/封套准备，不可用于Test断言修订或失败验证纠正。七项均NOT RUN，未建立新RED/TDD_READY。",
-      "owner": "MacBook发布／用户转发；原Mini正式Test执行"
+      "id": "B1_FROZEN_INVOCATION_INTAKE_PENDING",
+      "label": "H3调用环境不匹配；统一处置接收及续接未确认",
+      "detail": "Admission2/2、准备2/3保留；H3一次失败启动、尚无纠正，获准同根因最多三轮恢复冻结调用。不授予实际健康/断言修订预算，不重跑成功准备及H1/H2。",
+      "owner": "MacBook发布／用户转发；原Mini正式Test续接"
     }
   ],
   "milestones": [
@@ -86,7 +86,7 @@
     },
     {
       "id": "current_tdd",
-      "label": "B1七项NOT RUN；目录/封套准备失败，无新RED/TDD_READY",
+      "label": "准备及H2健康通过；H3未启动子进程，无新RED/TDD_READY",
       "status": "blocked"
     },
     {
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "核对70项当前身份；用户授权R0目录/封套准备有界自纠错，发布固定补充并等待原Mini人工接收，不派生产角色。"
+      "activation": "只读匹配70项当前身份；发布用户批准的剩余B1统一调用纠错短补充，原任务人工接收；MacBook不派生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -148,7 +148,7 @@
       "label": "Test Agent",
       "model": "gpt-5.6-terra / R2 xhigh",
       "status": "waiting",
-      "activation": "Admission2/2已用，七项均NOT RUN；固定接收后仅本次准备新增0/3，跨七项/上下文累计；准备通过再继续原验证，未授予测试内容返修额度。"
+      "activation": "准备2/3、Admission2/2历史保留；H1/H2健康PASS。固定接收后H3调用纠正0/3起，同根因跨命令/会话累计；实际测试修订额度不变。"
     },
     {
       "id": "juaner_worker",
@@ -787,8 +787,20 @@
     },
     {
       "id": "EVD-U11-B1-ENVELOPE-DISPOSITION-001",
-      "label": "用户授权本次准备至多三轮，原2/2保留；仅R0范围/证据审查，待Mini固定接收",
+      "label": "Mini已接收bbb08f0，准备2/3达PASS及H2健康通过；H3冻结调用不匹配另行停止",
       "path": "docs/planning/2026-09-20/xanthil-desktop-u11-b1-envelope-preparation-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-B1-H3-INVOCATION-STOP-001",
+      "label": "Controller匹配33源/33副本及4证据；H3外层环境拒绝退出1，未执行测试子进程",
+      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/u11-b1-capture-disposition-001/frozen-invocation-001/controller-intake-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-B1-FROZEN-INVOCATION-001",
+      "label": "用户授权剩余B1实际调用恢复冻结值的统一有界纠错；R0范围审查，待固定接收",
+      "path": "docs/planning/2026-09-20/xanthil-desktop-b1-frozen-invocation-disposition-001.md",
       "status": "present"
     }
   ],
@@ -839,10 +851,10 @@
       "id": "RSK-U11-B1-H2-OUTER-EXIT-UNKNOWN",
       "label": "H2冻结capture执行前语法拒绝，原外层工具数字退出码不可得",
       "level": "medium",
-      "mitigation": "用户仅接受已披露历史缺口，不补造不重放；原Admission2/2已耗尽。新增最多三轮仅目录/封套准备，新命令仍须完整工具返回和capture证据，新增未知停止。"
+      "mitigation": "已接受的历史H2缺口及Admission2/2保留，不补造不重放。准备2/3和H1/H2成功结果保留；剩余B1只准有界恢复冻结调用值，新增未知或真实测试失败按原Gate停止。"
     }
   ],
-  "updated_at": "2026-09-20T08:08:00.413Z",
+  "updated_at": "2026-09-20T08:59:59.914Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

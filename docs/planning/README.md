@@ -263,6 +263,15 @@ this exact issue; historical counts remain and no Test-content budget is added.
 Then resume the original seven commands without replaying H1. Fixed manual
 intake and preparation remain pending; no new RED/TDD_READY or product PASS.
 
+Latest confirmed handoff: Mini adopted `bbb08f0a78914d5b4afe5d991163dce2079d312b`.
+Preparation and H2 passed; H3's actual NPM_CONFIG_CACHE omitted a frozen path
+segment, so capture rejected it before child spawn. Admission2/2 and preparation2/3
+remain spent. The user approved [B1 Frozen Invocation001](2026-09-20/xanthil-desktop-b1-frozen-invocation-disposition-001.md):
+restore actual arguments/paths/env to frozen values under the existing per-cause
+three-round rule, across the remaining B1 commands rather than preparation only.
+Derive launch values from frozen records, retain H1/H2 and resume H3; no test,
+capture-check or authority weakening. Fixed manual intake remains pending.
+
 Current research-reference scope:
 
 - PX-2026-001/002: hypothesis-first AnalysisOps human-workbench and real local vertical-integration principles;
