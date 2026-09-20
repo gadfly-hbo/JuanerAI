@@ -220,6 +220,24 @@ the original Mini task and affected Spec Gate must precede new Test/Worker;
 normal admitted progression then needs no per-Gate relay. No auto-send/new task,
 MacBook production implementation or product acceptance is implied.
 
+Latest confirmed handoff: Mini adopted
+`02539ed02a22555622b5c61f2a7ddd3b351a8549`, preserving all 33 intake files,
+then stopped at `U1.1_FIRST_PACKAGE_SPEC_GATE_BLOCKED`. Admission001 Spec 1/1
+is consumed; B1/B2/GUI Test has not started and its shared correction allowance
+remains 0/2. The return left contradictory GUI Test write permission and
+colliding normal H-MAP evidence identities; some historical Spec command records
+are unavailable. MacBook read the relevant originals and matched the 33 current
+sources, 33 frozen copies and four key evidence identities, not product behavior.
+The user authorized [U1.1 Spec Consistency Disposition001](2026-09-20/xanthil-desktop-u11-spec-consistency-disposition-001.md):
+one targeted formal Spec correction plus at most one review-driven rework,
+limited acceptance of the disclosed historical record gap without replay or
+retroactive PASS, then the original progression only after affected Spec Gate
+PASS. Product/UI/91 AC and Test budgets are unchanged. Publication and manual
+fixed-commit intake by the original task do not themselves release Test/Worker;
+all earlier verdicts, spent allowances and UNKNOWN remain preserved.
+[Independent readiness Review001](2026-09-20/reviews/u11-spec-consistency-readiness-001.md)
+returned PASS for this bounded supplement only, not the Mini Spec Gate or product.
+
 Current research-reference scope:
 
 - PX-2026-001/002: hypothesis-first AnalysisOps human-workbench and real local vertical-integration principles;

@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_U11_FIRST_PACKAGE_ADMISSION",
-    "label": "最小IPC已GREEN；首包/GUI准入补充待Mini接收",
+    "id": "FIRST_DESKTOP_U11_SPEC_CONSISTENCY",
+    "label": "首包Spec一致性处置已授权；待Mini固定接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "waiting_user",
-  "summary": "Mini已接收15ddbf4，MapHealth通过，最小M1.1 IPC/Main有效RED→GREEN；不代表C1a包、GUI或U1.1完成。Controller核对33源/33副本及命令输出身份，补齐首包因果准入缺口；历史Reslice2/2、MapHealth1/1保留。",
-  "current_objective": "在原Mini任务闭合B1桥接/启动、B2初始界面/首包、GUI真实行为三段的Spec/Test/Worker顺序，保持产品/UI和最终91AC不变。",
-  "next_action": "用户将固定Git补充转发原纵切-1.0；Mini保护最新33现场，核验固定提交后ff-only接收，定向Spec收口及受影响Gate通过，再按三段限域Test→RED→Worker→GREEN连续推进。",
+  "summary": "Mini已接收02539ed，Admission001 Spec1/1后因GUI Test权限矛盾、正常检查身份冲突及历史命令留存缺口停止。Controller匹配33源/33副本和4关键证据；用户授权定向收口及有限F3风险接受。受影响Spec Gate仍未通过。",
+  "current_objective": "仅闭合F1/F2及阶段一致性；保留F3 UNKNOWN，不重批产品/UI，不增加Test额度，然后恢复原B1→B2→GUI链。",
+  "next_action": "用户将新固定Git补充转发原纵切-1.0；Mini核对最新33现场/副本及不重叠ff-only接收后，正式Spec一次定向修订+最多一次审查返修；整包审查及受影响Spec Gate PASS后原序推进。",
   "blockers": [
     {
-      "id": "U11_FIRST_PACKAGE_ADMISSION_INTAKE_PENDING",
-      "label": "首包与GUI因果准入未闭合；补充接收待确认",
-      "detail": "现有IPC GREEN保留；新增Spec最多1次返回、B1/B2/GUI首次测试及整项最多2次定向纠正，不重置历史。受影响Spec Gate需在Mini完成后重新通过。",
-      "owner": "MacBook发布／用户转发；原Mini正式角色执行"
+      "id": "U11_SPEC_CONSISTENCY_INTAKE_AND_GATE_PENDING",
+      "label": "F1/F2尚未闭合；补充接收及Spec Gate待确认",
+      "detail": "新增Spec仅一次定向修订+最多一次审查返修；Admission001 Spec1/1保留。Test首次组未启动、纠正0/2不变。F3仅已披露的历史证据缺口获风险接受，不等于历史PASS。",
+      "owner": "MacBook发布／用户手动转发；原Mini正式角色收口"
     }
   ],
   "milestones": [
@@ -81,7 +81,7 @@
     },
     {
       "id": "current_openspec_gate",
-      "label": "既有Spec Gate保留；首包执行合同修订待受影响Gate",
+      "label": "首包Spec Gate BLOCKED；F1/F2定向收口及复审待Mini执行",
       "status": "blocked"
     },
     {
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "按已授权范围核对33现场/33副本和R/G，准备独立审查后的最小首包准入补充；MacBook不派发生产角色。"
+      "activation": "只读匹配70项证据身份；用户授权F1/F2与有限F3处置，准备补充发布和原任务人工转发；MacBook不派发生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -141,14 +141,14 @@
       "label": "Spec Agent",
       "model": "requested gpt-5.6-sol / xhigh; runtime configuration not independently echoed",
       "status": "waiting",
-      "activation": "Mini接收补充后有一次定向执行合同收口权限；不是当前已派发，不重开产品/UI决定。"
+      "activation": "Admission001 Spec1/1已用且受影响Gate未通过；新补充接收后一次定向F1/F2修订+最多一次审查返修，历史不重置。"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra / R2 xhigh",
       "status": "waiting",
-      "activation": "已停止，MapHealth1/1及Reslice2/2保留。B1/B2/GUI各首次Test及共享2次定向纠正，须待固定接收及受影响Spec Gate PASS。"
+      "activation": "B1/B2/GUI首次测试未启动；原共享纠正0/2仍未用。必须待固定接收与受影响Spec Gate PASS。"
     },
     {
       "id": "juaner_worker",
@@ -745,9 +745,27 @@
     },
     {
       "id": "EVD-U11-FIRST-PACKAGE-GUI-ADMISSION-001",
-      "label": "用户授权首包与GUI准入补充；固定接收与Mini执行待确认",
+      "label": "Mini已固定接收02539ed；Spec1/1用尽，受影响Gate因F1/F2及F3证据缺口停止；非产品验收",
       "path": "docs/planning/2026-09-20/xanthil-desktop-u11-first-package-gui-admission-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-U11-FIRST-PACKAGE-SPEC-STOP-001",
+      "label": "Controller独立核对33现场/33副本及4证据大小/hash；仅当前身份，不补齐历史过程",
+      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/u11-spec-consistency-disposition-001/controller-intake-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-U11-SPEC-CONSISTENCY-DISPOSITION-001",
+      "label": "用户授权一次定向Spec+最多一次审查返修及有限F3风险接受；Mini接收和实际Gate待确认",
+      "path": "docs/planning/2026-09-20/xanthil-desktop-u11-spec-consistency-disposition-001.md",
       "status": "present"
+    },
+    {
+      "id": "EVD-U11-SPEC-CONSISTENCY-READINESS-001",
+      "label": "独立只读就绪审查PASS；仅补充准备，不是Mini Spec Gate或产品PASS",
+      "path": "docs/planning/2026-09-20/reviews/u11-spec-consistency-readiness-001.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -786,9 +804,15 @@
       "label": "MacBook误执行的历史环境/完整测试结果及旧日志身份未知",
       "level": "medium",
       "mitigation": "用户已接受披露的残余证据缺口并结束有界调查；原记录和现场保留，不清理、不重放、不宣称全部副作用为零、不把事故结果作为Gate证据。"
+    },
+    {
+      "id": "RSK-U11-ADMISSION-SPEC-EVIDENCE-GAP",
+      "label": "Admission001 Spec部分历史命令原文/输出/数字退出不可得",
+      "level": "medium",
+      "mitigation": "用户接受精确已披露的有限历史留存缺口；UNKNOWN/失败保留，不重放、不冒称历史PASS或所有副作用为零。新工作仍须原始证据，新增未知不在本次豁免内。"
     }
   ],
-  "updated_at": "2026-09-20T02:40:04.667Z",
+  "updated_at": "2026-09-20T04:21:08.802Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"
