@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_U11_B1_CAPTURE_RESUME",
-    "label": "Spec Gate已通过；B1 H2捕获续接补充待Mini接收",
+    "id": "FIRST_DESKTOP_U11_B1_ENVELOPE_PREPARATION",
+    "label": "目录封套准备处置已授权；待Mini固定接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "waiting_user",
-  "summary": "Mini已接收a4ab8d9，F1/F2收口及受影响Spec Gate PASS；B1 Test用纠正1/2后，H1健康通过、H2因外层传递错误且数字退出未留存而停止。Controller核对最新33源/33副本及5证据；用户已接受本次有限UNKNOWN并授权使用剩余一轮。",
-  "current_objective": "保持Spec及Test/产品输入，机械改为捕获文件执行，完整留存新命令返回，从H2继续原B1健康/RED链；不重放H1。",
-  "next_action": "用户将固定补充转发原纵切-1.0；Mini核对33现场、ff-only接收，按文件方式和精确argv适配消耗原剩余纠正2/2，更新非覆盖输入封套，从H2串行续接；新异常停止，真实RED/TDD_READY前不派Worker。",
+  "summary": "Mini已接收0cfdcaf，capture文件正确；创建attempt前漏建command父目录，ENOENT退出1，七项命令均未运行。Admission2/2已用。Controller核对33源/33副本及4证据，用户授权本次准备问题另有最多三轮有界自纠错。",
+  "current_objective": "只闭合本次目录/封套准备，再从原H2继续七项命令；保留Spec PASS、H1及既有产品边界。",
+  "next_action": "用户将固定补充转发原纵切-1.0；Mini核对最新33现场和不重叠ff-only接收，正式Test在原证据根完成准备（新增0/3，七项共用），通过后执行原未运行命令。Test修订额度仍0，未知/无进展/超限/真实健康失败按边界停止。",
   "blockers": [
     {
-      "id": "U11_B1_CAPTURE_DISPOSITION_INTAKE_PENDING",
-      "label": "H2外层退出UNKNOWN已获有限风险接受；固定补充及实际恢复未确认",
-      "detail": "不重开Spec，不新增纠正额度。原共享纠正1/2已用，剩余一轮用于传递修正及H2验证；H1保留。新的证据不确定性不属于此次接受范围。",
-      "owner": "MacBook发布／用户转发；原Mini正式Test续接"
+      "id": "U11_B1_ENVELOPE_PREPARATION_INTAKE_PENDING",
+      "label": "封套创建失败；准备处置固定接收及执行未确认",
+      "detail": "原Admission2/2历史保留；新增至多三轮仅本次目录/封套准备，不可用于Test断言修订或失败验证纠正。七项均NOT RUN，未建立新RED/TDD_READY。",
+      "owner": "MacBook发布／用户转发；原Mini正式Test执行"
     }
   ],
   "milestones": [
@@ -86,7 +86,7 @@
     },
     {
       "id": "current_tdd",
-      "label": "B1 H1健康通过；H2停止，无新有效RED/scoped TDD_READY",
+      "label": "B1七项NOT RUN；目录/封套准备失败，无新RED/TDD_READY",
       "status": "blocked"
     },
     {
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "只读核对71项身份；发布用户授权的R0捕获传递/证据处置，不重开规划或Spec，不派发生产角色。"
+      "activation": "核对70项当前身份；用户授权R0目录/封套准备有界自纠错，发布固定补充并等待原Mini人工接收，不派生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -148,7 +148,7 @@
       "label": "Test Agent",
       "model": "gpt-5.6-terra / R2 xhigh",
       "status": "waiting",
-      "activation": "B1五资产已冻结；纠正1/2已用。H1健康PASS，H2外层退出UNKNOWN；固定接收后原剩余纠正用于文件传递及H2验证，不增加额度。"
+      "activation": "Admission2/2已用，七项均NOT RUN；固定接收后仅本次准备新增0/3，跨七项/上下文累计；准备通过再继续原验证，未授予测试内容返修额度。"
     },
     {
       "id": "juaner_worker",
@@ -775,8 +775,20 @@
     },
     {
       "id": "EVD-U11-B1-CAPTURE-DISPOSITION-001",
-      "label": "用户授权有限H2 UNKNOWN接受及原剩余纠正；R0范围/证据审查，不是新Spec Gate或产品PASS",
+      "label": "Mini已接收0cfdcaf，capture文件独立匹配；目录准备失败，Admission2/2消耗，非测试或产品PASS",
       "path": "docs/planning/2026-09-20/xanthil-desktop-u11-b1-capture-disposition-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-U11-B1-ENVELOPE-STOP-001",
+      "label": "Controller匹配最新33源/33副本及4证据；ENOENT外层退出1、七项未运行",
+      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/u11-b1-capture-disposition-001/envelope-preparation-001/controller-intake-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-U11-B1-ENVELOPE-DISPOSITION-001",
+      "label": "用户授权本次准备至多三轮，原2/2保留；仅R0范围/证据审查，待Mini固定接收",
+      "path": "docs/planning/2026-09-20/xanthil-desktop-u11-b1-envelope-preparation-001.md",
       "status": "present"
     }
   ],
@@ -827,10 +839,10 @@
       "id": "RSK-U11-B1-H2-OUTER-EXIT-UNKNOWN",
       "label": "H2冻结capture执行前语法拒绝，原外层工具数字退出码不可得",
       "level": "medium",
-      "mitigation": "用户只接受此披露缺口；历史UNKNOWN/原始失败保留，不补造不重放。新执行须完整工具返回和原capture证据，剩余一轮有界纠正，新增未知停止。"
+      "mitigation": "用户仅接受已披露历史缺口，不补造不重放；原Admission2/2已耗尽。新增最多三轮仅目录/封套准备，新命令仍须完整工具返回和capture证据，新增未知停止。"
     }
   ],
-  "updated_at": "2026-09-20T07:12:34.687Z",
+  "updated_at": "2026-09-20T08:08:00.413Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

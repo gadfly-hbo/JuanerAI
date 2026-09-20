@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260920080656197-A46K59",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-20T08:06:56.197Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户授权本次目录封套准备最多三轮；原Admission2/2保留，待原Mini固定接收",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

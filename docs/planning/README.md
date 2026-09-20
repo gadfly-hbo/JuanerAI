@@ -254,6 +254,15 @@ execution disposition changes no product plan/Spec/assertion and adds no budget.
 Fixed manual intake and actual Test evidence remain pending; Spec PASS is
 retained, not a product or build/GUI PASS.
 
+Latest confirmed handoff: Mini adopted `0cfdcaf001d74a51b956087f7393cd34640b30cb`
+and preserved the approved capture file, but envelope preparation failed with
+ENOENT before any of the seven commands ran. Admission correction2/2 is spent.
+The user approved [B1 Envelope Preparation001](2026-09-20/xanthil-desktop-u11-b1-envelope-preparation-001.md):
+up to three separate, shared preparation correction/verification rounds for
+this exact issue; historical counts remain and no Test-content budget is added.
+Then resume the original seven commands without replaying H1. Fixed manual
+intake and preparation remain pending; no new RED/TDD_READY or product PASS.
+
 Current research-reference scope:
 
 - PX-2026-001/002: hypothesis-first AnalysisOps human-workbench and real local vertical-integration principles;
