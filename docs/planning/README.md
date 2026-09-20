@@ -270,7 +270,24 @@ remain spent. The user approved [B1 Frozen Invocation001](2026-09-20/xanthil-des
 restore actual arguments/paths/env to frozen values under the existing per-cause
 three-round rule, across the remaining B1 commands rather than preparation only.
 Derive launch values from frozen records, retain H1/H2 and resume H3; no test,
-capture-check or authority weakening. Fixed manual intake remains pending.
+capture-check or authority weakening. That intake and B1 continuation are now
+confirmed by the next receipt.
+
+Latest confirmed handoff: Mini adopted `5f05bd1dbeebecbf166b14892d263129330e4765`.
+B1 Bridge/Entry/Safety and retained IPC scoped RED/GREEN progression completed;
+this is not packaged/GUI or product acceptance. B2 first authoring stopped at
+TEST_CONTRACT_BLOCKED with four concrete Test/design mismatches, eight unused
+envelopes and no B2 RED/TDD_READY. MacBook matched the latest34 sources/copies
+and reviewed the affected design/Test and Gate records. The user approved
+[B2 Test Contract Disposition001](2026-09-20/xanthil-desktop-b2-test-contract-disposition-001.md):
+two shared B2 Test-content correction rounds, prospective bounded restoration
+of frozen B2 invocations, and limited acceptance of precisely disclosed historic
+API/environment/stderr observability gaps. The extra quotation correction stays
+a deviation, not retroactive authorization; all historical counts remain.
+No new Spec/product decision or loader framework. Fixed manual intake by the
+original task is pending; unaffected B1 evidence remains and shared-fixture
+changes require only affected health/regression. MacBook does not execute Test
+or Worker and this publication is not Mini adoption or product PASS.
 
 Current research-reference scope:
 

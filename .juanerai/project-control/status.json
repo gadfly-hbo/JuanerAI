@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_B1_FROZEN_INVOCATION",
-    "label": "B1冻结调用统一纠错已授权；待Mini固定接收",
+    "id": "FIRST_DESKTOP_B2_TEST_CONTRACT_DISPOSITION",
+    "label": "B1受限完成；B2集中Test修正已授权，待Mini固定接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "waiting_user",
-  "summary": "Mini已接收bbb08f0，准备PASS（2/3已用）、H2健康PASS；H3实际缓存路径漏段，capture在子进程前拒绝，外层退出1。Controller核对最新33源/33副本及4证据。用户授权剩余B1调用恢复冻结值的统一有界纠错。",
-  "current_objective": "从冻结命令记录提取并比对实际调用，修正H3环境值后继续剩余B1；保留准备及H1/H2，不重开Spec或修改捕获检查/测试断言。",
-  "next_action": "用户转发固定补充至原纵切-1.0；Mini核对最新33现场及固定ff-only接收，再由正式Test从H3恢复。实际调用恢复冻结值按同根因至多三轮跨命令/会话累计；历史不重置，测试本身失败、未知、无进展或越界仍停止。",
+  "summary": "Mini已接收5f05bd1，B1 Bridge/Entry/Safety及IPC受限GREEN；B2首次编写因四项Test合同缺口停止，八封套未执行。Controller只读匹配34源/34副本并核对实际design/Test。用户批准B2集中修正及精确历史证据限制处置；不是产品验收。",
+  "current_objective": "按既定合同集中闭合B2 F1–F4，新增两轮共享Test内容纠正；冻结调用恢复按同根因累计至多三轮。保留B1、全部历史消耗/偏差/UNKNOWN，不重开Spec或修改产品/UI。",
+  "next_action": "用户将固定补充转发原纵切-1.0；Mini核对最新34现场和完整固定ff-only接收后，正式Test登记B2内容修正第1/2轮、闭合F1–F4并做既定健康/有效RED。受影响B1回归按需，TDD_READY前无B2 Worker；不重做WIP/P1–P4。",
   "blockers": [
     {
-      "id": "B1_FROZEN_INVOCATION_INTAKE_PENDING",
-      "label": "H3调用环境不匹配；统一处置接收及续接未确认",
-      "detail": "Admission2/2、准备2/3保留；H3一次失败启动、尚无纠正，获准同根因最多三轮恢复冻结调用。不授予实际健康/断言修订预算，不重跑成功准备及H1/H2。",
-      "owner": "MacBook发布／用户转发；原Mini正式Test续接"
+      "id": "B2_TEST_CONTRACT_DISPOSITION_INTAKE_PENDING",
+      "label": "B2 F1–F4待修正；集中处置已批准，Mini固定接收未确认",
+      "detail": "B2原八封套/24输出槽未执行；无B2 RED/TDD_READY。新Test内容0/2，首轮集中修正即计用；已披露B2引号纠正仍为越界并保留实际1轮；同根因调用纠正不重置。历史API/env/stderr限制仅按新补充精确接受。",
+      "owner": "MacBook发布／用户转发；原Mini正式Test及协调者"
     }
   ],
   "milestones": [
@@ -86,12 +86,12 @@
     },
     {
       "id": "current_tdd",
-      "label": "准备及H2健康通过；H3未启动子进程，无新RED/TDD_READY",
+      "label": "B1受限RED/GREEN完成；B2 Test合同缺口待修，无B2 RED/TDD_READY",
       "status": "blocked"
     },
     {
       "id": "current_implementation",
-      "label": "最小IPC/Main已GREEN；生产桌面包与GUI尚未完成",
+      "label": "B1 Bridge/Entry/Safety及IPC GREEN；B2产品实现及首包/GUI未进入",
       "status": "blocked"
     },
     {
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "只读匹配70项当前身份；发布用户批准的剩余B1统一调用纠错短补充，原任务人工接收；MacBook不派生产角色。"
+      "activation": "核对Mini34源/34副本和实际design/Test/Gate；发布用户批准的B2集中修正及历史限制处置，待原任务手动固定接收；MacBook不派生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -148,14 +148,14 @@
       "label": "Test Agent",
       "model": "gpt-5.6-terra / R2 xhigh",
       "status": "waiting",
-      "activation": "准备2/3、Admission2/2历史保留；H1/H2健康PASS。固定接收后H3调用纠正0/3起，同根因跨命令/会话累计；实际测试修订额度不变。"
+      "activation": "B2首次返回BLOCKED，F1–F4未修、八封套未运行。固定接收后新B2内容0/2从首轮计用；冻结调用纠正另按同根因累计三轮，历史不重置。"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
       "model": "gpt-5.6-terra / requested R2 xhigh; runtime tuple not independently echoed",
       "status": "waiting",
-      "activation": "Mini已完成最小IPC/Main并取得GREEN；当前停止。每个后续行为须限域TDD_READY后独立派发，不提前实现GUI或业务能力。"
+      "activation": "B1 Bridge/Entry/Safety及IPC已取得受限GREEN；B2未启动，只有健康Test有效RED与scoped TDD_READY后按原串行授权独立派发。"
     },
     {
       "id": "juaner_validator",
@@ -799,8 +799,26 @@
     },
     {
       "id": "EVD-B1-FROZEN-INVOCATION-001",
-      "label": "用户授权剩余B1实际调用恢复冻结值的统一有界纠错；R0范围审查，待固定接收",
+      "label": "Mini已接收5f05bd1，H3调用纠正1/3成功；B1受限RED/GREEN完成，后续B2 Test合同缺口单独处置",
       "path": "docs/planning/2026-09-20/xanthil-desktop-b1-frozen-invocation-disposition-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-B2-TEST-CONTRACT-INTAKE-001",
+      "label": "Controller只读匹配当前34源/34副本及固定Git身份；仅身份核验，不是产品PASS",
+      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/b2-test-contract-disposition-001/controller-intake-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-B1-SCOPED-COMPLETION-001",
+      "label": "已读Mini B1 Gate并匹配SHA256；Bridge/Entry/Safety/IPC受限GREEN，不是打包/GUI/最终验收",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/u11-b1-completion-gate-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-B2-TEST-CONTRACT-DISPOSITION-001",
+      "label": "用户批准B2内容两轮、冻结调用有界恢复及精确历史限制处置；待固定Git接收",
+      "path": "docs/planning/2026-09-20/xanthil-desktop-b2-test-contract-disposition-001.md",
       "status": "present"
     }
   ],
@@ -852,9 +870,15 @@
       "label": "H2冻结capture执行前语法拒绝，原外层工具数字退出码不可得",
       "level": "medium",
       "mitigation": "已接受的历史H2缺口及Admission2/2保留，不补造不重放。准备2/3和H1/H2成功结果保留；剩余B1只准有界恢复冻结调用值，新增未知或真实测试失败按原Gate停止。"
+    },
+    {
+      "id": "RSK-B2-HISTORICAL-NATIVE-OBSERVABILITY",
+      "label": "B2原API返回元数据/历史环境及stderr独立分离不可恢复",
+      "level": "medium",
+      "mitigation": "用户仅接受u11-b2-original-records-001对应的披露限制；保留UNKNOWN、失败和额外引号纠正，不追认、不补跑、不证明全部副作用为零。新执行需完整原始结果，新增未知不在豁免内。"
     }
   ],
-  "updated_at": "2026-09-20T08:59:59.914Z",
+  "updated_at": "2026-09-20T14:35:16.035Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

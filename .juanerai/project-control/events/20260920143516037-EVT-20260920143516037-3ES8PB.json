@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260920143516037-3ES8PB",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-20T14:35:16.037Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户批准B2集中Test合同修正：两轮内容预算、冻结调用有界恢复及精确历史证据限制接受；B1受限成果保留，Mini固定接收仍待确认。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}
