@@ -6,21 +6,21 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_U11_MAP_HEALTH_DISPOSITION",
-    "label": "U1.1健康匹配误报；定向一次修正已授权，待Mini接收",
+    "id": "FIRST_DESKTOP_U11_FIRST_PACKAGE_ADMISSION",
+    "label": "最小IPC已GREEN；首包/GUI准入补充待Mini接收",
     "ordinal": 6,
     "total": 8
   },
   "health": "waiting_user",
-  "summary": "Mini已接收434e8fd并开始正式U1.1 Test；Reslice额外纠正2/2用尽。H-MAP因人工验收注释换行误报失败，尚无有效RED/TDD_READY。用户已授权一个单独计数的定向匹配修正及语法/H-MAP验证，通过后继续三项未执行命令；不重置历史或改Spec。",
-  "current_objective": "发布U1.1 Map Health Disposition001：限定coverage-map.test.ts人工标记匹配，健康通过后返回H-TUPLE/H-RUNNER/R-U1.1，保持Worker到TDD_READY才启动。",
-  "next_action": "将固定提交和转发全文给原纵切-1.0任务；Mini按static-diagnostic-u11-stop-index-001.json保护31现场，固定ff-only接收，再由正式Test执行唯一获准修正轮。其他已成功检查不重跑，失败即停。",
+  "summary": "Mini已接收15ddbf4，MapHealth通过，最小M1.1 IPC/Main有效RED→GREEN；不代表C1a包、GUI或U1.1完成。Controller核对33源/33副本及命令输出身份，补齐首包因果准入缺口；历史Reslice2/2、MapHealth1/1保留。",
+  "current_objective": "在原Mini任务闭合B1桥接/启动、B2初始界面/首包、GUI真实行为三段的Spec/Test/Worker顺序，保持产品/UI和最终91AC不变。",
+  "next_action": "用户将固定Git补充转发原纵切-1.0；Mini保护最新33现场，核验固定提交后ff-only接收，定向Spec收口及受影响Gate通过，再按三段限域Test→RED→Worker→GREEN连续推进。",
   "blockers": [
     {
-      "id": "U11_MAP_HEALTH_FIXED_INTAKE_PENDING",
-      "label": "H-MAP未通过；定向修正获准但Mini尚未接收",
-      "detail": "完整AC-XDESK-012-05人工义务仍在，单行匹配误报；原2/2保留。新Map Health001额度0/1，只有一次修正及指定验证，无新通用预算。",
-      "owner": "MacBook发布；用户转发；原Mini协调者/正式Test执行"
+      "id": "U11_FIRST_PACKAGE_ADMISSION_INTAKE_PENDING",
+      "label": "首包与GUI因果准入未闭合；补充接收待确认",
+      "detail": "现有IPC GREEN保留；新增Spec最多1次返回、B1/B2/GUI首次测试及整项最多2次定向纠正，不重置历史。受影响Spec Gate需在Mini完成后重新通过。",
+      "owner": "MacBook发布／用户转发；原Mini正式角色执行"
     }
   ],
   "milestones": [
@@ -81,18 +81,18 @@
     },
     {
       "id": "current_openspec_gate",
-      "label": "当前：冻结Spec受影响Gate PASS；不是Test或产品验收",
-      "status": "completed"
+      "label": "既有Spec Gate保留；首包执行合同修订待受影响Gate",
+      "status": "blocked"
     },
     {
       "id": "current_tdd",
-      "label": "当前：U1.1健康检查停止；尚无有效RED/TDD_READY",
+      "label": "最小IPC scoped TDD_READY/RED完成；剩余首包/GUI准入待定",
       "status": "blocked"
     },
     {
       "id": "current_implementation",
-      "label": "当前：生产 UI 与能力集成",
-      "status": "locked"
+      "label": "最小IPC/Main已GREEN；生产桌面包与GUI尚未完成",
+      "status": "blocked"
     },
     {
       "id": "current_acceptance",
@@ -106,7 +106,7 @@
       "label": "Codex Controller",
       "model": "project default",
       "status": "controller",
-      "activation": "只读核对Mini最新31源/31副本、匹配根因及命令记录；制作发布R0定向一次额度补充，不在MacBook改测试或派发生产角色。"
+      "activation": "按已授权范围核对33现场/33副本和R/G，准备独立审查后的最小首包准入补充；MacBook不派发生产角色。"
     },
     {
       "id": "d05_reviewer",
@@ -141,21 +141,21 @@
       "label": "Spec Agent",
       "model": "requested gpt-5.6-sol / xhigh; runtime configuration not independently echoed",
       "status": "waiting",
-      "activation": "Interrupted补充已完成；Mini报告静态闭合，原历史1/1不变。没有新增Spec派发权限。"
+      "activation": "Mini接收补充后有一次定向执行合同收口权限；不是当前已派发，不重开产品/UI决定。"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
       "model": "gpt-5.6-terra / R2 xhigh",
       "status": "waiting",
-      "activation": "Mini正式Test已停止，原Reslice额外2/2用尽。Map Health001定向0/1待固定接收，仅coverage-map.test.ts修正及指定健康验证；通过后继续原未运行命令。"
+      "activation": "已停止，MapHealth1/1及Reslice2/2保留。B1/B2/GUI各首次Test及共享2次定向纠正，须待固定接收及受影响Spec Gate PASS。"
     },
     {
       "id": "juaner_worker",
       "label": "Implementation Agent",
-      "model": "gpt-5.6-terra / high default; R2 xhigh (not dispatched)",
-      "status": "locked",
-      "activation": "锁定；仅在新 Change 达到 TDD_READY 后实施冻结范围。"
+      "model": "gpt-5.6-terra / requested R2 xhigh; runtime tuple not independently echoed",
+      "status": "waiting",
+      "activation": "Mini已完成最小IPC/Main并取得GREEN；当前停止。每个后续行为须限域TDD_READY后独立派发，不提前实现GUI或业务能力。"
     },
     {
       "id": "juaner_validator",
@@ -736,6 +736,18 @@
       "label": "用户授权定向单文件一次修正及验证；Mini接收和执行待确认",
       "path": "docs/planning/2026-09-20/xanthil-desktop-u11-map-health-disposition-001.md",
       "status": "present"
+    },
+    {
+      "id": "EVD-U11-MINIMAL-IPC-GREEN-001",
+      "label": "原始R/G及85项SHA256核对；仅最小IPC/Main GREEN，不是U1.1验收",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/u11-map-health-disposition-stop-index-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-U11-FIRST-PACKAGE-GUI-ADMISSION-001",
+      "label": "用户授权首包与GUI准入补充；固定接收与Mini执行待确认",
+      "path": "docs/planning/2026-09-20/xanthil-desktop-u11-first-package-gui-admission-001.md",
+      "status": "present"
     }
   ],
   "risks": [
@@ -776,7 +788,7 @@
       "mitigation": "用户已接受披露的残余证据缺口并结束有界调查；原记录和现场保留，不清理、不重放、不宣称全部副作用为零、不把事故结果作为Gate证据。"
     }
   ],
-  "updated_at": "2026-09-20T01:32:51.060Z",
+  "updated_at": "2026-09-20T02:40:04.667Z",
   "updated_by": {
     "role": "controller",
     "session": "macbook-controller"

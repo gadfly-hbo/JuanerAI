@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260920024004671-OQN92K",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-20T02:40:04.671Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "最小IPC已GREEN；用户授权首包与GUI准入补充，独立准备审查PASS，待原Mini固定接收",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -192,7 +192,7 @@ Mini task. Only verified unchanged intake and current Gate adoption release
 U1.1 Test; no new Spec return, historical-budget reset, early Worker, new task,
 automatic message, old-WIP operation or replay of successful preparation.
 
-Latest confirmed handoff: Mini safely adopted `434e8fd810c2e19953f084b67ddfaf465f0f2ae8`,
+Prior confirmed handoff: Mini safely adopted `434e8fd810c2e19953f084b67ddfaf465f0f2ae8`,
 accepted the affected Spec Gate, and resumed formal U1.1 Test. It stopped at
 `STATIC_DIAGNOSTIC_U1_1_TEST_HEALTH_BLOCKED_BUDGET_EXHAUSTED`; Reslice extra-Test
 2/2 is consumed. H-MAP misread an existing multiline manual-acceptance comment;
@@ -204,6 +204,21 @@ Historical budgets and failures remain; no Spec/product/policy change or general
 budget reset. MacBook matched the latest31 sources/copies and publishes the small
 supplement for manual fixed intake by the same Mini task. Test remains stopped
 until that intake; the matching diagnosis is not a validation PASS.
+
+Latest confirmed handoff: Mini adopted `15ddbf45b6b5efb71128c61fc78b3afb13536fe6`;
+Map Health passed and the minimal M1.1 IPC/Main achieved causal RED→GREEN.
+It stopped at `U1.1_INITIAL_SEAM_GREEN_CONTINUATION_GATE_BLOCKED`: no healthy
+C1a app or GUI evidence, not whole U1.1 completion. MacBook matched33 sources,
+33 copies and the retained command/result identities. Reslice2/2 and MapHealth1/1
+remain consumed. The user authorized [First Package / GUI Admission001](2026-09-20/xanthil-desktop-u11-first-package-gui-admission-001.md),
+with [independent readiness PASS](2026-09-20/reviews/u11-first-package-gui-admission-readiness-001.md):
+one directed Mini Spec return closes B1 bridge/entry, B2 initial UI/first package,
+then real GUI RED/GREEN inside U1.1. Three serial first-pass Test groups and at
+most two targeted corrections are separately bounded; no historical reset.
+Product/UI/91-AC/dependency decisions remain unchanged. Fixed manual intake in
+the original Mini task and affected Spec Gate must precede new Test/Worker;
+normal admitted progression then needs no per-Gate relay. No auto-send/new task,
+MacBook production implementation or product acceptance is implied.
 
 Current research-reference scope:
 
