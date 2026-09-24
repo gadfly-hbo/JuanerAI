@@ -34,8 +34,17 @@
 - negative:
 - integration:
 
-## Controller Decision
+## Boundary Classification
+
+- in-boundary engineering contract / product or upper-boundary change
+- affected product, architecture, security, data, permission, cost, or external-effect boundary:
+
+## Engineering Controller Decision
 
 - status: accepted / rejected / deferred
 - rationale:
 
+## User Decision, If Boundary-changing
+
+- status: not applicable / accepted / rejected / deferred
+- decision reference and rationale:

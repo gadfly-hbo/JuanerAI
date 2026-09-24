@@ -7,7 +7,8 @@
 - accepted baseline:
 - archive path:
 - final Validator verdict:
-- Controller acceptance:
+- Engineering Acceptance:
+- User Product Acceptance, if required:
 
 ## Intended Value
 

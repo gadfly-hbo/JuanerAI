@@ -68,7 +68,7 @@
 - [ ] Unit, contract, integration, E2E, syntax, static, and real-runtime counts reproduce as required.
 - [ ] Toolchain and dependency versions come from the approved canonical entrypoint.
 - [ ] Critical hashes match frozen inputs.
-- [ ] `verification.md` current verdict, traceability, test output, Controller state, and project board agree.
+- [ ] `verification.md` current verdict, traceability, test output, Engineering Controller state, and project board agree.
 - [ ] Residual risks and mixed external evidence are disclosed without being converted into PASS by omission.
 - [ ] Archive candidates have a current baseline, exact archive destination, and valid project-board references.
 
@@ -84,4 +84,5 @@
 - reproduced evidence:
 - non-blocking residual risks:
 - no-write attestation:
-- acceptance/approval reminder: Validator does not accept or archive.
+- acceptance/approval reminder: Validator does not grant Engineering Acceptance,
+  Product Acceptance, merge, release, or archive.

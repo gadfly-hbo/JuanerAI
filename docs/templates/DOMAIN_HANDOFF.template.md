@@ -70,4 +70,7 @@
 
 ## Handoff Back
 
-Use HANDOFF_BACK.template.md and report changed files, evidence, drift, risks, unverified areas, and Controller decisions needed.
+Use HANDOFF_BACK.template.md and report changed files, evidence, drift, risks,
+unverified areas, Engineering Controller decisions needed, and any bounded user
+decision needed. Do not route an ordinary in-boundary technical decision to the
+Product Manager.

@@ -10,22 +10,24 @@
 | proposed behavior change | openspec/changes/<change-id>/ |
 | executable correctness | tests/ |
 | role dispatch | approved domain brief or future Task Bus |
-| final result | verification.md, Controller acceptance, and archive |
+| final result | verification.md, Engineering Acceptance, required user Product Acceptance, and archive |
 
 ## Mapping
 
 One OpenSpec Change may contain several implementation Tasks. A future Task Bus item implements or validates a bounded subset of those Tasks and references the same Change, Requirement, and Test IDs.
 
-Task Bus state never overrides the approved spec. A handoff never approves itself. Controller approval never converts missing executable evidence into PASS without an explicit waiver.
+Task Bus state never overrides the approved spec. A handoff never approves
+itself. Engineering Controller approval never converts missing executable
+evidence into PASS; a risk waiver requires the user's explicit decision.
 
-## Master-Worker-Validator
+## Engineering-Worker-Validator
 
-- Master/Controller freezes intent, contract, boundaries, and task sequence.
+- Product Manager freezes product intent, UI, business boundaries, and product acceptance criteria.
+- Engineering Controller freezes engineering contracts, paths, validations, budgets, and task sequence inside those boundaries.
 - Worker receives a scoped brief and returns evidence.
 - Validator independently checks the frozen artifact and returns a verdict.
-- Controller accepts, requests changes, or blocks.
+- Engineering Controller records Engineering Acceptance, requests changes, or blocks; the user separately owns Product Acceptance and boundary/risk decisions.
 
 ## Activation
 
-AgentOps Task Bus is not initialized during this cold start. Activation requires repository lifecycle readiness, project-local routing, ignore policy, approved domains, and a first approved OpenSpec Change. No self-referential Controller Task is created.
-
+AgentOps Task Bus is not initialized during this cold start. Activation requires repository lifecycle readiness, project-local routing, ignore policy, approved domains, and a first approved OpenSpec Change. No self-referential Engineering Controller Task is created.

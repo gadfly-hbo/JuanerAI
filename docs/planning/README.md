@@ -86,7 +86,18 @@ into this tree. Before any product dispatch, the exact applicable inputs must
 be supplied and accessible in that task's approved package; missing input stops
 intake rather than prompting guessed requirements or replayed authorization.
 The first production batch's status and amendments remain with its owning
-Controller/task. This Blueprint integration does not update their status.
+engineering task. This Blueprint integration does not update their status.
+
+## Current responsibility takeover — no execution resume
+
+[Engineering Controller Takeover 001](2026-09-24/xanthil-desktop-engineering-controller-takeover-001.md)
+records the read-only observed WIP identity, latest confirmed Mini receipt,
+actual B2 stop point, preserved budgets/UNKNOWN, and receiver confirmation
+contract for the approved MacBook Product Manager / Mac mini Engineering
+Controller split. It ports no WIP branch history, changes no old state or
+evidence, and grants no product execution. Until the rule change is integrated
+and the original Mini task returns the named receipt, adoption is
+`UNCONFIRMED`; even then, a separate user resume decision is required.
 
 ## Historical withdrawal — remains VOID（2026-09-18）
 

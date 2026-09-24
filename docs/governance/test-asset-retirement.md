@@ -22,7 +22,7 @@ The ledger records the path or TEST ID, class, REQ/AC or diagnostic purpose, ret
 
 ## Test Asset Retirement Gate
 
-After GREEN and required regression, and before implementation/evidence freeze for independent verification, the Controller:
+After GREEN and required regression, and before implementation/evidence freeze for independent verification, the Engineering Controller:
 
 1. Reconciles the lifecycle ledger with the complete test-asset diff.
 2. Runs `ponytail-review` over that complete diff as the first simplification audit and records every finding or `Lean already. Ship.`.
@@ -32,7 +32,10 @@ After GREEN and required regression, and before implementation/evidence freeze f
 6. Inspects `skip`, `todo`, `only`, temporary/scratch/correction markers, obsolete formats and paths, and equivalent AC/input/assertion combinations. These are review signals, not automatic deletion rules; an approved gate or distinct risk may justify retention.
 7. Records the final ledger, retirement decisions, affected commands and counts, ponytail disposition, and `PASS` or `FAIL` verdict.
 
-If cleanup is required, production stays frozen and the Controller returns only the named test paths to the Test role. After removal, rerun the affected test and regression commands, then repeat this Gate. The Worker does not edit tests to obtain a retirement PASS.
+If cleanup is required, production stays frozen and the Engineering Controller
+returns only the named test paths to the Test role. After removal, rerun the
+affected test and regression commands, then repeat this Gate. The Worker does
+not edit tests to obtain a retirement PASS.
 
 ## Retirement Proof
 
@@ -60,4 +63,9 @@ The Validator remains read-only and reports the exact asset, missing owner or su
 
 ## Initial Mechanism Boundary
 
-This first version uses the lifecycle ledger, existing `ponytail-review`, Controller Gate, and Validator checklist. It creates no dedicated tombstone-review Skill, automatic deletion, persistent registry, background scan, or repository-wide cleanup authority. Reassess a dedicated tool or Skill only after several Changes provide repeated, classifiable misses that the manual Gate cannot reliably catch.
+This first version uses the lifecycle ledger, existing `ponytail-review`,
+Engineering Controller Gate, and Validator checklist. It creates no dedicated
+tombstone-review Skill, automatic deletion, persistent registry, background
+scan, or repository-wide cleanup authority. Reassess a dedicated tool or Skill
+only after several Changes provide repeated, classifiable misses that the
+manual Gate cannot reliably catch.

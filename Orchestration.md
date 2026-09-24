@@ -1,18 +1,30 @@
 # JuanerAI Orchestration
 
-JuanerAI uses CDI, Controller-Domain Isolation, the 总控域隔离工程法. OpenSpec owns intent and behavior; CDI owns authority, domain boundaries, handoff, and integration.
+JuanerAI uses CDI, Controller-Domain Isolation, the 总控域隔离工程法. OpenSpec owns approved behavior; CDI owns authority, domain boundaries, handoff, and integration.
 
-## Controller
+## Product Manager, Engineering Controller, and User
 
-Codex is the Controller. The Controller owns product clarification, CONTEXT.md, architecture, cross-domain contracts, OpenSpec gates, task slicing, assignment, integration review, acceptance, archive, and user communication.
+The MacBook Codex session is the Product Manager. It owns product clarification,
+CONTEXT.md, product planning, vertical scope, UI Contracts, business semantics,
+product acceptance criteria, and product-input freeze.
 
-Controller work with sufficient authority and evidence is completed directly. A self-assigned Task is not used to replace Controller judgment or independent validation.
+The Mac mini Codex session is the Engineering Controller. After receiving the
+approved product input, it owns feasibility, engineering architecture and
+contracts within approved boundaries, OpenSpec Gates, task slicing, assignment,
+engineering state, integration review, engineering acceptance, and authorized
+Git delivery/archive.
+
+The user is the final decision authority and directly controls the Engineering
+Controller. Product ambiguity, scope or boundary expansion, extra budget,
+residual risk, missing permission, and unknown or unsafe effects go directly to
+the user in the current Mini task. Product Manager participation is optional
+support requested by the user, not an engineering Gate.
 
 ## Domains
 
 | Domain | Owns | Does Not Own |
 |---|---|---|
-| product-governance | product docs, terminology, OpenSpec, architecture, shared decisions | product implementation |
+| product-governance | product docs, terminology, UI Contract, product decisions | engineering implementation or ordinary technical contracts |
 | experience | Xanthil Desktop, compatibility-preserved CLI, operator Console, and later user surfaces | Product Core or infrastructure SDK behavior |
 | core | packages/product-core, application, ports, contracts | concrete infrastructure |
 | capability-packs | Domain Pack and Model Pack SDKs and package-private logic | product-wide contracts |
@@ -27,15 +39,17 @@ Domains are boundaries, not permanent assignees or repositories. A Product Modul
 - Test role may write tests derived from approved Acceptance Criteria, not production implementation or approved specs.
 - Worker may write only production paths named in an approved brief, not tests or specs unless explicitly granted for a low-risk exception.
 - Validator is independent and read-only, runs approved checks, and returns evidence plus PASS, FAIL, or BLOCKED.
-- Controller is the only role that accepts contract changes and the final handoff.
+- Engineering Controller accepts compatible in-boundary engineering contract
+  changes and engineering handoffs. A boundary-changing contract requires a
+  user decision. Neither action grants product acceptance.
 
 The configured project agents are juaner_spec, juaner_test, juaner_worker, and juaner_validator. Their models, reasoning effort, sandbox, activation states, and override rules are owned by docs/governance/agent-model-routing.md and .codex/agents/.
 
 ## Dispatch Rule
 
 Dual-device product Changes follow the current execution mode and authority
-boundary in `docs/governance/product-change-execution-policy.md`. Controller-
-organized semi-automatic role progression is distinct from signed Host Loop
+boundary in `docs/governance/product-change-execution-policy.md`. Engineering
+Controller-organized semi-automatic role progression is distinct from signed Host Loop
 execution; changing mode does not waive the role or product Gates below.
 
 Decompose by vertical user value first, then give each role or domain a bounded slice. Every dispatch includes:
@@ -60,10 +74,21 @@ Task Bus work must reference an approved Change and may not redefine Requirement
 
 ## Cross-Domain Changes
 
-Shared contracts are Controller-owned. A domain that discovers contract drift stops the dependent branch and submits docs/templates/CONTRACT_CHANGE_REQUEST.template.md.
+Shared engineering contracts are owned by the Engineering Controller inside approved
+product, architecture, security, data, permission, and external-effect
+boundaries. A domain that discovers contract drift stops the dependent branch
+and submits docs/templates/CONTRACT_CHANGE_REQUEST.template.md. The Engineering
+Controller closes an in-boundary correction through Spec/Design and affected
+Gates; a boundary change goes directly to the user.
 
 Parallel work requires frozen contracts and non-overlapping write paths. Same-worktree implementation is serial by default. Independent validation uses a fresh role context and a frozen implementation reference.
+Independence is established by role, context, permissions, and fixed inputs; it
+does not require a different physical device.
 
 ## Acceptance
 
-The Controller reviews scope, terminology, contracts, data safety, expected RED, GREEN evidence, regression, traceability, risks, and independent verification. Tests are evidence, not approval.
+The Engineering Controller reviews scope, terminology, contracts, data safety,
+expected RED, GREEN evidence, regression, traceability, risks, and independent
+verification before Engineering Acceptance. Tests and Validator PASS are
+evidence, not approval. The user's Product Acceptance is a separate verdict and
+is never inferred from Engineering Acceptance.
