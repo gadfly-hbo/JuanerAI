@@ -23,6 +23,13 @@ GitHub protects `main`: changes arrive through pull requests, history stays
 linear, and force-push and deletion remain blocked. Pull requests use squash
 merge and merged branches are deleted.
 
+For current product Changes, the Mac mini Engineering Controller organizes
+branch review, push, PR, squash merge, OpenSpec archive, and delivery readback
+inside the user's granted Git permissions. MacBook Product Manager technical
+sign-off is not required. Engineering Acceptance, user Product Acceptance, and
+Git permission are separate: a Validator PASS or PR status supplies neither a
+required user verdict nor an ungranted merge/release permission.
+
 ## First Setup on Each Machine
 
 Clone the repository, enter its root, and record the device-local Git policy:
@@ -81,7 +88,8 @@ merge `origin/main` into the work branch. The eventual squash merge keeps
 
 Before changing devices, the current device must have a clean worktree and push
 all branch commits. Record the branch name, latest commit, validation result,
-and next action in the normal Controller handoff or conversation.
+and next action in the Product Manager/Engineering Controller handoff or
+conversation, as applicable.
 
 On the receiving device:
 
@@ -93,6 +101,11 @@ git switch --track origin/work/<source-device>/<slug>
 Only the receiving device writes after the handoff. If both machines changed
 the same branch, stop and inspect both commit tips before merging; never repair
 the conflict by resetting or force-pushing one side away.
+
+A responsibility handover is not branch handover or execution resumption. The
+receiver first returns an exact readback of task, repository, branch, commit,
+tree, status, evidence, and next permitted action. Until that receipt, adoption
+is unconfirmed and the prior writer/stop line remains authoritative.
 
 ## After Merge
 

@@ -84,6 +84,11 @@ Follow `AGENTS.md` Development Material Preservation; do not restate or fork tha
 - trigger and evidence:
 - required return Gate:
 
-## Controller Decisions Needed
+## Engineering Controller Decisions Needed
 
 - TBD
+
+## User Decisions Needed
+
+- product ambiguity, scope/boundary expansion, extra budget, residual risk,
+  missing permission, or unknown/unsafe effect only; `none` if not applicable

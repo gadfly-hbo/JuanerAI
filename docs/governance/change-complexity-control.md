@@ -32,10 +32,10 @@ The target is one Spec package, one Test return, one Worker implementation, and 
 
 ## Overdesign Review Before Spec Gate
 
-The Controller MUST run `ponytail-review` on the complete OpenSpec diff before
+The Engineering Controller MUST run `ponytail-review` on the complete OpenSpec diff before
 Spec Gate when any of these triggers applies:
 
-- the Spec role used high or xhigh reasoning instead of its default medium;
+- the Spec role used high or xhigh reasoning (including the current default);
 - a non-core, internal, support, or governance Change introduces persistence,
   transactions, concurrency, recovery, retry, audit, a new protocol, multiple
   runtime modes, or background work;
@@ -74,7 +74,7 @@ security, correctness, or R2/R3 controls required by the approved scope.
 
 ## Complexity Stop Line
 
-For an ordinary Change, any item below stops automatic forward dispatch and returns control to the Controller:
+For an ordinary Change, any item below stops automatic forward dispatch and returns control to the Engineering Controller:
 
 - a second post-Gate Spec clarification for the same behavior;
 - a second Test correction for the same AC or invariant;
@@ -93,7 +93,7 @@ Classify the stop before any new dispatch:
 
 | Cause | Required Return |
 |---|---|
-| missing user/product decision | user decision brief, then Spec |
+| missing user/product decision | Engineering Controller asks the user directly, then returns to Spec |
 | ambiguous or missing behavior contract | Spec/Design |
 | missing durable structure meaning | structure confirmation, then Spec |
 | invalid, tautological, or incomplete test | Test Design with production frozen |
@@ -102,7 +102,7 @@ Classify the stop before any new dispatch:
 | environment/toolchain drift | restore approved environment; do not change behavior |
 | external/model stochasticity | apply the pre-approved reliability policy; otherwise return to Spec/user |
 | slice too large | split into independently verifiable vertical deltas |
-| evidence/read-model conflict | Controller evidence correction before the next Gate |
+| evidence/read-model conflict | Engineering Controller evidence correction before the next Gate |
 
 Record the cause, evidence, owner, release condition, and whether the Change class must be raised.
 
@@ -144,12 +144,14 @@ At every material transition:
 3. Update traceability and the project board.
 4. Verify all three agree before dispatching the next role.
 
-For semi-automatic remote batches, apply the board-update timing in
-`product-change-execution-policy.md`; local verdicts and traceability remain
-required at every transition, while the board identifies the last confirmed
-handoff rather than claiming live remote progress.
+Apply `product-change-execution-policy.md`: the Mini Engineering Controller
+updates local verdicts, traceability, and the single authoritative engineering
+board at material transitions. A remote copy identifies its last synchronization,
+not live progress, and is not an additional writable board.
 
-Before archive, prove that the top verdict, final Validator verdict, Controller acceptance, baseline hash, archive path, and project-board references agree.
+Before archive, prove that the top verdict, final Validator verdict, Engineering
+Acceptance, required user Product Acceptance, baseline hash, archive path, and
+project-board references agree.
 
 ## Retrospective Trigger
 
