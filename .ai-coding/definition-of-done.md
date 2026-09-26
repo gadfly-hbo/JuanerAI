@@ -1,28 +1,32 @@
 # Definition of Done
 
-A behavior-changing Change is Done only when:
+Use `docs/governance/product-change-execution-policy.md`; completion does not
+grant external, Git or release authority.
 
-- The exact Product Input Package, UI Contract, and user UI Gate PASS are recorded.
-- Proposal, scope, non-goals, Requirements, and Acceptance Criteria are approved.
-- Design covers architecture, data, failures, security, compatibility, and rollback as applicable.
-- Tasks map to Requirements, tests, and allowed paths.
-- Spec Gate passes.
-- Test plan and required tests map to Acceptance Criteria.
-- Expected RED is executed and explained.
-- TDD_READY is recorded before Worker dispatch.
-- Implementation is within scope.
-- Target tests are GREEN.
-- Required regression, lint, typecheck, build, architecture, and security checks pass or are explicitly not applicable.
-- A Change that touched test assets has a PASS Test Asset Retirement Gate with a reconciled lifecycle ledger.
-- Traceability covers REQ -> AC -> TEST -> TASK -> CODE -> RESULT.
-- Independent verification passes or an authorized risk waiver is recorded.
-- Real user-visible paths are verified against the frozen UI Contract; synthetic
-  or backend-only evidence does not stand in for a required UI check.
-- Engineering Acceptance is recorded by the Engineering Controller.
-- Required user Product Acceptance is separately recorded; Validator PASS and
-  Engineering Acceptance are not substitutes.
-- Delta specification is merged into the current behavior baseline and the Change is archived.
+A behavior-changing Change is engineering-complete when:
 
-Claims without executable evidence are not completion. Engineering completion
-does not claim product acceptance, Git permission, release, or deployment that
-was not explicitly granted.
+- Approved product input, applicable UI Contract and user UI approval are bound.
+- Current behavior specs cover the delivered acceptance points and necessary
+  contracts; ambiguity was resolved before affected implementation.
+- Behavior-scoped causal RED precedes implementation; target tests are GREEN.
+- Applicable type/build, regression, contract, real-path, architecture and
+  safety checks pass or have a justified explicit non-applicability.
+- Scope, compatibility, failures, forbidden effects and important design
+  decisions remain inside approved boundaries.
+- Changed test assets preserve required coverage and removal/retention evidence.
+- Acceptance -> test/code/result links support every material delivery claim;
+  historical failures, UNKNOWN, residual risk and missing evidence are honest.
+- Independent evaluation of the complete fixed candidate passes, or the user
+  explicitly accepts a named risk waiver that is not called Validator PASS.
+- Mini records Engineering Acceptance; applicable authorized archive preserves
+  the current behavior baseline and Change history.
+
+Required user Product Acceptance is separate and must precede transitions that
+depend on it. Product completion, merge and deployment are not implied by
+engineering verification.
+
+Spec Gate, TDD_READY dispatch approval and a standalone Test Asset Retirement
+Gate are not prerequisites in the adopted continuous path. Their old records
+are preserved. Pure refactors require pre/post GREEN/equivalence; documentation
+and role-instruction changes use proportionate consistency/scope review without
+inventing product RED or UI acceptance.

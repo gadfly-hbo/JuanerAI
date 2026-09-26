@@ -37,10 +37,9 @@ current authority in the semi-automatic dual-device path.
   product inputs but does not pre-freeze ordinary implementation contracts,
   paths, commands, environments, or validation mechanics.
 - The **Mac mini Engineering Controller** receives approved product inputs and
-  owns feasibility, OpenSpec and design, engineering contracts, task slicing,
-  Spec Gate, Test and causal RED, TDD_READY, Worker, GREEN and regression, Test
-  Asset Retirement, independent Validator, engineering acceptance, engineering
-  state, and authorized Git delivery, integration, and archive.
+  owns feasibility, result-sized engineering packages and contract decisions,
+  continuous OpenSpec/SDD and TDD, regression, independent Validator,
+  engineering acceptance and state, and authorized Git delivery/integration/archive.
 - The **user** is the final decision authority. The Engineering Controller asks
   the user directly about product ambiguity, scope expansion, new architecture
   or safety boundaries, extra budget, residual-risk acceptance, missing
@@ -60,9 +59,9 @@ Cold-start documents and empty module boundaries do not authorize product implem
 
 ## Product Plan Development-Readiness Gate
 
-Every new or materially revised product plan that is intended to guide development must pass an independent development-readiness review before it is declared ready, frozen as product input, or dispatched to `juaner_spec`.
+Every new or materially revised product plan intended to guide development must pass an independent development-readiness review before it is declared ready, frozen as product input, or handed to engineering. Reuse an applicable completed review; ordinary internal engineering changes do not repeat it.
 
-After drafting the plan, the Product Manager dispatches a fresh read-only support Agent with an implementation-worker perspective. This Reviewer is not `juaner_worker`, receives no TDD_READY or implementation authority, and must not write OpenSpec, tests, or production code. Give it only the product plan and formal attachments, the JuanerAI authority documents explicitly referenced by the plan, and the review brief. Do not give it the Product Manager's unstated rationale or use external project repositories to rescue missing plan content; any required external lookup is itself a plan gap unless the user explicitly authorized that read-only study.
+After drafting the plan, the Product Manager dispatches a fresh read-only support Agent with an implementation-worker perspective. This Reviewer is not the engineering agent, receives no implementation authority, and must not write OpenSpec, tests, or production code. Give it only the product plan and formal attachments, the JuanerAI authority documents explicitly referenced by the plan, and the review brief. Do not give it the Product Manager's unstated rationale or use external project repositories to rescue missing plan content; any required external lookup is itself a plan gap unless the user explicitly authorized that read-only study.
 
 The Reviewer returns:
 
@@ -101,14 +100,14 @@ Before proposing a new Agent Runtime, Model Pack runtime, Runtime Port, or Runti
 
 Before selecting a product Change, revising priorities, or reviewing scope and module responsibility, read Blueprint v2.0's four core views (sections 4, 5–6, 9 and 10), pending product decisions (section 7), and selection rule (section 8). In the existing proposal, connect the user outcome, six-plus-two coverage and deferred return points, affected modules, competitive-value hypothesis and required evidence. Preserve the full approved capability landscape while delivering its smallest unmet outcomes; these views add no separate Gate or execution authority.
 
-Dual-device product Changes follow the long-term semi-automatic default,
-delegated stage checks and authority boundaries in
+Dual-device product Changes follow the continuous-engineering default,
+adoption conditions and authority boundaries in
 `docs/governance/product-change-execution-policy.md`.
 
 Observable behavior changes follow the split state machine in
 `.ai-coding/state-machine.md`: Product Manager work ends at Product Input
 Freeze; Engineering Controller work begins at confirmed Engineering Intake and
-continues through the retained OpenSpec/TDD/verification Gates, Engineering
+continues through behavior-scoped SDD/TDD and independent verification, Engineering
 Acceptance, required user Product Acceptance, and authorized archive.
 
 Each non-trivial change belongs to openspec/changes/<change-id>/ and declares allowed, conditional, and forbidden paths. Use greenfield_fast_path only when there is no compatibility, migration, replay, or irreversible-side-effect obligation; it still requires closed contracts, security boundaries, negative tests, activation, rollback, and real verification.
@@ -119,22 +118,20 @@ Each non-trivial change belongs to openspec/changes/<change-id>/ and declares al
 
 ## Reuse and Complexity Control
 
-Before sizing a post-bootstrap Change, or when the same behavior reaches a second Spec clarification, Test correction, or Worker revision or replan, read `docs/governance/change-complexity-control.md`. Xanthil Changes also read `docs/governance/xanthil-first-slice-reuse-baseline.md`. Crossing the stop line returns the Change to Engineering Controller root-cause review; it never waives gates or evidence.
-
-Before Spec Gate, the Engineering Controller must run `ponytail-review` on the complete OpenSpec diff when the Spec role used high/xhigh reasoning, a non-core or governance Change introduces durable machinery, enterprise readiness is used to justify present scope, or a correction expands the design. Findings return to Spec for deletion; material complexity beyond the approved goal requires explicit plain-language user approval before Test dispatch. Follow `docs/governance/change-complexity-control.md`.
+Before sizing a Change or diagnosing repeated non-convergent work, read `docs/governance/change-complexity-control.md`; Xanthil Changes also read `docs/governance/xanthil-first-slice-reuse-baseline.md`. Check actual complexity and risk within existing engineering/review work, not a reasoning-level-triggered approval stage. Material scope or safety expansion requires the user's decision; ordinary corrections follow the sole execution policy's progress-based stop-loss.
 
 ## Testing
 
 - Derive tests from Requirement and Acceptance Criteria IDs.
 - Establish an expected RED caused by missing behavior before production implementation.
-- Keep test-writing and implementation permissions logically separate.
+- One engineering agent may maintain authorized tests, code and necessary engineering design; final evaluation remains independent from all candidate authors.
 - Preserve assertions and negative cases during implementation.
 - Require contract tests for every replaceable Adapter.
 - Use executable evidence before claiming completion.
 
 Read .ai-coding/policies/testing.md and .ai-coding/definition-of-done.md for the applicable gate.
 
-When a Change adds, changes, or removes tests, fixtures, helpers, doubles, mocks, snapshots, coverage maps, or harness code, read `docs/governance/test-asset-retirement.md` at Test Design and again after GREEN/regression. The Engineering Controller must pass its Test Asset Retirement Gate before freezing evidence for Validator dispatch.
+When changing test assets, read `docs/governance/test-asset-retirement.md`. Preserve coverage and explain removals in existing verification; Validator checks this in the same review, without a separate retirement Gate or compulsory ledger.
 
 ## Roles
 
@@ -142,22 +139,15 @@ When a Change adds, changes, or removes tests, fixtures, helpers, doubles, mocks
 - Engineering Controller owns engineering architecture and contracts within the
   approved product, architecture, security, data, permission, and external-effect
   boundaries, plus engineering Gates, integration, and engineering communication.
-- Worker implements only an approved brief and allowed paths.
+- Engineering agent (`juaner_worker`) owns necessary engineering spec/design, tests, implementation and corrections in the approved work package.
 - Validator uses an independent read-only context and returns evidence and a verdict; it does not implement or approve.
-- Test author and implementation worker remain logically isolated.
+- Candidate authors and final Validator remain separate; optional Spec/Test specialists are bounded support, not default stages.
 
 ### Standing Delegation Authority
 
-The user grants standing authority to dispatch the configured project subagents when their lifecycle Gate is satisfied. Do not request per-dispatch confirmation for work already inside the approved Change, role boundary, model-routing policy, and path scope.
+After policy adoption, approved product/UI input and confirmed intake, the Engineering Controller dispatches `juaner_worker` for the result-sized package and reuses its context through ordinary corrections. After freezing the complete candidate and evidence, it dispatches `juaner_validator` in an independent read-only context. No per-dispatch user confirmation is needed inside the approved scope, resource and permission boundaries.
 
-- After approved product input is received and engineering intake is complete, the Engineering Controller must dispatch `juaner_spec` to draft or revise the complete OpenSpec package before Spec Gate.
-- After Spec Gate PASS, the Engineering Controller must dispatch `juaner_test` to derive executable tests and establish expected RED before production implementation.
-- After TDD_READY, the Engineering Controller must dispatch `juaner_worker` to make the minimum production change inside the frozen allowed paths.
-- After implementation and evidence are frozen, the Engineering Controller must dispatch `juaner_validator` in an independent read-only context before engineering acceptance.
-- Each role returns evidence to the Engineering Controller. Dispatch does not transfer product authority, approve a Gate, or unlock the next role early.
-- The Engineering Controller must not replace a required role dispatch with direct execution. An explicit user waiver, an unavailable role, or a genuine authority/evidence blocker must be recorded with the affected Gate and release condition.
-
-This section is persistent delegation authority across sessions. A new user command is required only to waive a role, change authority or scope, override routing, or proceed despite a blocker.
+Use `juaner_spec` or `juaner_test` only for a concrete scoped support question; neither creates a Spec Gate, TDD_READY approval or automatic next dispatch. A contributing specialist cannot be the final Validator. A missing role or incompatible loaded configuration must be disclosed and resolved at a safe boundary, not bypassed by author self-review or a silently different role. Product permission, Git authority and old task stops are not granted by dispatch or by editing these instructions.
 
 Use Orchestration.md and docs/templates/ for multi-domain or multi-agent work.
 
@@ -184,19 +174,15 @@ Read docs/architecture/data-authority.md and docs/architecture/security-boundari
 ## Scope and Contracts
 
 - Domain-private changes stay inside the approved domain.
-- Shared types, package manifests, APIs, schemas, events, identities, persistence,
-  and deployment contracts require Engineering Controller approval before
-  implementation. Compatible in-boundary corrections close locally through
-  Spec/Design and the affected Gates; product, architecture, security, data,
-  permission, or external-effect boundary changes require a user decision.
-- Contract drift produces docs/templates/CONTRACT_CHANGE_REQUEST.template.md and blocks dependent work until the Engineering Controller or user, as applicable, decides it.
+- Material public/compatibility, persistent-data, authority or irreversible-effect contract changes require an Engineering Controller impact decision before dependent implementation; upper-boundary changes require the user. Ordinary private details close within the engineering package through affected spec/test updates and verification.
+- Use docs/templates/CONTRACT_CHANGE_REQUEST.template.md for a material contract decision, not every private parameter or fixture correction.
 - Unknown business facts, fields, enum values, labels, IDs, thresholds, defaults, and model behavior remain pending rather than invented.
 
 ## Validation and Completion
 
 Use `tools/harness/validation/run` as the canonical default offline validation command. It establishes the approved command-local toolchain, runs the accepted deterministic suites, and always removes the real-model test gate; it has no real-model mode. Any actual provider/model invocation requires separate explicit user authorization and a Change-specific command. Every Change must still name its applicable focused validation commands and evidence level before implementation.
 
-No Change is engineering-complete without approved specification, expected RED,
+No behavior-changing Change is engineering-complete without approved behavior and its current specification, causal RED,
 GREEN tests, required regression and quality checks, scope verification,
 traceability, independent verification or an explicit user-authorized risk
 waiver, Engineering Acceptance, and the applicable OpenSpec archive. Product
@@ -214,8 +200,7 @@ blocker discovery, user-decision request or resolution, RED/GREEN/verification
 changes, engineering acceptance, applicable product acceptance, and archive.
 The Product Manager maintains product planning and is not a required writer for
 remote engineering progress. Workers and validators return evidence to the
-Engineering Controller rather than writing project-control state unless their
-approved brief explicitly grants that path.
+Engineering Controller rather than writing project-control state. Ordinary inner-loop test runs do not each require a board update.
 
 Follow the stage-recording and board-update timing in `docs/governance/product-change-execution-policy.md`. Mini maintains the confirmed engineering snapshot at each material transition. A MacBook copy is only its last synchronized view, not a live remote-state claim or a second writable board.
 

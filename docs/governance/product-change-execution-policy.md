@@ -1,277 +1,246 @@
 # Product Change Execution Policy
 
-This document is the sole durable policy authority for JuanerAI dual-device
-product execution. Other project documents link here without restating it.
+This is the sole durable execution-policy authority for JuanerAI dual-device
+product work. Supporting rules and role instructions implement this policy;
+planning drafts explain the design but are not a second authority.
 
-## Current Mode — Product / Engineering Split
+## Applicability and Adoption
 
-The user approved the following long-term semi-automatic division on
-2026-09-24. It supersedes the former current-mode rule that made the MacBook
-Controller the engineering approval and return point. It does not restart the
-old Host Loop, clear WIP, expand a product Change, or grant a new external,
-provider, dependency, host, destructive, Git, or release permission.
+The user-approved 2026-09-26 continuous-engineering revision (v0.8) retains the
+2026-09-24 Product Manager / Engineering Controller split. It replaces the
+default four-role serial pipeline, universal Spec Gate and TDD_READY dispatch
+approvals, separate Test Asset Retirement Gate, automatic reasoning escalation,
+and ordinary correction-count renewal in the current semi-automatic path.
+
+Publication and adoption are separate. New work must identify the published
+policy version and approved product input. An active Mini task adopts at a safe
+boundary only after reading back that version, its actual loaded roles, the
+preserved task/branch/tree, replaced old restrictions, remaining real resource
+limits, unresolved decisions, and next permitted action. Until then adoption
+is UNCONFIRMED. Receipt alone does not resume a stopped product task.
+
+An active task keeps its Change identity, branch ownership, code, uncommitted
+work, valid product approvals, evidence, failures, UNKNOWN and spent resources.
+The adoption record names which old role/attempt restrictions this user-approved
+revision replaces once; it does not grant repeated exceptions. An explicit user
+stop, exhausted real resource budget, missing authority or unsafe effect still
+needs its own release decision. No new task, WIP migration, retroactive approval,
+history reset, Host Loop restart, dependency installation, provider/data access,
+host/destructive operation, Git delivery or release is authorized by this policy.
+
+## Authorities
 
 | Authority | Owns | Does not own |
 |---|---|---|
-| MacBook Product Manager | Whitepaper and Research Demo interpretation; Blueprint; product proposal and vertical slice; UI Contract; product goal, scope, business semantics, visible behavior, product acceptance criteria, non-goals and prohibitions; product-planning records | ordinary OpenSpec/design choices, internal or compatible shared contracts, paths, commands, environments, validation mechanics, engineering repairs, stage execution, engineering state, or technical sign-off |
-| Mac mini Engineering Controller | feasibility; OpenSpec/design/tasks; engineering contracts inside approved boundaries; role dispatch and Gates; test/RED/TDD_READY/Worker/GREEN/regression/retirement/Validator; engineering exceptions and budgets; engineering state; Engineering Acceptance; authorized Git delivery, integration and archive | changing product meaning/UI/scope, crossing architecture/security/data/permission/external-effect boundaries, granting itself budget or permissions, accepting residual risk for the user, or claiming user Product Acceptance |
-| User | final product decisions and Product Acceptance; scope/boundary/risk/budget/permission decisions; direct control of the Mini task | role work that remains delegated and in bounds |
+| MacBook Product Manager | Whitepaper/Demo interpretation; Blueprint; product scope, UI, business meaning, acceptance criteria, prohibitions and planning | routine engineering contracts, paths, commands, environments, repairs, state or technical sign-off |
+| Mac mini Engineering Controller | intake, feasibility, work-package boundaries, important engineering decisions, progress diagnosis, single engineering state, engineering acceptance and authorized Git delivery | changing product or safety boundaries, granting new permissions/resources, accepting residual risk for the user, claiming Product Acceptance |
+| Engineering agent (`juaner_worker`) | necessary engineering spec/design, tests, implementation, diagnosis, integration and affected verification inside its work package | changing product commitments, weakening acceptance, expanding its own authority, final validation of its own candidate |
+| Independent Validator | acceptance-first evaluation of a fixed complete candidate and its evidence | authoring/repairing that candidate, granting acceptance, Git or execution permission |
+| User | final product, scope, boundary, permission, resource, risk and required Product Acceptance decisions | routine in-boundary corrections already delegated |
 
-Use these full role names in current rules and receipts. An unqualified
-`Controller` is ambiguous and does not identify a current authority.
-
-The Engineering Controller asks the user directly in its current task when a
-decision exceeds the approved product, architecture, safety, operation,
-permission, or budget boundary. It does not return to MacBook by default. The
-user may ask the Product Manager to help with product discussion, but that help
-is not an engineering approval dependency.
+Use these names; an unqualified Controller does not identify a current
+authority. Mini asks the user directly in the original task when a decision is
+needed. MacBook participation is optional product support requested by the user.
 
 ## Product Input and Engineering Intake
 
-The Product Manager freezes a **Product Input Package** containing:
+MacBook freezes the existing Product Input Package: Change identity, approved
+objective/scope/non-goals, business and failure semantics, exact UI Contract and
+user UI approval, acceptance criteria, prohibitions, reference versions and
+known safety/data/permission/resource boundaries. Reuse an applicable approved
+UI Contract; materially changed visible behavior requires the user's affected
+UI approval. Research Demos are behavior references, not production authority.
+New or materially revised product plans retain the existing independent
+development-readiness review; it checks product gaps, not implementation names.
 
-- Change identity and product objective;
-- product scope, non-goals, forbidden product outcomes, and deferred returns;
-- exact UI Contract identity and user UI Gate verdict;
-- business terminology, semantics, defaults, visible failures, cancellation,
-  recovery, and product acceptance criteria;
-- adopted Whitepaper/Demo sources with versions and applicability limits; and
-- product, data, safety, permission, cost, and external-effect stop lines known
-  at product freeze.
+MacBook does not pre-freeze private types, file names, commands, environments,
+fixtures or evidence mechanics. Mini reads the real repository, branch, WIP,
+code, evidence and stopping point before defining a result-sized work package:
 
-The Product Input Package does not need to preselect internal types, schemas,
-Ports, file paths, commands, tool locations, environment variables, test
-harnesses, or evidence capture mechanics. Those are Engineering Inputs unless
-they are themselves part of the approved user-visible behavior or an upper
-boundary.
+- one demonstrable or independently verifiable result, approved behavior and
+  acceptance references, non-goals and prohibitions;
+- allowed module/directory roots, conditional/forbidden paths, important
+  compatibility promises and safety boundaries;
+- approved toolchain, validation effects/entrypoints, evidence root and Git
+  permissions; normal safe parameter/path choices within that scope may evolve;
+- existing resource limits, unresolved decisions and next permitted action.
 
-The Engineering Controller performs a read-only intake against the current
-repository, branch ownership, active WIP, frozen product input, existing code,
-and retained evidence. It then creates or updates the existing Change's
-engineering package: feasibility result, OpenSpec, design, contracts, allowed
-paths, task slices, role briefs, toolchain/dependency plan, validation plan,
-budgets, stop lines, and Git delivery plan. It records contradictions rather
-than silently changing product input.
+Inside already authorized roots and effects, do not require a new approval for
+each file, command or role return. Allowed, conditional and forbidden paths
+remain binding. A package may span Store, Application, Profile and UI. Splitting
+preserves overall scope, history and resource limits. Use existing OpenSpec/task/
+handoff locations, not another PRD, authority package format, board or approval
+system. The existing authority-package template is an optional reference only
+when already selected by the Change; it is not an additional required artifact.
 
-A newly transferred execution batch normally uses one dedicated Mac mini task
-bound to the saved JuanerAI project, with the product package identity in its
-initial message. An already active batch remains in its explicitly identified
-task; responsibility adoption never duplicates or migrates it. A manual
-create/open-and-forward by the user is an acceptable handoff and does not
-justify a new scheduler or message system.
+A message, Git fetch, published commit or task existence is not receiver
+adoption. Manual forwarding by the user is sufficient; no message automation is
+required. Do not create or migrate tasks without the user's explicit request.
 
-Git publication, message delivery, task existence, or branch fetch is not proof
-of intake. Adoption requires a receiver readback of the exact rule/product
-identities, repository/task/branch, current stop point, preserved history and
-next permitted action. Until that receipt exists, status is `UNCONFIRMED`.
+## Continuous SDD and TDD
 
-## Current Semi-automatic Lifecycle
-
-The Product Manager owns:
+After approved product/UI input and engineering intake:
 
 ```text
-Request -> Explore -> Product Proposal -> UI Contract -> User UI Gate
--> Product Input Freeze
+result-sized work package
+-> one engineering agent: behavior spec -> causal RED -> minimal GREEN
+   -> necessary refactor / next behavior -> regression and candidate freeze
+-> independent Validator -> Engineering Acceptance
+-> required Product Acceptance and authorized delivery / integration / archive
 ```
 
-After confirmed intake, the Engineering Controller owns:
+For each behavior, first state the smallest sufficient engineering specification
+in the existing Change: input and observable output, important success/failure
+rules, forbidden effects, acceptance reference and any necessary contract
+decision. Resolve load-bearing product ambiguity before implementing it.
+Internal design may evolve; changing an approved commitment requires the
+appropriate decision before dependent implementation.
 
-```text
-Feasibility -> OpenSpec / Design / Tasks -> Spec Gate -> Test / causal RED
--> TDD_READY -> Worker -> GREEN / Regression -> Test Asset Retirement
--> independent Validator -> Engineering Acceptance -> authorized Git delivery
--> applicable Product Acceptance -> integration / archive
-```
+Then write and run the test, observe failure caused by the missing behavior,
+implement the minimum change to make it GREEN, and refactor only while GREEN.
+Keep this a small vertical loop, not a system-wide test-writing phase. Environment,
+import, locator and fixture failures are not causal RED. A missing prerequisite
+may mask later assertions; disclose that and actually execute all required
+assertions in final verification. Pure refactors use pre/post GREEN and relevant
+equivalence evidence; documentation-only work does not fabricate RED.
 
-The exact order of delivery, Product Acceptance, merge, and archive follows the
-frozen Change and its Git authority. Engineering Acceptance or Validator PASS
-never impersonates a required Product Acceptance. Where Product Acceptance is
-required, the Engineering Controller asks the user directly and records the
-verdict before the dependent transition.
+The same engineering agent writes tests and code within the authorized roots,
+preserving unrelated edits, acceptance assertions and negative/failure cases.
+It may correct stale fixtures and private interfaces, update necessary design,
+and retire test assets with retained coverage proof. Build the thinnest real
+approved runtime path early. Run affected type/build, contract, integration,
+regression and security checks proportionate to the actual change.
 
-The configured Spec, Test, Worker, and Validator roles remain fresh and
-isolated. The Engineering Controller performs delegated stage checks; it does
-not substitute for those roles. Role isolation, OpenSpec, valid RED,
-TDD_READY, regression, Test Asset Retirement, independent validation, honest
-UNKNOWN reporting, and executable evidence remain mandatory.
-Validator independence comes from a fresh role/context, read-only permissions,
-and frozen inputs; it does not require a second device.
+Spec and Test specialists are optional scoped support, not mandatory stages;
+they do not import the retired approval chain. A contributing specialist cannot
+validate its own candidate. The final Validator remains fresh and read-only.
+An unavailable role is disclosed, not silently replaced with author self-review.
 
-## In-scope Technical Decision Authority
+## Engineering Decisions and Local Correction
 
-The Engineering Controller may approve internal types, fields, schemas,
-versioning, interfaces, storage mappings, paths, commands, environments, and
-minimal Port/Adapter or compatible shared-contract changes when all are true:
+Ordinary private interfaces, local types, fixtures, command parameters and
+evidence locations are continuous engineering work when meaning, compatibility,
+permissions and effects remain in bounds. A technical word, cross-file edit or
+call through an existing database interface is not by itself a boundary change.
 
-- the decision implements named approved Requirements/Acceptance Criteria and
-  preserves product meaning, UI behavior, defaults, failure/recovery semantics,
-  evidence authority, and product acceptance obligations;
-- existing supported behavior, consumers, CLI, and historical records remain
-  compatible, with no silent replacement, fabricated provenance, unapproved
-  migration, or data deletion; and
-- it remains inside approved architecture, security, data, dependency,
-  permission, module, cost, and external-effect boundaries and introduces only
-  what the current Change needs.
+Before changing an important public/compatibility, persistent-data, authority or
+irreversible-effect contract, Mini identifies the specific impact and necessary
+checks in the existing design. It can decide in-boundary engineering choices;
+product, architecture, security, data, dependency, permission, cost or external
+effect expansion goes directly to the user. Update only affected spec/design
+and tests, then return to development, not the entire former Gate chain.
+Use CONTRACT_CHANGE_REQUEST only for a material contract decision, not every
+private adjustment. Never weaken product requirements or tests to fit a defect.
 
-Spec writes the formal contract and Design; the Engineering Controller records
-the approved need, minimum delta, affected consumers/paths, compatibility,
-required evidence, decision, and Gate in existing Change records. Exact paths
-inside approved candidate roots may be frozen there; forbidden paths and module
-boundaries remain binding. Compatibility needs affected old/new contract suites
-and independent validation, not merely an "additive" label. If a later role finds a gap, affected implementation
-freezes and returns locally to Spec/Design. Repeat the affected Spec Gate, Test
-Design/RED, TDD_READY, briefs, and verification before resuming. Worker never
-changes its own contract, Test never weakens acceptance, and a tool failure is
-not product RED.
+Thus authorized new log IDs, corrected SHA records with stable sources, stale
+test fixtures, compatible private parameters and restoration of approved behavior
+close locally without new user approvals or per-action Mini sign-off. Generate
+unique non-overwriting evidence IDs; they are not an enumerated allowance.
+Compute identities from actual inputs, preserve bad records, and rerun affected
+verification when needed; a new hash cannot authenticate unbound old output.
+Unsafe/unapproved data deletion or boundary-breaking changes stop for the user.
 
-Changed product meaning/UI/scope, incompatibility or migration, a new
-architecture/security/data boundary, a dependency source/version outside the
-approved dependency plan or a new script permission, real
-data/provider access, new host/destructive operation, or another permission or
-external effect goes directly to the user. It is not routed to MacBook for
-technical approval.
+## Progress-based Stop-loss and Real Resource Limits
 
-## Bounded Execution Self-correction
+Authorization to deliver the result includes normal design/test/implementation,
+debugging, regression and review repair. There is no ordinary role-return,
+correction-command or total-repair-count renewal. Counts may signal a need for
+internal diagnosis; they do not alone trigger user approval. Do not require a
+new numerical quota when the user has not imposed one.
 
-Ordinary diagnosis and correction stay in the Mini task while scope, role
-isolation, assertions, side effects, dependency sources, permissions, and the
-approved engineering budget remain unchanged. Preserve failed commands,
-outputs, UNKNOWN, side effects, consumed role returns, and budget counts.
+User-set cost, compute and execution-time limits remain hard boundaries.
+Platform limits cannot be bypassed. No numerical cap does not authorize new
+paid resources, providers or external effects. Preserve actual consumption.
 
-This covers command arguments, task-local paths/configuration and authorized
-task-local diagnostic or validation scripts, not product defects, failed
-acceptance assertions, incompatible dependencies, or unresolved contracts.
-Repeat only an authorized read-only or task-local, reversible operation whose
-previous effects are understood and which is known safe to repeat. It does not
-permit direct production/permanent-test work in place of the required role,
-replay of non-idempotent operations, or a change to product retry behavior.
+Progress needs evidence: eliminating a relevant cause, narrowing failure
+conditions, enabling a real path or closing an original acceptance point.
+Diagnostic learning must lead toward a verifiable repair of the current result;
+repeated new observations without narrowing the blocker or an executable repair
+path are non-convergence. New files, more rules, weaker tests, new IDs/agents or
+session changes are not progress and do not reset history.
 
-For the same execution issue, allow at most three correction-and-verification
-rounds, counted cumulatively across sessions and amendments in existing stage
-records, unless the frozen package sets a narrower bound. Each round must narrow
-the cause or resolve it. Repeated failure triggers root-cause analysis and, when
-needed, task re-slicing; it does not permit indefinite retry, relabeling, or
-self-increasing a budget. A successful operation is not replayed merely because
-a later review stopped.
+When the same problem repeats without useful progress, stop blind retries.
+Mini diagnoses from existing evidence. A supported in-boundary alternative may
+receive one bounded attempt with a hypothesis and an observable exit condition.
+If no viable route exists, or the attempt returns to the problem without
+progress, stop affected work and ask the user for a concrete scope/approach/
+resource/risk decision, not just more attempts. This is not a renewable quota.
+Use existing work returns; no per-round progress report or new accounting system.
 
-## Low-risk Static Reading
+User stops, unknown side effects, missing permissions and actual resource limits
+take precedence even when progress exists. Investigate uncertain effects
+read-only first; stop affected actions if safety remains unknown. After timeout,
+check processes and effects before repeating only known-safe operations.
+An erroneous self-imposed pause may be corrected with evidence only when original
+authority remains valid; it cannot relabel a real stop or missing evidence.
 
-Pure static reading errors may be corrected without a fixed three-round limit
-or charging a substantive Spec/Test/Worker return only when the operation reads already authorized local
-text or metadata, does not import or execute project code, changes no state
-except approved evidence recording, has understood effects, and preserves the
-assertion and evidence standard. It makes no network/provider call, host or
-privilege change, temporary-file mutation, or project execution. Syntax, build, test, fixture-health,
-RED/GREEN, integration, and GUI commands are not static reading. Repeated
-guessing without a narrowing cause is still no progress.
+## Independent Validation and Acceptance
 
-Classify actual effects, not a diagnostic label. Empty extraction or outer exit
-zero is not a proven assertion; a real content difference remains a finding.
-Disclose failed attempts, preserve full comparisons, and never replay a
-successful check or lost historical process merely to repair its record.
+Before inspecting the implementation explanation and author tests, Validator
+derives its key positive, negative and failure expectations from approved
+product acceptance and necessary contracts. This is a reading order within the
+same review, not another artifact or Gate. Independently exercise the key real
+business and failure paths in the approved environment, then compare the full
+candidate, tests and claims. Mocks cannot replace the behavior being proved.
 
-## Execution Accounting and Mistaken Pauses
+Freeze the complete candidate (committed, staged, unstaged and added scope) and
+evidence; overlapping pre-existing changes need attribution, not blanket exclusion.
+Verify causal RED, test sensitivity, negative cases, relevant quality/regression,
+scope/architecture/safety and evidence identity. Test retirement is part of this
+review under `test-asset-retirement.md`, not a separate PASS prerequisite.
 
-Keep these distinct in the existing stage record; no new ledger is required:
+A blocking finding identifies an acceptance failure, concrete engineering defect,
+violation of an approved architecture/safety/permission/contract boundary, or
+material evidence gap that prevents a required claim. Give the affected requirement
+or boundary, counterexample/evidence and recheck condition. Formatting, preferred
+implementation style and nonessential document tidying are advisory when they
+do not affect those claims. Missing authority or meaningful evidence is never
+reclassified as cosmetic.
 
-| Category | Counted evidence |
-|---|---|
-| Read/command error | failed operation and observed effects; not by itself a correction round or substantive role return |
-| Execution correction round | actual correction of the same identified issue plus verification; cause, change, result, progress, and cumulative count |
-| Substantive role return/rework | completed work-package return or actual reviewed revision under its budget; not automatically a progress message, evidence clarification, or forced partial return |
+Return all material findings together when inputs suffice. Engineering repairs
+continuously; revalidate the new fixed candidate's affected and collateral risks
+in an independent read-only context. Do not reuse invalidated PASS or restart
+unaffected stages. Mini checks blockers, candidate identity, authority and
+acceptance obligations without repeating the entire code review.
 
-Check the retained sequence before declaring no progress or exhaustion. A safe
-corrected read that succeeded is progress; it need not be repeated. A temporary
-pause adds no substantive rework charge. If evidence establishes that the
-Engineering Controller's own pause was mistaken, it may record the reason and
-resume only when original authority, scope, role isolation, and safe-resumption
-conditions still hold. A user stop, real exhausted budget, unresolved blocker,
-failed assertion, or explicitly closed allowance still needs its stated release
-authority. Do not relabel these as mistaken pauses.
+Validator PASS, Engineering Acceptance, user Product Acceptance, Git merge and
+deployment are different claims. Preserve required user/UI acceptance; a risk
+waiver requires an explicit user decision and never becomes a Validator PASS.
+Delivery/acceptance/merge/archive order follows the task's actual permissions.
 
-The Engineering Controller stops and asks the user in one concentrated decision
-request when it needs extra budget, acceptance of residual risk, a scope or
-boundary change, new permission, or resolution of genuinely unknown or unsafe
-effects. A normal command error does not create a cross-device approval flow.
-Historical failures, deviations, UNKNOWN, and consumed allowances are never
-reset, erased, or retrospectively authorized by a role change.
+## State, Evidence and Delivery
 
-These retained correction and accounting rules are prospective. New packages
-inherit them unless explicitly narrowed; an already frozen package adopts them
-through a user-approved amendment naming that batch. Responsibility adoption
-does not reopen historical one-use/exhausted allowances or change recorded
-counts. The current stopped B2 package remains subject to its separate resume
-decision and remaining round 2/2; it is not a mistaken-pause exception.
+Mini alone writes `.juanerai/project-control/status.json` through the existing
+CLI at material result, phase, blocker, decision and acceptance transitions.
+MacBook maintains planning; its last synchronized copy is not live Mini status.
+Workers and Validator return evidence, not competing board writes. Existing
+machine label `controller` means Mini Engineering Controller in this mode.
+Do not change the board schema or create a second state authority.
 
-## State, Evidence, and Single Writer
+Use existing OpenSpec records for necessary spec/design, acceptance-to-test/
+code/result traceability and verification references. No empty mandatory
+document suite or duplicate phase log. Preserve required evidence under the
+existing device-local persistent root: actual commands/environment/inputs,
+complete outputs and exits, failures and UNKNOWN. Ordinary source reads need
+not each have an archive. Follow AGENTS.md and HANDOFF_BACK for evidence identity
+and receiver access; do not reconstruct lost historical results as past PASS.
 
-`.juanerai/project-control/status.json` remains the sole current project-board
-state and is atomically replaced through the existing status CLI. The Mac mini
-Engineering Controller is the single writer for the active engineering Change.
-Workers and validators return evidence to it. MacBook maintains product
-planning and may display or explain delivery, but it is not the required relay
-or writer for live engineering progress.
+One device writes a branch. Preserve dirty work; use the existing PR/squash/
+ff-only protections. Mini organizes review, authorized Git delivery and archive
+without MacBook technical sign-off. Missing Git/release permission goes directly
+to the user. Git publication and a readable receipt do not transfer branch
+ownership or authorize the next Change.
 
-The current board CLI and static fallback still emit the legacy machine/display
-label `controller`. That label grants no authority and, for new current-mode
-writes, is a compatibility alias only for the Mac mini Engineering Controller;
-it never means the Product Manager. Renaming the schema enum and fallback UI is
-a separate bounded tool Change with backward-compatible old-event readback, not
-part of this responsibility adjustment.
+## Preserved Product and Historical Boundaries
 
-Before every material transition, the Engineering Controller updates the
-current Change's verification, traceability, tasks, and project-control state
-as applicable. Record prior/current state, Gate and authority, frozen identities,
-exact commands/results, durable evidence, outstanding risks, consumed budget,
-and next action. Status labels never replace evidence. Events remain
-best-effort history; no second board, state database, ledger, scheduler, or
-recovery framework is created.
+Product authority remains at `docs/planning/README.md`. Withdrawn plans stay
+void; a Blueprint, Demo or development-readiness PASS does not itself authorize
+product execution or external operations. Global product WIP remains one.
+Do not edit old pointer, State, pause, Ledger or historical worktrees.
 
-Ordinary source browsing need not archive every read-tool invocation. Gate,
-identity, scope/write, and validation claims retain actual commands, environment,
-inputs, complete stdout/stderr, numeric exit and completion evidence as required
-by the frozen package. A narrative summary is not raw process evidence; missing
-historical evidence stays UNKNOWN and is not reconstructed by replay.
-
-Formal source, specs, tests, decisions, and approved state travel through Git.
-Raw evidence follows AGENTS.md Development Material Preservation and
-`docs/templates/HANDOFF_BACK.template.md`. Git references do not copy external
-logs, and acceptance cannot depend on an unreadable locator.
-
-## Git Delivery and Acceptance
-
-Exactly one device owns and writes a work branch at a time. Preserve dirty
-worktrees and existing changes; use PR, squash, and ff-only protection from
-`git-development-workflow.md`.
-
-Within user-granted Git authority, the Engineering Controller organizes code
-review, branch push, PR, required acceptance checks, squash merge, OpenSpec
-archive, delivery receipt, and readback. MacBook technical sign-off is not
-required. Missing commit, push, PR, merge, archive, release, deployment, or
-credential permission goes directly to the user and is never inferred from the
-role split. Git authority never waives Product Acceptance or another lifecycle
-Gate named by the Change.
-
-## WIP and Responsibility Takeover
-
-Global product WIP remains one. Preserve the active pointer, State, pause,
-Ledger, branch ownership, evidence, failed attempts, UNKNOWN, and consumed
-budgets. A role handover is not a new Change, a restart, an acceptance, a WIP
-clear, or authorization to resume.
-
-The current bounded takeover facts and receipt contract are in
-`docs/planning/2026-09-24/xanthil-desktop-engineering-controller-takeover-001.md`.
-That note does not modify old WIP records or release their stop line. The
-Engineering Controller must ask the user directly in the original Mini task for
-any resume decision or authority still missing after adoption.
-
-## Product Plan Authority
-
-The current product-plan authority and return point are recorded in
-`docs/planning/README.md`. Historical plan withdrawal remains effective. A
-withdrawn plan, accepted Demo, Blueprint publication, or development-readiness
-PASS does not authorize product execution, external data, provider calls,
-dependency installation, schema creation, merge, release, or deployment.
+The 2026-09-24 takeover note is a historical snapshot, not a live Mini stop-point
+claim. Verify the original task's current state at adoption; keep all unresolved
+safety/product obligations and the separately required resume decision.
 
 ## Signed Automatic Host Loop — Separate and Inactive
 

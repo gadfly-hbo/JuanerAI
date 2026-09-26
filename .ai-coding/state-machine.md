@@ -1,39 +1,35 @@
 # Change State Machine
 
-| State | Required Output | Exit Condition |
-|---|---|---|
-| REQUEST | raw intent | intent recorded |
-| EXPLORE | scope, risks, unknowns | affected area understood |
-| PROPOSAL | product Change brief | goal and product boundaries testable |
-| UI_CONTRACT | change-scoped clickable UI Contract | proposed user flow and visible states are directly evaluable |
-| USER_UI_GATE | exact UI Contract identity and user verdict | PASS |
-| PRODUCT_INPUT_FREEZE | product goal, scope, UI, business semantics, acceptance criteria, non-goals, prohibitions, and upper stop lines | Product Manager freeze and user approval recorded |
-| ENGINEERING_INTAKE | repository/WIP readback, feasibility, engineering package plan, and receiver receipt | Engineering Controller confirms exact input and current stop point |
-| SPECIFICATION | delta spec with REQ and AC IDs | behavior unambiguous |
-| DESIGN | design.md | interfaces and failure semantics covered |
-| TASK_PLAN | tasks.md | requirements mapped to work |
-| SPEC_GATE | Engineering Controller verdict | PASS |
-| TEST_DESIGN | test-plan.md | AC coverage defined |
-| RED | executable failing tests | EXPECTED_RED |
-| TDD_READY | frozen tests, causal RED, environment health, allowed paths, and Engineering Controller verdict | PASS before Worker dispatch |
-| IMPLEMENTATION | approved source change | target behavior implemented |
-| GREEN | target test evidence | PASS |
-| REGRESSION | related quality evidence | required checks PASS |
-| TEST_ASSET_RETIREMENT | reconciled lifecycle ledger and Engineering Controller verdict, when test assets changed | PASS or not applicable |
-| VERIFY | verification.md and traceability | READY_FOR_ACCEPTANCE |
-| ENGINEERING_ACCEPT | Engineering Controller review of Gates, evidence, risks, and Validator | approved |
-| PRODUCT_ACCEPT | user verdict when required by frozen product input | approved or not applicable |
-| ARCHIVE | main spec updated, Change archived | baseline represents current behavior |
+Authority, adoption and stop behavior are defined only in
+`docs/governance/product-change-execution-policy.md`. This is a human lifecycle
+view; it does not change any runtime schema, old State/pause/Ledger or board data.
 
-The Product Manager owns REQUEST through PRODUCT_INPUT_FREEZE. The Mac mini
-Engineering Controller owns ENGINEERING_INTAKE through engineering delivery and
-asks the user directly for out-of-bound decisions. A compatible engineering
-contract gap returns locally to SPECIFICATION/DESIGN and repeats affected Gates.
+| State | Meaning / completion condition |
+|---|---|
+| REQUEST / EXPLORE / PROPOSAL | product result, scope and acceptance are clear |
+| UI_CONTRACT / USER_UI_GATE | applicable UI Contract and required user approval bound |
+| PRODUCT_INPUT_FREEZE | approved product semantics, acceptance, references and prohibitions fixed |
+| ENGINEERING_INTAKE | Mini confirms original task, inputs, live worktree, scope, permissions, resource limits and stop point |
+| IMPLEMENTATION | one engineering agent continuously owns behavior spec -> causal RED -> minimal GREEN -> necessary refactor; real runtime and affected checks run early |
+| REGRESSION | applicable quality/regression complete; coverage retirement reconciled in existing evidence |
+| VERIFY | independent read-only evaluation of complete fixed candidate; material findings return to the engineering loop |
+| ENGINEERING_ACCEPT | Mini checks blockers, candidate identity, authority and acceptance obligations |
+| PRODUCT_ACCEPT | user's required product verdict, or explicit non-applicability |
+| ARCHIVE | authorized delivery/integration and current behavior baseline preserved |
 
-Responsibility adoption is not ENGINEERING_INTAKE completion or execution
-resume. An already active Change retains its task, state, history, budgets, and
-stop line until the receiver receipt and any separate user resume decision.
+SPECIFICATION, DESIGN, TASK_PLAN, TEST_DESIGN, RED and GREEN may describe internal
+work or historical evidence; they are not approval boundaries. SPEC_GATE,
+TDD_READY and TEST_ASSET_RETIREMENT in old records remain historical, not
+requirements to recreate in adopted continuous work. Do not rewrite old records
+or migrate state data merely to change the workflow.
 
-BLOCKED preserves evidence and names one concrete release condition. UI,
-product, spec, test, implementation, or contract conflict returns to its owning
-earlier state. Validator PASS never skips ENGINEERING_ACCEPT or PRODUCT_ACCEPT.
+Product preparation belongs to MacBook. Mini is the sole writer of current
+engineering state. Record material results/transitions, not every inner test run.
+Independent validation uses new fixed inputs after repair; it does not repeat
+unaffected product preparation or create fresh role/command allowances.
+
+BLOCKED names a concrete missing decision/evidence/safe route. Routine errors
+stay in the engineering loop; repeated non-progress goes to Mini diagnosis.
+True user/permission/resource stops are never removed by a role or state rename.
+Receipt, engineering acceptance, Product Acceptance and Git permission remain
+distinct.

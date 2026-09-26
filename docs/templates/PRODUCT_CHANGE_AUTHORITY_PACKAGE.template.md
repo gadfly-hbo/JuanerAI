@@ -1,5 +1,9 @@
 # Product Change Authority Package
 
+This pre-existing template is optional/reference-only when already selected by
+the Change. Normally record the same applicable information once in existing
+OpenSpec/handoff records; do not add a mandatory package or approval stage.
+
 For the current semi-automatic path, the MacBook Product Manager freezes the
 Product Input section and the Mac mini Engineering Controller fills the
 Engineering Intake section. The signed sections apply only to the separately
@@ -21,11 +25,12 @@ signature bytes, raw prompt, or raw model output here.
 ## Engineering Intake — Mac mini Engineering Controller
 
 - Receiver task / host / repository / branch / owning device:
-- Current WIP, stop point, history, consumed budgets, UNKNOWN, and evidence readback:
+- Current WIP, stop point, history, actual resource consumption, UNKNOWN, and evidence readback:
 - Feasibility result:
 - OpenSpec / design / contract / task / allowed-path plan:
 - Dependency, toolchain, commands, environment, validation, and evidence plan:
-- Role sequence, budgets, correction limits, and stop lines:
+- Engineering agent / independent Validator, optional specialist question, real resource limits and stop conditions:
+- Published rule version / actually loaded roles / replaced old restrictions / retained stops:
 - Git permissions and delivery plan:
 - Intake receipt / state: `UNCONFIRMED` / `ADOPTED_STOP_RETAINED` / `READY_FOR_AUTHORIZED_EXECUTION`:
 

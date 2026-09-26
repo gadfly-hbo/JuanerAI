@@ -1,45 +1,28 @@
-# Engineering Controller Review
+# Engineering Controller Acceptance Review
 
-## Scope
+Use the sole execution policy. This is the acceptance handoff check, not a
+second full source/test audit after Validator. Link existing evidence.
 
-- Change:
-- Task:
-- Domain:
-- Handoff:
+## Identity
 
-## Findings
+- Change / work package:
+- Complete candidate and evidence references:
+- Independent Validator verdict / reference:
 
-- [ ] Paths remain within the approved boundary.
-- [ ] Reused baseline and intended delta are explicit; no baseline contract is reopened implicitly.
-- [ ] Terminology matches CONTEXT.md.
-- [ ] Requirements, tests, tasks, code, and evidence are traceable.
-- [ ] Shared contracts are unchanged or have an approved change request.
-- [ ] Data authority, privacy, and external-sharing rules hold.
-- [ ] Architecture dependency direction holds.
-- [ ] Runtime SDK types, events, errors, tool structures, and session structures remain inside their owning Adapter and are absent from business Ports and public/versioned contracts.
-- [ ] Expected RED and required negative evidence are genuine.
-- [ ] Independent mutations are independently scheduled; broad titles do not substitute for executable leaves.
-- [ ] Timeout, cancellation, retry, or persistence changes define admission, linearization, winner, late-result, and convergence semantics.
-- [ ] GREEN, regression, and risk-based quality evidence are executable.
-- [ ] Runtime, CLI, UI, or integration claims use real runtime evidence where required.
-- [ ] Risks, waivers, and unverified areas are explicit.
-- [ ] Actual PATH/toolchain and complete attempt ledger match the approved validation entrypoint and budget.
-- [ ] Current verification verdict, traceability, frozen hashes, project board, and proposed next state agree.
-- [ ] The ordinary-Change complexity stop line was not crossed, or a root-cause return/re-slice is recorded.
+## Required Checks
 
-## Test Asset Retirement, When Applicable
-
-- [ ] The lifecycle ledger covers every changed test, fixture, helper, double, mock, snapshot, coverage map, and harness path.
-- [ ] Complete test-asset diff received `ponytail-review`; each finding has a recorded disposition.
-- [ ] Every retained asset has a current evidence owner or retained consumer; every deletion has a coverage successor or diagnostic-only proof.
-- [ ] Temporary evidence and unresolved retirement candidates are absent from the verification freeze.
-- [ ] Affected tests and regression were rerun after any retirement edit.
+- [ ] Candidate identity matches what Validator evaluated; material repairs were rechecked.
+- [ ] Material blockers are resolved or have a specific explicit user risk waiver; advisory tidying is not treated as a blocker.
+- [ ] Approved acceptance coverage, causal RED/GREEN, applicable regression/quality and changed-test coverage are supported by the independent review.
+- [ ] Scope, important contract decisions, actual resource limits and permissions remain valid.
+- [ ] Failures, UNKNOWN and unverified/residual risk are disclosed; no new evidence impersonates historical PASS.
+- [ ] Current engineering state and verification refer to the same result; no duplicate per-command status log is required.
+- [ ] Required user Product Acceptance and Git/release permissions are separate and satisfied before dependent actions.
 
 ## Decision
 
-- verdict: approved / changes requested / blocked
-- evidence:
-- complete blocker list:
-- next state:
-- released work:
-- remaining blocked work:
+- Engineering Acceptance / changes requested / blocked:
+- Evidence and complete material blocker list:
+- Required user verdict / actual verdict:
+- Authorized next action:
+- Remaining stopped work and concrete release condition:
