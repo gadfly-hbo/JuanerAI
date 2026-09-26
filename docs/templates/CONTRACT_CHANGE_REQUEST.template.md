@@ -1,5 +1,9 @@
 # Contract Change Request
 
+Use for a material public/compatibility, persistent-data, authority or external-effect
+decision under the sole execution policy. Private parameters, fixtures and safe
+validation details stay in the engineering loop without this request.
+
 ## Summary
 
 ## Current Contract

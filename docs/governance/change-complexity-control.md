@@ -1,170 +1,79 @@
 # Change Complexity Control
 
-Activated dual-device product Changes also use the sole execution authority in
-`docs/governance/product-change-execution-policy.md`; this document does not
-redefine its WIP, repair, archive, release, or stop rules.
+Use `product-change-execution-policy.md` for authority, adoption and stop-loss.
+This document helps size and review work inside the existing loop; it adds no
+Gate, fixed role-return allowance or reasoning-triggered review.
 
-Use this workflow when sizing a post-bootstrap Change, selecting its evidence level, or responding to repeated Spec, Test, or Worker corrections. It controls process complexity; it does not waive the OpenSpec, RED, GREEN, regression, Validator, acceptance, or archive gates.
+## Size the Result
 
-## Classify Before Proposal
-
-| Class | Meaning | Expected Path |
-|---|---|---|
-| R0 support | Documentation, inventory, or reversible mechanical work with no observable runtime or contract change | Reduced documented flow with scope and evidence review |
-| Ordinary capability | Reuses current contracts, persistence, runtime, model, data, and security boundaries; changes one bounded user behavior | Small delta spec -> focused RED -> one Worker -> affected contracts/regression -> fresh Validator |
-| Boundary change | Changes a durable schema, Port, external data source, Adapter, model/runtime, security boundary, concurrency, recovery, atomicity, permission, or external effect | Full Change path with explicit boundary decisions and R2/R3 evidence |
-| Foundation/bootstrap | Establishes a first product slice or several system-wide baselines at once | Full path plus early feasibility probes, explicit reuse outputs, and mandatory retrospective |
-
-Record the class and rationale in Proposal and every role handoff. Difficulty does not lower the risk class.
-
-## Ordinary Change Baseline
-
-An ordinary Change starts from current behavior in `openspec/specs/` and identifies only its intended delta. It should:
-
-1. Name the reused capability, Port, fixture/double, error, persistence, runtime, and security contracts.
-2. State the smallest observable behavior change and its non-goals.
-3. Add or modify only the AC and tests needed for that delta.
-4. Preserve unrelated baseline tests and contract drivers.
-5. Release one bounded Worker write set after causal RED.
-6. Run focused tests, every affected Adapter contract suite, risk-based regression, and a fresh read-only Validator.
-
-The target is one Spec package, one Test return, one Worker implementation, and one Validator verdict. This is an operating target, not evidence by assertion.
-
-## Overdesign Review Before Spec Gate
-
-The Engineering Controller MUST run `ponytail-review` on the complete OpenSpec diff before
-Spec Gate when any of these triggers applies:
-
-- the Spec role used high or xhigh reasoning (including the current default);
-- a non-core, internal, support, or governance Change introduces persistence,
-  transactions, concurrency, recovery, retry, audit, a new protocol, multiple
-  runtime modes, or background work;
-- a personal, local, single-user, single-writer, or read-only scope invokes team
-  or enterprise needs to justify present behavior;
-- a Requirement, Acceptance Criterion, configuration option, abstraction, or
-  test asset has no current consumer or approved acceptance scenario;
-- a Test, Worker, or Validator finding expands the design instead of completing
-  the approved objective; or
-- a bounded feature begins to require broad existing-test migration or a
-  dedicated complex test framework.
-
-For every triggered review:
-
-1. Apply `ponytail-review` to the complete Proposal, Specification, Design,
-   Tasks, and Test Plan diff.
-2. Map every Requirement, design mechanism, and test asset to the current
-   objective, a current consumer, and an approved acceptance scenario.
-3. Return findings without current necessity to Spec for deletion before Test
-   dispatch.
-4. When material complexity beyond the approved goal may still be necessary,
-   stop and tell the user in plain language: the original goal, the added
-   mechanism, who needs it now, its development/test/maintenance cost, and the
-   simpler alternative.
-5. Preserve that additional complexity only after explicit user approval.
-
-Enterprise readiness is a two-sided review. Preserve the minimum Core,
-Application, Port, Adapter, Profile, versioned-contract, and provenance
-boundaries needed to keep future replacement possible. Defer enterprise-only
-identity, tenancy, policy, isolation, storage, audit, deployment, migration,
-concurrency, and recovery behavior to an explicitly approved enterprise Change.
-The review checks both missing preparation and premature implementation.
-
-This review removes unnecessary complexity only. It does not waive or delete
-security, correctness, or R2/R3 controls required by the approved scope.
-
-## Complexity Stop Line
-
-For an ordinary Change, any item below stops automatic forward dispatch and returns control to the Engineering Controller:
-
-- a second post-Gate Spec clarification for the same behavior;
-- a second Test correction for the same AC or invariant;
-- a second Worker revision or replan;
-- an isolated feature unexpectedly requires broad migration of existing tests;
-- the implementation unexpectedly crosses more Ports, Adapters, persistent structures, or security boundaries than Proposal declared;
-- the same task needs a second model/reasoning upgrade;
-- current verdict, traceability, test output, or frozen hashes contradict each other;
-- a real external result requires an unapproved retry, reliability threshold, fallback, or diagnostic policy.
-
-The stop line is a root-cause trigger. It never authorizes weaker tests, an incomplete fix, or acceptance without evidence.
-
-## Root-Cause Return
-
-Classify the stop before any new dispatch:
-
-| Cause | Required Return |
+| Work | Minimum approach |
 |---|---|
-| missing user/product decision | Engineering Controller asks the user directly, then returns to Spec |
-| ambiguous or missing behavior contract | Spec/Design |
-| missing durable structure meaning | structure confirmation, then Spec |
-| invalid, tautological, or incomplete test | Test Design with production frozen |
-| production defect inside frozen contract | bounded Worker revision |
-| unexpected cross-domain impact | Contract Change Request and re-slicing |
-| environment/toolchain drift | restore approved environment; do not change behavior |
-| external/model stochasticity | apply the pre-approved reliability policy; otherwise return to Spec/user |
-| slice too large | split into independently verifiable vertical deltas |
-| evidence/read-model conflict | Engineering Controller evidence correction before the next Gate |
+| R0 support: docs/inventory/reversible mechanics, no product behavior change | scope and consistency evidence; no fabricated product RED |
+| Ordinary capability: existing architecture/contracts, bounded behavior delta | necessary behavior spec, causal RED/GREEN, affected regression, independent verification |
+| Boundary-sensitive change | explicit necessary contract decisions and checks before affected dangerous actions; same engineering/Validator flow |
+| Foundation / first slice | thin real-runtime feasibility early, explicit reuse and small demonstrable results; same flow |
 
-Record the cause, evidence, owner, release condition, and whether the Change class must be raised.
+Name the current consumer, acceptance result, reused baseline and intended delta
+in the existing package. A call through an existing DB/runtime contract is not
+automatically a boundary change. Do not create an enterprise mechanism merely
+because future enterprise replacement must stay possible.
 
-## Concurrency and Publication Questions
+## Complexity Review Within Work
 
-Before Spec Gate for timeout, cancellation, retry, queues, persistence, atomic rename, or external actions, answer all of these:
+Engineering and Validator check necessity in their existing work. Use a bounded
+`ponytail-review` only when actual scope/design complexity warrants it, not
+because the model uses high reasoning. Check the affected proposal/design/code/
+test diff against a current consumer and acceptance need. Remove speculative
+abstractions, duplicate mechanisms and unsupported future requirements.
 
-- What event admits work?
-- Which work is already issued when cancellation or expiry occurs?
-- What is the physical and Application-visible linearization point?
-- Which contender wins each race?
-- What happens to late settlement or partial candidate output?
-- Do concurrent public calls resolve, reject, or converge to one result?
-- Which exceptional terminal or recovery writes remain permitted?
-- What is the absolute bound, and what aborts it?
+Preserve Product Core, Application, Port, Adapter, Profile, versioned-contract
+and provenance boundaries. Material scope expansion goes to the user with its
+need, cost and simpler alternative; a cosmetic preference does not block delivery.
+A real security/correctness requirement cannot be removed as simplification.
 
-A status enum without these answers is not a closed concurrency contract.
+## Diagnose Non-convergence
 
-## Test Design Preflight
+Use the sole policy's progress evidence and stop-loss. Repeated corrections
+signal diagnosis, not automatic Spec/Test redispatch or user quota renewal.
+Distinguish missing product decisions from private design defects, invalid tests,
+production defects, toolchain drift, excessive slice size and evidence mistakes.
 
-Before TDD_READY, confirm:
+Correct ordinary defects in the same engineering package. Investigate uncertain
+effects read-only; stop affected unsafe work. Only a material contract or upper
+boundary decision needs the corresponding Mini/user decision. Keep failures,
+unverified claims and scope limits. Do not classify each attempt into a new
+approval ledger.
 
-- helper and environment health pass independently of missing product behavior;
-- every material invariant has positive, negative, boundary, failure, and forbidden-side-effect leaves where applicable;
-- independent mutations are independently scheduled rather than represented only by a broad title;
-- doubles exercise the public boundary and do not replace the core behavior under test;
-- wall-clock metadata, source-string scans, or production test seams are not used as substitutes for observable behavior;
-- the current production fails for the intended missing behavior and all unrelated baseline checks remain healthy;
-- the exact test hash, command, expected count, environment entrypoint, and Worker write set are frozen.
+A bounded alternative must narrow the current acceptance blocker or produce a
+verifiable repair path. Repeated new observations without that convergence do
+not justify indefinite investigation. Use existing work returns for this check.
 
-## Evidence Read Model
+## Risk Questions Before Affected Actions
 
-`verification.md` is the current read model. It keeps the current verdict, frozen references, evidence matrix, residual risks, next Gate, and links to detailed events. Historical attempts belong in an event ledger or bounded evidence files.
+For changed cancellation, retry, concurrency, persistence or external actions,
+answer what is material to the actual scope:
 
-At every material transition:
+- What admits work, and what has already been issued at cancellation/expiry?
+- What is the physical/Application publication point and race winner?
+- Can late results publish, reopen work or cause an unapproved terminal write?
+- How do concurrent calls settle, and what bounds pending work?
+- What compatibility, rollback and authorized recovery evidence is required?
 
-1. Update the current verdict first.
-2. Append or link the evidence event.
-3. Update traceability and the project board.
-4. Verify all three agree before dispatching the next role.
+These are necessary design questions, not new sign-off stages. Tests must
+exercise actual important boundaries and forbidden effects. Confirm helper
+health before claiming causal RED; mocks cannot prove the mocked behavior.
 
-Apply `product-change-execution-policy.md`: the Mini Engineering Controller
-updates local verdicts, traceability, and the single authoritative engineering
-board at material transitions. A remote copy identifies its last synchronization,
-not live progress, and is not an additional writable board.
+## Evidence and Completion
 
-Before archive, prove that the top verdict, final Validator verdict, Engineering
-Acceptance, required user Product Acceptance, baseline hash, archive path, and
-project-board references agree.
+Keep the current result, acceptance coverage, fixed references, remaining risks
+and next action in existing verification/tasks; link raw evidence once. Mini
+updates the sole board at material transitions, not every command.
+Before delivery, the actual candidate, Validator, acceptance verdicts and archive
+references must agree. Mere optional-format gaps are advisory; material missing
+evidence remains a blocker.
 
-## Retrospective Trigger
-
-A retrospective is mandatory for:
-
-- every foundation/bootstrap Change;
-- any Change that crosses the complexity stop line;
-- a failed independent Validator that reopens Spec or Test Design;
-- a production or governance-tool incident exposing a missing safety contract;
-- a user correction that should become persistent project behavior.
-
-Use `docs/templates/CHANGE_RETROSPECTIVE.template.md`. Store product-specific reuse facts separately from this cross-Change workflow.
-
-## Completion Criterion
-
-Complexity control is complete when the Change class is explicit, reused baselines and intended delta are named, every stop-line event has a root-cause return, and the next role receives one bounded executable brief. A heavy first slice is acceptable; repeated unclassified repair loops are not.
+Use an existing retrospective when a substantive incident, non-convergence or
+foundation finding warrants a reusable lesson. Do not require a retrospective
+for every normal correction or create new rules for each typo. Completion means
+the scoped product result is verifiable and true stops have an explicit decision,
+not that every possible governance document has been produced.

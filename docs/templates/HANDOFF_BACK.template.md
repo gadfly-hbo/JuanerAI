@@ -1,5 +1,9 @@
 # Handoff Back
 
+Return at meaningful package outcomes, not after every correction. Use applicable
+fields and link existing verification/evidence instead of duplicating a ledger.
+The sole execution policy defines progress, stop-loss and actual resource limits.
+
 ## Identity
 
 - Change:
@@ -49,14 +53,14 @@ Follow `AGENTS.md` Development Material Preservation; do not restate or fork tha
 - existing status, `NEXT_ACTION`, or handoff record updated:
 - temporary/generated material confirmed discardable:
 
-## Attempt Ledger
+## Execution Evidence
 
 | Attempt | Exact Command | Environment/Entrypoint | Result | Post-Failure Mutation |
 |---|---|---|---|---|
 | | | | | none / authorized reference |
 
 - actual PATH/toolchain:
-- validation budget used:
+- actual resource consumption against an explicit limit, if applicable:
 - checks not run:
 - reason checks were not run:
 
@@ -65,7 +69,7 @@ Follow `AGENTS.md` Development Material Preservation; do not restate or fork tha
 - write risk:
 - high-write commands and count:
 - temporary or generated artifacts:
-- validation budget compliance:
+- actual resource/permission boundary compliance:
 - complete changed-path inventory or write-set reference:
 
 ## Contract Drift and Cross-Domain Impact
@@ -78,11 +82,12 @@ Follow `AGENTS.md` Development Material Preservation; do not restate or fork tha
 
 - TBD
 
-## Complexity Stop-Line
+## Progress or Stop-loss
 
 - crossed: yes / no
 - trigger and evidence:
-- required return Gate:
+- current acceptance blocker and viable repair path, if any:
+- next permitted action or concrete user decision:
 
 ## Engineering Controller Decisions Needed
 
@@ -90,5 +95,6 @@ Follow `AGENTS.md` Development Material Preservation; do not restate or fork tha
 
 ## User Decisions Needed
 
-- product ambiguity, scope/boundary expansion, extra budget, residual risk,
-  missing permission, or unknown/unsafe effect only; `none` if not applicable
+- product ambiguity, scope/boundary expansion, extra actual resources, residual
+  risk, missing permission, unsafe/unknown effects or diagnosed non-convergence;
+  ordinary correction counts are not a decision request; `none` when no decision is needed

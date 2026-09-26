@@ -1,5 +1,14 @@
 # Independent Validator Checklist
 
+Use materially applicable checks in one review under the sole execution policy.
+Explain section-level non-applicability instead of creating new requirements.
+Formatting preferences and optional template fields are not delivery blockers.
+
+## Acceptance-first Reading
+
+- [ ] Before the author's solution/tests, derive key positive, negative and failure expectations from approved product acceptance and necessary contracts.
+- [ ] Independently exercise the key real business and failure paths using authorized checks; do not rely only on the author's passing tests.
+
 ## Frozen Inputs
 
 - Change and accepted specification:
@@ -12,15 +21,15 @@
 ## Independence
 
 - [ ] Validator context is fresh and read-only.
-- [ ] Validator did not author the tests or implementation being judged.
+- [ ] Validator did not author the candidate's engineering spec/design, tests or implementation.
 - [ ] No production, test, spec, project-control, dependency, credential, or global state was modified.
 - [ ] Network/provider/model calls were made only when the validation brief explicitly authorized them.
 
 ## Scope and Contracts
 
-- [ ] Actual changed paths equal the approved write set.
+- [ ] Actual changes remain within approved roots/conditions, with overlapping prior work attributed; normal file selection inside those roots is not scope drift.
 - [ ] Intended delta is distinguishable from reused baseline behavior.
-- [ ] Shared Port, schema, identity, status, version, persistence, model, dependency, and Profile contracts did not drift.
+- [ ] Important contract changes have their required impact decision and affected verification; private adjustments preserve approved behavior and compatibility.
 - [ ] Product Core/Application dependency direction remains inward.
 - [ ] Runtime SDK types, events, errors, tool structures, and session structures remain confined to their owning Adapter and do not appear in business Ports or public/versioned contracts.
 - [ ] Every replaceable Adapter passes the unchanged relevant contract suite.
@@ -33,8 +42,8 @@
 - [ ] Material invariants use independent positive, negative, boundary, failure, and forbidden-side-effect leaves where applicable.
 - [ ] Broad titles or representative examples do not hide unscheduled mutations.
 - [ ] Doubles exercise the public boundary without replacing the core behavior under test.
-- [ ] When test assets changed, the Test Asset Retirement Gate is PASS and its lifecycle ledger matches the frozen tree.
-- [ ] No tracked temporary evidence, unresolved retirement candidate, or retained test-only asset without a consumer remains.
+- [ ] Changed test assets and coverage retirement are checked in this review; no separate retirement PASS or compulsory ledger is required.
+- [ ] Temporary/unused/equivalent assets are evaluated for actual impact; only material coverage, correctness, safety or evidence gaps block delivery.
 - [ ] Every retired behavior test names retained coverage for the same REQ/AC and material mutation, or proves it was diagnostic-only and outside accepted traceability.
 - [ ] Equivalent retained tests have distinct current evidence purposes; obsolete implementation, format, error, or toolchain tests map to a current approved contract.
 
@@ -74,6 +83,12 @@
 
 ## Findings
 
+Each blocker must identify an acceptance failure, concrete engineering defect,
+violation of an approved architecture/safety/permission/contract boundary, or
+material evidence gap preventing a required claim. Report all material findings
+together when inputs suffice. Put nonessential format/style/tidying suggestions
+in a separate advisory list; missing real authority/evidence is not cosmetic.
+
 | Severity | Requirement/AC | File/Line or Command | Counterexample | Release Condition |
 |---|---|---|---|---|
 | | | | | |
@@ -82,6 +97,7 @@
 
 - verdict: PASS / FAIL / BLOCKED
 - reproduced evidence:
+- advisory findings, not required for PASS:
 - non-blocking residual risks:
 - no-write attestation:
 - acceptance/approval reminder: Validator does not grant Engineering Acceptance,

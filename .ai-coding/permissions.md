@@ -1,17 +1,25 @@
 # Permission Model
 
-| Artifact | Product Manager | Engineering Controller | Spec Author | Test Author | Worker | Validator | User |
-|---|---|---|---|---|---|---|---|
-| product intent, UI, priorities, and acceptance criteria | freeze | read and detect conflict | propose during product phase | read | read | read | approve |
-| CONTEXT.md and product terminology | write | read | propose | read | read | read | decide conflict |
-| engineering architecture inside approved boundaries | read | approve | propose | read | read | verify | decide boundary expansion |
-| approved OpenSpec | read | approve | write before Gate | read | read | read | decide product ambiguity |
-| tests | read | approve scope and Gate | read | write | read by default | read and run | accept risk only |
-| production source | read | approve scope | no write | no write | scoped write | no write | grant exceptional permission |
-| internal or compatible shared contracts and schemas | read | approve | propose | read | no unapproved write | verify | decide boundary expansion |
-| engineering verification verdict | read | accept | no | no | no | write evidence only | accept risk only |
-| Product Acceptance | prepare/explain evidence | record, never infer | no | no | no | no | approve |
+The sole execution policy controls adoption and every boundary below. Scoped
+write means only the approved roots and task effects, never arbitrary authority.
 
-External messages, deployments, production data access, dependency installation,
-destructive operations, and cross-repository writes require explicit user
-authority beyond a Change's ordinary source scope.
+| Artifact / decision | Product Manager | Mini Engineering Controller | Engineering agent | Optional Spec / Test | Validator | User |
+|---|---|---|---|---|---|---|
+| product intent, UI, scope, acceptance | prepare/freeze | detect gaps; record decisions | read; preserve | read; propose gap | verify | approve changes |
+| product terminology / CONTEXT.md | maintain | detect conflict | preserve meaning | scoped proposal only | verify | decide conflict |
+| engineering spec/design and private contracts | read | authorize package; decide important impact | scoped write | Spec: scoped write; Test: read | read | decide upper-boundary changes |
+| tests, fixtures and helpers | read | authorize scope | scoped write; preserve acceptance | Test: scoped write; Spec: read | inspect/run authorized checks | decide risk waiver |
+| production source | read | authorize scope | scoped write | no write | no write | exceptional authority |
+| material public/persistent/authority contract | read | decide in-boundary change before implementation | implement decided change | scoped proposal | verify | decide boundary expansion |
+| current engineering state / acceptance | read | sole writer / accept | evidence only | evidence only | evidence/verdict only | risk decision |
+| Product Acceptance | explain | record, never infer | evidence | evidence | evidence | approve |
+
+Ordinary private corrections do not require a new write exception. Important
+contract decisions still precede dependent implementation. Preserve other
+writers' work, assertions and test coverage; author and final evaluator remain
+separate.
+
+External messages, deployment, production data, dependency installation,
+destructive operations and cross-repository writes require explicit authority
+beyond ordinary source scope. Git permission and stopped-task resumption are
+not implied by these role definitions.
