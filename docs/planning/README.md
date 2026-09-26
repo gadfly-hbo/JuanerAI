@@ -1,63 +1,75 @@
 # JuanerAI Product Planning Index
 
-## Current product-development authority — Blueprint v1.3（2026-09-19）
+## Current approved product-development authority — Blueprint v2.0（2026-09-26）
 
-[JuanerAI Product Development Blueprint v1.3](2026-09-19/juanerai-product-development-blueprint-v1.3.md)
-is the current highest product-development execution guideline. JuanerAI
-Whitepaper v3.3.4 remains its core product reference and commercialization
-charter. Whitepaper updates require explicit user notification, versioned
-Blueprint adoption, user approval, fresh Product Plan Development-Readiness
-PASS and project-rule integration.
+[JuanerAI Product Development Blueprint v2.0](2026-09-26/juanerai-product-development-blueprint-v2.0.md)
+is the user-approved highest product-development execution guideline, grounded
+in Whitepaper v4.0 as its core product reference and commercialization charter.
+The user confirmed the complete draft after independent
+[Review 001](2026-09-26/reviews/blueprint-v2.0-development-readiness-review-001.md)
+returned `PASS`. The approved product content is unchanged from that review.
+See the [approval and rule-integration record](2026-09-26/blueprint-v2.0-approval-and-rule-integration.md)
+for the reviewed/approved identities and publication boundary.
 
-v1.3 consolidates four core views as the Blueprint's development decision
-summary: **capability landscape, phased vertical-slice delivery, system
-architecture/module responsibility, and competitive value/evidence**. Read
-sections 4, 5, 10 and 11 together, then apply section 8 to Change selection.
-Full six-plus-two coverage retains targets and revisit points while delivery
-proceeds in usable vertical slices. IR is explicitly the analysis execution
-and verification contract within business-analysis compilation. Competitive
-advantages remain hypotheses until comparatively validated.
+Read the four views together: **capability landscape (§4), phased vertical-slice
+delivery (§§5–6), architecture/module responsibility (§9), competitive
+value/evidence (§10)**; apply selection rule §8 and close §7's product decisions
+before freezing the relevant product input. Full six-plus-two coverage and IR
+remain; competitive and learning-effect claims require evidence.
 
-Fresh [v1.3 Review 001](2026-09-19/reviews/blueprint-v1.3-development-readiness-review-001.md)
-returned `PASS` with no required additions. No production execution or remote
-lifecycle update is part of this documentation revision.
+The first production slice remains frozen. The later product-result sequence is
+**Decision Record and Expected Outcome → outcome follow-up → explicit adoption
+in the next Case**. The former new-period comparison candidate is reused within
+outcome follow-up, not selected as the default next Change. Each later slice
+still needs applicable acceptance evidence, its own UI Contract/UI Gate and
+confirmed engineering intake before OpenSpec/TDD work. This roadmap grants no
+new production dispatch, provider/data access, action or first-slice expansion.
 
-v1.3 does not expand, cancel or restart the frozen first production Change.
-The default later candidate remains new-period Case revision, rerun,
-evidence/judgment comparison and versioned report, subject to current acceptance
-and value evidence, its own UI Contract/UI Gate and OpenSpec/TDD lifecycle.
-It reuses the first slice's save/reopen/rerun foundations.
+The user authorized Git publication/integration and Mac mini adoption after
+confirming the full text. Exact Git and original-task receiver receipts prove
+those results separately; until receiver readback, adoption is `UNCONFIRMED`.
+Publication alone grants no engineering-state update or execution. Future Whitepaper revisions still require
+user notification, versioned Blueprint approval, independent readiness review
+and rule integration.
+
+## Historical Blueprints — immutable
 
 Blueprint [v1.0](https://github.com/gadfly-hbo/JuanerAI/blob/c5a305795bd7201b541e5f8184554bf72ed82b35/docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.0.md),
-[v1.1](https://github.com/gadfly-hbo/JuanerAI/blob/c5a305795bd7201b541e5f8184554bf72ed82b35/docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.1.md) and
-[v1.2](2026-09-19/juanerai-product-development-blueprint-v1.2.md) remain immutable
+[v1.1](https://github.com/gadfly-hbo/JuanerAI/blob/c5a305795bd7201b541e5f8184554bf72ed82b35/docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.1.md),
+[v1.2](2026-09-19/juanerai-product-development-blueprint-v1.2.md) and
+[v1.3](2026-09-19/juanerai-product-development-blueprint-v1.3.md) remain immutable
 history. v1.2 adopted Whitepaper v3.3.4's OSM/PIM and coverage map. Its
 [Review 001](2026-09-19/reviews/blueprint-v1.2-development-readiness-review-001.md)
 `NEEDS_CLARIFICATION` and
 [Review 002](2026-09-19/reviews/blueprint-v1.2-development-readiness-review-002.md)
-`PASS` retain their historical scope. First-slice UI, Session/Runtime, execution
-package and approved amendments remain binding where v1.3 retains them.
+`PASS` retain their historical scope. v1.3 consolidated the four views; its
+[Review 001](2026-09-19/reviews/blueprint-v1.3-development-readiness-review-001.md)
+`PASS` is preserved. First-slice UI, Session/Runtime, execution package and
+applicable approved amendments remain protected under v2.0 §6.1 and Appendix B.
 
-## Scoped main integration and task-package binding
+## Historical scoped main integration — v1.2 / v1.3
 
-This main change integrates only this Blueprint session's two increments:
+The prior main integration included only this Blueprint session's two increments:
 `a1277905506eedc947c2b0092de5915dd089e632` (v1.2) and
 `c5a305795bd7201b541e5f8184554bf72ed82b35` (v1.3).
-The two Blueprint files and three review records retain their exact source
-bytes; four existing rule/entry files are adapted to main. It does not merge
+The two Blueprint files and three review records retained their exact source
+bytes; four existing rule/entry files were adapted to main. It did not merge
 the earlier branch history, role configuration, execution policies, task
 packages, UI assets or project-board records. Those assets remain preserved at
 their original Git sources, not deleted or superseded by absence here.
 
-The v1.3 Blueprint remains the next Change's planning authority. When preparing
-its execution package, explicitly bind:
+## Current product-input package binding — v2.0
 
-- Blueprint: `v1.3`;
-- path: `docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.3.md`;
-- SHA-256: `e4ba6ca3052f377a24ecd7580316dfdeb3d9336612da342b9061da191e01fa62`;
+When preparing a later Change's Product Input Package, explicitly bind:
+
+- Blueprint: `v2.0`;
+- path: `docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md`;
+- SHA-256: `a7181f5a62e41955c7753b018c922701296948b593e9b7ffc164de549b768a30`;
 - exact package/integration commit and tree, resolved after publication;
-- four-view alignment: capability coverage (§4), phase/outcome (§5), module
-  responsibility and IR (§10), competitive hypothesis/evidence (§11), using §8;
+- four-view alignment: capability coverage (§4), phase/outcome (§§5–6), module
+  responsibility and IR (§9), competitive hypothesis/evidence (§10), using §8;
+- closed slice-specific product decisions (§7), exact UI Contract and user UI
+  Gate verdict, while preserving the first slice's frozen inputs;
 - receiver readback: device/task identity, actual received commit, Blueprint
   version/path/hash, and confirmation that those inputs govern the new package.
 
@@ -71,7 +83,7 @@ package stays frozen; this binding does not restart it or change its scope.
 ### Retained attachment source
 
 The original first-slice attachments referenced by the immutable Blueprints
-are outside this scoped main change. Where a relative attachment link has no
+remain at their original Git source. Where a relative attachment link has no
 file in this tree, resolve the same repository-relative path at fixed commit
 `c5a305795bd7201b541e5f8184554bf72ed82b35`, **not main or latest**.
 Use the [frozen source index](https://github.com/gadfly-hbo/JuanerAI/blob/c5a305795bd7201b541e5f8184554bf72ed82b35/docs/planning/README.md)
@@ -103,7 +115,7 @@ and the original Mini task returns the named receipt, adoption is
 
 The user withdrew all previously approved, not-yet-executed Xanthil Desktop
 and Model Pack development plans. Their status is **VOID**, not paused or
-awaiting dispatch. Blueprint v1.3 does not reactivate their roadmap,
+awaiting dispatch. Blueprint v2.0 does not reactivate their roadmap,
 fixtures, Changes, execution packages or development sequence.
 
 ### Scope of withdrawal

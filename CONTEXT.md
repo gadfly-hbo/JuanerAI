@@ -13,12 +13,16 @@ The product-definition and commercialization charter and the core reference for 
 _Avoid_: executable roadmap, implementation authorization, proof of completion
 
 **Product Development Blueprint**:
-JuanerAI's highest product-development execution guideline. Its four core views connect capability coverage, phased vertical delivery, module responsibility and competitive-value evidence. Blueprint v1.3 is current; v1.0/v1.1/v1.2 remain history.
+JuanerAI's highest product-development execution guideline. Its four core views connect capability coverage, phased vertical delivery, module responsibility and competitive-value evidence. Blueprint v2.0 is approved; v1.0–v1.3 remain history. Its Whitepaper v4.0 adoption preserves the frozen first slice and advances Personal decision records, outcome follow-up and explicit next-Case adoption before demand-led Team and Enterprise expansion.
 _Avoid_: Whitepaper copy, OpenSpec, automatic Change authorization
 
 **Xanthil**:
 The first JuanerAI commercial product. Xanthil Desktop is the unified user workbench for PIM and applicable OSM workflows; it reuses JuanerAI's shared analysis, execution and governance capabilities. The name itself grants no execution authority.
 _Avoid_: JuanerAI platform, Pi wrapper, CLI-first product
+
+**Personal / Team / Enterprise**:
+Product forms and governance scopes, separate from intelligence maturity and action permissions. Xanthil Personal uses the Desktop Free entry; Xanthil Team carries the former Workspace product direction; JuanerAI Enterprise adds enterprise responsibilities. Strategic naming does not rename existing packages or expand a frozen Change.
+_Avoid_: three execution cores, automatic infrastructure or migration authorization
 
 **Product Module**:
 A reusable JuanerAI capability that may begin as a monorepo module and later become an independently versioned subproject.
@@ -31,7 +35,7 @@ A specialist who investigates data and communicates evidence-backed findings and
 _Avoid_: BI operator
 
 **Decision User**:
-An enterprise user who relies on data to choose or authorize business action.
+A professional individual, team or enterprise user who relies on data to choose, defer or decline business action; authority to execute remains separate.
 _Avoid_: dashboard viewer
 
 ## Business Lines and Analysis Modes
@@ -62,21 +66,35 @@ _Avoid_: CPU machine language, prompt, generated SQL alone, cosmetic JSON, autom
 
 ## Decision Loop
 
+These are v2.0 product meanings. They do not retroactively change frozen first-slice states, contracts or acceptance; analysis completion is not Decision Loop completion.
+
 **Evidence-based Analysis (循证分析)**:
 An analyst-led investigation that keeps Hypotheses, supporting and refuting Evidence, alternatives, uncertainty, Forks, and bounded Subagent contributions traceable before a Finding is accepted.
 _Avoid_: Free analysis, 自由分析, unconstrained analysis
 
 **Decision Loop**:
-The traceable progression from Data through Decision and Action to Outcome.
-_Avoid_: reporting pipeline
+The traceable process from a problem and evidence through an accountable decision, applicable authorized action, actual observation and evaluation to governed improvement adopted by a later Case. Pure analysis may stop at bounded insight.
+_Avoid_: reporting pipeline, mandatory action for every Case, analysis completion
+
+**Decision Case**:
+A versioned business record beginning with a problem and preserving scope, responsibility, process and exact evidence references. It can contain successive analyses and remain valid without a decision or completed Loop; the frozen one-Session/one-Case contract remains unchanged.
+_Avoid_: chat title, report wrapper, single Analysis Run
+
+**Decision Record / Decision System of Record**:
+The contemporaneous record of considered options, visible evidence, selection/non-action/deferral, rationale, responsibility and applicable expectation. The System of Record preserves its durable identity and revision history without becoming the authority for external transaction facts.
+_Avoid_: correct-answer library, Memory, action permission, rewriting past reasons using later results
+
+**Decision Graph / Decision Lineage**:
+Versioned, sourced relationships connecting Cases, evidence, assets, choices and results; Lineage explains the information and responsibility behind a decision at that time. Relationships and summaries respect source permissions.
+_Avoid_: new source of truth, graph-database requirement, duplicate independent evidence
 
 **Data**:
 Recorded internal or external evidence used in analysis, with source and lineage.
 _Avoid_: truth, knowledge
 
 **Decision**:
-A selected course of action supported by evidence, constraints, and an accountable decision maker or policy.
-_Avoid_: insight, prediction
+An accountable choice supported by the evidence and constraints available at the time, including non-action or deferral. Selection does not itself authorize execution.
+_Avoid_: insight, prediction, action receipt
 
 **Action Recommendation**:
 A proposed business action that has not yet been authorized or executed.
@@ -91,8 +109,20 @@ An authorized business operation intended to change a real business state.
 _Avoid_: suggestion, tool call
 
 **Outcome**:
-An observed result attributed to an Action with stated evidence and uncertainty.
-_Avoid_: output, completion
+An observed result with stated source, quality and uncertainty. Attribution to an action or strategy is a separate, evidence-dependent judgment and may remain unknown.
+_Avoid_: generated output, action completion, automatic causal effect
+
+**Expected Outcome / Future Actual**:
+Expected Outcome records the pre-observation expectation, baseline, object, window, guardrails and evaluation arrangement. Future Actual is the sourced actual observation for the agreed object and window, with quality and maturity checked.
+_Avoid_: desired target as guaranteed prediction, LLM-generated actuals, retrospective expectation, execution receipt as effect
+
+**Outcome Evaluation**:
+The bounded assessment separating execution conformity, actual observation, expectation calibration, strategy attribution and decision quality given contemporaneous information.
+_Avoid_: observed improvement as proof of strategy increment, a bad result as proof of a bad original decision
+
+**Recall / Reuse / Learning**:
+Recall retrieves history; Reuse applies suitable existing material; Learning turns outcome evaluation into a correctly owned and validated versioned improvement explicitly adopted in a later Case. Adoption and changed analysis/choice show occurrence; independent later quality or effect evidence is needed to show effectiveness.
+_Avoid_: saved summary as learning, approved candidate as actual adoption, adoption as proven benefit
 
 ## Foundational Authorities
 

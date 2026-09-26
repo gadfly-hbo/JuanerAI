@@ -2,16 +2,16 @@
 
 ## Vision
 
-JuanerAI helps data analysts and enterprise decision users move beyond static BI reporting into a traceable Data -> Decision -> Action -> Outcome loop.
+JuanerAI is a Bottom-up Decision Intelligence System: professional individuals begin with trusted analysis, preserve decisions and expectations, revisit actual outcomes, and apply governed improvements in later Cases. Personal value supports demand-led Team and Enterprise growth; pure analysis may stop at bounded insight.
 
 ## Product Family
 
-JuanerAI is the commercial project family. Xanthil is its first product. Existing features and reusable Domain Packs, Model Packs, Runtime, data, semantic, asset and governance foundations remain available. [Product Development Blueprint v1.3](../planning/2026-09-19/juanerai-product-development-blueprint-v1.3.md) is the current highest development-execution guideline, grounded in JuanerAI Whitepaper v3.3.4 as its core product reference and the commercialization charter.
+JuanerAI is the commercial project family. Xanthil is its first product. Existing features and reusable Domain Packs, Model Packs, Runtime, data, semantic, asset and governance foundations remain available. [Product Development Blueprint v2.0](../planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md) is the approved highest development-execution guideline, grounded in JuanerAI Whitepaper v4.0 as its core product reference and the commercialization charter. Xanthil Personal maps to Desktop Free, Xanthil Team carries the former Workspace product direction, and JuanerAI Enterprise adds enterprise responsibilities; naming alone changes no implementation contract.
 
 ## Users
 
-- Data analysts investigating enterprise internal and external data.
-- Enterprise users who use data to choose or authorize business action.
+- Non-technical business and analysis users, beginning with the frozen personal membership-repurchase scenario.
+- Professional data analysts, teams and enterprise decision users investigating evidence and making accountable choices.
 
 ## Problem
 
@@ -19,7 +19,7 @@ Existing data products often stop at reports, metrics, dashboards, or analyst in
 
 ## Product Hypothesis
 
-A product grounded in an enterprise Ontology can connect evidence, business entities, decisions, authorized actions, and measured outcomes. AI can assist analysis and recommendation while policy and provenance keep the result accountable.
+A shared semantic, analysis, decision, learning and execution core can connect evidence, accountable choices and qualified outcomes without requiring an enterprise platform for personal use. Case history and governed next-Case adoption may create repeat value; this remains a hypothesis requiring real-use and appropriate effect evidence, including the cost of recording and follow-up.
 
 ## Business Lines and Workbench
 
@@ -65,12 +65,12 @@ The withdrawn plan sequenced Model Pack product work after Xanthil Desktop Data 
 
 ## Current Direction and Gate
 
-Blueprint v1.3 preserves the existing first vertical slice and frozen production batch. Its four core views refine later development: full six-plus-two capability coverage, phased vertical-slice delivery, front-end/shared-business/back-end responsibility, and competitive-value hypotheses with evidence. Business-analysis compilation through Analysis Plan IR is explicit across these views. Deferred capabilities retain a target and revisit point; claimed competitive advantage requires comparison, not feature presence.
+Blueprint v2.0 preserves the existing first vertical slice and frozen production batch. Its four core views refine later development: full six-plus-two capability coverage (§4), phased vertical-slice delivery (§§5–6), front-end/shared-business/back-end responsibility (§9), and competitive-value hypotheses with evidence (§10). Business-analysis compilation through Analysis Plan IR remains explicit. Deferred capabilities retain a target and revisit point; claimed competitive advantage requires comparison, not feature presence.
 
-Change selection combines the smallest unmet user outcome, full-landscape gaps, dependency readiness and value evidence. The default later candidate remains reuse of the same Decision Case with a new authorized period, new revision, rerun, evidence comparison and versioned report. It is not an authorized Change; current technical acceptance, separately approved value validation and its own UI/OpenSpec/TDD Gates remain applicable. Save/reopen/rerun foundations are reused, not built a second time.
+Change selection follows §8 and the confirmed later sequence: Decision Record and Expected Outcome → outcome follow-up → explicit adoption in the next Case. Each is a product outcome, not an already authorized Change. Close its product decisions under §7, confirm the applicable first-slice delivery/acceptance evidence, and obtain its own UI Contract/UI Gate and engineering intake before OpenSpec/TDD work. Existing Case save/reopen/rerun is reused; the former new-period comparison candidate supports outcome follow-up rather than remaining the default next Change.
 
-This is the scoped integration of the Blueprint session only. The original
-first-slice package, attachments and execution history remain at the fixed Git
-source described in [the planning index](../planning/README.md); their absence
-from this main tree does not withdraw or reapprove them. This update neither
-synchronizes an active Mac mini checkout nor claims receiver adoption.
+The original first-slice package, attachments and execution history remain at
+the fixed Git source described in [the planning index](../planning/README.md);
+their absence from this tree does not withdraw or reapprove them. Rule publication
+and active Mac mini adoption require separate exact Git and receiver receipts.
+Engineering status and the frozen batch's scope, permissions and stop line are unchanged.
