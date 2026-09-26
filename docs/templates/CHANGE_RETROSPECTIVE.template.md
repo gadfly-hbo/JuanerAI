@@ -1,5 +1,8 @@
 # Change Retrospective
 
+Use when a substantive incident or lesson warrants it, not after every ordinary
+correction. Fill known material facts; do not invent historical timing/counts.
+
 ## Identity and Outcome
 
 - Change:
@@ -30,10 +33,10 @@
 
 ## Effort and Rework
 
-- Spec clarifications after Gate:
-- Test corrections for the same behavior:
-- Worker revisions or replans:
-- model/reasoning upgrades:
+- Time to demonstrable/acceptable result, if observed:
+- User interruptions and concrete reasons:
+- Material design/test/implementation rework:
+- Diagnosed non-convergence and outcome:
 - broad existing-test migrations:
 - Validator FAIL rounds:
 - environment or tooling incidents:
@@ -46,9 +49,9 @@ List controls that prevented an incorrect implementation, false evidence, unsafe
 
 ## Avoidable Friction
 
-For each item, name the earliest Gate where it could have been prevented.
+For each material item, name the earliest useful check that could have prevented it.
 
-| Friction | Root Cause | Earliest Preventive Gate | Evidence |
+| Friction | Root Cause | Earliest Useful Check | Evidence |
 |---|---|---|---|
 | | | | |
 
@@ -57,7 +60,7 @@ For each item, name the earliest Gate where it could have been prevented.
 - stop line crossed: yes / no
 - trigger:
 - root-cause class:
-- return Gate:
+- next action or user decision:
 - re-slicing decision:
 - quality evidence preserved:
 

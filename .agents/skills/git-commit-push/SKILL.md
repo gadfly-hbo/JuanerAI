@@ -18,11 +18,19 @@ Use this when the user asks to commit and push current work.
 4. Run final validation relevant to the exact intended scope before final
    staging.
 5. Before final staging or commit, fingerprint the worktree with porcelain
-   status, tracked diffs, and hashes of intended untracked files. Rebuild the
-   available codebase-memory index from the current repository worktree with
-   `mode=full` and `persistence=false`. An `indexed` status alone is not
-   freshness evidence.
-6. Query the rebuilt graph first for exactly one Branch identity. Require usable
+   status, tracked diffs, and hashes of every intended changed file. Select the
+   applicable validation from the actual diff, not the task label:
+   - A delivery containing only governance documents, instructions, templates
+     or development-agent configuration uses complete diff/path review,
+     applicable syntax/reference/configuration checks and independent
+     consistency review. Record this scope and the fingerprint; a full
+     codebase graph is not required and its failure does not block this path.
+   - Product source, executable tests/tools/hooks/CI, dependencies, runtime
+     configuration, schemas or mixed deliveries retain the full-index check
+     below. Do not classify executable or product changes as documentation.
+     Rebuild with `mode=full` and `persistence=false`; an `indexed` status
+     alone is not freshness evidence.
+6. For the full-index path, query the rebuilt graph first for exactly one Branch identity. Require usable
    canonical repository or worktree root, `branch`, and `head_sha` fields, and
    require them to match exactly the repository root, current branch, and
    `HEAD` recorded in step 1. Record the actual root, branch, `head_sha`, and
@@ -35,20 +43,22 @@ Use this when the user asks to commit and push current work.
    prove that they resolve to the intended files. When either category does not
    apply, record it as N/A and inspect the available File, Section, Module, or
    equivalent graph identity instead. For every removed, renamed, or legacy
-   path in scope, prove zero graph hits; record N/A when none apply. Recompute
-   the fingerprint and require it to be identical after indexing. If indexing
+   path in scope, prove zero graph hits; record N/A when none apply. If indexing
    is unavailable, fails, returns stale results, or changes the worktree,
-   report the condition and stop before staging.
+   report the condition and stop before staging. For either validation path,
+   recompute the fingerprint after validation and require it to be identical;
+   otherwise inspect the new changes and revalidate the affected scope.
 7. Stage explicit paths. Do not use `git add .` blindly, and do not include
    credentials, caches, dependency folders, `.DS_Store`, or unrelated changes.
-8. Review the complete staged diff and confirm it matches the validated and
-   freshly indexed scope.
+8. Review the complete staged diff and confirm it matches the validated scope
+   and fingerprint from the applicable path.
 9. Use the user's exact commit message when supplied; otherwise generate one
    concise Conventional Commit message that fits the coherent staged scope.
 10. Commit without amending or rewriting history. Push the current work branch,
    setting its upstream when needed.
-11. Report the commit SHA, branch and remote, validation evidence, fresh-index
-    evidence, and remaining worktree state. A push does not merge the pull
+11. Report the commit SHA, branch and remote, validation evidence, the selected
+    validation path (with fresh-index evidence when applicable), and remaining
+    worktree state. A push does not merge the pull
     request or authorize the next product Gate.
 
 Never amend, rebase, reset, force-push, delete branches, or rewrite history

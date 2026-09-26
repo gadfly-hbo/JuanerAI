@@ -1,5 +1,9 @@
 # Domain Handoff
 
+Use applicable fields for one result-sized package under
+`docs/governance/product-change-execution-policy.md`. Link existing inputs and
+evidence; this template does not add approvals, stages or per-command quotas.
+
 ## Change and Goal
 
 - Change:
@@ -36,20 +40,15 @@
 - Concurrency/publication winner, if applicable:
 - Stop lines:
 - Write risk:
-- Validation budget:
-- Exact validation environment/entrypoint:
+- Existing actual resource limits, if any:
+- Approved validation environment/entrypoints and effect boundaries:
 
 ## Agent Route
 
 - Role:
-- Risk: R0 / R1 / R2 / R3
-- Difficulty: standard / complex / blocked
 - Model:
 - Reasoning effort:
-- Routing rationale:
-- Upgrade trigger:
-- Override duration:
-- Rollback to role default:
+- Optional specialist question and exit condition, if needed:
 
 ## Evidence Required
 
@@ -61,12 +60,12 @@
 - Regression:
 - Real runtime or external evidence:
 
-## Attempt Policy
+## Progress and Stop Conditions
 
-- Authorized executions:
-- Automatic upgrade limit:
-- Complexity stop-line trigger:
-- Return Gate after stop:
+- Current acceptance result to reach:
+- Existing user/safety/resource stops:
+- When relevant, root-cause evidence and bounded alternative's exit condition:
+- Next permitted action or concrete decision needed:
 
 ## Handoff Back
 
