@@ -2,7 +2,11 @@
 
 ## Product
 
-JuanerAI is the commercial project family. Xanthil is its first product; existing functionality and reusable foundations remain preserved. The pending Xanthil Desktop and Model Pack development plans were withdrawn by the user on 2026-09-18 and remain void. `docs/planning/README.md` is the current product-planning entry; it points to the approved Blueprint v1.0 base and the current v1.1 correction package. The first-slice UI Contract must directly reuse the accepted PX-2026-004/006 Xanthil product UI mode and its visible capability inventory rather than invent a replacement UI. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
+JuanerAI is the commercial project family. Xanthil is its first product; existing functionality and reusable foundations remain preserved. The pending Xanthil Desktop and Model Pack development plans were withdrawn by the user on 2026-09-18 and remain void. `docs/planning/README.md` is the current product-planning entry; it points to the approved [Product Development Blueprint v2.0](docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md), JuanerAI's highest product-development execution guideline. JuanerAI Whitepaper v4.0 is its core product reference and the commercialization charter; Whitepaper changes enter development only after the user explicitly notifies JuanerAI, approves a versioned Blueprint revision, that revision passes a fresh Product Plan Development-Readiness Gate, and the result is integrated here. Blueprint v1.0–v1.3 remain immutable history.
+
+OSM owns goals, measures, gaps, strategies, actions and business review. PIM owns questions, requirement clarification, analysis framing, investigation, evidence judgment and insight follow-up. Xanthil Desktop is their unified workbench; both reuse one analysis and execution core. The Blueprint's six product lines plus two cross-cutting capabilities are a Change-coverage map, not eight products or serial build phases.
+
+The first-slice UI Contract must directly reuse the accepted PX-2026-004/006 Xanthil product UI mode and its visible capability inventory rather than invent a replacement UI. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
 
 The product intent is to help data analysts and enterprise decision users move through Data -> Decision -> Action -> Outcome. It should produce actionable, traceable decisions rather than stop at BI reports or dashboards.
 
@@ -11,7 +15,7 @@ The product intent is to help data analysts and enterprise decision users move t
 Use this precedence when sources conflict:
 
 1. Current explicit user approval.
-2. This file and the project constitution.
+2. This file, the project constitution, and the current approved Product Development Blueprint; the Blueprint owns product-development execution sequence and Change selection.
 3. Approved OpenSpec specification.
 4. Approved design.
 5. Tests derived from the approved specification.
@@ -19,7 +23,7 @@ Use this precedence when sources conflict:
 7. Existing implementation.
 8. Chat history.
 
-Product terminology is owned by CONTEXT.md. Cross-domain orchestration is owned by Orchestration.md.
+Product terminology is owned by CONTEXT.md. Product route and Change-selection rules are owned by the current Blueprint referenced from `docs/planning/README.md`. Cross-domain orchestration is owned by Orchestration.md.
 
 ## Product and Engineering Authority
 
@@ -49,7 +53,7 @@ acceptance. The full boundary and handoff rules live only in
 
 ## Startup Stop Line
 
-The approved Blueprint v1.0 base and current v1.1 first-slice package are referenced from `docs/planning/README.md`. Review 002 applies only to the superseded v1.0 UI-adoption input. Before revising the retained clickable draft, the v1.1 package must pass a fresh Product Plan Development-Readiness Gate. Every product Change must bind an applicable change-scoped high-fidelity clickable UI Contract and the user's UI Gate PASS before engineering execution. Reuse a still-valid approved Contract; obtain affected user approval for new or materially changed visible behavior. The Contract must make the workflow and acceptance surface directly evaluable by a non-technical user; a backend, Runtime, Adapter or infrastructure label does not bypass this obligation. A Blueprint or development-readiness PASS authorizes only its stated planning result, not OpenSpec, dependencies, implementation, external data, provider calls or schema creation.
+The approved Blueprint v2.0 and its retained first-slice attachments are referenced from `docs/planning/README.md`. It preserves the frozen first production Change; the later sequence is Decision Record and Expected Outcome → outcome follow-up → explicit adoption in the next Case, not authorized Changes. Close each slice's product decisions under §7 before Product Input Freeze. Every product Change must bind an applicable change-scoped high-fidelity clickable UI Contract and the user's UI Gate PASS before engineering execution. Reuse a still-valid approved Contract; obtain affected user approval for new or materially changed visible behavior. The Contract must make the workflow and acceptance surface directly evaluable by a non-technical user; a backend, Runtime, Adapter or infrastructure label does not bypass this obligation. A Blueprint or development-readiness PASS authorizes only its stated planning result, not OpenSpec, dependencies, implementation, external data, provider calls or schema creation.
 
 Cold-start documents and empty module boundaries do not authorize product implementation, dependency installation, external data access, or schema creation.
 
@@ -94,11 +98,14 @@ Before proposing a new Agent Runtime, Model Pack runtime, Runtime Port, or Runti
 
 ## Change Workflow
 
+Before selecting a product Change, revising priorities, or reviewing scope and module responsibility, read Blueprint v2.0's four core views (sections 4, 5–6, 9 and 10), pending product decisions (section 7), and selection rule (section 8). In the existing proposal, connect the user outcome, six-plus-two coverage and deferred return points, affected modules, competitive-value hypothesis and required evidence. Preserve the full approved capability landscape while delivering its smallest unmet outcomes; these views add no separate Gate or execution authority.
+
 Dual-device product Changes follow the continuous-engineering default,
 adoption conditions and authority boundaries in
 `docs/governance/product-change-execution-policy.md`.
 
-Observable behavior changes follow the sole execution policy: Product Manager work ends at Product Input
+Observable behavior changes follow the split state machine in
+`.ai-coding/state-machine.md`: Product Manager work ends at Product Input
 Freeze; Engineering Controller work begins at confirmed Engineering Intake and
 continues through behavior-scoped SDD/TDD and independent verification, Engineering
 Acceptance, required user Product Acceptance, and authorized archive.
@@ -162,7 +169,7 @@ Read docs/architecture/data-authority.md and docs/architecture/security-boundari
 - Store source, permanent tests, product plans, OpenSpec, designs, formal decisions, and acceptance conclusions in their canonical repository locations on a normal work branch. They are preserved only after Git integration appropriate to their lifecycle; an uncommitted working-tree copy is not a preserved project asset.
 - Store raw logs, complete command output, exit results, frozen inputs, and diagnostic source needed for acceptance, attribution, or resumption under one device-local persistent artifact root organized by Change or task ID. Continue an already approved evidence location instead of creating a second authority. Record the actual root and owning device in the handoff; keep shared rules device-independent.
 - Use `/private/tmp` only for reproducible material that carries no acceptance, recovery, or historical-attribution duty. When a temporary probe becomes evidence, copy rather than move its source, inputs, and results to persistent storage after writes stop; record byte length and SHA-256, read the copy back independently, and retain historical failures. A digest without an accessible file is not a completed handoff.
-- Use the existing project status, `NEXT_ACTION`, or handoff record for the unmet acceptance point, exact return point, and evidence locator. `docs/templates/HANDOFF_BACK.template.md` carries the required device, identity, and receiver-availability fields. Keep credentials and unapproved sensitive data out of evidence; same-device persistence is not a cross-device backup.
+- Use the existing engineering status, `NEXT_ACTION`, or handoff record for the unmet acceptance point, exact return point, and evidence locator. `docs/templates/HANDOFF_BACK.template.md` carries the required device, identity, and receiver-availability fields. Keep credentials and unapproved sensitive data out of evidence; same-device persistence is not a cross-device backup.
 
 ## Scope and Contracts
 

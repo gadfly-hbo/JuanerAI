@@ -34,27 +34,17 @@ signature bytes, raw prompt, or raw model output here.
 - Git permissions and delivery plan:
 - Intake receipt / state: `UNCONFIRMED` / `ADOPTED_STOP_RETAINED` / `READY_FOR_AUTHORIZED_EXECUTION`:
 
-## Signed Host Loop — Retained Inactive Reference
-
-The following original signed-package fields are retained unchanged for historical
-reference only. They are not current semi-automatic requirements; this alignment
-does not activate, revise or authorize the old Host Loop.
-
-## Artifact Package
+## Signed Host Loop Artifact Package — Inactive Unless Separately Authorized
 
 - Change ID:
 - Repository / integration branch:
 - Baseline / Worktree / current branch:
-- Approved clickable UI Contract version / path / SHA-256:
-- User UI Gate verdict / approval reference: `PASS` / `BLOCKED`
 - Product objective and Acceptance IDs:
 - Allowed paths (sorted, exact):
 - Forbidden paths (sorted, exact):
 - Dependency policy:
 - Archive active / archive / canonical paths:
 - Stop lines and external prerequisites:
-- Bounded execution self-correction: inherit `docs/governance/product-change-execution-policy.md#bounded-execution-self-correction`, or record the explicit narrower limit; adoption reference for an already frozen batch:
-- In-scope technical decisions (semi-automatic only): inherit `docs/governance/product-change-execution-policy.md#in-scope-technical-decision-authority`, or record an explicit narrower limit; approved module roots / compatibility obligations / adoption reference for an already frozen batch:
 - Artifact Package SHA-256:
 
 ## D1-A Receipt
@@ -69,14 +59,6 @@ does not activate, revise or authorize the old Host Loop.
 
 ## DISPATCH
 
-- New Mac mini execution task required: `true`
-- Saved Mac mini project / expected repository:
-- New task title:
-- New task or client-task ID / host ID / project ID:
-- Task status: `PENDING` / `ACTIVE_READY` / `BLOCKED_SESSION_DISPATCH`
-- Initial-message package branch / commit / tree / path / SHA-256:
-- Delivery readback / timestamp:
-- Manual fallback, if required: exact failure and user create/open-and-forward receipt
 - Command ID / key ID / nonce / validity / idempotency ID:
 - Exact repository, scope, Worktree, routes, and validations:
 - Expected empty-pointer SHA-256:
@@ -100,7 +82,7 @@ does not activate, revise or authorize the old Host Loop.
 - Validation and Test Asset Retirement receipts:
 - Ledger / Handoff fixed references:
 - Risks / unverified / open questions:
-- Controller verdict:
+- Legacy signed-authority verdict:
 
 ## RELEASE
 

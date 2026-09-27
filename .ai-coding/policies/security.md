@@ -7,5 +7,6 @@
 - Tools, Domain Packs, and Model Packs declare capabilities and receive least privilege.
 - Action execution requires authorization, idempotency, audit, timeout, cancellation, and recovery semantics.
 - Automated Decision behavior requires a separate high-risk specification and human approval.
-- Security uncertainty fails closed and returns to the Controller.
-
+- Security uncertainty fails closed and returns directly to the user through
+  the current Engineering Controller task; it is not resolved by MacBook
+  technical approval.
