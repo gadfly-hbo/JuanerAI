@@ -734,9 +734,12 @@ test('U2 new Draft: confirmed computation authority and prior revision bytes rem
 }));
 
 test('U2 normal Profile: packaged descriptor is the sole tool source; unavailable tools preserve manual Session and refuse calculation before admission [AC-XDESK-012-03, AC-XDESK-005-06]',async t=>{
-  for(const mode of ['valid','missing','drift'])await t.test(mode,()=>withIsolatedProject(async projectRoot=>{
+  for(const mode of ['valid','missing','drift','python-drift'])await t.test(mode,()=>withIsolatedProject(async projectRoot=>{
     const setup=await initialRealU2Run(projectRoot),profileModule=await loadDesktopModule('profiles/personal/xanthil-desktop.ts'),toolchain=process.env.JUANERAI_TOOLCHAIN_BIN!;
-    const descriptor=join(projectRoot,'synthetic-toolchain-deployment.json');if(mode!=='missing')await writeFile(descriptor,JSON.stringify({schema_version:'1.0',duckdb:{executable_path:join(toolchain,'duckdb'),version:mode==='drift'?'1.5.1':'1.5.2'},python:{executable_path:join(toolchain,'python3'),version:'3.14.4'}}),{flag:'wx'});
+    const selectedPython=readDesktopPythonTool(toolchain);
+    const [pythonMajor,pythonMinor,pythonPatch]=selectedPython.pythonVersion.split('.');
+    const mismatchedPythonVersion=`${pythonMajor}.${pythonMinor}.${Number(pythonPatch)+1}`;
+    const descriptor=join(projectRoot,'synthetic-toolchain-deployment.json');if(mode!=='missing')await writeFile(descriptor,JSON.stringify({schema_version:'1.0',duckdb:{executable_path:join(toolchain,'duckdb'),version:mode==='drift'?'1.5.1':'1.5.2'},python:{executable_path:selectedPython.pythonExecutable,version:mode==='python-drift'?mismatchedPythonVersion:selectedPython.pythonVersion}}),{flag:'wx'});
     const deadlines=createControlledDeadlineScheduler(),profile=requiredExport<(input:unknown)=>Record<string,unknown>>(profileModule,'createPersonalXanthilDesktopProfile')({toolchainDeployment:{descriptor_path:descriptor},assistanceConfig:null,clock:fixedClock,deadlineScheduler:deadlines.scheduler});
     const opened=await requiredExport<Method>(profile,'openProject')({contract_version:'1.0',command_id:desktopTestIds.openProjectCommand,projectDirectoryCapability:{projectRoot,display_name:'Synthetic Project'},display_name:'Synthetic Project'}),app=requiredRecord(opened.application,'normal Application');
     assert.equal((await requiredExport<Method>(app,'readProjection')(setup.prepared.owner)).projection_token,setup.projection.projection_token);

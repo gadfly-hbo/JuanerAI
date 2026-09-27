@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927155036589-4HV4X5",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T15:50:36.589Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "校正当前里程碑和角色展示到实际已验收事实，历史事件不改；当前云端CI和合并仍未通过。",
+  "status_after": "active",
+  "evidence_refs": []
+}
