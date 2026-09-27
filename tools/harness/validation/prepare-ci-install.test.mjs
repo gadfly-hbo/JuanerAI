@@ -85,6 +85,17 @@ test('CI-WORKFLOW-002: real log reservation refuses every existing slot without 
   }
 });
 
+test('CI-TOOLCHAIN-003: workflow exposes the selected Python at the exact toolchain path used by Desktop', async (t) => {
+  const source = await readFile(new URL('../../../.github/workflows/ci.yml', import.meta.url), 'utf8');
+  const lines = source.split('\n').filter(line => /^\s+ln -s .*"\$TOOLCHAIN_BIN\/(?:node|npm|python3)"$/.test(line));
+  const root = await mkdtemp(join(tmpdir(), 'juanerai-ci-toolchain-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  execFileSync('/bin/bash', ['-ec', lines.join('\n')], { env: { PATH: process.env.PATH, TOOLCHAIN_BIN: root } });
+  const observed = execFileSync(join(root, 'python3'), ['-I', '-c', "import sys,json,csv,io,base64,datetime; from zoneinfo import ZoneInfo; from fractions import Fraction; assert sys.version_info >= (3,9); assert str(ZoneInfo('Asia/Shanghai')) == 'Asia/Shanghai'; print(sys.version.split()[0])"], { encoding: 'utf8', timeout: 10000, env: { PATH: '/usr/bin:/bin' } }).trim();
+  const selected = execFileSync('python3', ['--version'], { encoding: 'utf8', timeout: 10000, env: { PATH: process.env.PATH } }).trim().replace(/^Python /, '');
+  assert.equal(observed, selected, 'linked interpreter and selected interpreter have the same actual version');
+});
+
 test('CI-SOURCE-002: isolated prepare refuses existing paths; finalize rejects extra view changes and unexpected members', async (t) => {
   const root = await mkdtemp(join(tmpdir(), 'juanerai-ci-view-'));
   t.after(() => rm(root, { recursive: true, force: true }));

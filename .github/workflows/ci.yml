@@ -69,6 +69,7 @@ jobs:
           mkdir -p "$TOOLCHAIN_BIN"
           ln -s "$(command -v node)" "$TOOLCHAIN_BIN/node"
           ln -s "$(command -v npm)" "$TOOLCHAIN_BIN/npm"
+          ln -s "$(command -v python3)" "$TOOLCHAIN_BIN/python3"
           install -m 755 "$RUNNER_TEMP/duckdb/duckdb" "$TOOLCHAIN_BIN/duckdb"
           export JUANERAI_CI_NODE_GYP_ARCHIVE="$RUNNER_TEMP/node-gyp-approved.tgz"
           test ! -e "$JUANERAI_CI_NODE_GYP_ARCHIVE"

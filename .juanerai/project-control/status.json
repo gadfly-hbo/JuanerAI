@@ -6,15 +6,15 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "PRODUCT_ACCEPTED_ARCHIVE_CI_PENDING",
-    "label": "产品验收与归档审查通过；待云端CI",
+    "id": "PRODUCT_ACCEPTED_CI_CALCULATION_DIAGNOSIS",
+    "label": "产品验收保留；CI合成计算诊断",
     "ordinal": 8,
     "total": 8
   },
   "health": "active",
-  "summary": "用户产品验收PASS；本地归档及限定CI适配独立Validator PASS。原PR43失败、开发工具安全告警与UNKNOWN保留；新云端CI尚未运行，未合并。",
+  "summary": "workflow权限已由用户完成补授，be2250f推送成功。云端36328960726锁定安装/190成员校验/CI合同24项通过；Desktop合同302通过10失败，CALCULATION_FAILED与NeedsAttention待诊断，未合并。",
   "current_objective": "完成第一个Change的已授权归档与Git集成交付",
-  "next_action": "保存已验收归档与CI修正到原PR43，取得真实scripts-off可移植CI结果；全部适用Gate满足后按既有授权squash集成，不启动下一Change。",
+  "next_action": "正式Worker最小化真实CI计算失败并在既有工具/夹具配置范围闭环；不削弱断言，不安装本机依赖或重跑GUI；完整候选独立复核后再推原PR。",
   "blockers": [],
   "milestones": [
     {
@@ -913,7 +913,7 @@
       "mitigation": "原件与复制保留，不清理/重放/推断历史零副作用。当前37保护源未变，renderer未验证；直接等待用户本任务处置。"
     }
   ],
-  "updated_at": "2026-09-27T15:07:41.717Z",
+  "updated_at": "2026-09-27T15:19:33.933Z",
   "updated_by": {
     "role": "controller",
     "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"

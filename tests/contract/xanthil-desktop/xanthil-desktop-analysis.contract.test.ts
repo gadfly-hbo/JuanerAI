@@ -17,9 +17,10 @@ test('U2 named Ports: exact three and seven method contracts reject missing or e
 import { join } from 'node:path';
 import test from 'node:test';
 import { access } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 
 import { loadDesktopModule, requiredExport } from '../../fixtures/xanthil-desktop/desktop-contract-drivers.ts';
-import { assertDesktopFixtureHealth, readSyntheticCsvPair } from '../../fixtures/xanthil-desktop/desktop-fixtures.ts';
+import { readDesktopPythonTool, assertDesktopFixtureHealth, readSyntheticCsvPair } from '../../fixtures/xanthil-desktop/desktop-fixtures.ts';
 
 type CalculationResult = {
   implementation?: string;
@@ -37,6 +38,18 @@ type CalculationResult = {
 };
 type Calculation = (value: Record<string, unknown>) => Promise<CalculationResult>;
 
+test('CI-PYTHON-004: real execution configuration observes its exact selected interpreter and rejects unavailable tools', async () => {
+  const fixtures = await import('../../fixtures/xanthil-desktop/desktop-fixtures.ts');
+  const observe = requiredExport<(toolchain: string) => { pythonExecutable: string; pythonVersion: string }>(fixtures, 'readDesktopPythonTool');
+  const bin = process.env.JUANERAI_TOOLCHAIN_BIN;
+  assert.ok(bin);
+  const observed = observe(bin);
+  assert.equal(observed.pythonExecutable, join(bin, 'python3'));
+  assert.equal(observed.pythonVersion, execFileSync(observed.pythonExecutable, ['--version'], { encoding: 'utf8', timeout: 10000, env: { PATH: '/usr/bin:/bin' } }).trim().replace(/^Python /, ''));
+  assert.throws(() => observe(join(bin, 'not-an-installed-toolchain')), /ENOENT/);
+  assert.throws(() => observe('relative-toolchain'), /absolute/);
+});
+
 async function createExecution() {
   await assertDesktopFixtureHealth();
   const path = new URL('../../../adapters/analytics-duckdb/xanthil-desktop-decision-case.ts', import.meta.url);
@@ -49,7 +62,7 @@ async function createExecution() {
   assert.ok(toolchain, 'the approved command-local toolchain is a precondition, never RED evidence');
   return createExecution({
     duckdbExecutable: join(toolchain, 'duckdb'), duckdbVersion: '1.5.2',
-    pythonExecutable: join(toolchain, 'python3'), pythonVersion: '3.14.4',
+    ...readDesktopPythonTool(toolchain),
   });
 }
 

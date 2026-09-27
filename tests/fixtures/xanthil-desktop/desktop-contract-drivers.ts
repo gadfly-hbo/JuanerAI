@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { pathToFileURL } from 'node:url';
 
-import { assertDesktopFixtureHealth, createSessionCommand, createTemporaryDesktopProject, desktopTestIds, fixedClock, readSyntheticCsvPair } from './desktop-fixtures.ts';
+import { readDesktopPythonTool, assertDesktopFixtureHealth, createSessionCommand, createTemporaryDesktopProject, desktopTestIds, fixedClock, readSyntheticCsvPair } from './desktop-fixtures.ts';
 
 export async function loadDesktopModule(relativePath: string): Promise<Record<string, unknown>> {
   if (relativePath === 'apps/desktop/main.ts' || relativePath === 'apps/desktop/preload.ts') activeB1ElectronBoundary();
@@ -91,7 +91,7 @@ export async function createU12ProjectAdmissionApplication(projectRoot: string) 
   const analysis = await loadDesktopModule('adapters/analytics-duckdb/xanthil-desktop-decision-case.ts');
   const toolchain = process.env.JUANERAI_TOOLCHAIN_BIN;
   assert.ok(toolchain, 'approved local toolchain required');
-  const analysisExecution = requiredExport<(input: unknown) => unknown>(analysis, 'createDuckDbPythonDesktopLocalAnalysisExecution')({duckdbExecutable:join(toolchain,'duckdb'),duckdbVersion:'1.5.2',pythonExecutable:join(toolchain,'python3'),pythonVersion:'3.14.4'});
+  const analysisExecution = requiredExport<(input: unknown) => unknown>(analysis, 'createDuckDbPythonDesktopLocalAnalysisExecution')({duckdbExecutable:join(toolchain,'duckdb'),duckdbVersion:'1.5.2',...readDesktopPythonTool(toolchain)});
   const runEvidenceStore = requiredExport<(input: unknown) => unknown>(seams.storage, 'createLocalDesktopRunEvidenceStore')({projectRoot});
   const dependencies = {store,analysisExecution,runEvidenceStore,assistanceRuntime:null,clock:fixedClock,deadlineScheduler:createControlledDeadlineScheduler().scheduler};
   const application = createApplication(dependencies);
@@ -1113,7 +1113,7 @@ export async function createRealDesktopApplication(projectRoot: string, runtime 
   const runEvidenceStore = createRunStore({ projectRoot });
   const analysisExecution = createAnalysis({
     duckdbExecutable: toolOverrides.duckdbExecutable ?? join(toolchain, 'duckdb'), duckdbVersion: '1.5.2',
-    pythonExecutable: join(toolchain, 'python3'), pythonVersion: '3.14.4',
+    ...readDesktopPythonTool(toolchain),
   });
   const application = createApplication({ store, analysisExecution, runEvidenceStore, assistanceRuntime:runtime.runtime, clock: fixedClock, deadlineScheduler: deadlines.scheduler });
   return Object.freeze({ application, store, runEvidenceStore, analysisExecution, runtime, deadlines });

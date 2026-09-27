@@ -12,7 +12,7 @@ import { canonicalDesktopJson } from '../../../packages/product-core/xanthil-des
 import { join } from 'node:path';
 
 import { createControlledDeadlineScheduler, createOfflineAssistanceRuntimeDouble, createU12ProjectAdmissionApplication, loadDesktopModule, requiredExport, requiredRecord, withCommitResponseLostAfterRealCommit, withIsolatedProject } from '../../fixtures/xanthil-desktop/desktop-contract-drivers.ts';
-import { assertDesktopFixtureHealth, createSessionCommand, createSucceededDesktopRunManifest, desktopTestIds, fixedClock, readSyntheticCsvPair, runBytes } from '../../fixtures/xanthil-desktop/desktop-fixtures.ts';
+import { readDesktopPythonTool, assertDesktopFixtureHealth, createSessionCommand, createSucceededDesktopRunManifest, desktopTestIds, fixedClock, readSyntheticCsvPair, runBytes } from '../../fixtures/xanthil-desktop/desktop-fixtures.ts';
 
 type Method = (value: Record<string, unknown>) => Promise<Record<string, unknown>>;
 
@@ -41,7 +41,7 @@ async function initialRealU2Run(projectRoot: string) {
   const confirmation_files = { contract: bytes(documents.contract_bytes as Uint8Array), binding: bytes(documents.binding_bytes as Uint8Array), ir: bytes(documents.ir_bytes as Uint8Array) };
   const toolchain = process.env.JUANERAI_TOOLCHAIN_BIN; assert.ok(toolchain, 'approved toolchain health prerequisite');
   const module = await loadDesktopModule('adapters/analytics-duckdb/xanthil-desktop-decision-case.ts');
-  const execution = requiredExport<(input: unknown) => Record<string, unknown>>(module, 'createDuckDbPythonDesktopLocalAnalysisExecution')({ duckdbExecutable: join(toolchain,'duckdb'), duckdbVersion: '1.5.2', pythonExecutable: join(toolchain,'python3'), pythonVersion: '3.14.4' });
+  const execution = requiredExport<(input: unknown) => Record<string, unknown>>(module, 'createDuckDbPythonDesktopLocalAnalysisExecution')({ duckdbExecutable: join(toolchain,'duckdb'), duckdbVersion: '1.5.2', ...readDesktopPythonTool(toolchain) });
   const description = await requiredExport<Method>(execution,'describeImplementation')({});
   const code_assets = { primary_sql: description.primary_sql, python_verifier: description.python_verifier };
   const fixture = await createSucceededDesktopRunManifest();
@@ -983,7 +983,7 @@ async function createApplication(projectRoot: string, runtime = createOfflineAss
   const deadlines = createControlledDeadlineScheduler();
   const application = factory({
     store: createStore({ projectRoot }),
-    analysisExecution: createAnalysis({ duckdbExecutable: join(toolchain, 'duckdb'), duckdbVersion: '1.5.2', pythonExecutable: join(toolchain, 'python3'), pythonVersion: '3.14.4' }),
+    analysisExecution: createAnalysis({ duckdbExecutable: join(toolchain, 'duckdb'), duckdbVersion: '1.5.2', ...readDesktopPythonTool(toolchain) }),
     runEvidenceStore: createRunStore({ projectRoot }), assistanceRuntime:runtime.runtime, clock: fixedClock, deadlineScheduler: deadlines.scheduler,
   });
   return { application, deadlines, runtime };
@@ -1206,7 +1206,7 @@ test('TEST-XDESK-007 integration: composes the real SQLite, Run-store, and DuckD
     const assistance = createOfflineAssistanceRuntimeDouble();
     const application = createApplication({
       store: createStore({ projectRoot }),
-      analysisExecution: createAnalysis({ duckdbExecutable: join(toolchain, 'duckdb'), duckdbVersion: '1.5.2', pythonExecutable: join(toolchain, 'python3'), pythonVersion: '3.14.4' }),
+      analysisExecution: createAnalysis({ duckdbExecutable: join(toolchain, 'duckdb'), duckdbVersion: '1.5.2', ...readDesktopPythonTool(toolchain) }),
       runEvidenceStore: createRunStore({ projectRoot }),
       assistanceRuntime: assistance.runtime,
       clock: fixedClock,

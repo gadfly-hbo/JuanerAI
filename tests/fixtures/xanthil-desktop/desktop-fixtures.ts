@@ -1,8 +1,18 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { isAbsolute, join } from 'node:path';
+
+/** Fixture observation of the same selected executable used by the real Adapter. */
+export function readDesktopPythonTool(toolchain: string) {
+  assert.ok(isAbsolute(toolchain), 'absolute selected toolchain required');
+  const pythonExecutable = join(toolchain, 'python3');
+  const pythonVersion = execFileSync(pythonExecutable, ['-I', '-c', "import sys,json,csv,io,base64,datetime; from zoneinfo import ZoneInfo; from fractions import Fraction; assert sys.version_info >= (3,9); assert str(ZoneInfo('Asia/Shanghai')) == 'Asia/Shanghai'; print('.'.join(map(str,sys.version_info[:3])))"], { encoding: 'utf8', timeout: 10000, maxBuffer: 65536, env: { PATH: '/usr/bin:/bin' } }).trim();
+  assert.match(pythonVersion, /^3\.(?:9|[1-9]\d)\.\d+$/, 'observed Python version must meet the existing >=3.9 contract');
+  return Object.freeze({ pythonExecutable, pythonVersion });
+}
 
 export const desktopAcceptanceCriteria = Object.freeze({
   'REQ-XDESK-001': 5,
