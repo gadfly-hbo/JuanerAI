@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927003412770-OT59SN",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T00:34:12.770Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "Independent U3 review found five in-scope material defects; retain candidate001 and all FAIL/UNKNOWN, continue authorized local correction without permission expansion.",
+  "status_after": "active",
+  "evidence_refs": []
+}

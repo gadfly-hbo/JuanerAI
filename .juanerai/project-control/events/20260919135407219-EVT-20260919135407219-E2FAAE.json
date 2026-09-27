@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919135407219-E2FAAE",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T13:54:07.219Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户授权分段合同补充并获独立准备就绪PASS；登记Mini Spec1/1阻塞、Test0/2不变，固定接收后仅增一次定向Spec返回。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

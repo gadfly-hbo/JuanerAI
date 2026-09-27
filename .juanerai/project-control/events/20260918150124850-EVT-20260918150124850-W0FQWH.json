@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918150124850-W0FQWH",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-18T15:01:24.850Z",
+  "actor": {
+    "role": "controller",
+    "session": "whitepaper-blueprint-v1-controller"
+  },
+  "summary": "User paused the current Xanthil UI draft and required full PX-2026-004/006 product-mode realignment, including Fork, Subagent, Skill and other modules",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

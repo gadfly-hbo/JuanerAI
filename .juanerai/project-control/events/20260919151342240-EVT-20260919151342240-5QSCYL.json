@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919151342240-5QSCYL",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T15:13:42.240Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户接受临时路径残余风险；证据更正及十二草案只读审查完成，F1–F6待定向Spec授权，无续跑。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

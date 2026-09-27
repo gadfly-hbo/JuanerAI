@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260926170222779-ON22DS",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-26T17:02:22.779Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "U1.2 candidate002 collateral FAIL; original examples fixed, three concrete in-scope boundaries returned for repair.",
+  "status_after": "active",
+  "evidence_refs": []
+}

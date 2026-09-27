@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927141000811-ASV7DB",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-27T14:10:00.811Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "PR43自动CI失败；保留产品PASS，停止后续推送/重跑/合并，等待CI执行边界决定。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

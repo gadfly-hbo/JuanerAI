@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260925001856078-CQ879U",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-25T00:18:56.078Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "B2 C1a Typecheck健康PASS，首包仍需静态放行",
+  "status_after": "active",
+  "evidence_refs": []
+}

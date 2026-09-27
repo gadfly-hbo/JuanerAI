@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919001419881-9A5VSG",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-19T00:14:19.881Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "MacBook 通过 myhost 只读读取原始材料并核对：处置回执 5337 bytes/0d2f3f461375fb3cb78465b14d37ccc2f9dd9da99048c99c5013742898791935；处置 transcript 73949 bytes/17fa7ac7d6e4c8b022b4e0ad7ac9304cf89baf6c9ec22b4aff7995f83dab69de；独立读回 5199 bytes/892a48b14898d91601faad7f9c6dac6a0015243d43b6d2af81b31a9f8c138467；完整性记录 4668 bytes/ce3023b5a2972bd9cfda727f9ab6c9cb665f7d4bdac95784dd8f3953876a8826；写入脚本 14680 bytes/df6ce1af19493bdfa7e29daef7c4cfe976ca7c4607cd85b9d5463ba6fdcd08d2。保留原始 AppleScript 输出截断限制；已检查脚本顺序、AUTHORIZED_COMMAND_EXIT=0 和独立管理员读回 PASS，未重跑脚本或主机写操作。证据仍归 Mac mini 持久目录，MacBook 可通过只读 SSH 访问，未复制全量进程输出。",
+  "status_after": "waiting_user",
+  "evidence_refs": [
+    "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/WIP_DISPOSITION_COMPLETE-20260919T000420Z.md",
+    "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/wip-disposition-20260918T173335Z.mjs",
+    "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/wip-disposition-20260918T173335Z.transcript",
+    "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/wip-disposition-post-readback-20260919T000420Z.transcript",
+    "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/wip-disposition-integrity-20260919T000420Z.transcript"
+  ]
+}

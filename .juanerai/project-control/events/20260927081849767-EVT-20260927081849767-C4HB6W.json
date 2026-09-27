@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927081849767-C4HB6W",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T08:18:49.767Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "接收限定风险决定和一次入口演练授权；不追认历史PASS、不扩大风险或权限。",
+  "status_after": "active",
+  "evidence_refs": []
+}

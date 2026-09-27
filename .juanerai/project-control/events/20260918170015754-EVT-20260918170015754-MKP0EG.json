@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918170015754-MKP0EG",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-09-18T17:00:15.754Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户授权一次 Mac mini sudo 特权只读 WIP 核验，Controller 已直接派发至原执行任务；所有写入与生产阶段继续锁定。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

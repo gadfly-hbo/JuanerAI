@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260926224341332-1DV4ER",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-26T22:43:41.332Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "U2 candidate002 independently passed; proceed to approved U3 result without legacy serial approvals. Manual acceptance and final permissions remain separate.",
+  "status_after": "active",
+  "evidence_refs": []
+}

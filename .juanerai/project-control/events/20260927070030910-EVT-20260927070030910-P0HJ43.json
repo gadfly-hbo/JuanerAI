@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927070030910-P0HJ43",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T07:00:30.910Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "最小Main continuation修正完成，未改App/Store/Renderer，准备固定候选独立复核。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

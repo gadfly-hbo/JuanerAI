@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927082747068-CGPANB",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T08:27:47.068Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "正常Quit复核通过，依用户明确恢复决定继续原一次演练，历史偏差保留。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260920042108803-LZ5SJI",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-20T04:21:08.803Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户授权U1.1 F1/F2定向Spec及一次审查返修、有限F3历史证据缺口处置；补充待固定发布和原Mini手动接收",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

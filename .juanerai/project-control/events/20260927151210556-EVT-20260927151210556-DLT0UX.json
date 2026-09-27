@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927151210556-DLT0UX",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-09-27T15:12:10.556Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "原分支推送被GitHub workflow OAuth scope拒绝；无新云端执行或合并，停止待用户权限决定。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

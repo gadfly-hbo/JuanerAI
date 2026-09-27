@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260925005011938-JHH38F",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-25T00:50:11.938Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "Directed B2 Renderer config correction and one package-health validation authorized; no execution yet.",
+  "status_after": "active",
+  "evidence_refs": []
+}

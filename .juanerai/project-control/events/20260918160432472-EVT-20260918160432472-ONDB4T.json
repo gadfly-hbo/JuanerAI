@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918160432472-ONDB4T",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-18T16:04:32.472Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "新增永久 Execution-Location Gate，纠正双端角色派发边界",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

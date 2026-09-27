@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927084916953-AOT0MU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T08:49:16.953Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "记录当前原生验证实绩，保留Main历史RED缺口与早期启动UNKNOWN。",
+  "status_after": "active",
+  "evidence_refs": []
+}

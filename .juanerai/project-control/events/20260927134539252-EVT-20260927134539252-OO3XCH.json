@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927134539252-OO3XCH",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T13:45:39.252Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "用户在原任务确认已按验收入口说明查看，本 Change 产品验收通过；未声明 Git 集成或归档已完成。",
+  "status_after": "active",
+  "evidence_refs": []
+}

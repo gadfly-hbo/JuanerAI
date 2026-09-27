@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927065034219-22LD3U",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T06:50:34.219Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "独立复核确认单一关联竞态；复用其余有效通过证据，不新增普通返修审批。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927082146818-4U3LB2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T08:21:46.818Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "记录Controller工具行为误判与实际启动；保留Main限定风险接受，rollback/native验收未执行。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

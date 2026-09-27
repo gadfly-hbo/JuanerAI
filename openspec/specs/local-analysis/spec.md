@@ -331,21 +331,106 @@ The requirements below were accepted by `CHG-xanthil-typescript-migration`. They
 
 ### REQ-XTS-001 — Closed Native TypeScript Graph
 
-The complete accepted Xanthil production and test graph SHALL remain one-for-one native `.ts` without a compatibility period or runtime namespace change.
+The accepted CLI/Console graph remains native TypeScript with its existing
+behavior. The separately approved Desktop capability adds only its closed
+production/test graph and package build; it does not turn CLI into Desktop or
+change the existing local-analysis producer/reader contracts. Source and exact
+engineering mapping: [Desktop archive design](../../changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/design.md),
+including its current final CF/P5 and additive-export compatibility decisions.
 
-- **AC-XTS-001-01:** The graph preserves exactly the original eight production and 13 test/helper `.ts` paths enumerated in the accepted baseline, and adds only these 14 Run & Evidence Console `.ts` paths: `apps/console/xanthil-console.ts`; `packages/application/run-evidence-query.ts`; `packages/product-core/run-evidence.ts`; `packages/ports/run-evidence-reader.ts`; `adapters/storage-local/run-evidence-reader.ts`; `profiles/personal/console.ts`; `tests/unit/run-evidence-console/run-evidence.unit.test.ts`; `tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts`; `tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts`; `tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts`; `tests/fixtures/run-evidence-console/run-evidence-fixtures.ts`; `tests/fixtures/run-evidence-console/run-evidence-reader-contract.ts`; `tests/fixtures/run-evidence-console/console-harness.ts`; and `tests/fixtures/run-evidence-console/coverage-map.ts`. The original local-analysis former `.mjs` paths remain absent; no new Console `.mjs` owner or other Xanthil `.mjs` owner exists; and the CSV and separate runner self-test `.mjs` are not renamed.
-- **AC-XTS-001-02:** Every relative import/URL in the closed Xanthil graph resolves to its final explicit `.ts` target, and canonical Node executes each of the four `.test.ts` layers without a loader, compiler, or emitted JavaScript.
-- **AC-XTS-001-03:** Runtime module namespaces contain exactly the accepted exports named in the archived `proposal.md`; the three Port method sets and dependency direction remain unchanged. Existing Product Core, Port, and Application seams own their shared type-only interfaces. Adapter, Profile, and CLI types remain module-local unless an existing production or test type import has a current consumer for an export. No new module/package/file exists solely for types, and type-only exports add no runtime namespace export.
-- **AC-XTS-001-04:** No `allowJs`, `checkJs`, `.mjs` wrapper, dual source owner, loader, `tsx`, bundler, alternate runtime, JavaScript/declaration/source-map emit, `dist`, `build`, or generated migration artifact exists.
+- **AC-XTS-001-01:** Preserve the ordered 43 pre-Desktop roots: the original
+  eight production and 13 test/helper paths, fourteen Run & Evidence Console
+  paths and eight already accepted Model Pack contract-enabler paths. Append
+  exactly the 25 final Desktop paths in the accepted archive path contract
+  with its final CF mapping, for 68 total. The nonexistent standalone Desktop
+  schema path is omitted (schema is inside Store), the private analytical helper
+  is `adapters/analytics-duckdb/process.ts`, and the existing Main module-format
+  contract test is the final appended root. No pre-existing owner is duplicated,
+  removed or reordered. Former local-analysis `.mjs` owners stay absent.
+- **AC-XTS-001-02:** Existing CLI/Console imports and direct Node test execution
+  remain unchanged. Desktop retains explicit source imports; only its approved
+  Forge/Vite package and bounded existing TSX/Electron test seams compile or
+  load the Desktop surface. No loader or emitted compatibility layer is added
+  to CLI/Console.
+- **AC-XTS-001-03:** Existing three Port method sets, CLI/Application/Profile
+  signatures and dependency direction remain unchanged. The only additive
+  local-analysis runtime namespace changes are `defineDecisionAssistanceRuntime`
+  in the business Port and `createPiDecisionAssistanceRuntime` in the Pi
+  Adapter. Exact export assertions retain all original names and reject other
+  additions. Pi types stay in the Pi Adapter; shared type-only interfaces stay
+  with their existing owners, not new type-only modules.
+- **AC-XTS-001-04:** No `allowJs`, `checkJs`, broad include, skip-lib escape,
+  dual source owner, `tsx`, or root compiler emit is introduced. The separate
+  approved Desktop Forge/Vite Main/preload/Renderer output and build configs
+  are the narrow packaging exception, not a general bundler/migration allowance.
+
+The original migration-parity obligations below still protect old business and
+failure behavior. These accepted additive Desktop/root-oracle exceptions do
+not remove any TEST-XCLI identity or weaken its original negative assertions.
+
+#### Accepted Desktop graph compatibility criteria
+
+- **AC-XDESK-LA-001-01:** Every pre-Change TypeScript path and import remains
+  in the root graph; its existing public exports and behavior are preserved.
+- **AC-XDESK-LA-001-02:** Final P5 retains the exact twelve P4 compiler options
+  and original 43 ordered roots, adds only `jsx: "react-jsx"` and the 25
+  mapped Desktop roots above. No unbounded include/glob, duplicate, reordered
+  pre-Change owner, skip-lib bypass or emitted compatibility bridge is allowed.
+- **AC-XDESK-LA-001-03:** Pi SDK types/imports remain inside agent-pi;
+  Electron/React types remain in Desktop/build configuration; node:sqlite
+  remains inside the Desktop storage Adapter.
+- **AC-XDESK-LA-001-04:** Product Core, Application, business Ports, CLI/Console
+  and persisted business contracts expose only business or standard platform
+  values. Desktop owns exact no-model Run 3.0 separately: local-analysis still
+  writes 2.0/reads terminal 1.0 and 2.0, Console still selected-directory reads
+  1.0 only, and neither gains a dispatcher, scan, migration or rewritten Run.
 
 ### REQ-XTS-002 — Exact Strict No-Emit Toolchain
 
-The root SHALL use one exact, reproducible TypeScript toolchain for strict static checking while Node remains the direct runtime.
+The repository remains one private ESM npm package and one npm v3 lock. The
+approved Desktop [dependency decision](../../changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/dependency-decision.md)
+and current final Main module-format mapping in the archive design define the
+exact P4/P5 configuration; historical intermediate tuples are no longer accepted.
 
-- **AC-XTS-002-01:** `package.json` remains private ESM with npm `11.12.1`, Node `>=22.19.0`, Pi `0.84.2`, and TypeBox `1.3.7`; its only scripts are `typecheck = tsc -p tsconfig.json --noEmit` and `test = tools/harness/validation/run`, and its exact dev dependencies are TypeScript `5.9.3` and `@types/node` `22.19.19`. It has no `exports`, `bin`, `start`, `build`, or publication contract.
-- **AC-XTS-002-02:** The npm v3 lock root mirrors the exact runtime and dev dependencies, and the locked/installed direct package versions equal the manifest; no runtime dependency or package-manager version changes.
-- **AC-XTS-002-03:** The one root `tsconfig.json` preserves exactly its accepted strict options and original explicit 21 `files` entries, then appends only the 14 Console paths named in this Change's modified AC-XTS-001-01. It has no glob or `include`, bridge, skip-lib, emit, lint-like, extend, reference, or alternate-project option.
-- **AC-XTS-002-04:** Native syntax checks and `npm run typecheck` exit zero in the canonical environment and create no persistent output or generated artifact.
+- **AC-XTS-002-01:** Retain npm 11.12.1, Node engine >=22.19.0, Pi 0.84.2,
+  TypeBox 1.3.7, TypeScript 5.9.3 and @types/node 22.19.19. Approved additions
+  are React/React DOM 19.3.0, Electron 44.4.3, Vite 8.3.0,
+  @vitejs/plugin-react 6.1.1, Forge CLI/plugin-vite 7.11.2,
+  @types/react and @types/react-dom 19.3.0, and playwright-core 1.63.0.
+  Package identity is private `xanthil-desktop` / Xanthil / 0.1.0.
+  Existing typecheck/test scripts remain; only the three approved desktop
+  scripts, `main: ".vite/build/main.cjs"`, and one-key
+  `config: {forge: "./forge.config.cjs"}` are added for final P5.
+  There is no exports/bin/publication contract or generic start/build command.
+- **AC-XTS-002-02:** Locked and installed exact direct versions equal the
+  approved manifest. Lock SHA-256 remains
+  `861326061cd570b0e81584f149012b13228aec3da6528d82536f89cbb5d535c0`
+  (319836 bytes). No range, override, alternate package manager, source or
+  additional install-script permission is inferred by this baseline.
+- **AC-XTS-002-03:** Root tsconfig has only the accepted strict twelve options
+  plus final Desktop JSX, and the exact 43+25 ordered files described above.
+  No glob/include, extend/reference, emit, lint-like option or alternate
+  project replaces the strict closed graph.
+- **AC-XTS-002-04:** Native syntax and root no-emit typechecking remain
+  separately executable in the approved command-local environment and create
+  no persistent compiler output. Desktop packaging is separate and cannot be
+  substituted for a successful typecheck.
+
+#### Accepted Desktop toolchain compatibility criteria
+
+- **AC-XDESK-LA-002-01:** Historical P4 is exactly the 808-byte manifest
+  SHA-256 `5a5e225cab86826b78afb2b94eb18a4064ab75c1115aa27dfb1342a927ed264a`
+  and the unchanged lock above; it is retained as a closed compatibility
+  configuration, not the current packaged activation state.
+- **AC-XDESK-LA-002-02:** Final P5 adds only the approved Main/config/desktop
+  scripts to P4; existing test/typecheck semantics and dependency versions stay
+  unchanged. TEST-XCLI-021 recognizes only complete P4 or complete final P5 and
+  rejects intermediate/mixed/partial states; TEST-XCLI-022 stays unchanged.
+- **AC-XDESK-LA-002-03:** No nested lock, SQLite npm package, Maker, publisher,
+  updater, hidden test/install networking or additional test runner exists.
+- **AC-XDESK-LA-002-04:** The generated local package toolchain descriptor
+  contains only approved DuckDB/Python paths and versions. It is absent from
+  Git, Project data, Renderer values, provider payloads and reports.
 
 ### REQ-XTS-003 — Accepted Behavior and Boundary Parity
 
@@ -359,12 +444,80 @@ Static migration SHALL preserve the entire accepted `local-analysis` behavior, r
 
 ### REQ-XTS-004 — Canonical Offline Validation
 
-The canonical validation entrypoint SHALL make native TypeScript and unchanged product regression one fail-fast offline proof.
+The canonical entrypoint remains one fail-fast offline proof; the accepted
+Desktop extension appends all required Console and Desktop phases without a
+runtime phase selector or implicit package build in its default full mode.
+The explicitly requested `--portable` CI mode is a partial offline regression,
+not a third product tuple or a replacement for full CF/native acceptance.
 
-- **AC-XTS-004-01:** `tools/harness/validation/run` executes in this exact order: frozen tool versions; exact declared/installed dependency versions; native `.mjs` and `.ts` syntax; strict no-emit typecheck; Unit; Contract; Integration; E2E; unchanged project-board regression.
-- **AC-XTS-004-02:** A failed step streams its native output, stops every later step, returns nonzero, and creates no persistent validation result; successful execution returns zero.
-- **AC-XTS-004-03:** The runner always removes `XANTHIL_REAL_PI_ACCEPTANCE`; the offline matrix performs no real Pi/model/provider call, and the existing real-model E2E remains one gated skip.
-- **AC-XTS-004-04:** `npm test` invokes the canonical runner, while `npm run typecheck` remains a separately invokable check and a named runner phase. The separate existing runner self-test proves the new order and failure behavior.
+- **AC-XTS-004-01:** `tools/harness/validation/run` retains tool/dependency
+  health, native syntax, strict no-emit typecheck, existing local-analysis and
+  Model Pack suites, and project-board regression. It includes all four
+  unchanged Console unit/contract/integration/E2E commands before the full
+  Desktop unit/contract/integration/packaged-E2E commands in the accepted final
+  literal command list. No intermediate tuple or future leaf is marked passed.
+- **AC-XTS-004-02:** A failed phase streams native output, stops later phases,
+  returns nonzero and creates no success receipt. Successful execution returns
+  zero. An external evidence capture is not a replacement runner outcome.
+- **AC-XTS-004-03:** The runner always removes `XANTHIL_REAL_PI_ACCEPTANCE`;
+  offline validation makes no real model/provider call and retains the one
+  separately gated real-model skip.
+- **AC-XTS-004-04:** npm test still invokes the canonical runner; npm run
+  typecheck remains separately invokable and an actual runner phase. The
+  existing runner self-test preserves order, exact configuration, fail-fast
+  and no-provider assertions.
+
+#### Accepted Desktop validation compatibility criteria
+
+The user-authorized 2026-09-27 CI adaptation retains the default full command
+list and every business assertion. Explicit `--portable` runs the same syntax,
+strict types, CLI/Model Pack/board/Console, Desktop unit, portable contract and
+integration suites. It omits only the frozen packaged-Main module-format leaf
+and Desktop packaged GUI, and prints those, native/manual acceptance and
+Electron binary health as `NOT RUN`. Electron package health in that mode proves
+the exact installed registry package and its actual `index.js`, not a downloaded
+platform executable; default full mode still checks the approved macOS binary.
+The runner sets its own scope and cannot inherit a portable bypass. A missing
+portable input or failing assertion still stops with its actual nonzero exit.
+Separate macOS full/package/native evidence remains required for delivery.
+
+Ephemeral Ubuntu installation uses the existing pinned tools and dependencies,
+scripts off, no audit/fund, and no Git transport or credentials. Only the approved
+node-gyp codeload archive's two transport fields (`resolved`, `integrity`) and
+the same exact dependency's parent `@electron/rebuild` spec representation may
+differ in a temporary installation view after the frozen raw bytes/SHA-256/SRI
+match. The repository manifest/lock remain byte-identical; all other lock fields
+and graph topology remain equal. The third field is required by npm11.12.1's
+actual Arborist edge validation: a git parent spec rejects a remote child URL;
+both representations must name the identical approved commit archive. Reversing
+these three precise fields must recover the complete original lock object.
+The raw archive and historical Git-repack SRI bind
+different byte streams and are never substituted as equal evidence. Before any
+suite, exact installed archive members/name/version must match (only npm's
+documented ignore-file normalization applies). Existing output/install paths,
+extra lock changes, archive mismatch or unexpected members fail closed without
+overwrite, fallback, install scripts or automatic repair. No dependency upgrade,
+Forge/rebuild/editor execution, native binary download or Linux product claim
+is granted by this partial CI proof.
+
+- **AC-XDESK-LA-004-01:** Validation proves exact approved tools, package
+  name/version/source/integrity, local installation and required entry
+  capability before product tests. Metadata alone is insufficient; a missing
+  tool, entry or dependency is health failure, never causal product RED.
+  Entrypoint discovery may use the package's actual supported interface.
+- **AC-XDESK-LA-004-02:** Preserve old local-analysis/Model Pack/project-board
+  behavior, all 22 TEST-XCLI identities and the four unchanged Console suites.
+  Only the approved root-oracle and two additive-export exact-set exceptions
+  above change old test literals, not business assertions. Final CF runs full
+  Desktop unit/contract/integration/E2E; intermediate positive recognition is
+  retired, not available through an environment selector.
+- **AC-XDESK-LA-004-03:** Every phase preserves native output/numeric failure
+  semantics, stops later phases on failure and removes the real-model gate.
+- **AC-XDESK-LA-004-04:** Packaged E2E consumes the same frozen production app
+  as separate normal no-debug/native-chooser acceptance. Boundary Runtime
+  doubles may create closed synthetic persisted Projects for actual GUI
+  tests; this does not inject a Runtime into the package, replace the normal
+  local journey, or claim real-provider execution/quality.
 
 ### REQ-XTS-005 — Non-Destructive Rollback and Data Preservation
 

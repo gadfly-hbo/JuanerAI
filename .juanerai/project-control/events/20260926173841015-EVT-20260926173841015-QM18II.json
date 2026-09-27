@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260926173841015-QM18II",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-26T17:38:41.015Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "Engineering sizing combines approved U1.3 and U1.4; no product or external-effect scope expansion",
+  "status_after": "active",
+  "evidence_refs": []
+}

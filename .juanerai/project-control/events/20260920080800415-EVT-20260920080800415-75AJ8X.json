@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260920080800415-75AJ8X",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-20T08:08:00.415Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "同步历史H2风险条目的当前额度：Admission2/2已用，新增仅限目录封套准备",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

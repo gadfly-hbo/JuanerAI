@@ -200,9 +200,9 @@ async function loadPortDefinition(exportName: keyof PortModule) {
   return requiredExport(await loadPublicSeam('ports'), exportName);
 }
 
-test('TASK-003 PORT-DEFINITIONS [TEST-XCLI-006, TEST-XCLI-007, TEST-XCLI-008] exports only the three approved definers', async () => {
+test('TASK-003 PORT-DEFINITIONS [TEST-XCLI-006, TEST-XCLI-007, TEST-XCLI-008] preserves the three CLI definers plus the approved additive Desktop Assistance definer', async () => {
   const ports = await loadPublicSeam('ports');
-  assert.deepEqual(Object.keys(ports).sort(), portDefinitions.map(({ exportName }) => exportName).sort());
+  assert.deepEqual(Object.keys(ports).sort(), ['defineAgentAnalysisRuntime', 'defineDecisionAssistanceRuntime', 'defineLocalAnalysisExecution', 'defineRunArtifactStore']);
 });
 
 for (const definition of portDefinitions) {

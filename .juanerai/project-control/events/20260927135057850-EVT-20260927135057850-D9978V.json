@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927135057850-D9978V",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T13:50:57.850Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "用户授权五文件定向替代检查，原交付停止解除；无历史 PASS 改写，无新增产品权限。",
+  "status_after": "active",
+  "evidence_refs": []
+}

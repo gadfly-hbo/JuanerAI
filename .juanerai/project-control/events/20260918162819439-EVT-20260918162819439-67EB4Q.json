@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260918162819439-67EB4Q",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-18T16:28:19.439Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller-whitepaper-blueprint-v1"
+  },
+  "summary": "PKG-XANTHIL-DESKTOP-001 frozen for Mac mini transfer; read-only WIP preflight remains the first stop line",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

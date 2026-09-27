@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260920152338657-9YO3AJ",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-20T15:23:38.657Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户批准B2显式命令证据目录与证据分级处置；保留已用1/2和B1成果，仅余一轮Test，待原Mini固定接收。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

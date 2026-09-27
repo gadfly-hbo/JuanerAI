@@ -2,11 +2,14 @@
 set -eu
 
 usage() {
-  printf '%s\n' 'Usage: tools/harness/validation/run [--help]'
+  printf '%s\n' 'Usage: tools/harness/validation/run [--portable | --help]'
 }
 
+scope=full
+[ "$#" -le 1 ] || { usage >&2; exit 64; }
 case "${1-}" in
   '') ;;
+  --portable) scope=portable ;;
   --help)
     usage
     exit 0
@@ -33,6 +36,13 @@ fi
 PATH="$toolchain_bin:/usr/bin:/bin"
 export PATH
 unset XANTHIL_REAL_PI_ACCEPTANCE
+JUANERAI_VALIDATION_SCOPE=$scope
+export JUANERAI_VALIDATION_SCOPE
+if [ "$scope" = portable ]; then
+  printf '%s\n' 'PORTABLE ONLY: not full product acceptance' \
+    'NOT RUN: Electron binary' 'NOT RUN: packaged Main module' \
+    'NOT RUN: Desktop packaged GUI' 'NOT RUN: native/manual acceptance'
+fi
 
 trimmed() {
   printf '%s' "$1" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
@@ -112,3 +122,25 @@ node --test tests/e2e/xanthil-local-analysis/*.test.ts
 node --test tests/contract/model-pack-contract-enabler/*.test.ts
 node --test tests/integration/model-pack-contract-enabler/*.test.ts
 node --test tools/harness/project-board/project-control.test.mjs tools/harness/project-board/status-cli.test.mjs
+node --test tests/unit/run-evidence-console/run-evidence.unit.test.ts
+node --test tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts
+node --test tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts
+node --test tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts
+node --test tests/unit/xanthil-desktop/*.test.ts
+if [ "$scope" = portable ]; then
+  set --
+  contract_dir=tests/contract/xanthil-desktop
+  for contract in "$contract_dir"/*.test.ts; do
+    case "$contract" in
+      */xanthil-desktop-main-module-format.contract.test.ts) ;;
+      *) set -- "$@" "$contract" ;;
+    esac
+  done
+  node --test "$@"
+else
+node --test tests/contract/xanthil-desktop/*.test.ts
+fi
+node --test tests/integration/xanthil-desktop/*.test.ts
+if [ "$scope" = full ]; then
+node --test tests/e2e/xanthil-desktop/*.test.ts
+fi

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260920013251061-069U69",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-20T01:32:51.061Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "U1.1人工标记跨行误报：定向一次修正已获授权，原2/2保留，待固定Mini接收；无RED或TDD_READY",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

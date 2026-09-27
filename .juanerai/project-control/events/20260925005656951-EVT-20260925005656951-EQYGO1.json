@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260925005656951-EQYGO1",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-25T00:56:56.951Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "B2 Renderer config Worker return rejected at static output-path review; package validation remains unspent.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

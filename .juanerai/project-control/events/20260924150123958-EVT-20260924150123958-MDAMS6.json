@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924150123958-MDAMS6",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-24T15:01:23.958Z",
+  "actor": {
+    "role": "controller",
+    "session": "mac-mini-engineering-controller"
+  },
+  "summary": "Component Worker新增renderer未验证；证据根外两路径写入且native退出信息UNKNOWN，已停止。保留Test2/2、因果RED和限域TDD_READY，直接等待用户处置，无重放或清理。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

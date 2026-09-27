@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xanthil Desktop · Clickable UI Contract v1.1</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主工作区</a>
+
+<!-- 静态演示横幅：始终可见 -->
+<div class="mock-banner" role="note">
+  <strong>合成数据 / UI Contract / 模拟执行</strong> · 本界面不读取真实文件，不调用真实模型、Python、Skill、Prompt、Fork、Subagent 或外部 API；用于确认已接受的 Xanthil 产品模式与首个会员复购纵切。
+</div>
+
+<div class="window" id="window">
+  <!-- 窗口标题栏 -->
+  <header class="titlebar">
+    <div class="tb-traffic" aria-hidden="true">
+      <span class="tb-dot tb-close"></span><span class="tb-dot tb-min"></span><span class="tb-dot tb-max"></span>
+    </div>
+    <div class="tb-title">
+      <span class="brand-mark" aria-hidden="true">◆</span>
+      <span class="brand-name">Xanthil Desktop</span>
+      <span class="tb-sep" aria-hidden="true">·</span>
+      <span>快速 / 专业双模式 <span class="tb-tag">UI Contract v1.1</span></span>
+    </div>
+  </header>
+
+  <!-- 顶部常驻：双模式切换器 + 项目 + 后台状态 + 全局搜索 -->
+  <div class="topbar">
+    <div class="mode-switch" role="tablist" aria-label="模式切换">
+      <button class="mode-btn active" id="mode-quick" role="tab" aria-selected="true" aria-controls="view-quick" tabindex="0" type="button" data-mode="quick">
+        快速模式
+      </button>
+      <button class="mode-btn" id="mode-pro" role="tab" aria-selected="false" aria-controls="view-pro" tabindex="-1" type="button" data-mode="pro">
+        专业模式
+      </button>
+    </div>
+    <div class="topbar-project">
+      <span aria-hidden="true">▾</span> 会员运营
+      <span class="fine" id="mode-memory-note" title="以「用户 + 项目」记忆上次模式（静态表达）">已记忆：林岚 · 会员运营 → 快速模式</span>
+    </div>
+    <div class="topbar-right">
+      <button class="bg-pill" id="bg-pill" type="button" hidden title="快速模式任务在后台继续运行，点击返回">
+        <span class="dot dot-run" aria-hidden="true"></span> 快速模式 · <span id="bg-pill-count">1</span> 个任务运行中 · 返回
+      </button>
+      <button class="btn btn-ghost btn-sm" id="btn-palette" type="button">⌕ 全局搜索 <kbd>⌘K</kbd></button>
+      <button class="btn btn-ghost btn-sm" id="btn-drawer" type="button" aria-expanded="true" aria-controls="drawer" title="辅助抽屉（⌘I）">辅助抽屉</button>
+    </div>
+  </div>
+
+  <div class="app">
+    <!-- 左侧边栏：同模式 Session 列表 + 后台任务 -->
+    <nav class="sidebar" id="sidebar" aria-label="会话导航">
+      <div class="sb-top">
+        <button class="sb-new" id="btn-new-session" type="button">＋ 新建快速 Session</button>
+      </div>
+
+      <div class="sb-section">
+        <h2 class="sb-h" id="sb-sessions-h">快速 Session</h2>
+        <ul class="sb-list" id="sb-session-list" role="list" aria-label="当前模式会话列表">
+          <li class="sb-empty fine" id="sb-empty">尚无快速 Session。新建 Session 会为其独立创建三个目录。</li>
+        </ul>
+        <p class="fine sb-note">同模式列表只显示本模式 Session；模式之间不升级、不降级、不混写目录或历史。</p>
+      </div>
+
+      <div class="sb-section" id="sb-bg-section" hidden>
+        <h2 class="sb-h">后台任务</h2>
+        <ul class="sb-list" id="sb-bg-list" role="list"></ul>
+      </div>
+
+      <div class="sb-section" id="sb-fail-demo">
+        <h2 class="sb-h">UI Gate · 失败路径工具</h2>
+        <label class="check fail-toggle">
+          <input type="checkbox" id="toggle-fail-dir"> 失败路径 1：模拟 020_clean 目录创建失败
+        </label>
+        <label class="check fail-toggle">
+          <input type="checkbox" id="toggle-fail-subagent"> 失败路径 3：模拟 Subagent 运行失败
+        </label>
+        <label class="check fail-toggle">
+          <input type="checkbox" id="toggle-fail-reflow"> 失败路径：模拟 Subagent 自动回流失败/超时
+        </label>
+      </div>
+
+      <div class="sb-foot">
+        <span class="pill pill-offline" title="本 Demo 不含任何网络调用">● 离线 · 本地模式</span>
+        <span class="sb-user">分析师 · 林岚</span>
+      </div>
+    </nav>
+
+    <!-- 中央主工作区 -->
+    <main class="main" id="main" tabindex="-1">
+
+      <!-- ====== 快速模式：对话主线 + 内联能力卡 ====== -->
+      <section class="view" id="view-quick" role="tabpanel" aria-labelledby="mode-quick" tabindex="0">
+        <h1 id="h-quick" class="sr-only">快速模式对话工作台</h1>
+
+        <!-- 主 Session 对话 -->
+        <div class="convo" id="convo-main">
+        <div class="thread" id="thread" aria-live="polite">
+          <!-- 空状态：尚无 Session -->
+          <div class="empty thread-empty" id="thread-empty">
+            <p class="empty-icon" aria-hidden="true">◈</p>
+            <p><strong>快速模式</strong>：以对话为主线，没有固定阶段导航。</p>
+            <p class="fine">新建 Session 后，本会话独立拥有 <code>010_draw</code>、<code>020_clean</code>、<code>060_reports</code> 三个目录；只有三个目录都创建成功，Session 才可用。</p>
+            <div class="actions">
+              <button class="btn btn-primary" id="btn-new-session-main" type="button">＋ 新建快速 Session</button>
+            </div>
+          </div>
+          <!-- 消息与内联卡由 app.js 追加 -->
+        </div>
+
+        <!-- Composer 区 -->
+        <div class="composer-wrap" id="composer-wrap" hidden>
+          <div class="tool-chips" role="group" aria-label="显式能力调用">
+            <button class="chip chip-tool" id="chip-skill" type="button" aria-haspopup="dialog">⚙ Skill：<span id="chip-skill-name">未选择</span><span class="preview-tag" aria-hidden="true">Preview</span></button>
+            <button class="chip chip-tool" id="chip-prompt" type="button" aria-haspopup="dialog">✎ Prompt：<span id="chip-prompt-name">未选择</span><span class="preview-tag" aria-hidden="true">Preview</span></button>
+            <span class="tool-entry">
+              <button class="chip chip-tool" id="btn-fork" type="button">⑂ 创建 Fork <span class="preview-tag" aria-hidden="true">Preview</span></button>
+              <span class="lock-hint" id="fork-hint" role="note"></span>
+            </span>
+            <span class="tool-entry">
+              <button class="chip chip-tool" id="btn-subagent" type="button">⚙ 运行 Subagent <span class="preview-tag" aria-hidden="true">Preview</span></button>
+              <span class="lock-hint" id="subagent-hint" role="note"></span>
+            </span>
+            <button class="chip chip-tool" id="btn-report" type="button" disabled title="需要先完成一次已批准的分析">▤ 生成报告 <span class="preview-tag" aria-hidden="true">Preview</span></button>
+            <span class="fine tool-note">能力只由你显式触发；助手可建议或预填，不会自动执行。</span>
+          </div>
+
+          <!-- 可拖入的 Mock 原始文件 -->
+          <div class="mock-files" id="mock-files">
+            <span class="fine">可拖入的 Mock 原始文件：</span>
+            <span class="mock-file" draggable="true" data-file="orders_90d_synthetic.csv" data-meta="38,214 行 · 4.1 MB" tabindex="0" role="button" aria-label="拖入 orders_90d_synthetic.csv 到输入区">▦ orders_90d_synthetic.csv</span>
+            <span class="mock-file" draggable="true" data-file="members_tier_synthetic.csv" data-meta="6,832 行 · 0.6 MB" tabindex="0" role="button" aria-label="拖入 members_tier_synthetic.csv 到输入区">▦ members_tier_synthetic.csv</span>
+          </div>
+
+          <div class="composer" id="composer">
+            <textarea id="composer-input" rows="2" aria-label="对话输入" placeholder="输入消息，或把 Mock 原始文件拖到此处（静态演示，不会真实调用模型）"></textarea>
+            <div class="composer-foot">
+              <span class="pill pill-offline">● 离线</span>
+              <span class="fine" id="composer-boundary">模型可见边界：无（尚未批准任何聚合产物）</span>
+              <button class="btn btn-primary btn-sm" id="btn-send" type="button">发送（静态）</button>
+            </div>
+          </div>
+          <p class="fine composer-hint">演示提示：先把 Mock 原始文件拖入输入区登记到 <code>010_draw</code>，再显式运行本地处理。</p>
+        </div>
+        </div><!-- /convo-main -->
+
+        <!-- Fork 独立子对话 -->
+        <div class="convo" id="convo-fork" hidden>
+          <div class="convo-head" id="fork-head">
+            <div class="convo-head-main">
+              <span class="chip chip-fork">⑂ Fork</span>
+              <strong>F-01 · 替代假设「促销节奏变化」</strong>
+              <span class="fine">来源：主 Session「会员复购变化诊断」 · 继承：已批准聚合精确子集 A-01（从不继承 <code>010_draw</code>） · 独立历史</span>
+            </div>
+            <button class="btn btn-ghost btn-sm" type="button" data-convo="main">← 返回来源对话</button>
+          </div>
+          <div class="thread" id="thread-fork" aria-live="polite"></div>
+          <div class="convo-foot" id="fork-foot"></div>
+        </div>
+
+        <!-- Subagent 独立子对话 -->
+        <div class="convo" id="convo-subagent" hidden>
+          <div class="convo-head" id="subagent-head">
+            <div class="convo-head-main">
+              <span class="chip chip-agg">⚙ Subagent</span>
+              <strong>S-01 · 权益到期证据核验</strong>
+              <span class="fine">来源：主 Session「会员复购变化诊断」 · 继承：已批准聚合精确子集 A-01（从不继承 <code>010_draw</code>） · 独立历史</span>
+            </div>
+            <button class="btn btn-ghost btn-sm" type="button" data-convo="main">← 返回来源对话</button>
+          </div>
+          <div class="thread" id="thread-subagent" aria-live="polite"></div>
+          <div class="convo-foot" id="subagent-foot"></div>
+        </div>
+      </section>
+
+      <!-- ====== 专业模式：PX-2026-004 基线最小只读呈现 ====== -->
+      <section class="view" id="view-pro" role="tabpanel" aria-labelledby="mode-pro" tabindex="0" hidden>
+        <iframe class="professional-frame" id="professional-frame" src="./professional/index.html" title="专业模式完整六阶段工作台"></iframe>
+        <h1 id="h-pro" class="view-h">专业模式 <span class="syn-tag">PX-2026-004 基线 · 最小只读呈现</span></h1>
+        <p class="fine">本视图只复用 PX-2026-004 的信息架构与状态语义，不重写专业流程；完整交互见 PX-2026-004 Demo。用户可见的循证工作统一称为「循证分析」。</p>
+
+        <!-- 六阶段导航（只读状态语义） -->
+        <div class="stagebar" role="navigation" aria-label="专业模式分析阶段">
+          <ol class="stages">
+            <li><span class="stage done"><span class="stage-n">1</span>新建分析</span></li>
+            <li><span class="stage done"><span class="stage-n">2</span>数据准备</span></li>
+            <li><span class="stage done"><span class="stage-n">3</span>本地处理</span></li>
+            <li><span class="stage current"><span class="stage-n">4</span>循证分析</span></li>
+            <li><span class="stage"><span class="stage-n">5</span>报告</span></li>
+            <li><span class="stage"><span class="stage-n">6</span>执行反馈</span></li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h2 class="card-h">Session：会员复购变化诊断（专业）</h2>
+          <dl class="kv">
+            <div><dt>业务问题</dt><dd>华东区高价值会员近 90 天复购率下滑的驱动因素</dd></div>
+            <div><dt>模型可见边界</dt><dd>仅已批准聚合数据（A-01、A-02）；原始数据始终不可见</dd></div>
+            <div><dt>Session 类型</dt><dd>专业模式 · 固定六阶段导航 · 与快速 Session 不互相转换</dd></div>
+          </dl>
+        </div>
+
+        <div class="card">
+          <h2 class="card-h">循证分析 · 假设状态</h2>
+          <ul class="insp-list">
+            <li><span class="hypo-id">H1</span> 缺码导致下滑 <span class="chip chip-falsi">已证伪</span> <span class="fine">反例 E-103</span></li>
+            <li><span class="hypo-id">H2</span> 权益到期窗口 <span class="chip chip-ok">已支持</span> <span class="fine">E-201 / E-202</span></li>
+            <li><span class="hypo-id">H3</span> 天气抑制到店 <span class="chip chip-insuf">证据不足 · 未证实</span></li>
+          </ul>
+          <p class="fine">报告只允许收录「已支持」结论；未证实与已证伪内容进入「反例与限制」章节。</p>
+        </div>
+
+        <div class="card">
+          <h2 class="card-h">报告</h2>
+          <p>《会员复购变化诊断报告》 <span class="chip chip-wait">草稿 v1</span> · 结论均回链证据编号。</p>
+          <p class="fine">专业模式的最小呈现到此为止；阶段 Gate、子任务与执行反馈的完整状态语义以 PX-2026-004 已评估 Demo 为准。</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- 右侧辅助抽屉：三目录 / 数据子集 / 来源 / 报告版本 -->
+    <aside class="drawer" id="drawer" aria-label="辅助抽屉">
+      <div class="insp-head">
+        <h2 class="insp-title">辅助抽屉</h2>
+        <button class="btn btn-ghost btn-sm" id="btn-drawer-close" type="button" aria-label="关闭辅助抽屉">✕</button>
+      </div>
+
+      <section class="drawer-sec">
+        <h3 class="insp-h">Session 目录 <span class="fine" id="drawer-session-name">（未创建 Session）</span></h3>
+        <ul class="dirtree" id="dirtree" role="list">
+          <li class="dirtree-empty fine">创建 Session 后，此处显示 <code>010_draw</code> / <code>020_clean</code> / <code>060_reports</code> 的内容。</li>
+        </ul>
+      </section>
+
+      <section class="drawer-sec">
+        <h3 class="insp-h">模型可见数据子集</h3>
+        <ul class="insp-list" id="drawer-subset">
+          <li class="fine">无已批准聚合产物；原始数据（010_draw）永远不进入此子集。</li>
+        </ul>
+      </section>
+
+      <section class="drawer-sec">
+        <h3 class="insp-h">产物来源</h3>
+        <ul class="insp-list" id="drawer-provenance">
+          <li class="fine">暂无产物。</li>
+        </ul>
+      </section>
+
+      <section class="drawer-sec">
+        <h3 class="insp-h">报告版本</h3>
+        <ul class="insp-list" id="drawer-reports">
+          <li class="fine">暂无报告。</li>
+        </ul>
+      </section>
+    </aside>
+  </div>
+
+  <!-- 底部状态栏 -->
+  <footer class="statusbar">
+    <span class="pill pill-offline">● 离线 · 本地模式</span>
+    <span class="sb-item-plain">当前模式：<strong id="status-mode">快速模式</strong></span>
+    <span class="sb-item-plain">模型可见边界：<strong id="status-boundary">无已批准聚合</strong></span>
+    <span class="sb-item-plain">运行状态：<strong id="status-run">空闲</strong></span>
+    <span class="statusbar-right fine">全部数据为合成数据 · 仅加载本地静态资源</span>
+  </footer>
+</div>
+
+<!-- Skill / Prompt 选择弹层 -->
+<div class="veil" id="picker-veil" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="picker-title">
+    <div class="insp-head">
+      <h2 class="insp-title" id="picker-title">选择能力</h2>
+      <button class="btn btn-ghost btn-sm" id="btn-picker-close" type="button" aria-label="关闭">✕</button>
+    </div>
+    <div id="picker-body"></div>
+    <p class="fine">Demo 中 Skill / Prompt 仅展示显式选择、版本与适用范围，不真实执行。</p>
+  </div>
+</div>
+
+<!-- Fork 创建弹层 -->
+<div class="veil" id="fork-veil" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="fork-title">
+    <div class="insp-head">
+      <h2 class="insp-title" id="fork-title">创建 Fork</h2>
+      <button class="btn btn-ghost btn-sm" id="btn-fork-close" type="button" aria-label="关闭">✕</button>
+    </div>
+    <p>Fork 从主 Session 分叉，用于并行探索替代假设。继承范围只能是父 Session <strong>已批准聚合数据的精确子集</strong>，从不继承 <code>010_draw</code> 原始数据。</p>
+    <fieldset class="fork-scope">
+      <legend>继承范围（已批准聚合产物）</legend>
+      <label class="check"><input type="checkbox" id="fork-inherit-a01" checked disabled> weekly_repurchase_by_tier.agg（A-01，已批准）</label>
+      <label class="check"><input type="checkbox" id="fork-inherit-raw"> 尝试扩大范围：加入 010_draw 原始数据</label>
+    </fieldset>
+    <div class="err-card" id="fork-scope-block" role="alert" hidden>
+      <p><strong>已阻止：</strong>Fork 只能继承已批准聚合数据的精确子集，<code>010_draw</code> 原始数据不可继承。扩大范围必须先回到主 Session 完成新的显式确认。</p>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" id="btn-fork-create" type="button">创建 Fork</button>
+    </div>
+  </div>
+</div>
+
+<!-- 全局搜索（跨模式，显示模式徽标） -->
+<div class="veil" id="palette-veil" hidden>
+  <div class="palette" role="dialog" aria-modal="true" aria-label="全局搜索">
+    <input type="text" id="palette-input" class="palette-input" placeholder="搜索所有模式的 Session…" aria-label="全局搜索">
+    <ul class="palette-list" id="palette-list" role="listbox"></ul>
+    <p class="fine palette-foot">全局搜索可跨模式，结果带模式徽标 · ↑↓ 选择 · Enter 跳转 · Esc 关闭</p>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

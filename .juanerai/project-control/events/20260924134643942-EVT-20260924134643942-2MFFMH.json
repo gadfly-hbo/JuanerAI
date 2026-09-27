@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924134643942-2MFFMH",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-24T13:46:43.942Z",
+  "actor": {
+    "role": "controller",
+    "session": "mac-mini-engineering-controller"
+  },
+  "summary": "用户已授权恢复原Change并采用B2 Command Context001；固定接收完成，剩余第2/2轮待正式Test。后续合并/归档仅在全部Gate及验收满足后获准。",
+  "status_after": "active",
+  "evidence_refs": []
+}

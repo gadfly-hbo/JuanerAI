@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924234451641-Z7AURZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-24T23:44:51.641Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "B2 C1a Typecheck定向修正获用户授权，旧额度不重置",
+  "status_after": "active",
+  "evidence_refs": []
+}

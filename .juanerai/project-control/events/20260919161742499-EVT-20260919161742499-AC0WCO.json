@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919161742499-AC0WCO",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-19T16:17:42.499Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户授权误停后的剩余Spec完成补充回执；固化计数/误停规则，历史1/1保留，待固定包手动接收，Test不释放",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

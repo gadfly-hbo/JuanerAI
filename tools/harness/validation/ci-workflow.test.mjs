@@ -30,7 +30,7 @@ jobs:
           package-manager-cache: false
       - run: |
           test "$(node --version)" = v26.0.0
-          npm install --global npm@11.12.1
+          npm install --prefix "$RUNNER_TEMP/pinned-npm" --ignore-scripts --no-audit --no-fund --package-lock=false npm@11.12.1
           test "$(npm --version)" = 11.12.1
           curl --fail --location --output duckdb.zip ${DUCKDB_URL}
           printf '${DUCKDB_SHA256}  duckdb.zip\\n' | sha256sum --check --status
@@ -40,8 +40,9 @@ jobs:
           ln -s "$(command -v node)" "$TOOLCHAIN_BIN/node"
           ln -s "$(command -v npm)" "$TOOLCHAIN_BIN/npm"
           install -m 755 "$RUNNER_TEMP/duckdb/duckdb" "$TOOLCHAIN_BIN/duckdb"
-          npm ci
-          JUANERAI_TOOLCHAIN_BIN="$TOOLCHAIN_BIN" tools/harness/validation/run
+          npm ci --prefix "$INSTALL_VIEW" --ignore-scripts --no-audit --no-fund
+          export JUANERAI_TOOLCHAIN_BIN="$TOOLCHAIN_BIN"
+          run_logged portable-regression tools/harness/validation/run --portable
 `;
 
 function position(text, expression, description) {
@@ -88,7 +89,7 @@ function assertWorkflow(workflow) {
   assert.match(workflow, /npm[^\n]*11\.12\.1/);
   const nodeCheck = position(workflow, /node --version/, 'must check selected Node version');
   const npmCheck = position(workflow, /npm --version/, 'must check selected npm version');
-  const npmCi = position(workflow, /(?:^|\n)\s*npm ci(?:\s|$)/m, 'must install locked dependencies with npm ci');
+  const npmCi = position(workflow, /(?:^|\n)\s*(?:run_logged dependency-install )?npm ci --prefix "\$INSTALL_VIEW" --ignore-scripts --no-audit --no-fund/m, 'must install locked dependencies scripts-off in the explicit view');
   assert.ok(nodeCheck < npmCi && npmCheck < npmCi, 'Node and npm version checks must precede npm ci');
   const download = position(workflow, new RegExp(DUCKDB_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), 'must download the fixed official DuckDB asset');
   const checksum = position(workflow, new RegExp(`${DUCKDB_SHA256}[\\s\\S]*sha256sum\\s+--check\\s+--status`), 'must verify the fixed SHA-256 before extraction');
@@ -102,8 +103,9 @@ function assertWorkflow(workflow) {
   assert.ok(extraction < temporaryBin && temporaryBin < duckdbBin, 'temporary bin must receive DuckDB only after extraction');
   assert.doesNotMatch(workflow, /(?:apt(?:-get)?|brew|snap)\s+install[^\n]*duckdb/i);
 
-  // PRCI-TEST-004: install dependencies before the exact offline runner invocation.
-  const runner = position(workflow, /JUANERAI_TOOLCHAIN_BIN=[^\n\s]+\s+tools\/harness\/validation\/run/, 'must invoke only the canonical runner with its temporary bin');
+  // PRCI-TEST-004: install dependencies before the explicit partial offline invocation.
+  assert.match(workflow, /export JUANERAI_TOOLCHAIN_BIN="\$TOOLCHAIN_BIN"/);
+  const runner = position(workflow, /run_logged portable-regression tools\/harness\/validation\/run --portable/, 'must invoke the explicit portable runner with its temporary bin');
   assert.ok(npmCi < runner, 'npm ci must precede canonical validation');
   assert.doesNotMatch(workflow, /XANTHIL_REAL_PI_ACCEPTANCE|(?:real[-_ ]?model|provider|secret|retry|fallback|artifact|coverage|deploy(?:ment)?|gh\s+api|curl[^\n]*api\.github)/i);
 }
@@ -112,6 +114,6 @@ test('PRCI-TEST-001..004: assertion helper accepts the approved minimal declarat
   assertWorkflow(VALID_WORKFLOW);
 });
 
-test('PRCI-TEST-001..004: PR CI declaration is the single, fixed, offline canonical check', async () => {
+test('PRCI-TEST-001..004: PR CI declaration is the single, fixed, explicitly portable offline check', async () => {
   assertWorkflow(await readFile(WORKFLOW, 'utf8'));
 });

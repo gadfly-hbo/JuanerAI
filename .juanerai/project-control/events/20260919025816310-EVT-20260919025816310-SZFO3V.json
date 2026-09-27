@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919025816310-SZFO3V",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T02:58:16.310Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "四工具健康 PASS；用户授权 P1 配置最小修正与一次重跑，待同任务接收执行",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

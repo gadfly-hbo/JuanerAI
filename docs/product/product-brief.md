@@ -74,3 +74,12 @@ the fixed Git source described in [the planning index](../planning/README.md);
 their absence from this tree does not withdraw or reapprove them. Rule publication
 and active Mac mini adoption require separate exact Git and receiver receipts.
 Engineering status and the frozen batch's scope, permissions and stop line are unchanged.
+
+## First-batch history and acceptance locator
+
+The original first-batch planning receipts and supplement links remain in the
+[historical chronology](../planning/README.md#preserved-first-batch-planning-chronology--historical-not-current-state)
+and in Git at `d9507e2a5833bc286f8cdc5d01e23514bb889b4d`.
+They are not a current B2 stop or a new product authorization. The owning Mini
+Change's verification and project-control record carry its actual acceptance
+and delivery state; Blueprint v2.0 does not expand this frozen first slice.

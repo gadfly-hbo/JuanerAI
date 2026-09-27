@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927063337483-303LIY",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T06:33:37.483Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "同Worker定向修复返回，保留candidate002 FAIL和全部历史，准备新固定候选复核。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

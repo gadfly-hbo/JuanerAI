@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924151310591-O8QFXT",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-24T15:13:10.591Z",
+  "actor": {
+    "role": "controller",
+    "session": "纵切-1.0 Engineering Controller"
+  },
+  "summary": "用户接受B2 Component两份临时路径清单写入偏差及历史native元数据UNKNOWN；原Change仅从未运行的GREEN准备点恢复，额度不重置。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927134847810-VD5GA6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T13:48:47.810Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "Product Acceptance PASS 已记录；交付检查发现 5 个路径缺图节点，保留证据并在暂存前停止，无产品失败或验收回退。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

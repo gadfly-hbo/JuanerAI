@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260919014820780-TYMPBJ",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-19T01:48:20.780Z",
+  "actor": {
+    "role": "controller",
+    "session": "macbook-controller"
+  },
+  "summary": "用户整体确认 XDESK-DECISION-001 第 1–12 项；MacBook 冻结发布供原 Mini 任务人工接收，实际准备和生产 Gate 尚未执行。",
+  "status_after": "active",
+  "evidence_refs": []
+}

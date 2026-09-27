@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927151933933-LHJESA",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-09-27T15:19:33.933Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "GitHub权限阻塞解除；新云端实际安装成功但Desktop计算合同失败，保留原始完整输出与退出码并进入定向诊断。",
+  "status_after": "active",
+  "evidence_refs": []
+}

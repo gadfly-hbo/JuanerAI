@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260926191656025-6HPJJH",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-26T19:16:56.025Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "U1 candidate002 scoped automated PASS; continuous approved U2 package starts, no new external permissions",
+  "status_after": "active",
+  "evidence_refs": []
+}

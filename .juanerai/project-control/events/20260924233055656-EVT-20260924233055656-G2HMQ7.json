@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924233055656-G2HMQ7",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-24T23:30:55.656Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "B2 C1a Typecheck健康失败；保留证据并等待有界授权",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

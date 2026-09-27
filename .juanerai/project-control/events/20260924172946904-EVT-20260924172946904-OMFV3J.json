@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924172946904-OMFV3J",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-24T17:29:46.904Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-engineering-controller"
+  },
+  "summary": "C1a configuration-oracle regression passed; runner control pending",
+  "status_after": "active",
+  "evidence_refs": []
+}
