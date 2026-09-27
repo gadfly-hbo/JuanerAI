@@ -16,18 +16,53 @@ jobs:
   canonical-validation:
     name: Canonical validation
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NPM_CONFIG_IGNORE_SCRIPTS: 'true'
+      NPM_CONFIG_AUDIT: 'false'
+      NPM_CONFIG_FUND: 'false'
+      NPM_CONFIG_FETCH_RETRIES: '0'
+      NPM_CONFIG_REGISTRY: 'https://registry.npmjs.org/'
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v7
         with:
           node-version: 26.0.0
           package-manager-cache: false
-      - run: |
+      - env:
+          GIT_ALLOW_PROTOCOL: ''
+          GIT_TERMINAL_PROMPT: '0'
+        run: |
+          # Exact numeric exits and both streams remain in the native GitHub log.
+          run_logged() {
+            label="$1"; shift
+            printf '\nBEGIN %s\n' "$label"
+            (set -C; : >"$RUNNER_TEMP/$label.stdout" && : >"$RUNNER_TEMP/$label.stderr") || return 73
+            set +e
+            timeout --signal=TERM --kill-after=5s 180s "$@" >>"$RUNNER_TEMP/$label.stdout" 2>>"$RUNNER_TEMP/$label.stderr"
+            result=$?
+            set -e
+            printf 'STDOUT %s\n' "$label"; cat "$RUNNER_TEMP/$label.stdout"
+            printf 'STDERR %s\n' "$label"; cat "$RUNNER_TEMP/$label.stderr" >&2
+            printf 'EXIT %s %s\n' "$label" "$result"
+            return "$result"
+          }
           test "$(node --version)" = v26.0.0
-          npm install --global npm@11.12.1
+          export NPM_CONFIG_USERCONFIG="$RUNNER_TEMP/user.empty.npmrc"
+          export NPM_CONFIG_GLOBALCONFIG="$RUNNER_TEMP/global.empty.npmrc"
+          export NPM_CONFIG_CACHE="$RUNNER_TEMP/npm-cache"
+          test ! -e "$NPM_CONFIG_USERCONFIG" && test ! -e "$NPM_CONFIG_GLOBALCONFIG"
+          (set -C; : > "$NPM_CONFIG_USERCONFIG"; : > "$NPM_CONFIG_GLOBALCONFIG")
+          NPM_HOME="$RUNNER_TEMP/pinned-npm"
+          test ! -e "$NPM_HOME"
+          run_logged npm-prepare npm install --prefix "$NPM_HOME" --ignore-scripts --no-audit --no-fund --package-lock=false npm@11.12.1
+          export PATH="$NPM_HOME/node_modules/.bin:$PATH"
           test "$(npm --version)" = 11.12.1
           DUCKDB_ZIP="$RUNNER_TEMP/duckdb.zip"
-          curl --fail --location --output "$DUCKDB_ZIP" https://github.com/duckdb/duckdb/releases/download/v1.5.2/duckdb_cli-linux-amd64.zip
+          test ! -e "$DUCKDB_ZIP"
+          run_logged duckdb-download curl --max-time 180 --fail --location --proto '=https' --proto-redir '=https' --output "$DUCKDB_ZIP" https://github.com/duckdb/duckdb/releases/download/v1.5.2/duckdb_cli-linux-amd64.zip
           printf '%s  %s\n' 'fc9145affabca627431e73ddaf6b8117e5c192692480c13886f227be202d5d15' "$DUCKDB_ZIP" | sha256sum --check --status
           unzip -q "$DUCKDB_ZIP" -d "$RUNNER_TEMP/duckdb"
           TOOLCHAIN_BIN="$RUNNER_TEMP/juanerai-toolchain"
@@ -35,5 +70,15 @@ jobs:
           ln -s "$(command -v node)" "$TOOLCHAIN_BIN/node"
           ln -s "$(command -v npm)" "$TOOLCHAIN_BIN/npm"
           install -m 755 "$RUNNER_TEMP/duckdb/duckdb" "$TOOLCHAIN_BIN/duckdb"
-          npm ci
-          JUANERAI_TOOLCHAIN_BIN="$TOOLCHAIN_BIN" tools/harness/validation/run
+          export JUANERAI_CI_NODE_GYP_ARCHIVE="$RUNNER_TEMP/node-gyp-approved.tgz"
+          test ! -e "$JUANERAI_CI_NODE_GYP_ARCHIVE"
+          run_logged node-gyp-download curl --max-time 180 --fail --location --proto '=https' --proto-redir '=https' --output "$JUANERAI_CI_NODE_GYP_ARCHIVE" https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2
+          INSTALL_VIEW="$RUNNER_TEMP/approved-install-view"
+          run_logged install-view node tools/harness/validation/prepare-ci-install.mjs prepare "$GITHUB_WORKSPACE" "$INSTALL_VIEW" "$JUANERAI_CI_NODE_GYP_ARCHIVE"
+          run_logged dependency-install npm ci --prefix "$INSTALL_VIEW" --ignore-scripts --no-audit --no-fund
+          run_logged installed-source-check node tools/harness/validation/prepare-ci-install.mjs finalize "$GITHUB_WORKSPACE" "$INSTALL_VIEW" "$JUANERAI_CI_NODE_GYP_ARCHIVE"
+          run_logged ci-contracts node --test tools/harness/validation/*.test.mjs
+          export JUANERAI_TOOLCHAIN_BIN="$TOOLCHAIN_BIN"
+          export JUANERAI_TEST_EVIDENCE_DIR="$RUNNER_TEMP/portable-test-evidence"
+          mkdir "$JUANERAI_TEST_EVIDENCE_DIR"
+          run_logged portable-regression tools/harness/validation/run --portable

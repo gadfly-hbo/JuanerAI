@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927142044942-L9JRR5",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-27T14:20:44.942Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "用户授权限定CI适配；未授权依赖升级、新来源或脚本例外，保留既有CI FAIL与原生验收。",
+  "status_after": "active",
+  "evidence_refs": []
+}

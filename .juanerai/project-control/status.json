@@ -6,15 +6,15 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "PRODUCT_ACCEPTED_AUTHORIZED_DELIVERY",
-    "label": "产品验收通过，授权交付中",
+    "id": "PRODUCT_ACCEPTED_ARCHIVE_CI_PENDING",
+    "label": "产品验收与归档审查通过；待云端CI",
     "ordinal": 8,
     "total": 8
   },
   "health": "active",
-  "summary": "用户已通过产品验收，并授权精确五文件替代图节点检查；其余身份、范围、验证与集成条件保留。",
-  "current_objective": "完成原批准 Assistance 与最终工程验收",
-  "next_action": "完成独立五文件核验、fresh index 与指纹核对，保存验收成果后集成当前 main 并完成 OpenSpec 归档。",
+  "summary": "用户产品验收PASS；本地归档及限定CI适配独立Validator PASS。原PR43失败、开发工具安全告警与UNKNOWN保留；新云端CI尚未运行，未合并。",
+  "current_objective": "完成第一个Change的已授权归档与Git集成交付",
+  "next_action": "保存已验收归档与CI修正到原PR43，取得真实scripts-off可移植CI结果；全部适用Gate满足后按既有授权squash集成，不启动下一Change。",
   "blockers": [],
   "milestones": [
     {
@@ -913,7 +913,7 @@
       "mitigation": "原件与复制保留，不清理/重放/推断历史零副作用。当前37保护源未变，renderer未验证；直接等待用户本任务处置。"
     }
   ],
-  "updated_at": "2026-09-27T13:50:57.850Z",
+  "updated_at": "2026-09-27T15:07:41.717Z",
   "updated_by": {
     "role": "controller",
     "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"

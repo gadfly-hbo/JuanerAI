@@ -35,8 +35,8 @@ test('Desktop test fixture and 91-AC coverage map health are independent of miss
   assert.doesNotMatch('// AC-XDESK-012-05: records the separate same-build normal no-debug native-chooser\nconst interrupted = \'acceptance.\';', approvedManualEndpointPattern, 'a code line cannot impersonate the adjacent manual-marker continuation');
   await assertDesktopFixtureHealth();
   const [desktopSpecification, compatibilitySpecification] = await Promise.all([
-    readFile(new URL('../../../openspec/changes/xanthil-desktop-membership-repurchase-decision-case/specs/xanthil-desktop-decision-case/spec.md', import.meta.url), 'utf8'),
-    readFile(new URL('../../../openspec/changes/xanthil-desktop-membership-repurchase-decision-case/specs/local-analysis/spec.md', import.meta.url), 'utf8'),
+    readFile(new URL('../../../openspec/specs/xanthil-desktop-decision-case/spec.md', import.meta.url), 'utf8'),
+    readFile(new URL('../../../openspec/specs/local-analysis/spec.md', import.meta.url), 'utf8'),
   ]);
   const specified = [...new Set([
     ...(desktopSpecification.match(/AC-XDESK-\d{3}-\d{2}/g) ?? []),

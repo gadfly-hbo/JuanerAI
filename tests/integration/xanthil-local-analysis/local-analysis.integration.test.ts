@@ -498,7 +498,9 @@ async function assertInstalledDirectPackage(
   packageName: string,
   expected: DirectPackageHealth,
   packageRoot = join(repositoryRoot, 'node_modules', packageName),
+  scope = process.env.JUANERAI_VALIDATION_SCOPE ?? 'full',
 ) {
+  assert.ok(scope === 'full' || scope === 'portable', 'installation health scope is explicit');
   assert.equal(expected.name, packageName, `${packageName} expected package identity must be independent and exact`);
   assertProjectLocalResolution(packageRoot, packageName);
   const canonicalPackageRoot = await realpath(packageRoot);
@@ -513,15 +515,32 @@ async function assertInstalledDirectPackage(
     `${packageName} installation must retain the exact approved package identity`,
   );
 
-  const entryPath = join(canonicalPackageRoot, expected.requiredEntry);
+  // Portable CI verifies the installed tarball entry, not a lifecycle-downloaded binary.
+  // The default full contract and its executable/absence negatives remain unchanged.
+  const portableElectron = scope === 'portable' && packageName === 'electron';
+  const entryPath = join(canonicalPackageRoot, portableElectron ? 'index.js' : expected.requiredEntry);
   assertProjectLocalResolution(entryPath, packageName);
   const entry = await lstat(entryPath);
   assert.equal(entry.isFile(), true, `${packageName} required ${expected.entryKind} entry must be a file`);
   assert.ok(entry.size > 0, `${packageName} required ${expected.entryKind} entry must not be empty`);
-  if (expected.entryKind === 'executable') {
+  if (expected.entryKind === 'executable' && !portableElectron) {
     assert.notEqual(entry.mode & 0o111, 0, `${packageName} required executable entry must be executable`);
   }
 }
+
+test('CI-PORTABLE-HEALTH: scripts-off Electron package health does not claim installed native binary', async () => {
+  const root = await mkdtemp(join(repositoryRoot, 'node_modules', 'ci-electron-health-'));
+  try {
+    await writeFile(join(root, 'package.json'), JSON.stringify({ name: 'electron', version: '44.4.3' }));
+    await writeFile(join(root, 'index.js'), 'module.exports = null;\n');
+    await assertInstalledDirectPackage('electron', approvedDirectPackageHealth.electron, root, 'portable');
+    await assert.rejects(() => assertInstalledDirectPackage('electron', approvedDirectPackageHealth.electron, root, 'full'), /ENOENT/);
+    await writeFile(join(root, 'package.json'), JSON.stringify({ name: 'electron', version: '0.0.0' }));
+    await assert.rejects(() => assertInstalledDirectPackage('electron', approvedDirectPackageHealth.electron, root, 'portable'), /exact approved package identity/);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
 
 async function runVersionCommand(command: string, args: readonly string[]) {
   const { stdout, stderr } = await execFileAsync(command, args, { cwd: repositoryRoot, encoding: 'utf8' });

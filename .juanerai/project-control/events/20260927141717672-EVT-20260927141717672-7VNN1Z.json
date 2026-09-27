@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927141717672-7VNN1Z",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-27T14:17:17.672Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "归档候选独立只读验证PASS；PR43 Ubuntu CI FAIL与安装平台边界未解决，继续停止交付。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

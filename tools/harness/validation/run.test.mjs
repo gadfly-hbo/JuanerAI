@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 
 test('TEST-XDESK-CF-RESTORATION requires full Console then Desktop phases without intermediate selectors',async()=>{
   const source=await readFile(PUBLIC_RUNNER,'utf8');
-  const actual=source.split('\n').filter(line=>/^node .*--test /.test(line));
+  const actual=source.split('\n').filter(line=>/^node .*--test (tests|tools)\//.test(line));
   const expected=[
     'node --test tests/unit/xanthil-local-analysis/*.test.ts',
     'node --test tests/contract/xanthil-local-analysis/*.test.ts',
@@ -344,8 +344,8 @@ async function installPublicRunner(f) {
   return destination;
 }
 
-async function invoke(f, runner, inherited = {}) {
-  return run(runner, [], {
+async function invoke(f, runner, inherited = {}, args = []) {
+  return run(runner, args, {
     cwd: path.join(f.root, 'elsewhere'),
     env: {
       ...process.env,
@@ -363,6 +363,35 @@ async function observedLines(f) {
   const text = await readFile(f.observation, 'utf8');
   return text === '' ? [] : text.trim().split('\n');
 }
+
+test('CI-PORTABLE-001: explicit portable mode retains every portable suite and reports package/GUI NOT RUN', async (t) => {
+  const f = await fixture(t, { runnerTuple: 'CF' });
+  const runner = await installPublicRunner(f);
+  await mkdir(path.join(f.root, 'elsewhere'));
+  const result = await invoke(f, runner, { XANTHIL_REAL_PI_ACCEPTANCE: '1' }, ['--portable']);
+  assert.equal(result.code, 0, result.stderr);
+  const excluded = ['xanthil-desktop-main-module-format.contract.test.ts', 'xanthil-desktop.e2e.test.ts'];
+  assertCanonicalOrder(await observedLines(f), f, expectedRunnerChildren('CF').filter(line => !excluded.some(name => line.includes(name))));
+  for (const label of ['Electron binary', 'packaged Main module', 'Desktop packaged GUI', 'native/manual acceptance']) {
+    assert.ok(result.stdout.includes(`NOT RUN: ${label}`), label);
+  }
+  assert.doesNotMatch(result.stdout, /full.*PASS|product.*PASS/i);
+});
+
+test('CI-PORTABLE-002: portable failures stop later suites and default mode cannot inherit a portable bypass', async (t) => {
+  const f = await fixture(t, { runnerTuple: 'CF', failTarget: 'xanthil-desktop-store.contract.test.ts' });
+  const runner = await installPublicRunner(f);
+  await mkdir(path.join(f.root, 'elsewhere'));
+  const result = await invoke(f, runner, {}, ['--portable']);
+  assert.equal(result.code, 31);
+  assert.match(result.stderr, /native contract stderr/);
+  assert.equal((await observedLines(f)).some(line => !line.startsWith('syntax:') && line.includes('xanthil-desktop-storage.integration.test.ts')), false);
+  const full = await fixture(t, { runnerTuple: 'CF' });
+  const fullRunner = await installPublicRunner(full);
+  await mkdir(path.join(full.root, 'elsewhere'));
+  assert.equal((await invoke(full, fullRunner, { JUANERAI_VALIDATION_SCOPE: 'portable' })).code, 0);
+  assertCanonicalOrder(await observedLines(full), full, expectedRunnerChildren('CF'));
+});
 
 function assertCanonicalOrder(lines, f, expectedSuites) {
   const syntax = lines.filter((line) => line.startsWith('syntax:'));

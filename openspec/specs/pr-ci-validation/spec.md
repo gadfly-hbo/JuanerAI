@@ -36,7 +36,8 @@ second concurrent validation for that key.
 
 The job SHALL use `actions/checkout@v6` to check out GitHub's PR merge/input
 revision and `actions/setup-node@v7` with exact Node `26.0.0`. It SHALL install
-exact npm `11.12.1` and fail before dependency installation if Node or npm is
+exact npm `11.12.1` into a fresh runner-temporary prefix, scripts off and without
+global installation, audit or fund, and fail before dependency installation if Node or npm is
 not the required version. It SHALL use the runner's `python3`, which the
 canonical runner will reject unless it is `>=3.9`.
 
@@ -69,30 +70,50 @@ selected `node`, `npm`, and verified `duckdb` executables.
 If checkout, Node/npm setup/version verification, download, checksum,
 extraction, temporary-bin construction, or the canonical runner's Python
 preflight fails, the job exits nonzero and does not continue to a later step.
-It does not select an alternate source/tool/version, retry, repair, write a
-cache/artifact/report, or disclose a secret.
+It does not select an alternate source/tool/version, retry, repair, publish a
+cache/artifact/report, or disclose a secret. Task-local temporary npm cache,
+installation-view provenance and test emissions are allowed within the approved
+ephemeral job only; they do not create a shared cache or project-state authority.
 
 ## PRCI-REQ-003 — Canonical offline validation execution
 
-After the fixed toolchain succeeds, the job SHALL run `npm ci` against the
-checked-out repository and then invoke exactly:
+After the fixed toolchain succeeds, the job SHALL run scripts-off/no-audit/no-fund
+`npm ci` in the approved isolated installation view described by
+[REQ-XTS-004](../local-analysis/spec.md#req-xts-004--canonical-offline-validation).
+The repository manifest and lock remain unchanged. The single approved node-gyp
+archive is verified against its frozen raw checksum before use; only its
+temporary resolved/integrity fields and the same exact parent-edge transport
+spec differ (three fields, reverse-equal whole graph). All Git protocols and credential
+prompts are disabled during installation; checkout retains no credentials.
+Installed package members must match the verified raw archive before suites run.
+After placing the new node_modules into the previously absent checkout path,
+the job exports its toolchain and invokes exactly:
 
 ```text
-JUANERAI_TOOLCHAIN_BIN=<assembled-temporary-bin> tools/harness/validation/run
+JUANERAI_TOOLCHAIN_BIN=<assembled-temporary-bin> tools/harness/validation/run --portable
 ```
 
 It SHALL preserve the canonical runner as the authority for its own preflight,
 offline suite ordering, inherited `XANTHIL_REAL_PI_ACCEPTANCE` removal, native
 output, and exit semantics. The workflow SHALL not add a real-model flag,
-provider configuration, secret, retry/fallback, test selection, alternate
-validation command, or runner modification.
+provider configuration, secret, retry/fallback or arbitrary test selection.
+Explicit portable mode omits only macOS package-dependent Main/GUI checks and
+binary health with `NOT RUN`, not PASS; all portable suites remain present.
+The default full canonical plan and separate macOS/native/product acceptance
+remain mandatory delivery evidence, not claims of this Ubuntu status check.
+Important cloud commands retain separate stdout/stderr and numeric exit in the
+native job log, including failures, with exclusive output slots and a 180-second
+command limit; the job has a 20-minute maximum. No new upload action is used.
 
 ### PRCI-AC-005
 
 With the verified toolchain and successful `npm ci`, the job runs the canonical
 command with `JUANERAI_TOOLCHAIN_BIN` pointing only to its assembled temporary
 bin. A zero command exit marks the sole job successful; a nonzero exit marks
-it failed and keeps the runner's native output in the job log.
+it failed and keeps the runner's native output in the job log. Successful
+portable CI means only this explicitly partial plan passed, not full product
+or macOS acceptance. Local synthetic workflow/installation-view tests do not
+prove a future cloud installation succeeded.
 
 ### PRCI-AC-006
 

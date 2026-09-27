@@ -6,9 +6,13 @@ behavior. Historic suite counts are evidence, never a success contract.
 ## CVR-REQ-001 — Public shell entrypoint and PATH
 
 `tools/harness/validation/run` SHALL be an executable POSIX shell entrypoint.
-No argument runs the sole offline plan; `--help` prints usage and exits zero
+No argument runs the full offline plan; `--help` prints usage and exits zero
 without preflight or test. Other arguments fail nonzero without running a
-child.
+child, except the explicitly user-authorized `--portable` partial CI mode.
+That mode and its exact `NOT RUN` boundary are defined in current
+[REQ-XTS-004](../local-analysis/spec.md#req-xts-004--canonical-offline-validation).
+It never replaces default full CF or native/product acceptance. The runner
+sets its own mode, ignoring inherited scope values.
 
 It SHALL use `/Users/huangbo/Dev/Env/homebrew/bin` unless the single explicit
 `JUANERAI_TOOLCHAIN_BIN` environment variable is set to a usable directory.
