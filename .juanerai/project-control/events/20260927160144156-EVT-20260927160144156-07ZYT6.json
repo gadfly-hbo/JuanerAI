@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927160144156-07ZYT6",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-09-27T16:01:44.156Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "工程/用户验收和归档复核完成，云端portable CI实际PASS；仅余授权Git集成读回，旧失败/UNKNOWN及旧bootstrap状态保留。",
+  "status_after": "complete",
+  "evidence_refs": []
+}

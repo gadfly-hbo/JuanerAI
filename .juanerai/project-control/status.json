@@ -6,15 +6,15 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "PRODUCT_ACCEPTED_CI_PROFILE_FIXTURE_DIAGNOSIS",
-    "label": "产品验收保留；CI部署描述夹具修正",
+    "id": "ENGINEERING_PRODUCT_ACCEPTED_ARCHIVED",
+    "label": "首个Change已验收归档；Git集成按PR读回",
     "ordinal": 8,
     "total": 8
   },
-  "health": "active",
-  "summary": "610a136已推送。云端36330175315安装/来源校验/CI25/Desktop合同313通过，集成224中222通过2失败（valid子项及父项）；原始job日志完整，汇总读取在长行后遗漏。生产Profile正确拒绝夹具写死的Python版本，定向修正中；未合并。",
-  "current_objective": "完成第一个Change的已授权归档与Git集成交付",
-  "next_action": "Worker闭合部署描述实测版本夹具与负例，独立Validator复核完整候选后提交同PR；实际云端PASS才集成。",
+  "health": "complete",
+  "summary": "用户产品验收、独立工程/原生验证、OpenSpec归档复核通过。c764bda云端36331418007 PASS：CI25、Desktop合同313、集成225；产品与包未改。Git合并结论以PR#43及原任务最终读回为准，本记录不预先宣称合并。",
+  "current_objective": "保全已验收的第一个Change并完成授权交付读回",
+  "next_action": "本Change无下一工程阶段；仅完成已授权PR#43最终检查、squash集成与本地读回后停止。不得启动下一Change。",
   "blockers": [],
   "milestones": [
     {
@@ -79,7 +79,7 @@
     },
     {
       "id": "current_tdd",
-      "label": "当前Change：因果RED/GREEN及回归已验收；CI工具夹具修正在独立交付检查中",
+      "label": "当前Change：因果RED/GREEN、回归及CI交付检查已通过，历史风险处置保留",
       "status": "completed"
     },
     {
@@ -147,8 +147,8 @@
       "id": "juaner_worker",
       "label": "Continuous Engineering Worker",
       "model": "gpt-6-astra / high (current interface)",
-      "status": "active",
-      "activation": "v08_u4_resumed_worker：已验收产品保持；仅闭合当前CI部署描述夹具及受影响验证。"
+      "status": "complete",
+      "activation": "v08_u4_resumed_worker已完成已批准产品和CI夹具闭环，固定候选经独立Validator验证；没有下一Change派发。"
     },
     {
       "id": "juaner_validator",
@@ -843,6 +843,12 @@
       "label": "当前两路径身份/源码保护独立读回；历史退出UNKNOWN保留，不提供产品PASS",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/b2-component-unapproved-temp-write-001.json",
       "status": "present"
+    },
+    {
+      "id": "xdesk_final_acceptance_archive",
+      "label": "首个Change最终验收、归档及集成边界",
+      "path": "openspec/changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/acceptance.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -913,7 +919,7 @@
       "mitigation": "原件与复制保留，不清理/重放/推断历史零副作用。当前37保护源未变，renderer未验证；直接等待用户本任务处置。"
     }
   ],
-  "updated_at": "2026-09-27T15:50:36.588Z",
+  "updated_at": "2026-09-27T16:01:44.155Z",
   "updated_by": {
     "role": "controller",
     "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
