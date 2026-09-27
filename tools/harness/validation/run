@@ -112,3 +112,11 @@ node --test tests/e2e/xanthil-local-analysis/*.test.ts
 node --test tests/contract/model-pack-contract-enabler/*.test.ts
 node --test tests/integration/model-pack-contract-enabler/*.test.ts
 node --test tools/harness/project-board/project-control.test.mjs tools/harness/project-board/status-cli.test.mjs
+node --test tests/unit/run-evidence-console/run-evidence.unit.test.ts
+node --test tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts
+node --test tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts
+node --test tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts
+node --test tests/unit/xanthil-desktop/*.test.ts
+node --test tests/contract/xanthil-desktop/*.test.ts
+node --test tests/integration/xanthil-desktop/*.test.ts
+node --test tests/e2e/xanthil-desktop/*.test.ts

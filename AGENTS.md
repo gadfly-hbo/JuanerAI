@@ -21,17 +21,43 @@ Use this precedence when sources conflict:
 
 Product terminology is owned by CONTEXT.md. Cross-domain orchestration is owned by Orchestration.md.
 
+## Product and Engineering Authority
+
+Use the role names below; the unqualified word `Controller` does not name a
+current authority in the semi-automatic dual-device path.
+
+- The **MacBook Product Manager** owns Whitepaper and Research Demo
+  interpretation, the Blueprint, product proposals and vertical slices, UI
+  Contracts, user-visible behavior, business meaning, product acceptance
+  criteria, product prohibitions, and product-planning records. It freezes
+  product inputs but does not pre-freeze ordinary implementation contracts,
+  paths, commands, environments, or validation mechanics.
+- The **Mac mini Engineering Controller** receives approved product inputs and
+  owns feasibility, result-sized engineering packages and contract decisions,
+  continuous OpenSpec/SDD and TDD, regression, independent Validator,
+  engineering acceptance and state, and authorized Git delivery/integration/archive.
+- The **user** is the final decision authority. The Engineering Controller asks
+  the user directly about product ambiguity, scope expansion, new architecture
+  or safety boundaries, extra budget, residual-risk acceptance, missing
+  permissions, and unsafe or unknown effects. MacBook participation is optional
+  product support requested by the user, not a technical approval hop.
+
+Product acceptance and engineering acceptance are separate. A Validator PASS
+or Engineering Acceptance never substitutes for the user's required product/UI
+acceptance. The full boundary and handoff rules live only in
+`docs/governance/product-change-execution-policy.md`.
+
 ## Startup Stop Line
 
-The approved Blueprint v1.0 base and current v1.1 first-slice package are referenced from `docs/planning/README.md`. Review 002 applies only to the superseded v1.0 UI-adoption input. Before revising the retained clickable draft, the v1.1 package must pass a fresh Product Plan Development-Readiness Gate. Every product Change must then produce or revise a change-scoped high-fidelity clickable UI Contract and receive the user's UI Gate PASS before OpenSpec creation or `juaner_spec` dispatch. The UI Contract must make the workflow and visible acceptance surface directly evaluable by a non-technical user; backend, Runtime, Adapter, or infrastructure scope does not bypass this Gate. A review PASS authorizes only the next stated planning or UI-contract Gate; it does not authorize OpenSpec, dependency installation, production implementation, external data access, provider calls, or schema creation.
+The approved Blueprint v1.0 base and current v1.1 first-slice package are referenced from `docs/planning/README.md`. Review 002 applies only to the superseded v1.0 UI-adoption input. Before revising the retained clickable draft, the v1.1 package must pass a fresh Product Plan Development-Readiness Gate. Every product Change must bind an applicable change-scoped high-fidelity clickable UI Contract and the user's UI Gate PASS before engineering execution. Reuse a still-valid approved Contract; obtain affected user approval for new or materially changed visible behavior. The Contract must make the workflow and acceptance surface directly evaluable by a non-technical user; a backend, Runtime, Adapter or infrastructure label does not bypass this obligation. A Blueprint or development-readiness PASS authorizes only its stated planning result, not OpenSpec, dependencies, implementation, external data, provider calls or schema creation.
 
 Cold-start documents and empty module boundaries do not authorize product implementation, dependency installation, external data access, or schema creation.
 
 ## Product Plan Development-Readiness Gate
 
-Every new or materially revised product plan that is intended to guide development must pass an independent development-readiness review before it is declared ready, frozen as product input, or dispatched to `juaner_spec`.
+Every new or materially revised product plan intended to guide development must pass an independent development-readiness review before it is declared ready, frozen as product input, or handed to engineering. Reuse an applicable completed review; ordinary internal engineering changes do not repeat it.
 
-After drafting the plan, the Controller dispatches a fresh read-only support Agent with an implementation-worker perspective. This Reviewer is not `juaner_worker`, receives no TDD_READY or implementation authority, and must not write OpenSpec, tests, or production code. Give it only the product plan and formal attachments, the JuanerAI authority documents explicitly referenced by the plan, and the review brief. Do not give it the Controller's unstated rationale or use external project repositories to rescue missing plan content; any required external lookup is itself a plan gap unless the user explicitly authorized that read-only study.
+After drafting the plan, the Product Manager dispatches a fresh read-only support Agent with an implementation-worker perspective. This Reviewer is not the engineering agent, receives no implementation authority, and must not write OpenSpec, tests, or production code. Give it only the product plan and formal attachments, the JuanerAI authority documents explicitly referenced by the plan, and the review brief. Do not give it the Product Manager's unstated rationale or use external project repositories to rescue missing plan content; any required external lookup is itself a plan gap unless the user explicitly authorized that read-only study.
 
 The Reviewer returns:
 
@@ -43,9 +69,10 @@ The Reviewer returns:
 6. `Required Plan Additions`: the minimum text or attachment needed to remove each material gap;
 7. `Verdict`: `PASS` or `NEEDS_CLARIFICATION`.
 
-PASS requires an accurate restatement of the intended product and no load-bearing guess about behavior, boundaries, authority, or acceptance. Exact paths, TypeScript names, serialization schemas, and resource limits may remain deferred when the product semantics and stop line are complete. `NEEDS_CLARIFICATION` returns to the Controller; after a material correction, a fresh Reviewer repeats the Gate.
+PASS requires an accurate restatement of the intended product and no load-bearing guess about behavior, boundaries, authority, or acceptance. Exact paths, TypeScript names, serialization schemas, and resource limits may remain deferred when the product semantics and stop line are complete. `NEEDS_CLARIFICATION` returns to the Product Manager; after a material correction, a fresh Reviewer repeats the Gate.
 
-Reviewer PASS does not approve product intent, replace explicit user decisions, or transfer the Controller's product, architecture, contract, integration, or acceptance authority.
+Reviewer PASS does not approve product intent, replace explicit user decisions,
+or transfer Product Manager, Engineering Controller, or user authority.
 
 ## Architecture
 
@@ -67,13 +94,14 @@ Before proposing a new Agent Runtime, Model Pack runtime, Runtime Port, or Runti
 
 ## Change Workflow
 
-Dual-device product Changes follow the long-term semi-automatic default,
-delegated stage checks and authority boundaries in
+Dual-device product Changes follow the continuous-engineering default,
+adoption conditions and authority boundaries in
 `docs/governance/product-change-execution-policy.md`.
 
-Observable behavior changes follow:
-
-Request -> Explore -> Proposal -> UI Contract -> User UI Gate -> Specification -> Design -> Tasks -> Spec Gate -> Test Design -> RED -> Implementation -> GREEN -> Regression -> Independent Verification -> Acceptance -> Archive.
+Observable behavior changes follow the sole execution policy: Product Manager work ends at Product Input
+Freeze; Engineering Controller work begins at confirmed Engineering Intake and
+continues through behavior-scoped SDD/TDD and independent verification, Engineering
+Acceptance, required user Product Acceptance, and authorized archive.
 
 Each non-trivial change belongs to openspec/changes/<change-id>/ and declares allowed, conditional, and forbidden paths. Use greenfield_fast_path only when there is no compatibility, migration, replay, or irreversible-side-effect obligation; it still requires closed contracts, security boundaries, negative tests, activation, rollback, and real verification.
 
@@ -83,45 +111,36 @@ Each non-trivial change belongs to openspec/changes/<change-id>/ and declares al
 
 ## Reuse and Complexity Control
 
-Before sizing a post-bootstrap Change, or when the same behavior reaches a second Spec clarification, Test correction, or Worker revision or replan, read `docs/governance/change-complexity-control.md`. Xanthil Changes also read `docs/governance/xanthil-first-slice-reuse-baseline.md`. Crossing the stop line returns the Change to Controller root-cause review; it never waives gates or evidence.
-
-Before Spec Gate, the Controller must run `ponytail-review` on the complete OpenSpec diff when the Spec role used high/xhigh reasoning, a non-core or governance Change introduces durable machinery, enterprise readiness is used to justify present scope, or a correction expands the design. Findings return to Spec for deletion; material complexity beyond the approved goal requires explicit plain-language user approval before Test dispatch. Follow `docs/governance/change-complexity-control.md`.
+Before sizing a Change or diagnosing repeated non-convergent work, read `docs/governance/change-complexity-control.md`; Xanthil Changes also read `docs/governance/xanthil-first-slice-reuse-baseline.md`. Check actual complexity and risk within existing engineering/review work, not a reasoning-level-triggered approval stage. Material scope or safety expansion requires the user's decision; ordinary corrections follow the sole execution policy's progress-based stop-loss.
 
 ## Testing
 
 - Derive tests from Requirement and Acceptance Criteria IDs.
 - Establish an expected RED caused by missing behavior before production implementation.
-- Keep test-writing and implementation permissions logically separate.
+- One engineering agent may maintain authorized tests, code and necessary engineering design; final evaluation remains independent from all candidate authors.
 - Preserve assertions and negative cases during implementation.
 - Require contract tests for every replaceable Adapter.
 - Use executable evidence before claiming completion.
 
 Read .ai-coding/policies/testing.md and .ai-coding/definition-of-done.md for the applicable gate.
 
-When a Change adds, changes, or removes tests, fixtures, helpers, doubles, mocks, snapshots, coverage maps, or harness code, read `docs/governance/test-asset-retirement.md` at Test Design and again after GREEN/regression. The Controller must pass its Test Asset Retirement Gate before freezing evidence for Validator dispatch.
+When changing test assets, read `docs/governance/test-asset-retirement.md`. Preserve coverage and explain removals in existing verification; Validator checks this in the same review, without a separate retirement Gate or compulsory ledger.
 
 ## Roles
 
-- Controller owns product intent, architecture, terminology, shared contracts, task boundaries, integration, acceptance, and user communication.
-- In semi-automatic batches, the Mac mini coordinator exercises the delegated in-scope technical decision authority in `docs/governance/product-change-execution-policy.md#in-scope-technical-decision-authority`; MacBook retains decisions outside that boundary and final acceptance.
-- Worker implements only an approved brief and allowed paths.
+- Product Manager owns the frozen product input and product-planning communication.
+- Engineering Controller owns engineering architecture and contracts within the
+  approved product, architecture, security, data, permission, and external-effect
+  boundaries, plus engineering Gates, integration, and engineering communication.
+- Engineering agent (`juaner_worker`) owns necessary engineering spec/design, tests, implementation and corrections in the approved work package.
 - Validator uses an independent read-only context and returns evidence and a verdict; it does not implement or approve.
-- Test author and implementation worker remain logically isolated.
+- Candidate authors and final Validator remain separate; optional Spec/Test specialists are bounded support, not default stages.
 
 ### Standing Delegation Authority
 
-The user grants standing authority to dispatch the configured project subagents when their lifecycle Gate is satisfied. Agent invocation and formal lifecycle-role activation are distinct: the Controller may call any configured role for bounded support, while only a role activated with the approved production brief and lifecycle authority may write formal Change artifacts or advance a Gate.
+After policy adoption, approved product/UI input and confirmed intake, the Engineering Controller dispatches `juaner_worker` for the result-sized package and reuses its context through ordinary corrections. After freezing the complete candidate and evidence, it dispatches `juaner_validator` in an independent read-only context. No per-dispatch user confirmation is needed inside the approved scope, resource and permission boundaries.
 
-The MacBook Controller prepares and reviews the complete package and may use configured roles for bounded support; those support calls do not constitute production execution, create lifecycle evidence, or grant Change-write authority. After the user authorizes package transfer, MacBook publishes the frozen package branch, creates a dedicated new Codex task on the saved Mac mini JuanerAI project, and supplies the package as its initial message. It never selects an existing task by recency or ambient UI state; automatic dispatch failure stops for the one-time manual create/open-and-forward fallback. The new Mac mini execution task activates the formal Spec, Test, Worker, and Validator stages. On the MacBook, user wording such as “启动” or “授权启动” a Change starts package preparation and handoff unless the user explicitly changes the dual-device execution policy.
-
-- After product intent, all required product or structure decisions, and the exact user-approved UI Contract are available, the Mac mini execution coordinator must dispatch `juaner_spec` to draft or revise the complete OpenSpec package before Spec Gate.
-- After Spec Gate PASS, the Controller must dispatch `juaner_test` to derive executable tests and establish expected RED before production implementation.
-- After TDD_READY, the Controller must dispatch `juaner_worker` to make the minimum production change inside the frozen allowed paths.
-- After implementation and evidence are frozen, the Controller must dispatch `juaner_validator` in an independent read-only context before acceptance.
-- Each role returns evidence to the Controller. Dispatch does not transfer product authority, approve a Gate, or unlock the next role early.
-- The Controller must not replace a required role dispatch with direct execution. An explicit user waiver, an unavailable role, or a genuine authority/evidence blocker must be recorded with the affected Gate and release condition.
-
-This section is persistent delegation authority across sessions. A new user command is required only to waive a role, change authority or scope, change the designated execution device, override routing, or proceed despite a blocker. Product approval, UI acceptance, OpenSpec authorization, and lifecycle progression never implicitly change the designated execution device.
+Use `juaner_spec` or `juaner_test` only for a concrete scoped support question; neither creates a Spec Gate, TDD_READY approval or automatic next dispatch. A contributing specialist cannot be the final Validator. A missing role or incompatible loaded configuration must be disclosed and resolved at a safe boundary, not bypassed by author self-review or a silently different role. Product permission, Git authority and old task stops are not granted by dispatch or by editing these instructions.
 
 Use Orchestration.md and docs/templates/ for multi-domain or multi-agent work.
 
@@ -148,22 +167,34 @@ Read docs/architecture/data-authority.md and docs/architecture/security-boundari
 ## Scope and Contracts
 
 - Domain-private changes stay inside the approved domain.
-- Shared types, package manifests, APIs, schemas, events, identities, persistence, and deployment contracts require approval before implementation. The delegated Mac mini coordinator may approve eligible technical deltas under the execution policy; this does not expand dependency or external-operation permissions.
-- Contract drift stops dependent implementation and returns to Spec/Design. Eligible technical deltas are resolved locally under that policy; out-of-scope decisions use docs/templates/CONTRACT_CHANGE_REQUEST.template.md and return to MacBook.
+- Material public/compatibility, persistent-data, authority or irreversible-effect contract changes require an Engineering Controller impact decision before dependent implementation; upper-boundary changes require the user. Ordinary private details close within the engineering package through affected spec/test updates and verification.
+- Use docs/templates/CONTRACT_CHANGE_REQUEST.template.md for a material contract decision, not every private parameter or fixture correction.
 - Unknown business facts, fields, enum values, labels, IDs, thresholds, defaults, and model behavior remain pending rather than invented.
 
 ## Validation and Completion
 
 Use `tools/harness/validation/run` as the canonical default offline validation command. It establishes the approved command-local toolchain, runs the accepted deterministic suites, and always removes the real-model test gate; it has no real-model mode. Any actual provider/model invocation requires separate explicit user authorization and a Change-specific command. Every Change must still name its applicable focused validation commands and evidence level before implementation.
 
-No Change is complete without approved specification, expected RED, GREEN tests, required regression and quality checks, scope verification, traceability, independent verification or an explicit risk-based waiver, acceptance, and OpenSpec archive.
+No behavior-changing Change is engineering-complete without approved behavior and its current specification, causal RED,
+GREEN tests, required regression and quality checks, scope verification,
+traceability, independent verification or an explicit user-authorized risk
+waiver, Engineering Acceptance, and the applicable OpenSpec archive. Product
+completion additionally requires the user's product acceptance when the frozen
+product input names that Gate.
 
 ## Human Project Board
 
 The human project board is a read-only observability surface. Formal user decisions remain in the Codex CLI conversation; the board may present decision briefs and local browser notes but never submits approvals, starts agents, executes commands, or grants authority.
 
-The Controller owns `.juanerai/project-control/` and updates it at meaningful lifecycle transitions: Change start, phase transition, task completion, blocker discovery, user-decision request or resolution, RED/GREEN/verification changes, acceptance, and archive. Workers and validators return evidence to the Controller rather than writing project-control state unless their approved brief explicitly grants that path.
+The Engineering Controller owns `.juanerai/project-control/` for the current
+engineering Change and is its sole writer. It updates the board at meaningful
+lifecycle transitions: Change start, phase transition, task completion,
+blocker discovery, user-decision request or resolution, RED/GREEN/verification
+changes, engineering acceptance, applicable product acceptance, and archive.
+The Product Manager maintains product planning and is not a required writer for
+remote engineering progress. Workers and validators return evidence to the
+Engineering Controller rather than writing project-control state. Ordinary inner-loop test runs do not each require a board update.
 
-For semi-automatic remote batches, follow the stage-recording and board-update timing in `docs/governance/product-change-execution-policy.md`; the board is the last confirmed handoff, not a live remote-state claim.
+Follow the stage-recording and board-update timing in `docs/governance/product-change-execution-policy.md`. Mini maintains the confirmed engineering snapshot at each material transition. A MacBook copy is only its last synchronized view, not a live remote-state claim or a second writable board.
 
-Use `node tools/harness/project-board/status-cli.mjs` for state changes. `status.json` is the sole current-state authority and is atomically replaced; `events/` is best-effort non-authoritative history, and `decision-briefs/` is display-only context. The Controller is the only supported writer; concurrent Controller writes are outside the board contract. A board display never overrides OpenSpec, tests, Task Bus state, repository evidence, or an explicit user decision in the CLI.
+Use `node tools/harness/project-board/status-cli.mjs` for state changes. `status.json` is the sole current-state authority and is atomically replaced; `events/` is best-effort non-authoritative history, and `decision-briefs/` is display-only context. The Engineering Controller is the only supported writer for the current Change; concurrent writers are outside the board contract. A board display never overrides OpenSpec, tests, Task Bus state, repository evidence, or an explicit user decision in the CLI.

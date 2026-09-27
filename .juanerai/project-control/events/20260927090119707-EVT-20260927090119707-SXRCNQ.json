@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927090119707-SXRCNQ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T09:01:19.707Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "工程验收PASS与产品验收严格区分；入口演练和原生流程完成，历史失败UNKNOWN及Main窄风险接受保留。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924231715209-K9YXEV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-24T23:17:15.209Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-engineering-controller"
+  },
+  "summary": "Directed Runner fixture correction verified 9/9; C1a type health pending",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924165127361-39ITCN",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-24T16:51:27.361Z",
+  "actor": {
+    "role": "controller",
+    "session": "mac-mini-engineering-controller"
+  },
+  "summary": "C1a Runner封套静态绑定不符，测试未启动；按既有调用恢复权限处理。",
+  "status_after": "active",
+  "evidence_refs": []
+}

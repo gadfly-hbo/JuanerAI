@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260925004441771-TK4005",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-25T00:44:41.771Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "B2 first-package health failed at renderer entry resolution; stopped before GUI and source repair.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

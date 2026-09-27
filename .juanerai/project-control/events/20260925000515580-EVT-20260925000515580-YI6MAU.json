@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260925000515580-YI6MAU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-25T00:05:15.580Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "B2 C1a两项定向修订静态审查通过，唯一Typecheck待冻结",
+  "status_after": "active",
+  "evidence_refs": []
+}

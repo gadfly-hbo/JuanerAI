@@ -46,7 +46,7 @@ import type { AgentAnalysisRuntime, LocalAnalysisExecution, RunArtifactStore } f
 
 const execFileAsync = promisify(execFile);
 const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url));
-const approvedRootManifest = Object.freeze({
+const approvedP4RootManifest = Object.freeze({
   private: true,
   type: 'module',
   packageManager: 'npm@11.12.1',
@@ -54,6 +54,8 @@ const approvedRootManifest = Object.freeze({
   dependencies: Object.freeze({
     '@earendil-works/pi-coding-agent': '0.84.2',
     typebox: '1.3.7',
+    react: '19.3.0',
+    'react-dom': '19.3.0',
   }),
   scripts: Object.freeze({
     typecheck: 'tsc -p tsconfig.json --noEmit',
@@ -62,9 +64,31 @@ const approvedRootManifest = Object.freeze({
   devDependencies: Object.freeze({
     '@types/node': '22.19.19',
     typescript: '5.9.3',
+    electron: '44.4.3',
+    vite: '8.3.0',
+    '@vitejs/plugin-react': '6.1.1',
+    '@electron-forge/cli': '7.11.2',
+    '@electron-forge/plugin-vite': '7.11.2',
+    '@types/react': '19.3.0',
+    '@types/react-dom': '19.3.0',
+    'playwright-core': '1.63.0',
+  }),
+  name: 'xanthil-desktop',
+  productName: 'Xanthil',
+  version: '0.1.0',
+});
+const approvedP5RootManifest = Object.freeze({
+  ...approvedP4RootManifest,
+  main: '.vite/build/main.cjs',
+  config: Object.freeze({ forge: './forge.config.cjs' }),
+  scripts: Object.freeze({
+    ...approvedP4RootManifest.scripts,
+    'desktop:start': 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge start',
+    'desktop:package': 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64',
+    'desktop:test': 'npm run desktop:package && node --test tests/unit/xanthil-desktop/*.test.ts tests/contract/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/*.test.ts tests/e2e/xanthil-desktop/*.test.ts',
   }),
 });
-const approvedTsconfig = Object.freeze({
+const approvedP4Tsconfig = Object.freeze({
   compilerOptions: Object.freeze({
     strict: true,
     noEmit: true,
@@ -125,11 +149,139 @@ const approvedTsconfig = Object.freeze({
     'tests/fixtures/model-pack-contract-enabler/analytical-model-runtime-driver.ts',
   ]),
 });
+const approvedP5Tsconfig = Object.freeze({
+  compilerOptions: Object.freeze({
+    ...approvedP4Tsconfig.compilerOptions,
+    jsx: 'react-jsx',
+  }),
+  files: Object.freeze([
+    ...approvedP4Tsconfig.files,
+    'packages/product-core/xanthil-desktop-decision-case.ts',
+    'packages/application/xanthil-desktop-decision-case.ts',
+    'packages/contracts/xanthil-desktop-ipc.ts',
+    'packages/ports/xanthil-desktop-decision-case.ts',
+    'adapters/storage-local/xanthil-desktop-decision-case.ts',
+    'adapters/analytics-duckdb/process.ts',
+    'adapters/analytics-duckdb/xanthil-desktop-decision-case.ts',
+    'profiles/personal/xanthil-desktop.ts',
+    'apps/desktop/main.ts',
+    'apps/desktop/preload.ts',
+    'apps/desktop/renderer.tsx',
+    'tests/fixtures/xanthil-desktop/coverage-map.ts',
+    'tests/fixtures/xanthil-desktop/desktop-contract-drivers.ts',
+    'tests/fixtures/xanthil-desktop/desktop-e2e-harness.ts',
+    'tests/fixtures/xanthil-desktop/desktop-fixtures.ts',
+    'tests/unit/xanthil-desktop/xanthil-desktop.unit.test.ts',
+    'tests/unit/xanthil-desktop/coverage-map.test.ts',
+    'tests/contract/xanthil-desktop/xanthil-desktop-store.contract.test.ts',
+    'tests/contract/xanthil-desktop/xanthil-desktop-analysis.contract.test.ts',
+    'tests/contract/xanthil-desktop/xanthil-desktop-assistance.contract.test.ts',
+    'tests/contract/xanthil-desktop/xanthil-desktop-ipc.contract.test.ts',
+    'tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts',
+    'tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts',
+    'tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts',
+    'tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts',
+  ]),
+});
+const approvedC1aTsconfig = Object.freeze({
+  compilerOptions: Object.freeze({
+    ...approvedP4Tsconfig.compilerOptions,
+    jsx: 'react-jsx',
+  }),
+  files: Object.freeze([
+    ...approvedP4Tsconfig.files,
+    'packages/contracts/xanthil-desktop-ipc.ts',
+    'apps/desktop/main.ts',
+    'apps/desktop/preload.ts',
+    'apps/desktop/renderer.tsx',
+    'tests/fixtures/xanthil-desktop/coverage-map.ts',
+    'tests/fixtures/xanthil-desktop/desktop-contract-drivers.ts',
+    'tests/fixtures/xanthil-desktop/desktop-e2e-harness.ts',
+    'tests/fixtures/xanthil-desktop/desktop-fixtures.ts',
+    'tests/unit/xanthil-desktop/xanthil-desktop.unit.test.ts',
+    'tests/unit/xanthil-desktop/coverage-map.test.ts',
+    'tests/contract/xanthil-desktop/xanthil-desktop-ipc.contract.test.ts',
+    'tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts',
+  ]),
+});
+const approvedC1Tsconfig = Object.freeze({
+  compilerOptions: Object.freeze({ ...approvedP4Tsconfig.compilerOptions, jsx: 'react-jsx' }),
+  files: Object.freeze([
+    ...approvedP4Tsconfig.files,
+    'packages/application/xanthil-desktop-decision-case.ts',
+    'packages/contracts/xanthil-desktop-ipc.ts',
+    'packages/ports/xanthil-desktop-decision-case.ts',
+    'adapters/storage-local/xanthil-desktop-decision-case.ts',
+    'profiles/personal/xanthil-desktop.ts',
+    'apps/desktop/main.ts', 'apps/desktop/preload.ts', 'apps/desktop/renderer.tsx',
+    'tests/fixtures/xanthil-desktop/coverage-map.ts',
+    'tests/fixtures/xanthil-desktop/desktop-contract-drivers.ts',
+    'tests/fixtures/xanthil-desktop/desktop-e2e-harness.ts',
+    'tests/fixtures/xanthil-desktop/desktop-fixtures.ts',
+    'tests/unit/xanthil-desktop/xanthil-desktop.unit.test.ts',
+    'tests/unit/xanthil-desktop/coverage-map.test.ts',
+    'tests/contract/xanthil-desktop/xanthil-desktop-store.contract.test.ts',
+    'tests/contract/xanthil-desktop/xanthil-desktop-ipc.contract.test.ts',
+    'tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts',
+    'tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts',
+    'tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts',
+  ]),
+});
+const approvedC2Tsconfig = Object.freeze({
+  compilerOptions: Object.freeze({ ...approvedP4Tsconfig.compilerOptions, jsx: 'react-jsx' }),
+  files: Object.freeze([...approvedC1Tsconfig.files,
+    'packages/product-core/xanthil-desktop-decision-case.ts',
+    'adapters/analytics-duckdb/process.ts',
+    'adapters/analytics-duckdb/xanthil-desktop-decision-case.ts',
+    'tests/contract/xanthil-desktop/xanthil-desktop-analysis.contract.test.ts',
+  ]),
+});
+const approvedP4RepositoryConfigurationFiles = Object.freeze([
+  'package-lock.json',
+  'package.json',
+  'tsconfig.json',
+]);
+const approvedP5RepositoryConfigurationFiles = Object.freeze([
+  'forge.config.cjs',
+  'package-lock.json',
+  'package.json',
+  'tsconfig.json',
+  'vite.main.config.mjs',
+  'vite.preload.config.mjs',
+  'vite.renderer.config.mjs',
+]);
+type DirectPackageHealth = Readonly<{
+  name: string;
+  version: string;
+  resolved: string;
+  integrity: string;
+  requiredEntry: string;
+  entryKind: 'module' | 'declaration' | 'executable';
+}>;
+
+const approvedDirectPackageHealth = Object.freeze({
+  '@earendil-works/pi-coding-agent': { name: '@earendil-works/pi-coding-agent', version: '0.84.2', resolved: 'https://registry.npmjs.org/@earendil-works/pi-coding-agent/-/pi-coding-agent-0.84.2.tgz', integrity: 'sha512-l4E+B7hgXKWddRo8bC/eSue2aWZjEgJ9xIpf5p0Og+lq8a2TArCwJ0HCoCPCgaBP/tN4zbYH/wOwvx9pJpeLCA==', requiredEntry: 'dist/index.js', entryKind: 'module' },
+  typebox: { name: 'typebox', version: '1.3.7', resolved: 'https://registry.npmjs.org/typebox/-/typebox-1.3.7.tgz', integrity: 'sha512-meKuifc33Pccx0O6PdIzYMq3Og8zvP4TIi/a+Bw3AEMZMxOD0+RHGQvpglEe6Zdy3wZ8nqn/j95h8LUZLk/6Hg==', requiredEntry: 'build/index.mjs', entryKind: 'module' },
+  react: { name: 'react', version: '19.3.0', resolved: 'https://registry.npmjs.org/react/-/react-19.3.0.tgz', integrity: 'sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==', requiredEntry: 'index.js', entryKind: 'module' },
+  'react-dom': { name: 'react-dom', version: '19.3.0', resolved: 'https://registry.npmjs.org/react-dom/-/react-dom-19.3.0.tgz', integrity: 'sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==', requiredEntry: 'index.js', entryKind: 'module' },
+  '@types/node': { name: '@types/node', version: '22.19.19', resolved: 'https://registry.npmjs.org/@types/node/-/node-22.19.19.tgz', integrity: 'sha512-dyh/xO2Fh5bYrfWaaqGrRQQGkNdmYw6AmaAUvYeUMNTWQtvb796ikLdmTchRmOlOiIJ1TDXfWgVx1QkUlQ6Hew==', requiredEntry: 'index.d.ts', entryKind: 'declaration' },
+  typescript: { name: 'typescript', version: '5.9.3', resolved: 'https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz', integrity: 'sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==', requiredEntry: 'bin/tsc', entryKind: 'executable' },
+  electron: { name: 'electron', version: '44.4.3', resolved: 'https://registry.npmjs.org/electron/-/electron-44.4.3.tgz', integrity: 'sha512-LTpSFTB40qVCXIX5xMo+cgHI/Jjkbjw7VpB26PccEbroqOn72LBukeaDwPVo1fBYzSzs0c9iPuAucFCO7Tw81Q==', requiredEntry: 'dist/Electron.app/Contents/MacOS/Electron', entryKind: 'executable' },
+  vite: { name: 'vite', version: '8.3.0', resolved: 'https://registry.npmjs.org/vite/-/vite-8.3.0.tgz', integrity: 'sha512-lhZBVvEHefgE+HQZC9O7EBJgCU/nVzFNl7vkS4RE0APtWLP02/8QVIkQtzBxPquh7lq5/78NHipTj7ODQ6XuyQ==', requiredEntry: 'dist/node/index.js', entryKind: 'module' },
+  '@vitejs/plugin-react': { name: '@vitejs/plugin-react', version: '6.1.1', resolved: 'https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-6.1.1.tgz', integrity: 'sha512-yxLaQV9gkhS8ezJqCM6+ndU7mDY6gqAg75NQ+0IjwEI8IYOmQCgkRwHKVSfWXW076DsqMo0Dk+0FK1U+M5RgFw==', requiredEntry: 'dist/index.js', entryKind: 'module' },
+  '@electron-forge/cli': { name: '@electron-forge/cli', version: '7.11.2', resolved: 'https://registry.npmjs.org/@electron-forge/cli/-/cli-7.11.2.tgz', integrity: 'sha512-c+C4ndLfHbxwZuCn9G8iT9wD/woLdaVkoSVjAIbj+0nJhi8UmiVsz/+Gxlj4cvhMRTzBMBxudstLU7RocMikfg==', requiredEntry: 'dist/electron-forge.js', entryKind: 'executable' },
+  '@electron-forge/plugin-vite': { name: '@electron-forge/plugin-vite', version: '7.11.2', resolved: 'https://registry.npmjs.org/@electron-forge/plugin-vite/-/plugin-vite-7.11.2.tgz', integrity: 'sha512-QagRgjXfMBeyP+NkMdUMqke/E0ldfcBycjkgCb2FEH3VnS+Llk5RE2716H3quTuUtRhX2gdRuUDdLsstHFuGWg==', requiredEntry: 'dist/VitePlugin.js', entryKind: 'module' },
+  '@types/react': { name: '@types/react', version: '19.3.0', resolved: 'https://registry.npmjs.org/@types/react/-/react-19.3.0.tgz', integrity: 'sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==', requiredEntry: 'index.d.ts', entryKind: 'declaration' },
+  '@types/react-dom': { name: '@types/react-dom', version: '19.3.0', resolved: 'https://registry.npmjs.org/@types/react-dom/-/react-dom-19.3.0.tgz', integrity: 'sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==', requiredEntry: 'index.d.ts', entryKind: 'declaration' },
+  'playwright-core': { name: 'playwright-core', version: '1.63.0', resolved: 'https://registry.npmjs.org/playwright-core/-/playwright-core-1.63.0.tgz', integrity: 'sha512-rYCsBF/M5HjUch52bbtVONEFjv6Xu8sm8h72dNlR5bzIE1fvC/bxgspzkjSfU+MweEMmPM8KJebG6nnyxo5mCg==', requiredEntry: 'index.mjs', entryKind: 'module' },
+} satisfies Record<string, DirectPackageHealth>);
 const forbiddenRepositoryConfigurationNames = new Set([
+  'forge.config.cjs',
   'bun.lock', 'bun.lockb', 'deno.json', 'deno.jsonc', 'npm-shrinkwrap.json',
   'package-lock.json', 'package.json', 'pipfile', 'pipfile.lock', 'pnpm-lock.yaml',
   'poetry.lock', 'pyproject.toml', 'requirements-dev.txt', 'requirements.txt',
   'setup.cfg', 'setup.py', 'tsconfig.json', 'webpack.config.js', 'webpack.config.mjs',
+  'vite.main.config.mjs', 'vite.preload.config.mjs', 'vite.renderer.config.mjs',
   'yarn.lock',
 ]);
 
@@ -275,24 +427,100 @@ function atLeastVersion(output: string, label: string, minimum: string) {
 }
 
 function assertApprovedRootManifest(manifest: unknown) {
-  assert.deepEqual(manifest, approvedRootManifest, 'root package.json must be the approved closed object');
+  try {
+    assert.deepEqual(manifest, approvedP4RootManifest, 'root package.json must be the approved P4 closed object');
+    return 'P4' as const;
+  } catch {
+    assert.deepEqual(manifest, approvedP5RootManifest, 'root package.json must be the approved P4 or P5 closed object');
+    return 'P5' as const;
+  }
 }
 
-function assertApprovedLock(lock: TestRecord, manifest: TestRecord) {
+function assertApprovedLock(lock: TestRecord) {
   assert.equal(typeof lock, 'object');
   const packages = requiredRecord(lock.packages, 'npm lock packages');
   const root = requiredRecord(packages[''], 'npm lock root');
-  assert.deepEqual(root.dependencies, manifest.dependencies, 'lock root must mirror exact direct dependencies');
-  assert.deepEqual(root.devDependencies, manifest.devDependencies, 'lock root must mirror exact direct dev dependencies');
-  assert.equal(requiredRecord(packages['node_modules/@earendil-works/pi-coding-agent'], 'Pi lock entry').version, '0.84.2');
-  assert.equal(requiredRecord(packages['node_modules/typebox'], 'typebox lock entry').version, '1.3.7');
-  assert.equal(requiredRecord(packages['node_modules/@types/node'], 'Node types lock entry').version, '22.19.19');
-  assert.equal(requiredRecord(packages['node_modules/typescript'], 'TypeScript lock entry').version, '5.9.3');
+  assert.deepEqual(root, {
+    name: 'xanthil-desktop',
+    version: '0.1.0',
+    dependencies: approvedP4RootManifest.dependencies,
+    devDependencies: approvedP4RootManifest.devDependencies,
+    engines: approvedP4RootManifest.engines,
+  }, 'lock root must be the exact approved closed object');
+  for (const [packageName, expected] of Object.entries(approvedDirectPackageHealth)) {
+    const entry = requiredRecord(packages[`node_modules/${packageName}`], `${packageName} lock entry`);
+    assert.deepEqual(
+      {
+        version: entry.version,
+        resolved: entry.resolved,
+        integrity: entry.integrity,
+      },
+      {
+        version: expected.version,
+        resolved: expected.resolved,
+        integrity: expected.integrity,
+      },
+      `${packageName} lock entry must have the exact approved version, source, and integrity`,
+    );
+  }
+}
+
+function matchesApprovedConfigurationTuple(
+  manifest: unknown,
+  tsconfig: unknown,
+  configurationFiles: readonly string[],
+  expectedManifest: unknown,
+  expectedTsconfig: unknown,
+  expectedConfigurationFiles: readonly string[],
+) {
+  try {
+    assert.deepEqual(manifest, expectedManifest);
+    assert.deepEqual(tsconfig, expectedTsconfig);
+    assert.deepEqual(configurationFiles, expectedConfigurationFiles);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP4RootManifest, approvedP4Tsconfig, approvedP4RepositoryConfigurationFiles)) return 'C0' as const;
+  if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP5RootManifest, approvedP5Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'P5' as const;
+  assert.fail('root package.json, tsconfig.json, and configuration inventory must form exactly P4 or final P5 without an intermediate tuple or selector');
 }
 
 function assertProjectLocalResolution(resolved: string, packageName: string) {
   const localPrefix = join(repositoryRoot, 'node_modules') + sep;
   assert.ok(resolved.startsWith(localPrefix), `${packageName} must resolve from the project-local node_modules tree`);
+}
+
+async function assertInstalledDirectPackage(
+  packageName: string,
+  expected: DirectPackageHealth,
+  packageRoot = join(repositoryRoot, 'node_modules', packageName),
+) {
+  assert.equal(expected.name, packageName, `${packageName} expected package identity must be independent and exact`);
+  assertProjectLocalResolution(packageRoot, packageName);
+  const canonicalPackageRoot = await realpath(packageRoot);
+  assertProjectLocalResolution(canonicalPackageRoot, packageName);
+
+  const packageJsonPath = join(canonicalPackageRoot, 'package.json');
+  assertProjectLocalResolution(packageJsonPath, packageName);
+  const installedMetadata = JSON.parse(await readFile(packageJsonPath, 'utf8'));
+  assert.deepEqual(
+    { name: installedMetadata.name, version: installedMetadata.version },
+    { name: expected.name, version: expected.version },
+    `${packageName} installation must retain the exact approved package identity`,
+  );
+
+  const entryPath = join(canonicalPackageRoot, expected.requiredEntry);
+  assertProjectLocalResolution(entryPath, packageName);
+  const entry = await lstat(entryPath);
+  assert.equal(entry.isFile(), true, `${packageName} required ${expected.entryKind} entry must be a file`);
+  assert.ok(entry.size > 0, `${packageName} required ${expected.entryKind} entry must not be empty`);
+  if (expected.entryKind === 'executable') {
+    assert.notEqual(entry.mode & 0o111, 0, `${packageName} required executable entry must be executable`);
+  }
 }
 
 async function runVersionCommand(command: string, args: readonly string[]) {
@@ -2796,7 +3024,7 @@ test('TASK-010 R3 TEST-XCLI-011 production-default preflight then one inert open
   globalThis.fetch = async () => { fetchCalls += 1; throw new Error('network forbidden'); };
   t.after(() => { globalThis.fetch = previousFetch; });
   const adapter = await loadPublicSeam('agentAdapter');
-  assert.deepEqual(Object.keys(adapter), ['createPiAgentAnalysisRuntime']);
+  assert.deepEqual(Object.keys(adapter), ['createPiAgentAnalysisRuntime', 'createPiDecisionAssistanceRuntime']);
   const createRuntime = requiredExport(adapter, 'createPiAgentAnalysisRuntime');
   const runtime = createRuntime({ provider: 'minimax-cn', model_id: 'MiniMax-M3' });
   assert.deepEqual(Object.keys(runtime), ['preflightModel', 'openSession']);
@@ -3005,30 +3233,179 @@ test('TASK-006 TEST-XCLI-001 [AC-XCLI-004-01, AC-XCLI-004-02, AC-XCLI-005-01, AC
   assert.deepEqual((await readdir(exampleRoot, { withFileTypes: true })).map((entry) => [entry.name, entry.isFile()]).sort(), [['member-orders-v1.csv', true]]);
 });
 
+test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only exact P4 or final mapped P5',async()=>{
+  assert.equal(assertApprovedConfigurationTuple(approvedP4RootManifest,approvedP4Tsconfig,approvedP4RepositoryConfigurationFiles),'C0');
+  assert.equal(assertApprovedConfigurationTuple(approvedP5RootManifest,approvedP5Tsconfig,approvedP5RepositoryConfigurationFiles),'P5');
+  for(const intermediate of [approvedC1aTsconfig,approvedC1Tsconfig,approvedC2Tsconfig])assert.throws(()=>assertApprovedConfigurationTuple(approvedP5RootManifest,intermediate,approvedP5RepositoryConfigurationFiles));
+  assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'CF'},approvedP5Tsconfig,approvedP5RepositoryConfigurationFiles));
+  const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'P5');
+});
+
 test('TEST-XCLI-021 [AC-XCLI-001-01, AC-XCLI-007-01, AC-XCLI-008-01, AC-XCLI-016-01] enforces the reproducible project-local native TypeScript dependency, configuration, and engine contract', async () => {
+  assert.throws(()=>assertApprovedConfigurationTuple(approvedP5RootManifest, approvedC2Tsconfig, approvedP5RepositoryConfigurationFiles));
+  for (const omitted of approvedC2Tsconfig.files.slice(43)) assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, { ...approvedC2Tsconfig, files: approvedC2Tsconfig.files.filter(path => path !== omitted) }, approvedP5RepositoryConfigurationFiles), `C2 cannot omit ${omitted}`);
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, { ...approvedC2Tsconfig, files: [...approvedC2Tsconfig.files.slice(0,43), ...approvedC2Tsconfig.files.slice(43).reverse()] }, approvedP5RepositoryConfigurationFiles));
+  for (const extra of ['adapters/storage-local/xanthil-desktop-schema.ts','adapters/agent-pi/decision-assistance.ts']) assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, { ...approvedC2Tsconfig, files: [...approvedC2Tsconfig.files, extra] }, approvedP5RepositoryConfigurationFiles));
+  assert.throws(()=>assertApprovedConfigurationTuple(approvedP5RootManifest, approvedC1Tsconfig, approvedP5RepositoryConfigurationFiles));
+  for (const omitted of approvedC1Tsconfig.files.slice(43)) assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, { ...approvedC1Tsconfig, files: approvedC1Tsconfig.files.filter(path => path !== omitted) }, approvedP5RepositoryConfigurationFiles), `C1 cannot omit ${omitted}`);
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, { ...approvedC1Tsconfig, files: [...approvedC1Tsconfig.files.slice(0, 43), ...approvedC1Tsconfig.files.slice(43).reverse()] }, approvedP5RepositoryConfigurationFiles), 'C1 cannot reorder its independently frozen appendix');
+  for (const extra of ['packages/product-core/xanthil-desktop-decision-case.ts', 'adapters/storage-local/xanthil-desktop-schema.ts', 'adapters/analytics-duckdb/xanthil-desktop-decision-case.ts']) assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, { ...approvedC1Tsconfig, files: [...approvedC1Tsconfig.files, extra] }, approvedP5RepositoryConfigurationFiles), 'C1 does not create absent placeholders or admit later Run');
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP4RootManifest, approvedC1Tsconfig, approvedP5RepositoryConfigurationFiles));
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, approvedC1Tsconfig, approvedP4RepositoryConfigurationFiles));
   // Negative-first oracle health: these isolated values must fail before real root artifacts are read.
-  assert.doesNotThrow(() => assertApprovedRootManifest(structuredClone(approvedRootManifest)));
-  assert.throws(() => assertApprovedRootManifest({ ...approvedRootManifest, dependencies: { ...approvedRootManifest.dependencies, unexpected: '1.0.0' } }));
-  assert.throws(() => assertApprovedRootManifest({ ...approvedRootManifest, dependencies: { ...approvedRootManifest.dependencies, '@earendil-works/pi-coding-agent': '^0.84.2' } }));
-  assert.throws(() => assertApprovedRootManifest({ ...approvedRootManifest, dependencies: { ...approvedRootManifest.dependencies, typebox: '1.3.8' } }));
-  assert.throws(() => assertApprovedRootManifest({ ...approvedRootManifest, packageManager: 'pnpm@10.0.0' }));
-  assert.throws(() => assertApprovedRootManifest({ ...approvedRootManifest, devDependencies: { ...approvedRootManifest.devDependencies, typescript: '5.0.0' } }));
-  assert.throws(() => assertApprovedRootManifest({ ...approvedRootManifest, scripts: { build: 'compiler' } }));
-  assert.throws(() => assertApprovedRootManifest({ ...approvedRootManifest, build: 'dist' }));
+  assert.doesNotThrow(() => assertApprovedConfigurationTuple(
+    structuredClone(approvedP4RootManifest),
+    structuredClone(approvedP4Tsconfig),
+    [...approvedP4RepositoryConfigurationFiles],
+  ));
+  assert.throws(() => assertApprovedConfigurationTuple(
+    structuredClone(approvedP5RootManifest),
+    structuredClone(approvedC1aTsconfig),
+    [...approvedP5RepositoryConfigurationFiles],
+  ));
+  assert.doesNotThrow(() => assertApprovedConfigurationTuple(
+    structuredClone(approvedP5RootManifest),
+    structuredClone(approvedP5Tsconfig),
+    [...approvedP5RepositoryConfigurationFiles],
+  ));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, dependencies: { ...approvedP4RootManifest.dependencies, unexpected: '1.0.0' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, dependencies: { ...approvedP4RootManifest.dependencies, '@earendil-works/pi-coding-agent': '^0.84.2' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, dependencies: { ...approvedP4RootManifest.dependencies, typebox: '1.3.8' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, packageManager: 'pnpm@10.0.0' }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, devDependencies: { ...approvedP4RootManifest.devDependencies, typescript: '5.0.0' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, scripts: { build: 'compiler' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, build: 'dist' }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, name: 'xanthil-desktop-next' }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, productName: 'Xanthil Next' }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, version: '0.1.1' }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, dependencies: { ...approvedP4RootManifest.dependencies, react: '19.3.1' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, devDependencies: { ...approvedP4RootManifest.devDependencies, electron: '44.4.4' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, devDependencies: { ...approvedP4RootManifest.devDependencies, vite: '8.3.1' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP4RootManifest, devDependencies: { ...approvedP4RootManifest.devDependencies, 'playwright-core': '1.63.1' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP5RootManifest, main: '.vite/build/other.js' }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP5RootManifest, main: '.vite/build/main.js' }), 'the historical ESM-interpreted CommonJS descriptor remains rejected');
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP5RootManifest, config: { forge: './other-forge.config.cjs' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP5RootManifest, scripts: { ...approvedP5RootManifest.scripts, 'desktop:start': 'electron-forge start' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP5RootManifest, scripts: { ...approvedP5RootManifest.scripts, 'desktop:package': 'electron-forge package' } }));
+  assert.throws(() => assertApprovedRootManifest({ ...approvedP5RootManifest, scripts: { ...approvedP5RootManifest.scripts, 'desktop:test': 'node --test tests/*.test.ts' } }));
+  const { main: omittedP5Main, ...partialP5Manifest } = approvedP5RootManifest;
+  assert.throws(() => assertApprovedRootManifest(partialP5Manifest));
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP4RootManifest, approvedP5Tsconfig, approvedP5RepositoryConfigurationFiles));
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, approvedC1aTsconfig, approvedP4RepositoryConfigurationFiles), 'C1a requires the frozen final P5 manifest/configuration inventory as well as its exact source appendix');
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP4RootManifest, approvedC1aTsconfig, approvedP5RepositoryConfigurationFiles), 'the C0 manifest cannot be mixed with the C1a appendix');
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP5RootManifest,
+    { ...approvedC1aTsconfig, files: [...approvedC1aTsconfig.files, 'packages/application/xanthil-desktop-decision-case.ts'] },
+    approvedP5RepositoryConfigurationFiles,
+  ), 'a future C1b-only source cannot be admitted to C1a');
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP5RootManifest,
+    { ...approvedC1aTsconfig, files: approvedC1aTsconfig.files.filter((file) => file !== 'apps/desktop/preload.ts') },
+    approvedP5RepositoryConfigurationFiles,
+  ), 'C1a rejects an omitted shell source');
+  const reorderedC1aFiles = [...approvedC1aTsconfig.files];
+  [reorderedC1aFiles[43], reorderedC1aFiles[44]] = [reorderedC1aFiles[44], reorderedC1aFiles[43]];
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP5RootManifest,
+    { ...approvedC1aTsconfig, files: reorderedC1aFiles },
+    approvedP5RepositoryConfigurationFiles,
+  ), 'C1a rejects a reordered source appendix');
+  assert.throws(() => assertApprovedConfigurationTuple(
+    { ...approvedP5RootManifest, configuration_selector: 'C1a' },
+    approvedC1aTsconfig,
+    approvedP5RepositoryConfigurationFiles,
+  ), 'a runtime/configuration selector is not an approved tuple field');
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, approvedP4Tsconfig, approvedP4RepositoryConfigurationFiles));
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP4RootManifest,
+    { ...approvedP4Tsconfig, compilerOptions: { ...approvedP4Tsconfig.compilerOptions, unexpected: true } },
+    approvedP4RepositoryConfigurationFiles,
+  ));
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP5RootManifest,
+    { ...approvedP5Tsconfig, compilerOptions: { ...approvedP5Tsconfig.compilerOptions, jsx: 'preserve' } },
+    approvedP5RepositoryConfigurationFiles,
+  ));
+  const { jsx: omittedP5Jsx, ...p5CompilerOptionsWithoutJsx } = approvedP5Tsconfig.compilerOptions;
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP5RootManifest,
+    { ...approvedP5Tsconfig, compilerOptions: p5CompilerOptionsWithoutJsx },
+    approvedP5RepositoryConfigurationFiles,
+  ));
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP5RootManifest,
+    { ...approvedP5Tsconfig, files: approvedP5Tsconfig.files.slice(0, -1) },
+    approvedP5RepositoryConfigurationFiles,
+  ));
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP5RootManifest,
+    { ...approvedP5Tsconfig, files: [...approvedP5Tsconfig.files, 'apps/desktop/extra.ts'] },
+    approvedP5RepositoryConfigurationFiles,
+  ));
+  const reorderedP5Files = [...approvedP5Tsconfig.files];
+  [reorderedP5Files[43], reorderedP5Files[44]] = [reorderedP5Files[44], reorderedP5Files[43]];
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP5RootManifest,
+    { ...approvedP5Tsconfig, files: reorderedP5Files },
+    approvedP5RepositoryConfigurationFiles,
+  ));
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP5RootManifest,
+    approvedP5Tsconfig,
+    approvedP5RepositoryConfigurationFiles.filter((name) => name !== 'forge.config.cjs'),
+  ));
+  assert.throws(() => assertApprovedConfigurationTuple(
+    approvedP5RootManifest,
+    approvedP5Tsconfig,
+    [...approvedP5RepositoryConfigurationFiles, 'webpack.config.mjs'],
+  ));
 
   const lockFixture = {
     lockfileVersion: 3,
     packages: {
-      '': { dependencies: structuredClone(approvedRootManifest.dependencies), devDependencies: structuredClone(approvedRootManifest.devDependencies) },
-      'node_modules/@earendil-works/pi-coding-agent': { version: '0.84.2' },
-      'node_modules/typebox': { version: '1.3.7' },
-      'node_modules/@types/node': { version: '22.19.19' },
-      'node_modules/typescript': { version: '5.9.3' },
+      '': {
+        name: 'xanthil-desktop',
+        version: '0.1.0',
+        dependencies: structuredClone(approvedP4RootManifest.dependencies),
+        devDependencies: structuredClone(approvedP4RootManifest.devDependencies),
+        engines: structuredClone(approvedP4RootManifest.engines),
+      },
+      ...Object.fromEntries(Object.entries(approvedDirectPackageHealth).map(([packageName, expected]) => [
+        `node_modules/${packageName}`,
+        { version: expected.version, resolved: expected.resolved, integrity: expected.integrity },
+      ])),
     },
   };
-  assert.doesNotThrow(() => assertApprovedLock(lockFixture, approvedRootManifest));
-  assert.throws(() => assertApprovedLock({ ...lockFixture, packages: { ...lockFixture.packages, '': { dependencies: { typebox: '1.3.7' } } } }, approvedRootManifest));
-  assert.throws(() => assertApprovedLock({ ...lockFixture, packages: { ...lockFixture.packages, 'node_modules/typebox': { version: '1.3.8' } } }, approvedRootManifest));
+  assert.doesNotThrow(() => assertApprovedLock(lockFixture));
+  assert.throws(() => assertApprovedLock({ ...lockFixture, packages: { ...lockFixture.packages, '': { ...lockFixture.packages[''], dependencies: { typebox: '1.3.7' } } } }));
+  assert.throws(() => assertApprovedLock({ ...lockFixture, packages: { ...lockFixture.packages, 'node_modules/typebox': { version: '1.3.8' } } }));
+  assert.throws(() => assertApprovedLock({ ...lockFixture, packages: { ...lockFixture.packages, '': { ...lockFixture.packages[''], name: 'xanthil-desktop-next' } } }));
+  assert.throws(() => assertApprovedLock({ ...lockFixture, packages: { ...lockFixture.packages, '': { ...lockFixture.packages[''], version: '0.1.1' } } }));
+  assert.throws(() => assertApprovedLock({ ...lockFixture, packages: { ...lockFixture.packages, '': { ...lockFixture.packages[''], engines: { node: '>=22.20.0' } } } }));
+  for (const [packageName, expected] of Object.entries(approvedDirectPackageHealth)) {
+    assert.throws(() => assertApprovedLock({
+      ...lockFixture,
+      packages: {
+        ...lockFixture.packages,
+        [`node_modules/${packageName}`]: { version: `${expected.version}-drift`, resolved: expected.resolved, integrity: expected.integrity },
+      },
+    }));
+    assert.throws(() => assertApprovedLock({
+      ...lockFixture,
+      packages: {
+        ...lockFixture.packages,
+        [`node_modules/${packageName}`]: { version: expected.version, resolved: `${expected.resolved}.drift`, integrity: expected.integrity },
+      },
+    }));
+    assert.throws(() => assertApprovedLock({
+      ...lockFixture,
+      packages: {
+        ...lockFixture.packages,
+        [`node_modules/${packageName}`]: { version: expected.version, resolved: expected.resolved, integrity: `${expected.integrity}drift` },
+      },
+    }));
+  }
   assert.throws(() => assertProjectLocalResolution('/usr/local/lib/node_modules/@earendil-works/pi-coding-agent/index.js', '@earendil-works/pi-coding-agent'));
   assert.throws(() => atLeastVersion('v22.18.9', 'Node', '22.19.0'));
   assert.throws(() => exactVersion('11.12.0', 'npm', '11.12.1'));
@@ -3036,18 +3413,37 @@ test('TEST-XCLI-021 [AC-XCLI-001-01, AC-XCLI-007-01, AC-XCLI-008-01, AC-XCLI-016
   assert.throws(() => atLeastVersion('Python 3.8.18', 'Python', '3.9.0'));
 
   const manifest = JSON.parse(await readFile(join(repositoryRoot, 'package.json'), 'utf8'));
-  assertApprovedRootManifest(manifest);
   const lock = JSON.parse(await readFile(join(repositoryRoot, 'package-lock.json'), 'utf8'));
-  assertApprovedLock(lock, manifest);
+  assertApprovedLock(lock);
 
-  for (const [packageName, expectedVersion] of Object.entries({ ...approvedRootManifest.dependencies, ...approvedRootManifest.devDependencies })) {
-    const resolutionTarget = packageName === '@types/node' ? `${packageName}/package.json` : packageName;
-    assertProjectLocalResolution(fileURLToPath(import.meta.resolve(resolutionTarget)), packageName);
-    const packageJsonPath = join(repositoryRoot, 'node_modules', packageName, 'package.json');
-    const installedMetadata = JSON.parse(await readFile(packageJsonPath, 'utf8'));
-    assert.equal(installedMetadata.name, packageName);
-    assert.equal(installedMetadata.version, expectedVersion);
+  for (const [packageName, expected] of Object.entries(approvedDirectPackageHealth)) {
+    await assertInstalledDirectPackage(packageName, expected);
   }
+  await assert.rejects(
+    () => assertInstalledDirectPackage(
+      '@electron-forge/cli',
+      { ...approvedDirectPackageHealth['@electron-forge/cli'], requiredEntry: 'dist/missing-electron-forge-entry.js' },
+    ),
+    /ENOENT/,
+    'matching package metadata alone must not prove the required entry is present',
+  );
+  await assert.rejects(
+    () => assertInstalledDirectPackage(
+      'typebox',
+      { ...approvedDirectPackageHealth.typebox, entryKind: 'executable' },
+    ),
+    /executable/,
+    'a non-executable module must not satisfy an executable-entry requirement',
+  );
+  await assert.rejects(
+    () => assertInstalledDirectPackage(
+      '@earendil-works/pi-coding-agent',
+      approvedDirectPackageHealth['@earendil-works/pi-coding-agent'],
+      '/usr/local/lib/node_modules/@earendil-works/pi-coding-agent',
+    ),
+    /project-local/,
+    'a global package location must not satisfy the project-local installation requirement',
+  );
 
   atLeastVersion(await runVersionCommand(process.execPath, ['--version']), 'Node', '22.19.0');
   exactVersion(await runVersionCommand('npm', ['--version']), 'npm', '11.12.1');
@@ -3055,14 +3451,12 @@ test('TEST-XCLI-021 [AC-XCLI-001-01, AC-XCLI-007-01, AC-XCLI-008-01, AC-XCLI-016
   atLeastVersion(await runVersionCommand('python3', ['--version']), 'Python', '3.9.0');
 
   const tsconfig = JSON.parse(await readFile(join(repositoryRoot, 'tsconfig.json'), 'utf8'));
-  assert.deepEqual(tsconfig, approvedTsconfig, 'the root TypeScript configuration must be the approved closed object');
-
   const configurationFiles = await findRepositoryConfigurationFiles(repositoryRoot);
-  assert.deepEqual(
+  assert.doesNotThrow(() => assertApprovedConfigurationTuple(
+    manifest,
+    tsconfig,
     configurationFiles.map((path) => relative(repositoryRoot, path)).sort(),
-    ['package-lock.json', 'package.json', 'tsconfig.json'],
-    'the slice must have no alternative package manager, compiler/build, Python dependency, or ambient package declaration',
-  );
+  ), 'the adopted root must remain one of the complete approved P4 or P5 configuration tuples');
 });
 
 test('TEST-XCLI-022 [AC-XCLI-016-01, AC-XCLI-016-04] keeps every closed-graph target in its native .ts path without compatibility or compiler/build artifacts', async () => {

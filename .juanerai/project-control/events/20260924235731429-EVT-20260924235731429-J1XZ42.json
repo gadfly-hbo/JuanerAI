@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924235731429-J1XZ42",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-24T23:57:31.429Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "B2 C1a Test类型修正静态范围PASS，Worker限域修订待派发",
+  "status_after": "active",
+  "evidence_refs": []
+}

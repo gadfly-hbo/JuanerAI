@@ -1,63 +1,47 @@
 # Change Workflow
 
-## Standard Path
+Use `docs/governance/product-change-execution-policy.md` for authority, adoption,
+local correction, stop-loss and delivery. This is its execution summary, not a
+second policy or an instruction to resume an existing stopped task.
 
-1. Request: capture raw intent; write no product code.
-2. Explore: read relevant product, spec, architecture, source, tests, and contracts.
-3. Proposal: state why, goal, scope, non-goals, risks, and dependencies.
-4. UI Contract: build or revise a change-scoped clickable contract in the accepted product UI mode. It exposes the complete user workflow, visible states, failures, cancellation, retry/recovery, applicable data/provider disclosures, and acceptance endpoints without requiring source-code inspection.
-5. User UI Gate: bind the exact UI Contract version/path and record the user's `PASS`. `NEEDS_REVISION` returns to Step 4.
-6. Execution Package Freeze: MacBook creates the complete bounded package, commits and pushes its work branch, reads back the exact remote branch/commit/tree/package hash, and stops writing that branch.
-7. New Mac mini Session Dispatch: after transfer authorization, MacBook creates one new Codex task on the saved Mac mini JuanerAI project and sends the frozen package as the initial message. Record the new task/thread, host, project, repository, and delivery status. A pending task remains in this step; failed or ambiguous delivery becomes `BLOCKED_SESSION_DISPATCH`.
-8. Specification: the new Mac mini execution task dispatches `juaner_spec` and defines atomic Requirements and observable Acceptance Criteria from the approved UI Contract and product decisions.
-9. Design: define boundaries, contracts, failures, security, compatibility, and rollback. The Mac mini coordinator resolves eligible technical choices under `docs/governance/product-change-execution-policy.md#in-scope-technical-decision-authority`; decisions outside that boundary return to MacBook.
-10. Tasks: map every Task to Requirements, tests, allowed paths, and the approved UI Contract.
-11. Spec Gate: Controller-delegated coordinator verdict within the frozen package is `PASS`.
-12. Test Design: derive test cases from Acceptance Criteria and approved UI states.
-13. RED: prove failures are caused by missing target behavior.
-14. Implementation: make the minimum approved production change.
-15. GREEN and Refactor: pass target tests; refactor only after GREEN.
-16. Regression and Quality: run the approved risk-based command set.
-17. Test Asset Retirement: for Changes that touched test assets, reconcile their lifecycle ledger and pass `docs/governance/test-asset-retirement.md`.
-18. Verify: independently check spec, UI Contract conformance, scope, architecture, traceability, and evidence.
-19. Accept: MacBook Controller or user approves according to risk.
-20. Archive: merge the delta into openspec/specs and preserve Change history.
+## Product Preparation
 
-## Product UI-First Gate
+Product Manager clarifies intent and the smallest useful result, prepares the
+product proposal and applicable clickable UI Contract, completes the existing
+development-readiness review for new/material product plans, and obtains user
+product/UI approval. Reuse valid existing inputs; do not repeat these steps for
+internal engineering changes. Freeze product semantics, acceptance and prohibitions,
+not ordinary implementation mechanics.
 
-Every formal product Change completes Steps 4 and 5 before OpenSpec creation or
-`juaner_spec` dispatch. The UI Contract must reuse the accepted product UI mode
-and make the Change directly evaluable by a non-technical user. A generic
-platform, backend, runtime, adapter, or infrastructure Change may not bypass
-this Gate; if its product effect cannot be represented in the UI Contract, the
-Proposal is not ready. A material post-PASS change to the workflow or visible
-acceptance surface invalidates the prior verdict and returns to Step 4.
+## Engineering Work
 
-Documentation-only governance work that changes no product behavior is not a
-formal product Change and stays on the reduced R0 path below.
+After Mini verifies real intake and authorizes the result-sized work package:
 
-## Dedicated Mac mini Session Gate
+1. One engineering agent states the minimum behavior spec and necessary design:
+   input/output, success/failure, forbidden effects, acceptance reference and
+   material contracts. Resolve load-bearing ambiguity before implementing it.
+2. For that behavior, write and run a test that fails because the behavior is
+   absent; implement the smallest GREEN change; refactor only while GREEN.
+   Repeat this small vertical loop, not a whole-system test-first stage.
+3. Correct code, fixtures and private design locally inside the authorized roots.
+   Check important boundary changes before dependent actions. Run the thinnest
+   real path early and the applicable type/build, contract and regression checks.
+4. Freeze the complete candidate and evidence. Independent Validator derives
+   expectations from acceptance first, then verifies real paths, test integrity,
+   boundaries, coverage retirement and evidence in one review.
+5. Repair material findings within the same work package and revalidate the new
+   candidate. Mini records engineering acceptance without repeating full review.
+6. Complete required user Product Acceptance and authorized Git delivery/archive
+   in the task's agreed order. Stop at the delivered result.
 
-Step 7 always creates a new execution task for a newly authorized batch. Bind
-it directly to the saved Mac mini JuanerAI project checkout and the repository
-named by the package unless the user or package explicitly requires a managed
-worktree; do not infer a destination from the most recent task, foreground
-task, or ambient UI state. Put the complete transfer instruction in the new
-task's initial message so creation and transfer are one operation. Use an
-existing task only when the user names that exact task.
+These are work activities, not new approvals. No universal Spec Gate, TDD_READY
+dispatch approval, separate retirement Gate or routine Spec/Test agent handoff.
+Optional specialists answer a concrete question without becoming a pipeline.
 
-The dispatch receipt must prove the new task identity, Mac mini host, saved
-project, expected repository, frozen branch/commit/tree, package path/hash, and
-active/ready status. Session creation authority does not authorize host
-operations, dependency installation, provider calls, repository writes, or a
-production role before the package's first local Gate. If automatic creation or
-delivery is unavailable, preserve the frozen branch and package and request the
-single manual create/open-and-forward fallback; never silently route to another
-task.
+## Exceptions by Work Type
 
-This Gate is prospective. A batch already delivered and active when the rule is
-adopted remains in its current task; do not create a duplicate task for it.
-
-## Lightweight Paths
-
-Documentation-only work may use a reduced R0 flow with scope review and evidence. A pure refactor requires a verified pre-change GREEN baseline. An emergency fix requires an immediate regression test and mandatory later specification backfill.
+Behavior additions and fixes use causal RED before implementation. Pure
+refactors use pre/post GREEN and relevant equivalence checks. Documentation-only
+work uses scope, consistency and evidence review; no fake RED or product UI work.
+Risk-sensitive checks run before affected dangerous actions, not only at final
+review. Scope/permission/resource limits and progress-based stop-loss still apply.

@@ -11,7 +11,8 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "noUncheckedSideEffectImports": true,
-    "types": ["node"]
+    "types": ["node"],
+    "jsx": "react-jsx"
   },
   "files": [
     "packages/product-core/local-analysis.ts",
@@ -56,6 +57,31 @@
     "tests/integration/model-pack-contract-enabler/contracts-inactive.integration.test.ts",
     "tests/fixtures/model-pack-contract-enabler/model-pack-fixtures.ts",
     "tests/fixtures/model-pack-contract-enabler/model-pack-package-driver.ts",
-    "tests/fixtures/model-pack-contract-enabler/analytical-model-runtime-driver.ts"
+    "tests/fixtures/model-pack-contract-enabler/analytical-model-runtime-driver.ts",
+    "packages/product-core/xanthil-desktop-decision-case.ts",
+    "packages/application/xanthil-desktop-decision-case.ts",
+    "packages/contracts/xanthil-desktop-ipc.ts",
+    "packages/ports/xanthil-desktop-decision-case.ts",
+    "adapters/storage-local/xanthil-desktop-decision-case.ts",
+    "adapters/analytics-duckdb/process.ts",
+    "adapters/analytics-duckdb/xanthil-desktop-decision-case.ts",
+    "profiles/personal/xanthil-desktop.ts",
+    "apps/desktop/main.ts",
+    "apps/desktop/preload.ts",
+    "apps/desktop/renderer.tsx",
+    "tests/fixtures/xanthil-desktop/coverage-map.ts",
+    "tests/fixtures/xanthil-desktop/desktop-contract-drivers.ts",
+    "tests/fixtures/xanthil-desktop/desktop-e2e-harness.ts",
+    "tests/fixtures/xanthil-desktop/desktop-fixtures.ts",
+    "tests/unit/xanthil-desktop/xanthil-desktop.unit.test.ts",
+    "tests/unit/xanthil-desktop/coverage-map.test.ts",
+    "tests/contract/xanthil-desktop/xanthil-desktop-store.contract.test.ts",
+    "tests/contract/xanthil-desktop/xanthil-desktop-analysis.contract.test.ts",
+    "tests/contract/xanthil-desktop/xanthil-desktop-assistance.contract.test.ts",
+    "tests/contract/xanthil-desktop/xanthil-desktop-ipc.contract.test.ts",
+    "tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts",
+    "tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts",
+    "tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts",
+    "tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts"
   ]
 }

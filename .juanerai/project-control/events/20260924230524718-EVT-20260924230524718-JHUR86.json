@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924230524718-JHUR86",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-24T23:05:24.718Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-engineering-controller"
+  },
+  "summary": "User authorized one directed B2 C1a runner fixture correction and one verification",
+  "status_after": "active",
+  "evidence_refs": []
+}

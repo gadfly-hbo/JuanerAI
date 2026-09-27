@@ -20,13 +20,16 @@ Choose the mode from the user's invocation:
   task is clear; ask only when the task itself is ambiguous.
 - Run `tools/harness/git/start-work <slug>` and verify the resulting branch is
   `work/mac-mini/<slug>` with a clean worktree.
-- Report the branch and invite the user to state the product task. The new
-  branch does not waive OpenSpec, TDD, role, or approval Gates.
+- Report the branch and next permitted action for the stated task. A new branch
+  does not supply approved product/UI input, confirmed intake, causal RED/GREEN,
+  independent validation, required acceptance or missing safety/resource/Git
+  authority; follow the current execution policy, not retired role Gates.
 
 ## 继续
 
-- Require or identify one existing `work/mac-mini/*` branch. Do not take over a
-  branch currently owned by the MacBook without an explicit handoff.
+- Identify the existing work branch owned by Mini, including an explicitly
+  handed-over branch with another device prefix. Preserve its identity; do not
+  take over MacBook-owned work without explicit handoff.
 - Fetch with pruning. Switch to the branch and use `git pull --ff-only` only
   when it already has an upstream. Preserve local-only commits and changes.
 - Report current status, latest commit, upstream, and the next recorded task;
@@ -34,15 +37,18 @@ Choose the mode from the user's invocation:
 
 ## 交付
 
-- Require a `work/mac-mini/*` branch and completed applicable project Gates.
+- Require a work branch owned by Mini and completed applicable acceptance and verification.
   Stop and name missing evidence instead of treating a push as acceptance.
 - Read `.agents/skills/git-commit-push/SKILL.md` and follow it to validate,
   stage explicit paths, commit, and push the work branch.
 - Verify `gh auth status`. If GitHub CLI is unavailable or unauthenticated,
   stop with the one-time setup command; do not install or expose a token.
 - Create or update one pull request targeting `main`, using the repository PR
-  template and current validation evidence. Report its URL and leave it open
-  for MacBook review; delivery never merges it.
+  template and current validation evidence. Report its URL. Delivery alone does
+  not grant merge permission; leave it open unless the user has separately
+  granted the relevant integration authority. Mini organizes independent review
+  and authorized integration under the sole policy; MacBook technical sign-off
+  is not a prerequisite.
 
 With no mode, inspect read-only state and recommend exactly one of `开始`,
 `继续`, or `交付`. Mutate nothing until the user selects or clearly states a

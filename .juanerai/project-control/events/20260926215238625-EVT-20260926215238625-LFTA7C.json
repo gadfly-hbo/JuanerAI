@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260926215238625-LFTA7C",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-26T21:52:38.625Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "Independent U2 review found five in-scope material gaps; continuous engineering correction proceeds without renewing retired role-count gates.",
+  "status_after": "active",
+  "evidence_refs": []
+}

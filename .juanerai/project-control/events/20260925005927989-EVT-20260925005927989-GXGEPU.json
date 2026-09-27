@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260925005927989-GXGEPU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-25T00:59:27.989Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "One bounded Renderer output-path Worker review revision authorized; package validation remains unused.",
+  "status_after": "active",
+  "evidence_refs": []
+}

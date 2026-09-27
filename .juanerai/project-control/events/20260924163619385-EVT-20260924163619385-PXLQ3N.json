@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924163619385-PXLQ3N",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-24T16:36:19.385Z",
+  "actor": {
+    "role": "controller",
+    "session": "mac-mini-engineering-controller"
+  },
+  "summary": "C1a tuple首测因Controller错误选用B2专用捕获器而预启动INVALID；在既有调用恢复权限内处理。",
+  "status_after": "active",
+  "evidence_refs": []
+}

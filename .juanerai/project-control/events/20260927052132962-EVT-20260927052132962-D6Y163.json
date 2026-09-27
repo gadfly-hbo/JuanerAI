@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927052132962-D6Y163",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T05:21:32.962Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "U4作者结果与最终CF完成，保留手工/回滚与历史证据限制，进入候选封存而非验收PASS。",
+  "status_after": "active",
+  "evidence_refs": []
+}

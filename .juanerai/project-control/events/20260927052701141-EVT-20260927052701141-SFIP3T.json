@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927052701141-SFIP3T",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T05:27:01.141Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "发现CF008覆盖21张CF006历史截图；有界只读核定后停止，用户风险处置待决，不追认PASS。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

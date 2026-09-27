@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924171249625-CA6W4D",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-24T17:12:49.625Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-engineering-controller"
+  },
+  "summary": "B2 first package blocked before execution by omitted approved build prerequisites",
+  "status_after": "active",
+  "evidence_refs": []
+}

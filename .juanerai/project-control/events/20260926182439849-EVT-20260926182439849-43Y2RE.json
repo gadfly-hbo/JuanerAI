@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260926182439849-43Y2RE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-26T18:24:39.849Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "U1 independent finding U1-F1; ordinary in-scope continuous correction, no quota reset",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924232247848-M34AOY",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-09-24T23:22:47.848Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-engineering-controller"
+  },
+  "summary": "Typecheck outer launcher mismatch caught before execution; invocation restoration pending",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927070903062-ENJOWV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T07:09:03.062Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "独立F1/F2关闭，产品源码包保持冻结；停在真实用户决定/验收边界，未Git或归档。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

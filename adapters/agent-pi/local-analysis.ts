@@ -1,7 +1,10 @@
 import * as Type from 'typebox';
+import { createHash } from 'node:crypto';
 
 import type { AnalysisProposal, Finding, PlainRecord } from '../../packages/product-core/local-analysis.ts';
 import type { AgentAnalysisRuntime, AgentAnalysisSession, ExecutionTool, ModelIdentity, RuntimeReadiness } from '../../packages/ports/local-analysis.ts';
+import { defineDecisionAssistanceRuntime, type DecisionAssistanceRuntime, type RuntimeAssistanceDraftContent } from '../../packages/ports/local-analysis.ts';
+import { canonicalDesktopJson, validateDesktopAssistanceDraft, validateDesktopAssistancePayload } from '../../packages/product-core/xanthil-desktop-decision-case.ts';
 
 type AdapterError = Error & { code: string };
 type FactoryConfig = { provider: string; model_id: string };
@@ -612,7 +615,7 @@ function sdkModel(value: unknown): SdkModel {
   return value;
 }
 
-async function createProductionFacade(request: FacadeRequest, readiness: ProductionReadiness): Promise<SessionFacade> {
+async function createProductionFacade(request: FacadeRequest, readiness: ProductionReadiness, toolNames:readonly string[]=TOOL_NAMES): Promise<SessionFacade> {
   let listener: FacadeListener | undefined;
   let disposed = false;
   const { runtime, model } = readiness;
@@ -621,7 +624,7 @@ async function createProductionFacade(request: FacadeRequest, readiness: Product
   const inertLoader = createInertResourceLoader(sdk, settings, request.system_prompt);
   const created = await sdk.createAgentSession({
     modelRuntime: runtime, model, sessionManager: sdk.SessionManager.inMemory('/'), settingsManager: settings,
-    resourceLoader: inertLoader, noTools: 'all', customTools: request.custom_tools, tools: TOOL_NAMES,
+    resourceLoader: inertLoader, noTools: 'all', customTools: request.custom_tools, tools: toolNames,
   });
   const session = productionSession(sessionCandidate(created));
   const realized = { session, unsubscribe: session.subscribe?.((event: unknown) => {
@@ -687,6 +690,74 @@ function isProductionSession(value: unknown): value is ProductionSession {
 
 function isProductionReadiness(value: Readiness): value is ProductionReadiness {
   return 'sdk' in value;
+}
+
+/** Optional one-turn Desktop Assistance. No tools, source reader or persistent Pi session. */
+export function createPiDecisionAssistanceRuntime(config:unknown,injection?:unknown):DecisionAssistanceRuntime{
+  if(!exactObject(config,['provider','model_id'])||!nonEmptyString(config.provider)||!nonEmptyString(config.model_id))throw sanitized('VALIDATION_FAILED');
+  const selected={provider:config.provider,model_id:config.model_id},factory=validateInjection(injection);
+  let readiness:ProductionReadiness|undefined,ready=false,active:AbortController|undefined;
+  const same=(input:PlainRecord)=>input.requested_provider===selected.provider&&input.requested_model===selected.model_id;
+  return defineDecisionAssistanceRuntime({
+    async preflightSelection(input:Parameters<DecisionAssistanceRuntime['preflightSelection']>[0]){
+      if(!exactObject(input,['requested_provider','requested_model'])||!same(input))throw sanitized('VALIDATION_FAILED');
+      ready=false;
+      try{if(!factory)readiness=await createProductionReadiness({requested_model:selected});ready=true;}catch{/* No Provider call or fallback on unavailable local selection. */}
+      return Object.freeze({runtime_id:RUNTIME_ID,runtime_version:REQUIRED_RUNTIME_VERSION,adapter_id:ADAPTER_ID,adapter_version:ADAPTER_VERSION,requested_provider:selected.provider,requested_model:selected.model_id,ready});
+    },
+    async executeAssistance(input:Parameters<DecisionAssistanceRuntime['executeAssistance']>[0]){
+      if(!exactObject(input,['action_kind','payload_bytes','payload_sha256','requested_provider','requested_model','cancellation_signal','deadline_seconds'])||!same(input)||!['organize_question','explain_evidence','draft_candidates'].includes(input.action_kind)||!(input.payload_bytes instanceof Uint8Array)||!sha256Hex(input.payload_sha256)||createHash('sha256').update(input.payload_bytes).digest('hex')!==input.payload_sha256||!(input.cancellation_signal instanceof AbortSignal)||!Number.isInteger(input.deadline_seconds)||input.deadline_seconds<0||input.deadline_seconds>300)throw sanitized('VALIDATION_FAILED');
+      let text:string,payload:PlainRecord;
+      try{text=new TextDecoder('utf-8',{fatal:true}).decode(input.payload_bytes);payload=closedTerminalJson(text);if(canonicalDesktopJson(payload)!==text||payload.action_kind!==input.action_kind||payload.schema_version!=='1.0')throw protocol();validateDesktopAssistancePayload(payload);}catch{throw sanitized('VALIDATION_FAILED');}
+      if(!ready)throw sanitized('PROVIDER_UNAVAILABLE');if(active)throw sanitized('VALIDATION_FAILED');if(input.cancellation_signal.aborted)throw sanitized('CANCELLED');if(input.deadline_seconds===0)throw sanitized('DEADLINE_EXCEEDED');
+      const controller=new AbortController();active=controller;let deadline=false,facade:SessionFacade|undefined,unsubscribe:(()=>unknown)|undefined,closed=false,stage=0,terminal:PlainRecord|undefined,eventFailure=false;
+      const abort=()=>controller.abort();input.cancellation_signal.addEventListener('abort',abort,{once:true});
+      const timer=setTimeout(()=>{deadline=true;controller.abort();},Math.min(30,input.deadline_seconds)*1000);
+      const cancelled=new Promise<never>((_resolve,reject)=>controller.signal.addEventListener('abort',()=>reject(sanitized(deadline?'DEADLINE_EXCEEDED':'CANCELLED')),{once:true}));
+      const receive=(raw:unknown)=>{if(closed||controller.signal.aborted)return;try{
+        const event=projectEvent(raw);if(!event||event.type==='message_update')return;
+        if(event.type==='message_end'&&stage===0){const message=event.message as PlainRecord;if(message.stopReason!=='stop')throw protocol();terminal=closedTerminalJson((message.content as PlainRecord[]).map(x=>String(x.text)).join(''));stage=1;}
+        else if(event.type==='agent_end'&&stage===1&&event.willRetry===false)stage=2;
+        else if(event.type==='agent_settled'&&stage===2)stage=3;
+        else throw protocol();
+      }catch{eventFailure=true;}};
+      try{
+        const request=deepFreeze({requested_model:selected,system_prompt:'Return exactly one JSON object with draft_kind and draft_content for the disclosed action. organize_question: question_fields with question_text,hypothesis_display_title,business_context,alternative_explanations. explain_evidence: evidence_explanation with evidence_explanation_text. draft_candidates: candidates with candidates array; each has title,evidence_basis,risk_or_refutation,applicability_conditions,future_validation_metric. No tools, identities, preference, action execution, additional data or product authority. All output is an untrusted editable draft.',custom_tools:[],retry_limit:0,tool_timeout_seconds:30});
+        const opening=Promise.resolve(factory?factory(request):readiness?createProductionFacade(request,readiness,[]):Promise.reject(sanitized('PROVIDER_UNAVAILABLE'))).then(value=>{
+          const opened=validateFacade(value);
+          if(closed){
+            // The caller already received cancellation. A late SDK session must
+            // never prompt, leak its cleanup error, or revive that terminal result.
+            void (async()=>{let timeout:ReturnType<typeof setTimeout>|undefined;try{
+              try{await Promise.race([(async()=>{await opened.abort();await opened.waitForIdle();})(),new Promise<void>(resolve=>{timeout=setTimeout(resolve,30000);})]);}
+              finally{opened.dispose();}
+            }catch{/* Preserve the already-settled, sanitized cancellation. */}finally{if(timeout)clearTimeout(timeout);}})();
+            throw sanitized('CANCELLED');
+          }
+          facade=opened;return opened;
+        });
+        await Promise.race([opening,cancelled]);if(!facade)throw sanitized('PROVIDER_UNAVAILABLE');
+        const subscription=facade.subscribe(receive);if(typeof subscription!=='function')throw protocol();unsubscribe=subscription as()=>unknown;
+        if(!frozenActiveStatus(facade.setActiveTools(Object.freeze([])),[]))throw protocol();
+        const status=await Promise.race([Promise.resolve(facade.prompt(text,EMPTY_OPTIONS)),cancelled]);
+        if(controller.signal.aborted)throw sanitized(deadline?'DEADLINE_EXCEEDED':'CANCELLED');if(!frozenStatus(status,'settled',true)||eventFailure||stage!==3||!terminal||!exactObject(terminal,['draft_kind','draft_content']))throw sanitized('VALIDATION_FAILED');
+        const expected=({organize_question:'question_fields',explain_evidence:'evidence_explanation',draft_candidates:'candidates'} as const)[input.action_kind];
+        if(terminal.draft_kind!==expected||!isPlainObject(terminal.draft_content))throw sanitized('VALIDATION_FAILED');
+        const content=terminal.draft_content;validateDesktopAssistanceDraft(expected,content,true);
+        const actual=facade.getActualModel();if(!closedFrozenModel(actual)||!actual.provider||!actual.model_id)throw sanitized('VALIDATION_FAILED');
+        return deepFreeze({actual_provider:actual.provider,actual_model:actual.model_id,draft_kind:expected,draft_content:content as RuntimeAssistanceDraftContent});
+      }catch(error){const code=errorCode(error);throw sanitized(['CANCELLED','DEADLINE_EXCEEDED','VALIDATION_FAILED'].includes(String(code))?String(code):code==='PROTOCOL_FAILURE'?'VALIDATION_FAILED':'PROVIDER_UNAVAILABLE');}
+      finally{
+        closed=true;clearTimeout(timer);input.cancellation_signal.removeEventListener('abort',abort);
+        try{
+          try{unsubscribe?.();}finally{
+            if(facade){let timeout:ReturnType<typeof setTimeout>|undefined;try{await Promise.race([(async()=>{if(stage!==3||eventFailure||controller.signal.aborted)await facade!.abort();await facade!.waitForIdle();})(),new Promise<void>(resolve=>{timeout=setTimeout(resolve,30000);})]);}finally{if(timeout)clearTimeout(timeout);facade.dispose();}}
+          }
+        }catch{throw sanitized('PROVIDER_UNAVAILABLE');}finally{active=undefined;}
+      }
+    },
+    async cancel(){active?.abort();return Object.freeze({cancelled:true as const});},
+  });
 }
 
 export function createPiAgentAnalysisRuntime(config: unknown, injection?: unknown): AgentAnalysisRuntime {

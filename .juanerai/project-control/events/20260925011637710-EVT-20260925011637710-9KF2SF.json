@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260925011637710-9KF2SF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-25T01:16:37.710Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "B2 package correction-2 INVALID_HEALTH; TLS disconnect; evidence retained; execution stopped",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

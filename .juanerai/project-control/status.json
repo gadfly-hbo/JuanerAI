@@ -6,23 +6,16 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_DESKTOP_B2_COMMAND_CONTEXT",
-    "label": "B2上下文传递及证据分级已授权；待Mini固定接收",
-    "ordinal": 6,
+    "id": "PRODUCT_ACCEPTED_AUTHORIZED_DELIVERY",
+    "label": "产品验收通过，授权交付中",
+    "ordinal": 8,
     "total": 8
   },
-  "health": "waiting_user",
-  "summary": "Mini已接收8078b9ab；B2内容第1/2轮返回TEST_CONFLICT，五份Test未修且验证未运行。Controller确认capture未传命令证据目录的合同缺口，匹配34源/34副本。用户批准单一显式上下文字段、精确历史证据限制处置及后续证据分级；不是产品PASS。",
-  "current_objective": "闭合冻结command.env→capture→Test确切证据目录，只有具名emitting命令增加一个字段；保留原capture及B1成果，用剩余第2/2轮完成上下文健康和F1–F4，不新增额度。",
-  "next_action": "用户转发B2 Command Context001固定补充到原纵切-1.0；Mini核对34现场后ff-only接收。正式Test在剩余2/2轮定向派生capture、冻结十一字段上下文及最小正反向健康控制、修复F1–F4，再按既有健康/有效RED/TDD_READY推进；普通浏览不强制完整API元数据，Gate/身份/写入证据仍完整保留。",
-  "blockers": [
-    {
-      "id": "B2_COMMAND_CONTEXT_INTAKE_PENDING",
-      "label": "B2确切证据目录尚未传给子进程；新补充待固定接收",
-      "detail": "B2内容1/2已用，0文件修订/0验证；剩余1轮未使用。用户批准上下文传递与限定新证据限制处置，不追认历史摘要PASS，不重置消耗。B2仍无RED/TDD_READY，当前停止。",
-      "owner": "MacBook发布／用户手动转发；原Mini正式Test及协调者"
-    }
-  ],
+  "health": "active",
+  "summary": "用户已通过产品验收，并授权精确五文件替代图节点检查；其余身份、范围、验证与集成条件保留。",
+  "current_objective": "完成原批准 Assistance 与最终工程验收",
+  "next_action": "完成独立五文件核验、fresh index 与指纹核对，保存验收成果后集成当前 main 并完成 OpenSpec 归档。",
+  "blockers": [],
   "milestones": [
     {
       "id": "handoff_intake",
@@ -86,13 +79,13 @@
     },
     {
       "id": "current_tdd",
-      "label": "B1受限GREEN保留；B2上下文合同冲突待修，内容1/2已用",
-      "status": "blocked"
+      "label": "B2 Component限域TDD_READY已通过；后续叶仍待Gate",
+      "status": "active"
     },
     {
       "id": "current_implementation",
-      "label": "B1 Bridge/Entry/Safety及IPC GREEN；B2产品实现及首包/GUI未进入",
-      "status": "blocked"
+      "label": "Component Worker已有未验证Renderer；准备一次GREEN",
+      "status": "active"
     },
     {
       "id": "current_acceptance",
@@ -103,10 +96,10 @@
   "agents": [
     {
       "id": "controller",
-      "label": "Codex Controller",
-      "model": "project default",
+      "label": "Mac mini Engineering Controller",
+      "model": "gpt-6-astra / high (current interface)",
       "status": "controller",
-      "activation": "只读匹配Mini34源/34副本，承认上一补充漏审传递链路；发布定向执行合同及证据分级补充，待用户转发；不在MacBook派生产角色。"
+      "activation": "本任务工程总控；用户已采用v0.8并解除迁移暂停；普通工程纠正本地闭环，真实产品/权限/安全/资源问题直接问用户。"
     },
     {
       "id": "d05_reviewer",
@@ -139,30 +132,30 @@
     {
       "id": "juaner_spec",
       "label": "Spec Agent",
-      "model": "requested gpt-5.6-sol / xhigh; runtime configuration not independently echoed",
+      "model": "gpt-6-astra / high (current interface)",
       "status": "complete",
-      "activation": "Mini已完成Consistency定向1/1、整包审查及受影响Spec Gate PASS；审查返修0/1未用，本次不重开。"
+      "activation": "当前可选专项支持，未派发；历史角色结果、失败及消耗见保留证据。"
     },
     {
       "id": "juaner_test",
       "label": "Test Agent",
-      "model": "gpt-5.6-terra / R2 xhigh",
-      "status": "waiting",
-      "activation": "B2第1/2轮TEST_CONFLICT，未修改五份Test/未执行验证。固定接收后用仅剩第2/2轮闭合显式上下文、最小正反向健康控制和F1–F4；不重置历史。"
+      "model": "gpt-6-astra / high (current interface)",
+      "status": "complete",
+      "activation": "当前可选专项支持，未派发；历史角色结果、失败及消耗见保留证据。"
     },
     {
       "id": "juaner_worker",
-      "label": "Implementation Agent",
-      "model": "gpt-5.6-terra / requested R2 xhigh; runtime tuple not independently echoed",
-      "status": "waiting",
-      "activation": "B1 Bridge/Entry/Safety及IPC已取得受限GREEN；B2未启动，只有健康Test有效RED与scoped TDD_READY后按原串行授权独立派发。"
+      "label": "Continuous Engineering Worker",
+      "model": "gpt-6-astra / high (current interface)",
+      "status": "active",
+      "activation": "v08_u12_continuous_engineering：必要工程规格、测试、实现与修正；历史消耗保留，不恢复旧次数审批。"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
-      "model": "gpt-5.6-sol / high default; R2 xhigh (not dispatched)",
+      "model": "gpt-6-astra / high (current interface)",
       "status": "locked",
-      "activation": "锁定；仅在生产实现和证据冻结后进行独立验证。"
+      "activation": "完整候选冻结后独立只读、验收优先验证；尚未派发，不提供当前PASS。"
     },
     {
       "id": "session_runtime_reviewer",
@@ -829,8 +822,26 @@
     },
     {
       "id": "EVD-B2-COMMAND-CONTEXT-001",
-      "label": "用户批准单一测试证据目录字段、最小capture派生、精确新限制处置及证据分级；剩余1轮，接收未确认",
+      "label": "Mini已固定采纳；内容2/2已用，健康及Component因果RED证据已独立复核，MOUNT/首包/GUI未运行",
       "path": "docs/planning/2026-09-20/xanthil-desktop-b2-command-context-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-MINI-B2-CONTEXT-ADOPTED-20260924",
+      "label": "Mini固定接收c01b68b；34源/34副本前后保持，非Test/Gate PASS",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/b2-command-context-post-merge-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-B2-COMPONENT-TDD-READY-001",
+      "label": "Component限域TDD_READY：独立健康、因果RED、12份解释、现场/资产台账通过；不是产品验收",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/b2-component-tdd-ready-gate-001.json",
+      "status": "verified"
+    },
+    {
+      "id": "EVD-B2-COMPONENT-TEMP-INCIDENT-001",
+      "label": "当前两路径身份/源码保护独立读回；历史退出UNKNOWN保留，不提供产品PASS",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/b2-component-unapproved-temp-write-001.json",
       "status": "present"
     }
   ],
@@ -894,11 +905,17 @@
       "label": "最新Test manifest/比较/工具定位native记录缺失，patch-result为摘要",
       "level": "medium",
       "mitigation": "仅按B2 Command Context001接受精确披露限制；原件/UNKNOWN保留，不把当前34/201读回当作历史补证。后续普通浏览分级，身份/Gate/写入证据仍须足以证明调用与完成；未知效果仍停。"
+    },
+    {
+      "id": "RSK-B2-COMPONENT-OUTSIDE-ROOT-WRITE",
+      "label": "新两路径无预检重定向及原生执行元数据丢失",
+      "level": "medium",
+      "mitigation": "原件与复制保留，不清理/重放/推断历史零副作用。当前37保护源未变，renderer未验证；直接等待用户本任务处置。"
     }
   ],
-  "updated_at": "2026-09-20T15:23:38.654Z",
+  "updated_at": "2026-09-27T13:50:57.850Z",
   "updated_by": {
     "role": "controller",
-    "session": "macbook-controller"
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
   }
 }

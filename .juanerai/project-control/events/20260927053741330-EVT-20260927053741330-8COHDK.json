@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260927053741330-8COHDK",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-27T05:37:41.330Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "截图非覆盖修正通过，转入固定候选独立验收准备；未声明Validator已返回或产品验收。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

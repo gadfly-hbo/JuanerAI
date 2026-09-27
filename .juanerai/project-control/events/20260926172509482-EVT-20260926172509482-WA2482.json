@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260926172509482-WA2482",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-26T17:25:09.482Z",
+  "actor": {
+    "role": "controller",
+    "session": "engineering-controller"
+  },
+  "summary": "U1.2 scoped independent PASS; U1.3 continuous engineering resumed under adopted v0.8",
+  "status_after": "active",
+  "evidence_refs": []
+}

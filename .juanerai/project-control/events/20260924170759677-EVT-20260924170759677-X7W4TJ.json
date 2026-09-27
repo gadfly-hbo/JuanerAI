@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924170759677-X7W4TJ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-24T17:07:59.677Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-engineering-controller"
+  },
+  "summary": "B2 C1a typecheck health passed; first package pending",
+  "status_after": "active",
+  "evidence_refs": []
+}

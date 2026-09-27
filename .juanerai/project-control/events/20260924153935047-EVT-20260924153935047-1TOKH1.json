@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924153935047-1TOKH1",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-24T15:39:35.047Z",
+  "actor": {
+    "role": "controller",
+    "session": "纵切-1.0 Engineering Controller"
+  },
+  "summary": "B2 Component corrected GREEN 1/1 PASS；有界封套纠正1/3，后续MOUNT Test仍待独立执行。",
+  "status_after": "active",
+  "evidence_refs": []
+}

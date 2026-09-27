@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260924164616558-2NHOAT",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-24T16:46:16.558Z",
+  "actor": {
+    "role": "controller",
+    "session": "mac-mini-engineering-controller"
+  },
+  "summary": "C1a tuple配置oracle 2/2 PASS，错误调用恢复1/3；Runner待执行。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,8 +1,44 @@
 # Product Change Authority Package
 
-Materialize this template on the MacBook Controller, hash every canonical
-artifact, and sign the resulting command bytes. Never place a secret, private
-key, credential, signature bytes, raw prompt, or raw model output here.
+This pre-existing template is optional/reference-only when already selected by
+the Change. Normally record the same applicable information once in existing
+OpenSpec/handoff records; do not add a mandatory package or approval stage.
+
+For the current semi-automatic path, the MacBook Product Manager freezes the
+Product Input section and the Mac mini Engineering Controller fills the
+Engineering Intake section. The signed sections apply only to the separately
+authorized inactive Host Loop. Never place a secret, private key, credential,
+signature bytes, raw prompt, or raw model output here.
+
+## Product Input — MacBook Product Manager
+
+- Change ID / product objective:
+- Product scope / non-goals / prohibited outcomes / deferred returns:
+- UI Contract version / path / SHA-256:
+- User UI Gate verdict / reference:
+- Business terms, semantics, defaults, visible failures and recovery:
+- Product Acceptance IDs and required user verdict:
+- Adopted Whitepaper/Demo sources, versions, and applicability:
+- Product/data/safety/permission/cost/external-effect stop lines:
+- Product Input SHA-256 / user approval reference:
+
+## Engineering Intake — Mac mini Engineering Controller
+
+- Receiver task / host / repository / branch / owning device:
+- Current WIP, stop point, history, actual resource consumption, UNKNOWN, and evidence readback:
+- Feasibility result:
+- OpenSpec / design / contract / task / allowed-path plan:
+- Dependency, toolchain, commands, environment, validation, and evidence plan:
+- Engineering agent / independent Validator, optional specialist question, real resource limits and stop conditions:
+- Published rule version / actually loaded roles / replaced old restrictions / retained stops:
+- Git permissions and delivery plan:
+- Intake receipt / state: `UNCONFIRMED` / `ADOPTED_STOP_RETAINED` / `READY_FOR_AUTHORIZED_EXECUTION`:
+
+## Signed Host Loop — Retained Inactive Reference
+
+The following original signed-package fields are retained unchanged for historical
+reference only. They are not current semi-automatic requirements; this alignment
+does not activate, revise or authorize the old Host Loop.
 
 ## Artifact Package
 

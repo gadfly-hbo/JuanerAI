@@ -1,11 +1,30 @@
 # Testing Policy
 
-- Prefer domain unit tests for pure rules, integration tests for real component boundaries, contract tests for every Port Adapter, and E2E tests for core Decision Loops.
-- Test the observable result and forbidden side effects, not implementation details.
-- Every material Acceptance Criterion has positive, negative, boundary, and failure-path coverage as applicable.
-- RED is valid only when the test environment is healthy and the target behavior is absent.
-- Mocks may isolate an external boundary but may not replace the core behavior being proved.
-- Adapter contract suites run unchanged against each implementation.
-- Data, permission, identity, action, persistence, concurrency, recovery, and audit changes require negative-first evidence.
-- A test change during implementation is a conflict requiring return to Test Design unless the approved task explicitly includes the correction.
-- Test assets follow `docs/governance/test-asset-retirement.md`; passing or aging alone never authorizes deletion.
+Authority and stop conditions come from
+`docs/governance/product-change-execution-policy.md`.
+
+- Before each behavior's implementation, state its minimum sufficient spec and
+  acceptance reference, write the test, and run a causal expected RED. Then
+  implement minimal GREEN and refactor only while GREEN.
+- Pure refactors use pre/post GREEN and relevant equivalence evidence;
+  documentation-only work does not fabricate RED.
+- Prefer domain unit tests for pure rules, real-boundary integration tests,
+  unchanged Port contract suites for replaceable Adapters, and real user-path
+  checks for core Decision Loops.
+- Derive assertions from approved acceptance, not implementation details.
+  Cover material positive, negative, boundary, failure and forbidden effects.
+- Environment/import/locator/fixture failures are not product RED. Establish
+  helper health and disclose masked assertions; final checks execute every
+  required assertion.
+- Mocks may isolate unrelated external systems but cannot replace the core
+  behavior being proved.
+- The engineering agent may update tests/fixtures with implementation within
+  its authorized roots. Preserve assertions and negative coverage; use the
+  appropriate decision before changing product or material contract meaning.
+  Routine test correction does not return to a separate Test Design Gate.
+- Apply `docs/governance/test-asset-retirement.md` within normal development
+  and independent review. Test edits/removals must remain visible and supported
+  by retained coverage; no separate retirement approval.
+- Validator derives key cases from acceptance first, independently exercises
+  key real and failure paths, and checks that tests can detect relevant errors.
+  Passing author tests alone is not independent proof.

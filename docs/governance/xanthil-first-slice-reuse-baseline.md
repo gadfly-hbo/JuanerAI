@@ -61,7 +61,7 @@ Ordinary Xanthil features do not reopen these decisions:
 - success linearizes only at final succeeded `run.json`; candidate evidence/Markdown is not success;
 - terminal files are immutable and rollback/retirement never rewrites user-owned runs;
 - the synthetic fixture, raw rows, credentials, provider payloads, transcripts, and unrelated workspace content remain within their approved boundaries;
-- project subagents dispatch automatically only at their lifecycle Gates under the standing authority in `AGENTS.md`.
+- current project subagents follow the adoption and dispatch authority in `AGENTS.md` and the sole execution policy; archived role Gates remain history, not a new-feature pipeline.
 
 A future Change may replace a decision, but it must name the current contract, the intended delta, compatibility, activation, rollback, tests, and affected consumers.
 
@@ -77,13 +77,13 @@ Do not promote these facts into reusable platform promises without a new approve
 
 ## New-Change Intake
 
-Before dispatching Spec, record:
+At engineering intake, record in the existing work package:
 
 1. Which current Requirements, Ports, tests, fixtures/doubles, errors, and Profiles are reused unchanged?
 2. What single user-observable delta is proposed?
 3. Does the delta change persistence, identity, version, model/runtime, data source, egress, permission, timeout, cancellation, atomicity, or terminal behavior?
 4. Which existing contract suites must remain unchanged and which new leaves are needed?
-5. Does any existing test need modification? If yes, what approved behavior changed?
+5. Does any existing test need modification? If yes, what approved behavior or current interface justifies it, and how is required coverage preserved?
 6. Is a known working reference repository available, and which assumptions are transferable?
 7. Is the Change ordinary, boundary-changing, or foundation/bootstrap under `docs/governance/change-complexity-control.md`?
 
