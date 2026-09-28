@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Xanthil · Case 决策助手 UI Contract</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23263442'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='18'%3EX%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="JuanerAI，持续做出更好的决策；Xanthil Desktop">
+        <span class="brand-mark"><img src="assets/juanerai-logo-slogan.png" alt=""></span>
+        <span class="brand-copy"><strong>JuanerAI</strong><small>持续做出更好的决策</small></span>
+        <span class="product-name">Xanthil Desktop</span>
+      </div>
+      <nav class="mode-switch" aria-label="工作模式">
+        <button class="mode-button active" data-mode="quick">快速模式</button>
+        <button class="mode-button" data-mode="professional">专业模式</button>
+      </nav>
+      <div class="top-actions">
+        <span class="demo-badge">UI Contract · 合成状态 · 无真实模型调用</span>
+        <button class="icon-button" aria-label="通知">◌</button>
+        <div class="avatar" aria-label="本地用户">HB</div>
+      </div>
+    </header>
+
+    <main id="quickView" class="workspace quick-workspace">
+      <aside class="session-rail" aria-label="Case Assistant 会话">
+        <div class="rail-heading">
+          <div>
+            <p class="eyebrow">QUICK SESSIONS</p>
+            <h1>Case Assistant</h1>
+          </div>
+          <button class="small-button" id="linkCaseButton">关联一个 Case</button>
+        </div>
+        <label class="search-box">
+          <span>⌕</span>
+          <input aria-label="搜索会话" value="" placeholder="搜索 Case 或会话">
+        </label>
+
+        <section class="session-group">
+          <p class="group-label">今天</p>
+          <button class="session-item selected">
+            <span class="session-title">会员复购决策</span>
+            <span class="session-source" id="railSource">来源：会员复购分析 · r7</span>
+            <span class="session-meta"><span id="railStatus" class="status-dot amber"></span><span id="railStatusText">等待授权</span></span>
+          </button>
+          <button class="session-item muted">
+            <span class="session-title">季度留存复盘</span>
+            <span class="session-source">来源：留存分析 · r3</span>
+            <span class="session-meta"><span class="status-dot gray"></span>已归档</span>
+          </button>
+        </section>
+
+        <div class="rail-footnote">
+          <strong>不是空白聊天</strong>
+          <span>每个快速会话都必须关联一个专业 Case revision。</span>
+        </div>
+      </aside>
+
+      <section class="conversation-pane">
+        <header class="conversation-header">
+          <div>
+            <div class="title-line">
+              <h2>会员复购决策</h2>
+              <span class="linked-badge">已关联专业 Case</span>
+            </div>
+            <button class="source-link" id="sourceLink" data-action="open-professional">会员复购分析 · revision r7 ↗</button>
+          </div>
+          <div class="header-actions">
+            <span id="attemptStatus" class="attempt-status">等待授权</span>
+            <button id="stopButton" class="danger-button" disabled>停止</button>
+            <button class="icon-button" aria-label="更多">•••</button>
+          </div>
+        </header>
+
+        <div id="conversationScroll" class="conversation-scroll" aria-live="polite">
+          <section class="context-banner">
+            <div class="context-icon">C</div>
+            <div>
+              <strong>从已确认的 Case 继续，而不是重新分析</strong>
+              <p id="boundSourceSummary">已绑定 revision r7：12 条已验证证据、4 个已采纳 Finding、2 项分析限制。</p>
+            </div>
+            <button data-action="open-professional" class="text-button">查看来源</button>
+          </section>
+
+          <div class="timeline" id="timeline">
+            <article class="message user-message">
+              <div class="message-meta"><span>你</span><span>Attempt 前置讨论 · 09:42</span></div>
+              <p>基于已经确认的证据，帮我比较“对权益到期会员做小范围续费触达”和“本轮暂不行动”，最后形成可审阅的决策草案。</p>
+            </article>
+
+            <article class="message assistant-message">
+              <div class="message-meta"><span>Case Assistant · 建议</span><span>未进入模型任务</span></div>
+              <p>我会只读取这个 Case 已验证的证据、Finding、限制与报告历史。开始前请确认 Provider、数据类别、只读工具和硬上限。</p>
+              <button class="primary-button" id="openAuthorization">查看任务授权</button>
+            </article>
+          </div>
+
+          <section id="draftCard" class="draft-card hidden" aria-labelledby="draftTitle">
+            <div class="draft-heading">
+              <div>
+                <p class="eyebrow">PENDING DECISION DRAFT</p>
+                <h3 id="draftTitle">待采纳决策草案</h3>
+                <p id="draftSource">草案 v1 · Attempt A-01 · 来源 revision r7</p>
+              </div>
+              <span id="draftBadge" class="state-badge amber">待采纳 · 无业务写入</span>
+            </div>
+            <div id="staleNotice" class="stale-notice hidden">
+              <strong id="staleTitle">来源已变化，草案已过期</strong>
+              <span id="staleCopy">草案基于 r7，当前 Case 为 r8。请查看变化并创建新 Attempt。</span>
+              <div class="inline-actions"><button class="secondary-button" id="viewChanges">查看 r7 → r8 变化</button><button class="primary-button" id="rebindCurrent">基于 r8 重新开始</button></div>
+            </div>
+            <div class="draft-grid">
+              <div class="draft-section">
+                <h4>Decision Record</h4>
+                <dl>
+                  <div><dt>选择</dt><dd id="decisionChoice">对权益到期会员执行受控续费触达试验</dd></div>
+                  <div><dt>理由</dt><dd id="decisionRationale">复购下滑集中在权益到期窗口；证据支持先验证小范围触达，而不是全面推广。</dd></div>
+                  <div><dt>责任人 / 确认</dt><dd id="decisionOwner">林岚 · 会员运营 / 采纳时记录</dd></div>
+                  <div><dt>替代项</dt><dd id="decisionAlternatives">本轮不行动；扩大到所有沉默会员（因证据不足不采用）</dd></div>
+                  <div><dt>限制 / 未知</dt><dd id="decisionLimitations">渠道归因未验证；触达疲劳仅有聚合口径</dd></div>
+                </dl>
+              </div>
+              <div class="draft-section">
+                <h4>Expected Outcome</h4>
+                <dl>
+                  <div><dt>基线</dt><dd id="expectedBaseline">到期窗口 30 日复购率 18.4% · Evidence E-07</dd></div>
+                  <div><dt>对象 / 指标</dt><dd id="expectedMetric">权益到期会员 / 30 日复购率</dd></div>
+                  <div><dt>预期</dt><dd id="expectedValue">方向：提升；范围：+2～4 个百分点；仍需受控验证</dd></div>
+                  <div><dt>观察窗口</dt><dd id="expectedWindow">首轮触达后 30 天</dd></div>
+                  <div><dt>Guardrails</dt><dd id="expectedGuardrail">退订率不高于基线 +0.5pp；单会员补贴不超过批准额度</dd></div>
+                  <div><dt>结果来源</dt><dd id="resultSource">CRM 复购事件聚合 · Owner：数据运营</dd></div>
+                  <div><dt>评价安排</dt><dd id="evaluationOwner">林岚在窗口结束后复盘停止、调整或扩大</dd></div>
+                </dl>
+              </div>
+            </div>
+            <div class="evidence-row">
+              <span>引用：</span><span id="evidenceReferences">Evidence E-07 / E-11 · Finding F-03 · 限制 L-02</span>
+            </div>
+            <div class="draft-actions">
+              <button class="secondary-button" id="editDraft">编辑</button>
+              <button class="secondary-button" id="rejectDraft">拒绝草案</button>
+              <button class="secondary-button hidden" id="cancelPendingRevision">取消这次修订</button>
+              <button class="primary-button" id="adoptDraft">采纳到 Case</button>
+            </div>
+          </section>
+
+          <section id="adoptedCard" class="adopted-card hidden">
+            <div class="success-icon">✓</div>
+            <div>
+              <p class="eyebrow">FORMAL CASE RECORD</p>
+              <h3>Decision Record 与 Expected Outcome 已采纳</h3>
+              <p id="adoptedSummary">由本地用户于 10:06 采纳 · 来源 revision r7 · 报告 v2 已创建，v1 保留。</p>
+            </div>
+            <button class="secondary-button" data-action="open-professional">返回专业模式查看</button>
+          </section>
+        </div>
+
+        <footer class="composer">
+          <div class="capability-row">
+            <button class="preview-chip" data-preview="fork">Fork <span>Preview</span></button>
+            <button class="preview-chip" data-preview="subagent">Subagent <span>Preview</span></button>
+            <button class="capability-chip" id="continueButton" disabled>继续此工作</button>
+            <span id="budgetIndicator">未开始 · 需要任务授权</span>
+          </div>
+          <div class="composer-box">
+            <textarea id="composerInput" aria-label="给 Case Assistant 的消息" placeholder="追问选择、约束、责任人或预期结果…"></textarea>
+            <button id="sendButton" class="send-button" aria-label="发送">↑</button>
+          </div>
+          <p>Agent 只能提交待采纳草案。正式记录必须由你确认。</p>
+        </footer>
+      </section>
+
+      <aside class="context-drawer" aria-label="任务上下文">
+        <div class="drawer-tabs" role="tablist">
+          <button class="drawer-tab active" data-tab="grant">授权</button>
+          <button class="drawer-tab" data-tab="source">来源</button>
+          <button class="drawer-tab" data-tab="capability">能力</button>
+          <button class="drawer-tab" data-tab="history">历史</button>
+        </div>
+        <div id="drawerContent"></div>
+      </aside>
+    </main>
+
+    <main id="professionalView" class="workspace professional-workspace hidden">
+      <aside class="pro-nav">
+        <p class="eyebrow">PROFESSIONAL SESSION</p>
+        <h2>会员复购分析</h2>
+        <p class="revision-line">Case revision <strong id="professionalRevision">r7</strong></p>
+        <ol class="stage-list">
+          <li><span>1</span><div><strong>New analysis</strong><small>帮我整理问题 · 逐次披露</small></div></li>
+          <li><span>2</span><div><strong>数据准备</strong><small>快照已确认</small></div></li>
+          <li><span>3</span><div><strong>Local processing</strong><small>DuckDB + Python</small></div></li>
+          <li><span>4</span><div><strong>Evidence-based analysis</strong><small>帮我解释证据 · 固定方法不变</small></div></li>
+          <li><span>5</span><div><strong>Report</strong><small>Finding / 帮我起草候选</small></div></li>
+          <li class="active"><span>6</span><div><strong>Execution feedback</strong><small>原 Decision Closure 保持</small></div></li>
+        </ol>
+      </aside>
+      <section class="pro-main">
+        <header class="pro-header">
+          <div>
+            <p class="eyebrow">阶段 6 / EXECUTION FEEDBACK</p>
+            <h1>在原分析 Closure 之后记录正式决定</h1>
+          </div>
+          <button class="secondary-button" data-action="open-quick">打开关联 Quick Session</button>
+        </header>
+        <div class="pro-summary-grid">
+          <article><span>已验证 Evidence</span><strong>12</strong><small>来源可追踪</small></article>
+          <article><span>已采纳 Finding</span><strong>4</strong><small>人工确认</small></article>
+          <article><span>分析限制</span><strong>2</strong><small>必须进入决策</small></article>
+          <article><span>当前报告</span><strong id="reportVersion">v1</strong><small id="reportNote">已导出</small></article>
+        </div>
+        <section class="pro-card case-assistant-entry">
+          <div class="assistant-orb">✦</div>
+          <div>
+            <p class="eyebrow">MULTI-TURN CASE ASSISTANT</p>
+            <h2 id="proAssistantTitle">用 Case Assistant 记录正式决定</h2>
+            <p id="proAssistantCopy">在独立快速会话中比较选择、补齐责任与预期结果。Agent 只能形成待采纳草案。</p>
+            <div class="boundary-pills"><span>读取已验证证据</span><span>只读工具</span><span>用户采纳</span><span>不执行行动</span></div>
+          </div>
+          <button class="primary-button" data-action="open-quick">进入 Case Assistant</button>
+        </section>
+        <section id="professionalDecision" class="pro-card hidden">
+          <div class="formal-heading">
+            <div><p class="eyebrow">FORMAL RECORD</p><h2 id="professionalDecisionTitle">受控续费触达试验</h2></div>
+            <span class="state-badge green">已采纳</span>
+          </div>
+          <p id="professionalDecisionSummary">Decision Record DR-002 与 Expected Outcome EO-002 已绑定 revision r7。</p>
+          <div class="formal-grid"><div><span>责任人</span><strong id="professionalOwner">林岚</strong></div><div><span>观察窗口 / 触发</span><strong id="professionalWindow">30 天</strong></div><div><span>新报告</span><strong id="professionalReport">v2</strong></div></div>
+          <div class="draft-actions"><button class="secondary-button" id="startDecisionRevision">从当前正式记录创建修订</button></div>
+        </section>
+      </section>
+      <aside class="pro-context">
+        <h3>Case 控制权</h3>
+        <ul>
+          <li><span>数据快照</span><strong>已确认</strong></li>
+          <li><span>证据采纳</span><strong>由用户完成</strong></li>
+          <li><span>Agent 权限</span><strong>只读 + 提交草案</strong></li>
+          <li><span>正式写入</span><strong>仅用户采纳</strong></li>
+        </ul>
+        <div class="report-history">
+          <h4>报告版本</h4>
+          <div id="reportHistory"><button type="button" data-report-version="v1">v1 · 当前</button></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <dialog id="authorizationDialog" class="modal wide-modal">
+    <form method="dialog">
+      <div class="modal-header"><div><p class="eyebrow">TASK-LEVEL GRANT</p><h2 id="grantTitle">确认 Attempt A-01 的任务授权</h2></div><button class="icon-button" value="cancel" aria-label="关闭">×</button></div>
+      <p class="modal-lead">以下数值仅用于 UI Contract 演示，不是生产默认值，也不授权任何真实费用。</p>
+      <div id="grantBlocker" class="stale-notice hidden"></div>
+      <div class="grant-grid">
+        <section><h3>来源与模型</h3><dl><div><dt>来源</dt><dd id="grantSource">会员复购分析 · r7 · Completed</dd></div><div><dt>Provider</dt><dd id="grantProvider">UI Contract Fake Provider</dd></div><div><dt>Model</dt><dd>synthetic-case-assistant</dd></div></dl></section>
+        <section><h3>硬上限（演示值）</h3><dl><div><dt>模型轮次</dt><dd id="grantTurns">最多 6 轮</dd></div><div><dt>执行时间</dt><dd>最多 300 秒；等待用户时暂停</dd></div><div><dt>等待截止</dt><dd id="grantWait">最多 24 小时（演示值）</dd></div><div><dt>费用</dt><dd>最多 ¥2.00（不会实际消费）</dd></div></dl></section>
+        <section><h3>会发送</h3><ul><li>已验证 Evidence / Finding</li><li>限制与候选行动</li><li>020_clean 批准子集摘要</li><li>当前报告版本摘要</li></ul></section>
+        <section><h3>不会发送 / 不能使用</h3><ul><li>原始上传文件与未确认快照</li><li>任意文件、Shell、SQL、Web</li><li>其他 Case 或外部写接口</li><li>行动执行</li></ul></section>
+      </div>
+      <div class="payload-preview"><strong id="grantTaskHeading">初始任务文本 · 逐字外发</strong><p id="grantTaskText">基于已经确认的证据，帮我比较“对权益到期会员做小范围续费触达”和“本轮暂不行动”，最后形成可审阅的决策草案。</p><small id="grantTaskNote">后续只有你在 Composer 点击“发送”的可见文本会逐字发给同一 Provider。</small></div>
+      <div class="payload-preview"><strong>精确数据身份</strong><p id="grantDataDetails">020_clean-r7@sha256:demo-r7 · fields: cohort, repeat_rate, repeat_revenue · aggregate rows 3；Evidence E-07/E-11；Finding F-03；final report v1 摘要。</p></div>
+      <div class="payload-preview"><strong>本 Attempt 外发历史与明确排除</strong><div id="grantHistoryDetails"><p>外发：无旧消息或工具回执；仅发送上述初始任务与 r7 授权数据。</p><p>排除：Pi transcript、未选择报告版本、附件、路径和其他 Session 历史。</p></div></div>
+      <div class="tool-list"><strong>只读工具</strong><span>读取 Case 摘要</span><span>读取已验证证据</span><span>读取报告历史</span><span>校验草案完整性</span></div>
+      <div class="skill-line"><span>Skill：Case 决策与预期 v1.0</span><button type="button" class="text-button" id="viewPrompt">查看 Prompt 信息</button></div>
+      <label class="sensitive-confirm"><input id="sensitiveConfirm" type="checkbox"> 我确认以上逐字文本可能包含敏感业务内容，并同意仅在本合成演示中发送（不会实际联网）。</label>
+      <div class="modal-actions"><button class="secondary-button" value="cancel">取消</button><button type="button" class="primary-button" id="confirmAuthorization" disabled>确认并开始合成 Attempt</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="editDialog" class="modal wide-modal">
+    <form method="dialog">
+      <div class="modal-header"><div><p class="eyebrow">USER EDIT</p><h2>编辑待采纳草案</h2></div><button class="icon-button" value="cancel" aria-label="关闭">×</button></div>
+      <fieldset class="choice-field"><legend>决定类型</legend><label><input type="radio" name="decisionType" value="candidate" checked> 选择已有候选</label><label><input type="radio" name="decisionType" value="no-action"> 不行动</label><label><input type="radio" name="decisionType" value="defer"> 暂缓</label></fieldset>
+      <p id="branchRequirements" class="modal-lead">选择已有候选：全部 Decision Record 与 Expected Outcome 字段必填。</p>
+      <div class="edit-grid">
+        <label>理由<textarea id="editRationale">复购下滑集中在权益到期窗口；先验证小范围触达。</textarea></label>
+        <label>责任人<input id="editOwner" value="林岚 · 会员运营"></label>
+        <label>采用的 Evidence / Finding<input id="editEvidence" value="Evidence E-07 / E-11 · Finding F-03 · 限制 L-02"></label>
+        <label>已比较的替代项<textarea id="editAlternatives">本轮不行动；扩大到所有沉默会员（因证据不足不采用）</textarea></label>
+        <label>限制 / 未知<textarea id="editLimitations">渠道归因未验证；触达疲劳仅有聚合口径</textarea></label>
+        <label class="candidate-only">基线及来源<input id="editBaseline" value="到期窗口 30 日复购率 18.4% · Evidence E-07"></label>
+        <label class="candidate-only">观察对象 / 指标<input id="editMetric" value="权益到期会员 / 30 日复购率"></label>
+        <label>预期 / 不适用原因<textarea id="editExpected">复购率提升 +2～4 个百分点</textarea></label>
+        <label>观察窗口 / 重新评估触发<input id="editWindow" value="首轮触达后 30 天"></label>
+        <label class="candidate-only">Guardrail<input id="editGuardrail" value="退订率不高于基线 +0.5pp"></label>
+        <label class="candidate-only">计划结果来源与 Owner<input id="editResultSource" value="CRM 复购事件聚合 · 数据运营"></label>
+        <label>评价安排与责任人<input id="editEvaluation" value="林岚在窗口结束后复盘"></label>
+      </div>
+      <div id="editError" class="field-error hidden">请补齐当前决定类型的必填字段。</div>
+      <div class="modal-actions"><button class="secondary-button" value="cancel">取消未确认编辑</button><button type="button" class="primary-button" id="saveDraftEdit">保存用户修改</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="revisionDialog" class="modal">
+    <form method="dialog">
+      <div class="modal-header"><div><p class="eyebrow">FORMAL REVISION</p><h2>从当前正式记录创建修订？</h2></div><button class="icon-button" value="cancel" aria-label="关闭">×</button></div>
+      <p id="revisionDialogCopy">当前 Decision Record、Expected Outcome 与报告 v2 保持有效。创建只会产生待审修订草案；取消不会生成 DR / EO 或报告 v3。</p>
+      <label>修订原因<input id="revisionReason" value="重新评估触达范围"></label>
+      <div class="modal-actions"><button type="button" class="secondary-button" id="cancelDecisionRevision">取消修订 · 不生成新版本</button><button type="button" class="primary-button" id="createDecisionRevision">创建待审修订草案</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="rejectDialog" class="modal">
+    <form method="dialog">
+      <div class="modal-header"><h2>拒绝这版草案？</h2><button class="icon-button" value="cancel" aria-label="关闭">×</button></div>
+      <p>来源 Completed revision、正式 Decision Record 和报告都不会改变。草案与拒绝历史仍可查看。</p>
+      <label>可选原因<input id="rejectReason" placeholder="例如：责任人与预期范围尚未确认"></label>
+      <div class="modal-actions"><button class="secondary-button" value="cancel">取消</button><button type="button" class="primary-button" id="confirmReject">确认拒绝草案</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="genericDialog" class="modal">
+    <form method="dialog">
+      <div class="modal-header"><h2 id="genericTitle">说明</h2><button class="icon-button" value="cancel" aria-label="关闭">×</button></div>
+      <div id="genericBody" class="generic-body"></div>
+      <div class="modal-actions"><button class="primary-button" value="cancel">知道了</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="adoptDialog" class="modal">
+    <form method="dialog">
+      <div class="modal-header"><div><p class="eyebrow">DETERMINISTIC ADOPTION</p><h2>采纳到来源 Case？</h2></div><button class="icon-button" value="cancel" aria-label="关闭">×</button></div>
+      <div class="write-summary" id="adoptionWriteSummary"><p>成功后将一次性追加：</p><ul><li>Decision Record DR-002</li><li>Expected Outcome EO-002</li><li>报告版本 v2（v1 成为可读 superseded history）</li></ul><p><strong>不改变：</strong>来源 Completed revision r7、原 Finding 与 Decision Closure。</p></div>
+      <p class="no-write-note">对话和 Agent 不会直接执行写入；这是由你触发的确定性业务命令。</p>
+      <div class="modal-actions"><button class="secondary-button" value="cancel">返回审阅</button><button type="button" class="primary-button" id="confirmAdoption">确认采纳</button></div>
+    </form>
+  </dialog>
+
+  <div class="scenario-panel" aria-label="UI Contract 场景控制">
+    <button id="scenarioToggle">UI Contract 场景</button>
+    <div id="scenarioMenu" class="scenario-menu hidden">
+      <strong>只改变合成界面状态</strong>
+      <button id="scenarioReset">重置未授权</button>
+      <button id="scenarioStop">演示停止路径</button>
+      <button id="scenarioProviderMissing">Provider 未授权</button>
+      <button id="scenarioBudgetMissing">预算缺失</button>
+      <button id="scenarioStale">来源 revision 变化</button>
+      <button id="scenarioDecisionStale">当前决定版本变化</button>
+      <button id="scenarioProviderError">Provider 失败</button>
+      <button id="scenarioAdoptionFailure">采纳失败</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
