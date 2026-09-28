@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928015923877-A48D6R",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-28T01:59:23.877Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "INSTALL001-003真实Profile计算RED/GREEN证据已读回；不代表安装版验收",
+  "status_after": "active",
+  "evidence_refs": []
+}

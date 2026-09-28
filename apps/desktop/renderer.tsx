@@ -7,6 +7,9 @@ type XanthilDesktopAppProps = Readonly<{ api: XanthilDesktopApi }>;
 type Mode = 'quick' | 'professional';
 type DialogKind = 'search' | 'skill' | 'prompt' | null;
 
+const revisionLabel: Record<string,string> = {Draft:'准备中',Ready:'待计算',Review:'待审阅',NeedsAttention:'需要处理',Completed:'已完成'};
+const runLabel: Record<string,string> = {Running:'处理中',Succeeded:'成功',Failed:'失败',Cancelled:'已取消'};
+
 const professionalStages = [
   '新建分析',
   '数据准备',
@@ -166,7 +169,7 @@ export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) {
     await businessAction(async()=>{
       const result=kind==='draft'?await api.createDraftRevision(command):kind==='cancel'&&running?await api.cancelAnalysis({...command,run_id:running.run_id}):projection.confirmation?await api.startAnalysis({...command,confirmation_id:projection.confirmation.confirmation_id}):null;
       if(!result)return;if(!result.ok){showBusinessError(result.error);return;}acceptProjection(result.value);
-      if(kind==='draft'){setSelectedStage('数据准备');setBusinessNotice('新 Draft 已创建，原修订和证据保留。');}
+      if(kind==='draft'){setSelectedStage('数据准备');setBusinessNotice('新修订已创建，原修订和证据保留。');}
     });
   }
   async function reviewAction(kind:'accept'|'save'|'complete',value?:string|SaveFormInput){
@@ -176,7 +179,7 @@ export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) {
     await businessAction(async()=>{
       const result=kind==='accept'&&typeof value==='string'?await api.acceptFinding({...command,finding_id:value}):kind==='save'&&typeof value==='object'?await api.saveForm({...command,form:value}):kind==='complete'&&acceptance&&form?await api.completeCase({...command,acceptance_id:acceptance.acceptance_id,form_id:form.form_id}):null;
       if(!result)return;if(!result.ok){showBusinessError(result.error);return;}acceptProjection(result.value);
-      setBusinessNotice(kind==='accept'?'已接受此精确 Finding；尚未完成分析案例。':kind==='complete'?'分析案例已完成，已生成不可变最终报告；未执行外部行动。':'表单已保存；保存不等于接受或完成。');
+      setBusinessNotice(kind==='accept'?'已接受本次分析结果；尚未完成分析案例。':kind==='complete'?'分析案例已完成，已生成不可变最终报告；未执行外部行动。':'表单已保存；保存不等于接受或完成。');
     });
   }
   async function exportReport(reportId:string){
@@ -263,10 +266,6 @@ export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) {
   return (
     <div className="xanthil-shell" aria-label="Xanthil Desktop">
       <link href={stylesUrl} rel="stylesheet" />
-      <div className="local-boundary" role="status">
-        本地桌面壳层 · 未激活能力不会读取文件、调用模型或创建业务记录
-      </div>
-
       <header className="titlebar">
         <div className="identity">
           <span aria-hidden="true" className="identity-mark">◆</span>
@@ -275,7 +274,7 @@ export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) {
           <span>决策助手</span>
           <span className="quiet-chip">本地</span>
         </div>
-        <span className="titlebar-state">当前为界面工作台，业务路径按阶段启用</span>
+        <span className="titlebar-state">原始数据留在本机 · 模型辅助逐次确认</span>
       </header>
 
       <div className="commandbar">
@@ -284,7 +283,7 @@ export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) {
           <button aria-pressed={mode === 'professional'} className={mode === 'professional' ? 'mode-button active' : 'mode-button'} onClick={() => selectMode('professional')} type="button">专业模式 <span aria-hidden="true">Professional</span></button>
         </div>
         <div className="project-context" aria-label="项目上下文">
-          <span aria-hidden="true">⌄</span><strong>项目 · Project</strong><span>{project?.display_name ?? '尚未选择'}</span><span className="muted">· 当前模式：{mode === 'quick' ? '快速' : '专业'}</span>
+          <span aria-hidden="true">⌄</span><strong>项目</strong><span>{project?.display_name ?? '尚未选择'}</span>
           {mode === 'professional' && <button className="secondary-button" disabled={busy} onClick={chooseProject} type="button">{project ? '重新打开项目' : '选择项目'}</button>}
         </div>
         <div className="command-actions">
@@ -302,7 +301,7 @@ export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) {
           </section>
           <section aria-labelledby="recent-heading" className="rail-section recent-runs">
             <h2 id="recent-heading">最近运行</h2>
-            {projection?.runs.length ? <ul className="session-list">{projection.runs.map(run => <li key={run.run_id}><span className="quiet-chip">{run.status}</span> <small>{run.run_id}</small></li>)}</ul> : <p><span className="status-dot quiet" />没有本地处理记录</p>}
+            {projection?.runs.length ? <ul className="session-list">{projection.runs.map((run,index) => <li key={run.run_id}><span>本地处理 {index+1}</span><span className="quiet-chip">{runLabel[run.status]}</span></li>)}</ul> : <p><span className="status-dot quiet" />没有本地处理记录</p>}
             <p><span className={`status-dot ${workSummary.label!=='空闲' ? 'online' : 'quiet'}`} />{workSummary.target?workSummary.label:'没有后台运行'}</p>
           </section>
           <div className="rail-footer"><span><span className="status-dot online" />离线 · 本地模式</span><small>分析师 · 未指定</small></div>
@@ -312,7 +311,7 @@ export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) {
           {mode === 'professional'
             ? <ProfessionalWorkspace selectedStage={selectedStage} onSelectStage={setSelectedStage} workLabel={workSummary.label}>
               {projection?.revision && projection.session && <nav className="revision-navigation" aria-label="案例修订历史">
-                <p>{historical ? '历史修订 · 只读' : '当前修订'} · 修订 {projection.revision.revision_sequence} · {projection.revision.state}</p>
+                <p>{historical ? '历史修订 · 只读' : '当前修订'} {projection.revision.revision_sequence} <span className="quiet-chip">{revisionLabel[projection.revision.state]}</span></p>
                 {projection.revision.previous_revision_id && <button type="button" className="secondary-button" disabled={busy || pending} onClick={()=>void readRevision(projection.revision!.previous_revision_id!)}>查看上一修订</button>}
                 {historical && <button type="button" className="secondary-button" disabled={busy || pending} onClick={()=>void readRevision(projection.session!.current_revision_id)}>返回当前修订</button>}
                 {projection.revision.integrity_state !== 'ok' && <p role="status">此修订的引用证据损坏；原始字节和可读历史已保留。受损内容不可使用，可返回当前修订创建新的干净 Draft。</p>}
@@ -328,26 +327,27 @@ export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) {
                 <div><label htmlFor="case-hypothesis">假设显示名称</label><input id="case-hypothesis" disabled={busy || pending || caseReadonly} value={fields.hypothesis_display_title} onChange={event => setFields({ ...fields, hypothesis_display_title: event.target.value })} /></div>
                 <div><label htmlFor="case-context">业务背景</label><textarea id="case-context" disabled={busy || pending || caseReadonly} rows={2} value={fields.business_context} onChange={event => setFields({ ...fields, business_context: event.target.value })} /></div>
                 <div><label htmlFor="case-alternatives">替代解释（每行一项）</label><textarea id="case-alternatives" aria-invalid={invalidAlternatives} aria-describedby={invalidAlternatives ? 'case-alternatives-error' : undefined} disabled={busy || pending || caseReadonly} rows={2} value={fields.alternative_explanations.join('\n')} onChange={event => setFields({ ...fields, alternative_explanations: event.target.value === '' ? [] : event.target.value.split('\n') })} />{invalidAlternatives && <p id="case-alternatives-error" role="alert">每项替代解释须包含非空白文字，请修改空白行；也可清空整个字段，不填写替代解释。</p>}</div>
-                <p>{projection?.revision ? `${projection.revision.state} · 修订 ${projection.revision.revision_sequence} · 行版本 ${projection.revision.row_version} · ${projection.revision.integrity_state}` : '新建会话只准备本地案例和三个目录，不开始计算。'}</p>
-                <button aria-describedby="case-status" className="secondary-button" disabled={busy || pending || invalidAlternatives || !project || !caseName.trim() || !!projection && !projection.capabilities.can_save_case_fields} type="submit">{busy ? '正在处理…' : projection ? '保存案例字段' : '创建分析'}</button>
+                <p>{projection?.revision ? `${revisionLabel[projection.revision.state]} · 修订 ${projection.revision.revision_sequence}` : '创建本地分析案例，不开始计算。'}</p>
+                <button aria-describedby="case-status" className="primary-button" disabled={busy || pending || invalidAlternatives || !project || !caseName.trim() || !!projection && !projection.capabilities.can_save_case_fields} type="submit">{busy ? '正在处理…' : projection ? '保存案例字段' : '创建分析'}</button>
                 {!project && <p>请先选择项目。</p>}
               </form>}
               {selectedStage==='数据准备' && <DataPreparation key={projection?.revision?.revision_id??'none'} api={api} projection={projection} disabled={busy||pending} onProjection={acceptProjection} onFailure={showBusinessError} onUnknown={()=>{setPending(true);setBusinessNotice('结果待核对，请重新打开项目；不会自动重发。');}} />}
-              {projection?.revision&&projection.session&&['新建分析','循证分析','执行反馈'].includes(selectedStage)&&<AssistancePanel key={projection.revision.revision_id} api={api} projection={projection} stage={selectedStage} disabled={busy||pending||historical||projection.revision.integrity_state!=='ok'} onProjection={acceptProjection} onFailure={showBusinessError} onUnknown={()=>setPending(true)}/>}
               {selectedStage==='本地处理' && <section className="workbench-card" aria-label="确定性本地分析">
-                <h2>本地计算与独立复核</h2><p>DuckDB SQL 主计算 · Python 独立复算 · 最长 300 秒 · 自动重试 0</p>
-                <p role="status">{projection?.revision?.state==='Review'?'独立复核完成 · Review':running?'本地处理运行中':projection?.confirmation?'已确认快照，等待显式开始':'尚无已确认快照，请先完成数据准备。'}</p>
-                <button type="button" className="secondary-button" disabled={busy||pending||!projection?.capabilities.can_start_analysis} onClick={()=>void analysisAction('start')}>开始本地处理</button>
+                <h2>本地计算与独立复核</h2><p>使用两种独立方法核对同一快照；只有结果一致才生成分析证据。</p>
+                <p role="status">{projection?.revision?.state==='Review'?'独立复核完成 · 可审阅结果':running?'本地处理运行中':projection?.confirmation?'已确认快照，等待显式开始':'尚无已确认快照，请先完成数据准备。'}</p>
+                <button type="button" className="primary-button" disabled={busy||pending||!projection?.capabilities.can_start_analysis} onClick={()=>void analysisAction('start')}>开始本地处理</button>
                 {running&&<button type="button" disabled={busy||pending||!projection?.capabilities.can_cancel_analysis} onClick={()=>void analysisAction('cancel')}>取消本地处理</button>}
-                <ul>{projection?.runs.map(run=><li key={run.run_id}>{run.status} · {run.run_id} · {run.terminal_reason??'无终止原因'}{(run.status==='Failed'||run.status==='Cancelled')&&<RunTerminalFailure run={run}/>}</li>)}</ul>
+                <ul className="run-history">{projection?.runs.map((run,index)=><li key={run.run_id}><strong>本地处理 {index+1} · {runLabel[run.status]}</strong><details><summary>运行身份与方法</summary>{run.status} · {run.run_id} · {run.terminal_reason??'无终止原因'} · DuckDB / Python · 最长 300 秒 · 自动重试 0</details>{(run.status==='Failed'||run.status==='Cancelled')&&<RunTerminalFailure run={run}/>}</li>)}</ul>
               </section>}
               {selectedStage!=='新建分析'&&<><p role="status">{businessNotice}</p>{businessError&&<div role="alert"><strong>{businessError.message}</strong><p>{businessError.what_did_not_happen}</p><p>{businessError.preserved_authority}</p><p>{businessError.recovery_action}</p></div>}{pending&&<p role="alert">结果待核对，写入已停用，请重新打开项目；不会自动重发。</p>}</>}
-              {selectedStage==='循证分析' && <section className="workbench-card"><h2>已提交的分析证据</h2>{projection?.findings.length?projection.findings.map(finding=><section key={finding.finding_id}><FindingReview finding={finding}/><p>{projection.acceptances.some(a=>a.finding_id===finding.finding_id)?'此 Finding 已有显式接受记录':'此 Finding 尚未接受'}</p><button type="button" disabled={busy||pending||!projection.capabilities.can_accept_finding||projection.acceptances.some(a=>a.finding_id===finding.finding_id)} onClick={()=>void reviewAction('accept',finding.finding_id)}>接受本次分析结果</button></section>):<p>暂无已提交的 Finding；失败或不一致不会产生判断。</p>}
+              {selectedStage==='循证分析' && <section className="workbench-card"><h2>已提交的分析证据</h2>{projection?.findings.length?projection.findings.map(finding=><section key={finding.finding_id}><FindingReview finding={finding}/><p>{projection.acceptances.some(a=>a.finding_id===finding.finding_id)?'本次结果已显式接受':'本次结果尚未接受'}</p><button type="button" className="primary-button" disabled={busy||pending||!projection.capabilities.can_accept_finding||projection.acceptances.some(a=>a.finding_id===finding.finding_id)} onClick={()=>void reviewAction('accept',finding.finding_id)}>接受本次分析结果</button></section>):<p>暂无可审阅的分析结果；失败或不一致不会产生判断。</p>}
                 <label htmlFor="manual-evidence">手工证据解释（不改变计算结果）</label><textarea id="manual-evidence" rows={4} value={evidenceText} disabled={busy||pending||!projection?.capabilities.can_save_evidence_explanation} onChange={e=>setEvidenceText(e.target.value)}/><button type="button" disabled={busy||pending||!projection?.capabilities.can_save_evidence_explanation} onClick={()=>void reviewAction('save',{kind:'evidence_explanation',evidence_explanation_text:evidenceText})}>保存证据解释</button>
               </section>}
               {selectedStage==='报告'&&<section className="workbench-card"><h2>本地报告版本</h2><p role="status">{exportNotice}</p>{projection?.reports.length?<ReportVersions key={projection.projection_token} projection={projection} exportDisabled={busy||pending||!projection.capabilities.can_export_report} onExport={exportReport}/>:<p>暂无报告版本。</p>}</section>}
-              {selectedStage==='执行反馈'&&<section className="workbench-card"><h2>手工决策路线</h2><p>{projection?.revision?.state==='Completed'?'当前已有已完成闭环；后续重跑不会自动替换旧权威。':'候选比较或证据不足路线保存后仍为 Review。完成要求已显式接受 Finding 和最新有效路线。'}</p><DecisionClosureEditor key={projection?.projection_token??'none'} initial={projection?.forms.at(-1)??null} disabled={busy||pending||!projection?.capabilities.can_save_decision_closure} canComplete={!!projection?.capabilities.can_complete_case&&!busy&&!pending} onSave={form=>reviewAction('save',form)} onComplete={()=>reviewAction('complete')}/><h3>决策表单处置历史</h3><ul aria-label="决策表单处置历史">{projection?.forms.map(form=><li key={form.form_id}>表单 {form.form_sequence} · {({draft:'已保存草稿',saved:'已保存闭环路线（不等于完成）',not_adopted:'不采纳此候选方案',deferred:'暂缓决策',more_evidence:'需要补证'})[form.disposition]}{form.disposition==='deferred'?` · ${form.defer_until??'未指定日期'}`:''} · {form.updated_at}</li>)}</ul><ul aria-label="闭环历史">{projection?.closures.map(closure=><li key={closure.closure_id}>{closure.route==='candidate_comparison'?'候选比较':'证据不足'} · {closure.completed_at} · 已完成分析案例（不是已执行行动）</li>)}</ul></section>}
-              {projection?.revision&&['数据准备','本地处理','循证分析','报告'].includes(selectedStage)&&<p><button type="button" disabled={busy||pending||!projection.capabilities.can_create_draft_revision} onClick={()=>void analysisAction('draft')}>创建新 Draft 修订</button> 修改数据选择将使用新修订；旧快照和证据保留。</p>}
+              {selectedStage==='执行反馈'&&<section className="workbench-card"><h2>手工决策路线</h2><p>{projection?.revision?.state==='Completed'?'当前已有已完成闭环；后续重跑不会自动替换旧权威。':'先审阅并接受分析结果，再保存候选比较或证据不足路线，最后单独完成案例。'}</p><DecisionClosureEditor key={projection?.projection_token??'none'} initial={projection?.forms.at(-1)??null} disabled={busy||pending||!projection?.capabilities.can_save_decision_closure} canComplete={!!projection?.capabilities.can_complete_case&&!busy&&!pending} onSave={form=>reviewAction('save',form)} onComplete={()=>reviewAction('complete')}/><h3>决策表单处置历史</h3><ul aria-label="决策表单处置历史">{projection?.forms.map(form=><li key={form.form_id}>表单 {form.form_sequence} · {({draft:'已保存草稿',saved:'已保存闭环路线（不等于完成）',not_adopted:'不采纳此候选方案',deferred:'暂缓决策',more_evidence:'需要补证'})[form.disposition]}{form.disposition==='deferred'?` · ${form.defer_until??'未指定日期'}`:''} · {form.updated_at}</li>)}</ul><ul aria-label="闭环历史">{projection?.closures.map(closure=><li key={closure.closure_id}>{closure.route==='candidate_comparison'?'候选比较':'证据不足'} · {closure.completed_at} · 已完成分析案例（不是已执行行动）</li>)}</ul></section>}
+              {projection?.revision&&['数据准备','本地处理','循证分析','报告'].includes(selectedStage)&&<p><button type="button" disabled={busy||pending||!projection.capabilities.can_create_draft_revision} onClick={()=>void analysisAction('draft')}>创建新数据修订</button> 修改数据选择将使用新修订；旧快照和证据保留。</p>}
+              {projection?.revision&&projection.session&&['新建分析','循证分析','执行反馈'].includes(selectedStage)&&<AssistancePanel key={projection.revision.revision_id} api={api} projection={projection} stage={selectedStage} disabled={busy||pending||historical||projection.revision.integrity_state!=='ok'} onProjection={acceptProjection} onFailure={showBusinessError} onUnknown={()=>setPending(true)}/>}
+              <div aria-label="专业模式能力" className="capability-row"><button type="button" onClick={event=>openDialog('skill',event.currentTarget)}>Skill · 会员复购分析</button><button type="button" onClick={event=>openDialog('prompt',event.currentTarget)}>Prompt · 循证分析措辞</button></div>
             </ProfessionalWorkspace>
             : <QuickWorkspace onOpenDialog={openDialog} onPreview={setPreviewNotice} previewNotice={previewNotice} />}
         </main>
@@ -355,15 +355,12 @@ export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) {
         {drawerOpen ? (
           <aside aria-label="辅助抽屉内容" className="auxiliary-drawer" id="auxiliary-drawer">
             <div className="drawer-heading"><h2>辅助抽屉</h2><button aria-label="关闭辅助抽屉" className="icon-button" onClick={closeDrawer} type="button">×</button></div>
-            <DrawerSection heading="上下文" value={mode === 'quick' ? '快速模式 · 暂无会话' : `专业模式 · ${selectedStage}`} />
-            <DrawerSection heading="数据与模型边界" value={`${projection?.snapshot?'已确认本地不可变快照':'尚无已确认快照'}；${projection?.disclosures.length?`${projection.disclosures.length} 项逐次披露，发送状态以对应 Attempt 为准。`:'尚无逐次模型披露；未发送模型请求。'}`} />
-            <DrawerSection heading="证据与子任务" value={`${projection?.findings.length??0} 项已提交 Finding；无 Fork 或 Subagent 结果。`} />
-            <DrawerSection heading="报告版本" value={`${projection?.reports.length??0} 个本地报告版本；外部导出目标当前情况未检查。`} />
+            <ContextInspector mode={mode} projection={projection} stage={selectedStage} projectName={project?.display_name} expanded />
             <p className="drawer-note">关闭抽屉后，主工作区、状态与返回入口仍可直接使用。</p>
           </aside>
         ) : (
           <aside aria-label="Inspector 概览" className="inspector-summary">
-            <h2>Inspector</h2><p>上下文、证据、边界和报告版本可从辅助抽屉查看。</p><button className="text-button" onClick={() => setDrawerOpen(true)} type="button">打开辅助抽屉</button>
+            <div className="drawer-heading"><h2>上下文</h2><button className="text-button" onClick={() => setDrawerOpen(true)} type="button">展开详情</button></div><ContextInspector mode={mode} projection={projection} stage={selectedStage} projectName={project?.display_name} expanded={false}/>
           </aside>
         )}
       </div>
@@ -385,9 +382,11 @@ export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) {
 
 function AssistancePanel({api,projection,stage,disabled,onProjection,onFailure,onUnknown}:{api:XanthilDesktopApi;projection:DesktopProjection;stage:ProfessionalStage;disabled:boolean;onProjection:(p:DesktopProjection)=>void;onFailure:(e:DesktopFailure)=>void;onUnknown:()=>void}){
   const [provider,setProvider]=useState(''),[model,setModel]=useState(''),[preview,setPreview]=useState<DisclosurePreview|null>(null),[confirmed,setConfirmed]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState('可选辅助只产生待审草稿；未配置模型时继续手工编辑。');
+  const [expanded,setExpanded]=useState(projection.assistance_drafts.some(d=>d.disposition==='pending'));
   const dialog=useRef<HTMLDialogElement>(null),trigger=useRef<HTMLElement|null>(null),active=useRef(false),restoreFocus=useRef(false);
   const revision=projection.revision!,session=projection.session!,running=projection.attempts.find(a=>a.status==='Running');
   const action=stage==='新建分析'?'organize_question':stage==='循证分析'?'explain_evidence':'draft_candidates';
+  useEffect(()=>{if(running||projection.assistance_drafts.some(d=>d.disposition==='pending'))setExpanded(true);},[running,projection.assistance_drafts]);
   const label=action==='organize_question'?'整理问题（辅助草稿）':action==='explain_evidence'?'解释证据（辅助草稿）':'拟定候选（辅助草稿）';
   const eligible=action==='organize_question'?['Draft','Ready'].includes(revision.state)&&projection.findings.length===0:action==='explain_evidence'?revision.state==='Review':revision.state==='Review'&&projection.acceptances.some(a=>a.finding_id===projection.findings.at(-1)?.finding_id);
   const owner={project_id:session.project_id,session_id:session.session_id,case_id:session.case_id,revision_id:revision.revision_id};
@@ -399,7 +398,7 @@ function AssistancePanel({api,projection,stage,disabled,onProjection,onFailure,o
   const prepare=(element:HTMLElement)=>void execute(async()=>{trigger.current=element;const result=await api.prepareAssistanceDisclosure({contract_version:'1.0',...owner,expected_row_version:revision.row_version,action_kind:action,requested_provider:provider,requested_model:model});if(!result.ok){onFailure(result.error);return;}setConfirmed(false);setPreview(result.value);});
   const decide=(decision:'accepted'|'refused')=>void execute(async()=>{if(!preview)return;const result=await api.decideAssistanceDisclosure({...command(),preview_token:preview.preview_token,payload_sha256:preview.payload_sha256,decision,free_text_confirmed:decision==='accepted'&&confirmed});if(!result.ok){onFailure(result.error);return;}onProjection(result.value);close();setNotice(decision==='refused'?'已拒绝；未创建 Attempt，继续手工编辑。':'已记录披露；尚未发送。');});
   const accepted=projection.disclosures.findLast(d=>d.decision==='accepted'&&d.action_kind===action&&!projection.attempts.some(a=>a.disclosure_id===d.disclosure_id));
-  return <section className="workbench-card" aria-label="可选模型辅助" aria-busy={busy}><h2>可选辅助 · 人工审阅后采用</h2><p role="status">{notice}</p><p>仅发送已保存的案例字段；编辑后请先保存，再重新核对披露。请求名称不会配置或切换生产 Provider。</p>
+  return <details className="workbench-card assistance-panel" aria-label="可选模型辅助" aria-busy={busy} open={expanded} onToggle={event=>setExpanded(event.currentTarget.open)}><summary>可选模型辅助 · 人工审阅后采用</summary><p role="status">{notice}</p><p>仅发送已保存的案例字段；编辑后请先保存，再重新核对披露。请求名称不会配置或切换生产 Provider。</p>
     <label>请求的提供方<input value={provider} disabled={busy||disabled} onChange={e=>setProvider(e.target.value)}/></label><label>请求的模型<input value={model} disabled={busy||disabled} onChange={e=>setModel(e.target.value)}/></label>
     <button type="button" disabled={disabled||busy||!eligible||!!running||projection.runs.some(r=>r.status==='Running')||!provider.trim()||!model.trim()} onClick={e=>prepare(e.currentTarget)}>{label}</button>
     {accepted&&<button type="button" disabled={disabled||busy||!!running} onClick={()=>void execute(async()=>{const result=await api.startAssistance({...command(),disclosure_id:accepted.disclosure_id});if(!result.ok){onFailure(result.error);return;}onProjection(result.value);setNotice('请求已准入；取消不能撤回已发送内容。');})}>发送本次已确认请求</button>}
@@ -409,7 +408,7 @@ function AssistancePanel({api,projection,stage,disabled,onProjection,onFailure,o
     <dialog ref={dialog} aria-labelledby="assistance-disclosure-title" className="desktop-dialog" onCancel={e=>{e.preventDefault();if(!busy)close();}} onKeyDown={e=>{if(e.key!=='Tab')return;const nodes=Array.from(e.currentTarget.querySelectorAll<HTMLElement>('button:not([disabled]),input:not([disabled])')),first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}}>
       <h2 id="assistance-disclosure-title">逐次模型披露</h2>{preview&&<><p>请求 {preview.requested_provider} / {preview.requested_model}</p><p>{preview.irretractability_notice}</p><p>成本：{preview.cost_notice??'未知，尚无报价'}</p><p>类别：{preview.categories.join('、')}</p><pre aria-label="精确发送载荷" style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{preview.payload_text}</pre><code aria-label="载荷 SHA-256">{preview.payload_sha256}</code><label><input type="checkbox" checked={confirmed} disabled={busy} onChange={e=>setConfirmed(e.target.checked)}/>我已检查自由文本，不含不应发送的敏感内容</label><button type="button" disabled={busy||(preview.free_text_present&&!confirmed)} onClick={()=>decide('accepted')}>确认此次披露</button><button type="button" disabled={busy} onClick={()=>decide('refused')}>拒绝此次发送</button></>}
     </dialog>
-  </section>;
+  </details>;
 }
 
 function RunTerminalFailure({run}:{run:DesktopProjection['runs'][number]}){
@@ -444,7 +443,7 @@ function FindingReview({ finding }: Readonly<{ finding: DesktopProjection['findi
   const relative = (value: DesktopCalculationResult['changes']['active_member_count']['relative_change']) => value === 'not_applicable' ? '不适用（对比期基数为零）' : exactFraction(value);
   const judgment = finding.judgment === 'Confirmed' ? '当前期复购率低于对比期；证据支持 H1 的关联判断，不证明原因。' : finding.judgment === 'Rejected' ? '当前期复购率未低于对比期；本次证据不支持 H1。' : '至少一期活跃成员分母为零，无法作出可比较的判断。';
   return <article className="finding-review">
-    <h3>{finding.judgment}</h3><p>H1：当前期复购率低于对比期</p><p>{judgment}</p>
+    <div className="hypothesis-heading"><span className="hypothesis-id">H1</span><h3>当前期复购率低于对比期</h3><span className={`judgment-badge judgment-${finding.judgment}`}>{finding.judgment==='Confirmed'?'证据支持':finding.judgment==='Rejected'?'证据不支持':'证据不足'}</span></div><p>{judgment}</p>
     <div className="metric-scroll"><table aria-label="两期复购指标"><caption>两期复购指标 · CNY / Asia/Shanghai</caption><thead><tr><th scope="col">指标与单位</th><th scope="col">对比期</th><th scope="col">当前期</th></tr></thead><tbody>
       <tr><th scope="row">活跃成员数（人，复购率分母）</th><td>{comparison.active_member_count}</td><td>{current.active_member_count}</td></tr>
       <tr><th scope="row">复购成员数（人）</th><td>{comparison.repeat_member_count}</td><td>{current.repeat_member_count}</td></tr>
@@ -460,7 +459,7 @@ function FindingReview({ finding }: Readonly<{ finding: DesktopProjection['findi
     </tbody></table></div>
     <h4>分组贡献（M2）</h4>{metrics.m2.status === 'not_applicable' ? <p>不适用：本次没有选择成员分组，不臆造分组结论。</p> : <><p>按确认的成员分组计算复购收入变化；只显示脱敏分组序号，不显示原始组名。贡献为当前期减对比期，不代表原因。</p><div className="metric-scroll"><table aria-label="分组复购收入贡献"><thead><tr><th scope="col">分组</th><th scope="col">对比期（分）</th><th scope="col">当前期（分）</th><th scope="col">贡献（分）</th></tr></thead><tbody>{metrics.m2.groups.map((group,index)=><tr key={group.group_id}><th scope="row">分组 {index+1}</th><td>{group.comparison_repeat_revenue_fen}</td><td>{group.current_repeat_revenue_fen}</td><td>{group.absolute_delta}</td></tr>)}</tbody></table></div></>}
     <h4>支持、反证与限制</h4><p>{judgment}</p><p>DuckDB 主计算与 Python 独立复算一致。关联不等于因果；不进行显著性检验；结论仅限已确认的本地快照，不能外推真实效果。</p>
-    <details><summary>精确指标与证据身份（技术信息）</summary><pre>{finding.metrics}</pre><ul>{finding.evidence_refs.map(x=><li key={x}>{x}</li>)}</ul><p>{finding.refutation}</p><ul>{finding.supporting_evidence.concat(finding.limitations).map(x=><li key={x}>{x}</li>)}</ul></details>
+    <details><summary>精确指标与证据身份（技术信息）</summary><p>正式判断：{finding.judgment}</p><pre>{finding.metrics}</pre><ul>{finding.evidence_refs.map(x=><li key={x}>{x}</li>)}</ul><p>{finding.refutation}</p><ul>{finding.supporting_evidence.concat(finding.limitations).map(x=><li key={x}>{x}</li>)}</ul></details>
     <p>计算结果、显式接受与决策闭环是独立事实；此页面不执行外部行动。</p>
   </article>;
 }
@@ -475,7 +474,7 @@ export function DecisionClosureEditor({initial,disabled,canComplete,onSave,onCom
   const save=async(disposition:DecisionForm['disposition'])=>{if(disabled||saving)return;setSaving(true);try{await onSave({...form,disposition,defer_until:disposition==='deferred'&&deferUntil!==''?deferUntil:null});}finally{setSaving(false);}};
   const candidateFields=[['title','候选标题'],['evidence_basis','证据依据'],['risk_or_refutation','风险或反证'],['applicability_conditions','适用条件'],['future_validation_metric','后续验证指标']] as const;
   return <section className="decision-editor" aria-label="决策闭环表单" aria-busy={saving}>
-    <p id="decision-help">保存草稿可不完整；保存闭环路线要求候选至少两项且五项文字完整，或填写证据不足原因。保存不替代显式完成。</p>
+    <p id="decision-help">比较至少两个完整候选，或说明为何证据不足。保存路线后仍需单独完成案例。</p>
     <label htmlFor="decision-route">闭环路线</label><select id="decision-route" disabled={disabled||saving} value={form.route??''} onChange={event=>{const route=event.target.value;change({...form,route:route==='candidate_comparison'||route==='insufficient_evidence'?route:null,preferred_candidate_id:null,preferred_reason:null,insufficient_reason:route==='insufficient_evidence'?form.insufficient_reason:null});}}><option value="">尚未选择</option><option value="candidate_comparison">候选比较</option><option value="insufficient_evidence">证据不足</option></select>
     {form.route!=='insufficient_evidence'&&<><button type="button" disabled={disabled||saving} onClick={()=>change({...form,candidates:[...form.candidates,{candidate_id:crypto.randomUUID(),title:'',evidence_basis:'',risk_or_refutation:'',applicability_conditions:'',future_validation_metric:''}]})}>新增候选</button>
       {form.candidates.map((candidate,index)=><fieldset key={candidate.candidate_id} disabled={disabled||saving}><legend>候选 {index+1}</legend>{candidateFields.map(([key,label])=><div key={key}><label htmlFor={`candidate-${candidate.candidate_id}-${key}`}>{label}</label><textarea id={`candidate-${candidate.candidate_id}-${key}`} value={candidate[key]} rows={2} onChange={event=>change({...form,candidates:form.candidates.map(item=>item.candidate_id===candidate.candidate_id?{...item,[key]:event.target.value}:item)})}/></div>)}<button type="button" onClick={()=>change({...form,candidates:[...form.candidates,{...candidate,candidate_id:crypto.randomUUID()}]})}>复制候选 {index+1}</button><button type="button" onClick={()=>change({...form,candidates:form.candidates.filter(c=>c.candidate_id!==candidate.candidate_id),preferred_candidate_id:form.preferred_candidate_id===candidate.candidate_id?null:form.preferred_candidate_id,preferred_reason:form.preferred_candidate_id===candidate.candidate_id?null:form.preferred_reason})}>移除候选 {index+1}</button></fieldset>)}
@@ -483,16 +482,16 @@ export function DecisionClosureEditor({initial,disabled,canComplete,onSave,onCom
     </>}
     {form.route==='insufficient_evidence'&&<><label htmlFor="insufficient-reason">证据不足原因</label><textarea id="insufficient-reason" rows={4} disabled={disabled||saving} value={form.insufficient_reason??''} onChange={event=>change({...form,insufficient_reason:event.target.value})}/><p>此路线没有首选候选；不强迫生成建议。</p></>}
     <p id="decision-validity">{valid?'路线内容完整，可保存后再单独完成。':'路线尚未完整；可以保存草稿，不可完成。'}</p>
-    <button type="button" disabled={disabled||saving} onClick={()=>void save('draft')}>保存草稿</button><button type="button" aria-describedby="decision-validity" disabled={disabled||saving||!valid} onClick={()=>void save('saved')}>保存闭环路线</button>
+    <button type="button" disabled={disabled||saving} onClick={()=>void save('draft')}>保存草稿</button><button type="button" className="primary-button" aria-describedby="decision-validity" disabled={disabled||saving||!valid} onClick={()=>void save('saved')}>保存闭环路线</button>
     <fieldset disabled={disabled||saving}><legend>暂不闭环</legend><p>以下处置针对本表单中的候选方案或当前决策，不代表完成或执行行动。</p><button type="button" disabled={form.candidates.length===0} onClick={()=>void save('not_adopted')}>不采纳此候选方案</button><label htmlFor="defer-until">暂缓到（可不填）</label><input id="defer-until" type="date" value={deferUntil} onChange={event=>{setDeferUntil(event.target.value);setDirty(true);}}/><p>再次暂缓会保留显示的日期；清空日期后保存，明确记为未指定日期，旧处置仍保留。</p><button type="button" onClick={()=>void save('deferred')}>暂缓决策</button><button type="button" onClick={()=>void save('more_evidence')}>需要补证</button></fieldset>
-    <p>只有显式接受的 Finding 与最新已保存路线才可完成；未保存修改时请先保存。</p><button type="button" disabled={disabled||saving||dirty||!canComplete} onClick={()=>void onComplete()}>完成分析案例</button>
+    <p>只有已接受的分析结果与最新已保存路线才可完成；未保存修改时请先保存。</p><button type="button" className="primary-button" disabled={disabled||saving||dirty||!canComplete} onClick={()=>void onComplete()}>完成分析案例</button>
   </section>;
 }
 
 function ReportVersions({projection,exportDisabled,onExport}:Readonly<{projection:DesktopProjection;exportDisabled:boolean;onExport:(reportId:string)=>Promise<void>}>){
   const [selected,setSelected]=useState(projection.revision?.current_report_id??projection.reports.at(-1)?.report_id);
   const report=projection.reports.find(item=>item.report_id===selected);
-  return <><label htmlFor="report-version">报告版本历史</label><select id="report-version" value={selected} onChange={event=>setSelected(event.target.value)}>{projection.reports.map(item=><option key={item.report_id} value={item.report_id}>修订报告 {item.version_sequence} · {item.state==='final'?(projection.revision?.current_report_id===item.report_id?'当前最终报告':'历史最终报告'):'分析草稿'}</option>)}</select>{report&&<><ReportReview report={report} projection={projection}/><button type="button" className="secondary-button" disabled={exportDisabled} onClick={()=>void onExport(report.report_id)}>导出报告 {report.version_sequence}（Markdown / HTML）</button></>}</>;
+  return <><label htmlFor="report-version">报告版本历史</label><select id="report-version" value={selected} onChange={event=>setSelected(event.target.value)}>{projection.reports.map(item=><option key={item.report_id} value={item.report_id}>修订报告 {item.version_sequence} · {item.state==='final'?(projection.revision?.current_report_id===item.report_id?'当前最终报告':'历史最终报告'):'分析草稿'}</option>)}</select>{report&&<><ReportReview report={report} projection={projection}/><button type="button" className="primary-button" disabled={exportDisabled} onClick={()=>void onExport(report.report_id)}>导出报告 {report.version_sequence}（Markdown / HTML）</button></>}</>;
 }
 
 function ReportReview({ report,projection }: Readonly<{ report: DesktopProjection['reports'][number];projection:DesktopProjection }>) {
@@ -501,7 +500,7 @@ function ReportReview({ report,projection }: Readonly<{ report: DesktopProjectio
   const finding=projection.findings.find(f=>f.finding_id===report.finding_id),closure=projection.closures.find(c=>c.closure_id===report.closure_id),form=projection.forms.find(f=>f.form_id===closure?.form_id);
   return <article className="report-review"><h3>修订报告 {report.version_sequence} · {report.state==='final'?(projection.revision?.current_report_id===report.report_id?'当前最终报告':'历史最终报告（保留原文）'):'分析草稿'}</h3><p>{report.acceptance_id?'形成时已接受':'形成时未接受'} · {report.closure_id?'形成时已闭环':'形成时未闭环'}；这些标记是报告形成时状态，不代表外部目标当前情况。</p>
     {finding&&<FindingReview finding={finding}/>}{form&&<section aria-label="报告决策路线"><h4>{form.route==='candidate_comparison'?'候选比较':'证据不足'}</h4>{form.route==='insufficient_evidence'?<p>{form.insufficient_reason}</p>:form.candidates.map(candidate=><section key={candidate.candidate_id}><h5>{candidate.title}{form.preferred_candidate_id===candidate.candidate_id?' · 首选':''}</h5><dl><dt>证据依据</dt><dd>{candidate.evidence_basis}</dd><dt>风险或反证</dt><dd>{candidate.risk_or_refutation}</dd><dt>适用条件</dt><dd>{candidate.applicability_conditions}</dd><dt>后续验证指标</dt><dd>{candidate.future_validation_metric}</dd></dl></section>)}{form.preferred_reason&&<p>首选理由：{form.preferred_reason}</p>}<p>未执行外部 Action；未声明 Outcome。</p></section>}
-    {review ? <><section aria-label="报告草稿正文">{review.markdown_text.split(/(```[\s\S]*?```)/u).map((block,index)=>block.startsWith('```')?<details key={index}><summary>{block.startsWith('```json')?'精确计算数据（技术原文）':'来源与方法身份（技术原文）'}</summary><pre>{block}</pre></details>:<pre key={index}>{block}</pre>)}</section>
+    {review ? <><details><summary>报告完整原文（含技术身份）</summary><section aria-label="报告草稿正文">{review.markdown_text.split(/(```[\s\S]*?```)/u).map((block,index)=>block.startsWith('```')?<details key={index}><summary>{block.startsWith('```json')?'精确计算数据（技术原文）':'来源与方法身份（技术原文）'}</summary><pre>{block}</pre></details>:<pre key={index}>{block}</pre>)}</section></details>
       <nav aria-label="报告证据回链"><ul>{review.evidence.map(item=><li key={item.evidence_ref}><a href={`#${targetId(item.evidence_ref)}`} onClick={event=>{event.preventDefault();const target=document.getElementById(targetId(item.evidence_ref));const detail=target?.querySelector('details');if(detail)detail.open=true;target?.focus();target?.scrollIntoView({block:'start'});}}>{item.title}</a></li>)}</ul></nav>
       {review.evidence.map(item=><section className="report-evidence" key={item.evidence_ref} id={targetId(item.evidence_ref)} tabIndex={-1} aria-label={item.title}><h4>{item.title}</h4><details><summary>展开只读证据原文</summary><pre>{item.content}</pre></details></section>)}</>
       : <p role="status">报告或引用证据损坏，正文不可用；原始字节保留，不使用未经核验的内容。</p>}
@@ -519,15 +518,11 @@ function ProfessionalWorkspace({ selectedStage, onSelectStage, children, workLab
         ))}
       </nav>
       <section aria-labelledby="professional-workspace-heading" className="professional-workspace">
-        <div className="workspace-kicker">专业模式 · 首纵切工作台</div>
         <h1 id="professional-workspace-heading">{panel.title}</h1>
         <p className="workspace-description">{selectedStage === '新建分析' ? '在选定项目内创建专业会话，记录复购问题与假设。可选问题辅助须先逐次披露并明确发送。' : panel.description}</p>
-        <p className="boundary-note">{selectedStage === '新建分析' ? '手工字段保持本地 · 可选模型辅助单独确认' : panel.boundary}</p>
+        <p className="workspace-boundary">{selectedStage === '新建分析' ? '手工字段保持本地 · 可选模型辅助单独确认' : panel.boundary}</p>
         {children}
-        <div className="professional-grid">
-          <section className="workbench-card"><h2>当前阶段</h2><p>{selectedStage}</p><span className="quiet-chip">{selectedStage === '新建分析' ? '本地案例可用' : '本地业务可用'}</span></section>
-          <section className="workbench-card"><h2>恢复与返回</h2><p>{workLabel==='空闲'?'没有运行中的任务':workLabel}；切换模式不会取消或转换工作。</p></section>
-        </div>
+        <p className="workspace-footer">{workLabel==='空闲'?'没有运行中的任务':workLabel} · 切换模式不会取消或转换工作。</p>
       </section>
     </>
   );
@@ -557,7 +552,7 @@ function DataPreparation({api,projection,disabled,onProjection,onFailure,onUnkno
     setWorking(true);try{const result=await api.confirmRevision({...owner,command_id:crypto.randomUUID(),inspection_token:inspection.inspection_token,confirmation});if(result.ok){onProjection(result.value);setInspection(null);}else onFailure(result.error);}catch{onUnknown();}finally{setWorking(false);}
   }
   const mappings:[keyof InspectionConfiguration['column_mapping'],string,'members'|'orders'][]=[['member_id_column','成员 ID 列','members'],['member_group_column','成员分组列','members'],['order_id_column','订单 ID 列','orders'],['order_member_id_column','订单成员 ID 列','orders'],['paid_at_column','支付时间列','orders'],['amount_column','金额列','orders'],['status_column','订单状态列','orders'],['currency_column','币种列','orders']];
-  if(projection?.snapshot)return <section className="workbench-card"><h2>不可变数据快照已确认</h2><p>CNY · Asia/Shanghai · 原始数据未上传，模型不可见。</p><ul>{(['members','orders'] as const).map(role=><li key={role}>{projection.snapshot![role].display_name} · {projection.snapshot![role].byte_length} bytes<p>SHA-256：{projection.snapshot![role].sha256}</p></li>)}</ul><p>成员：纳入 {projection.snapshot.included_member_count}，排除 {projection.snapshot.excluded_member_count}；订单：纳入 {projection.snapshot.included_order_count}，排除 {projection.snapshot.excluded_order_count}。</p><p>已记录授权、质量处理与分析定义。修改选择须创建新 Draft 修订。</p></section>;
+  if(projection?.snapshot)return <section className="workbench-card"><h2>不可变数据快照已确认</h2><p>CNY · Asia/Shanghai · 原始数据未上传，模型不可见。</p><ul>{(['members','orders'] as const).map(role=><li key={role}>{projection.snapshot![role].display_name} · {projection.snapshot![role].byte_length} bytes<p>SHA-256：{projection.snapshot![role].sha256}</p></li>)}</ul><p>成员：纳入 {projection.snapshot.included_member_count}，排除 {projection.snapshot.excluded_member_count}；订单：纳入 {projection.snapshot.included_order_count}，排除 {projection.snapshot.excluded_order_count}。</p><p>已记录授权、质量处理与分析定义。修改选择须创建新数据修订。</p></section>;
   return <section className="workbench-card import-review" aria-busy={working}>
     <h2>两份本地 CSV</h2><p>原始数据只在本机读取，不显示原始成员、订单 ID 或组名；不发送给模型。</p>
     <button type="button" className="secondary-button" disabled={locked||!projection?.capabilities.can_select_import} onClick={()=>void inspect(false)}>选择成员与订单 CSV</button>
@@ -625,7 +620,7 @@ function SearchDialog() {
 
 function CapabilityDialog({ capability }: Readonly<{ capability: 'Skill' | 'Prompt' }>) {
   const details = capability === 'Skill'
-    ? { available: '会员复购分析 · v1.0', scope: '适用于专业模式的首纵切方法展示', unavailable: '通用 Skill 市场 · 不可用' }
+    ? { available: '会员复购分析 · v1.0', scope: '适用于专业模式的会员复购分析', unavailable: '通用 Skill 市场 · 不可用' }
     : { available: '循证分析措辞 · v1.0', scope: '仅影响可选辅助说明，不改变数据、计算或判断', unavailable: '通用 Prompt 管理 · 不可用' };
   return (
     <div className="dialog-content">
@@ -638,6 +633,18 @@ function CapabilityDialog({ capability }: Readonly<{ capability: 'Skill' | 'Prom
 
 function DrawerSection({ heading, value }: Readonly<{ heading: string; value: string }>) {
   return <section className="drawer-section"><h3>{heading}</h3><p>{value}</p></section>;
+}
+
+function ContextInspector({mode,projection,stage,projectName,expanded}:Readonly<{mode:Mode;projection:DesktopProjection|null;stage:ProfessionalStage;projectName:string|undefined;expanded:boolean}>){
+  const context=mode==='professional'?projection:null,revision=context?.revision,snapshot=context?.snapshot;
+  return <>
+    <section className="drawer-section"><h3>当前上下文</h3><dl className="context-list"><dt>项目</dt><dd>{projectName??'尚未选择'}</dd><dt>分析</dt><dd>{revision?.case_name??'尚未打开分析'}</dd><dt>阶段</dt><dd>{mode==='professional'?stage:'快速模式 · Preview'}</dd>{revision&&<><dt>状态</dt><dd>{revisionLabel[revision.state]} · 修订 {revision.revision_sequence}</dd></>}</dl>{revision?.question_text&&<p className="context-question">{revision.question_text}</p>}</section>
+    <section className="drawer-section"><h3>数据与模型边界</h3>{snapshot?<><p>{snapshot.members.display_name}<br/>{snapshot.orders.display_name}</p><p>纳入 {snapshot.included_member_count} 位成员、{snapshot.included_order_count} 笔订单。已确认本地不可变快照。</p></>:<p>尚无已确认快照。原始 CSV 保持本地。</p>}<p>{context?.disclosures.length?`${context.disclosures.length} 项逐次披露；是否发送以请求记录为准。`:'尚无逐次模型披露；未发送模型请求。'}</p></section>
+    <section className="drawer-section"><h3>假设与证据</h3>{context?.findings.length?context.findings.map(f=><div key={f.finding_id} className="inspector-evidence"><strong>H1 · {f.judgment==='Confirmed'?'证据支持':f.judgment==='Rejected'?'证据不支持':'证据不足'}</strong><p>当前期会员复购率低于对比期</p><p>{f.evidence_refs.length} 项证据回链 · {context.acceptances.some(a=>a.finding_id===f.finding_id)?'已显式接受':'待人工审阅'}</p></div>):<p>{revision?'H1：当前期会员复购率低于对比期。尚无已提交计算结果。':'创建专业分析后显示真实假设和证据。'}</p>}<p>Fork / Subagent · Preview，无已执行子任务。</p></section>
+    <section className="drawer-section"><h3>报告版本</h3>{context?.reports.length?<ul className="inspector-versions">{context.reports.map(r=><li key={r.report_id}>版本 {r.version_sequence} · {r.state==='final'?(revision?.current_report_id===r.report_id?'当前最终报告':'历史最终报告'):'分析草稿'}<small>{r.acceptance_id?'形成时已接受':'形成时未接受'} · {r.closure_id?'已闭环':'未闭环'}</small></li>)}</ul>:<p>暂无报告。计算、接受结果和完成案例分别记录。</p>}</section>
+    <DrawerSection heading="Skill · Prompt" value="会员复购分析 v1.0 · 循证分析措辞 v1.0。通用能力为 Preview，不改变确定性方法。"/>
+    {expanded&&<details className="technical-details"><summary>技术身份与运行记录</summary>{revision&&<p>Case {context?.session?.case_id}<br/>Revision {revision.revision_id}<br/>{revision.state} · row_version {revision.row_version} · {revision.integrity_state}</p>}{snapshot&&<p>members SHA-256 {snapshot.members.sha256}<br/>orders SHA-256 {snapshot.orders.sha256}</p>}<ul>{context?.runs.map(run=><li key={run.run_id}>{run.status} · {run.run_id} · {run.terminal_reason??'无终止原因'}</li>)}</ul>{context?.findings.map(f=><div key={f.finding_id}><p>{f.judgment} · {f.finding_id}</p><ul>{f.evidence_refs.map(ref=><li key={ref}>{ref}</li>)}</ul></div>)}</details>}
+  </>;
 }
 
 const root = document.getElementById('root');

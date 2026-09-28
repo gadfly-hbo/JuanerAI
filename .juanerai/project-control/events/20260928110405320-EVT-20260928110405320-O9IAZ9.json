@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928110405320-O9IAZ9",
+  "event_type": "accepted",
+  "occurred_at": "2026-09-28T11:04:05.320Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "用户明确 UI 验收通过，绑定 DMG003；仅记录验收，未 Git 交付或扩大范围。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

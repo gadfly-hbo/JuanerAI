@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928043333279-6YAZ8Y",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-28T04:33:33.279Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "用户报告MacBook002仍无法启动，暂停验收并收取目标只读诊断",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

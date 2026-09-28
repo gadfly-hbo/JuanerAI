@@ -11,9 +11,9 @@ Current approved local-analysis composition:
 - local artifact storage;
 - single local workspace and user trust boundary.
 
-SQLite operational state and a Semantica Adapter remain future Personal candidates. Any additional configuration or Runtime contract requires its own approved Change.
+The accepted first Xanthil Desktop Change also composes SQLite operational state, immutable local evidence and DuckDB/Python independent calculation through its Desktop Profile. CLI behavior remains preserved. Semantica and enterprise deployment remain deferred; Windows activation is not implied by macOS evidence.
 
-The current product-planning direction is Xanthil Desktop for macOS and Windows, but no Desktop Profile or packaging/runtime composition is active. Continued CLI product development is paused while the approved CLI composition remains current executable behavior. A future Desktop Change must name the reused Application/Port contracts, Desktop-specific deltas, current-CLI compatibility, activation, rollback, and real Windows acceptance environment before Profile activation.
+The approved [internal-install supplement](../../openspec/changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/internal-install-supplement-001.md) adds a relocatable internal Apple Silicon app: the Profile resolves a v2 toolchain descriptor relative to packaged Resources, verifies the bundled runtime inventory and observed versions, and admits only explicitly selected external writable Projects. The v1 absolute descriptor remains supported for existing development deployments. Inventory hashes detect inconsistency; they are not publisher authentication, Developer ID signing or notarization. Actual target-Mac installation acceptance is separate from local build/tests.
 
 ## Runtime Selection
 

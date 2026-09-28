@@ -69,6 +69,8 @@ export type DesktopAcceptanceCase = Readonly<{
 
 /** Closed producer identities accepted by the U1.1 packaged-GUI readback seam. */
 export const guiPackageReadbackProducers = Object.freeze([
+  Object.freeze({ commandId: 'UI-DEMO-PACKAGE-002', attempt: 'first' }),
+  Object.freeze({ commandId: 'UI-DEMO-PACKAGE-003', attempt: 'first' }),
   Object.freeze({ commandId: 'B-PACKAGE-U4-V08', attempt: 'first' }),
   Object.freeze({ commandId: 'B-PACKAGE-U4-V08', attempt: 'correction-1' }),
   Object.freeze({ commandId: 'B-PACKAGE-U4-V08', attempt: 'correction-2' }),

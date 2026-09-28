@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928033740300-O2FIZT",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-28T03:37:40.300Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "包签名结构修正独立PASS；旧001目标失败保留，新002等待MacBook重验",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

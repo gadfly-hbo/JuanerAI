@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928140919336-IZ5X1Z",
+  "event_type": "accepted",
+  "occurred_at": "2026-09-28T14:09:19.336Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "用户授权同一 Change 内部安装、签名修正及已验收 UI 的 Git 交付；开始范围和索引核验。",
+  "status_after": "active",
+  "evidence_refs": []
+}

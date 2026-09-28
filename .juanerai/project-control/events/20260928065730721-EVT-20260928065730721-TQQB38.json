@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928065730721-TQQB38",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-09-28T06:57:30.721Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "用户报告安装成功；授权同一首 Change UI Demo 还原返工。历史失败与未知保留，未宣称新 UI PASS。",
+  "status_after": "active",
+  "evidence_refs": []
+}

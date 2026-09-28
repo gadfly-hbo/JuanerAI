@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928024829371-1D8GVR",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-28T02:48:29.371Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "内部安装固定候选独立工程PASS；待MacBook用户实机验收，未Git交付",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}
