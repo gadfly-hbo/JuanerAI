@@ -6,15 +6,15 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "FIRST_CHANGE_SUPPLEMENT_GIT_DELIVERY",
-    "label": "首 Change 内部安装与 UI 补充：已验收，Git 交付中",
+    "id": "FIRST_CHANGE_SUPPLEMENT_ACCEPTED_DELIVERY_READBACK",
+    "label": "首 Change 补充已工程/UI验收；Git集成以PR44读回为准",
     "ordinal": 4,
     "total": 4
   },
-  "health": "active",
-  "summary": "用户已明确授权本次补充 Git 交付。保留内部安装/包签名/UI 独立工程验证与用户 UI 验收；当前仅进行固定范围 Git 检查和 PR 集成，不扩展产品或公共发行。",
-  "current_objective": "恢复已批准 Demo 的专业工作台与双模式 UI 体验，保持真实本地分析及内部独立安装能力。",
-  "next_action": "核对完整交付范围、固定验证输入与新鲜 full-index，提交当前工作分支，完成 PR 审查及 squash 集成读回；不删除本地工作分支，不发布二进制。",
+  "health": "complete",
+  "summary": "内部安装、包签名修正与 Demo UI 补充工程验证完成，用户已报告安装试用成功并明确 UI 验收通过。候选已推送 PR#44；本记录的 complete 指补充工程/用户 UI 验收，不预先宣称云端 CI、合并或公开发行。历史失败、UNKNOWN 和 DMG002 缺失保留。",
+  "current_objective": "保全本次已验收补充的代码、规格、测试、失败和验收证据，完成授权 Git 交付读回。",
+  "next_action": "无下一产品阶段。仅核对 PR#44 最终 CI、完成授权 squash 集成及本机 main 快进读回后停止；最终提交/树/远端结论见原证据根 ui-demo-restoration-001/git-delivery-001/ 最终回执。",
   "blockers": [],
   "milestones": [
     {
@@ -158,14 +158,14 @@
       "label": "Continuous Engineering Worker",
       "model": "gpt-6-astra / high (current interface)",
       "status": "complete",
-      "activation": "新副本封装修正及永久防回归入口完成，旧包/DMG/运行库/数据保留，待目标机重验。"
+      "activation": "内部安装、签名及 UI Demo 返工完成；固定产品输入未变，无下一 Change 派发。"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-6-astra / high (current interface)",
       "status": "complete",
-      "activation": "fresh internal_signature_candidate001_validator固定修正PASS；目标002 NOT RUN，原失败及观察时长偏差保留。"
+      "activation": "最终 UI candidate-002 独立 PASS；继承未变内部安装/签名验证。历史 target002、原始失败及 timing UNKNOWN 保留，不冒称其已被追认。"
     },
     {
       "id": "session_runtime_reviewer",
@@ -907,6 +907,12 @@
       "label": "用户明确 UI 验收通过：DMG003",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/ui-demo-restoration-001/user-ui-acceptance-001.md",
       "status": "present"
+    },
+    {
+      "id": "first-change-supplement-pr44",
+      "label": "本次补充 Git 交付 PR44：最终 CI/合并以远端读回为准",
+      "path": "https://github.com/gadfly-hbo/JuanerAI/pull/44",
+      "status": "present"
     }
   ],
   "risks": [
@@ -983,7 +989,7 @@
       "mitigation": "保留原记录与 UNKNOWN，不声明历史材料全部保全；旧 signed app 基线仍完整。当前候选已独立验证，不重建旧文件或扩大历史风险豁免。用户已被询问旧 DMG 去向。"
     }
   ],
-  "updated_at": "2026-09-28T14:09:19.331Z",
+  "updated_at": "2026-09-28T14:15:20.400Z",
   "updated_by": {
     "role": "controller",
     "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
