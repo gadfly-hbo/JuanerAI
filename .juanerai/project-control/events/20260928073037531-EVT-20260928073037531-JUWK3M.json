@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928073037531-JUWK3M",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-09-28T07:30:37.531Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "UI Demo 返工进入固定候选/独立验证；保留历史失败与证据限制，用户 UI 验收尚未进行。",
+  "status_after": "active",
+  "evidence_refs": []
+}

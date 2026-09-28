@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928032221265-VQ69CA",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-28T03:22:21.265Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "签名结构修正作者GREEN；独立验证及MacBook启动仍待验，历史失败保留",
+  "status_after": "validating",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928075015120-NIDC3H",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-28T07:50:15.120Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "UI Demo 固定候选独立 Validator PASS；工程总控接受技术验证，交用户新版 UI 验收。保留历史 UNKNOWN，未 Git 交付。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

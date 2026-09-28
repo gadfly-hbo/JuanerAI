@@ -661,7 +661,8 @@ test('U3 decision editor exposes two routes, explicit non-closure actions and se
     const Editor=requiredExport<(props:Record<string,unknown>)=>import('react').ReactNode>(renderer,'DecisionClosureEditor');let saves=0,completions=0;
     const markup=server.renderToStaticMarkup(react.createElement(Editor,{initial:null,disabled:false,canComplete:false,onSave:()=>{saves++;},onComplete:()=>{completions++;}}));
     for(const text of ['候选比较','证据不足','新增候选','保存草稿','保存闭环路线','暂缓决策','需要补证','完成分析案例'])assert.ok(markup.includes(text),text);
-    assert.match(markup,/type="button" disabled="">完成分析案例/);assert.equal(saves,0);assert.equal(completions,0);
+    const completionTag=markup.match(/<button\b[^>]*>完成分析案例<\/button>/u)?.[0];
+    assert.ok(completionTag,'the explicit completion control exists');assert.match(completionTag,/\btype="button"/u);assert.match(completionTag,/\bdisabled=""/u);assert.equal(saves,0);assert.equal(completions,0);
   });
 });
 

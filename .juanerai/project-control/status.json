@@ -6,15 +6,15 @@
     "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
   },
   "phase": {
-    "id": "ENGINEERING_PRODUCT_ACCEPTED_ARCHIVED",
-    "label": "首个Change已验收归档；Git集成按PR读回",
-    "ordinal": 8,
-    "total": 8
+    "id": "FIRST_CHANGE_SUPPLEMENT_ACCEPTED_DELIVERY_READBACK",
+    "label": "首 Change 补充已工程/UI验收；Git集成以PR44读回为准",
+    "ordinal": 4,
+    "total": 4
   },
   "health": "complete",
-  "summary": "用户产品验收、独立工程/原生验证、OpenSpec归档复核通过。c764bda云端36331418007 PASS：CI25、Desktop合同313、集成225；产品与包未改。Git合并结论以PR#43及原任务最终读回为准，本记录不预先宣称合并。",
-  "current_objective": "保全已验收的第一个Change并完成授权交付读回",
-  "next_action": "本Change无下一工程阶段；仅完成已授权PR#43最终检查、squash集成与本地读回后停止。不得启动下一Change。",
+  "summary": "内部安装、包签名修正与 Demo UI 补充工程验证完成，用户已报告安装试用成功并明确 UI 验收通过。候选已推送 PR#44；本记录的 complete 指补充工程/用户 UI 验收，不预先宣称云端 CI、合并或公开发行。历史失败、UNKNOWN 和 DMG002 缺失保留。",
+  "current_objective": "保全本次已验收补充的代码、规格、测试、失败和验收证据，完成授权 Git 交付读回。",
+  "next_action": "无下一产品阶段。仅核对 PR#44 最终 CI、完成授权 squash 集成及本机 main 快进读回后停止；最终提交/树/远端结论见原证据根 ui-demo-restoration-001/git-delivery-001/ 最终回执。",
   "blockers": [],
   "milestones": [
     {
@@ -91,6 +91,16 @@
       "id": "current_acceptance",
       "label": "当前Change：独立技术/原生验证及用户产品验收PASS（不等于云端CI或合并完成）",
       "status": "completed"
+    },
+    {
+      "id": "ui_demo_restoration_engineering",
+      "label": "UI Demo 返工：固定候选独立工程验证通过",
+      "status": "completed"
+    },
+    {
+      "id": "ui_demo_restoration_user_acceptance",
+      "label": "UI Demo 返工：用户明确 UI 验收通过（非目标 Mac 安装身份独立证明）",
+      "status": "completed"
     }
   ],
   "agents": [
@@ -148,14 +158,14 @@
       "label": "Continuous Engineering Worker",
       "model": "gpt-6-astra / high (current interface)",
       "status": "complete",
-      "activation": "v08_u4_resumed_worker已完成已批准产品和CI夹具闭环，固定候选经独立Validator验证；没有下一Change派发。"
+      "activation": "内部安装、签名及 UI Demo 返工完成；固定产品输入未变，无下一 Change 派发。"
     },
     {
       "id": "juaner_validator",
       "label": "Validator",
       "model": "gpt-6-astra / high (current interface)",
       "status": "complete",
-      "activation": "完整产品候选及原生补充已独立PASS；归档/CI局部修正按固定候选独立复核，不将旧PASS冒充新云端结果。"
+      "activation": "最终 UI candidate-002 独立 PASS；继承未变内部安装/签名验证。历史 target002、原始失败及 timing UNKNOWN 保留，不冒称其已被追认。"
     },
     {
       "id": "session_runtime_reviewer",
@@ -849,6 +859,60 @@
       "label": "首个Change最终验收、归档及集成边界",
       "path": "openspec/changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/acceptance.md",
       "status": "verified"
+    },
+    {
+      "id": "internal-install-intake-001",
+      "label": "内部安装补充只读接收；非产品PASS",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/internal-install-001/intake-001.md",
+      "status": "present"
+    },
+    {
+      "id": "internal-install-supplement-001",
+      "label": "内部安装补充行为、范围、实际验证和待验收项",
+      "path": "openspec/changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/internal-install-supplement-001.md",
+      "status": "present"
+    },
+    {
+      "id": "internal-install-independent-001",
+      "label": "内部安装candidate-003独立验收报告：本机工程PASS，目标机待验",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/internal-install-001/validator-001/report.md",
+      "status": "verified"
+    },
+    {
+      "id": "internal-install-target-open-failure-001",
+      "label": "MacBook Finder无法打开与源包只读签名失败",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/internal-install-001/macbook-open-failure-001/diagnostic.md",
+      "status": "present"
+    },
+    {
+      "id": "internal-signature-validator-001",
+      "label": "签名修正独立验证：本机PASS，目标002待重验",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/internal-install-001/signature-repair-001/validator-001/report.md",
+      "status": "verified"
+    },
+    {
+      "id": "internal-install-target002-failure-001",
+      "label": "用户报告002安装后仍无法打开；目标诊断待读回",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/internal-install-001/signature-repair-001/macbook-002-failure-001.md",
+      "status": "present"
+    },
+    {
+      "id": "ui-demo-restoration-validator-001",
+      "label": "UI Demo 固定候选独立验收报告（非用户验收）",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/ui-demo-restoration-001/validator-001/REVIEW.md",
+      "status": "verified"
+    },
+    {
+      "id": "ui-demo-user-acceptance-001",
+      "label": "用户明确 UI 验收通过：DMG003",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/ui-demo-restoration-001/user-ui-acceptance-001.md",
+      "status": "present"
+    },
+    {
+      "id": "first-change-supplement-pr44",
+      "label": "本次补充 Git 交付 PR44：最终 CI/合并以远端读回为准",
+      "path": "https://github.com/gadfly-hbo/JuanerAI/pull/44",
+      "status": "present"
     }
   ],
   "risks": [
@@ -917,9 +981,15 @@
       "label": "新两路径无预检重定向及原生执行元数据丢失",
       "level": "medium",
       "mitigation": "原件与复制保留，不清理/重放/推断历史零副作用。当前37保护源未变，renderer未验证；直接等待用户本任务处置。"
+    },
+    {
+      "id": "ui-demo-historical-material-001",
+      "label": "历史 DMG002 缺失与两项旧输入预拷遗漏",
+      "level": "medium",
+      "mitigation": "保留原记录与 UNKNOWN，不声明历史材料全部保全；旧 signed app 基线仍完整。当前候选已独立验证，不重建旧文件或扩大历史风险豁免。用户已被询问旧 DMG 去向。"
     }
   ],
-  "updated_at": "2026-09-27T16:01:44.155Z",
+  "updated_at": "2026-09-28T14:15:20.400Z",
   "updated_by": {
     "role": "controller",
     "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"

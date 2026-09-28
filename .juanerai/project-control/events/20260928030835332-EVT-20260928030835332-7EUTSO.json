@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260928030835332-7EUTSO",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-28T03:08:35.332Z",
+  "actor": {
+    "role": "controller",
+    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+  },
+  "summary": "MacBook应用程序副本无法打开；源包签名结构核验失败，暂停验收，不绕过保护",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

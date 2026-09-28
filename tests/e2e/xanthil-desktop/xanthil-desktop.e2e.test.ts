@@ -54,7 +54,7 @@ test('F2 GUI durable Assistance terminal reasons give truthful preservation and 
     projection=await requiredExport<Method>(app,'decideAssistanceDisclosure')({...command(),preview_token:preview.preview_token,payload_sha256:preview.payload_sha256,decision:'accepted',free_text_confirmed:true});projection=await requiredExport<Method>(app,'startAssistance')({...command(),disclosure_id:(projection.disclosures as Record<string,unknown>[])[0].disclosure_id});
     for(let n=0;n<100&&(projection.attempts as Record<string,unknown>[]).some(a=>a.status==='Running');n++){await new Promise(r=>setTimeout(r,10));projection=await requiredExport<Method>(app,'readProjection')(owner);}assert.equal((projection.attempts as Record<string,unknown>[])[0].terminal_reason,reason);assert.deepEqual(projection.assistance_drafts,[]);
     const launched=await launchFrozenProductionApp({project_directory:project.projectRoot,members_file:fileURLToPath(new URL('../../fixtures/xanthil-desktop/members.csv',import.meta.url)),orders_file:fileURLToPath(new URL('../../fixtures/xanthil-desktop/orders.csv',import.meta.url)),export_file:join(project.projectRoot,'unused.html')});t.after(()=>launched.close());const page=await launched.firstWindow();page.setDefaultTimeout(5000);
-    await page.getByRole('button',{name:'专业模式',exact:true}).click();await page.getByRole('button',{name:'选择项目',exact:true}).click();await page.getByRole('button',{name:String(requiredRecord(projection.session,'session').display_name),exact:true}).click();await page.getByText('会话已打开',{exact:true}).waitFor();const history=page.getByRole('list',{name:'辅助请求历史'});await history.scrollIntoViewIfNeeded();const text=await history.innerText();await saveScreenshotExclusive(page,join(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY!,`f2-assistance-${reason}.png`));
+    await page.getByRole('button',{name:'专业模式',exact:true}).click();await page.getByRole('button',{name:'选择项目',exact:true}).click();await page.getByRole('button',{name:String(requiredRecord(projection.session,'session').display_name),exact:true}).click();await page.getByText('会话已打开',{exact:true}).waitFor();await page.locator('details.assistance-panel > summary').click();const history=page.getByRole('list',{name:'辅助请求历史'});await history.scrollIntoViewIfNeeded();const text=await history.innerText();await saveScreenshotExclusive(page,join(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY!,`f2-assistance-${reason}.png`));
     assert.ok(text.includes(label));for(const section of ['原因：','未发生：','保留：','下一步：'])assert.ok(text.includes(section));assert.match(text,/不能撤回/);assert.match(text,/手工/);assert.doesNotMatch(text,/synthetic private|未发送|未创建 Attempt/);assert.equal(await page.getByRole('button',{name:'保存案例字段',exact:true}).isEnabled(),true);
   });
 });
@@ -75,6 +75,7 @@ test('U4 GUI exact disclosure refusal and unavailable model preserve manual edit
   await page.getByRole('button',{name:'专业模式',exact:true}).click();await page.getByRole('button',{name:'选择项目',exact:true}).click();
   const longContext='Synthetic context only. '.repeat(80);
   await page.getByLabel('分析案例名称',{exact:true}).fill('Synthetic Assistance case');await page.getByLabel('复购问题',{exact:true}).fill('  Preserve exact user question  ');await page.getByLabel('业务背景',{exact:true}).fill(longContext);await page.getByLabel('假设显示名称',{exact:true}).fill('Reviewed hypothesis');await page.getByRole('button',{name:'创建分析',exact:true}).click();await page.getByText('会话已创建',{exact:true}).waitFor();
+  await page.locator('details.assistance-panel > summary').click();
   assert.equal(await page.getByRole('button',{name:'整理问题（辅助草稿）',exact:true}).count(),1,'healthy saved Session must expose its optional disclosed Assistance action');
   const readCounts=()=>{const db=new DatabaseSync(join(attachment.project_directory,'.xanthil','desktop','state.sqlite'),{readOnly:true});try{return{disclosures:db.prepare('SELECT count(*) n FROM model_disclosures').get()?.n,attempts:db.prepare('SELECT count(*) n FROM assistance_attempts').get()?.n,drafts:db.prepare('SELECT count(*) n FROM assistance_drafts').get()?.n};}finally{db.close();}};
   await page.getByLabel('请求的提供方',{exact:true}).fill('offline-test');await page.getByLabel('请求的模型',{exact:true}).fill('deterministic');
@@ -127,7 +128,7 @@ test('U4 GUI persisted untrusted question evidence and candidate Drafts require 
       for(const viewport of [{width:1440,height:900},{width:1366,height:768}]){await page.setViewportSize(viewport);if(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY)await saveScreenshotExclusive(page,join(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY,`u4-${action}-${viewport.width}.png`));}
     }finally{await launched.close();}
     const reopened=await launchFrozenProductionApp(attachment);page=await reopened.firstWindow();page.setDefaultTimeout(5000);
-    try{await open();assert.equal(await page.getByRole('region',{name:new RegExp(`^${title} · 已采用`)}).count(),1);assert.equal(await page.getByRole('region',{name:new RegExp(`^${title} · 已拒绝`)}).count(),1);if(action==='organize_question')assert.equal(await page.getByLabel('复购问题',{exact:true}).inputValue(),'  GUI edited question  ');if(action==='explain_evidence')assert.equal(await page.getByLabel('手工证据解释（不改变计算结果）',{exact:true}).inputValue(),'GUI edited evidence, not causal proof');if(action==='draft_candidates')assert.equal(await page.getByRole('group',{name:'候选 1',exact:true}).getByLabel('候选标题',{exact:true}).inputValue(),'GUI edited candidate');}finally{await reopened.close();}
+    try{await open();await page.locator('details.assistance-panel > summary').click();assert.equal(await page.getByRole('region',{name:new RegExp(`^${title} · 已采用`)}).count(),1);assert.equal(await page.getByRole('region',{name:new RegExp(`^${title} · 已拒绝`)}).count(),1);if(action==='organize_question')assert.equal(await page.getByLabel('复购问题',{exact:true}).inputValue(),'  GUI edited question  ');if(action==='explain_evidence')assert.equal(await page.getByLabel('手工证据解释（不改变计算结果）',{exact:true}).inputValue(),'GUI edited evidence, not causal proof');if(action==='draft_candidates')assert.equal(await page.getByRole('group',{name:'候选 1',exact:true}).getByLabel('候选标题',{exact:true}).inputValue(),'GUI edited candidate');}finally{await reopened.close();}
   });
 });
 
@@ -151,10 +152,10 @@ async function completeProfessionalJourney(page: Awaited<ReturnType<Awaited<Retu
   await page.getByRole('button',{name:'确认数据快照',exact:true}).click();try{await page.getByText('不可变数据快照已确认',{exact:true}).waitFor();}catch(error){console.log('U3 confirmation actual state:',await page.locator('body').innerText());throw error;}
   await professionalStages.getByRole('button',{name:/本地处理/}).click();
   await page.getByRole('button', { name: /开始本地处理|开始计算/ }).click();
-  await page.getByText('独立复核完成 · Review',{exact:true}).waitFor({timeout:30000});await professionalStages.getByRole('button',{name:/循证分析/}).click();await page.getByRole('table',{name:'两期复购指标',exact:true}).waitFor();
+  await page.getByText('独立复核完成 · 可审阅结果',{exact:true}).waitFor({timeout:30000});await professionalStages.getByRole('button',{name:/循证分析/}).click();await page.getByRole('table',{name:'两期复购指标',exact:true}).waitFor();
   assert.equal(await page.getByRole('button',{name:'接受本次分析结果',exact:true}).count(),1,'healthy committed Finding needs the explicit U3 acceptance action');
   if(stopAtReview)return;
-  await page.getByRole('button', { name: '接受本次分析结果',exact:true }).click();await page.getByText('此 Finding 已有显式接受记录',{exact:true}).waitFor();
+  await page.getByRole('button', { name: '接受本次分析结果',exact:true }).click();await page.getByText('本次结果已显式接受',{exact:true}).waitFor();
   assert.equal(await page.getByText('结果尚未接受 · 没有决策闭环或外部行动。',{exact:true}).count(),0,'accepted Finding must not retain a contradictory constant unaccepted label');
   await page.getByLabel('手工证据解释（不改变计算结果）',{exact:true}).fill('Manual comparison; association is not a causal claim.');await page.getByRole('button',{name:'保存证据解释',exact:true}).click();
   await page.getByText('表单已保存；保存不等于接受或完成。',{exact:true}).waitFor();
@@ -197,11 +198,38 @@ test('U2 GUI: real double CSV review confirmation and local analysis publish one
   for(let index=0;index<await treatments.count();index++)await treatments.nth(index).selectOption({index:1});
   for(const label of ['我有权将这两份本地数据用于本次分析','我已核对每项数据问题的数量与处理方式','我确认映射、期间、有效状态与分析定义'])await page.getByLabel(label,{exact:true}).check();
   await page.getByRole('button',{name:'确认数据快照',exact:true}).click();try{await page.getByText('不可变数据快照已确认',{exact:true}).waitFor();}catch(error){console.log('U2 confirmation visible state:',await page.locator('body').innerText());throw error;}
-  await page.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/本地处理/}).click();await page.getByRole('button',{name:'开始本地处理',exact:true}).click();
+  await page.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/本地处理/}).click();
+  // Observe real React commits locally; protocol round-trips must not require the
+  // real computation to remain slow. No API/clock/calculator is intercepted.
+  await page.evaluate(()=>{
+    const trace:{step:string;status:string;runIdentity:string}[]=[];
+    Object.defineProperty(window,'__runningNavigation',{value:trace,configurable:true});
+    let step=0;
+    const button=(label:string)=>Array.from(document.querySelectorAll<HTMLButtonElement>('button')).find(element=>element.textContent?.trim().startsWith(label));
+    const mode=(label:string)=>button(label)?.getAttribute('aria-pressed')==='true';
+    const observer=new MutationObserver(()=>{
+      const status=document.querySelector('footer[aria-label="Status"]')?.textContent??'';
+      const record=(name:string)=>trace.push({step:name,status,runIdentity:document.querySelector('.run-history details')?.textContent??''});
+      if(step===0&&status.includes('本地处理中')){record('running');step=1;button('快速模式')!.click();}
+      else if(step===1&&mode('快速模式')){record('quick');step=2;button('辅助抽屉')!.click();}
+      else if(step===2&&document.querySelector('[aria-label="辅助抽屉内容"]')){record('drawer');step=3;document.querySelector<HTMLButtonElement>('[aria-label="关闭辅助抽屉"]')!.click();}
+      else if(step===3&&!document.querySelector('[aria-label="辅助抽屉内容"]')){record('drawer-closed');step=4;button('返回后台工作 · 本地处理')!.click();}
+      else if(step===4&&mode('专业模式')&&document.querySelector('[aria-label="确定性本地分析"]')){record('returned');observer.disconnect();}
+    });
+    observer.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['aria-pressed']});
+  });
+  await page.getByRole('button',{name:'开始本地处理',exact:true}).click();
+  await page.waitForFunction(()=>Reflect.get(window,'__runningNavigation')?.length===5);
+  const runningNavigation=await page.evaluate(()=>Reflect.get(window,'__runningNavigation')) as {step:string;status:string;runIdentity:string}[];
+  console.log('AC001-04 actual Running DOM commits:',JSON.stringify(runningNavigation));
+  assert.deepEqual(runningNavigation.map(entry=>entry.step),['running','quick','drawer','drawer-closed','returned']);
+  for(const entry of runningNavigation)assert.match(entry.status,/运行状态：本地处理中/u,'each navigation commit observes the real Running projection');
+  assert.equal(runningNavigation[0].runIdentity,runningNavigation[4].runIdentity,'return keeps the actual same Running identity');
   const status=page.getByRole('contentinfo',{name:'Status',exact:true});
-  await status.getByText('运行状态：本地处理中',{exact:true}).waitFor();
+  await page.getByRole('region',{name:'确定性本地分析',exact:true}).getByText(/^本地处理 1 · (处理中|成功)$/u).waitFor();
   const activeDb=new DatabaseSync(join(attachment.project_directory,'.xanthil','desktop','state.sqlite'),{readOnly:true});
-  let activeRun:unknown;try{const row=activeDb.prepare('SELECT run_id,status FROM analysis_runs').get();assert.equal(row?.status,'Running');activeRun=row?.run_id;}finally{activeDb.close();}
+  let activeRun:unknown;try{const rows=activeDb.prepare('SELECT run_id,status FROM analysis_runs').all();assert.equal(rows.length,1);const row=rows[0];assert.ok(['Running','Succeeded'].includes(String(row?.status)),'real work has started; a fast completed Run is not a missing background task');activeRun=row?.run_id;console.log('AC001-04 before mode switch:',JSON.stringify({run:row,status:await status.innerText()}));}finally{activeDb.close();}
+  assert.ok(runningNavigation[0].runIdentity.includes(String(activeRun)),'observed Running identity is the one real persisted Run');
   await page.getByRole('button',{name:'快速模式',exact:true}).click();
   await page.getByRole('button',{name:'辅助抽屉',exact:true}).click();
   await page.getByRole('button',{name:'关闭辅助抽屉',exact:true}).click();
@@ -212,9 +240,9 @@ test('U2 GUI: real double CSV review confirmation and local analysis publish one
   console.log('AC001-04 after return click:',JSON.stringify({body:await page.locator('body').innerText(),pressed:await page.getByRole('button',{name:'专业模式',exact:true}).getAttribute('aria-pressed'),navigationCount:await page.getByRole('navigation',{name:'专业模式阶段',exact:true}).count()}));
   if(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY)await saveScreenshotExclusive(page,join(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY,'u4-return-after-click.png'));
   await page.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/本地处理/}).waitFor();
-  await page.getByText('独立复核完成 · Review',{exact:true}).waitFor({timeout:30000});
+  await page.getByText('独立复核完成 · 可审阅结果',{exact:true}).waitFor({timeout:30000});
   const completedDb=new DatabaseSync(join(attachment.project_directory,'.xanthil','desktop','state.sqlite'),{readOnly:true});try{assert.deepEqual(completedDb.prepare('SELECT run_id,status FROM analysis_runs').all().map(x=>({...x})),[{run_id:activeRun,status:'Succeeded'}]);assert.equal(completedDb.prepare('SELECT mode FROM product_sessions').get()?.mode,'professional');}finally{completedDb.close();}
-  await page.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/循证分析/}).click();await page.getByText('Rejected',{exact:true}).waitFor();
+  await page.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/循证分析/}).click();await page.getByText('证据不支持',{exact:true}).waitFor();
   await page.getByRole('table',{name:'两期复购指标',exact:true}).waitFor();
   assert.match(await page.getByRole('table',{name:'两期复购指标',exact:true}).innerText(),/活跃成员数.*复购成员数.*复购率.*复购收入/su);
   assert.match(await page.getByRole('table',{name:'两期复购指标',exact:true}).innerText(),/分母|活跃成员/u);
@@ -232,6 +260,7 @@ test('U2 GUI: real double CSV review confirmation and local analysis publish one
   }
   if(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY)await saveScreenshotExclusive(page,join(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY,'u2-review-finding.png'),true);
   await page.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/报告/}).click();
+  await page.getByText('报告完整原文（含技术身份）',{exact:true}).click();
   const reportBody=page.getByRole('region',{name:'报告草稿正文',exact:true});await reportBody.waitFor();
   const reportText=await reportBody.textContent()??'';
   for(const [role,path] of [['members',attachment.members_file],['orders',attachment.orders_file]])assert.ok(reportText.includes(`${role} SHA-256: ${createHash('sha256').update(await readFile(path)).digest('hex')}`));
@@ -254,7 +283,7 @@ test('U2 GUI: real double CSV review confirmation and local analysis publish one
     let reopened=await restarted.firstWindow();reopened.setDefaultTimeout(5000);
     await reopened.getByRole('button',{name:'专业模式',exact:false}).click();await reopened.getByRole('button',{name:'选择项目',exact:true}).click();await reopened.getByRole('button',{name:'Synthetic U2 decision',exact:true}).click();await reopened.getByText('会话已打开',{exact:true}).waitFor();
     assert.equal(await reopened.getByRole('button',{name:'保存案例字段',exact:true}).isEnabled(),false);
-    await reopened.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/循证分析/}).click();await reopened.getByText('Rejected',{exact:true}).waitFor();
+    await reopened.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/循证分析/}).click();await reopened.getByText('证据不支持',{exact:true}).waitFor();
     // After a proven clean reopen, damage only a referenced synthetic report while the owned app is closed.
     await restarted.close();
     const reportDb=new DatabaseSync(join(attachment.project_directory,'.xanthil','desktop','state.sqlite'),{readOnly:true});
@@ -266,11 +295,11 @@ test('U2 GUI: real double CSV review confirmation and local analysis publish one
     await reopened.getByText('报告或引用证据损坏，正文不可用；原始字节保留，不使用未经核验的内容。',{exact:true}).waitFor();
     assert.equal(await reopened.evaluate(()=>Reflect.get(window,'__untrustedReport')),undefined);
     assert.equal(await reopened.getByRole('region',{name:'报告草稿正文',exact:true}).count(),0);
-    await reopened.getByRole('button',{name:'创建新 Draft 修订',exact:true}).click();await reopened.getByRole('button',{name:'选择成员与订单 CSV',exact:true}).waitFor();
+    await reopened.getByRole('button',{name:'创建新数据修订',exact:true}).click();await reopened.getByRole('button',{name:'选择成员与订单 CSV',exact:true}).waitFor();
     assert.equal(await reopened.getByRole('button',{name:'选择成员与订单 CSV',exact:true}).isEnabled(),true);assert.equal(await reopened.getByText('不可变数据快照已确认',{exact:true}).count(),0);
-    await reopened.getByRole('button',{name:'查看上一修订',exact:true}).click();await reopened.getByRole('navigation',{name:'案例修订历史',exact:true}).getByText(/^历史修订 · 只读 · 修订 1 · Review$/u).waitFor();
+    await reopened.getByRole('button',{name:'查看上一修订',exact:true}).click();await reopened.getByRole('navigation',{name:'案例修订历史',exact:true}).getByText(/^历史修订 · 只读 1\s*待审阅$/u).waitFor();
     await reopened.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/循证分析/}).click();await reopened.getByRole('table',{name:'两期复购指标',exact:true}).waitFor();
-    assert.equal(await reopened.getByRole('button',{name:'创建新 Draft 修订',exact:true}).isEnabled(),false);
+    assert.equal(await reopened.getByRole('button',{name:'创建新数据修订',exact:true}).isEnabled(),false);
     await reopened.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/数据准备/}).click();
     assert.equal(await reopened.getByRole('button',{name:'选择成员与订单 CSV',exact:true}).count(),0,'the historical confirmed snapshot has no editable import action');
     if(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY)await saveScreenshotExclusive(reopened,join(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY,'u2-historical-revision.png'),true);
@@ -291,7 +320,7 @@ test('U1 Session: packaged professional workspace creates saves and reopens the 
   await page.getByLabel('复购问题', { exact: true }).fill('Why did repurchase decline?');
   await page.getByRole('button', { name: '创建分析', exact: true }).click();
   await page.getByText('会话已创建', { exact: true }).waitFor();
-  assert.equal(await page.getByText('本地案例可用', { exact: true }).count(), 1, 'the active Session stage must not falsely remain labelled inactive');
+  assert.equal(await page.getByRole('button',{name:'保存案例字段',exact:true}).isEnabled(), true, 'the actual active Session exposes its usable save action rather than a stage-activation placeholder');
   assert.equal(await page.getByLabel('复购问题', { exact: true }).count(), 1, await page.locator('body').innerText());
   await page.getByLabel('复购问题', { exact: true }).fill('Edited synthetic question');
   await page.getByRole('button', { name: '保存案例字段', exact: true }).click();
@@ -753,7 +782,7 @@ test('AC-XDESK-012-07: activates only the personal macOS arm64 professional path
   await reopened.getByRole('button',{name:'选择项目',exact:true}).click();
   await reopened.getByRole('button',{name:'Synthetic repurchase decision',exact:true}).click();
   await reopened.getByText('会话已打开',{exact:true}).waitFor();
-  assert.match(await reopened.locator('body').innerText(),/Completed/);
+  assert.match(await reopened.getByRole('navigation',{name:'案例修订历史',exact:true}).innerText(),/已完成/);
   await expectNoPrototypeSimulation(reopened);
 });
 

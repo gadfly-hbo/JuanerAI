@@ -165,7 +165,7 @@ export function createDuckDbPythonDesktopLocalAnalysisExecution(config: unknown)
   async verify(input:unknown){
    const x=request(input);
    const payload=JSON.stringify({contract:x.contract,members:Buffer.from(x.snapshot.members_bytes).toString('base64'),orders:Buffer.from(x.snapshot.orders_bytes).toString('base64'),groups:x.group_pseudonym_map});
-   const output=await run(pythonPath,['-I','-c',python],payload,x.cancellation_signal,x.deadline_seconds);
+   const output=await run(pythonPath,['-I','-B','-c',python],payload,x.cancellation_signal,x.deadline_seconds);
    let result:unknown;try{result=JSON.parse(output);}catch{desktopRuleFailure('CALCULATION_FAILED');}
    return Object.freeze({schema_version:'1.0',run_id:x.run_id,implementation:'python_independent',method,result});
   }

@@ -1,5 +1,9 @@
 # Xanthil Desktop Membership-Repurchase Decision Case Specification
 
+## Internal installation supplement
+
+The user-approved [internal-install supplement 001](../../changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/internal-install-supplement-001.md) narrowly extends AC-XDESK-012-03 to an internal relocatable Apple Silicon .app and optional simple DMG. Bundled Python/DuckDB use contained, identity-checked app resources; Projects remain explicitly selected external writable directories. Original UI/business AC, historical evidence and all other prohibitions remain. Local Mini verification is not target-MacBook acceptance; signing/notarization and security bypass are not implied.
+
 ## Accepted capability and provenance
 
 - Capability: `xanthil-desktop-decision-case`.
@@ -493,3 +497,22 @@ activate only after executable evidence through the actual packaged entry.
 - No Preview capability execution.
 - No public distribution, enterprise claim, telemetry, user-data study,
   migration platform, generic persistence, or second Runtime.
+
+## Approved UI Demo restoration (same first Change)
+
+The user requests restoration of the accepted PX004 professional workbench and
+PX006 dual-mode hierarchy, not a replacement workflow. At the two approved
+desktop viewports, the stage bar and global status remain visible while the
+workspace and contextual Inspector scroll independently. Business evidence and
+the next explicit action precede optional model configuration; full technical
+identities remain available on demand. Forms, evidence and feedback retain one
+compact light/warm-gray/teal control system with readable business text and
+visible keyboard focus. The Inspector projects the actual selected context,
+snapshot, Finding and report versions, never Demo results.
+
+Optional Assistance may be collapsed, but disclosure, sensitive-text consent,
+refusal, pending Draft review and focus restoration remain explicit and fully
+reachable. Default mode, Session switching, six-stage navigation, all existing
+business/safety assertions and Preview non-execution are unchanged. The
+implementation and verification scope is recorded in
+[UI Demo Restoration 001](../../changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/ui-demo-restoration-001.md).

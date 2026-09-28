@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdtemp, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { basename, dirname, isAbsolute, join, resolve } from 'node:path';
 import type { BaseWindow, OpenDialogOptions } from 'electron';
@@ -11,7 +11,7 @@ import { guiPackageReadbackProducers, guiPackageReadbackRelativePaths, type GuiP
 const guiPackageReadbackEnvironmentKey = 'JUANERAI_GUI_PACKAGE_READBACK';
 const packageReadbackRecordType = 'PACKAGE_READBACK';
 const packageAggregateAlgorithm = 'SHA-256 of UTF-8 sorted <relativePath>\\t<bytes>\\t<sha256>\\n lines';
-const packagedDesktopApp = resolve(fileURLToPath(new URL('../../../out/Xanthil-darwin-arm64/Xanthil.app/', import.meta.url)));
+const packagedDesktopApp = resolve(process.env.JUANERAI_GUI_PACKAGE_ROOT ?? fileURLToPath(new URL('../../../out/Xanthil-darwin-arm64/Xanthil.app/', import.meta.url)));
 
 export async function saveScreenshotExclusive(page: Pick<Page, 'screenshot'>, path: string, fullPage = false) {
   const bytes = await page.screenshot({ fullPage });
@@ -123,6 +123,13 @@ async function assertSourcePackageEvidence(record: JsonRecord, producer: GuiPack
   assert.equal(result.attempt, producer.attempt, 'producer result.json attempt matches the mapped attempt');
   assert.equal(result.child_exit_code, 0, 'producer package child exited successfully');
   assert.equal(result.outer_capture_exit_code, 0, 'producer package capture exited successfully');
+  if(producer.commandId==='UI-DEMO-PACKAGE-002'||producer.commandId==='UI-DEMO-PACKAGE-003'){
+    assert.ok(isJsonRecord(command.env));
+    assert.equal(typeof command.env.JUANERAI_INTERNAL_INSTALL_OUTPUT,'string');
+    assert.equal(packagedDesktopApp,join(command.env.JUANERAI_INTERNAL_INSTALL_OUTPUT as string,'Xanthil-darwin-arm64','Xanthil.app'),'new package root is bound to the successful Forge producer output');
+  }else{
+    assert.equal(packagedDesktopApp,resolve(fileURLToPath(new URL('../../../out/Xanthil-darwin-arm64/Xanthil.app/',import.meta.url))),'historical producers retain their original package root');
+  }
 }
 
 export async function readFrozenProductionPackageIdentity(): Promise<FrozenProductionPackageIdentity> {
@@ -210,11 +217,17 @@ export async function launchFrozenProductionApp(attachment: NativeChooserAttachm
   await assertFrozenProductionPackageIdentity(identity);
   const { _electron } = await import('playwright-core');
   validateChooserAttachment(attachment);
+  const evidence=process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY;
+  assert.ok(evidence&&isAbsolute(evidence),'each GUI run requires its own absolute evidence directory');
+  const isolated=await mkdtemp(join(evidence,'launch-')),userData=join(isolated,'user-data'),cwd=join(isolated,'empty-cwd'),tmp=join(isolated,'tmp');
+  for(const path of[userData,cwd,tmp])await mkdir(path);
   const app = await _electron.launch({
     executablePath: join(identity.packageRoot, 'Contents/MacOS/Xanthil'),
     chromiumSandbox: true,
-    args: [],
+    args: ['--user-data-dir='+userData],cwd,env:{PATH:'/usr/bin:/bin',LANG:'en_US.UTF-8',TMPDIR:tmp},
   });
+  const observed=await app.evaluate(({app})=>({userData:app.getPath('userData'),sessionData:app.getPath('sessionData'),cwd:process.cwd()}));
+  try{assert.deepEqual(observed,{userData,sessionData:userData,cwd});}catch(error){await app.close();throw error;}
   // Test-only native capability boundary. The actual packaged Main/Profile/Store
   // execute unchanged; this does not prove manual native-dialog interaction.
   await app.evaluate(({ dialog }, value) => {
