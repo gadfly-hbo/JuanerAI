@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930110132477-C6AV82",
+  "event_type": "archived",
+  "occurred_at": "2026-09-30T11:01:32.477Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "PR46 CI通过并squash合并fbd72e1；main已ff同步，Change002验收及归档完成",
+  "status_after": "complete",
+  "evidence_refs": []
+}

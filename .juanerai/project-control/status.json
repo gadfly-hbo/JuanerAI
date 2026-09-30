@@ -6,15 +6,15 @@
     "product": "Xanthil Desktop Personal — Case Assistant / Decision Record"
   },
   "phase": {
-    "id": "CHANGE_002_GIT_INTEGRATION",
-    "label": "Change002 Git集成",
+    "id": "CHANGE_002_ARCHIVED",
+    "label": "Change002 已验收、合并并归档",
     "ordinal": 5,
     "total": 5
   },
-  "health": "validating",
-  "summary": "用户产品验收通过；交付测试修正独立PASS，完整CI契约27PASS，portable2171PASS；应用及DMG011未变。",
+  "health": "complete",
+  "summary": "Change002已由用户验收，PR46云端验证通过并squash合并为fbd72e1；OpenSpec归档及当前规范已集成。DMG011保持验收版本。",
   "current_objective": "在首 Change 基础上实现 Case Assistant、人工采纳的 Decision Record / Expected Outcome 与追加报告。",
-  "next_action": "提交交付测试修正，等待PR46云端CI通过后squash合并并读回main。",
+  "next_action": "Change002产品与工程工作完成；等待用户另行指定下一项工作。",
   "blockers": [],
   "milestones": [
     {
@@ -45,7 +45,7 @@
     {
       "id": "git_integration",
       "label": "Git集成与归档保存",
-      "status": "active"
+      "status": "completed"
     }
   ],
   "agents": [
@@ -150,10 +150,16 @@
       "label": "用户产品验收及Git提交合并授权",
       "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/acceptance.md",
       "status": "verified"
+    },
+    {
+      "id": "CHANGE002-INTEGRATION",
+      "label": "PR46已合并及main读回，云端验证PASS",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/completion.md",
+      "status": "verified"
     }
   ],
   "risks": [],
-  "updated_at": "2026-09-30T10:56:16.223Z",
+  "updated_at": "2026-09-30T11:01:32.476Z",
   "updated_by": {
     "role": "controller",
     "session": "change-002-engineering-controller"
