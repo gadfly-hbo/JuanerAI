@@ -6,15 +6,15 @@
     "product": "Xanthil Desktop — development mode engineering supplement"
   },
   "phase": {
-    "id": "DESKTOP_DEV_DELIVERY",
-    "label": "开发模式已授权归档与Git交付",
+    "id": "DESKTOP_DEV_COMPLETE",
+    "label": "开发模式工程补充已交付归档",
     "ordinal": 4,
     "total": 4
   },
-  "health": "active",
-  "summary": "CI旧manifest绑定已精确修正，本机27/27通过、独立复核PASS；准备更新PR48并重跑云端。",
+  "health": "complete",
+  "summary": "PR48已squash合并且main干净读回；真实HMR/业务/隔离、独立验证与云端检查通过，DMG011保持不变。",
   "current_objective": "复用真实Desktop后端，接通Renderer热更新并隔离开发数据/权限，分开日常测试与包验收。",
-  "next_action": "完成修正增量图谱和提交，云端通过后squash合并并读回main。",
+  "next_action": "本补充完成；按开发指南日常试用，等待用户后续明确需求，不自动启动新产品范围或MacBook配置。",
   "blockers": [],
   "milestones": [
     {
@@ -35,7 +35,7 @@
     {
       "id": "dev_delivery",
       "label": "工程结论与授权Git交付",
-      "status": "active"
+      "status": "completed"
     }
   ],
   "agents": [
@@ -170,10 +170,16 @@
       "label": "Controller工程验收PASS及交付边界",
       "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-development-mode/engineering-acceptance.md",
       "status": "verified"
+    },
+    {
+      "id": "DESKTOP-DEV-COMPLETION",
+      "label": "PR48合并、main读回与开发模式交付结论",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-development-mode/completion.md",
+      "status": "verified"
     }
   ],
   "risks": [],
-  "updated_at": "2026-09-30T13:52:13.327Z",
+  "updated_at": "2026-09-30T13:58:05.708Z",
   "updated_by": {
     "role": "controller",
     "session": "desktop-dev-engineering-controller"
