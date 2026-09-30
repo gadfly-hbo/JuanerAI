@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929051834057-SIBNQ1",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T05:18:34.057Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "用户新增验收前要求：真实小米Pi与内部DMG。离线candidate003验收保留为历史范围，重开补充工程。",
+  "status_after": "active",
+  "evidence_refs": []
+}

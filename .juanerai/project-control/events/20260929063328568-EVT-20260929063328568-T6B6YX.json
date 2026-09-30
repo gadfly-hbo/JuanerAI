@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929063328568-T6B6YX",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T06:33:28.568Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "plan002 失败关闭，无草稿或正式写入，无自动重试。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929022604013-YQ3GQK",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T02:26:04.013Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "转入 Desktop Quick / 专业模式回流集成与原生验证",
+  "status_after": "active",
+  "evidence_refs": []
+}

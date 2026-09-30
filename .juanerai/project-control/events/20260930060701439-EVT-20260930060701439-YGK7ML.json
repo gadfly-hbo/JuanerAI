@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930060701439-YGK7ML",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T06:07:01.439Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "配置服务13项因果RED到GREEN完成；模型入口接线继续",
+  "status_after": "active",
+  "evidence_refs": []
+}

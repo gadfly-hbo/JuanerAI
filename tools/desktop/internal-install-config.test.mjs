@@ -23,18 +23,22 @@ test('INSTALL-004: real Forge postPackage passes its exact bundle to the seal en
   const config = require('../../forge.config.cjs');
   const seal = require('./seal-internal-app.cjs'), original = seal.sealInternalApp;
   const output = join(process.env.JUANERAI_INTERNAL_INSTALL_OUTPUT, 'Xanthil-darwin-arm64');
+  const helper=require('./build-keychain-helper.cjs'),originalHelper=helper.buildKeychainHelper;
+  const helperCalls=[];
   const calls = [];
   try {
     // Only the native signing boundary is observed here; the same actual entry's
     // real signature behavior is covered by the frozen strict RED/GREEN bundle.
+    helper.buildKeychainHelper=app=>{helperCalls.push(app);};
     seal.sealInternalApp = app => { calls.push(app); };
     await config.hooks.postPackage(config, { platform: 'darwin', arch: 'arm64', outputPaths: [output] });
     assert.deepEqual(calls, [join(output, 'Xanthil.app')]);
+    assert.deepEqual(helperCalls,[join(output,'Xanthil.app')],'PS-03 normal package contains the signed OS helper');
     const failure = new Error('synthetic native signature rejection');
     seal.sealInternalApp = () => { throw failure; };
     await assert.rejects(config.hooks.postPackage(config, { platform: 'darwin', arch: 'arm64', outputPaths: [output] }), error => error === failure);
     seal.sealInternalApp = () => assert.fail('invalid output must not invoke signing');
     await assert.rejects(config.hooks.postPackage(config, { platform: 'linux', arch: 'arm64', outputPaths: [output] }), /approved single darwin-arm64/);
     await assert.rejects(config.hooks.postPackage(config, { platform: 'darwin', arch: 'arm64', outputPaths: ['/outside-approved-output'] }), /Unexpected internal signing output/);
-  } finally { seal.sealInternalApp = original; }
+  } finally { seal.sealInternalApp = original;helper.buildKeychainHelper=originalHelper; }
 });

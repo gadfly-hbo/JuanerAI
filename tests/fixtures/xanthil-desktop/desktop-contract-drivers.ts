@@ -662,6 +662,8 @@ export const createRoot = (target) => control().createRoot(target);
 
 let b2TsxHookInstalled = false;
 let b2EmissionOrdinal = 0;
+let b2AssistantEmissionUrl = '';
+let b2SettingsEmissionUrl = '';
 const b2EmittedModuleUrls = new Set<string>();
 
 function installB2TsxHook() {
@@ -677,6 +679,9 @@ function installB2TsxHook() {
           boundary.hookResolutions += 1;
           return { url: b2ClientBoundaryModule, shortCircuit: true };
         }
+        if (specifier === './provider-settings.tsx') return {url:b2SettingsEmissionUrl,shortCircuit:true};
+        if (specifier === './case-assistant-workspace.tsx') return {url:b2AssistantEmissionUrl,shortCircuit:true};
+        if (specifier === '../../packages/product-core/case-assistant.ts') return nextResolve(new URL('../../../packages/product-core/case-assistant.ts',import.meta.url).href,context);
         throw new Error(`B2 emitted module import is not approved: ${specifier}`);
       }
       return nextResolve(specifier, context);
@@ -881,6 +886,10 @@ export async function requireB2Renderer() {
     }
     throw error;
   }
+  const settingsUrl=new URL('../../../apps/desktop/provider-settings.tsx',import.meta.url),settingsSource=await readFile(settingsUrl,'utf8'),settingsCompiled=await compileB2Tsx(settingsSource,settingsUrl.pathname);
+  assert.equal(settingsCompiled.emitted.diagnostics.length,0);const settingsEmission=await persistB2Emission(settingsSource,settingsUrl.pathname,settingsCompiled.emitted.outputText,'provider-settings');b2SettingsEmissionUrl=settingsEmission.moduleUrl;b2EmittedModuleUrls.add(b2SettingsEmissionUrl);
+  const assistantUrl=new URL('../../../apps/desktop/case-assistant-workspace.tsx',import.meta.url),assistantSource=await readFile(assistantUrl,'utf8'),assistantCompiled=await compileB2Tsx(assistantSource,assistantUrl.pathname);
+  assert.equal(assistantCompiled.emitted.diagnostics.length,0);const assistantEmission=await persistB2Emission(assistantSource,assistantUrl.pathname,assistantCompiled.emitted.outputText,'case-assistant');b2AssistantEmissionUrl=assistantEmission.moduleUrl;b2EmittedModuleUrls.add(b2AssistantEmissionUrl);
   const compiled = await compileB2Tsx(source, b2RendererUrl.pathname);
   assert.equal(compiled.emitted.diagnostics.length, 0, 'the real Renderer must compile cleanly through the already-proven TSX seam');
   return importB2Tsx(await persistB2Emission(source, b2RendererUrl.pathname, compiled.emitted.outputText, 'renderer'));

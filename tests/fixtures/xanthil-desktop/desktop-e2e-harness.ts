@@ -123,7 +123,7 @@ async function assertSourcePackageEvidence(record: JsonRecord, producer: GuiPack
   assert.equal(result.attempt, producer.attempt, 'producer result.json attempt matches the mapped attempt');
   assert.equal(result.child_exit_code, 0, 'producer package child exited successfully');
   assert.equal(result.outer_capture_exit_code, 0, 'producer package capture exited successfully');
-  if(producer.commandId==='UI-DEMO-PACKAGE-002'||producer.commandId==='UI-DEMO-PACKAGE-003'){
+  if(producer.commandId==='CHANGE002-PACKAGE-018'||producer.commandId==='CHANGE002-PACKAGE-017'||producer.commandId==='CHANGE002-PACKAGE-016'||producer.commandId==='CHANGE002-PACKAGE-015'||producer.commandId==='CHANGE002-PACKAGE-014'||producer.commandId==='CHANGE002-PACKAGE-013'||producer.commandId==='CHANGE002-PACKAGE-012'||producer.commandId==='CHANGE002-PACKAGE-011'||producer.commandId==='CHANGE002-PACKAGE-010'||producer.commandId==='CHANGE002-PACKAGE-009'||producer.commandId==='CHANGE002-PACKAGE-008'||producer.commandId==='CHANGE002-PACKAGE-007'||producer.commandId==='CHANGE002-PACKAGE-006'||producer.commandId==='CHANGE002-PACKAGE-005'||producer.commandId==='CHANGE002-PACKAGE-004'||producer.commandId==='CHANGE002-PACKAGE-003'||producer.commandId==='CHANGE002-PACKAGE-002'||producer.commandId==='CHANGE002-PACKAGE-001'||producer.commandId==='UI-DEMO-PACKAGE-002'||producer.commandId==='UI-DEMO-PACKAGE-003'){
     assert.ok(isJsonRecord(command.env));
     assert.equal(typeof command.env.JUANERAI_INTERNAL_INSTALL_OUTPUT,'string');
     assert.equal(packagedDesktopApp,join(command.env.JUANERAI_INTERNAL_INSTALL_OUTPUT as string,'Xanthil-darwin-arm64','Xanthil.app'),'new package root is bound to the successful Forge producer output');

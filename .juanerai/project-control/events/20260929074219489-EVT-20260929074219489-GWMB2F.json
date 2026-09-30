@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929074219489-GWMB2F",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T07:42:19.489Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "用户指出 DMG005 偏离冻结 UI；Controller 找到本机原稿并确认，工程验收重新打开",
+  "status_after": "active",
+  "evidence_refs": []
+}

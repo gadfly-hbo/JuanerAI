@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930101525445-QOLGGT",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T10:15:25.445Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "candidate010 / DMG011独立PASS及Controller工程验收完成，等待MacBook用户产品验收。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

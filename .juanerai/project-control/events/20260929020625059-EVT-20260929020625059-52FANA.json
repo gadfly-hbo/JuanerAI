@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929020625059-52FANA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T02:06:25.059Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "Application 首个端到端离线垂直结果 GREEN",
+  "status_after": "active",
+  "evidence_refs": []
+}

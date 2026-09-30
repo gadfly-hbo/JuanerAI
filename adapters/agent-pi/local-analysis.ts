@@ -1,3 +1,4 @@
+import {loadLocalPi,runLocalXiaomiText,localConnectionError} from './xiaomi-local.ts';
 import * as Type from 'typebox';
 import { createHash } from 'node:crypto';
 
@@ -692,9 +693,13 @@ function isProductionReadiness(value: Readiness): value is ProductionReadiness {
   return 'sdk' in value;
 }
 
+/** Explicit closed output types for the three existing untrusted Desktop Drafts. */
+const desktopAssistanceSystemPrompt = `{"instruction":"Return exactly one JSON object for the disclosed action_kind, using its response template below.","response_templates":{"organize_question":{"draft_kind":"question_fields","draft_content":{"question_text":"string","hypothesis_display_title":"string","business_context":"string","alternative_explanations":["nonblank string"]}},"explain_evidence":{"draft_kind":"evidence_explanation","draft_content":{"evidence_explanation_text":"string"}},"draft_candidates":{"draft_kind":"candidates","draft_content":{"candidates":[{"title":"string","evidence_basis":"string","risk_or_refutation":"string","applicability_conditions":"string","future_validation_metric":"string"}]}}},"rules":["Choose only response_templates[action_kind]. Keep its draft_kind exactly; draft_content is an object, never a string.","Include every displayed field with exactly its displayed JSON type and no extra fields. All leaves shown as string are strings; alternative_explanations and candidates are arrays.","Replace template strings with concise draft text grounded only in the disclosed input. Preserve supplied question and hypothesis meaning; do not invent business facts. State uncertainty where evidence is absent.","Use an empty string for unavailable text and an empty array when there are no items. Each alternative_explanations item must be a nonblank string. Each candidate has all five displayed string fields, without IDs.","No Markdown fences, comments, duplicate keys, prefixes or suffixes. No tools, identities, preference, action execution, additional data or product authority. All output is an untrusted editable draft requiring human review."]}`;
+
 /** Optional one-turn Desktop Assistance. No tools, source reader or persistent Pi session. */
-export function createPiDecisionAssistanceRuntime(config:unknown,injection?:unknown):DecisionAssistanceRuntime{
+export function createPiDecisionAssistanceRuntime(config:unknown,injection?:unknown,localCredential?:(()=>string)):DecisionAssistanceRuntime{
   if(!exactObject(config,['provider','model_id'])||!nonEmptyString(config.provider)||!nonEmptyString(config.model_id))throw sanitized('VALIDATION_FAILED');
+  if(localCredential&&(injection!==undefined||config.provider!=='xiaomi-token-plan-cn'||config.model_id!=='mimo-v2.6-pro'))throw sanitized('VALIDATION_FAILED');
   const selected={provider:config.provider,model_id:config.model_id},factory=validateInjection(injection);
   let readiness:ProductionReadiness|undefined,ready=false,active:AbortController|undefined;
   const same=(input:PlainRecord)=>input.requested_provider===selected.provider&&input.requested_model===selected.model_id;
@@ -702,7 +707,7 @@ export function createPiDecisionAssistanceRuntime(config:unknown,injection?:unkn
     async preflightSelection(input:Parameters<DecisionAssistanceRuntime['preflightSelection']>[0]){
       if(!exactObject(input,['requested_provider','requested_model'])||!same(input))throw sanitized('VALIDATION_FAILED');
       ready=false;
-      try{if(!factory)readiness=await createProductionReadiness({requested_model:selected});ready=true;}catch{/* No Provider call or fallback on unavailable local selection. */}
+      try{if(localCredential)await loadLocalPi();else if(!factory)readiness=await createProductionReadiness({requested_model:selected});ready=true;}catch{/* No Provider call or fallback on unavailable local selection. */}
       return Object.freeze({runtime_id:RUNTIME_ID,runtime_version:REQUIRED_RUNTIME_VERSION,adapter_id:ADAPTER_ID,adapter_version:ADAPTER_VERSION,requested_provider:selected.provider,requested_model:selected.model_id,ready});
     },
     async executeAssistance(input:Parameters<DecisionAssistanceRuntime['executeAssistance']>[0]){
@@ -722,7 +727,15 @@ export function createPiDecisionAssistanceRuntime(config:unknown,injection?:unkn
         else throw protocol();
       }catch{eventFailure=true;}};
       try{
-        const request=deepFreeze({requested_model:selected,system_prompt:'Return exactly one JSON object with draft_kind and draft_content for the disclosed action. organize_question: question_fields with question_text,hypothesis_display_title,business_context,alternative_explanations. explain_evidence: evidence_explanation with evidence_explanation_text. draft_candidates: candidates with candidates array; each has title,evidence_basis,risk_or_refutation,applicability_conditions,future_validation_metric. No tools, identities, preference, action execution, additional data or product authority. All output is an untrusted editable draft.',custom_tools:[],retry_limit:0,tool_timeout_seconds:30});
+        const request=deepFreeze({requested_model:selected,system_prompt:desktopAssistanceSystemPrompt,custom_tools:[],retry_limit:0,tool_timeout_seconds:30});
+        if(localCredential){
+          const result=await runLocalXiaomiText({key:localCredential(),text,system:request.system_prompt,jsonObject:input.action_kind==='draft_candidates',signal:controller.signal,maxOutput:2048,timeoutMs:Math.min(30000,input.deadline_seconds*1000)});
+          if(controller.signal.aborted)throw sanitized(deadline?'DEADLINE_EXCEEDED':'CANCELLED');
+          const output=closedTerminalJson(result.text),expected=({organize_question:'question_fields',explain_evidence:'evidence_explanation',draft_candidates:'candidates'} as const)[input.action_kind];
+          if(!exactObject(output,['draft_kind','draft_content'])||output.draft_kind!==expected||!isPlainObject(output.draft_content))throw sanitized('VALIDATION_FAILED');
+          validateDesktopAssistanceDraft(expected,output.draft_content,true);
+          return deepFreeze({actual_provider:selected.provider,actual_model:selected.model_id,draft_kind:expected,draft_content:output.draft_content as RuntimeAssistanceDraftContent});
+        }
         const opening=Promise.resolve(factory?factory(request):readiness?createProductionFacade(request,readiness,[]):Promise.reject(sanitized('PROVIDER_UNAVAILABLE'))).then(value=>{
           const opened=validateFacade(value);
           if(closed){
@@ -746,7 +759,7 @@ export function createPiDecisionAssistanceRuntime(config:unknown,injection?:unkn
         const content=terminal.draft_content;validateDesktopAssistanceDraft(expected,content,true);
         const actual=facade.getActualModel();if(!closedFrozenModel(actual)||!actual.provider||!actual.model_id)throw sanitized('VALIDATION_FAILED');
         return deepFreeze({actual_provider:actual.provider,actual_model:actual.model_id,draft_kind:expected,draft_content:content as RuntimeAssistanceDraftContent});
-      }catch(error){const code=errorCode(error);throw sanitized(['CANCELLED','DEADLINE_EXCEEDED','VALIDATION_FAILED'].includes(String(code))?String(code):code==='PROTOCOL_FAILURE'?'VALIDATION_FAILED':'PROVIDER_UNAVAILABLE');}
+      }catch(error){if(localCredential)throw sanitized(localConnectionError(error));const code=errorCode(error);throw sanitized(['CANCELLED','DEADLINE_EXCEEDED','VALIDATION_FAILED'].includes(String(code))?String(code):code==='PROTOCOL_FAILURE'?'VALIDATION_FAILED':'PROVIDER_UNAVAILABLE');}
       finally{
         closed=true;clearTimeout(timer);input.cancellation_signal.removeEventListener('abort',abort);
         try{

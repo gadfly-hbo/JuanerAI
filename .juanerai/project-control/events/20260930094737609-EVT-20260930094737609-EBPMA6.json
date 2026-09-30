@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930094737609-EBPMA6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T09:47:37.609Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "host031原生生命周期、DMG与安装验证通过，进入完整回归。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

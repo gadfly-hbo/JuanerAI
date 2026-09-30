@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929043359739-GQ0MC7",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T04:33:59.739Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "原生批次11 PASS / 6 FAIL，失败日志已保留，定位到 Playwright 关闭后的进程句柄读取。",
+  "status_after": "active",
+  "evidence_refs": []
+}

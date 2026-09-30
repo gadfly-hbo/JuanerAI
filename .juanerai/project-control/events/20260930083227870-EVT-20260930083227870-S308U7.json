@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930083227870-S308U7",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T08:32:27.870Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "独立反例发现两项生命周期缺陷，暂停最终交付等待完整结论",
+  "status_after": "validating",
+  "evidence_refs": []
+}

@@ -830,6 +830,28 @@ test('U2 Ready fields: post-confirmation case edit preserves immutable confirmat
   assert.deepEqual(await requiredExport<Method>(reopened.application, 'readProjection')(prepared.owner), saved);
 }));
 
+function assertNoRawSnapshotMetadata(value: unknown) {
+  const publicText = JSON.stringify(value, (key, field) => {
+    if (field instanceof Uint8Array) return '[private bytes]';
+    if (['sha256','contract_sha256','binding_sha256','ir_sha256'].includes(key)) {
+      assert.equal(typeof field, 'string'); assert.match(field, /^[a-f0-9]{64}$/);
+      return '[verified SHA-256 identity]';
+    }
+    if (key === 'snapshot_id') {
+      assert.equal(typeof field, 'string'); assert.match(field, /^[a-f0-9]{8}-[a-f0-9]{4}-[47][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/);
+      return '[verified snapshot UUID]';
+    }
+    return field;
+  });
+  assert.doesNotMatch(publicText, /North|South|0001|0002|\/Users\//);
+}
+
+test('AC-XDESK-004-07 metadata leakage scanner admits typed opaque identities but still catches public raw fields and malformed identities',()=>{
+  assert.doesNotThrow(()=>assertNoRawSnapshotMetadata({contract_sha256:'a'.repeat(30)+'0002'+'b'.repeat(30),snapshot_id:'00010002-0000-4000-8000-000100020003'}));
+  for(const raw of ['North','South','0001','0002','/Users/synthetic']) assert.throws(()=>assertNoRawSnapshotMetadata({public_text:raw}));
+  assert.throws(()=>assertNoRawSnapshotMetadata({sha256:'0001'}));assert.throws(()=>assertNoRawSnapshotMetadata({snapshot_id:'0002'}));
+});
+
 test('U2 immutable read: only committed source hashes and canonical confirmation bytes reach analysis; tamper is never silently consumed [AC-XDESK-004-07, AC-XDESK-011-07]', async () => withIsolatedProject(async projectRoot => {
   const prepared = await preparedU2Confirmation(projectRoot), ready = await requiredExport<Method>(prepared.application, 'confirmRevision')(prepared.command);
   const snapshot = requiredRecord(ready.snapshot, 'snapshot'), confirmation = requiredRecord(ready.confirmation, 'confirmation');
@@ -842,7 +864,8 @@ test('U2 immutable read: only committed source hashes and canonical confirmation
   assert.deepEqual(new Uint8Array(orders.bytes as Uint8Array), prepared.command.source_files.orders.bytes);
   const documents = requiredRecord(found.confirmation, 'documents');
   for (const key of ['contract','binding','ir']) assert.equal(createHash('sha256').update(documents[`${key}_bytes`] as Uint8Array).digest('hex'), documents[`${key}_sha256`]);
-  assert.doesNotMatch(JSON.stringify(found, (_key, value) => value instanceof Uint8Array ? '[private bytes]' : value), /North|South|0001|0002|\/Users\//);
+  assert.equal(sources.snapshot_id, snapshot.snapshot_id);
+  assertNoRawSnapshotMetadata(found);
   const database = join(projectRoot, '.xanthil', 'desktop', 'state.sqlite'), before = await readFile(database);
   const destination = join(projectRoot, String(prepared.owner.session_id), '010_draw', String(snapshot.snapshot_id), 'orders.csv');
   await writeFile(destination, 'synthetic-tamper');
@@ -1169,7 +1192,7 @@ test('U1.2 F5: real Application supplies canonical initialization provenance and
 test('U1.2 AC-XDESK-002-02: opens fresh and existing Projects without invoking Analysis Run evidence Runtime provider or network effects', async () => {
   await withIsolatedProject(async (projectRoot) => {
     const first = await createU12ProjectAdmissionApplication(projectRoot);
-    assert.deepEqual(Object.keys(first.application).sort(), ['acceptFinding','cancelAnalysis','cancelAssistance','checkImportAdmission','checkReportExport','completeCase', 'confirmRevision', 'createDraftRevision', 'createSession','decideAssistanceDisclosure','disposeAssistanceDraft', 'inspectImportFiles', 'listSessions', 'openProject', 'openSession','prepareAssistanceDisclosure','prepareReportExport', 'readProjection', 'reconcileInterrupted','recordReportExport', 'saveForm', 'startAnalysis','startAssistance', 'waitForProjection'], 'U4 Assistance and private native-import admission are exact; construction never starts effects');
+    assert.deepEqual(Object.keys(first.application).sort(), ['acceptFinding','cancelAnalysis','cancelAssistance','checkImportAdmission','checkReportExport','closeModelWork','completeCase', 'confirmRevision', 'createDraftRevision', 'createSession','decideAssistanceDisclosure','disposeAssistanceDraft', 'inspectImportFiles', 'listSessions', 'openProject', 'openSession','prepareAssistanceDisclosure','prepareReportExport', 'readProjection', 'reconcileInterrupted','recordReportExport', 'saveForm', 'startAnalysis','startAssistance', 'waitForProjection'], 'U4 Assistance, private model lifecycle and native-import admission are exact; construction never starts effects');
     const firstOpen = await requiredExport<Method>(first.application, 'openProject')({
       contract_version: '1.0', command_id: desktopTestIds.openProjectCommand,
       proposed_project_id: desktopTestIds.project, display_name: 'Synthetic Project',
@@ -1215,7 +1238,7 @@ test('TEST-XDESK-007 integration: composes the real SQLite, Run-store, and DuckD
       clock: fixedClock,
       deadlineScheduler: deadlines.scheduler,
     });
-    assert.deepEqual(Object.keys(application).sort(), ['acceptFinding', 'cancelAnalysis', 'cancelAssistance', 'checkImportAdmission', 'checkReportExport', 'completeCase', 'confirmRevision', 'createDraftRevision', 'createSession', 'decideAssistanceDisclosure', 'disposeAssistanceDraft', 'inspectImportFiles', 'listSessions', 'openProject', 'openSession', 'prepareAssistanceDisclosure', 'prepareReportExport', 'readProjection', 'reconcileInterrupted', 'recordReportExport', 'saveForm', 'startAnalysis', 'startAssistance', 'waitForProjection'].sort());
+    assert.deepEqual(Object.keys(application).sort(), ['acceptFinding', 'cancelAnalysis', 'cancelAssistance', 'checkImportAdmission', 'checkReportExport', 'closeModelWork', 'completeCase', 'confirmRevision', 'createDraftRevision', 'createSession', 'decideAssistanceDisclosure', 'disposeAssistanceDraft', 'inspectImportFiles', 'listSessions', 'openProject', 'openSession', 'prepareAssistanceDisclosure', 'prepareReportExport', 'readProjection', 'reconcileInterrupted', 'recordReportExport', 'saveForm', 'startAnalysis', 'startAssistance', 'waitForProjection'].sort());
     assert.equal(assistance.calls.length, 0, 'composition itself cannot call a provider');
     const open = requiredExport<(value: Record<string, unknown>) => Promise<unknown>>(application, 'openProject');
     await open({ contract_version: '1.0', command_id: desktopTestIds.openProjectCommand, proposed_project_id: desktopTestIds.project, display_name: 'Synthetic Project' });

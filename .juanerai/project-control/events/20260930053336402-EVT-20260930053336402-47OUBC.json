@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930053336402-47OUBC",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T05:33:36.402Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "单一Xiaomi模型接入增量产品输入准备启动，保留DMG007及先前验收。",
+  "status_after": "active",
+  "evidence_refs": []
+}

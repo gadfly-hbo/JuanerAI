@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929032742376-N5D8UR",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-09-29T03:27:42.376Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "实现及离线回归完成，固定候选进入独立验证。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929094016030-7BM9OM",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T09:40:16.030Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "候选008冻结并完成15289项身份读回；独立UI复核启动。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

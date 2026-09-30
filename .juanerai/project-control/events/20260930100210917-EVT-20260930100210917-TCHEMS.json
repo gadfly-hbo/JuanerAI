@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930100210917-TCHEMS",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T10:02:10.917Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "工程作者停止修改；原独立Validator正在复验固定candidate010。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

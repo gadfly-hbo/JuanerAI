@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930084732537-YNT28Z",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T08:47:32.537Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "candidate009独立FAIL4项，恢复原工程上下文集中修正；暂停最终交付",
+  "status_after": "active",
+  "evidence_refs": []
+}

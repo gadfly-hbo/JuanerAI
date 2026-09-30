@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929025922846-P9BIVZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T02:59:22.846Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "原生验证发现部署依赖缺失与首 Change 抽屉回归，已接受无安装的范围内修复。",
+  "status_after": "active",
+  "evidence_refs": []
+}

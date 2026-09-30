@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929083821524-SJBSMA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T08:38:21.524Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "UI修正与新DMG宿主验证全部通过，进入候选冻结",
+  "status_after": "validating",
+  "evidence_refs": []
+}

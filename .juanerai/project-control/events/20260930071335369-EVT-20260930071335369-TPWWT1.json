@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930071335369-TPWWT1",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T07:13:35.369Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "两个受影响原生用例与完整存储配置演练PASS，进入DMG安装和全量回归",
+  "status_after": "active",
+  "evidence_refs": []
+}

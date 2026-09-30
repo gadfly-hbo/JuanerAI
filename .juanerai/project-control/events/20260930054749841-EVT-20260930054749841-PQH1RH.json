@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930054749841-PQH1RH",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T05:47:49.841Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "用户确认Provider配置面板；固定输入及Engineering Intake完成，恢复工程执行",
+  "status_after": "active",
+  "evidence_refs": []
+}

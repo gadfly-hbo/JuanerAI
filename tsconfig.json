@@ -11,7 +11,9 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "noUncheckedSideEffectImports": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "jsx": "react-jsx"
   },
   "files": [
@@ -82,6 +84,34 @@
     "tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts",
     "tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts",
     "tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts",
-    "tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts"
+    "tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts",
+    "packages/contracts/case-assistant.ts",
+    "packages/product-core/case-assistant.ts",
+    "packages/application/case-assistant.ts",
+    "packages/ports/case-assistant.ts",
+    "adapters/agent-pi/case-assistant.ts",
+    "adapters/storage-local/case-assistant.ts",
+    "apps/desktop/case-assistant-main.ts",
+    "apps/desktop/case-assistant-workspace.tsx",
+    "tests/e2e/xanthil-desktop/case-assistant.e2e.test.ts",
+    "tests/integration/xanthil-desktop/case-assistant.integration.test.ts",
+    "tests/contract/xanthil-desktop/case-assistant-ipc.contract.test.ts",
+    "tests/contract/xanthil-desktop/case-assistant-runtime.contract.test.ts",
+    "tests/contract/xanthil-desktop/case-assistant-store.contract.test.ts",
+    "tests/unit/xanthil-desktop/case-assistant.unit.test.ts",
+    "tests/fixtures/case-assistant/fixtures.ts",
+    "tests/fixtures/case-assistant/completed-case.ts",
+    "tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts",
+    "tests/fixtures/case-assistant/native-synthetic-main.ts",
+    "packages/ports/provider-settings.ts",
+    "packages/contracts/provider-settings.ts",
+    "packages/application/provider-settings.ts",
+    "adapters/agent-pi/xiaomi-local.ts",
+    "adapters/credentials-macos/index.ts",
+    "apps/desktop/provider-settings.tsx",
+    "tests/unit/xanthil-desktop/provider-settings.unit.test.ts",
+    "tests/integration/xanthil-desktop/provider-settings.integration.test.ts",
+    "tests/contract/xanthil-desktop/provider-settings-runtime.contract.test.ts",
+    "tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts"
   ]
 }

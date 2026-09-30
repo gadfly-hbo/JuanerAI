@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929095121576-JQLAOA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T09:51:21.576Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "candidate008独立PASS与UI修正工程验收完成，DMG007交付用户产品/UI验收。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -37,3 +37,11 @@ export const xanthilDesktopApi: XanthilDesktopApi = {
 };
 
 contextBridge.exposeInMainWorld('xanthilDesktopApi', xanthilDesktopApi);
+
+import type { CaseAssistantApi } from '../../packages/contracts/case-assistant.ts';
+export const xanthilCaseAssistantApi: CaseAssistantApi = { request: input => ipcRenderer.invoke('xanthil-case-assistant:v1',input) };
+contextBridge.exposeInMainWorld('xanthilCaseAssistantApi',xanthilCaseAssistantApi);
+
+import type {ProviderSettingsApi} from '../../packages/contracts/provider-settings.ts';
+const providerSettingsApi:ProviderSettingsApi={request:input=>ipcRenderer.invoke('xanthil-provider-settings:v1',input)};
+contextBridge.exposeInMainWorld('xanthilProviderSettingsApi',providerSettingsApi);

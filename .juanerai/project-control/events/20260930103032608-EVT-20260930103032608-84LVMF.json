@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930103032608-84LVMF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T10:30:32.608Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "用户验收DMG011并授权Git提交合并；准备OpenSpec归档",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929065408405-MOXJ2U",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T06:54:08.405Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "real-pi-plan-003/execution-001 PASS，使用实际 SDK/Provider，无自动重试、无业务数据、无购买。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

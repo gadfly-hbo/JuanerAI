@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929084624742-J97VKH",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T08:46:24.742Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "candidate007固定版本读回通过，派发全新只读UI独立复核",
+  "status_after": "validating",
+  "evidence_refs": []
+}

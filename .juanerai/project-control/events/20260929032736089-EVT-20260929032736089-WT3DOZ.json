@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929032736089-WT3DOZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T03:27:36.089Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "candidate002冻结并完成Controller读回，派发fresh只读Validator。",
+  "status_after": "active",
+  "evidence_refs": []
+}

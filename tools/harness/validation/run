@@ -142,5 +142,6 @@ node --test tests/contract/xanthil-desktop/*.test.ts
 fi
 node --test tests/integration/xanthil-desktop/*.test.ts
 if [ "$scope" = full ]; then
-node --test tests/e2e/xanthil-desktop/*.test.ts
+node tests/fixtures/case-assistant/build-native-fixture.mjs
+node --test --test-concurrency=1 tests/e2e/xanthil-desktop/*.test.ts
 fi

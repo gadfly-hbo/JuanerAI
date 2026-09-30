@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930072504706-TY1VBG",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T07:25:04.706Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "完整回归PASS，进入已授权真实Provider验证",
+  "status_after": "validating",
+  "evidence_refs": []
+}

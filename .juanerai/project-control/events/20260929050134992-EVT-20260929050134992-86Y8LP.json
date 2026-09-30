@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929050134992-86Y8LP",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T05:01:34.992Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "独立PASS及Engineering Acceptance完成；等待用户Product/UI Acceptance，未授权Git与归档。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929070719923-87JYRU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T07:07:19.923Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "candidate006 作者冻结与 Controller 字节回读 PASS，独立最终复查已启动；额度授权与原始输入留存均已闭合。",
+  "status_after": "validating",
+  "evidence_refs": []
+}
