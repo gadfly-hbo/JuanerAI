@@ -6,7 +6,7 @@ JuanerAI is a Bottom-up Decision Intelligence System: professional individuals b
 
 ## Product Family
 
-JuanerAI is the commercial project family. Xanthil is its first product. Existing features and reusable Domain Packs, Model Packs, Runtime, data, semantic, asset and governance foundations remain available. [Product Development Blueprint v2.0](../planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md) is the approved highest development-execution guideline, grounded in JuanerAI Whitepaper v4.0 as its core product reference and the commercialization charter. Xanthil Personal maps to Desktop Free, Xanthil Team carries the former Workspace product direction, and JuanerAI Enterprise adds enterprise responsibilities; naming alone changes no implementation contract.
+JuanerAI is the commercial project family. Xanthil is its first product. Existing features and reusable Domain Packs, Model Packs, Runtime, data, semantic, asset and governance foundations remain available. [Product Development Blueprint v3.0](../planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md) is the approved highest development-execution guideline, grounded in JuanerAI Whitepaper v4.0 as its core product reference and the commercialization charter. Xanthil Personal maps to Desktop Free, Xanthil Team carries the former Workspace product direction, and JuanerAI Enterprise adds enterprise responsibilities; naming alone changes no implementation contract.
 
 ## Users
 
@@ -65,9 +65,9 @@ The withdrawn plan sequenced Model Pack product work after Xanthil Desktop Data 
 
 ## Current Direction and Gate
 
-Blueprint v2.0 preserves the existing first vertical slice and frozen production batch. Its four core views refine later development: full six-plus-two capability coverage (§4), phased vertical-slice delivery (§§5–6), front-end/shared-business/back-end responsibility (§9), and competitive-value hypotheses with evidence (§10). Business-analysis compilation through Analysis Plan IR remains explicit. Deferred capabilities retain a target and revisit point; claimed competitive advantage requires comparison, not feature presence.
+Blueprint v3.0 preserves Change 001/002 inputs and accepted capabilities. Its four core views refine later development: full six-plus-two capability coverage (§4), phased vertical-slice delivery (§§5–6), front-end/shared-business/back-end responsibility (§9), and competitive-value hypotheses with evidence (§10). Business-analysis compilation through Analysis Plan IR remains explicit. Deferred capabilities retain a target and revisit point; claimed competitive advantage requires comparison, not feature presence.
 
-Change selection follows §8 and the confirmed later sequence: Decision Record and Expected Outcome → outcome follow-up → explicit adoption in the next Case. Each is a product outcome, not an already authorized Change. Close its product decisions under §7, confirm the applicable first-slice delivery/acceptance evidence, and obtain its own UI Contract/UI Gate and engineering intake before OpenSpec/TDD work. Existing Case save/reopen/rerun is reused; the former new-period comparison candidate supports outcome follow-up rather than remaining the default next Change.
+Change selection follows §8 and the confirmed sequence: Decision Record and Expected Outcome → bounded Fork/Subagent collaboration → outcome follow-up → explicit adoption in the next Case. Each is a product outcome, not engineering-start authority. Close its product decisions under §7, confirm applicable prior delivery/acceptance evidence, and obtain its own UI Contract/UI Gate and engineering intake before OpenSpec/TDD work. Each Change consults relevant earlier research Demos under §11 as reference, not execution authority. Existing Case save/reopen/rerun is reused; the former new-period comparison candidate supports outcome follow-up rather than remaining the default next Change.
 
 The original first-slice package, attachments and execution history remain at
 the fixed Git source described in [the planning index](../planning/README.md);
@@ -82,4 +82,4 @@ The original first-batch planning receipts and supplement links remain in the
 and in Git at `d9507e2a5833bc286f8cdc5d01e23514bb889b4d`.
 They are not a current B2 stop or a new product authorization. The owning Mini
 Change's verification and project-control record carry its actual acceptance
-and delivery state; Blueprint v2.0 does not expand this frozen first slice.
+and delivery state; Blueprint v3.0 does not expand this frozen first slice.

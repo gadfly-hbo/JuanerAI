@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; connect-src 'none'; form-action 'none'; object-src 'none'; base-uri 'none'">
+  <title>Xanthil · Fork / Subagent UI Contract</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="incremental.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="JuanerAI，持续做出更好的决策；Xanthil Desktop">
+        <span class="brand-mark"><img src="../../2026-09-28/clickable-ui-contract-case-assistant-v1.0/dist/assets/juanerai-logo-slogan.png" alt=""></span>
+        <span class="brand-copy"><strong>JuanerAI</strong><small>持续做出更好的决策</small></span>
+        <span class="product-name">Xanthil Desktop</span>
+      </div>
+      <nav class="mode-switch" aria-label="工作模式">
+        <button class="mode-button active" data-action="quick" aria-pressed="true">快速模式</button>
+        <button class="mode-button" data-action="professional" aria-pressed="false">专业模式</button>
+      </nav>
+      <div class="top-actions"><span class="demo-badge">UI Contract · 合成状态 · 无真实模型调用</span><span class="avatar" aria-label="本地用户">HB</span></div>
+    </header>
+    <main id="quickView" class="workspace quick-workspace">
+      <aside class="session-rail" aria-label="父子会话树">
+        <div class="rail-heading"><div><p class="eyebrow">QUICK SESSIONS</p><h1>Case Assistant</h1></div></div>
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="search" aria-label="搜索父子会话" placeholder="搜索对话或任务"></label>
+        <div id="sessionTree"></div>
+        <div class="rail-footnote"><strong>一个 Case，多条思路</strong><span>子对话有独立授权和历史。一次运行一个模型任务。</span><button class="text-button" data-action="source">查看来源关系</button></div>
+      </aside>
+      <section class="conversation-pane" aria-label="当前对话">
+        <header class="conversation-header"><div><div class="title-line"><h2 id="conversationTitle">会员复购决策</h2><span id="conversationType" class="linked-badge">根 Case Assistant</span></div><button class="source-link" data-action="source">会员复购分析 · revision r7 ↗</button></div><div class="header-actions"><span id="currentStatus" class="attempt-status"></span><button class="danger-button" data-action="stop" id="stopButton">停止</button><button class="small-button" data-action="close" id="closeButton">关闭父会话</button></div></header>
+        <div class="conversation-scroll" id="conversationScroll">
+          <div id="alerts"></div>
+          <section class="context-banner"><div class="context-icon" id="contextIcon">C</div><div><strong id="contextTitle">从已确认的决定，探索另一条思路</strong><p id="contextSubtitle">Case r7 · Completed · accepted Finding · Closure 有效 · final report v2</p></div><button class="text-button" data-action="professional">查看来源</button></section>
+          <div class="timeline" id="timeline"></div>
+          <div id="resultArea"></div>
+        </div>
+        <section class="composer" aria-label="对话输入">
+          <div class="capability-row" id="capabilities"></div>
+          <div class="composer-box"><textarea id="composerInput" aria-label="本次任务或回答" placeholder="继续讨论前，确认本次任务与材料…"></textarea><button class="send-button" data-action="send" aria-label="发送当前可见文本">↑</button></div>
+          <p id="composerNote">Fake Provider / synthetic · 每次发送仅包含已披露文本与选定材料 · 无真实外发</p>
+        </section>
+      </section>
+      <aside class="context-drawer" aria-label="来源、授权与记录">
+        <nav class="drawer-tabs" aria-label="辅助面板"><button class="drawer-tab active" data-tab="source">来源</button><button class="drawer-tab" data-tab="authorization">授权</button><button class="drawer-tab" data-tab="materials">材料</button><button class="drawer-tab" data-tab="history">历史</button></nav>
+        <div id="drawerContent" class="drawer-panel"></div>
+      </aside>
+    </main>
+    <main id="professionalView" class="workspace professional-workspace hidden" aria-label="专业模式来源">
+      <nav class="pro-nav" aria-label="六阶段"><p class="eyebrow">PROFESSIONAL CASE</p><h2>会员复购分析</h2><p class="revision-line">r7 · Completed</p><ol class="stage-list" id="stageList"></ol></nav>
+      <section class="pro-main"><div class="pro-header"><div><p class="eyebrow">SOURCE CASE · READ ONLY</p><h1 id="stageTitle">Execution feedback</h1></div><span class="state-badge green">已完成 · 既有流程</span></div><div class="pro-summary-grid"><article><span>已验证 Evidence</span><strong>12</strong><small>子结果不增加</small></article><article><span>已采纳 Finding</span><strong>4</strong><small>子结果不改写</small></article><article><span>正式决定</span><strong>DR-002</strong><small>Expected Outcome EO-002</small></article><article><span>当前报告</span><strong>v2</strong><small>final · 保持原版本</small></article></div><article class="pro-card case-assistant-entry"><div class="assistant-orb">C</div><div><p class="eyebrow">CASE ASSISTANT</p><h2>比较思路，审阅后再使用</h2><p>返回父对话查看子结果。采纳子结果仅增加对话材料。</p><div class="boundary-pills"><span>MODEL · 建议</span><span>不发布正式决定</span><span>不更新报告</span></div></div><button class="primary-button" data-action="quick">返回快速模式</button></article><article class="pro-card"><p class="eyebrow">FORMAL RECORD · RETAINED BASELINE</p><h2>受控续费触达试验</h2><p>由用户采纳的 DR-002 / EO-002，绑定来源 r7。</p><div class="formal-grid"><div><span>责任人</span><strong>林岚 · 会员运营</strong></div><div><span>观察窗口</span><strong>30 天</strong></div><div><span>报告版本</span><strong>v2 · 当前</strong></div></div><p class="retained-note">本附件仅呈现原流程的保留状态。正式编辑、计算和导出交互请查看已批准的 Change 002 附件。</p><a class="text-button" href="../../2026-09-28/clickable-ui-contract-case-assistant-v1.0/dist/index.html" target="_blank" rel="noopener">打开既有完整 UI Contract ↗</a></article></section>
+      <aside class="pro-context"><h3>来源与报告</h3><ul><li><span>Case revision</span><strong>r7</strong></li><li><span>Decision Closure</span><strong>有效</strong></li><li><span>Evidence / Finding</span><strong>12 / 4</strong></li></ul><div class="report-history"><button data-action="report">v2 · 当前 final · DR-002 / EO-002</button><button data-action="report-old">v1 · superseded · 可读</button></div><p class="retained-note">模式切换只是导航，活动子任务状态仍保留。</p><button class="secondary-button" data-action="quick">查看父子对话</button></aside>
+    </main>
+  </div>
+  <details class="scenario-panel" id="scenarios"><summary>UI Contract 场景 · 仅演示</summary><div class="scenario-menu" id="scenarioMenu"></div></details>
+  <div id="announcement" class="toast hidden" role="status" aria-live="polite"></div>
+  <dialog class="modal wide-modal" id="dialog" aria-labelledby="dialogTitle"><form id="dialogForm"><div class="modal-header"><div><p class="eyebrow">XANTHIL · UI CONTRACT</p><h2 id="dialogTitle"></h2></div><button type="button" class="icon-button" data-action="dismiss" aria-label="关闭对话框">×</button></div><div id="dialogBody"></div><p id="dialogError" class="field-error hidden" role="alert"></p><div class="modal-actions"><button type="button" class="secondary-button" data-action="dismiss" id="dialogCancel">取消</button><button type="submit" class="primary-button" id="dialogConfirm">确认</button></div></form></dialog>
+  <script src="app.js"></script>
+</body>
+</html>

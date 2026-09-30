@@ -1,15 +1,16 @@
 # JuanerAI Product Planning Index
 
-## Current approved product-development authority — Blueprint v2.0（2026-09-26）
+## Current approved product-development authority — Blueprint v3.0（2026-10-01）
 
-[JuanerAI Product Development Blueprint v2.0](2026-09-26/juanerai-product-development-blueprint-v2.0.md)
+[JuanerAI Product Development Blueprint v3.0](2026-09-30/juanerai-product-development-blueprint-v3.0.md)
 is the user-approved highest product-development execution guideline, grounded
 in Whitepaper v4.0 as its core product reference and commercialization charter.
-The user confirmed the complete draft after independent
-[Review 001](2026-09-26/reviews/blueprint-v2.0-development-readiness-review-001.md)
-returned `PASS`. The approved product content is unchanged from that review.
-See the [approval and rule-integration record](2026-09-26/blueprint-v2.0-approval-and-rule-integration.md)
-for the reviewed/approved identities and publication boundary.
+The user replied “审核通过” to the complete formal Blueprint/plan/UI package on
+2026-10-01 after fresh independent
+[Review 002](2026-09-30/reviews/xanthil-fork-subagent-and-blueprint-v3-development-readiness-review-002.md)
+returned `PASS`. The approved product content is unchanged; only approval-control
+information was updated. See the [approval, local rule-integration and Product Input Freeze record](2026-09-30/xanthil-fork-subagent-approval-and-product-input-freeze-v1.0.md)
+for reviewed/approved identities and the separate publication/intake boundary.
 
 Read the four views together: **capability landscape (§4), phased vertical-slice
 delivery (§§5–6), architecture/module responsibility (§9), competitive
@@ -17,16 +18,24 @@ value/evidence (§10)**; apply selection rule §8 and close §7's product decisi
 before freezing the relevant product input. Full six-plus-two coverage and IR
 remain; competitive and learning-effect claims require evidence.
 
-The first production slice remains frozen. The later product-result sequence is
-**Decision Record and Expected Outcome → outcome follow-up → explicit adoption
-in the next Case**. The former new-period comparison candidate is reused within
+Change 001/002 inputs and accepted behavior remain protected. The product-result sequence is
+**Decision Record and Expected Outcome → bounded Fork/Subagent collaboration →
+outcome follow-up → explicit adoption in the next Case**. The former new-period comparison candidate is reused within
 outcome follow-up, not selected as the default next Change. Each later slice
 still needs applicable acceptance evidence, its own UI Contract/UI Gate and
 confirmed engineering intake before OpenSpec/TDD work. This roadmap grants no
 new production dispatch, provider/data access, action or first-slice expansion.
 
-The user authorized Git publication/integration and Mac mini adoption after
-confirming the full text. Exact Git and original-task receiver receipts prove
+On 2026-09-30 the user approved a scoped Change 003 selection adjustment:
+bounded Fork and one user-initiated Subagent in one Change, before outcome
+follow-up. The [scope and route decision](2026-09-30/change-003-scope-and-route-decision-v1.0.md)
+records that decision and the subsequent 2026-10-01 formal approval.
+Blueprint v3.0 is now approved and integrated into MacBook's local rule entries;
+At the local freeze recorded above, Git publication and Mac mini adoption had not occurred. Historical plans/specs
+remain unchanged, and product approval grants no engineering start.
+
+For Blueprint v2.0, the user previously authorized Git publication/integration
+and Mac mini adoption after confirming that version's full text. Exact Git and original-task receiver receipts prove
 those results separately; until receiver readback, adoption is `UNCONFIRMED`.
 Publication alone grants no engineering-state update or execution. Future Whitepaper revisions still require
 user notification, versioned Blueprint approval, independent readiness review
@@ -38,12 +47,25 @@ The user passed the UI Gate for [Xanthil Case Assistant Product Plan v1.0](2026-
 
 The freeze record captures the MacBook product decision. Git publication, Mac mini fixed-version readback and Engineering Intake require their own receipts; the freeze record does not assert them. The first accepted Desktop Change remains the implementation base; the second Change adds a Case Assistant and Decision Record / Expected Outcome flow using its existing Case, revision, evidence, calculation and report capabilities.
 
+## Third Xanthil Desktop Change — approved, product input frozen locally
+
+[Current user review package](2026-09-30/change-003-user-review-package-v1.0.md) records the 2026-10-01 Gate results, verified clickable surface and current stop line. The [approval and Product Input Freeze record](2026-09-30/xanthil-fork-subagent-approval-and-product-input-freeze-v1.0.md) binds the user decision, reviewed identities and approval-control-only updates.
+
+After approving [Fork/Subagent Discussion v0.1](2026-09-30/xanthil-fork-subagent-product-proposal-v0.1.md), the user approved the complete [Blueprint v3.0](2026-09-30/juanerai-product-development-blueprint-v3.0.md), [Product Plan v1.0](2026-09-30/xanthil-fork-subagent-product-plan-v1.0.md), [Incremental UI Contract v1.0](2026-09-30/xanthil-fork-subagent-ui-contract-v1.0.md) and [clickable attachment](2026-09-30/clickable-ui-contract-fork-subagent-v1.0/index.html). Fork first, then one single-layer user-initiated Subagent; sequential model work, independent windows, return distinct from adoption, and no direct formal writes. Fresh [Review 002](2026-09-30/reviews/xanthil-fork-subagent-and-blueprint-v3-development-readiness-review-002.md) passed both Blueprint and product-plan Development-Readiness on 2026-10-01; [plan Review 001](2026-09-30/reviews/xanthil-fork-subagent-development-readiness-review-001.md) NEEDS_CLARIFICATION remains preserved. User UI Gate PASS, full Blueprint/plan approval, local rule integration and local Product Input Freeze are complete. The freeze-time Git publication, receiver adoption and Engineering Intake entries are historical snapshots, not a live remote-state claim; the freeze itself granted neither engineering execution nor cross-device dispatch.
+
+The user subsequently authorized Git publication/integration and dispatch to the existing Mac mini `change-003`, then approved an index exception limited to this frozen planning/synthetic-UI package. See the [publication and dispatch authorization record](2026-09-30/change-003-publication-and-dispatch-authorization-v1.0.md). Actual publication commit/tree, PR and receiver adoption still require real Git and task receipts; this authorization adds no product scope, Provider permission or inferred engineering start.
+
+Each Change should consult relevant earlier research Demos as reference for efficiency, not authority. The [Change 003 reference and adoption note](2026-09-30/xanthil-fork-subagent-research-reference-v1.0.md) records selected sources, adoption differences and production gaps, keeping the formal input self-contained.
+
+[Outcome Follow-up Proposal v0.1](2026-09-30/xanthil-outcome-follow-up-product-proposal-v0.1.md) is retained as deferred reference, not the selected Change 003. Its former D1–D6 recommendations remain unapproved. Outcome follow-up and next-Case adoption retain their later return points.
+
 ## Historical Blueprints — immutable
 
 Blueprint [v1.0](https://github.com/gadfly-hbo/JuanerAI/blob/c5a305795bd7201b541e5f8184554bf72ed82b35/docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.0.md),
 [v1.1](https://github.com/gadfly-hbo/JuanerAI/blob/c5a305795bd7201b541e5f8184554bf72ed82b35/docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.1.md),
-[v1.2](2026-09-19/juanerai-product-development-blueprint-v1.2.md) and
-[v1.3](2026-09-19/juanerai-product-development-blueprint-v1.3.md) remain immutable
+[v1.2](2026-09-19/juanerai-product-development-blueprint-v1.2.md),
+[v1.3](2026-09-19/juanerai-product-development-blueprint-v1.3.md) and
+[v2.0](2026-09-26/juanerai-product-development-blueprint-v2.0.md) remain immutable
 history. v1.2 adopted Whitepaper v3.3.4's OSM/PIM and coverage map. Its
 [Review 001](2026-09-19/reviews/blueprint-v1.2-development-readiness-review-001.md)
 `NEEDS_CLARIFICATION` and
@@ -51,7 +73,10 @@ history. v1.2 adopted Whitepaper v3.3.4's OSM/PIM and coverage map. Its
 `PASS` retain their historical scope. v1.3 consolidated the four views; its
 [Review 001](2026-09-19/reviews/blueprint-v1.3-development-readiness-review-001.md)
 `PASS` is preserved. First-slice UI, Session/Runtime, execution package and
-applicable approved amendments remain protected under v2.0 §6.1 and Appendix B.
+applicable approved amendments remain protected under v3.0 §6.1 and Appendix B.
+v2.0's [Review 001](2026-09-26/reviews/blueprint-v2.0-development-readiness-review-001.md)
+and [approval/integration record](2026-09-26/blueprint-v2.0-approval-and-rule-integration.md)
+retain their original identities and authority boundaries.
 
 ## Historical scoped main integration — v1.2 / v1.3
 
@@ -64,13 +89,13 @@ the earlier branch history, role configuration, execution policies, task
 packages, UI assets or project-board records. Those assets remain preserved at
 their original Git sources, not deleted or superseded by absence here.
 
-## Current product-input package binding — v2.0
+## Current product-input package binding — v3.0
 
 When preparing a later Change's Product Input Package, explicitly bind:
 
-- Blueprint: `v2.0`;
-- path: `docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md`;
-- SHA-256: `a7181f5a62e41955c7753b018c922701296948b593e9b7ffc164de549b768a30`;
+- Blueprint: `v3.0`;
+- path: `docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md`;
+- SHA-256 after approval-control updates: `7aadfbd59da22df7bb4889cd8b25e77cb0e46711b1cdc4e7ba2cc0997de98113`;
 - exact package/integration commit and tree, resolved after publication;
 - four-view alignment: capability coverage (§4), phase/outcome (§§5–6), module
   responsibility and IR (§9), competitive hypothesis/evidence (§10), using §8;
@@ -80,7 +105,7 @@ When preparing a later Change's Product Input Package, explicitly bind:
   version/path/hash, and confirmation that those inputs govern the new package.
 
 This is an intake field requirement in the existing package, not a new Gate
-or an authorized second Change. Git publication, a main merge, a fetch, or a
+or engineering-start authority. Git publication, a main merge, a fetch, or a
 sent message is not proof that an active Mac mini task adopted the version.
 Keep receiver adoption unconfirmed until its readback. Do not switch, reset or
 overwrite its active work branch to force synchronization. The existing first
@@ -121,7 +146,7 @@ and the original Mini task returns the named receipt, adoption is
 
 The user withdrew all previously approved, not-yet-executed Xanthil Desktop
 and Model Pack development plans. Their status is **VOID**, not paused or
-awaiting dispatch. Blueprint v2.0 does not reactivate their roadmap,
+awaiting dispatch. Blueprint v3.0 does not reactivate their roadmap,
 fixtures, Changes, execution packages or development sequence.
 
 ### Scope of withdrawal

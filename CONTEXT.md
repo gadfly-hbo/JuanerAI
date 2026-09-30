@@ -13,7 +13,7 @@ The product-definition and commercialization charter and the core reference for 
 _Avoid_: executable roadmap, implementation authorization, proof of completion
 
 **Product Development Blueprint**:
-JuanerAI's highest product-development execution guideline. Its four core views connect capability coverage, phased vertical delivery, module responsibility and competitive-value evidence. Blueprint v2.0 is approved; v1.0–v1.3 remain history. Its Whitepaper v4.0 adoption preserves the frozen first slice and advances Personal decision records, outcome follow-up and explicit next-Case adoption before demand-led Team and Enterprise expansion.
+JuanerAI's highest product-development execution guideline. Its four core views connect capability coverage, phased vertical delivery, module responsibility and competitive-value evidence. Blueprint v3.0 is approved; v1.0–v2.0 remain history. It retains Whitepaper v4.0 adoption and Change 001/002 inputs, inserts bounded Fork/Subagent collaboration after Personal decision records and expectations, then returns to outcome follow-up and explicit next-Case adoption before demand-led Team and Enterprise expansion.
 _Avoid_: Whitepaper copy, OpenSpec, automatic Change authorization
 
 **Xanthil**:
@@ -66,7 +66,7 @@ _Avoid_: CPU machine language, prompt, generated SQL alone, cosmetic JSON, autom
 
 ## Decision Loop
 
-These are v2.0 product meanings. They do not retroactively change frozen first-slice states, contracts or acceptance; analysis completion is not Decision Loop completion.
+These product meanings were adopted in v2.0 and remain unchanged in v3.0. They do not retroactively change frozen first-slice states, contracts or acceptance; analysis completion is not Decision Loop completion.
 
 **Evidence-based Analysis (循证分析)**:
 An analyst-led investigation that keeps Hypotheses, supporting and refuting Evidence, alternatives, uncertainty, Forks, and bounded Subagent contributions traceable before a Finding is accepted.
