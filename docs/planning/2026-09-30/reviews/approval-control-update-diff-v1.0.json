@@ -1,0 +1,295 @@
+{
+  "purpose": "Approval-control-only byte reconstruction; not a new product or engineering Gate.",
+  "date": "2026-10-01",
+  "files": [
+    {
+      "path": "docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md",
+      "beforeSha256": "a722ebdad4b8577064eacafbe256d6a3bee04cf863d66d5bbde5228d8b04ad2f",
+      "afterSha256": "7aadfbd59da22df7bb4889cd8b25e77cb0e46711b1cdc4e7ba2cc0997de98113",
+      "changes": [
+        {
+          "beforeLine": 1,
+          "afterLine": 1,
+          "old": [
+            "# JuanerAI 产品开发蓝图 v3.0 — 待审候选"
+          ],
+          "new": [
+            "# JuanerAI 产品开发蓝图 v3.0"
+          ]
+        },
+        {
+          "beforeLine": 7,
+          "afterLine": 7,
+          "old": [
+            "| 版本 | `3.0 candidate-01` |",
+            "| 状态 | `CANDIDATE_FOR_REVIEW`；不是 `APPROVED`，尚未替代当前生效蓝图 |",
+            "| 用户决定 | 2026-09-30 已批准 Change 003 范围及 Fork／Subagent 讨论稿，要求形成正式路线版本、产品计划、增量可点击 UI 和 Gates；本文件全文仍待确认 |",
+            "| 日期 | 2026-09-30 |",
+            "| 当前生效蓝图 | [v2.0](../2026-09-26/juanerai-product-development-blueprint-v2.0.md)；已批准的路线调整见[Change 003 记录](change-003-scope-and-route-decision-v1.0.md)；新版本批准与规则整合仍待完成 |"
+          ],
+          "new": [
+            "| 版本 | `3.0` |",
+            "| 状态 | `APPROVED`；MacBook 本地规则整合完成，尚未 Git 发布或由 Mac mini 采用 |",
+            "| 用户决定 | 2026-10-01 用户对正式路线／产品计划／增量 UI 审核包回复“审核通过”；全文批准及 UI Gate PASS 见[批准与产品输入冻结记录](xanthil-fork-subagent-approval-and-product-input-freeze-v1.0.md) |",
+            "| 日期 | 草拟 2026-09-30；批准 2026-10-01 |",
+            "| 当前生效蓝图 | 本版 v3.0；替代规划入口中的 [v2.0](../2026-09-26/juanerai-product-development-blueprint-v2.0.md)，不倒写旧蓝图、已接受合同或工程状态 |"
+          ]
+        },
+        {
+          "beforeLine": 14,
+          "afterLine": 14,
+          "old": [
+            "| 独立审查 | 本版新鲜 Development-Readiness Review 待完成；v2.0 Review 001 PASS 只属于其历史输入 |",
+            "| 关联候选 | [正式产品计划 v1.0](xanthil-fork-subagent-product-plan-v1.0.md)、[增量 UI Contract v1.0](xanthil-fork-subagent-ui-contract-v1.0.md)；均须按各自记录确认状态 |"
+          ],
+          "new": [
+            "| 独立审查 | 新鲜 [Review 002](reviews/xanthil-fork-subagent-and-blueprint-v3-development-readiness-review-002.md) PASS；先前审查及其适用输入保留 |",
+            "| 关联产品输入 | 已批准的[产品计划 v1.0](xanthil-fork-subagent-product-plan-v1.0.md)、[增量 UI Contract v1.0](xanthil-fork-subagent-ui-contract-v1.0.md)；精确身份见冻结记录 |"
+          ]
+        },
+        {
+          "beforeLine": 22,
+          "afterLine": 22,
+          "old": [
+            "本文件是可审查候选，不是冻结 Product Input Package。完整新版本批准、用户 UI",
+            "Gate、新鲜独立就绪审查、规则整合、Product Input Freeze、Git 发布和接收方采用",
+            "分别记录；当前均不得由讨论稿批准或本文件存在推断。本文不授权 OpenSpec、生产实现、",
+            "依赖、Provider 调用、真实数据、外部行动、Git 发布或 Mac mini 开工。"
+          ],
+          "new": [
+            "本文件全文批准、新鲜独立就绪 PASS、用户 UI Gate PASS、MacBook 本地规则整合和",
+            "Product Input Freeze 已分别记录。Git 发布、接收方采用及 Engineering Intake 尚未执行，",
+            "不由产品批准推断。本文不授权 OpenSpec、生产实现、依赖、Provider 调用、真实数据、",
+            "外部行动、Git 发布或 Mac mini 开工。"
+          ]
+        },
+        {
+          "beforeLine": 44,
+          "afterLine": 44,
+          "old": [
+            "实质改变后续纵切顺序，故形成 v3.0 候选。Personal 决策闭环的价值终点保持。"
+          ],
+          "new": [
+            "实质改变后续纵切顺序，故升至 v3.0。Personal 决策闭环的价值终点保持。"
+          ]
+        },
+        {
+          "beforeLine": 53,
+          "afterLine": 53,
+          "old": [
+            "本表沿用 v2.0 已批准的白皮书采用判断，按当前交付事实更新定位；不声称 v3.0 全文",
+            "已经批准。“采用”不表示完整实现或立即实施；“延期”保留目标和回看条件；"
+          ],
+          "new": [
+            "本表沿用 v2.0 已批准的白皮书采用判断，按当前交付事实更新定位；v3.0 全文批准",
+            "不等于工程执行。“采用”不表示完整实现或立即实施；“延期”保留目标和回看条件；"
+          ]
+        },
+        {
+          "beforeLine": 82,
+          "afterLine": 82,
+          "old": [
+            "| 受控 Fork／Subagent | 按已批准讨论稿形成 §6.3 与本次正式候选包 | 同一 Change 先 Fork 后 Subagent，两项均有工程与用户验收才完成 |"
+          ],
+          "new": [
+            "| 受控 Fork／Subagent | §6.3 与本次正式产品输入已批准 | 同一 Change 先 Fork 后 Subagent，两项均有工程与用户验收才完成 |"
+          ]
+        },
+        {
+          "beforeLine": 170,
+          "afterLine": 170,
+          "old": [
+            "本节保留 v2.0 全部纵切，并落实已批准的 Change 003 范围方向；正式 v3.0 全文仍待批准。"
+          ],
+          "new": [
+            "本节保留 v2.0 全部纵切，并落实已批准的 Change 003 范围方向；正式 v3.0 全文已获批准。"
+          ]
+        },
+        {
+          "beforeLine": 201,
+          "afterLine": 201,
+          "old": [
+            "本轮未重跑原工程验收，也未读取 Mini 原始证据或声称其采用本候选蓝图。"
+          ],
+          "new": [
+            "本轮未重跑原工程验收，也未读取 Mini 原始证据或声称其采用本版蓝图。"
+          ]
+        },
+        {
+          "beforeLine": 234,
+          "afterLine": 234,
+          "old": [
+            "### 6.3 当前候选：受控 Fork 与单个 Subagent 协作"
+          ],
+          "new": [
+            "### 6.3 当前选定纵切：受控 Fork 与单个 Subagent 协作"
+          ]
+        },
+        {
+          "beforeLine": 243,
+          "afterLine": 243,
+          "old": [
+            "承载，二者仍待其全文／UI Gate。本片按同一 Change 内先 Fork、后 Subagent 交付："
+          ],
+          "new": [
+            "承载，二者的全文／UI Gate 已获批准，尚未工程接收。本片按同一 Change 内先 Fork、后 Subagent 交付："
+          ]
+        },
+        {
+          "beforeLine": 344,
+          "afterLine": 344,
+          "old": [
+            "本稿是路线候选，不直接授予工程实施权。Change 001／002 已关闭的产品决定以其"
+          ],
+          "new": [
+            "本版是已批准路线，不直接授予工程实施权。Change 001／002 已关闭的产品决定以其"
+          ]
+        },
+        {
+          "beforeLine": 346,
+          "afterLine": 346,
+          "old": [
+            "下表将候选包须准确承接的语义和仍待完成的批准区分，不能由工程猜测。"
+          ],
+          "new": [
+            "下表将本片已关闭产品语义与后续纵切待定项区分，不能由工程猜测。"
+          ]
+        },
+        {
+          "beforeLine": 351,
+          "afterLine": 351,
+          "old": [
+            "| 当前协作片 | 讨论稿中的根父入口、分叉材料、独立授权、单层单个／顺序执行、回流不等于采纳、停止／关闭／恢复、来源过期及无正式写入在 §6.3 和正式计划中闭合；本候选全文、增量 UI Gate、新鲜就绪审查及 Freeze 仍待完成 | 业务父子及结果身份、兼容／持久化、事务与幂等、资源排他、迟到与取消、内部类型／Schema／接口、错误及测试组织；不能反向扩大产品边界 |"
+          ],
+          "new": [
+            "| 当前协作片 | 根父入口、分叉材料、独立授权、单层单个／顺序执行、回流不等于采纳、停止／关闭／恢复、来源过期及无正式写入在 §6.3 和正式计划中闭合；全文／UI 批准、Review 002 PASS 及本地 Freeze 已记录 | 业务父子及结果身份、兼容／持久化、事务与幂等、资源排他、迟到与取消、内部类型／Schema／接口、错误及测试组织；不能反向扩大产品边界 |"
+          ]
+        },
+        {
+          "beforeLine": 535,
+          "afterLine": 535,
+          "old": [],
+          "new": [
+            "2026-10-01 当前状态：用户对正式审核包回复“审核通过”；本版及具体产品计划全文",
+            "获批、用户 UI Gate PASS，Review 002 为当前就绪 PASS。MacBook 已完成必要规则入口",
+            "整合并本地冻结产品输入，精确身份见[批准与冻结记录](xanthil-fork-subagent-approval-and-product-input-freeze-v1.0.md)。",
+            "上表保留候选形成时历史，不倒写审查结论或声明已发布／Mini 已接收。",
+            ""
+          ]
+        },
+        {
+          "beforeLine": 542,
+          "afterLine": 547,
+          "old": [
+            "本版通过所需批准及就绪审查后，才按授权将规划入口及必要项目规则指向 v3.0；",
+            "本次候选不自行改写 AGENTS／CONTEXT 或接管 Mini 工程看板。"
+          ],
+          "new": [
+            "本版所需批准及就绪审查已完成，规划入口及必要项目规则已在 MacBook 本地指向 v3.0；",
+            "未接管 Mini 工程看板，未完成 Git 集成或跨端接收。"
+          ]
+        },
+        {
+          "beforeLine": 549,
+          "afterLine": 554,
+          "old": [
+            "转发按明确授予的 Git／交接权限执行；本候选没有这些权限。"
+          ],
+          "new": [
+            "转发按明确授予的 Git／交接权限执行；本次“审核通过”没有授予这些权限。"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "docs/planning/2026-09-30/xanthil-fork-subagent-product-plan-v1.0.md",
+      "beforeSha256": "3bed07a63c649927b4ffc17a4f5ce08030be9fe91dd0c51336250cace55a8a65",
+      "afterSha256": "e8762f1a485108efc564a8bebd8f5cb84a50275626560f14db84998e6095a56a",
+      "changes": [
+        {
+          "beforeLine": 6,
+          "afterLine": 6,
+          "old": [
+            "- 状态：`CANDIDATE_FOR_DEVELOPMENT_READINESS_AND_USER_UI_REVIEW`，不是 Product Input Freeze。",
+            "- 用户先确认[范围与路线调整](change-003-scope-and-route-decision-v1.0.md)，随后明确“讨论稿同意，继续推进正式路线版本、可点击增量 UI Contract 和相应 Gate；UI 标准在 change2 时已经确定，注意做延续”。[讨论稿 v0.1](xanthil-fork-subagent-product-proposal-v0.1.md)中的根入口、分叉点、关闭及回流恢复建议由此进入本正式候选；本计划不增加自主程度或工具／数据权限。"
+          ],
+          "new": [
+            "- 状态：`PRODUCT_INPUT_FROZEN_LOCALLY`；2026-10-01 用户全文批准及 UI Gate PASS，精确身份见[批准与冻结记录](xanthil-fork-subagent-approval-and-product-input-freeze-v1.0.md)。尚未 Git 发布／Engineering Intake。",
+            "- 用户先确认[范围与路线调整](change-003-scope-and-route-decision-v1.0.md)，随后明确“讨论稿同意，继续推进正式路线版本、可点击增量 UI Contract 和相应 Gate；UI 标准在 change2 时已经确定，注意做延续”。[讨论稿 v0.1](xanthil-fork-subagent-product-proposal-v0.1.md)中的根入口、分叉点、关闭及回流恢复建议由此进入本正式计划；本计划不增加自主程度或工具／数据权限。"
+          ]
+        },
+        {
+          "beforeLine": 9,
+          "afterLine": 9,
+          "old": [
+            "- 路线候选：[Blueprint v3.0](juanerai-product-development-blueprint-v3.0.md)；[v2.0](../2026-09-26/juanerai-product-development-blueprint-v2.0.md)仍是整合的已批准版本。v3 全文、独立就绪结论及规则整合不得由本计划存在推断。",
+            "- 可见行为：[增量 UI Contract v1.0](xanthil-fork-subagent-ui-contract-v1.0.md)及[可点击附件](clickable-ui-contract-fork-subagent-v1.0/index.html)。用户 UI Gate 尚未取得。"
+          ],
+          "new": [
+            "- 已批准路线：[Blueprint v3.0](juanerai-product-development-blueprint-v3.0.md)，已在 MacBook 本地整合；[v2.0](../2026-09-26/juanerai-product-development-blueprint-v2.0.md)保留为历史，不倒写其内容。新鲜 [Review 002](reviews/xanthil-fork-subagent-and-blueprint-v3-development-readiness-review-002.md) PASS。",
+            "- 可见行为：[增量 UI Contract v1.0](xanthil-fork-subagent-ui-contract-v1.0.md)及[可点击附件](clickable-ui-contract-fork-subagent-v1.0/index.html)。2026-10-01 用户“审核通过”，UI Gate PASS。"
+          ]
+        },
+        {
+          "beforeLine": 12,
+          "afterLine": 12,
+          "old": [
+            "本次仅产品／UI 规划、离线合成原型和独立只读就绪审查。无工程 Intake、OpenSpec、生产代码、测试资产、依赖、真实模型、业务数据、Git 发布或 Mac mini 派发授权。就绪 PASS 不替代用户 UI Gate／蓝图全文确认，不自动冻结或启动工程。"
+          ],
+          "new": [
+            "本次完成产品／UI 批准、独立只读就绪审查、本地规则整合与 Product Input Freeze。无工程 Intake、OpenSpec、生产代码、测试资产、依赖、真实模型、业务数据、Git 发布或 Mac mini 派发授权。就绪 PASS 与用户全文／UI 批准分别记录，产品冻结不启动工程。"
+          ]
+        },
+        {
+          "beforeLine": 151,
+          "afterLine": 151,
+          "old": [
+            "本计划、Blueprint v3 候选、UI 正文／可点击附件及自包含 research 采用说明作为当前审查包。新鲜独立 Reviewer 按七项 development-readiness 检查蓝图和具体计划，修正物质缺口后再由新 Reviewer 复查，历史结论保留。"
+          ],
+          "new": [
+            "本计划、已批准 Blueprint v3、UI 正文／可点击附件及自包含 research 采用说明构成产品输入包。新鲜独立 Review 002 按七项 development-readiness 检查蓝图和具体计划并判定 PASS；Review 001 的 NEEDS_CLARIFICATION 及后续修正历史保留。"
+          ]
+        },
+        {
+          "beforeLine": 153,
+          "afterLine": 153,
+          "old": [
+            "就绪 PASS 后展示可点击界面供用户 UI Gate 和新蓝图全文确认；未收到明确用户结果不填写 PASS／APPROVED。之后才按授权完成规则整合、固定产品输入、Git 发布和接收。本 chat 停在用户审核，不自动提交／推送／交接，也不操作 Mac mini 的工程状态。"
+          ],
+          "new": [
+            "2026-10-01 用户审核通过后，全文／UI 批准、MacBook 本地规则整合和 Product Input Freeze 见[冻结记录](xanthil-fork-subagent-approval-and-product-input-freeze-v1.0.md)。Git 发布、固定版本接收与工程推进仍需独立适用授权及回执。本 chat 不自动提交／推送／交接，也不操作 Mac mini 的工程状态。"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "docs/planning/2026-09-30/xanthil-fork-subagent-ui-contract-v1.0.md",
+      "beforeSha256": "a8a32946129f13cd6caa11ce71efa61c405dae780d0bd5f58f57b23fb2d3607f",
+      "afterSha256": "7642abb73102d761a705ac99d54ae00958b35b9a9a8ec7e713d595868e60f4c4",
+      "changes": [
+        {
+          "beforeLine": 6,
+          "afterLine": 6,
+          "old": [
+            "- 状态：`CANDIDATE_FOR_USER_UI_GATE`，不是用户 UI Gate PASS 或 Product Input Freeze。",
+            "- 产品语义由[正式产品计划 v1.0](xanthil-fork-subagent-product-plan-v1.0.md) FS-R01–08／AC-FS-01–10 拥有；路线见 [Blueprint v3.0 候选](juanerai-product-development-blueprint-v3.0.md)。冲突须修订，不由前端固定示例裁决。"
+          ],
+          "new": [
+            "- 状态：`USER_UI_GATE_PASS / PRODUCT_INPUT_FROZEN_LOCALLY`；2026-10-01 用户“审核通过”，见[批准与冻结记录](xanthil-fork-subagent-approval-and-product-input-freeze-v1.0.md)。尚未 Git 发布或进入工程 Intake。",
+            "- 产品语义由[正式产品计划 v1.0](xanthil-fork-subagent-product-plan-v1.0.md) FS-R01–08／AC-FS-01–10 拥有；路线见已批准的 [Blueprint v3.0](juanerai-product-development-blueprint-v3.0.md)。冲突须修订，不由前端固定示例裁决。"
+          ]
+        },
+        {
+          "beforeLine": 83,
+          "afterLine": 83,
+          "old": [
+            "用户 UI Gate、新 Blueprint 全文确认、规则整合和 Product Input Freeze 仍须各自明确记录。此次完成后停在本 chat 等审核，不自动 Git 发布、发送 Mac mini 或开始工程。"
+          ],
+          "new": [
+            "用户 UI Gate、新 Blueprint／产品计划全文确认、MacBook 本地规则整合和 Product Input Freeze 已在[批准与冻结记录](xanthil-fork-subagent-approval-and-product-input-freeze-v1.0.md)分别记录。本次只更新文档控制和状态说明，§1–5 的可见行为及可点击实现字节不变。不自动 Git 发布、发送 Mac mini 或开始工程。"
+          ]
+        }
+      ]
+    }
+  ]
+}
