@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930120259866-56QBZD",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T12:02:59.866Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-dev-engineering-controller"
+  },
+  "summary": "真实开发版原生复验PASS，HMR状态丢失已关闭，进入最终固定与独立验证准备。",
+  "status_after": "active",
+  "evidence_refs": []
+}

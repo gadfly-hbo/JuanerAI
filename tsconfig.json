@@ -112,6 +112,10 @@
     "tests/unit/xanthil-desktop/provider-settings.unit.test.ts",
     "tests/integration/xanthil-desktop/provider-settings.integration.test.ts",
     "tests/contract/xanthil-desktop/provider-settings-runtime.contract.test.ts",
-    "tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts"
+    "tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts",
+    "apps/desktop/development.ts",
+    "apps/desktop/desktop-work.ts",
+    "tests/unit/xanthil-desktop/development-mode.test.ts",
+    "tests/unit/xanthil-desktop/development-main.test.ts"
   ]
 }

@@ -224,6 +224,27 @@ const approvedProviderSettingsTsconfig = Object.freeze({
     'tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts',
   ]),
 });
+// DEV-04: exact engineering supplement; all historical tuples stay immutable.
+const approvedDevelopmentManifest = Object.freeze({
+  ...approvedP5RootManifest,
+  scripts: Object.freeze({
+    ...approvedP5RootManifest.scripts,
+    test: 'node tools/desktop/test-daily.mjs --all',
+    'desktop:start': 'node tools/desktop/development-start.mjs',
+    'desktop:test': 'node tools/desktop/test-daily.mjs',
+    'desktop:test:artifact': 'node --test tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts',
+    'desktop:test:native': 'node tools/desktop/development-native.mjs',
+  }),
+});
+const developmentAppendix = Object.freeze([
+  'apps/desktop/development.ts','apps/desktop/desktop-work.ts',
+  'tests/unit/xanthil-desktop/development-mode.test.ts',
+  'tests/unit/xanthil-desktop/development-main.test.ts',
+]);
+const approvedDevelopmentTsconfig = Object.freeze({
+  compilerOptions: approvedProviderSettingsTsconfig.compilerOptions,
+  files: Object.freeze([...approvedProviderSettingsTsconfig.files,...developmentAppendix]),
+});
 const approvedC1aTsconfig = Object.freeze({
   compilerOptions: Object.freeze({
     ...approvedP4Tsconfig.compilerOptions,
@@ -529,6 +550,7 @@ function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, 
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP5RootManifest, approvedP5Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'P5' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP5RootManifest, approvedChange002Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change002' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP5RootManifest, approvedProviderSettingsTsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change002ProviderSettings' as const;
+  if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedDevelopmentTsconfig, approvedP5RepositoryConfigurationFiles)) return 'DesktopDevelopment' as const;
   assert.fail('root package.json, tsconfig.json, and configuration inventory must form exactly P4, final P5, Change002, or its approved Provider Settings increment without an intermediate tuple or selector');
 }
 
@@ -3350,7 +3372,7 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple(approvedP5RootManifest,approvedChange002Tsconfig,[...approvedP5RepositoryConfigurationFiles,'unauthorized.config.cjs']));
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Change002ProviderSettings');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'DesktopDevelopment');
 });
 
 test('TEST-XCLI-021 PS-06/07 admits only the exact Provider Settings appendix and rejects each partial, reordered or expanded tuple', () => {
@@ -3616,4 +3638,14 @@ test('TEST-XCLI-022 [AC-XCLI-016-01, AC-XCLI-016-04] keeps every closed-graph ta
   for (const target of targets) assert.equal(existsSync(new URL(target.href.replace(/\.ts$/, '.mjs'))), false);
   const names = await Promise.all(targets.map(async (target) => (await readdir(new URL('.', target))).map((name) => `${target.pathname}/${name}`)));
   assert.equal(names.flat().some((name) => /(^|\/)(dist|build)|\.mjs$/.test(name)), false);
+});
+
+
+test('DEV-04 exact development tuple rejects omissions, reordering and expanded effects',()=>{
+ const check=(manifest:unknown,config:unknown)=>assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles);
+ assert.equal(check(approvedDevelopmentManifest,approvedDevelopmentTsconfig),'DesktopDevelopment');
+ for(const omitted of developmentAppendix)assert.throws(()=>check(approvedDevelopmentManifest,{...approvedDevelopmentTsconfig,files:approvedDevelopmentTsconfig.files.filter(p=>p!==omitted)}));
+ assert.throws(()=>check(approvedDevelopmentManifest,{...approvedDevelopmentTsconfig,files:[...approvedProviderSettingsTsconfig.files,...developmentAppendix].reverse()}));
+ assert.throws(()=>check({...approvedDevelopmentManifest,scripts:{...approvedDevelopmentManifest.scripts,'desktop:test':'npm run desktop:package'}},approvedDevelopmentTsconfig));
+ assert.throws(()=>check({...approvedDevelopmentManifest,dependencies:{...approvedDevelopmentManifest.dependencies,unapproved:'1.0.0'}},approvedDevelopmentTsconfig));
 });

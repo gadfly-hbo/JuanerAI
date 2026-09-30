@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930121915159-OIM2ET",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T12:19:15.159Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-dev-engineering-controller"
+  },
+  "summary": "Worker已释放候选；独立Validator实际只读角色已核对并正在执行验证。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

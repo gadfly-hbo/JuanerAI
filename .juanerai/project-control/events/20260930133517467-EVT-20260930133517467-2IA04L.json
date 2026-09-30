@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930133517467-2IA04L",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-09-30T13:35:17.467Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-dev-engineering-controller"
+  },
+  "summary": "用户授权本补充Git交付及两文件图谱例外；开始归档和最终交付",
+  "status_after": "active",
+  "evidence_refs": []
+}

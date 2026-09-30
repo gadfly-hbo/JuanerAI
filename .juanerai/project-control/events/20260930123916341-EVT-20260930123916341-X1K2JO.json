@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930123916341-X1K2JO",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-09-30T12:39:16.341Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-dev-engineering-controller"
+  },
+  "summary": "工程验收及独立验证通过；集中申请本补充Git交付与package.json/tsconfig.json两文件图谱例外。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

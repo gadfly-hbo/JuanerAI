@@ -13,10 +13,12 @@
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "tools/harness/validation/run",
-    "desktop:start": "node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge start",
+    "test": "node tools/desktop/test-daily.mjs --all",
+    "desktop:start": "node tools/desktop/development-start.mjs",
     "desktop:package": "node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64",
-    "desktop:test": "npm run desktop:package && node --test tests/unit/xanthil-desktop/*.test.ts tests/contract/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/*.test.ts tests/e2e/xanthil-desktop/*.test.ts"
+    "desktop:test": "node tools/desktop/test-daily.mjs",
+    "desktop:test:artifact": "node --test tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts",
+    "desktop:test:native": "node tools/desktop/development-native.mjs"
   },
   "devDependencies": {
     "@types/node": "22.19.19",

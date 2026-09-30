@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFile, mkdtemp, mkdir, writeFile, rm, rmdir, cp, rename, readdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -107,8 +108,46 @@ test('CI-SOURCE-002: isolated prepare refuses existing paths; finalize rejects e
   await mkdir(join(repo, 'node_modules'));
   await assert.rejects(() => prepare(repo, view, archive), /existing path/);
   await rmdir(join(repo, 'node_modules')); // empty, owned synthetic precondition fixture
-  await prepare(repo, view, archive);
+  const manifestIdentity = { bytes: 1539, sha256: 'db19b12f4b3822f11b7567bf87d06347b64a5aca1767f41c6d3753e74bf2dacd' };
+  const lockIdentity = { bytes: 319836, sha256: '861326061cd570b0e81584f149012b13228aec3da6528d82536f89cbb5d535c0' };
+  const digest = bytes => ({ bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
+  const originals = new Map();
+  for (const [name, expected] of [['package.json', manifestIdentity], ['package-lock.json', lockIdentity]]) {
+    const path = join(repo, name), bytes = await readFile(path);
+    assert.deepEqual(digest(bytes), expected, 'fixture is the actual approved current repository input');
+    originals.set(name, bytes);
+  }
+  const receipt = await prepare(repo, view, archive);
+  assert.deepEqual(receipt.manifest, manifestIdentity);
+  assert.deepEqual(receipt.lock, lockIdentity);
+  assert.deepEqual(JSON.parse(await readFile(join(view, 'source-identity.json'))), receipt);
   await assert.rejects(() => prepare(repo, view, archive), /existing path/);
+  for (const [name, bytes] of originals) {
+    const path = join(repo, name), refusedView = join(root, `refused-${name}`);
+    // Valid JSON whitespace changes still invalidate both size and same-size hashes.
+    const sameSize = Buffer.from(bytes); sameSize[sameSize.length - 1] = 32;
+    for (const changed of [sameSize, Buffer.concat([bytes, Buffer.from('\n')])]) {
+      await writeFile(path, changed);
+      await assert.rejects(() => prepare(repo, refusedView, archive), name === 'package.json' ? /approved repository manifest identity/ : /approved repository lock identity/);
+      await assert.rejects(() => readdir(refusedView), { code: 'ENOENT' }, 'rejection creates no install view');
+    }
+    await writeFile(path, bytes);
+  }
+  for (const [name, bytes] of originals) {
+    const path = join(repo, name), changed = Buffer.from(bytes); changed[changed.length - 1] = 32;
+    await writeFile(path, changed);
+    await assert.rejects(() => finalize(repo, view, archive), name === 'package.json' ? /repository manifest unchanged/ : /repository lock unchanged/);
+    await assert.rejects(() => readdir(join(repo, 'node_modules')), { code: 'ENOENT' });
+    await writeFile(path, bytes);
+  }
+  const viewManifest = join(view, 'package.json');
+  await writeFile(viewManifest, Buffer.concat([originals.get('package.json'), Buffer.from('\n')]));
+  await assert.rejects(() => finalize(repo, view, archive), /view manifest unchanged/);
+  await writeFile(viewManifest, originals.get('package.json'));
+  const receiptPath = join(view, 'source-identity.json'), receiptBytes = await readFile(receiptPath);
+  await writeFile(receiptPath, JSON.stringify({ ...receipt, repo: join(root, 'other-repo') }));
+  await assert.rejects(() => finalize(repo, view, archive), /fixed view invocation/);
+  await writeFile(receiptPath, receiptBytes);
   const lockPath = join(view, 'package-lock.json'), original = await readFile(lockPath);
   const changed = JSON.parse(original); changed.unapproved = true;
   await writeFile(lockPath, JSON.stringify(changed));
@@ -138,6 +177,12 @@ test('CI-SOURCE-002: isolated prepare refuses existing paths; finalize rejects e
   await rm(join(secondInstalled, 'unexpected.js'));
   const result = await finalize(repo, secondView, archive);
   assert.ok(result.verifiedMembers > 100);
+  assert.deepEqual(result.manifest, manifestIdentity);
+  assert.deepEqual(result.lock, lockIdentity);
+  assert.equal(result.repositoryInputsUnchanged, true);
+  assert.equal(result.helperRunsNoScripts, true);
+  assert.deepEqual(await readFile(join(repo, 'package.json')), originals.get('package.json'));
+  assert.deepEqual(JSON.parse(await readFile(join(secondView, 'installed-identity.json'))), result);
   assert.deepEqual(await readFile(join(repo, 'package-lock.json')), await readFile(new URL('../../../package-lock.json', import.meta.url)));
   await assert.rejects(() => finalize(repo, secondView, archive), /existing path/);
 });

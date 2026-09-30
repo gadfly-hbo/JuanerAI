@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930135213327-KIVM3U",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-30T13:52:13.327Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-dev-engineering-controller"
+  },
+  "summary": "两文件CI修正27PASS与独立PASS；Validator临时夹具只读限制已如实记录",
+  "status_after": "active",
+  "evidence_refs": []
+}

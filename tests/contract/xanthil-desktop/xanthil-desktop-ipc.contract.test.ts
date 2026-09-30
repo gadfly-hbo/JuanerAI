@@ -436,9 +436,9 @@ test('TEST-XDESK-011 [AC-XDESK-012-02..06, AC-XTS-001-01..04, AC-XTS-002-01..04]
   assert.equal(manifest.version, '0.1.0');
   assert.equal(manifest.main, '.vite/build/main.cjs');
   assert.deepEqual(manifest.config, { forge: './forge.config.cjs' });
-  assert.deepEqual((manifest.scripts as Record<string, string>)['desktop:start'], 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge start');
+  assert.deepEqual((manifest.scripts as Record<string, string>)['desktop:start'], 'node tools/desktop/development-start.mjs');
   assert.deepEqual((manifest.scripts as Record<string, string>)['desktop:package'], 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64');
-  assert.deepEqual((manifest.scripts as Record<string, string>)['desktop:test'], 'npm run desktop:package && node --test tests/unit/xanthil-desktop/*.test.ts tests/contract/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/*.test.ts tests/e2e/xanthil-desktop/*.test.ts');
+  assert.deepEqual((manifest.scripts as Record<string, string>)['desktop:test'], 'node tools/desktop/test-daily.mjs');
   const main = await loadDesktopModule('apps/desktop/main.ts');
   assert.equal(typeof requiredExport(main, 'createXanthilDesktopIpcHandlers'), 'function');
 });
@@ -820,7 +820,7 @@ test('AC-XDESK-LA-002-01: retains the exact P4 package and npm-v3 lock hashes', 
 test('AC-XDESK-LA-002-02: accepts only the complete frozen P4 or P5 manifest state and scripts', async () => {
   const manifest = JSON.parse(await readFile(new URL('../../../package.json', import.meta.url), 'utf8')) as Record<string, unknown>;
   const scripts = manifest.scripts as Record<string, string>;
-  assert.equal(scripts['desktop:start'], 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge start');
+  assert.equal(scripts['desktop:start'], 'node tools/desktop/development-start.mjs');
   assert.equal(scripts['desktop:package'], 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64');
 });
 

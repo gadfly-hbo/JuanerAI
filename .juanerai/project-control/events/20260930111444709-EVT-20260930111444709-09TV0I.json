@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930111444709-09TV0I",
+  "event_type": "change_started",
+  "occurred_at": "2026-09-30T11:14:44.709Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-dev-engineering-controller"
+  },
+  "summary": "DMG011已交付；新开发模式工程补充在独立分支开始，接收已确认",
+  "status_after": "active",
+  "evidence_refs": []
+}
