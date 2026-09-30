@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930103649707-GGTGRJ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T10:36:49.707Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "PR46首次云端CI失败：Change1入口数量断言过期，派回原工程上下文修正测试",
+  "status_after": "validating",
+  "evidence_refs": []
+}

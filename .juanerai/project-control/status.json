@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "CHANGE_002_GIT_INTEGRATION",
-    "label": "Change002 产品验收通过／Git集成",
+    "label": "Change002 Git集成",
     "ordinal": 5,
     "total": 5
   },
-  "health": "active",
-  "summary": "用户已验收candidate010 / DMG011并授权Git提交合并；工程与独立验证PASS，归档已准备。",
+  "health": "validating",
+  "summary": "用户产品验收通过；交付测试修正独立PASS，完整CI契约27PASS，portable2171PASS；应用及DMG011未变。",
   "current_objective": "在首 Change 基础上实现 Case Assistant、人工采纳的 Decision Record / Expected Outcome 与追加报告。",
-  "next_action": "核对提交范围与索引，提交并推送工作分支，通过PR squash合并并读回main。",
+  "next_action": "提交交付测试修正，等待PR46云端CI通过后squash合并并读回main。",
   "blockers": [],
   "milestones": [
     {
@@ -153,7 +153,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-09-30T10:30:32.608Z",
+  "updated_at": "2026-09-30T10:56:16.223Z",
   "updated_by": {
     "role": "controller",
     "session": "change-002-engineering-controller"
