@@ -12,9 +12,9 @@
     "total": 4
   },
   "health": "active",
-  "summary": "工程验收和独立验证PASS；用户已授权本补充Git交付及package.json、tsconfig.json两文件图谱例外。",
+  "summary": "CI旧manifest绑定已精确修正，本机27/27通过、独立复核PASS；准备更新PR48并重跑云端。",
   "current_objective": "复用真实Desktop后端，接通Renderer热更新并隔离开发数据/权限，分开日常测试与包验收。",
-  "next_action": "完成归档一致性与最终图谱核对，提交PR并经云端验证后squash合并、读回main；保持DMG011不变。",
+  "next_action": "完成修正增量图谱和提交，云端通过后squash合并并读回main。",
   "blockers": [],
   "milestones": [
     {
@@ -173,7 +173,7 @@
     }
   ],
   "risks": [],
-  "updated_at": "2026-09-30T13:35:17.467Z",
+  "updated_at": "2026-09-30T13:52:13.327Z",
   "updated_by": {
     "role": "controller",
     "session": "desktop-dev-engineering-controller"

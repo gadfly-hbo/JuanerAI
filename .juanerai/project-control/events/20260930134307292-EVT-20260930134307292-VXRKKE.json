@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930134307292-VXRKKE",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-09-30T13:43:07.292Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-dev-engineering-controller"
+  },
+  "summary": "CI 36723488394 install-view fail，旧manifest字节身份不匹配；原始日志已保留",
+  "status_after": "active",
+  "evidence_refs": []
+}
