@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929060433234-6DLP2D",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T06:04:33.234Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "internal004 DMG与实装验证完成；真实Pi计划已冻结，尚未发出Provider请求。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

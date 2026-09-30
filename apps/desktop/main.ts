@@ -1,3 +1,7 @@
+import {createProviderSettings} from '../../packages/application/provider-settings.ts';
+import {createMacOsCredentialStore} from '../../adapters/credentials-macos/index.ts';
+import {probeLocalXiaomi} from '../../adapters/agent-pi/xiaomi-local.ts';
+import { createCaseAssistantHandler } from './case-assistant-main.ts';
 import { basename, dirname, isAbsolute, join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
@@ -6,7 +10,7 @@ import { constants } from 'node:fs';
 import * as electron from 'electron';
 
 import { validateXanthilDesktopRequest, type DesktopFailureCode, type ProjectOpenValue } from '../../packages/contracts/xanthil-desktop-ipc.ts';
-import { createPersonalXanthilDesktopProfile } from '../../profiles/personal/xanthil-desktop.ts';
+import { createPersonalXanthilDesktopProfile, loadPersonalCaseAssistantActivation } from '../../profiles/personal/xanthil-desktop.ts';
 
 const { app, BrowserWindow, ipcMain } = electron;
 
@@ -174,6 +178,8 @@ function failureFrom(error: unknown): XanthilDesktopIpcFailure {
   const code = typeof candidate.code === 'string'
     ? candidate.code
     : typeof candidate.message === 'string' ? candidate.message : 'INTEGRITY_BLOCKED';
+  if(code==='CONFIGURATION_CHANGED')return failure('PAYLOAD_STALE');
+  if(['KEYCHAIN_UNAVAILABLE','MODEL_NOT_CONFIGURED','CREDENTIAL_INVALID','MODEL_BUSY'].includes(code))return failure('PROVIDER_UNAVAILABLE');
   return failure(knownFailureCodes.has(code as DesktopFailureCode) ? code as DesktopFailureCode : 'INTEGRITY_BLOCKED');
 }
 
@@ -475,6 +481,7 @@ export function createNativeReportExportWriter():ExportWriter{return Object.free
   }finally{await handle.close();}
 }});}
 
+let closeWindowModelWork:()=>void=()=>undefined;
 function startNormalMainEntry(): void {
   const window = new BrowserWindow({
     width: 1366,
@@ -502,14 +509,36 @@ function startNormalMainEntry(): void {
   if (!ipcHandlersRegistered) {
     const entryUrl=typeof __filename==='string'?`file://${__filename}`:import.meta.url;
     const descriptor_path=app.isPackaged?join(process.resourcesPath,'toolchain-deployment.json'):fileURLToPath(new URL('../../build/xanthil-toolchain-deployment.json',entryUrl));
-    const productionProfile = createPersonalXanthilDesktopProfile({toolchainDeployment:{descriptor_path},assistanceConfig:null,clock: () => new Date(),deadlineScheduler:{schedule({at_epoch_ms,callback}:{at_epoch_ms:number;callback:()=>void}){const timer=setTimeout(callback,Math.max(0,at_epoch_ms-Date.now()));return {cancel(){clearTimeout(timer);}};}}});
+    const caseAssistantConfig=loadPersonalCaseAssistantActivation(process.env);
+    delete process.env.XIAOMI_TOKEN_PLAN_CN_API_KEY;
+    delete process.env.JUANERAI_CASE_ASSISTANT_ACTIVATION;
+    const providerSettings=caseAssistantConfig?undefined:createProviderSettings({store:createMacOsCredentialStore(join(dirname(process.execPath),'xanthil-keychain')),probe:probeLocalXiaomi});
+    void providerSettings?.initialize();
+    const productionProfile = createPersonalXanthilDesktopProfile({toolchainDeployment:{descriptor_path},assistanceConfig:null,caseAssistantConfig,...(providerSettings?{providerSettings}:{}),clock: () => new Date(),deadlineScheduler:{schedule({at_epoch_ms,callback}:{at_epoch_ms:number;callback:()=>void}){const timer=setTimeout(callback,Math.max(0,at_epoch_ms-Date.now()));return {cancel(){clearTimeout(timer);}};}}});
     const handlers = createXanthilDesktopIpcHandlers({ productionProfile, nativeDialogs: normalNativeDialogs(),sourceReader:normalSourceReader(),exportWriter:createNativeReportExportWriter(), senderPolicy: isCurrentMainFrame });
     for (const [method, handler] of Object.entries(handlers)) {
       ipcMain.handle(`xanthil-desktop:v1:${method}`, (event, request) => handler(event, request));
     }
+    const assistantHandler=createCaseAssistantHandler({senderPolicy:isCurrentMainFrame,getApplication:()=>productionProfile.getCaseAssistant(),async exportReport(application,sessionId,reportId,_commandId){
+      const projection=await application.read(sessionId),report=projection.reports.find(r=>r.id===reportId);if(!report)throw Object.assign(new Error('NOT_FOUND'),{code:'NOT_FOUND'});
+      const selected=await normalNativeDialogs().selectExportFile();if(selected===null)throw Object.assign(new Error('CANCELLED'),{code:'CANCELLED'});
+      if(!record(selected)||(selected.format!=='markdown'&&selected.format!=='html'))throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
+      const bytes=new TextEncoder().encode(selected.format==='markdown'?report.markdown:report.html),expected=selected.format==='markdown'?report.markdown_sha256:report.html_sha256;
+      if(createHash('sha256').update(bytes).digest('hex')!==expected)throw Object.assign(new Error('INTEGRITY_BLOCKED'),{code:'INTEGRITY_BLOCKED'});
+      const descriptor=await createNativeReportExportWriter().writeAndReadBack(selected.capability,bytes);return {report_id:reportId,display_name:selected.display_name,...descriptor as object};
+    }});
+    ipcMain.handle('xanthil-case-assistant:v1',(event,request)=>assistantHandler(event,request));
+    ipcMain.handle('xanthil-provider-settings:v1',async(event,request)=>{
+      if(!isCurrentMainFrame(event))return {ok:false,code:'FORBIDDEN'};
+      if(!providerSettings)return {ok:false,code:'MODEL_BUSY'};
+      return providerSettings.request(request);
+    });
+    closeWindowModelWork=()=>{void providerSettings?.request({operation:'cancel'});void productionProfile.closeModelWork();};
+    app.on('before-quit',()=>{providerSettings?.close();void productionProfile.closeModelWork();});
     ipcHandlersRegistered = true;
   }
 
+  window.on('close',()=>closeWindowModelWork());
   void window.loadFile(fileURLToPath(new URL('../renderer/main_window/index.html', typeof __filename === 'string' ? `file://${__filename}` : import.meta.url)));
 }
 

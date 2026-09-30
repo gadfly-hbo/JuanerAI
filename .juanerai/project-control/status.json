@@ -3,995 +3,159 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "JuanerAI — Blueprint v1.0 / Xanthil Desktop Free"
+    "product": "Xanthil Desktop Personal — Case Assistant / Decision Record"
   },
   "phase": {
-    "id": "FIRST_CHANGE_SUPPLEMENT_ACCEPTED_DELIVERY_READBACK",
-    "label": "首 Change 补充已工程/UI验收；Git集成以PR44读回为准",
-    "ordinal": 4,
-    "total": 4
+    "id": "CHANGE_002_GIT_INTEGRATION",
+    "label": "Change002 Git集成",
+    "ordinal": 5,
+    "total": 5
   },
-  "health": "complete",
-  "summary": "内部安装、包签名修正与 Demo UI 补充工程验证完成，用户已报告安装试用成功并明确 UI 验收通过。候选已推送 PR#44；本记录的 complete 指补充工程/用户 UI 验收，不预先宣称云端 CI、合并或公开发行。历史失败、UNKNOWN 和 DMG002 缺失保留。",
-  "current_objective": "保全本次已验收补充的代码、规格、测试、失败和验收证据，完成授权 Git 交付读回。",
-  "next_action": "无下一产品阶段。仅核对 PR#44 最终 CI、完成授权 squash 集成及本机 main 快进读回后停止；最终提交/树/远端结论见原证据根 ui-demo-restoration-001/git-delivery-001/ 最终回执。",
+  "health": "validating",
+  "summary": "用户产品验收通过；交付测试修正独立PASS，完整CI契约27PASS，portable2171PASS；应用及DMG011未变。",
+  "current_objective": "在首 Change 基础上实现 Case Assistant、人工采纳的 Decision Record / Expected Outcome 与追加报告。",
+  "next_action": "提交交付测试修正，等待PR46云端CI通过后squash合并并读回main。",
   "blockers": [],
   "milestones": [
     {
-      "id": "handoff_intake",
-      "label": "历史／旧计划已作废：双模式 Handoff 接收",
+      "id": "provider_scope",
+      "label": "单一Provider方向授权",
       "status": "completed"
     },
     {
-      "id": "d05_decisions",
-      "label": "历史／旧计划已作废：D0.5 产品化决策",
+      "id": "provider_ui",
+      "label": "可点击面板／独立产品就绪审查／用户UI确认",
       "status": "completed"
     },
     {
-      "id": "development_readiness",
-      "label": "历史／旧计划已作废：开发就绪审查",
+      "id": "provider_engineering",
+      "label": "增量接收与OpenSpec／TDD／实现",
       "status": "completed"
     },
     {
-      "id": "user_approval",
-      "label": "历史／旧计划已作废：用户整体确认",
+      "id": "provider_verification",
+      "label": "原生验证／独立Validator／新DMG",
       "status": "completed"
     },
     {
-      "id": "d1a_intake",
-      "label": "历史／旧计划已作废：首个 Change D1-A",
-      "status": "locked"
-    },
-    {
-      "id": "spec_gate",
-      "label": "历史／旧计划已作废：Spec Gate",
-      "status": "locked"
-    },
-    {
-      "id": "implementation",
-      "label": "历史／旧计划已作废：RED / 实现 / 验证",
-      "status": "locked"
-    },
-    {
-      "id": "blueprint_v1",
-      "label": "当前：Blueprint v1.0 用户确认",
+      "id": "provider_product_acceptance",
+      "label": "MacBook实际使用验收",
       "status": "completed"
     },
     {
-      "id": "ui_contract_readiness",
-      "label": "当前：UI Contract 独立开发就绪审查",
-      "status": "completed"
-    },
-    {
-      "id": "clickable_ui_contract",
-      "label": "当前：高保真可点击 UI Contract",
-      "status": "completed"
-    },
-    {
-      "id": "user_ui_gate",
-      "label": "当前：用户 UI Gate",
-      "status": "completed"
-    },
-    {
-      "id": "current_openspec_gate",
-      "label": "F1/F2已闭合；Mini受影响Spec Gate PASS（非产品验收）",
-      "status": "completed"
-    },
-    {
-      "id": "current_tdd",
-      "label": "当前Change：因果RED/GREEN、回归及CI交付检查已通过，历史风险处置保留",
-      "status": "completed"
-    },
-    {
-      "id": "current_implementation",
-      "label": "当前Change：产品实现与原生流程已验收，产品候选保持不变",
-      "status": "completed"
-    },
-    {
-      "id": "current_acceptance",
-      "label": "当前Change：独立技术/原生验证及用户产品验收PASS（不等于云端CI或合并完成）",
-      "status": "completed"
-    },
-    {
-      "id": "ui_demo_restoration_engineering",
-      "label": "UI Demo 返工：固定候选独立工程验证通过",
-      "status": "completed"
-    },
-    {
-      "id": "ui_demo_restoration_user_acceptance",
-      "label": "UI Demo 返工：用户明确 UI 验收通过（非目标 Mac 安装身份独立证明）",
-      "status": "completed"
+      "id": "git_integration",
+      "label": "Git集成与归档保存",
+      "status": "active"
     }
   ],
   "agents": [
     {
       "id": "controller",
       "label": "Mac mini Engineering Controller",
-      "model": "gpt-6-astra / high (current interface)",
+      "model": "repository configured gpt-6-astra / high; runtime tuple not separately attested",
       "status": "controller",
-      "activation": "本任务工程总控；用户已采用v0.8并解除迁移暂停；普通工程纠正本地闭环，真实产品/权限/安全/资源问题直接问用户。"
-    },
-    {
-      "id": "d05_reviewer",
-      "label": "Fresh Product Plan Reviewer",
-      "model": "fresh read-only support context",
-      "status": "complete",
-      "activation": "历史结果保留；不构成新计划批准。 Review 002 PASS after bounded correction"
-    },
-    {
-      "id": "d1a_reviewer",
-      "label": "Fresh D1-A Product Plan Reviewer",
-      "model": "fresh read-only support context",
-      "status": "complete",
-      "activation": "历史结果保留；不构成新计划批准。 Unique review completed; one bounded correction closed by Controller targeted readback"
-    },
-    {
-      "id": "public_release_gate_reviewer",
-      "label": "Fresh Public Release Gate Development-Readiness Reviewer",
-      "model": "fresh material-isolated read-only support context",
-      "status": "complete",
-      "activation": "历史结果保留；不构成新计划批准。 D05-XD-PRG-001 seven-part review PASS"
-    },
-    {
-      "id": "ui_contract_reviewer",
-      "label": "Fresh UI Contract Development-Readiness Reviewer",
-      "model": "gpt-5.6-terra / high, fresh read-only support context",
-      "status": "complete",
-      "activation": "Review 001 NEEDS_CLARIFICATION；bounded correction 后由全新 Reviewer 完成 Review 002 PASS，仅放行可点击 UI Contract。"
-    },
-    {
-      "id": "juaner_spec",
-      "label": "Spec Agent",
-      "model": "gpt-6-astra / high (current interface)",
-      "status": "complete",
-      "activation": "当前可选专项支持，未派发；历史角色结果、失败及消耗见保留证据。"
-    },
-    {
-      "id": "juaner_test",
-      "label": "Test Agent",
-      "model": "gpt-6-astra / high (current interface)",
-      "status": "complete",
-      "activation": "当前可选专项支持，未派发；历史角色结果、失败及消耗见保留证据。"
+      "activation": "当前 Change 002 用户明确授权，拥有工程接收、合同决策、状态及验收。"
     },
     {
       "id": "juaner_worker",
       "label": "Continuous Engineering Worker",
-      "model": "gpt-6-astra / high (current interface)",
-      "status": "complete",
-      "activation": "内部安装、签名及 UI Demo 返工完成；固定产品输入未变，无下一 Change 派发。"
+      "model": "gpt-6-astra / high / workspace-write / never; actual CLI turn attested",
+      "status": "waiting",
+      "activation": "候选固定，工程验收通过；当前停止实现写入。"
     },
     {
       "id": "juaner_validator",
-      "label": "Validator",
-      "model": "gpt-6-astra / high (current interface)",
-      "status": "complete",
-      "activation": "最终 UI candidate-002 独立 PASS；继承未变内部安装/签名验证。历史 target002、原始失败及 timing UNKNOWN 保留，不冒称其已被追认。"
-    },
-    {
-      "id": "session_runtime_reviewer",
-      "label": "Fresh Session/Runtime Development-Readiness Reviewer",
-      "model": "gpt-6-astra / high (R2: persistence and Agent Runtime boundary)",
-      "status": "complete",
-      "activation": "Fresh Review 001 completed with NEEDS_CLARIFICATION; no writes or external study."
-    },
-    {
-      "id": "session_runtime_reviewer_002",
-      "label": "Fresh Session/Runtime Development-Readiness Reviewer 002",
-      "model": "gpt-6-astra / high (R2: persistence, recovery, Agent Runtime and provider-call lifecycle)",
-      "status": "complete",
-      "activation": "Fresh Review 002 PASS; no writes, external study, OpenSpec or implementation authority."
-    },
-    {
-      "id": "dependency_structure_reviewer_001",
-      "label": "Dependency/Structure Readiness Reviewer 001",
-      "model": "default support Agent / inherited model / requested xhigh",
-      "status": "complete",
-      "activation": "NEEDS_CLARIFICATION：Electron 二进制校验锚；Controller 已补，原 verdict 保留。"
-    },
-    {
-      "id": "dependency_structure_reviewer_002",
-      "label": "Fresh Dependency/Structure Readiness Reviewer 002",
-      "model": "default support Agent / inherited model / requested xhigh",
-      "status": "complete",
-      "activation": "PASS：定向读取现行政策后撤销错误的新任务 finding；仅规划支持，无生产权限。"
-    },
-    {
-      "id": "reslice_readiness_reviewer_001",
-      "label": "Fresh Execution Reslice Readiness Reviewer 001",
-      "model": "default support Agent / inherited model / requested xhigh",
-      "status": "complete",
-      "activation": "PASS，仅正式补充准备就绪；只读、无Mini/Research补充调查，不授予产品角色Gate、发布或执行权限。"
-    },
-    {
-      "id": "incremental_contract_readiness_reviewer_001",
-      "label": "Fresh Incremental Contract Readiness Reviewer 001",
-      "model": "default support Agent / inherited model / requested xhigh",
-      "status": "complete",
-      "activation": "PASS，无承重补充项；仅静态规划审查，不证明实际可构建或Spec Gate，无写入或Mini/Research外部调查。"
-    },
-    {
-      "id": "incremental_contract_static_review_001",
-      "label": "U1 / Contract Read-only Support Review",
-      "model": "default support Agent / inherited model / requested R2 xhigh; effective tuple not echoed",
-      "status": "complete",
-      "activation": "只读支持审查NEEDS_FIX；非正式Spec/Test/Worker/Validator，无Change写入或Gate放行权限。"
-    },
-    {
-      "id": "incremental_contract_test_complexity_review_001",
-      "label": "TDD / Whole-package Complexity Read-only Support Review",
-      "model": "default support Agent / inherited model / requested R2 xhigh; effective tuple not echoed",
-      "status": "complete",
-      "activation": "只读支持审查NEEDS_FIX；非正式Spec/Test/Worker/Validator，无Change写入或Gate放行权限。"
-    },
-    {
-      "id": "directed_spec_closure_readiness_001",
-      "label": "Fresh Directed Spec Closure Readiness Reviewer",
-      "model": "default support Agent / inherited model / requested R2 xhigh; effective tuple not echoed",
-      "status": "complete",
-      "activation": "PASS，限一次F1–F6 Spec收口交接准备；无写入或Mini/Research补充调查，不代替Spec Gate。"
-    },
-    {
-      "id": "interrupted_spec_resumption_scope_review_001",
-      "label": "Read-only R0 Scope / Complexity Review",
-      "model": "default support Agent / inherited model / requested R2 xhigh; effective tuple not echoed",
-      "status": "complete",
-      "activation": "原NEEDS_FIX仅续接计数表述；Controller定向改为保留原BLOCKED/1/1并追加完成回执，已读回闭合。其余范围检查通过，ponytail无新增机制；非Product Plan Gate或Spec Gate。"
-    },
-    {
-      "id": "static_disposition_spec_review_001",
-      "label": "Read-only support review — interrupted",
-      "model": "default support Agent / inherited model / requested R2 xhigh",
-      "status": "blocked",
-      "activation": "只读边界被错误shell引用破坏，实际触发本机node --test/npm run；已停止，无内容/Gate结论。Controller负责新事故处置。 用户已接受披露缺口并授权Controller直接完成后续复核；该Agent结果仍不提供PASS，未重新派发。"
+      "label": "Independent Validator",
+      "model": "gpt-6-astra / high / read-only / never; actual fresh CLI turn attested",
+      "status": "waiting",
+      "activation": "candidate010独立复验PASS，F1–F4及closeSession关闭，无阻断项或风险豁免。"
     }
   ],
-  "metrics": [
-    {
-      "id": "d05_decisions",
-      "label": "历史统计／非当前授权：D0.5 decision areas drafted",
-      "done": 11,
-      "total": 11
-    },
-    {
-      "id": "structure_decisions",
-      "label": "历史统计／非当前授权：User-approved persistent structure decisions",
-      "done": 23,
-      "total": 23
-    },
-    {
-      "id": "product_changes",
-      "label": "历史统计／非当前授权：旧首 Change 范围批准记录（现已作废）",
-      "done": 1,
-      "total": 1
-    },
-    {
-      "id": "public_release_gate_review",
-      "label": "历史统计／非当前授权：Public Release Gate amendment readiness reviews",
-      "done": 1,
-      "total": 1
-    },
-    {
-      "id": "blueprint_ui_plan_gates",
-      "label": "当前：Blueprint 用户确认与 UI Contract 开发就绪 Gate",
-      "done": 2,
-      "total": 2
-    }
-  ],
+  "metrics": [],
   "evidence": [
     {
-      "id": "EVD-D05-001",
-      "label": "历史证据：Target-side Handoff receipt",
-      "path": "docs/planning/2026-08-28/xanthil-desktop-handoff-receipt.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-D05-002",
-      "label": "历史证据：D0.5 productization decision package",
-      "path": "docs/planning/2026-08-28/xanthil-desktop-d05-productization-decision-package.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-D05-003",
-      "label": "历史证据：D0.5 Structure Decision Ledger",
-      "path": "docs/planning/2026-08-28/xanthil-desktop-d05-structure-decision-ledger.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-D05-004",
-      "label": "历史证据：Current Desktop product plan",
-      "path": "docs/planning/2026-08-27/xanthil-desktop-phase-one-product-plan.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-D05-005",
-      "label": "历史证据：Current baseline TypeScript attestation",
-      "path": "docs/planning/2026-08-28/xanthil-desktop-current-baseline-attestation.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D05-006",
-      "label": "历史证据：Development-readiness Review 001 stop",
-      "path": "docs/planning/2026-08-28/reviews/d05-development-readiness-review-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D05-007",
-      "label": "历史证据：Fresh Development-readiness Review 002 PASS",
-      "path": "docs/planning/2026-08-28/reviews/d05-development-readiness-review-002.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D05-008",
-      "label": "历史证据：D0.5 user decision brief",
-      "path": ".juanerai/project-control/decision-briefs/D05-XD-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D1A-001",
-      "label": "历史证据：First Change D1-A intake candidate",
-      "path": "docs/planning/2026-08-28/d1a/xanthil-desktop-session-bootstrap-d1a-intake.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D1A-002",
-      "label": "历史证据：Unique fresh D1-A review",
-      "path": "docs/planning/2026-08-28/d1a/reviews/d1a-product-plan-review-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D1A-003",
-      "label": "历史证据：D1-A bounded correction targeted readback",
-      "path": "docs/planning/2026-08-28/d1a/reviews/d1a-targeted-readback-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D1A-004",
-      "label": "历史证据：Historical Mac mini empty-WIP readback — not current pointer state",
-      "path": "docs/planning/2026-08-28/d1a/evidence/mac-mini-pre-dispatch-readback-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D05-009",
-      "label": "历史证据：User-approved JUANERAI_PUBLIC_RELEASE_GATE amendment",
-      "path": "docs/planning/2026-08-28/xanthil-desktop-public-release-gate-amendment.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D05-010",
-      "label": "历史证据：Fresh Public Release Gate Development-Readiness Review PASS",
-      "path": "docs/planning/2026-08-28/reviews/public-release-gate-development-readiness-review-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D1A-005",
-      "label": "历史证据：PR #21 merge and dual-device exact readback",
-      "path": "docs/planning/2026-08-28/d1a/evidence/pr21-merge-dual-device-readback-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D1A-006",
-      "label": "历史证据：Frozen Desktop bootstrap dependency policy",
-      "path": "docs/planning/2026-08-28/d1a/xanthil-desktop-session-bootstrap-dependency-policy.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D1A-007",
-      "label": "历史证据：Hosted Windows CI scope targeted readback",
-      "path": "docs/planning/2026-08-28/d1a/evidence/windows-ci-scope-targeted-readback-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-D1A-008",
-      "label": "历史证据：Historical automatic-route regression blocker — not a semi-automatic prerequisite",
-      "path": "docs/planning/2026-08-28/d1a/evidence/coordinator-regression-pre-dispatch-blocker-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-WVEB-VALIDATOR002-FAIL",
-      "label": "历史证据：Validator002 FAIL and M1/B0 bounded return",
-      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-validator-002-gate.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-WVEB-TEST011-MANIFEST",
-      "label": "历史证据：S04 approved bounded Test supplement, role substitution pending",
-      "path": "docs/planning/2026-09-05/automation-repair/m1-test-correction-011-brief.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-WVEB-TEST011-RED",
-      "label": "历史证据：Test011 independent causalRED / Readiness, Worker pending",
-      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-test-correction-011-gate.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-WVEB-WORKER004-GREEN",
-      "label": "历史证据：Worker004 snapshot fix and current Controller quality/final Retirement PASS; fresh Validator pending",
-      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-worker-revision-004-gate.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-WVEB-VALIDATOR003-FAIL",
-      "label": "历史证据：Validator003 FAIL, original getter fixed, bounded root containment return at R012",
-      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-validator-003-gate.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-WVEB-M1-ACCEPTANCE",
-      "label": "历史证据：M1 component Acceptance and archive/integration Gate",
-      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-integration-gate-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-WVEB-M1-CLOSED",
-      "label": "历史证据：M1/B0 closed: PR28 accepted-tree integration, archive/live-main and R018 stop",
-      "path": "docs/planning/2026-09-05/automation-repair/reviews/m1-closure-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-AUTOMATION-REPAIR-FINAL-CLOSURE",
-      "label": "历史证据：Final automation-repair closure and Desktop return baseline",
-      "path": "docs/planning/2026-09-05/automation-repair/reviews/final-closure-r382.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-SEMIAUTO-DUAL-ISOLATION",
-      "label": "历史证据：Current dual-device isolation and receiver-verified evidence locators",
-      "path": "docs/planning/2026-08-28/xanthil-desktop-handoff-receipt.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-PLAN-WITHDRAWAL-20260918",
-      "label": "用户撤销待执行 Desktop / Model Pack 计划，保留已有成果",
-      "path": "docs/planning/README.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-BLUEPRINT-V1-20260918",
-      "label": "用户确认的 JuanerAI Product Development Blueprint v1.0",
-      "path": "docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.0.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-UI-CONTRACT-V1-20260918",
-      "label": "冻结用于可点击 UI 制作的 Xanthil Desktop UI Contract v1.0",
-      "path": "docs/planning/2026-09-18/xanthil-desktop-ui-contract-v1.0.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-UI-READINESS-001-20260918",
-      "label": "UI Contract Development-Readiness Review 001 NEEDS_CLARIFICATION",
-      "path": "docs/planning/2026-09-18/reviews/ui-contract-development-readiness-review-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-UI-READINESS-002-20260918",
-      "label": "Fresh UI Contract Development-Readiness Review 002 PASS",
-      "path": "docs/planning/2026-09-18/reviews/ui-contract-development-readiness-review-002.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-SESSION-RUNTIME-REVIEW-002",
-      "label": "Fresh Session/Runtime Development-Readiness Review 002 PASS",
-      "path": "docs/planning/2026-09-18/reviews/session-runtime-development-readiness-review-002.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-WIP-DISPOSITION-20260919",
-      "label": "Mac mini WIP_DISPOSITION_COMPLETE：MacBook 已只读读取原文并复算哈希；只证明该次处置，非持续在线状态",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/WIP_DISPOSITION_COMPLETE-20260919T000420Z.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-STAGE2-ROUTE-EXCEPTION-20260919",
-      "label": "Mac mini 路由异常：MacBook 已只读读取并核对大小及 SHA-256；不表示新路由已通过",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/STAGE2_ROUTING_EXCEPTION-20260919T001847Z.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-ROUTING-AMENDMENT-001",
-      "label": "Routing Amendment 001 已由 Mini ff-only 采纳；正式 Spec xhigh 请求接受并返回，运行配置无独立回显",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-first-product-change-routing-amendment-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-STAGE2-DEPENDENCY-EXCEPTION-20260919",
-      "label": "Mac mini Stage 2 依赖异常：MacBook 只读原文及大小/hash 核对；非持续在线证明",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/STAGE2_DEPENDENCY_EXCEPTION-20260919T010800Z.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-XDESK-DECISION-001",
-      "label": "用户整体批准 XDESK-DECISION-001 第 1–12 项且 Mini 已固定提交接收；非 Spec Gate PASS",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-dependency-structure-decision-v1.0.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-XDESK-DECISION-REVIEW-001",
-      "label": "Readiness Review 001 NEEDS_CLARIFICATION 历史及最小修订",
-      "path": "docs/planning/2026-09-19/reviews/dependency-structure-readiness-review-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-XDESK-DECISION-REVIEW-002",
-      "label": "Fresh Readiness Review 002 PASS，错误身份 finding 已撤销；非 Spec Gate",
-      "path": "docs/planning/2026-09-19/reviews/dependency-structure-readiness-review-002.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-TOOLCHAIN-EXCEPTION-20260919",
-      "label": "Mini 工具链异常原文/hash及 HEAD 已由 MacBook 只读核对；仅当次观察",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/DECISION_001_TOOLCHAIN_EXCEPTION-20260919T020500Z.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-TOOLCHAIN-AMENDMENT-001",
-      "label": "Mini 已接收 Toolchain Amendment 001；四工具准备/独立健康读回 PASS，非依赖兼容性 PASS",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-toolchain-amendment-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-P1-EXCEPTION-20260919",
-      "label": "Mini P1 配置重复加载异常；MacBook 只读核对回执、脚本/日志及 candidate/baseline 哈希",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/TOOLCHAIN_001_P1_EXCEPTION-20260919T024300Z.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-P1-CONFIG-RETRY-001",
-      "label": "Mini 已 ff-only 接收；配置预检及唯一 P1 重跑退出 0，图审查因来源停止",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-p1-config-retry-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-P1-NON-REGISTRY-EXCEPTION-001",
-      "label": "MacBook 只读核对 P1 Config Retry 回执原文/大小/hash；配置修正成功与来源停止分别保留",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/dependency-preflight-001/p1-config-retry-001/P1_CONFIG_RETRY_001_EXCEPTION.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-SOURCE-AND-EXECUTION-AMENDMENT-001",
-      "label": "Mini 已固定提交采纳来源/自修正补充；来源匹配，P1 后续停止于六个基线 integrity 缺口",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-source-and-execution-amendment-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-BASELINE-INTEGRITY-EXCEPTION-001",
-      "label": "MacBook 已只读核对完整回执及索引大小/hash；非 P1 PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/dependency-preflight-001/source-and-execution-001/SOURCE_EXECUTION_001_EXCEPTION.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-BASELINE-INTEGRITY-AMENDMENT-001",
-      "label": "Mini 已固定接收并报告六归档/六字段及 P1–P3 PASS；MacBook核对回执身份，未独立重跑全部探针",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-baseline-integrity-amendment-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-RUN-CONTRACT-EXCEPTION-001",
-      "label": "MacBook只读完整回执并核对10960 bytes及SHA-256，源码冲突复核；非产品验收",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/dependency-preflight-001/baseline-integrity-001/controller-exception-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-TECHNICAL-DECISION-AMENDMENT-001",
-      "label": "Mini已固定采纳并报告Run适配/Spec及P4通过；之后Test预算异常另行保留，非产品验收",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-technical-decision-amendment-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-P4-REPORTED-PASS-001",
-      "label": "Mini报告P4 canonical1410 PASS/1未授权真实Pi跳过、Console82 PASS；MacBook核对记录hash，未重跑或接受产品",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/p4-complete-001.json",
-      "status": "present"
-    },
-    {
-      "id": "EVD-TEST-BUDGET-EXCEPTION-001",
-      "label": "MacBook独立核对异常索引59777bytes/SHA256及31份当前文件和31份副本；保留越界/测试质量问题",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/execution-budget-exception-index-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-TEST-RECOVERY-AMENDMENT-001",
-      "label": "Mini已采纳Recovery 001并完成定向Spec；Test第一轮补全不合格，新增纠正1/2后因诊断证据未知停止",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-test-recovery-amendment-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-TEST-RECOVERY-STOP-001",
-      "label": "MacBook读取回执并核对停止索引46359bytes/SHA256、31份现场及副本等100项身份；非测试或产品PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/test-recovery-stop-index-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-TEST-RECOVERY-SPEC-GATE-001",
-      "label": "Mini记录定向Spec/整包ponytail/受影响Spec Gate PASS；MacBook只读原文及hash核对，非独立Spec验收",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/test-recovery-spec-gate-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-TEST-RESUME-DISPOSITION-001",
-      "label": "Mini已固定接收并消耗最后一轮；该授权已用尽，不能重放",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-test-resume-disposition-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-TEST-RESUME-STOP-001",
-      "label": "MacBook读取Mini原件并核对停止索引及213项文件身份引用；只是保全核对，不是RED/验收",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/test-resume-stop-index-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-EXECUTION-RESLICE-PROPOSAL-001",
-      "label": "用户已确认执行拆分方案v0.1，保留原文；正式续接以已授权补充及固定接收为准",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-execution-reslice-proposal-v0.1.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-EXECUTION-RESLICE-AMENDMENT-001",
-      "label": "Mini已接收d04925d0；该补充Spec1/1已用，完整接口冲突停止，历史条款保留",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-execution-reslice-amendment-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-EXECUTION-RESLICE-REVIEW-001",
-      "label": "独立只读Readiness Review001 PASS及Controller边界注记；非Spec Gate或产品验收",
-      "path": "docs/planning/2026-09-19/reviews/execution-reslice-readiness-review-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-EXECUTION-RESLICE-STOP-001",
-      "label": "MacBook核对当前d04925d0、异常回执/停止索引和31原件/31副本；身份PASS，不是产品测试",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-001-mini-intake.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-INCREMENTAL-CONTRACT-AMENDMENT-001",
-      "label": "Mini已接收0cdc3c2；Spec1/1停止，新诊断处置与只读审查见后续记录",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-incremental-contract-amendment-001.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-INCREMENTAL-CONTRACT-REVIEW-001",
-      "label": "Fresh Readiness Review001 PASS；不代替Mini完整调用链收口、Spec Gate或实际构建",
-      "path": "docs/planning/2026-09-19/reviews/incremental-contract-readiness-review-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-INCREMENTAL-DIAGNOSTIC-DISPOSITION-001",
-      "label": "上一轮风险接受/证据更正及F1–F6只读NEEDS_FIX；后续定向Spec授权见新补充，不追认历史PASS",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-incremental-contract-diagnostic-disposition-001.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-INCREMENTAL-RECOVERED-TOOLS-001",
-      "label": "历史工具记录部分找回、独立读回；仍缺写前身份，非重放或PASS",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/recovered-historical-tool-records-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-INCREMENTAL-FROZEN-INTAKE-001",
-      "label": "31现场/31副本与最新停止索引匹配；仅身份核对",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/frozen-intake-readback-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-DIRECTED-SPEC-CLOSURE-001",
-      "label": "Mini已接收942b670；唯一返回因误停不完整，Spec Gate FAIL；剩余续接见2026-09-20处置",
-      "path": "docs/planning/2026-09-19/xanthil-desktop-directed-spec-closure-001.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-DIRECTED-SPEC-CLOSURE-INTAKE-001",
-      "label": "本次只读核对Mini0cdc3c2、31现场与31副本匹配；未远端写入",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/directed-spec-closure-intake-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-DIRECTED-SPEC-CLOSURE-REVIEW-001",
-      "label": "独立就绪审查PASS，仅交接准备；不证明Spec Gate或产品行为",
-      "path": "docs/planning/2026-09-19/reviews/directed-spec-closure-readiness-review-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-INTERRUPTED-SPEC-RESUMPTION-001",
-      "label": "用户授权剩余Spec续接及计数/误停规则；历史不重置、Test不释放",
-      "path": "docs/planning/2026-09-20/xanthil-desktop-interrupted-spec-resumption-001.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-DIRECTED-SPEC-RETURN-READBACK-001",
-      "label": "Controller匹配当前942b670、最新31源/副本及19保护资产；只读身份核对",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/interrupted-spec-resumption-intake-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-STATIC-DIAGNOSTIC-CONTROLLER-INCIDENT-001",
-      "label": "MacBook误执行、精确进程止损及未决影响；不是验证PASS",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/static-diagnostic-controller-incident-001.json",
-      "status": "present"
-    },
-    {
-      "id": "EVD-STATIC-DIAGNOSTIC-INTAKE-001",
-      "label": "新鲜31源/副本和19保护资产匹配，仅身份核验",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/static-diagnostic-disposition-intake-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-STATIC-DIAGNOSTIC-DISPOSITION-001",
-      "label": "用户事故残余风险接受、Mini超额处置及后续边界；需固定接收",
-      "path": "docs/planning/2026-09-20/xanthil-desktop-static-diagnostic-disposition-001.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-STATIC-DIAGNOSTIC-SPEC-REVIEW-001",
-      "label": "Controller受影响Spec Gate PASS；静态内容审查，不是RED/GREEN或产品PASS",
-      "path": "docs/planning/2026-09-20/reviews/static-diagnostic-spec-review-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-U11-MAP-HEALTH-STOP-001",
-      "label": "Mini最新停止索引192478bytes/SHA256核对，31源/31副本匹配；H-MAP失败不是RED",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/static-diagnostic-u11-stop-index-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-U11-MAP-HEALTH-DISPOSITION-001",
-      "label": "用户授权定向单文件一次修正及验证；Mini接收和执行待确认",
-      "path": "docs/planning/2026-09-20/xanthil-desktop-u11-map-health-disposition-001.md",
-      "status": "present"
-    },
-    {
-      "id": "EVD-U11-MINIMAL-IPC-GREEN-001",
-      "label": "原始R/G及85项SHA256核对；仅最小IPC/Main GREEN，不是U1.1验收",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/u11-map-health-disposition-stop-index-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-U11-FIRST-PACKAGE-GUI-ADMISSION-001",
-      "label": "Mini已固定接收02539ed；Spec1/1用尽，受影响Gate因F1/F2及F3证据缺口停止；非产品验收",
-      "path": "docs/planning/2026-09-20/xanthil-desktop-u11-first-package-gui-admission-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-U11-FIRST-PACKAGE-SPEC-STOP-001",
-      "label": "Controller独立核对33现场/33副本及4证据大小/hash；仅当前身份，不补齐历史过程",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/u11-spec-consistency-disposition-001/controller-intake-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-U11-SPEC-CONSISTENCY-DISPOSITION-001",
-      "label": "Mini已固定接收a4ab8d9并完成F1/F2受影响Spec Gate PASS；后续B1执行异常单独保留",
-      "path": "docs/planning/2026-09-20/xanthil-desktop-u11-spec-consistency-disposition-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-U11-SPEC-CONSISTENCY-READINESS-001",
-      "label": "独立只读就绪审查PASS；仅补充准备，不是Mini Spec Gate或产品PASS",
-      "path": "docs/planning/2026-09-20/reviews/u11-spec-consistency-readiness-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-U11-B1-CAPTURE-STOP-001",
-      "label": "Controller只读匹配33源/33副本及5关键证据；原始H2语法拒绝与退出码缺口保留，非新RED",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/u11-b1-capture-disposition-001/controller-intake-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-U11-B1-CAPTURE-DISPOSITION-001",
-      "label": "Mini已接收0cfdcaf，capture文件独立匹配；目录准备失败，Admission2/2消耗，非测试或产品PASS",
-      "path": "docs/planning/2026-09-20/xanthil-desktop-u11-b1-capture-disposition-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-U11-B1-ENVELOPE-STOP-001",
-      "label": "Controller匹配最新33源/33副本及4证据；ENOENT外层退出1、七项未运行",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/u11-b1-capture-disposition-001/envelope-preparation-001/controller-intake-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-U11-B1-ENVELOPE-DISPOSITION-001",
-      "label": "Mini已接收bbb08f0，准备2/3达PASS及H2健康通过；H3冻结调用不匹配另行停止",
-      "path": "docs/planning/2026-09-20/xanthil-desktop-u11-b1-envelope-preparation-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-B1-H3-INVOCATION-STOP-001",
-      "label": "Controller匹配33源/33副本及4证据；H3外层环境拒绝退出1，未执行测试子进程",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/u11-b1-capture-disposition-001/frozen-invocation-001/controller-intake-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-B1-FROZEN-INVOCATION-001",
-      "label": "Mini已接收5f05bd1，H3调用纠正1/3成功；B1受限RED/GREEN完成，后续B2 Test合同缺口单独处置",
-      "path": "docs/planning/2026-09-20/xanthil-desktop-b1-frozen-invocation-disposition-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-B2-TEST-CONTRACT-INTAKE-001",
-      "label": "Controller只读匹配当前34源/34副本及固定Git身份；仅身份核验，不是产品PASS",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/b2-test-contract-disposition-001/controller-intake-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-B1-SCOPED-COMPLETION-001",
-      "label": "已读Mini B1 Gate并匹配SHA256；Bridge/Entry/Safety/IPC受限GREEN，不是打包/GUI/最终验收",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/u11-b1-completion-gate-001.json",
+      "id": "CHANGE002-INTAKE",
+      "label": "固定产品包与工程接收记录",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/intake.md",
       "status": "verified"
-    },
-    {
-      "id": "EVD-B2-TEST-CONTRACT-DISPOSITION-001",
-      "label": "Mini已接收8078b9ab；第1/2轮返回上下文TEST_CONFLICT，无Test修订或验证；最新处置见B2 Command Context001",
-      "path": "docs/planning/2026-09-20/xanthil-desktop-b2-test-contract-disposition-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-B2-CONTEXT-INTAKE-001",
-      "label": "Controller匹配最新34源/34副本及8078b9ab身份；仅读回，非历史补证或产品验证",
-      "path": "/Users/huangbo/JuanerAI-artifacts/PKG-XANTHIL-DESKTOP-001/dependency-structure-decision-20260919/incremental-contract-disposition-001/b2-command-context-001/controller-intake-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-B2-COMMAND-CONTEXT-001",
-      "label": "Mini已固定采纳；内容2/2已用，健康及Component因果RED证据已独立复核，MOUNT/首包/GUI未运行",
-      "path": "docs/planning/2026-09-20/xanthil-desktop-b2-command-context-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-MINI-B2-CONTEXT-ADOPTED-20260924",
-      "label": "Mini固定接收c01b68b；34源/34副本前后保持，非Test/Gate PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/b2-command-context-post-merge-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-B2-COMPONENT-TDD-READY-001",
-      "label": "Component限域TDD_READY：独立健康、因果RED、12份解释、现场/资产台账通过；不是产品验收",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/b2-component-tdd-ready-gate-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "EVD-B2-COMPONENT-TEMP-INCIDENT-001",
-      "label": "当前两路径身份/源码保护独立读回；历史退出UNKNOWN保留，不提供产品PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/b2-component-unapproved-temp-write-001.json",
-      "status": "present"
     },
     {
-      "id": "xdesk_final_acceptance_archive",
-      "label": "首个Change最终验收、归档及集成边界",
+      "id": "CHANGE001-ACCEPTANCE",
+      "label": "保留首 Change 产品验收与归档",
       "path": "openspec/changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/acceptance.md",
       "status": "verified"
     },
     {
-      "id": "internal-install-intake-001",
-      "label": "内部安装补充只读接收；非产品PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/internal-install-001/intake-001.md",
-      "status": "present"
-    },
-    {
-      "id": "internal-install-supplement-001",
-      "label": "内部安装补充行为、范围、实际验证和待验收项",
-      "path": "openspec/changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/internal-install-supplement-001.md",
-      "status": "present"
-    },
-    {
-      "id": "internal-install-independent-001",
-      "label": "内部安装candidate-003独立验收报告：本机工程PASS，目标机待验",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/internal-install-001/validator-001/report.md",
+      "id": "CHANGE002-ENGINEERING-ACCEPTANCE",
+      "label": "candidate010 / DMG011工程及用户产品验收通过",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/engineering-acceptance.md",
       "status": "verified"
     },
     {
-      "id": "internal-install-target-open-failure-001",
-      "label": "MacBook Finder无法打开与源包只读签名失败",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/internal-install-001/macbook-open-failure-001/diagnostic.md",
-      "status": "present"
-    },
-    {
-      "id": "internal-signature-validator-001",
-      "label": "签名修正独立验证：本机PASS，目标002待重验",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/internal-install-001/signature-repair-001/validator-001/report.md",
+      "id": "CHANGE002-INDEPENDENT-PASS",
+      "label": "历史 candidate006 Validator 报告；不证明当前 UI 一致性",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/independent-verification-real-pi-dmg.md",
       "status": "verified"
     },
     {
-      "id": "internal-install-target002-failure-001",
-      "label": "用户报告002安装后仍无法打开；目标诊断待读回",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/internal-install-001/signature-repair-001/macbook-002-failure-001.md",
-      "status": "present"
-    },
-    {
-      "id": "ui-demo-restoration-validator-001",
-      "label": "UI Demo 固定候选独立验收报告（非用户验收）",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/ui-demo-restoration-001/validator-001/REVIEW.md",
+      "id": "CHANGE002-UI-FIDELITY-001",
+      "label": "原稿固定版本及 DMG005 UI 偏差复核",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/ui-fidelity-review-001.md",
       "status": "verified"
     },
     {
-      "id": "ui-demo-user-acceptance-001",
-      "label": "用户明确 UI 验收通过：DMG003",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-membership-repurchase-decision-case/mac-mini-wip-preflight-20260919-001/technical-decision-001/ui-demo-restoration-001/user-ui-acceptance-001.md",
-      "status": "present"
+      "id": "CHANGE002-UI-VALIDATOR-001",
+      "label": "candidate007 独立验证 FAIL，4项缺陷",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/independent-verification-ui-001.md",
+      "status": "verified"
     },
     {
-      "id": "first-change-supplement-pr44",
-      "label": "本次补充 Git 交付 PR44：最终 CI/合并以远端读回为准",
-      "path": "https://github.com/gadfly-hbo/JuanerAI/pull/44",
-      "status": "present"
+      "id": "CHANGE002-UI-VALIDATOR-002",
+      "label": "candidate008 独立验证PASS，四项缺陷关闭",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/independent-verification-ui-002.md",
+      "status": "verified"
+    },
+    {
+      "id": "PROVIDER-UI-GATE",
+      "label": "单一Provider UI Gate PASS，固定输入与工程接收完成",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/provider-settings-ui-gate-v1.md",
+      "status": "verified"
+    },
+    {
+      "id": "PROVIDER-CANDIDATE009",
+      "label": "完整候选693源文件及DMG010固定，Controller字节读回通过",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-case-assistant-decision-record/candidate-009/manifest.json",
+      "status": "verified"
+    },
+    {
+      "id": "PROVIDER-VALIDATOR001-FAIL",
+      "label": "candidate009独立FAIL：4项生命周期反例及复验条件",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/independent-verification-provider-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "PROVIDER-CANDIDATE010",
+      "label": "candidate010/DMG011固定及Controller26499项字节哈希读回通过",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-case-assistant-decision-record/controller-candidate010-readback.json",
+      "status": "verified"
+    },
+    {
+      "id": "PROVIDER-VALIDATOR002-PASS",
+      "label": "candidate010独立复验PASS，四项缺陷与相邻授权问题已关闭",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/independent-verification-provider-002.md",
+      "status": "verified"
+    },
+    {
+      "id": "CHANGE002-PRODUCT-ACCEPTANCE",
+      "label": "用户产品验收及Git提交合并授权",
+      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/acceptance.md",
+      "status": "verified"
     }
   ],
-  "risks": [
-    {
-      "id": "RSK-D05-001",
-      "label": "历史旧计划风险：Selected stack not yet proved in-package",
-      "level": "high",
-      "mitigation": "旧计划已作废；以下原风险处置仅供后续重新评估，不授权执行：First Change is foundation/R2 and requires early macOS/Windows feasibility and fault-injection probes"
-    },
-    {
-      "id": "RSK-D05-002",
-      "label": "历史旧计划风险：Python sidecar is not a hostile-code sandbox",
-      "level": "high",
-      "mitigation": "旧计划已作废；以下原风险处置仅供后续重新评估，不授权执行：No user-authored Python; narrow operations; no shell; offline acceptance; separate future sandbox Change for hostile code"
-    },
-    {
-      "id": "RSK-D05-003",
-      "label": "历史旧计划风险：Development evidence may be overstated as public-release readiness",
-      "level": "high",
-      "mitigation": "旧计划已作废；以下原风险处置仅供后续重新评估，不授权执行：Use exact evidence-tier labels; prohibit public distribution and production-ready claims until user-activated JUANERAI_PUBLIC_RELEASE_GATE passes for one frozen Release Candidate"
-    },
-    {
-      "id": "RSK-WITHDRAWN-PLAN-REPLAY",
-      "label": "旧批准与主机保留指针被误读为可继续执行",
-      "level": "high",
-      "mitigation": "以 docs/planning/README.md 作废决定为准；旧 pointer 已通过用户授权的最小人工异常释放改为空值，旧 State/pause/Ledger locator/日志/工作树/Git 历史继续保留且不得被解释为 CLOSED 或完成。"
-    },
-    {
-      "id": "RSK-CLICKABLE-UI-OVERCLAIM",
-      "label": "可点击 UI 的模拟状态被误读为真实产品能力",
-      "level": "high",
-      "mitigation": "所有模拟数据、执行、持久化、模型调用和恢复状态必须明确标注；UI Gate PASS 只允许后续 OpenSpec 决策，不构成生产验收。"
-    },
-    {
-      "id": "RSK-CONTROLLER-STATIC-REVIEW-INCIDENT",
-      "label": "MacBook误执行的历史环境/完整测试结果及旧日志身份未知",
-      "level": "medium",
-      "mitigation": "用户已接受披露的残余证据缺口并结束有界调查；原记录和现场保留，不清理、不重放、不宣称全部副作用为零、不把事故结果作为Gate证据。"
-    },
-    {
-      "id": "RSK-U11-ADMISSION-SPEC-EVIDENCE-GAP",
-      "label": "Admission001 Spec部分历史命令原文/输出/数字退出不可得",
-      "level": "medium",
-      "mitigation": "用户接受精确已披露的有限历史留存缺口；UNKNOWN/失败保留，不重放、不冒称历史PASS或所有副作用为零。新工作仍须原始证据，新增未知不在本次豁免内。"
-    },
-    {
-      "id": "RSK-U11-B1-H2-OUTER-EXIT-UNKNOWN",
-      "label": "H2冻结capture执行前语法拒绝，原外层工具数字退出码不可得",
-      "level": "medium",
-      "mitigation": "已接受的历史H2缺口及Admission2/2保留，不补造不重放。准备2/3和H1/H2成功结果保留；剩余B1只准有界恢复冻结调用值，新增未知或真实测试失败按原Gate停止。"
-    },
-    {
-      "id": "RSK-B2-HISTORICAL-NATIVE-OBSERVABILITY",
-      "label": "B2原API返回元数据/历史环境及stderr独立分离不可恢复",
-      "level": "medium",
-      "mitigation": "用户仅接受u11-b2-original-records-001对应的披露限制；保留UNKNOWN、失败和额外引号纠正，不追认、不补跑、不证明全部副作用为零。新执行需完整原始结果，新增未知不在豁免内。"
-    },
-    {
-      "id": "RSK-B2-CONTEXT-ROLE-EVIDENCE-GAP",
-      "label": "最新Test manifest/比较/工具定位native记录缺失，patch-result为摘要",
-      "level": "medium",
-      "mitigation": "仅按B2 Command Context001接受精确披露限制；原件/UNKNOWN保留，不把当前34/201读回当作历史补证。后续普通浏览分级，身份/Gate/写入证据仍须足以证明调用与完成；未知效果仍停。"
-    },
-    {
-      "id": "RSK-B2-COMPONENT-OUTSIDE-ROOT-WRITE",
-      "label": "新两路径无预检重定向及原生执行元数据丢失",
-      "level": "medium",
-      "mitigation": "原件与复制保留，不清理/重放/推断历史零副作用。当前37保护源未变，renderer未验证；直接等待用户本任务处置。"
-    },
-    {
-      "id": "ui-demo-historical-material-001",
-      "label": "历史 DMG002 缺失与两项旧输入预拷遗漏",
-      "level": "medium",
-      "mitigation": "保留原记录与 UNKNOWN，不声明历史材料全部保全；旧 signed app 基线仍完整。当前候选已独立验证，不重建旧文件或扩大历史风险豁免。用户已被询问旧 DMG 去向。"
-    }
-  ],
-  "updated_at": "2026-09-28T14:15:20.400Z",
+  "risks": [],
+  "updated_at": "2026-09-30T10:56:16.223Z",
   "updated_by": {
     "role": "controller",
-    "session": "01a0b45a-13ad-7b92-a2b4-cdde980558e1"
+    "session": "change-002-engineering-controller"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930095126204-UKPGHL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T09:51:26.204Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "完整canonical通过，进入固定候选与独立复验。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

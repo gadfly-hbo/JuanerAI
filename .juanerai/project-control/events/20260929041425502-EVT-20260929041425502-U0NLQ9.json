@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929041425502-U0NLQ9",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T04:14:25.502Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "六项修正中三项已有GREEN；剩余三项实际原生RED及恢复检查证据齐备。",
+  "status_after": "active",
+  "evidence_refs": []
+}

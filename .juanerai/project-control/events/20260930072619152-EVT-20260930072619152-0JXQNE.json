@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930072619152-0JXQNE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T07:26:19.152Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "真实旅程在辅助入口失败，停止并转入原工程上下文定位",
+  "status_after": "active",
+  "evidence_refs": []
+}

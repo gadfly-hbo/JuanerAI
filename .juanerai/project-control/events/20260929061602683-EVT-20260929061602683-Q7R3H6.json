@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929061602683-Q7R3H6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T06:16:02.683Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "保留 real-pi-plan-001/execution-001；无自动重试。",
+  "status_after": "active",
+  "evidence_refs": []
+}

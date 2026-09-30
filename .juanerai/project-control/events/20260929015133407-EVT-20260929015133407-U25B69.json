@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929015133407-U25B69",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T01:51:33.407Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "工程合同决定 accepted；开始授权离线垂直实现",
+  "status_after": "active",
+  "evidence_refs": []
+}

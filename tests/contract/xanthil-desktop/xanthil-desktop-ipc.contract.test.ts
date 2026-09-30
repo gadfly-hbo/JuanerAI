@@ -521,7 +521,7 @@ test('U1.1 B1-BRIDGE: real preload exposes and maps the closed twenty-method xan
   }
   assert.equal(control.invokes.length, b1Methods.length, 'every public method invokes one and only one closed channel');
   assert.deepEqual(control.invokes.map(({ channel }) => channel), b1Methods.map((method) => `xanthil-desktop:v1:${method}`), 'the closed channel sequence follows the exact frozen method order');
-  assert.deepEqual(control.contextBridgeExposures.map((exposure) => exposure.key), ['xanthilDesktopApi'], 'preload exposes one and only one context-isolated global key');
+  assert.deepEqual(control.contextBridgeExposures.map((exposure) => exposure.key), ['xanthilDesktopApi','xanthilCaseAssistantApi','xanthilProviderSettingsApi'], 'PS-01 adds only its closed settings API; both original business APIs are preserved');
   assert.equal(control.contextBridgeExposures[0]!.value, api, 'contextBridge receives the identical public API object');
   for (const forbidden of ['invoke', 'ipcRenderer', 'channel', 'electron', 'shell', 'process', 'require', 'readFile', 'writeFile']) {
     assert.equal(Object.hasOwn(api, forbidden), false, `preload exposes no raw or generic ${forbidden} member`);
@@ -534,7 +534,8 @@ test('U1.1 B1-ENTRY: normal Main entry registers the existing refusal factory an
   const createHandlers = requiredExport<(value: Record<string, unknown>) => Record<string, (sender: unknown, request: Record<string, unknown>) => Promise<Record<string, unknown>>>>(main, 'createXanthilDesktopIpcHandlers');
   assert.equal(control.requestSingleInstanceLockCalls(), 1, 'normal Main entry requests one single-instance admission');
   assert.equal(control.whenReadyCalls(), 1, 'normal Main entry waits for Electron readiness once');
-  assert.deepEqual(control.ipcChannels().sort(), b1Methods.map((method) => `xanthil-desktop:v1:${method}`).sort(), 'normal Main entry registers exactly one closed IPC handler per method');
+  assert.deepEqual(control.ipcChannels().sort(), [...b1Methods.map((method) => `xanthil-desktop:v1:${method}`),'xanthil-case-assistant:v1','xanthil-provider-settings:v1'].sort(), 'normal Main retains every business method and adds only the approved closed settings channel');
+  assert.deepEqual(await control.ipcHandler('xanthil-provider-settings:v1')(control.foreignSenderEvent(),{operation:'read'}),{ok:false,code:'FORBIDDEN'},'settings refuses an untrusted sender before credential access');
   assert.equal(control.browserWindowOptions.length, 1, 'normal Main entry creates exactly one local BrowserWindow');
   assert.deepEqual(Object.fromEntries(['width','height','useContentSize'].map(key=>[key,control.browserWindowOptions[0]![key]])),{width:1366,height:768,useContentSize:true},'normal startup uses the approved content viewport without relying on a test resize');
   assert.equal(Object.hasOwn(control.browserWindowOptions[0]!, 'minWidth'),false,'the initial viewport does not add an unapproved native resize restriction');
@@ -676,7 +677,7 @@ test('U1.1 B2-COMPONENT: actual XanthilDesktopApp renders the accepted initial s
     const createElement = requiredExport<(type: unknown, props: unknown) => unknown>(react, 'createElement');
     const renderToStaticMarkup = requiredExport<(element: unknown) => string>(server, 'renderToStaticMarkup');
     const markup = renderToStaticMarkup(createElement(App, { api: recording.api }));
-    for (const label of ['Xanthil Desktop', 'Project', 'Session', 'Workspace', 'Inspector', 'Status', 'Quick', 'Professional', 'Global Search', '新建分析', '数据准备', '本地处理', '循证分析', '报告', '执行反馈', 'Skill', 'Prompt', 'Fork', 'Subagent', 'Preview']) {
+    for (const label of ['JuanerAI','持续做出更好的决策','Xanthil Desktop','Case Assistant','关联一个 Case','模型未配置','Case 决策与预期 v1.0','Status','Quick','Professional','Global Search','Fork','Subagent','Preview']) {
       assert.match(markup, new RegExp(escapeRegexLiteral(label), 'u'), `the accepted initial shell visibly names ${label}`);
     }
     assert.deepEqual([...recording.calls.entries()], recording.methods.map((method) => [method, 0]), 'the exact twenty-method Renderer API remains entirely unused by the static initial shell');

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929035252074-9WF7K1",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T03:52:52.074Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "workspace-write工程角色恢复并独立核对运行设置，按六项发现继续修正；Validator等待新固定候选。",
+  "status_after": "active",
+  "evidence_refs": []
+}

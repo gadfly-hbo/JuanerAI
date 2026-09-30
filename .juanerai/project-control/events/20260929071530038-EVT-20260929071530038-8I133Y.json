@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929071530038-8I133Y",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T07:15:30.038Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "candidate006 独立 PASS 后记录工程验收；DMG005 就绪，等待用户产品/UI 验收。无新增模型调用或产品修改。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929044809263-T1BRHX",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T04:48:09.263Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "固定候选003：652源文件、43变更路径、1879证据文件；作者停止修改。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

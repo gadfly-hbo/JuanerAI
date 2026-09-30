@@ -3,6 +3,7 @@ import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
+import { createRequire } from 'node:module';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -127,7 +128,7 @@ const app = Object.freeze({
   requestSingleInstanceLock() { return true; },
   quit() { unexpected('app.quit'); },
   on(event, listener) {
-    if ((event !== 'second-instance' && event !== 'activate') || typeof listener !== 'function') unexpected(\`app.on:\${event}\`);
+    if ((event !== 'second-instance' && event !== 'activate' && event !== 'before-quit') || typeof listener !== 'function') unexpected(\`app.on:\${event}\`);
   },
   whenReady() { return Promise.resolve(); },
 });
@@ -152,7 +153,7 @@ class BrowserWindow {
     });
   }
   on(event, listener) {
-    if (event !== 'closed' || typeof listener !== 'function') unexpected(\`BrowserWindow.on:\${event}\`);
+    if ((event !== 'closed' && event !== 'close') || typeof listener !== 'function') unexpected(\`BrowserWindow.on:\${event}\`);
   }
   async loadFile(path) {
     if (typeof path !== 'string' || started) unexpected('loadFile');
@@ -253,7 +254,22 @@ test('U1.1 MAIN-MODULE-FORMAT: loads the descriptor-selected packaged Main with 
     assertContainedPath(targetRoot, targetEntryPath, 'copied descriptor-selected Main entry');
     await mkdir(dirname(targetEntryPath), { recursive: true });
     await writeFile(join(targetRoot, 'package.json'), descriptorBytes);
-    await writeFile(targetEntryPath, mainBytes);
+    // Main may have emitted relative chunks. Copy only the actual frozen packaged
+    // build subtree, preserving loader boundaries and all wrong-format controls.
+    const asar = createRequire(import.meta.url)('@electron/asar');
+    const archive = join(packageIdentity.packageRoot, 'Contents/Resources/app.asar');
+    for (const packagedPath of asar.listPackage(archive) as string[]) {
+      const path = packagedPath.replace(/^\//, '');
+      if (!path.startsWith('.vite/build/') || asar.statFile(archive, path).files) continue;
+      const destination = resolve(targetRoot, path);
+      assertContainedPath(targetRoot, destination, 'packaged Main chunk');
+      const bytes = asar.extractFile(archive, path);
+      assert.deepEqual(bytes, await readFile(resolve(repositoryRoot, path)), 'chunk equals actual emitted build');
+      await mkdir(dirname(destination), { recursive: true });
+      await writeFile(destination, bytes);
+    }
+    assert.deepEqual(await readFile(targetEntryPath), mainBytes);
+
     const targetResult = await runEntry(targetEntryPath);
     assert.equal(targetResult.timedOut, false, 'descriptor-selected Main loader child did not time out');
     assert.equal(targetResult.signal, null, 'descriptor-selected Main loader child has no signal');

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929074808555-JBM93W",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T07:48:08.555Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "用户授权修正冻结 UI 并生成新 DMG；恢复同一工程 Worker",
+  "status_after": "active",
+  "evidence_refs": []
+}

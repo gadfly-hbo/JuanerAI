@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929034958840-ETFSML",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T03:49:58.840Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "独立验证完成并报告6项具体缺陷；开始已批准范围内纠正，不新增产品范围。",
+  "status_after": "active",
+  "evidence_refs": []
+}

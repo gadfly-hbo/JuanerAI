@@ -8,7 +8,9 @@ export default defineConfig({
       formats: ['cjs'],
     },
     rollupOptions: {
-      external: ['electron', 'node:url'],
+      // Pi resolves its ESM resources relative to import.meta.url. Load the
+      // installed production closure instead of rewriting it into a CJS chunk.
+      external: ['electron', 'node:url', '@earendil-works/pi-coding-agent'],
     },
   },
 });

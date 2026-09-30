@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929085647748-UAXSVI",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T08:56:47.748Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "恢复工程修正VUI-01–04，历史FAIL与DMG006保留",
+  "status_after": "active",
+  "evidence_refs": []
+}

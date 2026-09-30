@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929065247146-58I414",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T06:52:47.146Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "host012 五阶段完成；旧打包失败在实际 require 处复现并由原生 SDK 外置加载修复。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

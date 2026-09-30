@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930093657916-DB8P7D",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T09:36:57.916Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "原生验证推进至窗口关闭后宿主退出定位，保留host026–029失败及已通过证据。",
+  "status_after": "active",
+  "evidence_refs": []
+}

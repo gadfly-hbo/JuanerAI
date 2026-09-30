@@ -69,6 +69,24 @@ export type DesktopAcceptanceCase = Readonly<{
 
 /** Closed producer identities accepted by the U1.1 packaged-GUI readback seam. */
 export const guiPackageReadbackProducers = Object.freeze([
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-001', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-002', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-003', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-004', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-005', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-006', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-007', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-008', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-009', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-010', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-011', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-012', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-013', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-018', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-017', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-016', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-015', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE002-PACKAGE-014', attempt:'first' }),
   Object.freeze({ commandId: 'UI-DEMO-PACKAGE-002', attempt: 'first' }),
   Object.freeze({ commandId: 'UI-DEMO-PACKAGE-003', attempt: 'first' }),
   Object.freeze({ commandId: 'B-PACKAGE-U4-V08', attempt: 'first' }),
@@ -202,7 +220,7 @@ export const desktopAcceptanceCases = Object.freeze([
   ...defineCases('REQ-XDESK-001', 'TEST-XDESK-009', 'e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts', [
     'launches the packaged arm64 shell with the persistent Xanthil frame',
     'shows the six professional stages with their Chinese acceptance labels',
-    'keeps Quick, Fork, Subagent, Skill, and Prompt visible as effect-free Preview',
+    'fixed Skill/Prompt information and Fork/Subagent Preview remain effect-free',
     'proves only the U1.1 shell mode/search surface closes without creating a Session; later Session and background-work continuity remains a later consumer',
     'keeps keyboard focus, modal trapping, drawer recovery, and both approved viewport layouts usable',
   ]),

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930055943143-BQLWMP",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T05:59:43.143Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "Provider增量首次真实Keychain薄路径PASS；旧包缺少全局入口的因果RED已确认",
+  "status_after": "active",
+  "evidence_refs": []
+}

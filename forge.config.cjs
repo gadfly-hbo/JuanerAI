@@ -43,10 +43,15 @@ module.exports = {
     }
     const output = path.resolve(result.outputPaths[0]);
     if (!output.startsWith(path.resolve(internalOutput) + path.sep)) throw new Error('Unexpected internal signing output');
+    require('./tools/desktop/build-keychain-helper.cjs').buildKeychainHelper(path.join(output, 'Xanthil.app'));
     require('./tools/desktop/seal-internal-app.cjs').sealInternalApp(path.join(output, 'Xanthil.app'));
   } } } : {}),
   packagerConfig: {
     asar: true,
+    // Pi is dynamically loaded. Keep the already installed production closure;
+    // Packager filters dev modules during copy without npm install or lifecycle scripts.
+    prune: true,
+    ignore: file => file.includes('/node_modules/.') || Boolean(file) && !(/^\/(?:\.vite(?:\/|$)|node_modules(?:\/|$)|package\.json$)/.test(file)),
     extraResource: internalResources
       ? [path.join(internalResources, 'toolchain-deployment.json'), path.join(internalResources, 'toolchain'), path.join(internalResources, 'THIRD_PARTY_NOTICES')]
       : ['build/xanthil-toolchain-deployment.json'],

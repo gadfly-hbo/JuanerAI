@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929033808501-NX257B",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T03:38:08.501Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "实际runtime确认只读与固定模型，环境阻塞解除；相同juaner_validator在CLI开始独立审查。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

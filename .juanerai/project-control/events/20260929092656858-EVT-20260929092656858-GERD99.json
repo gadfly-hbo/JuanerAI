@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929092656858-GERD99",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T09:26:56.858Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "四项缺陷修复、新DMG007及全部宿主验证通过",
+  "status_after": "validating",
+  "evidence_refs": []
+}

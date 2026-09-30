@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929033059252-WVZXE8",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T03:30:59.252Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "独立Validator实际sandbox不符而停止；固定候选未改动，检查同角色只读恢复环境。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

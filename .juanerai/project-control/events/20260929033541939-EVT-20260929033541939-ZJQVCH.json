@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929033541939-ZJQVCH",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T03:35:41.939Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "用户授权CLI升级后已安装0.158.0，继续只读Validator环境预检。",
+  "status_after": "active",
+  "evidence_refs": []
+}

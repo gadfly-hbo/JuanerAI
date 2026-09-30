@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930071509972-GK3SC8",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T07:15:09.972Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "DMG与演练通过；全量回归3项失败转交原工程上下文修正",
+  "status_after": "active",
+  "evidence_refs": []
+}

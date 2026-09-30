@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930065143899-K9VWMR",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T06:51:43.899Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "Provider设置原生流程通过，进入回归和真实验证阶段；明确保留当前未通过检查",
+  "status_after": "active",
+  "evidence_refs": []
+}

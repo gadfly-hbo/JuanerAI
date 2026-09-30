@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929043809690-1TG545",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T04:38:09.690Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "原生GREEN：17 PASS / 0 FAIL / 0 SKIP，未调用真实模型。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

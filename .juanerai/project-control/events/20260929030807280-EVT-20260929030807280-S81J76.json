@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929030807280-S81J76",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T03:08:07.280Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "native009实际应用包合成主流程及重启通过，进入最终回归。",
+  "status_after": "active",
+  "evidence_refs": []
+}

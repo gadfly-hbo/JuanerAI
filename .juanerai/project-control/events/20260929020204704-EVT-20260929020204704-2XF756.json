@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929020204704-2XF756",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T02:02:04.704Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "首个真实增量存储垂直结果 GREEN；进入运行生命周期实现",
+  "status_after": "active",
+  "evidence_refs": []
+}

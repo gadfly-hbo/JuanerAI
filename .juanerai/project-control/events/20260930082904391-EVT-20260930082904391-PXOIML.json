@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930082904391-PXOIML",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T08:29:04.391Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "同步工程实现完成与全新只读验证角色状态；保留MacBook产品验收待办",
+  "status_after": "validating",
+  "evidence_refs": []
+}

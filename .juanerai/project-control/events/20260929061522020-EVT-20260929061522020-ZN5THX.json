@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929061522020-ZN5THX",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T06:15:22.020Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "真实 Provider 授权已解决：仅合成数据，保留每轮请求/超时上限，不充值或切换 PAYG。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

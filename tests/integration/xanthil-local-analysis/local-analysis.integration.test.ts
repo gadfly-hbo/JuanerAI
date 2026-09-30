@@ -183,6 +183,47 @@ const approvedP5Tsconfig = Object.freeze({
     'tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts',
   ]),
 });
+const approvedChange002Tsconfig = Object.freeze({
+  compilerOptions: approvedP5Tsconfig.compilerOptions,
+  files: Object.freeze([
+    ...approvedP5Tsconfig.files,
+    'packages/contracts/case-assistant.ts',
+    'packages/product-core/case-assistant.ts',
+    'packages/application/case-assistant.ts',
+    'packages/ports/case-assistant.ts',
+    'adapters/agent-pi/case-assistant.ts',
+    'adapters/storage-local/case-assistant.ts',
+    'apps/desktop/case-assistant-main.ts',
+    'apps/desktop/case-assistant-workspace.tsx',
+    'tests/e2e/xanthil-desktop/case-assistant.e2e.test.ts',
+    'tests/integration/xanthil-desktop/case-assistant.integration.test.ts',
+    'tests/contract/xanthil-desktop/case-assistant-ipc.contract.test.ts',
+    'tests/contract/xanthil-desktop/case-assistant-runtime.contract.test.ts',
+    'tests/contract/xanthil-desktop/case-assistant-store.contract.test.ts',
+    'tests/unit/xanthil-desktop/case-assistant.unit.test.ts',
+    'tests/fixtures/case-assistant/fixtures.ts',
+    'tests/fixtures/case-assistant/completed-case.ts',
+    'tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts',
+    'tests/fixtures/case-assistant/native-synthetic-main.ts',
+  ]),
+});
+// PS-06/07: exact authorized desktop settings increment; historical tuples remain intact.
+const approvedProviderSettingsTsconfig = Object.freeze({
+  compilerOptions: approvedChange002Tsconfig.compilerOptions,
+  files: Object.freeze([
+    ...approvedChange002Tsconfig.files,
+    'packages/ports/provider-settings.ts',
+    'packages/contracts/provider-settings.ts',
+    'packages/application/provider-settings.ts',
+    'adapters/agent-pi/xiaomi-local.ts',
+    'adapters/credentials-macos/index.ts',
+    'apps/desktop/provider-settings.tsx',
+    'tests/unit/xanthil-desktop/provider-settings.unit.test.ts',
+    'tests/integration/xanthil-desktop/provider-settings.integration.test.ts',
+    'tests/contract/xanthil-desktop/provider-settings-runtime.contract.test.ts',
+    'tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts',
+  ]),
+});
 const approvedC1aTsconfig = Object.freeze({
   compilerOptions: Object.freeze({
     ...approvedP4Tsconfig.compilerOptions,
@@ -486,7 +527,9 @@ function matchesApprovedConfigurationTuple(
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP4RootManifest, approvedP4Tsconfig, approvedP4RepositoryConfigurationFiles)) return 'C0' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP5RootManifest, approvedP5Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'P5' as const;
-  assert.fail('root package.json, tsconfig.json, and configuration inventory must form exactly P4 or final P5 without an intermediate tuple or selector');
+  if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP5RootManifest, approvedChange002Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change002' as const;
+  if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP5RootManifest, approvedProviderSettingsTsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change002ProviderSettings' as const;
+  assert.fail('root package.json, tsconfig.json, and configuration inventory must form exactly P4, final P5, Change002, or its approved Provider Settings increment without an intermediate tuple or selector');
 }
 
 function assertProjectLocalResolution(resolved: string, packageName: string) {
@@ -1591,11 +1634,55 @@ async function readPiAdapterProductionSource() {
   return readFile(fileURLToPath(new URL('../../../adapters/agent-pi/local-analysis.ts', import.meta.url)), 'utf8');
 }
 
-test('TASK-009 R4 TEST-XCLI-011 [AC-XCLI-007-04, R4-AC-001-01] production source binds only the approved MiniMax-M3 identity', async () => {
-  const source = await readPiAdapterProductionSource();
+function assertCliAndDesktopModelSource(source: string) {
   assert.match(source, /const PROVIDER = 'minimax-cn';/);
   assert.match(source, /const MODEL_ID = 'MiniMax-M3';/);
-  assert.equal(/xiaomi-token-plan-cn|mimo-v2\.5-pro/.test(source), false);
+  // This shared file also owns the separately approved Desktop factory. Exclude
+  // only that named function from the CLI scan, then check its credential gate.
+  const desktopStart = source.indexOf('export function createPiDecisionAssistanceRuntime(');
+  const cliStart = source.indexOf('export function createPiAgentAnalysisRuntime(');
+  assert.ok(desktopStart >= 0 && cliStart > desktopStart);
+  assert.equal(source.split('export function createPiDecisionAssistanceRuntime(').length, 2);
+  const desktop = source.slice(desktopStart, cliStart);
+  const cli = source.slice(0, desktopStart) + source.slice(cliStart);
+  assert.equal(/xiaomi-token-plan-cn|mimo-v2\.[0-9]+-pro/.test(cli), false);
+  assert.equal(/mimo-v2\.5-pro/.test(source), false);
+  assert.match(desktop, /if\(localCredential&&\(injection!==undefined\|\|config.provider!=='xiaomi-token-plan-cn'\|\|config.model_id!=='mimo-v2\.6-pro'\)\)throw sanitized\('VALIDATION_FAILED'\);/);
+}
+
+test('TASK-009 R4 TEST-XCLI-011 [AC-XCLI-007-04, R4-AC-001-01, PS-06/07] CLI source retains only MiniMax-M3 with the exact separate Desktop credential boundary', async () => {
+  const source = await readPiAdapterProductionSource();
+  assertCliAndDesktopModelSource(source);
+  for (const changed of [
+    source.replace("const PROVIDER = 'minimax-cn';", "const PROVIDER = 'xiaomi-token-plan-cn';"),
+    source.replace("const MODEL_ID = 'MiniMax-M3';", "const MODEL_ID = 'mimo-v2.6-pro';"),
+    source.replace('  validateFactoryInput(config);', "  const fallbackModel = 'xiaomi-token-plan-cn';"),
+    source.replace("config.provider!=='xiaomi-token-plan-cn'", "config.provider!=='another-provider'"),
+    source.replace("config.model_id!=='mimo-v2.6-pro'", "config.model_id!=='mimo-v2.5-pro'"),
+    source.replace('injection!==undefined||config.provider', 'config.provider'),
+    source.replace('if(localCredential&&(injection', 'if(false&&(injection'),
+  ]) {
+    assert.notEqual(changed, source, 'each mutation must actually change its target');
+    assert.throws(() => assertCliAndDesktopModelSource(changed));
+  }
+});
+
+test('TEST-XCLI-011 PS-06/07 actual factories reject desktop identity at CLI and reject unapproved credential-bound tuples before access', async () => {
+  const {createPiAgentAnalysisRuntime, createPiDecisionAssistanceRuntime} = await import('../../../adapters/agent-pi/local-analysis.ts');
+  const desktop = {provider: 'xiaomi-token-plan-cn', model_id: 'mimo-v2.6-pro'};
+  const key = () => { assert.fail('factory validation must not read any credential'); };
+  assert.throws(() => createPiAgentAnalysisRuntime(desktop), /MODEL_UNAVAILABLE/);
+  for (const config of [
+    {...desktop, provider: 'minimax-cn'},
+    {...desktop, model_id: 'mimo-v2.5-pro'},
+    {...desktop, provider: 'arbitrary'},
+    {...desktop, model_id: 'arbitrary'},
+    {...desktop, endpoint: 'https://unapproved.invalid'},
+    {...desktop, configuration_selector: 'desktop'},
+  ]) assert.throws(() => createPiDecisionAssistanceRuntime(config, undefined, key), /VALIDATION_FAILED/);
+  assert.throws(() => createPiDecisionAssistanceRuntime(desktop, {sdkSessionFactory() { assert.fail('no injected SDK admission'); }}, key), /VALIDATION_FAILED/);
+  assert.doesNotThrow(() => createPiAgentAnalysisRuntime({provider: 'minimax-cn', model_id: 'MiniMax-M3'}));
+  assert.doesNotThrow(() => createPiDecisionAssistanceRuntime(desktop, undefined, key));
 });
 
 test('TASK-009 R4 TEST-XCLI-011 [AC-XCLI-007-04, R4-AC-001-01] production source performs exactly one explicit local-only ModelRuntime refresh', async () => {
@@ -3252,13 +3339,36 @@ test('TASK-006 TEST-XCLI-001 [AC-XCLI-004-01, AC-XCLI-004-02, AC-XCLI-005-01, AC
   assert.deepEqual((await readdir(exampleRoot, { withFileTypes: true })).map((entry) => [entry.name, entry.isFile()]).sort(), [['member-orders-v1.csv', true]]);
 });
 
-test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only exact P4 or final mapped P5',async()=>{
+test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only exact P4, final mapped P5 or final Change002',async()=>{
   assert.equal(assertApprovedConfigurationTuple(approvedP4RootManifest,approvedP4Tsconfig,approvedP4RepositoryConfigurationFiles),'C0');
   assert.equal(assertApprovedConfigurationTuple(approvedP5RootManifest,approvedP5Tsconfig,approvedP5RepositoryConfigurationFiles),'P5');
   for(const intermediate of [approvedC1aTsconfig,approvedC1Tsconfig,approvedC2Tsconfig])assert.throws(()=>assertApprovedConfigurationTuple(approvedP5RootManifest,intermediate,approvedP5RepositoryConfigurationFiles));
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'CF'},approvedP5Tsconfig,approvedP5RepositoryConfigurationFiles));
+  assert.equal(assertApprovedConfigurationTuple(approvedP5RootManifest,approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles),'Change002');
+  for(const omitted of approvedChange002Tsconfig.files.slice(approvedP5Tsconfig.files.length)) assert.throws(()=>assertApprovedConfigurationTuple(approvedP5RootManifest,{...approvedChange002Tsconfig,files:approvedChange002Tsconfig.files.filter(path=>path!==omitted)},approvedP5RepositoryConfigurationFiles));
+  assert.throws(()=>assertApprovedConfigurationTuple(approvedP5RootManifest,{...approvedChange002Tsconfig,files:[...approvedP5Tsconfig.files,...approvedChange002Tsconfig.files.slice(approvedP5Tsconfig.files.length).reverse()]},approvedP5RepositoryConfigurationFiles));
+  assert.throws(()=>assertApprovedConfigurationTuple(approvedP5RootManifest,approvedChange002Tsconfig,[...approvedP5RepositoryConfigurationFiles,'unauthorized.config.cjs']));
+  assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'P5');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Change002ProviderSettings');
+});
+
+test('TEST-XCLI-021 PS-06/07 admits only the exact Provider Settings appendix and rejects each partial, reordered or expanded tuple', () => {
+  const current = approvedProviderSettingsTsconfig;
+  const base = approvedChange002Tsconfig.files;
+  const appendix = current.files.slice(base.length);
+  const check = (config: unknown) => assertApprovedConfigurationTuple(approvedP5RootManifest, config, approvedP5RepositoryConfigurationFiles);
+  assert.equal(check(current), 'Change002ProviderSettings');
+  for (const omitted of appendix) assert.throws(() => check({...current, files: current.files.filter(path => path !== omitted)}), `cannot omit ${omitted}`);
+  assert.throws(() => check({...current, files: [...base, ...appendix.toReversed()]}));
+  assert.throws(() => check({...current, files: [...current.files, appendix[0]]}));
+  assert.throws(() => check({...current, files: [...current.files, 'adapters/credentials-macos/unapproved.ts']}));
+  assert.throws(() => check({...current, configuration_selector: 'ProviderSettings'}));
+  assert.throws(() => check({...current, compilerOptions: {...current.compilerOptions, strict: false}}));
+  assert.throws(() => assertApprovedConfigurationTuple({...approvedP5RootManifest, configuration_selector: 'ProviderSettings'}, current, approvedP5RepositoryConfigurationFiles));
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP4RootManifest, current, approvedP5RepositoryConfigurationFiles));
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, current, approvedP4RepositoryConfigurationFiles));
+  assert.throws(() => assertApprovedConfigurationTuple(approvedP5RootManifest, current, [...approvedP5RepositoryConfigurationFiles, 'provider.config.cjs']));
 });
 
 test('TEST-XCLI-021 [AC-XCLI-001-01, AC-XCLI-007-01, AC-XCLI-008-01, AC-XCLI-016-01] enforces the reproducible project-local native TypeScript dependency, configuration, and engine contract', async () => {
@@ -3475,7 +3585,7 @@ test('TEST-XCLI-021 [AC-XCLI-001-01, AC-XCLI-007-01, AC-XCLI-008-01, AC-XCLI-016
     manifest,
     tsconfig,
     configurationFiles.map((path) => relative(repositoryRoot, path)).sort(),
-  ), 'the adopted root must remain one of the complete approved P4 or P5 configuration tuples');
+  ), 'the adopted root must remain one of the complete approved P4, P5, Change002 or Provider Settings configuration tuples');
 });
 
 test('TEST-XCLI-022 [AC-XCLI-016-01, AC-XCLI-016-04] keeps every closed-graph target in its native .ts path without compatibility or compiler/build artifacts', async () => {

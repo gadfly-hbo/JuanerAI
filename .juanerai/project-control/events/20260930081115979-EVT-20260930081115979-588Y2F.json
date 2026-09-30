@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930081115979-588Y2F",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T08:11:15.979Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "DMG010原生演练与安装PASS，完整回归进行中",
+  "status_after": "validating",
+  "evidence_refs": []
+}

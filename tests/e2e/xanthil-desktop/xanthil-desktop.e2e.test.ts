@@ -76,15 +76,30 @@ test('U4 GUI exact disclosure refusal and unavailable model preserve manual edit
   const longContext='Synthetic context only. '.repeat(80);
   await page.getByLabel('分析案例名称',{exact:true}).fill('Synthetic Assistance case');await page.getByLabel('复购问题',{exact:true}).fill('  Preserve exact user question  ');await page.getByLabel('业务背景',{exact:true}).fill(longContext);await page.getByLabel('假设显示名称',{exact:true}).fill('Reviewed hypothesis');await page.getByRole('button',{name:'创建分析',exact:true}).click();await page.getByText('会话已创建',{exact:true}).waitFor();
   await page.locator('details.assistance-panel > summary').click();
-  assert.equal(await page.getByRole('button',{name:'整理问题（辅助草稿）',exact:true}).count(),1,'healthy saved Session must expose its optional disclosed Assistance action');
+  assert.equal(await page.getByRole('button',{name:'帮我整理问题',exact:true}).count(),1,'healthy saved Session must expose its optional disclosed Assistance action');
   const readCounts=()=>{const db=new DatabaseSync(join(attachment.project_directory,'.xanthil','desktop','state.sqlite'),{readOnly:true});try{return{disclosures:db.prepare('SELECT count(*) n FROM model_disclosures').get()?.n,attempts:db.prepare('SELECT count(*) n FROM assistance_attempts').get()?.n,drafts:db.prepare('SELECT count(*) n FROM assistance_drafts').get()?.n};}finally{db.close();}};
-  await page.getByLabel('请求的提供方',{exact:true}).fill('offline-test');await page.getByLabel('请求的模型',{exact:true}).fill('deterministic');
-  const before=readCounts();await page.getByRole('button',{name:'整理问题（辅助草稿）',exact:true}).click();const dialog=page.getByRole('dialog',{name:'逐次模型披露',exact:true});await dialog.waitFor();
+  assert.equal(await page.getByLabel('请求的提供方',{exact:true}).count(),0,'approved single Provider is fixed, not editable');
+  assert.equal(await page.getByLabel('请求的模型',{exact:true}).count(),0);
+  assert.match(await page.locator('details.assistance-panel').innerText(),/Xiaomi Token Plan · MiMo 2.6 Pro/);
+  assert.equal(await page.getByRole('button',{name:'帮我整理问题',exact:true}).isEnabled(),false,'unconfigured helper cannot disclose or send');
+  assert.deepEqual(readCounts(),{disclosures:0,attempts:0,drafts:0});assert.equal(await page.getByRole('button',{name:'保存案例字段',exact:true}).isEnabled(),true);
+  // Test-only stale UI projection: configuration was displayed as available but the
+  // real Application remains unconfigured. Refusal and final admission must still
+  // preserve the old no-send/manual-edit guarantees. No key or runtime is injected.
+  await app.evaluate(({ipcMain})=>{
+    const req=process.getBuiltinModule('module').createRequire(process.cwd()+'/package.json');
+    globalThis.fetch=async()=>{throw Error('U4_NETWORK_FORBIDDEN');};
+    req('node:net').Socket.prototype.connect=function(){throw Error('U4_NETWORK_FORBIDDEN');};
+    ipcMain.removeHandler('xanthil-provider-settings:v1');
+    ipcMain.handle('xanthil-provider-settings:v1',(_event,request)=>request.operation==='read'?{ok:true,value:{configured:true,state:'configured',busy:false,generation:0,last_test:'passed'}}:{ok:false,code:'FORBIDDEN'});
+  });
+  await page.waitForFunction(()=>Array.from(document.querySelectorAll('button')).some(b=>b.textContent==='帮我整理问题'&&!b.disabled));
+  const before=readCounts();await page.getByRole('button',{name:'帮我整理问题',exact:true}).click();const dialog=page.getByRole('dialog',{name:'逐次模型披露',exact:true});await dialog.waitFor();
   const payload=await dialog.getByLabel('精确发送载荷',{exact:true}).textContent();assert.equal(JSON.parse(payload!).question_text,'  Preserve exact user question  ');assert.equal(JSON.parse(payload!).business_context,longContext);assert.equal(await dialog.getByLabel('载荷 SHA-256',{exact:true}).textContent(),createHash('sha256').update(payload!).digest('hex'));assert.deepEqual(readCounts(),before);
   assert.equal(await dialog.getByRole('button',{name:'确认此次披露',exact:true}).isEnabled(),false);
   for(const viewport of [{width:1440,height:900},{width:1366,height:768}]){await page.setViewportSize(viewport);const refuse=dialog.getByRole('button',{name:'拒绝此次发送',exact:true});await refuse.scrollIntoViewIfNeeded();const rect=await refuse.boundingBox();assert.ok(rect&&rect.y>=0&&rect.y+rect.height<=viewport.height,'long disclosure remains scrollable to its actual refusal control');assert.equal(await dialog.getByLabel('精确发送载荷',{exact:true}).textContent(),payload);await refuse.focus();await page.keyboard.press('Tab');assert.equal(await dialog.evaluate(el=>el.contains(document.activeElement)),true);if(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY)await saveScreenshotExclusive(page,join(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY,`u4-disclosure-${viewport.width}.png`));}
-  await dialog.getByRole('button',{name:'拒绝此次发送',exact:true}).click();await page.getByText('已拒绝；未创建 Attempt，继续手工编辑。',{exact:true}).waitFor();assert.deepEqual(readCounts(),{disclosures:1,attempts:0,drafts:0});assert.equal(await page.getByRole('button',{name:'整理问题（辅助草稿）',exact:true}).evaluate(el=>el===document.activeElement),true);
-  await page.getByRole('button',{name:'整理问题（辅助草稿）',exact:true}).click();await dialog.getByLabel('我已检查自由文本，不含不应发送的敏感内容',{exact:true}).check();await dialog.getByRole('button',{name:'确认此次披露',exact:true}).click();await page.getByText('已记录披露；尚未发送。',{exact:true}).waitFor();await page.getByRole('button',{name:'发送本次已确认请求',exact:true}).click();await page.getByRole('alert').filter({hasText:/不可用|未配置/}).first().waitFor();assert.deepEqual(readCounts(),{disclosures:2,attempts:0,drafts:0});assert.equal(await page.getByRole('button',{name:'保存案例字段',exact:true}).isEnabled(),true);
+  await dialog.getByRole('button',{name:'拒绝此次发送',exact:true}).click();await page.getByText('已拒绝；未创建 Attempt，继续手工编辑。',{exact:true}).waitFor();assert.deepEqual(readCounts(),{disclosures:1,attempts:0,drafts:0});assert.equal(await page.getByRole('button',{name:'帮我整理问题',exact:true}).evaluate(el=>el===document.activeElement),true);
+  await page.getByRole('button',{name:'帮我整理问题',exact:true}).click();await dialog.getByLabel('我已检查自由文本，不含不应发送的敏感内容',{exact:true}).check();await dialog.getByRole('button',{name:'确认此次披露',exact:true}).click();await page.getByText('已记录披露；尚未发送。',{exact:true}).waitFor();await page.getByRole('button',{name:'发送本次已确认请求',exact:true}).click();await page.getByRole('alert').filter({hasText:/不可用|未配置/}).first().waitFor();assert.deepEqual(readCounts(),{disclosures:2,attempts:0,drafts:0});assert.equal(await page.getByRole('button',{name:'保存案例字段',exact:true}).isEnabled(),true);
 });
 
 test('U4 GUI persisted untrusted question evidence and candidate Drafts require visible edit adopt or reject and survive reopen [AC-XDESK-006-07, AC-XDESK-012-04]',async t=>{
@@ -201,11 +216,14 @@ test('U2 GUI: real double CSV review confirmation and local analysis publish one
   await page.getByRole('navigation',{name:'专业模式阶段',exact:true}).getByRole('button',{name:/本地处理/}).click();
   // Observe real React commits locally; protocol round-trips must not require the
   // real computation to remain slow. No API/clock/calculator is intercepted.
+  const drawerControl=page.getByRole('button',{name:'辅助抽屉',exact:true});
+  assert.equal(await drawerControl.count(),1,'the approved icon keeps its accessible action name');
+  console.log('U2 drawer control identity:',JSON.stringify(await drawerControl.evaluate(element=>({text:element.textContent,accessibleLabel:element.getAttribute('aria-label')}))));
   await page.evaluate(()=>{
     const trace:{step:string;status:string;runIdentity:string}[]=[];
     Object.defineProperty(window,'__runningNavigation',{value:trace,configurable:true});
     let step=0;
-    const button=(label:string)=>Array.from(document.querySelectorAll<HTMLButtonElement>('button')).find(element=>element.textContent?.trim().startsWith(label));
+    const button=(label:string)=>Array.from(document.querySelectorAll<HTMLButtonElement>('button')).find(element=>(element.getAttribute('aria-label')??element.textContent)?.trim().startsWith(label));
     const mode=(label:string)=>button(label)?.getAttribute('aria-pressed')==='true';
     const observer=new MutationObserver(()=>{
       const status=document.querySelector('footer[aria-label="Status"]')?.textContent??'';
@@ -219,7 +237,11 @@ test('U2 GUI: real double CSV review confirmation and local analysis publish one
     observer.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['aria-pressed']});
   });
   await page.getByRole('button',{name:'开始本地处理',exact:true}).click();
-  await page.waitForFunction(()=>Reflect.get(window,'__runningNavigation')?.length===5);
+  try{await page.waitForFunction(()=>Reflect.get(window,'__runningNavigation')?.length===5);}catch(error){
+    console.log('U2 Running navigation failure:',JSON.stringify(await page.evaluate(()=>({trace:Reflect.get(window,'__runningNavigation'),status:document.querySelector('footer[aria-label="Status"]')?.textContent}))));
+    if(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY)await saveScreenshotExclusive(page,join(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY,'u2-running-navigation-failure.png'));
+    throw error;
+  }
   const runningNavigation=await page.evaluate(()=>Reflect.get(window,'__runningNavigation')) as {step:string;status:string;runIdentity:string}[];
   console.log('AC001-04 actual Running DOM commits:',JSON.stringify(runningNavigation));
   assert.deepEqual(runningNavigation.map(entry=>entry.step),['running','quick','drawer','drawer-closed','returned']);
@@ -440,28 +462,11 @@ test('U1.1 AC-XDESK-001-02: shows the six professional stages with their Chinese
   await expectNoPrototypeSimulation(page);
 });
 
-test('U1.1 AC-XDESK-001-03: keeps Quick, Fork, Subagent, Skill, and Prompt visible as effect-free Preview', async (t) => {
-  const { app } = await launchedProfessionalCase(t);
-  const page = await app.firstWindow();
-  await page.getByRole('button', { name: '快速模式' }).click();
-  const initialUrl = page.url();
-  for (const capability of ['Skill', 'Prompt', 'Fork', 'Subagent']) {
-    const preview = page.getByRole('button', { name: new RegExp(`^${capability} · Preview$`, 'u') });
-    await preview.waitFor();
-    await preview.click();
-    assert.equal(page.url(), initialUrl, `${capability} Preview does not navigate to an active capability`);
-    if (capability === 'Fork' || capability === 'Subagent') {
-      await page.getByText('缺少：先创建 Session', { exact: false }).waitFor();
-    } else {
-      const picker = page.getByRole('dialog', { name: new RegExp(`^${capability} · Preview$`, 'u') });
-      await picker.waitFor();
-      await picker.getByText('Preview · 模拟', { exact: true }).waitFor();
-      await page.keyboard.press('Escape');
-      await picker.waitFor({ state: 'hidden' });
-    }
-    assert.doesNotMatch(await page.locator('body').innerText(), /(?:Session\s+(?:已创建|created)|已创建.*Session|分析(?:已启动|运行中)|Analysis\s+(?:started|running)|报告(?:已生成|已导出))/i, `${capability} may show its honest prompt but cannot create a Session, start analysis, or produce a report`);
-  }
-  await page.getByText('执行反馈', { exact: true }).waitFor({ state: 'hidden' });
+test('U1.1 AC-XDESK-001-03: fixed Skill/Prompt information and Fork/Subagent Preview remain effect-free', async (t) => {
+  const { app } = await launchedProfessionalCase(t),page=await app.firstWindow();await page.getByRole('button',{name:'快速模式'}).click();const initialUrl=page.url();
+  for(const capability of ['Fork','Subagent']){const preview=page.getByRole('button',{name:`${capability} Preview`,exact:true});await preview.click();const picker=page.getByRole('dialog',{name:`${capability} · Preview`,exact:true});assert.match(await picker.innerText(),/不会创建 Session、Attempt、工具回执或结果/);assert.equal(page.url(),initialUrl);await page.keyboard.press('Escape');await picker.waitFor({state:'hidden'});}
+  await page.getByRole('button',{name:'能力',exact:true}).click();assert.match(await page.locator('.ca-inspector').innerText(),/Case 决策与预期 v1.0/);await page.getByRole('button',{name:'查看 Prompt 信息',exact:true}).click();const prompt=page.getByRole('dialog',{name:'Prompt 信息 · 只读',exact:true});assert.match(await prompt.innerText(),/用户确认前不写正式记录/);await page.keyboard.press('Escape');
+  assert.doesNotMatch(await page.locator('body').innerText(),/(?:Session\s+(?:已创建|created)|已创建.*Session|分析(?:已启动|运行中)|报告(?:已生成|已导出))/i,'informational controls cannot create a Session, start analysis or produce a report');assert.equal(page.url(),initialUrl);await page.getByText('执行反馈',{exact:true}).waitFor({state:'hidden'});
 });
 
 test('U1.1 AC-XDESK-001-04: proves only the U1.1 shell mode/search surface closes without creating a Session; later Session and background-work continuity remains a later consumer', async (t) => {
@@ -496,10 +501,10 @@ test('U1.1 AC-XDESK-001-05: keeps keyboard focus, modal trapping, drawer recover
     assert.equal(await drawer.evaluate((element) => document.activeElement === element), true, 'closing the auxiliary drawer restores focus to its usable trigger');
 
     await page.getByRole('button', { name: '快速模式' }).click();
-    const skill = page.getByRole('button', { name: /Skill/ });
+    const skill = page.getByRole('button', { name: 'Fork Preview',exact:true });
     await skill.focus();
     await skill.click();
-    const picker = page.getByRole('dialog', { name: /Skill/ });
+    const picker = page.getByRole('dialog', { name: 'Fork · Preview',exact:true });
     await picker.waitFor();
     await page.keyboard.press('Tab');
     assert.equal(await picker.evaluate((element) => element.contains(document.activeElement)), true, 'Tab focus is contained in the approved modal capability dialog');

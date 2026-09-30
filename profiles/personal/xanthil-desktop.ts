@@ -1,3 +1,9 @@
+import {createPiStoredCaseAssistantRuntime} from '../../adapters/agent-pi/xiaomi-local.ts';
+import type {createProviderSettings} from '../../packages/application/provider-settings.ts';
+import { createCaseAssistantApplication } from '../../packages/application/case-assistant.ts';
+import { createLocalCaseAssistantStore } from '../../adapters/storage-local/case-assistant.ts';
+import { createPiCaseAssistantRuntime, validateXiaomiActivationPolicy, XIAOMI_CREDIT_RESERVATION } from '../../adapters/agent-pi/case-assistant.ts';
+import type { AssistantConfig } from '../../packages/contracts/case-assistant.ts';
 import { createHash, randomUUID } from 'node:crypto';
 import { access, lstat, readFile, readdir, readlink, realpath } from 'node:fs/promises';
 import { constants } from 'node:fs';
@@ -84,14 +90,29 @@ function capability(value: unknown): ProjectDirectoryCapability {
 }
 
 export function composePersonalXanthilDesktopProfile(dependencies:unknown){
-  exactRecord(dependencies,['store','analysisExecution','runEvidenceStore','assistanceRuntime','clock','deadlineScheduler']);
+  exactRecord(dependencies,['store','analysisExecution','runEvidenceStore','assistanceRuntime','clock','deadlineScheduler',...(record(dependencies)&&Object.hasOwn(dependencies,'modelAccess')?['modelAccess']:[])]);
   return createXanthilDesktopDecisionCaseApplication(dependencies);
 }
 
 /** The deployment capability is Main-owned, never an IPC/Renderer path. */
 export function createPersonalXanthilDesktopProfile(deployment: unknown) {
-  const configured = exactRecord(deployment, ['toolchainDeployment','assistanceConfig','clock','deadlineScheduler']);
-  const assistanceRuntime=configured.assistanceConfig===null?null:createPiDecisionAssistanceRuntime(configured.assistanceConfig);
+  const configured = exactRecord(deployment, ['toolchainDeployment','assistanceConfig','clock','deadlineScheduler',...(record(deployment)&&Object.hasOwn(deployment,'caseAssistantConfig')?['caseAssistantConfig']:[]),...(record(deployment)&&Object.hasOwn(deployment,'providerSettings')?['providerSettings']:[])]);
+  const providerSettings=configured.providerSettings as ReturnType<typeof createProviderSettings>|undefined;
+  let caseAssistant: ReturnType<typeof createCaseAssistantApplication>|null=null;
+  let modelEpoch=0;
+  const applications=new Set<ReturnType<typeof composePersonalXanthilDesktopProfile>>();
+  function closeModelWork(){modelEpoch++;for(const application of applications)application.closeModelWork();applications.clear();const previous=caseAssistant;caseAssistant=null;return previous?.close();}
+  const assistantSetting=configured.caseAssistantConfig??null;
+  const assistantConfig=assistantSetting===null?null:exactRecord(assistantSetting,['authorization','max_input_bytes','max_output_tokens',...(record(assistantSetting)&&Object.hasOwn(assistantSetting,'deployment')?['deployment']:[])]);
+  const authorization:AssistantConfig|null=providerSettings?{provider:'xiaomi-token-plan-cn',model:'mimo-v2.6-pro',authorized:true,runtime_id:'pi',runtime_version:'0.84.2',adapter_version:'1.0',limits:{turns:8,execution_ms:300000,waiting_ms:120000,cost_microunits:8*XIAOMI_CREDIT_RESERVATION,turn_cost_microunits:XIAOMI_CREDIT_RESERVATION,currency:'XIAOMI_CREDITS'}}:assistantConfig?.authorization as AssistantConfig|null;
+  const privateDeployment=assistantConfig?.deployment===undefined?null:exactRecord(assistantConfig.deployment,['policy','api_key']);
+  const activation=privateDeployment?validateXiaomiActivationPolicy(privateDeployment.policy,privateDeployment.api_key):null;
+  const runtimeDeployment=activation?{policy:activation,api_key:privateDeployment!.api_key as string}:undefined;
+  // One deployment runtime owns the allowance across every opened Session/Project.
+  const storedRuntime=providerSettings?createPiStoredCaseAssistantRuntime(()=>providerSettings.taskCredential()):null;
+  const assistantRuntime=providerSettings?{async turn(input:Parameters<NonNullable<typeof storedRuntime>['turn']>[0]){const generation=providerSettings.status().generation;try{return await storedRuntime!.turn(input);}catch(error){providerSettings.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:authorization?.authorized?createPiCaseAssistantRuntime({provider:authorization.provider,model:authorization.model,max_input_bytes:assistantConfig!.max_input_bytes,max_output_tokens:assistantConfig!.max_output_tokens},undefined,runtimeDeployment):null;
+  const storedAssistance=providerSettings?createPiDecisionAssistanceRuntime({provider:'xiaomi-token-plan-cn',model_id:'mimo-v2.6-pro'},undefined,()=>providerSettings.taskCredential()):null;
+  const assistanceRuntime=storedAssistance?{...storedAssistance,async executeAssistance(input:Parameters<typeof storedAssistance.executeAssistance>[0]){const generation=providerSettings!.status().generation;try{return await storedAssistance.executeAssistance(input);}catch(error){providerSettings!.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:configured.assistanceConfig===null?null:createPiDecisionAssistanceRuntime(configured.assistanceConfig);
   if (typeof configured.clock !== 'function') failure('VALIDATION_FAILED');
   const clock = configured.clock as Clock;
   const location=exactRecord(configured.toolchainDeployment,['descriptor_path']);
@@ -118,11 +139,14 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
   }
 
   async function openProject(request: unknown) {
+    const closing=closeModelWork(),epoch=modelEpoch;await closing;
+    const guard=()=>{if(epoch!==modelEpoch)failure('INTERRUPTED');};
     const input = exactRecord(request, ['contract_version', 'projectDirectoryCapability', 'display_name', 'command_id']);
     if (input.contract_version !== '1.0' || typeof input.command_id !== 'string' || input.command_id.length === 0 || typeof input.display_name !== 'string') failure('VALIDATION_FAILED');
     const selected = capability(input.projectDirectoryCapability);
     if (input.display_name !== selected.display_name) failure('VALIDATION_FAILED');
     const projectLocation = await realpath(selected.projectRoot);
+    if (activation && (projectLocation!==activation.project_root || Date.now()>=Date.parse(activation.expires_at))) failure('AUTHORITY_REQUIRED');
     const resources = dirname(descriptorPath);
     if (basename(resources) === 'Resources' && basename(dirname(resources)) === 'Contents') {
       const bundle = await realpath(dirname(dirname(resources)));
@@ -133,14 +157,15 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
       }
     }
     try { await access(projectLocation, constants.W_OK); } catch { failure('FORBIDDEN'); }
-    const store = createLocalDesktopDecisionCaseStore({ projectRoot: selected.projectRoot });
+    guard();const store = createLocalDesktopDecisionCaseStore({ projectRoot: selected.projectRoot });
     let execution:ReturnType<typeof createDuckDbPythonDesktopLocalAnalysisExecution>|undefined;
     const analysisExecution=Object.freeze({
       async describeImplementation(input:unknown){execution=undefined;execution=await configuredAnalysis();return execution.describeImplementation(input);},
       async calculate(input:unknown){if(!execution)failure('TOOLCHAIN_UNAVAILABLE');return execution.calculate(input);},
       async verify(input:unknown){if(!execution)failure('TOOLCHAIN_UNAVAILABLE');return execution.verify(input);},
     });
-    const application = composePersonalXanthilDesktopProfile({ store,analysisExecution,runEvidenceStore:createLocalDesktopRunEvidenceStore({projectRoot:selected.projectRoot}),assistanceRuntime, clock,deadlineScheduler:configured.deadlineScheduler });
+    const application = composePersonalXanthilDesktopProfile({ store,analysisExecution,runEvidenceStore:createLocalDesktopRunEvidenceStore({projectRoot:selected.projectRoot}),assistanceRuntime, clock,deadlineScheduler:configured.deadlineScheduler,...(providerSettings?{modelAccess:providerSettings.access}:{}) });
+    applications.add(application);
     const opened = await application.openProject({
       contract_version: '1.0',
       command_id: input.command_id,
@@ -148,6 +173,10 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
       display_name: selected.display_name,
     });
     const sessions = await application.listSessions({ project_id: opened.project_id });
+    guard();
+    const assistantStore=createLocalCaseAssistantStore({projectRoot: selected.projectRoot});
+    caseAssistant=createCaseAssistantApplication({store:assistantStore,config:authorization??null,runtime:assistantRuntime,clock,...(providerSettings?{modelAccess:providerSettings.access}:{})});
+    const openedAssistant=caseAssistant;await openedAssistant.reopen();guard();
     const value: ProjectOpenValue = Object.freeze({
       project: Object.freeze({ project_id: opened.project_id, display_name: opened.display_name, schema_version: '1.0', write_state: 'ready' }),
       sessions,
@@ -155,5 +184,15 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
     return Object.freeze({ application, value });
   }
 
-  return Object.freeze({ openProject });
+  return Object.freeze({ closeModelWork, openProject, getCaseAssistant:()=>caseAssistant });
+}
+
+/** Main-only environment boundary; unconfigured behavior remains fail closed. */
+export function loadPersonalCaseAssistantActivation(env: Readonly<Record<string,string|undefined>>) {
+  if (!env.JUANERAI_CASE_ASSISTANT_ACTIVATION) return null;
+  try {
+    const policy=validateXiaomiActivationPolicy(JSON.parse(env.JUANERAI_CASE_ASSISTANT_ACTIVATION),env.XIAOMI_TOKEN_PLAN_CN_API_KEY);
+    const authorization:AssistantConfig={provider:policy.provider,model:policy.model,authorized:true,runtime_id:'pi',runtime_version:'0.84.2',adapter_version:'1.0',limits:{turns:policy.requests,execution_ms:300000,waiting_ms:120000,cost_microunits:policy.requests*XIAOMI_CREDIT_RESERVATION,turn_cost_microunits:XIAOMI_CREDIT_RESERVATION,currency:'XIAOMI_CREDITS'}};
+    return {authorization,max_input_bytes:12000,max_output_tokens:2048,deployment:{policy,api_key:env.XIAOMI_TOKEN_PLAN_CN_API_KEY!}};
+  } catch {return null;}
 }

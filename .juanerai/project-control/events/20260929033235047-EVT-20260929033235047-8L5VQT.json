@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929033235047-8L5VQT",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T03:32:35.047Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "独立验证环境无法恢复：App沙箱不符；CLI版本被拒。保存固定候选与精确恢复点，等待用户决定环境恢复或CLI升级。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

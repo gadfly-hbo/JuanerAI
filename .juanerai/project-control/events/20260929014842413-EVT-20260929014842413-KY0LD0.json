@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929014842413-KY0LD0",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T01:48:42.413Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "看板当前里程碑切换到 Change 002；首 Change 历史保留于 Git 和接收快照",
+  "status_after": "active",
+  "evidence_refs": []
+}

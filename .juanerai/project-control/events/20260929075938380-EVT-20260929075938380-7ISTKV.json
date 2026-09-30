@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260929075938380-7ISTKV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-29T07:59:38.380Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-002-engineering-controller"
+  },
+  "summary": "冻结 UI 三项原生因果 RED 已确认",
+  "status_after": "active",
+  "evidence_refs": []
+}
