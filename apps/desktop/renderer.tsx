@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import {ProviderSettingsProvider,ProviderSettingsEntry,useProviderSettings} from './provider-settings.tsx';
 import type {ProviderSettingsApi} from '../../packages/contracts/provider-settings.ts';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
@@ -29,13 +30,8 @@ const stylesUrl = new URL('./styles.css', import.meta.url).href;
 
 type ProfessionalStage = (typeof professionalStages)[number];
 
-/** Read-only presentation of already-committed work; never admits or resumes it. */
-export function summarizeDesktopWork(running: boolean, attempt: Pick<DesktopProjection['attempts'][number], 'status' | 'action_kind'> | undefined, disclosures: number, hasSessionRun = false): Readonly<{label:string;target:ProfessionalStage|null;modelBoundary:string}> {
-  const modelBoundary=disclosures>0?'按逐次披露记录':'无';
-  if(running)return{label:'本地处理中',target:'本地处理',modelBoundary};
-  if(attempt?.status==='Running')return{label:'模型辅助处理中',target:attempt.action_kind==='organize_question'?'新建分析':attempt.action_kind==='explain_evidence'?'循证分析':'执行反馈',modelBoundary};
-  return{label:'空闲',target:hasSessionRun?'本地处理':null,modelBoundary};
-}
+import {summarizeDesktopWork} from './desktop-work.ts';
+export {summarizeDesktopWork};
 
 const professionalPanels: Readonly<Record<ProfessionalStage, Readonly<{ title: string; description: string; boundary: string }>>> = {
   新建分析: {
@@ -295,7 +291,7 @@ function XanthilDesktopContent({ api }: XanthilDesktopAppProps) {
       <header className="titlebar">
         <div className="identity" aria-label="JuanerAI，持续做出更好的决策；Xanthil Desktop">
           <span className="juaner-brand"><img src={new URL('./assets/juanerai-logo-slogan.png',import.meta.url).href} alt="" /></span><span className="juaner-brand-copy"><strong>JuanerAI</strong><small>持续做出更好的决策</small></span>
-          <strong className="product-name">Xanthil Desktop</strong>
+          <strong className="product-name">Xanthil Desktop{import.meta.hot ? ' · 开发版' : ''}</strong>
         </div>
         <nav className="mode-switch" aria-label="工作模式">
           <button aria-pressed={mode === 'quick'} className={mode === 'quick' ? 'mode-button active' : 'mode-button'} onClick={() => selectMode('quick')} type="button">快速模式 <span aria-hidden="true">Quick</span></button>
@@ -694,4 +690,10 @@ const root = document.getElementById('root');
 
 if (root === null) throw new Error('Xanthil Desktop requires #root');
 
-createRoot(root).render(<XanthilDesktopApp api={window.xanthilDesktopApi} />);
+// Fast Refresh updates registered component families after module evaluation.
+// Rendering a new entry identity here on each update would remount that tree first.
+if (!import.meta.hot?.data.reactRoot) {
+  const reactRoot = createRoot(root);
+  if (import.meta.hot) import.meta.hot.data.reactRoot = reactRoot;
+  reactRoot.render(<XanthilDesktopApp api={window.xanthilDesktopApi} />);
+}

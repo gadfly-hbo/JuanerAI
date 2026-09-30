@@ -242,6 +242,28 @@ The 2026-09-24 takeover note is a historical snapshot, not a live Mini stop-poin
 claim. Verify the original task's current state at adoption; keep all unresolved
 safety/product obligations and the separately required resume decision.
 
+## Fixed-Code Business Acceptance and Installed Artifacts
+
+For an approved Desktop development supplement, ordinary engineering checks may
+use the real native development entry, Application and local backends. Formal
+business acceptance binds frozen source, test inputs, emitted Main/Preload,
+Renderer/server configuration and runtime identities. A changing HMR session is
+working evidence only; stop edits and recheck the fixed candidate before acceptance.
+Product/UI acceptance and independent engineering verification remain separate.
+
+Installed-artifact acceptance additionally binds the exact package, resources,
+runtime, signature and installation context. Packaging is an explicit check when
+affected by Main/Preload, packaging, resources, security or deployment changes;
+ordinary test runs need not create another application copy. Record each retained
+acceptance item and its command/evidence surface. Existing explicit artifact
+obligations remain binding until fulfilled or their non-applicability is justified
+within approved scope. This does not weaken any prior accepted artifact or DMG.
+
+Several accepted Changes may accumulate into one stable application version/DMG.
+That release requires its own affected artifact checks and authorized delivery;
+a development business PASS does not establish installation or release acceptance.
+No new process stage, board or permission source is created by this distinction.
+
 ## Signed Automatic Host Loop — Separate and Inactive
 
 The signed automatic execution, release, and recovery mechanism is not the

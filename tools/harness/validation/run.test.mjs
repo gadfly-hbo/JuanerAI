@@ -223,12 +223,12 @@ async function currentRunnerTuple(root = REPO_ROOT) {
 
   assert.equal(manifest.main, '.vite/build/main.cjs', 'the already-approved CommonJS package entry remains exact');
   assert.deepEqual(manifest.config, { forge: './forge.config.cjs' }, 'C1a requires the exact P5 Forge config');
-  assert.equal(scripts['desktop:start'], 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge start');
+  assert.equal(scripts['desktop:start'], 'node tools/desktop/development-start.mjs');
   assert.equal(scripts['desktop:package'], 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64');
-  assert.equal(scripts['desktop:test'], 'npm run desktop:package && node --test tests/unit/xanthil-desktop/*.test.ts tests/contract/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/*.test.ts tests/e2e/xanthil-desktop/*.test.ts');
+  assert.equal(scripts['desktop:test'], 'node tools/desktop/test-daily.mjs');
   assert.equal(tsconfig.compilerOptions?.jsx, 'react-jsx', 'C1a requires its exact JSX mode');
-  assert.equal(files.length,96,'accepted Change002 retains43+25 roots plus28 explicitly approved additions');
-  assert.deepEqual(files.slice(43),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX],'Change1 and Change2 roots are independent literals, never derived from actual files');
+  assert.equal(files.length,100,'development supplement appends exactly four roots to the retained96');
+  assert.deepEqual(files.slice(43),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX,'apps/desktop/development.ts','apps/desktop/desktop-work.ts','tests/unit/xanthil-desktop/development-mode.test.ts','tests/unit/xanthil-desktop/development-main.test.ts'],'Change1 and Change2 roots are independent literals, never derived from actual files');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }

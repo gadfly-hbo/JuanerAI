@@ -2,7 +2,11 @@
 import Foundation
 import Security
 
+#if XANTHIL_DEVELOPMENT
+let service = "com.juanerai.xanthil.development.xiaomi-token-plan-cn"
+#else
 let service = "com.juanerai.xanthil.xiaomi-token-plan-cn"
+#endif
 let account = "api-key"
 func finish(_ value: [String: Any]) -> Never {
     let data = (try? JSONSerialization.data(withJSONObject: value, options: [.sortedKeys])) ?? Data("{\"status\":\"protocol_error\"}".utf8)

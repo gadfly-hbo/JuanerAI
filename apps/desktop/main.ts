@@ -1,3 +1,4 @@
+import {developmentEndpoint, isDevelopmentFrame, prepareDevelopmentRoot, assertDevelopmentPath} from './development.ts';
 import {createProviderSettings} from '../../packages/application/provider-settings.ts';
 import {createMacOsCredentialStore} from '../../adapters/credentials-macos/index.ts';
 import {probeLocalXiaomi} from '../../adapters/agent-pi/xiaomi-local.ts';
@@ -13,6 +14,15 @@ import { validateXanthilDesktopRequest, type DesktopFailureCode, type ProjectOpe
 import { createPersonalXanthilDesktopProfile, loadPersonalCaseAssistantActivation } from '../../profiles/personal/xanthil-desktop.ts';
 
 const { app, BrowserWindow, ipcMain } = electron;
+declare const MAIN_WINDOW_VITE_DEV_SERVER_URL: string | undefined;
+const developmentUrl = developmentEndpoint(app.isPackaged, typeof MAIN_WINDOW_VITE_DEV_SERVER_URL === 'undefined' ? undefined : MAIN_WINDOW_VITE_DEV_SERVER_URL);
+const development = developmentUrl ? prepareDevelopmentRoot(process.env.JUANERAI_DESKTOP_DEV_ROOT ?? join(app.getPath('appData'), 'Xanthil Development')) : null;
+if (development) {
+  app.setName('Xanthil Development');
+  app.setPath('userData', development.userData);
+  app.setPath('sessionData', development.cache);
+  app.setAppLogsPath(development.logs);
+}
 
 export type XanthilDesktopSenderPolicy = (sender: unknown) => boolean;
 
@@ -436,14 +446,15 @@ function isCurrentMainFrame(event: unknown): boolean {
   const currentWindow = mainWindow;
   if (currentWindow === undefined || typeof event !== 'object' || event === null) return false;
   const candidate = event as Readonly<{ sender?: unknown; senderFrame?: unknown }>;
-  return candidate.sender === currentWindow.webContents && candidate.senderFrame === currentWindow.webContents.mainFrame;
+  return candidate.sender === currentWindow.webContents && candidate.senderFrame === currentWindow.webContents.mainFrame
+    && (!developmentUrl || isDevelopmentFrame(currentWindow.webContents.mainFrame.url, developmentUrl));
 }
 
 function normalNativeDialogs(): NativeDialogs {
   return Object.freeze({
     async selectExportFile(){
       const window=mainWindow;if(!window)return null;const selected=await electron.dialog.showSaveDialog(window,{title:'导出本地报告（.md 或 .html）',defaultPath:'xanthil-report.html',filters:[{name:'UTF-8 Markdown / HTML',extensions:['md','html']}]});
-      if(selected.canceled||!selected.filePath)return null;const display_name=basename(selected.filePath),format=display_name.endsWith('.md')?'markdown':display_name.endsWith('.html')?'html':null;
+      if(selected.canceled||!selected.filePath)return null;if(development)assertDevelopmentPath(development.root,selected.filePath,true);const display_name=basename(selected.filePath),format=display_name.endsWith('.md')?'markdown':display_name.endsWith('.html')?'html':null;
       if(format===null)throw Object.assign(new Error('VALIDATION_FAILED'),{code:'VALIDATION_FAILED'});
       return Object.freeze({capability:Object.freeze({path:selected.filePath}),display_name,format});
     },
@@ -451,14 +462,16 @@ function normalNativeDialogs(): NativeDialogs {
       const window=mainWindow;if(!window)return null;
       const members=await electron.dialog.showOpenDialog(window,{title:'选择成员 CSV',properties:['openFile'],filters:[{name:'CSV',extensions:['csv']}]});if(members.canceled||members.filePaths.length!==1)return null;
       const orders=await electron.dialog.showOpenDialog(window,{title:'选择订单 CSV',properties:['openFile'],filters:[{name:'CSV',extensions:['csv']}]});if(orders.canceled||orders.filePaths.length!==1)return null;
+      if(development){assertDevelopmentPath(development.root,members.filePaths[0]);assertDevelopmentPath(development.root,orders.filePaths[0]);}
       return Object.freeze({members:members.filePaths[0],orders:orders.filePaths[0]});
     },
     async selectProject() {
       const window = mainWindow;
       if (window === undefined) return null;
-      const selected = await electron.dialog.showOpenDialog(window, { properties: ['openDirectory', 'createDirectory'] });
+      const selected = await electron.dialog.showOpenDialog(window, { properties: ['openDirectory', 'createDirectory'], ...(development ? {defaultPath:development.projects} : {}) });
       const projectRoot = selected.filePaths[0];
       if (selected.canceled || projectRoot === undefined) return null;
+      if(development)assertDevelopmentPath(development.projects,projectRoot);
       return Object.freeze({ projectRoot, display_name: basename(projectRoot) });
     },
   });
@@ -486,6 +499,7 @@ function startNormalMainEntry(): void {
   const window = new BrowserWindow({
     width: 1366,
     height: 768,
+    ...(development ? {title:'Xanthil Desktop · 开发版'} : {}),
     useContentSize: true,
     webPreferences: {
       preload: fileURLToPath(new URL('./preload.js', typeof __filename === 'string' ? `file://${__filename}` : import.meta.url)),
@@ -509,10 +523,11 @@ function startNormalMainEntry(): void {
   if (!ipcHandlersRegistered) {
     const entryUrl=typeof __filename==='string'?`file://${__filename}`:import.meta.url;
     const descriptor_path=app.isPackaged?join(process.resourcesPath,'toolchain-deployment.json'):fileURLToPath(new URL('../../build/xanthil-toolchain-deployment.json',entryUrl));
-    const caseAssistantConfig=loadPersonalCaseAssistantActivation(process.env);
+    const caseAssistantConfig=development ? null : loadPersonalCaseAssistantActivation(process.env);
     delete process.env.XIAOMI_TOKEN_PLAN_CN_API_KEY;
     delete process.env.JUANERAI_CASE_ASSISTANT_ACTIVATION;
-    const providerSettings=caseAssistantConfig?undefined:createProviderSettings({store:createMacOsCredentialStore(join(dirname(process.execPath),'xanthil-keychain')),probe:probeLocalXiaomi});
+    const credentialHelper=development?fileURLToPath(new URL('../../build/development-keychain/xanthil-keychain',entryUrl)):join(dirname(process.execPath),'xanthil-keychain');
+    const providerSettings=caseAssistantConfig?undefined:createProviderSettings({store:createMacOsCredentialStore(credentialHelper),probe:probeLocalXiaomi});
     void providerSettings?.initialize();
     const productionProfile = createPersonalXanthilDesktopProfile({toolchainDeployment:{descriptor_path},assistanceConfig:null,caseAssistantConfig,...(providerSettings?{providerSettings}:{}),clock: () => new Date(),deadlineScheduler:{schedule({at_epoch_ms,callback}:{at_epoch_ms:number;callback:()=>void}){const timer=setTimeout(callback,Math.max(0,at_epoch_ms-Date.now()));return {cancel(){clearTimeout(timer);}};}}});
     const handlers = createXanthilDesktopIpcHandlers({ productionProfile, nativeDialogs: normalNativeDialogs(),sourceReader:normalSourceReader(),exportWriter:createNativeReportExportWriter(), senderPolicy: isCurrentMainFrame });
@@ -539,7 +554,8 @@ function startNormalMainEntry(): void {
   }
 
   window.on('close',()=>closeWindowModelWork());
-  void window.loadFile(fileURLToPath(new URL('../renderer/main_window/index.html', typeof __filename === 'string' ? `file://${__filename}` : import.meta.url)));
+  if (developmentUrl) void window.loadURL(developmentUrl);
+  else void window.loadFile(fileURLToPath(new URL('../renderer/main_window/index.html', typeof __filename === 'string' ? `file://${__filename}` : import.meta.url)));
 }
 
 if (!app.requestSingleInstanceLock()) {

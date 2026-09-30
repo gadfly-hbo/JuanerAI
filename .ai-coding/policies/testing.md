@@ -28,3 +28,9 @@ Authority and stop conditions come from
 - Validator derives key cases from acceptance first, independently exercises
   key real and failure paths, and checks that tests can detect relevant errors.
   Passing author tests alone is not independent proof.
+
+Desktop daily tests run without implicitly packaging. Keep native development
+checks and package/resource/runtime/signature/install checks explicit, with each
+applicable acceptance item mapped in the Change verification. Formal business
+acceptance uses a fixed source/build/runtime/input identity; a live HMR session
+is not a fixed candidate. Apply the sole policy's installed-artifact distinction.

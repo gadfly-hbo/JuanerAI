@@ -37,3 +37,15 @@ Deferred target:
 Personal and enterprise Profiles share Product Core and Application behavior. They do not pretend infrastructure with different transactional, analytical, consistency, security, or availability semantics is identical.
 
 Every Profile must pass the applicable Port contract suites. Enterprise activation additionally requires production-like integration and recovery evidence.
+
+## Local Desktop Development
+
+The approved desktop-development-mode supplement composes the same Desktop
+Application, SQLite, DuckDB/Python and Pi semantics through Forge/Vite. Only the
+unpackaged compile-time loopback endpoint admits development loading; packaged
+mode ignores development environment. Main and Preload require explicit restart.
+The development root owns separate user data, caches, logs and Projects. Native
+selection refuses paths outside that root (Projects must be below its Projects
+folder). The separately compiled Keychain helper fixes a development-only service;
+production service/account defaults and installed apps are unchanged. No production
+key import, .zcode reuse, provider call or existing-project copy is implicit.

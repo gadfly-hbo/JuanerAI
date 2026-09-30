@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930114830821-9E94XQ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T11:48:30.821Z",
+  "actor": {
+    "role": "controller",
+    "session": "desktop-dev-engineering-controller"
+  },
+  "summary": "Desktop原生HMR发现可复现状态丢失；native-001保留失败证据，DMG011不受影响。",
+  "status_after": "active",
+  "evidence_refs": []
+}

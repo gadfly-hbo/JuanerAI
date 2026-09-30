@@ -24,12 +24,14 @@ function inventory(root, directory = root) {
   });
 }
 
-function sealInternalApp(app) {
+function sealInternalApp(app, options = {}) {
   assert.ok(path.isAbsolute(app) && app.endsWith('/Xanthil.app'));
   assert.ok(fs.lstatSync(app).isDirectory() && !fs.lstatSync(app).isSymbolicLink());
   const resources = path.join(app, 'Contents', 'Resources');
   const descriptor = JSON.parse(fs.readFileSync(path.join(resources, 'toolchain-deployment.json'), 'utf8'));
-  assert.equal(descriptor.schema_version, '2.0');
+  assert.deepEqual(Object.keys(options), options.engineeringSmoke === true ? ['engineeringSmoke'] : []);
+  assert.equal(descriptor.schema_version, options.engineeringSmoke === true ? '1.0' : '2.0');
+  if(options.engineeringSmoke === true) assert.equal(fs.existsSync(path.join(app,'Contents/MacOS/xanthil-keychain')),false,'engineering smoke cannot read production credentials');
   const before = inventory(resources);
   const frameworkRoot = path.join(app, 'Contents', 'Frameworks');
   const names = ['Electron Framework.framework', 'Mantle.framework', 'ReactiveObjC.framework', 'Squirrel.framework',
