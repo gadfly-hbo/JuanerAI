@@ -10,6 +10,17 @@ The first-slice UI Contract must directly reuse the accepted PX-2026-004/006 Xan
 
 The product intent is to help data analysts and enterprise decision users move through Data -> Decision -> Action -> Outcome. It should produce actionable, traceable decisions rather than stop at BI reports or dashboards.
 
+### Product Core Principles
+
+When designing or reviewing JuanerAI product behavior and experience, apply these principles distilled from [Blueprint v4.1 §2](docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.1.md#2-人机分工前后台与产品语义):
+
+1. Users provide goals, necessary information, authorization and business judgment; the product advances the internal workflow.
+2. Reusable professional methods, metrics, assets and configuration belong to background maintenance, not repeated setup by each task's user.
+3. AI advances tasks within supported capabilities and granted authority; product mechanisms enforce boundaries, calculations, evidence validation and consistent state.
+4. Rigorous background checks should not become repetitive front-end confirmations. Ask users for meaningful clarification, authorization and decisions; keep evidence and controls inspectable.
+
+These principles guide product choices across JuanerAI; they add no Gate or execution authority and do not alter approved contracts or in-flight scope.
+
 ## Authority
 
 Use this precedence when sources conflict:
