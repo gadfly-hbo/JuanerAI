@@ -6,7 +6,7 @@ JuanerAI is a Bottom-up Decision Intelligence System: professional individuals b
 
 ## Product Family
 
-JuanerAI is the commercial project family. Xanthil is its first product. Existing features and reusable Domain Packs, Model Packs, Runtime, data, semantic, asset and governance foundations remain available. [Product Development Blueprint v3.0](../planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md) is the approved highest development-execution guideline, grounded in JuanerAI Whitepaper v4.0 as its core product reference and the commercialization charter. Xanthil Personal maps to Desktop Free, Xanthil Team carries the former Workspace product direction, and JuanerAI Enterprise adds enterprise responsibilities; naming alone changes no implementation contract.
+JuanerAI is the commercial project family. Xanthil is its first product. Existing features and reusable Domain Packs, Model Packs, Runtime, data, semantic, asset and governance foundations remain available. [Product Development Blueprint v4.0](../planning/2026-10-01/juanerai-product-development-blueprint-v4.0.md), with its [approval and rule-integration record](../planning/2026-10-01/blueprint-v4.0-approval-and-rule-integration.md), is the approved highest development-execution guideline, grounded in JuanerAI Whitepaper v4.0 as its core product reference and the commercialization charter. Xanthil Personal maps to Desktop Free, Xanthil Team carries the former Workspace product direction, and JuanerAI Enterprise adds enterprise responsibilities; naming alone changes no implementation contract.
 
 ## Users
 
@@ -16,6 +16,8 @@ JuanerAI is the commercial project family. Xanthil is its first product. Existin
 ## Problem
 
 Existing data products often stop at reports, metrics, dashboards, or analyst interpretation. The user must still translate observations into decisions, operational actions, and outcome learning.
+
+JuanerAI must also avoid transferring its internal workflow to the user. People state needs, provide missing authorized material, judge findings, comment on reports, choose recommendations and report outcomes; the product advances authorized work. Reusable methods, metrics, hypotheses, strategies and technical configuration belong to background maintenance, while business meaning, uncertainty, evidence and authority remain inspectable.
 
 ## Product Hypothesis
 
@@ -65,9 +67,9 @@ The withdrawn plan sequenced Model Pack product work after Xanthil Desktop Data 
 
 ## Current Direction and Gate
 
-Blueprint v3.0 preserves Change 001/002 inputs and accepted capabilities. Its four core views refine later development: full six-plus-two capability coverage (§4), phased vertical-slice delivery (§§5–6), front-end/shared-business/back-end responsibility (§9), and competitive-value hypotheses with evidence (§10). Business-analysis compilation through Analysis Plan IR remains explicit. Deferred capabilities retain a target and revisit point; claimed competitive advantage requires comparison, not feature presence.
+Blueprint v4.0 preserves Change 001–003 inputs and accepted capabilities. Its four core views refine later development: full six-plus-two capability coverage (§4), bounded stage design and grouped capability delivery with vertical-slice validation (§§5–6), front-end/shared-business/back-end responsibility (§9), and competitive-value hypotheses with evidence (§10). Business-analysis compilation through Analysis Plan IR must demonstrably drive the supported execution chain, not merely record it. Deferred capabilities retain a target and revisit point; claimed competitive advantage requires comparison, including an appropriate Agent-plus-Skill baseline, not feature presence.
 
-Change selection follows §8 and the confirmed sequence: Decision Record and Expected Outcome → bounded Fork/Subagent collaboration → outcome follow-up → explicit adoption in the next Case. Each is a product outcome, not engineering-start authority. Close its product decisions under §7, confirm applicable prior delivery/acceptance evidence, and obtain its own UI Contract/UI Gate and engineering intake before OpenSpec/TDD work. Each Change consults relevant earlier research Demos under §11 as reference, not execution authority. Existing Case save/reopen/rerun is reused; the former new-period comparison candidate supports outcome follow-up rather than remaining the default next Change.
+Change selection follows §8: after the accepted analysis, decision/expectation and bounded collaboration foundations, prioritize P1 AI-led membership-analysis task delivery, then outcome follow-up → explicit adoption in the next Case. Group semantic/method/IR execution, task coordination/authorization/recovery, and report/review/decision capabilities within that bounded stage. Each Change identifies its stage, capability increment and dependencies; stage acceptance evaluates scenario, actual capability consumption and user experience on one integrated candidate. These are product outcomes, not engineering-start authority. Close applicable §7 decisions, confirm prior acceptance, and bind an applicable UI Contract/UI Gate and engineering intake before OpenSpec/TDD work. Each Change consults relevant Demos under §11 as reference, not authority. Existing Case save/reopen/rerun is reused; period comparison still supports the later outcome-follow-up scope.
 
 The original first-slice package, attachments and execution history remain at
 the fixed Git source described in [the planning index](../planning/README.md);
@@ -82,4 +84,4 @@ The original first-batch planning receipts and supplement links remain in the
 and in Git at `d9507e2a5833bc286f8cdc5d01e23514bb889b4d`.
 They are not a current B2 stop or a new product authorization. The owning Mini
 Change's verification and project-control record carry its actual acceptance
-and delivery state; Blueprint v3.0 does not expand this frozen first slice.
+and delivery state; Blueprint v4.0 does not retroactively expand its accepted scope.
