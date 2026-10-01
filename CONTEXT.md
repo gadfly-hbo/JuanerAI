@@ -13,7 +13,7 @@ The product-definition and commercialization charter and the core reference for 
 _Avoid_: executable roadmap, implementation authorization, proof of completion
 
 **Product Development Blueprint**:
-JuanerAI's highest product-development execution guideline. Its four core views connect capability coverage, bounded stage delivery, module responsibility and competitive-value evidence. Blueprint v4.0 is approved under the approval record linked from `docs/planning/README.md`; v1.0–v3.0 remain history. It retains Whitepaper v4.0 adoption and Change 001–003, prioritizes AI-led membership analysis with grouped capabilities and vertical-slice validation, then returns to outcome follow-up and explicit next-Case adoption before demand-led Team and Enterprise expansion. Scenario, capability and experience acceptance describe different evidence, not three new approval processes.
+JuanerAI's highest product-development execution guideline. Its four core views connect capability coverage, bounded stage delivery, module responsibility and competitive-value evidence. Blueprint v4.1 is approved under the approval record linked from `docs/planning/README.md`; v1.0–v4.0 remain history. It retains Whitepaper v4.0 adoption and Change 001–003, prioritizes AI-led membership analysis with grouped capabilities and vertical-slice validation, then returns to outcome follow-up and explicit next-Case adoption. Data/semantic expansion follows actual task needs rather than blocking feedback behind a complete platform; bounded trial discussion follows joint P1 acceptance, with separate permissions. Team and Enterprise remain demand-led. Scenario, capability and experience acceptance describe different evidence, not three new approval processes.
 _Avoid_: Whitepaper copy, OpenSpec, automatic Change authorization
 
 **Xanthil**:
@@ -66,7 +66,7 @@ _Avoid_: CPU machine language, prompt, generated SQL alone, cosmetic JSON, autom
 
 ## Decision Loop
 
-These decision-lifecycle meanings were adopted in v2.0 and retained through v4.0. v4.0 changes task-progression responsibility, not the distinction between analysis, a human decision and a completed Loop. Existing accepted states, contracts and evidence are not retroactively rewritten.
+These decision-lifecycle meanings were adopted in v2.0 and retained through v4.1. The v4 series changes task-progression responsibility, not the distinction between analysis, a human decision and a completed Loop. Existing accepted states, contracts and evidence are not retroactively rewritten.
 
 **Evidence-based Analysis (循证分析)**:
 An investigation in which the system advances authorized analysis while people supply business judgment. Hypotheses, supporting and refuting Evidence, alternatives, uncertainty, Forks and bounded Subagent contributions remain traceable before a Finding is accepted; system verification does not fabricate human acceptance.
