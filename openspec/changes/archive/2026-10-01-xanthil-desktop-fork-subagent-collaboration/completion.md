@@ -1,5 +1,9 @@
 # Change003 accepted scope and authorized OpenSpec archive
 
+Current Git outcome: [delivery and archive receipt](git-delivery.md). PR51 is
+merged; the earlier preparation/pending statements below describe their recorded
+historical stage.
+
 Date: 2026-10-01. This record documents the user-authorized mechanical archive and
 current-spec publication. Git delivery/integration is owned by the Mac mini
 Engineering Controller and is not claimed by this worker record.
