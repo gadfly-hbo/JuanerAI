@@ -16,6 +16,23 @@ The sole execution policy defines progress, stop-loss and actual resource limits
 
 - TBD
 
+## Blueprint Capability Coverage — at Change delivery
+
+Follow the sole execution policy's Blueprint Capability Coverage section. Link
+existing records; ordinary correction returns need not regenerate a full map.
+
+- Blueprint and capability-register revision:
+- Latest full six-plus-two map (show it in the user-facing delivery):
+- Preserved Change snapshot and fixed candidate/evidence references:
+
+| Capability ID | Previous scope/status | Current scope/status | Remaining gap | Evidence / unverified limit |
+|---|---|---|---|---|
+
+- Expected/in-progress coverage, explicitly not delivered:
+- Capability target newly accepted, if any; cross-Change/real-path/boundary and required user acceptance references:
+- No business capability delta, if applicable:
+- Gap recommendations only; no automatic new scope:
+
 ## Files Changed
 
 | Path | Change |

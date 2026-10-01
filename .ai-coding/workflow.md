@@ -11,7 +11,9 @@ product proposal and applicable clickable UI Contract, completes the existing
 development-readiness review for new/material product plans, and obtains user
 product/UI approval. Reuse valid existing inputs; do not repeat these steps for
 internal engineering changes. Freeze product semantics, acceptance and prohibitions,
-not ordinary implementation mechanics.
+not ordinary implementation mechanics. Link affected Blueprint capability IDs
+from `docs/planning/capability-coverage/register.md` in the existing Change input;
+forecast coverage separately from delivered coverage.
 
 ## Engineering Work
 
@@ -32,7 +34,11 @@ After Mini verifies real intake and authorizes the result-sized work package:
 5. Repair material findings within the same work package and revalidate the new
    candidate. Mini records engineering acceptance without repeating full review.
 6. Complete required user Product Acceptance and authorized Git delivery/archive
-   in the task's agreed order. Stop at the delivered result.
+   in the task's agreed order. Update the cumulative capability register and full
+   latest map, preserve the Change snapshot, and show scope/status delta, gaps
+   and evidence under the sole policy's Blueprint Capability Coverage section.
+   No new approval stage or unrelated capability revalidation. Stop at the
+   delivered result.
 
 These are work activities, not new approvals. No universal Spec Gate, TDD_READY
 dispatch approval, separate retirement Gate or routine Spec/Test agent handoff.

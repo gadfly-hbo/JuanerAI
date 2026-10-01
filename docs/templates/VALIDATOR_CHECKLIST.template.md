@@ -80,6 +80,8 @@ Formatting preferences and optional template fields are not delivery blockers.
 - [ ] `verification.md` current verdict, traceability, test output, Engineering Controller state, and project board agree.
 - [ ] Residual risks and mixed external evidence are disclosed without being converted into PASS by omission.
 - [ ] Archive candidates have a current baseline, exact archive destination, and valid project-board references.
+- [ ] Material new Blueprint capability claims match the entry's target scope and completion conditions; plan/code/connected path/acceptance are distinct. Any newly accepted target has fixed cross-Change integration, real-path, scenario/boundary and required user acceptance evidence, not an inference from one example or several parts.
+- [ ] Delivery coverage preserves the full landscape and honest partial/unknown states; inspect affected claims in this review, not a new Gate or global retest. Register, latest map and snapshot agree, with stable IDs and evidence identities.
 
 ## Findings
 

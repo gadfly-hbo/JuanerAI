@@ -231,6 +231,90 @@ without MacBook technical sign-off. Missing Git/release permission goes directly
 to the user. Git publication and a readable receipt do not transfer branch
 ownership or authorize the next Change.
 
+## Blueprint Capability Coverage
+
+Keep one cumulative capability register at
+`docs/planning/capability-coverage/register.md`, derived from the entire effective
+Blueprint, not just the current Change or Analysis IR. Its stable capability IDs
+link Blueprint sections, target users/value, target scope and capability-specific
+observable completion conditions. Product Manager owns definitions and Blueprint
+scope; ordinary evidence/status updates belong to Mini Engineering Controller
+after intake. Neither may narrow a target merely to mark it complete. Retain IDs
+across Blueprint revisions; append or explicitly retire/replace entries with
+history rather than reusing IDs or silently deleting deferred capabilities.
+
+This register is a product-coverage projection of approved plans and actual
+delivery evidence, not a second engineering phase/state authority. Mini remains
+the sole engineering-status writer. One assigned device writes the register in
+an owned work branch at a time; use existing Git handoff protections for a
+product-baseline revision. MacBook need not approve routine coverage updates.
+Latest map and delivery snapshots are views of that register, not parallel
+editable status stores. Publication and receiving-task adoption still require
+separate evidence; no background sync, scheduler or new dispatch is implied.
+
+For each capability retain target scope, implemented/connected/accepted scope,
+uncovered parts, linked Changes, evidence with identity and limitations, and
+last update. Separate planning, code presence, real-path connection and accepted
+target evidence; these are facts, not universal maturity levels. Use these
+statuses with a scope-qualified explanation:
+
+| Status | Meaning |
+|---|---|
+| 未启动 | No scoped work started in the checked boundary; identify that boundary, not an unverified repository-wide absence. |
+| 规划中 | A roadmap/proposal or scoped plan exists; no delivered behavior is implied. |
+| 实现中 | Current engineering work is evidenced; forecasts are not delivered coverage. |
+| 局部实现 | Evidence supports a subset, but the named target is not fully accepted; show the subset and missing links. |
+| 目标范围已验收 | This entry's explicit target and capability-specific conditions have sufficient acceptance evidence. It is not all-product completion. |
+| 待核验 | Available evidence cannot establish the relevant state; record what is unknown and the next evidence needed. |
+
+Preserve already accepted subscopes when later work is in progress. A status is
+not a score: one example, code presence, several disconnected parts, Change
+counts, code volume or averaged percentages cannot prove general capability or
+an end-to-end loop. Parent status is a reasoned scope statement, never an
+arithmetic roll-up; disclose unknown children. Each capability uses its own
+completion conditions. Undefined future scenarios/thresholds stay pending
+product decisions, not invented acceptance criteria.
+
+Within the existing work, not a new stage:
+
+1. At product preparation/intake, link the Change's approved user story to the
+   affected capability IDs in its existing proposal/tasks. Keep expected coverage
+   separate from current coverage. Reuse valid acceptance; do not reopen accepted
+   Changes merely to backfill links.
+2. At candidate verification, assess affected cumulative claims against their
+   capability conditions. A new `目标范围已验收` claim must bind the fixed
+   integrated candidate, relevant cross-Change integration, real execution path,
+   applicable scenarios and key negative/boundary cases, plus required user
+   Product Acceptance. Reuse valid evidence with its identity and limitations;
+   independent Validator checks the material new claims in the same review.
+   If required user acceptance follows engineering validation, keep the target
+   unaccepted and record the technical evidence first; update the projection
+   after that existing user decision. Recording its receipt alone does not
+   trigger another Validator round or delay the original acceptance sequence.
+   Change acceptance answers the user story; capability acceptance answers the
+   cumulative target. Neither replaces the other or authorizes new tests/data.
+3. At every Change completion, Mini updates affected register entries and
+   `docs/planning/capability-coverage/latest.md`, then preserves a non-overwritten
+   snapshot under its `snapshots/` directory, linked from the existing delivery
+   record. Include a fixed register revision or a same-commit relative register
+   link plus candidate/evidence identities. Later corrections append a new
+   snapshot with a correction link; never rewrite an issued snapshot. Bootstrap
+   reconstructions explicitly name their retrospective date and unknown prior
+   state. In-progress snapshots are not completion snapshots.
+4. The delivery response shows the full stable-layout six-plus-two map, the
+   Change's before/after scope/status delta, remaining gaps and evidence links,
+   without waiting for another user reminder. Keep unaffected capabilities on
+   the map; place detail in the register. A Change with no business coverage
+   delta still reports that fact and preserves the full map in its snapshot.
+
+Missing evidence limits the capability claim to partial/unknown; it does not
+block an otherwise valid unrelated user story or require a global revalidation.
+Newly discovered gaps become recommendations for the user/existing priority
+mechanism, not automatically authorized implementation. This adds no approval,
+mandatory specialist, separate report ledger, product behavior or execution
+permission. Update the projection proportionately rather than repairing every
+historical document or running all product tests just to refresh a picture.
+
 ## Preserved Product and Historical Boundaries
 
 Product authority remains at `docs/planning/README.md`. Withdrawn plans stay
