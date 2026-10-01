@@ -6,7 +6,12 @@
 
 <a id="e-bp"></a>
 
-## E-BP — 当前产品目标
+## E-BP — 当前产品目标与历史基线
+
+- 当前规划来源：[Blueprint v4.1](../2026-10-01/juanerai-product-development-blueprint-v4.1.md)及其[批准／评审采用记录](../2026-10-01/blueprint-v4.1-approval-and-rule-integration.md)。本次只更新产品规划引用与清单映射；以下 E-001～E-LEGACY、历史状态及快照的证据边界未变，Git 发布及接收采用另证。
+- v4.1 §4.1 沿用本清单唯一维护机制；§5.1 明确非全串行路线，§6.2／§9.2／§9.4 记录本期实际链缺口及静态评审采用，§10 要求同一候选三类验收。静态依据不是新的运行 PASS，不升级既有实现状态。
+
+历史建表来源（原身份保留，下面章节号指 v3.0）：
 
 - [Blueprint v3.0](../2026-09-30/juanerai-product-development-blueprint-v3.0.md)，文件 SHA-256：`7aadfbd59da22df7bb4889cd8b25e77cb0e46711b1cdc4e7ba2cc0997de98113`；本轮本地计算核对。
 - §4 为六条产品主线及 A/B 两项贯穿能力；§5–6 为阶段和纵切路线；§7 保留待决产品定义；§9 为模块边界及复用基础；§10 为价值假设与证据要求。

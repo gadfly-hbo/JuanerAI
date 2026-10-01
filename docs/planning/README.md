@@ -1,6 +1,52 @@
 # JuanerAI Product Planning Index
 
-## Current approved product-development authority — Blueprint v4.0（2026-10-01）
+## Current approved product-development authority — Blueprint v4.1（2026-10-01）
+
+[JuanerAI Product Development Blueprint v4.1](2026-10-01/juanerai-product-development-blueprint-v4.1.md)
+is the approved product-development guideline in this work branch. Its
+[approval and rule-integration record](2026-10-01/blueprint-v4.1-approval-and-rule-integration.md)
+separates user approval, independent planning readiness, local integration,
+Git publication and receiver adoption. Whitepaper v4.0 adoption is unchanged.
+At local freeze, Git publication and receiving-task adoption were not yet
+established. The user subsequently authorized publication under approval-record
+§6; actual Git/PR receipts establish delivery. Receiving-task adoption remains
+separate and unconfirmed until its explicit readback.
+
+Read the four views (§4, §§5–6, §9, §10), pending decisions (§7) and selection
+rule (§8). P1 delivers core task experience and genuinely reusable Analysis
+Core together, with the minimum data/semantic/execution dependencies. After P1,
+expand data and semantics for actual task or feedback blockers; adequate
+authorized sources allow outcome follow-up to proceed without waiting for a
+complete platform, then governed improvement and explicit next-Case adoption.
+The six-plus-two landscape and accepted Change001–003 scopes remain.
+
+Joint P1 scenario, capability and experience acceptance permits discussion
+of a bounded single-scenario trial, not automatic real-data, Provider or
+deployment authority. Packs, OSM, Team and Enterprise follow real demand.
+Static architecture feasibility does not prove working IR consumption,
+UI acceptance, engineering readiness or product value.
+
+The retained [v4.0 stage proposal](2026-10-01/xanthil-ai-led-analysis-next-slice-proposal-v0.1.md)
+remains a fixed scope/acceptance reference; its draft labels and former
+coordination status are historical. v4.1 and its approval record own the
+current route and adoption interpretation. The in-progress P1 product/UI package
+must adopt the exact revision explicitly; this update neither edits it nor
+reopens its completed corrections or starts production.
+
+### Current product-input package binding — v4.1
+
+Later packages bind the v4.1 file, its exact SHA-256 and eventual publication
+commit/tree; the approval record and independent review; the retained stage
+proposal where applicable; the four-view/stable-capability-ID alignment;
+closed applicable §7 decisions and exact UI Contract/user UI Gate.
+The approval record links the reviewed identity. Receiver readback must name
+the actual task/device, adopted version and protected work/stop boundary.
+Until then, adoption is unconfirmed; main publication alone does not establish it.
+
+## Historical v4.0 approval snapshot — superseded as route by v4.1
+
+The following is the prior approval/publication snapshot, preserved for
+traceability rather than current authority or a present permission grant.
 
 [JuanerAI Product Development Blueprint v4.0](2026-10-01/juanerai-product-development-blueprint-v4.0.md)
 is the approved highest product-development execution guideline. Read it with
@@ -40,7 +86,7 @@ change active engineering state, approve Provider/data access, resume stopped
 tasks, or claim receiver adoption. The user has manually forwarded the planning
 prompt; no automatic dispatch or additional session message is part of this release.
 
-### Current product-input package binding — v4.0
+### Historical product-input package binding — v4.0
 
 Later packages explicitly bind:
 
