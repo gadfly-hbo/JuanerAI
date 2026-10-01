@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001042418941-ISSXAL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T04:24:18.941Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "独立探针确认旧格式父会话关闭缺陷",
+  "status_after": "active",
+  "evidence_refs": []
+}

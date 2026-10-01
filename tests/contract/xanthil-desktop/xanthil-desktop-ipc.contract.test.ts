@@ -521,8 +521,11 @@ test('U1.1 B1-BRIDGE: real preload exposes and maps the closed twenty-method xan
   }
   assert.equal(control.invokes.length, b1Methods.length, 'every public method invokes one and only one closed channel');
   assert.deepEqual(control.invokes.map(({ channel }) => channel), b1Methods.map((method) => `xanthil-desktop:v1:${method}`), 'the closed channel sequence follows the exact frozen method order');
-  assert.deepEqual(control.contextBridgeExposures.map((exposure) => exposure.key), ['xanthilDesktopApi','xanthilCaseAssistantApi','xanthilProviderSettingsApi'], 'PS-01 adds only its closed settings API; both original business APIs are preserved');
+  assert.deepEqual(control.contextBridgeExposures.map((exposure) => exposure.key), ['xanthilDesktopApi','xanthilCaseAssistantApi','xanthilProviderSettingsApi','xanthilChildSession','xanthilParentNavigation'], 'Change003 adds only Main-provided child identity and parent navigation subscription; original business APIs are preserved');
   assert.equal(control.contextBridgeExposures[0]!.value, api, 'contextBridge receives the identical public API object');
+  assert.equal(control.contextBridgeExposures[3]!.value,null,'root has no renderer-selected child identity');
+  const navigation=requiredRecord(control.contextBridgeExposures[4]!.value,'parent navigation');
+  assert.deepEqual(Reflect.ownKeys(navigation),['subscribe']);assert.equal(typeof navigation.subscribe,'function','navigation exposes no arbitrary channel sender');
   for (const forbidden of ['invoke', 'ipcRenderer', 'channel', 'electron', 'shell', 'process', 'require', 'readFile', 'writeFile']) {
     assert.equal(Object.hasOwn(api, forbidden), false, `preload exposes no raw or generic ${forbidden} member`);
   }

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001024104107-27ZVE9",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T02:41:04.107Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "完整获准原生矩阵通过，准备独立验证",
+  "status_after": "active",
+  "evidence_refs": []
+}

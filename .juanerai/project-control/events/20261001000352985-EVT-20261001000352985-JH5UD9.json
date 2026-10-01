@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001000352985-JH5UD9",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-01T00:03:52.985Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Fork local creation causal RED/GREEN; not complete Fork acceptance",
+  "status_after": "active",
+  "evidence_refs": []
+}

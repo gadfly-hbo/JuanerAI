@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001011253636-3SY5H9",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T01:12:53.636Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "host-probe-002退出1：Main窗口阶段已执行，最终清理访问关闭连接失败。证据完整保留，同一worker继续修正。",
+  "status_after": "active",
+  "evidence_refs": []
+}

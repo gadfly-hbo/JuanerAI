@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001042616184-14U5P8",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T04:26:16.184Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "继续剩余旧格式关闭兼容修正",
+  "status_after": "active",
+  "evidence_refs": []
+}

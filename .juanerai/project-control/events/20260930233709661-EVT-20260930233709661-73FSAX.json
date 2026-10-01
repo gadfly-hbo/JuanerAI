@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930233709661-73FSAX",
+  "event_type": "change_started",
+  "occurred_at": "2026-09-30T23:37:09.661Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Change003 fixed intake confirmed; user startup received",
+  "status_after": "active",
+  "evidence_refs": []
+}

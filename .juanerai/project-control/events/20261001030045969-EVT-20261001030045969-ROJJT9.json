@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001030045969-ROJJT9",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T03:00:45.969Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "独立验证发现renderer崩溃生命周期风险，待原生复核",
+  "status_after": "active",
+  "evidence_refs": []
+}

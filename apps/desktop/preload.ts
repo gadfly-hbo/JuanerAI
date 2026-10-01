@@ -45,3 +45,8 @@ contextBridge.exposeInMainWorld('xanthilCaseAssistantApi',xanthilCaseAssistantAp
 import type {ProviderSettingsApi} from '../../packages/contracts/provider-settings.ts';
 const providerSettingsApi:ProviderSettingsApi={request:input=>ipcRenderer.invoke('xanthil-provider-settings:v1',input)};
 contextBridge.exposeInMainWorld('xanthilProviderSettingsApi',providerSettingsApi);
+
+const childSession=process.argv.find(value=>value.startsWith('--xanthil-child-session='))?.slice('--xanthil-child-session='.length)??null;
+contextBridge.exposeInMainWorld('xanthilChildSession',childSession);
+
+contextBridge.exposeInMainWorld('xanthilParentNavigation',{subscribe(callback:(id:string)=>void){const receive=(_event:unknown,id:unknown)=>{if(typeof id==='string')callback(id);};ipcRenderer.on('xanthil-case-assistant:focus-parent',receive);return ()=>ipcRenderer.removeListener('xanthil-case-assistant:focus-parent',receive);}});

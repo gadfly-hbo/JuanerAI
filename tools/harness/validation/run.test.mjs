@@ -142,6 +142,14 @@ const CHANGE002_TSCONFIG_APPENDIX = Object.freeze([
   'tests/contract/xanthil-desktop/provider-settings-runtime.contract.test.ts',
   'tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts',
 ]);
+// Accepted Change003 prepends these four roots to the retained100, in this order.
+// Keep independent literals so config omissions/substitutions cannot define the oracle.
+const CHANGE003_TSCONFIG_PREFIX = Object.freeze([
+  'tests/unit/xanthil-desktop/collaboration-window-close.unit.test.ts',
+  'tests/integration/xanthil-desktop/case-collaboration.integration.test.ts',
+  'tests/integration/xanthil-desktop/case-collaboration-lifecycle.integration.test.ts',
+  'tests/e2e/xanthil-desktop/case-collaboration-native.e2e.test.ts',
+]);
 const FIXTURE_BUILD_OBSERVATION = 'fixture-build:case-assistant:unset';
 const C0_RUNNER_TEST_TARGETS = Object.freeze([
   'tests/unit/xanthil-local-analysis/*.test.ts', 'tests/contract/xanthil-local-analysis/*.test.ts',
@@ -227,8 +235,9 @@ async function currentRunnerTuple(root = REPO_ROOT) {
   assert.equal(scripts['desktop:package'], 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64');
   assert.equal(scripts['desktop:test'], 'node tools/desktop/test-daily.mjs');
   assert.equal(tsconfig.compilerOptions?.jsx, 'react-jsx', 'C1a requires its exact JSX mode');
-  assert.equal(files.length,100,'development supplement appends exactly four roots to the retained96');
-  assert.deepEqual(files.slice(43),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX,'apps/desktop/development.ts','apps/desktop/desktop-work.ts','tests/unit/xanthil-desktop/development-mode.test.ts','tests/unit/xanthil-desktop/development-main.test.ts'],'Change1 and Change2 roots are independent literals, never derived from actual files');
+  assert.equal(files.length,104,'Change003 prepends exactly four roots to the retained100');
+  assert.deepEqual(files.slice(0,4),CHANGE003_TSCONFIG_PREFIX,'Change003 roots are exact ordered independent literals');
+  assert.deepEqual(files.slice(47),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX,'apps/desktop/development.ts','apps/desktop/desktop-work.ts','tests/unit/xanthil-desktop/development-mode.test.ts','tests/unit/xanthil-desktop/development-main.test.ts'],'Change1 and Change2 roots are independent literals, never derived from actual files');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }
@@ -611,6 +620,12 @@ test('CI-CHANGE002-001: closed roots reject omission, substitution, reordering a
     files => [...files,'packages/application/unapproved.ts'],
     files => files.map((file,index)=>index===68?'packages/contracts/unapproved.ts':file),
     files => [...files.slice(0,68),files[69],files[68],...files.slice(70)],
+    // Each added root must remain present, exact and in its approved position.
+    ...[0,1,2,3].flatMap(index => [
+      files => files.filter((_,position)=>position!==index),
+      files => files.map((file,position)=>position===index?'tests/unapproved.test.ts':file),
+      files => files.map((file,position)=>position===index?files[index+1]:position===index+1?files[index]:file),
+    ]),
   ]) {
     await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files:mutate(original.files)}));
     await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});

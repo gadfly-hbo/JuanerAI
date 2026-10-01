@@ -1,3 +1,4 @@
+import {installCollaborationClose} from './collaboration-window-close.ts';
 import {developmentEndpoint, isDevelopmentFrame, prepareDevelopmentRoot, assertDevelopmentPath} from './development.ts';
 import {createProviderSettings} from '../../packages/application/provider-settings.ts';
 import {createMacOsCredentialStore} from '../../adapters/credentials-macos/index.ts';
@@ -442,7 +443,45 @@ export function createXanthilDesktopIpcHandlers(dependencies: unknown): XanthilD
 let mainWindow: electron.BrowserWindow | undefined;
 let ipcHandlersRegistered = false;
 
+type AssistantApplication=NonNullable<ReturnType<ReturnType<typeof createPersonalXanthilDesktopProfile>['getCaseAssistant']>>;
+const childWindows=new Map<string,{window:electron.BrowserWindow;application:AssistantApplication}>();
+const lostRenderers=new WeakSet<object>();
+function fenceRendererLoss(window:electron.BrowserWindow,persist:()=>Promise<unknown>,committed:()=>boolean,after:()=>void){
+ const contents=window.webContents; // BrowserWindow access can throw after native destruction.
+ let pending=false,finished=false;
+ const lost=()=>{if(committed()||finished||pending)return;lostRenderers.add(contents);pending=true;
+  // Calling persist starts the Application's synchronous Abort/epoch fence now.
+  void persist().then(()=>{finished=true;after();}).catch(()=>{pending=false;});
+ };
+ contents.on('render-process-gone',lost);contents.on('destroyed',lost);window.on('closed',lost);
+}
+
+function childSender(event:unknown,request:unknown,current:AssistantApplication|null):boolean{
+ if(!record(event)||!record(request)||request.version!=='1.1'||typeof request.session_id!=='string')return false;
+ const binding=childWindows.get(request.session_id);
+ return !!binding&&!binding.window.isDestroyed()&&!lostRenderers.has(binding.window.webContents)&&binding.application===current&&event.sender===binding.window.webContents&&event.senderFrame===binding.window.webContents.mainFrame&&
+ (!developmentUrl||isDevelopmentFrame(binding.window.webContents.mainFrame.url,developmentUrl))&&['read_collaboration','prepare','start','send','stop','close','return_result','focus_parent'].includes(String(request.operation));
+}
+async function openChildWindow(application:AssistantApplication,id:string,isCurrent:()=>boolean){
+ const projection=await application.readCollaboration(id);
+ if(!isCurrent()||!mainWindow)throw Object.assign(new Error('INTERRUPTED'),{code:'INTERRUPTED'});
+ const life=await application.lifecycle(id);if(!life.open)await application.reopenSession(id,life.epoch);if(!isCurrent())throw Object.assign(new Error('INTERRUPTED'),{code:'INTERRUPTED'});
+ const existing=childWindows.get(id);if(existing&&!existing.window.isDestroyed()&&existing.application===application){existing.window.focus();return {opened:true,session_id:id};}
+ const window=new BrowserWindow({width:1366,height:768,useContentSize:true,title:`${projection.relation.kind==='fork'?'Fork':'Subagent'} · ${projection.session.title}`,webPreferences:{
+ preload:fileURLToPath(new URL('./preload.js',typeof __filename==='string'?`file://${__filename}`:import.meta.url)),contextIsolation:true,sandbox:true,nodeIntegration:false,devTools:false,webSecurity:true,additionalArguments:['--xanthil-child-session='+id]}});
+ childWindows.set(id,{window,application});let loadFailed=false;
+ window.webContents.on('will-navigate',event=>event.preventDefault());window.webContents.setWindowOpenHandler(()=>({action:'deny'}));
+ window.webContents.session.setPermissionCheckHandler(()=>false);window.webContents.session.setPermissionRequestHandler((_w,_p,callback)=>callback(false));
+ const committed=installCollaborationClose(window,{hasWork:()=>application.hasWork(id),confirm:async()=>{const choice=await electron.dialog.showMessageBox(window,{type:'question',message:'关闭并停止此子任务？',buttons:['取消','关闭并停止'],defaultId:0,cancelId:0});return choice.response===1;},persist:()=>application.closeSession(id),afterPersist:()=>{},failed:()=>electron.dialog.showMessageBox(window,{type:'error',message:'关闭结果待核对，请保留窗口并重新核对。'})});
+ fenceRendererLoss(window,()=>application.closeSession(id),()=>committed()||loadFailed,()=>{if(!window.isDestroyed())window.destroy();});
+ window.on('closed',()=>{if(childWindows.get(id)?.window===window)childWindows.delete(id);});
+ try{if(developmentUrl)await window.loadURL(developmentUrl);else await window.loadFile(fileURLToPath(new URL('../renderer/main_window/index.html',typeof __filename==='string'?`file://${__filename}`:import.meta.url)));}
+ catch(error){loadFailed=true;window.destroy();throw error;}
+ return {opened:true,session_id:id};
+}
+
 function isCurrentMainFrame(event: unknown): boolean {
+  if(record(event)&&record(event.sender)&&lostRenderers.has(event.sender))return false;
   const currentWindow = mainWindow;
   if (currentWindow === undefined || typeof event !== 'object' || event === null) return false;
   const candidate = event as Readonly<{ sender?: unknown; senderFrame?: unknown }>;
@@ -494,7 +533,8 @@ export function createNativeReportExportWriter():ExportWriter{return Object.free
   }finally{await handle.close();}
 }});}
 
-let closeWindowModelWork:()=>void=()=>undefined;
+let closeWindowModelWork:()=>Promise<unknown>=async()=>undefined;
+let hasWindowModelWork=()=>false,quitRequested=false,quitCommitted=false;
 function startNormalMainEntry(): void {
   const window = new BrowserWindow({
     width: 1366,
@@ -534,7 +574,7 @@ function startNormalMainEntry(): void {
     for (const [method, handler] of Object.entries(handlers)) {
       ipcMain.handle(`xanthil-desktop:v1:${method}`, (event, request) => handler(event, request));
     }
-    const assistantHandler=createCaseAssistantHandler({senderPolicy:isCurrentMainFrame,getApplication:()=>productionProfile.getCaseAssistant(),async exportReport(application,sessionId,reportId,_commandId){
+    const assistantHandler=createCaseAssistantHandler({focusParent:async id=>{if(!mainWindow||mainWindow.isDestroyed())throw Object.assign(new Error('PARENT_CLOSED'),{code:'PARENT_CLOSED'});mainWindow.webContents.send('xanthil-case-assistant:focus-parent',id);mainWindow.focus();return {focused:true};},senderPolicy:(event,request)=>isCurrentMainFrame(event)||childSender(event,request,productionProfile.getCaseAssistant()),openChildWindow:async id=>{const application=productionProfile.getCaseAssistant();if(!application)throw Object.assign(new Error('NOT_FOUND'),{code:'NOT_FOUND'});return openChildWindow(application,id,()=>productionProfile.getCaseAssistant()===application);},getApplication:()=>productionProfile.getCaseAssistant(),async exportReport(application,sessionId,reportId,_commandId){
       const projection=await application.read(sessionId),report=projection.reports.find(r=>r.id===reportId);if(!report)throw Object.assign(new Error('NOT_FOUND'),{code:'NOT_FOUND'});
       const selected=await normalNativeDialogs().selectExportFile();if(selected===null)throw Object.assign(new Error('CANCELLED'),{code:'CANCELLED'});
       if(!record(selected)||(selected.format!=='markdown'&&selected.format!=='html'))throw Object.assign(new Error('INVALID_REQUEST'),{code:'INVALID_REQUEST'});
@@ -548,12 +588,15 @@ function startNormalMainEntry(): void {
       if(!providerSettings)return {ok:false,code:'MODEL_BUSY'};
       return providerSettings.request(request);
     });
-    closeWindowModelWork=()=>{void providerSettings?.request({operation:'cancel'});void productionProfile.closeModelWork();};
-    app.on('before-quit',()=>{providerSettings?.close();void productionProfile.closeModelWork();});
+    closeWindowModelWork=async()=>{await productionProfile.closeModelWork();await providerSettings?.request({operation:'cancel'});};
+    hasWindowModelWork=()=>[...childWindows].some(([id,binding])=>binding.application===productionProfile.getCaseAssistant()&&binding.application.hasWork(id));
+    app.on('before-quit',event=>{if(quitCommitted){providerSettings?.close();return;}event.preventDefault();quitRequested=true;if(mainWindow)mainWindow.close();else void closeWindowModelWork().then(()=>{quitCommitted=true;app.quit();});});
     ipcHandlersRegistered = true;
   }
 
-  window.on('close',()=>closeWindowModelWork());
+  const rootCommitted=installCollaborationClose(window,{hasWork:hasWindowModelWork,confirm:async()=>{const choice=await electron.dialog.showMessageBox(window,{type:'question',message:'关闭父窗口并停止所有关联未完成任务？',buttons:['取消','关闭并停止'],defaultId:0,cancelId:0});if(choice.response!==1)quitRequested=false;return choice.response===1;},persist:()=>closeWindowModelWork(),afterPersist:()=>{for(const child of childWindows.values())if(!child.window.isDestroyed())child.window.destroy();if(quitRequested){quitCommitted=true;setImmediate(()=>app.quit());}},failed:()=>electron.dialog.showMessageBox(window,{type:'error',message:'关闭结果待核对，请保留窗口并重新核对。'})});
+  const closeOwnedWork=closeWindowModelWork;
+  fenceRendererLoss(window,closeOwnedWork,rootCommitted,()=>{for(const child of childWindows.values())if(!child.window.isDestroyed())child.window.destroy();if(!window.isDestroyed())window.destroy();});
   if (developmentUrl) void window.loadURL(developmentUrl);
   else void window.loadFile(fileURLToPath(new URL('../renderer/main_window/index.html', typeof __filename === 'string' ? `file://${__filename}` : import.meta.url)));
 }

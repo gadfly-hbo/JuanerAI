@@ -8,7 +8,9 @@ export type LocalCredentialStore = {
 export type ConnectionFailure = 'CREDENTIAL_INVALID' | 'NETWORK_UNAVAILABLE' | 'CONNECTION_TIMEOUT' | 'QUOTA_EXCEEDED' | 'CONNECTION_FAILED';
 export type ConnectionProbe = (key: string, signal: AbortSignal) => Promise<void>;
 /** Application sees only generation and admission, never the credential. */
+export type ModelOccupant=Readonly<{session_id:string|null;label:string}>;
 export type LocalModelAccess = {
+  occupant?():ModelOccupant|null;
   snapshot(): { generation: number; available: boolean };
-  acquire(generation: number): Promise<{ release(): void }>;
+  acquire(generation: number,owner?:ModelOccupant): Promise<{ release(): void }>;
 };

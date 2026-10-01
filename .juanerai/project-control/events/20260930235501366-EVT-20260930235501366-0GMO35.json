@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930235501366-0GMO35",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T23:55:01.366Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Primary identity attested; prescribed worker continues implementation",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001060703906-5L86VD",
+  "event_type": "accepted",
+  "occurred_at": "2026-10-01T06:07:03.906Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Controller Engineering Acceptance recorded after independent composite PASS; user Product Acceptance pending",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

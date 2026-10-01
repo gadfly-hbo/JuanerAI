@@ -1,6 +1,6 @@
 # Accepted Case Assistant and Provider Settings baseline
 
-Accepted 2026-09-30 by the user after candidate010 / DMG011 delivery. Source and final acceptance: [Change002 archive](../../changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/acceptance.md). Read this baseline alongside the retained Desktop and local-analysis specifications. The requirement body below is preserved verbatim from the accepted Change; chronological candidate/evidence and formerly pending acceptance notes describe history, superseded by the archive acceptance record. Bare Provider input filenames resolve within that archive. This publication grants no new Provider, data or product authority.
+Accepted 2026-09-30 by the user after candidate010 / DMG011 delivery. Source and final acceptance: [Change002 archive](../../changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/acceptance.md). Read this baseline alongside the retained Desktop and local-analysis specifications. The requirement body below retains the accepted Change, with only the Fork/Subagent Preview statements reconciled with the [accepted collaboration baseline](../case-collaboration/spec.md); chronological candidate/evidence and formerly pending acceptance notes describe history, superseded by the archive acceptance record. Bare Provider input filenames resolve within that archive. This publication grants no new Provider, data or product authority.
 
 ---
 
@@ -9,7 +9,8 @@ Accepted 2026-09-30 by the user after candidate010 / DMG011 delivery. Source and
 Normative inputs: frozen product plan §4–12 and UI Contract UI-00–20, both under
 `docs/planning/2026-09-28/`. Existing canonical Desktop/local-analysis requirements
 remain unchanged except Quick's approved Case-bound capability and readonly
-built-in Skill/Prompt; Fork/Subagent and all unrelated capabilities stay Preview.
+built-in Skill/Prompt. User-directed Fork/Subagent now follow the accepted
+[collaboration baseline](../case-collaboration/spec.md); unrelated capabilities stay Preview.
 
 ## Validator correction acceptance (candidate-003 work)
 
@@ -75,6 +76,9 @@ or a structured draft; only Application executes authorized tools and validates
 results. Allow only verified Case/evidence/finding/limitations/candidates,
 approved aggregate subset and selected report summaries. No raw sources,
 arbitrary file/SQL/Shell/Web/other Case or Session, writes, forks or subagents.
+This Runtime-tool prohibition remains: user-directed root creation under the
+[collaboration baseline](../case-collaboration/spec.md) does not authorize model-autonomous
+creation, recursive dispatch or a child creating another child.
 The runtime result contains exactly Provider, Model, measured cost and output. Question/advice contains exactly kind and text; draft exactly kind and fields, with the existing closed Decision/Outcome field schema. A tool request contains exactly kind, authorized tool name and source revision; extra fields are rejected before tool work or another model turn. Tool receipts show business action, object/revision, time, readonly marker,
 status and exact outbound result. Out-of-scope/invalid requests are refused.
 
@@ -131,7 +135,8 @@ Quick/Professional switch, linked Session left rail, conversation/draft center,
 authorization/source/capability/tools/reports inspector. Return opens source
 stage 6 and displays formal objects, actor/time/source/report. Preserve all six
 stages and three one-shot actions. Never imply Provider connected when disabled.
-Fork/Subagent only explain Preview; Prompt readonly, one built-in Skill.
+User-directed Fork/Subagent follow the accepted [collaboration baseline](../case-collaboration/spec.md).
+Prompt remains readonly, with one built-in Skill; other Preview prohibitions remain.
 All controls have labels, keyboard operation and visible focus; modal focus is
 contained/restored, Escape cancels safe dialogs, errors identify recovery and
 whether Case changed. At 1440×900 and 1280×720 critical actions remain reachable;
