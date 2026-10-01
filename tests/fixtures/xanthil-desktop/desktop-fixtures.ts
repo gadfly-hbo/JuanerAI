@@ -69,6 +69,12 @@ export type DesktopAcceptanceCase = Readonly<{
 
 /** Closed producer identities accepted by the U1.1 packaged-GUI readback seam. */
 export const guiPackageReadbackProducers = Object.freeze([
+  Object.freeze({ commandId:'CHANGE003-PACKAGE-001', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE003-PACKAGE-002', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE003-PACKAGE-003', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE003-PACKAGE-004', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE003-PACKAGE-005', attempt:'first' }),
+  Object.freeze({ commandId:'CHANGE003-PACKAGE-006', attempt:'first' }),
   Object.freeze({ commandId:'CHANGE002-PACKAGE-001', attempt:'first' }),
   Object.freeze({ commandId:'CHANGE002-PACKAGE-002', attempt:'first' }),
   Object.freeze({ commandId:'CHANGE002-PACKAGE-003', attempt:'first' }),
@@ -220,7 +226,7 @@ export const desktopAcceptanceCases = Object.freeze([
   ...defineCases('REQ-XDESK-001', 'TEST-XDESK-009', 'e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts', [
     'launches the packaged arm64 shell with the persistent Xanthil frame',
     'shows the six professional stages with their Chinese acceptance labels',
-    'fixed Skill/Prompt information and Fork/Subagent Preview remain effect-free',
+    'fixed Skill/Prompt information and unlinked Fork/Subagent refusal remain effect-free',
     'proves only the U1.1 shell mode/search surface closes without creating a Session; later Session and background-work continuity remains a later consumer',
     'keeps keyboard focus, modal trapping, drawer recovery, and both approved viewport layouts usable',
   ]),
@@ -313,7 +319,7 @@ export const desktopAcceptanceCases = Object.freeze([
   ]),
   ...defineCases('REQ-XDESK-012', 'TEST-XDESK-010', 'e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts', [
     'retains the exact P4 package and lock identity as historical non-RED evidence',
-    'adds only frozen P5 desktop paths scripts configs and validation phases after TDD_READY',
+    'retains exact accepted Desktop scripts and canonical validation phases [DEV-04]',
     'packages only the approved local arm64 application and contained toolchain descriptor',
     'drives the same production app with chromiumSandbox true and no CSP or provider bypass',
     'records the separate same-build normal no-debug native-chooser acceptance',
@@ -571,11 +577,14 @@ export async function readSyntheticCsvPair() {
 }
 
 export async function createTemporaryDesktopProject() {
-  const projectRoot = await mkdtemp(join(tmpdir(), 'xanthil-desktop-test-'));
+  // Native acceptance retains synthetic projects with its screenshots and raw logs.
+  const evidence = process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY;
+  if (evidence) assert.ok(isAbsolute(evidence), 'native evidence directory is absolute');
+  const projectRoot = await mkdtemp(join(evidence ?? tmpdir(), 'xanthil-desktop-test-'));
   return Object.freeze({
     projectRoot,
     async dispose() {
-      await rm(projectRoot, { recursive: true, force: true });
+      if (!evidence) await rm(projectRoot, { recursive: true, force: true });
     },
   });
 }

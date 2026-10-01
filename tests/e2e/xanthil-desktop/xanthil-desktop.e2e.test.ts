@@ -462,9 +462,9 @@ test('U1.1 AC-XDESK-001-02: shows the six professional stages with their Chinese
   await expectNoPrototypeSimulation(page);
 });
 
-test('U1.1 AC-XDESK-001-03: fixed Skill/Prompt information and Fork/Subagent Preview remain effect-free', async (t) => {
+test('U1.1 AC-XDESK-001-03: fixed Skill/Prompt information and unlinked Fork/Subagent refusal remain effect-free', async (t) => {
   const { app } = await launchedProfessionalCase(t),page=await app.firstWindow();await page.getByRole('button',{name:'快速模式'}).click();const initialUrl=page.url();
-  for(const capability of ['Fork','Subagent']){const preview=page.getByRole('button',{name:`${capability} Preview`,exact:true});await preview.click();const picker=page.getByRole('dialog',{name:`${capability} · Preview`,exact:true});assert.match(await picker.innerText(),/不会创建 Session、Attempt、工具回执或结果/);assert.equal(page.url(),initialUrl);await page.keyboard.press('Escape');await picker.waitFor({state:'hidden'});}
+  const initialWindows=app.windows().length;for(const capability of ['Fork','Subagent']){const entry=page.getByRole('button',{name:capability,exact:true});assert.equal(await entry.isEnabled(),false,'AC-FS-01 unlinked root cannot create child');}assert.equal(await page.getByRole('dialog').count(),0);assert.equal(app.windows().length,initialWindows);assert.equal(page.url(),initialUrl);
   await page.getByRole('button',{name:'能力',exact:true}).click();assert.match(await page.locator('.ca-inspector').innerText(),/Case 决策与预期 v1.0/);await page.getByRole('button',{name:'查看 Prompt 信息',exact:true}).click();const prompt=page.getByRole('dialog',{name:'Prompt 信息 · 只读',exact:true});assert.match(await prompt.innerText(),/用户确认前不写正式记录/);await page.keyboard.press('Escape');
   assert.doesNotMatch(await page.locator('body').innerText(),/(?:Session\s+(?:已创建|created)|已创建.*Session|分析(?:已启动|运行中)|报告(?:已生成|已导出))/i,'informational controls cannot create a Session, start analysis or produce a report');assert.equal(page.url(),initialUrl);await page.getByText('执行反馈',{exact:true}).waitFor({state:'hidden'});
 });
@@ -487,9 +487,14 @@ test('U1.1 AC-XDESK-001-04: proves only the U1.1 shell mode/search surface close
 });
 
 test('U1.1 AC-XDESK-001-05: keeps keyboard focus, modal trapping, drawer recovery, and both approved viewport layouts usable', async (t) => {
-  const { app } = await launchedProfessionalCase(t);
-  const page = await app.firstWindow();
-  for (const viewport of [{ width: 1440, height: 900 }, { width: 1366, height: 768 }]) {
+  const { app, attachment } = await launchedProfessionalCase(t);
+  const {completedCase}=await import('../../fixtures/case-assistant/completed-case.ts'),{config}=await import('../../fixtures/case-assistant/fixtures.ts'),{createLocalCaseAssistantStore}=await import('../../../adapters/storage-local/case-assistant.ts'),{createCaseAssistantApplication}=await import('../../../packages/application/case-assistant.ts');
+  const baseline=await completedCase(attachment.project_directory),store=createLocalCaseAssistantStore({projectRoot:attachment.project_directory});let calls=0;
+  const seed=createCaseAssistantApplication({store,config,clock:()=>new Date(),runtime:{async turn(){calls++;return {provider:config.provider,model:config.model,cost_microunits:0,output:{kind:'advice',text:'已保存的键盘验证分叉点'}};}}});
+  const parent=await seed.link(baseline.owner,'键盘验证来源',randomUUID()),grant=await seed.prepare(parent.session.id,'合成父任务');await seed.start(parent.session.id,grant.id,true);
+  let history=await seed.read(parent.session.id);for(let i=0;i<100&&history.attempts.at(-1)?.status!=='Succeeded';i++){await new Promise(r=>setTimeout(r,10));history=await seed.read(parent.session.id);}assert.equal(history.attempts.at(-1)?.status,'Succeeded');const cutoff=history.events.find(e=>e.kind==='advice')!.id;await seed.close();
+  const page = await app.firstWindow();await page.getByRole('button',{name:'选择项目',exact:true}).click();await page.locator('.ca-rail li button').filter({hasText:'键盘验证来源'}).click();
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 1366, height: 768 }, {width:1280,height:720}]) {
     await page.setViewportSize(viewport);
     const drawer = page.getByRole('button', { name: '辅助抽屉', exact: true });
     await drawer.focus();
@@ -501,16 +506,18 @@ test('U1.1 AC-XDESK-001-05: keeps keyboard focus, modal trapping, drawer recover
     assert.equal(await drawer.evaluate((element) => document.activeElement === element), true, 'closing the auxiliary drawer restores focus to its usable trigger');
 
     await page.getByRole('button', { name: '快速模式' }).click();
-    const skill = page.getByRole('button', { name: 'Fork Preview',exact:true });
-    await skill.focus();
+    const skill = page.getByRole('button', { name: 'Fork',exact:true });
+    assert.equal(await skill.isEnabled(),true,'qualified root has saved Fork history');await skill.focus();
     await skill.click();
-    const picker = page.getByRole('dialog', { name: 'Fork · Preview',exact:true });
-    await picker.waitFor();
+    const picker = page.getByRole('dialog', { name: '创建 Fork · 预览继承范围',exact:true });
+    await picker.waitFor();await picker.getByLabel('本次讨论目的').fill('键盘核对继承范围');await picker.getByLabel('选择父对话历史位置').selectOption(cutoff);assert.equal(await picker.getByRole('button',{name:'创建独立子窗口',exact:true}).isEnabled(),true);assert.equal(await picker.locator('input[type=checkbox]:checked').count(),0);
     await page.keyboard.press('Tab');
     assert.equal(await picker.evaluate((element) => element.contains(document.activeElement)), true, 'Tab focus is contained in the approved modal capability dialog');
-    await page.keyboard.press('Escape');
+    await page.keyboard.press('Shift+Tab');assert.equal(await picker.evaluate(element=>element.contains(document.activeElement)),true,'reverse Tab stays in the modal');await page.keyboard.press('Escape');
     await picker.waitFor({ state: 'hidden' });
     assert.equal(await skill.evaluate((element) => document.activeElement === element), true, 'closing the capability dialog restores focus to its usable trigger');
+    assert.equal(app.windows().length,1);assert.equal((await store.readParentCollaboration(parent.session.id)).children.length,0);assert.equal((await store.readSession(parent.session.id)).attempts.length,1);assert.equal(calls,1,'only the prelaunch synthetic parent fixture ran');
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await saveScreenshotExclusive(page,join(process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY!,`fork-keyboard-cancel-${viewport.width}.png`));
   }
 });
 
@@ -727,22 +734,25 @@ test('AC-XDESK-012-01: retains the exact P4 package and lock identity as histori
   assert.equal(packageLock.byteLength,319836);
   assert.equal(createHash('sha256').update(packageLock).digest('hex'),'861326061cd570b0e81584f149012b13228aec3da6528d82536f89cbb5d535c0');
   const p4=JSON.parse(packageJson);delete p4.main;delete p4.config;
-  for(const key of ['desktop:start','desktop:package','desktop:test'])delete p4.scripts[key];
+  for(const key of ['desktop:start','desktop:package','desktop:test','desktop:test:artifact','desktop:test:native'])delete p4.scripts[key];
+  p4.scripts.test='tools/harness/validation/run'; // Restore only the separately exact-checked accepted DEV-04 delta.
   const p4Bytes=Buffer.from(JSON.stringify(p4,null,2)+'\n');
   assert.equal(p4Bytes.byteLength,808);
-  assert.equal(createHash('sha256').update(p4Bytes).digest('hex'),'5a5e225cab86826b78afb2b94eb18a4064ab75c1115aa27dfb1342a927ed264a','only the separately checked approved P5 additions differ from the exact retained P4 object');
+  assert.equal(createHash('sha256').update(p4Bytes).digest('hex'),'5a5e225cab86826b78afb2b94eb18a4064ab75c1115aa27dfb1342a927ed264a','only the separately checked approved P5 and DEV-04 additions differ from the exact retained P4 object');
 });
 
-test('AC-XDESK-012-02: adds only frozen P5 desktop paths scripts configs and validation phases after TDD_READY', async () => {
+test('AC-XDESK-012-02: retains exact accepted Desktop scripts and canonical validation phases [DEV-04]', async () => {
   const packageJson = await import('node:fs/promises').then(({ readFile }) => readFile(new URL('../../../package.json', import.meta.url), 'utf8'));
   const manifest=JSON.parse(packageJson);
   assert.equal(manifest.main,'.vite/build/main.cjs');
   assert.deepEqual(manifest.config,{forge:'./forge.config.cjs'});
   assert.deepEqual(manifest.scripts,{
-    typecheck:'tsc -p tsconfig.json --noEmit',test:'tools/harness/validation/run',
-    'desktop:start':'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge start',
+    typecheck:'tsc -p tsconfig.json --noEmit',test:'node tools/desktop/test-daily.mjs --all',
+    'desktop:start':'node tools/desktop/development-start.mjs',
     'desktop:package':'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64',
-    'desktop:test':'npm run desktop:package && node --test tests/unit/xanthil-desktop/*.test.ts tests/contract/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/*.test.ts tests/e2e/xanthil-desktop/*.test.ts',
+    'desktop:test':'node tools/desktop/test-daily.mjs',
+    'desktop:test:artifact':'node --test tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts',
+    'desktop:test:native':'node tools/desktop/development-native.mjs',
   });
   // Exact 68-root/compiler/config-inventory equality and mixed-tuple negatives
   // are independently asserted by TEST-XCLI-021-CF-RESTORATION, not inferred here.

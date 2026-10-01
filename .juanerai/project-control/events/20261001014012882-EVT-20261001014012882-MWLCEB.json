@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001014012882-MWLCEB",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T01:40:12.882Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "host-probe-003两项原生测试1 PASS/1 FAIL，清理正常。Controller已发布decision002限定验证执行，未豁免完整验证义务。",
+  "status_after": "active",
+  "evidence_refs": []
+}

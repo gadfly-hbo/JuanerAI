@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001002537545-Y0MCQD",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T00:25:37.545Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Fork独立授权/结果与协议拒绝已GREEN；安装的Pi Adapter使用合成传输验证，无真实Provider调用。完整Fork/Subagent均未完成。",
+  "status_after": "active",
+  "evidence_refs": []
+}

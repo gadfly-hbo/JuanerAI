@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001031603055-BQPIU3",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T03:16:03.055Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "独立反例确认，原工程代理继续F1–F5修正",
+  "status_after": "active",
+  "evidence_refs": []
+}

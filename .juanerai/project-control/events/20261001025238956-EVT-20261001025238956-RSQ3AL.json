@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001025238956-RSQ3AL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T02:52:38.956Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "冻结完整候选001，进入独立只读验证",
+  "status_after": "active",
+  "evidence_refs": []
+}

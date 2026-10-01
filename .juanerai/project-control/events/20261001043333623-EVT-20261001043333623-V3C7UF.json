@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001043333623-V3C7UF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T04:33:33.623Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "接受旧格式显式关闭的限定迁移触发调整",
+  "status_after": "active",
+  "evidence_refs": []
+}

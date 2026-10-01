@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001062312772-08X61N",
+  "event_type": "accepted",
+  "occurred_at": "2026-10-01T06:23:12.772Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "User explicitly accepted Change003 product/UI; Git delivery and archive remain pending authorization",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

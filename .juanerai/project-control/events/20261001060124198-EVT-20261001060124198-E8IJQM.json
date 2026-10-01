@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001060124198-E8IJQM",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-01T06:01:24.198Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Complete canonical GREEN with bounded Keychain test; independent review pending",
+  "status_after": "validating",
+  "evidence_refs": []
+}

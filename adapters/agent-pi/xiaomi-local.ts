@@ -1,7 +1,7 @@
 import {readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {pathToFileURL} from 'node:url';
-import {fixedXiaomiModel,caseAssistantSystemPrompt,XIAOMI_CREDIT_RESERVATION} from './case-assistant.ts';
+import {fixedXiaomiModel,assistantPrompt,validateAssistantOutput,XIAOMI_CREDIT_RESERVATION} from './case-assistant.ts';
 function fail(code:string):never{throw Object.assign(new Error(code),{code,stack:code});}
 /** SDK error text is classified in memory, never returned, logged or retained. */
 export function localConnectionError(error:unknown):string {
@@ -63,10 +63,10 @@ export function createPiStoredCaseAssistantRuntime(credential:()=>string):import
  return {async turn(input){
   if(input.provider!==fixedXiaomiModel.provider||input.model!==fixedXiaomiModel.id)fail('AUTHORITY_REQUIRED');
   if(input.cost_reservation_microunits<XIAOMI_CREDIT_RESERVATION)fail('BUDGET_EXHAUSTED');
-  const result=await runLocalXiaomiText({key:credential(),text:input.payload,system:caseAssistantSystemPrompt,signal:input.signal,maxOutput:2048,timeoutMs:60000});
+  const result=await runLocalXiaomiText({key:credential(),text:input.payload,system:assistantPrompt(input),signal:input.signal,maxOutput:2048,timeoutMs:60000});
   let output:import('../../packages/contracts/case-assistant.ts').AssistantTurnResult['output'];
   try{output=JSON.parse(result.text);}catch{fail('VALIDATION_FAILED');}
-  if(!output||!['question','advice','tool','draft'].includes(output.kind))fail('VALIDATION_FAILED');
+  output=validateAssistantOutput(input,output);
   if(result.cost_microunits>input.cost_reservation_microunits)fail('PROVIDER_USAGE_INVALID');
   return {provider:input.provider,model:input.model,cost_microunits:result.cost_microunits,output};
  }};

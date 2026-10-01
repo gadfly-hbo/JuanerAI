@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001041326488-OJSBKW",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T04:13:26.488Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "完整候选002冻结，进入独立复查",
+  "status_after": "active",
+  "evidence_refs": []
+}

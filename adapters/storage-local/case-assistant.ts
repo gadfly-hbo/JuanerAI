@@ -1,3 +1,5 @@
+import {validateChildResult} from '../../packages/product-core/case-collaboration.ts';
+import type {ChildRelation,ChildPreview,ChildResult,ChildResultValue,ResultTarget,ChildDelivery,ChildReview,ParentCollaboration,CollaborationLifecycle} from '../../packages/contracts/case-collaboration.ts';
 import { DatabaseSync } from 'node:sqlite';
 import { createHash, randomUUID } from 'node:crypto';
 import { existsSync, lstatSync, realpathSync } from 'node:fs';
@@ -26,13 +28,16 @@ CREATE TABLE heads(source TEXT PRIMARY KEY,decision_id TEXT NOT NULL);
 CREATE TABLE receipts(id TEXT PRIMARY KEY,fingerprint TEXT NOT NULL,result TEXT NOT NULL);
 CREATE INDEX attempts_parent ON attempts(parent); CREATE INDEX events_parent ON events(parent);
 CREATE INDEX drafts_parent ON drafts(parent); CREATE INDEX decisions_parent ON decisions(parent); CREATE INDEX reports_parent ON reports(parent);`;
-const schemaIdentity = (() => { const db = new DatabaseSync(':memory:'); try {
-    db.exec(schema);
-    return encode(db.prepare('SELECT type,name,tbl_name,sql FROM sqlite_schema ORDER BY type,name').all());
-}
-finally {
-    db.close();
-} })();
+const collaborationSchema = `CREATE TABLE collaboration_children(id TEXT PRIMARY KEY REFERENCES sessions(id),parent TEXT NOT NULL REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);
+CREATE TABLE collaboration_lifecycle(id TEXT PRIMARY KEY REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);
+CREATE TABLE collaboration_results(id TEXT PRIMARY KEY,child_id TEXT NOT NULL REFERENCES collaboration_children(id),attempt_id TEXT NOT NULL UNIQUE REFERENCES attempts(id),version INTEGER NOT NULL CHECK(version>0),body TEXT NOT NULL,sha256 TEXT NOT NULL,UNIQUE(child_id,version));
+CREATE TABLE collaboration_returns(id TEXT PRIMARY KEY REFERENCES collaboration_results(id),parent TEXT NOT NULL REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);
+CREATE TABLE collaboration_reviews(id TEXT PRIMARY KEY REFERENCES collaboration_results(id),parent TEXT NOT NULL REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);`;
+function identity(db:DatabaseSync){return encode(db.prepare('SELECT type,name,tbl_name,sql FROM sqlite_schema ORDER BY type,name').all());}
+const schemaIdentities=([100,101] as const).map(version=>{const db=new DatabaseSync(':memory:');try{
+ db.exec(version===100?schema:schema.replace("version='1.0'","version='1.1'"));
+ if(version===101)db.exec(collaborationSchema);return identity(db);
+}finally{db.close();}});
 const sourceKey = (owner: OwnerRef) => encode(owner);
 const same = (a: unknown, b: unknown) => encode(a) === encode(b);
 const escape = (text: string) => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
@@ -75,10 +80,10 @@ export function createLocalCaseAssistantStore(config: {
                     throw e;
                 }
             }
-            const identity = db.prepare('SELECT * FROM metadata').all();
-            if (identity.length !== 1 || identity[0].version !== '1.0' || projectId && identity[0].project_id !== projectId || Number(db.prepare('PRAGMA application_id').get()?.application_id) !== 1480802625 || Number(db.prepare('PRAGMA user_version').get()?.user_version) !== 100)
+            const metadata = db.prepare('SELECT * FROM metadata').all(), version=Number(db.prepare('PRAGMA user_version').get()?.user_version);
+            if (metadata.length !== 1 || ![100,101].includes(version) || metadata[0].version !== (version===100?'1.0':'1.1') || projectId && metadata[0].project_id !== projectId || Number(db.prepare('PRAGMA application_id').get()?.application_id) !== 1480802625)
                 assistantFailure('SCHEMA_UNSUPPORTED');
-            if (encode(db.prepare('SELECT type,name,tbl_name,sql FROM sqlite_schema ORDER BY type,name').all()) !== schemaIdentity)
+            if (identity(db) !== schemaIdentities[version-100])
                 assistantFailure('SCHEMA_UNSUPPORTED');
             for (const table of tables)
                 for (const row of db.prepare(`SELECT * FROM ${table}`).all()) {
@@ -86,6 +91,8 @@ export function createLocalCaseAssistantStore(config: {
                     if ((table === 'drafts' ? `${value.id}:${value.version}` : value.id) !== row.id)
                         assistantFailure('INTEGRITY_BLOCKED');
                 }
+            if(version===101)for(const table of ['collaboration_children','collaboration_lifecycle','collaboration_results','collaboration_returns','collaboration_reviews'])
+                for(const row of db.prepare(`SELECT * FROM ${table}`).all())decode(row);
             return db;
         }
         catch (e) {
@@ -146,6 +153,9 @@ export function createLocalCaseAssistantStore(config: {
         const r = db.prepare('SELECT * FROM original.case_revisions WHERE revision_id=? AND project_id=? AND session_id=? AND case_id=?').get(o.revision_id, o.project_id, o.session_id, o.case_id);
         if (!s || s.current_revision_id !== o.revision_id || !r || r.state !== 'Completed' || r.integrity_state !== 'ok' || String(r.row_version) !== source.row_version || r.current_finding_id !== source.finding_id || r.current_acceptance_id !== source.acceptance_id || r.current_closure_id !== source.closure_id || r.current_report_id !== source.report.report_id)
             assistantFailure('STALE_REVISION');
+        const aggregate=db.prepare('SELECT sha256,columns_json FROM original.aggregate_artifacts WHERE artifact_id=? AND revision_id=?').get(source.aggregate.artifact_id,o.revision_id);
+        const report=db.prepare('SELECT markdown_sha256,version_sequence,state FROM original.report_versions WHERE report_id=? AND revision_id=?').get(source.report.report_id,o.revision_id);
+        if(!aggregate||aggregate.sha256!==source.aggregate.sha256||!same(JSON.parse(String(aggregate.columns_json)),source.aggregate.fields)||!report||report.state!=='final'||report.markdown_sha256!==source.report.sha256||Number(report.version_sequence)!==source.report.version)assistantFailure('STALE_REVISION');
     }
     async function readSource(owner: OwnerRef): Promise<AssistantSource> {
         const p = await original.readProjection(owner), r = p.revision, f = p.findings.find(f => f.finding_id === r?.current_finding_id), a = p.acceptances.find(a => a.acceptance_id === r?.current_acceptance_id), c = p.closures.find(c => c.closure_id === r?.current_closure_id), report = p.reports.find(x => x.report_id === r?.current_report_id), form = p.forms.find(x => x.form_id === c?.form_id);
@@ -176,6 +186,187 @@ export function createLocalCaseAssistantStore(config: {
             missing.push('缺少已验证聚合');
         return { owner: structuredClone(owner), case_name: r?.case_name ?? '', current_revision_id: p.session?.current_revision_id ?? '', eligible: missing.length === 0, missing, row_version: r?.row_version ?? '', finding_id: f?.finding_id ?? '', acceptance_id: a?.acceptance_id ?? '', closure_id: c?.closure_id ?? '', evidence_refs: f?.evidence_refs ?? [], limitations: f?.limitations ?? [], candidates: form?.candidates ?? [], finding_summary: f ? encode({ judgment: f.judgment, supporting_evidence: f.supporting_evidence, refutation: f.refutation, limitations: f.limitations }) : '', aggregate: { artifact_id: f?.aggregate_id ?? '', sha256: String(aggregate?.sha256 ?? ''), fields: aggregate ? JSON.parse(String(aggregate.columns_json)) : [], scope: encode({ comparison: p.confirmation?.comparison_period ?? null, current: p.confirmation?.current_period ?? null, grain: 'verified comparison/current aggregate metrics; no individual rows' }), content: f?.metrics ?? '' }, report: { report_id: report?.report_id ?? '', version: Number(report?.version_sequence ?? 0), sha256: report?.markdown_sha256 ?? '', summary: encode({ report_id: report?.report_id ?? null, finding_id: f?.finding_id ?? null, judgment: f?.judgment ?? null, limitations: f?.limitations ?? [], closure_route: c?.route ?? null }) } };
     }
+    function child(db:DatabaseSync,id:string):ChildRelation|null{
+        if(Number(db.prepare('PRAGMA user_version').get()?.user_version)===100)return null;
+        const row=db.prepare('SELECT * FROM collaboration_children WHERE id=?').get(id);
+        return row?decode<ChildRelation>(row):null;
+    }
+    async function readChild(id:string){const db=connect();if(!db)return null;try{return child(db,id);}finally{db.close();}}
+    function lifecycle(db:DatabaseSync,id:string):CollaborationLifecycle{
+        if(Number(db.prepare('PRAGMA user_version').get()?.user_version)===100)return {open:true,epoch:0};
+        const row=db.prepare('SELECT * FROM collaboration_lifecycle WHERE id=?').get(id);return row?decode<CollaborationLifecycle>(row):{open:true,epoch:0};
+    }
+    async function readLifecycle(id:string){const db=connect();if(!db)assistantFailure('NOT_FOUND');try{get(db,'sessions',id);return lifecycle(db,id);}finally{db.close();}}
+    async function closeFamily(id:string,at:string,explicitClose=false){
+        let expected:ReadonlyArray<{id:string;state:CollaborationLifecycle;attempts:AssistantAttempt[]}>|undefined;
+        try{return transaction(db=>{
+            get(db,'sessions',id);
+            if(explicitClose)migrate(db);
+            const modern=Number(db.prepare('PRAGMA user_version').get()?.user_version)===101;
+            const ids=[id,...(modern&&!child(db,id)?db.prepare('SELECT id FROM collaboration_children WHERE parent=?').all(id).map(r=>String(r.id)):[])];
+            for(const sessionId of ids){
+                if(modern){const old=lifecycle(db,sessionId);if(old.open){const body=encode({open:false,epoch:old.epoch+1});db.prepare('INSERT INTO collaboration_lifecycle VALUES(?,?,?) ON CONFLICT(id) DO UPDATE SET body=excluded.body,sha256=excluded.sha256').run(sessionId,body,hash(body));}}
+                for(const attempt of rows<AssistantAttempt>(db,'attempts',sessionId))if(['Running','Waiting'].includes(attempt.status))write(db,'attempts',attempt.id,sessionId,{...attempt,status:'Interrupted',ended_at:at,waiting_deadline:null,reason:'session_closed'},true);
+            }
+            if(modern)expected=ids.map(id=>({id,state:lifecycle(db,id),attempts:rows<AssistantAttempt>(db,'attempts',id)}));
+            return ids;
+        });}catch(error){
+            if(!expected)throw error;
+            // A lost COMMIT response is success only when the exact close and
+            // interruption are durable. Unreadable state leaves Application fences set.
+            let committed=false;
+            try{const db=connect();if(!db)throw error;try{
+                committed=Number(db.prepare('PRAGMA user_version').get()?.user_version)===101&&expected.every(item=>same(lifecycle(db,item.id),item.state)&&same(rows<AssistantAttempt>(db,'attempts',item.id),item.attempts));
+            }finally{db.close();}}catch{assistantFailure('RESULT_PENDING');}
+            if(committed)return expected.map(item=>item.id);
+            throw error;
+        }
+    }
+    async function reopenSession(id:string,epoch:number){return transaction(db=>{
+        get(db,'sessions',id);const old=lifecycle(db,id);if(old.epoch!==epoch)assistantFailure('LIFECYCLE_STALE');if(old.open)return old;
+        const state={open:true,epoch:epoch+1},body=encode(state);db.prepare('UPDATE collaboration_lifecycle SET body=?,sha256=? WHERE id=?').run(body,hash(body),id);return state;
+    });}
+    async function readParentCollaboration(id:string):Promise<ParentCollaboration>{
+        const db=connect();if(!db)assistantFailure('NOT_FOUND');try{
+            get<AssistantSession>(db,'sessions',id);if(child(db,id))assistantFailure('FORBIDDEN');
+            if(Number(db.prepare('PRAGMA user_version').get()?.user_version)===100)return {children:[],results:[],deliveries:[],reviews:[],materials:[]};
+            const children=db.prepare('SELECT * FROM collaboration_children WHERE parent=? ORDER BY rowid').all(id).map(r=>decode<ChildRelation>(r));
+            const results=db.prepare('SELECT r.* FROM collaboration_results r JOIN collaboration_children c ON r.child_id=c.id WHERE c.parent=? ORDER BY r.rowid').all(id).map(r=>decode<ChildResult>(r));
+            const deliveries=db.prepare('SELECT * FROM collaboration_returns WHERE parent=? ORDER BY rowid').all(id).map(r=>decode<ChildDelivery>(r));
+            const reviews=db.prepare('SELECT * FROM collaboration_reviews WHERE parent=? ORDER BY rowid').all(id).map(r=>decode<ChildReview>(r));
+            const materials=reviews.filter(r=>r.disposition==='adopted').map(review=>{const result=results.find(r=>r.id===review.result_id);if(!result||!review.material_id||result.version!==review.result_version||result.sha256!==review.result_sha256)assistantFailure('INTEGRITY_BLOCKED');return {id:review.material_id,classification:'MODEL' as const,result,review};});
+            return {children,results,deliveries,reviews,materials};
+        }finally{db.close();}
+    }
+    function targetResult(db:DatabaseSync,target:ResultTarget):ChildResult{
+        const row=db.prepare('SELECT * FROM collaboration_results WHERE id=?').get(target.result_id);if(!row)assistantFailure('NOT_FOUND');const result=decode<ChildResult>(row);
+        if(result.version!==target.result_version||result.sha256!==target.result_sha256)assistantFailure('STALE_RESULT');return result;
+    }
+    function parentOpen(db:DatabaseSync,id:string){const row=db.prepare('SELECT * FROM collaboration_lifecycle WHERE id=?').get(id);if(row&&!decode<{open:boolean}>(row).open)assistantFailure('PARENT_CLOSED');}
+    function checkResultSource(db:DatabaseSync,result:ChildResult,source:AssistantSource){
+        if(!same(result.source,source)||(db.prepare('SELECT decision_id FROM heads WHERE source=?').get(sourceKey(source.owner))?.decision_id??null)!==result.baseline_decision_id)assistantFailure('AUTHORIZATION_STALE');
+        parentOpen(db,result.parent_session_id);
+    }
+    function collaborationCommit<T>(commandId:string,fingerprint:string,source:AssistantSource,work:(db:DatabaseSync)=>T):T{
+        let proposed:T|undefined;
+        try{return transaction(db=>{
+            const prior=db.prepare('SELECT * FROM receipts WHERE id=?').get(commandId);
+            if(prior){if(prior.fingerprint!==fingerprint)assistantFailure('COMMAND_CONFLICT');return JSON.parse(String(prior.result)) as T;}
+            proposed=work(db);db.prepare('INSERT INTO receipts VALUES(?,?,?)').run(commandId,fingerprint,encode(proposed));return proposed;
+        },source);}catch(error){
+            if(proposed===undefined)throw error;
+            try{const db=connect();if(!db)throw error;try{const receipt=db.prepare('SELECT * FROM receipts WHERE id=?').get(commandId);if(receipt){if(receipt.fingerprint!==fingerprint)assistantFailure('COMMAND_CONFLICT');return JSON.parse(String(receipt.result)) as T;}}finally{db.close();}}catch{pending=true;assistantFailure('RESULT_PENDING');}
+            throw error;
+        }
+    }
+    async function returnChild(id:string,target:ResultTarget,commandId:string,at:string,source:AssistantSource,signal:AbortSignal):Promise<ChildDelivery>{
+        const fresh=await readSource(source.owner);if(!same(fresh,source))assistantFailure('AUTHORIZATION_STALE');
+        return collaborationCommit(commandId,hash(encode({kind:'return_result',id,target})),source,db=>{
+            if(signal.aborted)assistantFailure('INTERRUPTED');const result=targetResult(db,target);
+            if(result.child_session_id!==id)assistantFailure('FORBIDDEN');checkResultSource(db,result,source);
+            const previous=decode<ChildDelivery>(db.prepare('SELECT * FROM collaboration_returns WHERE id=?').get(result.id));
+            if(previous.status==='returned')return previous;
+            const delivery:ChildDelivery={...previous,status:'returned',returned_at:at,error:null},body=encode(delivery);
+            db.prepare('UPDATE collaboration_returns SET body=?,sha256=? WHERE id=?').run(body,hash(body),result.id);return delivery;
+        });
+    }
+    async function reviewChild(id:string,target:ResultTarget,commandId:string,disposition:'adopted'|'declined',reason:string,at:string,source:AssistantSource,signal:AbortSignal):Promise<ChildReview>{
+        const fresh=await readSource(source.owner);if(!same(fresh,source))assistantFailure('AUTHORIZATION_STALE');
+        return collaborationCommit(commandId,hash(encode({kind:'review_result',id,target,disposition,reason})),source,db=>{
+            if(signal.aborted)assistantFailure('INTERRUPTED');const result=targetResult(db,target);
+            if(result.parent_session_id!==id||child(db,id))assistantFailure('FORBIDDEN');checkResultSource(db,result,source);
+            const delivery=decode<ChildDelivery>(db.prepare('SELECT * FROM collaboration_returns WHERE id=?').get(result.id));if(delivery.status!=='returned')assistantFailure('NOT_RETURNED');
+            const previous=db.prepare('SELECT * FROM collaboration_reviews WHERE id=?').get(result.id);
+            if(previous){const review=decode<ChildReview>(previous);if(review.disposition!==disposition||review.reason!==reason)assistantFailure('REVIEW_FINAL');return review;}
+            const review:ChildReview={...target,parent_session_id:id,disposition,reason,at,material_id:disposition==='adopted'?randomUUID():null},body=encode(review);
+            db.prepare('INSERT INTO collaboration_reviews VALUES(?,?,?,?)').run(result.id,id,body,hash(body));return review;
+        });
+    }
+    async function failChildReturn(id:string,target:ResultTarget,signal:AbortSignal):Promise<void>{
+        transaction(db=>{
+            if(signal.aborted)assistantFailure('INTERRUPTED');
+            const result=targetResult(db,target);if(result.child_session_id!==id)assistantFailure('FORBIDDEN');
+            const previous=decode<ChildDelivery>(db.prepare('SELECT * FROM collaboration_returns WHERE id=?').get(result.id));
+            if(previous.status==='returned')return;
+            const body=encode({...previous,status:'failed',error:'local_return_failed'});
+            db.prepare('UPDATE collaboration_returns SET body=?,sha256=? WHERE id=?').run(body,hash(body),result.id);
+        });
+    }
+    async function childResults(id:string):Promise<readonly ChildResult[]>{const db=connect();if(!db)return [];try{
+        if(!child(db,id))return [];return db.prepare('SELECT * FROM collaboration_results WHERE child_id=? ORDER BY version').all(id).map(r=>decode<ChildResult>(r));
+    }finally{db.close();}}
+    async function finishChild(attempt:AssistantAttempt,value:ChildResultValue,signal:AbortSignal):Promise<ChildResult>{
+        const a=attempt.authorization,grant=a.collaboration;
+        if(!grant||attempt.status!=='Succeeded'||!attempt.ended_at)assistantFailure('FORBIDDEN');
+        const endedAt=attempt.ended_at;
+        const fresh=await readSource(a.source.owner);if(!same(fresh,a.source))assistantFailure('AUTHORIZATION_STALE');
+        validateChildResult(value,grant.allowed_references);
+        let proposed:ChildResult|undefined;
+        try{return transaction(db=>{
+            if(signal.aborted)assistantFailure('INTERRUPTED');
+            const relation=child(db,attempt.session_id);if(!relation||grant.child_session_id!==relation.child_session_id||grant.parent_session_id!==relation.parent_session_id||!same(a.source,relation.source))assistantFailure('FORBIDDEN');
+            if((db.prepare('SELECT decision_id FROM heads WHERE source=?').get(sourceKey(a.source.owner))?.decision_id??null)!==a.baseline_decision_id)assistantFailure('AUTHORIZATION_STALE');
+            for(const [id,epoch]of [[relation.parent_session_id,grant.parent_epoch],[attempt.session_id,grant.child_epoch]] as const){const row=db.prepare('SELECT * FROM collaboration_lifecycle WHERE id=?').get(id);if(row){const state=decode<{epoch:number;open:boolean}>(row);if(!state.open||state.epoch!==epoch)assistantFailure('INTERRUPTED');}else if(epoch!==0)assistantFailure('INTERRUPTED');}
+            const prior=get<AssistantAttempt>(db,'attempts',attempt.id);
+            const committed=db.prepare('SELECT * FROM collaboration_results WHERE attempt_id=?').get(attempt.id);
+            if(committed){const result=decode<ChildResult>(committed);if(!same(result.value,value)||!same(prior,attempt))assistantFailure('COMMAND_CONFLICT');return result;}
+            if(!['Running','Waiting'].includes(prior.status)||!same(prior.authorization,a))assistantFailure('INTERRUPTED');
+            const version=Number(db.prepare('SELECT COALESCE(MAX(version),0)+1 AS version FROM collaboration_results WHERE child_id=?').get(attempt.session_id)!.version);
+            const body={id:randomUUID(),child_session_id:attempt.session_id,parent_session_id:relation.parent_session_id,attempt_id:attempt.id,authorization_id:a.id,version,source:a.source,baseline_decision_id:a.baseline_decision_id,value,created_at:endedAt};
+            const result:ChildResult={...body,sha256:hash(encode(body))};proposed=result;const encoded=encode(result);
+            db.prepare('INSERT INTO collaboration_results VALUES(?,?,?,?,?,?)').run(body.id,body.child_session_id,attempt.id,version,encoded,hash(encoded));
+            const delivery=encode({result_id:body.id,parent_session_id:relation.parent_session_id,status:'unreturned',returned_at:null,error:null});
+            db.prepare('INSERT INTO collaboration_returns VALUES(?,?,?,?)').run(body.id,relation.parent_session_id,delivery,hash(delivery));
+            write(db,'attempts',attempt.id,attempt.session_id,attempt,true);return result;
+        },a.source);}catch(error){
+            if(!proposed)throw error;
+            try{const db=connect();if(!db)throw error;try{const committed=db.prepare('SELECT * FROM collaboration_results WHERE attempt_id=?').get(attempt.id);if(committed)return decode<ChildResult>(committed);}finally{db.close();}}catch{pending=true;assistantFailure('RESULT_PENDING');}
+            throw error;
+        }
+    }
+    function migrate(db:DatabaseSync){
+        if(Number(db.prepare('PRAGMA user_version').get()?.user_version)===101)return;
+        const project=db.prepare('SELECT project_id FROM metadata').get()!.project_id;
+        db.exec("DROP TABLE metadata; CREATE TABLE metadata(project_id TEXT PRIMARY KEY,version TEXT NOT NULL CHECK(version='1.1'));");
+        db.prepare("INSERT INTO metadata VALUES (?,'1.1')").run(project);
+        db.exec(collaborationSchema);db.exec('PRAGMA user_version=101');
+    }
+    async function createChild(commandId:string,session:AssistantSession,preview:ChildPreview,signal:AbortSignal,assertAdmission:()=>void=()=>{}){
+        const fingerprint=hash(encode({kind:'create_child',preview}));
+        const fresh=await readSource(preview.source.owner);
+        if(!same(fresh,preview.source))assistantFailure('AUTHORIZATION_STALE');
+        let proposed:ChildRelation|undefined;
+        try{return transaction(db=>{
+            if(signal.aborted)assistantFailure('INTERRUPTED');
+            assertAdmission(); // Synchronous through COMMIT: shared settings/helper/model admission cannot interleave.
+            const prior=db.prepare('SELECT * FROM receipts WHERE id=?').get(commandId);
+            if(prior){if(prior.fingerprint!==fingerprint)assistantFailure('COMMAND_CONFLICT');const found=child(db,String(prior.result));if(!found)assistantFailure('INTEGRITY_BLOCKED');return found;}
+            const parent=get<AssistantSession>(db,'sessions',preview.parent_session_id);
+            if(child(db,parent.id)||!same(parent.source,session.source)||!same(session.source,preview.source.owner))assistantFailure('FORBIDDEN');
+            const visible=rows<AssistantEvent>(db,'events',parent.id).filter(e=>['user','advice','question','tool'].includes(e.kind)&&e.source_revision===preview.source.owner.revision_id);
+            const cutoff=visible.findIndex(e=>e.id===preview.cutoff_id);
+            if((preview.kind==='fork'||preview.cutoff_id!==null)&&cutoff<0)assistantFailure('INVALID_CUTOFF');
+            const available=preview.cutoff_id===null?visible:visible.slice(0,cutoff+1);
+            if(new Set(preview.selected_history.map(e=>e.id)).size!==preview.selected_history.length||preview.selected_history.some(e=>!available.some(saved=>same(saved,e))))assistantFailure('INVALID_SELECTION');
+            const head=db.prepare('SELECT decision_id FROM heads WHERE source=?').get(sourceKey(session.source));
+            if((head?.decision_id??null)!==preview.baseline_decision_id)assistantFailure('AUTHORIZATION_STALE');
+            if(rows<AssistantAttempt>(db,'attempts').some(a=>['Running','Waiting'].includes(a.status)))assistantFailure('BUSY');
+            migrate(db);
+            const life=db.prepare('SELECT * FROM collaboration_lifecycle WHERE id=?').get(parent.id);
+            if(life){const state=decode<{epoch:number;open:boolean}>(life);if(!state.open||state.epoch!==preview.parent_epoch)assistantFailure('INTERRUPTED');}
+            else if(preview.parent_epoch!==0)assistantFailure('INTERRUPTED');
+            proposed={...preview,child_session_id:session.id};
+            write(db,'sessions',session.id,session.source.project_id,session);
+            const body=encode(proposed);db.prepare('INSERT INTO collaboration_children VALUES(?,?,?,?)').run(session.id,parent.id,body,hash(body));
+            db.prepare('INSERT INTO receipts VALUES(?,?,?)').run(commandId,fingerprint,session.id);
+            return proposed;
+        },preview.source);}catch(error){
+            if(!proposed)throw error;
+            try{const db=connect();if(!db)throw error;try{const receipt=db.prepare('SELECT * FROM receipts WHERE id=?').get(commandId);if(receipt){if(receipt.fingerprint!==fingerprint)assistantFailure('COMMAND_CONFLICT');const found=child(db,String(receipt.result));if(!found)assistantFailure('INTEGRITY_BLOCKED');return found;}}finally{db.close();}}
+            catch{pending=true;assistantFailure('RESULT_PENDING');}
+            throw error;
+        }
+    }
     async function createSession(commandId: string, session: AssistantSession, source: AssistantSource) {
         const fresh = await readSource(source.owner);
         if (!same(fresh, source) || !source.eligible)
@@ -192,7 +383,7 @@ export function createLocalCaseAssistantStore(config: {
     }
     async function listSessions(projectId: string) { const db = connect(false, projectId); if (!db)
         return []; try {
-        return rows<AssistantSession>(db, 'sessions', projectId);
+        return rows<AssistantSession>(db, 'sessions', projectId).filter(s=>!child(db,s.id));
     }
     finally {
         db.close();
@@ -205,7 +396,9 @@ export function createLocalCaseAssistantStore(config: {
         db.close();
     } }
     async function saveAttempt(attempt: AssistantAttempt) { transaction(db => { const session = get<AssistantSession>(db, 'sessions', attempt.session_id); if (!same(session.source, attempt.authorization.source.owner))
-        assistantFailure('FORBIDDEN'); const old = db.prepare('SELECT * FROM attempts WHERE id=?').get(attempt.id); if (old) {
+        assistantFailure('FORBIDDEN'); const relation=child(db,session.id),grant=attempt.authorization.collaboration;
+        if(relation?(!grant||grant.child_session_id!==session.id||grant.parent_session_id!==relation.parent_session_id||grant.kind!==relation.kind||!same(attempt.authorization.source,relation.source)||attempt.authorization.baseline_decision_id!==relation.baseline_decision_id):!!grant)assistantFailure('FORBIDDEN');
+        const old = db.prepare('SELECT * FROM attempts WHERE id=?').get(attempt.id); if (old) {
         const prior = decode<AssistantAttempt>(old);
         if (!same(prior.authorization, attempt.authorization) || !['Running', 'Waiting'].includes(prior.status) && !same(prior, attempt))
             assistantFailure('FORBIDDEN');
@@ -216,7 +409,7 @@ export function createLocalCaseAssistantStore(config: {
         assistantFailure('INTERRUPTED'); const attempt = get<AssistantAttempt>(db, 'attempts', event.attempt_id); if (event.kind !== 'status' && !['Running', 'Waiting'].includes(attempt.status) || attempt.session_id !== sessionId || event.source_revision !== attempt.authorization.source.owner.revision_id)
         assistantFailure('FORBIDDEN'); write(db, 'events', event.id, sessionId, event); }); }
     async function saveDraft(draft: AssistantDraft, signal?: AbortSignal) { transaction(db => { if (signal?.aborted)
-        assistantFailure('INTERRUPTED'); const attempt = get<AssistantAttempt>(db, 'attempts', draft.attempt_id); if (draft.manual_base_id) {
+        assistantFailure('INTERRUPTED'); if(child(db,draft.session_id))assistantFailure('FORBIDDEN');const attempt = get<AssistantAttempt>(db, 'attempts', draft.attempt_id); if (draft.manual_base_id) {
         const formal = get<FormalDecision>(db, 'decisions', draft.manual_base_id), session = get<AssistantSession>(db, 'sessions', draft.session_id), origin = get<AssistantDraft>(db, 'drafts', `${formal.draft_id}:${formal.draft_version}`);
         if (!same(session.source, formal.source) || origin.attempt_id !== draft.attempt_id || draft.baseline_decision_id !== formal.id || draft.source_revision !== formal.source.revision_id)
             assistantFailure('FORBIDDEN');
@@ -322,5 +515,5 @@ export function createLocalCaseAssistantStore(config: {
         return; transaction(db => { for (const attempt of rows<AssistantAttempt>(db, 'attempts'))
         if (['Running', 'Waiting'].includes(attempt.status))
             write(db, 'attempts', attempt.id, attempt.session_id, { ...attempt, status: 'Interrupted', ended_at: at, waiting_deadline: null, reason: 'application_closed' }, true); }); }
-    return { readSource, listSessions, createSession, readSession, saveAttempt, appendEvent, saveDraft, findFormalDraft, formalHistory, adopt, interruptAll };
+    return { readLifecycle,closeFamily,reopenSession,readParentCollaboration,returnChild,failChildReturn,reviewChild,childResults,finishChild,readChild,createChild,readSource, listSessions, createSession, readSession, saveAttempt, appendEvent, saveDraft, findFormalDraft, formalHistory, adopt, interruptAll };
 }

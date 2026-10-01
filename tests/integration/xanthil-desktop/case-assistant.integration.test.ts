@@ -166,7 +166,7 @@ for(const status of ['Running','Waiting'] as const)for(const exit of ['close','c
 
 test('VUI02 AC-06 real SQLite reply SQLITE_BUSY safely fails and explicit continuation preserves history',async t=>withIsolatedProject(async root=>{
  const {DatabaseSync}=await import('node:sqlite');const baseline=await completedCase(root),store=createLocalCaseAssistantStore({projectRoot:root});let calls=0,injections=0;
- const app=createCaseAssistantApplication({store,runtime:{async turn(){calls++;return {provider:config.provider,model:config.model,cost_microunits:0,output:{kind:'question',text:'合成后续问题'}};}},config:{...config,limits:{...config.limits,waiting_ms:80}},clock:()=>new Date()});t.after(()=>app.close());
+ const app=createCaseAssistantApplication({store,runtime:{async turn(){calls++;return {provider:config.provider,model:config.model,cost_microunits:0,output:{kind:'question',text:'合成后续问题'}};}},config:{...config,limits:{...config.limits,waiting_ms:80}},clock:()=>new Date()});try{
  const linked=await app.link(baseline.owner,'后续回复失败',randomUUID()),id=linked.session.id,auth=await app.prepare(id,'初始任务');await app.start(id,auth.id,true);
  const before=await eventually(()=>app.read(id),p=>p.attempts.at(-1)?.status==='Waiting');
  const prepare=DatabaseSync.prototype.prepare;
@@ -175,13 +175,15 @@ test('VUI02 AC-06 real SQLite reply SQLITE_BUSY safely fails and explicit contin
  const failed=await app.read(id);assert.equal(failed.attempts.at(-1)?.status,'Failed','reply persistence failure must not strand Waiting');assert.equal(injections,1);assert.equal(calls,1);assert.equal(failed.events.some(e=>e.text==='未保存回复'),false);assert.deepEqual(failed.events.filter(e=>e.kind!=='status'),before.events.filter(e=>e.kind!=='status'));
  await new Promise(r=>setTimeout(r,100));assert.equal((await app.read(id)).attempts.at(-1)?.status,'Failed');assert.equal(calls,1);await assert.rejects(()=>app.send(id,'不能隐式重试'),/FORBIDDEN/);
  const next=await app.prepare(id,'显式继续');assert.deepEqual(next.selected_history,[]);await app.start(id,next.id,true);await eventually(()=>app.read(id),p=>p.attempts.at(-1)?.status==='Waiting');await app.stop(id);const recovered=await app.read(id);assert.equal(calls,2);assert.deepEqual(recovered.attempts.map(a=>a.status),['Failed','Stopped']);assert.deepEqual(recovered.drafts,[]);assert.deepEqual(recovered.decisions,[]);assert.deepEqual(recovered.reports,[]);
+ }finally{await app.close();}
 }));
 
 for(const terminal of ['deadline','stop'] as const)test(`VUI02 AC-06 ${terminal} wins while reply append is pending in real SQLite`,async t=>withIsolatedProject(async root=>{
  const baseline=await completedCase(root),store=createLocalCaseAssistantStore({projectRoot:root});let calls=0,release=()=>{},entered=()=>{};const gate=new Promise<void>(r=>{release=r;}),arrived=new Promise<void>(r=>{entered=r;});
- const app=createCaseAssistantApplication({store:{...store,async appendEvent(id,e,signal){if(e.text==='延迟回复'){entered();await gate;}return store.appendEvent(id,e,signal);}},runtime:{async turn(){calls++;return{provider:config.provider,model:config.model,cost_microunits:0,output:{kind:'question',text:'等待回答'}};}},config:{...config,limits:{...config.limits,waiting_ms:100}},clock:()=>new Date()});t.after(async()=>{release();await app.close();});
+ const app=createCaseAssistantApplication({store:{...store,async appendEvent(id,e,signal){if(e.text==='延迟回复'){entered();await gate;}return store.appendEvent(id,e,signal);}},runtime:{async turn(){calls++;return{provider:config.provider,model:config.model,cost_microunits:0,output:{kind:'question',text:'等待回答'}};}},config:{...config,limits:{...config.limits,waiting_ms:100}},clock:()=>new Date()});try{
  const linked=await app.link(baseline.owner,'回复竞态',randomUUID()),id=linked.session.id,auth=await app.prepare(id,'初始任务');await app.start(id,auth.id,true);await eventually(()=>app.read(id),p=>p.attempts.at(-1)?.status==='Waiting');
  const sending=app.send(id,'延迟回复');const settled=sending.catch(()=>undefined);await arrived;
  if(terminal==='stop')await app.stop(id);else await new Promise(r=>setTimeout(r,140));
  const p=await app.read(id);assert.equal(p.attempts.at(-1)?.status,terminal==='stop'?'Stopped':'WaitExpired');release();await settled;assert.equal(calls,1);const final=await app.read(id);assert.equal(final.events.some(e=>e.text==='延迟回复'),false);assert.deepEqual(final.drafts,[]);assert.deepEqual(final.decisions,[]);assert.deepEqual(final.reports,[]);
+ }finally{release();await app.close();}
 }));

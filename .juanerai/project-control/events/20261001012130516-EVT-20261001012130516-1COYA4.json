@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001012130516-1COYA4",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T01:21:30.516Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "进入Subagent增量实现；Fork原生整项仍待修正后重跑，无完整候选或验收声明。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,3 +1,4 @@
+import type {ChildRelation,ChildPreview,ChildResult,ChildResultValue,ResultTarget,ChildDelivery,ChildReview,ParentCollaboration,CollaborationLifecycle} from '../contracts/case-collaboration.ts';
 import type { AssistantSource, AssistantSession, AssistantAttempt, AssistantEvent, AssistantDraft, FormalDecision, AssistantReport, AssistantTurn, AssistantTurnResult } from '../contracts/case-assistant.ts';
 import type { OwnerRef } from '../contracts/xanthil-desktop-ipc.ts';
 export type AssistantHistory = Readonly<{
@@ -7,6 +8,17 @@ export type AssistantHistory = Readonly<{
     drafts: readonly AssistantDraft[];
 }>;
 export interface CaseAssistantStore {
+    readLifecycle(id:string):Promise<CollaborationLifecycle>;
+    closeFamily(id:string,at:string,explicitClose?:boolean):Promise<readonly string[]>;
+    reopenSession(id:string,epoch:number):Promise<CollaborationLifecycle>;
+    readParentCollaboration(id:string):Promise<ParentCollaboration>;
+    returnChild(id:string,target:ResultTarget,commandId:string,at:string,source:AssistantSource,signal:AbortSignal):Promise<ChildDelivery>;
+    failChildReturn(id:string,target:ResultTarget,signal:AbortSignal):Promise<void>;
+    reviewChild(id:string,target:ResultTarget,commandId:string,disposition:'adopted'|'declined',reason:string,at:string,source:AssistantSource,signal:AbortSignal):Promise<ChildReview>;
+    childResults(id:string):Promise<readonly ChildResult[]>;
+    finishChild(attempt:AssistantAttempt,value:ChildResultValue,signal:AbortSignal):Promise<ChildResult>;
+    readChild(id:string):Promise<ChildRelation|null>;
+    createChild(commandId:string,session:AssistantSession,preview:ChildPreview,signal:AbortSignal,assertAdmission?:()=>void):Promise<ChildRelation>;
     readSource(owner: OwnerRef): Promise<AssistantSource>;
     listSessions(projectId: string): Promise<readonly AssistantSession[]>;
     createSession(commandId: string, session: AssistantSession, source: AssistantSource): Promise<AssistantSession>;

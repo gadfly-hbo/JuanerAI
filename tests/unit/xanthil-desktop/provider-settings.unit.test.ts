@@ -1,3 +1,4 @@
+import {installCollaborationClose} from '../../../apps/desktop/collaboration-window-close.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createProviderSettings } from '../../../packages/application/provider-settings.ts';
@@ -67,15 +68,15 @@ test('F3 issued save commits honestly after cancel, without pretending rollback'
 
 test('F1 every Dock-created Main window revokes a delayed probe and closes model work',async()=>{
  const {readFileSync}=await import('node:fs'),{stripTypeScriptTypes}=await import('node:module'),{runInNewContext}=await import('node:vm'),{EventEmitter}=await import('node:events'),path=await import('node:path'),{fileURLToPath}=await import('node:url');
- const windows:Window[]=[];let settings:ReturnType<typeof createProviderSettings>,closes=0,release!:()=>void;
+ const windows:Window[]=[];let settings:ReturnType<typeof createProviderSettings>,closes=0,confirmations=0,release!:()=>void;
  const app=Object.assign(new EventEmitter(),{isPackaged:true,requestSingleInstanceLock:()=>true,whenReady:()=>Promise.resolve(),quit(){}});
- class Window extends EventEmitter{destroyed=false;webContents={mainFrame:{},on(){},setWindowOpenHandler(){},session:{setPermissionCheckHandler(){},setPermissionRequestHandler(){}}};constructor(){super();windows.push(this);}static getAllWindows(){return windows.filter(w=>!w.destroyed);}loadFile(){return Promise.resolve();}focus(){}}
+ class Window extends EventEmitter{destroyed=false;webContents={mainFrame:{},on(){},setWindowOpenHandler(){},session:{setPermissionCheckHandler(){},setPermissionRequestHandler(){}}};constructor(){super();windows.push(this);}static getAllWindows(){return windows.filter(w=>!w.destroyed);}loadFile(){return Promise.resolve();}focus(){}isDestroyed(){return this.destroyed;}close(){let prevented=false;this.emit('close',{preventDefault(){prevented=true;}});if(!prevented){this.destroyed=true;this.emit('closed');}}}
  const code=stripTypeScriptTypes(readFileSync('apps/desktop/main.ts','utf8'),{mode:'strip'}).replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'').replaceAll('import.meta.url',JSON.stringify('file:///synthetic/apps/desktop/main.ts'));
- runInNewContext(code,{...await import('../../../apps/desktop/development.ts'),electron:{app,BrowserWindow:Window,ipcMain:{handle(){}}},...path,fileURLToPath,URL,process:{execPath:'/synthetic/Xanthil',resourcesPath:'/synthetic/Resources',env:{}},setTimeout,clearTimeout,loadPersonalCaseAssistantActivation:()=>null,createMacOsCredentialStore:()=>({async read(){return {status:'found',key:'synthetic-window'};},async save(){assert.fail('no write');},async delete(){assert.fail();}}),probeLocalXiaomi:()=>new Promise<void>(r=>release=r),createProviderSettings:(v:Parameters<typeof createProviderSettings>[0])=>(settings=createProviderSettings(v)),createPersonalXanthilDesktopProfile:()=>({openProject(){},closeModelWork(){closes++;},getCaseAssistant:()=>({async close(){closes++;}})}),createCaseAssistantHandler:()=>()=>{},constants:{}});
+ runInNewContext(code,{installCollaborationClose,...await import('../../../apps/desktop/development.ts'),electron:{app,BrowserWindow:Window,ipcMain:{handle(){}},dialog:{async showMessageBox(){confirmations++;return {response:0};}}},...path,fileURLToPath,URL,process:{execPath:'/synthetic/Xanthil',resourcesPath:'/synthetic/Resources',env:{}},setTimeout,clearTimeout,loadPersonalCaseAssistantActivation:()=>null,createMacOsCredentialStore:()=>({async read(){return {status:'found',key:'synthetic-window'};},async save(){assert.fail('no write');},async delete(){assert.fail();}}),probeLocalXiaomi:()=>new Promise<void>(r=>release=r),createProviderSettings:(v:Parameters<typeof createProviderSettings>[0])=>(settings=createProviderSettings(v)),createPersonalXanthilDesktopProfile:()=>({hasModelWork:()=>settings.status().busy,openProject(){},closeModelWork(){closes++;},getCaseAssistant:()=>({async close(){closes++;}})}),createCaseAssistantHandler:()=>()=>{},constants:{}});
  await new Promise(r=>setImmediate(r));
  for(let i=0;i<3;i++){
   const window=windows[i],pending=settings!.request({operation:'test',key:'synthetic-new'});await new Promise(r=>setImmediate(r));
-  window.emit('close');window.destroyed=true;window.emit('closed');release();const result=await pending;
+  window.close();await new Promise(r=>setImmediate(r));assert.equal(confirmations,0,'connection probe has no collaboration close confirmation');assert.equal(window.destroyed,true,'native close awaits model cleanup');release();const result=await pending;
   assert.equal(result.ok,false,`window ${i+1} must invalidate late proof`);assert.equal(result.proof,undefined);assert.equal(closes,i+1);
   app.emit('activate');await new Promise(r=>setImmediate(r));
  }
@@ -86,4 +87,16 @@ for(const temporary of ['NETWORK_UNAVAILABLE','CONNECTION_TIMEOUT','QUOTA_EXCEED
  f.settings.reportTaskFailure(temporary,generation);await f.settings.request({operation:'refresh'});let lease=await f.settings.access.acquire(generation);lease.release();
  f.settings.reportTaskFailure('CREDENTIAL_INVALID',generation);const proof=await f.settings.request({operation:'test',key:newKey});assert.equal((await f.settings.request({operation:'save',key:newKey,proof:proof.proof!})).ok,true);
  f.settings.reportTaskFailure('CREDENTIAL_INVALID',generation);assert.equal(f.settings.status().state,'configured');lease=await f.settings.access.acquire(f.settings.status().generation);assert.equal(f.settings.taskCredential(),newKey);lease.release();
+});
+
+
+test('native fixture cleanup waits for captured child exit and records TERM/KILL as failure',async()=>{
+ const {spawn}=await import('node:child_process'),{closeOwnedNativeProcess}=await import('../../fixtures/case-assistant/owned-native-cleanup.ts');
+ const once=(emitter:{once(event:string,listener:()=>void):unknown},event:string)=>new Promise<void>(resolve=>{emitter.once(event,resolve);});
+ const child=spawn(process.execPath,['-e',"process.on('SIGTERM',()=>{});process.stdout.write('ready');setInterval(()=>{},1000)"],{env:{PATH:'/usr/bin:/bin'},stdio:['ignore','pipe','pipe']});
+ await once(child.stdout!,'data');let record:any;
+ try{await assert.rejects(()=>closeOwnedNativeProcess(child,async()=>{},async value=>{record=value;},100),/graceful exit timeout/);assert.deepEqual(record.signals,['SIGTERM','SIGKILL']);assert.equal(record.running,false);assert.equal(child.signalCode,'SIGKILL');assert.equal(record.pid,child.pid);assert.ok(record.error);}
+ finally{if(child.exitCode===null&&child.signalCode===null){child.kill('SIGKILL');await once(child,'exit');}}
+ const normal=spawn(process.execPath,['-e',"process.stdin.resume();process.stdout.write('ready');process.stdin.once('data',()=>process.exit(0))"],{env:{PATH:'/usr/bin:/bin'},stdio:['pipe','pipe','pipe']});await once(normal.stdout!,'data');
+ await closeOwnedNativeProcess(normal,async()=>{normal.stdin!.write('close');},async value=>{record=value;});assert.deepEqual(record.signals,[]);assert.equal(record.exit,0);assert.equal(record.error,null);
 });

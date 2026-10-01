@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001051038807-QX4II4",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T05:10:38.807Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "独立复查关闭所有实现发现，仅剩F6用户权限决定",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

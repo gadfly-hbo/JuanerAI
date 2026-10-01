@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930234034528-FM2OR9",
+  "event_type": "status_updated",
+  "occurred_at": "2026-09-30T23:40:34.528Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Worker runtime verified; engineering contract preparation active",
+  "status_after": "active",
+  "evidence_refs": []
+}

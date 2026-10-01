@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001054608323-9IM7FC",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-01T05:46:08.323Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Authorized Keychain passed; full run failed on obsolete helper-absence test precondition",
+  "status_after": "active",
+  "evidence_refs": []
+}

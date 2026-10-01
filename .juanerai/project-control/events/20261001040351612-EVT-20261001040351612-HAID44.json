@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001040351612-HAID44",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T04:03:51.612Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "完整获准原生矩阵和独立反例复跑GREEN",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+const modulePath='../../../apps/desktop/collaboration-window-close.ts';
+test('UI-FS-13 native close coordination preserves cancel and awaits durable family close before destroying windows',async()=>{
+ const {installCollaborationClose}=await import(modulePath);let listener!:(e:{preventDefault():void})=>void,active=true,choice=false,blocked=0,persisted=0,closed=0,errors=0,children=0;
+ let release!:()=>void;const gate=new Promise<void>(r=>release=r);
+ const window={on(_event:string,fn:typeof listener){listener=fn;},close(){closed++;listener({preventDefault(){blocked++;}});}};
+ installCollaborationClose(window,{hasWork:()=>active,confirm:async()=>choice,persist:async()=>{persisted++;await gate;},afterPersist:()=>{children++;},failed:async()=>{errors++;}});
+ listener({preventDefault(){blocked++;}});await new Promise(r=>setTimeout(r,0));assert.equal(persisted,0);assert.equal(closed,0);assert.equal(children,0);
+ choice=true;listener({preventDefault(){blocked++;}});await new Promise(r=>setTimeout(r,0));assert.equal(persisted,1);assert.equal(closed,0);listener({preventDefault(){blocked++;}});assert.equal(persisted,1,'duplicate close does not race');
+ release();await new Promise(r=>setTimeout(r,0));assert.equal(closed,1);assert.equal(children,1);assert.equal(blocked,3);assert.equal(errors,0);
+});
+test('UI-FS-13 persistence failure keeps native window visible and allows explicit retry',async()=>{
+ const {installCollaborationClose}=await import(modulePath);let listener!:(e:{preventDefault():void})=>void,closed=0,errors=0,fail=true;
+ const window={on(_event:string,fn:typeof listener){listener=fn;},close(){closed++;listener({preventDefault(){assert.fail('committed close must finish');}});}};
+ installCollaborationClose(window,{hasWork:()=>false,confirm:async()=>{assert.fail('idle close needs no stop confirmation');},persist:async()=>{if(fail)throw Error('synthetic write failure');},afterPersist:()=>{},failed:async()=>{errors++;}});
+ listener({preventDefault(){}});await new Promise(r=>setTimeout(r,0));assert.equal(closed,0);assert.equal(errors,1);fail=false;listener({preventDefault(){}});await new Promise(r=>setTimeout(r,0));assert.equal(closed,1);
+});
+
+for(const rootEvent of ['render-process-gone','close'])test('F2 actual Main child/root renderer loss fences once, including destroyed after crash: '+rootEvent,async()=>{
+ const {readFileSync}=await import('node:fs'),{stripTypeScriptTypes}=await import('node:module'),{runInNewContext}=await import('node:vm'),{EventEmitter}=await import('node:events'),path=await import('node:path'),{fileURLToPath}=await import('node:url');const {installCollaborationClose}=await import(modulePath);
+ const windows:Window[]=[];let rootCloses=0;const childCloses:string[]=[];const app=Object.assign(new EventEmitter(),{isPackaged:true,requestSingleInstanceLock:()=>true,whenReady:()=>Promise.resolve(),quit(){}});
+ class Window extends EventEmitter{destroyed=false;contents=Object.assign(new EventEmitter(),{mainFrame:{},setWindowOpenHandler(){},session:{setPermissionCheckHandler(){},setPermissionRequestHandler(){}}});get webContents(){if(this.destroyed)throw Error('Object has been destroyed');return this.contents;}constructor(){super();windows.push(this);}static getAllWindows(){return windows.filter(w=>!w.destroyed);}loadFile(){return Promise.resolve();}focus(){}isDestroyed(){return this.destroyed;}destroy(){if(this.destroyed)return;this.destroyed=true;this.emit('closed');this.contents.emit('destroyed');}close(){let prevented=false;this.emit('close',{preventDefault(){prevented=true;}});if(!prevented)this.destroy();}}
+ const application={async readCollaboration(id:string){return {relation:{kind:'subagent'},session:{title:id}};},async lifecycle(){return {open:true,epoch:0};},hasWork(){return true;},async closeSession(id:string){childCloses.push(id);}};
+ const code=stripTypeScriptTypes(readFileSync('apps/desktop/main.ts','utf8'),{mode:'strip'}).replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'').replaceAll('import.meta.url',JSON.stringify('file:///synthetic/apps/desktop/main.ts'))+'\nglobalThis.openTestChild=openChildWindow;';
+ const context:any={installCollaborationClose,...await import('../../../apps/desktop/development.ts'),electron:{app,BrowserWindow:Window,ipcMain:{handle(){}},dialog:{async showMessageBox(){return {response:1};}}},...path,fileURLToPath,URL,process:{execPath:'/synthetic/Xanthil',resourcesPath:'/synthetic/Resources',env:{}},setTimeout,clearTimeout,setImmediate,loadPersonalCaseAssistantActivation:()=>null,probeLocalXiaomi:async()=>{},createMacOsCredentialStore:()=>({}),createProviderSettings:()=>({initialize(){},request(){},close(){}}),createPersonalXanthilDesktopProfile:()=>({openProject(){},getCaseAssistant:()=>application,closeModelWork(){rootCloses++;return Promise.resolve();}}),createCaseAssistantHandler:()=>()=>{},constants:{}};
+ runInNewContext(code,context);await new Promise(r=>setImmediate(r));await context.openTestChild(application,'owned-child',()=>true);const child=windows[1];child.webContents.emit('render-process-gone',{}, {reason:'killed'});assert.deepEqual(childCloses,['owned-child'],'fence starts at native event before any await');child.webContents.emit('destroyed');await new Promise(r=>setImmediate(r));assert.deepEqual(childCloses,['owned-child']);assert.equal(rootCloses,0,'child loss preserves other family/root work');
+ await context.openTestChild(application,'destroyed-child',()=>true);const destroyed=windows.at(-1)!;assert.doesNotThrow(()=>destroyed.destroy(),'direct destruction must fence without dereferencing a dead BrowserWindow');assert.deepEqual(childCloses,['owned-child','destroyed-child']);await new Promise(r=>setImmediate(r));
+ await context.openTestChild(application,'remaining-child',()=>true);
+ if(rootEvent==='close'){windows[0].close();await new Promise(r=>setImmediate(r));}else{windows[0].webContents.emit('render-process-gone',{}, {reason:'crashed'});assert.equal(rootCloses,1);windows[0].webContents.emit('destroyed');}await new Promise(r=>setImmediate(r));assert.equal(rootCloses,1);assert.equal(windows[0].isDestroyed(),true);assert.equal(windows.at(-1)!.isDestroyed(),true);assert.deepEqual(childCloses,['owned-child','destroyed-child','remaining-child']);
+});

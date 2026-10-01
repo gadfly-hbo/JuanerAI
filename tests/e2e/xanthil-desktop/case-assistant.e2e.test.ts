@@ -12,14 +12,15 @@ const require=createRequire(import.meta.url);
 async function compiledProviderSettings(dir:string){const source=await readFile(new URL('../../../apps/desktop/provider-settings.tsx',import.meta.url),'utf8'),compiled=ts.transpileModule(source,{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText;const text=compiled.replace(/from ['\"](react(?:\/jsx-runtime)?)['\"]/g,(_m,s)=>`from ${JSON.stringify(pathToFileURL(require.resolve(s)).href)}`);const file=join(dir,'provider-settings-'+crypto.randomUUID()+'.mjs');await writeFile(file,text,{flag:'wx'});return pathToFileURL(file).href;}
 
 
-test('UI-03/05/19/20 initial Quick surface offers Case association, explicit unauthorized Provider and Preview only controls',async()=>{
+test('UI-03/05/19/20 initial Quick surface offers Case association, explicit unauthorized Provider and gated collaboration controls',async()=>{
  const path=new URL('../../../apps/desktop/case-assistant-workspace.tsx',import.meta.url),source=await readFile(path,'utf8');
  const compiled=ts.transpileModule(source,{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText;
  let emitted=compiled.replace(/from ['"](react(?:\/jsx-runtime)?)['"]/g,(_m,s)=>`from ${JSON.stringify(pathToFileURL(require.resolve(s)).href)}`).replace(/from ['"]\.\.\/\.\.\/packages\/([^'"]+)['"]/g,(_m,s)=>`from ${JSON.stringify(new URL('../../../packages/'+s,import.meta.url).href)}`);
  const dir=join(tmpdir(),'case-assistant-render-test');await mkdir(dir,{recursive:true});emitted=emitted.replace("'./provider-settings.tsx'",JSON.stringify(await compiledProviderSettings(dir)));const file=join(dir,`component-${Date.now()}.mjs`);await writeFile(file,emitted);
  const {CaseAssistantWorkspace}=await import(pathToFileURL(file).href);let calls=0;
  const html=renderToStaticMarkup(createElement(CaseAssistantWorkspace,{api:{request(){calls++;throw new Error('no implicit call');}},projectId:null,sources:[],initial:null,onChange(){},onOpenSource(){},onChooseProject(){}}));
- for(const label of ['关联一个 Case','模型未配置','Case 决策与预期 v1.0','Fork','Subagent','Preview'])assert.ok(html.includes(label),`visible ${label}`);assert.equal(calls,0);
+ for(const label of ['关联一个 Case','模型未配置','Case 决策与预期 v1.0','Fork','Subagent'])assert.ok(html.includes(label),`visible ${label}`);assert.equal(calls,0);assert.doesNotMatch(html,/Fork <span>Preview<\/span>/,'AC-FS-01 real collaboration entry replaces obsolete Preview');assert.match(html,/<button[^>]*disabled[^>]*>Fork<\/button>/,'unlinked root cannot create Fork');
+ assert.doesNotMatch(html,/Subagent <span>Preview<\/span>/,'AC-FS-05 task entry replaces obsolete Preview');assert.match(html,/<button[^>]*disabled[^>]*>Subagent<\/button>/,'unlinked root cannot create Subagent');
  const unconfigured=html.match(/<p class="ca-environment">[\s\S]*?<\/p>/)?.[0]??'';
  assert.match(unconfigured,/<button[^>]*>配置模型<\/button>/,'PS-01 unconfigured callout directly opens settings before a Project or session exists');
 
@@ -27,6 +28,7 @@ test('UI-03/05/19/20 initial Quick surface offers Case association, explicit una
  const credits=renderToStaticMarkup(createElement(CaseAssistantWorkspace,{api:{request(){throw new Error('no implicit call');}},projectId:null,sources:[],initial,onChange(){},onOpenSource(){},onChooseProject(){}}));
  for(const label of ['Token Plan Credits','保守上界，非账单','42000 / 49152000','共享最多 8 次请求','16384','2048','12000','60 秒','300 秒','120 秒','600 秒','不购买、不充值、不回退到 PAYG'])assert.ok(credits.includes(label),`ACTIVATE-003 visible ${label}`);
  assert.doesNotMatch(credits,/费用：/);
+ assert.match(credits,/>关闭父会话<\/button>/,'F1 qualified parent exposes explicit family close');
 });
 
 // Compile actual presentation functions, omitting only the browser mount bootstrap.
@@ -41,6 +43,32 @@ async function reviewComponents(){
  };
  const workspace=await compile('case-assistant-workspace.tsx');return {...await import(workspace),...await import(await compile('renderer.tsx','\nexport {ProfessionalDecision,ProfessionalControl};\n',workspace))};
 }
+test('UI-FS-04/05/07 child workspace presents independent authorization, stop and result controls',async()=>{
+ const {ChildAssistantWorkspace}=await reviewComponents();
+ const html=renderToStaticMarkup(createElement(ChildAssistantWorkspace,{api:{request(){throw Error('no implicit render call');}},sessionId:crypto.randomUUID()}));
+ for(const label of ['返回父对话','子任务文本','停止','查看任务授权','自己的历史','完整结果'])assert.ok(html.includes(label),`child control ${label}`);
+ assert.match(html,/<div class="ca-composer-box"><textarea[^>]*aria-label="子任务文本"/,'child reuses the accepted full-width composer');
+ assert.doesNotMatch(html,/采纳到 Case|配置模型|关联一个 Case/);
+});
+test('UI-FS-13 root history selection explicitly reopens only that parent without model or delivery',async()=>{
+ const {withFork}=await import('../../fixtures/case-assistant/collaboration.ts');const {createCaseAssistantHandler}=await import('../../../apps/desktop/case-assistant-main.ts');
+ await withFork('root-reopen-ui',async s=>{
+  await s.app.closeSession(s.parent.session.id);const handler=createCaseAssistantHandler({senderPolicy:()=>true,getApplication:()=>s.app,exportReport:async()=>assert.fail('no report effect')});const {openRootConversation}=await reviewComponents();
+  const p=await openRootConversation({request:(input:unknown)=>handler(null,input)},s.parent.session.id);assert.equal(p.session.id,s.parent.session.id);assert.equal((await s.app.lifecycle(s.parent.session.id)).open,true);assert.equal((await s.app.lifecycle(s.child.session.id)).open,false);assert.equal(s.calls.length,1);assert.equal((await s.app.readParent(s.parent.session.id)).deliveries.length,0);
+ });
+});
+test('UI-FS-10/11 parent presents returned version for explicit review and MODEL material selection',async()=>{
+ const {withFork}=await import('../../fixtures/case-assistant/collaboration.ts');
+ await withFork('parent-review-ui',async s=>{
+  await s.start();await s.wait(s.child.session.id,'Succeeded');const result=(await s.app.readCollaboration(s.child.session.id)).results[0],target={result_id:result.id,result_version:result.version,result_sha256:result.sha256};
+  await s.app.returnResult(s.child.session.id,target,crypto.randomUUID());
+  const {ParentCollaborationResults}=await reviewComponents();
+  const render=async()=>renderToStaticMarkup(createElement(ParentCollaborationResults,{api:{request(){throw Error('render cannot mutate');}},parent:await s.app.read(s.parent.session.id),state:await s.app.readParent(s.parent.session.id),selected:[],onSelect(){},onRefresh(){}}));
+  const pending=await render();for(const x of ['待审子结果','采纳为材料','不采纳',result.value.summary,result.sha256])assert.ok(pending.includes(x),x);
+  await s.app.reviewResult(s.parent.session.id,target,crypto.randomUUID(),'adopted','合成人工核对',true);
+  const adopted=await render();assert.match(adopted,/已采纳子材料/);assert.match(adopted,/MODEL/);assert.match(adopted,/<input[^>]*type="checkbox"[^>]*>/);assert.doesNotMatch(adopted,/<input[^>]*checked/,'material is unselected by default');assert.doesNotMatch(adopted,/采纳到 Case/);
+ });
+});
 async function withReviewRecord(work:(value:any)=>Promise<void>){
  const {withIsolatedProject}=await import('../../fixtures/xanthil-desktop/desktop-contract-drivers.ts');const {completedCase}=await import('../../fixtures/case-assistant/completed-case.ts');const {createLocalCaseAssistantStore}=await import('../../../adapters/storage-local/case-assistant.ts');const {createCaseAssistantApplication}=await import('../../../packages/application/case-assistant.ts');const {decision,config}=await import('../../fixtures/case-assistant/fixtures.ts');
  return withIsolatedProject(async root=>{const baseline=await completedCase(root),store=createLocalCaseAssistantStore({projectRoot:root}),source=await store.readSource(baseline.owner),fields={...decision,choice:'no_action' as const,candidate_id:null,evidence_refs:source.evidence_refs,finding_refs:[source.finding_id]};
@@ -71,3 +99,13 @@ test('VUI04 UI-14/16 draft report caption is truthful across pending adopted rej
  revised=await app.revise(p.session.id,p.current_decision_id);const rejected=await app.reject(p.session.id,revised.drafts.at(-1).id,1,true,'不采纳');assert.match(render(rejected),/草案已拒绝.*未新增报告/);
  const reopened={...rejected,...await store.readSession(p.session.id)};assert.equal(render(reopened),render(rejected));assert.equal(reopened.reports.length,1);
 }));
+
+test('UI-FS-05/11 prepared parent material disclosure is readable, exact and absent when unselected',async()=>{
+ const {withFork}=await import('../../fixtures/case-assistant/collaboration.ts');await withFork('readable-parent-material',async s=>{
+  await s.start();await s.wait(s.child.session.id,'Succeeded');const r=(await s.app.readCollaboration(s.child.session.id)).results[0],target={result_id:r.id,result_version:r.version,result_sha256:r.sha256};await s.app.returnResult(s.child.session.id,target,crypto.randomUUID());await s.app.reviewResult(s.parent.session.id,target,crypto.randomUUID(),'adopted','合成人工核对，仅供后续选择',true);const state=await s.app.readParent(s.parent.session.id),{ParentMaterialDisclosure,ChildContextSelection}=await reviewComponents();
+  const empty=await s.app.prepareParent(s.parent.session.id,'继续父工作',[],[],[],false),selected=await s.app.prepareParent(s.parent.session.id,'继续父工作',[],[],[state.materials[0].id],false);
+  const render=(authorization:unknown)=>renderToStaticMarkup(createElement(ParentMaterialDisclosure,{authorization}));assert.match(render(empty),/未选择子材料，本次不发送/);assert.doesNotMatch(render(empty),new RegExp(r.value.summary));
+  const html=render(selected);for(const text of [r.value.summary,r.value.limitations[0],r.value.unknowns[0],r.id,r.sha256,r.attempt_id,r.child_session_id,r.source.owner.revision_id,state.materials[0].id,'合成人工核对，仅供后续选择','MODEL'])assert.ok(html.includes(text),text);assert.doesNotMatch(html,/<details|<pre/,'required content is directly readable, independent of JSON disclosure');assert.equal(s.calls.length,2,'rendering and local preview do not call model');
+  const p=await s.app.readCollaboration(s.child.session.id),choices=renderToStaticMarkup(createElement(ChildContextSelection,{projection:p,history:[],results:[],disabled:false,onHistory(){},onResult(){}}));for(const text of [r.sha256,r.attempt_id,r.source.case_name,r.source.owner.revision_id,'原 Attempt','消息状态','结果 v1'])assert.ok(choices.includes(text),text);assert.doesNotMatch(choices,/<input[^>]*checked/);assert.equal((await s.app.read(s.parent.session.id)).attempts.length,1);
+ });
+});
