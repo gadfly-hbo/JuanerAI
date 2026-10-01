@@ -25,6 +25,14 @@ Required user Product Acceptance is separate and must precede transitions that
 depend on it. Product completion, merge and deployment are not implied by
 engineering verification.
 
+At Change completion, delivery includes the full Blueprint capability map,
+affected capability delta, remaining gaps, evidence and preserved snapshot under
+the sole policy's Blueprint Capability Coverage section. Update the cumulative
+register; do not count planned/in-progress scope as delivered or elevate a
+single accepted scenario to a general capability. Capability-level acceptance
+claims require their own scoped, cross-Change evidence, not another process
+stage. Unrelated capabilities may remain partial or unknown.
+
 Spec Gate, TDD_READY dispatch approval and a standalone Test Asset Retirement
 Gate are not prerequisites in the adopted continuous path. Their old records
 are preserved. Pure refactors require pre/post GREEN/equivalence; documentation

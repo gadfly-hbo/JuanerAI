@@ -41,6 +41,19 @@ Publication alone grants no engineering-state update or execution. Future Whitep
 user notification, versioned Blueprint approval, independent readiness review
 and rule integration.
 
+## Cumulative Blueprint capability coverage
+
+Use the [latest full capability map](capability-coverage/latest.md) for the
+six-plus-two landscape, current delta and gaps, and the
+[capability register](capability-coverage/register.md) for stable IDs, target
+users/value, capability-specific completion conditions and scope-qualified
+evidence. The [evidence index](capability-coverage/evidence.md) distinguishes
+accepted Change001/002/003 scopes from unverified older assets and future plans.
+Snapshots are linked from the map. These are delivery projections, not revised
+Blueprint scope, a parallel engineering board or authorization for deferred work.
+Maintenance and acceptance rules live only in the
+[sole execution policy](../governance/product-change-execution-policy.md#blueprint-capability-coverage).
+
 ## Second Xanthil Desktop Change — frozen product input
 
 The user passed the UI Gate for [Xanthil Case Assistant Product Plan v1.0](2026-09-28/xanthil-case-assistant-product-plan-v1.0.md) and its [incremental UI Contract v1.0](2026-09-28/xanthil-case-assistant-ui-contract-v1.0.md) on 2026-09-29. [Review 006](2026-09-28/reviews/xanthil-case-assistant-development-readiness-review-006.md) passed Product Plan Development-Readiness. The [UI Gate and Product Input Freeze record](2026-09-28/xanthil-case-assistant-ui-gate-and-product-input-freeze-v1.0.md) binds the decision and exact attachments. The user also selected this UI as the visual and interaction standard reference for future JuanerAI work; future affected contracts must state how they apply it.

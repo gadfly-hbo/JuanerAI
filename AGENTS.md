@@ -106,6 +106,13 @@ Dual-device product Changes follow the continuous-engineering default,
 adoption conditions and authority boundaries in
 `docs/governance/product-change-execution-policy.md`.
 
+When preparing or completing a Change, link its user story to the stable IDs in
+`docs/planning/capability-coverage/register.md`. At delivery, Mini updates and
+shows the full Blueprint coverage map, scoped delta, gaps and evidence, and
+preserves a Change snapshot under the sole execution policy's Blueprint
+Capability Coverage section. This is cumulative product visibility, not a new
+Gate, engineering board or permission to expand scope.
+
 Observable behavior changes follow the split state machine in
 `.ai-coding/state-machine.md`: Product Manager work ends at Product Input
 Freeze; Engineering Controller work begins at confirmed Engineering Intake and
