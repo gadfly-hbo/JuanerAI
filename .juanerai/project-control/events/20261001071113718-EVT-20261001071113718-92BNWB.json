@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001071113718-92BNWB",
+  "event_type": "archived",
+  "occurred_at": "2026-10-01T07:11:13.718Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Change003已通过PR #51集成与归档，云端CI通过、合并树一致、本地main已同步；保存最终回执。",
+  "status_after": "complete",
+  "evidence_refs": []
+}
