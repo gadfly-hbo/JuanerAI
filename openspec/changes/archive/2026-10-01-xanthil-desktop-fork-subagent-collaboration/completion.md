@@ -76,3 +76,18 @@ This is local uncommitted archive preparation. Independent review of the doc del
 and authorized Git preservation/integration remain with Engineering Controller.
 The product acceptance does not imply installation, release or real-provider
 quality acceptance, and this archive does not authorize a new Change.
+
+
+## PR51 CI contract repair — 2026-10-01
+
+Hosted run36826036926 at `978dc659d735bb63222ed8d29805111c2b470ffd` exposed a stale
+100-root test expectation after the accepted four-root Change003 addition. The
+bounded repair changes only `tools/harness/validation/run.test.mjs` plus these
+completion/verification appendices. The exact ordered104-root contract, previous
+negative assertions and runner behavior remain; added negatives cover each new root.
+See [verification](verification.md) for causal failure, invocation corrections and
+test-retirement rationale. Pinned Node26 complete CI contract suite now passes
+27/27 locally, with no skip. All historical failures remain at
+`worker/delivery-ci-001` under the preserved Change evidence root. Independent
+review and hosted CI rerun are pending; no worker Git operation or native/Keychain
+rerun occurred, and this addendum does not claim merge/integration success.

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001064525338-F6B2GF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T06:45:25.338Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Git交付首次CI失败已定位为旧100项断言与获批104项配置不一致；启动范围内修正。",
+  "status_after": "active",
+  "evidence_refs": []
+}

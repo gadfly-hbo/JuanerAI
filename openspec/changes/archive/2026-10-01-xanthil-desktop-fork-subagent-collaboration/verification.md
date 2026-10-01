@@ -1069,3 +1069,42 @@ The current baseline is [Case collaboration](../../../specs/case-collaboration/s
 No repeated canonical execution is needed for this doc delta. Git delivery remains
 with Engineering Controller; this worker performed no staging/commit/push/merge.
 No new Provider, business-data, installation or release authority is implied.
+
+
+## 2026-10-01 PR51 stale CI tuple correction
+
+Delivery head `978dc659d735bb63222ed8d29805111c2b470ffd`, hosted run36826036926,
+failed the CI contract suite before portable regression: currentRunnerTuple still
+expected100 roots, while accepted Change003 adds four ordered roots before the
+retained100. This is a stale test-contract failure, not a production behavior RED.
+User authorized only the test oracle and these delivery verification appendices.
+
+Smallest contract: recognize exactly the accepted104-root tuple using independent
+literals for the four Change003 entries, retaining the original100-root layout and
+all configuration/phase/argv/gate constraints. Reject omission, substitution,
+reordering and extras. The test now checks the explicit four-root prefix and shifts
+the existing appendix offset from43 to47. It preserves every original negative and
+adds omission/substitution/adjacent-swap checks for each of the four added roots.
+No test is removed, skipped or weakened; no runner/config/production change.
+
+Evidence on Mac mini under the existing Change root: `worker/delivery-ci-001/`.
+Hosted failure log is copied and hash-bound there. Local pinned Node26.0.0 RED
+`red-001` reproduces all seven104-vs100 failures (18 PASS/9 FAIL/exit1); two additional
+failures were missing JUANERAI_CI_NODE_GYP_ARCHIVE input. After the oracle correction,
+`green-001` had25 PASS/2 FAIL/exit1, only that missing-input pair. Both remain failed
+runs. No product fault or test waiver is inferred from the invocation omission.
+
+Reused the existing approved local node-gyp archive after exact SHA-512 verification;
+no download/install. With that explicit input, `green-002` runs the actual complete
+`node --test tools/harness/validation/*.test.mjs`: **27 PASS/0 FAIL/0 skip, exit0**.
+Full stdout/stderr, exit, environment, pinned executable hash and frozen test/config
+inputs are retained. These are local CI-contract results; hosted CI rerun remains
+Controller-owned and pending. Native/Keychain/full canonical were not rerun for this
+test-only correction; prior accepted runtime evidence remains unchanged.
+
+Test-asset-retirement rationale: the obsolete100-root expectation gains only the
+four already accepted Change003 roots. Prior appendices and every original negative
+remain, with twelve added mutation checks protecting the exact new prefix. This
+updates a current consumer's fixture contract without retiring acceptance coverage.
+`manifest.json`, `full.diff` and `HANDOFF_BACK.md` freeze the three-file delta for
+independent Validator. No Git mutation, board write or new product permission.
