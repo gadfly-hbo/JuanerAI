@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001045238390-2WO6WW",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T04:52:38.390Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "旧格式显式关闭原生及独立反例复跑GREEN",
+  "status_after": "active",
+  "evidence_refs": []
+}

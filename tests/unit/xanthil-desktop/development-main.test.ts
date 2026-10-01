@@ -1,3 +1,4 @@
+import {installCollaborationClose} from '../../../apps/desktop/collaboration-window-close.ts';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {readFileSync,mkdtempSync,realpathSync} from 'node:fs';
@@ -25,7 +26,7 @@ async function mainBoundary(packaged:boolean,compiled:unknown){
  }
  const env={JUANERAI_DESKTOP_DEV_ROOT:join(root,'dev'),XIAOMI_TOKEN_PLAN_CN_API_KEY:'synthetic-unusable',JUANERAI_CASE_ASSISTANT_ACTIVATION:'synthetic-invalid',MAIN_WINDOW_VITE_DEV_SERVER_URL:'http://evil.invalid'};
  const source=stripTypeScriptTypes(readFileSync('apps/desktop/main.ts','utf8'),{mode:'strip'}).replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'').replaceAll('import.meta.url',JSON.stringify('file:///synthetic/.vite/build/main.cjs'));
- runInNewContext(source,{...deployment,...path,fileURLToPath,URL,MAIN_WINDOW_VITE_DEV_SERVER_URL:compiled,electron:{app,BrowserWindow:Window,ipcMain:{handle:(name:string,fn:Function)=>handlers.set(name,fn)}},process:{execPath:'/production/Xanthil',resourcesPath:'/production/Resources',env},setTimeout,clearTimeout,validateXanthilDesktopRequest,createProviderSettings,loadPersonalCaseAssistantActivation:()=>{activationCalls++;return null;},createMacOsCredentialStore:(helper:string)=>{credentialHelpers.push(helper);return {async read(){return {status:'absent'};}};},probeLocalXiaomi:()=>assert.fail('no probe'),createPersonalXanthilDesktopProfile:()=>({openProject(){assert.fail('no project effect');},getCaseAssistant(){},closeModelWork(){}}),createCaseAssistantHandler:()=>()=>undefined});
+ runInNewContext(source,{installCollaborationClose,...deployment,...path,fileURLToPath,URL,MAIN_WINDOW_VITE_DEV_SERVER_URL:compiled,electron:{app,BrowserWindow:Window,ipcMain:{handle:(name:string,fn:Function)=>handlers.set(name,fn)}},process:{execPath:'/production/Xanthil',resourcesPath:'/production/Resources',env},setTimeout,clearTimeout,validateXanthilDesktopRequest,createProviderSettings,loadPersonalCaseAssistantActivation:()=>{activationCalls++;return null;},createMacOsCredentialStore:(helper:string)=>{credentialHelpers.push(helper);return {async read(){return {status:'absent'};}};},probeLocalXiaomi:()=>assert.fail('no probe'),createPersonalXanthilDesktopProfile:()=>({openProject(){assert.fail('no project effect');},getCaseAssistant(){},closeModelWork(){}}),createCaseAssistantHandler:()=>()=>undefined});
  await new Promise<void>(resolve=>setImmediate(resolve));
  return {root,handlers,paths,loads,credentialHelpers,activationCalls,env,window:windows[0]};
 }

@@ -139,7 +139,7 @@ class BrowserWindow {
     this.webContents = Object.freeze({
       mainFrame: Object.freeze({}),
       on(event, listener) {
-        if (event !== 'will-navigate' || typeof listener !== 'function') unexpected(\`webContents.on:\${event}\`);
+        if (!['will-navigate','render-process-gone','destroyed'].includes(event) || typeof listener !== 'function') unexpected(\`webContents.on:\${event}\`);
       },
       setWindowOpenHandler(listener) {
         if (typeof listener !== 'function') unexpected('setWindowOpenHandler');
@@ -282,4 +282,25 @@ test('U1.1 MAIN-MODULE-FORMAT: loads the descriptor-selected packaged Main with 
   } finally {
     await rm(loaderRoot, { recursive: true, force: true });
   }
+});
+
+test('U1.1 current package readback rejects unknown producer, failed build, root mismatch and evidence tampering',async()=>{
+ const original=readCanonicalReadbackInput(),record=JSON.parse(await readFile(original.path,'utf8'));
+ const evidence=process.env.JUANERAI_TEST_EVIDENCE_DIR;assert.ok(evidence&&isAbsolute(evidence));
+ const sources=Object.fromEntries(await Promise.all(['command','inputs','result'].map(async key=>[key,await readFile(join(dirname(original.path),key+'.json'),'utf8')])));
+ const cases=[
+  {name:'unknown-producer',error:/scheduled GUI package producer/,edit:(r:JsonRecord,c:JsonRecord,result:JsonRecord)=>({...r,commandId:'CHANGE003-UNSCHEDULED'})},
+  {name:'failed-build',error:/child exited successfully/,edit:(r:JsonRecord,c:JsonRecord,result:Record<string,unknown>)=>{result.child_exit_code=1;return r;}},
+  {name:'root-mismatch',error:/packageRoot is the approved/,edit:(r:JsonRecord,c:JsonRecord,result:JsonRecord)=>({...r,packageRoot:join(evidence,'wrong-package')})},
+  {name:'tampered-evidence',error:/command.json digest/,edit:(r:JsonRecord,c:JsonRecord,result:JsonRecord)=>r},
+ ];
+ try{for(const negative of cases){
+  const directory=join(evidence,'package-readback-negatives',negative.name,record.commandId,record.attempt);await mkdir(directory,{recursive:true});
+  const command=JSON.parse(sources.command),result=JSON.parse(sources.result),copy=negative.edit(structuredClone(record),command,result) as Record<string,any>;
+  for(const key of ['command','inputs','result']){const bytes=Buffer.from(key==='command'?JSON.stringify(command):key==='result'?JSON.stringify(result):sources[key]);await writeFile(join(directory,key+'.json'),bytes);copy.executionEvidence[key]={bytes:bytes.length,sha256:sha256(bytes)};}
+  if(negative.name==='tampered-evidence')copy.executionEvidence.command.sha256='0'.repeat(64);
+  const path=join(directory,'package-readback-001.json'),bytes=Buffer.from(JSON.stringify(copy));await writeFile(path,bytes);process.env[packageReadbackEnvironmentKey]=JSON.stringify({path,sha256:sha256(bytes)});
+  await assert.rejects(readFrozenProductionPackageIdentity,negative.error,negative.name);
+ }}finally{process.env[packageReadbackEnvironmentKey]=JSON.stringify(original);}
+ await assertFrozenProductionPackageIdentity(await readFrozenProductionPackageIdentity());
 });

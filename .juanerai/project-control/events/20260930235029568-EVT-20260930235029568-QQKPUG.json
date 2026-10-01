@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20260930235029568-QQKPUG",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-09-30T23:50:29.568Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "Material engineering contracts accepted with C3 correction",
+  "status_after": "active",
+  "evidence_refs": []
+}

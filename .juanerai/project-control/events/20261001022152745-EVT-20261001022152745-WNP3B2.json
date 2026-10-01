@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001022152745-WNP3B2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T02:21:52.745Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "host-probe-005退出1；包身份不变，4333证据项核对。一次已核验自有进程强制清理已记录，72个启动进程均退出。",
+  "status_after": "active",
+  "evidence_refs": []
+}

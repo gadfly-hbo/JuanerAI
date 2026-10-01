@@ -1,3 +1,4 @@
+import {closeOwnedNativeProcess} from '../../fixtures/case-assistant/owned-native-cleanup.ts';
 import assert from 'node:assert/strict';
 import {mkdir,writeFile,readFile,access} from 'node:fs/promises';
 import {join,resolve} from 'node:path';
@@ -85,7 +86,7 @@ test('F1–F4 packaged Main closes every window: delayed probe/save and all four
  // Omit executablePath: installed Playwright supplies its loader and Electron's
  // default app dispatches the fixture argument. The fixture requires the exact ASAR Main.
  const app=await electron.launch({args:[resolve('tests/fixtures/case-assistant/provider-lifecycle-main.cjs'),'--user-data-dir='+join(root,'user-data')],env:{PATH:'/usr/bin:/bin',LANG:'en_US.UTF-8',JUANERAI_LIFECYCLE_ASAR:asar,JUANERAI_LIFECYCLE_ASAR_SHA256:process.env.JUANERAI_PROVIDER_SETTINGS_ASAR_SHA256!,JUANERAI_LIFECYCLE_MAIN_SHA256:mainSha},cwd:root});const child=app.process();
- t.after(async()=>{if(child.exitCode!==null||child.signalCode!==null)return;let timer:ReturnType<typeof setTimeout>|undefined;try{await Promise.race([app.close(),new Promise<never>((_,reject)=>{timer=setTimeout(()=>reject(Error('owned lifecycle app timeout')),5000);})]);}finally{if(timer)clearTimeout(timer);if(child.exitCode===null&&child.signalCode===null){await writeFile(join(root,'owned-cleanup.json'),JSON.stringify({pid:child.pid,reason:'fixture-only',signal:'SIGTERM'}));child.kill('SIGTERM');}}});
+ t.after(()=>closeOwnedNativeProcess(child,()=>app.close(),value=>writeFile(join(root,'owned-cleanup.json'),JSON.stringify(value,null,2))));
  async function control<T=unknown>(method:string,arg?:unknown):Promise<T>{return app.evaluate((_,input)=>Reflect.get(globalThis,'lifecycle')[input.method](input.arg),{method,arg});}
  type Result<T> = {ok:boolean;value:T;code?:string;proof?:string;error?:{code:string}};
  async function invoke<T>(channel:string,request:unknown){return control<Result<T>>('invoke',{channel,request});}

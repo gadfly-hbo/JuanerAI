@@ -34,10 +34,13 @@ app.on('browser-window-created',(_,window)=>{
  window.on('close',()=>recordWindow('close',id,webContentsId));
  window.on('closed',()=>recordWindow('closed',id,webContentsId));
  window.webContents.on('destroyed',()=>recordWindow('webContents-destroyed',id,webContentsId));
+ window.webContents.on('render-process-gone',(_,details)=>windowEvents.push({sequence:++windowSequence,event:'render-process-gone',id,webContentsId,...details}));
 });
 app.on('activate',()=>{windowEvents.push({sequence:++windowSequence,event:'activate',windows:nativeWindows()});if(windowEvents.length>512)windowEvents.shift();});
 
 let key='synthetic-lifecycle-old',mode='',held='',release=()=>{},requests=0,saves=0,reads=0,project='',fault='',fetches=0,sockets=0;
+let childOutput='question';const childPayloads=[];
+const deliveryFault=require('./collaboration-delivery-fault.cjs').installDeliveryWriteFault();
 const handlers=new Map(),tasks=new Map();
 const wait=async boundary=>{if(mode!==boundary)return;mode='';held=boundary;await new Promise(r=>release=()=>{held='';r();});};
 const cp=require('node:child_process');cp.spawn=(file,args,options)=>{
@@ -55,6 +58,8 @@ dialog.showOpenDialog=async()=>({canceled:false,filePaths:[project]});
 async function invoke({channel,request}){const window=BrowserWindow.getAllWindows()[0];if(!window)throw Error('WINDOW_REQUIRED');return handlers.get(channel)({sender:window.webContents,senderFrame:window.webContents.mainFrame},request);}
 globalThis.lifecycle={windowState(){return {windows:nativeWindows(),events:[...windowEvents],allClosedEvents,beforeQuitEvents};},health(){return {syntheticKeepalive:app.listeners('window-all-closed').includes(keepSyntheticHost),listenerBaseline:listenerBaseline(),fixture:__filename,phase:bootstrapPhase,mainLoaded,mainPath,mainBytes:mainBytes.length,mainSha,asarSha,mainCached:!!require.cache[mainPath],appPath:app.getAppPath(),executable:process.execPath,electron:process.versions.electron,defaultApp:process.defaultApp===true,isPackaged:app.isPackaged,handlersInstalled:['xanthil-provider-settings:v1','xanthil-case-assistant:v1','xanthil-desktop:v1:startAssistance'].every(channel=>handlers.has(channel))};},fault(value){fault=value;},arm(value){mode=value;},release(){release();},project(value){project=value;},invoke,
  begin({id,...input}){tasks.set(id,invoke(input));},result(id){return tasks.get(id);},
+ deliveryFaultArm(child){deliveryFault.arm(join(project,'.xanthil/desktop/case-assistant.sqlite'),child);return deliveryFault.read();},deliveryFaultRead(){return deliveryFault.read();},
+ childOutput(value){if(!['question','result','advice','failure'].includes(value))throw Error('INVALID_FIXTURE_MODE');childOutput=value;},childPayloads(){return [...childPayloads];},
  stats(){return {held,requests,saves,reads,fetches,sockets,keyIsOld:key==='synthetic-lifecycle-old',windows:BrowserWindow.getAllWindows().length};}};
 (async()=>{
  bootstrapPhase='installed-sdk';
@@ -69,6 +74,11 @@ globalThis.lifecycle={windowState(){return {windows:nativeWindows(),events:[...w
   if(text!=='Reply with OK.'){
    const input=JSON.parse(text),action=input.action_kind;
    output=JSON.stringify(action==='organize_question'?{draft_kind:'question_fields',draft_content:{question_text:'Synthetic question',hypothesis_display_title:'Synthetic hypothesis',business_context:'Synthetic',alternative_explanations:[]}}:action==='explain_evidence'?{draft_kind:'evidence_explanation',draft_content:{evidence_explanation_text:'Synthetic evidence'}}:action==='draft_candidates'?{draft_kind:'candidates',draft_content:{candidates:[]}}:{kind:'question',text:'Synthetic question'});
+   if(input.authorized_context?.contract_version==='1.1'){
+    childPayloads.push(input);const context=input.authorized_context;
+    if(childOutput==='failure')throw Error('synthetic child transport failure');
+    output=JSON.stringify(childOutput==='result'?{kind:'result',summary:context.selected_results.length?'R2 复核所选 R1；依据不足。':context.business_projection?.candidates?.length?'R1 检查完成；'+context.task:'R1 检查完成；依据不足。',references:context.selected_results.length?[context.allowed_references.find(r=>r.kind==='result')]:context.business_projection?.candidates?.length?context.allowed_references.filter(r=>['candidate','aggregate','report','history'].includes(r.kind)):[context.allowed_references[0]],limitations:['仅依据明确选择的材料。'],unknowns:['没有独立因果证据。']}:childOutput==='advice'?{kind:'advice',text:'不完整意见'}:{kind:'question',text:'是否只检查所选证据边界？'});
+   }
   }
   (async()=>{await wait('runtime');stream.push({type:'done',reason:'stop',message:{role:'assistant',content:[{type:'text',text:output}],api:model.api,provider:model.provider,model:model.id,usage:{input:10,cacheRead:0,cacheWrite:0,output:100,totalTokens:110,cost:{total:0}},stopReason:'stop',timestamp:Date.now()}});})();return stream;
  };

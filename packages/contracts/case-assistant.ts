@@ -1,3 +1,4 @@
+import type {CollaborationRequest,ChildAuthorization,ChildResultValue} from './case-collaboration.ts';
 import type { OwnerRef, DecisionCandidateInput } from './xanthil-desktop-ipc.ts';
 export type AssistantSource = Readonly<{
     owner: OwnerRef;
@@ -89,6 +90,7 @@ export type AssistantEvent = Readonly<{
     source_revision: string;
 }>;
 export type Authorization = Readonly<{
+    collaboration?:ChildAuthorization;
     id: string;
     source: AssistantSource;
     baseline_decision_id: string | null;
@@ -101,8 +103,8 @@ export type Authorization = Readonly<{
     }>[];
     tools: readonly AssistantTool[];
     categories: readonly string[];
-    skill_version: '1.0';
-    prompt_version: '1.0';
+    skill_version: '1.0'|'1.1';
+    prompt_version: '1.0'|'1.1';
     created_at: string;
     payload: string;
     blockers: readonly string[];
@@ -180,6 +182,7 @@ export type AssistantProjection = Readonly<{
     current_decision_id: string | null;
 }>;
 export type AssistantTurn = Readonly<{
+    collaboration?:Readonly<{contract_version:'1.1';purpose:'fork'|'subagent'}>;
     payload: string;
     provider: string;
     model: string;
@@ -190,7 +193,7 @@ export type AssistantTurnResult = Readonly<{
     provider: string;
     model: string;
     cost_microunits: number;
-    output: Readonly<{
+    output: ChildResultValue | Readonly<{
         kind: 'advice' | 'question';
         text: string;
     }> | Readonly<{
@@ -280,7 +283,7 @@ export type CaseAssistantResult<T> = Readonly<{
     };
 }>;
 export interface CaseAssistantApi {
-    request<T>(input: CaseAssistantRequest): Promise<CaseAssistantResult<T>>;
+    request<T>(input: CaseAssistantRequest|CollaborationRequest): Promise<CaseAssistantResult<T>>;
 }
 export function validateCaseAssistantRequest(input: unknown): CaseAssistantRequest {
     const fail = (): never => { throw Object.assign(new Error('INVALID_REQUEST'), { code: 'INVALID_REQUEST' }); };

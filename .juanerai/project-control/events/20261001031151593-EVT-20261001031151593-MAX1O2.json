@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001031151593-MAX1O2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T03:11:51.593Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "独立验证FAIL，进入受控修正",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

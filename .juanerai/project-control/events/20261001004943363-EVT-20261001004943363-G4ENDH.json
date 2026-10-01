@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001004943363-G4ENDH",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T00:49:43.363Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "完成53项既有/互斥回归，后续来源及存储分叉点修复7项通过；完整Fork/Subagent尚未验收。",
+  "status_after": "active",
+  "evidence_refs": []
+}

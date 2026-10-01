@@ -3,185 +3,99 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "Xanthil Desktop — development mode engineering supplement"
+    "product": "Xanthil Desktop — Fork / Subagent collaboration"
   },
   "phase": {
-    "id": "DESKTOP_DEV_COMPLETE",
-    "label": "开发模式工程补充已交付归档",
-    "ordinal": 4,
-    "total": 4
+    "id": "ARCHIVE",
+    "label": "Change 003 已授权Git交付与归档",
+    "ordinal": 6,
+    "total": 6
   },
-  "health": "complete",
-  "summary": "PR48已squash合并且main干净读回；真实HMR/业务/隔离、独立验证与云端检查通过，DMG011保持不变。",
-  "current_objective": "复用真实Desktop后端，接通Renderer热更新并隔离开发数据/权限，分开日常测试与包验收。",
-  "next_action": "本补充完成；按开发指南日常试用，等待用户后续明确需求，不自动启动新产品范围或MacBook配置。",
+  "health": "active",
+  "summary": "Change003已完成工程与产品验收，OpenSpec已归档；PR #51的CI入口断言已修正，本地CI contract suite 27/27通过，待独立复核及新版本云端CI。",
+  "current_objective": "交付受控独立子窗口、精确授权、结果回流与父材料人工采纳，并保留现有专业能力。",
+  "next_action": "复核精确CI修正，提交并推送PR #51；确认云端CI通过后squash合并，同步main并保存交付回执。",
   "blockers": [],
   "milestones": [
     {
-      "id": "dev_intake",
-      "label": "范围及工程接收",
+      "id": "intake",
+      "label": "固定版本与工程接收",
       "status": "completed"
     },
     {
-      "id": "dev_implementation",
-      "label": "实现和真实开发运行验证",
+      "id": "fork",
+      "label": "Fork完整路径",
       "status": "completed"
     },
     {
-      "id": "dev_validation",
-      "label": "独立固定候选验证",
+      "id": "subagent",
+      "label": "Subagent完整路径",
       "status": "completed"
     },
     {
-      "id": "dev_delivery",
-      "label": "工程结论与授权Git交付",
+      "id": "verification",
+      "label": "回归及独立验证",
       "status": "completed"
+    },
+    {
+      "id": "product",
+      "label": "用户产品验收",
+      "status": "completed"
+    },
+    {
+      "id": "delivery",
+      "label": "授权Git交付与归档",
+      "status": "active"
     }
   ],
   "agents": [
     {
       "id": "controller",
       "label": "Mac mini Engineering Controller",
-      "model": "repository configured gpt-6-astra/high; primary actual tuple not separately attested",
+      "model": "gpt-6-astra/high; actual primary turn_context verified",
       "status": "controller",
-      "activation": "本任务用户授权的有界工程补充。"
+      "activation": "用户在原change-003会话明确启动；独占工程状态写入。"
     },
     {
       "id": "juaner_worker",
       "label": "Continuous Engineering Worker",
-      "model": "gpt-6-astra/high/workspace-write/never; actual CLI turn attested",
+      "model": "gpt-6-astra/high/workspace-write/never; actual CLI turn_context verified",
       "status": "complete",
-      "activation": "freeze-004已交回，已释放代码和构建目录。"
+      "activation": "候选003加supplement002已封存；本轮仅修正单文件验证前提，生产代码未变。"
     },
     {
       "id": "juaner_validator",
       "label": "Independent Validator",
-      "model": "gpt-6-astra/high/read-only/never; actual CLI turn attested",
+      "model": "gpt-6-astra/high/read-only/never; actual CLI turn_context verified",
       "status": "complete",
-      "activation": "freeze-004独立PASS，V-01已关闭，未授予Git或发布权限。"
+      "activation": "review004独立只读PASS，F6关闭，无剩余实质阻断。"
     }
   ],
   "metrics": [],
   "evidence": [
     {
-      "id": "CHANGE002-INTAKE",
-      "label": "固定产品包与工程接收记录",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/intake.md",
+      "id": "CHANGE003-INTAKE",
+      "label": "固定产品输入与工程接收",
+      "path": "openspec/changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/intake.md",
       "status": "verified"
     },
     {
-      "id": "CHANGE001-ACCEPTANCE",
-      "label": "保留首 Change 产品验收与归档",
-      "path": "openspec/changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/acceptance.md",
+      "id": "CHANGE003-ENGINEERING-ACCEPTANCE",
+      "label": "固定组合候选工程验收",
+      "path": "openspec/changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/engineering-acceptance.md",
       "status": "verified"
     },
     {
-      "id": "CHANGE002-ENGINEERING-ACCEPTANCE",
-      "label": "candidate010 / DMG011工程及用户产品验收通过",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/engineering-acceptance.md",
-      "status": "verified"
-    },
-    {
-      "id": "CHANGE002-INDEPENDENT-PASS",
-      "label": "历史 candidate006 Validator 报告；不证明当前 UI 一致性",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/independent-verification-real-pi-dmg.md",
-      "status": "verified"
-    },
-    {
-      "id": "CHANGE002-UI-FIDELITY-001",
-      "label": "原稿固定版本及 DMG005 UI 偏差复核",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/ui-fidelity-review-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "CHANGE002-UI-VALIDATOR-001",
-      "label": "candidate007 独立验证 FAIL，4项缺陷",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/independent-verification-ui-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "CHANGE002-UI-VALIDATOR-002",
-      "label": "candidate008 独立验证PASS，四项缺陷关闭",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/independent-verification-ui-002.md",
-      "status": "verified"
-    },
-    {
-      "id": "PROVIDER-UI-GATE",
-      "label": "单一Provider UI Gate PASS，固定输入与工程接收完成",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/provider-settings-ui-gate-v1.md",
-      "status": "verified"
-    },
-    {
-      "id": "PROVIDER-CANDIDATE009",
-      "label": "完整候选693源文件及DMG010固定，Controller字节读回通过",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-case-assistant-decision-record/candidate-009/manifest.json",
-      "status": "verified"
-    },
-    {
-      "id": "PROVIDER-VALIDATOR001-FAIL",
-      "label": "candidate009独立FAIL：4项生命周期反例及复验条件",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/independent-verification-provider-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "PROVIDER-CANDIDATE010",
-      "label": "candidate010/DMG011固定及Controller26499项字节哈希读回通过",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-case-assistant-decision-record/controller-candidate010-readback.json",
-      "status": "verified"
-    },
-    {
-      "id": "PROVIDER-VALIDATOR002-PASS",
-      "label": "candidate010独立复验PASS，四项缺陷与相邻授权问题已关闭",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/independent-verification-provider-002.md",
-      "status": "verified"
-    },
-    {
-      "id": "CHANGE002-PRODUCT-ACCEPTANCE",
-      "label": "用户产品验收及Git提交合并授权",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/acceptance.md",
-      "status": "verified"
-    },
-    {
-      "id": "CHANGE002-INTEGRATION",
-      "label": "PR46已合并及main读回，云端验证PASS",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/completion.md",
-      "status": "verified"
-    },
-    {
-      "id": "DESKTOP-DEV-INTAKE",
-      "label": "开发模式授权、边界及工程接收",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-development-mode/intake.md",
-      "status": "verified"
-    },
-    {
-      "id": "DESKTOP-DEV-CANDIDATE004",
-      "label": "固定候选与Controller393项读回匹配",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/xanthil-desktop-development-mode/controller/candidate004-readback.json",
-      "status": "verified"
-    },
-    {
-      "id": "DESKTOP-DEV-INDEPENDENT-PASS",
-      "label": "独立Validator PASS与真实宿主探针",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-development-mode/independent-verification.md",
-      "status": "verified"
-    },
-    {
-      "id": "DESKTOP-DEV-ENGINEERING-ACCEPTANCE",
-      "label": "Controller工程验收PASS及交付边界",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-development-mode/engineering-acceptance.md",
-      "status": "verified"
-    },
-    {
-      "id": "DESKTOP-DEV-COMPLETION",
-      "label": "PR48合并、main读回与开发模式交付结论",
-      "path": "openspec/changes/archive/2026-09-30-xanthil-desktop-development-mode/completion.md",
+      "id": "CHANGE003-PRODUCT-ACCEPTANCE",
+      "label": "用户产品/UI验收通过",
+      "path": "openspec/changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/product-acceptance.md",
       "status": "verified"
     }
   ],
   "risks": [],
-  "updated_at": "2026-09-30T13:58:05.708Z",
+  "updated_at": "2026-10-01T06:54:07.221Z",
   "updated_by": {
     "role": "controller",
-    "session": "desktop-dev-engineering-controller"
+    "session": "change-003"
   }
 }

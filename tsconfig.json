@@ -17,6 +17,10 @@
     "jsx": "react-jsx"
   },
   "files": [
+    "tests/unit/xanthil-desktop/collaboration-window-close.unit.test.ts",
+    "tests/integration/xanthil-desktop/case-collaboration.integration.test.ts",
+    "tests/integration/xanthil-desktop/case-collaboration-lifecycle.integration.test.ts",
+    "tests/e2e/xanthil-desktop/case-collaboration-native.e2e.test.ts",
     "packages/product-core/local-analysis.ts",
     "packages/ports/local-analysis.ts",
     "packages/application/local-analysis.ts",

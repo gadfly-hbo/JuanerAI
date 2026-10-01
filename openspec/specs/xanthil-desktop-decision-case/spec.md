@@ -41,9 +41,13 @@ six-stage workbench for the membership-repurchase path.
 - **AC-XDESK-001-02:** Professional mode exposes New analysis, Data preparation,
   Local processing/model-exposure Gate, Evidence-based analysis, Report, and
   Execution feedback/Decision Closure in the accepted hierarchy.
-- **AC-XDESK-001-03:** Quick, Fork, Subagent, and general Skill/Prompt actions
+- **AC-XDESK-001-03:** Quick and general Skill/Prompt actions
   are visibly Preview; invoking them creates no task, child result, persistence,
-  provider call, report version, or success claim.
+  provider call, report version, or success claim. The previously accepted
+  [Case Assistant](../case-assistant/spec.md) scope remains its Quick exception.
+  User-directed Fork/Subagent now follow the accepted
+  [collaboration baseline](../case-collaboration/spec.md); no other Preview capability
+  is enabled, and model-autonomous/recursive child dispatch remains prohibited.
 - **AC-XDESK-001-04:** Mode switching does not convert a Session or cancel work;
   search distinguishes modes; closing the drawer leaves the main path usable
   and keeps active status plus return affordance visible.

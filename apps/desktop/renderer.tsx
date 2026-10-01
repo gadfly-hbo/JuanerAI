@@ -7,7 +7,7 @@ import type { AssistanceDraftContent, CaseFieldsInput, ConfirmationInput, Deskto
 import type { DesktopCalculationResult } from '../../packages/product-core/xanthil-desktop-decision-case.ts';
 
 import {formalDecisionSections} from '../../packages/product-core/case-assistant.ts';
-import {CaseAssistantWorkspace, DecisionFieldsView} from './case-assistant-workspace.tsx';
+import {ChildAssistantWorkspace,CaseAssistantWorkspace, DecisionFieldsView} from './case-assistant-workspace.tsx';
 import type {CaseAssistantApi,AssistantProjection,AssistantSession} from '../../packages/contracts/case-assistant.ts';
 
 type XanthilDesktopAppProps = Readonly<{ api: XanthilDesktopApi }>;
@@ -68,16 +68,18 @@ const professionalPanels: Readonly<Record<ProfessionalStage, Readonly<{ title: s
 
 declare global {
   interface Window {
+    xanthilChildSession?:string|null;
     xanthilDesktopApi: XanthilDesktopApi;
     xanthilCaseAssistantApi: CaseAssistantApi;
     xanthilProviderSettingsApi?: ProviderSettingsApi;
   }
 }
 
-export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) { return <ProviderSettingsProvider api={window.xanthilProviderSettingsApi}><XanthilDesktopContent api={api}/></ProviderSettingsProvider>; }
+export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) { if(window.xanthilChildSession)return <div className="xanthil-shell" aria-label="Xanthil Desktop"><link href={stylesUrl} rel="stylesheet"/><header className="titlebar"><div className="identity" aria-label="JuanerAI，持续做出更好的决策；Xanthil Desktop"><span className="juaner-brand"><img src={new URL('./assets/juanerai-logo-slogan.png',import.meta.url).href} alt=""/></span><span className="juaner-brand-copy"><strong>JuanerAI</strong><small>持续做出更好的决策</small></span><strong className="product-name">Xanthil Desktop</strong></div></header><ChildAssistantWorkspace api={window.xanthilCaseAssistantApi} sessionId={window.xanthilChildSession}/><footer className="statusbar" aria-label="Status">独立子对话 · 原始数据保持本地</footer></div>;return <ProviderSettingsProvider api={window.xanthilProviderSettingsApi}><XanthilDesktopContent api={api}/></ProviderSettingsProvider>; }
 function XanthilDesktopContent({ api }: XanthilDesktopAppProps) {
   const assistantApi=window.xanthilCaseAssistantApi;
   const [assistant,setAssistant]=useState<AssistantProjection|null>(null);
+  useEffect(()=>window.xanthilParentNavigation?.subscribe(id=>{void assistantApi.request<AssistantProjection>({version:'1.0',operation:'read',session_id:id}).then(r=>{if(r.ok){setAssistant(r.value);setMode('quick');}});}),[assistantApi]);
   const [formalState,setFormal]=useState<AssistantProjection|null>(null);
   const [mode, setMode] = useState<Mode>('quick');
   const [selectedStage, setSelectedStage] = useState<ProfessionalStage>('新建分析');
@@ -697,3 +699,5 @@ if (!import.meta.hot?.data.reactRoot) {
   if (import.meta.hot) import.meta.hot.data.reactRoot = reactRoot;
   reactRoot.render(<XanthilDesktopApp api={window.xanthilDesktopApi} />);
 }
+
+declare global {interface Window {xanthilParentNavigation?:{subscribe(callback:(id:string)=>void):()=>void}}}

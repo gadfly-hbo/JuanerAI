@@ -144,3 +144,16 @@ test('ACTIVATE-001/002 real completed Case + Profile share the allowance across 
   await open();const first=await run();assert.equal(first.attempts.at(-1)?.status,'Waiting');await profile.getCaseAssistant()!.stop(linked.session.id);await open();const second=await run();assert.equal(second.attempts.at(-1)?.reason,'BUDGET_EXHAUSTED');assert.equal(observed.calls(),1);assert.equal(second.decisions.length,0);await profile.getCaseAssistant()!.close();
  });
 });
+
+test('AC-FS-03/04 installed Pi child turn accepts complete result and refuses advice without hidden repair',async t=>{
+ const specifier='@earendil-works/pi-coding-agent';const sdk=await import(specifier),{pathToFileURL}=await import('node:url'),{join}=await import('node:path');
+ const core=await import(pathToFileURL(join(sdk.getPackageDir(),'node_modules/@earendil-works/pi-agent-core/dist/index.js')).href);
+ const original=core.Agent.prototype.prompt;const prompts:string[]=[];
+ t.mock.method(core.Agent.prototype,'prompt',function(this:any,...args:any[]){prompts.push(this.state.systemPrompt);return Reflect.apply(original,this,args);});
+ let calls=0,response:unknown={kind:'result',summary:'证据不足。',references:[{kind:'case',id:'case',revision_id:'revision',version:null,sha256:null}],limitations:['无获准聚合。'],unknowns:[]};
+ const runtime=createPiCaseAssistantRuntime({provider:'synthetic',model:'offline',max_input_bytes:8192,max_output_tokens:1024},{async respond(){calls++;return response;}});
+ const input={provider:'synthetic',model:'offline',payload:JSON.stringify({authorized_context:{contract_version:'1.1',allowed_references:(response as any).references}}),signal:new AbortController().signal,cost_reservation_microunits:10,collaboration:{contract_version:'1.1' as const,purpose:'fork' as const}};
+ assert.deepEqual((await runtime.turn(input)).output,response);assert.equal(calls,1);assert.match(prompts[0],/1\.1/);assert.match(prompts[0],/result/);assert.doesNotMatch(prompts[0],/DecisionFields must/);
+ response={kind:'advice',text:'不应编造 Waiting'};await assert.rejects(()=>runtime.turn(input));assert.equal(calls,2,'no hidden repair or model retry');
+ response={kind:'result',summary:'错误来源',references:[{kind:'case',id:'foreign',revision_id:'revision',version:null,sha256:null}],limitations:['限制'],unknowns:[]};await assert.rejects(()=>runtime.turn(input),/RESULT_OUTSIDE_AUTHORIZATION/);assert.equal(calls,3);
+});

@@ -113,7 +113,7 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
     modelGuard();const control:ModelWork={abort:new AbortController(),reason:null};modelWork.add(control);
     let lease:{release():void}|undefined,transferred=false;
     try{
-    if(modelAccess)lease=await modelAccess.acquire(disclosureGenerations.get(command.disclosure_id)??-1);
+    if(modelAccess&&assistance)lease=await modelAccess.acquire(disclosureGenerations.get(command.disclosure_id)??-1,{session_id:owner.session_id,label:'专业模式辅助'});
     control.release=()=>lease?.release();modelGuard();
     const prior=await store.checkAssistanceAdmission(command);modelGuard();if(prior)return prior;
     const projection=await readProjection(owner),disclosure=projection.disclosures.find(d=>d.disclosure_id===command.disclosure_id);

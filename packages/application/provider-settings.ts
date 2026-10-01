@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
-import type { LocalCredentialStore, ConnectionProbe, LocalModelAccess } from '../ports/provider-settings.ts';
+import type { LocalCredentialStore, ConnectionProbe, LocalModelAccess,ModelOccupant } from '../ports/provider-settings.ts';
 import type { ProviderSettingsStatus, ProviderSettingsResult } from '../contracts/provider-settings.ts';
 const probeCodes = ['CREDENTIAL_INVALID','NETWORK_UNAVAILABLE','CONNECTION_TIMEOUT','QUOTA_EXCEEDED','CONNECTION_FAILED'] as const;
 function fail(code: string): never { throw Object.assign(new Error(code), { code, stack: code }); }
@@ -9,6 +9,7 @@ const digest=(key:string)=>createHash('sha256').update(key).digest('hex');
 export function createProviderSettings(input: { store: LocalCredentialStore; probe: ConnectionProbe }) {
   let state:ProviderSettingsStatus['state']='unconfigured', configured=false, generation=0, identity:string|null=null;
   let lastTest:ProviderSettingsStatus['last_test']='none', busy=false, closed=false, taskKey:string|undefined;
+  let taskOwner:ModelOccupant|null=null;
   let proof:{id:string;hash:string;generation:number}|undefined, pending:AbortController|undefined;
   let epoch=0;const invalidIdentities=new Set<string>();
   function status():ProviderSettingsStatus { return {configured,state,busy,generation,last_test:lastTest}; }
@@ -27,9 +28,10 @@ export function createProviderSettings(input: { store: LocalCredentialStore; pro
   function cancel(){epoch++;proof=undefined;pending?.abort();}
   async function initialize(){lock();try{sync(await readKey());}catch{/* Visible unavailable state; no fallback. */}finally{busy=false;}}
   const access:LocalModelAccess={
+    occupant:()=>busy?(taskOwner??{session_id:null,label:'模型接入'}):null,
     snapshot:()=>({generation,available:state==='configured'}),
-    async acquire(expected){
-      lock();
+    async acquire(expected,owner){
+      lock();taskOwner=owner??{session_id:null,label:'专业模式辅助'};
       try {
         if(expected!==generation)fail('CONFIGURATION_CHANGED');
         const previousState=state,key=await readKey();
@@ -39,8 +41,8 @@ export function createProviderSettings(input: { store: LocalCredentialStore; pro
         if(previousState==='credential_invalid'||state==='credential_invalid'){state='credential_invalid';fail('CREDENTIAL_INVALID');}
         if(key===null)fail('MODEL_NOT_CONFIGURED');
         taskKey=key;let released=false;
-        return {release(){if(released)return;released=true;taskKey=undefined;busy=false;}};
-      }catch(error){taskKey=undefined;busy=false;throw error;}
+        return {release(){if(released)return;released=true;taskKey=undefined;taskOwner=null;busy=false;}};
+      }catch(error){taskKey=undefined;taskOwner=null;busy=false;throw error;}
     },
   };
   async function request(raw:unknown):Promise<ProviderSettingsResult>{
@@ -102,4 +104,13 @@ export function createProviderSettings(input: { store: LocalCredentialStore; pro
     reportTaskFailure(code:string,expectedGeneration=generation){if(expectedGeneration!==generation)return;if(code==='CREDENTIAL_INVALID'){if(identity)invalidIdentities.add(identity);state='credential_invalid';}if(probeCodes.includes(code as typeof probeCodes[number]))lastTest=code as typeof probeCodes[number];},
     close(){closed=true;cancel();taskKey=undefined;},
   };
+}
+
+/** Same local exclusion contract for Profiles without a credential-backed lease. */
+export function createLocalModelAccess(available:boolean):LocalModelAccess{
+ let owner:ModelOccupant|null=null;
+ return {snapshot:()=>({generation:0,available}),occupant:()=>owner,
+ async acquire(generation,context){if(owner)fail('MODEL_BUSY');if(generation!==0)fail('CONFIGURATION_CHANGED');if(!available)fail('MODEL_NOT_CONFIGURED');
+ owner=context??{session_id:null,label:'专业模式辅助'};let released=false;return {release(){if(released)return;released=true;owner=null;}};
+ }};
 }

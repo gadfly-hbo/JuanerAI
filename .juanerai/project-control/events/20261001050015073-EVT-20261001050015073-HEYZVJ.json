@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001050015073-HEYZVJ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T05:00:15.073Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "完整候选003进入独立复查",
+  "status_after": "active",
+  "evidence_refs": []
+}

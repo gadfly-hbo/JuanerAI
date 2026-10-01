@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001065407221-LFPQCK",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T06:54:07.221Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-003"
+  },
+  "summary": "CI入口精确元组修正及新增负例完成，本地完整CI contract suite 27 PASS；历史失败保留。",
+  "status_after": "active",
+  "evidence_refs": []
+}

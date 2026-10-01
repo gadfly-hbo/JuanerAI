@@ -1,3 +1,4 @@
+import {createLocalModelAccess} from '../../packages/application/provider-settings.ts';
 import {createPiStoredCaseAssistantRuntime} from '../../adapters/agent-pi/xiaomi-local.ts';
 import type {createProviderSettings} from '../../packages/application/provider-settings.ts';
 import { createCaseAssistantApplication } from '../../packages/application/case-assistant.ts';
@@ -101,7 +102,7 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
   let caseAssistant: ReturnType<typeof createCaseAssistantApplication>|null=null;
   let modelEpoch=0;
   const applications=new Set<ReturnType<typeof composePersonalXanthilDesktopProfile>>();
-  function closeModelWork(){modelEpoch++;for(const application of applications)application.closeModelWork();applications.clear();const previous=caseAssistant;caseAssistant=null;return previous?.close();}
+  async function closeModelWork(){modelEpoch++;for(const application of applications)application.closeModelWork();applications.clear();const previous=caseAssistant;await previous?.close();if(caseAssistant===previous)caseAssistant=null;}
   const assistantSetting=configured.caseAssistantConfig??null;
   const assistantConfig=assistantSetting===null?null:exactRecord(assistantSetting,['authorization','max_input_bytes','max_output_tokens',...(record(assistantSetting)&&Object.hasOwn(assistantSetting,'deployment')?['deployment']:[])]);
   const authorization:AssistantConfig|null=providerSettings?{provider:'xiaomi-token-plan-cn',model:'mimo-v2.6-pro',authorized:true,runtime_id:'pi',runtime_version:'0.84.2',adapter_version:'1.0',limits:{turns:8,execution_ms:300000,waiting_ms:120000,cost_microunits:8*XIAOMI_CREDIT_RESERVATION,turn_cost_microunits:XIAOMI_CREDIT_RESERVATION,currency:'XIAOMI_CREDITS'}}:assistantConfig?.authorization as AssistantConfig|null;
@@ -113,6 +114,7 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
   const assistantRuntime=providerSettings?{async turn(input:Parameters<NonNullable<typeof storedRuntime>['turn']>[0]){const generation=providerSettings.status().generation;try{return await storedRuntime!.turn(input);}catch(error){providerSettings.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:authorization?.authorized?createPiCaseAssistantRuntime({provider:authorization.provider,model:authorization.model,max_input_bytes:assistantConfig!.max_input_bytes,max_output_tokens:assistantConfig!.max_output_tokens},undefined,runtimeDeployment):null;
   const storedAssistance=providerSettings?createPiDecisionAssistanceRuntime({provider:'xiaomi-token-plan-cn',model_id:'mimo-v2.6-pro'},undefined,()=>providerSettings.taskCredential()):null;
   const assistanceRuntime=storedAssistance?{...storedAssistance,async executeAssistance(input:Parameters<typeof storedAssistance.executeAssistance>[0]){const generation=providerSettings!.status().generation;try{return await storedAssistance.executeAssistance(input);}catch(error){providerSettings!.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:configured.assistanceConfig===null?null:createPiDecisionAssistanceRuntime(configured.assistanceConfig);
+  const modelAccess=providerSettings?.access??createLocalModelAccess(!!authorization?.authorized||assistanceRuntime!==null);
   if (typeof configured.clock !== 'function') failure('VALIDATION_FAILED');
   const clock = configured.clock as Clock;
   const location=exactRecord(configured.toolchainDeployment,['descriptor_path']);
@@ -164,7 +166,7 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
       async calculate(input:unknown){if(!execution)failure('TOOLCHAIN_UNAVAILABLE');return execution.calculate(input);},
       async verify(input:unknown){if(!execution)failure('TOOLCHAIN_UNAVAILABLE');return execution.verify(input);},
     });
-    const application = composePersonalXanthilDesktopProfile({ store,analysisExecution,runEvidenceStore:createLocalDesktopRunEvidenceStore({projectRoot:selected.projectRoot}),assistanceRuntime, clock,deadlineScheduler:configured.deadlineScheduler,...(providerSettings?{modelAccess:providerSettings.access}:{}) });
+    const application = composePersonalXanthilDesktopProfile({ store,analysisExecution,runEvidenceStore:createLocalDesktopRunEvidenceStore({projectRoot:selected.projectRoot}),assistanceRuntime, clock,deadlineScheduler:configured.deadlineScheduler,modelAccess });
     applications.add(application);
     const opened = await application.openProject({
       contract_version: '1.0',
@@ -175,7 +177,7 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
     const sessions = await application.listSessions({ project_id: opened.project_id });
     guard();
     const assistantStore=createLocalCaseAssistantStore({projectRoot: selected.projectRoot});
-    caseAssistant=createCaseAssistantApplication({store:assistantStore,config:authorization??null,runtime:assistantRuntime,clock,...(providerSettings?{modelAccess:providerSettings.access}:{})});
+    caseAssistant=createCaseAssistantApplication({store:assistantStore,config:authorization??null,runtime:assistantRuntime,clock,modelAccess});
     const openedAssistant=caseAssistant;await openedAssistant.reopen();guard();
     const value: ProjectOpenValue = Object.freeze({
       project: Object.freeze({ project_id: opened.project_id, display_name: opened.display_name, schema_version: '1.0', write_state: 'ready' }),
@@ -184,7 +186,7 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
     return Object.freeze({ application, value });
   }
 
-  return Object.freeze({ closeModelWork, openProject, getCaseAssistant:()=>caseAssistant });
+  return Object.freeze({ hasModelWork:()=>!!modelAccess.occupant?.()||!!caseAssistant?.hasWork(),closeModelWork, openProject, getCaseAssistant:()=>caseAssistant });
 }
 
 /** Main-only environment boundary; unconfigured behavior remains fail closed. */
