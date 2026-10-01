@@ -35,3 +35,14 @@ Material findings：无。
 本记录是九文件审查之后保存的第十份文档，不在上述九文件哈希集合内；提交时需明确纳入路径、文本检查和暂存字节核验。
 
 审查期间独立 PR #53 已合入 main，`origin/main` 前进至 `3a5e9185d688b6274c88c03b7639b49dea930d67`。本 PASS 不预先覆盖合并结果。发布者须正常接入该基线，保留其能力覆盖机制，并对 AGENTS／README 合成结果及其他引入文件保全做增量一致性核对，不倒改两份固定正文。
+
+## 正常合并后的独立增量核对
+
+同一只读 Reviewer 随后核验 HEAD `69c925de201f93d5087cbd4b21208b875196c540`、tree `a4eb41d3bb4c746781e5b1e548c33a1014b60bfb` 相对上述 main 的合成结果，返回 `PASS`；无 material finding 或新增 advisory。
+
+- AGENTS 和 README 同时保留 v4.0 当前指引与 PR #53 的稳定 ID、全景、增量、缺口、证据、快照及唯一执行政策入口；其当前 SHA-256 分别为 `bb2c4efa2dd19e615ca3324f742d7e5fefac628415197649e6274a2aecf5a176` 和 `d27c1c45115b8ad112e1263317d372c90c312a38ca487f52735d5d9e35a3e665`。
+- PR #53 其余 13 文件的 HEAD／工作树与该 main 字节相同；本任务没有重写能力覆盖机制。
+- 两份固定正文、Review 002 和三个本机排除材料的指纹不变；相对 main 恰为十份既定 Markdown，tracked／staged 无差异，`git diff --check` PASS。
+- Reviewer 也核对了本记录追加前的 3631 bytes／SHA-256 `ced20daae941d32d45cda2784869f94fa1e503ad923024da69f7768d81eda4ca`，确认其准确记录首次审查及限制。本段仅保存第二次实际返回，不把追加后的自述当成独立再次审查。
+
+合并后静态检查为 143 个本地 Markdown 目标存在、无行尾空白／冲突标记／替换字符。三个绝对截图链接仍明确属于 MacBook 本机材料。发布前继续核验本段追加后的完整十文件指纹、范围及暂存字节；GitHub CI、PR 合并及接收方采用仍各以真实回执为准。
