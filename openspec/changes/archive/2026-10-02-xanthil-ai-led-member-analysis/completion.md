@@ -43,3 +43,8 @@ Same-device receiver: Mac mini Engineering Controller; artifacts are local, with
 cross-device backup UNKNOWN. Configured responsibilities remain juaner_worker,
 workspace-write/never; model/effort Controller-attested gpt-6-astra/high, independent
 runtime fields UNKNOWN. No role/model/effort switch.
+
+
+## Controller integration closeout — 2026-10-02
+
+PR59 is merged at `9d416f658529fe99c5cb2224c1af5ac4d37c73c2` with the exact reviewed tree and successful hosted portable CI36999834288. Independent delivery reviews009/010 passed. The [Git receipt](git-delivery.md#final-git-integration-receipt--2026-10-02) binds source, tree, CI, preserved waiver and synchronization evidence. Local main synchronized; MacBook SSH timed out, so dual-device synchronization remains incomplete. This closes authorized Git delivery/archive only; E2 and later human experience remain open as above.
