@@ -260,3 +260,14 @@ Final independent supplement008 exited0; report `controller/validator-permitted-
 ## User delivery decision — E2 deferred (2026-10-02)
 
 User: “放行E2，后续再修，交付change004”. Mini records [Engineering Acceptance with E2 waiver](engineering-acceptance.md) and the open [E2 follow-up](e2-follow-up.md). This later explicit instruction supersedes the prior delivery stop for this fixed candidate. Historical Validator BLOCKED and native failures remain unchanged. Human experience remains deferred; Git delivery and mechanical archive are now authorized. No install/release or real Provider permission is added.
+
+
+## 2026-10-02 delivery CI timeout correction
+
+Independent delivery review009 passed at HEAD `6a035185f6eaa6afeb6380bef1b6f646e5ba4f11`: 153 delivery files,177 preserved production/test/config files and32 frozen product inputs matched; CI contracts62/62. Report SHA-256 `9f9b70688addca1ad4c3253c600811a555bb4863c32a403b4ad59299b1bf4be9`, under the existing evidence root `controller/validator-permitted-001/delivery-review-009`.
+
+[PR59](https://github.com/gadfly-hbo/JuanerAI/pull/59) initial [hosted run36995989555](https://github.com/gadfly-hbo/JuanerAI/actions/runs/36995989555) stopped portable-regression at180seconds, exit124. Completed test groups had no assertion failures; unfinished groups were not proved. This failure is separate from the user's E2 waiver.
+
+The Controller selected a finite1080second allowance only for the exact portable-regression label, within the unchanged20minute job cap. All other stages remain180seconds; TERM, five-second kill grace, full commands/tests, log reservation and separate streams/exact exits remain. No product, dependency, runtime or permission expansion. Two same-context worker attempts produced the isolated fixed source and specification but then made no tool progress; both were stopped at a boundary with no test child running. The Controller authored only the two-file CI correction; the original author-independent Validator remains responsible for its final review.
+
+Causal configuration RED observed180s versus required1080s; it is not a product RED. GREEN: all93 affected CI contract tests passed, zero failures/skips. New executable cases cover every current label, near-match/unknown labels, exits0/17/124, signal/grace, exact streams and one wrapper invocation. Four isolated mutations (job cap, global allowance, signal, label) each failed. Existing assertions/tests were retained. Evidence: `controller/delivery-ci-timeout-author-004` under the sole Change004 artifact root, with RED/GREEN streams/results, mutation results and frozen file identities. Hosted completion and independent review of this delta are still pending at this record. E1 PASS, E2 BLOCKED-with-user-waiver and deferred human Product Acceptance remain unchanged.

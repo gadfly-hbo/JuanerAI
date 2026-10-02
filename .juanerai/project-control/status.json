@@ -12,9 +12,9 @@
     "total": 6
   },
   "health": "active",
-  "summary": "用户已明确放行E2并要求交付；工程接受附E2豁免。正在归档、修正旧CI精确入口清单并准备PR。",
-  "current_objective": "在固定候选上完成独立持久化及原生工程验证；用户体验按指示后续进行。",
-  "next_action": "固定交付增量并独立复核；提交PR、验证CI、squash合并及安全同步main。",
+  "summary": "PR59已发布，交付增量独立复核通过；首次CI因180秒超时失败，最小时限修正及93项契约检查已通过，等待独立复核和新CI。",
+  "current_objective": "完成Change004附E2用户豁免的Git交付和归档，真人体验后置。",
+  "next_action": "固定CI时限修正，推送PR59；独立复核与Hosted CI通过后squash合并、安全同步main。",
   "blockers": [],
   "milestones": [
     {
@@ -61,14 +61,14 @@
       "label": "Continuous Engineering Worker",
       "model": "gpt-6-astra/high/workspace-write/never; CLI turn_context verified",
       "status": "complete",
-      "activation": "机械归档和当前规格已完成，证据及源码身份核对通过。"
+      "activation": "隔离副本已保留；无进展时安全中断，Controller仅接手两文件CI修正。"
     },
     {
       "id": "juaner_validator",
       "label": "Independent Validator",
       "model": "gpt-6-astra/high/never; source read-only, isolated artifact writes approved and verified",
       "status": "waiting",
-      "activation": "保留E1 PASS / E2 BLOCKED；待交付文档和CI契约增量独立复核。"
+      "activation": "交付review009 PASS；待CI时限修正独立复核。"
     }
   ],
   "metrics": [],
@@ -112,7 +112,7 @@
       "mitigation": "保留SIGABRT及桌面服务拒绝证据；补齐原生交互、清理及当前包/full native canonical后才关闭。"
     }
   ],
-  "updated_at": "2026-10-02T10:28:53.346Z",
+  "updated_at": "2026-10-02T11:12:31.070Z",
   "updated_by": {
     "role": "controller",
     "session": "change-004"
