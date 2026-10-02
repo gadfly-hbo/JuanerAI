@@ -15,8 +15,14 @@ Read `docs/governance/git-development-workflow.md` before acting.
   pull request to `main`.
 - Preserve the repository's OpenSpec, TDD, validation, and independent-review
   Gates; the Git workflow does not approve product scope or acceptance.
-- Squash merge after the PR diff and evidence are accepted, then fast-forward
-  local `main` and prune deleted remote branches.
+- Squash merge after the PR diff and evidence are accepted. The merging device
+  then runs `tools/harness/git/sync-main` to synchronize its own and configured
+  SSH peers' `main`, regardless of which device performed the merge. Follow the
+  workflow document's target setup and checked-out-main consent rules; never
+  switch an active work branch just to synchronize.
+- Report each target's verified main commit or precise skip/failure. A merged
+  PR with a skipped peer is merged but not fully synchronized; do not retry
+  indefinitely or require in-flight sessions to adopt updated rules.
 - Stop on ambiguous local changes, divergent same-branch work, or a conflict
   that could discard either device's commits. Do not reset, force-push, or hide
   the conflict with a new branch unless the user explicitly chooses recovery.
