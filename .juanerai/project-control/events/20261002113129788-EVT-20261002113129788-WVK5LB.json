@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002113129788-WVK5LB",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T11:31:29.788Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "用户明确MacBook离线，取消本次后续同步尝试，改由用户后续手动同步",
+  "status_after": "complete",
+  "evidence_refs": []
+}

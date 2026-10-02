@@ -6,15 +6,15 @@
     "product": "Xanthil Desktop — AI-led membership analysis"
   },
   "phase": {
-    "id": "DELIVERY",
-    "label": "Change004 E2豁免接受，归档与Git交付",
+    "id": "DELIVERED",
+    "label": "Change004附E2豁免交付并归档",
     "ordinal": 6,
     "total": 6
   },
-  "health": "active",
-  "summary": "PR59已发布，交付增量独立复核通过；首次CI因180秒超时失败，最小时限修正及93项契约检查已通过，等待独立复核和新CI。",
-  "current_objective": "完成Change004附E2用户豁免的Git交付和归档，真人体验后置。",
-  "next_action": "固定CI时限修正，推送PR59；独立复核与Hosted CI通过后squash合并、安全同步main。",
+  "health": "complete",
+  "summary": "PR59已squash合并；独立复核009/010及Hosted portable CI通过，归档完成。E2待修，用户体验后置；MacBook由用户后续手动同步。",
+  "current_objective": "Change004获授权工程交付与OpenSpec归档已完成。",
+  "next_action": "后续修复E2并由用户完成产品体验；MacBook由用户后续手动同步。",
   "blockers": [],
   "milestones": [
     {
@@ -45,7 +45,7 @@
     {
       "id": "delivery",
       "label": "授权Git交付与归档",
-      "status": "active"
+      "status": "completed"
     }
   ],
   "agents": [
@@ -67,8 +67,8 @@
       "id": "juaner_validator",
       "label": "Independent Validator",
       "model": "gpt-6-astra/high/never; source read-only, isolated artifact writes approved and verified",
-      "status": "waiting",
-      "activation": "交付review009 PASS；待CI时限修正独立复核。"
+      "status": "complete",
+      "activation": "review009/010 PASS；E1 PASS，E2 BLOCKED保留并按用户豁免交付。"
     }
   ],
   "metrics": [],
@@ -89,6 +89,12 @@
       "id": "CHANGE004-COVERAGE",
       "label": "完整六＋二覆盖及 E1关闭/E2剩余限制",
       "path": "docs/planning/capability-coverage/latest.md",
+      "status": "verified"
+    },
+    {
+      "id": "CHANGE004-GIT-DELIVERY",
+      "label": "PR59合并、CI与逐设备同步回执",
+      "path": "openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/git-delivery.md",
       "status": "verified"
     }
   ],
@@ -112,7 +118,7 @@
       "mitigation": "保留SIGABRT及桌面服务拒绝证据；补齐原生交互、清理及当前包/full native canonical后才关闭。"
     }
   ],
-  "updated_at": "2026-10-02T11:12:31.070Z",
+  "updated_at": "2026-10-02T11:31:29.788Z",
   "updated_by": {
     "role": "controller",
     "session": "change-004"
