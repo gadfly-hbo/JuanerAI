@@ -3,105 +3,118 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "Xanthil Desktop — Fork / Subagent collaboration"
+    "product": "Xanthil Desktop — AI-led membership analysis"
   },
   "phase": {
-    "id": "ARCHIVE",
-    "label": "Change 003 已交付与归档",
+    "id": "DELIVERY",
+    "label": "Change004 E2豁免接受，归档与Git交付",
     "ordinal": 6,
     "total": 6
   },
-  "health": "complete",
-  "summary": "Change003工程与产品验收PASS；PR #51云端CI通过并squash合并，OpenSpec归档及当前规范已集成，本地main已核对同步。",
-  "current_objective": "交付受控独立子窗口、精确授权、结果回流与父材料人工采纳，并保留现有专业能力。",
-  "next_action": "保存最终交付回执与看板完成记录；等待用户另行批准下一Change的产品输入。",
+  "health": "active",
+  "summary": "用户已明确放行E2并要求交付；工程接受附E2豁免。正在归档、修正旧CI精确入口清单并准备PR。",
+  "current_objective": "在固定候选上完成独立持久化及原生工程验证；用户体验按指示后续进行。",
+  "next_action": "固定交付增量并独立复核；提交PR、验证CI、squash合并及安全同步main。",
   "blockers": [],
   "milestones": [
     {
       "id": "intake",
-      "label": "固定版本与工程接收",
+      "label": "批准输入与工程接收",
       "status": "completed"
     },
     {
-      "id": "fork",
-      "label": "Fork完整路径",
+      "id": "stage_a",
+      "label": "A：计划、分析与待审报告离线实现",
       "status": "completed"
     },
     {
-      "id": "subagent",
-      "label": "Subagent完整路径",
+      "id": "stage_b",
+      "label": "B：点评、恢复与人审离线实现",
       "status": "completed"
     },
     {
       "id": "verification",
-      "label": "回归及独立验证",
+      "label": "工程接受：E1通过，E2用户豁免",
       "status": "completed"
     },
     {
       "id": "product",
-      "label": "用户产品验收",
-      "status": "completed"
+      "label": "用户后续产品/体验验收",
+      "status": "pending"
     },
     {
       "id": "delivery",
       "label": "授权Git交付与归档",
-      "status": "completed"
+      "status": "active"
     }
   ],
   "agents": [
     {
       "id": "controller",
       "label": "Mac mini Engineering Controller",
-      "model": "gpt-6-astra/high; actual primary turn_context verified",
+      "model": "gpt-6-astra/high",
       "status": "controller",
-      "activation": "用户在原change-003会话明确启动；独占工程状态写入。"
+      "activation": "原change-004用户已明确开工；唯一工程状态写入者。"
     },
     {
       "id": "juaner_worker",
       "label": "Continuous Engineering Worker",
-      "model": "gpt-6-astra/high/workspace-write/never; actual CLI turn_context verified",
+      "model": "gpt-6-astra/high/workspace-write/never; CLI turn_context verified",
       "status": "complete",
-      "activation": "固定功能候选及CI精确入口修正已完成；无剩余写入任务。"
+      "activation": "机械归档和当前规格已完成，证据及源码身份核对通过。"
     },
     {
       "id": "juaner_validator",
       "label": "Independent Validator",
-      "model": "gpt-6-astra/high/read-only/never; actual CLI turn_context verified",
-      "status": "complete",
-      "activation": "功能review004、归档review001及CI修正review002均PASS，无实质阻断。"
+      "model": "gpt-6-astra/high/never; source read-only, isolated artifact writes approved and verified",
+      "status": "waiting",
+      "activation": "保留E1 PASS / E2 BLOCKED；待交付文档和CI契约增量独立复核。"
     }
   ],
   "metrics": [],
   "evidence": [
     {
-      "id": "CHANGE003-INTAKE",
-      "label": "固定产品输入与工程接收",
-      "path": "openspec/changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/intake.md",
+      "id": "CHANGE004-INTAKE",
+      "label": "用户启动与固定工程接收",
+      "path": "openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/intake.md",
       "status": "verified"
     },
     {
-      "id": "CHANGE003-ENGINEERING-ACCEPTANCE",
-      "label": "固定组合候选工程验收",
-      "path": "openspec/changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/engineering-acceptance.md",
+      "id": "CHANGE004-CANDIDATE",
+      "label": "固定候选 corrected-offline-005 与独立复核006",
+      "path": "openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/engineering-decisions.md",
       "status": "verified"
     },
     {
-      "id": "CHANGE003-PRODUCT-ACCEPTANCE",
-      "label": "用户产品/UI验收通过",
-      "path": "openspec/changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/product-acceptance.md",
-      "status": "verified"
-    },
-    {
-      "id": "CHANGE003-GIT-DELIVERY",
-      "label": "PR #51已合并及Git归档回执",
-      "path": "openspec/changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/git-delivery.md",
+      "id": "CHANGE004-COVERAGE",
+      "label": "完整六＋二覆盖及 E1关闭/E2剩余限制",
+      "path": "docs/planning/capability-coverage/latest.md",
       "status": "verified"
     }
   ],
-  "risks": [],
-  "updated_at": "2026-10-01T07:11:13.717Z",
+  "risks": [
+    {
+      "id": "UX-DEFERRED",
+      "label": "真人体验及模型质量未验证",
+      "level": "medium",
+      "mitigation": "按用户指示后置体验；验收时如实区分工程证据与用户判断。"
+    },
+    {
+      "id": "RUNTIME-ACTIVATION",
+      "label": "真实运行权限及资源配置待明确",
+      "level": "medium",
+      "mitigation": "离线合成验证；未配置或未获准的真实Provider/数据使用拒绝准入。"
+    },
+    {
+      "id": "E2-DEFERRED",
+      "label": "用户接受E2延后修复",
+      "level": "medium",
+      "mitigation": "保留SIGABRT及桌面服务拒绝证据；补齐原生交互、清理及当前包/full native canonical后才关闭。"
+    }
+  ],
+  "updated_at": "2026-10-02T10:28:53.346Z",
   "updated_by": {
     "role": "controller",
-    "session": "change-003"
+    "session": "change-004"
   }
 }

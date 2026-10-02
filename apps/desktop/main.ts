@@ -1,3 +1,4 @@
+import {createMembershipTaskHandler} from './member-task-main.ts';
 import {installCollaborationClose} from './collaboration-window-close.ts';
 import {developmentEndpoint, isDevelopmentFrame, prepareDevelopmentRoot, assertDevelopmentPath} from './development.ts';
 import {createProviderSettings} from '../../packages/application/provider-settings.ts';
@@ -574,6 +575,8 @@ function startNormalMainEntry(): void {
     for (const [method, handler] of Object.entries(handlers)) {
       ipcMain.handle(`xanthil-desktop:v1:${method}`, (event, request) => handler(event, request));
     }
+    const membershipHandler=createMembershipTaskHandler({senderPolicy:isCurrentMainFrame,getApplication:()=>productionProfile.getMembershipTask(),selectFiles:()=>normalNativeDialogs().selectImportFiles(),readFiles:cap=>normalSourceReader().readSelectedFiles(cap)});
+    ipcMain.handle('xanthil-membership-task:v1',(event,request)=>membershipHandler(event,request));
     const assistantHandler=createCaseAssistantHandler({focusParent:async id=>{if(!mainWindow||mainWindow.isDestroyed())throw Object.assign(new Error('PARENT_CLOSED'),{code:'PARENT_CLOSED'});mainWindow.webContents.send('xanthil-case-assistant:focus-parent',id);mainWindow.focus();return {focused:true};},senderPolicy:(event,request)=>isCurrentMainFrame(event)||childSender(event,request,productionProfile.getCaseAssistant()),openChildWindow:async id=>{const application=productionProfile.getCaseAssistant();if(!application)throw Object.assign(new Error('NOT_FOUND'),{code:'NOT_FOUND'});return openChildWindow(application,id,()=>productionProfile.getCaseAssistant()===application);},getApplication:()=>productionProfile.getCaseAssistant(),async exportReport(application,sessionId,reportId,_commandId){
       const projection=await application.read(sessionId),report=projection.reports.find(r=>r.id===reportId);if(!report)throw Object.assign(new Error('NOT_FOUND'),{code:'NOT_FOUND'});
       const selected=await normalNativeDialogs().selectExportFile();if(selected===null)throw Object.assign(new Error('CANCELLED'),{code:'CANCELLED'});
@@ -589,7 +592,7 @@ function startNormalMainEntry(): void {
       return providerSettings.request(request);
     });
     closeWindowModelWork=async()=>{await productionProfile.closeModelWork();await providerSettings?.request({operation:'cancel'});};
-    hasWindowModelWork=()=>[...childWindows].some(([id,binding])=>binding.application===productionProfile.getCaseAssistant()&&binding.application.hasWork(id));
+    hasWindowModelWork=()=>productionProfile.hasModelWork()||[...childWindows].some(([id,binding])=>binding.application===productionProfile.getCaseAssistant()&&binding.application.hasWork(id));
     app.on('before-quit',event=>{if(quitCommitted){providerSettings?.close();return;}event.preventDefault();quitRequested=true;if(mainWindow)mainWindow.close();else void closeWindowModelWork().then(()=>{quitCommitted=true;app.quit();});});
     ipcHandlersRegistered = true;
   }

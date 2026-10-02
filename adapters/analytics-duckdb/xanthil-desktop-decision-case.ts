@@ -1,6 +1,7 @@
+import {plannedSelection,validateMembershipPlan,validateMembershipResult} from '../../packages/product-core/member-analysis.ts';
 import { createHash } from 'node:crypto';
 import { isAbsolute } from 'node:path';
-import { canonicalDesktopJson, checkedDesktopInteger, desktopMetricChanges, desktopRational, desktopRuleFailure, prepareDesktopData, type DesktopMetricPeriod, type DesktopSelection } from '../../packages/product-core/xanthil-desktop-decision-case.ts';
+import { canonicalDesktopJson, checkedDesktopInteger, desktopMetricChanges, desktopRational, desktopRuleFailure, prepareDesktopData, validateDesktopCalculationResult, type DesktopMetricPeriod, type DesktopSelection } from '../../packages/product-core/xanthil-desktop-decision-case.ts';
 import { runAnalysisProcess } from './process.ts';
 
 const sql = `WITH ranked AS (
@@ -17,6 +18,8 @@ UNION ALL
 SELECT 'group',period,group_id,'0','0',CAST(CAST(coalesce(sum(revenue),0) AS BIGINT) AS VARCHAR)
  FROM members GROUP BY period,group_id ORDER BY "scope",period,group_id;
 `;
+// The M1 materialization omits both the member group key and the M2 aggregate.
+const m1Sql = sql.split('UNION ALL')[0].replaceAll('period,member_id,group_id', 'period,member_id') + 'ORDER BY period;\n';
 const python = String.raw`import sys,json,csv,io,base64,datetime
 from zoneinfo import ZoneInfo
 from fractions import Fraction
@@ -64,7 +67,7 @@ def instant(text):
     epoch=aware.astimezone(datetime.timezone.utc)-datetime.datetime(1970,1,1,tzinfo=datetime.timezone.utc)
     return epoch.days*86400+epoch.seconds,(m[3] or '').rstrip('0'),aware.astimezone(ZoneInfo('Asia/Shanghai')).date().isoformat()
 request=json.load(sys.stdin); contract=request['contract']; mapping=contract['column_mapping']
-members=csv_rows(request['members']); orders=csv_rows(request['orders']); grouped=contract['selected_group_mode']=='mapped'
+members=csv_rows(request['members']); orders=csv_rows(request['orders']); plan=contract.get('execution_plan'); grouped=contract['selected_group_mode']=='mapped' and (plan is None or 'M2' in plan['methods'])
 member_groups={}
 for row in members:
     key=row[mapping['member_id_column']]
@@ -110,13 +113,22 @@ d=checked(int(new['denominator'])*int(old['denominator']))
 absolute=ratio(n,d)
 relative='not_applicable' if int(old['numerator'])==0 else ratio(checked(int(absolute['numerator'])*int(old['denominator'])),checked(int(absolute['denominator'])*int(old['numerator'])))
 changes['repurchase_rate']={'absolute_delta':absolute,'relative_change':relative}
-m2={'status':'not_applicable'}
+m2={'status':'not_selected' if plan is not None and 'M2' not in plan['methods'] else 'not_applicable'}
 if grouped:
     values=[{'group_id':key,'comparison_repeat_revenue_fen':str(value['comparison']),'current_repeat_revenue_fen':str(value['current']),'absolute_delta':str(checked(value['current']-value['comparison']))} for key,value in sorted(groups.items())]
     total=0
     for value in values: total=checked(total+int(value['absolute_delta']))
     if total!=int(changes['repeat_revenue_fen']['absolute_delta']): raise ValueError('reconciliation')
     m2={'status':'applicable','groups':values}
+if plan is not None:
+    if not selected['comparison'] and not selected['current']: raise ValueError('empty')
+    unavailable=False
+    for period in periods.values():
+        if period['active_member_count']=='0':
+            period['repurchase_rate']='not_applicable'; unavailable=True
+    if unavailable:
+        changes['repurchase_rate']={'absolute_delta':'not_applicable','relative_change':'not_applicable'}
+        if grouped: m2={'status':'not_applicable'}
 print(json.dumps({'periods':periods,'changes':changes,'m2':m2},sort_keys=True,separators=(',',':')))
 `;
 const sha = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex');
@@ -130,8 +142,9 @@ function request(value: unknown): Request {
   if (typeof x.run_id !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(x.run_id) || !(x.cancellation_signal instanceof AbortSignal) || !Number.isInteger(x.deadline_seconds) || Number(x.deadline_seconds)<0 || Number(x.deadline_seconds)>30) desktopRuleFailure();
   if (x.cancellation_signal.aborted) desktopRuleFailure('CANCELLED');
   if (x.deadline_seconds===0) desktopRuleFailure('DEADLINE_EXCEEDED');
-  if (x.expected_code_identity!==method.code_identity) desktopRuleFailure('SOURCE_CHANGED');
   exact(x.snapshot,['members_bytes','orders_bytes']); if (!record(x.contract)) desktopRuleFailure();
+  if (Object.hasOwn(x.contract,'schema_version') || Object.hasOwn(x.contract,'execution_plan')) plannedSelection(x.contract,x.snapshot as Request['snapshot']);
+  if(x.expected_code_identity!==selectedMethod(x as Request).code_identity)desktopRuleFailure('SOURCE_CHANGED');
   return x as Request;
 }
 type Row = {scope:string;period:string;group_id:string|null;active:string;repeat:string;revenue:string};
@@ -140,6 +153,14 @@ function metric(row?: Row): DesktopMetricPeriod {
   if(active<0n||repeat<0n||repeat>active||revenue<0n)desktopRuleFailure('CALCULATION_FAILED');
   return Object.freeze({active_member_count:String(active),repeat_member_count:String(repeat),repurchase_rate:active===0n?desktopRational(0n,1n):desktopRational(repeat,active),repeat_revenue_fen:String(revenue)});
 }
+function plannedMethods(x:Request): readonly string[]|null { return record(x.contract.execution_plan)?x.contract.execution_plan.methods as readonly string[]:null; }
+function selectedSql(x:Request):string { return plannedMethods(x)?.length===1?m1Sql:sql; }
+function selectedMethod(x:Request){return {...method,code_identity:sha(canonicalDesktopJson({method_id:method.id,method_version:method.version,primary_sql_sha256:sha(selectedSql(x)),python_verifier_sha256:sha(python)}))};}
+function envelope(x:Request,implementation:'duckdb_primary'|'python_independent',result:unknown) {
+ const plan=x.contract.execution_plan,chosen=selectedMethod(x);
+ const validated=plan?validateMembershipResult(result,validateMembershipPlan(plan)):validateDesktopCalculationResult(result);
+ return plan?{schema_version:'2.0',run_id:x.run_id,implementation,method:chosen,plan_sha256:sha(canonicalDesktopJson(plan)),materialization:{primary_sql_sha256:sha(selectedSql(x)),python_verifier_sha256:sha(python)},result:validated}:{schema_version:'1.0',run_id:x.run_id,implementation,method,result:validated};
+}
 const literal=(value:string)=>"'"+value.replaceAll("'","''")+"'";
 export function createDuckDbPythonDesktopLocalAnalysisExecution(config: unknown) {
  const settings=exact(config,['duckdbExecutable','duckdbVersion','pythonExecutable','pythonVersion']);
@@ -147,27 +168,32 @@ export function createDuckDbPythonDesktopLocalAnalysisExecution(config: unknown)
  const duckdb=settings.duckdbExecutable,pythonPath=settings.pythonExecutable,pythonVersion=settings.pythonVersion;
  async function run(command:string,args:readonly string[],input:string,signal:AbortSignal,seconds:number){try{return await runAnalysisProcess(command,args,signal,seconds,input);}catch(error){const code=(error as {code?:string}).code;desktopRuleFailure(code==='TIMEOUT'?'DEADLINE_EXCEEDED':code==='CANCELLED'?'CANCELLED':'CALCULATION_FAILED');}}
  return Object.freeze({
-  async describeImplementation(input:unknown){exact(input,[]);return Object.freeze({method_id:method.id,method_version:method.version,code_identity:method.code_identity,duckdb_version:'1.5.2',python_version:pythonVersion,primary_sql:bytes(sql),python_verifier:bytes(python)});},
+  async describeImplementation(input:unknown){const value=exact(input,record(input)&&Object.hasOwn(input,'execution_plan')?['execution_plan']:[]);const plan=value.execution_plan?validateMembershipPlan(value.execution_plan):null,selected=plan?.methods.length===1?m1Sql:sql;const code_identity=sha(canonicalDesktopJson({method_id:method.id,method_version:method.version,primary_sql_sha256:sha(selected),python_verifier_sha256:sha(python)}));return Object.freeze({method_id:method.id,method_version:method.version,code_identity,duckdb_version:'1.5.2',python_version:pythonVersion,primary_sql:bytes(selected),python_verifier:bytes(python)});},
   async calculate(input:unknown){
    const x=request(input),prepared=prepareDesktopData(x.snapshot,x.contract),mapped=x.contract.selected_group_mode==='mapped';
    if(mapped?!record(x.group_pseudonym_map):x.group_pseudonym_map!==null)desktopRuleFailure();
    const groupIds=new Set<string>();
    if(mapped)for(const group of new Set(prepared.member_groups.values())){if(typeof group!=='string'||!Object.hasOwn(x.group_pseudonym_map!,group))desktopRuleFailure();const id=x.group_pseudonym_map![group];if(!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(id)||groupIds.has(id))desktopRuleFailure();groupIds.add(id);}
    const values=prepared.orders.map(row=>'('+[literal(row.period),literal(row.member_id),mapped?literal(x.group_pseudonym_map![row.group!]):'NULL',literal(row.order_id),String(row.epoch_seconds),literal(row.fraction),String(row.amount_fen)].join(',')+')').join(',');
-   const source="SET autoinstall_known_extensions=false; SET autoload_known_extensions=false; CREATE TABLE orders(period VARCHAR,member_id VARCHAR,group_id VARCHAR,order_id VARCHAR,epoch_seconds BIGINT,fraction VARCHAR,amount_fen BIGINT); INSERT INTO orders VALUES "+values+";\n"+sql;
+   const source="SET autoinstall_known_extensions=false; SET autoload_known_extensions=false; CREATE TABLE orders(period VARCHAR,member_id VARCHAR,group_id VARCHAR,order_id VARCHAR,epoch_seconds BIGINT,fraction VARCHAR,amount_fen BIGINT); INSERT INTO orders VALUES "+values+";\n"+selectedSql(x);
    const output=await run(duckdb,['-init','/dev/null','-json',':memory:'],source,x.cancellation_signal,x.deadline_seconds);
    let rows:Row[];try{rows=JSON.parse(output);}catch{desktopRuleFailure('CALCULATION_FAILED');}if(!Array.isArray(rows))desktopRuleFailure('CALCULATION_FAILED');
    const periods={comparison:metric(rows.find(r=>r.scope==='period'&&r.period==='comparison')),current:metric(rows.find(r=>r.scope==='period'&&r.period==='current'))},changes=desktopMetricChanges(periods.comparison,periods.current);
-   let m2:unknown={status:'not_applicable'};
-   if(mapped){const ids=[...new Set(rows.filter(r=>r.scope==='group').map(r=>r.group_id!))].sort();const groups=ids.map(group_id=>{const old=BigInt(rows.find(r=>r.scope==='group'&&r.group_id===group_id&&r.period==='comparison')?.revenue??'0'),now=BigInt(rows.find(r=>r.scope==='group'&&r.group_id===group_id&&r.period==='current')?.revenue??'0');return {group_id,comparison_repeat_revenue_fen:String(old),current_repeat_revenue_fen:String(now),absolute_delta:String(checkedDesktopInteger(now-old))};});let sum=0n;for(const g of groups)sum=checkedDesktopInteger(sum+BigInt(g.absolute_delta));if(String(sum)!==changes.repeat_revenue_fen.absolute_delta)desktopRuleFailure('CALCULATION_FAILED');m2={status:'applicable',groups};}
-   return Object.freeze({schema_version:'1.0',run_id:x.run_id,implementation:'duckdb_primary',method,result:{periods,changes,m2}});
+   let m2:unknown={status:plannedMethods(x)?.length===1?'not_selected':'not_applicable'};
+   if(mapped&&(!plannedMethods(x)||plannedMethods(x)!.includes('M2'))){const ids=[...new Set(rows.filter(r=>r.scope==='group').map(r=>r.group_id!))].sort();const groups=ids.map(group_id=>{const old=BigInt(rows.find(r=>r.scope==='group'&&r.group_id===group_id&&r.period==='comparison')?.revenue??'0'),now=BigInt(rows.find(r=>r.scope==='group'&&r.group_id===group_id&&r.period==='current')?.revenue??'0');return {group_id,comparison_repeat_revenue_fen:String(old),current_repeat_revenue_fen:String(now),absolute_delta:String(checkedDesktopInteger(now-old))};});let sum=0n;for(const g of groups)sum=checkedDesktopInteger(sum+BigInt(g.absolute_delta));if(String(sum)!==changes.repeat_revenue_fen.absolute_delta)desktopRuleFailure('CALCULATION_FAILED');m2={status:'applicable',groups};}
+   let result:unknown={periods,changes,m2};
+   if(plannedMethods(x)){
+    const unavailable=periods.comparison.active_member_count==='0'||periods.current.active_member_count==='0';
+    result={periods:Object.fromEntries(Object.entries(periods).map(([name,p])=>[name,{...p,repurchase_rate:p.active_member_count==='0'?'not_applicable':p.repurchase_rate}])),changes:{...changes,repurchase_rate:unavailable?{absolute_delta:'not_applicable',relative_change:'not_applicable'}:changes.repurchase_rate},m2:unavailable&&plannedMethods(x)!.includes('M2')?{status:'not_applicable'}:m2};
+   }
+   return Object.freeze(envelope(x,'duckdb_primary',result));
   },
   async verify(input:unknown){
    const x=request(input);
    const payload=JSON.stringify({contract:x.contract,members:Buffer.from(x.snapshot.members_bytes).toString('base64'),orders:Buffer.from(x.snapshot.orders_bytes).toString('base64'),groups:x.group_pseudonym_map});
    const output=await run(pythonPath,['-I','-B','-c',python],payload,x.cancellation_signal,x.deadline_seconds);
    let result:unknown;try{result=JSON.parse(output);}catch{desktopRuleFailure('CALCULATION_FAILED');}
-   return Object.freeze({schema_version:'1.0',run_id:x.run_id,implementation:'python_independent',method,result});
+   return Object.freeze(envelope(x,'python_independent',result));
   }
  });
 }

@@ -100,3 +100,77 @@
 ## E-LEGACY — 既有可复用基础的核验边界
 
 Blueprint §9 明确保留 CLI、Core、本地计算、Model Pack contract enabler 等基础。[现有规格入口](../../../openspec/specs/README.md)、[Model Pack contract enabler](../../../openspec/specs/model-pack-contract-enabler/spec.md)可用于后续定向核验。本轮没有全库验证这些基础在 Blueprint v3 各目标范围下的当前集成、真实执行和用户验收，故相关广义能力保留“待核验”或已证明的局部范围，而不是声称其不存在，也不凭旧代码／Demo／规格存在判定整个能力完成。
+
+<a id="e-004-wip"></a>
+
+## E-004-WIP — Change004 在研，尚无完整 P1 接受
+
+2026-10-02，Mac mini Engineering Controller 对本机阶段快照独立字节／哈希读回。以上历史 E-001～003 的采集说明保持原时点，本节使用当前本机证据。工程起点 commit `c413bee3356a7d26be6ef4ea6bbd8e218fca4d79`、tree `74e042fa0680a22ba29fd68e87f67f8ca6428301`；工作树含未提交实现，HEAD 不是新增实现候选。产品输入固定于 `989deeb536a770dc0067a82a73f20f17220cbd40`。权限和所有权见 [intake](../../../openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/intake.md)，具体工程边界见 [工程决定](../../../openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/engineering-decisions.md)。
+
+原始证据唯一根为 `/Users/bendandebaba/JuanerAI-artifacts/change-004`，归 Mac mini；以下均相对于该根。接收方 Controller 可在同设备读取，尚无跨设备备份或 Git 发布证据。
+
+| 固定阶段 | 身份与支持范围 |
+| --- | --- |
+| 首个实际计划消费链 | `worker/implementation-001/candidate-manifest.json` SHA-256 `312eb62cdee3d59aafea791f85473411e74a6135abf38c59ad863fd9e35bc4ac`；44 聚焦及 502 旧路径检查、类型检查通过。Controller 回执 `controller/worker-implementation-001/controller-readback.json`。 |
+| 任务／共享物理模型占位 | `worker/stage-a-20261001T232433Z/checkpoint-physical-001/candidate.json` SHA-256 `a6827c1dc6bc9540e091301cb45ae247df206a6cf1b155cc7b55c8ce3d77a1aa`；101 最终受影响回归、类型及离线构建通过。回执 `controller/worker-stage-a-002/controller-readback.json`。 |
+| 配置／授权补充与原生阻点 | `worker/stage-ab-20261002T010119Z/native-blocker-001/source-delta.json` SHA-256 `4e9745182df687b6f99c99cfe1dad84725c8420f1a23e2bec2061b389c0f87b1`，绑定上一阶段 baseline；34 聚焦检查、补充配置检查、类型及离线构建通过。17 源码增量及 5644 证据文件已读回，回执 `controller/worker-stage-b-001/controller-readback.json`。 |
+
+测试数量来自不同阶段且可重叠，不能相加为唯一覆盖。失败记录保留，详细归属见 [verification](../../../openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/verification.md)。原生 Electron 在产品 Main 前 SIGABRT，清理报 EPERM，根因 UNKNOWN；未执行到真实组件／IPC 断言。Decision003 允许继续不受影响的离线 B，实现授权不等于豁免此验证。
+
+B、完整集成候选及其回归、独立 Validator、工程接受、用户体验／产品接受、真实 Provider 质量和安装／发布均不能由这些阶段记录推出。[在研全景快照](snapshots/change-004-in-progress-2026-10-02.md)不是完成快照；后续完成需追加固定候选证据。
+
+## E-004-REVIEW-001
+
+2026-10-02，完整离线候选冻结并完成首轮独立审查。唯一证据根、Mac mini 所有权、工程起点和产品输入身份沿用 E-004-WIP；以下路径相对于 `/Users/bendandebaba/JuanerAI-artifacts/change-004`。这些是当前本机可读证据，尚无 Git 集成或跨设备备份。
+
+- 固定根：`worker/stage-d004-20261002T0325Z/integrated-offline-001`。`receipt.json` SHA-256 `b93d3214f31c24af1a0f900e8fe1d84e1769ac5ca846838a590b4c55e7105b1e`；`candidate.json` SHA-256 `aa40363193d046d8e59d83b186d010a0001f6f5fbb4aa4fc44bcb1faf7a65859`。184 源码文件、25 依赖文件和 16133 证据条目。
+- Controller 独立读回：`controller/worker-cross-entry-001/controller-readback.json`，16564 次读取、2193255880 字节、零不一致；字节身份不代表行为接受。
+- 作者离线回归 `daily-028`：2390 PASS／0 FAIL／1 个既有真实 Pi 门控 SKIP。后续界面修正有定向回归、`types-complete-043`及当前源码重新构建的 `package-fixed-042`；具体快照和限制见 Change verification，重叠检查不相加。
+- 独立报告：`controller/validator-review-001/last-message.txt`，SHA-256 `9e2f1af040f44cb0b3d8b50d6fc362ffb009836faa23d8d97aaa530895167e44`。实际角色 `juaner_validator`，gpt-6-astra/high/read-only/never；有效配置见同目录 `turn-context-attestation.json`，完整独立命令和输出见 `stdout.jsonl`。
+- 独立结论 **FAIL**：F1 绝对路径外发过滤遗漏；F2 默认有据人审摘要／已知项复用缺失；F3 正式提交后显示矛盾；F4 点评保存失败清空原文。正在同一 `juaner_worker` 上下文修正，尚无新候选接受。
+- 独立正面证据：真实 DuckDB/Python 的 M1／M1+M2、判别性期间修改、零值／零分母／全空、错配和取消；M1 执行分支观察；表达替换与原事实保留；21 项协议及 2 项物理结算测试、类型检查通过。
+- E1 **BLOCKED**：独立持久化整链、主／子任务和故障复跑在 `mkdtemp` 被 read-only sandbox 拒绝，未进入业务断言。作者已有真实 SQLite／SIGKILL／热日志／唯一重试证据，但不能冒充独立执行。
+- E2 **BLOCKED**：原生启动、打包 GUI、键盘／焦点／视口和完整原生验证未完成。Decision003 仅允许离线开发继续，未豁免此责任；没有重试或绕过权限。
+
+首轮快照见[完整六＋二覆盖图](snapshots/change-004-review-001-2026-10-02.md)。F1/F2/F4 真实激活决定、实际 Provider 质量／费用、UX01–07 及用户产品接受仍未完成；这里的产品决定编号与 Validator 缺陷编号分属不同记录。原 40 项稳定 ID 和 001～003 已接受子范围保持，不将工程包、离线检查或独立有限通过升级为交付。
+
+## E-004-REVIEW-006
+
+2026-10-02，当前离线修复候选及独立复核。唯一证据根仍为 `/Users/bendandebaba/JuanerAI-artifacts/change-004`（Mac mini），以下为相对路径。历史失败、候选和各次复核均保留；工作树尚未提交／集成，跨设备备份 UNKNOWN。
+
+- 固定根：`worker/stage-fixes5-20261002T090727Z/corrected-offline-005`。Receipt SHA-256 `c20455d7f53b1eab9dbb13cf30f12dfa54ebaa260b32a0bd56dd6ec25ac759b4`；candidate `080a55f9abb23d8e1b358b96a6b6e410ef0707b095cfc2bc734a2b52b9e3009a`；evidence `0d0703f692f86b7e9465c214dc789973e0002c322f04a3ff6e1b510e08f13b2b`。184 源码文件、25 依赖、2037 证据条目，完整历史关联见 `prior.json`。
+- 作者最终证据：273 Runtime 契约 PASS、39 定向集成 PASS、类型检查 PASS、当前静态包 PASS。前序 338／375 项及完整 daily 2446 PASS／0 FAIL／1 既有真实 Pi 门控 SKIP 仅对未变范围复用，未宣称在最终候选重跑全套；数量重叠不相加。
+- Controller 机械冻结及独立回读：`controller/worker-validator-fixes-005/controller-readback.json`，2500 次、646671004 字节、零差异。此前代理收尾无进展的中断／恢复记录保留，非产品测试失败；最终作者调用退出 0。
+- 独立报告：`controller/validator-review-006/last-message.txt` SHA-256 `9716fa6decb9f3e346e27aa4d40522874e9a5714861db6b53aa8c82860e4a45b`；完整独立命令／输出与实际 gpt-6-astra/high/read-only/never 配置同目录保存。结论：**整体 BLOCKED，最后 F1 实现修复限定范围 PASS，无剩余实质实现缺陷**。F2/F3/F4 生产实现未再变化，沿用此前独立有限结论。
+- 独立执行：273 Runtime 契约通过；20 个支持表达在 11 个材料入口共 220 次原文一致性检查通过；124 个违规表达跨 11 个入口共 1364 次拒绝，凭据、模型构造和传输均为零。此为有限验证，不宣称通用文本识别或安全完备。独立回读 2468 次、645416160 字节、零差异；184 个实时源码执行前后匹配。
+- 包身份 `1395539bad39479781990bc9bccbfcd4a3c37c927e14700194c3d837e817f756`；app.asar 122560660 字节，SHA-256 `d0e2b3efa4b45f98e91749cb847ad9af7b962b1622b04449366fa49d78789c8b`。仅静态工程包，未启动、安装或发布。
+- E1/E2 继续 BLOCKED：独立持久化执行受 read-only 临时写入限制；原生 Electron 在 Main 前退出及清理 EPERM 未解决。未更换路线规避权限。作者 SQLite／恢复证据不能替代独立执行，离线组件证据不能替代原生验证。
+
+工程接受、产品接受、OpenSpec 归档及 Git 交付未完成；真实激活 F1/F2/F4 产品决定、模型质量／费用和 UX01–07 仍分别待定。当前返回点及所需验证权限见 [Controller 工程记录](../../../openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/engineering-decisions.md#current-disposition--offline-candidate-reviewed-2026-10-02)。[本轮完整覆盖快照](snapshots/change-004-offline-review-2026-10-02.md)保留原 40 个稳定 ID 的范围和已接受子范围，没有新增目标验收。
+
+## E-004-VERIFY-007-008
+
+2026-10-02，用户批准隔离合成测试写入与本机 Electron 启动／清理。唯一证据根和设备仍为 `/Users/bendandebaba/JuanerAI-artifacts/change-004`（Mac mini）；以下相对路径位于 `controller/validator-permitted-001/`。固定 candidate、receipt 和 app.asar 身份沿用 E-004-REVIEW-006；184 个原源码前后零差异。没有改变原 40 项稳定 ID 或已验收范围。
+
+- 实际独立角色 gpt-6-astra/high/never；`runtime-preflight/` 证实隔离目录可写、原源码写入 EPERM，零源码字节写入。各次 `controller-runtime-attestation.json` 绑定实际配置。唯一可写测试根为该证据目录，未修改全局配置。
+- **E1 PASS**：`validation-007/persistence-001/`，完整会员集成158 PASS／0 FAIL／0 SKIP，含真实合成分析、SQLite/SIGKILL/热日志恢复、原账本主子任务及 F1–F4。独立报告 `validation-007/last-message.txt` SHA-256 `29d778feb5b9261e189afd47f397ee0df215a876298e4a631d8cd291a6eb295a`。
+- **E2 BLOCKED**：`validation-007/native-001/`，构建通过，Electron PID34623 SIGABRT，0 PASS／1 FAIL；未进入窗口／IPC验证。独立清理／进程枚举 EPERM；Playwright观察退出及临时清理。Controller的精确PID读取随后确认该主进程不存在，不能冒充独立全后代清理证据。
+- `controller-native-related-log.json` 保存同PID的 kernel/launchd 拒绝记录，明确涉及 WindowServer/LaunchServices；`controller-native-diagnostic.json` 及 `.ips` 副本保存应用注册阶段崩溃。具体沙箱／桌面服务不兼容已获证据；唯一根因或修复有效性仍未证明。没有再次启动或换 host/browser。
+- `validation-007/canonical-portable-001/` 保留两项依赖布局失败；未受影响余项1764 PASS／0 FAIL／1既有真实模型门控SKIP。复制现有依赖后 `validation-008/targeted-001/` 匹配4项PASS，原两失败解除，结果SHA-256 `09dba88aed76cb7509b6753fb1c38b8a0d3a278d10b2dfea4bb97fbf95dc4750`。这不是完整canonical单次PASS；各组数量不相加为新增唯一覆盖。
+- 完整 native/package 和当前包的注册producer GUI readback仍缺。工程／产品接受、归档、Git／安装／发布没有完成；真实模型及真人体验继续分别待定。当前返回点见[工程记录](../../../openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/engineering-decisions.md#verification-result--approved-isolated-execution-2026-10-02)。
+
+[当前完整六＋二快照](snapshots/change-004-isolated-verification-2026-10-02.md)保留累计已证能力和全部缺口；前序快照及失败不覆盖。证据在本机可读，跨设备备份 UNKNOWN，源变更尚未 Git 集成。
+
+独立补验最终报告 `validation-008/last-message.txt` SHA-256 `2931d404bd1d7b449f51a3a4a845c2e1c391021b6595bb342c70b5bc90b66610`，退出0；4/4通过，原依赖、184候选源码及1905副本源码保持原字节。新目录创建／清单形状诊断的两次准备失败保留，均发生在测试前。
+
+## E-004-DELIVERY
+
+2026-10-02，用户在原会话明确：“放行E2，后续再修，交付change004”。这授权固定候选的工程交付及归档，并接受已披露的 E2 及相关完整 native/package 证据缺口。本项不把既有 Validator BLOCKED 改成 PASS，不声明真人体验已完成。
+
+- 固定生产候选沿用 E-004-REVIEW-006：candidate `080a55f9abb23d8e1b358b96a6b6e410ef0707b095cfc2bc734a2b52b9e3009a`、receipt `c20455d7f53b1eab9dbb13cf30f12dfa54ebaa260b32a0bd56dd6ec25ac759b4`，184源码与32项批准产品输入已重新核对。
+- 独立验证和历史失败沿用 E-004-VERIFY-007-008；E1关闭，E2明示后置。工程接受、豁免范围／撤销条件和精确返回点见[工程接受](../../../openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/engineering-acceptance.md)及[E2后续修复](../../../openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/e2-follow-up.md)。
+- 当前行为规格、归档映射、文档增量及CI精确入口清单修正的证据由[完成记录](../../../openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/completion.md)绑定；Git/CI/两机同步的实际结果由[交付记录](../../../openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/git-delivery.md)记录。准备完成不代表已经合并。
+- 产品增量：P1 A/B从在研实现转为附E2豁免的工程交付；六＋二累计地图仍按各能力已证范围解释，40项稳定目标、原001～003已接受子范围不变。真人体验、真实模型质量／费用、行动／Actual／评价及学习闭环等缺口保留。
+- 本次交付不授权实际Provider/业务数据、安装、发布或下一Change。原始证据根仍为 `/Users/bendandebaba/JuanerAI-artifacts/change-004`（Mac mini）；Git集成不等于这些设备本地原始日志已跨设备备份。
+
+[完整交付快照](snapshots/change-004-delivery-with-e2-waiver-2026-10-02.md)保存固定六＋二覆盖、增量和缺口。

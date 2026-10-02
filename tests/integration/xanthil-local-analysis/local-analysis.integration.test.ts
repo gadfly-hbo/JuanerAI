@@ -553,7 +553,19 @@ const collaborationTestFiles = [
 ];
 const approvedChange003Tsconfig=Object.freeze({...approvedDevelopmentTsconfig,files:[...collaborationTestFiles,...approvedDevelopmentTsconfig.files]});
 
+const membershipTestFiles = [
+ 'tests/contract/xanthil-desktop/member-analysis-plan.contract.test.ts',
+ 'tests/integration/xanthil-desktop/member-analysis-chain.integration.test.ts',
+ 'tests/integration/xanthil-desktop/member-task.integration.test.ts',
+ 'tests/contract/xanthil-desktop/member-task-runtime.contract.test.ts',
+ 'tests/e2e/xanthil-desktop/member-task-native.e2e.test.ts',
+ 'tests/fixtures/member-task/native-main.ts',
+ 'tests/fixtures/member-task/native-renderer.tsx',
+];
+const approvedChange004Tsconfig=Object.freeze({...approvedChange003Tsconfig,files:[...approvedChange003Tsconfig.files,...membershipTestFiles]});
+
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedChange004Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change004' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedChange003Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change003' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP4RootManifest, approvedP4Tsconfig, approvedP4RepositoryConfigurationFiles)) return 'C0' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP5RootManifest, approvedP5Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'P5' as const;
@@ -3381,7 +3393,7 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple(approvedP5RootManifest,approvedChange002Tsconfig,[...approvedP5RepositoryConfigurationFiles,'unauthorized.config.cjs']));
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Change003');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Change004');
 });
 
 test('TEST-XCLI-021 PS-06/07 admits only the exact Provider Settings appendix and rejects each partial, reordered or expanded tuple', () => {
@@ -3668,4 +3680,17 @@ test('Change003 exact typecheck inventory preserves all development checks and r
  assert.throws(()=>check({...approvedChange003Tsconfig,compilerOptions:{...approvedChange003Tsconfig.compilerOptions,strict:false}}));
  assert.throws(()=>check({...approvedChange003Tsconfig,configuration_selector:'Change003'}));
  assert.throws(()=>assertApprovedConfigurationTuple({...approvedDevelopmentManifest,dependencies:{...approvedDevelopmentManifest.dependencies,unapproved:'1.0.0'}},approvedChange003Tsconfig,approvedP5RepositoryConfigurationFiles));
+});
+
+
+test('Change004 exact typecheck inventory preserves earlier tuples and rejects omissions, reordered or expanded configuration',()=>{
+ const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedDevelopmentManifest,config,approvedP5RepositoryConfigurationFiles);
+ assert.equal(check(approvedChange004Tsconfig),'Change004');
+ assert.equal(check(approvedChange003Tsconfig),'Change003');
+ for(const omitted of membershipTestFiles)assert.throws(()=>check({...approvedChange004Tsconfig,files:approvedChange004Tsconfig.files.filter(p=>p!==omitted)}));
+ assert.throws(()=>check({...approvedChange004Tsconfig,files:[...approvedChange003Tsconfig.files,...membershipTestFiles.toReversed()]}));
+ for(const extra of [membershipTestFiles[0],'tests/unapproved.ts'])assert.throws(()=>check({...approvedChange004Tsconfig,files:[...approvedChange004Tsconfig.files,extra]}));
+ assert.throws(()=>check({...approvedChange004Tsconfig,compilerOptions:{...approvedChange004Tsconfig.compilerOptions,strict:false}}));
+ assert.throws(()=>check({...approvedChange004Tsconfig,configuration_selector:'Change004'}));
+ assert.throws(()=>assertApprovedConfigurationTuple({...approvedDevelopmentManifest,dependencies:{...approvedDevelopmentManifest.dependencies,unapproved:'1.0.0'}},approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles));
 });

@@ -1,5 +1,9 @@
 # Accepted Case collaboration baseline
 
+## Change004 scoped amendment
+
+For an eligible Completed P1 source, [the membership-task baseline](../member-analysis-task/spec.md) and its Decision004 define retained main/manual-child grants in the original ledger, closed material and explicit sidecar102 activation. The legacy100→101 compatibility and manual003 behavior below remain for non-P1 sources. This scoped amendment does not authorize new model-created children or reopen formal completion; E2 remains deferred under the named waiver.
+
 Accepted 2026-10-01: [Engineering Acceptance](../../changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/engineering-acceptance.md),
 [user Product/UI Acceptance](../../changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/product-acceptance.md)
 and [authorized archive](../../changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/completion.md).

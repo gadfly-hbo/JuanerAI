@@ -1,0 +1,120 @@
+结论：P1 的方向在现有架构上可行，支持当前 A→B 组织建议；不需要重新选 Runtime，也没有必要先建设完整数据／语义平台。
+真正需要补齐的是三条链：计划真正驱动执行、未完成任务的受控推进、一次人审的整体正式生效。现有组件提供了基础，但不能直接拼接后宣称这些新能力已经成立。
+1. 本次评估的身份与限制
+对象	实际核对结果
+正式发布基线	按指定的 c149998c349043347499d698012a96b4baf84530，从本地 Git 对象读取现行规则；未联网复核 GitHub 最新状态
+本 session 工作树	be1c，HEAD 为 9aff1f88a24fd29a6d843b3614d014ef50192be3，干净；未同步、切换或修改
+产品包工作树	e1d5，HEAD 为 3a5e9185d688b6274c88c03b7639b49dea930d67；本次产品包仍为未提交材料
+实际评估对象	v0.1／Candidate001；评估前后原有 17 个材料文件 SHA-256 均未变化
+代码对应关系	固定业务基线 2bb18d7… 到指定 PR54 基线没有本次相关业务源码变化，可据此对照现有实现
+
+
+身份清单见 [Candidate001](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/docs/planning/2026-10-01/reviews/xanthil-ai-led-analysis-review-candidate-001.md)。这些材料是本次评估快照，不是冻结合同。
+评估期间新增的[产品就绪审查001](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/docs/planning/2026-10-01/reviews/xanthil-ai-led-analysis-development-readiness-review-001.md)也已读取，其结论是 NEEDS_CLARIFICATION。我没有联系该 session，也没有把它作为本次源码核对的替代。
+必读产品正文均可访问。Mini 当前工作、实际运行环境与未发布改动没有核验。此次没有运行测试、UI、Provider 或服务，因此以下是静态架构评估，不是运行验证 PASS。
+2. 可复用的基础，以及不能直接继承的能力
+基础	可复用证据	P1 必须补齐
+Contract／Binding／快照	已绑定 revision、期间、状态、映射、质量处置和不可变源文件	增加场景配置版本与受限计划的执行绑定
+DuckDB／Python	已有真实主算、独立复算、精确结果比较	两条计算路径都实际消费计划选择及参数
+Run／证据／报告	已有物理产物、哈希、终态、数据库可见性与来源链	新计划身份贯穿实际执行、验证结果、Finding 和报告
+Assistant／协作	已有受限业务协议、授权、停止和正式 Decision 发布	新未完成任务入口、可写业务命令、任务累计授权和复合人审
+
+
+关键区别是：当前 ir.json 是固定五步文档；Application 保存它，但实际仍直接调用固定的 calculate → verify → equality → publish。计算 Port 的请求中也没有计划。现有期间和映射确实影响计算，不能说当前执行是假的；缺的是“计划作为执行依据”。[固定 IR (line 231)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/packages/product-core/xanthil-desktop-decision-case.ts:231)、[执行调用链 (line 223)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/packages/application/xanthil-desktop-decision-case.ts:223)、[计算 Port (line 7)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/packages/ports/xanthil-desktop-decision-case.ts:7)
+旧 Assistant 明确要求 Completed、已接受 Finding、合法 Closure 和 final report；预算又在每个新 Attempt 从零开始。因此，新任务不能仅通过增加几个旧 Assistant 工具接通。[来源资格 (line 160)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/adapters/storage-local/case-assistant.ts:160)、[Attempt 初始化 (line 206)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/packages/application/case-assistant.ts:206)
+3. Analysis Core 的最小共享边界
+按本次使用的 codebase-design 原则，建议收敛为三个业务契约，而不是创建通用执行平台。以下是职责，不预定文件名或最终 API：
+1. 合格分析上下文
+   精确绑定 Case/revision、场景配置版本、Contract、Binding、源快照及已接受的质量处置。不能拿名称相同的新对象或“latest 配置”替代。
+2. 受限执行计划
+   只表达本期 M1 或 M1＋合格 M2、合法参数、必要依赖和验证要求。Application 校验后，可信代码将它编译／物化成实际计算输入；不接受模型提供的任意 SQL、Python 或流程节点。
+3. 已验证结果包
+   携带同一计划、输入、方法实现、主算／复算和验证身份，供 Finding、报告及后续点评消费。报告不能另行拼装一套无来源数字。
+计划检查至少落在三处：
+- 准入前：拒绝未知方法、非法参数、配置／Contract／Binding 错配及缺少强制验证。
+- 执行前：重新核验快照、计划与将执行的物化内容一致；不能只相信调用方提供的哈希。
+- 发布前：核验实际执行和复算结果均属于同一计划，验证通过后才能发布业务结果。
+当前 DuckDB 使用固定查询，其中包括分组计算；Python 根据当前分组配置执行对应逻辑。P1 若选择 M1-only，必须使实际执行路径不再执行 M2，不能只隐藏报告中的分组结果。[计算 Adapter (line 6)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/adapters/analytics-duckdb/xanthil-desktop-decision-case.ts:6)
+必要合同变化包括：
+- 计算请求／结果与 Run 来源链增加计划、配置及执行身份。
+- 分开“数据具有分组字段”和“此次选择执行 M2”；当前两者存在耦合。
+- 明确 M2 的“未选择”和“不适用”，不能混淆解释。
+- 新合同显式版本化；旧 CLI、Desktop Run、历史报告继续按旧合同读取，不追补虚构 IR 身份，不强制迁移全部历史。
+这些是 Engineering Controller 应关闭的合同影响，不是重新审批 Runtime 的理由。
+4. 语义、任务推进、恢复与人审如何接通
+场景语义：版本配置＋任务 Binding，足够支撑 P1
+复用现有指标定义、状态意义、方法资格和六类质量处置，形成有限、可维护的场景配置。多个任务真实消费同一版本，各任务再绑定自己的源文件和实际字段。
+技术检查可以自动完成：编码、字段存在性、类型、时间覆盖、引用完整性、质量计数。以下不能自动猜：有效订单状态的业务含义、指标意义、未知字段映射、分组意义以及质量处置授权。
+配置更新不改变旧任务；字段名称相同也不等于业务含义已确认。不需要因此引入完整 Ontology、通用语义管理后台或新 Domain Pack 平台。
+未完成任务：新增业务用例，保留原 Assistant 边界
+新任务协调由 Application 负责，工具只触达获准的准备、计划、计算／验证、结果读取和待审报告能力。
+模型不能获得接受 Finding、Closure、正式 Decision／Expected、执行行动或自主派生子任务的工具。完成后再接续原 Assistant／003；保留原资格、人工启动、单层及 MODEL-only 采纳限制。
+任务授权需要区分：
+- 授权范围：允许的目的、来源、语义、方法范围、接收方、材料类别、额度和期限。
+- 本次精确执行：在该范围内形成的不可变计划和实际载荷。
+因此不必要求用户逐 API 批准，但每次出站、工具写入及结果发布都必须检查当前授权。先授权范围、随后形成具体计划是可行的；不能把“同计划”解释成可任意修改的任务通行证。
+原始列名、群组名称、自定义语义文本和报告内容都可能含敏感信息。应从合格结构化字段重建模型材料，不能整份配置／报告直接发送。匿名组名不自动解决小群体披露；具体屏蔽规则和可披露边界仍需用户决定。
+停止／恢复／点评：需要持久授权账本，不需要恢复 Pi 会话
+至少持久保存任务授权链、累计消耗／在途预留、已验证成果身份、点评绑定和终止状态：
+- 停止同时封闭新准入和迟到结果发布；已发请求可能仍收费。
+- 重开仅恢复视图；显式继续后才创建新 Attempt，不能清零累计预算。
+- 模型整理失败时可复用仍有效的本地验证结果，不重算整个任务。
+- 表达点评追加报告版本，保持事实和证据；若调用模型，仍消耗额度并检查当前授权。
+- 合法期间变化形成新 revision／计划／Run／授权；业务语义未变则 NO_CHANGE，不生成新计算或模型调用。
+- 未选择给 AI 使用的点评只留本地，不能先送模型分类再声称未授权。
+具体状态名称、计时器和内部函数属于工程细化；跨重启资源账本、授权失效和版本身份属于持久合同。
+一次人审：复用业务规则，但必须建立整体提交边界
+现有 Finding acceptance、Closure/final report 与 Assistant Decision 发布是不同命令。Assistant 使用独立数据库，并通过附加原数据库检查已完成来源；它并未把 P1 所需全部正式效果合为一次提交。[Closure 发布 (line 1369)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/adapters/storage-local/xanthil-desktop-decision-case.ts:1369)、[Assistant 事务 (line 117)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/adapters/storage-local/case-assistant.ts:117)、[Decision 发布 (line 441)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/adapters/storage-local/case-assistant.ts:441)
+建议新增一个仅供明确人审调用的复合业务命令：
+- 复用既有 Finding、Closure、Decision／Expected 校验。
+- 绑定精确待审版本、审阅内容和幂等身份。
+- 先准备不可变文件，再以明确的权威提交点使全部正式效果可见。
+- 提交响应不明时先读回同一回执；未确认前不重复发布。
+- “只保存分析”不创建 Decision／Expected；“需要更多证据”不产生正式接受。
+同库还是跨库由工程决策，但必须证明崩溃一致性。依次调用三个旧命令、失败后尝试补偿，不等于整体原子。 如果不能满足承诺，应交用户调整产品结果，不能偷偷退回多个人工步骤。
+5. A/B 依赖合理，建议只前移一项工作
+当前 [A/B 方案 (line 7)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/docs/planning/2026-10-01/xanthil-ai-led-analysis-change-organization-v0.1.md:7)合理：
+- A：空白任务 → 合格资料／配置 → 授权 → 受限计划 → 真实主算／复算 → 首个 Finding／待审报告。
+- B：在同一能力上完成点评、重分析、恢复和最终人审。
+最早真实集成点就在 A 内的第一条完整消费链，不是 IR 文件保存成功，也不是三个内部包各自完成。模型替身可以验证这条机制，但不能证明真实 AI 质量。
+建议前移的是：在 A 确定新任务、结果和存储合同前，就关闭 B 的复合人审身份与提交边界设计。 不要求 A 提前交付全部 B，只避免 A 冻结出无法安全收尾的数据结构。
+此外：
+- A 已必须具备停止、重开不自动执行、成果持久保存；不能全部延后到 B。
+- A 接旧审阅出口须证明兼容；未证明时提供只读检查／保存有效工作。
+- A＋B 在同一集成候选上通过场景、能力、体验三类验收，才算 P1 完成。
+- 无需强制拆成 G1/G2/G3 三个 Change；若两次冻结代价过高，可由工程调整内部分组。
+- Mini WIP 未知，不能据此推定可以开工或重排任务。
+6. 什么证据才证明“计划真的被消费”
+判别项	必须看到的证据
+方法选择	同一合格输入，M1 与 M1＋M2 导致真实执行分支／调用和结果结构不同；M1 不偷偷执行 M2
+参数消费	使用能区分结果的样本，合法期间变化改变实际读取范围及主算／复算结果，而非仅改变标签
+拒绝执行	未知方法、缺资格、错配配置／快照／Binding、删除独立验证等，在相应边界被拒绝；不得回落固定管线
+来源闭合	从报告反查 Finding、证据、两份计算结果、实际执行内容、计划及源快照，全部匹配；不能只验证结果自报的 plan ID
+防装饰性实现	故意让执行忽略计划、固定参数或始终执行 M2，验收应失败
+发布与恢复	验证失败、停止迟到、保存故障、丢失响应、重启读回和重复提交均不能造成错误正式效果
+
+
+拒绝证据应区分允许保存的失败／审计记录与禁止产生的计算、成功证据、正式记录和额外外发，不笼统要求所有存储零变化。
+现有真实双引擎[合同测试资产 (line 67)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/tests/contract/xanthil-desktop/xanthil-desktop-analysis.contract.test.ts:67)可作为扩展基础；本轮仅阅读，未执行。
+体验测量还应覆盖首次配置、首次任务和复用任务，单独记录隐性维护劳动。原型的 200 人示例、动画耗时和演示额度不能用作真实性能基线。
+7. 对现有产品／UI 的最小调整与决策归属
+需要调整的地方
+1. 零分母示例必须修正。
+   当前合同明确“筛选后没有任何有效行”是阻塞，原型却把两期全空当作已验证不足。推荐保留旧资格，用“一期为零、另一期有有效订单”展示 Inconclusive；两期全空显示资料阻塞。若坚持全空也能完成，属于用户需要确认的数据资格变化。[现行合同 (line 130)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/openspec/specs/xanthil-desktop-decision-case/spec.md:130)、[原型 (line 60)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/docs/planning/2026-10-01/clickable-ui-contract-ai-led-analysis-v0.1/app.js:60)
+2. 补齐 Expected 的护栏。
+   当前正式规则要求适用 Expected 包含 guardrails；原型没有对应采集／保存，依赖条件不能替代。补在人审、正式摘要和历史回读中即可，不需要新增治理层。[现行校验 (line 27)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/packages/product-core/case-assistant.ts:27)
+3. 明确 Attempt 结束与任务授权有效期的区别。
+   待审点评、停止后重开、表达修订要显示“能否继续、需何种新授权、累计余额”。新期间也不能自动汇总旧点评作为新来源授权。原型目前采用本地预设变换，只能展示交互，不能证明真实模型路径。[点评实现 (line 128)](/Users/huangbo/.codex/worktrees/e1d5/JuanerAI/docs/planning/2026-10-01/clickable-ui-contract-ai-led-analysis-v0.1/app.js:128)
+4. A 的依赖说明前移复合提交设计。
+   不改变 A/B 产品终点，只提前识别存储／身份兼容风险。
+四类结论
+类别	本次归属
+工程自行细化	有限计划的内部表示／编译、模块拆分、函数名、SQL 组织、UI 状态实现、内部工作包
+工程合同影响	计划执行与来源版本、未完成任务命令、持久授权账本、报告／点评绑定、复合人审提交、旧数据和 001～003 兼容
+必须交用户	新增披露／小群体保护边界；实际资源与体验阈值；若放宽全空数据资格；若降低一次人审整体生效承诺；任何新数据、Provider、部署或试验权限
+UNKNOWN	Mini 实际 WIP／环境；真实 AI 质量；代表性规模与性能；实际成本控制能力；跨存储崩溃验证；UI 实际布局、键盘与交互表现
+
+
+普通工程选择不增加跨 Controller 审批。上述产品材料修正与既有冻结条件，可以在产品/UI 准备中继续处理，不需要暂停不受影响的工作。
+最后，你新确认的路线边界是合理的：P1 后按真实任务或回访阻塞补数据／语义，来源足够就直接进入反馈闭环；三类 P1 验收共同通过后，可以讨论有界单场景试用。 当前只需保留 Case、Decision／Expected、报告的稳定来源，避免未来回访失去依据，不必先实现完整平台或企业化。
+本轮评估到此交回；未修改文件、Git、规则或其他工作树，未启动工程，也未取得任何新增外部使用权限。

@@ -1,6 +1,8 @@
 import type {CollaborationRequest,ChildAuthorization,ChildResultValue} from './case-collaboration.ts';
 import type { OwnerRef, DecisionCandidateInput } from './xanthil-desktop-ipc.ts';
+export type MembershipOrigin = Readonly<{version:'1.0';task_id:string;prepared_sha256:string}>;
 export type AssistantSource = Readonly<{
+    membership_origin?: MembershipOrigin;
     owner: OwnerRef;
     case_name: string;
     current_revision_id: string;
@@ -89,7 +91,9 @@ export type AssistantEvent = Readonly<{
     status: string;
     source_revision: string;
 }>;
+export type MembershipAuthorization={version:'1.0';task_id:string;source_sha256:string;profile:import('../product-core/member-task.ts').TaskResourceProfile;purpose:'assistant'|'fork'|'subagent';session_id:string;created_at:string;expires_at:string;usage:{calls:number;output_tokens:number;active_ms:number;wait_ms:number;local_runs:number;unresolved:number}};
 export type Authorization = Readonly<{
+    membership?: MembershipAuthorization;
     collaboration?:ChildAuthorization;
     id: string;
     source: AssistantSource;
@@ -137,6 +141,7 @@ export type AssistantDraft = Readonly<{
     decided_at: string | null;
     reason: string | null;
 }>;
+export type MembershipDecisionFields = Omit<DecisionFields,'outcome'> & {outcome:OutcomeFields & {dependencies:string;guardrail_applicable:boolean;guardrail_not_applicable_reason:string}};
 export type FormalDecision = Readonly<{
     id: string;
     outcome_id: string;
@@ -148,9 +153,7 @@ export type FormalDecision = Readonly<{
     fields: DecisionFields;
     actor: string;
     adopted_at: string;
-    draft_id: string;
-    draft_version: number;
-}>;
+}> & ({draft_id:string;draft_version:number;origin?:never}|{draft_id?:never;draft_version?:never;origin:{kind:'membership_review';task_id:string;review_id:string;review_version:number;intent_id:string}});
 export type AssistantReport = Readonly<{
     id: string;
     decision_id: string;
@@ -182,6 +185,8 @@ export type AssistantProjection = Readonly<{
     current_decision_id: string | null;
 }>;
 export type AssistantTurn = Readonly<{
+    retained_membership?:{version:'1.0'};
+    membership?:Readonly<{version:'1.0';purpose?:'comment'}>;
     collaboration?:Readonly<{contract_version:'1.1';purpose:'fork'|'subagent'}>;
     payload: string;
     provider: string;
@@ -189,7 +194,7 @@ export type AssistantTurn = Readonly<{
     signal: AbortSignal;
     cost_reservation_microunits: number;
 }>;
-export type AssistantTurnResult = Readonly<{
+export type AssistantTurnResult = Readonly<{membership_usage?:Readonly<{output_tokens:number}>;
     provider: string;
     model: string;
     cost_microunits: number;

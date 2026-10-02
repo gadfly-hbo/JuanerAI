@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002083608586-TW9HX2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T08:36:08.586Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "review004：F1 剩余误拦回归，F2/F3/F4 原独立结论保留，工程接受待定。",
+  "status_after": "active",
+  "evidence_refs": []
+}

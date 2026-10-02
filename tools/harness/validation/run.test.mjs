@@ -150,6 +150,17 @@ const CHANGE003_TSCONFIG_PREFIX = Object.freeze([
   'tests/integration/xanthil-desktop/case-collaboration-lifecycle.integration.test.ts',
   'tests/e2e/xanthil-desktop/case-collaboration-native.e2e.test.ts',
 ]);
+// Approved Change004 P1 plan/chain/task/runtime/native coverage appends seven
+// roots after the retained104. Keep this oracle independent of actual config.
+const CHANGE004_TSCONFIG_APPENDIX = Object.freeze([
+  'tests/contract/xanthil-desktop/member-analysis-plan.contract.test.ts',
+  'tests/integration/xanthil-desktop/member-analysis-chain.integration.test.ts',
+  'tests/integration/xanthil-desktop/member-task.integration.test.ts',
+  'tests/contract/xanthil-desktop/member-task-runtime.contract.test.ts',
+  'tests/e2e/xanthil-desktop/member-task-native.e2e.test.ts',
+  'tests/fixtures/member-task/native-main.ts',
+  'tests/fixtures/member-task/native-renderer.tsx',
+]);
 const FIXTURE_BUILD_OBSERVATION = 'fixture-build:case-assistant:unset';
 const C0_RUNNER_TEST_TARGETS = Object.freeze([
   'tests/unit/xanthil-local-analysis/*.test.ts', 'tests/contract/xanthil-local-analysis/*.test.ts',
@@ -235,9 +246,10 @@ async function currentRunnerTuple(root = REPO_ROOT) {
   assert.equal(scripts['desktop:package'], 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64');
   assert.equal(scripts['desktop:test'], 'node tools/desktop/test-daily.mjs');
   assert.equal(tsconfig.compilerOptions?.jsx, 'react-jsx', 'C1a requires its exact JSX mode');
-  assert.equal(files.length,104,'Change003 prepends exactly four roots to the retained100');
+  assert.equal(files.length,111,'Change004 appends exactly seven roots to the retained104');
   assert.deepEqual(files.slice(0,4),CHANGE003_TSCONFIG_PREFIX,'Change003 roots are exact ordered independent literals');
-  assert.deepEqual(files.slice(47),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX,'apps/desktop/development.ts','apps/desktop/desktop-work.ts','tests/unit/xanthil-desktop/development-mode.test.ts','tests/unit/xanthil-desktop/development-main.test.ts'],'Change1 and Change2 roots are independent literals, never derived from actual files');
+  assert.deepEqual(files.slice(47,104),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX,'apps/desktop/development.ts','apps/desktop/desktop-work.ts','tests/unit/xanthil-desktop/development-mode.test.ts','tests/unit/xanthil-desktop/development-main.test.ts'],'Change1 and Change2 roots are independent literals, never derived from actual files');
+  assert.deepEqual(files.slice(104),CHANGE004_TSCONFIG_APPENDIX,'Change004 roots are exact ordered independent literals');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }
@@ -634,6 +646,34 @@ test('CI-CHANGE002-001: closed roots reject omission, substitution, reordering a
   const manifest = JSON.parse(await readFile(path.join(root,'package.json'),'utf8'));
   await writeFile(path.join(root,'package.json'),JSON.stringify({...manifest,config:{forge:'./unapproved.cjs'}}));
   await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});
+});
+
+test('CI-CHANGE004-001: every appended root and retained boundary remain exact', async t => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'juanerai-cvr-change004-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  for (const name of C1A_TUPLE_CONFIGURATION_FILES) await cp(path.join(REPO_ROOT,name),path.join(root,name));
+  assert.equal(await currentRunnerTuple(root),'CF');
+  const original = JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8'));
+  const mutations = [
+    ['retained104 alone', files => files.slice(0,104)],
+    ['extra trailing root', files => [...files,'tests/unapproved.test.ts']],
+    ['extra leading root', files => ['tests/unapproved.test.ts',...files]],
+    ['appendix moved before retained roots', files => [...files.slice(104),...files.slice(0,104)]],
+    ['retained tail substituted', files => files.map((file,index)=>index===103?'tests/unapproved.test.ts':file)],
+    ['retained tail reordered', files => [...files.slice(0,102),files[103],files[102],...files.slice(104)]],
+    ...[104,105,106,107,108,109,110].flatMap(index => [
+      [`root ${index} omitted`, files => files.filter((_,position)=>position!==index)],
+      [`root ${index} substituted`, files => files.map((file,position)=>position===index?'tests/unapproved.test.ts':file)],
+      [`root ${index} replaced by preceding root`, files => files.map((file,position)=>position===index?files[index-1]:file)],
+      [`root ${index} swapped with preceding root`, files => files.map((file,position)=>position===index?files[index-1]:position===index-1?files[index]:file)],
+    ]),
+  ];
+  for (const [name, mutate] of mutations) await t.test(name, async () => {
+    await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files:mutate(original.files)}));
+    await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'},name);
+  });
+  await writeFile(path.join(root,'tsconfig.json'),JSON.stringify(original));
+  assert.equal(await currentRunnerTuple(root),'CF','the restored approved tuple remains healthy');
 });
 
 test('CI-CHANGE002-002: full fixture build failure stops GUI and fixed argv detects phase mutations', async t => {

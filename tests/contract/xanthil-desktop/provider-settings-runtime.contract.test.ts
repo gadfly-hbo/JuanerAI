@@ -104,3 +104,11 @@ test('PS native fixture loads the installed SDK through require from a VM withou
   for(const name of ['psCalls','psMode','psRelease'])Reflect.deleteProperty(globalThis,name);
  }
 });
+
+for(const failure of [false,true])test(`P1-C4 stored Pi turn retains physical settlement after abort (${failure?'error':'done'})`,async t=>{
+ const {runLocalXiaomiText}=await import('../../../adapters/agent-pi/xiaomi-local.ts'),specifier='@earendil-works/pi-coding-agent',sdk=await import(specifier),ai=await import(pathToFileURL(join(sdk.getPackageDir(),'node_modules/@earendil-works/pi-ai/dist/index.js')).href);
+ let enter!:()=>void,finish!:()=>void,calls=0;const entered=new Promise<void>(r=>enter=r);
+ t.mock.method(sdk.ModelRuntime.prototype,'streamSimple',(model:Record<string,unknown>)=>{calls++;const stream=ai.createAssistantMessageEventStream();finish=()=>stream.push(failure?{type:'error',reason:'error',error:{role:'assistant',content:[],stopReason:'error',errorMessage:'synthetic'}}:{type:'done',reason:'stop',message:{role:'assistant',content:[{type:'text',text:'late'}],api:model.api,provider:model.provider,model:model.id,usage:{input:10,cacheRead:0,cacheWrite:0,output:2,totalTokens:12,cost:{total:0}},stopReason:'stop',timestamp:Date.now()}});enter();return stream;});
+ const abort=new AbortController();let settled=false;const pending=runLocalXiaomiText({key:'synthetic-test-key',text:'synthetic',system:'',signal:abort.signal,maxOutput:128,timeoutMs:30000}).catch(e=>e).finally(()=>{settled=true;});
+ await entered;abort.abort();await new Promise(r=>setTimeout(r,20));const early=settled;finish();const result=await pending;assert.equal(early,false,'issued SDK turn still owns physical work after abort notification');assert.equal(result.code,'CANCELLED');assert.equal(calls,1);
+});

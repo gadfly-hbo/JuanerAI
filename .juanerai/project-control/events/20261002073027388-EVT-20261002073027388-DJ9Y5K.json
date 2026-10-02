@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002073027388-DJ9Y5K",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T07:30:27.388Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "corrected-offline-002 冻结并完成 Controller 回读，独立复核启动。",
+  "status_after": "active",
+  "evidence_refs": []
+}

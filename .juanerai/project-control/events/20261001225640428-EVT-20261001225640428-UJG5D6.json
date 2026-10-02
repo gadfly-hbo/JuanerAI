@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001225640428-UJG5D6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T22:56:40.428Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "首个真实行为RED：仅M1仍执行M2；环境健康，完整证据已保存。",
+  "status_after": "active",
+  "evidence_refs": []
+}

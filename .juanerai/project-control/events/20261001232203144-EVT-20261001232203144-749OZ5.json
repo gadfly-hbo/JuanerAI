@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001232203144-749OZ5",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T23:22:03.144Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "Controller完成首段16文件候选及3410文件证据读回；继续A，未作阶段验收。",
+  "status_after": "active",
+  "evidence_refs": []
+}
