@@ -52,7 +52,8 @@ for(const boundary of ['preflight','admission','committed-admission','runtime'] 
  const preview=await app.prepareAssistanceDisclosure({contract_version:'1.0',...owner,expected_row_version:p.revision!.row_version,action_kind:action,requested_provider:'offline-test',requested_model:'deterministic'});
  p=await app.decideAssistanceDisclosure({...command(),preview_token:preview.preview_token,payload_sha256:preview.payload_sha256,decision:'accepted',free_text_confirmed:true});
  const pending=app.startAssistance({...command(),disclosure_id:p.disclosures.at(-1)!.disclosure_id}).catch(e=>e);await entered.promise;
- await (app as typeof app & {closeModelWork?:()=>Promise<void>}).closeModelWork?.();await s.request({operation:'cancel'});release.resolve();await pending;
+ await (app as typeof app & {closeModelWork?:()=>Promise<void>}).closeModelWork?.();await s.request({operation:'cancel'});const occupiedBeforeSettlement=s.status().busy;release.resolve();await pending;
+ if(boundary==='runtime')assert.equal(occupiedBeforeSettlement,true,'logical close cannot release an issued professional model turn');
  for(let i=0;i<50&&(await app.readProjection(owner)).attempts.at(-1)?.status==='Running';i++)await new Promise(r=>setTimeout(r,5));
  assert.equal(calls,boundary==='runtime'?1:0,'closed admission must never enter Runtime; active work cannot repeat');const final=await app.readProjection(owner);assert.equal(final.attempts.length,boundary==='preflight'?0:1);if(final.attempts.length){assert.equal(final.attempts.at(-1)?.status,'Failed');assert.equal(final.attempts.at(-1)?.terminal_reason,'interrupted');}assert.equal(final.assistance_drafts.length,0);assert.equal(s.status().busy,false);assert.throws(()=>s.taskCredential(),/AUTHORITY_REQUIRED/);
 }));

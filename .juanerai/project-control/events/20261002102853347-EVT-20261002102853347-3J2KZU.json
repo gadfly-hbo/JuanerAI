@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002102853347-3J2KZU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T10:28:53.347Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "机械归档完成，产品源码保持不变；交付增量待独立复核和Git集成。",
+  "status_after": "active",
+  "evidence_refs": []
+}

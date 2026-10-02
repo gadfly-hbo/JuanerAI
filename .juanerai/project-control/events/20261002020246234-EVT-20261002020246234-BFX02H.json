@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002020246234-BFX02H",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T02:02:46.234Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "点评和期间重算取得GREEN；修复本地保存失败导致重复模型调用的问题。原生验证缺口保留。",
+  "status_after": "active",
+  "evidence_refs": []
+}

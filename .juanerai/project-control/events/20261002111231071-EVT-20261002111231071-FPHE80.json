@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002111231071-FPHE80",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T11:12:31.071Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "交付review009通过；CI超时修正93项通过，准备独立复核及Hosted CI",
+  "status_after": "active",
+  "evidence_refs": []
+}

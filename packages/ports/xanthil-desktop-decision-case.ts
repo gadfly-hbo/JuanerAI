@@ -1,20 +1,21 @@
+import type {AnalysisRunManifest,MembershipPlan,MembershipResult,PlannedStart,PlannedSelection} from '../product-core/member-analysis.ts';
 import type { AcceptFindingRequest, CancelAnalysisRequest, CompleteCaseRequest, ConfirmRevisionRequest, CreateDraftRevisionRequest, CreateSessionRequest, DesktopProjection, ExportReportRequest, ExportValue, OwnerRef, RevisionCommand, SaveFormRequest, SessionSummary, StartAnalysisRequest } from '../contracts/xanthil-desktop-ipc.ts';
 import type { DesktopCalculationResult, DesktopFileDescriptor, DesktopReportMaterial, DesktopRunArtifact, DesktopRunManifest, DesktopSelection } from '../product-core/xanthil-desktop-decision-case.ts';
 
 export type DesktopRunBytes = Readonly<{bytes: Uint8Array; sha256: string; byte_length: string}>;
-export type DesktopTerminalRunBundle = Readonly<{run_id: string; locator: string; manifest: DesktopRunManifest; manifest_sha256: string; descriptors: readonly DesktopFileDescriptor[]}>;
+export type DesktopTerminalRunBundle = Readonly<{run_id: string; locator: string; manifest: AnalysisRunManifest; manifest_sha256: string; descriptors: readonly DesktopFileDescriptor[]}>;
 export type DesktopAnalysisDescription = Readonly<{method_id:string;method_version:string;code_identity:string;duckdb_version:string;python_version:string;primary_sql:DesktopRunBytes;python_verifier:DesktopRunBytes}>;
-export type DesktopCalculationRequest = Readonly<{run_id:string;expected_code_identity:string;contract:DesktopSelection;snapshot:Readonly<{members_bytes:Uint8Array;orders_bytes:Uint8Array}>;group_pseudonym_map:Readonly<Record<string,string>>|null;cancellation_signal:AbortSignal;deadline_seconds:number}>;
-export type DesktopCalculationOutput = Readonly<{schema_version:'1.0';run_id:string;implementation:'duckdb_primary'|'python_independent';method:Readonly<{id:string;version:string;code_identity:string}>;result:DesktopCalculationResult}>;
+export type DesktopCalculationRequest = Readonly<{run_id:string;expected_code_identity:string;contract:DesktopSelection|PlannedSelection;snapshot:Readonly<{members_bytes:Uint8Array;orders_bytes:Uint8Array}>;group_pseudonym_map:Readonly<Record<string,string>>|null;cancellation_signal:AbortSignal;deadline_seconds:number}>;
+export type DesktopCalculationOutput = Readonly<{schema_version:'1.0'|'2.0';run_id:string;implementation:'duckdb_primary'|'python_independent';method:Readonly<{id:string;version:string;code_identity:string}>;result:MembershipResult}>;
 export type DesktopLocalAnalysisExecution = Readonly<{
-  describeImplementation(input:Readonly<Record<string,never>>):Promise<DesktopAnalysisDescription>;
+  describeImplementation(input:Readonly<Record<string,never>>|Readonly<{execution_plan:MembershipPlan}>):Promise<DesktopAnalysisDescription>;
   calculate(input:DesktopCalculationRequest):Promise<DesktopCalculationOutput>;
   verify(input:DesktopCalculationRequest):Promise<DesktopCalculationOutput>;
 }>;
 type DesktopRunAppend = Readonly<{run_id:string;expected_in_progress_manifest_sha256:string;bytes:Uint8Array;cancellation_signal:AbortSignal}>;
-type DesktopRunTerminal = Readonly<{run_id:string;expected_in_progress_manifest_sha256:string;terminal_manifest:DesktopRunManifest;cancellation_signal:AbortSignal}>;
+type DesktopRunTerminal = Readonly<{run_id:string;expected_in_progress_manifest_sha256:string;terminal_manifest:AnalysisRunManifest;cancellation_signal:AbortSignal}>;
 export type DesktopRunEvidenceStore = Readonly<{
-  beginRun(input:Readonly<{run_id:string;initial_manifest:DesktopRunManifest;confirmation_files:Readonly<{contract:DesktopRunBytes;binding:DesktopRunBytes;ir:DesktopRunBytes}>;code_assets:Readonly<{primary_sql:DesktopRunBytes;python_verifier:DesktopRunBytes}>;cancellation_signal:AbortSignal}>):Promise<Readonly<{run_id:string;locator:string;in_progress_manifest_sha256:string}>>;
+  beginRun(input:Readonly<{run_id:string;initial_manifest:AnalysisRunManifest;confirmation_files:Readonly<{contract:DesktopRunBytes;binding:DesktopRunBytes;ir:DesktopRunBytes}>;code_assets:Readonly<{primary_sql:DesktopRunBytes;python_verifier:DesktopRunBytes}>;cancellation_signal:AbortSignal}>):Promise<Readonly<{run_id:string;locator:string;in_progress_manifest_sha256:string}>>;
   recordDuckDbResult(input:DesktopRunAppend):Promise<Readonly<{descriptor:DesktopRunArtifact;in_progress_manifest_sha256:string}>>;
   recordPythonResult(input:DesktopRunAppend):Promise<Readonly<{descriptor:DesktopRunArtifact;in_progress_manifest_sha256:string}>>;
   succeedRun(input:DesktopRunTerminal&Readonly<{evidence_bytes:Uint8Array;summary_bytes:Uint8Array;evidence_document_bytes:Uint8Array}>):Promise<DesktopTerminalRunBundle>;
@@ -34,7 +35,7 @@ export function defineDesktopRunEvidenceStore(implementation:unknown):DesktopRun
   if(!isRecord(implementation)||Object.keys(implementation).length!==methods.length||methods.some(key=>typeof implementation[key]!=='function'))fail();
   return Object.freeze({beginRun:implementation.beginRun as DesktopRunEvidenceStore['beginRun'],recordDuckDbResult:implementation.recordDuckDbResult as DesktopRunEvidenceStore['recordDuckDbResult'],recordPythonResult:implementation.recordPythonResult as DesktopRunEvidenceStore['recordPythonResult'],succeedRun:implementation.succeedRun as DesktopRunEvidenceStore['succeedRun'],failRun:implementation.failRun as DesktopRunEvidenceStore['failRun'],cancelRun:implementation.cancelRun as DesktopRunEvidenceStore['cancelRun'],readTerminalRun:implementation.readTerminalRun as DesktopRunEvidenceStore['readTerminalRun']});
 }
-export type DesktopAnalysisAdmission = Readonly<{command: StartAnalysisRequest; ids: Readonly<{run_id:string}>; started_at:string; deadline_at:string; profile_id:string; method_id:string; method_version:string; code_identity:string; input_fingerprint:string}>;
+export type DesktopAnalysisAdmission = Readonly<{command: StartAnalysisRequest|PlannedStart; ids: Readonly<{run_id:string}>; started_at:string; deadline_at:string; profile_id:string; method_id:string; method_version:string; code_identity:string; input_fingerprint:string}>;
 export type DesktopAggregatePublication = Readonly<{artifact_id:string; locator:string; sha256:string; byte_length:string; columns:readonly string[]; measurement_meanings:Readonly<Record<string,string>>; group_pseudonym_map:Readonly<Record<string,string>>|null}>;
 export type DesktopReportPublication = Readonly<{report_id:string; markdown:Readonly<{locator:string;sha256:string;byte_length:string}>; html:Readonly<{locator:string;sha256:string;byte_length:string}>; source:Readonly<Record<string,unknown>>; evidence_refs:readonly string[]}>;
 export type DesktopExportDescriptor=Readonly<{display_name:string;media_type:'text/html;charset=utf-8'|'text/markdown;charset=utf-8';sha256:string;byte_length:string}>;
@@ -43,7 +44,7 @@ export type DesktopAnalysisCandidates = OwnerRef & Readonly<{expected_row_versio
  aggregate:Readonly<{artifact_id:string;bytes:Uint8Array;method_id:string;method_version:string;code_identity:string;columns:readonly string[];measurement_meanings:Readonly<Record<string,string>>;group_pseudonym_map:Readonly<Record<string,string>>|null}>;
  report:Readonly<{report_id:string;markdown_bytes:Uint8Array;html_bytes:Uint8Array;source:Readonly<Record<string,unknown>>;evidence_refs:readonly string[]}>}>;
 export type DesktopAnalysisSettlement = Readonly<{command:RevisionCommand;run_id:string;completed_at:string;input_fingerprint:string;
- terminal:Readonly<{status:'succeeded';runBundle:DesktopTerminalRunBundle;aggregatePublication:DesktopAggregatePublication;reportPublication:DesktopReportPublication;finding:Readonly<{finding_id:string;judgment:string;metrics:DesktopCalculationResult;supporting_evidence:readonly string[];refutation:string;limitations:readonly string[];evidence_refs:readonly string[]}>}>|Readonly<{status:'failed';reason:string}>|Readonly<{status:'cancelled';reason:'user_cancelled'}>}>;
+ terminal:Readonly<{status:'succeeded';runBundle:DesktopTerminalRunBundle;aggregatePublication:DesktopAggregatePublication;reportPublication:DesktopReportPublication;finding:Readonly<{finding_id:string;judgment:string;metrics:MembershipResult;supporting_evidence:readonly string[];refutation:string;limitations:readonly string[];evidence_refs:readonly string[]}>}>|Readonly<{status:'failed';reason:string}>|Readonly<{status:'cancelled';reason:'user_cancelled'}>}>;
 
 export type DesktopSourcePair = Readonly<{ members: Readonly<{ display_name: string; bytes: Uint8Array }>; orders: Readonly<{ display_name: string; bytes: Uint8Array }> }>;
 export type DesktopConfirmationPublication = Readonly<{

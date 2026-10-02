@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002023055900-5YCJ7T",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T02:30:55.900Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "C6主要保存与恢复路径取得GREEN；尚未完整候选冻结、独立验证或产品接受。",
+  "status_after": "active",
+  "evidence_refs": []
+}

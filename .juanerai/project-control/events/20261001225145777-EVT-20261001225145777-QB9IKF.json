@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001225145777-QB9IKF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T22:51:45.777Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "工程决定闭合；同一worker进入第一组因果RED/GREEN。",
+  "status_after": "active",
+  "evidence_refs": []
+}

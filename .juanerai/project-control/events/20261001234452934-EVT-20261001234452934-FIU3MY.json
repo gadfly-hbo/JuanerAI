@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001234452934-FIU3MY",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T23:44:52.934Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "A后台任务链首个GREEN；完整A与界面尚未验收。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,3 +1,4 @@
+import {validatePlanStart,validateMembershipPlan,validateAnalysisManifest,analysisResult,analysisRatio,membershipJudgment,membershipHash,type MembershipPlan,type AnalysisRunManifest} from '../product-core/member-analysis.ts';
 import type { LocalModelAccess } from '../ports/provider-settings.ts';
 import { createHash, randomUUID } from 'node:crypto';
 import { desktopAssistancePayload, validateDesktopAssistanceDraft } from '../product-core/xanthil-desktop-decision-case.ts';
@@ -83,14 +84,17 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
   const scheduler=exactRecord(dependency.deadlineScheduler,['schedule']);
   if(typeof scheduler.schedule!=='function')failure('VALIDATION_FAILED');
   const activeRuns=new Map<string,{abort:AbortController;reason:string|null}>();
-  type ModelWork={abort:AbortController;reason:string|null;release?:()=>void};
+  type ModelWork={abort:AbortController;reason:string|null;release?:()=>void;physicalPending?:boolean;finished?:boolean};
   const activeAttempts=new Map<string,ModelWork>();
   const modelWork=new Set<ModelWork>();
   let modelClosed=false;
   function modelGuard(){if(modelClosed)failure('INTERRUPTED');}
+  function releaseModelWork(work:ModelWork){
+    if(!work.physicalPending){work.release?.();work.release=undefined;}
+  }
   function closeModelWork(){
     modelClosed=true;disclosures.clear();disclosureGenerations.clear();
-    for(const work of modelWork){work.reason='interrupted';work.abort.abort();work.release?.();}
+    for(const work of modelWork){work.reason='interrupted';work.abort.abort();releaseModelWork(work);}
     if(activeAttempts.size)void assistance?.cancel().catch(()=>undefined);
   }
   const timestamp=()=>{const now=clock();if(!(now instanceof Date)||!Number.isFinite(now.getTime()))failure('VALIDATION_FAILED');return now.toISOString();};
@@ -130,7 +134,7 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
     if(admitted.attempts.some(a=>a.attempt_id===attempt_id&&a.status==='Running')){
       activeAttempts.set(attempt_id,control);
       transferred=true;
-      void executeAssistance(owner,attempt_id,payload.payload_text,control).catch(error=>{if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;}).finally(()=>{activeAttempts.delete(attempt_id);modelWork.delete(control);lease?.release();});
+      void executeAssistance(owner,attempt_id,payload.payload_text,control).catch(error=>{if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;}).finally(()=>{activeAttempts.delete(attempt_id);modelWork.delete(control);control.finished=true;releaseModelWork(control);});
     }
     return admitted;
     } finally {if(!transferred){modelWork.delete(control);lease?.release();}}
@@ -148,7 +152,7 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
     try{return await store.disposeAssistanceDraft({command,form_id:randomUUID(),completed_at:timestamp(),input_fingerprint:fingerprint('dispose_assistance_draft',command)});}catch(error){if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;throw error;}
   }
 
-  async function executeAssistance(owner:OwnerRef,attemptId:string,payloadText:string,control:{abort:AbortController;reason:string|null}):Promise<void>{
+  async function executeAssistance(owner:OwnerRef,attemptId:string,payloadText:string,control:ModelWork):Promise<void>{
     const before=await store.readProjection(owner),attempt=before.attempts.find(a=>a.attempt_id===attemptId)!;
     const deadline=Date.parse(attempt.deadline_at),scheduled=(scheduler.schedule as (v:{at_epoch_ms:number;callback:()=>void})=>{cancel():void})({at_epoch_ms:deadline,callback:()=>{control.reason='deadline_exceeded';control.abort.abort();void assistance!.cancel().catch(()=>undefined);}});
     const settle=async(terminal:Parameters<DesktopDecisionCaseStore['settleAssistance']>[0]['terminal'])=>{
@@ -161,7 +165,9 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
       if(control.abort.signal.aborted)failure(abortCode());
       if(Date.parse(timestamp())>=deadline)failure('DEADLINE_EXCEEDED');
       const aborted=new Promise<never>((_,reject)=>{const check=()=>reject(new DesktopApplicationError(abortCode()));if(control.abort.signal.aborted)check();else control.abort.signal.addEventListener('abort',check,{once:true});});
-      const output=await Promise.race([assistance!.executeAssistance({action_kind:attempt.action_kind as 'organize_question',payload_bytes:new TextEncoder().encode(payloadText),payload_sha256:hash(payloadText),requested_provider:attempt.requested_provider,requested_model:attempt.requested_model,cancellation_signal:control.abort.signal,deadline_seconds:Math.max(0,Math.min(300,Math.floor((deadline-Date.parse(timestamp()))/1000)))}),aborted]);
+      control.physicalPending=true;
+      const issued=(async()=>assistance!.executeAssistance({action_kind:attempt.action_kind as 'organize_question',payload_bytes:new TextEncoder().encode(payloadText),payload_sha256:hash(payloadText),requested_provider:attempt.requested_provider,requested_model:attempt.requested_model,cancellation_signal:control.abort.signal,deadline_seconds:Math.max(0,Math.min(300,Math.floor((deadline-Date.parse(timestamp()))/1000)))}) )().finally(()=>{control.physicalPending=false;if(control.finished||control.abort.signal.aborted)releaseModelWork(control);});
+      const output=await Promise.race([issued,aborted]);
       if(control.abort.signal.aborted)failure(abortCode());if(Date.parse(timestamp())>=deadline)failure('DEADLINE_EXCEEDED');
       exactRecord(output,['actual_provider','actual_model','draft_kind','draft_content']);if(!output.actual_provider.trim()||!output.actual_model.trim())failure('VALIDATION_FAILED');
       const expected={organize_question:'question_fields',explain_evidence:'evidence_explanation',draft_candidates:'candidates'}[attempt.action_kind];if(output.draft_kind!==expected)failure('VALIDATION_FAILED');
@@ -191,10 +197,12 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
 
   async function startAnalysis(input:unknown):Promise<DesktopProjection>{
     if(resultPending)failure('RESULT_PENDING');if(!analysis||!runStore||!scheduler)failure('TOOLCHAIN_UNAVAILABLE');
-    const command=validateXanthilDesktopRequest('startAnalysis',input),owner={project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id};
+    const command=validatePlanStart(input),owner={project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id};
     const current=await readProjection(owner);if(current.session?.current_revision_id!==owner.revision_id)failure('STALE_REVISION');if(current.revision?.integrity_state!=='ok')failure('INTEGRITY_BLOCKED');
-    const description=exactRecord(await analysis.describeImplementation({}),['method_id','method_version','code_identity','duckdb_version','python_version','primary_sql','python_verifier']);
-    const started_at=timestamp(),deadline_at=new Date(Date.parse(started_at)+300000).toISOString();
+    const plan=command.contract_version==='2.0'?command.execution_plan:undefined;
+    if(plan){const confirmed=await store.readConfirmedSnapshot({...owner,confirmation_id:command.confirmation_id});const c=JSON.parse(new TextDecoder().decode(confirmed.confirmation.contract_bytes)),binding=JSON.parse(new TextDecoder().decode(confirmed.confirmation.binding_bytes));const parameters={column_mapping:binding,comparison_period:c.comparison_period,current_period:c.current_period,currency:c.currency,time_zone:c.time_zone,valid_statuses:c.valid_statuses,selected_group_mode:c.selected_group_mode};validateMembershipPlan(plan,{members_bytes:confirmed.snapshot.members.bytes,orders_bytes:confirmed.snapshot.orders.bytes},parameters);if(plan.snapshot_id!==confirmed.snapshot.snapshot_id)failure('SOURCE_CHANGED');}
+    const description=exactRecord(await analysis.describeImplementation(plan?{execution_plan:plan}:{}),['method_id','method_version','code_identity','duckdb_version','python_version','primary_sql','python_verifier']);
+    const started_at=timestamp(),deadline_at=new Date(Date.parse(started_at)+Number(plan?.task_context?.run_ms??300000)).toISOString();
     const random=randomUUID().replaceAll('-',''),hex=Date.parse(started_at).toString(16).padStart(12,'0');
     const run_id=`${hex.slice(0,8)}-${hex.slice(8)}-7${random.slice(13,16)}-${random.slice(16,20)}-${random.slice(20)}`;
     let admitted:DesktopProjection;
@@ -203,14 +211,14 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
     // A duplicate committed request resolves its original identity and never starts another process.
     if(actual?.status==='Running'&&!activeRuns.has(run_id)){
       const control={abort:new AbortController(),reason:null as string|null};activeRuns.set(run_id,control);
-      void executeAnalysis(owner,admitted,description,control).catch(error=>{if((error as {code?:string}).code==='RESULT_PENDING')resultPending=true;}).finally(()=>activeRuns.delete(run_id));
+      void executeAnalysis(owner,admitted,description,control,plan).catch(error=>{if((error as {code?:string}).code==='RESULT_PENDING')resultPending=true;}).finally(()=>activeRuns.delete(run_id));
     }
     return admitted;
   }
 
-  async function executeAnalysis(owner:OwnerRef,admitted:DesktopProjection,description:Record<string,unknown>,control:{abort:AbortController;reason:string|null}):Promise<void>{
+  async function executeAnalysis(owner:OwnerRef,admitted:DesktopProjection,description:Record<string,unknown>,control:{abort:AbortController;reason:string|null},plan?:MembershipPlan):Promise<void>{
     const run=admitted.runs.at(-1)!,run_id=run.run_id,deadline=Date.parse(run.deadline_at),signal=control.abort.signal;
-    let manifest:DesktopRunManifest|undefined,manifestSha:string|undefined;
+    let manifest:AnalysisRunManifest|undefined,manifestSha:string|undefined;
     const scheduled=(scheduler!.schedule as (input:{at_epoch_ms:number;callback:()=>void})=>{cancel():void})({at_epoch_ms:deadline,callback:()=>{control.reason='deadline_exceeded';control.abort.abort();}});
     if(!scheduled||typeof scheduled.cancel!=='function')failure('VALIDATION_FAILED');
     const check=()=>{if(Date.parse(timestamp())>=deadline){control.reason='deadline_exceeded';control.abort.abort();}if(control.abort.signal.aborted)failure(control.reason==='user_cancelled'?'CANCELLED':'DEADLINE_EXCEEDED');};
@@ -231,25 +239,25 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
       const primary=exactRecord(description.primary_sql,['bytes','sha256','byte_length']),python=exactRecord(description.python_verifier,['bytes','sha256','byte_length']);
       if(!(primary.bytes instanceof Uint8Array)||!(python.bytes instanceof Uint8Array)||hash(primary.bytes)!==primary.sha256||hash(python.bytes)!==python.sha256||String(primary.bytes.length)!==primary.byte_length||String(python.bytes.length)!==python.byte_length)failure('INTEGRITY_BLOCKED');
       const descriptor=(path:string,input:Record<string,unknown>)=>({path,sha256:input.sha256,byte_length:input.byte_length});
-      manifest=validateDesktopRunManifest({schema_version:'3.0',run_id,analysis_kind:'membership_repurchase_decision_case',status:'in_progress',started_at:run.started_at,
+      manifest=validateAnalysisManifest({schema_version:plan?'4.0':'3.0',...(plan?{execution_plan:plan}:{}),run_id,analysis_kind:'membership_repurchase_decision_case',status:'in_progress',started_at:run.started_at,
         product_context:{...owner,confirmation_id:admitted.confirmation!.confirmation_id,snapshot_id:snapshot.snapshot.snapshot_id},application:{id:'xanthil-desktop',version:'0.1.0'},profile:{id:'personal-desktop'},execution:{kind:'deterministic_local',model_usage:'none'},method:{id:run.method_id,version:run.method_version,code_identity:run.code_identity},tools:{duckdb_version:description.duckdb_version,python_version:description.python_version},
         confirmation:{contract:descriptor('analysis-contract.json',confirmation_files.contract),binding:descriptor('binding.json',confirmation_files.binding),ir:descriptor('ir.json',confirmation_files.ir)},
         sources:(['members','orders'] as const).map(role=>({role,snapshot_id:snapshot.snapshot.snapshot_id,...descriptor(`${owner.session_id}/010_draw/${snapshot.snapshot.snapshot_id}/${role}.csv`,snapshot.snapshot[role]),display_name:snapshot.snapshot[role].display_name,confirmed_at:admitted.snapshot!.confirmed_at})),
         artifacts:[{artifact_id:'primary-query',kind:'query',...descriptor('assets/primary.sql',primary)},{artifact_id:'independent-verifier',kind:'verifier',...descriptor('assets/verify.py',python)}]});
 const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmation_files,code_assets:{primary_sql:bytes(primary.bytes),python_verifier:bytes(python.bytes)},cancellation_signal:signal});manifestSha=text(begun.in_progress_manifest_sha256);
-      const request=()=>{check();return {run_id,expected_code_identity:run.code_identity,contract:selection,snapshot:raw,group_pseudonym_map,cancellation_signal:signal,deadline_seconds:Math.min(30,Math.max(0,Math.floor((deadline-Date.parse(timestamp()))/1000)))};};
-      const duck=await analysis!.calculate(request());check();const primaryResult=validateDesktopCalculationResult(duck.result);
-      const first=await runStore!.recordDuckDbResult({run_id,expected_in_progress_manifest_sha256:manifestSha,bytes:encode(duck),cancellation_signal:signal});manifestSha=text(first.in_progress_manifest_sha256);manifest=validateDesktopRunManifest({...manifest,artifacts:[...manifest.artifacts,first.descriptor]});
-      const verifier=await analysis!.verify(request());check();const independentResult=validateDesktopCalculationResult(verifier.result);
-      const second=await runStore!.recordPythonResult({run_id,expected_in_progress_manifest_sha256:manifestSha,bytes:encode(verifier),cancellation_signal:signal});manifestSha=text(second.in_progress_manifest_sha256);manifest=validateDesktopRunManifest({...manifest,artifacts:[...manifest.artifacts,second.descriptor]});
+      const request=()=>{check();return {run_id,expected_code_identity:run.code_identity,contract:plan?{...selection,schema_version:'2.0',execution_plan:plan}:selection,snapshot:raw,group_pseudonym_map,cancellation_signal:signal,deadline_seconds:Math.min(Number(plan?.task_context?.process_seconds??30),Math.max(0,Math.floor((deadline-Date.parse(timestamp()))/1000)))};};
+      const duck=await analysis!.calculate(request());check();const primaryResult=analysisResult(duck.result,plan);
+      const first=await runStore!.recordDuckDbResult({run_id,expected_in_progress_manifest_sha256:manifestSha,bytes:encode(duck),cancellation_signal:signal});manifestSha=text(first.in_progress_manifest_sha256);manifest=validateAnalysisManifest({...manifest,artifacts:[...manifest.artifacts,first.descriptor]});
+      const verifier=await analysis!.verify(request());check();const independentResult=analysisResult(verifier.result,plan);
+      const second=await runStore!.recordPythonResult({run_id,expected_in_progress_manifest_sha256:manifestSha,bytes:encode(verifier),cancellation_signal:signal});manifestSha=text(second.in_progress_manifest_sha256);manifest=validateAnalysisManifest({...manifest,artifacts:[...manifest.artifacts,second.descriptor]});
       if(canonicalDesktopJson(primaryResult)!==canonicalDesktopJson(independentResult))failure('VALIDATION_MISMATCH');
-      const artifact_id=randomUUID(),report_id=randomUUID(),finding_id=randomUUID(),judgment=desktopJudgment(primaryResult),limitations=['association_not_causation','no_significance_test','confirmed_local_snapshot_only'];
-      const evidence_refs=[`${run_id}:duckdb-result`,`${run_id}:python-result`], supporting_evidence=[`comparison_repurchase_rate=${primaryResult.periods.comparison.repurchase_rate.numerator}/${primaryResult.periods.comparison.repurchase_rate.denominator}`,`current_repurchase_rate=${primaryResult.periods.current.repurchase_rate.numerator}/${primaryResult.periods.current.repurchase_rate.denominator}`];
+      const artifact_id=randomUUID(),report_id=randomUUID(),finding_id=randomUUID(),judgment=membershipJudgment(primaryResult),limitations=['association_not_causation','no_significance_test','confirmed_local_snapshot_only'];
+      const evidence_refs=[`${run_id}:duckdb-result`,`${run_id}:python-result`], supporting_evidence=[`comparison_repurchase_rate=${analysisRatio(primaryResult.periods.comparison.repurchase_rate)}`,`current_repurchase_rate=${analysisRatio(primaryResult.periods.current.repurchase_rate)}`];
       const refutation=judgment==='Confirmed'?'association_does_not_establish_cause':judgment==='Rejected'?'current_rate_is_not_lower':'active_member_denominator_is_zero';
-      const source={schema_version:'1.0',run_id,finding_id,...manifest.product_context,method:manifest.method};
-      const ratio=(value:{numerator:string;denominator:string})=>`${value.numerator}/${value.denominator}`;
+      const source={schema_version:plan?'2.0':'1.0',...(plan?{plan_sha256:membershipHash(plan)}:{}),run_id,finding_id,...manifest.product_context,method:manifest.method};
+      const ratio=analysisRatio;
       const periods=primaryResult.periods;
-      const provenance=`Run: ${run_id}\nProject: ${owner.project_id}\nSession: ${owner.session_id}\nCase: ${owner.case_id}\nRevision: ${owner.revision_id}\nConfirmation: ${manifest.product_context.confirmation_id}\nSnapshot: ${manifest.product_context.snapshot_id}\nMethod: ${run.method_id} / ${run.method_version}\nCode SHA-256: ${run.code_identity}\n${manifest.sources.map(s=>`${s.role} SHA-256: ${s.sha256}`).join('\n')}`;
+      const provenance=`${plan?'Plan: '+plan.id+'\nPlan SHA-256: '+membershipHash(plan)+'\n':''}Run: ${run_id}\nProject: ${owner.project_id}\nSession: ${owner.session_id}\nCase: ${owner.case_id}\nRevision: ${owner.revision_id}\nConfirmation: ${manifest.product_context.confirmation_id}\nSnapshot: ${manifest.product_context.snapshot_id}\nMethod: ${run.method_id} / ${run.method_version}\nCode SHA-256: ${run.code_identity}\n${manifest.sources.map(s=>`${s.role} SHA-256: ${s.sha256}`).join('\n')}`;
       const readable=`# 会员复购分析 · 证据草稿\n\nH1：当前期复购率低于对比期\n判断：${judgment}\n未接受 · 未闭环 · 未导出\n\n## 两期指标\n\n| 指标 | 对比期 | 当前期 |\n|---|---:|---:|\n| 活跃成员（复购率分母） | ${periods.comparison.active_member_count} | ${periods.current.active_member_count} |\n| 复购成员 | ${periods.comparison.repeat_member_count} | ${periods.current.repeat_member_count} |\n| 复购率（精确分数） | ${ratio(periods.comparison.repurchase_rate)} | ${ratio(periods.current.repurchase_rate)} |\n| 复购收入（分） | ${periods.comparison.repeat_revenue_fen} | ${periods.current.repeat_revenue_fen} |\n\n支持与反证：两期有效订单按成员和时间排序，复购收入只计期内第二笔及以后的有效订单。${judgment==='Confirmed'?'当前期复购率较低，支持此关联假设。':judgment==='Rejected'?'当前期复购率不低于对比期，不支持此假设。':'至少一期活跃成员分母为零，不能作可比较判断。'}\n\n限制：关联不等于因果；不进行显著性检验；仅限已确认的本地快照。\n\n## 精确指标与变化\n\n\`\`\`json\n${canonicalDesktopJson(primaryResult)}\n\`\`\`\n\n## 来源与方法\n\n\`\`\`text\n${provenance}\n\`\`\`\n`;
       const projectedEvidence=[{id:'duckdb-result',title:'DuckDB 主计算',value:duck},{id:'python-result',title:'Python 独立复算',value:verifier}];
       const links=projectedEvidence.map(x=>`[${x.title}](#evidence-${run_id}-${x.id})`).join(' · ');
@@ -258,11 +266,11 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
       const escape=(value:string)=>value.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
       const html=`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>会员复购分析 · 证据草稿</title><body><main><pre>${escape(readable)}</pre><nav aria-label="证据回链">${projectedEvidence.map(x=>`<a href="#evidence-${run_id}-${x.id}">${x.title}</a>`).join(' · ')}</nav>${projectedEvidence.map(x=>`<section id="evidence-${run_id}-${x.id}"><h2>${x.title}</h2><pre>${escape(canonicalDesktopJson(x.value))}</pre></section>`).join('')}</main></body></html>`;
       check();const current=await store.readProjection(owner);
-      const publications=await store.publishAnalysisSuccessCandidates({...owner,expected_row_version:current.revision!.row_version,run_id,operation_id:randomUUID(),aggregate:{artifact_id,bytes:encode({schema_version:'1.0',artifact_id,run_id,product_context:manifest.product_context,method:manifest.method,result:primaryResult}),method_id:run.method_id,method_version:run.method_version,code_identity:run.code_identity,columns:['period','active_member_count','repeat_member_count','repeat_revenue_fen','repurchase_rate'],measurement_meanings:{repeat_revenue_fen:'sum_of_second_and_later_valid_orders_in_period',repurchase_rate:'repeat_member_count/active_member_count'},group_pseudonym_map},report:{report_id,markdown_bytes:new TextEncoder().encode(markdown),html_bytes:new TextEncoder().encode(html),source,evidence_refs}});
+      const publications=await store.publishAnalysisSuccessCandidates({...owner,expected_row_version:current.revision!.row_version,run_id,operation_id:randomUUID(),aggregate:{artifact_id,bytes:encode({schema_version:plan?'2.0':'1.0',...(plan?{plan_sha256:membershipHash(plan)}:{}),artifact_id,run_id,product_context:manifest.product_context,method:manifest.method,result:primaryResult}),method_id:run.method_id,method_version:run.method_version,code_identity:run.code_identity,columns:['period','active_member_count','repeat_member_count','repeat_revenue_fen','repurchase_rate'],measurement_meanings:{repeat_revenue_fen:'sum_of_second_and_later_valid_orders_in_period',repurchase_rate:'repeat_member_count/active_member_count'},group_pseudonym_map},report:{report_id,markdown_bytes:new TextEncoder().encode(markdown),html_bytes:new TextEncoder().encode(html),source,evidence_refs}});
       const a=publications.aggregatePublication,r=publications.reportPublication;
-      const evidence={schema_version:'3.0',run_id,product_context:manifest.product_context,method:manifest.method,sources:manifest.sources.map(({role,sha256})=>({role,sha256})),calculations:manifest.artifacts.slice(2),equality:{status:'matched',result_sha256:hash(canonicalDesktopJson(primaryResult))},judgment,m2_applicability:primaryResult.m2.status,candidate_publications:{aggregate:{artifact_id:a.artifact_id,locator:a.locator,sha256:a.sha256,byte_length:a.byte_length},report:{report_id:r.report_id,markdown:r.markdown,html:r.html}},limitations};
+      const evidence={schema_version:plan?'4.0':'3.0',...(plan?{plan_sha256:membershipHash(plan)}:{}),run_id,product_context:manifest.product_context,method:manifest.method,sources:manifest.sources.map(({role,sha256})=>({role,sha256})),calculations:manifest.artifacts.slice(2),equality:{status:'matched',result_sha256:hash(canonicalDesktopJson(primaryResult))},judgment,m2_applicability:primaryResult.m2.status,candidate_publications:{aggregate:{artifact_id:a.artifact_id,locator:a.locator,sha256:a.sha256,byte_length:a.byte_length},report:{report_id:r.report_id,markdown:r.markdown,html:r.html}},limitations};
       const evidence_bytes=encode(evidence),summary_bytes=new TextEncoder().encode(markdown),evidence_document_bytes=new TextEncoder().encode(markdown),completed_at=timestamp();check();
-      const terminal_manifest=validateDesktopRunManifest({...manifest,status:'succeeded',ended_at:completed_at,artifacts:[...manifest.artifacts,{artifact_id:'run-summary',kind:'summary',...descriptor('summary.md',bytes(summary_bytes))},{artifact_id:'run-evidence',kind:'evidence_document',...descriptor('evidence.md',bytes(evidence_document_bytes))}],evidence:descriptor('evidence.json',bytes(evidence_bytes))});
+      const terminal_manifest=validateAnalysisManifest({...manifest,status:'succeeded',ended_at:completed_at,artifacts:[...manifest.artifacts,{artifact_id:'run-summary',kind:'summary',...descriptor('summary.md',bytes(summary_bytes))},{artifact_id:'run-evidence',kind:'evidence_document',...descriptor('evidence.md',bytes(evidence_document_bytes))}],evidence:descriptor('evidence.json',bytes(evidence_bytes))});
       const bundle=await runStore!.succeedRun({run_id,expected_in_progress_manifest_sha256:manifestSha,terminal_manifest,evidence_bytes,summary_bytes,evidence_document_bytes,cancellation_signal:signal});
       // The Run terminal is irreversible; a later SQLite failure must not rewrite it.
       manifest=terminal_manifest;manifestSha=text(bundle.manifest_sha256);check();
@@ -271,7 +279,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
       const code=String((error as {code?:string}).code??'CALCULATION_FAILED');if(code==='RESULT_PENDING'){resultPending=true;throw error;}
       const mapping:Record<string,string>={SOURCE_CHANGED:'source_changed',TOOLCHAIN_UNAVAILABLE:'toolchain_unavailable',CALCULATION_FAILED:'calculation_failed',VALIDATION_MISMATCH:'validation_mismatch',RUN_ARTIFACT_FAILED:'run_artifact_failed',PUBLICATION_FAILED:'publication_failed',DEADLINE_EXCEEDED:'deadline_exceeded',INTEGRITY_BLOCKED:'integrity_blocked',CANCELLED:'user_cancelled'};
       const reason=control.reason??mapping[code]??'calculation_failed',completed_at=timestamp(),cancelled=reason==='user_cancelled';
-      if(reason!=='deadline_exceeded'&&Date.parse(completed_at)<deadline&&manifest?.status==='in_progress'&&manifestSha){try{const terminal_manifest=validateDesktopRunManifest({...manifest,status:cancelled?'cancelled':'failed',ended_at:completed_at,terminal_detail:{reason}});await runStore![cancelled?'cancelRun':'failRun']({run_id,expected_in_progress_manifest_sha256:manifestSha,terminal_manifest,cancellation_signal:new AbortController().signal});}catch{/* Preserve the incomplete file authority, never fabricate a terminal bundle. */}}
+      if(reason!=='deadline_exceeded'&&Date.parse(completed_at)<deadline&&manifest?.status==='in_progress'&&manifestSha){try{const terminal_manifest=validateAnalysisManifest({...manifest,status:cancelled?'cancelled':'failed',ended_at:completed_at,terminal_detail:{reason}});await runStore![cancelled?'cancelRun':'failRun']({run_id,expected_in_progress_manifest_sha256:manifestSha,terminal_manifest,cancellation_signal:new AbortController().signal});}catch{/* Preserve the incomplete file authority, never fabricate a terminal bundle. */}}
       const current=await store.readProjection(owner);
       if(current.runs.find(x=>x.run_id===run_id)?.status==='Running')await settle(cancelled?{status:'cancelled',reason:'user_cancelled'}:{status:'failed',reason},completed_at);
     }finally{scheduled.cancel();}
@@ -593,5 +601,5 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
     } catch (error) { if ((error as { code?: string }).code === 'RESULT_PENDING') resultPending = true; throw error; }
   }
 
-  return Object.freeze({ closeModelWork, openProject, listSessions, readProjection, createSession, createDraftRevision, openSession, acceptFinding, completeCase, checkReportExport, prepareReportExport, recordReportExport, saveForm, waitForProjection, checkImportAdmission, inspectImportFiles, confirmRevision, startAnalysis, cancelAnalysis, reconcileInterrupted, prepareAssistanceDisclosure, decideAssistanceDisclosure, startAssistance, cancelAssistance, disposeAssistanceDraft });
+  return Object.freeze({ hasModelWork:()=>modelWork.size>0, closeModelWork, openProject, listSessions, readProjection, createSession, createDraftRevision, openSession, acceptFinding, completeCase, checkReportExport, prepareReportExport, recordReportExport, saveForm, waitForProjection, checkImportAdmission, inspectImportFiles, confirmRevision, startAnalysis, cancelAnalysis, reconcileInterrupted, prepareAssistanceDisclosure, decideAssistanceDisclosure, startAssistance, cancelAssistance, disposeAssistanceDraft });
 }

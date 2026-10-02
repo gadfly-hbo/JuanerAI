@@ -1,5 +1,9 @@
 # Accepted Case Assistant and Provider Settings baseline
 
+## Change004 scoped amendment
+
+Change004 adds the separately authorized unfinished membership task and the P1-origin retained Completed consumer. Its original task ledger, separate grants, closed material and shared physical lease rules are defined in the [membership-task baseline](../member-analysis-task/spec.md). Existing non-P1 eligibility and formal effects below remain. Engineering delivery has a named E2 waiver; native evidence and human experience are not claimed passed.
+
 Accepted 2026-09-30 by the user after candidate010 / DMG011 delivery. Source and final acceptance: [Change002 archive](../../changes/archive/2026-09-30-xanthil-desktop-case-assistant-decision-record/acceptance.md). Read this baseline alongside the retained Desktop and local-analysis specifications. The requirement body below retains the accepted Change, with only the Fork/Subagent Preview statements reconciled with the [accepted collaboration baseline](../case-collaboration/spec.md); chronological candidate/evidence and formerly pending acceptance notes describe history, superseded by the archive acceptance record. Bare Provider input filenames resolve within that archive. This publication grants no new Provider, data or product authority.
 
 ---

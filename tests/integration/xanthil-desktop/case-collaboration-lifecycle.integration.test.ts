@@ -116,8 +116,10 @@ test('AC-FS-08/09 Subagent parent close/reopen after result commit fences automa
 for(const mode of ['advice','failure','stop','budget','timeout','wait-expired'] as const)test('AC-FS-05/08 installed Pi Subagent '+mode+' publishes no complete result or delivery',async()=>withFork('subagent-'+mode,async s=>{
  let entered!:()=>void,release!:()=>void;const reached=new Promise<void>(r=>entered=r),gate=new Promise<void>(r=>release=r);
  s.setResponse(async()=>{if(mode==='failure')throw Error('synthetic transport unavailable');if(mode==='advice')return {kind:'advice',text:'不完整建议'};if(mode==='stop'||mode==='timeout'){entered();await gate;return {kind:'result',summary:'迟到结果',references:[],limitations:['限制'],unknowns:[]};}if(mode==='wait-expired')return {kind:'question',text:'等待回答'};return {kind:'tool',tool:'read_case',revision_id:s.baseline.owner.revision_id};});
- await s.start();if(mode==='stop'){await reached;await s.app.stop(s.child.session.id);release();}
- const expected=mode==='stop'?'Stopped':mode==='budget'?'BudgetExhausted':mode==='timeout'?'TimedOut':mode==='wait-expired'?'WaitExpired':'Failed';await s.wait(s.child.session.id,expected);release();
+ await s.start();if(mode==='stop'){await reached;await s.app.stop(s.child.session.id);}
+ const expected=mode==='stop'?'Stopped':mode==='budget'?'BudgetExhausted':mode==='timeout'?'TimedOut':mode==='wait-expired'?'WaitExpired':'Failed';await s.wait(s.child.session.id,expected);
+ if(mode==='stop'||mode==='timeout')assert.equal(s.app.occupant()?.session_id,s.child.session.id,'C4 logical terminal retains the issued Pi turn');
+ release();for(let i=0;i<100&&s.app.occupant()!==null;i++)await new Promise(r=>setTimeout(r,5));
  const p=await s.app.readParent(s.parent.session.id);assert.equal(p.results.length,0);assert.equal(p.deliveries.length,0);assert.equal(p.materials.length,0);assert.equal(s.app.occupant(),null);assert.equal((await s.app.read(s.parent.session.id)).attempts.length,1);assert.deepEqual(await s.store.formalHistory(s.baseline.owner),{decisions:[],reports:[]});
 },'subagent',mode==='budget'?{turns:2}:mode==='timeout'?{execution_ms:500}:mode==='wait-expired'?{waiting_ms:100}:{}));
 

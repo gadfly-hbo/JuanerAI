@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002085748341-SD1K5B",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T08:57:48.341Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "review005 剩余 F1 单一语法回归修正启动。",
+  "status_after": "active",
+  "evidence_refs": []
+}

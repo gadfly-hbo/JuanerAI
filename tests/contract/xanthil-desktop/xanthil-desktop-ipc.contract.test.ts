@@ -521,7 +521,11 @@ test('U1.1 B1-BRIDGE: real preload exposes and maps the closed twenty-method xan
   }
   assert.equal(control.invokes.length, b1Methods.length, 'every public method invokes one and only one closed channel');
   assert.deepEqual(control.invokes.map(({ channel }) => channel), b1Methods.map((method) => `xanthil-desktop:v1:${method}`), 'the closed channel sequence follows the exact frozen method order');
-  assert.deepEqual(control.contextBridgeExposures.map((exposure) => exposure.key), ['xanthilDesktopApi','xanthilCaseAssistantApi','xanthilProviderSettingsApi','xanthilChildSession','xanthilParentNavigation'], 'Change003 adds only Main-provided child identity and parent navigation subscription; original business APIs are preserved');
+  assert.deepEqual(control.contextBridgeExposures.map((exposure) => exposure.key), ['xanthilDesktopApi','xanthilCaseAssistantApi','xanthilProviderSettingsApi','xanthilChildSession','xanthilParentNavigation','xanthilMembershipTaskApi'], 'Change004 adds the closed membership API; all original business APIs are preserved');
+  const membership=requiredRecord(control.contextBridgeExposures[5]!.value,'membership API');
+  assert.deepEqual(Reflect.ownKeys(membership),['request'],'membership exposes no generic IPC or filesystem capability');
+  const membershipRequest={operation:'list'};await (membership.request as (v:unknown)=>Promise<unknown>)(membershipRequest);
+  assert.equal(control.invokes.at(-1)!.channel,'xanthil-membership-task:v1');assert.equal(control.invokes.at(-1)!.request,membershipRequest);
   assert.equal(control.contextBridgeExposures[0]!.value, api, 'contextBridge receives the identical public API object');
   assert.equal(control.contextBridgeExposures[3]!.value,null,'root has no renderer-selected child identity');
   const navigation=requiredRecord(control.contextBridgeExposures[4]!.value,'parent navigation');
@@ -537,8 +541,9 @@ test('U1.1 B1-ENTRY: normal Main entry registers the existing refusal factory an
   const createHandlers = requiredExport<(value: Record<string, unknown>) => Record<string, (sender: unknown, request: Record<string, unknown>) => Promise<Record<string, unknown>>>>(main, 'createXanthilDesktopIpcHandlers');
   assert.equal(control.requestSingleInstanceLockCalls(), 1, 'normal Main entry requests one single-instance admission');
   assert.equal(control.whenReadyCalls(), 1, 'normal Main entry waits for Electron readiness once');
-  assert.deepEqual(control.ipcChannels().sort(), [...b1Methods.map((method) => `xanthil-desktop:v1:${method}`),'xanthil-case-assistant:v1','xanthil-provider-settings:v1'].sort(), 'normal Main retains every business method and adds only the approved closed settings channel');
+  assert.deepEqual(control.ipcChannels().sort(), [...b1Methods.map((method) => `xanthil-desktop:v1:${method}`),'xanthil-case-assistant:v1','xanthil-provider-settings:v1','xanthil-membership-task:v1'].sort(), 'normal Main retains every business method and registers the approved closed membership channel');
   assert.deepEqual(await control.ipcHandler('xanthil-provider-settings:v1')(control.foreignSenderEvent(),{operation:'read'}),{ok:false,code:'FORBIDDEN'},'settings refuses an untrusted sender before credential access');
+  assert.deepEqual(await control.ipcHandler('xanthil-membership-task:v1')(control.foreignSenderEvent(),{operation:'list'}),{ok:false,error:{code:'FORBIDDEN',message:'未完成：FORBIDDEN。已验证结果和累计用量保留。'}},'membership rejects foreign sender before project access');
   assert.equal(control.browserWindowOptions.length, 1, 'normal Main entry creates exactly one local BrowserWindow');
   assert.deepEqual(Object.fromEntries(['width','height','useContentSize'].map(key=>[key,control.browserWindowOptions[0]![key]])),{width:1366,height:768,useContentSize:true},'normal startup uses the approved content viewport without relying on a test resize');
   assert.equal(Object.hasOwn(control.browserWindowOptions[0]!, 'minWidth'),false,'the initial viewport does not add an unapproved native resize restriction');
@@ -680,7 +685,7 @@ test('U1.1 B2-COMPONENT: actual XanthilDesktopApp renders the accepted initial s
     const createElement = requiredExport<(type: unknown, props: unknown) => unknown>(react, 'createElement');
     const renderToStaticMarkup = requiredExport<(element: unknown) => string>(server, 'renderToStaticMarkup');
     const markup = renderToStaticMarkup(createElement(App, { api: recording.api }));
-    for (const label of ['JuanerAI','持续做出更好的决策','Xanthil Desktop','Case Assistant','关联一个 Case','模型未配置','Case 决策与预期 v1.0','Status','Quick','Professional','Global Search','Fork','Subagent','Preview']) {
+    for (const label of ['JuanerAI','持续做出更好的决策','Xanthil Desktop','会员分析','从业务问题开始','模型未配置','已完成分析的决策助手','Status','Quick','Professional','Global Search','Preview']) {
       assert.match(markup, new RegExp(escapeRegexLiteral(label), 'u'), `the accepted initial shell visibly names ${label}`);
     }
     assert.deepEqual([...recording.calls.entries()], recording.methods.map((method) => [method, 0]), 'the exact twenty-method Renderer API remains entirely unused by the static initial shell');

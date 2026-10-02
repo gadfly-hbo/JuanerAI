@@ -34,14 +34,14 @@ test('UI-03/05/19/20 initial Quick surface offers Case association, explicit una
 // Compile actual presentation functions, omitting only the browser mount bootstrap.
 async function reviewComponents(){
  const dir=join(process.env.JUANERAI_TEST_EVIDENCE_DIR??tmpdir(),'vui-render');await mkdir(dir,{recursive:true});
- const settingsUrl=await compiledProviderSettings(dir);
+ const settingsUrl=await compiledProviderSettings(dir);let membershipUrl='';
  const compile=async(name:string,extra='',workspace='')=>{
   const url=new URL('../../../apps/desktop/'+name,import.meta.url);let source=await readFile(url,'utf8');if(name==='renderer.tsx')source=source.slice(0,source.indexOf("const root = document.getElementById('root');"))+extra;
   let text=ts.transpileModule(source,{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText;
-  text=text.replace(/from ['"](react(?:\/jsx-runtime)?|react-dom\/client)['"]/g,(_m,s)=>`from ${JSON.stringify(pathToFileURL(require.resolve(s)).href)}`).replace(/from ['"]\.\.\/\.\.\/packages\/([^'"]+)['"]/g,(_m,s)=>`from ${JSON.stringify(new URL('../../../packages/'+s,import.meta.url).href)}`).replace("'./case-assistant-workspace.tsx'",JSON.stringify(workspace)).replace("'./provider-settings.tsx'",JSON.stringify(settingsUrl)).replace("'./desktop-work.ts'",JSON.stringify(new URL('../../../apps/desktop/desktop-work.ts',import.meta.url).href));
+  text=text.replace(/from ['"](react(?:\/jsx-runtime)?|react-dom\/client)['"]/g,(_m,s)=>`from ${JSON.stringify(pathToFileURL(require.resolve(s)).href)}`).replace(/from ['"]\.\.\/\.\.\/packages\/([^'"]+)['"]/g,(_m,s)=>`from ${JSON.stringify(new URL('../../../packages/'+s,import.meta.url).href)}`).replace("'./case-assistant-workspace.tsx'",JSON.stringify(workspace)).replace("'./provider-settings.tsx'",JSON.stringify(settingsUrl)).replace("'./member-task-workspace.tsx'",JSON.stringify(membershipUrl)).replace("'./desktop-work.ts'",JSON.stringify(new URL('../../../apps/desktop/desktop-work.ts',import.meta.url).href));
   const file=join(dir,name+'-'+crypto.randomUUID()+'.mjs');await writeFile(file,text,{flag:'wx'});return pathToFileURL(file).href;
  };
- const workspace=await compile('case-assistant-workspace.tsx');return {...await import(workspace),...await import(await compile('renderer.tsx','\nexport {ProfessionalDecision,ProfessionalControl};\n',workspace))};
+ membershipUrl=await compile('member-task-workspace.tsx');const workspace=await compile('case-assistant-workspace.tsx');return {...await import(workspace),...await import(await compile('renderer.tsx','\nexport {ProfessionalDecision,ProfessionalControl};\n',workspace))};
 }
 test('UI-FS-04/05/07 child workspace presents independent authorization, stop and result controls',async()=>{
  const {ChildAssistantWorkspace}=await reviewComponents();
@@ -109,3 +109,23 @@ test('UI-FS-05/11 prepared parent material disclosure is readable, exact and abs
   const p=await s.app.readCollaboration(s.child.session.id),choices=renderToStaticMarkup(createElement(ChildContextSelection,{projection:p,history:[],results:[],disabled:false,onHistory(){},onResult(){}}));for(const text of [r.sha256,r.attempt_id,r.source.case_name,r.source.owner.revision_id,'原 Attempt','消息状态','结果 v1'])assert.ok(choices.includes(text),text);assert.doesNotMatch(choices,/<input[^>]*checked/);assert.equal((await s.app.read(s.parent.session.id)).attempts.length,1);
  });
 });
+
+
+test('UI-P1-D004 retained authorization shows original cumulative resource ledger',async()=>{
+ const path=new URL('../../../apps/desktop/case-assistant-workspace.tsx',import.meta.url),source=await readFile(path,'utf8');
+ const compiled=ts.transpileModule(source,{compilerOptions:{jsx:ts.JsxEmit.ReactJSX,module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext}}).outputText;
+ let emitted=compiled.replace(/from ['"](react(?:\/jsx-runtime)?)['"]/g,(_m,s)=>`from ${JSON.stringify(pathToFileURL(require.resolve(s)).href)}`).replace(/from ['"]\.\.\/\.\.\/packages\/([^'"]+)['"]/g,(_m,s)=>`from ${JSON.stringify(new URL('../../../packages/'+s,import.meta.url).href)}`);
+ const dir=join(tmpdir(),'case-assistant-render-test');await mkdir(dir,{recursive:true});emitted=emitted.replace("'./provider-settings.tsx'",JSON.stringify(await compiledProviderSettings(dir)));const file=join(dir,`component-${Date.now()}.mjs`);await writeFile(file,emitted);
+
+ const {CaseAssistantWorkspace}=await import(pathToFileURL(file).href);
+ const profile={model_calls:10,total_output_tokens:10000,total_active_ms:120000,total_wait_ms:20000,grant_ms:300000},membership={version:'1.0',task_id:'local-task',source_sha256:'a'.repeat(64),profile,purpose:'assistant',session_id:'s',created_at:new Date().toISOString(),expires_at:new Date(Date.now()+profile.grant_ms).toISOString(),usage:{calls:4,output_tokens:4000,active_ms:20000,wait_ms:10000,local_runs:1,unresolved:1}};
+ const initial={session:{id:'s',title:'合成会员讨论',source:{revision_id:'r'}},source:{case_name:'合成分析',evidence_refs:[],limitations:[]},events:[],drafts:[],decisions:[],reports:[],attempts:[{status:'Stopped',turns:1,execution_ms:12,cost_microunits:0,authorization:{membership,config:null}}]};
+ const html=renderToStaticMarkup(createElement(CaseAssistantWorkspace,{api:{request(){throw Error('no implicit issue');}},projectId:null,sources:[],initial,onChange(){},onOpenSource(){},onChooseProject(){}}));assert.match(html,/原会员任务累计资源/);assert.match(html,/剩余请求 6/);assert.match(html,/未知用量仍占用/);assert.match(html,/独立授权/);
+});
+
+test('UI-P1-13 completed membership formal history is read-only in both retained views',async()=>withReviewRecord(async({baseline,p})=>{
+ const {CaseAssistantWorkspace,ProfessionalDecision,DecisionFieldsView}=await reviewComponents();const initial={...p,decisions:p.decisions.map((d:any)=>{const {draft_id,draft_version,...value}=d;return {...value,fields:{...value.fields,outcome:{...value.fields.outcome,dependencies:'合成明确依赖',guardrail_applicable:false,guardrail_not_applicable_reason:'合成只记录方案尚未执行'}},origin:{kind:'membership_review',task_id:crypto.randomUUID(),review_id:crypto.randomUUID(),review_version:1,intent_id:crypto.randomUUID()}};})};
+ const quick=renderToStaticMarkup(createElement(CaseAssistantWorkspace,{api:{request(){throw Error('history must not issue');}},projectId:p.session.source.project_id,sources:[],initial,onChange(){},onOpenSource(){},onChooseProject(){}}));
+ const professional=renderToStaticMarkup(createElement(ProfessionalDecision,{projection:baseline.projection,formal:initial,disabled:false,onBegin(){},onRevise(){throw Error('P1 history cannot become legacy draft');},onExport(){}}));
+ const detail=renderToStaticMarkup(createElement(DecisionFieldsView,{fields:initial.decisions.at(-1).fields}));assert.match(detail,/合成明确依赖/);assert.match(detail,/合成只记录方案尚未执行/);assert.match(professional,/合成明确依赖/);assert.match(professional,/合成只记录方案尚未执行/);for(const html of [quick,professional]){assert.doesNotMatch(html,/修订当前正式决定|创建待采纳修订/);assert.match(html,/会员分析的已完成记录.*只读/);assert.match(html,/合成负责人/);}
+}));

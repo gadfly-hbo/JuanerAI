@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002093612885-CE27AY",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T09:36:12.885Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "用户批准限定验证权限；启动实际权限核对及剩余工程验证。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

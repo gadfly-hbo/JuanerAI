@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002030825741-ZAQPAC",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T03:08:25.741Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "跨入口合同影响已由Mini闭合，无新增用户Gate；当前缺陷仍待同一worker修复。原生验证缺口保留。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,3 +1,6 @@
+import {createMembershipTaskApplication} from '../../packages/application/member-task.ts';
+import {createLocalMembershipTaskStore} from '../../adapters/storage-local/member-task.ts';
+import {resourceProfile} from '../../packages/product-core/member-task.ts';
 import {createLocalModelAccess} from '../../packages/application/provider-settings.ts';
 import {createPiStoredCaseAssistantRuntime} from '../../adapters/agent-pi/xiaomi-local.ts';
 import type {createProviderSettings} from '../../packages/application/provider-settings.ts';
@@ -97,12 +100,17 @@ export function composePersonalXanthilDesktopProfile(dependencies:unknown){
 
 /** The deployment capability is Main-owned, never an IPC/Renderer path. */
 export function createPersonalXanthilDesktopProfile(deployment: unknown) {
-  const configured = exactRecord(deployment, ['toolchainDeployment','assistanceConfig','clock','deadlineScheduler',...(record(deployment)&&Object.hasOwn(deployment,'caseAssistantConfig')?['caseAssistantConfig']:[]),...(record(deployment)&&Object.hasOwn(deployment,'providerSettings')?['providerSettings']:[])]);
+  const configured = exactRecord(deployment, ['toolchainDeployment','assistanceConfig','clock','deadlineScheduler',...(record(deployment)&&Object.hasOwn(deployment,'caseAssistantConfig')?['caseAssistantConfig']:[]),...(record(deployment)&&Object.hasOwn(deployment,'providerSettings')?['providerSettings']:[]),...(record(deployment)&&Object.hasOwn(deployment,'membershipConfig')?['membershipConfig']:[])]);
   const providerSettings=configured.providerSettings as ReturnType<typeof createProviderSettings>|undefined;
   let caseAssistant: ReturnType<typeof createCaseAssistantApplication>|null=null;
+  let membership:ReturnType<typeof createMembershipTaskApplication>|null=null;
+  const memberConfig=configured.membershipConfig?exactRecord(configured.membershipConfig,['profile','synthetic']):null;const memberProfile=memberConfig?resourceProfile(memberConfig.profile):null;
+  if(memberProfile?.activation!=='synthetic_only'&&memberConfig)failure('AUTHORITY_REQUIRED');
+  const memberTransport=memberConfig?exactRecord(memberConfig.synthetic,['respond']):null;if(memberTransport&&typeof memberTransport.respond!=='function')failure('VALIDATION_FAILED');
+  const memberRuntime=memberProfile?createPiCaseAssistantRuntime({provider:memberProfile.provider,model:memberProfile.model,max_input_bytes:memberProfile.max_input_bytes,max_output_tokens:memberProfile.call_output_tokens},memberTransport as {respond(payload:string):Promise<unknown>}):null;
   let modelEpoch=0;
   const applications=new Set<ReturnType<typeof composePersonalXanthilDesktopProfile>>();
-  async function closeModelWork(){modelEpoch++;for(const application of applications)application.closeModelWork();applications.clear();const previous=caseAssistant;await previous?.close();if(caseAssistant===previous)caseAssistant=null;}
+  async function closeModelWork(){modelEpoch++;const previousMember=membership;await previousMember?.close();if(membership===previousMember)membership=null;for(const application of applications)application.closeModelWork();applications.clear();const previous=caseAssistant;await previous?.close();if(caseAssistant===previous)caseAssistant=null;}
   const assistantSetting=configured.caseAssistantConfig??null;
   const assistantConfig=assistantSetting===null?null:exactRecord(assistantSetting,['authorization','max_input_bytes','max_output_tokens',...(record(assistantSetting)&&Object.hasOwn(assistantSetting,'deployment')?['deployment']:[])]);
   const authorization:AssistantConfig|null=providerSettings?{provider:'xiaomi-token-plan-cn',model:'mimo-v2.6-pro',authorized:true,runtime_id:'pi',runtime_version:'0.84.2',adapter_version:'1.0',limits:{turns:8,execution_ms:300000,waiting_ms:120000,cost_microunits:8*XIAOMI_CREDIT_RESERVATION,turn_cost_microunits:XIAOMI_CREDIT_RESERVATION,currency:'XIAOMI_CREDITS'}}:assistantConfig?.authorization as AssistantConfig|null;
@@ -114,7 +122,7 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
   const assistantRuntime=providerSettings?{async turn(input:Parameters<NonNullable<typeof storedRuntime>['turn']>[0]){const generation=providerSettings.status().generation;try{return await storedRuntime!.turn(input);}catch(error){providerSettings.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:authorization?.authorized?createPiCaseAssistantRuntime({provider:authorization.provider,model:authorization.model,max_input_bytes:assistantConfig!.max_input_bytes,max_output_tokens:assistantConfig!.max_output_tokens},undefined,runtimeDeployment):null;
   const storedAssistance=providerSettings?createPiDecisionAssistanceRuntime({provider:'xiaomi-token-plan-cn',model_id:'mimo-v2.6-pro'},undefined,()=>providerSettings.taskCredential()):null;
   const assistanceRuntime=storedAssistance?{...storedAssistance,async executeAssistance(input:Parameters<typeof storedAssistance.executeAssistance>[0]){const generation=providerSettings!.status().generation;try{return await storedAssistance.executeAssistance(input);}catch(error){providerSettings!.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:configured.assistanceConfig===null?null:createPiDecisionAssistanceRuntime(configured.assistanceConfig);
-  const modelAccess=providerSettings?.access??createLocalModelAccess(!!authorization?.authorized||assistanceRuntime!==null);
+  const modelAccess=providerSettings?.access??createLocalModelAccess(!!authorization?.authorized||assistanceRuntime!==null||memberRuntime!==null);
   if (typeof configured.clock !== 'function') failure('VALIDATION_FAILED');
   const clock = configured.clock as Clock;
   const location=exactRecord(configured.toolchainDeployment,['descriptor_path']);
@@ -141,6 +149,7 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
   }
 
   async function openProject(request: unknown) {
+    if(membership?.hasWork())failure('BUSY');
     const closing=closeModelWork(),epoch=modelEpoch;await closing;
     const guard=()=>{if(epoch!==modelEpoch)failure('INTERRUPTED');};
     const input = exactRecord(request, ['contract_version', 'projectDirectoryCapability', 'display_name', 'command_id']);
@@ -177,8 +186,10 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
     const sessions = await application.listSessions({ project_id: opened.project_id });
     guard();
     const assistantStore=createLocalCaseAssistantStore({projectRoot: selected.projectRoot});
-    caseAssistant=createCaseAssistantApplication({store:assistantStore,config:authorization??null,runtime:assistantRuntime,clock,modelAccess});
+    const membershipStore=createLocalMembershipTaskStore(selected.projectRoot);
+    caseAssistant=createCaseAssistantApplication({store:assistantStore,config:authorization??null,runtime:assistantRuntime,clock,modelAccess,membership:{store:membershipStore,desktop:application,sourceStore:store,profile:memberProfile,runtime:memberRuntime}});
     const openedAssistant=caseAssistant;await openedAssistant.reopen();guard();
+    membership=createMembershipTaskApplication({desktop:application,project_id:opened.project_id,store:membershipStore,sourceStore:store,profile:memberProfile,runtime:memberRuntime,modelAccess,clock});await membership.reopen();guard();
     const value: ProjectOpenValue = Object.freeze({
       project: Object.freeze({ project_id: opened.project_id, display_name: opened.display_name, schema_version: '1.0', write_state: 'ready' }),
       sessions,
@@ -186,7 +197,7 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
     return Object.freeze({ application, value });
   }
 
-  return Object.freeze({ hasModelWork:()=>!!modelAccess.occupant?.()||!!caseAssistant?.hasWork(),closeModelWork, openProject, getCaseAssistant:()=>caseAssistant });
+  return Object.freeze({ hasModelWork:()=>[...applications].some(app=>app.hasModelWork())||!!caseAssistant?.hasWork()||!!membership?.hasWork(),closeModelWork, openProject, getCaseAssistant:()=>caseAssistant,getMembershipTask:()=>membership });
 }
 
 /** Main-only environment boundary; unconfigured behavior remains fail closed. */

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002091541564-UN92QL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T09:15:41.564Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "corrected-offline-005 冻结，独立复核006启动。",
+  "status_after": "active",
+  "evidence_refs": []
+}

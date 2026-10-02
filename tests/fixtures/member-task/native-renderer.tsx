@@ -1,0 +1,10 @@
+import {createElement} from 'react';
+import {createRoot} from 'react-dom/client';
+import {MembershipTaskWorkspace} from '../../../apps/desktop/member-task-workspace.tsx';
+import '../../../apps/desktop/styles.css';
+import type {MembershipApi} from '../../../packages/contracts/member-task.ts';
+const api=(window as unknown as {xanthilMembershipTaskApi:MembershipApi}).xanthilMembershipTaskApi;
+const result=await api.request({version:'1.0',operation:'list'});
+if(!result.ok||!Array.isArray(result.value)||!result.value.length)throw Error('fixture project absent');
+const projectId=result.value[0].owner.project_id;
+createRoot(document.getElementById('root')!).render(createElement(MembershipTaskWorkspace,{api,projectId,onOpenSource(){},onChooseProject(){},onLegacy(){}}));

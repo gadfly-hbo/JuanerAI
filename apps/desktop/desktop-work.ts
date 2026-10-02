@@ -1,5 +1,5 @@
 import type {DesktopProjection} from '../../packages/contracts/xanthil-desktop-ipc.ts';
-type ProfessionalStage='新建分析'|'数据准备'|'本地处理'|'循证分析'|'报告'|'执行反馈';
+type ProfessionalStage='新建分析'|'数据准备'|'本地处理'|'循证分析'|'分析报告'|'执行反馈';
 /** Read-only presentation of already-committed work; never admits or resumes it. */
 export function summarizeDesktopWork(running: boolean, attempt: Pick<DesktopProjection['attempts'][number], 'status' | 'action_kind'> | undefined, disclosures: number, hasSessionRun = false): Readonly<{label:string;target:ProfessionalStage|null;modelBoundary:string}> {
   const modelBoundary=disclosures>0?'按逐次披露记录':'无';

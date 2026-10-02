@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002013013167-5DPCDJ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T01:30:13.167Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "Controller回读A增量与证据无差异；明确解除A原生交互对B实现的前置条件。",
+  "status_after": "active",
+  "evidence_refs": []
+}

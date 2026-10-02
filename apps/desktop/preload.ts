@@ -50,3 +50,7 @@ const childSession=process.argv.find(value=>value.startsWith('--xanthil-child-se
 contextBridge.exposeInMainWorld('xanthilChildSession',childSession);
 
 contextBridge.exposeInMainWorld('xanthilParentNavigation',{subscribe(callback:(id:string)=>void){const receive=(_event:unknown,id:unknown)=>{if(typeof id==='string')callback(id);};ipcRenderer.on('xanthil-case-assistant:focus-parent',receive);return ()=>ipcRenderer.removeListener('xanthil-case-assistant:focus-parent',receive);}});
+
+import type {MembershipApi} from '../../packages/contracts/member-task.ts';
+const membershipApi:MembershipApi={request:input=>ipcRenderer.invoke('xanthil-membership-task:v1',input)};
+contextBridge.exposeInMainWorld('xanthilMembershipTaskApi',membershipApi);
