@@ -1,0 +1,184 @@
+#!/bin/sh
+# Run from the repository to synchronize. The internal --target entry is also
+# streamed unchanged to SSH stdin, so peers need no installed copy or checkout.
+set -eu
+export GIT_OPTIONAL_LOCKS=0 GIT_TERMINAL_PROMPT=0 GIT_NO_REPLACE_OBJECTS=1
+
+g() {
+  git -c core.hooksPath=/dev/null -c core.fsmonitor=false \
+    -c gc.auto=0 -c maintenance.auto=false -c fetch.writeCommitGraph=false \
+    -c submodule.recurse=false "$@"
+}
+die() { echo "sync-main: $*" >&2; exit 1; }
+usage() {
+  echo 'usage: sync-main [--check] [--allow-main-worktree local|host:/absolute/repo] ...' >&2
+  exit 2
+}
+origin_url() {
+  # Multiple origin URLs make the identity ambiguous.
+  [ "$(g config --get-all remote.origin.url | wc -l | tr -d ' ')" = 1 ] || return 1
+  g remote get-url origin
+}
+advertised_main() {
+  remote_line=$(g ls-remote --exit-code --refs origin refs/heads/main) || return 1
+  [ "$(printf '%s\n' "$remote_line" | wc -l | tr -d ' ')" = 1 ] || return 1
+  printf '%s\n' "$remote_line" | awk '$2 == "refs/heads/main" { print $1 }'
+}
+operation_in_progress() {
+  for state in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD rebase-merge rebase-apply BISECT_LOG sequencer index.lock; do
+    [ ! -e "$(g rev-parse --git-path "$state")" ] || return 0
+  done
+  return 1
+}
+target_run() {
+  target_root=$1 expected_origin=$2 pinned=$3 mode=$4 allowed=$5 label=$6
+  branch=unknown before=unknown
+  cd "$target_root" 2>/dev/null || target_fail failed 'repository path unavailable'
+  physical_root=$(pwd -P)
+  actual_root=$(g rev-parse --show-toplevel 2>/dev/null) || target_fail failed 'not a worktree repository'
+  [ "$physical_root" = "$actual_root" ] || target_fail failed 'target must name the repository root'
+  branch=$(g symbolic-ref --quiet --short HEAD || printf detached)
+  before=$(g rev-parse --verify refs/heads/main 2>/dev/null) || target_fail failed 'local main is missing'
+  actual_origin=$(origin_url) || target_fail failed 'origin must have exactly one URL'
+  [ "$actual_origin" = "$expected_origin" ] || target_fail failed 'origin identity differs'
+  remote_tip=$(advertised_main) || target_fail failed 'cannot verify origin/main'
+  [ "$remote_tip" = "$pinned" ] || target_fail skipped 'origin/main changed after pinning; run again'
+  if [ "$before" = "$pinned" ]; then
+    echo "[$label] up-to-date branch=$branch main-before=$before main-after=$before mode=unchanged"
+    return 0
+  fi
+
+  # Porcelain branch records do not depend on pathname quoting. Always reject
+  # main held by a different worktree; Git fetch checks again when writing.
+  main_count=$(g worktree list --porcelain | awk '$0 == "branch refs/heads/main" { n++ } END { print n+0 }')
+  if [ "$main_count" -gt 0 ]; then
+    [ "$main_count" = 1 ] && [ "$branch" = main ] || target_fail skipped 'main is checked out in another worktree'
+    [ "$allowed" = yes ] || target_fail skipped 'checked-out main requires explicit idle-worktree permission'
+    operation_in_progress && target_fail skipped 'Git operation in progress'
+    [ -z "$(g status --porcelain --untracked-files=all)" ] || target_fail skipped 'checked-out main is dirty'
+    update_kind=worktree
+  else
+    update_kind=ref-only
+  fi
+
+  if [ "$mode" = check ]; then
+    if g cat-file -e "$pinned^{commit}" 2>/dev/null; then
+      g merge-base --is-ancestor "$before" "$pinned" || target_fail skipped 'main has diverged or is ahead'
+      ancestry=verified
+    else
+      ancestry=unverified-until-fetch
+    fi
+    echo "[$label] checked branch=$branch main-before=$before main-after=$before target=$pinned mode=$update_kind ancestry=$ancestry"
+    return 0
+  fi
+
+  # Fetch just the authoritative main; no pruning, tags, FETCH_HEAD, recursion,
+  # hooks or automatic maintenance. Only local main has the FF-only contract;
+  # Git may replace its remote-tracking ref when the remote rewrites history.
+  g fetch --no-tags --no-write-fetch-head --no-recurse-submodules --no-auto-maintenance \
+    origin refs/heads/main:refs/remotes/origin/main || target_fail failed 'origin fetch failed'
+  [ "$(g rev-parse refs/remotes/origin/main)" = "$pinned" ] || target_fail skipped 'origin/main changed during fetch; main untouched'
+  g merge-base --is-ancestor refs/heads/main "$pinned" || target_fail skipped 'main has diverged or is ahead'
+  if [ "$update_kind" = worktree ]; then
+    [ "$(g symbolic-ref --quiet --short HEAD || true)" = main ] || target_fail skipped 'current branch changed'
+    operation_in_progress && target_fail skipped 'Git operation in progress'
+    [ -z "$(g status --porcelain --untracked-files=all)" ] || target_fail skipped 'checked-out main became dirty'
+    g -c merge.autostash=false merge --ff-only --no-edit "$pinned" || target_fail failed 'fast-forward worktree update failed'
+  else
+    # Unlike unchecked update-ref, non-force fetch both enforces FF ancestry
+    # and refuses a main checked out (including another linked worktree).
+    g fetch --no-tags --no-write-fetch-head --no-recurse-submodules --no-auto-maintenance \
+      . "$pinned:refs/heads/main" || target_fail failed 'main fast-forward refused by Git'
+  fi
+  after=$(g rev-parse refs/heads/main)
+  [ "$after" = "$pinned" ] || target_fail failed 'main readback differs from pinned commit'
+  echo "[$label] synced branch=$branch main-before=$before main-after=$after mode=$update_kind"
+}
+target_fail() {
+  outcome=$1; shift
+  after=$(g rev-parse --verify refs/heads/main 2>/dev/null || printf unknown)
+  echo "[$label] $outcome branch=$branch main-before=$before main-after=$after reason=$*" >&2
+  exit 1
+}
+
+if [ "${1-}" = --target ]; then
+  [ "$#" = 7 ] || usage
+  shift
+  target_run "$@"
+  exit 0
+fi
+
+# Resolve the source while still at the invocation directory, before any write.
+script=$0
+case "$script" in
+  /*) ;;
+  */*) script="$(pwd -P)/$script" ;;
+  *) script=$(command -v "$script") || die 'cannot locate saved sync-main script' ;;
+esac
+[ -f "$script" ] && [ -r "$script" ] || die 'invoke the saved sync-main script by its path'
+# An allowed main update can replace this file. Pin its bytes before any write;
+# the sentinel preserves trailing newlines in POSIX command substitution.
+script_source=$(cat "$script" && printf '.') || die 'cannot read saved sync-main script'
+script_source=${script_source%.}
+
+mode=sync
+permissions=
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --check) mode=check; shift ;;
+    --allow-main-worktree)
+      [ "$#" -ge 2 ] || usage
+      permissions="${permissions}${2}
+"
+      shift 2 ;;
+    *) usage ;;
+  esac
+done
+repo=$(g rev-parse --show-toplevel 2>/dev/null) || die 'not inside a worktree repository'
+cd "$repo"
+# Reject embedded line/control delimiters before newline-delimited iteration.
+if g config --local --null --get-all sync.targets | od -An -tx1 | grep -Eq '(^|[[:space:]])(09|0a|0d)([[:space:]]|$)'; then
+  die 'sync.targets contains a control character'
+fi
+targets=$(g config --local --get-all sync.targets || true)
+[ -n "$targets" ] || die 'configure at least one repository-local sync.targets peer'
+while IFS= read -r target; do
+  host=${target%%:*}; directory=${target#*:}
+  case "$host" in ''|-*|*[!a-zA-Z0-9._@-]*) die "invalid target host: $host" ;; esac
+  case "$directory" in /*) ;; *) die 'target must use host:/absolute/repository' ;; esac
+  [ "$target" != "$directory" ] || die 'target must use host:/absolute/repository'
+done <<EOF
+$targets
+EOF
+while IFS= read -r permission; do
+  [ -n "$permission" ] || continue
+  [ "$permission" = local ] || printf '%s\n' "$targets" | grep -Fx -- "$permission" >/dev/null || die 'permission must name local or an exact configured target'
+done <<EOF
+$permissions
+EOF
+expected_origin=$(origin_url) || die 'origin must have exactly one URL'
+pinned=$(advertised_main) || die 'cannot verify origin/main'
+case "$pinned" in ''|*[!0-9a-f]*) die 'invalid advertised main commit' ;; esac
+echo "origin/main target=$pinned mode=$mode"
+
+permitted() {
+  if printf '%s' "$permissions" | grep -Fx -- "$1" >/dev/null; then printf yes; else printf no; fi
+}
+# Quote each argument for the remote login shell; paths may contain spaces and
+# apostrophes. Host is separately restricted above and never interpreted here.
+quote() { printf "'%s'" "$(printf '%s' "$1" | sed "s/'/'\\\\''/g")"; }
+result=0
+(target_run "$repo" "$expected_origin" "$pinned" "$mode" "$(permitted local)" local) || result=1
+while IFS= read -r target; do
+  host=${target%%:*}; directory=${target#*:}
+  remote_command="sh -s -- --target $(quote "$directory") $(quote "$expected_origin") $(quote "$pinned") $(quote "$mode") $(quote "$(permitted "$target")") $(quote "$target")"
+  if ! printf '%s' "$script_source" | ssh -T -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 \
+      -o ConnectionAttempts=1 -o ServerAliveInterval=5 -o ServerAliveCountMax=2 \
+      "$host" "$remote_command"; then
+    echo "[$target] failed branch=unknown main-before=unknown main-after=unknown reason=peer did not complete synchronization" >&2
+    result=1
+  fi
+done <<EOF
+$targets
+EOF
+exit "$result"
