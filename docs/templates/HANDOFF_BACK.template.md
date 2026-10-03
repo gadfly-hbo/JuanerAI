@@ -25,7 +25,7 @@ Follow the sole execution policy's Blueprint Capability Coverage section. Link
 existing records; ordinary correction returns need not regenerate a full map.
 
 - Blueprint and capability-register revision:
-- Latest full six-plus-two map (show it in the user-facing delivery):
+- Latest full six-plus-two map link (show delta in daily delivery; show the full map at stage acceptance or on user request):
 - Preserved Change snapshot and fixed candidate/evidence references:
 
 | Capability ID | Previous scope/status | Current scope/status | Remaining gap | Evidence / unverified limit |

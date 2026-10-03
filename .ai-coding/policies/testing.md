@@ -35,8 +35,9 @@ Authority and stop conditions come from
   key real and failure paths, and checks that tests can detect relevant errors.
   Passing author tests alone is not independent proof.
 
-Desktop daily tests run without implicitly packaging. Keep native development
-checks and package/resource/runtime/signature/install checks explicit, with each
-applicable acceptance item mapped in the Change verification. Formal business
-acceptance uses a fixed source/build/runtime/input identity; a live HMR session
-is not a fixed candidate. Apply the sole policy's installed-artifact distinction.
+Use the sole policy's Verification Cadence and Fixed-Code sections for daily
+checks, early trials, formal Change/stage acceptance, and browser/Desktop
+applicability. Map checks by the behavior proved, not a `desktop` filename;
+reuse valid evidence without waiving independent key-path checks or required CI.
+Formal acceptance binds a fixed source/build/runtime/input identity, not a live
+HMR session. Daily testing does not implicitly require packaging.

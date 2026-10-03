@@ -116,11 +116,15 @@ For every Change, consult relevant earlier research Demos as reference for effic
 Dual-device product Changes follow the continuous-engineering default,
 adoption conditions and authority boundaries in
 `docs/governance/product-change-execution-policy.md`.
+For same-batch approval/UI Contract reuse, early internal trial versus formal
+Change/stage completion, and browser versus Desktop verification applicability,
+apply that policy's Product Input, Verification Cadence and Fixed-Code sections.
 
 When preparing or completing a Change, link its user story to the stable IDs in
-`docs/planning/capability-coverage/register.md`. At delivery, Mini updates and
-shows the full Blueprint coverage map, scoped delta, gaps and evidence, and
-preserves a Change snapshot under the sole execution policy's Blueprint
+`docs/planning/capability-coverage/register.md`. At every Change delivery, Mini
+updates the register/full map and preserves a snapshot; the response shows the
+delta, gaps and evidence with a full-map link. Stage acceptance and user requests
+show the full six-plus-two map under the sole execution policy's Blueprint
 Capability Coverage section. This is cumulative product visibility, not a new
 Gate, engineering board or permission to expand scope.
 

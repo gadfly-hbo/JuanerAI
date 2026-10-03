@@ -12,12 +12,19 @@ default four-role serial pipeline, universal Spec Gate and TDD_READY dispatch
 approvals, separate Test Asset Retirement Gate, automatic reasoning escalation,
 and ordinary correction-count renewal in the current semi-automatic path.
 
+The 2026-10-03 browser/internal-trial alignment implements the approved
+[roadmap revision 002 §7](../planning/2026-10-03/juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md#7-交给-mini-后怎样连续推进)
+and [product slice §7.2](../planning/2026-10-03/xanthil-task-experience-integration-proposal-v0.1.md#72-给工程师-agent工程规则最小调整-prompt)
+published at `d89f7d45f6c5ecab7440d66e4747ee3ef6625826`. It retains formal
+Changes, user UI approval, independent validation and required CI.
+
 Publication and adoption are separate. New work must identify the published
 policy version and approved product input. An active Mini task adopts at a safe
 boundary only after reading back that version, its actual loaded roles, the
 preserved task/branch/tree, replaced old restrictions, remaining real resource
 limits, unresolved decisions, and next permitted action. Until then adoption
 is UNCONFIRMED. Receipt alone does not resume a stopped product task.
+Publication does not force other in-flight sessions onto a new baseline.
 
 An active task keeps its Change identity, branch ownership, code, uncommitted
 work, valid product approvals, evidence, failures, UNKNOWN and spent resources.
@@ -47,9 +54,12 @@ needed. MacBook participation is optional product support requested by the user.
 MacBook freezes the existing Product Input Package: Change identity, approved
 objective/scope/non-goals, business and failure semantics, exact UI Contract and
 user UI approval, acceptance criteria, prohibitions, reference versions and
-known safety/data/permission/resource boundaries. Reuse an applicable approved
-UI Contract; materially changed visible behavior requires the user's affected
-UI approval. Research Demos are behavior references, not production authority.
+known safety/data/permission/resource boundaries. Reuse valid same-batch product,
+UI, authorization and environment decisions; resolve only missing, expired or
+changed items without extending permissions or resetting consumption. One approved
+UI Contract may cover several Changes when applicable to each; new or materially
+changed visible behavior requires the user's affected UI approval. Research Demos
+are behavior references, not production authority.
 New or materially revised product plans retain the existing independent
 development-readiness review; it checks product gaps, not implementation names.
 
@@ -72,6 +82,9 @@ preserves overall scope, history and resource limits. Use existing OpenSpec/task
 handoff locations, not another PRD, authority package format, board or approval
 system. The existing authority-package template is an optional reference only
 when already selected by the Change; it is not an additional required artifact.
+Keep formal Changes result-sized: the global roadmap is neither one giant
+Change nor permission to start all candidates. Commits, internal subtasks and
+ordinary corrections do not each restart product preparation or the full workflow.
 
 A message, Git fetch, published commit or task existence is not receiver
 adoption. Manual forwarding by the user is sufficient; no message automation is
@@ -221,6 +234,21 @@ check processes and effects before repeating only known-safe operations.
 An erroneous self-imposed pause may be corrected with evidence only when original
 authority remains valid; it cannot relabel a real stop or missing evidence.
 
+## Verification Cadence and Internal Trial
+
+These are work/claim distinctions within the existing lifecycle, not new Gates.
+
+| Work / claim | Applicable verification and feedback |
+|---|---|
+| Daily iteration | Run affected tests and the relevant main path; retain valid RED/GREEN and key counterexamples. Reuse unaffected evidence, product/UI approvals and the engineering context rather than repeating full regression or dispatching a Validator for each edit. |
+| Early internal trial / preview | Within approved trial, data/model, budget and environment permissions, identify fixed code/runtime configuration, approved inputs, available paths, actual checks, unopened scope and known issues. Verify the exposed path's safety, authorization, calculation/evidence, saving and stopping/recovery before feedback. The first approved simple-mode path need not wait for all S1 variants; this is not formal Change/stage acceptance or external/commercial trial authority. |
+| Complete result / formal Change | Complete applicable regression, independent validation and required user Product Acceptance for that Change; retain required CI before authorized merge. A batch label cannot defer these obligations to stage end while claiming the Change complete. |
+| Integrated stage | Evaluate scenario, capability and experience on the same integrated product across Changes; reuse valid scoped evidence and disclose remaining gaps. Early trial feedback or individual Change PASS does not establish stage acceptance. |
+
+Use the existing verification/delivery record for each claim and its limitations.
+This cadence does not change CI triggers, scope selection or required checks;
+daily focused checks do not waive the product PR's required portable CI.
+
 ## Independent Validation and Acceptance
 
 Before inspecting the implementation explanation and author tests, Validator
@@ -236,14 +264,27 @@ evidence; overlapping pre-existing changes need attribution, not blanket exclusi
 Verify causal RED, test sensitivity, negative cases, relevant quality/regression,
 scope/architecture/safety and evidence identity. Test retirement is part of this
 review under `test-asset-retirement.md`, not a separate PASS prerequisite.
+Reuse complete, trustworthy CI/check evidence after verifying its candidate,
+inputs and environment applicability. Independence does not require rerunning
+every identical suite: target missing coverage, suspect evidence and affected
+risks while retaining independent judgment and key real/failure-path checks.
+This neither waives required CI nor makes author self-review independent.
 
-A blocking finding identifies an acceptance failure, concrete engineering defect,
+A blocking finding identifies an acceptance failure, material engineering defect,
 violation of an approved architecture/safety/permission/contract boundary, or
 material evidence gap that prevents a required claim. Give the affected requirement
 or boundary, counterexample/evidence and recheck condition. Formatting, preferred
 implementation style and nonessential document tidying are advisory when they
 do not affect those claims. Missing authority or meaningful evidence is never
 reclassified as cosmetic.
+
+Ordinary low-risk layout/copy issues may remain while work continues, with their
+impact, workaround and specific return point in the existing issue/delivery
+record. Wrong calculations/evidence, unauthorized access/privacy exposure,
+budget or stop failure, lost results and an unusable promised main path block
+the affected trial/delivery; safely isolated unrelated work may continue. Copy
+that changes metric meaning, obscures authorization or falsely signals success
+is not cosmetic. This does not waive required UI approval or accepted commitments.
 
 Return all material findings together when inputs suffice. Engineering repairs
 continuously; revalidate the new fixed candidate's affected and collateral risks
@@ -355,11 +396,13 @@ Within the existing work, not a new stage:
    snapshot with a correction link; never rewrite an issued snapshot. Bootstrap
    reconstructions explicitly name their retrospective date and unknown prior
    state. In-progress snapshots are not completion snapshots.
-4. The delivery response shows the full stable-layout six-plus-two map, the
-   Change's before/after scope/status delta, remaining gaps and evidence links,
-   without waiting for another user reminder. Keep unaffected capabilities on
-   the map; place detail in the register. A Change with no business coverage
-   delta still reports that fact and preserves the full map in its snapshot.
+4. Every Change delivery response shows the before/after scope/status delta,
+   remaining gaps and evidence, and links the latest full map and its Change
+   snapshot without another reminder. Display the full stable-layout six-plus-two
+   map in the response at stage acceptance or when the user requests it. The
+   latest map and each completion snapshot still retain unaffected capabilities;
+   detail stays in the register. A Change with no business delta reports that
+   fact and still updates the records and preserves its full-map snapshot.
 
 Missing evidence limits the capability claim to partial/unknown; it does not
 block an otherwise valid unrelated user story or require a global revalidation.
@@ -382,12 +425,23 @@ safety/product obligations and the separately required resume decision.
 
 ## Fixed-Code Business Acceptance and Installed Artifacts
 
-For an approved Desktop development supplement, ordinary engineering checks may
-use the real native development entry, Application and local backends. Formal
-business acceptance binds frozen source, test inputs, emitted Main/Preload,
-Renderer/server configuration and runtime identities. A changing HMR session is
-working evidence only; stop edits and recheck the fixed candidate before acceptance.
+Use the approved delivery surface's normal entry: browser plus same-host service,
+or native Desktop development when applicable, with the real Application/backends.
+Formal business acceptance binds frozen source, test inputs, frontend/service
+configuration and runtime identities, plus emitted Main/Preload for Desktop.
+A changing HMR session is working evidence only; stop edits and recheck the
+fixed candidate before acceptance.
 Product/UI acceptance and independent engineering verification remain separate.
+
+For approved browser delivery, defer only Desktop-shell, packaging, installation
+and distribution-specific checks. Map applicability by the behavior proved in
+existing Change verification, not by a path containing `desktop`. Retain shared
+business tests and verify browser/service connection and cross-site protection,
+file/credential permissions, key calculations/evidence, state persistence and
+stop/recovery. Browser PASS neither closes old native E2 nor erases historical
+failures, waivers or unresolved gaps. Shared correctness/safety defects still
+block the affected browser path. Required CI remains unchanged even when its
+suite names contain `desktop`; this policy does not authorize deleting tests.
 
 Installed-artifact acceptance additionally binds the exact package, resources,
 runtime, signature and installation context. Packaging is an explicit check when

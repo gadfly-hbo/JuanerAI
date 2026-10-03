@@ -47,6 +47,14 @@ The approval record links the reviewed identity. Receiver readback must name
 the actual task/device, adopted version and protected work/stop boundary.
 Until then, adoption is unconfirmed; main publication alone does not establish it.
 
+## Approved delivery breakdown and first batch — 2026-10-03
+
+The user approved revision 002 of the [full Change roadmap](2026-10-03/juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md) and [next product scope and handoff](2026-10-03/xanthil-task-experience-integration-proposal-v0.1.md), then authorized Git publication and first-batch preparation. Blueprint v4.1 and its capability goals remain unchanged. The [independent review](2026-10-03/reviews/full-change-roadmap-v0.1-readiness-001.md#追加-002浏览器交付与首次内部试用修订审查) covers planning readiness, not production intake.
+
+Near-term delivery is a PC browser plus same-machine local service. N01/N02 first expose one real, authorized membership-analysis task in simple mode, then complete S1; Desktop packaging and shell-only checks are deferred without deleting their implementation or closing historical gaps. The attached [Demo v0.2](2026-10-03/pc-task-experience-prototype-v0.2/README.md) is an interaction reference, not a UI Gate PASS or production implementation.
+
+The first handoff is product/UI preparation, not an instruction to implement all 20 candidates. Reuse valid approvals and close only remaining model, data, resource and UI decisions. Engineering-policy adjustments are proposed in the handoff; the sole execution policy remains effective until its owner publishes the minimal changes and the receiving task adopts them. Git publication, receiver adoption and engineering authority remain separate.
+
 ## Historical v4.0 approval snapshot — superseded as route by v4.1
 
 The following is the prior approval/publication snapshot, preserved for
