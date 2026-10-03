@@ -1,5 +1,55 @@
 # Current result and next action
 
+## Engineering Acceptance and archive — 2026-10-03
+
+The Engineering Controller accepts candidate-003 for this bounded CI/workflow
+repair after independent engineering Validator PASS and matching complete cloud
+evidence. Published HEAD `6c31aef701ae050c42713dc71a248cc5c6504e1f`, tree
+`15329211aea787702c95594766cbb5e60480c566`, matches all 28 frozen files.
+GitHub tested merge `72bd552c47e1893bc4d674c28590d0b6939c9339` with the expected
+base/head parents and that same tree. No behavior, permission, timeout,
+concurrency, dependency or assertion waiver was used.
+
+[Run 37122653004](https://github.com/gadfly-hbo/JuanerAI/actions/runs/37122653004)
+finished successfully in 12m32s job time: portable validation 727s, exit 0;
+17/17 canonical groups completed. Harness 158/158, Desktop contracts 658/658
+and Desktop integration 498/498 passed; every one of the 159 partitioned member
+cases appears individually as PASS. Pinned installation, both cloud archive
+proofs, syntax and typecheck passed. The sole skipped test is the explicitly
+gated real-provider acceptance test. Native GUI, packaging/DMG and installed
+artifact acceptance were not run and are not part of this tooling acceptance.
+No business capability or user product acceptance is newly claimed.
+
+The actual runtime reported Node 26.0.0, npm 11.12.1, Python 3.12.3,
+DuckDB 1.5.2 and four available CPUs (AMD EPYC 9V74); CPU quota was UNKNOWN.
+Desktop integration completed in 662s. This corrects the earlier incomplete
+1080s portable run without reducing coverage or increasing its limit; it does
+not guarantee that future source or runner changes cannot cause a failure.
+
+Native evidence under the existing persistent root:
+
+- `github-candidate003-attempt1.run.json`, 12,635 bytes, SHA-256
+  `08c20e4566b164f33225332db5279d0ea8f19fdebc7831272a20abaa061e6aec`.
+- `github-candidate003-attempt1.job.json`, 2,136 bytes, SHA-256
+  `ed8a0db05b03a94a83da40297ac720678ff658d1d941c1f0f583d46e931e9e6c`.
+- `github-candidate003-attempt1.log`, 652,426 bytes, SHA-256
+  `ef15bc8eaac358ace62e3f3a9e7f71905ab460a819fe9a9c3ccbd68b452da9bb`.
+- `github-candidate003-merge-input.json`, 2,616 bytes, SHA-256
+  `77c8bf80b7c77617b76ef3f7e6788662309e26864ee13f4b8b7b48c08e05c081`.
+
+The four accepted Change documents are moved together to this archive; current
+requirements are integrated in the canonical-validation and pr-ci-validation
+specifications and existing sole execution policy. Verify document preservation,
+references and unchanged executable bytes before publishing this mechanical
+archive. Final PR-revision checks, authorized merge and main synchronization
+remain delivery actions. Their exact receipts belong to
+[PR #61](https://github.com/gadfly-hbo/JuanerAI/pull/61) and the same evidence root.
+No Mini task adoption or execution resumption is implied.
+
+The sections below retain the earlier fixed-candidate snapshots and their
+then-current limits. This acceptance supersedes their pending status, not their
+historical FAIL, UNKNOWN or unverified results.
+
 ## Candidate-003 local correction
 
 The mechanical split preserves all 159 member cases: 84 task/formal/human-review
@@ -129,7 +179,7 @@ candidate. The two original Validator findings remain historical FAIL evidence.
 The complete local candidate is frozen for independent review and authorized
 candidate publication. Author checks below passed within their stated scopes;
 complete Linux CI and independent disposition remain pending at this snapshot.
-No business capability delta; the [full coverage snapshot](../../../docs/planning/capability-coverage/snapshots/ci-reliability-and-feedback-2026-10-03.md)
+No business capability delta; the [full coverage snapshot](../../../../docs/planning/capability-coverage/snapshots/ci-reliability-and-feedback-2026-10-03.md)
 retains all prior accepted scopes and gaps. This is not product acceptance.
 
 ## Identity and scope

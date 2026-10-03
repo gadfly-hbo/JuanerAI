@@ -10,6 +10,12 @@
   at 1080 seconds, preserved rather than rerun unchanged.
 - [x] Mechanically partition oversized member tests, preserve every case and
   assertion, update independent inventories and measure equivalent execution.
-- [ ] Actual corrected full cloud portable PASS; local limitations remain explicit.
-- [ ] Independent review and parent engineering disposition; no author acceptance claim.
-- [ ] Applicable OpenSpec archive and authorized Git delivery/readback.
+- [x] Actual corrected full cloud portable PASS: run 37122653004, 17/17 groups,
+  exit 0 in 727 seconds; local and native limitations remain explicit.
+- [x] Independent engineering Validator PASS and Engineering Controller Acceptance
+  for candidate-003; no product or native acceptance claim.
+- [x] Four accepted Change documents moved to this archive; historical failures
+  retained and the two relative references repaired.
+- [ ] Final PR-revision checks and authorized Git merge/readback: receipt remains
+  in PR #61 and the same evidence root, without another source change solely to
+  repeat the delivery receipt.
