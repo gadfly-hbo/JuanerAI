@@ -1,0 +1,133 @@
+{
+  "source_preservation": {
+    "original_files": 142,
+    "unchanged_source_and_preserved_destination": true,
+    "mismatches": []
+  },
+  "research_protection": {
+    "exploration_markdown_files": 2677,
+    "changed": []
+  },
+  "formal_changes": {
+    "tracked_before": 1942,
+    "changed": [
+      "AGENTS.md",
+      "CONTEXT.md",
+      "README.md",
+      "docs/planning/README.md"
+    ],
+    "unexpected": []
+  },
+  "frozen_blueprints": {
+    "count": 8,
+    "all_unchanged": true
+  },
+  "adopted_v4": {
+    "sha256": "86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb",
+    "matches_adopted": true,
+    "legacy_absolute_path_matches": true
+  },
+  "project_ledger": {
+    "rows": 59,
+    "outside_background_unchanged": true
+  },
+  "master_product_content_unchanged": true,
+  "current_links": {
+    "files": 33,
+    "local_references": 1243,
+    "external_references": 13,
+    "defects": [
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig01_广义数据决策者.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig04_OSM八大模块.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig05_三种分析模式.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig13_DAME六类方法体系.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig14_ABTestAnalysis边界.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig06_AnalysisIR编译器.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig08_Xanthil_DomainPack_四库双库关系.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig12_SemanticContextRuntime四库联动.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig11_DomainPack三种状态.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig09_可信裁判与Teach.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig09_可信裁判与Teach.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      },
+      {
+        "file": "/Users/huangbo/JuanerAI-whitepaper-migration/docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "target": "assets/fig10_端到端案例.png",
+        "error": "missing_file",
+        "inherited_missing_image": true
+      }
+    ],
+    "non_image_defects": []
+  },
+  "research_index": {
+    "projects": 59,
+    "source_files": 178,
+    "all_source_hashes_match": true,
+    "reference_records": 256,
+    "missing_reference_sources": [],
+    "all_reference_identities_resolvable": true,
+    "ledger_snapshot_matches": true
+  },
+  "absolute_reference_compatibility": {
+    "frozen_absolute_count": 2,
+    "frozen_relative_and_absolute_files": 6,
+    "resolution": "legacy byte-exact source retained; same-SHA originals mapped into formal repository; current mutable navigation uses repository-relative links"
+  },
+  "master_identity": {
+    "sha256": "b92a46373d5a25c1ca6f26b5af6418faf2174cb7c8d2e8d3ad4ebead159b79c8",
+    "bytes": 268394
+  }
+}

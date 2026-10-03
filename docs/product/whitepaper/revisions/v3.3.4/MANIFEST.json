@@ -1,0 +1,68 @@
+{
+  "version": "v3.3.4",
+  "frozen_on": "2026-09-26",
+  "successor": "v4.0",
+  "note": "Exact pre-upgrade bytes. Main text and available assets retained; 13 inherited missing PNGs are not invented. Historical governance/source links resolve against canonical whitepaper directory, not a copied governance tree.",
+  "files": [
+    {
+      "path": "JUANERAI_WHITEPAPER.md",
+      "bytes": 252757,
+      "sha256": "429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b"
+    },
+    {
+      "path": "WHITEPAPER_V3_3_4_RECEIPT.json",
+      "bytes": 12356,
+      "sha256": "87d3250867fe5726331628e4e27913bdf78883b4112e44339023b2932a60fe78"
+    },
+    {
+      "path": "assets/fig17_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788"
+    },
+    {
+      "path": "assets/fig15_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62"
+    },
+    {
+      "path": "assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "bytes": 15322,
+      "sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab"
+    },
+    {
+      "path": "assets/fig19_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea"
+    },
+    {
+      "path": "assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c"
+    },
+    {
+      "path": "assets/fig20_OSM目标形成与多维计划_R3.png",
+      "bytes": 604951,
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9"
+    },
+    {
+      "path": "assets/fig07_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2"
+    },
+    {
+      "path": "assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "bytes": 13069,
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161"
+    },
+    {
+      "path": "assets/fig18_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976"
+    },
+    {
+      "path": "assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "bytes": 755981,
+      "sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b"
+    }
+  ]
+}

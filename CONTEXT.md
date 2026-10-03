@@ -8,7 +8,7 @@ JuanerAI is a product family centered on turning data into traceable business de
 The highest-level commercial project and product family.
 _Avoid_: using JuanerAI as a synonym for Xanthil
 
-**JuanerAI Whitepaper**:
+**JuanerAI Whitepaper** ([current source](docs/product/whitepaper/README.md)):
 The product-definition and commercialization charter and the core reference for the Product Development Blueprint. A Whitepaper revision changes development only after explicit user notification and adoption through an approved, reviewed Blueprint revision.
 _Avoid_: executable roadmap, implementation authorization, proof of completion
 

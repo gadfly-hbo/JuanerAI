@@ -1,0 +1,18 @@
+{
+  "tables": 100,
+  "errors": [],
+  "missing_image_targets": [
+    "assets/fig01_广义数据决策者.png",
+    "assets/fig04_OSM八大模块.png",
+    "assets/fig05_三种分析模式.png",
+    "assets/fig06_AnalysisIR编译器.png",
+    "assets/fig08_Xanthil_DomainPack_四库双库关系.png",
+    "assets/fig09_可信裁判与Teach.png",
+    "assets/fig10_端到端案例.png",
+    "assets/fig11_DomainPack三种状态.png",
+    "assets/fig12_SemanticContextRuntime四库联动.png",
+    "assets/fig13_DAME六类方法体系.png",
+    "assets/fig14_ABTestAnalysis边界.png"
+  ],
+  "mainlines_links": 39
+}

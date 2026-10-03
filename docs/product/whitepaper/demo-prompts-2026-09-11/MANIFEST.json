@@ -1,0 +1,314 @@
+{
+  "generated_on": "2026-09-11",
+  "purpose": "Controller session prompts; no build or production authorization created",
+  "roadmap_sha256": "7e3a7b1391a57f78d11f3a2f3d59ab902c44a45be87b9beb45ce711548efd844",
+  "items": [
+    {
+      "id": "A01",
+      "title": "DAME 方法资产→IR→真实计算",
+      "file": "A01-dame-method-assets.md",
+      "dependencies": [],
+      "upstream_explorations": [
+        "PX-2026-009",
+        "PX-2026-014",
+        "PX-2026-032"
+      ],
+      "sha256": "86cb707d30e4a594597156ba281f245d913f290d8371d29fd08dd9baa1dd74ef"
+    },
+    {
+      "id": "A02",
+      "title": "A/B Test Analysis 可运行最小闭环",
+      "file": "A02-ab-test-analysis.md",
+      "dependencies": [
+        "A01"
+      ],
+      "upstream_explorations": [
+        "PX-2026-022",
+        "PX-2026-034"
+      ],
+      "sha256": "45b601f572ab86b38a982056a5f94928e28ebf2c7904355602769ac65d232c81"
+    },
+    {
+      "id": "A03",
+      "title": "本地文件导入→数据质量→不可变快照",
+      "file": "A03-local-import-snapshots.md",
+      "dependencies": [],
+      "upstream_explorations": [
+        "PX-2026-009",
+        "PX-2026-032"
+      ],
+      "sha256": "16bcf39d396aa93d8da7b0d55dd9da642d9f797e9d5e420dec48e6821ecdaf49"
+    },
+    {
+      "id": "A04",
+      "title": "需求→上下文→方法→计算→报告，同一条实际链",
+      "file": "A04-requirements-to-report.md",
+      "dependencies": [
+        "A01",
+        "A03"
+      ],
+      "upstream_explorations": [
+        "PX-2026-030",
+        "PX-2026-031",
+        "PX-2026-014",
+        "PX-2026-032",
+        "PX-2026-021",
+        "PX-2026-028"
+      ],
+      "sha256": "ee10c66e8721c91d3b648f6e306ab78c8f587d3a5a2eda403200e782a335dd1b"
+    },
+    {
+      "id": "A05",
+      "title": "六级裁判对同一证据链的独立判别",
+      "file": "A05-six-level-validation.md",
+      "dependencies": [
+        "A04"
+      ],
+      "upstream_explorations": [
+        "PX-2026-011",
+        "PX-2026-031",
+        "PX-2026-032",
+        "PX-2026-033",
+        "PX-2026-034",
+        "PX-2026-035"
+      ],
+      "sha256": "8df0a54dbd1e5453b6a25ec1b13f034fbccc02440432da0698e7a9f2f8c1eb8b"
+    },
+    {
+      "id": "A06",
+      "title": "运行退出、取消、重试与人工等待恢复",
+      "file": "A06-run-recovery.md",
+      "dependencies": [
+        "A04"
+      ],
+      "upstream_explorations": [
+        "PX-2026-002",
+        "PX-2026-032",
+        "PX-2026-035"
+      ],
+      "sha256": "74b29fb6a90eb1405ce0231712562ded9e35b0779bc03445f54d07e4d09c1d9f"
+    },
+    {
+      "id": "A07",
+      "title": "已安装 Model Pack 的日常推理与业务证据",
+      "file": "A07-model-pack-daily-inference.md",
+      "dependencies": [
+        "A01",
+        "A04"
+      ],
+      "upstream_explorations": [
+        "PX-2026-005",
+        "PX-2026-007",
+        "PX-2026-008",
+        "PX-2026-031",
+        "PX-2026-032"
+      ],
+      "sha256": "004baaea76d372f16f88fe223de7681d0aafc50059643dd5b67e04f2e403a5e0"
+    },
+    {
+      "id": "A08",
+      "title": "本地优先、最小上下文与失效权限",
+      "file": "A08-local-data-permission.md",
+      "dependencies": [
+        "A03",
+        "A04"
+      ],
+      "upstream_explorations": [
+        "PX-2026-013",
+        "PX-2026-019",
+        "PX-2026-031",
+        "PX-2026-032"
+      ],
+      "sha256": "0c896f48547196eeff493af3e78b2d62e026a2ef47b3ad3efe37f9a628be0ee2"
+    },
+    {
+      "id": "A09",
+      "title": "目标树、指标驱动与跨目标冲突",
+      "file": "A09-objective-tree.md",
+      "dependencies": [],
+      "upstream_explorations": [
+        "PX-2026-033",
+        "PX-2026-037"
+      ],
+      "sha256": "6dde33397fb8f73f7aa95131a227886b63e01ce6d6fe301d9b34535b7e421cf1"
+    },
+    {
+      "id": "A10",
+      "title": "策略组合与资源约束的真实数值决策",
+      "file": "A10-strategy-optimization.md",
+      "dependencies": [
+        "A01",
+        "A09"
+      ],
+      "upstream_explorations": [
+        "PX-2026-001",
+        "PX-2026-020",
+        "PX-2026-034",
+        "PX-2026-037"
+      ],
+      "sha256": "4f9f58806409918b44de26446836e004726c55ed2f9afd3f312f306ab6059fdb"
+    },
+    {
+      "id": "A11",
+      "title": "同一目标案例的经营闭环接续",
+      "file": "A11-same-case-business-loop.md",
+      "dependencies": [
+        "A02",
+        "A04",
+        "A05",
+        "A06",
+        "A09",
+        "A10"
+      ],
+      "upstream_explorations": [
+        "PX-2026-029",
+        "PX-2026-030",
+        "PX-2026-031",
+        "PX-2026-032",
+        "PX-2026-033",
+        "PX-2026-034",
+        "PX-2026-035",
+        "PX-2026-036",
+        "PX-2026-037"
+      ],
+      "sha256": "eae9f8fc4b5ca95a3235d7ec783ee7257dab9a8d555782cf6dae067c36a72b33"
+    },
+    {
+      "id": "A12",
+      "title": "周期报告/目标刷新：新一期真实计算",
+      "file": "A12-periodic-analysis.md",
+      "dependencies": [
+        "A04",
+        "A06"
+      ],
+      "upstream_explorations": [
+        "PX-2026-021",
+        "PX-2026-033",
+        "PX-2026-032"
+      ],
+      "sha256": "0afd1597334251a2e6fb28b4705f466a5ffc819641a67cccd6abb47d695267b9"
+    },
+    {
+      "id": "B01",
+      "title": "真实 LLM 的需求访谈与自主探索质量",
+      "file": "B01-live-llm-quality.md",
+      "dependencies": [],
+      "upstream_explorations": [
+        "PX-2026-013",
+        "PX-2026-030",
+        "PX-2026-009"
+      ],
+      "sha256": "2b48d67cadba1a3366c0f441631d81ad0d678a7cb144910c8775ef38c52c83b1"
+    },
+    {
+      "id": "B02",
+      "title": "深度研究实际采证与引用核验",
+      "file": "B02-research-evidence-retrieval.md",
+      "dependencies": [],
+      "upstream_explorations": [
+        "PX-2026-010",
+        "PX-2026-012",
+        "PX-2026-031"
+      ],
+      "sha256": "5b50cf35bf0df42898c7711500eeb224cb8f46b2a5df6f667a33602248b90aa3"
+    },
+    {
+      "id": "B03",
+      "title": "Ontology / Knowledge / Memory 的 Owner 后端接续",
+      "file": "B03-asset-owner-backend.md",
+      "dependencies": [],
+      "upstream_explorations": [
+        "PX-2026-001",
+        "PX-2026-002",
+        "PX-2026-003",
+        "PX-2026-031",
+        "PX-2026-035"
+      ],
+      "sha256": "c6221e8f9c0246c0934daaaacc84bc5a790b8bf381bd6e72ad12a281d908c749"
+    },
+    {
+      "id": "B04",
+      "title": "通用方法纠错与跨域回归发布",
+      "file": "B04-method-teach-release.md",
+      "dependencies": [
+        "A01"
+      ],
+      "upstream_explorations": [
+        "PX-2026-015",
+        "PX-2026-036"
+      ],
+      "sha256": "8be9d70a14e0322af59889c7f87bfc9814fc7400f5ee4e3a1a068608b5888ab6"
+    },
+    {
+      "id": "B05",
+      "title": "高风险 Pack 的实际业务方法",
+      "file": "B05-domain-numerical-methods.md",
+      "dependencies": [
+        "A01",
+        "A02",
+        "A07",
+        "A10"
+      ],
+      "upstream_explorations": [
+        "PX-2026-019",
+        "PX-2026-022",
+        "PX-2026-023",
+        "PX-2026-024",
+        "PX-2026-025",
+        "PX-2026-026",
+        "PX-2026-027"
+      ],
+      "sha256": "1365ab7c3f1f3bd59e7202721c73f88c79b169a16507f6c8d77b304bc0166c66"
+    },
+    {
+      "id": "B06",
+      "title": "A/B 复杂设计扩展",
+      "file": "B06-advanced-ab-design.md",
+      "dependencies": [
+        "A02"
+      ],
+      "upstream_explorations": [
+        "PX-2026-022",
+        "PX-2026-034"
+      ],
+      "sha256": "26c92aeca767d65085d9346495f3a55aefa6efab165ee1df4ea86605452e4117"
+    },
+    {
+      "id": "B07",
+      "title": "Phase 2 企业 Serving 消费路径",
+      "file": "B07-enterprise-serving.md",
+      "dependencies": [],
+      "upstream_explorations": [
+        "PX-2026-005",
+        "PX-2026-007",
+        "PX-2026-008"
+      ],
+      "sha256": "679f954fdee66c97f154e64b69c1981f64ded3ea4bc1dd909e6892c668f6a9f1"
+    },
+    {
+      "id": "B08",
+      "title": "行动任务适配器与独立回执接续",
+      "file": "B08-action-adapter-receipts.md",
+      "dependencies": [],
+      "upstream_explorations": [
+        "PX-2026-001",
+        "PX-2026-034",
+        "PX-2026-037"
+      ],
+      "sha256": "b49ba9cdddbbc64b8426f1b3b9bd1118938a0b384edc704e86c8f10be8b8b56a"
+    },
+    {
+      "id": "U01",
+      "title": "代表用户试用：需求、证据与行动理解",
+      "file": "U01-representative-user-study.md",
+      "dependencies": [],
+      "upstream_explorations": [
+        "PX-2026-009",
+        "PX-2026-030",
+        "PX-2026-021",
+        "PX-2026-037"
+      ],
+      "sha256": "e0e874eeba4c95f981f6fd4d5eab51260503cba19adcaff3e4eace409811bcc5"
+    }
+  ]
+}

@@ -1,0 +1,354 @@
+{
+  "scan_scope": "tracked working-tree text files, no Git/network mutation",
+  "repositories": [
+    {
+      "root": "/Users/huangbo/JuanerAI",
+      "head": "c01b68b639156344b2257e45a69892268c17693f",
+      "branch": "work/macbook/wip-preflight-exception-disposition",
+      "tracked_count": 1336,
+      "text_count": 1328,
+      "findings": [],
+      "related_ignored_files": [
+        "docs/planning/.DS_Store"
+      ],
+      "related_untracked_files": [],
+      "broader_reference_matches": [
+        "docs/planning/2026-08-27/dual-device-module-path-ownership-matrix.md:102:| D0 static Demo | separate approved research/demo workspace; no JuanerAI production paths | assigned by user outside this plan |",
+        "docs/planning/2026-08-28/xanthil-desktop-handoff-receipt.md:16:`/Users/huangbo/Dev/Projects/research/explorations/PX-2026-006-xanthil-dual-mode/HANDOFF.md`",
+        "docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.0.md:16:| Whitepaper SHA-256 | `9344f07cff450239a0ac33423a239f0dc47c9ac0aa48de8e86253e2b143300ff` |"
+      ],
+      "untracked_findings": [],
+      "summary": {
+        "matched_tracked_files": 0,
+        "matched_tracked_lines": 0,
+        "explicit_absolute_whitepaper_lines": 0,
+        "ignored_content_gap": false,
+        "ignored_note": "Only relevant ignored items were .DS_Store; all tracked files included regardless of ignores."
+      }
+    },
+    {
+      "root": "/Users/huangbo/.codex/worktrees/caaa/JuanerAI",
+      "head": "0a1cdb927cc88a17cc929005178c5743e0aa96d0",
+      "branch": "work/macbook/blueprint-v4-1-implementation-path",
+      "tracked_count": 1950,
+      "text_count": 1918,
+      "findings": [
+        {
+          "path": "docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.2.md",
+          "line": 10,
+          "matches": {
+            "whitepaper_name": [
+              "JUANERAI_WHITEPAPER.md"
+            ]
+          },
+          "text": "| Core reference | JuanerAI Whitepaper v3.3.4, `JUANERAI_WHITEPAPER.md` |",
+          "classification": "frozen_or_approved_blueprint_source_identity",
+          "recommendation": "Preserve exact bytes and SHA; resolve historical locator using an explicit relocation table linked by current planning/product index. Do not blind-replace the path inside approved Blueprint."
+        },
+        {
+          "path": "docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.3.md",
+          "line": 10,
+          "matches": {
+            "whitepaper_name": [
+              "JUANERAI_WHITEPAPER.md"
+            ]
+          },
+          "text": "| Core reference | JuanerAI Whitepaper v3.3.4, `JUANERAI_WHITEPAPER.md` |",
+          "classification": "frozen_or_approved_blueprint_source_identity",
+          "recommendation": "Preserve exact bytes and SHA; resolve historical locator using an explicit relocation table linked by current planning/product index. Do not blind-replace the path inside approved Blueprint."
+        },
+        {
+          "path": "docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md",
+          "line": 425,
+          "matches": {
+            "absolute_research_whitepaper": [
+              "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md"
+            ],
+            "absolute_research_product": [
+              "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md"
+            ],
+            "whitepaper_name": [
+              "JUANERAI_WHITEPAPER.md",
+              "JUANERAI_WHITEPAPER.md"
+            ],
+            "relative_whitepaper": [
+              "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+              "research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md"
+            ]
+          },
+          "text": "| 白皮书 v4.0 | research 的 `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`；268494 bytes；SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；MacBook 本次读取 `/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md` |",
+          "classification": "frozen_or_approved_blueprint_source_identity",
+          "recommendation": "Preserve exact bytes and SHA; resolve historical locator using an explicit relocation table linked by current planning/product index. Do not blind-replace the path inside approved Blueprint."
+        },
+        {
+          "path": "docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md",
+          "line": 426,
+          "matches": {
+            "whitepaper_name": [
+              "JUANERAI_WHITEPAPER.md"
+            ],
+            "relative_whitepaper": [
+              "docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md"
+            ]
+          },
+          "text": "| v3.3.4 前版 | research 的 `docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md`；252757 bytes；SHA-256 `429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b`；历史参考，非新路线 |",
+          "classification": "frozen_or_approved_blueprint_source_identity",
+          "recommendation": "Preserve exact bytes and SHA; resolve historical locator using an explicit relocation table linked by current planning/product index. Do not blind-replace the path inside approved Blueprint."
+        },
+        {
+          "path": "docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md",
+          "line": 561,
+          "matches": {
+            "absolute_research_whitepaper": [
+              "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md"
+            ],
+            "absolute_research_product": [
+              "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md"
+            ],
+            "whitepaper_name": [
+              "JUANERAI_WHITEPAPER.md",
+              "JUANERAI_WHITEPAPER.md"
+            ],
+            "relative_whitepaper": [
+              "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+              "research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md"
+            ]
+          },
+          "text": "| 白皮书 v4.0 | 沿用 v2.0 核验身份：research 的 `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`；268494 bytes；SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；v2.0 当时读取 `/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md`，本轮未重新核验外部文件 |",
+          "classification": "frozen_or_approved_blueprint_source_identity",
+          "recommendation": "Preserve exact bytes and SHA; resolve historical locator using an explicit relocation table linked by current planning/product index. Do not blind-replace the path inside approved Blueprint."
+        },
+        {
+          "path": "docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md",
+          "line": 562,
+          "matches": {
+            "whitepaper_name": [
+              "JUANERAI_WHITEPAPER.md"
+            ],
+            "relative_whitepaper": [
+              "docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md"
+            ]
+          },
+          "text": "| v3.3.4 前版 | research 的 `docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md`；252757 bytes；SHA-256 `429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b`；历史参考，非新路线 |",
+          "classification": "frozen_or_approved_blueprint_source_identity",
+          "recommendation": "Preserve exact bytes and SHA; resolve historical locator using an explicit relocation table linked by current planning/product index. Do not blind-replace the path inside approved Blueprint."
+        },
+        {
+          "path": "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.0.md",
+          "line": 344,
+          "matches": {
+            "whitepaper_name": [
+              "JUANERAI_WHITEPAPER.md"
+            ],
+            "relative_whitepaper": [
+              "docs/product/whitepaper/JUANERAI_WHITEPAPER.md"
+            ]
+          },
+          "text": "| 白皮书 v4.0 | 继承 v3 附录 A 已采用身份：research `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`，268494 bytes，SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；本轮未重读／核验外部原件，不宣称它仍为当前文件哈希 |",
+          "classification": "frozen_or_approved_blueprint_source_identity",
+          "recommendation": "Preserve exact bytes and SHA; resolve historical locator using an explicit relocation table linked by current planning/product index. Do not blind-replace the path inside approved Blueprint."
+        },
+        {
+          "path": "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.1.md",
+          "line": 399,
+          "matches": {
+            "whitepaper_name": [
+              "JUANERAI_WHITEPAPER.md"
+            ],
+            "relative_whitepaper": [
+              "docs/product/whitepaper/JUANERAI_WHITEPAPER.md"
+            ]
+          },
+          "text": "| 白皮书 v4.0 | 继承 v3 附录 A 已采用身份：research `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`，268494 bytes，SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；本轮未重读／核验外部原件，不宣称它仍为当前文件哈希 |",
+          "classification": "frozen_or_approved_blueprint_source_identity",
+          "recommendation": "Preserve exact bytes and SHA; resolve historical locator using an explicit relocation table linked by current planning/product index. Do not blind-replace the path inside approved Blueprint."
+        }
+      ],
+      "related_ignored_files": [
+        "docs/planning/2026-10-01/.DS_Store"
+      ],
+      "related_untracked_files": [
+        "docs/planning/2026-10-02/blueprint-v4.1-implementation-path-supplement-v0.1.md",
+        "docs/planning/2026-10-03/pc-task-experience-prototype-v0.1/README.md",
+        "docs/planning/2026-10-03/pc-task-experience-prototype-v0.1/app.js",
+        "docs/planning/2026-10-03/pc-task-experience-prototype-v0.1/index.html",
+        "docs/planning/2026-10-03/pc-task-experience-prototype-v0.1/styles.css"
+      ],
+      "broader_reference_matches": [
+        "docs/planning/2026-08-27/dual-device-module-path-ownership-matrix.md:102:| D0 static Demo | separate approved research/demo workspace; no JuanerAI production paths | assigned by user outside this plan |",
+        "docs/planning/2026-08-28/xanthil-desktop-handoff-receipt.md:16:`/Users/huangbo/Dev/Projects/research/explorations/PX-2026-006-xanthil-dual-mode/HANDOFF.md`",
+        "docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.0.md:16:| Whitepaper SHA-256 | `9344f07cff450239a0ac33423a239f0dc47c9ac0aa48de8e86253e2b143300ff` |",
+        "docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.2.md:11:| Whitepaper SHA-256 | `429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b` |",
+        "docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.3.md:11:| Whitepaper SHA-256 | `429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b` |",
+        "docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.3.md:161:| C2. Three analysis modes | Hypothesis-first, deep research and autonomous exploration each complete a bounded investigation and can explicitly compose; discovery remains a candidate until evidence judgment. | Phase 1 hypothesis-first; phase 2 independent research/exploration slices, then explicit composition. PX-004, PX-009/010/012. |",
+        "docs/planning/2026-09-19/reviews/blueprint-v1.3-development-readiness-review-001.md:48:The Reviewer verified the authorized Whitepaper SHA-256 as",
+        "docs/planning/2026-09-26/blueprint-v2.0-approval-and-rule-integration.md:47:- `AGENTS.md`：版本与白皮书来源、四视图阅读位置、后续结果顺序及 §7 关闭条件。",
+        "docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md:42:白皮书更新须经用户通知、精确来源核对、逐项采用判断、用户批准版本化蓝图、",
+        "docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md:425:| 白皮书 v4.0 | research 的 `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`；268494 bytes；SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；MacBook 本次读取 `/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md` |",
+        "docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md:426:| v3.3.4 前版 | research 的 `docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md`；252757 bytes；SHA-256 `429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b`；历史参考，非新路线 |",
+        "docs/planning/2026-09-26/reviews/blueprint-v2.0-development-readiness-review-001.md:36:- Whitepaper v4.0 identity verified: 268,494 bytes, SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`.",
+        "docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md:20:随后回到结果回访、改进与下一 Case 显式采用。白皮书版本及来源不变。",
+        "docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md:48:白皮书更新须经用户通知、精确来源核对、逐项采用判断、用户批准版本化蓝图、",
+        "docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md:561:| 白皮书 v4.0 | 沿用 v2.0 核验身份：research 的 `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`；268494 bytes；SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；v2.0 当时读取 `/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md`，本轮未重新核验外部文件 |",
+        "docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md:562:| v3.3.4 前版 | research 的 `docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md`；252757 bytes；SHA-256 `429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b`；历史参考，非新路线 |",
+        "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.0.md:11:| 产品来源 | 延续已采用的白皮书 v4.0；新增来源为用户对 Change001～003 的试用反馈及本次前后台、人机分工决定，不是白皮书换版 |",
+        "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.0.md:39:白皮书仍是蓝图的核心参考与商业化纲领；获批、经独立就绪审查并整合进项目规则的蓝图才是产品开发最高执行指引。白皮书变更仍须用户通知、来源核对、采用决定、蓝图修订、独立就绪审查及规则整合，不能自动改写在研 Change。",
+        "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.0.md:344:| 白皮书 v4.0 | 继承 v3 附录 A 已采用身份：research `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`，268494 bytes，SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；本轮未重读／核验外部原件，不宣称它仍为当前文件哈希 |",
+        "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.1.md:39:白皮书仍是蓝图的核心参考与商业化纲领；获批、经独立就绪审查并整合进项目规则的蓝图才是产品开发最高执行指引。白皮书变更仍须用户通知、来源核对、采用决定、蓝图修订、独立就绪审查及规则整合，不能自动改写在研 Change。",
+        "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.1.md:399:| 白皮书 v4.0 | 继承 v3 附录 A 已采用身份：research `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`，268494 bytes，SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；本轮未重读／核验外部原件，不宣称它仍为当前文件哈希 |",
+        "openspec/changes/archive/2026-10-01-xanthil-desktop-fork-subagent-collaboration/intake.md:42:Forbidden: frozen product inputs/research/UI assets, historical archives/accepted specs before authorized archive, governance/role settings, unrelated CLI/Model Packs, installed apps/user projects, credentials/Keychain, legacy State/pointers/Ledger/Host Loop, real provider calls, business data, dependency installs, external publication and release. No source branch handover to MacBook or messaging other chats is authorized."
+      ],
+      "untracked_findings": [
+        {
+          "path": "docs/planning/2026-10-02/blueprint-v4.1-implementation-path-supplement-v0.1.md",
+          "line": 77,
+          "text": "- 白皮书 v4.0：第24章价值评价、第25章 Personal → Team → Enterprise 与 Decision Loop、第28章竞争优势、第31章结果学习；采用身份沿用蓝图附录。本轮阅读 research 中 `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`，未采用新白皮书版本。",
+          "classification": "preexisting_untracked_planning_material_do_not_modify",
+          "recommendation": "Record relocation globally; preserve this unrelated working-tree material. Its owner can adopt updated navigation later."
+        }
+      ],
+      "summary": {
+        "matched_tracked_files": 6,
+        "matched_tracked_lines": 8,
+        "explicit_absolute_whitepaper_lines": 2,
+        "ignored_content_gap": false,
+        "ignored_note": "Only relevant ignored items were .DS_Store; all tracked files included regardless of ignores."
+      },
+      "current_navigation_candidates": [
+        {
+          "path": "docs/planning/README.md",
+          "lines": [
+            3,
+            9,
+            36
+          ],
+          "recommendation": "Add current canonical whitepaper relative link and dated old-to-new locator note near current authority; do not change Blueprint adoption/version/status."
+        },
+        {
+          "path": "CONTEXT.md",
+          "lines": [
+            11,
+            12
+          ],
+          "recommendation": "Link the existing Whitepaper definition to local docs/product/whitepaper/JUANERAI_WHITEPAPER.md; retain adopted identity semantics."
+        },
+        {
+          "path": "AGENTS.md",
+          "lines": [
+            5
+          ],
+          "recommendation": "Optionally make existing Whitepaper v4.0 reference a relative link, retaining exact authority prose."
+        },
+        {
+          "path": "README.md",
+          "lines": [
+            19,
+            21
+          ],
+          "recommendation": "Add product/whitepaper and research index navigation only. Existing historical-route prose is outside path migration unless separately corrected."
+        }
+      ]
+    },
+    {
+      "root": "/Users/huangbo/JuanerAI-whitepaper-migration",
+      "branch": "work/macbook/whitepaper-research-migration",
+      "head": "137d65a8754c448adc7fc2cc690d2bab8d848ade",
+      "tracked_count": 1942,
+      "text_count": 1910,
+      "findings": [
+        {
+          "path": "docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.2.md",
+          "line": 10,
+          "text": "| Core reference | JuanerAI Whitepaper v3.3.4, `JUANERAI_WHITEPAPER.md` |",
+          "classification": "frozen_or_approved_blueprint_source_identity"
+        },
+        {
+          "path": "docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.3.md",
+          "line": 10,
+          "text": "| Core reference | JuanerAI Whitepaper v3.3.4, `JUANERAI_WHITEPAPER.md` |",
+          "classification": "frozen_or_approved_blueprint_source_identity"
+        },
+        {
+          "path": "docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md",
+          "line": 425,
+          "text": "| 白皮书 v4.0 | research 的 `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`；268494 bytes；SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；MacBook 本次读取 `/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md` |",
+          "classification": "frozen_or_approved_blueprint_source_identity"
+        },
+        {
+          "path": "docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md",
+          "line": 426,
+          "text": "| v3.3.4 前版 | research 的 `docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md`；252757 bytes；SHA-256 `429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b`；历史参考，非新路线 |",
+          "classification": "frozen_or_approved_blueprint_source_identity"
+        },
+        {
+          "path": "docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md",
+          "line": 561,
+          "text": "| 白皮书 v4.0 | 沿用 v2.0 核验身份：research 的 `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`；268494 bytes；SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；v2.0 当时读取 `/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/JUANERAI_WHITEPAPER.md`，本轮未重新核验外部文件 |",
+          "classification": "frozen_or_approved_blueprint_source_identity"
+        },
+        {
+          "path": "docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md",
+          "line": 562,
+          "text": "| v3.3.4 前版 | research 的 `docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md`；252757 bytes；SHA-256 `429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b`；历史参考，非新路线 |",
+          "classification": "frozen_or_approved_blueprint_source_identity"
+        },
+        {
+          "path": "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.0.md",
+          "line": 344,
+          "text": "| 白皮书 v4.0 | 继承 v3 附录 A 已采用身份：research `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`，268494 bytes，SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；本轮未重读／核验外部原件，不宣称它仍为当前文件哈希 |",
+          "classification": "frozen_or_approved_blueprint_source_identity"
+        },
+        {
+          "path": "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.1.md",
+          "line": 399,
+          "text": "| 白皮书 v4.0 | 继承 v3 附录 A 已采用身份：research `docs/product/whitepaper/JUANERAI_WHITEPAPER.md`，268494 bytes，SHA-256 `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`；本轮未重读／核验外部原件，不宣称它仍为当前文件哈希 |",
+          "classification": "frozen_or_approved_blueprint_source_identity"
+        }
+      ],
+      "identical_finding_lines_to_caaa": true,
+      "matched_file_identity": [
+        {
+          "path": "docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.2.md",
+          "sha256": "8a256b7cb3e7bac1edc70a7879fbca18cea2276efd527dcb9f6fd1352364fc40",
+          "identical_to_caaa": true
+        },
+        {
+          "path": "docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.3.md",
+          "sha256": "e4ba6ca3052f377a24ecd7580316dfdeb3d9336612da342b9061da191e01fa62",
+          "identical_to_caaa": true
+        },
+        {
+          "path": "docs/planning/2026-09-26/juanerai-product-development-blueprint-v2.0.md",
+          "sha256": "a7181f5a62e41955c7753b018c922701296948b593e9b7ffc164de549b768a30",
+          "identical_to_caaa": true
+        },
+        {
+          "path": "docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md",
+          "sha256": "7aadfbd59da22df7bb4889cd8b25e77cb0e46711b1cdc4e7ba2cc0997de98113",
+          "identical_to_caaa": true
+        },
+        {
+          "path": "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.0.md",
+          "sha256": "38d2a760b7014a425f36c74f35aebf04fa20dd8064a9a358f2ad8ba57b93b162",
+          "identical_to_caaa": true
+        },
+        {
+          "path": "docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.1.md",
+          "sha256": "38639d60b0234c5c5922eb9fdc0c5220e47019374940240ab1915f22b4168052",
+          "identical_to_caaa": true
+        }
+      ],
+      "summary": {
+        "matched_tracked_files": 6,
+        "matched_tracked_lines": 8,
+        "explicit_absolute_whitepaper_lines": 2
+      }
+    }
+  ],
+  "migration_notes": [
+    "Absolute source locations inside frozen adoption records describe the original read, not a current locator; maintain them and add relocation resolution.",
+    "Research exploration/HANDOFF absolute links remain valid because Demos stay at research.",
+    "Do not touch active project-control state, untracked product/UI work, historical fingerprints or frozen Blueprint bytes.",
+    "Relocating active Markdown may change relative links or administrative text; preserve the exact adopted v4.0 bytes as a frozen snapshot if canonical editing changes its hash."
+  ]
+}

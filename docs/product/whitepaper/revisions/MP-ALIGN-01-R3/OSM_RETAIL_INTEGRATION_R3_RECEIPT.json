@@ -1,0 +1,168 @@
+{
+  "date": "2026-09-16",
+  "revision": "v3.3.1 / MP-ALIGN-01-R3",
+  "product_baseline": "v3.3",
+  "authorization": "User: 批准融合",
+  "predecessor_revision": "MP-ALIGN-01-R2",
+  "predecessor_sha256": "1a0ab37da206427d1a8354246c5c677a829e14261a593a3bf8e9a41c9a3b63c5",
+  "main_sha256": "6ce15fa734fc454fb136de31c0fab49dfc64511203753e7159d52e846bbf2564",
+  "protected_sections_unchanged": {
+    "Model Pack 18.10-18.22": true,
+    "Member case chapter 23": true,
+    "Model Pack appendices I/J": true,
+    "OSM eight headings": true
+  },
+  "PROJECTS_only_common_background_changed": true,
+  "protected_file_hashes_unchanged": 204,
+  "archived_source_hashes_verified": 3,
+  "R2_snapshot_files_verified": 7,
+  "local_links_checked": 815,
+  "new_link_defects": 0,
+  "preexisting_link_defects": [
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig01_广义数据决策者.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig02_BI_AI问数_JuanerAI.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig03_目标经营闭环.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig04_OSM八大模块.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig05_三种分析模式.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig06_AnalysisIR编译器.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig08_Xanthil_DomainPack_四库双库关系.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig09_可信裁判与Teach.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig10_端到端案例.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig11_DomainPack三种状态.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig12_SemanticContextRuntime四库联动.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig13_DAME六类方法体系.png"
+    ],
+    [
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "missing",
+      "assets/fig14_ABTestAnalysis边界.png"
+    ]
+  ],
+  "balanced_fences": true,
+  "diff_whitespace_check": "passed; Markdown two-space hard breaks allowed",
+  "synthetic_arithmetic_check": "passed",
+  "images": {
+    "references": 21,
+    "unique": 20,
+    "available": 7,
+    "missing_preexisting": [
+      "assets/fig01_广义数据决策者.png",
+      "assets/fig02_BI_AI问数_JuanerAI.png",
+      "assets/fig03_目标经营闭环.png",
+      "assets/fig04_OSM八大模块.png",
+      "assets/fig05_三种分析模式.png",
+      "assets/fig06_AnalysisIR编译器.png",
+      "assets/fig08_Xanthil_DomainPack_四库双库关系.png",
+      "assets/fig09_可信裁判与Teach.png",
+      "assets/fig10_端到端案例.png",
+      "assets/fig11_DomainPack三种状态.png",
+      "assets/fig12_SemanticContextRuntime四库联动.png",
+      "assets/fig13_DAME六类方法体系.png",
+      "assets/fig14_ABTestAnalysis边界.png"
+    ],
+    "new_diagram": "assets/fig20_OSM目标形成与多维计划_R3.png",
+    "new_editable_source": "assets/fig20_OSM目标形成与多维计划_R3.svg",
+    "visual_review": "PNG inspected by author and Controller; no clipping, overlap or text corruption"
+  },
+  "independent_text_review": "No material issues reported; product boundaries and protected sections checked",
+  "limits": [
+    "13 inherited missing publication images remain",
+    "Demo suites and real business effects not rerun or validated",
+    "Formal repository and R1 integration recovery package not modified",
+    "No PDF/DOCX export, commit, push or merge"
+  ],
+  "content_files": [
+    {
+      "path": "JUANERAI_WHITEPAPER.md",
+      "sha256": "6ce15fa734fc454fb136de31c0fab49dfc64511203753e7159d52e846bbf2564",
+      "bytes": 211852
+    },
+    {
+      "path": "assets/fig07_6plus1总体架构.png",
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "bytes": 187993
+    },
+    {
+      "path": "assets/fig15_ModelPack_MLflow生命周期.png",
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "bytes": 212106
+    },
+    {
+      "path": "assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "bytes": 224101
+    },
+    {
+      "path": "assets/fig17_Consumer_DesktopRuntime边界.png",
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "bytes": 208594
+    },
+    {
+      "path": "assets/fig18_ModelPack通用合同与首发Profile.png",
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "bytes": 232942
+    },
+    {
+      "path": "assets/fig19_Phase2企业Serving路线.png",
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "bytes": 175625
+    },
+    {
+      "path": "assets/fig20_OSM目标形成与多维计划_R3.png",
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "bytes": 604951
+    },
+    {
+      "path": "assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "bytes": 13069
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-19",
+  "source_date": "2026-09-15",
+  "adoption_authority": "User explicitly requests integrating the supplied OSM/PIM document and the discussed six-mainline plus two-capability table into v3.3.4",
+  "scope": "Product definitions and research traceability; source candidate wording is superseded for PIM naming by current explicit user adoption; source implementation suggestions are not execution authorization",
+  "files": [
+    {
+      "file": "JuanerAI_双主线定位与命名提炼_2026-09-15.md",
+      "original_path": "/Users/huangbo/Desktop/JuanerAI_双主线定位与命名提炼_2026-09-15.md",
+      "sha256": "48e525506a1f89ed6b2d19d9a24d83b3d32e82807991e67b4df94ff631c1e384",
+      "bytes": 6960
+    }
+  ]
+}

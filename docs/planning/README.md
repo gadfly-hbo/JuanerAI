@@ -1,5 +1,9 @@
 # JuanerAI Product Planning Index
 
+## Product sources and research navigation — 2026-10-03
+
+The [Whitepaper entry](../product/whitepaper/README.md) is now maintained inside this repository. Use [the exact adopted v4.0 source](../product/whitepaper/revisions/v4.0/JUANERAI_WHITEPAPER.md) for the historical SHA `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`; use the [current editorial master](../product/whitepaper/JUANERAI_WHITEPAPER.md) for navigation maintenance. [The migration map](../product/whitepaper/MIGRATION_2026-10-03.md) resolves prior research absolute/relative paths without rewriting frozen Blueprint bytes. [The research index](../research/README.md) locates original Demo evidence; required fixed attachments still travel with each product input. This document-location change does not revise Blueprint v4.1 or receiving-task authority.
+
 ## Current approved product-development authority — Blueprint v4.1（2026-10-01）
 
 [JuanerAI Product Development Blueprint v4.1](2026-10-01/juanerai-product-development-blueprint-v4.1.md)
