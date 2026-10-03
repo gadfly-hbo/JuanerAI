@@ -25,10 +25,18 @@ Required user Product Acceptance is separate and must precede transitions that
 depend on it. Product completion, merge and deployment are not implied by
 engineering verification.
 
-At Change completion, delivery includes the full Blueprint capability map,
-affected capability delta, remaining gaps, evidence and preserved snapshot under
-the sole policy's Blueprint Capability Coverage section. Update the cumulative
-register; do not count planned/in-progress scope as delivered or elevate a
+Daily checks and early internal trials follow the sole policy's Verification
+Cadence and Internal Trial section; trial feedback is not formal Change or stage
+completion. Complete each Change's applicable regression, independent evaluation
+and required acceptance; batching does not defer them to stage end. Required CI
+remains a merge condition. Apply the Fixed-Code section's browser/Desktop scope:
+deferred shell checks do not waive shared tests or close historical native E2.
+
+At Change completion, update the full Blueprint capability map and preserve the
+snapshot; the delivery response shows the delta, gaps and evidence with the
+latest full-map link. Display the full six-plus-two map at stage acceptance or
+on user request under the sole policy's Blueprint Capability Coverage section.
+Update the cumulative register; do not count planned/in-progress scope as delivered or elevate a
 single accepted scenario to a general capability. Capability-level acceptance
 claims require their own scoped, cross-Change evidence, not another process
 stage. Unrelated capabilities may remain partial or unknown.
