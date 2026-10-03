@@ -95,5 +95,6 @@ flowchart TB
 | [Change002](snapshots/change-002-retrospective.md) | 2026-10-01回溯重建，不是当时原始汇报 | candidate010/DMG011验收及PR46集成 |
 | [Change003在研](snapshots/change-003-in-progress-2026-10-01.md) | **非交付快照** | 2026-10-01读取到的原任务回执；无最终固定候选 |
 | [Change003完成](snapshots/change-003-completed-2026-10-01.md) | 按已发布验收和Git回执更新 | candidate003＋supplement002，PR51/52集成归档；原在研快照保留 |
+| [CI可靠性与反馈](snapshots/ci-reliability-and-feedback-2026-10-03.md) | 无业务能力增量，状态与缺口不变 | 沿用同提交清单及 Change001–004 业务证据；工程结果见该快照链接 |
 
 今后每次Change完成，按唯一政策增量更新清单、总图并追加完成快照；含“无业务能力增量”的Change也保留全图。快照中的同提交清单／证据链接在该快照发布的Git版本中读取，后来修正另追加，不覆盖已发布快照。

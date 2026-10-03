@@ -10,7 +10,9 @@ Authority and stop conditions come from
   documentation-only work does not fabricate RED.
 - Prefer domain unit tests for pure rules, real-boundary integration tests,
   unchanged Port contract suites for replaceable Adapters, and real user-path
-  checks for core Decision Loops.
+  checks for core Decision Loops. For affected user entry, UI, recovery and CI
+  inputs, apply the sole policy's Continuous SDD and TDD section within these
+  checks, not a separate test phase.
 - Derive assertions from approved acceptance, not implementation details.
   Cover material positive, negative, boundary, failure and forbidden effects.
 - Environment/import/locator/fixture failures are not product RED. Establish
@@ -18,6 +20,10 @@ Authority and stop conditions come from
   required assertion.
 - Mocks may isolate unrelated external systems but cannot replace the core
   behavior being proved.
+- Apply the sole policy's CI reliability rules to validation-tool changes:
+  exercise the actual entry and selection/failure paths, retain deterministic
+  false-positive regressions, and measure optimized fixtures before/after.
+  A lighter documentation check never claims product regression coverage.
 - The engineering agent may update tests/fixtures with implementation within
   its authorized roots. Preserve assertions and negative coverage; use the
   appropriate decision before changing product or material contract meaning.

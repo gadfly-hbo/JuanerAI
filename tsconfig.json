@@ -127,6 +127,8 @@
     "tests/contract/xanthil-desktop/member-task-runtime.contract.test.ts",
     "tests/e2e/xanthil-desktop/member-task-native.e2e.test.ts",
     "tests/fixtures/member-task/native-main.ts",
-    "tests/fixtures/member-task/native-renderer.tsx"
+    "tests/fixtures/member-task/native-renderer.tsx",
+    "tests/integration/xanthil-desktop/member-task-retained.integration.test.ts",
+    "tests/fixtures/xanthil-desktop/member-task-test-support.ts"
   ]
 }

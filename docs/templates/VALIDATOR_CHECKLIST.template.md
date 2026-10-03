@@ -8,6 +8,7 @@ Formatting preferences and optional template fields are not delivery blockers.
 
 - [ ] Before the author's solution/tests, derive key positive, negative and failure expectations from approved product acceptance and necessary contracts.
 - [ ] Independently exercise the key real business and failure paths using authorized checks; do not rely only on the author's passing tests.
+- [ ] For affected claims, apply the sole policy's normal-user-entry, readable UI and recovery checks; helper-only evidence does not prove the full user sequence.
 
 ## Frozen Inputs
 
@@ -75,7 +76,7 @@ Formatting preferences and optional template fields are not delivery blockers.
 ## Evidence and Read Models
 
 - [ ] Unit, contract, integration, E2E, syntax, static, and real-runtime counts reproduce as required.
-- [ ] Toolchain and dependency versions come from the approved canonical entrypoint.
+- [ ] Toolchain, dependency versions and applicable CI commands/inputs match current executable definitions and approved artifacts; distinguish local subsets from actual CI results.
 - [ ] Critical hashes match frozen inputs.
 - [ ] `verification.md` current verdict, traceability, test output, Engineering Controller state, and project board agree.
 - [ ] Residual risks and mixed external evidence are disclosed without being converted into PASS by omission.

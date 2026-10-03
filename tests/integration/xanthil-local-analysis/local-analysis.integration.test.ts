@@ -563,8 +563,14 @@ const membershipTestFiles = [
  'tests/fixtures/member-task/native-renderer.tsx',
 ];
 const approvedChange004Tsconfig=Object.freeze({...approvedChange003Tsconfig,files:[...approvedChange003Tsconfig.files,...membershipTestFiles]});
+const ciMaintenanceTestFiles = [
+ 'tests/integration/xanthil-desktop/member-task-retained.integration.test.ts',
+ 'tests/fixtures/xanthil-desktop/member-task-test-support.ts',
+];
+const approvedCiMaintenanceTsconfig=Object.freeze({...approvedChange004Tsconfig,files:[...approvedChange004Tsconfig.files,...ciMaintenanceTestFiles]});
 
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedCiMaintenanceTsconfig, approvedP5RepositoryConfigurationFiles)) return 'CiMaintenance' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedChange004Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change004' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedChange003Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change003' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedP4RootManifest, approvedP4Tsconfig, approvedP4RepositoryConfigurationFiles)) return 'C0' as const;
@@ -3393,7 +3399,22 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple(approvedP5RootManifest,approvedChange002Tsconfig,[...approvedP5RepositoryConfigurationFiles,'unauthorized.config.cjs']));
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Change004');
+  assert.equal(assertApprovedConfigurationTuple(approvedDevelopmentManifest,approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles),'Change004');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'CiMaintenance');
+});
+
+test('CI-CHECK-001 H-TUPLE admits only the explicit CI-maintenance appendix and retains all Change004 roots', () => {
+  const check = (config: unknown) => assertApprovedConfigurationTuple(approvedDevelopmentManifest, config, approvedP5RepositoryConfigurationFiles);
+  assert.equal(check(approvedChange004Tsconfig), 'Change004');
+  assert.equal(check(approvedCiMaintenanceTsconfig), 'CiMaintenance');
+  for (const omitted of [...membershipTestFiles, ...ciMaintenanceTestFiles]) {
+    assert.throws(() => check({ ...approvedCiMaintenanceTsconfig, files: approvedCiMaintenanceTsconfig.files.filter(file => file !== omitted) }), `cannot omit ${omitted}`);
+  }
+  assert.throws(() => check({ ...approvedCiMaintenanceTsconfig, files: [...approvedChange004Tsconfig.files, ...ciMaintenanceTestFiles.toReversed()] }));
+  assert.throws(() => check({ ...approvedCiMaintenanceTsconfig, files: [...approvedCiMaintenanceTsconfig.files, ciMaintenanceTestFiles[0]] }));
+  assert.throws(() => check({ ...approvedCiMaintenanceTsconfig, files: [...approvedChange004Tsconfig.files, ciMaintenanceTestFiles[0], 'tests/unapproved.test.ts'] }));
+  assert.throws(() => check({ ...approvedCiMaintenanceTsconfig, configuration_selector: 'CiMaintenance' }));
+  assert.throws(() => check({ ...approvedCiMaintenanceTsconfig, compilerOptions: { ...approvedCiMaintenanceTsconfig.compilerOptions, strict: false } }));
 });
 
 test('TEST-XCLI-021 PS-06/07 admits only the exact Provider Settings appendix and rejects each partial, reordered or expanded tuple', () => {

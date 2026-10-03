@@ -27,6 +27,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
           node-version: 26.0.0
@@ -34,26 +35,58 @@ jobs:
       - env:
           GIT_ALLOW_PROTOCOL: ''
           GIT_TERMINAL_PROMPT: '0'
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           # Exact numeric exits and both streams remain in the native GitHub log.
           run_logged() {
             label="$1"; shift
             printf '\nBEGIN %s\n' "$label"
             (set -C; : >"$RUNNER_TEMP/$label.stdout" && : >"$RUNNER_TEMP/$label.stderr") || return 73
+            started=$SECONDS
+            mkfifo "$RUNNER_TEMP/$label.stdout.pipe" "$RUNNER_TEMP/$label.stderr.pipe" || return 73
+            tee -a "$RUNNER_TEMP/$label.stdout" <"$RUNNER_TEMP/$label.stdout.pipe" &
+            stdout_pid=$!
+            tee -a "$RUNNER_TEMP/$label.stderr" <"$RUNNER_TEMP/$label.stderr.pipe" >&2 &
+            stderr_pid=$!
             set +e
             if [ "$label" = portable-regression ]; then
-              timeout --signal=TERM --kill-after=5s 1080s "$@" >>"$RUNNER_TEMP/$label.stdout" 2>>"$RUNNER_TEMP/$label.stderr"
+              timeout --signal=TERM --kill-after=5s 1080s "$@" >"$RUNNER_TEMP/$label.stdout.pipe" 2>"$RUNNER_TEMP/$label.stderr.pipe"
             else
-              timeout --signal=TERM --kill-after=5s 180s "$@" >>"$RUNNER_TEMP/$label.stdout" 2>>"$RUNNER_TEMP/$label.stderr"
+              timeout --signal=TERM --kill-after=5s 180s "$@" >"$RUNNER_TEMP/$label.stdout.pipe" 2>"$RUNNER_TEMP/$label.stderr.pipe"
             fi
             result=$?
+            wait "$stdout_pid"; stdout_result=$?
+            wait "$stderr_pid"; stderr_result=$?
             set -e
-            printf 'STDOUT %s\n' "$label"; cat "$RUNNER_TEMP/$label.stdout"
-            printf 'STDERR %s\n' "$label"; cat "$RUNNER_TEMP/$label.stderr" >&2
+            rm "$RUNNER_TEMP/$label.stdout.pipe" "$RUNNER_TEMP/$label.stderr.pipe"
+            printf 'DURATION %s %ss\n' "$label" "$((SECONDS - started))"
             printf 'EXIT %s %s\n' "$label" "$result"
+            [ "$result" -ne 0 ] || { [ "$stdout_result" -eq 0 ] && [ "$stderr_result" -eq 0 ]; } || return 74
             return "$result"
           }
           test "$(node --version)" = v26.0.0
+          test "${#PR_BASE_SHA}" -eq 40
+          case "$PR_BASE_SHA" in *[!0-9a-f]*) exit 64 ;; esac
+          git cat-file -e "$PR_BASE_SHA^{commit}"
+          SCOPE_CHECK="$RUNNER_TEMP/base-ci-scope.mjs"
+          scope_entry=$(git ls-tree "$PR_BASE_SHA" -- tools/harness/validation/ci-scope.mjs)
+          if [ -n "$scope_entry" ]; then
+            case "$scope_entry" in '100644 blob '*) ;; *) exit 65 ;; esac
+            (set -C; git show "$PR_BASE_SHA:tools/harness/validation/ci-scope.mjs" > "$SCOPE_CHECK")
+            validation_scope=$(node "$SCOPE_CHECK" "$PR_BASE_SHA")
+          else
+            validation_scope=full
+          fi
+          case "$validation_scope" in
+            documentation)
+              run_logged documentation node "$SCOPE_CHECK" --check-docs "$PR_BASE_SHA"
+              run_logged scope-contracts node --test tools/harness/validation/ci-scope.test.mjs tools/harness/validation/ci-workflow.test.mjs
+              printf 'DOCUMENTATION ONLY: product regression and native acceptance NOT RUN\n'
+              exit 0
+              ;;
+            full) ;;
+            *) exit 65 ;;
+          esac
           export NPM_CONFIG_USERCONFIG="$RUNNER_TEMP/user.empty.npmrc"
           export NPM_CONFIG_GLOBALCONFIG="$RUNNER_TEMP/global.empty.npmrc"
           export NPM_CONFIG_CACHE="$RUNNER_TEMP/npm-cache"
@@ -82,8 +115,22 @@ jobs:
           run_logged install-view node tools/harness/validation/prepare-ci-install.mjs prepare "$GITHUB_WORKSPACE" "$INSTALL_VIEW" "$JUANERAI_CI_NODE_GYP_ARCHIVE"
           run_logged dependency-install npm ci --prefix "$INSTALL_VIEW" --ignore-scripts --no-audit --no-fund
           run_logged installed-source-check node tools/harness/validation/prepare-ci-install.mjs finalize "$GITHUB_WORKSPACE" "$INSTALL_VIEW" "$JUANERAI_CI_NODE_GYP_ARCHIVE"
-          run_logged ci-contracts node --test tools/harness/validation/*.test.mjs
           export JUANERAI_TOOLCHAIN_BIN="$TOOLCHAIN_BIN"
+          "$TOOLCHAIN_BIN/node" - "$TOOLCHAIN_BIN" <<'CI_RUNTIME'
+          const { realpathSync, readFileSync } = require('node:fs');
+          const { execFileSync } = require('node:child_process');
+          const { availableParallelism, cpus } = require('node:os');
+          const { join } = require('node:path');
+          const bin = process.argv[2];
+          const tools = Object.fromEntries(['node', 'npm', 'python3', 'duckdb'].map(name => {
+            const executable = join(bin, name);
+            const version = execFileSync(executable, ['--version'], { encoding: 'utf8', timeout: 10000, env: { PATH: `${bin}:/usr/bin:/bin` } }).trim();
+            return [name, { path: realpathSync(executable), version }];
+          }));
+          let cpuQuota = 'UNKNOWN';
+          try { cpuQuota = readFileSync('/sys/fs/cgroup/cpu.max', 'utf8').trim(); } catch {}
+          console.log('CI_RUNTIME ' + JSON.stringify({ tools, availableParallelism: availableParallelism(), cpuModel: cpus()[0]?.model || 'UNKNOWN', cpuQuota }));
+          CI_RUNTIME
           export JUANERAI_TEST_EVIDENCE_DIR="$RUNNER_TEMP/portable-test-evidence"
           mkdir "$JUANERAI_TEST_EVIDENCE_DIR"
           run_logged portable-regression tools/harness/validation/run --portable
