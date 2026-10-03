@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
-import { spawnSync } from 'node:child_process';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { spawn, spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,6 +10,32 @@ const REPO_ROOT = fileURLToPath(new URL('../../../', import.meta.url));
 const WORKFLOW = path.join(REPO_ROOT, '.github', 'workflows', 'ci.yml');
 const DUCKDB_URL = 'https://github.com/duckdb/duckdb/releases/download/v1.5.2/duckdb_cli-linux-amd64.zip';
 const DUCKDB_SHA256 = 'fc9145affabca627431e73ddaf6b8117e5c192692480c13886f227be202d5d15';
+
+test('CI-LOG-003: CI emits both streams before the child exits and preserves failure/timing', async t => {
+  const workflow = await readFile(WORKFLOW, 'utf8');
+  const shell = workflow.split('        run: |\n')[1].split('\n').map(line => line.replace(/^          /, '')).join('\n');
+  const definition = shell.slice(shell.indexOf('run_logged() {'), shell.indexOf('\ntest "$(node --version)"'));
+  const root = await mkdtemp(path.join(tmpdir(), 'juanerai-ci-stream-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const child = spawn('/bin/bash', ['-c', `set -e\ntimeout() { shift 3; "$@"; }\n${definition}\nrun_logged live /bin/sh -c 'printf live-out; printf live-err >&2; i=0; while [ ! -f "$RUNNER_TEMP/seen" ]; do i=$((i+1)); [ "$i" -lt 50 ] || exit 88; sleep 0.1; done; exit 17'`], {
+    env: { PATH: '/usr/bin:/bin', RUNNER_TEMP: root },
+  });
+  let stdout = '', stderr = '', acknowledged = false;
+  const acknowledge = () => {
+    if (!acknowledged && stdout.includes('live-out') && stderr.includes('live-err')) {
+      acknowledged = true;
+      void writeFile(path.join(root, 'seen'), 'both streams observed');
+    }
+  };
+  child.stdout.on('data', chunk => { stdout += chunk; acknowledge(); });
+  child.stderr.on('data', chunk => { stderr += chunk; acknowledge(); });
+  const status = await new Promise((resolve, reject) => { child.on('error', reject); child.on('close', resolve); });
+  assert.equal(status, 17, 'child only returns 17 after both streams reach the observer before exit');
+  assert.match(stdout, /DURATION live [0-9]+s/);
+  assert.match(stdout, /EXIT live 17/);
+  assert.equal(await readFile(path.join(root, 'live.stdout'), 'utf8'), 'live-out');
+  assert.equal(await readFile(path.join(root, 'live.stderr'), 'utf8'), 'live-err');
+});
 
 const VALID_WORKFLOW = `on:
   pull_request:
@@ -126,8 +152,9 @@ test('CI-TIMEOUT-001: only portable regression gets 1080s within the unchanged j
   assertWorkflow(workflow);
   const shell = workflow.split('        run: |\n')[1].split('\n').map(line => line.replace(/^          /, '')).join('\n');
   const definition = shell.slice(shell.indexOf('run_logged() {'), shell.indexOf('\ntest "$(node --version)"'));
-  const labels = ['portable-regression', 'npm-prepare', 'duckdb-download', 'node-gyp-download', 'install-view', 'dependency-install', 'installed-source-check', 'ci-contracts', 'portable-regression-extra', 'unknown'];
-  assert.deepEqual([...workflow.matchAll(/^          run_logged (\S+) /gm)].map(match => match[1]).sort(), labels.slice(0, 8).sort());
+  const commands = ['portable-regression', 'npm-prepare', 'duckdb-download', 'node-gyp-download', 'install-view', 'dependency-install', 'installed-source-check', 'documentation', 'scope-contracts'];
+  const labels = [...commands, 'portable-regression-extra', 'unknown'];
+  assert.deepEqual([...workflow.matchAll(/^\s+run_logged (\S+) /gm)].map(match => match[1]).sort(), commands.slice().sort());
   for (const label of labels) {
     for (const exit of [0, 17, 124]) {
       await t.test(`${label}: exit ${exit}`, async subtest => {

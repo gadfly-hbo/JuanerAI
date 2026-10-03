@@ -8,8 +8,9 @@ import { fileURLToPath } from 'node:url';
 
 test('TEST-XDESK-CF-RESTORATION requires full Console then Desktop phases without intermediate selectors',async()=>{
   const source=await readFile(PUBLIC_RUNNER,'utf8');
-  const actual=source.split('\n').filter(line=>/^node --test (?:--test-concurrency=1 )?(tests|tools)\//.test(line));
+  const actual=source.split('\n').map(line=>line.replace(/^run_group \S+ /,'')).filter(line=>/^node --test (?:--test-concurrency=1 )?(tests|tools)\//.test(line));
   const expected=[
+    'node --test tools/harness/validation/*.test.mjs',
     'node --test tests/unit/xanthil-local-analysis/*.test.ts',
     'node --test tests/contract/xanthil-local-analysis/*.test.ts',
     'node --test tests/integration/xanthil-local-analysis/*.test.ts',
@@ -35,6 +36,7 @@ test('TEST-XDESK-CF-RESTORATION requires full Console then Desktop phases withou
 const REPO_ROOT = fileURLToPath(new URL('../../../', import.meta.url));
 const PUBLIC_RUNNER = path.join(REPO_ROOT, 'tools', 'harness', 'validation', 'run');
 const CANONICAL_NODE = process.execPath;
+const VALIDATION_CHILD = 'validation:runner-fixture.test.mjs:unset';
 const C0_RUNNER_CHILDREN = Object.freeze([
   'unit:local-analysis.unit.test.ts:unset',
   'contract:local-analysis-ports.contract.test.ts:unset',
@@ -54,7 +56,10 @@ const CF_CONSOLE_PATHS = Object.freeze([
 const CF_DESKTOP_GROUPS = Object.freeze([
   [
     "tests/unit/xanthil-desktop/case-assistant.unit.test.ts",
+    "tests/unit/xanthil-desktop/collaboration-window-close.unit.test.ts",
     "tests/unit/xanthil-desktop/coverage-map.test.ts",
+    "tests/unit/xanthil-desktop/development-main.test.ts",
+    "tests/unit/xanthil-desktop/development-mode.test.ts",
     "tests/unit/xanthil-desktop/provider-settings.unit.test.ts",
     "tests/unit/xanthil-desktop/xanthil-desktop.unit.test.ts"
   ],
@@ -63,6 +68,9 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/contract/xanthil-desktop/case-assistant-pi-build.contract.test.ts",
     "tests/contract/xanthil-desktop/case-assistant-runtime.contract.test.ts",
     "tests/contract/xanthil-desktop/case-assistant-store.contract.test.ts",
+    "tests/contract/xanthil-desktop/member-analysis-plan.contract.test.ts",
+    "tests/contract/xanthil-desktop/member-task-runtime.contract.test.ts",
+    "tests/contract/xanthil-desktop/member-task-ui.contract.test.ts",
     "tests/contract/xanthil-desktop/provider-settings-runtime.contract.test.ts",
     "tests/contract/xanthil-desktop/xanthil-desktop-analysis.contract.test.ts",
     "tests/contract/xanthil-desktop/xanthil-desktop-assistance.contract.test.ts",
@@ -72,6 +80,10 @@ const CF_DESKTOP_GROUPS = Object.freeze([
   ],
   [
     "tests/integration/xanthil-desktop/case-assistant.integration.test.ts",
+    "tests/integration/xanthil-desktop/case-collaboration-lifecycle.integration.test.ts",
+    "tests/integration/xanthil-desktop/case-collaboration.integration.test.ts",
+    "tests/integration/xanthil-desktop/member-analysis-chain.integration.test.ts",
+    "tests/integration/xanthil-desktop/member-task.integration.test.ts",
     "tests/integration/xanthil-desktop/provider-settings.integration.test.ts",
     "tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts",
     "tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts"
@@ -79,6 +91,8 @@ const CF_DESKTOP_GROUPS = Object.freeze([
   [
     "tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts",
     "tests/e2e/xanthil-desktop/case-assistant.e2e.test.ts",
+    "tests/e2e/xanthil-desktop/case-collaboration-native.e2e.test.ts",
+    "tests/e2e/xanthil-desktop/member-task-native.e2e.test.ts",
     "tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts",
     "tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts"
   ]
@@ -161,8 +175,18 @@ const CHANGE004_TSCONFIG_APPENDIX = Object.freeze([
   'tests/fixtures/member-task/native-main.ts',
   'tests/fixtures/member-task/native-renderer.tsx',
 ]);
+const C0_ROOT_COUNT = 43;
+const DEVELOPMENT_TSCONFIG_APPENDIX = Object.freeze([
+  'apps/desktop/development.ts', 'apps/desktop/desktop-work.ts',
+  'tests/unit/xanthil-desktop/development-mode.test.ts',
+  'tests/unit/xanthil-desktop/development-main.test.ts',
+]);
+const DESKTOP_ROOT_START = CHANGE003_TSCONFIG_PREFIX.length + C0_ROOT_COUNT;
+const CHANGE004_ROOT_START = DESKTOP_ROOT_START + CF_TSCONFIG_APPENDIX.length +
+  CHANGE002_TSCONFIG_APPENDIX.length + DEVELOPMENT_TSCONFIG_APPENDIX.length;
 const FIXTURE_BUILD_OBSERVATION = 'fixture-build:case-assistant:unset';
 const C0_RUNNER_TEST_TARGETS = Object.freeze([
+  'tools/harness/validation/*.test.mjs',
   'tests/unit/xanthil-local-analysis/*.test.ts', 'tests/contract/xanthil-local-analysis/*.test.ts',
   'tests/integration/xanthil-local-analysis/*.test.ts', 'tests/e2e/xanthil-local-analysis/*.test.ts',
   'tests/contract/model-pack-contract-enabler/*.test.ts', 'tests/integration/model-pack-contract-enabler/*.test.ts',
@@ -234,7 +258,7 @@ async function currentRunnerTuple(root = REPO_ROOT) {
     assert.equal(scripts['desktop:package'], undefined, 'C0 cannot contain a partial Desktop package script');
     assert.equal(scripts['desktop:test'], undefined, 'C0 cannot contain a partial Desktop test script');
     assert.equal(tsconfig.compilerOptions?.jsx, undefined, 'C0 cannot contain a partial Desktop JSX mode');
-    assert.equal(files.length, 43, 'C0 retains exactly the H-TUPLE-verified P4 file count');
+    assert.equal(files.length, C0_ROOT_COUNT, 'C0 retains exactly the H-TUPLE-verified P4 file count');
     assert.equal(files.some((file) => typeof file === 'string' && file.includes('xanthil-desktop')), false, 'C0 has no Desktop appendage');
     assert.deepEqual(knownConfigurationFiles, C0_TUPLE_CONFIGURATION_FILES, 'C0 retains the exact H-TUPLE configuration inventory');
     return 'C0';
@@ -246,10 +270,9 @@ async function currentRunnerTuple(root = REPO_ROOT) {
   assert.equal(scripts['desktop:package'], 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64');
   assert.equal(scripts['desktop:test'], 'node tools/desktop/test-daily.mjs');
   assert.equal(tsconfig.compilerOptions?.jsx, 'react-jsx', 'C1a requires its exact JSX mode');
-  assert.equal(files.length,111,'Change004 appends exactly seven roots to the retained104');
-  assert.deepEqual(files.slice(0,4),CHANGE003_TSCONFIG_PREFIX,'Change003 roots are exact ordered independent literals');
-  assert.deepEqual(files.slice(47,104),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX,'apps/desktop/development.ts','apps/desktop/desktop-work.ts','tests/unit/xanthil-desktop/development-mode.test.ts','tests/unit/xanthil-desktop/development-main.test.ts'],'Change1 and Change2 roots are independent literals, never derived from actual files');
-  assert.deepEqual(files.slice(104),CHANGE004_TSCONFIG_APPENDIX,'Change004 roots are exact ordered independent literals');
+  assert.deepEqual(files.slice(0,CHANGE003_TSCONFIG_PREFIX.length),CHANGE003_TSCONFIG_PREFIX,'Change003 roots are exact ordered independent literals');
+  assert.deepEqual(files.slice(DESKTOP_ROOT_START,CHANGE004_ROOT_START),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX,...DEVELOPMENT_TSCONFIG_APPENDIX],'retained Desktop roots are independent literals, never derived from actual files');
+  assert.deepEqual(files.slice(CHANGE004_ROOT_START),CHANGE004_TSCONFIG_APPENDIX,'Change004 roots and total length are fixed by the independent ordered inventory');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }
@@ -265,7 +288,7 @@ function expectedRunnerTestTargets(tuple) {
 }
 
 function testTargetsFromRunnerSource(source) {
-  return source.split('\n').flatMap((line) => line.match(/(?:tests\/|tools\/harness\/project-board\/)[^\s'"]+\.test\.(?:ts|mjs)/g) ?? []);
+  return source.split('\n').flatMap((line) => line.match(/(?:tests\/|tools\/harness\/(?:project-board|validation)\/)[^\s'"]+\.test\.(?:ts|mjs)/g) ?? []);
 }
 
 function desktopArgvRecords(lines) {
@@ -320,6 +343,7 @@ async function fixture(t, {
   await writeFile(path.join(root, 'node_modules', 'typebox', 'package.json'), '{"version":"1.3.7"}\n', 'utf8');
   await writeFile(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"strict":true,"noEmit":true}}\n', 'utf8');
   for (const file of [
+    'tools/harness/validation/runner-fixture.test.mjs',
     'tests/unit/xanthil-local-analysis/local-analysis.unit.test.ts',
     'tests/contract/xanthil-local-analysis/local-analysis-ports.contract.test.ts',
     'tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts',
@@ -359,6 +383,7 @@ case "$1" in
       *tests/integration/*) group=integration ;;
       *tests/e2e/*) group=e2e ;;
       *tools/harness/project-board/*) group=project-board ;;
+      *tools/harness/validation/*) group=validation ;;
     esac; done
     target=unknown
     for arg in "$@"; do case "$arg" in
@@ -450,6 +475,27 @@ test('CI-PORTABLE-001: explicit portable mode retains every portable suite and r
   assert.doesNotMatch(result.stdout, /full.*PASS|product.*PASS/i);
 });
 
+test('CI-CHECK-001: canonical validation checks its own contracts first and stops before product work', async t => {
+  const f = await fixture(t, { runnerTuple: 'CF', failGroup: 'validation' });
+  const runner = await installPublicRunner(f);
+  await mkdir(path.join(f.root, 'elsewhere'));
+  const result = await invoke(f, runner, { XANTHIL_REAL_PI_ACCEPTANCE: '1' }, ['--portable']);
+  assert.equal(result.code, 23, 'the validation contract failure must stop the public runner');
+  assert.deepEqual((await observedLines(f)).filter(line => !line.startsWith('argv:')), [VALIDATION_CHILD]);
+  assert.match(result.stdout, /native validation stdout/);
+  assert.match(result.stderr, /native validation stderr/);
+});
+
+test('CI-LOG-003: failed canonical group reports duration and exact child exit', async t => {
+  const f = await fixture(t, { runnerTuple: 'CF', failGroup: 'validation' });
+  const runner = await installPublicRunner(f);
+  await mkdir(path.join(f.root, 'elsewhere'));
+  const result = await invoke(f, runner);
+  assert.equal(result.code, 23);
+  assert.match(result.stdout, /BEGIN validation-contracts\n/);
+  assert.match(result.stdout, /END validation-contracts exit=23 duration=[0-9]+s\n/);
+});
+
 test('CI-PORTABLE-002: portable failures stop later suites and default mode cannot inherit a portable bypass', async (t) => {
   const f = await fixture(t, { runnerTuple: 'CF', failTarget: 'xanthil-desktop-store.contract.test.ts' });
   const runner = await installPublicRunner(f);
@@ -469,8 +515,9 @@ function assertCanonicalOrder(lines, f, expectedSuites) {
   const syntax = lines.filter((line) => line.startsWith('syntax:'));
   const phases = lines.filter((line) => !line.startsWith('syntax:') && !line.startsWith('argv:'));
   assert.deepEqual(syntax.slice().sort(), f.syntaxBasenames.map((name) => `syntax:${name}`));
-  assert.deepEqual(phases, ['typecheck', ...expectedSuites]);
-  assert.equal(lines.indexOf('typecheck'), syntax.length, 'native syntax checks must precede the strict typecheck phase');
+  assert.deepEqual(phases, [VALIDATION_CHILD, 'typecheck', ...expectedSuites]);
+  assert.equal(lines.indexOf(VALIDATION_CHILD), 1, 'one validation argv must precede its child');
+  assert.equal(lines.indexOf('typecheck'), syntax.length + 2, 'contracts and native syntax precede strict typecheck');
 }
 
 test('Final CF checkpoint preserves mapped roots and complete offline behavior coverage', async () => {
@@ -478,6 +525,14 @@ test('Final CF checkpoint preserves mapped roots and complete offline behavior c
   const source = await readFile(PUBLIC_RUNNER, 'utf8');
   assert.deepEqual(testTargetsFromRunnerSource(source), expectedRunnerTestTargets('CF'));
   assert.doesNotMatch(source, /phase[_-]?selector|configuration[_-]?selector|desktop:package/);
+});
+
+test('CI-CHECK-001: fixed Desktop fixture inventory matches actual suite files', async () => {
+  for (const [index, group] of ['unit', 'contract', 'integration', 'e2e'].entries()) {
+    const directory = `tests/${group}/xanthil-desktop`;
+    const actual = (await readdir(path.join(REPO_ROOT, directory))).filter(name => name.endsWith('.test.ts')).sort().map(name => `${directory}/${name}`);
+    assert.deepEqual(actual, CF_DESKTOP_GROUPS[index], 'new source tests require explicit fixture coverage, not automatic acceptance');
+  }
 });
 
 test('CVR-TEST-001: selected toolchain passes and starts offline checks in order', async (t) => {
@@ -567,8 +622,9 @@ test('TEST-XDESK-013: each approved C0 or C1a tuple runs only its independently 
   assert.match(failed.stderr, tuple !== 'C0' ? /native unit stderr/ : /native contract stderr/);
   const stopped = (await observedLines(failing)).filter((line) => !line.startsWith('syntax:') && !line.startsWith('argv:'));
   const expectedStopped = tuple !== 'C0'
-    ? ['typecheck', ...C0_RUNNER_CHILDREN,...CF_CONSOLE_PATHS.map(p=>p.split('/')[1]+':'+p.split('/').at(-1)+':unset'), ...CF_DESKTOP_GROUPS[0].map(p=>'unit:'+path.basename(p)+':unset')]
+    ? [VALIDATION_CHILD, 'typecheck', ...C0_RUNNER_CHILDREN,...CF_CONSOLE_PATHS.map(p=>p.split('/')[1]+':'+p.split('/').at(-1)+':unset'), ...CF_DESKTOP_GROUPS[0].map(p=>'unit:'+path.basename(p)+':unset')]
     : [
+    VALIDATION_CHILD,
     'typecheck',
     'unit:local-analysis.unit.test.ts:unset',
     'contract:local-analysis-ports.contract.test.ts:unset',
@@ -654,19 +710,20 @@ test('CI-CHANGE004-001: every appended root and retained boundary remain exact',
   for (const name of C1A_TUPLE_CONFIGURATION_FILES) await cp(path.join(REPO_ROOT,name),path.join(root,name));
   assert.equal(await currentRunnerTuple(root),'CF');
   const original = JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8'));
+  const start = CHANGE004_ROOT_START;
   const mutations = [
-    ['retained104 alone', files => files.slice(0,104)],
+    ['retained roots alone', files => files.slice(0,start)],
     ['extra trailing root', files => [...files,'tests/unapproved.test.ts']],
     ['extra leading root', files => ['tests/unapproved.test.ts',...files]],
-    ['appendix moved before retained roots', files => [...files.slice(104),...files.slice(0,104)]],
-    ['retained tail substituted', files => files.map((file,index)=>index===103?'tests/unapproved.test.ts':file)],
-    ['retained tail reordered', files => [...files.slice(0,102),files[103],files[102],...files.slice(104)]],
-    ...[104,105,106,107,108,109,110].flatMap(index => [
+    ['appendix moved before retained roots', files => [...files.slice(start),...files.slice(0,start)]],
+    ['retained tail substituted', files => files.map((file,index)=>index===start-1?'tests/unapproved.test.ts':file)],
+    ['retained tail reordered', files => [...files.slice(0,start-2),files[start-1],files[start-2],...files.slice(start)]],
+    ...CHANGE004_TSCONFIG_APPENDIX.flatMap((_,offset) => { const index = start + offset; return [
       [`root ${index} omitted`, files => files.filter((_,position)=>position!==index)],
       [`root ${index} substituted`, files => files.map((file,position)=>position===index?'tests/unapproved.test.ts':file)],
       [`root ${index} replaced by preceding root`, files => files.map((file,position)=>position===index?files[index-1]:file)],
       [`root ${index} swapped with preceding root`, files => files.map((file,position)=>position===index?files[index-1]:position===index-1?files[index]:file)],
-    ]),
+    ]; }),
   ];
   for (const [name, mutate] of mutations) await t.test(name, async () => {
     await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files:mutate(original.files)}));
@@ -686,7 +743,7 @@ test('CI-CHANGE002-002: full fixture build failure stops GUI and fixed argv dete
   const expected = expectedRunnerChildren('CF');
   assertCanonicalOrder(await observedLines(failed),failed,expected.slice(0,expected.indexOf(FIXTURE_BUILD_OBSERVATION)+1));
   for (const mutate of [
-    source => source.replace('node tests/fixtures/case-assistant/build-native-fixture.mjs\n',''),
+    source => source.replace('run_group native-fixture node tests/fixtures/case-assistant/build-native-fixture.mjs\n',''),
     source => source.replace('--test-concurrency=1','--test-concurrency=2'),
     source => source.replace('--test-concurrency=1','--test-concurrency=1 --test-name-pattern=smoke'),
   ]) {

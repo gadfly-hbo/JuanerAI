@@ -10,7 +10,56 @@ import { installView, prepare, finalize } from './prepare-ci-install.mjs';
 const key = 'node_modules/@electron/node-gyp';
 const url = 'https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2';
 const sri = 'sha512-MXgzlTDEEndJB3TBbvd5uFQO/8gaINo1Hfen8vef5rq/VHVPeB63uuv/uO5+8GFsAJ/rauu6XB79S6K4+aXc+w==';
-test('CI-SOURCE-001: verified raw archive changes only three transport fields, original lock untouched', async () => {
+
+test('CI-CHECK-001: cloud archive applicability is explicit locally and never skipped in GitHub Actions', async t => {
+  const root = await mkdtemp(join(tmpdir(), 'juanerai-ci-applicability-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const bad = join(root, 'bad.tgz'); await writeFile(bad, 'not the approved archive');
+  for (const [name, cloud, archive, success] of [
+    ['local absent', 'false', undefined, true],
+    ['cloud absent', 'true', undefined, false],
+    ['local invalid', 'false', bad, false],
+    ['cloud invalid', 'true', bad, false],
+  ]) await t.test(name, () => {
+    const env = { ...process.env, GITHUB_ACTIONS: cloud };
+    delete env.NODE_TEST_CONTEXT; // independent, filtered child; never re-enters this applicability test
+    delete env.JUANERAI_CI_NODE_GYP_ARCHIVE;
+    if (archive) env.JUANERAI_CI_NODE_GYP_ARCHIVE = archive;
+    const result = spawnSync(process.execPath, ['--test', '--test-name-pattern=^CI-SOURCE-001:', new URL(import.meta.url).pathname], { env, encoding: 'utf8', timeout: 10000 });
+    assert.equal(result.status === 0, success, result.stdout + result.stderr);
+    if (success) assert.match(result.stdout, /NOT RUN: cloud archive/);
+    else assert.doesNotMatch(result.stdout, /NOT RUN: cloud archive/);
+  });
+});
+
+test('CI-SOURCE-003: local and CI always reject drift in pinned manifest/lock before archive use or writes', async t => {
+  const root = await mkdtemp(join(tmpdir(), 'juanerai-ci-source-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const repo = join(root, 'repo'), view = join(root, 'view'), absentArchive = join(root, 'absent.tgz');
+  await mkdir(repo);
+  for (const name of ['package.json', 'package-lock.json']) await cp(new URL(`../../../${name}`, import.meta.url), join(repo, name));
+  await assert.rejects(() => prepare(repo, view, absentArchive), { code: 'ENOENT' }, 'healthy current pins reach the archive prerequisite');
+  for (const name of ['package.json', 'package-lock.json']) {
+    const file = join(repo, name), original = await readFile(file);
+    const sameSize = Buffer.from(original); sameSize[sameSize.length - 1] = 32;
+    for (const changed of [sameSize, Buffer.concat([original, Buffer.from('\n')])]) {
+      await writeFile(file, changed);
+      await assert.rejects(() => prepare(repo, view, absentArchive), name === 'package.json' ? /approved repository manifest identity/ : /approved repository lock identity/);
+      await assert.rejects(() => readdir(view), { code: 'ENOENT' });
+      await assert.rejects(() => readdir(join(repo, 'node_modules')), { code: 'ENOENT' });
+    }
+    await writeFile(file, original);
+  }
+});
+function cloudArchiveUnavailable(t) {
+  if (process.env.JUANERAI_CI_NODE_GYP_ARCHIVE) return false;
+  assert.notEqual(process.env.GITHUB_ACTIONS, 'true', 'cloud CI requires the explicit approved archive input');
+  t.skip('NOT RUN: cloud archive/member proof; local source identities are checked separately');
+  return true;
+}
+
+test('CI-SOURCE-001: verified raw archive changes only three transport fields, original lock untouched', async t => {
+  if (cloudArchiveUnavailable(t)) return;
   const lock = JSON.parse(await readFile(new URL('../../../package-lock.json', import.meta.url)));
   const before = structuredClone(lock);
   assert.ok(process.env.JUANERAI_CI_NODE_GYP_ARCHIVE, 'explicit approved archive input is required');
@@ -98,6 +147,7 @@ test('CI-TOOLCHAIN-003: workflow exposes the selected Python at the exact toolch
 });
 
 test('CI-SOURCE-002: isolated prepare refuses existing paths; finalize rejects extra view changes and unexpected members', async (t) => {
+  if (cloudArchiveUnavailable(t)) return;
   const root = await mkdtemp(join(tmpdir(), 'juanerai-ci-view-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const repo = join(root, 'repo'), view = join(root, 'view');

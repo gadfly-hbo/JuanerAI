@@ -109,24 +109,40 @@ require_package_version node_modules/typescript/package.json version 5.9.3 'Type
 require_package_version package.json "devDependencies['@types/node']" 22.19.19 'Node types declaration'
 require_package_version node_modules/@types/node/package.json version 22.19.19 'Node types installation'
 
+run_group() {
+  group_label=$1
+  shift
+  group_started=$(date +%s)
+  printf '\nBEGIN %s\n' "$group_label"
+  group_result=0
+  "$@" || group_result=$?
+  printf 'END %s exit=%s duration=%ss\n' "$group_label" "$group_result" "$(($(date +%s) - group_started))"
+  [ "$group_result" -eq 0 ] || exit "$group_result"
+}
+
+run_group validation-contracts node --test tools/harness/validation/*.test.mjs
+
+check_syntax() {
 find . -path ./node_modules -prune -o -type f \( -name '*.mjs' -o -name '*.ts' \) -print |
 while IFS= read -r file; do
-  node --check "$file"
+  node --check "$file" || return $?
 done
+}
+run_group syntax check_syntax
 
-npm run typecheck
-node --test tests/unit/xanthil-local-analysis/*.test.ts
-node --test tests/contract/xanthil-local-analysis/*.test.ts
-node --test tests/integration/xanthil-local-analysis/*.test.ts
-node --test tests/e2e/xanthil-local-analysis/*.test.ts
-node --test tests/contract/model-pack-contract-enabler/*.test.ts
-node --test tests/integration/model-pack-contract-enabler/*.test.ts
-node --test tools/harness/project-board/project-control.test.mjs tools/harness/project-board/status-cli.test.mjs
-node --test tests/unit/run-evidence-console/run-evidence.unit.test.ts
-node --test tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts
-node --test tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts
-node --test tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts
-node --test tests/unit/xanthil-desktop/*.test.ts
+run_group typecheck npm run typecheck
+run_group local-unit node --test tests/unit/xanthil-local-analysis/*.test.ts
+run_group local-contract node --test tests/contract/xanthil-local-analysis/*.test.ts
+run_group local-integration node --test tests/integration/xanthil-local-analysis/*.test.ts
+run_group local-e2e node --test tests/e2e/xanthil-local-analysis/*.test.ts
+run_group model-contract node --test tests/contract/model-pack-contract-enabler/*.test.ts
+run_group model-integration node --test tests/integration/model-pack-contract-enabler/*.test.ts
+run_group project-board node --test tools/harness/project-board/project-control.test.mjs tools/harness/project-board/status-cli.test.mjs
+run_group console-unit node --test tests/unit/run-evidence-console/run-evidence.unit.test.ts
+run_group console-contract node --test tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts
+run_group console-integration node --test tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts
+run_group console-e2e node --test tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts
+run_group desktop-unit node --test tests/unit/xanthil-desktop/*.test.ts
 if [ "$scope" = portable ]; then
   set --
   contract_dir=tests/contract/xanthil-desktop
@@ -136,12 +152,12 @@ if [ "$scope" = portable ]; then
       *) set -- "$@" "$contract" ;;
     esac
   done
-  node --test "$@"
+  run_group desktop-contract node --test "$@"
 else
-node --test tests/contract/xanthil-desktop/*.test.ts
+run_group desktop-contract node --test tests/contract/xanthil-desktop/*.test.ts
 fi
-node --test tests/integration/xanthil-desktop/*.test.ts
+run_group desktop-integration node --test tests/integration/xanthil-desktop/*.test.ts
 if [ "$scope" = full ]; then
-node tests/fixtures/case-assistant/build-native-fixture.mjs
-node --test --test-concurrency=1 tests/e2e/xanthil-desktop/*.test.ts
+run_group native-fixture node tests/fixtures/case-assistant/build-native-fixture.mjs
+run_group desktop-e2e node --test --test-concurrency=1 tests/e2e/xanthil-desktop/*.test.ts
 fi

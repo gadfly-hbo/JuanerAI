@@ -34,6 +34,23 @@ second concurrent validation for that key.
 
 ## PRCI-REQ-002 — Fixed source, toolchain, and provenance
 
+Before installation, CI SHALL resolve scope using GitHub's immutable PR base
+commit and the checked-out merge revision. It SHALL execute the classifier from
+the base commit, not a PR-selected implementation or environment skip switch.
+An initial base without that classifier requires full portable regression.
+Missing base, malformed output or classifier/Git errors fail the required job.
+
+Only added/modified regular non-executable Markdown in root `README.md`,
+`AGENTS.md`, `CONTEXT.md`, `Orchestration.md`, `docs/governance/` or `.ai-coding/`
+may receive focused documentation checks. Mixed/unknown paths, planning or
+OpenSpec contracts, runtime, tests, dependencies, CI/tool changes, renames,
+deletions, type/mode changes and control-character filenames require full
+portable regression. The job always runs; there is no path-filtered absent
+required check. Focused checks rerun trusted classification and `git diff
+--check`, plus scope/workflow contracts, then explicitly report product/native
+regression `NOT RUN`. They do not install dependencies. The following pinned
+toolchain/install provisions apply to the full portable lane.
+
 The job SHALL use `actions/checkout@v6` to check out GitHub's PR merge/input
 revision and `actions/setup-node@v7` with exact Node `26.0.0`. It SHALL install
 exact npm `11.12.1` into a fresh runner-temporary prefix, scripts off and without
@@ -101,9 +118,14 @@ Explicit portable mode omits only macOS package-dependent Main/GUI checks and
 binary health with `NOT RUN`, not PASS; all portable suites remain present.
 The default full canonical plan and separate macOS/native/product acceptance
 remain mandatory delivery evidence, not claims of this Ubuntu status check.
-Important cloud commands retain separate stdout/stderr and numeric exit in the
-native job log, including failures, with exclusive output slots and a 180-second
-command limit; the job has a 20-minute maximum. No new upload action is used.
+Important cloud commands stream stdout/stderr live, retain separate exclusive
+stream files, and print duration plus exact numeric exit including failures.
+Short-lived named pipes are drained before return and removed; prior log files
+are never overwritten. Only portable regression receives 1080 seconds; other
+commands receive 180 seconds and the job retains its 20-minute maximum. No
+retry, timeout inflation or new upload action is used. The canonical runner
+itself owns the early validation-contract group, avoiding a duplicate CI-only
+invocation. Cloud archive proofs remain mandatory in this lane.
 
 ### PRCI-AC-005
 

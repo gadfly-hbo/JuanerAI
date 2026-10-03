@@ -135,6 +135,26 @@ keeps its own authority boundary. Missing approved inputs are setup failures,
 not product RED. Disclose unavailable platform checks; a local subset is not
 CI PASS and a CI definition is not permission to install or download resources.
 
+CI reliability is part of this engineering loop. The canonical validation entry
+owns the applicable harness-contract checks and product suites; local delivery
+and CI use the same entry rather than separate remembered command lists. An
+explicitly classified non-runtime documentation change may use focused checks.
+Mixed, executable, dependency, runtime, schema, test or CI changes require their
+applicable regression; unknown or unverified scope cannot select the lighter
+path. Report the selected scope and omitted checks. A documentation check is
+not product regression PASS, and editing the selection mechanism cannot exempt
+that edit from its own full validation.
+
+Keep deterministic regression for false positives, source/fixture drift,
+scope selection and failure propagation. Retain approved input/trust pins;
+deriving a new hash does not approve its source. Test optimization preserves
+acceptance, negative inputs, isolation and required real-boundary evidence.
+Measure representative pre/post cost before claiming a performance improvement;
+stream failure output and show suite timings in the existing verification log.
+Classify repeated CI failures from evidence before retrying. A green rerun or a
+larger timeout does not close an unexplained failure, and routine in-boundary
+CI correction follows the same engineering package without another approval.
+
 Spec and Test specialists are optional scoped support, not mandatory stages;
 they do not import the retired approval chain. A contributing specialist cannot
 validate its own candidate. The final Validator remains fresh and read-only.

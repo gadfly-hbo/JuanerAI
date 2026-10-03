@@ -1,10 +1,10 @@
 import type {MembershipRequest} from '../../../packages/contracts/member-task.ts';
 import {DatabaseSync} from 'node:sqlite';
 import assert from 'node:assert/strict';
-import test from 'node:test';
-import {randomUUID} from 'node:crypto';
-import {mkdtempSync} from 'node:fs';
-import {join} from 'node:path';
+import test, {after} from 'node:test';
+import {createHash,randomUUID} from 'node:crypto';
+import {cpSync,mkdtempSync,readdirSync} from 'node:fs';
+import {join,relative} from 'node:path';
 import {tmpdir} from 'node:os';
 import {createU12ProjectAdmissionApplication,requiredExport} from '../../fixtures/xanthil-desktop/desktop-contract-drivers.ts';
 import {createXanthilDesktopDecisionCaseApplication} from '../../../packages/application/xanthil-desktop-decision-case.ts';
@@ -357,11 +357,56 @@ for(const kind of ['fork','subagent'] as const)test(`P1-D004-01 explicit retaine
  assert.equal(JSON.parse(payloads[1]).authorized_tool_result.result.periods.current.repeat_revenue_fen,JSON.parse(completed.case.findings[0].metrics).periods.current.repeat_revenue_fen);await app.close();
 });
 
-async function retainedFixture(respond:(payload:string)=>Promise<unknown>,clock=()=>new Date()){
- const f=await reviewChoiceFixture(undefined,['M1','M2']);const completed=await f.app.submitReview(f.id,f.command);const {createLocalCaseAssistantStore}=await import('../../../adapters/storage-local/case-assistant.ts'),{createCaseAssistantApplication}=await import('../../../packages/application/case-assistant.ts'),{config}=await import('../../fixtures/case-assistant/fixtures.ts');
+async function completedMembershipFixture(){
+ const f=await reviewChoiceFixture(undefined,['M1','M2']),completed=await f.app.submitReview(f.id,f.command);
+ return {root:f.root,id:f.id,desktop:f.desktop,store:f.store,shared:f.shared,app:f.app,completed};
+}
+async function retainedFixture(respond:(payload:string)=>Promise<unknown>,clock=()=>new Date(),prepared?:Awaited<ReturnType<typeof completedMembershipFixture>>){
+ const f=prepared??await completedMembershipFixture(),completed=f.completed;const {createLocalCaseAssistantStore}=await import('../../../adapters/storage-local/case-assistant.ts'),{createCaseAssistantApplication}=await import('../../../packages/application/case-assistant.ts'),{config}=await import('../../fixtures/case-assistant/fixtures.ts');
  const assistantStore=createLocalCaseAssistantStore({projectRoot:f.root}),app=createCaseAssistantApplication({store:assistantStore,config,clock,modelAccess:f.shared,runtime:createPiCaseAssistantRuntime({provider:'synthetic',model:'offline',max_input_bytes:16000,max_output_tokens:1000},{respond}),membership:{store:f.store,desktop:f.desktop,sourceStore:createLocalDesktopDecisionCaseStore({projectRoot:f.root}),profile:syntheticProfile()}});
  const parent=await app.link(completed.owner,'合成后续任务',randomUUID());const wait=async()=>{for(let n=0;n<200;n++){const p=await app.read(parent.session.id);if(p.attempts.at(-1)?.status!=='Running')return p;await new Promise(r=>setTimeout(r,10));}assert.fail('retained task timeout');};return {...f,completed,retained:app,assistantStore,parent,wait};
 }
+
+function retainedFixtureFiles(root:string){
+ return readdirSync(root,{recursive:true,withFileTypes:true}).filter(e=>e.isFile()).map(e=>{
+  const path=join(e.parentPath,e.name),bytes=readFileSync(path);
+  assert.equal(bytes.includes(Buffer.from(root)),false,'completed fixture must not bind its original absolute root');
+  return {path:relative(root,path),bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')};
+ }).sort((a,b)=>a.path.localeCompare(b.path));
+}
+async function createRetainedMatrixSeed(){
+ const {root,id,completed,shared}=await completedMembershipFixture();
+ assert.equal(completed.status,'closed');assert.equal(completed.case.revision!.state,'Completed');
+ assert.ok(completed.grants.every(g=>g.revoked_at));assert.equal(shared.occupant?.(),null);
+ return {root,id,completed,files:retainedFixtureFiles(root)};
+}
+let retainedMatrixSeed:ReturnType<typeof createRetainedMatrixSeed>|undefined;
+// Only the repeated material-policy matrices share immutable completed bytes.
+// Every consumer gets its own project, applications, stores and model lease;
+// current retained authorization is still issued by the real Application.
+async function retainedMatrixFixture(respond:(payload:string)=>Promise<unknown>){
+ const seed=await (retainedMatrixSeed??=createRetainedMatrixSeed()),root=mkdtempSync(join(process.env.JUANERAI_TEST_EVIDENCE_DIR??tmpdir(),'member-retained-'));
+ cpSync(seed.root,root,{recursive:true});assert.deepEqual(retainedFixtureFiles(root),seed.files);
+ const base=await blankTaskFixture(root),store=createLocalMembershipTaskStore(root),shared=createLocalModelAccess(true);
+ const app=createMembershipTaskApplication({desktop:base.desktop,project_id:desktopTestIds.project,store,profile:syntheticProfile(),modelAccess:shared,sourceStore:createLocalDesktopDecisionCaseStore({projectRoot:root})});
+ const completed=await app.read(seed.id);assert.deepEqual(completed,seed.completed,'copied completed source must retain the exact public projection');
+ return retainedFixture(respond,()=>new Date(),{root,id:seed.id,desktop:base.desktop,store,shared,app,completed});
+}
+after(async()=>{if(retainedMatrixSeed){const seed=await retainedMatrixSeed;assert.deepEqual(retainedFixtureFiles(seed.root),seed.files,'all matrix consumers must preserve the closed seed bytes');}});
+
+test('CI-PERF-005 completed fixture copies preserve independent state and source-tamper rejection',async()=>{
+ const first=await retainedMatrixFixture(async()=>({kind:'advice',text:'unused'})),second=await retainedMatrixFixture(async()=>({kind:'advice',text:'unused'}));
+ assert.notEqual(first.root,second.root);assert.notEqual(first.shared,second.shared);assert.notEqual(first.parent.session.id,second.parent.session.id);
+ const secondBefore=await second.app.read(second.id),source=join(first.root,first.completed.owner.session_id,'010_draw',first.completed.case.snapshot!.snapshot_id,'orders.csv');
+ writeFileSync(source,'synthetic clone-only source drift');
+ await assert.rejects(()=>createLocalDesktopDecisionCaseStore({projectRoot:first.root}).readConfirmedSnapshot({...first.completed.owner,confirmation_id:first.completed.case.confirmation!.confirmation_id}),{code:'INTEGRITY_BLOCKED'});
+ assert.deepEqual(await second.app.read(second.id),secondBefore,'one copy cannot change another source or resource ledger');
+ const authorization=await second.retained.prepare(second.parent.session.id,'核对当前结果');assert.deepEqual(authorization.blockers,[]);
+ await first.retained.close();await second.retained.close();
+ const db=new DatabaseSync(join(second.root,'.xanthil/desktop/state.sqlite'));db.prepare('UPDATE membership_attempts SET body_sha256=?').run('f'.repeat(64));db.close();
+ await assert.rejects(()=>second.store.read(second.id),{code:'INTEGRITY_BLOCKED'});
+ const seed=await retainedMatrixSeed!;assert.deepEqual(retainedFixtureFiles(seed.root),seed.files,'source and database mutations in both copies must leave seed bytes unchanged');
+});
 for(const operation of ['stop','close'] as const)test(`P1-D004-02 ${operation} fences late result and retains unknown usage and physical ownership`,async()=>{
  let entered!:()=>void,release!:()=>void;const entry=new Promise<void>(r=>entered=r),pending=new Promise<void>(r=>release=r);const f=await retainedFixture(async()=>{entered();await pending;return {kind:'advice',text:'迟到合成意见'};}),id=f.parent.session.id,a=await f.retained.prepare(id,'核对当前结果');await f.retained.start(id,a.id,true);await entry;
  if(operation==='stop')await f.retained.stop(id);else await f.retained.closeSession(id,true);
@@ -369,7 +414,7 @@ for(const operation of ['stop','close'] as const)test(`P1-D004-02 ${operation} f
  assert.equal((await f.retained.read(id)).events.some(e=>e.kind==='advice'),false);state=await createLocalMembershipTaskStore(f.root).read(f.id);assert.equal(state.usage.at(-1)?.status,'unresolved');assert.equal(state.usage.reduce((n,u)=>n+u.calls,0),f.completed.totals.calls+1);await f.app.reopen();assert.equal((await f.app.read(f.id)).status,'closed');await f.retained.close();
 });
 for(const material of ['member_id','检查 1 /2026/private','请检查 exports/.env','请检查 exports%2F.env','/Volumes/Finance/exports/source.csv','/tmp/source.csv','Please check exports/source.csv.','请检查 exports/source.csv！'])test(`P1-D004-03 selected text history and child result cannot launder raw identity or group labels (${material})`,async()=>{
- let calls=0;const f=await retainedFixture(async()=>++calls===1?{kind:'advice',text:material}:{kind:'question',text:'合成问题'}),id=f.parent.session.id;
+ let calls=0;const f=await retainedMatrixFixture(async()=>++calls===1?{kind:'advice',text:material}:{kind:'question',text:'合成问题'}),id=f.parent.session.id;
  await assert.rejects(()=>f.retained.prepare(id,material),{code:'OUTBOUND_FORBIDDEN'});
  const a=await f.retained.prepare(id,'核对结果');await f.retained.start(id,a.id,true);assert.equal((await f.wait()).attempts.at(-1)?.status,'Failed');assert.equal((await f.retained.read(id)).events.some(e=>e.kind==='advice'),false);
  const fresh=await f.retained.prepare(id,'再次核对');await f.retained.start(id,fresh.id,true);await f.wait();const attempt=(await f.retained.read(id)).attempts.at(-1)!;await f.assistantStore.appendEvent(id,{id:randomUUID(),attempt_id:attempt.id,at:new Date().toISOString(),kind:'advice',text:material,tool:null,status:'completed',source_revision:f.completed.owner.revision_id});const poisoned=(await f.retained.read(id)).events.at(-1)!;await f.retained.stop(id);await assert.rejects(()=>f.retained.prepare(id,'检查', [poisoned.id]),{code:'OUTBOUND_FORBIDDEN'});await f.retained.close();
@@ -395,12 +440,12 @@ test('P1-D004-06 original completed task cannot regain admission via ordinary au
 });
 
 for(const material of ['member_id','检查 1 /2026/private','请检查 exports/.env','请检查 exports%2F.env','/Volumes/Finance/exports/source.csv','/tmp/source.csv','Please check exports/source.csv.','请检查 exports/source.csv！'])test(`P1-D004-07 manual child result refuses prohibited text before save or return (${material})`,async()=>{
- const f=await retainedFixture(async payload=>({kind:'result',summary:material,references:[JSON.parse(payload).authorized_context.allowed_references[0]],limitations:['合成限制'],unknowns:[]})),id=f.parent.session.id;
+ const f=await retainedMatrixFixture(async payload=>({kind:'result',summary:material,references:[JSON.parse(payload).authorized_context.allowed_references[0]],limitations:['合成限制'],unknowns:[]})),id=f.parent.session.id;
  const preview=await f.retained.prepareChild(id,'subagent','检查反证',null,[],[],true),child=await f.retained.createChild(id,preview.id,randomUUID(),true),a=await f.retained.prepareCollaboration(child.session.id,'检查反证',[],[]);await f.retained.start(child.session.id,a.id,true);for(let n=0;n<200&&(await f.retained.read(child.session.id)).attempts.at(-1)?.status==='Running';n++)await new Promise(r=>setTimeout(r,10));assert.equal((await f.retained.read(child.session.id)).attempts.at(-1)?.status,'Failed');assert.equal((await f.retained.readCollaboration(child.session.id)).results.length,0);assert.equal((await f.retained.readParent(id)).deliveries.length,0);assert.equal((await f.app.read(f.id)).totals.calls,f.completed.totals.calls+1);await f.retained.close();
 });
 
 for(const material of ['member_id','检查 1 /2026/private','请检查 exports/.env','请检查 exports%2F.env','/Volumes/Finance/exports/source.csv','/tmp/source.csv','Please check exports/source.csv.','请检查 exports/source.csv！'])test(`P1-D004-08 Waiting holds the shared slot and cumulative reservation; unsafe reply has no extra request (${material})`,async()=>{
- let calls=0;const f=await retainedFixture(async()=>{calls++;return {kind:'question',text:'需要补充哪项限制？'};}),id=f.parent.session.id,a=await f.retained.prepare(id,'检查限制');await f.retained.start(id,a.id,true);assert.equal((await f.wait()).attempts.at(-1)?.status,'Waiting');assert.ok(f.shared.occupant?.());let state=await f.store.read(f.id);assert.equal(state.usage.at(-1)?.kind,'waiting');assert.equal(state.usage.at(-1)?.status,'issued');await assert.rejects(()=>f.retained.send(id,material),{code:'OUTBOUND_FORBIDDEN'});assert.equal(calls,1);state=await f.store.read(f.id);assert.ok(state.grants.find(g=>g.id===a.id)?.revoked_at);assert.equal(state.usage.reduce((n,u)=>n+u.calls,0),f.completed.totals.calls+1);await f.retained.close();
+ let calls=0;const f=await retainedMatrixFixture(async()=>{calls++;return {kind:'question',text:'需要补充哪项限制？'};}),id=f.parent.session.id,a=await f.retained.prepare(id,'检查限制');await f.retained.start(id,a.id,true);assert.equal((await f.wait()).attempts.at(-1)?.status,'Waiting');assert.ok(f.shared.occupant?.());let state=await f.store.read(f.id);assert.equal(state.usage.at(-1)?.kind,'waiting');assert.equal(state.usage.at(-1)?.status,'issued');await assert.rejects(()=>f.retained.send(id,material),{code:'OUTBOUND_FORBIDDEN'});assert.equal(calls,1);state=await f.store.read(f.id);assert.ok(state.grants.find(g=>g.id===a.id)?.revoked_at);assert.equal(state.usage.reduce((n,u)=>n+u.calls,0),f.completed.totals.calls+1);await f.retained.close();
 });
 
 test('P1-D004-09 reopened Application retains completed identity and cumulative usage without issuing',async()=>{
@@ -469,7 +514,7 @@ test('F3 exact receipt matching distinguishes initial history and unknown respon
 });
 
 for(const forbidden of ['/tmp/source.csv','检查 1 /2026/private','请检查 exports/.env','请检查 exports%2F.env','exports/source.csv!'])for(const kind of ['fork','subagent'] as const)test(`F1 retained ${kind} ${forbidden} initial selected reports return adoption and late reuse enforce current material policy`,async()=>{
- let isChild=false;const payloads:string[]=[];const f=await retainedFixture(async payload=>{payloads.push(payload);return isChild?{kind:'result',summary:'合成未知事项',references:[JSON.parse(payload).authorized_context.allowed_references[0]],limitations:['因果未知'],unknowns:[]}:{kind:'advice',text:'合成限制'};}),id=f.parent.session.id;const a=await f.retained.prepare(id,'核对当前结果',[],[f.parent.source.report.report_id]);await f.retained.start(id,a.id,true);await f.wait();const cutoff=kind==='fork'?(await f.retained.read(id)).events.find(e=>e.kind==='advice')!.id:null;
+ let isChild=false;const payloads:string[]=[];const f=await retainedMatrixFixture(async payload=>{payloads.push(payload);return isChild?{kind:'result',summary:'合成未知事项',references:[JSON.parse(payload).authorized_context.allowed_references[0]],limitations:['因果未知'],unknowns:[]}:{kind:'advice',text:'合成限制'};}),id=f.parent.session.id;const a=await f.retained.prepare(id,'核对当前结果',[],[f.parent.source.report.report_id]);await f.retained.start(id,a.id,true);await f.wait();const cutoff=kind==='fork'?(await f.retained.read(id)).events.find(e=>e.kind==='advice')!.id:null;
  await f.retained.prepareChild(id,kind,'检查 '+forbidden,cutoff,[],[],true); // A local preview grants no model admission.
  assert.equal(payloads.length,1);const preview=await f.retained.prepareChild(id,kind,'检查未知事项',cutoff,[],[f.parent.source.report.report_id],true),child=await f.retained.createChild(id,preview.id,randomUUID(),true);await assert.rejects(()=>f.retained.prepareCollaboration(child.session.id,'检查 /Volumes/Finance/source.csv',[],[]),{code:'OUTBOUND_FORBIDDEN'});const ca=await f.retained.prepareCollaboration(child.session.id,'检查未知事项',[],[]);isChild=true;await f.retained.start(child.session.id,ca.id,true);await until(async()=>(await f.retained.read(child.session.id)).attempts.at(-1)?.status!=='Running');const result=(await f.retained.readCollaboration(child.session.id)).results[0],target={result_id:result.id,result_version:result.version,result_sha256:result.sha256};assert.ok(result);assert.equal(payloads.length,2);for(const payload of payloads){assert.equal(payload.includes(f.completed.case.reports.at(-1)!.review_content!.markdown_text),false);assert.doesNotMatch(payload,/\/tmp\/|\/Volumes\/|member_id|North|South/);assert.equal(JSON.parse(payload).authorized_context.selected_reports[0].material.result.m2,undefined);}
  // Simulate a readable pre-correction result. Both the inner immutable identity
