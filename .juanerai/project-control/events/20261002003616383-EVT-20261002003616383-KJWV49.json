@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002003616383-KJWV49",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T00:36:16.383Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "Decision002确认C4涵盖旧助手共享占位；停止后实际调用未结束的跨入口反例已转GREEN。",
+  "status_after": "active",
+  "evidence_refs": []
+}

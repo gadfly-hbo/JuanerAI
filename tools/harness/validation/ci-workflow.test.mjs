@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { spawnSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -116,4 +118,36 @@ test('PRCI-TEST-001..004: assertion helper accepts the approved minimal declarat
 
 test('PRCI-TEST-001..004: PR CI declaration is the single, fixed, explicitly portable offline check', async () => {
   assertWorkflow(await readFile(WORKFLOW, 'utf8'));
+});
+
+test('CI-TIMEOUT-001: only portable regression gets 1080s within the unchanged job cap', async t => {
+  const workflow = await readFile(WORKFLOW, 'utf8');
+  assert.match(workflow, /^    timeout-minutes: 20$/m);
+  assertWorkflow(workflow);
+  const shell = workflow.split('        run: |\n')[1].split('\n').map(line => line.replace(/^          /, '')).join('\n');
+  const definition = shell.slice(shell.indexOf('run_logged() {'), shell.indexOf('\ntest "$(node --version)"'));
+  const labels = ['portable-regression', 'npm-prepare', 'duckdb-download', 'node-gyp-download', 'install-view', 'dependency-install', 'installed-source-check', 'ci-contracts', 'portable-regression-extra', 'unknown'];
+  assert.deepEqual([...workflow.matchAll(/^          run_logged (\S+) /gm)].map(match => match[1]).sort(), labels.slice(0, 8).sort());
+  for (const label of labels) {
+    for (const exit of [0, 17, 124]) {
+      await t.test(`${label}: exit ${exit}`, async subtest => {
+        const root = await mkdtemp(path.join(tmpdir(), 'juanerai-ci-timeout-'));
+        subtest.after(() => rm(root, { recursive: true, force: true }));
+        // Execute the actual logging function; replace only the wait with an
+        // immediate argument-recording shim, as in the existing log tests.
+        const invocation = `set -e\ntimeout() { printf '%s\\n' "$1" "$2" "$3" >> "$RUNNER_TEMP/timeout-args"; shift 3; "$@"; }\n${definition}\nrun_logged "$CI_LABEL" /bin/sh -c 'printf child-out; printf child-err >&2; exit "$CI_CHILD_EXIT"'\n`;
+        const result = spawnSync('/bin/bash', ['-c', invocation], {
+          env: { PATH: '/usr/bin:/bin', RUNNER_TEMP: root, CI_LABEL: label, CI_CHILD_EXIT: String(exit) },
+          encoding: 'utf8', timeout: 10000,
+        });
+        assert.equal(result.signal, null);
+        assert.equal(result.status, exit, result.stderr);
+        assert.equal(await readFile(path.join(root, 'timeout-args'), 'utf8'), `--signal=TERM\n--kill-after=5s\n${label === 'portable-regression' ? '1080s' : '180s'}\n`);
+        assert.equal(await readFile(path.join(root, `${label}.stdout`), 'utf8'), 'child-out');
+        assert.equal(await readFile(path.join(root, `${label}.stderr`), 'utf8'), 'child-err');
+        assert.ok(result.stdout.includes(`EXIT ${label} ${exit}\n`));
+        assert.ok(result.stderr.includes('child-err'));
+      });
+    }
+  }
 });

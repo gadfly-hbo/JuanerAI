@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002041256574-5SC61K",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T04:12:56.574Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "Decision004 连接与兼容性修复通过，进入完整候选验证。",
+  "status_after": "active",
+  "evidence_refs": []
+}

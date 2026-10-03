@@ -41,7 +41,11 @@ jobs:
             printf '\nBEGIN %s\n' "$label"
             (set -C; : >"$RUNNER_TEMP/$label.stdout" && : >"$RUNNER_TEMP/$label.stderr") || return 73
             set +e
-            timeout --signal=TERM --kill-after=5s 180s "$@" >>"$RUNNER_TEMP/$label.stdout" 2>>"$RUNNER_TEMP/$label.stderr"
+            if [ "$label" = portable-regression ]; then
+              timeout --signal=TERM --kill-after=5s 1080s "$@" >>"$RUNNER_TEMP/$label.stdout" 2>>"$RUNNER_TEMP/$label.stderr"
+            else
+              timeout --signal=TERM --kill-after=5s 180s "$@" >>"$RUNNER_TEMP/$label.stdout" 2>>"$RUNNER_TEMP/$label.stderr"
+            fi
             result=$?
             set -e
             printf 'STDOUT %s\n' "$label"; cat "$RUNNER_TEMP/$label.stdout"

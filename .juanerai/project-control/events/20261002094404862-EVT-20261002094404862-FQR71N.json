@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002094404862-FQR71N",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T09:44:04.862Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "已批准的隔离验证启动；实际 gpt-6-astra/high/never 已核对。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

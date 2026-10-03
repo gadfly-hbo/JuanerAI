@@ -157,3 +157,10 @@ test('AC-FS-03/04 installed Pi child turn accepts complete result and refuses ad
  response={kind:'advice',text:'不应编造 Waiting'};await assert.rejects(()=>runtime.turn(input));assert.equal(calls,2,'no hidden repair or model retry');
  response={kind:'result',summary:'错误来源',references:[{kind:'case',id:'foreign',revision_id:'revision',version:null,sha256:null}],limitations:['限制'],unknowns:[]};await assert.rejects(()=>runtime.turn(input),/RESULT_OUTSIDE_AUTHORIZATION/);assert.equal(calls,3);
 });
+
+for(const rejectLate of [false,true])test(`P1-C4 Pi abort waits for issued synthetic transport settlement (${rejectLate?'reject':'resolve'})`,async()=>{
+ let enter!:()=>void,finish!:()=>void;const entered=new Promise<void>(r=>enter=r),gate=new Promise<unknown>((resolve,reject)=>{finish=()=>rejectLate?reject(Error('synthetic failure')):resolve({kind:'question',text:'late'});});
+ const runtime=createPiCaseAssistantRuntime({provider:'synthetic',model:'offline',max_input_bytes:8192,max_output_tokens:1024},{async respond(){enter();return gate;}}),abort=new AbortController();let settled=false;
+ const pending=runtime.turn({provider:'synthetic',model:'offline',payload:'{}',signal:abort.signal,cost_reservation_microunits:10}).catch(error=>error).finally(()=>{settled=true;});
+ await entered;abort.abort();await new Promise(r=>setTimeout(r,20));const early=settled;finish();const result=await pending;assert.equal(early,false,'abort notification alone is not transport settlement');assert.equal(result.code,'INTERRUPTED');
+});

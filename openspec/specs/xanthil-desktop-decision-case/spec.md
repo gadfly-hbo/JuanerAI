@@ -1,5 +1,9 @@
 # Xanthil Desktop Membership-Repurchase Decision Case Specification
 
+## Change004 scoped amendment
+
+The [membership-task baseline](../member-analysis-task/spec.md) adds the same-Case unfinished quick entry, explicit reusable configuration, plan-driven M1/M1+M2, version-bound comments and combined human-review outcomes. Its schema110/102 and compatibility boundaries are scoped to that explicit P1 activation; existing legacy rows/files and behavior below remain. Change004 engineering delivery includes an E2 waiver, not native or human-experience acceptance.
+
 ## Internal installation supplement
 
 The user-approved [internal-install supplement 001](../../changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/internal-install-supplement-001.md) narrowly extends AC-XDESK-012-03 to an internal relocatable Apple Silicon .app and optional simple DMG. Bundled Python/DuckDB use contained, identity-checked app resources; Projects remain explicitly selected external writable directories. Original UI/business AC, historical evidence and all other prohibitions remain. Local Mini verification is not target-MacBook acceptance; signing/notarization and security bypass are not implied.

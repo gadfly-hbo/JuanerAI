@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; connect-src 'none'; form-action 'none'; object-src 'none'; base-uri 'none'">
+  <title>Xanthil · AI 主导的会员分析 · 界面交互约定</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../2026-09-28/clickable-ui-contract-case-assistant-v1.0/dist/styles.css">
+  <link rel="stylesheet" href="incremental.css">
+</head>
+<body class="p1">
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="JuanerAI，持续做出更好的决策；Xanthil Desktop">
+        <span class="brand-mark"><img src="../../2026-09-28/clickable-ui-contract-case-assistant-v1.0/dist/assets/juanerai-logo-slogan.png" alt=""></span>
+        <span class="brand-copy"><strong>JuanerAI</strong><small>持续做出更好的决策</small></span><span class="product-name">Xanthil Desktop</span>
+      </div>
+      <nav class="mode-switch" aria-label="工作模式"><button class="mode-button active" data-action="quick" aria-pressed="true">快速模式</button><button class="mode-button" data-action="professional" aria-pressed="false">专业模式</button></nav>
+      <div class="top-actions"><span class="demo-badge">界面交互约定 · 合成演示</span><span class="avatar" aria-label="本地用户">HB</span></div>
+    </header>
+    <div class="review-strip"><details><summary>评审场景工具 · 位于产品交互之外</summary><div class="scenario-controls"><label for="scenario">下一次任务的合成条件</label><select id="scenario"><option value="normal">两期下降 · 正常完成</option><option value="flat">错误前提 · 实际未下降</option><option value="zero">单期零分母 · 有限证据不足</option><option value="empty">双期筛选合计无有效行 · 资料阻断</option><option value="group">匿名 A / B 分组贡献</option><option value="missing">缺少 orders.csv</option><option value="semantic">期间语义缺失</option><option value="mismatch">主算与复算不一致</option><option value="model">验证后模型失败</option><option value="stop">运行中停止／关闭重开</option><option value="scope">点评修改期间</option></select><button class="small-button" data-action="reset">应用场景并回到空白任务</button><label class="checkline"><input id="failPublication" type="checkbox">下一次正式记录模拟失败</label></div><p>仅注入合成资料和故障；仍须自己提出任务、添加资料、授权和审阅。无网络、真实模型或业务文件访问；刷新清空本页内存。</p></details></div>
+    <main class="workspace quick-workspace" id="workspace">
+      <aside class="session-rail" aria-label="项目与任务历史"><div class="rail-heading"><div><p class="eyebrow">工作空间</p><h1>我的工作</h1></div></div><div class="project-label">▣ 会员经营 <span>个人项目</span></div><p class="group-label">今天</p><button class="session-item selected" data-action="current"><span class="session-title" id="railTitle">新分析任务</span><span class="session-source">会员复购 · 离线演示</span><span class="session-meta" id="railStatus">尚未开始</span></button><div id="leftHistory"></div><div class="rail-footnote"><strong>从业务问题开始</strong><span>说明你想了解什么。资料、口径和分析过程在需要时展开。</span><span>本页记录仅保留在当前窗口内存。</span></div></aside>
+      <section class="conversation-pane" aria-label="分析工作区"><header class="conversation-header"><div><p class="eyebrow">会员经营 / 分析任务</p><h2 id="taskTitle">从一个问题开始</h2></div><div class="header-actions"><span id="status" role="status" aria-live="polite">尚未开始</span><button class="danger-button" id="stopButton" data-action="stop" disabled>停止</button><button class="small-button" data-action="close">关闭任务</button><button class="small-button" id="contextToggle" data-action="context" aria-expanded="true">收起上下文</button></div></header><div class="conversation-scroll" id="mainContent"></div><footer class="work-footer"><span>合成数据 · 系统验证 ≠ 人工接受</span><span>无真实外发 · 无行动执行</span></footer></section>
+      <aside class="context-drawer" id="context" aria-label="来源、授权、证据及历史"><div class="context-heading"><strong>任务上下文</strong><span>随时可查</span></div><div id="contextContent"></div></aside>
+    </main>
+  </div>
+  <dialog id="modal" aria-labelledby="dialogTitle"><div id="dialogContent"></div></dialog>
+  <script src="app.js"></script>
+</body>
+</html>

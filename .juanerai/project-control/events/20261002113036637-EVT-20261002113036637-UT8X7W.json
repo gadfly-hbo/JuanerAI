@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002113036637-UT8X7W",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T11:30:36.637Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "PR59合并、归档交付完成；E2豁免保留，MacBook同步因SSH超时未完成",
+  "status_after": "complete",
+  "evidence_refs": []
+}

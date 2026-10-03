@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001223901065-KAHXKX",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T22:39:01.065Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "Change004用户授权启动；真人体验后置，进入工程开发。",
+  "status_after": "active",
+  "evidence_refs": []
+}

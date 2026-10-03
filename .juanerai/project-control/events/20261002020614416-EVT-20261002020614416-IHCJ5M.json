@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002020614416-IHCJ5M",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T02:06:14.416Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "B由点评重算进入整体人审实现；原生缺口、最终集成验证及用户接受继续待完成。",
+  "status_after": "active",
+  "evidence_refs": []
+}

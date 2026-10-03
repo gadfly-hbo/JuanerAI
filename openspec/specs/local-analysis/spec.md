@@ -1,5 +1,9 @@
 # Xanthil CLI Local Analysis Specification
 
+## Change004 scoped amendment
+
+For the explicit membership plan/version path, [the membership-task baseline](../member-analysis-task/spec.md) specifies M1-only versus M1+M2 execution, independent DuckDB/Python verification, period/zero/empty semantics and plan/result provenance. Unversioned legacy execution below remains unchanged; no second runtime, fallback or Provider permission is introduced.
+
 ## Capability Contract
 
 - Source Changes: `CHG-xanthil-cli-local-analysis-slice`; `CHG-xanthil-typescript-migration`; `CHG-run-root-identity-reuse-fix`; `CHG-runtime-provenance-neutralization`

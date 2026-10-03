@@ -1,0 +1,52 @@
+2026-10-01 MacBook P1 publication preflight — index failure, not product failure.
+
+User authorized committing/pushing this product/UI package and forwarding its
+requirements to the existing Mac mini chat change-004. This record adds no waiver.
+
+Repository: /Users/huangbo/.codex/worktrees/e1d5/JuanerAI
+Branch: work/macbook/ai-led-member-analysis-product-plan
+HEAD: 3a5e9185d688b6274c88c03b7639b49dea930d67
+Owning device: huangbodeMacBook-Pro.local
+
+Applicable skill: .agents/skills/git-commit-push/SKILL.md, steps 5-6.
+The publication includes an executable, offline clickable UI prototype; it was
+not reclassified as governance-only documentation to bypass the full index.
+
+Both actual calls used mcp__codebase_memory_juanerai__index_repository with:
+{"repo_path":"/Users/huangbo/.codex/worktrees/e1d5/JuanerAI","name":"JuanerAI-P1-product-input-publication-20261001","mode":"full","persistence":false}
+
+Attempt 1 returned isError=true and the following complete text payload:
+{"status":"error","outcome":"exit_nonzero","hint":"Indexing worker crashed on a file. The crash was contained (the server survived). Re-run to retry; a future release isolates the culprit file.","repo_path":"/Users/huangbo/.codex/worktrees/e1d5/JuanerAI"}
+
+Attempt 2 returned isError=true and the same complete text payload:
+{"status":"error","outcome":"exit_nonzero","hint":"Indexing worker crashed on a file. The crash was contained (the server survived). Re-run to retry; a future release isolates the culprit file.","repo_path":"/Users/huangbo/.codex/worktrees/e1d5/JuanerAI"}
+
+The tool did not return a numeric worker exit code, a culprit file, or a usable
+fresh Branch/file coverage result. No such evidence is invented here.
+
+After attempt 1, the complete fingerprint (root/branch/HEAD/porcelain status,
+tracked and staged binary diffs, and bytes/SHA-256 for all 31 intended files)
+was independently recomputed in a new Node process and matched the pre-call
+fingerprint exactly. No tracked or staged changes were present. No dependencies,
+index persistence files, production changes, provider calls or business data
+were introduced by the publication task.
+
+After attempt 2, publishing remains stopped before staging. Subsequent text edits
+only correct old approval tense in the plan/UI/index, following the independent
+read-only consistency findings; this failure record is a new preserved artifact.
+They do not modify the clickable prototype, behavior, historical sources or reviews.
+
+Current unmet point: required full-index fresh identity and changed-file coverage.
+Next permitted action: finish unaffected static checks, preserve the candidate,
+and ask the user for a one-publication exception or another authorized resolution.
+No commit, push, PR, Mini message, engineering intake or production start occurred.
+Any later permission and actual publication/receiver receipt must be separate.
+
+Subsequent user-authorized disposition (same product chat, 2026-10-01):
+The Product Manager requested a one-publication full-index exception solely for
+this product-planning/offline UI package, using the completed syntax, reference,
+source-hash and independent-consistency checks. The user directly replied
+"批准". This overrides only the index stop for this publication; it does not
+turn either failed result into PASS or change any future production policy.
+The contemporaneous approval/handoff record names the scope and unchanged stops.
+Final staging, commit, push, PR and receiver readback remain actual future events.

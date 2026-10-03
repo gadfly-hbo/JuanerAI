@@ -1,4 +1,7 @@
 /// <reference types="vite/client" />
+import {MembershipTaskWorkspace} from './member-task-workspace.tsx';
+import type {MembershipApi} from '../../packages/contracts/member-task.ts';
+import type {TaskProjection} from '../../packages/product-core/member-task.ts';
 import {ProviderSettingsProvider,ProviderSettingsEntry,useProviderSettings} from './provider-settings.tsx';
 import type {ProviderSettingsApi} from '../../packages/contracts/provider-settings.ts';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
@@ -22,7 +25,7 @@ const professionalStages = [
   '数据准备',
   '本地处理',
   '循证分析',
-  '报告',
+  '分析报告',
   '执行反馈',
 ] as const;
 
@@ -54,7 +57,7 @@ const professionalPanels: Readonly<Record<ProfessionalStage, Readonly<{ title: s
     description: '查看已提交的 H1 判断、支持证据、反证与限制。分析成功不等于结果已被接受。',
     boundary: '关联不等于因果 · 不作行动声明',
   },
-  报告: {
+  分析报告: {
     title: '可追溯报告',
     description: '查看当前修订的报告版本与证据身份；草稿不是已接受的决策报告。',
     boundary: '报告形成、接受、闭环与导出是四个独立事实',
@@ -71,6 +74,7 @@ declare global {
     xanthilChildSession?:string|null;
     xanthilDesktopApi: XanthilDesktopApi;
     xanthilCaseAssistantApi: CaseAssistantApi;
+    xanthilMembershipTaskApi:MembershipApi;
     xanthilProviderSettingsApi?: ProviderSettingsApi;
   }
 }
@@ -78,8 +82,9 @@ declare global {
 export function XanthilDesktopApp({ api }: XanthilDesktopAppProps) { if(window.xanthilChildSession)return <div className="xanthil-shell" aria-label="Xanthil Desktop"><link href={stylesUrl} rel="stylesheet"/><header className="titlebar"><div className="identity" aria-label="JuanerAI，持续做出更好的决策；Xanthil Desktop"><span className="juaner-brand"><img src={new URL('./assets/juanerai-logo-slogan.png',import.meta.url).href} alt=""/></span><span className="juaner-brand-copy"><strong>JuanerAI</strong><small>持续做出更好的决策</small></span><strong className="product-name">Xanthil Desktop</strong></div></header><ChildAssistantWorkspace api={window.xanthilCaseAssistantApi} sessionId={window.xanthilChildSession}/><footer className="statusbar" aria-label="Status">独立子对话 · 原始数据保持本地</footer></div>;return <ProviderSettingsProvider api={window.xanthilProviderSettingsApi}><XanthilDesktopContent api={api}/></ProviderSettingsProvider>; }
 function XanthilDesktopContent({ api }: XanthilDesktopAppProps) {
   const assistantApi=window.xanthilCaseAssistantApi;
+  const [quickKind,setQuickKind]=useState<'membership'|'legacy'>('membership'),[memberTask,setMemberTask]=useState<TaskProjection|null>(null);
   const [assistant,setAssistant]=useState<AssistantProjection|null>(null);
-  useEffect(()=>window.xanthilParentNavigation?.subscribe(id=>{void assistantApi.request<AssistantProjection>({version:'1.0',operation:'read',session_id:id}).then(r=>{if(r.ok){setAssistant(r.value);setMode('quick');}});}),[assistantApi]);
+  useEffect(()=>window.xanthilParentNavigation?.subscribe(id=>{void assistantApi.request<AssistantProjection>({version:'1.0',operation:'read',session_id:id}).then(r=>{if(r.ok){setAssistant(r.value);setQuickKind('legacy');setMode('quick');}});}),[assistantApi]);
   const [formalState,setFormal]=useState<AssistantProjection|null>(null);
   const [mode, setMode] = useState<Mode>('quick');
   const [selectedStage, setSelectedStage] = useState<ProfessionalStage>('新建分析');
@@ -229,10 +234,11 @@ function XanthilDesktopContent({ api }: XanthilDesktopAppProps) {
     void assistantApi.request<readonly AssistantSession[]>({version:'1.0',operation:'list',project_id:session.project_id}).then(async r=>{if(!r.ok)return;const linked=r.value.find(x=>x.source.case_id===session.case_id&&x.source.revision_id===projection.revision?.revision_id);if(!linked){if(current)setFormal(null);return;}const result=await assistantApi.request<AssistantProjection>({version:'1.0',operation:'read',session_id:linked.id});if(current&&result.ok)setFormal(associatedFormal(projection,result.value));});return()=>{current=false;};
   },[projection?.projection_token,assistant?.current_decision_id,mode]);
   async function beginCaseAssistant(){if(!projection?.session||!projection.revision)return;await businessAction(async()=>{
-    const s=projection.session!;const r=await assistantApi.request<AssistantProjection>({version:'1.0',operation:'link',owner:{project_id:s.project_id,session_id:s.session_id,case_id:s.case_id,revision_id:projection.revision!.revision_id},title:projection.revision!.case_name+' · 决策',command_id:crypto.randomUUID()});if(!r.ok){setBusinessNotice(r.error.message);return;}setAssistant(r.value);setMode('quick');});}
+    const s=projection.session!;const r=await assistantApi.request<AssistantProjection>({version:'1.0',operation:'link',owner:{project_id:s.project_id,session_id:s.session_id,case_id:s.case_id,revision_id:projection.revision!.revision_id},title:projection.revision!.case_name+' · 决策',command_id:crypto.randomUUID()});if(!r.ok){setBusinessNotice(r.error.message);return;}setAssistant(r.value);setQuickKind('legacy');setMode('quick');});}
 
   function selectMode(nextMode: Mode) {
-    if (nextMode === 'professional' && mode === 'quick' && assistant) {
+    if(nextMode==='professional'&&mode==='quick'&&quickKind==='membership'&&memberTask){void openAssistantSource(memberTask.owner).then(()=>setSelectedStage('循证分析'));return;}
+    if (quickKind==='legacy' && nextMode === 'professional' && mode === 'quick' && assistant) {
       void openAssistantSource(assistant.session.source);
       return;
     }
@@ -306,7 +312,7 @@ function XanthilDesktopContent({ api }: XanthilDesktopAppProps) {
         </div>
       </header>
 
-      {mode==='quick'?<CaseAssistantWorkspace api={assistantApi} projectId={project?.project_id??null} sources={sessions} initial={assistant} onChange={setAssistant} onOpenSource={owner=>void openAssistantSource(owner)} onChooseProject={()=>void chooseProject()}/>:<div className="desktop-layout">
+      {mode==='quick'?(quickKind==='membership'?<MembershipTaskWorkspace api={window.xanthilMembershipTaskApi} projectId={project?.project_id??null} initial={memberTask} onTaskChange={setMemberTask} onOpenSource={owner=>void openAssistantSource(owner).then(()=>setSelectedStage('循证分析'))} onChooseProject={()=>void chooseProject()} onLegacy={()=>setQuickKind('legacy')}/>:<><button type="button" onClick={()=>setQuickKind('membership')}>返回会员分析任务</button><CaseAssistantWorkspace api={assistantApi} projectId={project?.project_id??null} sources={sessions} initial={assistant} onChange={setAssistant} onOpenSource={owner=>void openAssistantSource(owner)} onChooseProject={()=>void chooseProject()}/></>):<div className="desktop-layout">
         <aside aria-label="Project and Session navigation" className="session-rail pro-nav">
           <p className="eyebrow">PROFESSIONAL SESSION</p>
           <h2>{projection?.revision?.case_name ?? '专业分析'}</h2>
@@ -357,10 +363,10 @@ function XanthilDesktopContent({ api }: XanthilDesktopAppProps) {
               {selectedStage==='循证分析' && <section className="workbench-card"><h2>已提交的分析证据</h2>{projection?.findings.length?projection.findings.map(finding=><section key={finding.finding_id}><FindingReview finding={finding}/><p>{projection.acceptances.some(a=>a.finding_id===finding.finding_id)?'本次结果已显式接受':'本次结果尚未接受'}</p><button type="button" className="primary-button" disabled={busy||pending||!projection.capabilities.can_accept_finding||projection.acceptances.some(a=>a.finding_id===finding.finding_id)} onClick={()=>void reviewAction('accept',finding.finding_id)}>接受本次分析结果</button></section>):<p>暂无可审阅的分析结果；失败或不一致不会产生判断。</p>}
                 <label htmlFor="manual-evidence">手工证据解释（不改变计算结果）</label><textarea id="manual-evidence" rows={4} value={evidenceText} disabled={busy||pending||!projection?.capabilities.can_save_evidence_explanation} onChange={e=>setEvidenceText(e.target.value)}/><button type="button" disabled={busy||pending||!projection?.capabilities.can_save_evidence_explanation} onClick={()=>void reviewAction('save',{kind:'evidence_explanation',evidence_explanation_text:evidenceText})}>保存证据解释</button>
               </section>}
-              {selectedStage==='报告'&&<section className="workbench-card"><h2>本地报告版本</h2><p role="status">{exportNotice}</p>{projection?.reports.length?<ReportVersions key={projection.projection_token} projection={projection} exportDisabled={busy||pending||!projection.capabilities.can_export_report} onExport={exportReport}/>:<p>暂无报告版本。</p>}</section>}
-              {selectedStage==='执行反馈'&&<ProfessionalDecision projection={projection} formal={formal} disabled={busy||pending||historical} onBegin={()=>void beginCaseAssistant()} onRevise={()=>void businessAction(async()=>{if(!formal)return;const r=await assistantApi.request<AssistantProjection>({version:'1.0',operation:'revise',session_id:formal.session.id,decision_id:formal.current_decision_id!});if(r.ok){setAssistant(r.value);setMode('quick');}else setBusinessNotice(r.error.message);})} onExport={report_id=>void businessAction(async()=>{if(!formal)return;const r=await assistantApi.request({version:'1.0',operation:'export',session_id:formal.session.id,report_id,command_id:crypto.randomUUID()});setBusinessNotice(r.ok?'正式报告已导出。':r.error.message);})}/>}
+              {selectedStage==='分析报告'&&<section className="workbench-card"><h2>本地报告版本</h2><p role="status">{exportNotice}</p>{projection?.reports.length?<ReportVersions key={projection.projection_token} projection={projection} exportDisabled={busy||pending||!projection.capabilities.can_export_report} onExport={exportReport}/>:<p>暂无报告版本。</p>}</section>}
+              {selectedStage==='执行反馈'&&<ProfessionalDecision projection={projection} formal={formal} disabled={busy||pending||historical} onBegin={()=>void beginCaseAssistant()} onRevise={()=>void businessAction(async()=>{if(!formal)return;const r=await assistantApi.request<AssistantProjection>({version:'1.0',operation:'revise',session_id:formal.session.id,decision_id:formal.current_decision_id!});if(r.ok){setAssistant(r.value);setQuickKind('legacy');setMode('quick');}else setBusinessNotice(r.error.message);})} onExport={report_id=>void businessAction(async()=>{if(!formal)return;const r=await assistantApi.request({version:'1.0',operation:'export',session_id:formal.session.id,report_id,command_id:crypto.randomUUID()});setBusinessNotice(r.ok?'正式报告已导出。':r.error.message);})}/>}
               {selectedStage==='执行反馈'&&<details className="workbench-card original-closure" open={projection?.revision?.state!=='Completed'}><summary>手工决策路线 · 原 Decision Closure</summary><p>{projection?.revision?.state==='Completed'?'当前已有已完成闭环；后续重跑不会自动替换旧权威。':'先审阅并接受分析结果，再保存候选比较或证据不足路线，最后单独完成案例。'}</p><DecisionClosureEditor key={projection?.projection_token??'none'} initial={projection?.forms.at(-1)??null} disabled={busy||pending||!projection?.capabilities.can_save_decision_closure} canComplete={!!projection?.capabilities.can_complete_case&&!busy&&!pending} onSave={form=>reviewAction('save',form)} onComplete={()=>reviewAction('complete')}/><h3>决策表单处置历史</h3><ul aria-label="决策表单处置历史">{projection?.forms.map(form=><li key={form.form_id}>表单 {form.form_sequence} · {({draft:'已保存草稿',saved:'已保存闭环路线（不等于完成）',not_adopted:'不采纳此候选方案',deferred:'暂缓决策',more_evidence:'需要补证'})[form.disposition]}{form.disposition==='deferred'?` · ${form.defer_until??'未指定日期'}`:''} · {form.updated_at}</li>)}</ul><ul aria-label="闭环历史">{projection?.closures.map(closure=><li key={closure.closure_id}>{closure.route==='candidate_comparison'?'候选比较':'证据不足'} · {closure.completed_at} · 已完成分析案例（不是已执行行动）</li>)}</ul></details>}
-              {projection?.revision&&['数据准备','本地处理','循证分析','报告'].includes(selectedStage)&&<p><button type="button" disabled={busy||pending||!projection.capabilities.can_create_draft_revision} onClick={()=>void analysisAction('draft')}>创建新数据修订</button> 修改数据选择将使用新修订；旧快照和证据保留。</p>}
+              {projection?.revision&&['数据准备','本地处理','循证分析','分析报告'].includes(selectedStage)&&<p><button type="button" disabled={busy||pending||!projection.capabilities.can_create_draft_revision} onClick={()=>void analysisAction('draft')}>创建新数据修订</button> 修改数据选择将使用新修订；旧快照和证据保留。</p>}
               {projection?.revision&&projection.session&&['新建分析','循证分析','执行反馈'].includes(selectedStage)&&<AssistancePanel key={projection.revision.revision_id} api={api} projection={projection} stage={selectedStage} disabled={busy||pending||historical||projection.revision.integrity_state!=='ok'} onProjection={acceptProjection} onFailure={showBusinessError} onUnknown={()=>setPending(true)}/>}
               <div aria-label="专业模式能力" className="capability-row"><button type="button" onClick={event=>openDialog('skill',event.currentTarget)}>Skill · 会员复购分析</button><button type="button" onClick={event=>openDialog('prompt',event.currentTarget)}>Prompt · 循证分析措辞</button></div>
             </ProfessionalWorkspace>
@@ -375,7 +381,7 @@ function XanthilDesktopContent({ api }: XanthilDesktopAppProps) {
           </aside>
         ) : (
           <aside aria-label="Inspector 概览" className="inspector-summary">
-            {selectedStage==='执行反馈'?<ProfessionalControl projection={projection} formal={formal} onOriginalReport={()=>setSelectedStage('报告')} onFormalReport={id=>{const detail=document.getElementById('formal-report-'+id) as HTMLDetailsElement|null;if(detail){detail.open=true;detail.scrollIntoView({block:'start'});detail.querySelector('summary')?.focus();}}}/>:<><div className="drawer-heading"><h2>上下文</h2><button className="text-button" onClick={() => setDrawerOpen(true)} type="button">展开详情</button></div><ContextInspector mode={mode} projection={projection} stage={selectedStage} projectName={project?.display_name} expanded={false}/></>}
+            {selectedStage==='执行反馈'?<ProfessionalControl projection={projection} formal={formal} onOriginalReport={()=>setSelectedStage('分析报告')} onFormalReport={id=>{const detail=document.getElementById('formal-report-'+id) as HTMLDetailsElement|null;if(detail){detail.open=true;detail.scrollIntoView({block:'start'});detail.querySelector('summary')?.focus();}}}/>:<><div className="drawer-heading"><h2>上下文</h2><button className="text-button" onClick={() => setDrawerOpen(true)} type="button">展开详情</button></div><ContextInspector mode={mode} projection={projection} stage={selectedStage} projectName={project?.display_name} expanded={false}/></>}
           </aside>
         )}
       </div>}
@@ -453,11 +459,11 @@ function AssistanceDraftEditor({draft,disabled,onDispose}:{draft:DesktopProjecti
   </section>;
 }
 
-function exactFraction(value: Readonly<{ numerator: string; denominator: string }>) { return `${value.numerator} / ${value.denominator}`; }
+function exactFraction(value: Readonly<{ numerator: string; denominator: string }>|'not_applicable') { return value==='not_applicable'?'不适用':`${value.numerator} / ${value.denominator}`; }
 
 function FindingReview({ finding }: Readonly<{ finding: DesktopProjection['findings'][number] }>) {
   // Store admission validates the closed metrics before they reach this read-only projection.
-  const metrics = JSON.parse(finding.metrics) as DesktopCalculationResult;
+  const metrics = JSON.parse(finding.metrics) as import('../../packages/product-core/member-analysis.ts').MembershipResult;
   const { comparison, current } = metrics.periods;
   const relative = (value: DesktopCalculationResult['changes']['active_member_count']['relative_change']) => value === 'not_applicable' ? '不适用（对比期基数为零）' : exactFraction(value);
   const judgment = finding.judgment === 'Confirmed' ? '当前期复购率低于对比期；证据支持 H1 的关联判断，不证明原因。' : finding.judgment === 'Rejected' ? '当前期复购率未低于对比期；本次证据不支持 H1。' : '至少一期活跃成员分母为零，无法作出可比较的判断。';
@@ -476,7 +482,7 @@ function FindingReview({ finding }: Readonly<{ finding: DesktopProjection['findi
       <tr><th scope="row">复购率</th><td>{exactFraction(metrics.changes.repurchase_rate.absolute_delta)}</td><td>{relative(metrics.changes.repurchase_rate.relative_change)}</td></tr>
       <tr><th scope="row">复购收入</th><td>{metrics.changes.repeat_revenue_fen.absolute_delta} 分</td><td>{relative(metrics.changes.repeat_revenue_fen.relative_change)}</td></tr>
     </tbody></table></div>
-    <h4>分组贡献（M2）</h4>{metrics.m2.status === 'not_applicable' ? <p>不适用：本次没有选择成员分组，不臆造分组结论。</p> : <><p>按确认的成员分组计算复购收入变化；只显示脱敏分组序号，不显示原始组名。贡献为当前期减对比期，不代表原因。</p><div className="metric-scroll"><table aria-label="分组复购收入贡献"><thead><tr><th scope="col">分组</th><th scope="col">对比期（分）</th><th scope="col">当前期（分）</th><th scope="col">贡献（分）</th></tr></thead><tbody>{metrics.m2.groups.map((group,index)=><tr key={group.group_id}><th scope="row">分组 {index+1}</th><td>{group.comparison_repeat_revenue_fen}</td><td>{group.current_repeat_revenue_fen}</td><td>{group.absolute_delta}</td></tr>)}</tbody></table></div></>}
+    <h4>分组贡献（M2）</h4>{metrics.m2.status !== 'applicable' ? <p>{metrics.m2.status==='not_selected'?'本次只选总体比较，未执行分组分析。':'分组比较不适用，请检查分组选择与两期活跃会员分母。'}</p> : <><p>按确认的成员分组计算复购收入变化；只显示脱敏分组序号，不显示原始组名。贡献为当前期减对比期，不代表原因。</p><div className="metric-scroll"><table aria-label="分组复购收入贡献"><thead><tr><th scope="col">分组</th><th scope="col">对比期（分）</th><th scope="col">当前期（分）</th><th scope="col">贡献（分）</th></tr></thead><tbody>{metrics.m2.groups.map((group,index)=><tr key={group.group_id}><th scope="row">分组 {index+1}</th><td>{group.comparison_repeat_revenue_fen}</td><td>{group.current_repeat_revenue_fen}</td><td>{group.absolute_delta}</td></tr>)}</tbody></table></div></>}
     <h4>支持、反证与限制</h4><p>{judgment}</p><p>DuckDB 主计算与 Python 独立复算一致。关联不等于因果；不进行显著性检验；结论仅限已确认的本地快照，不能外推真实效果。</p>
     <details><summary>精确指标与证据身份（技术信息）</summary><p>正式判断：{finding.judgment}</p><pre>{finding.metrics}</pre><ul>{finding.evidence_refs.map(x=><li key={x}>{x}</li>)}</ul><p>{finding.refutation}</p><ul>{finding.supporting_evidence.concat(finding.limitations).map(x=><li key={x}>{x}</li>)}</ul></details>
     <p>计算结果、显式接受与决策闭环是独立事实；此页面不执行外部行动。</p>
@@ -527,7 +533,7 @@ function ReportReview({ report,projection }: Readonly<{ report: DesktopProjectio
   </article>;
 }
 
-const stageEnglish = ['New analysis','数据准备','Local processing','Evidence-based analysis','Report','Execution feedback'];
+const stageEnglish = ['新建分析','数据准备','本地处理','循证分析','分析报告','执行反馈'];
 const stageNotes = ['帮我整理问题 · 逐次披露','数据范围与快照','DuckDB + Python','帮我解释证据 · 固定方法不变','Finding / 报告历史','原 Decision Closure 保持'];
 function ProfessionalStages({selectedStage,onSelectStage}:{selectedStage:ProfessionalStage;onSelectStage:(stage:ProfessionalStage)=>void}) {
   return <nav aria-label="专业模式阶段" className="professional-stages">{professionalStages.map((stage,index)=><button type="button" key={stage} aria-label={`${index+1} ${stage}`} aria-current={selectedStage===stage?'step':undefined} className={selectedStage===stage?'stage-button active':'stage-button'} onClick={()=>onSelectStage(stage)}><span className="stage-number">{index+1}</span><span><strong>{stageEnglish[index]}<span className="visually-hidden"> · {stage}</span></strong><small>{stageNotes[index]}</small></span></button>)}</nav>;
@@ -559,7 +565,7 @@ function ProfessionalDecision({projection,formal,disabled,onBegin,onRevise,onExp
    <article><span>当前报告</span><strong>{report?'v'+report.sequence:original?'v'+original.version_sequence:'暂无'}</strong><small>{report?'原 final report 保留 · 只读':original?original.state+' · 当前':'尚未生成报告'}</small></article>
   </section>
   <section className="pro-card case-assistant-entry"><div className="assistant-orb" aria-hidden="true">✦</div><div><p className="eyebrow">MULTI-TURN CASE ASSISTANT</p><h2>{decision?'Decision Record 已采纳':'用 Case Assistant 记录正式决定'}</h2><p>{decision?`正式决定与 Expected Outcome 已记录，报告 v${report?.sequence} 已追加；来源分析与原 Closure 保持。`:'在独立快速会话中比较已保存候选、补齐责任与预期结果。Agent 只能形成待采纳草案。'}</p><div className="boundary-pills"><span>读取已验证证据</span><span>只读工具</span><span>用户采纳</span><span>不执行行动</span></div>{!eligible&&<p role="status">{formal?.source.missing.join('；')||'请先完成数据快照、证据采纳、Decision Closure 与 final report。'}</p>}</div><button type="button" aria-label="用 Case Assistant 完成决策" className="primary-button" disabled={disabled||!eligible} onClick={onBegin}>进入 Case Assistant</button></section>
-  {decision&&<section className="pro-card formal-record"><div className="formal-heading"><div><p className="eyebrow">FORMAL RECORD</p><h2>当前正式决定 · v{decision.sequence}</h2></div><span className="state-badge green">已采纳</span></div><p>{decision.fields.choice==='candidate'?'选择已有候选：'+(formal?.source.candidates.find(c=>c.candidate_id===decision.fields.candidate_id)?.title??decision.fields.candidate_id):decision.fields.choice==='no_action'?'不行动':'暂缓'}</p><div className="formal-grid"><div><span>责任人</span><strong>{decision.fields.owner}</strong></div><div><span>观察窗口 / 触发</span><strong>{decision.fields.outcome.applicable?decision.fields.outcome.observation_window:decision.fields.outcome.reassess_trigger}</strong></div><div><span>新报告</span><strong>v{report?.sequence}</strong></div></div><details><summary>正式 Decision Record / Expected Outcome 完整字段</summary><p>{decision.id} · {decision.outcome_id}</p><p>采纳人 {decision.actor} · {decision.adopted_at} · 来源 revision {decision.source.revision_id}</p><DecisionFieldsView fields={decision.fields}/></details><div className="draft-actions"><button type="button" disabled={disabled||!eligible} onClick={onRevise}>创建待采纳修订</button></div></section>}
+  {decision&&<section className="pro-card formal-record"><div className="formal-heading"><div><p className="eyebrow">FORMAL RECORD</p><h2>当前正式决定 · v{decision.sequence}</h2></div><span className="state-badge green">已采纳</span></div><p>{decision.fields.choice==='candidate'?'选择已有候选：'+(formal?.source.candidates.find(c=>c.candidate_id===decision.fields.candidate_id)?.title??decision.fields.candidate_id):decision.fields.choice==='no_action'?'不行动':'暂缓'}</p><div className="formal-grid"><div><span>责任人</span><strong>{decision.fields.owner}</strong></div><div><span>观察窗口 / 触发</span><strong>{decision.fields.outcome.applicable?decision.fields.outcome.observation_window:decision.fields.outcome.reassess_trigger}</strong></div><div><span>新报告</span><strong>v{report?.sequence}</strong></div></div><details><summary>正式 Decision Record / Expected Outcome 完整字段</summary><p>{decision.id} · {decision.outcome_id}</p><p>采纳人 {decision.actor} · {decision.adopted_at} · 来源 revision {decision.source.revision_id}</p><DecisionFieldsView fields={decision.fields}/></details><div className="draft-actions">{decision.origin?<p>会员分析的已完成记录 · 只读</p>:<button type="button" disabled={disabled||!eligible} onClick={onRevise}>创建待采纳修订</button>}</div></section>}
   {formal?.reports.map((item,i)=>{const linked=formal.decisions.find(d=>d.id===item.decision_id&&d.report_id===item.id&&d.source.revision_id===item.source_revision&&d.source_report_id===item.original_report_id&&(['project_id','session_id','case_id','revision_id'] as const).every(key=>d.source[key]===formal.source.owner[key]));return <details className="formal-report" id={'formal-report-'+item.id} key={item.id}><summary>报告 v{item.sequence} · {i===formal.reports.length-1?'当前':'superseded history'}</summary>{linked?<article className="formal-report-preview" aria-label={`正式报告 v${item.sequence}`}><p>采纳人 {linked.actor} · {linked.adopted_at}</p>{formalDecisionSections(linked).map(section=><section key={section.title}><h3>{section.title}</h3><dl>{section.rows.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value||'未填写'}</dd></div>)}</dl></section>)}</article>:<p role="alert">报告关联的正式记录不可用；请重新打开项目核对，不以当前决定替代。</p>}<button type="button" onClick={()=>onExport(item.id)}>导出此报告</button></details>;})}
  </section>;
 }

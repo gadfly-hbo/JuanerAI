@@ -1,3 +1,5 @@
+import {createRetainedMembershipAccess,type RetainedMembershipDependencies} from './member-retained.ts';
+import type {TaskUsage} from '../product-core/member-task.ts';
 import {createLocalModelAccess} from './provider-settings.ts';
 import {isDeepStrictEqual} from 'node:util';
 import {validateChildResult} from '../product-core/case-collaboration.ts';
@@ -14,18 +16,26 @@ export function createCaseAssistantApplication(input: {
     config: AssistantConfig | null;
     clock: () => Date;
     modelAccess?: LocalModelAccess;
+    membership?:RetainedMembershipDependencies;
 }) {
     const { store, runtime, clock } = input, config = structuredClone(input.config), previews = new Map<string, {
         generation?: number;
         session: string;
         authorization: Authorization;
     }>();
+    const membership=input.membership?createRetainedMembershipAccess(input.membership,clock):null;
+    const retainedProfile=input.membership?.profile;
+    const retainedConfig:AssistantConfig|null=retainedProfile?.activation==='synthetic_only'?{provider:retainedProfile.provider,model:retainedProfile.model,authorized:true,runtime_id:'pi',runtime_version:'0.84.2',adapter_version:'1.0',limits:{turns:retainedProfile.model_calls,execution_ms:retainedProfile.total_active_ms,waiting_ms:retainedProfile.wait_ms,cost_microunits:retainedProfile.total_output_tokens,turn_cost_microunits:retainedProfile.call_output_tokens,currency:'synthetic'}}:null;
+    const runtimeFor=(a:Authorization)=>a.membership?(input.membership?.runtime??runtime):runtime;
     const access=input.modelAccess??createLocalModelAccess(!!config?.authorized);
     type Live = {
         attempt: AssistantAttempt;
         abort: AbortController;
         timer: ReturnType<typeof setTimeout> | null;
         busy: boolean;
+        physicalPending?: boolean;
+        waitingUsage?:TaskUsage;
+        waitingBegan?:number;
         release?: () => void;
     };
     const live = new Map<string, Live>();
@@ -35,7 +45,7 @@ export function createCaseAssistantApplication(input: {
     const now = () => clock().toISOString();
     function guards() { if (closed)
         assistantFailure('INTERRUPTED'); }
-    async function read(id: string): Promise<AssistantProjection> { usedSessions.add(id);const h = await store.readSession(id), source = await store.readSource(h.session.source), f = await store.formalHistory(h.session.source); return { version: '1.0', ...h, source, ...f, current_decision_id: f.decisions.at(-1)?.id ?? null }; }
+    async function read(id: string): Promise<AssistantProjection> { usedSessions.add(id);let h = await store.readSession(id);const control=live.get(id);if(control?.attempt.authorization.membership&&['Running','Waiting'].includes(control.attempt.status)){try{await membership!.guard(control.attempt.authorization);}catch(error){await settle(control,'Failed',String((error as {code?:string}).code??'SOURCE_CHANGED'));h=await store.readSession(id);}}const source = await store.readSource(h.session.source), f = await store.formalHistory(h.session.source); return { version: '1.0', ...h, source, ...f, current_decision_id: f.decisions.at(-1)?.id ?? null }; }
     async function link(owner: OwnerRef, title: string, commandId: string) { guards(); const source = await store.readSource(owner); if (!source.eligible)
         assistantFailure('SOURCE_INELIGIBLE'); const session = await store.createSession(commandId, { id: randomUUID(), title, source: owner, created_at: now(), archived: false }, source); return read(session.id); }
     async function list(projectId: string) { return store.listSessions(projectId); }
@@ -60,7 +70,7 @@ export function createCaseAssistantApplication(input: {
         const selected=allowed.filter(e=>historyIds.includes(e.id));
         if(new Set(historyIds).size!==historyIds.length||selected.length!==historyIds.length||selected.some(e=>e.source_revision!==p.source.owner.revision_id))assistantFailure('FORBIDDEN');
         const available=[{id:p.source.report.report_id,summary:p.source.report.summary},...p.reports.map(r=>({id:r.id,summary:JSON.stringify(p.decisions.find(d=>d.id===r.decision_id))}))];
-        const reports=available.filter(r=>reportIds.includes(r.id));
+        const reports=available.filter((r,i)=>reportIds.includes(r.id)&&(!p.source.membership_origin||available.findIndex(v=>v.id===r.id)===i));
         if(new Set(reportIds).size!==reportIds.length||reports.length!==reportIds.length)assistantFailure('FORBIDDEN');
         collaborationIdle();if(epoch!==(sessionEpochs.get(id)??0))assistantFailure('INTERRUPTED');
         const preview:ChildPreview={id:randomUUID(),parent_session_id:id,kind,task,cutoff_id:cutoffId,source:p.source,baseline_decision_id:p.current_decision_id,selected_history:selected,selected_reports:reports,aggregate:includeAggregate?p.source.aggregate:null,parent_epoch:life.epoch,created_at:now()};
@@ -82,29 +92,32 @@ export function createCaseAssistantApplication(input: {
         const epoch=sessionEpochs.get(id)??0;
         if(!(await store.readLifecycle(id)).open)assistantFailure('SESSION_CLOSED');
         const p = await read(id), previous = p.attempts.at(-1), current = p.decisions.at(-1);
+        const selectedConfig=p.source.membership_origin?retainedConfig:config;
         const selected = p.events.filter(e => historyIds.includes(e.id));
         if (new Set(historyIds).size !== historyIds.length || selected.length !== historyIds.length || selected.some(e => !['user', 'advice', 'question', 'tool'].includes(e.kind) || e.source_revision !== p.source.owner.revision_id))
             assistantFailure('FORBIDDEN');
         if (rebase && selected.some(e => e.kind !== 'user'))
             assistantFailure('FORBIDDEN');
         const available = [{ id: p.source.report.report_id, summary: p.source.report.summary }, ...p.reports.map(r => ({ id: r.id, summary: JSON.stringify(p.decisions.find(d => d.id === r.decision_id)) }))];
-        const chosen = reportIds.length ? available.filter(r => reportIds.includes(r.id)) : [available.at(-1)!];
+        const chosen = reportIds.length ? available.filter((r,i) => reportIds.includes(r.id)&&(!p.source.membership_origin||available.findIndex(v=>v.id===r.id)===i)) : [available.at(-1)!];
         if (reportIds.length && chosen.length !== new Set(reportIds).size)
             assistantFailure('FORBIDDEN');
         const blockers = [...p.source.missing];
+        if(p.source.membership_origin&&!membership)blockers.push('P1 来源需要单独配置材料范围与原任务累计资源');
         if (!assistantText(text))
             blockers.push('请填写初始任务文本');
-        if (!config?.authorized || !runtime)
+        if (!selectedConfig?.authorized || !(p.source.membership_origin?(input.membership?.runtime??runtime):runtime))
             blockers.push('模型未配置');
         const accessSnapshot=access.snapshot();
         if(accessSnapshot&&!accessSnapshot.available)blockers.push('请检查模型接入配置');
-        if (!config || !assistantText(config.provider) || !assistantText(config.model) || !assistantText(config.limits.currency) || !['turns', 'execution_ms', 'waiting_ms', 'cost_microunits', 'turn_cost_microunits'].every(k => Number.isSafeInteger(config.limits[k as keyof typeof config.limits]) && Number(config.limits[k as keyof typeof config.limits]) > 0) || config.limits.turn_cost_microunits > config.limits.cost_microunits)
+        if (!selectedConfig || !assistantText(selectedConfig.provider) || !assistantText(selectedConfig.model) || !assistantText(selectedConfig.limits.currency) || !['turns', 'execution_ms', 'waiting_ms', 'cost_microunits', 'turn_cost_microunits'].every(k => Number.isSafeInteger(selectedConfig.limits[k as keyof typeof selectedConfig.limits]) && Number(selectedConfig.limits[k as keyof typeof selectedConfig.limits]) > 0) || selectedConfig.limits.turn_cost_microunits > selectedConfig.limits.cost_microunits)
             blockers.push('缺少确切执行、等待或费用硬上限');
         const baseline = rebase || !previous ? current?.id ?? null : previous.authorization.baseline_decision_id;
         if (baseline !== (current?.id ?? null))
             blockers.push('当前决定已变化，请基于当前版本重新开始');
         const context = { source: { owner: p.source.owner, finding_id: p.source.finding_id, evidence_refs: p.source.evidence_refs, limitations: p.source.limitations, closure_id: p.source.closure_id }, aggregate: p.source.aggregate, formal_baseline: baseline ? current : null, initial_text: text, selected_history: selected, selected_reports: chosen, tools: ASSISTANT_TOOLS, skill: 'Case 决策与预期 v1.0', prompt_version: '1.0' };
-        const authorization: Authorization = { id: randomUUID(), source: p.source, baseline_decision_id: baseline, config, initial_text: text, selected_history: selected, selected_reports: chosen, tools: ASSISTANT_TOOLS, categories: ['user_authored_text', 'verified_case', 'accepted_evidence_finding', 'approved_020_clean_subset', 'selected_report_summary', 'selected_history'], skill_version: '1.0', prompt_version: '1.0', created_at: now(), payload: JSON.stringify(context), blockers };
+        let authorization: Authorization = { id: randomUUID(), source: p.source, baseline_decision_id: baseline, config:selectedConfig, initial_text: text, selected_history: selected, selected_reports: chosen, tools: ASSISTANT_TOOLS, categories: ['user_authored_text', 'verified_case', 'accepted_evidence_finding', 'approved_020_clean_subset', 'selected_report_summary', 'selected_history'], skill_version: '1.0', prompt_version: '1.0', created_at: now(), payload: JSON.stringify(context), blockers };
+        if(p.source.membership_origin&&membership){try{authorization=await membership.restrict(authorization,id);}catch(error){if((error as {code?:string}).code!=='AUTHORITY_REQUIRED')throw error;authorization={...authorization,blockers:[...authorization.blockers,'尚未配置获准的 P1 材料与累计资源']};}}
         guards();if(epoch!==(sessionEpochs.get(id)??0))assistantFailure('INTERRUPTED');
         previews.set(authorization.id, { session: id, authorization, generation: accessSnapshot?.generation });
         return structuredClone(authorization);
@@ -117,13 +130,14 @@ export function createCaseAssistantApplication(input: {
         const cancel=()=>c.abort();continuation?.addEventListener('abort',cancel,{once:true});if(continuation?.aborted)c.abort();
         try{const relation=await store.readChild(id);if(!relation)assistantFailure('FORBIDDEN');localPublications.set(c,[id,relation.parent_session_id]);if((epochs.get(id)??0)!==(sessionEpochs.get(id)??0)||(epochs.get(relation.parent_session_id)??0)!==(sessionEpochs.get(relation.parent_session_id)??0))c.abort();
             const p=await read(id);if(!isDeepStrictEqual(p.source,relation.source)||p.current_decision_id!==relation.baseline_decision_id)assistantFailure('AUTHORIZATION_STALE');
+            if(p.source.membership_origin){if(!membership)assistantFailure('AUTHORITY_REQUIRED');const result=(await store.childResults(id)).find(r=>r.id===target.result_id&&r.version===target.result_version&&r.sha256===target.result_sha256);if(!result)assistantFailure('NOT_FOUND');await membership.safeValue(p.source,result.value);}
             try{return await store.returnChild(id,target,commandId,now(),p.source,c.signal);}
             catch(error){if(!c.signal.aborted)await store.failChildReturn(id,target,c.signal);throw error;}
         }finally{continuation?.removeEventListener('abort',cancel);localPublications.delete(c);}
     }
     async function reviewResult(id:string,target:ResultTarget,commandId:string,disposition:'adopted'|'declined',reason:string,confirmed:boolean){
         guards();if(!confirmed)assistantFailure('AUTHORITY_REQUIRED');const c=new AbortController();localPublications.set(c,[id]);
-        try{const p=await read(id);return await store.reviewChild(id,target,commandId,disposition,reason,now(),p.source,c.signal);}finally{localPublications.delete(c);}
+        try{const p=await read(id);if(p.source.membership_origin){if(!membership)assistantFailure('AUTHORITY_REQUIRED');const result=(await store.readParentCollaboration(id)).results.find(r=>r.id===target.result_id&&r.version===target.result_version&&r.sha256===target.result_sha256);if(!result)assistantFailure('NOT_FOUND');await membership.safeValue(p.source,result.value);}return await store.reviewChild(id,target,commandId,disposition,reason,now(),p.source,c.signal);}finally{localPublications.delete(c);}
     }
     async function prepareParent(id:string,text:string,historyIds:readonly string[],reportIds:readonly string[],materialIds:readonly string[],rebase:boolean){
         guards();const epoch=sessionEpochs.get(id)??0;
@@ -137,7 +151,8 @@ export function createCaseAssistantApplication(input: {
         const preview=previews.get(a.id)!;
         if(!isDeepStrictEqual(a.source,state.source)||a.baseline_decision_id!==state.current_decision_id)assistantFailure('AUTHORIZATION_STALE');
         const materials=selected.map(m=>({id:m.id,classification:m.classification,review:m.review,result:{id:m.result.id,child_session_id:m.result.child_session_id,attempt_id:m.result.attempt_id,version:m.result.version,sha256:m.result.sha256,source:m.result.source.owner,value:m.result.value}}));
-        const authorization:Authorization={...a,payload:JSON.stringify({...JSON.parse(a.payload),selected_materials:materials}),categories:[...a.categories,...(materials.length?['selected_MODEL_user_adopted_material']:[])]};
+        let authorization:Authorization={...a,payload:JSON.stringify({...JSON.parse(a.payload),selected_materials:materials}),categories:[...a.categories,...(materials.length?['selected_MODEL_user_adopted_material']:[])]};
+        if(a.source.membership_origin&&membership)authorization=await membership.restrict(authorization,id);
         previews.set(a.id,{...preview,authorization});return structuredClone(authorization);
     }
     async function prepareCollaboration(id:string,text:string,historyIds:readonly string[],resultIds:readonly string[]):Promise<Authorization>{
@@ -159,14 +174,21 @@ export function createCaseAssistantApplication(input: {
         const tools=ASSISTANT_TOOLS.filter(t=>t==='read_case'||t==='read_report'&&relation.selected_reports.length>0||relation.aggregate!==null&&['read_evidence','read_candidates','read_aggregate'].includes(t));
         const collaboration={kind:relation.kind,child_session_id:id,parent_session_id:relation.parent_session_id,parent_epoch:parentLife.epoch,child_epoch:childLife.epoch,allowed_references:refs,selected_results:selectedResults};
         const context={contract_version:'1.1',task:relation.task,source:{owner:p.source.owner,case_name:p.source.case_name},formal_baseline_id:relation.baseline_decision_id,inherited_history:relation.selected_history,selected_history:a.selected_history,selected_results:selectedResults.map(r=>({id:r.id,version:r.version,sha256:r.sha256,attempt_id:r.attempt_id,value:r.value})),selected_reports:relation.selected_reports,aggregate:relation.aggregate,business_projection:relation.aggregate?{finding_id:p.source.finding_id,evidence_refs:p.source.evidence_refs,finding_summary:p.source.finding_summary,candidates:p.source.candidates,limitations:p.source.limitations}:null,initial_text:text,allowed_references:refs,tools,skill:'有界子对话 v1.1',prompt_version:'1.1'};
-        const authorization:Authorization={...a,baseline_decision_id:relation.baseline_decision_id,collaboration,selected_reports:relation.selected_reports,tools,skill_version:'1.1',prompt_version:'1.1',payload:JSON.stringify(context),categories:['user_authored_text','selected_parent_history','selected_own_history','selected_own_results',...(relation.aggregate?['approved_020_clean_subset','accepted_evidence_finding']:[]),...(relation.selected_reports.length?['selected_report_summary']:[])]};
+        let authorization:Authorization={...a,baseline_decision_id:relation.baseline_decision_id,collaboration,selected_reports:relation.selected_reports,tools,skill_version:'1.1',prompt_version:'1.1',payload:JSON.stringify(context),categories:['user_authored_text','selected_parent_history','selected_own_history','selected_own_results',...(relation.aggregate?['approved_020_clean_subset','accepted_evidence_finding']:[]),...(relation.selected_reports.length?['selected_report_summary']:[])]};
         const latestParent=await store.readLifecycle(relation.parent_session_id),latestChild=await store.readLifecycle(id);
         guards();
         if(epoch!==(sessionEpochs.get(id)??0)||parentEpoch!==(sessionEpochs.get(relation.parent_session_id)??0)||closedSessions.has(id)||closedSessions.has(relation.parent_session_id)||!latestParent.open||!latestChild.open||latestParent.epoch!==parentLife.epoch||latestChild.epoch!==childLife.epoch){previews.delete(a.id);assistantFailure('INTERRUPTED');}
         if(!isDeepStrictEqual(a.source,p.source)||a.baseline_decision_id!==p.current_decision_id){previews.delete(a.id);assistantFailure('AUTHORIZATION_STALE');}
+        if(a.source.membership_origin&&membership)authorization=await membership.restrict(authorization,id);
         previews.set(a.id,{...snapshot,authorization});return structuredClone(authorization);
     }
     async function event(control: Live, kind: AssistantEvent['kind'], text: string, status = 'completed', tool: AssistantEvent['tool'] = null) { await store.appendEvent(control.attempt.session_id, { id: randomUUID(), attempt_id: control.attempt.id, at: now(), kind, text, tool, status, source_revision: control.attempt.authorization.source.owner.revision_id }, kind === 'status' ? undefined : control.abort.signal); }
+    function releaseSettled(control: Live) {
+        if (!control.physicalPending && !['Running', 'Waiting'].includes(control.attempt.status)) {
+            control.release?.();
+            control.release = undefined;
+        }
+    }
     async function settle(control: Live, status: AssistantStatus, reason: string | null) { if (control.timer)
         clearTimeout(control.timer); control.timer = null; control.abort.abort(); if (!['Running', 'Waiting'].includes(control.attempt.status))
         return; control.attempt = { ...control.attempt, status, reason, ended_at: now(), waiting_deadline: null }; try {
@@ -177,8 +199,9 @@ export function createCaseAssistantApplication(input: {
                 if(saved?.status!=='Succeeded'||!result)throw error;
                 control.attempt=saved;return;
             }
+            if(control.attempt.authorization.membership){if(control.waitingUsage){await membership!.update(control.attempt.authorization,{...control.waitingUsage,status:'settled',wait_ms:Math.min(control.waitingUsage.wait_ms,Math.max(0,clock().getTime()-(control.waitingBegan??clock().getTime())))});control.waitingUsage=undefined;}await membership!.finish(control.attempt.authorization,control.attempt);}
             await event(control, 'status', reason ?? status, status);
-        } finally { control.release?.(); control.release=undefined; } }
+        } finally { releaseSettled(control); } }
     async function start(id: string, previewId: string, freeTextConfirmed: boolean) {
         guards();
         if (!freeTextConfirmed)
@@ -187,7 +210,8 @@ export function createCaseAssistantApplication(input: {
         if (!preview || preview.session !== id)
             assistantFailure('AUTHORITY_REQUIRED');
         const a = preview.authorization;
-        if (a.blockers.length || !a.config?.authorized || !runtime)
+        if(a.source.membership_origin&&(!a.membership||!membership))assistantFailure('AUTHORITY_REQUIRED');
+        if (a.blockers.length || !a.config?.authorized || !runtimeFor(a))
             assistantFailure('AUTHORITY_REQUIRED');
         if(pendingStarts.has(id))assistantFailure('BUSY');
         const pending=new AbortController();pendingStarts.set(id,pending);
@@ -199,7 +223,7 @@ export function createCaseAssistantApplication(input: {
         if(!(await store.readLifecycle(id)).open)assistantFailure('SESSION_CLOSED');
         if(a.collaboration){const parentLife=await store.readLifecycle(a.collaboration.parent_session_id),childLife=await store.readLifecycle(id);if(!parentLife.open||!childLife.open||parentLife.epoch!==a.collaboration.parent_epoch||childLife.epoch!==a.collaboration.child_epoch)assistantFailure('AUTHORIZATION_STALE');}
         if(pending.signal.aborted||closed)return p;
-        if (JSON.stringify(p.source) !== JSON.stringify(a.source) || p.current_decision_id !== a.baseline_decision_id || JSON.stringify(config) !== JSON.stringify(a.config))
+        if (JSON.stringify(p.source) !== JSON.stringify(a.source) || p.current_decision_id !== a.baseline_decision_id || JSON.stringify(a.membership?retainedConfig:config) !== JSON.stringify(a.config))
             assistantFailure('AUTHORIZATION_STALE');
         if (live.has(id) && ['Running', 'Waiting'].includes(live.get(id)!.attempt.status))
             assistantFailure('BUSY');
@@ -210,6 +234,7 @@ export function createCaseAssistantApplication(input: {
         transferred=true;
         let saved = false;
         try {
+            if(a.membership)await membership!.grant(a,attempt);
             await store.saveAttempt(attempt);
             saved = true;
             if (control.abort.signal.aborted)
@@ -256,20 +281,31 @@ export function createCaseAssistantApplication(input: {
                 await store.saveAttempt(control.attempt);
                 if (control.abort.signal.aborted)
                     return;
-                const payload = JSON.stringify({ authorized_context: JSON.parse(a.payload), current_attempt_history: p.events.filter(e => e.attempt_id === control.attempt.id && ['user', 'question', 'advice', 'tool'].includes(e.kind)), visible_message: text, authorized_tool_result: toolResult });
+                const ordinaryPayload = JSON.stringify({ authorized_context: JSON.parse(a.payload), current_attempt_history: p.events.filter(e => e.attempt_id === control.attempt.id && ['user', 'question', 'advice', 'tool'].includes(e.kind)), visible_message: text, authorized_tool_result: toolResult });
+                const payload=a.membership?await membership!.payload(a,p.events.filter(e=>e.attempt_id===control.attempt.id&&['user','question','advice','tool'].includes(e.kind)),text,toolResult):ordinaryPayload;
+                const usage=a.membership?await membership!.reserve(a,control.attempt,'model',payload):null;
                 await event(control, 'payload', payload, 'issued');
                 if (control.abort.signal.aborted)
                     return;
-                const began = clock().getTime(), remaining = limits.execution_ms - control.attempt.execution_ms;
+                const began = clock().getTime(), remaining = Math.min(limits.execution_ms - control.attempt.execution_ms,...(a.membership?[a.membership.profile.call_ms,Date.parse(a.membership.expires_at)-clock().getTime()]:[]));
+                if(usage)await membership!.update(a,{...usage,status:'issued'});
                 const timeout = new Promise<never>((_, reject) => { control.timer = setTimeout(() => { reject(Object.assign(new Error('EXECUTION_TIMEOUT'), { code: 'EXECUTION_TIMEOUT' })); control.abort.abort(); }, remaining); });
                 const aborted = new Promise<never>((_, reject) => { control.abort.signal.addEventListener('abort', () => reject(Object.assign(new Error('INTERRUPTED'), { code: 'INTERRUPTED' })), { once: true }); });
-                const output = await Promise.race([runtime!.turn({ payload, provider: c.provider, model: c.model, signal: control.abort.signal, cost_reservation_microunits: limits.turn_cost_microunits,...(a.collaboration?{collaboration:{contract_version:'1.1' as const,purpose:a.collaboration.kind}}:{}) }), timeout, aborted]);
+                control.physicalPending = true;
+                // Logical cancellation is responsive; only the issued turn's settlement
+                // permits another entry point to own the shared physical model slot.
+                const issued = (async () => runtimeFor(a)!.turn({ ...(a.membership?{retained_membership:{version:'1.0' as const}}:{}),payload, provider: c.provider, model: c.model, signal: control.abort.signal, cost_reservation_microunits: limits.turn_cost_microunits,...(a.collaboration?{collaboration:{contract_version:'1.1' as const,purpose:a.collaboration.kind}}:{}) }))().finally(() => {
+                    control.physicalPending = false;
+                    releaseSettled(control);
+                });
+                let output;try{output=await Promise.race([issued,timeout,aborted]);if(usage)await membership!.update(a,{...usage,status:'settled',active_ms:Math.min(usage.active_ms,Math.max(0,clock().getTime()-began))});}catch(error){if(usage)await membership!.update(a,{...usage,status:'unresolved'});throw error;}
+                if(a.membership){await membership!.guard(a);output={...output,output:await membership!.output(a,output.output)};}
                 if (control.timer)
                     clearTimeout(control.timer);
                 control.timer = null;
                 if (control.abort.signal.aborted)
                     return;
-                if(a.collaboration){
+                if(a.collaboration||a.membership){
                     const latest=await read(control.attempt.session_id);
                     if(control.abort.signal.aborted)return;
                     if(!latest.source.eligible||!isDeepStrictEqual(latest.source,a.source)||latest.current_decision_id!==a.baseline_decision_id){
@@ -297,7 +333,7 @@ export function createCaseAssistantApplication(input: {
                     const value=validateChildResult(o,a.collaboration.allowed_references);
                     const ended:AssistantAttempt={...control.attempt,status:'Succeeded',reason:null,ended_at:now(),waiting_deadline:null};
                     const result=await store.finishChild(ended,value,control.abort.signal);
-                    control.attempt=ended;control.release?.();control.release=undefined;
+                    control.attempt=ended;if(a.membership)await membership!.finish(a,ended);control.release?.();control.release=undefined;
                     try{
                         await event(control,'status','Succeeded','Succeeded');
                         if(a.collaboration.kind==='subagent'&&!control.abort.signal.aborted)await deliverResult(control.attempt.session_id,{result_id:result.id,result_version:result.version,result_sha256:result.sha256},randomUUID(),control.abort.signal);
@@ -317,7 +353,7 @@ export function createCaseAssistantApplication(input: {
                     if (JSON.stringify(latest.source) !== JSON.stringify(a.source))
                         assistantFailure('STALE_REVISION');
                     const s = a.source;
-                    toolResult = o.tool === 'read_case' ? { owner: s.owner, case_name: s.case_name,...(!a.collaboration||a.tools.includes('read_evidence')?{limitations:s.limitations}:{}) } : o.tool === 'read_evidence' ? { finding_id: s.finding_id, evidence_refs: s.evidence_refs, summary: s.finding_summary } : o.tool === 'read_candidates' ? s.candidates : o.tool === 'read_aggregate' ? s.aggregate : a.selected_reports;
+                    toolResult = a.membership?await membership!.tool(a):o.tool === 'read_case' ? { owner: s.owner, case_name: s.case_name,...(!a.collaboration||a.tools.includes('read_evidence')?{limitations:s.limitations}:{}) } : o.tool === 'read_evidence' ? { finding_id: s.finding_id, evidence_refs: s.evidence_refs, summary: s.finding_summary } : o.tool === 'read_candidates' ? s.candidates : o.tool === 'read_aggregate' ? s.aggregate : a.selected_reports;
                     await event(control, 'tool', JSON.stringify({ source: s.owner, result: toolResult }), 'completed', o.tool);
                     text = '';
                     continue;
@@ -328,13 +364,15 @@ export function createCaseAssistantApplication(input: {
                     await event(control, 'question', o.text);
                     if (control.abort.signal.aborted)
                         return;
-                    const deadline = new Date(clock().getTime() + limits.waiting_ms).toISOString();
+                    const waitMs=Math.min(limits.waiting_ms,...(a.membership?[a.membership.profile.wait_ms,Date.parse(a.membership.expires_at)-clock().getTime()]:[]));
+                    if(a.membership){control.waitingUsage=await membership!.reserve(a,control.attempt,'waiting',null);await membership!.update(a,{...control.waitingUsage,status:'issued'});control.waitingBegan=clock().getTime();}
+                    const deadline = new Date(clock().getTime() + waitMs).toISOString();
                     control.attempt = { ...control.attempt, status: 'Waiting', waiting_deadline: deadline };
                     await store.saveAttempt(control.attempt);
                     if (control.abort.signal.aborted)
                         return;
                     control.busy = false;
-                    control.timer = setTimeout(() => void settle(control, 'WaitExpired', 'waiting_timeout'), limits.waiting_ms);
+                    control.timer = setTimeout(() => void settle(control, 'WaitExpired', 'waiting_timeout'), waitMs);
                     return;
                 }
                 if (o.kind === 'draft') {
@@ -378,6 +416,7 @@ export function createCaseAssistantApplication(input: {
             assistantFailure('INTERRUPTED');
         if (JSON.stringify(p.source) !== JSON.stringify(control.attempt.authorization.source) || p.current_decision_id !== control.attempt.authorization.baseline_decision_id)
             assistantFailure('AUTHORIZATION_STALE');
+        if(control.attempt.authorization.membership){await membership!.payload(control.attempt.authorization,[],text,null);if(control.waitingUsage){await membership!.update(control.attempt.authorization,{...control.waitingUsage,status:'settled',wait_ms:Math.min(control.waitingUsage.wait_ms,Math.max(0,clock().getTime()-(control.waitingBegan??clock().getTime())))});control.waitingUsage=undefined;}}
         // Waiting still owns the deadline until the reply is durably appended.
         await event(control, 'user', text);
         if (control.abort.signal.aborted)
@@ -428,7 +467,7 @@ export function createCaseAssistantApplication(input: {
             // behavior while the incremented process epoch invalidates old grants.
             if((await store.readLifecycle(sessionId)).open)closedSessions.delete(sessionId);
         }}
-        finally{for(const sessionId of ids){const c=live.get(sessionId);c?.release?.();if(c)c.release=undefined;}}
+        finally{for(const sessionId of ids){const c=live.get(sessionId);if(c){if(c.attempt.authorization.membership){if(c.waitingUsage){await membership!.update(c.attempt.authorization,{...c.waitingUsage,status:'settled',wait_ms:Math.min(c.waitingUsage.wait_ms,Math.max(0,clock().getTime()-(c.waitingBegan??clock().getTime())))});c.waitingUsage=undefined;}await membership!.finish(c.attempt.authorization,c.attempt);}releaseSettled(c);}}}
     }
     async function reopenSession(id:string,epoch:number){guards();const state=await store.reopenSession(id,epoch);closedSessions.delete(id);sessionEpochs.set(id,(sessionEpochs.get(id)??0)+1);return state;}
     async function close(){if(closeComplete)return;closed=true;previews.clear();childPreviews.clear();for(const pending of pendingStarts.values())pending.abort();for(const c of childCreates.values())c.abort.abort();for(const c of localPublications.keys())c.abort();for(const id of usedSessions)await closeSession(id);closeComplete=true;}

@@ -715,10 +715,12 @@ export function createPiDecisionAssistanceRuntime(config:unknown,injection?:unkn
       let text:string,payload:PlainRecord;
       try{text=new TextDecoder('utf-8',{fatal:true}).decode(input.payload_bytes);payload=closedTerminalJson(text);if(canonicalDesktopJson(payload)!==text||payload.action_kind!==input.action_kind||payload.schema_version!=='1.0')throw protocol();validateDesktopAssistancePayload(payload);}catch{throw sanitized('VALIDATION_FAILED');}
       if(!ready)throw sanitized('PROVIDER_UNAVAILABLE');if(active)throw sanitized('VALIDATION_FAILED');if(input.cancellation_signal.aborted)throw sanitized('CANCELLED');if(input.deadline_seconds===0)throw sanitized('DEADLINE_EXCEEDED');
-      const controller=new AbortController();active=controller;let deadline=false,facade:SessionFacade|undefined,unsubscribe:(()=>unknown)|undefined,closed=false,stage=0,terminal:PlainRecord|undefined,eventFailure=false;
+      const controller=new AbortController();active=controller;let issuedPrompt:Promise<unknown>|undefined;let deadline=false,facade:SessionFacade|undefined,unsubscribe:(()=>unknown)|undefined,closed=false,stage=0,terminal:PlainRecord|undefined,eventFailure=false;
       const abort=()=>controller.abort();input.cancellation_signal.addEventListener('abort',abort,{once:true});
       const timer=setTimeout(()=>{deadline=true;controller.abort();},Math.min(30,input.deadline_seconds)*1000);
       const cancelled=new Promise<never>((_resolve,reject)=>controller.signal.addEventListener('abort',()=>reject(sanitized(deadline?'DEADLINE_EXCEEDED':'CANCELLED')),{once:true}));
+      // The stored-model path awaits its own physical settlement without racing this Promise.
+      void cancelled.catch(()=>undefined);
       const receive=(raw:unknown)=>{if(closed||controller.signal.aborted)return;try{
         const event=projectEvent(raw);if(!event||event.type==='message_update')return;
         if(event.type==='message_end'&&stage===0){const message=event.message as PlainRecord;if(message.stopReason!=='stop')throw protocol();terminal=closedTerminalJson((message.content as PlainRecord[]).map(x=>String(x.text)).join(''));stage=1;}
@@ -752,7 +754,8 @@ export function createPiDecisionAssistanceRuntime(config:unknown,injection?:unkn
         await Promise.race([opening,cancelled]);if(!facade)throw sanitized('PROVIDER_UNAVAILABLE');
         const subscription=facade.subscribe(receive);if(typeof subscription!=='function')throw protocol();unsubscribe=subscription as()=>unknown;
         if(!frozenActiveStatus(facade.setActiveTools(Object.freeze([])),[]))throw protocol();
-        const status=await Promise.race([Promise.resolve(facade.prompt(text,EMPTY_OPTIONS)),cancelled]);
+        issuedPrompt=(async()=>facade!.prompt(text,EMPTY_OPTIONS))();
+        const status=await Promise.race([issuedPrompt,cancelled]);
         if(controller.signal.aborted)throw sanitized(deadline?'DEADLINE_EXCEEDED':'CANCELLED');if(!frozenStatus(status,'settled',true)||eventFailure||stage!==3||!terminal||!exactObject(terminal,['draft_kind','draft_content']))throw sanitized('VALIDATION_FAILED');
         const expected=({organize_question:'question_fields',explain_evidence:'evidence_explanation',draft_candidates:'candidates'} as const)[input.action_kind];
         if(terminal.draft_kind!==expected||!isPlainObject(terminal.draft_content))throw sanitized('VALIDATION_FAILED');
@@ -764,7 +767,15 @@ export function createPiDecisionAssistanceRuntime(config:unknown,injection?:unkn
         closed=true;clearTimeout(timer);input.cancellation_signal.removeEventListener('abort',abort);
         try{
           try{unsubscribe?.();}finally{
-            if(facade){let timeout:ReturnType<typeof setTimeout>|undefined;try{await Promise.race([(async()=>{if(stage!==3||eventFailure||controller.signal.aborted)await facade!.abort();await facade!.waitForIdle();})(),new Promise<void>(resolve=>{timeout=setTimeout(resolve,30000);})]);}finally{if(timeout)clearTimeout(timeout);facade.dispose();}}
+            if(facade){
+              const confirmedIdle=(async()=>{if(stage!==3||eventFailure||controller.signal.aborted)await facade!.abort();if(!frozenStatus(await facade!.waitForIdle(),'idle',true))throw protocol();})();
+              try{
+                // Either the original prompt settles or the Adapter confirms idle.
+                // A cleanup timeout or rejected cancellation is not such proof.
+                if(issuedPrompt)await Promise.any([issuedPrompt.then(()=>undefined,()=>undefined),confirmedIdle]);
+                else await confirmedIdle;
+              }finally{facade.dispose();}
+            }
           }
         }catch{throw sanitized('PROVIDER_UNAVAILABLE');}finally{active=undefined;}
       }

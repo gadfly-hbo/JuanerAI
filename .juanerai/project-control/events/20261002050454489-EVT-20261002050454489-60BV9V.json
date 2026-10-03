@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002050454489-60BV9V",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T05:04:54.489Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "Validator FAIL 已收取，四项范围内修正已派发至原工程上下文。",
+  "status_after": "active",
+  "evidence_refs": []
+}
