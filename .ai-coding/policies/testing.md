@@ -10,7 +10,9 @@ Authority and stop conditions come from
   documentation-only work does not fabricate RED.
 - Prefer domain unit tests for pure rules, real-boundary integration tests,
   unchanged Port contract suites for replaceable Adapters, and real user-path
-  checks for core Decision Loops.
+  checks for core Decision Loops. For affected user entry, UI, recovery and CI
+  inputs, apply the sole policy's Continuous SDD and TDD section within these
+  checks, not a separate test phase.
 - Derive assertions from approved acceptance, not implementation details.
   Cover material positive, negative, boundary, failure and forbidden effects.
 - Environment/import/locator/fixture failures are not product RED. Establish

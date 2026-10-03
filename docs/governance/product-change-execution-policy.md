@@ -111,10 +111,37 @@ and retire test assets with retained coverage proof. Build the thinnest real
 approved runtime path early. Run affected type/build, contract, integration,
 regression and security checks proportionate to the actual change.
 
+For affected user-visible claims, verify the normal supported user entry and
+its actual configuration, not only a test launcher or helper. Check that the
+approved UI communicates choices, state and required limits in user-readable
+terms; raw payloads do not substitute for that experience. Cover relevant
+first-use/reopen, failure after persistence, retry/readback and lifecycle paths
+when the changed behavior depends on them. Helper-only replay or idempotency
+tests do not establish the UI-to-storage sequence. Reuse still-valid evidence
+for unaffected behavior; this is not a whole-product retest or an extra Gate.
+Unapproved provider/data/host effects remain untested and explicitly limited,
+not implicitly authorized to obtain real-path evidence.
+
+Before a costly validation run or publication, use the current executable
+entrypoints and CI definition to identify the applicable commands, required
+environment and approved input artifacts. Reuse that invocation with its input
+identities in existing verification; do not reconstruct it from partial old
+logs or duplicate changing file counts/hashes in instruction documents. When
+source layout, package inputs or validation entrypoints change, check affected
+CI manifests/contracts early and run the applicable existing regression before
+delivery. A stale derived inventory/fixture may be corrected in scope with
+source-based proof; a dependency, trust pin, acceptance or permission change
+keeps its own authority boundary. Missing approved inputs are setup failures,
+not product RED. Disclose unavailable platform checks; a local subset is not
+CI PASS and a CI definition is not permission to install or download resources.
+
 Spec and Test specialists are optional scoped support, not mandatory stages;
 they do not import the retired approval chain. A contributing specialist cannot
 validate its own candidate. The final Validator remains fresh and read-only.
 An unavailable role is disclosed, not silently replaced with author self-review.
+Keep the same engineering context through ordinary correction; return to Mini
+at a result-sized outcome, a real decision boundary or non-convergence, not
+after every command or internal spec/test edit.
 
 ## Engineering Decisions and Local Correction
 
@@ -181,7 +208,8 @@ derives its key positive, negative and failure expectations from approved
 product acceptance and necessary contracts. This is a reading order within the
 same review, not another artifact or Gate. Independently exercise the key real
 business and failure paths in the approved environment, then compare the full
-candidate, tests and claims. Mocks cannot replace the behavior being proved.
+candidate, tests and claims. Apply the normal-user-path and current-CI-input
+checks above to affected claims; mocks cannot replace the behavior being proved.
 
 Freeze the complete candidate (committed, staged, unstaged and added scope) and
 evidence; overlapping pre-existing changes need attribution, not blanket exclusion.
@@ -224,6 +252,12 @@ existing device-local persistent root: actual commands/environment/inputs,
 complete outputs and exits, failures and UNKNOWN. Ordinary source reads need
 not each have an archive. Follow AGENTS.md and HANDOFF_BACK for evidence identity
 and receiver access; do not reconstruct lost historical results as past PASS.
+Maintain one concise current result/next-action summary in the existing
+verification or handoff and link it from other surfaces. Update it at meaningful
+outcomes; preserve issued receipts, failed probe source/inputs/outputs and raw
+history separately. A passing rerun does not explain a lost failure: retain
+UNKNOWN where attribution is unavailable. Optional template fields do not
+require duplicate reports or per-command handoffs.
 
 One device writes a branch. Preserve dirty work; use the existing PR/squash/
 ff-only protections. Mini organizes review, authorized Git delivery and archive
