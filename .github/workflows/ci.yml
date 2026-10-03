@@ -116,6 +116,21 @@ jobs:
           run_logged dependency-install npm ci --prefix "$INSTALL_VIEW" --ignore-scripts --no-audit --no-fund
           run_logged installed-source-check node tools/harness/validation/prepare-ci-install.mjs finalize "$GITHUB_WORKSPACE" "$INSTALL_VIEW" "$JUANERAI_CI_NODE_GYP_ARCHIVE"
           export JUANERAI_TOOLCHAIN_BIN="$TOOLCHAIN_BIN"
+          "$TOOLCHAIN_BIN/node" - "$TOOLCHAIN_BIN" <<'CI_RUNTIME'
+          const { realpathSync, readFileSync } = require('node:fs');
+          const { execFileSync } = require('node:child_process');
+          const { availableParallelism, cpus } = require('node:os');
+          const { join } = require('node:path');
+          const bin = process.argv[2];
+          const tools = Object.fromEntries(['node', 'npm', 'python3', 'duckdb'].map(name => {
+            const executable = join(bin, name);
+            const version = execFileSync(executable, ['--version'], { encoding: 'utf8', timeout: 10000, env: { PATH: `${bin}:/usr/bin:/bin` } }).trim();
+            return [name, { path: realpathSync(executable), version }];
+          }));
+          let cpuQuota = 'UNKNOWN';
+          try { cpuQuota = readFileSync('/sys/fs/cgroup/cpu.max', 'utf8').trim(); } catch {}
+          console.log('CI_RUNTIME ' + JSON.stringify({ tools, availableParallelism: availableParallelism(), cpuModel: cpus()[0]?.model || 'UNKNOWN', cpuQuota }));
+          CI_RUNTIME
           export JUANERAI_TEST_EVIDENCE_DIR="$RUNNER_TEMP/portable-test-evidence"
           mkdir "$JUANERAI_TEST_EVIDENCE_DIR"
           run_logged portable-regression tools/harness/validation/run --portable

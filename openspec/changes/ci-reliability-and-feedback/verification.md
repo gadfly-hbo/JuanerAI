@@ -1,5 +1,92 @@
 # Current result and next action
 
+## Candidate-003 local correction
+
+The mechanical split preserves all 159 member cases: 84 task/formal/human-review
+cases in `member-task.integration.test.ts`, 75 retained/material cases in
+`member-task-retained.integration.test.ts`. The support module registers zero
+tests. `partition-equivalence-20261003.log` and its retained script compare all
+103 non-import top-level statements with published `b36facf`; test names, bodies,
+assertions and negative inputs are unchanged. Only necessary support exports,
+imports and file placement differ. The immutable seed and final immutability
+check stay process-local to the retained file.
+
+The identical 17-case non-UI sample passed before and after: 164.464485s versus
+102.678961s, a 37.57% reduction in this local sample. Native process/fixture-root
+records show separate child processes and writable roots; both children were
+observed using a CPU simultaneously. No within-file concurrency or timeout was
+changed. This sample is not a full Linux or UI performance result.
+
+Both independent typecheck inventories now append the two explicit new roots;
+the original Change004 tuple and all rejection coverage remain. H-TUPLE focused
+checks pass 3/3. Actual workflow diagnostics have a retained causal RED and now
+report selected tool paths/versions and CPU facts without environment leakage.
+Complete local harness: 158 tests, 156 PASS, 0 FAIL, two explicit unavailable
+cloud archive/member proofs, exit 0 in 50.448935s. `git diff --check` passes.
+Local full typecheck/UI/product regression remain unavailable with the existing
+partial dependency installation; no installation was performed.
+
+Evidence is in the same persistent root: `member-partition-before-20261003.log`,
+`member-partition-after-20261003.log`, `member-partition-cpu-sample-20261003.log`,
+`partition-equivalence-20261003.log`, `runtime-split-full-harness.log`,
+`runtime-split-htuple.log`, and their source/identity records. The complete
+candidate is to be frozen and independently reviewed before publication; full
+cloud portable PASS and final disposition are still required. No merge,
+Engineering Acceptance, archive or receiver adoption is claimed here.
+
+## Candidate-002 cloud result and bounded follow-up
+
+Published HEAD `b36facf189a5c39307cc31cd0cecefdb0639cf6e`, tree
+`910b93f23995ee9240d0cfd4c4a2aeac4fcde3fa`, was checked in
+[run 37119557289](https://github.com/gadfly-hbo/JuanerAI/actions/runs/37119557289).
+Its PR merge input `3079c3c7c51ae9394e7ac15eb22b921708492c0a` has parents
+`d0b6f2a933cbf21b913fdd2751761705e0fa5016` and that published HEAD; its tree
+matches the candidate tree. Candidate-002 passed independent source/publication
+review, not final Engineering Acceptance.
+
+The actual full cloud run FAILED: portable validation reached the unchanged
+1080-second limit, exit 124. All 148 cloud harness tests passed, including the
+two archive/member proofs omitted locally. Typecheck and 16 of the 17 canonical
+groups completed successfully. Desktop integration was incomplete; the member
+file reported 154 of 159 cases before interruption. Output order does not prove
+other interrupted files had not started. No blind same-SHA rerun, timeout
+increase, merge or acceptance followed this failure.
+
+Compared with the preceding failed PR run, 31 common optimized matrix cases
+took 387.466s before and 239.479s after (38.19% less). The 106 common unmodified
+member cases took 594.519s and 595.311s (0.13% more). These are sums for matching
+cases, not full-job wall time; the successful optimization alone did not close
+the total runtime gap. Runner CPU/quota and exact effective Python path were
+not captured, so an environment explanation remains unproven.
+
+The follow-up mechanically partitions the oversized member integration file,
+preserving all cases and assertions and using the runner's existing file-level
+parallelism. Shared fixture support registers no tests. Exact typecheck roots
+and independent fixture inventories follow the split. Minimal toolchain/CPU
+diagnostics go in the existing CI log. No dependency, test concurrency, timeout,
+production behavior or acceptance change is approved by this correction.
+The test-only refactor requires pre/post GREEN equivalence; only a subsequent
+full portable run can establish CI completion.
+
+A separate proposed review-state seed was rejected before implementation:
+the checkpoint retained a live expiring grant. Reuse would change authorization
+semantics. Its diagnostic PASS proves detection of that unsafe checkpoint,
+not permission to reuse it or a performance benefit in the delivered suite.
+`review-seed-probe-source.ts` and `review-seed-probe-20261003.log` retain the
+probe in the same evidence root. Historical failures and rejected probes remain.
+
+Native GitHub evidence, independently read back in the evidence root below:
+
+- `github-candidate002-attempt1.run.json`, 12,617 bytes, SHA-256
+  `5094c72f6230d9c6a29b6787464ec6b3a0858f2ae03caacf946fa8be49ffa3e0`.
+- `github-candidate002-attempt1.job.json`, 2,136 bytes, SHA-256
+  `202aae2e637d3d57273710088fc79190706f831a9b2187fe48494034494be83a`.
+- `github-candidate002-attempt1.log`, 392,301 bytes, SHA-256
+  `364377e7ef7d980c0e6f449d2bc45fe9100bc2cf9f66d0b41bd50998e79348e8`.
+
+The sections below preserve earlier fixed-candidate evidence and its then-current
+limits; this section supersedes their pending-cloud status, not their results.
+
 ## Candidate-001 correction scope
 
 Independent review returned FAIL on two CI-SCOPE-002 counterexamples, and the

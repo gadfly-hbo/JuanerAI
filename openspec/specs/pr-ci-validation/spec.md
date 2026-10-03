@@ -44,7 +44,7 @@ Only added/modified regular non-executable Markdown in root `README.md`,
 `AGENTS.md`, `CONTEXT.md`, `Orchestration.md`, `docs/governance/` or `.ai-coding/`
 may receive focused documentation checks. Mixed/unknown paths, planning or
 OpenSpec contracts, runtime, tests, dependencies, CI/tool changes, renames,
-deletions, type/mode changes and control-character filenames require full
+copies, deletions, type/mode changes and control-character filenames require full
 portable regression. The job always runs; there is no path-filtered absent
 required check. Focused checks rerun trusted classification and `git diff
 --check`, plus scope/workflow contracts, then explicitly report product/native
@@ -126,6 +126,10 @@ commands receive 180 seconds and the job retains its 20-minute maximum. No
 retry, timeout inflation or new upload action is used. The canonical runner
 itself owns the early validation-contract group, avoiding a duplicate CI-only
 invocation. Cloud archive proofs remain mandatory in this lane.
+The existing native log SHALL identify the effective toolchain paths/versions
+and available CPU parallelism for performance attribution, without dumping
+environment variables or introducing a telemetry service. Unavailable optional
+host diagnostics are reported as unknown, not inferred.
 
 ### PRCI-AC-005
 

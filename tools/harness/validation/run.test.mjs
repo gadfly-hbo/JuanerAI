@@ -83,6 +83,7 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/integration/xanthil-desktop/case-collaboration-lifecycle.integration.test.ts",
     "tests/integration/xanthil-desktop/case-collaboration.integration.test.ts",
     "tests/integration/xanthil-desktop/member-analysis-chain.integration.test.ts",
+    "tests/integration/xanthil-desktop/member-task-retained.integration.test.ts",
     "tests/integration/xanthil-desktop/member-task.integration.test.ts",
     "tests/integration/xanthil-desktop/provider-settings.integration.test.ts",
     "tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts",
@@ -174,6 +175,11 @@ const CHANGE004_TSCONFIG_APPENDIX = Object.freeze([
   'tests/e2e/xanthil-desktop/member-task-native.e2e.test.ts',
   'tests/fixtures/member-task/native-main.ts',
   'tests/fixtures/member-task/native-renderer.tsx',
+]);
+// Approved CI-only mechanical partition; original Change004 roots stay intact.
+const CI_MAINTENANCE_TSCONFIG_APPENDIX = Object.freeze([
+  'tests/integration/xanthil-desktop/member-task-retained.integration.test.ts',
+  'tests/fixtures/xanthil-desktop/member-task-test-support.ts',
 ]);
 const C0_ROOT_COUNT = 43;
 const DEVELOPMENT_TSCONFIG_APPENDIX = Object.freeze([
@@ -272,7 +278,9 @@ async function currentRunnerTuple(root = REPO_ROOT) {
   assert.equal(tsconfig.compilerOptions?.jsx, 'react-jsx', 'C1a requires its exact JSX mode');
   assert.deepEqual(files.slice(0,CHANGE003_TSCONFIG_PREFIX.length),CHANGE003_TSCONFIG_PREFIX,'Change003 roots are exact ordered independent literals');
   assert.deepEqual(files.slice(DESKTOP_ROOT_START,CHANGE004_ROOT_START),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX,...DEVELOPMENT_TSCONFIG_APPENDIX],'retained Desktop roots are independent literals, never derived from actual files');
-  assert.deepEqual(files.slice(CHANGE004_ROOT_START),CHANGE004_TSCONFIG_APPENDIX,'Change004 roots and total length are fixed by the independent ordered inventory');
+  const maintenanceStart = CHANGE004_ROOT_START + CHANGE004_TSCONFIG_APPENDIX.length;
+  assert.deepEqual(files.slice(CHANGE004_ROOT_START,maintenanceStart),CHANGE004_TSCONFIG_APPENDIX,'original Change004 roots remain exact');
+  assert.deepEqual(files.slice(maintenanceStart),CI_MAINTENANCE_TSCONFIG_APPENDIX,'CI maintenance roots and total length are fixed by the independent ordered inventory');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }
@@ -757,5 +765,26 @@ test('CI-CHANGE002-002: full fixture build failure stops GUI and fixed argv dete
       assertCanonicalOrder(lines,f,expected);
       assert.deepEqual(desktopArgvRecords(lines),focusedChildren('CF').map(argv=>`argv:${argv.join('|')}`));
     },{code:'ERR_ASSERTION'},'accepted phase/argv oracle must reject this mutant');
+  }
+});
+
+test('CI-CHECK-001: CI maintenance roots reject omission, substitution, duplication and reordering', async t => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'juanerai-cvr-maintenance-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  for (const name of C1A_TUPLE_CONFIGURATION_FILES) await cp(path.join(REPO_ROOT, name), path.join(root, name));
+  assert.equal(await currentRunnerTuple(root), 'CF');
+  const original = JSON.parse(await readFile(path.join(root, 'tsconfig.json'), 'utf8'));
+  const start = CHANGE004_ROOT_START + CHANGE004_TSCONFIG_APPENDIX.length;
+  for (const offset of CI_MAINTENANCE_TSCONFIG_APPENDIX.keys()) {
+    const index = start + offset;
+    for (const [name, mutate] of [
+      ['omit', files => files.filter((_, position) => position !== index)],
+      ['substitute', files => files.map((file, position) => position === index ? 'tests/unapproved.test.ts' : file)],
+      ['duplicate preceding', files => files.map((file, position) => position === index ? files[index - 1] : file)],
+      ['swap preceding', files => files.map((file, position) => position === index ? files[index - 1] : position === index - 1 ? files[index] : file)],
+    ]) await t.test(`${offset}: ${name}`, async () => {
+      await writeFile(path.join(root, 'tsconfig.json'), JSON.stringify({ ...original, files: mutate(original.files) }));
+      await assert.rejects(() => currentRunnerTuple(root), { code: 'ERR_ASSERTION' });
+    });
   }
 });

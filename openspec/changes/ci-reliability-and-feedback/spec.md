@@ -48,12 +48,24 @@ values. Legitimate identifiers must not cause privacy failure merely because
 they contain a short numeric substring. Injected forbidden row-level data must
 still fail. Preserve the existing privacy and boundary assertions.
 
-## CI-PERF-005 — Fixture reuse with isolation
+## CI-PERF-005 — Test efficiency with isolation
 
 Repeated fixtures may reuse immutable synthetic seed construction, with fresh
 writable copies per test. Before/after real fixture measurements must bind code,
 commands and outputs. Mutation, corruption and cross-fixture tests must remain
 effective; production database verification and test assertions are not removed.
+
+An oversized integration file may be mechanically partitioned into independent
+files under the existing Node test runner. Preserve every original case name,
+assertion, negative input and required from-scratch path; shared fixture support
+must not register tests when imported. Keep the existing runner concurrency and
+timeouts, with fresh per-process state and per-test writable roots. Update the
+independent file inventory and typecheck roots explicitly. Compare the same
+cases before/after; the full portable run, not a projected saving, closes CI.
+Record actual runtime/toolchain and available CPU parallelism in the existing CI
+log to distinguish execution environment from source changes; do not dump the
+environment or add a telemetry service. A checkpoint containing a live expiring
+grant is not an immutable reusable seed.
 
 Contract decision: these are internal engineering/test interfaces within the
 approved workflow repair; no product, persistent business or permission contract

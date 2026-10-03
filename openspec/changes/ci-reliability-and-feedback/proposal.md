@@ -17,6 +17,16 @@ remote device mutations, provider calls or new framework. This worker has no Git
 writes; the package grants no Git publication authority. Parent delivery retains
 the user's separate conversation authorization.
 
+Following the candidate-002 cloud timeout, the bounded test partition also
+includes `member-task-retained.integration.test.ts`,
+`tests/fixtures/xanthil-desktop/member-task-test-support.ts` and their explicit
+`tsconfig.json`/runner-fixture inventory entries. It changes test organization,
+not product behavior, assertion strength, dependency pins or CI resource limits.
+The independent complete-tsconfig tuple in
+`tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts`
+receives only the same exact CI-maintenance appendix; existing approved tuples
+and rejection cases remain unchanged.
+
 Acceptance is defined in [spec.md](spec.md). The current result and evidence are
 kept once in [verification.md](verification.md). Independent review and parent
 acceptance remain separate from author checks. No Blueprint capability delta.

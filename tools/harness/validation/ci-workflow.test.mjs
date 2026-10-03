@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, realpath, rm, symlink, writeFile } from 'node:fs/promises';
 import { spawn, spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -10,6 +10,36 @@ const REPO_ROOT = fileURLToPath(new URL('../../../', import.meta.url));
 const WORKFLOW = path.join(REPO_ROOT, '.github', 'workflows', 'ci.yml');
 const DUCKDB_URL = 'https://github.com/duckdb/duckdb/releases/download/v1.5.2/duckdb_cli-linux-amd64.zip';
 const DUCKDB_SHA256 = 'fc9145affabca627431e73ddaf6b8117e5c192692480c13886f227be202d5d15';
+
+// CI-PERF-005: selected bin -> actual resolved paths/versions and bounded CPU
+// diagnostics. Unavailable quota is UNKNOWN; a required tool failure stops the
+// step. No environment dump, implicit tool fallback or validation-mode change.
+test('CI-PERF-005: existing CI step reports selected runtime and CPU without exposing environment', async t => {
+  const workflow = await readFile(WORKFLOW, 'utf8');
+  const shell = workflow.split('        run: |\n')[1].split('\n').map(line => line.replace(/^          /, '')).join('\n');
+  const diagnostic = shell.slice(shell.indexOf('export JUANERAI_TOOLCHAIN_BIN'), shell.indexOf('export JUANERAI_TEST_EVIDENCE_DIR'));
+  const root = await mkdtemp(path.join(tmpdir(), 'juanerai-ci-runtime-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  await symlink(process.execPath, path.join(root, 'node'));
+  const versions = { npm: '11.12.1', python3: 'Python 3.9.6', duckdb: 'v1.5.2 (fixture)' };
+  for (const [tool, version] of Object.entries(versions)) await writeFile(path.join(root, tool), `#!/bin/sh\n[ "$1" = --version ] || exit 64\nprintf '%s\\n' '${version}'\n`, { mode: 0o755 });
+  const invoke = () => spawnSync('/bin/bash', ['-ec', diagnostic], { env: { PATH: '/usr/bin:/bin', TOOLCHAIN_BIN: root, PRIVATE_TEST_SENTINEL: 'must-not-appear-in-runtime-diagnostics' }, encoding: 'utf8', timeout: 10000 });
+  const result = invoke();
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /^CI_RUNTIME /, 'existing full CI step must emit actual runtime diagnostics');
+  const report = JSON.parse(result.stdout.trim().replace(/^CI_RUNTIME /, ''));
+  assert.deepEqual(Object.keys(report).sort(), ['availableParallelism', 'cpuModel', 'cpuQuota', 'tools']);
+  assert.deepEqual(Object.keys(report.tools).sort(), ['duckdb', 'node', 'npm', 'python3']);
+  for (const [tool, version] of Object.entries({ node: process.version, ...versions })) {
+    assert.deepEqual(report.tools[tool], { path: await realpath(path.join(root, tool)), version });
+  }
+  assert.ok(Number.isInteger(report.availableParallelism) && report.availableParallelism >= 1);
+  assert.equal(typeof report.cpuModel, 'string'); assert.ok(report.cpuModel.length > 0);
+  assert.match(report.cpuQuota, /^(?:UNKNOWN|(?:max|[0-9]+) [0-9]+)$/);
+  assert.doesNotMatch(result.stdout, /PRIVATE_TEST_SENTINEL|must-not-appear-in-runtime-diagnostics/);
+  await writeFile(path.join(root, 'python3'), '#!/bin/sh\nexit 17\n', { mode: 0o755 });
+  assert.notEqual(invoke().status, 0, 'required tool failure cannot become invented successful diagnostics');
+});
 
 test('CI-LOG-003: CI emits both streams before the child exits and preserves failure/timing', async t => {
   const workflow = await readFile(WORKFLOW, 'utf8');
