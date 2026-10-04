@@ -1,0 +1,35 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdir,writeFile,readFile,symlink} from 'node:fs/promises';
+import {join,resolve} from 'node:path';
+import {createHash} from 'node:crypto';
+import {build} from 'vite';
+import {_electron as electron} from 'playwright-core';
+import {readDesktopPythonTool} from '../../fixtures/xanthil-desktop/desktop-fixtures.ts';
+import {closeOwnedNativeProcess} from '../../fixtures/case-assistant/owned-native-cleanup.ts';
+
+test('UI-P1-A-INTERACT real component and IPC prepare consent authorize continue stop reopen',{timeout:90000},async t=>{
+ const root=process.env.JUANERAI_TEST_EVIDENCE_DIR!,repo=resolve('.'),bin=process.env.JUANERAI_TOOLCHAIN_BIN!,py=readDesktopPythonTool(bin);
+ await mkdir(join(root,'build'));await symlink(join(repo,'node_modules'),join(root,'node_modules'),'dir');
+ await writeFile(join(root,'toolchain.json'),JSON.stringify({schema_version:'1.0',duckdb:{executable_path:join(bin,'duckdb'),version:'1.5.2'},python:{executable_path:py.pythonExecutable,version:py.pythonVersion}}));
+ const sources=['tests/fixtures/member-task/native-main.ts','tests/fixtures/member-task/native-renderer.tsx','apps/desktop/member-task-workspace.tsx','apps/desktop/member-task-main.ts','apps/desktop/preload.ts'];
+ await writeFile(join(root,'native-source-identity.json'),JSON.stringify(await Promise.all(sources.map(async path=>{const b=await readFile(path);return {path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')};})),null,2));
+ for(const [name,entry] of [['main','tests/fixtures/member-task/native-main.ts'],['preload','apps/desktop/preload.ts']])await build({configFile:false,build:{target:'node22',outDir:join(root,'build'),emptyOutDir:false,lib:{entry:resolve(entry),formats:['cjs'],fileName:()=>name+'.cjs'},rollupOptions:{external:(id)=>id.startsWith('node:')||['electron','@earendil-works/pi-coding-agent','typebox'].includes(id)}}});
+ const html=join(root,'index.html');await writeFile(html,'<!doctype html><html lang="zh-CN"><meta charset="UTF-8"><meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'self\'; style-src \'self\' \'unsafe-inline\'; connect-src \'none\'"><div id="root"></div><script type="module" src="'+resolve('tests/fixtures/member-task/native-renderer.tsx')+'"></script></html>');
+ await build({configFile:false,root,base:'./',build:{target:'esnext',outDir:join(root,'renderer'),rollupOptions:{input:html}}});
+ const app=await electron.launch({args:[join(root,'build/main.cjs'),'--user-data-dir='+join(root,'electron-user-data')],env:{PATH:bin+':/usr/bin:/bin',LANG:'en_US.UTF-8',JUANERAI_TEST_EVIDENCE_DIR:root,JUANERAI_FIXTURE_REPO:repo},cwd:repo});
+ t.after(()=>closeOwnedNativeProcess(app.process(),()=>app.close(),async v=>{await writeFile(join(root,'native-cleanup.json'),JSON.stringify(v));}));
+ const page=await app.firstWindow();page.setDefaultTimeout(5000);const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.getByLabel('要核实的业务问题',{exact:true}).fill('再次核实会员复购');await page.getByRole('button',{name:'创建任务并准备资料',exact:true}).click();
+ const config=page.getByLabel('已保存的分析口径',{exact:true});await config.waitFor();await config.selectOption({index:1});assert.equal(await page.getByLabel('配置维护者',{exact:true}).count(),0);
+ await page.getByRole('button',{name:'选择会员与订单文件',exact:true}).click();await page.getByRole('button',{name:'按已选口径检查本次资料',exact:true}).click();
+ await page.getByLabel('确认上述资料处理及明确口径',{exact:true}).check();await page.getByRole('button',{name:'保存准备结果',exact:true}).click();
+ const consent=page.getByLabel('允许模型使用本条业务问题文本（默认不选）',{exact:true});await consent.waitFor();assert.equal(await consent.isChecked(),false);await consent.check();
+ await page.getByLabel('我有权使用这些资料，并同意上述本地处理、模型材料和资源范围',{exact:true}).check();await page.getByRole('button',{name:'授权并开始分析',exact:true}).click();
+ await page.getByRole('heading',{name:'首个可信发现 · 系统验证，人工未接受',exact:true}).waitFor();await page.getByText('本次尝试：本次未完成',{exact:false}).waitFor();
+ await page.getByRole('button',{name:'明确继续 · 核验并沿用有效授权',exact:true}).click();await page.getByText('合成复核结果已保留。',{exact:true}).waitFor();
+ const before=await app.evaluate(async()=>await (globalThis as any).membershipFixture.read());const current=before.find((x:any)=>x.question==='再次核实会员复购');assert.equal(current.case.runs.length,1);assert.equal(current.grants.length,1);assert.equal(current.attempts.length,2);assert.equal(current.grants[0].selected_text,'再次核实会员复购');
+ await page.getByRole('button',{name:'停止任务',exact:true}).click();await page.getByText('已停止',{exact:true}).first().waitFor();await app.evaluate(async()=>await (globalThis as any).membershipFixture.reopen());await page.reload();await page.getByRole('button',{name:/再次核实会员复购/}).click();await page.getByText('重开只读取记录，不自动调用模型。检查原范围并明确重新授权后才能继续。',{exact:true}).waitFor();
+ const after=await app.evaluate(async()=>await (globalThis as any).membershipFixture.read());const reopened=after.find((x:any)=>x.task_id===current.task_id);assert.deepEqual(reopened.totals,current.totals);assert.ok(reopened.grants[0].revoked_at);assert.equal(reopened.case.runs.length,1);assert.deepEqual(errors,[]);await page.screenshot({path:join(root,'reopened-task.png')});
+ const requests=JSON.parse(await readFile(join(root,'ipc-requests.json'),'utf8')).map((x:any)=>x.operation);for(const op of ['create','select','inspect_config','prepare_config','authorize','continue','stop','read'])assert.ok(requests.includes(op),op);
+});

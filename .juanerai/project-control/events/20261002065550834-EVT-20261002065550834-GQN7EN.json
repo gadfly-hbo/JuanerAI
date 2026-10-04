@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002065550834-GQN7EN",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T06:55:50.834Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "修正候选冻结与读回完成，启动第二轮独立验证。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -29,6 +29,7 @@ export async function runLocalXiaomiText(input:{key:string;text:string;system:st
  if(!Number.isInteger(input.maxOutput)||input.maxOutput<1||input.maxOutput>2048||input.timeoutMs<1||input.timeoutMs>60000)fail('VALIDATION_FAILED');
  if(Buffer.byteLength(input.text)+Buffer.byteLength(input.system)>12000||input.text.includes(input.key)||input.system.includes(input.key))fail('OUTBOUND_FORBIDDEN');
  const deadline=new AbortController(),timer=setTimeout(()=>deadline.abort(),input.timeoutMs),signal=AbortSignal.any([input.signal,deadline.signal]);
+ let issuedTurn:Promise<void>|undefined;
  let agent:{abort():void;prompt(input:unknown):Promise<void>;state:{messages:Record<string,unknown>[]}}|undefined;
  const abort=()=>agent?.abort();signal.addEventListener('abort',abort,{once:true});
  try{
@@ -42,7 +43,8 @@ export async function runLocalXiaomiText(input:{key:string;text:string;system:st
     });
    }});
   const cancelled=new Promise<never>((_,reject)=>{const check=()=>reject(Object.assign(new Error('cancelled'),{code:input.signal.aborted?'CANCELLED':'CONNECTION_TIMEOUT'}));if(signal.aborted)check();else signal.addEventListener('abort',check,{once:true});});
-  await Promise.race([agent!.prompt({role:'user',content:input.text,timestamp:Date.now()}),cancelled]);
+  issuedTurn=agent!.prompt({role:'user',content:input.text,timestamp:Date.now()});
+  await Promise.race([issuedTurn,cancelled]);
   if(signal.aborted)fail(input.signal.aborted?'CANCELLED':'CONNECTION_TIMEOUT');
   const m=agent!.state.messages.at(-1);
   if(!m||m.role!=='assistant'||m.stopReason!=='stop')fail(localConnectionError(m?.errorMessage));
@@ -52,7 +54,7 @@ export async function runLocalXiaomiText(input:{key:string;text:string;system:st
   if(!u||[u.input,u.cacheRead,u.cacheWrite,u.output,u.totalTokens].some(x=>!Number.isSafeInteger(x)||x<0)||u.output>input.maxOutput||u.input+u.cacheRead+u.cacheWrite>16384||u.totalTokens!==u.input+u.cacheRead+u.cacheWrite+u.output)fail('PROVIDER_USAGE_INVALID');
   return {text,cost_microunits:((u.input+u.cacheRead+u.cacheWrite)*300+u.output*600)*1000000};
  }catch(error){fail(signal.aborted?(input.signal.aborted?'CANCELLED':'CONNECTION_TIMEOUT'):localConnectionError(error));}
- finally{clearTimeout(timer);signal.removeEventListener('abort',abort);agent?.abort();}
+ finally{clearTimeout(timer);signal.removeEventListener('abort',abort);agent?.abort();if(issuedTurn)await issuedTurn.catch(()=>undefined);}
 }
 export async function probeLocalXiaomi(key:string,signal:AbortSignal){
  const result=await runLocalXiaomiText({key,text:'Reply with OK.',system:'',signal,maxOutput:128,timeoutMs:30000});

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261001225805604-UNKX7M",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-01T22:58:05.604Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "P1-PLAN-01 GREEN；第二组边界行为RED已保存。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002100019890-PKXMWV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T10:00:19.890Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "E1 独立验证 158 PASS，关闭 E1；E2 保留，补验依赖布局。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

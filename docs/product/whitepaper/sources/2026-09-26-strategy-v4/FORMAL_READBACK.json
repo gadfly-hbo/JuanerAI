@@ -1,0 +1,59 @@
+{
+  "date": "2026-09-26",
+  "mode": "read_only_local_no_fetch_no_remote_device_operations",
+  "main": {
+    "path": "/Users/huangbo/.codex/worktrees/caaa/JuanerAI",
+    "head": "6c4cecbc3bb75bb32fb8c7fa2662d56e6b8db22f",
+    "branch": "main",
+    "status": ""
+  },
+  "working_checkout": {
+    "path": "/Users/huangbo/JuanerAI",
+    "head": "c01b68b639156344b2257e45a69892268c17693f",
+    "branch": "work/macbook/wip-preflight-exception-disposition",
+    "status": ""
+  },
+  "files": [
+    {
+      "path": "/Users/huangbo/.codex/worktrees/caaa/JuanerAI/docs/planning/README.md",
+      "bytes": 9256,
+      "sha256": "8c071275a2a71beae441dbb9fafbec6d952ef183f1c7f52a66b698d287b11102"
+    },
+    {
+      "path": "/Users/huangbo/.codex/worktrees/caaa/JuanerAI/docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.3.md",
+      "bytes": 45747,
+      "sha256": "e4ba6ca3052f377a24ecd7580316dfdeb3d9336612da342b9061da191e01fa62"
+    },
+    {
+      "path": "/Users/huangbo/.codex/worktrees/caaa/JuanerAI/docs/planning/2026-09-19/juanerai-product-development-blueprint-v1.2.md",
+      "bytes": 25251,
+      "sha256": "8a256b7cb3e7bac1edc70a7879fbca18cea2276efd527dcb9f6fd1352364fc40"
+    },
+    {
+      "path": "/Users/huangbo/JuanerAI/docs/planning/README.md",
+      "bytes": 30910,
+      "sha256": "a4f8aec93a6981b161d35a48b78ba7dc231940c52d1915c82ebeebc44d1bd645"
+    },
+    {
+      "path": "/Users/huangbo/JuanerAI/docs/planning/2026-09-18/xanthil-desktop-session-runtime-boundary-v1.0.md",
+      "bytes": 13649,
+      "sha256": "d42d5cc5ce45b33b707058141744453e6ae2d0df14ea8c0544b626e2a08b1527"
+    }
+  ],
+  "findings": {
+    "main_blueprint": "v1.3",
+    "adopted_whitepaper": "v3.3.4",
+    "adopted_whitepaper_sha256": "429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b",
+    "v4_adoption": "NOT_ADOPTED_BY_THIS_TURN",
+    "legacy_unexecuted_plans": "VOID per 2026-09-18 formal planning index",
+    "active_device_adoption": "NOT_INFERRED",
+    "implementation_and_release": "NOT_EVALUATED",
+    "session_runtime_boundary": {
+      "blueprint_reference": "docs/planning/2026-09-18/xanthil-desktop-session-runtime-boundary-v1.0.md",
+      "present_in_observed_main_worktree": false,
+      "verified_working_checkout_copy": "/Users/huangbo/JuanerAI/docs/planning/2026-09-18/xanthil-desktop-session-runtime-boundary-v1.0.md",
+      "verified_rule": "First slice: one Product Session contains exactly one Decision Case; multiple preserved Case revisions; implementation authority remains its approved frozen contract.",
+      "limitation": "Not a claim that all Blueprint dependencies are available in main; completeness must be checked at later formal adoption."
+    }
+  }
+}

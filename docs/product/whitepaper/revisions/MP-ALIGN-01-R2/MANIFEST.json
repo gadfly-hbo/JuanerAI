@@ -1,0 +1,57 @@
+{
+  "revision": "v3.3.1 / MP-ALIGN-01-R2",
+  "snapshot_date": "2026-09-16",
+  "purpose": "Frozen pre-OSM-integration reference; historical, not editable master",
+  "files": [
+    {
+      "path": "JUANERAI_WHITEPAPER.md",
+      "sha256": "1a0ab37da206427d1a8354246c5c677a829e14261a593a3bf8e9a41c9a3b63c5",
+      "bytes": 190619
+    },
+    {
+      "path": "assets/fig07_6plus1总体架构.png",
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "bytes": 187993
+    },
+    {
+      "path": "assets/fig15_ModelPack_MLflow生命周期.png",
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "bytes": 212106
+    },
+    {
+      "path": "assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "bytes": 224101
+    },
+    {
+      "path": "assets/fig17_Consumer_DesktopRuntime边界.png",
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "bytes": 208594
+    },
+    {
+      "path": "assets/fig18_ModelPack通用合同与首发Profile.png",
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "bytes": 232942
+    },
+    {
+      "path": "assets/fig19_Phase2企业Serving路线.png",
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "bytes": 175625
+    }
+  ],
+  "missing_referenced_assets": [
+    "assets/fig01_广义数据决策者.png",
+    "assets/fig02_BI_AI问数_JuanerAI.png",
+    "assets/fig03_目标经营闭环.png",
+    "assets/fig04_OSM八大模块.png",
+    "assets/fig05_三种分析模式.png",
+    "assets/fig06_AnalysisIR编译器.png",
+    "assets/fig08_Xanthil_DomainPack_四库双库关系.png",
+    "assets/fig09_可信裁判与Teach.png",
+    "assets/fig10_端到端案例.png",
+    "assets/fig11_DomainPack三种状态.png",
+    "assets/fig12_SemanticContextRuntime四库联动.png",
+    "assets/fig13_DAME六类方法体系.png",
+    "assets/fig14_ABTestAnalysis边界.png"
+  ]
+}

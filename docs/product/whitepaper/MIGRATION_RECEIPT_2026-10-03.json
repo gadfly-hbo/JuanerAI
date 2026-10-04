@@ -1,0 +1,1107 @@
+{
+  "date": "2026-10-03",
+  "status": "LOCAL_DOCUMENT_MIGRATION_VERIFIED",
+  "product_version": "v4.0",
+  "maintenance_revision": "MIGRATION-R1",
+  "authorization": "User approved the proposed migration and explicitly requested updating pre-existing absolute-path references. This is document relocation and navigation maintenance, not product implementation or publication authority.",
+  "canonical_repository": "JuanerAI",
+  "canonical_path": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+  "main_sha256": "b92a46373d5a25c1ca6f26b5af6418faf2174cb7c8d2e8d3ad4ebead159b79c8",
+  "main_bytes": 268394,
+  "local_worktree": "/Users/huangbo/JuanerAI-whitepaper-migration",
+  "branch": "work/macbook/whitepaper-research-migration",
+  "base_commit": "137d65a8754c448adc7fc2cc690d2bab8d848ade",
+  "historical_adopted_v4": {
+    "path": "docs/product/whitepaper/revisions/v4.0/JUANERAI_WHITEPAPER.md",
+    "sha256": "86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb",
+    "bytes": 268494
+  },
+  "scope": {
+    "original_whitepaper_files": 142,
+    "additional_background_documents": 2,
+    "projects_indexed": 59,
+    "project_source_files": 178,
+    "specific_reference_records": 256,
+    "master_demo_locators": 38,
+    "existing_formal_files_modified": [
+      "AGENTS.md",
+      "CONTEXT.md",
+      "README.md",
+      "docs/planning/README.md"
+    ],
+    "original_demo_files_moved": 0
+  },
+  "checks": {
+    "142_original_sources_preserved_in_both_repositories": true,
+    "178_project_source_identities_match": true,
+    "256_reference_identities_resolvable": true,
+    "ledger_snapshot_preserves_old_identity": true,
+    "original_v4_legacy_absolute_path_and_new_frozen_copy_byte_equal": true,
+    "eight_frozen_blueprints_unchanged": true,
+    "six_blueprint_source_references_resolved_without_rewriting_history": true,
+    "research_2677_markdown_unchanged": true,
+    "project_59_rows_unchanged": true,
+    "formal_1942_baseline_only_four_navigation_files_changed": true,
+    "master_product_content_unchanged": true,
+    "current_navigation_files_checked": 33,
+    "current_local_link_references_checked": 1243,
+    "new_missing_files_or_anchors": 0,
+    "markdown_tables_checked": 100,
+    "table_or_fence_errors": 0,
+    "git_diff_check_existing_tracked_files": "PASS",
+    "independent_reference_review": "PASS",
+    "independent_source_review": "PASS after resolving two findings; original findings retained"
+  },
+  "images": {
+    "inherited_missing_unique": 11,
+    "targets": [
+      "assets/fig01_广义数据决策者.png",
+      "assets/fig04_OSM八大模块.png",
+      "assets/fig05_三种分析模式.png",
+      "assets/fig06_AnalysisIR编译器.png",
+      "assets/fig08_Xanthil_DomainPack_四库双库关系.png",
+      "assets/fig09_可信裁判与Teach.png",
+      "assets/fig10_端到端案例.png",
+      "assets/fig11_DomainPack三种状态.png",
+      "assets/fig12_SemanticContextRuntime四库联动.png",
+      "assets/fig13_DAME六类方法体系.png",
+      "assets/fig14_ABTestAnalysis边界.png"
+    ],
+    "assets_changed": false,
+    "new_images_generated": false
+  },
+  "legacy_handling": {
+    "research_whitepaper_directory": "frozen_compatibility_archive_not_second_editable_master",
+    "current_formal_navigation": "repository_relative",
+    "historical_absolute_paths_and_hashes": "retained_and_mapped_to_byte_exact_copies",
+    "research_demo_references": "portable_locator_and_identity_index_not_a_full_demo_copy"
+  },
+  "publication": {
+    "committed": false,
+    "pushed": false,
+    "pull_request_created": false,
+    "merged": false,
+    "other_devices_adopted": "NOT_CLAIMED",
+    "formal_root_checkout_modified": false,
+    "other_existing_worktrees_modified": false
+  },
+  "limitations": [
+    "11 inherited missing images remain; not a full PDF/DOCX publication.",
+    "Historical source/revision links retain their original resolution bases; current navigation is validated separately.",
+    "No Demo rerun, code change, OpenSpec change, provider use, real-data validation or engineering-state write.",
+    "Migration lives in a persistent isolated JuanerAI worktree. Main integration and cross-device delivery require their applicable Git authorization and actual receipts.",
+    "Local research redirect entries must be updated before this migration worktree is moved or removed; canonical repository-relative paths remain stable."
+  ],
+  "evidence": "docs/product/whitepaper/migration/2026-10-03/",
+  "formal_content_files_excluding_self": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 23724,
+      "sha256": "f57601e09a89ededbb5c7b61f708b155fd0e8e202dae9f4eb19e651bc56bddb2"
+    },
+    {
+      "path": "CONTEXT.md",
+      "bytes": 11587,
+      "sha256": "a1edec86b17de5eaed8975ebfac642c105fee219f729eea3e1e88f7856692772"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2130,
+      "sha256": "f57719fb2c3a3071583631058243e87aa01267b8ccbb8e6d7acba8e195dd0408"
+    },
+    {
+      "path": "docs/planning/README.md",
+      "bytes": 52685,
+      "sha256": "4d8e5c4fbb8d6228eddaef067e7fb145cf2141ff271cd8e89826b34f2cd13c4e"
+    },
+    {
+      "path": "docs/product/JUANERAI_CONTEXT.md",
+      "bytes": 10144,
+      "sha256": "27e2a64828b89df0f830558e5f01550681f058cca61a2b04ae1ace76748d84b9"
+    },
+    {
+      "path": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "bytes": 13348,
+      "sha256": "f29133fe6082b6f1eea95b7174c6464d601b652b3022376b85b2a65667e81906"
+    },
+    {
+      "path": "docs/product/whitepaper/AGENTS.md",
+      "bytes": 731,
+      "sha256": "9a219cbc3d51ea34e3b2deeec240fa634d2a7320e4feca1af73727228dbd0346"
+    },
+    {
+      "path": "docs/product/whitepaper/CHANGELOG.md",
+      "bytes": 47697,
+      "sha256": "8161c04a1ef426a99327a15d6e72c2330b9151785f28f046bd6c3abb84ddc6ca"
+    },
+    {
+      "path": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "bytes": 29497,
+      "sha256": "443a2902277a2f01435306c3a6eb0fa09aedf2b813886eca465e7f316cbce28b"
+    },
+    {
+      "path": "docs/product/whitepaper/DEVELOPMENT_BINDINGS.md",
+      "bytes": 17560,
+      "sha256": "0749649157cd9f73c5da0faed3228c3126f9d1edba8a881260979746bd63a215"
+    },
+    {
+      "path": "docs/product/whitepaper/DEVELOPMENT_LINKAGE.md",
+      "bytes": 1648,
+      "sha256": "bdbb8c782c73dc8d0a321881523b64d1c44035469645775102cecbb457ea0bc1"
+    },
+    {
+      "path": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "bytes": 268394,
+      "sha256": "b92a46373d5a25c1ca6f26b5af6418faf2174cb7c8d2e8d3ad4ebead159b79c8"
+    },
+    {
+      "path": "docs/product/whitepaper/MAINTENANCE.md",
+      "bytes": 2669,
+      "sha256": "9bf81d62fc515ea81f1910eef9666d6bc3fcff1ce7910082588343c003973176"
+    },
+    {
+      "path": "docs/product/whitepaper/MARKET_SOURCE_CHECK_2026-09-26.md",
+      "bytes": 2699,
+      "sha256": "ab2c74537402fa23534138b19c9d71471a18e83e51a75ed02d30a5021dada2c1"
+    },
+    {
+      "path": "docs/product/whitepaper/MIGRATION_2026-10-03.md",
+      "bytes": 3244,
+      "sha256": "297bf79efa63354ea89433956f9cb165f3b3f753f4936ee29e11f08917b79424"
+    },
+    {
+      "path": "docs/product/whitepaper/MIGRATION_MANIFEST_2026-10-03.json",
+      "bytes": 198643,
+      "sha256": "f4e3c6327a855fccd472725baed7ad554f477ca8933915f927f193339fb2ec68"
+    },
+    {
+      "path": "docs/product/whitepaper/NEXT_ACTION.md",
+      "bytes": 1104,
+      "sha256": "bebda883ca40561e9ee7288e5277fed1f5d7120a9c50fc7e8fcd356ca26a3206"
+    },
+    {
+      "path": "docs/product/whitepaper/OSM_PIM_MAINLINES_INTEGRATION_2026-09-19.md",
+      "bytes": 8694,
+      "sha256": "ab5992e5d3254eb730e7df60a8bed59861941f45f33830e1d39847d37cda09b6"
+    },
+    {
+      "path": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md",
+      "bytes": 7290,
+      "sha256": "3bf5376443db04d5bcb31422836d01ccac6133059ed25d58922132e382a59781"
+    },
+    {
+      "path": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_R3_RECEIPT.json",
+      "bytes": 5711,
+      "sha256": "793000abe3a3bafdd06aa493e9f52cd7fe069bc54af7fbc2f13241c8b50e4062"
+    },
+    {
+      "path": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "bytes": 25781,
+      "sha256": "f8db528b81779eb7bad9bac0df5acbdc3adec41f5e54ab89474828297d45f4b4"
+    },
+    {
+      "path": "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+      "bytes": 12169,
+      "sha256": "0fa08348ce162898463fd72513bcb88cc88e0b57630a3ee7937730d88f5126d1"
+    },
+    {
+      "path": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "bytes": 58975,
+      "sha256": "1dbe21445b1bafbf1fa5d3af2ca454e02b0476a1da0612201a3d7ffc560ca425"
+    },
+    {
+      "path": "docs/product/whitepaper/README.md",
+      "bytes": 1792,
+      "sha256": "09e80f760b377feb75b195d0e97cee56b4a185e8a0b5b7f970930c7f67734927"
+    },
+    {
+      "path": "docs/product/whitepaper/SCAN_RECEIPT_2026-09-11.json",
+      "bytes": 35817,
+      "sha256": "9859c635963081c6de407a2513af29bb79ec9facadbd9156b796fbc4063816e5"
+    },
+    {
+      "path": "docs/product/whitepaper/STRATEGY_V4_INTEGRATION_2026-09-26.md",
+      "bytes": 9789,
+      "sha256": "b8200354bdfdda0ba55da1674bf407e6c86f587f88f71f2ce3ac4ef9663d9b33"
+    },
+    {
+      "path": "docs/product/whitepaper/TAKEOVER_REVIEW.md",
+      "bytes": 10761,
+      "sha256": "214f2f818830b974ef884ea1ca9ba72ff6ace13ebfa023b6613e363aefaa3275"
+    },
+    {
+      "path": "docs/product/whitepaper/WHITEPAPER_V3_3_2_RECEIPT.json",
+      "bytes": 4120,
+      "sha256": "f6e21ba0d8a425c8785750a0448fc1231b8d85c18263801321160b314ab8c1ff"
+    },
+    {
+      "path": "docs/product/whitepaper/WHITEPAPER_V3_3_3_RECEIPT.json",
+      "bytes": 11226,
+      "sha256": "9a15994de2a728b8fa27f6ac7a0b708539034d5fe0e06c1621cad1ffc1a803e7"
+    },
+    {
+      "path": "docs/product/whitepaper/WHITEPAPER_V3_3_4_RECEIPT.json",
+      "bytes": 12356,
+      "sha256": "87d3250867fe5726331628e4e27913bdf78883b4112e44339023b2932a60fe78"
+    },
+    {
+      "path": "docs/product/whitepaper/WHITEPAPER_V4_0_RECEIPT.json",
+      "bytes": 18070,
+      "sha256": "15ba6f1ac63db4bbe850a9889177e6bf48947522645ad4f857bda8a0dc65e536"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig07_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig15_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig19_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "bytes": 604951,
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "bytes": 13069,
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "bytes": 755981,
+      "sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "bytes": 15322,
+      "sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig22_decision_lifecycle_v4.0.png",
+      "bytes": 249610,
+      "sha256": "46633f4d555fd813c23b5d06dee5da778f1a1726c7323c2708bb5e37fe5e7cc6"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig22_decision_lifecycle_v4.0.svg",
+      "bytes": 6963,
+      "sha256": "8cdc64fcd861a1bde4758bc4bd5f76eb4957a764106b6dcebba6f853f76174df"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A01-dame-method-assets.md",
+      "bytes": 5340,
+      "sha256": "86cb707d30e4a594597156ba281f245d913f290d8371d29fd08dd9baa1dd74ef"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A02-ab-test-analysis.md",
+      "bytes": 5603,
+      "sha256": "45b601f572ab86b38a982056a5f94928e28ebf2c7904355602769ac65d232c81"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A03-local-import-snapshots.md",
+      "bytes": 5281,
+      "sha256": "16bcf39d396aa93d8da7b0d55dd9da642d9f797e9d5e420dec48e6821ecdaf49"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A04-requirements-to-report.md",
+      "bytes": 5854,
+      "sha256": "ee10c66e8721c91d3b648f6e306ab78c8f587d3a5a2eda403200e782a335dd1b"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A05-six-level-validation.md",
+      "bytes": 5766,
+      "sha256": "8df0a54dbd1e5453b6a25ec1b13f034fbccc02440432da0698e7a9f2f8c1eb8b"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A06-run-recovery.md",
+      "bytes": 5539,
+      "sha256": "74b29fb6a90eb1405ce0231712562ded9e35b0779bc03445f54d07e4d09c1d9f"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A07-model-pack-daily-inference.md",
+      "bytes": 5848,
+      "sha256": "004baaea76d372f16f88fe223de7681d0aafc50059643dd5b67e04f2e403a5e0"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A08-local-data-permission.md",
+      "bytes": 5733,
+      "sha256": "0c896f48547196eeff493af3e78b2d62e026a2ef47b3ad3efe37f9a628be0ee2"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A09-objective-tree.md",
+      "bytes": 5213,
+      "sha256": "6dde33397fb8f73f7aa95131a227886b63e01ce6d6fe301d9b34535b7e421cf1"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A10-strategy-optimization.md",
+      "bytes": 5639,
+      "sha256": "4f9f58806409918b44de26446836e004726c55ed2f9afd3f312f306ab6059fdb"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A11-same-case-business-loop.md",
+      "bytes": 6326,
+      "sha256": "eae9f8fc4b5ca95a3235d7ec783ee7257dab9a8d555782cf6dae067c36a72b33"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/A12-periodic-analysis.md",
+      "bytes": 5456,
+      "sha256": "0afd1597334251a2e6fb28b4705f466a5ffc819641a67cccd6abb47d695267b9"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/ALL_PROMPTS.md",
+      "bytes": 115415,
+      "sha256": "3bba702cb9771623afa9a9d3360b7c98f40f858bb3ac333fd4b622349e356ca9"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/B01-live-llm-quality.md",
+      "bytes": 5430,
+      "sha256": "2b48d67cadba1a3366c0f441631d81ad0d678a7cb144910c8775ef38c52c83b1"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/B02-research-evidence-retrieval.md",
+      "bytes": 5296,
+      "sha256": "5b50cf35bf0df42898c7711500eeb224cb8f46b2a5df6f667a33602248b90aa3"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/B03-asset-owner-backend.md",
+      "bytes": 5514,
+      "sha256": "c6221e8f9c0246c0934daaaacc84bc5a790b8bf381bd6e72ad12a281d908c749"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/B04-method-teach-release.md",
+      "bytes": 5256,
+      "sha256": "8be9d70a14e0322af59889c7f87bfc9814fc7400f5ee4e3a1a068608b5888ab6"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/B05-domain-numerical-methods.md",
+      "bytes": 6194,
+      "sha256": "1365ab7c3f1f3bd59e7202721c73f88c79b169a16507f6c8d77b304bc0166c66"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/B06-advanced-ab-design.md",
+      "bytes": 5241,
+      "sha256": "26c92aeca767d65085d9346495f3a55aefa6efab165ee1df4ea86605452e4117"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/B07-enterprise-serving.md",
+      "bytes": 5399,
+      "sha256": "679f954fdee66c97f154e64b69c1981f64ded3ea4bc1dd909e6892c668f6a9f1"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/B08-action-adapter-receipts.md",
+      "bytes": 5359,
+      "sha256": "b49ba9cdddbbc64b8426f1b3b9bd1118938a0b384edc704e86c8f10be8b8b56a"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/MANIFEST.json",
+      "bytes": 8633,
+      "sha256": "04790d601e7bf333e0b762f52f17eff44a1c3bada8c38d7ba927c8f0c7a8848f"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/README.md",
+      "bytes": 3598,
+      "sha256": "13830997fe1c1b5a8c2b34d95378b6d45887cc822805ecc8bb343626f7430bee"
+    },
+    {
+      "path": "docs/product/whitepaper/demo-prompts-2026-09-11/U01-representative-user-study.md",
+      "bytes": 3871,
+      "sha256": "e0e874eeba4c95f981f6fd4d5eab51260503cba19adcaff3e4eace409811bcc5"
+    },
+    {
+      "path": "docs/product/whitepaper/development-linkage/INTEGRATION_REVIEW.md",
+      "bytes": 3281,
+      "sha256": "a1476d4fd3645c0e648af76acb63da7aff5ec0a3dd0e79626c54a3e2ef787ff6"
+    },
+    {
+      "path": "docs/product/whitepaper/development-linkage/PREPARED_CHANGE.json",
+      "bytes": 3821,
+      "sha256": "a75ca6e1f86bd7b0f10a342801eec0fab0eb2b0cde8eac9c91f064597035ee0a"
+    },
+    {
+      "path": "docs/product/whitepaper/development-linkage/juanerai-documentation-change.zip",
+      "bytes": 1263321,
+      "sha256": "1c3877efc2cea1fe0f42cd832c0234b58e8aa4c00bbafd59f68794083f93fa83"
+    },
+    {
+      "path": "docs/product/whitepaper/migration/2026-10-03/reference-audit.json",
+      "bytes": 24921,
+      "sha256": "caa14871961163c8015149cdefc2dba89a39bdaf2f7fb7bffeca0291acbb57f9"
+    },
+    {
+      "path": "docs/product/whitepaper/migration/2026-10-03/review-reference.json",
+      "bytes": 6320,
+      "sha256": "92f8cbce7b2c3b4f56535e5bb7822d85c7d2b7bcb2510e90a15deebf1c6c0300"
+    },
+    {
+      "path": "docs/product/whitepaper/migration/2026-10-03/review-source.json",
+      "bytes": 3397,
+      "sha256": "5eabe66c6e24645ef46979a65fa6a94ffb48a55dfba7046b73673283b59ea9fd"
+    },
+    {
+      "path": "docs/product/whitepaper/migration/2026-10-03/source-inventory.json",
+      "bytes": 347310,
+      "sha256": "1beab73d08da3d63c71623d8a455652fd5d1cca2c9da59000eeb7714d54410c9"
+    },
+    {
+      "path": "docs/product/whitepaper/migration/2026-10-03/structure-check.json",
+      "bytes": 612,
+      "sha256": "d946fa7eec2e06afc902ed62a6c16da2bad5757d59c3e6f53c2740996747f4b4"
+    },
+    {
+      "path": "docs/product/whitepaper/migration/2026-10-03/verification.json",
+      "bytes": 4768,
+      "sha256": "192b62614770907d875d141bc42a00a9de7485cd0b83f787a206bbfe4b3b9e18"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md",
+      "bytes": 190619,
+      "sha256": "1a0ab37da206427d1a8354246c5c677a829e14261a593a3bf8e9a41c9a3b63c5"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/MANIFEST.json",
+      "bytes": 2074,
+      "sha256": "83cac1b1e55cd59e3ebb63277d253980dd5f0a5c62d40ac43b1d240ea2a744a8"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig07_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig15_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig19_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/JUANERAI_WHITEPAPER.md",
+      "bytes": 211852,
+      "sha256": "6ce15fa734fc454fb136de31c0fab49dfc64511203753e7159d52e846bbf2564"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/MANIFEST.json",
+      "bytes": 2771,
+      "sha256": "ee370401bf6607b060d69294d6ba30b7cf4f53b95efd0dd8bdccb801bb77d76d"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/OSM_RETAIL_INTEGRATION_R3_RECEIPT.json",
+      "bytes": 5711,
+      "sha256": "793000abe3a3bafdd06aa493e9f52cd7fe069bc54af7fbc2f13241c8b50e4062"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig07_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig15_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig19_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "bytes": 604951,
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "bytes": 13069,
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/JUANERAI_WHITEPAPER.md",
+      "bytes": 212431,
+      "sha256": "18fb7dd6da75d66b59c29dacdf4847cfb4eef10dfd67833cdf64fc25033724ce"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/MANIFEST.json",
+      "bytes": 2707,
+      "sha256": "3790b8e6deef7b3dd83b9d6a630ed7ccaf8132b65c5ca550929a6b9da1d0ef62"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/WHITEPAPER_V3_3_2_RECEIPT.json",
+      "bytes": 4120,
+      "sha256": "f6e21ba0d8a425c8785750a0448fc1231b8d85c18263801321160b314ab8c1ff"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig07_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig15_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig19_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "bytes": 604951,
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "bytes": 13069,
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/JUANERAI_WHITEPAPER.md",
+      "bytes": 235205,
+      "sha256": "9344f07cff450239a0ac33423a239f0dc47c9ac0aa48de8e86253e2b143300ff"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/MANIFEST.json",
+      "bytes": 3125,
+      "sha256": "98665deb823dee3ef047dc0bceb0b11b6ae466a63f071823d87decb1d48fb5e9"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/WHITEPAPER_V3_3_3_RECEIPT.json",
+      "bytes": 11226,
+      "sha256": "9a15994de2a728b8fa27f6ac7a0b708539034d5fe0e06c1621cad1ffc1a803e7"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig07_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig15_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig19_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "bytes": 604951,
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "bytes": 13069,
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "bytes": 755981,
+      "sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "bytes": 15322,
+      "sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md",
+      "bytes": 252757,
+      "sha256": "429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/MANIFEST.json",
+      "bytes": 2488,
+      "sha256": "64993282bec0d5526043ff1baa05e2f1d611fbf34671ae27013476c87d854fd2"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/WHITEPAPER_V3_3_4_RECEIPT.json",
+      "bytes": 12356,
+      "sha256": "87d3250867fe5726331628e4e27913bdf78883b4112e44339023b2932a60fe78"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig07_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig15_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig19_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "bytes": 604951,
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "bytes": 13069,
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "bytes": 755981,
+      "sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "bytes": 15322,
+      "sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/CHANGELOG.md",
+      "bytes": 49457,
+      "sha256": "643a2b8bd3b0f258c8ec9f5fb3b107e0decca052af53daa16470f2ea9e623009"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "bytes": 30446,
+      "sha256": "7e3a7b1391a57f78d11f3a2f3d59ab902c44a45be87b9beb45ce711548efd844"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/DEVELOPMENT_BINDINGS.md",
+      "bytes": 17082,
+      "sha256": "6c619c888a4f58a93908dd4f9187ab1aa62289a959c0a4f60a1a3ee2bd8bb380"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/DEVELOPMENT_LINKAGE.md",
+      "bytes": 9746,
+      "sha256": "eb0a364e22bf145244693177d5e7db12c1a1cb50f07ff5cc94d7ba21446bb2d1"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/JUANERAI_CONTEXT.md",
+      "bytes": 10302,
+      "sha256": "3a45d0844d1f47b430cb2655c6932f7d7f6030bf315ccfcddbbcaac3923eaf6f"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "bytes": 13519,
+      "sha256": "8e7d57197d3b2b8c2ac3593ec6a67cde96f42dac075a908f936ede76881eadf6"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/JUANERAI_WHITEPAPER.md",
+      "bytes": 268494,
+      "sha256": "86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/MAINTENANCE.md",
+      "bytes": 6672,
+      "sha256": "e3d4298e235ed01e31a662dc9045918b2fb31760008a08ff4e982b748169427b"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/MARKET_SOURCE_CHECK_2026-09-26.md",
+      "bytes": 2479,
+      "sha256": "f0c12f4674da3a435ad52e7238ea672c6035554bffadf363b7aee28fa10380f5"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/NEXT_ACTION.md",
+      "bytes": 11627,
+      "sha256": "8ca8f17956caac7b0061051a3bd5b11ec3b1cec47c64a3589d45f29920518759"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/OSM_PIM_MAINLINES_INTEGRATION_2026-09-19.md",
+      "bytes": 8435,
+      "sha256": "1420283a84c10b958764b90e9f4d35753ad52cb313bffb8e175995a90effd9c0"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md",
+      "bytes": 7060,
+      "sha256": "dbe650fece48080b95e1509772a5050489fced4bd4d5633af348543ab0131bb1"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "bytes": 26719,
+      "sha256": "6650fc16cc47690fff34deef393e50552040dd7210d629a1d4fb1ddc758875eb"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+      "bytes": 12073,
+      "sha256": "b1e51072723730e39f5c5b8bbe79b3bb31d9d7dbe3d097a1f01df7084f133818"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/PROJECT_BINDINGS.md",
+      "bytes": 65190,
+      "sha256": "db705f7add445e8fb7b1b7986d1f9e882831e887997a60ec2a42278d05755637"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/STRATEGY_V4_INTEGRATION_2026-09-26.md",
+      "bytes": 9565,
+      "sha256": "33b5d4f78053d443f015172d83a52a13d97557534df8c404b6de2211777ba3ef"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/TAKEOVER_REVIEW.md",
+      "bytes": 10589,
+      "sha256": "2964713be65862cc2a5e7874e9b05357c502b13a83920596faec5d33a5af7711"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/WHITEPAPER_V4_0_RECEIPT.json",
+      "bytes": 18070,
+      "sha256": "15ba6f1ac63db4bbe850a9889177e6bf48947522645ad4f857bda8a0dc65e536"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig07_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig15_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig19_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "bytes": 604951,
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "bytes": 13069,
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "bytes": 755981,
+      "sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "bytes": 15322,
+      "sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig22_decision_lifecycle_v4.0.png",
+      "bytes": 249610,
+      "sha256": "46633f4d555fd813c23b5d06dee5da778f1a1726c7323c2708bb5e37fe5e7cc6"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v4.0/assets/fig22_decision_lifecycle_v4.0.svg",
+      "bytes": 6963,
+      "sha256": "8cdc64fcd861a1bde4758bc4bd5f76eb4957a764106b6dcebba6f853f76174df"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_数据分析与决策操作系统白皮书_v3.3 (1).md",
+      "bytes": 162483,
+      "sha256": "afe465e73b0b8df104d590a27a30d11ab072e7e67ffcc8b1da9f3a8c5bca5dfb"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_数据分析与决策操作系统白皮书_v3.3.1.md",
+      "bytes": 187914,
+      "sha256": "a311ca2ff04d2a469e8b2cc9f969af95ce68433c1740b77857fd0c3aefb318bd"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_ModelPack一致性修订变更清单.md",
+      "bytes": 11943,
+      "sha256": "06e561b1c68e9d6dd68aacb55dc073ed9ad34a6870d1af6a41fd511d6778ce97"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_升级说明.md",
+      "bytes": 3781,
+      "sha256": "3994dafd2817e2cdda2a8cc87adee3aac4dc0ab2d359886e76fb56f0aa1ab41d"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_配图资产清单.md",
+      "bytes": 4275,
+      "sha256": "f5d18095c2e2c24ed71e20fec4a9000279b2fd401d90de542240ec15472c80e4"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_验证报告.md",
+      "bytes": 2012,
+      "sha256": "81ba852218c7b7e6057263a0533eb961a4b6a3a6c65c83fcb8d47023c0fa0501"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/RECEIPT.json",
+      "bytes": 7146,
+      "sha256": "ae9321cb4de1411850c50c85b69db86169bce473b7fb1f8b8ac82397279c87c1"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/original.zip",
+      "bytes": 1327128,
+      "sha256": "ba918249b0169a82a87e64158b916f34a8ef81f953995ee0773ea8d21315c67a"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/JuanerAI_OSM_零售目标管理模型融合方案_v1.0.md",
+      "bytes": 40912,
+      "sha256": "c588fd9f5c53ee86d643dc318e4c98d2270b5789b98ed4e1487b5df63d3f71fa"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/JuanerAI白皮书Controller_OSM融合Prompt.md",
+      "bytes": 7497,
+      "sha256": "4e9072375750957448ad5cbfc1c66f361f581349d15f7c18d0dcc8f4a166fed7"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/RECEIPT.json",
+      "bytes": 1364,
+      "sha256": "8f868f6639dbdb0721630c55fa71d5e8232aea92a44f409f13b4fb0909318f57"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/零售目标管理模型解读-2.pdf",
+      "bytes": 1436484,
+      "sha256": "6db51e3e4beb81f9a99914b69028bfca340bb62eec93f946bf35844438cf8e4e"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/JuanerAI_产品矩阵与C端到B端增长战略方案.md",
+      "bytes": 24763,
+      "sha256": "21d573401d1349948d620c01d87aba3f50c38550c99e4064c62eec660ee008a4"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/RECEIPT.json",
+      "bytes": 1001,
+      "sha256": "731ec1656ebf8287fe1b06e7dd83fba04dbf9c4409d1c1e92f06aee54c453e06"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/handoff(20260916-160421).md",
+      "bytes": 16323,
+      "sha256": "bf461e80ca2d72d6280ed72b8487d05e638193e127e7d44c44849be0b3798d00"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-19-osm-pim/JuanerAI_双主线定位与命名提炼_2026-09-15.md",
+      "bytes": 6960,
+      "sha256": "48e525506a1f89ed6b2d19d9a24d83b3d32e82807991e67b4df94ff631c1e384"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-19-osm-pim/RECEIPT.json",
+      "bytes": 745,
+      "sha256": "f9dfd1a5309094229d26f6eb03e3e2b92c1c583fa9c20870013d6a62baacd160"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/FORMAL_READBACK.json",
+      "bytes": 2698,
+      "sha256": "7a24404a16eebf602d04b1a2dd9a5ffa5f28484ffc7f3064e4d729f0a0a67070"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/JuanerAI_Whitepaper_Strategy_Upgrade_Handoff_2026-09-26.md",
+      "bytes": 49366,
+      "sha256": "7629218c8524e9070f25daf77b0aed546471f11fc06f3625e87e183480f78c34"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/RECEIPT.json",
+      "bytes": 520,
+      "sha256": "009882547ce7b1ed32628c4ddf37738d866c8d90d960c537296b6eb63f5f61a0"
+    },
+    {
+      "path": "docs/research/PROJECT_INDEX.json",
+      "bytes": 58847,
+      "sha256": "0085e1314a230631969268aedc0ea371535cceb3528ef26445549778129ceb18"
+    },
+    {
+      "path": "docs/research/README.md",
+      "bytes": 12161,
+      "sha256": "ca8a627f21bb1dd287997dc3c4858067d8ea197fef54dddaf841b15b32ffd7ce"
+    },
+    {
+      "path": "docs/research/REFERENCES.md",
+      "bytes": 81283,
+      "sha256": "b18e78bbd96c3bdc62f0bfaa9df19ed8f6e6f8021ffe51f04bfc9af3fe9423ab"
+    },
+    {
+      "path": "docs/research/REFERENCE_LOCATIONS.json",
+      "bytes": 115195,
+      "sha256": "1560d70f7b68ca7662cffcb5476c4aefda23c2b9aa484add22521f6f9ef809a7"
+    },
+    {
+      "path": "docs/research/snapshots/2026-10-03/PROJECTS.md",
+      "bytes": 58131,
+      "sha256": "403bfec62e7e0748275c46f74fc642f0bfa2a9927e26a0258122a89c9229dfca"
+    },
+    {
+      "path": "docs/research/snapshots/2026-10-03/README.md",
+      "bytes": 321,
+      "sha256": "b44d391488ac2d86ceadbeb77db9e407e367efaabc97d133b33d5785f4195298"
+    }
+  ],
+  "research_current_entry_files": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 8735,
+      "sha256": "5f46feeebcb0f351bbf979ae9c748116ea709c6a0aae8f5bb6451b1a7e156164",
+      "before_sha256": "a595c9ec0dac2c71d4a0441d59eba1a55eb5a54340ea82195b12808ed4903888"
+    },
+    {
+      "path": "PROMPTS.md",
+      "bytes": 7694,
+      "sha256": "5442c2d1176662dbe006ac77f0a53cc77428c683ffbbb3221525c2175fc6c377",
+      "before_sha256": "21e686af2d27f019065890b64ac030c3b5ec6f0a3e68f495ce6964c5e8df63dc"
+    },
+    {
+      "path": "PROJECTS.md",
+      "bytes": 57323,
+      "sha256": "ae92993fbc61d72b2881d3760efa724d8c8610a1f52c11bcfd248b7032e40142",
+      "before_sha256": "403bfec62e7e0748275c46f74fc642f0bfa2a9927e26a0258122a89c9229dfca"
+    },
+    {
+      "path": "docs/product/JUANERAI_CONTEXT.md",
+      "bytes": 2258,
+      "sha256": "066e69495d782f858f574e6635209a2cbbc31781a751fe99c3fd24aa4174abfa",
+      "before_sha256": "3a45d0844d1f47b430cb2655c6932f7d7f6030bf315ccfcddbbcaac3923eaf6f"
+    },
+    {
+      "path": "docs/product/whitepaper/README.md",
+      "bytes": 1825,
+      "sha256": "10969101a7270b562210f0f833d882c52d427833d01e94d4648359d73adcbafb",
+      "before_sha256": null
+    },
+    {
+      "path": "docs/product/whitepaper/AGENTS.md",
+      "bytes": 516,
+      "sha256": "b6a5cd097b118452b741496a976b5fcd4317041e8e5e32d3cc8fef12f1c88ce0",
+      "before_sha256": null
+    }
+  ],
+  "receipt_note": "This receipt excludes its own hash. Original source receipts keep their historical scope; this manifest/receipt owns migration and navigation identities."
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002102113675-A8TB7M",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T10:21:13.675Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "用户明确放行E2、后续修复并交付Change004；工程接受附豁免，进入归档/Git交付。",
+  "status_after": "active",
+  "evidence_refs": []
+}

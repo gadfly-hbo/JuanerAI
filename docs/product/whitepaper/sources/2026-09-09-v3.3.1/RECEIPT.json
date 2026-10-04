@@ -1,0 +1,185 @@
+{
+  "received_on": "2026-09-09",
+  "source_archive": "original.zip",
+  "archive_sha256": "ba918249b0169a82a87e64158b916f34a8ef81f953995ee0773ea8d21315c67a",
+  "archive_bytes": 1327128,
+  "skipped": "12 __MACOSX AppleDouble metadata entries; original.zip preserves them",
+  "files": [
+    {
+      "path": "JuanerAI_3.3.1_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2"
+    },
+    {
+      "path": "JuanerAI_3.3.1_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788"
+    },
+    {
+      "path": "JuanerAI_3.3.1_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c"
+    },
+    {
+      "path": "JuanerAI_3.3.1_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62"
+    },
+    {
+      "path": "JuanerAI_3.3.1_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976"
+    },
+    {
+      "path": "JuanerAI_3.3.1_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea"
+    },
+    {
+      "path": "JuanerAI_数据分析与决策操作系统白皮书_v3.3 (1).md",
+      "bytes": 162483,
+      "sha256": "afe465e73b0b8df104d590a27a30d11ab072e7e67ffcc8b1da9f3a8c5bca5dfb"
+    },
+    {
+      "path": "JuanerAI_数据分析与决策操作系统白皮书_v3.3.1.md",
+      "bytes": 187914,
+      "sha256": "a311ca2ff04d2a469e8b2cc9f969af95ce68433c1740b77857fd0c3aefb318bd"
+    },
+    {
+      "path": "JuanerAI_白皮书_v3.3.1_ModelPack一致性修订变更清单.md",
+      "bytes": 11943,
+      "sha256": "06e561b1c68e9d6dd68aacb55dc073ed9ad34a6870d1af6a41fd511d6778ce97"
+    },
+    {
+      "path": "JuanerAI_白皮书_v3.3.1_升级说明.md",
+      "bytes": 3781,
+      "sha256": "3994dafd2817e2cdda2a8cc87adee3aac4dc0ab2d359886e76fb56f0aa1ab41d"
+    },
+    {
+      "path": "JuanerAI_白皮书_v3.3.1_配图资产清单.md",
+      "bytes": 4275,
+      "sha256": "f5d18095c2e2c24ed71e20fec4a9000279b2fd401d90de542240ec15472c80e4"
+    },
+    {
+      "path": "JuanerAI_白皮书_v3.3.1_验证报告.md",
+      "bytes": 2012,
+      "sha256": "81ba852218c7b7e6057263a0533eb961a4b6a3a6c65c83fcb8d47023c0fa0501"
+    }
+  ],
+  "asset_mapping": [
+    {
+      "reference": "assets/fig03_目标经营闭环.png",
+      "sha256_expected": "f1a9819895cb2fdae2652dbf93aa6e04c4259a1732c29231943b9c27e82f517a",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig01_广义数据决策者.png",
+      "sha256_expected": "e5625dc2169e7ba3c2f515420d0d79df7c699c213f30d4eee73248bee8806b80",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig02_BI_AI问数_JuanerAI.png",
+      "sha256_expected": "0132d99cb0846b4785e83450c377a2026c50054498d3ec98a5ef7a48dade07c4",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig04_OSM八大模块.png",
+      "sha256_expected": "900ca2b7f8085a69f096ab25a9182fd320354599c285c5c6a27bf11f8b956f54",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig05_三种分析模式.png",
+      "sha256_expected": "353f23f616f6d4fbf39c61496beb329b94e41893c1993891fbae479376ff237c",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig13_DAME六类方法体系.png",
+      "sha256_expected": "80fe2597a84ea3f0735eaaa458261bb1d9c0d2790a929c707eca59a976c150f2",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig14_ABTestAnalysis边界.png",
+      "sha256_expected": "b06a07524cb2d56a9365f8f35eca0980ba0404acffcb077f5de19108361656a2",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig06_AnalysisIR编译器.png",
+      "sha256_expected": "d564e827ebd576332ad8c09ddf0de9f2c9691fb873402823330941f4a873471e",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig08_Xanthil_DomainPack_四库双库关系.png",
+      "sha256_expected": "c064b8387cb23044c1fe48087b015e2829fb6f5240ab3810f51b15b5987b88b9",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig12_SemanticContextRuntime四库联动.png",
+      "sha256_expected": "6940cd3e3b17169afdc3ace485cc3ecc3fe91de1e24b6d2798d9211ae20bb1d2",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig07_6plus1总体架构.png",
+      "sha256_expected": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "status": "present",
+      "archive_filename": "JuanerAI_3.3.1_6plus1总体架构.png"
+    },
+    {
+      "reference": "assets/fig11_DomainPack三种状态.png",
+      "sha256_expected": "49da162c92a533fe98ed8e9e580b6b3feb6447337e58ebbdc2dc971190a7c56f",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig15_ModelPack_MLflow生命周期.png",
+      "sha256_expected": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "status": "present",
+      "archive_filename": "JuanerAI_3.3.1_ModelPack_MLflow生命周期.png"
+    },
+    {
+      "reference": "assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "sha256_expected": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "status": "present",
+      "archive_filename": "JuanerAI_3.3.1_ModelEvol_ModelPack职责映射.png"
+    },
+    {
+      "reference": "assets/fig18_ModelPack通用合同与首发Profile.png",
+      "sha256_expected": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "status": "present",
+      "archive_filename": "JuanerAI_3.3.1_ModelPack通用合同与首发Profile.png"
+    },
+    {
+      "reference": "assets/fig17_Consumer_DesktopRuntime边界.png",
+      "sha256_expected": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "status": "present",
+      "archive_filename": "JuanerAI_3.3.1_Consumer_DesktopRuntime边界.png"
+    },
+    {
+      "reference": "assets/fig19_Phase2企业Serving路线.png",
+      "sha256_expected": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "status": "present",
+      "archive_filename": "JuanerAI_3.3.1_Phase2企业Serving路线.png"
+    },
+    {
+      "reference": "assets/fig09_可信裁判与Teach.png",
+      "sha256_expected": "b09e6f60e1978f09e4239bca5531a909202139be3acdc8be38085482dd031c41",
+      "status": "missing",
+      "archive_filename": null
+    },
+    {
+      "reference": "assets/fig10_端到端案例.png",
+      "sha256_expected": "47d9d664e6cad1d2f4dd8f5dea5b53c6a557eb990684d3483e4f557cece17ec1",
+      "status": "missing",
+      "archive_filename": null
+    }
+  ]
+}

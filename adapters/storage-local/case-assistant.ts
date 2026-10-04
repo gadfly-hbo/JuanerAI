@@ -1,3 +1,5 @@
+import {validateReviewDecision,type MembershipReview} from '../../packages/product-core/member-review.ts';
+import {assistantRecord} from '../../packages/product-core/case-assistant.ts';
 import {validateChildResult} from '../../packages/product-core/case-collaboration.ts';
 import type {ChildRelation,ChildPreview,ChildResult,ChildResultValue,ResultTarget,ChildDelivery,ChildReview,ParentCollaboration,CollaborationLifecycle} from '../../packages/contracts/case-collaboration.ts';
 import { DatabaseSync } from 'node:sqlite';
@@ -34,9 +36,9 @@ CREATE TABLE collaboration_results(id TEXT PRIMARY KEY,child_id TEXT NOT NULL RE
 CREATE TABLE collaboration_returns(id TEXT PRIMARY KEY REFERENCES collaboration_results(id),parent TEXT NOT NULL REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);
 CREATE TABLE collaboration_reviews(id TEXT PRIMARY KEY REFERENCES collaboration_results(id),parent TEXT NOT NULL REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);`;
 function identity(db:DatabaseSync){return encode(db.prepare('SELECT type,name,tbl_name,sql FROM sqlite_schema ORDER BY type,name').all());}
-const schemaIdentities=([100,101] as const).map(version=>{const db=new DatabaseSync(':memory:');try{
- db.exec(version===100?schema:schema.replace("version='1.0'","version='1.1'"));
- if(version===101)db.exec(collaborationSchema);return identity(db);
+const schemaIdentities=([100,101,102] as const).map(version=>{const db=new DatabaseSync(':memory:');try{
+ db.exec(version===100?schema:schema.replace("version='1.0'",version===101?"version='1.1'":"version='1.2'"));
+ if(version>=101)db.exec(collaborationSchema);return identity(db);
 }finally{db.close();}});
 const sourceKey = (owner: OwnerRef) => encode(owner);
 const same = (a: unknown, b: unknown) => encode(a) === encode(b);
@@ -81,17 +83,18 @@ export function createLocalCaseAssistantStore(config: {
                 }
             }
             const metadata = db.prepare('SELECT * FROM metadata').all(), version=Number(db.prepare('PRAGMA user_version').get()?.user_version);
-            if (metadata.length !== 1 || ![100,101].includes(version) || metadata[0].version !== (version===100?'1.0':'1.1') || projectId && metadata[0].project_id !== projectId || Number(db.prepare('PRAGMA application_id').get()?.application_id) !== 1480802625)
+            if (metadata.length !== 1 || ![100,101,102].includes(version) || metadata[0].version !== (version===100?'1.0':version===101?'1.1':'1.2') || projectId && metadata[0].project_id !== projectId || Number(db.prepare('PRAGMA application_id').get()?.application_id) !== 1480802625)
                 assistantFailure('SCHEMA_UNSUPPORTED');
             if (identity(db) !== schemaIdentities[version-100])
                 assistantFailure('SCHEMA_UNSUPPORTED');
             for (const table of tables)
                 for (const row of db.prepare(`SELECT * FROM ${table}`).all()) {
                     const value = decode(row);
+                    if(table==='decisions'&&value.origin!==undefined){if(version!==102)assistantFailure('SCHEMA_UNSUPPORTED');validateMembershipFormal(value);const state=new DatabaseSync(base,{readOnly:true});try{const origin=value.origin as FormalDecision['origin'];const receipt=state.prepare("SELECT result_json FROM membership_receipts WHERE command_id=?").get(origin!.intent_id),r=state.prepare('SELECT body_json,body_sha256 FROM membership_reviews WHERE review_id=? AND version=?').get(origin!.review_id,origin!.review_version);if(!receipt||!r||hash(String(r.body_json))!==r.body_sha256)assistantFailure('INTEGRITY_BLOCKED');const result=JSON.parse(String(receipt.result_json)),review=JSON.parse(String(r.body_json)) as MembershipReview,finding=state.prepare('SELECT evidence_refs_json FROM findings WHERE finding_id=?').get(review.source.finding_id);if(!finding||result.decision_id!==value.id||result.expected_id!==value.outcome_id||result.report_id!==value.report_id||result.review_sha256!==review.sha256||result.task_id!==origin!.task_id||!same(value.source,review.source.owner)||value.source_report_id!==review.source.report_id||value.actor!==review.fields.actor||value.adopted_at!==result.at||!same(value.fields,validateReviewDecision(review.fields.decision,{evidence_refs:JSON.parse(String(finding.evidence_refs_json)),finding_id:review.source.finding_id,candidates:review.fields.closure.candidates})))assistantFailure('INTEGRITY_BLOCKED');}finally{state.close();}}
                     if ((table === 'drafts' ? `${value.id}:${value.version}` : value.id) !== row.id)
                         assistantFailure('INTEGRITY_BLOCKED');
                 }
-            if(version===101)for(const table of ['collaboration_children','collaboration_lifecycle','collaboration_results','collaboration_returns','collaboration_reviews'])
+            if(version>=101)for(const table of ['collaboration_children','collaboration_lifecycle','collaboration_results','collaboration_returns','collaboration_reviews'])
                 for(const row of db.prepare(`SELECT * FROM ${table}`).all())decode(row);
             return db;
         }
@@ -175,16 +178,26 @@ export function createLocalCaseAssistantStore(config: {
         safe(base);
         const db = new DatabaseSync(base, { readOnly: true });
         let aggregate: Record<string, unknown> | undefined;
+        let membership_origin: AssistantSource['membership_origin'];
         try {
             if (f)
                 aggregate = db.prepare('SELECT * FROM aggregate_artifacts WHERE artifact_id=? AND revision_id=?').get(f.aggregate_id, owner.revision_id);
+            const run=f?db.prepare('SELECT run_contract_version FROM analysis_runs WHERE run_id=?').get(f.run_id):null;
+            if(run?.run_contract_version==='4.0'){
+                const task=db.prepare('SELECT task_id FROM membership_tasks WHERE project_id=? AND session_id=? AND case_id=? AND current_revision_id=?').get(owner.project_id,owner.session_id,owner.case_id,owner.revision_id);
+                if(!task)assistantFailure('INTEGRITY_BLOCKED');
+                const receipt=db.prepare("SELECT result_json FROM membership_receipts WHERE task_id=? AND json_extract(result_json,'$.kind')='prepared' ORDER BY rowid DESC LIMIT 1").get(task.task_id);
+                if(!receipt)assistantFailure('INTEGRITY_BLOCKED');const prepared=JSON.parse(String(receipt.result_json)).prepared;
+                membership_origin={version:'1.0',task_id:String(task.task_id),prepared_sha256:prepared.fingerprint};
+            }
+
         }
         finally {
             db.close();
         }
         if (f && !aggregate)
             missing.push('缺少已验证聚合');
-        return { owner: structuredClone(owner), case_name: r?.case_name ?? '', current_revision_id: p.session?.current_revision_id ?? '', eligible: missing.length === 0, missing, row_version: r?.row_version ?? '', finding_id: f?.finding_id ?? '', acceptance_id: a?.acceptance_id ?? '', closure_id: c?.closure_id ?? '', evidence_refs: f?.evidence_refs ?? [], limitations: f?.limitations ?? [], candidates: form?.candidates ?? [], finding_summary: f ? encode({ judgment: f.judgment, supporting_evidence: f.supporting_evidence, refutation: f.refutation, limitations: f.limitations }) : '', aggregate: { artifact_id: f?.aggregate_id ?? '', sha256: String(aggregate?.sha256 ?? ''), fields: aggregate ? JSON.parse(String(aggregate.columns_json)) : [], scope: encode({ comparison: p.confirmation?.comparison_period ?? null, current: p.confirmation?.current_period ?? null, grain: 'verified comparison/current aggregate metrics; no individual rows' }), content: f?.metrics ?? '' }, report: { report_id: report?.report_id ?? '', version: Number(report?.version_sequence ?? 0), sha256: report?.markdown_sha256 ?? '', summary: encode({ report_id: report?.report_id ?? null, finding_id: f?.finding_id ?? null, judgment: f?.judgment ?? null, limitations: f?.limitations ?? [], closure_route: c?.route ?? null }) } };
+        return { ...(membership_origin?{membership_origin}:{}),owner: structuredClone(owner), case_name: r?.case_name ?? '', current_revision_id: p.session?.current_revision_id ?? '', eligible: missing.length === 0, missing, row_version: r?.row_version ?? '', finding_id: f?.finding_id ?? '', acceptance_id: a?.acceptance_id ?? '', closure_id: c?.closure_id ?? '', evidence_refs: f?.evidence_refs ?? [], limitations: f?.limitations ?? [], candidates: form?.candidates ?? [], finding_summary: f ? encode({ judgment: f.judgment, supporting_evidence: f.supporting_evidence, refutation: f.refutation, limitations: f.limitations }) : '', aggregate: { artifact_id: f?.aggregate_id ?? '', sha256: String(aggregate?.sha256 ?? ''), fields: aggregate ? JSON.parse(String(aggregate.columns_json)) : [], scope: encode({ comparison: p.confirmation?.comparison_period ?? null, current: p.confirmation?.current_period ?? null, grain: 'verified comparison/current aggregate metrics; no individual rows' }), content: f?.metrics ?? '' }, report: { report_id: report?.report_id ?? '', version: Number(report?.version_sequence ?? 0), sha256: report?.markdown_sha256 ?? '', summary: encode({ report_id: report?.report_id ?? null, finding_id: f?.finding_id ?? null, judgment: f?.judgment ?? null, limitations: f?.limitations ?? [], closure_route: c?.route ?? null }) } };
     }
     function child(db:DatabaseSync,id:string):ChildRelation|null{
         if(Number(db.prepare('PRAGMA user_version').get()?.user_version)===100)return null;
@@ -202,7 +215,7 @@ export function createLocalCaseAssistantStore(config: {
         try{return transaction(db=>{
             get(db,'sessions',id);
             if(explicitClose)migrate(db);
-            const modern=Number(db.prepare('PRAGMA user_version').get()?.user_version)===101;
+            const modern=Number(db.prepare('PRAGMA user_version').get()?.user_version)>=101;
             const ids=[id,...(modern&&!child(db,id)?db.prepare('SELECT id FROM collaboration_children WHERE parent=?').all(id).map(r=>String(r.id)):[])];
             for(const sessionId of ids){
                 if(modern){const old=lifecycle(db,sessionId);if(old.open){const body=encode({open:false,epoch:old.epoch+1});db.prepare('INSERT INTO collaboration_lifecycle VALUES(?,?,?) ON CONFLICT(id) DO UPDATE SET body=excluded.body,sha256=excluded.sha256').run(sessionId,body,hash(body));}}
@@ -216,7 +229,7 @@ export function createLocalCaseAssistantStore(config: {
             // interruption are durable. Unreadable state leaves Application fences set.
             let committed=false;
             try{const db=connect();if(!db)throw error;try{
-                committed=Number(db.prepare('PRAGMA user_version').get()?.user_version)===101&&expected.every(item=>same(lifecycle(db,item.id),item.state)&&same(rows<AssistantAttempt>(db,'attempts',item.id),item.attempts));
+                committed=Number(db.prepare('PRAGMA user_version').get()?.user_version)>=101&&expected.every(item=>same(lifecycle(db,item.id),item.state)&&same(rows<AssistantAttempt>(db,'attempts',item.id),item.attempts));
             }finally{db.close();}}catch{assistantFailure('RESULT_PENDING');}
             if(committed)return expected.map(item=>item.id);
             throw error;
@@ -325,7 +338,7 @@ export function createLocalCaseAssistantStore(config: {
         }
     }
     function migrate(db:DatabaseSync){
-        if(Number(db.prepare('PRAGMA user_version').get()?.user_version)===101)return;
+        if(Number(db.prepare('PRAGMA user_version').get()?.user_version)>=101)return;
         const project=db.prepare('SELECT project_id FROM metadata').get()!.project_id;
         db.exec("DROP TABLE metadata; CREATE TABLE metadata(project_id TEXT PRIMARY KEY,version TEXT NOT NULL CHECK(version='1.1'));");
         db.prepare("INSERT INTO metadata VALUES (?,'1.1')").run(project);
@@ -375,7 +388,7 @@ export function createLocalCaseAssistantStore(config: {
             assistantFailure();
         connect(true, source.owner.project_id)!.close();
         const fingerprint = hash(encode({ kind: 'link', title: session.title, owner: session.source }));
-        return transaction(db => { const prior = db.prepare('SELECT * FROM receipts WHERE id=?').get(commandId); if (prior) {
+        return transaction(db => { if(source.membership_origin)migrateMembershipSidecar(db,source.owner.project_id,'main');const prior = db.prepare('SELECT * FROM receipts WHERE id=?').get(commandId); if (prior) {
             if (prior.fingerprint !== fingerprint)
                 assistantFailure('COMMAND_CONFLICT');
             return get<AssistantSession>(db, 'sessions', String(prior.result));
@@ -410,7 +423,7 @@ export function createLocalCaseAssistantStore(config: {
         assistantFailure('FORBIDDEN'); write(db, 'events', event.id, sessionId, event); }); }
     async function saveDraft(draft: AssistantDraft, signal?: AbortSignal) { transaction(db => { if (signal?.aborted)
         assistantFailure('INTERRUPTED'); if(child(db,draft.session_id))assistantFailure('FORBIDDEN');const attempt = get<AssistantAttempt>(db, 'attempts', draft.attempt_id); if (draft.manual_base_id) {
-        const formal = get<FormalDecision>(db, 'decisions', draft.manual_base_id), session = get<AssistantSession>(db, 'sessions', draft.session_id), origin = get<AssistantDraft>(db, 'drafts', `${formal.draft_id}:${formal.draft_version}`);
+        const formal = get<FormalDecision>(db, 'decisions', draft.manual_base_id);if(formal.origin)assistantFailure('FORBIDDEN');const session = get<AssistantSession>(db, 'sessions', draft.session_id), origin = get<AssistantDraft>(db, 'drafts', `${formal.draft_id}:${formal.draft_version}`);
         if (!same(session.source, formal.source) || origin.attempt_id !== draft.attempt_id || draft.baseline_decision_id !== formal.id || draft.source_revision !== formal.source.revision_id)
             assistantFailure('FORBIDDEN');
     }
@@ -426,7 +439,7 @@ export function createLocalCaseAssistantStore(config: {
         const formal = get<FormalDecision>(db, 'decisions', decisionId);
         if (!same(formal.source, owner))
             assistantFailure('FORBIDDEN');
-        return get<AssistantDraft>(db, 'drafts', `${formal.draft_id}:${formal.draft_version}`);
+        if(formal.origin)assistantFailure('FORBIDDEN');return get<AssistantDraft>(db, 'drafts', `${formal.draft_id}:${formal.draft_version}`);
     }
     finally {
         db.close();
@@ -516,4 +529,35 @@ export function createLocalCaseAssistantStore(config: {
         if (['Running', 'Waiting'].includes(attempt.status))
             write(db, 'attempts', attempt.id, attempt.session_id, { ...attempt, status: 'Interrupted', ended_at: at, waiting_deadline: null, reason: 'application_closed' }, true); }); }
     return { readLifecycle,closeFamily,reopenSession,readParentCollaboration,returnChild,failChildReturn,reviewChild,childResults,finishChild,readChild,createChild,readSource, listSessions, createSession, readSession, saveAttempt, appendEvent, saveDraft, findFormalDraft, formalHistory, adopt, interruptAll };
+}
+
+/** Only the explicit P1 formal submission calls this local sidecar activation. */
+export function prepareMembershipSidecar(projectRoot:string,projectId:string):string{
+ const root=realpathSync(projectRoot),path=join(root,'.xanthil','desktop','case-assistant.sqlite');
+ for(const file of [join(root,'.xanthil'),dirname(path),path,...['-journal','-wal','-shm'].map(s=>path+s)])if(existsSync(file)&&lstatSync(file).isSymbolicLink())assistantFailure('INTEGRITY_BLOCKED');
+ const existed=existsSync(path),db=new DatabaseSync(path);try{
+ db.exec('PRAGMA busy_timeout=0; PRAGMA synchronous=FULL;');
+ if(!existed){db.exec('BEGIN IMMEDIATE');try{db.exec(schema);db.exec('PRAGMA application_id=1480802625;PRAGMA user_version=100');db.prepare("INSERT INTO metadata VALUES(?,'1.0')").run(projectId);db.exec('COMMIT');}catch(e){try{db.exec('ROLLBACK');}catch{}throw e;}}
+ assertMembershipSidecar(db,projectId,'main');
+ }finally{db.close();}return path;
+}
+export function assertMembershipSidecar(db:DatabaseSync,projectId:string,name:'main'|'assistant'){
+ const version=Number(db.prepare(`PRAGMA ${name}.user_version`).get()?.user_version),metadata=db.prepare(`SELECT * FROM ${name}.metadata`).all();
+ const actual=encode(db.prepare(`SELECT type,name,tbl_name,sql FROM ${name}.sqlite_schema ORDER BY type,name`).all());
+ if(![100,101,102].includes(version)||Number(db.prepare(`PRAGMA ${name}.application_id`).get()?.application_id)!==1480802625||metadata.length!==1||metadata[0].project_id!==projectId||metadata[0].version!==({100:'1.0',101:'1.1',102:'1.2'} as Record<number,string>)[version]||actual!==schemaIdentities[version-100])assistantFailure('SCHEMA_UNSUPPORTED');
+ if(db.prepare(`PRAGMA ${name}.journal_mode`).get()?.journal_mode!=='delete'||Number(db.prepare(`PRAGMA ${name}.synchronous`).get()?.synchronous)!==2||JSON.stringify(db.prepare(`PRAGMA ${name}.integrity_check`).all())!=='[{"integrity_check":"ok"}]'||db.prepare(`PRAGMA ${name}.foreign_key_check`).all().length)assistantFailure('INTEGRITY_BLOCKED');
+ for(const table of [...tables,...(version>=101?['collaboration_children','collaboration_lifecycle','collaboration_results','collaboration_returns','collaboration_reviews']:[])])for(const row of db.prepare(`SELECT * FROM ${name}.${table}`).all())if(typeof row.body!=='string'||hash(row.body)!==row.sha256)assistantFailure('INTEGRITY_BLOCKED');
+ return version;
+}
+export function migrateMembershipSidecar(db:DatabaseSync,projectId:string,name:'assistant'|'main'='assistant'){
+ const version=assertMembershipSidecar(db,projectId,name);if(version===102)return;
+ db.exec(`DROP TABLE ${name}.metadata;CREATE TABLE ${name}.metadata(project_id TEXT PRIMARY KEY,version TEXT NOT NULL CHECK(version='1.2'));`);db.prepare(`INSERT INTO ${name}.metadata VALUES(?,'1.2')`).run(projectId);
+ if(version===100)db.exec(collaborationSchema.replaceAll('CREATE TABLE ',`CREATE TABLE ${name}.`));
+ db.exec(`PRAGMA ${name}.user_version=102`);assertMembershipSidecar(db,projectId,name);
+}
+
+function validateMembershipFormal(value:unknown){
+ const f=assistantRecord(value,['id','outcome_id','report_id','sequence','source','source_report_id','previous_id','fields','actor','adopted_at','origin']),o=assistantRecord(f.origin,['kind','task_id','review_id','review_version','intent_id']),owner=assistantRecord(f.source,['project_id','session_id','case_id','revision_id']);
+ const uuid=(v:unknown)=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(v);
+ if(o.kind!=='membership_review'||![f.id,f.outcome_id,f.report_id,f.source_report_id,o.task_id,o.review_id,o.intent_id,...Object.values(owner)].every(uuid)||f.previous_id!==null&&!uuid(f.previous_id)||!Number.isSafeInteger(f.sequence)||Number(f.sequence)<1||!Number.isSafeInteger(o.review_version)||Number(o.review_version)<1||!assistantText(f.actor)||typeof f.adopted_at!=='string'||!Number.isFinite(Date.parse(f.adopted_at)))assistantFailure('INTEGRITY_BLOCKED');
 }

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002012116697-ED2QVV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T01:21:16.697Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "A补充聚焦GREEN；原生启动证据已保留，未扩大权限或声明交互PASS。",
+  "status_after": "active",
+  "evidence_refs": []
+}

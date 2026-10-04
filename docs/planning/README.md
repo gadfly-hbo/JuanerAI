@@ -1,6 +1,121 @@
 # JuanerAI Product Planning Index
 
-## Current approved product-development authority — Blueprint v3.0（2026-10-01）
+## Product sources and research navigation — 2026-10-03
+
+The [Whitepaper entry](../product/whitepaper/README.md) is now maintained inside this repository. Use [the exact adopted v4.0 source](../product/whitepaper/revisions/v4.0/JUANERAI_WHITEPAPER.md) for the historical SHA `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`; use the [current editorial master](../product/whitepaper/JUANERAI_WHITEPAPER.md) for navigation maintenance. [The migration map](../product/whitepaper/MIGRATION_2026-10-03.md) resolves prior research absolute/relative paths without rewriting frozen Blueprint bytes. [The research index](../research/README.md) locates original Demo evidence; required fixed attachments still travel with each product input. This document-location change does not revise Blueprint v4.1 or receiving-task authority.
+
+## Current approved product-development authority — Blueprint v4.1（2026-10-01）
+
+[JuanerAI Product Development Blueprint v4.1](2026-10-01/juanerai-product-development-blueprint-v4.1.md)
+is the approved product-development guideline in this work branch. Its
+[approval and rule-integration record](2026-10-01/blueprint-v4.1-approval-and-rule-integration.md)
+separates user approval, independent planning readiness, local integration,
+Git publication and receiver adoption. Whitepaper v4.0 adoption is unchanged.
+At local freeze, Git publication and receiving-task adoption were not yet
+established. The user subsequently authorized publication under approval-record
+§6; actual Git/PR receipts establish delivery. Receiving-task adoption remains
+separate and unconfirmed until its explicit readback.
+
+Read the four views (§4, §§5–6, §9, §10), pending decisions (§7) and selection
+rule (§8). P1 delivers core task experience and genuinely reusable Analysis
+Core together, with the minimum data/semantic/execution dependencies. After P1,
+expand data and semantics for actual task or feedback blockers; adequate
+authorized sources allow outcome follow-up to proceed without waiting for a
+complete platform, then governed improvement and explicit next-Case adoption.
+The six-plus-two landscape and accepted Change001–003 scopes remain.
+
+Joint P1 scenario, capability and experience acceptance permits discussion
+of a bounded single-scenario trial, not automatic real-data, Provider or
+deployment authority. Packs, OSM, Team and Enterprise follow real demand.
+Static architecture feasibility does not prove working IR consumption,
+UI acceptance, engineering readiness or product value.
+
+The retained [v4.0 stage proposal](2026-10-01/xanthil-ai-led-analysis-next-slice-proposal-v0.1.md)
+remains a fixed scope/acceptance reference; its draft labels and former
+coordination status are historical. v4.1 and its approval record own the
+current route and adoption interpretation. The in-progress P1 product/UI package
+must adopt the exact revision explicitly; this update neither edits it nor
+reopens its completed corrections or starts production.
+
+### Current product-input package binding — v4.1
+
+Later packages bind the v4.1 file, its exact SHA-256 and eventual publication
+commit/tree; the approval record and independent review; the retained stage
+proposal where applicable; the four-view/stable-capability-ID alignment;
+closed applicable §7 decisions and exact UI Contract/user UI Gate.
+The approval record links the reviewed identity. Receiver readback must name
+the actual task/device, adopted version and protected work/stop boundary.
+Until then, adoption is unconfirmed; main publication alone does not establish it.
+
+## Approved delivery breakdown and first batch — 2026-10-03
+
+The user approved revision 002 of the [full Change roadmap](2026-10-03/juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md) and [next product scope and handoff](2026-10-03/xanthil-task-experience-integration-proposal-v0.1.md), then authorized Git publication and first-batch preparation. Blueprint v4.1 and its capability goals remain unchanged. The [independent review](2026-10-03/reviews/full-change-roadmap-v0.1-readiness-001.md#追加-002浏览器交付与首次内部试用修订审查) covers planning readiness, not production intake.
+
+Near-term delivery is a PC browser plus same-machine local service. N01/N02 first expose one real, authorized membership-analysis task in simple mode, then complete S1; Desktop packaging and shell-only checks are deferred without deleting their implementation or closing historical gaps. The attached [Demo v0.2](2026-10-03/pc-task-experience-prototype-v0.2/README.md) is an interaction reference, not a UI Gate PASS or production implementation.
+
+The first handoff is product/UI preparation, not an instruction to implement all 20 candidates. Reuse valid approvals and close only remaining model, data, resource and UI decisions. Engineering-policy adjustments are proposed in the handoff; the sole execution policy remains effective until its owner publishes the minimal changes and the receiving task adopts them. Git publication, receiver adoption and engineering authority remain separate.
+
+## Historical v4.0 approval snapshot — superseded as route by v4.1
+
+The following is the prior approval/publication snapshot, preserved for
+traceability rather than current authority or a present permission grant.
+
+[JuanerAI Product Development Blueprint v4.0](2026-10-01/juanerai-product-development-blueprint-v4.0.md)
+is the approved highest product-development execution guideline. Read it with
+the [approval and rule-integration record](2026-10-01/blueprint-v4.0-approval-and-rule-integration.md),
+which records the user's confirmation and subsequent authorization to publish
+this session's Blueprint work. Whitepaper v4.0 remains the core product reference
+and commercialization charter; there is no new Whitepaper adoption in this release.
+
+The two approved planning documents retain their exact already-forwarded bytes.
+Their draft labels and pre-approval stop lines describe the earlier snapshot;
+the approval record owns the subsequent approval and rule-integration status.
+They are not frozen engineering inputs and grant no production or UI acceptance.
+Fresh [Review 002](2026-10-01/reviews/blueprint-v4.0-stage-development-readiness-review-002.md)
+passed planning readiness only; it does not close the remaining §7 decisions.
+
+Read all four views: capability landscape and cumulative scope (§4), bounded
+stages and validation slices (§§5–6), module/IR responsibility (§9), and value
+evidence (§10). Use §8 to organize a bounded complete stage, grouped capabilities,
+early vertical integration and stage acceptance. Each Change identifies its
+stage outcome, capability increment, dependencies and remaining gaps; scenario,
+capability and experience evidence must jointly support the integrated result.
+Small engineering commits do not force every shared capability into a tiny story.
+
+Change 001–003 remain accepted within their original scope. Next is the bounded
+**P1 AI-led membership-analysis stage → outcome follow-up → explicit next-Case
+adoption**. The [stage and next-slice plan](2026-10-01/xanthil-ai-led-analysis-next-slice-proposal-v0.1.md)
+defines G1 semantic/method/IR execution and verification, G2 task coordination/
+authorization/recovery, and G3 report feedback and human decisions. These are
+capability groups, not three preassigned Changes or a new general platform.
+
+Users provide needs, missing authorized materials and business judgments; the
+system advances authorized work and reuses background configuration. Actual
+IR consumption, unchanged data/decision authority and useful results matter,
+not just fewer clicks. Formal product decisions, applicable clickable UI/user
+Gate and engineering intake still precede production. This publication does not
+change active engineering state, approve Provider/data access, resume stopped
+tasks, or claim receiver adoption. The user has manually forwarded the planning
+prompt; no automatic dispatch or additional session message is part of this release.
+
+### Historical product-input package binding — v4.0
+
+Later packages explicitly bind:
+
+- Blueprint `v4.0`, path `docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.0.md`,
+  SHA-256 `38d2a760b7014a425f36c74f35aebf04fa20dd8064a9a358f2ad8ba57b93b162`;
+- stage plan `docs/planning/2026-10-01/xanthil-ai-led-analysis-next-slice-proposal-v0.1.md`,
+  SHA-256 `c141a365518bd3b35c085cf2033f1f79a531e4b06c50f68f90b595dee485a98d`;
+- the approval record, exact publication commit/tree and applicable review;
+- four-view alignment, stage/capability/dependency scope, closed applicable §7
+  decisions, precise UI Contract and the user's UI Gate;
+- receiver task/device, exact received identity, retained work/stop boundary
+  and explicit planning adoption. A Git merge or forwarded prompt is not that receipt.
+
+## Historical v3.0 approval snapshot — superseded as route by v4.0
+
+The following records the earlier v3.0 approval and freeze-time state; it is not
+the current route or a claim about today's engineering progress.
 
 [JuanerAI Product Development Blueprint v3.0](2026-09-30/juanerai-product-development-blueprint-v3.0.md)
 is the user-approved highest product-development execution guideline, grounded
@@ -77,8 +192,9 @@ Each Change should consult relevant earlier research Demos as reference for effi
 Blueprint [v1.0](https://github.com/gadfly-hbo/JuanerAI/blob/c5a305795bd7201b541e5f8184554bf72ed82b35/docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.0.md),
 [v1.1](https://github.com/gadfly-hbo/JuanerAI/blob/c5a305795bd7201b541e5f8184554bf72ed82b35/docs/planning/2026-09-18/juanerai-product-development-blueprint-v1.1.md),
 [v1.2](2026-09-19/juanerai-product-development-blueprint-v1.2.md),
-[v1.3](2026-09-19/juanerai-product-development-blueprint-v1.3.md) and
-[v2.0](2026-09-26/juanerai-product-development-blueprint-v2.0.md) remain immutable
+[v1.3](2026-09-19/juanerai-product-development-blueprint-v1.3.md),
+[v2.0](2026-09-26/juanerai-product-development-blueprint-v2.0.md) and
+[v3.0](2026-09-30/juanerai-product-development-blueprint-v3.0.md) remain immutable
 history. v1.2 adopted Whitepaper v3.3.4's OSM/PIM and coverage map. Its
 [Review 001](2026-09-19/reviews/blueprint-v1.2-development-readiness-review-001.md)
 `NEEDS_CLARIFICATION` and
@@ -102,7 +218,10 @@ the earlier branch history, role configuration, execution policies, task
 packages, UI assets or project-board records. Those assets remain preserved at
 their original Git sources, not deleted or superseded by absence here.
 
-## Current product-input package binding — v3.0
+## Historical product-input package binding — v3.0
+
+Retained for packages originally bound to v3.0. New packages use the current
+v4.0 binding above; historical frozen packages do not migrate automatically.
 
 When preparing a later Change's Product Input Package, explicitly bind:
 

@@ -1,10 +1,24 @@
 # JuanerAI 蓝图能力覆盖图 — 最新
 
-**2026-10-01 更新：Change003完成｜Blueprint v3.0｜40项能力，六条主线＋两项贯穿能力。**
+**规划对齐：Blueprint v4.1｜已验收基线：2026-10-01 Change003｜工程交付补充：2026-10-02 Change004（E2豁免）｜40项能力，六条主线＋两项贯穿能力。**
 
 Change001的会员复购分析、Change002的Case Assistant／决定／预期，以及**Change003的单层Fork／有界Subagent协作均已按各自限定范围验收并交付**。本轮已读回003工程／用户验收及PR51/52合并记录。**产品已具备可用纵切，但尚未达到蓝图的完整DecisionLoop。**
 
 [累计清单：全部能力、目标和完成条件](register.md) · [证据、固定版本及限制](evidence.md) · [维护规则](../../governance/product-change-execution-policy.md#blueprint-capability-coverage)
+
+## 本次规划增量（不提升实现或验收状态）
+
+当前路线、P1 预期能力增量和全部稳定 ID 的映射见[清单 v4.1 规划段](register.md#v41-规划映射与下一阶段增量非实现状态)。P1 将核心体验与 Analysis Core 协同补齐；后续数据／语义按实际任务或回访阻塞扩展，有足够来源即可进入反馈，再到受治理改进／下一 Case 采用。三类 P1 验收共同通过后才讨论有界试用，权限另定。
+
+以下图表和“Change003交付”段保持原固定工程证据；该规划段没有新产品交付或接受；Change004在研刷新见下一节。规划中的 IR 真实消费、未完成任务推进及整体人审不能提前填成已完成。图中广义 Context／IR 的“待核验”是原工程快照；已知 Desktop 固定链缺口见清单规划段，不声称全库／其他设备已经穷尽核验。
+
+## Change004 工程交付（2026-10-02，E2用户豁免）
+
+用户已要求交付，并明确 E2 后续再修。**固定 P1 A/B 实现获得附 E2 豁免的工程接受**：未完成任务推进、可执行分析计划、点评／必要重算、保存恢复和三种人审结果已接通；E1 独立持久化158项全部通过，布局补验4项通过。Git实际结果见[交付记录](../../../openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/git-delivery.md)。
+
+**E2 仍为待修复项**：原生构建成功，Electron 启动失败，沙箱拒绝桌面服务访问；原生交互及完整包验证尚缺。真人体验由用户后续完成，没有新能力目标被提升为完整验收。详见 [E-004-DELIVERY](evidence.md#e-004-delivery) 及[累计清单](register.md#change004-工程交付2026-10-02e2用户豁免)。
+
+六＋二全图和40项能力保持完整，001～003接受范围保留。早期在研、review001、离线复核及隔离验证快照均保留；[本次工程交付快照](snapshots/change-004-delivery-with-e2-waiver-2026-10-02.md)绑定固定候选、用户豁免、未验证部分及同提交累计清单。
 
 ## 全景图
 
@@ -64,7 +78,7 @@ flowchart TB
 | 002 已交付 | C5-01/02/09、C1-03、C3-01、C6-01、A-04/05、B-02/03在已有范围上扩展；**C5-08限定目标获验收** | 002当时Fork/Subagent仅Preview；正式预期不等于Actual/评价；[回溯快照](snapshots/change-002-retrospective.md) |
 | **003 已交付** | **C5-03/04：实现中→目标范围已验收**；C1-01/03、C3-01、C6-01、A-04/05、B-01～03扩大已验收子范围、保持局部实现 | 根Case→独立子窗口→受控任务→精确回流→人工MODEL采纳已闭合；不新增正式业务写入、Actual／评价／学习；[完成快照](snapshots/change-003-completed-2026-10-01.md) |
 
-当前未从本次证据识别新的在研Change；不自动启动后续项。003离线canonical记录为2305 PASS／0 FAIL／1真实模型门控SKIP，含native73/73；独立与用户验收已记录。**实际Provider／模型质量、安装或发布不在此完成结论内**，本轮未重跑产品测试或复制Mini原始日志。
+在该 Change003 工程证据快照采集时，未识别新的在研Change；这不否认后来正在准备的 P1 产品包，也不是今日 Mini WIP 断言；不自动启动后续项。003离线canonical记录为2305 PASS／0 FAIL／1真实模型门控SKIP，含native73/73；独立与用户验收已记录。**实际Provider／模型质量、安装或发布不在此完成结论内**，本轮未重跑产品测试或复制Mini原始日志。
 
 ## 能力级结论与下一步建议
 
@@ -81,5 +95,6 @@ flowchart TB
 | [Change002](snapshots/change-002-retrospective.md) | 2026-10-01回溯重建，不是当时原始汇报 | candidate010/DMG011验收及PR46集成 |
 | [Change003在研](snapshots/change-003-in-progress-2026-10-01.md) | **非交付快照** | 2026-10-01读取到的原任务回执；无最终固定候选 |
 | [Change003完成](snapshots/change-003-completed-2026-10-01.md) | 按已发布验收和Git回执更新 | candidate003＋supplement002，PR51/52集成归档；原在研快照保留 |
+| [CI可靠性与反馈](snapshots/ci-reliability-and-feedback-2026-10-03.md) | 无业务能力增量，状态与缺口不变 | 沿用同提交清单及 Change001–004 业务证据；工程结果见该快照链接 |
 
 今后每次Change完成，按唯一政策增量更新清单、总图并追加完成快照；含“无业务能力增量”的Change也保留全图。快照中的同提交清单／证据链接在该快照发布的Git版本中读取，后来修正另追加，不覆盖已发布快照。

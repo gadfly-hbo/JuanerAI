@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="1320" viewBox="0 0 1680 1320">
+<title>OSM 目标形成与多维计划</title>
+<desc>可比来源、规则版本与人工调整形成待批目标候选；批准后形成同一目标计划版本。商品、渠道与营销归属是共同明细空间的投影，各视图均为合成示例十一亿元，不能相加。计划必须验证同口径、分配与约束，并保留历史版本。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#63778E"/></marker></defs>
+<rect width="1680" height="1320" fill="#F5F7FA"/>
+<text x="62" y="76" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="44" font-weight="600" fill="#163849" text-anchor="start">OSM 目标形成与多维计划</text>
+<text x="64" y="115" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="24" font-weight="400" fill="#617187" text-anchor="start">白皮书方案示意 · 目标形成、审批与多维一致性</text>
+<circle cx="76" cy="171" r="21" fill="#176B78"/>
+<text x="76" y="179" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="24" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<text x="112" y="179" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="29" font-weight="600" fill="#133B49" text-anchor="start">先形成可解释的候选，再批准目标计划</text>
+<rect x="58" y="209" width="486" height="166" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="84" y="251" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#223C55" text-anchor="start">可比来源 ＋ 规则版本 ＋ 人工调整</text>
+<text x="84" y="294" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#25374D" text-anchor="start">同口径经营事实、外部参考与战略要求</text>
+<text x="84" y="336" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#617187" text-anchor="start">保留来源、计算依据和调整理由</text>
+<line x1="554" y1="292" x2="626" y2="292" stroke="#63778E" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="640" y="209" width="384" height="166" rx="16" fill="#EAF1FB" stroke="#BDD0EA" stroke-width="1.5"/>
+<text x="832" y="255" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="30" font-weight="600" fill="#27537B" text-anchor="middle">待批目标候选</text>
+<text x="832" y="299" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#27537B" text-anchor="middle">可复算、可解释、可驳回</text>
+<text x="832" y="340" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#496987" text-anchor="middle">候选目标 ≠ 预测结果</text>
+<line x1="1038" y1="292" x2="1110" y2="292" stroke="#63778E" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1074" y="266" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617187" text-anchor="middle">批准</text>
+<rect x="1124" y="209" width="498" height="166" rx="16" fill="#E7F3F0" stroke="#B4D9CC" stroke-width="1.5"/>
+<text x="1373" y="255" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="30" font-weight="600" fill="#1E6252" text-anchor="middle">同一目标计划版本</text>
+<text x="1373" y="299" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#245C51" text-anchor="middle">锁定定义、周期、分配和批准依据</text>
+<text x="1373" y="340" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#49796F" text-anchor="middle">后续修订形成新版本</text>
+<circle cx="76" cy="431" r="21" fill="#176B78"/>
+<text x="76" y="439" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="24" font-weight="600" fill="#FFFFFF" text-anchor="middle">2</text>
+<text x="112" y="439" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="29" font-weight="600" fill="#133B49" text-anchor="start">一个共同明细空间，投影为三个目标视图</text>
+<rect x="58" y="474" width="610" height="348" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="363" y="520" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="30" font-weight="600" fill="#223C55" text-anchor="middle">共同明细空间</text>
+<text x="363" y="559" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="27" font-weight="600" fill="#176B78" text-anchor="middle">商品 × 渠道 × 营销归属</text>
+<rect x="164" y="590" width="87" height="44" rx="6" fill="#DDEDF0" stroke="#BCD8DF" stroke-width="1.5"/>
+<rect x="263" y="590" width="87" height="44" rx="6" fill="#DDEDF0" stroke="#BCD8DF" stroke-width="1.5"/>
+<rect x="362" y="590" width="87" height="44" rx="6" fill="#DDEDF0" stroke="#BCD8DF" stroke-width="1.5"/>
+<rect x="461" y="590" width="87" height="44" rx="6" fill="#DDEDF0" stroke="#BCD8DF" stroke-width="1.5"/>
+<rect x="164" y="647" width="87" height="44" rx="6" fill="#DDEDF0" stroke="#BCD8DF" stroke-width="1.5"/>
+<rect x="263" y="647" width="87" height="44" rx="6" fill="#DDEDF0" stroke="#BCD8DF" stroke-width="1.5"/>
+<rect x="362" y="647" width="87" height="44" rx="6" fill="#DDEDF0" stroke="#BCD8DF" stroke-width="1.5"/>
+<rect x="461" y="647" width="87" height="44" rx="6" fill="#DDEDF0" stroke="#BCD8DF" stroke-width="1.5"/>
+<text x="363" y="740" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#496987" text-anchor="middle">按共同粒度记录交叉分配</text>
+<text x="363" y="782" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#496987" text-anchor="middle">所有视图引用同一计划版本</text>
+<line x1="681" y1="648" x2="728" y2="648" stroke="#63778E" stroke-width="3"/>
+<line x1="728" y1="527" x2="728" y2="763" stroke="#63778E" stroke-width="3"/>
+<line x1="728" y1="527" x2="785" y2="527" stroke="#63778E" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="728" y1="645" x2="785" y2="645" stroke="#63778E" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="728" y1="763" x2="785" y2="763" stroke="#63778E" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="800" y="474" width="822" height="106" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="830" y="514" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="27" font-weight="600" fill="#223C55" text-anchor="start">商品视图</text>
+<text x="830" y="552" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#617187" text-anchor="start">商品 A 6 ＋ 商品 B 5</text>
+<text x="1589" y="538" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="33" font-weight="600" fill="#176B78" text-anchor="end">11 亿元</text>
+<rect x="800" y="592" width="822" height="106" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="830" y="632" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="27" font-weight="600" fill="#223C55" text-anchor="start">渠道视图</text>
+<text x="830" y="670" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#617187" text-anchor="start">门店 7 ＋ 线上 4</text>
+<text x="1589" y="656" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="33" font-weight="600" fill="#176B78" text-anchor="end">11 亿元</text>
+<rect x="800" y="710" width="822" height="106" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="830" y="750" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="27" font-weight="600" fill="#223C55" text-anchor="start">营销归属视图</text>
+<text x="830" y="788" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#617187" text-anchor="start">活动 3 ＋ 日常 8</text>
+<text x="1589" y="774" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="33" font-weight="600" fill="#176B78" text-anchor="end">11 亿元</text>
+<rect x="58" y="845" width="1564" height="75" rx="12" fill="#FFF3DD" stroke="#E9CD92" stroke-width="1.5"/>
+<text x="840" y="892" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="25" font-weight="500" fill="#775218" text-anchor="middle">合成示例：三个视图各为 11 亿元；三个投影不可相加，边际合计一致也不等于交叉约束已可行。</text>
+<circle cx="76" cy="974" r="21" fill="#176B78"/>
+<text x="76" y="982" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="24" font-weight="600" fill="#FFFFFF" text-anchor="middle">3</text>
+<text x="112" y="982" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="29" font-weight="600" fill="#133B49" text-anchor="start">目标计划须满足的约束</text>
+<rect x="58" y="1016" width="506" height="101" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="82" y="1054" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#223C55" text-anchor="start">同一可加口径</text>
+<text x="82" y="1093" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="start">同周期、同版本、同业务范围</text>
+<rect x="587" y="1016" width="506" height="101" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="611" y="1054" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#223C55" text-anchor="start">互斥分配与重叠处理</text>
+<text x="611" y="1093" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="start">活动重叠须有明确归属或分配规则</text>
+<rect x="1116" y="1016" width="506" height="101" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="1140" y="1054" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#223C55" text-anchor="start">未分配余额显式保留</text>
+<text x="1140" y="1093" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="start">不为配平总额而隐式填充</text>
+<rect x="58" y="1132" width="506" height="101" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="82" y="1170" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#223C55" text-anchor="start">锁定约束可检查</text>
+<text x="82" y="1209" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="start">保留资源、护栏与锁定明细约束</text>
+<rect x="587" y="1132" width="506" height="101" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="611" y="1170" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#223C55" text-anchor="start">历史版本保持不变</text>
+<text x="611" y="1209" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="start">修订生成新版本，保留批准依据</text>
+<rect x="1116" y="1132" width="506" height="101" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.5"/>
+<text x="1140" y="1170" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#223C55" text-anchor="start">非可加指标另行计算</text>
+<text x="1140" y="1209" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="start">比率按分子分母；存量不跨期相加</text>
+<text x="64" y="1281" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#738194" text-anchor="start">功能方案与合成示例，不代表已实现；图中未定义新 Schema、API 或通用目标算法。</text>
+</svg>

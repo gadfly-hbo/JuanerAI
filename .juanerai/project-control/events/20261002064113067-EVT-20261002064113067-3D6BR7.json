@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002064113067-3D6BR7",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T06:41:13.067Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "修正候选完整离线回归通过，进入最终打包和证据冻结。",
+  "status_after": "active",
+  "evidence_refs": []
+}

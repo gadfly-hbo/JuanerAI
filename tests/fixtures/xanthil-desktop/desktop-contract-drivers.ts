@@ -664,6 +664,7 @@ let b2TsxHookInstalled = false;
 let b2EmissionOrdinal = 0;
 let b2AssistantEmissionUrl = '';
 let b2SettingsEmissionUrl = '';
+let b2MembershipEmissionUrl = '';
 const b2EmittedModuleUrls = new Set<string>();
 
 function installB2TsxHook() {
@@ -680,6 +681,7 @@ function installB2TsxHook() {
           return { url: b2ClientBoundaryModule, shortCircuit: true };
         }
         if (specifier === './desktop-work.ts') return nextResolve(new URL('../../../apps/desktop/desktop-work.ts',import.meta.url).href,context);
+        if (specifier === './member-task-workspace.tsx') return {url:b2MembershipEmissionUrl,shortCircuit:true};
         if (specifier === './provider-settings.tsx') return {url:b2SettingsEmissionUrl,shortCircuit:true};
         if (specifier === './case-assistant-workspace.tsx') return {url:b2AssistantEmissionUrl,shortCircuit:true};
         if (specifier === '../../packages/product-core/case-assistant.ts') return nextResolve(new URL('../../../packages/product-core/case-assistant.ts',import.meta.url).href,context);
@@ -887,6 +889,8 @@ export async function requireB2Renderer() {
     }
     throw error;
   }
+  const membershipUrl=new URL('../../../apps/desktop/member-task-workspace.tsx',import.meta.url),membershipSource=await readFile(membershipUrl,'utf8'),membershipCompiled=await compileB2Tsx(membershipSource,membershipUrl.pathname);
+  assert.equal(membershipCompiled.emitted.diagnostics.length,0);const membershipEmission=await persistB2Emission(membershipSource,membershipUrl.pathname,membershipCompiled.emitted.outputText,'member-task');b2MembershipEmissionUrl=membershipEmission.moduleUrl;b2EmittedModuleUrls.add(b2MembershipEmissionUrl);
   const settingsUrl=new URL('../../../apps/desktop/provider-settings.tsx',import.meta.url),settingsSource=await readFile(settingsUrl,'utf8'),settingsCompiled=await compileB2Tsx(settingsSource,settingsUrl.pathname);
   assert.equal(settingsCompiled.emitted.diagnostics.length,0);const settingsEmission=await persistB2Emission(settingsSource,settingsUrl.pathname,settingsCompiled.emitted.outputText,'provider-settings');b2SettingsEmissionUrl=settingsEmission.moduleUrl;b2EmittedModuleUrls.add(b2SettingsEmissionUrl);
   const assistantUrl=new URL('../../../apps/desktop/case-assistant-workspace.tsx',import.meta.url),assistantSource=await readFile(assistantUrl,'utf8'),assistantCompiled=await compileB2Tsx(assistantSource,assistantUrl.pathname);

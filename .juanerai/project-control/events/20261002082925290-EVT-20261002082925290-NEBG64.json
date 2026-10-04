@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002082925290-NEBG64",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T08:29:25.290Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "corrected-offline-003 完成机械冻结及读回；收尾代理响应恢复记录已保留，独立复核004启动。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002002235799-XJ9HN1",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T00:22:35.799Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "代理调用600秒无输出且无本地命令，已保留全部WIP/证据并在原上下文续跑。",
+  "status_after": "active",
+  "evidence_refs": []
+}

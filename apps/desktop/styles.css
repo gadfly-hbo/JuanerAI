@@ -222,3 +222,15 @@ button { border-radius:8px; }.primary-button { background:#e8643a; border-color:
 .ca-selection-item input{margin:3px 0 0}.ca-selection-item>span{min-width:0;overflow-wrap:anywhere;white-space:normal}
 .ca-selection-item strong,.ca-selection-item small{display:block}.ca-selection-item strong{font-weight:500;white-space:pre-wrap}.ca-selection-item small{margin-top:6px;font-size:10px;color:var(--muted)}
 .ca-material-disclosure{overflow-wrap:anywhere}.ca-material-disclosure p{white-space:pre-wrap}.ca-material-disclosure dl{font-size:11px;line-height:1.6}.ca-material-disclosure dt{color:var(--muted);margin-top:8px}.ca-material-disclosure dd{margin:0}
+
+/* Membership tasks reuse the accepted Case Assistant workbench. */
+.member-workspace .ca-transcript { overflow-y:auto; }
+.member-workspace textarea { width:100%; min-height:5rem; }
+.member-workspace label { display:block; margin:.7rem 0; }
+.member-workspace table { width:100%; border-collapse:collapse; }
+.member-workspace th,.member-workspace td { padding:.6rem; text-align:left; border-bottom:1px solid #e7e3de; }
+.member-workspace pre { white-space:pre-wrap; overflow-wrap:anywhere; }
+.member-workspace .ca-actions { flex-wrap:wrap; }
+.member-workspace .ca-inspector { overflow:auto; }
+.member-workspace .ca-header { position:sticky; top:0; z-index:1; background:#fff; }
+@media (max-width:1000px) { .member-workspace { grid-template-columns:180px minmax(0,1fr); } .member-workspace .ca-inspector { grid-column:1/-1; } }

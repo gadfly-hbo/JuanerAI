@@ -64,11 +64,21 @@ For every child command, the entrypoint SHALL remove
 `--offline`, `--real-model`, authorization switch, provider selection, retry,
 fallback, or external invocation behavior.
 
-After preflight it SHALL run, sequentially and fail-fast, the existing
-repository checks in this order: syntax for repository `.mjs` files outside
-`node_modules`; unit tests; contract tests; integration tests; default E2E
-tests; project-board tests. It SHALL derive repository-relative paths from the
-runner location, not caller CWD, and invoke the existing tests unchanged.
+After preflight it SHALL run applicable `tools/harness/validation/*.test.mjs`
+contracts first, before syntax, typecheck and expensive product suites. Runner
+contract fixtures SHALL use inert child commands rather than recursively run the
+actual canonical plan. Manifest/lock identity and negative source checks always
+run locally and in CI without a network prerequisite. Only the two genuine cloud
+archive/member proofs may report explicit `NOT RUN` locally when the archive is
+absent. Missing archive in GitHub Actions and any supplied invalid archive SHALL
+fail; dependency trust pins remain fixed.
+
+Then it SHALL preserve the executable plan's complete sequential, fail-fast
+syntax/typecheck, Local Analysis, Model Pack, board, Console and Desktop groups.
+Portable mode retains its approved native exclusions. It SHALL derive paths
+from the runner location, not caller CWD. Fixed inventory tests SHALL retain
+independent expected members and negative cases; redundant counts and offsets
+are derived from that independent inventory, never the configuration under test.
 
 ### CVR-AC-005
 
@@ -83,8 +93,10 @@ propagates a nonzero result.
 
 ## CVR-REQ-004 — Transient, non-mutating operation
 
-The entrypoint SHALL stream child stdout and stderr directly. All-success
-returns zero; a preflight or validation failure returns nonzero. It SHALL not
+The entrypoint SHALL stream child stdout and stderr directly and print each
+group's start, duration and exact numeric exit. All-success returns zero;
+a validation failure preserves the child's numeric exit and stops later groups.
+A preflight failure returns nonzero. It SHALL not
 create a report, JSONL protocol, summary, skip ledger, cache, log, schema,
 database, project-board record, artifact directory, package change, dependency
 change, or global-environment mutation.

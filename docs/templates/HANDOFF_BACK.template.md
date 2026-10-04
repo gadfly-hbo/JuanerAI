@@ -2,6 +2,9 @@
 
 Return at meaningful package outcomes, not after every correction. Use applicable
 fields and link existing verification/evidence instead of duplicating a ledger.
+Keep one current result/next-action summary and point other reports to it;
+preserve issued receipts and historical failures. Omit inapplicable optional
+fields; an inner-loop test run is not a handoff event.
 The sole execution policy defines progress, stop-loss and actual resource limits.
 
 ## Identity
@@ -22,7 +25,7 @@ Follow the sole execution policy's Blueprint Capability Coverage section. Link
 existing records; ordinary correction returns need not regenerate a full map.
 
 - Blueprint and capability-register revision:
-- Latest full six-plus-two map (show it in the user-facing delivery):
+- Latest full six-plus-two map link (show delta in daily delivery; show the full map at stage acceptance or on user request):
 - Preserved Change snapshot and fixed candidate/evidence references:
 
 | Capability ID | Previous scope/status | Current scope/status | Remaining gap | Evidence / unverified limit |
@@ -44,6 +47,10 @@ existing records; ordinary correction returns need not regenerate a full map.
 |---|---|---|---|---|---|---|
 
 ## Validation
+
+Link the existing verification for affected normal-user-path/UI/recovery results
+and the actual applicable CI command/input identities. State which claims remain
+unverified; use the sole policy's Continuous SDD and TDD section, not a new report.
 
 | Check | Result | Minimal Evidence |
 |---|---|---|

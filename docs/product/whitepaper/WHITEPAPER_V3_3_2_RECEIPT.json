@@ -1,0 +1,105 @@
+{
+  "date": "2026-09-16",
+  "whitepaper_version": "v3.3.2",
+  "product_architecture_baseline": "v3.3",
+  "authorization": "User: 融合后，要将版本升级到v3.3.2了",
+  "current_master": "JUANERAI_WHITEPAPER.md",
+  "main_sha256": "18fb7dd6da75d66b59c29dacdf4847cfb4eef10dfd67833cdf64fc25033724ce",
+  "predecessor": {
+    "version": "v3.3.1 / MP-ALIGN-01-R3",
+    "sha256": "6ce15fa734fc454fb136de31c0fab49dfc64511203753e7159d52e846bbf2564",
+    "snapshot": "revisions/MP-ALIGN-01-R3/JUANERAI_WHITEPAPER.md",
+    "manifest": "revisions/MP-ALIGN-01-R3/MANIFEST.json",
+    "original_receipt": "OSM_RETAIL_INTEGRATION_R3_RECEIPT.json",
+    "original_receipt_sha256": "793000abe3a3bafdd06aa493e9f52cd7fe069bc54af7fbc2f13241c8b50e4062"
+  },
+  "scope": "Version designation and traceability only; existing integrated product definitions retained",
+  "checks": {
+    "current_entrypoints": {
+      "context": true,
+      "next_action": true,
+      "projects": true,
+      "maintenance": true,
+      "project_bindings": true,
+      "development_bindings": true,
+      "development_linkage": true,
+      "change_record": true
+    },
+    "current_links_checked": 824,
+    "new_link_defects": 0,
+    "inherited_missing_images": 13,
+    "code_fences_balanced": true,
+    "R3_snapshot_files_verified": 10,
+    "R3_receipt_byte_unchanged": true,
+    "OSM_and_downstream_functional_definitions_unchanged": true,
+    "all_diagrams_byte_unchanged": true,
+    "PROJECTS_only_common_background_changed": true,
+    "protected_historical_and_formal_files_byte_unchanged": 204
+  },
+  "modified_documents": [
+    "PROJECTS.md",
+    "docs/product/JUANERAI_CONTEXT.md",
+    "docs/product/whitepaper/PROJECT_BINDINGS.md",
+    "docs/product/whitepaper/DEVELOPMENT_LINKAGE.md",
+    "docs/product/whitepaper/DEVELOPMENT_BINDINGS.md",
+    "docs/product/whitepaper/CHANGELOG.md",
+    "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+    "docs/product/whitepaper/NEXT_ACTION.md",
+    "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md",
+    "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+    "docs/product/whitepaper/MAINTENANCE.md"
+  ],
+  "content_files": [
+    {
+      "path": "JUANERAI_WHITEPAPER.md",
+      "sha256": "18fb7dd6da75d66b59c29dacdf4847cfb4eef10dfd67833cdf64fc25033724ce",
+      "bytes": 212431
+    },
+    {
+      "path": "assets/fig07_6plus1总体架构.png",
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "bytes": 187993
+    },
+    {
+      "path": "assets/fig15_ModelPack_MLflow生命周期.png",
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "bytes": 212106
+    },
+    {
+      "path": "assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "bytes": 224101
+    },
+    {
+      "path": "assets/fig17_Consumer_DesktopRuntime边界.png",
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "bytes": 208594
+    },
+    {
+      "path": "assets/fig18_ModelPack通用合同与首发Profile.png",
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "bytes": 232942
+    },
+    {
+      "path": "assets/fig19_Phase2企业Serving路线.png",
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "bytes": 175625
+    },
+    {
+      "path": "assets/fig20_OSM目标形成与多维计划_R3.png",
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "bytes": 604951
+    },
+    {
+      "path": "assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "bytes": 13069
+    }
+  ],
+  "formal_linkage_status": "R1 recovery package remains pending integration; v3.3.2 not written to formal repository",
+  "limits": [
+    "Existing 13 missing publication images remain",
+    "No Demo suites rerun or new execution authorized",
+    "No code, formal repository, commit, push, or merge operations"
+  ]
+}

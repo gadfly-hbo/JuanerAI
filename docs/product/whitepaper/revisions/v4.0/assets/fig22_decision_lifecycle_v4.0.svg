@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1210" viewBox="0 0 1480 1210" role="img" aria-labelledby="title desc">
+<title id="title">JuanerAI v4.0：Decision Lifecycle 共享内核</title>
+<desc id="desc">Personal、Team、Enterprise共用内核。PIM问题和可选OSM目标进入从问题建立的Decision Case。语义、分析、执行产生证据；决策记录预期并经独立批准行动；未来实际进入学习，经治理由下一Case采用。四库双库和Graph保留来源权威。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#537387"/></marker></defs>
+<style>text{font-family:"PingFang SC","Noto Sans CJK SC",Arial,sans-serif;fill:#15344b}.title{font-size:34px;font-weight:650}.h{font-size:24px;font-weight:650}.body{font-size:20px}.small{font-size:18px;fill:#426377}.eyebrow{font-size:18px;letter-spacing:2px;fill:#376f79}.line{fill:none;stroke:#537387;stroke-width:2.2;marker-end:url(#arrow)}.dash{stroke-dasharray:7 5}</style>
+<rect width="1480" height="1210" fill="#f5f8fa"/>
+<text x="60" y="52" class="eyebrow">JUANERAI 4.0 · BOTTOM-UP DECISION INTELLIGENCE</text>
+<text x="60" y="100" class="title">一个共享内核，贯通从问题到学习的决策生命周期</text>
+<rect x="60" y="132" width="420" height="96" rx="14" fill="#ffffff" stroke="#c8d7e0"/>
+<text x="82" y="168" class="h">Xanthil Personal</text>
+<text x="82" y="200" class="small">Desktop Free · 一个人的真实工作</text>
+<rect x="530" y="132" width="420" height="96" rx="14" fill="#ffffff" stroke="#c8d7e0"/>
+<text x="552" y="168" class="h">Xanthil Team</text>
+<text x="552" y="200" class="small">原 Workspace 定位 · 共享语义与共同复盘</text>
+<rect x="1000" y="132" width="420" height="96" rx="14" fill="#ffffff" stroke="#c8d7e0"/>
+<text x="1022" y="168" class="h">JuanerAI Enterprise</text>
+<text x="1022" y="200" class="small">单场景试点后 · 扩展治理与组织学习</text>
+<path d="M 482 178 L 521 178" class="line"/>
+<path d="M 952 178 L 991 178" class="line"/>
+<rect x="240" y="262" width="470" height="96" rx="14" fill="#e8f1f5" stroke="#c8d7e0"/>
+<text x="262" y="298" class="h">PIM · 问题与洞察</text>
+<text x="262" y="330" class="small">问题 / 异常 / 机会；无需先有目标</text>
+<rect x="770" y="262" width="470" height="96" rx="14" fill="#e8f1f5" stroke="#c8d7e0"/>
+<text x="792" y="298" class="h">OSM · 目标与策略</text>
+<text x="792" y="330" class="small">目标 / 合格快照 / Gap；接回行动与复盘</text>
+<path d="M 475 359 L 475 390" class="line"/>
+<path d="M 1005 359 L 1005 390" class="line"/>
+<rect x="60" y="392" width="1360" height="630" rx="20" fill="#ffffff" stroke="#84a9b5" stroke-width="2"/>
+<text x="90" y="435" class="h">Decision Case · 从问题建立，持续记录分析、选择、行动、结果与学习</text>
+<text x="90" y="468" class="small">统一身份 / 版本 / 责任 / 作用域 / 精确引用；Case 未闭环仍可保存和交付</text>
+<rect x="95" y="506" width="390" height="145" rx="14" fill="#edf6f5" stroke="#c8d7e0"/>
+<text x="117" y="542" class="h">Semantic Context Runtime</text>
+<text x="117" y="574" class="small">Case + 草拟 Contract</text>
+<text x="117" y="601" class="small">编译 Context / Binding</text>
+<text x="117" y="628" class="small">按权限、时点与适用性取用资产</text>
+<rect x="545" y="506" width="390" height="145" rx="14" fill="#edf6f5" stroke="#c8d7e0"/>
+<text x="567" y="542" class="h">Analysis Core</text>
+<text x="567" y="574" class="small">确认 Contract / Analysis IR</text>
+<text x="567" y="601" class="small">三模式 + DAME + Validation</text>
+<text x="567" y="628" class="small">明确方法、证据要求及限制</text>
+<rect x="995" y="506" width="390" height="145" rx="14" fill="#edf6f5" stroke="#c8d7e0"/>
+<text x="1017" y="542" class="h">Harness / Execution</text>
+<text x="1017" y="574" class="small">本地计算与获准模型 / 工具</text>
+<text x="1017" y="601" class="small">受控执行、恢复、来源与验证</text>
+<text x="1017" y="628" class="small">产出可审查 Evidence</text>
+<path d="M 487 577 L 535 577" class="line"/>
+<path d="M 937 577 L 985 577" class="line"/>
+<path d="M 1190 653 L 1190 685" class="line"/>
+<rect x="995" y="695" width="390" height="181" rx="14" fill="#eaf0fa" stroke="#c8d7e0"/>
+<text x="1017" y="731" class="h">Decision Core</text>
+<text x="1017" y="763" class="small">Evidence → Options → Record</text>
+<text x="1017" y="790" class="small">事前 Expected Outcome</text>
+<text x="1017" y="817" class="small">独立批准 → Action / 回执</text>
+<text x="1017" y="844" class="small">Future Actual → Outcome 评价</text>
+<rect x="545" y="695" width="390" height="181" rx="14" fill="#eaf0fa" stroke="#c8d7e0"/>
+<text x="567" y="731" class="h">Learning Core</text>
+<text x="567" y="763" class="small">评价 → 改进候选</text>
+<text x="567" y="790" class="small">Owner / Commit / Teach / 验证</text>
+<text x="567" y="817" class="small">批准版本 → 下一 Case 显式采用</text>
+<text x="567" y="844" class="small">采用发生 ≠ 学习效果已证明</text>
+<rect x="95" y="695" width="390" height="181" rx="14" fill="#eaf0fa" stroke="#c8d7e0"/>
+<text x="117" y="731" class="h">Record / Graph / Lineage</text>
+<text x="117" y="763" class="small">保留当时依据与选择责任</text>
+<text x="117" y="790" class="small">连接 Case、假设、策略和结果</text>
+<text x="117" y="817" class="small">保留反例、失败、未知与旧版本</text>
+<text x="117" y="844" class="small">图谱不另建资产真源</text>
+<path d="M 993 781 L 945 781" class="line"/>
+<path d="M 543 781 L 495 781" class="line"/>
+<path d="M 288 693 L 288 661" class="line dash"/>
+<text x="95" y="913" class="small">虚线：下一 Case 重新检查权限、适用条件和版本；不得把未来结果倒灌进旧分析。</text>
+<text x="95" y="954" class="small">System of Record 贯穿全程；Decision Loop 不强迫普通分析采取行动。</text>
+<text x="95" y="985" class="small">业务决定、模型验收、资产发布和外部行动各有责任与门禁，不能互相替代。</text>
+<rect x="60" y="1050" width="865" height="112" rx="14" fill="#eef3f6" stroke="#c8d7e0"/>
+<text x="82" y="1086" class="h">按 Case 需要装配能力</text>
+<text x="82" y="1118" class="small">Domain Pack：可执行决策方法 · Model Pack：受治理模型</text>
+<text x="82" y="1145" class="small">Deep Research：外部证据 · 四库 / 双库：有来源与 Owner 的共享资产</text>
+<rect x="955" y="1050" width="465" height="112" rx="14" fill="#eef3f6" stroke="#c8d7e0"/>
+<text x="977" y="1086" class="h">Report Studio · 表达层</text>
+<text x="977" y="1118" class="small">呈现当前 Case 的证据、判断与限制</text>
+<text x="977" y="1145" class="small">不为报告模板补造决定、行动或效果</text>
+</svg>

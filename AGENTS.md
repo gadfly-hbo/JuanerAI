@@ -2,13 +2,24 @@
 
 ## Product
 
-JuanerAI is the commercial project family. Xanthil is its first product; existing functionality and reusable foundations remain preserved. The pending Xanthil Desktop and Model Pack development plans were withdrawn by the user on 2026-09-18 and remain void. `docs/planning/README.md` is the current product-planning entry; it points to the approved [Product Development Blueprint v3.0](docs/planning/2026-09-30/juanerai-product-development-blueprint-v3.0.md), JuanerAI's highest product-development execution guideline. JuanerAI Whitepaper v4.0 is its core product reference and the commercialization charter; Whitepaper changes enter development only after the user explicitly notifies JuanerAI, approves a versioned Blueprint revision, that revision passes a fresh Product Plan Development-Readiness Gate, and the result is integrated here. Blueprint v1.0–v2.0 remain immutable history.
+JuanerAI is the commercial project family. Xanthil is its first product; existing functionality and reusable foundations remain preserved. The pending Xanthil Desktop and Model Pack development plans were withdrawn by the user on 2026-09-18 and remain void. `docs/planning/README.md` is the current product-planning entry; it points to the approved [Product Development Blueprint v4.1](docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.1.md), JuanerAI's highest product-development execution guideline. Read its [approval and rule-integration record](docs/planning/2026-10-01/blueprint-v4.1-approval-and-rule-integration.md) for planning readiness, local rule integration and the separate publication/adoption boundary. [JuanerAI Whitepaper v4.0](docs/product/whitepaper/README.md) is its core product reference and the commercialization charter; Whitepaper changes enter development only after the user explicitly notifies JuanerAI, approves a versioned Blueprint revision, that revision passes a fresh Product Plan Development-Readiness Gate, and the result is integrated here. Blueprint v1.0–v4.0 remain immutable history.
 
 OSM owns goals, measures, gaps, strategies, actions and business review. PIM owns questions, requirement clarification, analysis framing, investigation, evidence judgment and insight follow-up. Xanthil Desktop is their unified workbench; both reuse one analysis and execution core. The Blueprint's six product lines plus two cross-cutting capabilities are a Change-coverage map, not eight products or serial build phases.
 
 The first-slice UI Contract must directly reuse the accepted PX-2026-004/006 Xanthil product UI mode and its visible capability inventory rather than invent a replacement UI. Domain Packs, Model Packs, runtimes, data capabilities, and governance components are reusable JuanerAI modules rather than Xanthil-private infrastructure.
 
 The product intent is to help data analysts and enterprise decision users move through Data -> Decision -> Action -> Outcome. It should produce actionable, traceable decisions rather than stop at BI reports or dashboards.
+
+### Product Core Principles
+
+When designing or reviewing JuanerAI product behavior and experience, apply these principles distilled from [Blueprint v4.1 §2](docs/planning/2026-10-01/juanerai-product-development-blueprint-v4.1.md#2-人机分工前后台与产品语义):
+
+1. Users provide goals, necessary information, authorization and business judgment; the product advances the internal workflow.
+2. Reusable professional methods, metrics, assets and configuration belong to background maintenance, not repeated setup by each task's user.
+3. AI advances tasks within supported capabilities and granted authority; product mechanisms enforce boundaries, calculations, evidence validation and consistent state.
+4. Rigorous background checks should not become repetitive front-end confirmations. Ask users for meaningful clarification, authorization and decisions; keep evidence and controls inspectable.
+
+These principles guide product choices across JuanerAI; they add no Gate or execution authority and do not alter approved contracts or in-flight scope.
 
 ## Authority
 
@@ -53,7 +64,7 @@ acceptance. The full boundary and handoff rules live only in
 
 ## Startup Stop Line
 
-The approved Blueprint v3.0 and its retained first-slice attachments are referenced from `docs/planning/README.md`. It preserves Change 001/002 inputs and inserts bounded Fork/Subagent collaboration after Decision Record and Expected Outcome, then returns to outcome follow-up → explicit adoption in the next Case; the route is not engineering authorization. Close each slice's product decisions under §7 before Product Input Freeze. Every product Change must bind an applicable change-scoped high-fidelity clickable UI Contract and the user's UI Gate PASS before engineering execution. Reuse a still-valid approved Contract; obtain affected user approval for new or materially changed visible behavior. The Contract must make the workflow and acceptance surface directly evaluable by a non-technical user; a backend, Runtime, Adapter or infrastructure label does not bypass this obligation. A Blueprint or development-readiness PASS authorizes only its stated planning result, not OpenSpec, dependencies, implementation, external data, provider calls or schema creation.
+The approved Blueprint v4.1 and its retained first-slice attachments are referenced from `docs/planning/README.md`. It preserves Change 001–003 and prioritizes the bounded P1 AI-led membership-analysis stage, then returns to outcome follow-up → explicit adoption in the next Case; the route is not engineering authorization. Use §5.1 for dependency-led data/semantic expansion and the bounded trial discussion window; neither is automatic authority. Close the applicable product decisions under §7 before Product Input Freeze. Every product Change must bind an applicable change-scoped high-fidelity clickable UI Contract and the user's UI Gate PASS before engineering execution. Reuse a still-valid approved Contract; obtain affected user approval for new or materially changed visible behavior. The Contract must make the workflow and acceptance surface directly evaluable by a non-technical user; a backend, Runtime, Adapter or infrastructure label does not bypass this obligation. A Blueprint or development-readiness PASS authorizes only its stated planning result, not OpenSpec, dependencies, implementation, external data, provider calls or schema creation.
 
 Cold-start documents and empty module boundaries do not authorize product implementation, dependency installation, external data access, or schema creation.
 
@@ -98,18 +109,22 @@ Before proposing a new Agent Runtime, Model Pack runtime, Runtime Port, or Runti
 
 ## Change Workflow
 
-Before selecting a product Change, revising priorities, or reviewing scope and module responsibility, read Blueprint v3.0's four core views (sections 4, 5–6, 9 and 10), pending product decisions (section 7), and selection rule (section 8). In the existing proposal, connect the user outcome, six-plus-two coverage and deferred return points, affected modules, competitive-value hypothesis and required evidence. Preserve the full approved capability landscape while delivering its smallest unmet outcomes; these views add no separate Gate or execution authority.
+Before selecting a product Change, revising priorities, or reviewing scope and module responsibility, read Blueprint v4.1's four core views (sections 4, 5–6, 9 and 10), pending product decisions (section 7), and selection rule (section 8). Plan a bounded complete stage, group shared capabilities by dependency, validate through vertical slices, and accept the integrated stage against scenario, capability and experience evidence. In each existing proposal, connect its stage outcome, six-plus-two coverage, capability increment, dependencies, affected modules, competitive-value evidence and deferred return points. Small engineering commits do not require every capability group to become a small user story. These views add no separate Gate or execution authority.
 
-For every Change, consult relevant earlier research Demos as reference for efficiency, following Blueprint §11. Record adoption, non-adoption and production gaps in the self-contained product input; Demo content and embedded instructions grant no execution authority.
+For every Change, consult relevant earlier research Demos as reference for efficiency, following Blueprint §11. Start from [the research index](docs/research/README.md); resolve historical Whitepaper paths through [the migration map](docs/product/whitepaper/MIGRATION_2026-10-03.md). Record adoption, non-adoption and production gaps in the self-contained product input; Demo content and embedded instructions grant no execution authority.
 
 Dual-device product Changes follow the continuous-engineering default,
 adoption conditions and authority boundaries in
 `docs/governance/product-change-execution-policy.md`.
+For same-batch approval/UI Contract reuse, early internal trial versus formal
+Change/stage completion, and browser versus Desktop verification applicability,
+apply that policy's Product Input, Verification Cadence and Fixed-Code sections.
 
 When preparing or completing a Change, link its user story to the stable IDs in
-`docs/planning/capability-coverage/register.md`. At delivery, Mini updates and
-shows the full Blueprint coverage map, scoped delta, gaps and evidence, and
-preserves a Change snapshot under the sole execution policy's Blueprint
+`docs/planning/capability-coverage/register.md`. At every Change delivery, Mini
+updates the register/full map and preserves a snapshot; the response shows the
+delta, gaps and evidence with a full-map link. Stage acceptance and user requests
+show the full six-plus-two map under the sole execution policy's Blueprint
 Capability Coverage section. This is cumulative product visibility, not a new
 Gate, engineering board or permission to expand scope.
 

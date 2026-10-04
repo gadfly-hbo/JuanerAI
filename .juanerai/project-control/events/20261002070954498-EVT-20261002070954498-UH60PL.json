@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261002070954498-UH60PL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-02T07:09:54.498Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-004"
+  },
+  "summary": "第二轮独立FAIL收取；两项剩余实现修正已派发。",
+  "status_after": "active",
+  "evidence_refs": []
+}

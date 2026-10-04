@@ -1,0 +1,53 @@
+{
+  "scope": "independent read-only source identity and migration review",
+  "manifest_files_checked": 142,
+  "research_original_files_checked": 142,
+  "research_protected_files_checked": 2677,
+  "identity_errors": [],
+  "non_link_master_diff": "--- \n+++ \n@@ -6,10 +6,13 @@\n \n **产品战略基线：** JuanerAI v4.0  \n **白皮书版本：** v4.0  \n-**修订日期：** 2026 年 9 月 26 日  \n+**战略修订日期：** 2026 年 9 月 26 日  \n+**导航维护修订：** v4.0 / MIGRATION-R1（2026-10-03），产品定义不变  \n **承接版本：** [v3.3.4 冻结快照](<LINK>)，继承其分析、语义、执行、模型与治理基础  \n **文档性质：** 产品定义、战略路线与推荐逻辑架构；不等于已实现能力清单  \n-**升级依据：** 用户本轮明确要求战略升级至 v4.0；[原始输入与指纹](<LINK>)、[融合及影响记录](<LINK>)、[当前版本收据](<LINK>)\n+**升级依据：** 用户本轮明确要求战略升级至 v4.0；[原始输入与指纹](<LINK>)、[融合及影响记录](<LINK>)、[当前迁移收据](<LINK>)\n+\n+> **维护位置已迁入 JuanerAI。** 唯一编辑主稿为本文件；已被 Blueprint 采用的原始 v4.0 字节保存于[冻结快照](<LINK>)。本版仅调整存放位置、资料入口与链接，不改变产品战略或正式开发范围。文中 Demo 链接通往[研究引用索引](<LINK>)，其中提供原始资料定位、原章节及指纹；完整 Demo 仍保留 research。第25.7等章节中的9月26日状态属于当时核对，当前规划以[正式入口](<LINK>)为准。\n \n ## v4.0 的新起点\n \n",
+  "current_master_demo_links": {
+    "count": 38,
+    "unique": 38,
+    "all_reference_anchors_exist": true,
+    "old_explorations_relative_links": 0
+  },
+  "project_index": {
+    "projects": 59,
+    "brief_action_source_hashes_all_match": true,
+    "locator_vs_fulltext_boundary": "explicit in README and REFERENCES"
+  },
+  "findings": [
+    {
+      "severity": "medium",
+      "path": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "description": "4.5 states links open original Brief/review but migrated links open locator metadata; revise navigation claim."
+    },
+    {
+      "severity": "medium",
+      "path": "docs/research/PROJECT_INDEX.json",
+      "description": "source ledger SHA is pre-background-edit 403bfec but source PROJECTS currently ae929; preserve old PROJECTS bytes in a formal frozen snapshot and map locator to it."
+    }
+  ],
+  "reference_identity_mismatches_at_original_location": [
+    {
+      "id": "ref-d675398008af9012",
+      "path": "/Users/huangbo/Dev/Projects/research/PROJECTS.md",
+      "issue": "identity currently unavailable at referenced location"
+    }
+  ],
+  "resolution_reviews": [
+    {
+      "scope": "only two prior findings rechecked; original findings retained",
+      "checks": {
+        "master_locator_wording_correct": true,
+        "snapshot_sha256": "403bfec62e7e0748275c46f74fc642f0bfa2a9927e26a0258122a89c9229dfca",
+        "snapshot_matches_original_ledger_sha": true,
+        "project_index_preserved_copy": "docs/research/snapshots/2026-10-03/PROJECTS.md",
+        "reference_locations_preserved_copy": "docs/research/snapshots/2026-10-03/PROJECTS.md",
+        "reference_markdown_snapshot_link_present": true,
+        "all_findings_resolved": true
+      },
+      "conclusion": "resolved"
+    }
+  ]
+}

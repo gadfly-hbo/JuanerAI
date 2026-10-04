@@ -109,16 +109,62 @@ is unconfirmed and the prior writer/stop line remains authoritative.
 
 ## After Merge
 
-On each machine that has the repository:
+The device performing an authorized PR merge owns the synchronization closeout
+for both devices. MacBook-to-Mini and Mini-to-MacBook use the same command;
+the user does not need to relay another message to the receiving session.
+Synchronize the merged `origin/main` baseline, not every pushed work branch.
+First confirm that the pull request is merged and its intended tree is present
+on `origin/main`.
 
 ```sh
-git switch main
-git pull --ff-only
-git fetch origin --prune
+tools/harness/git/sync-main
 ```
 
-After a squash merge, first confirm that the pull request is merged and its
-intended tree is present on `origin/main`. The local work branch is then
+Configure reciprocal targets once in each repository's **local** Git config,
+using an existing, verified non-interactive SSH alias and repository path:
+
+```sh
+git config --local --add sync.targets '<peer-ssh-alias>:/absolute/repository/path'
+```
+
+These machine-specific values never enter Git. Verify both SSH directions;
+one working direction does not establish the other. Missing targets are
+reported, not treated as a successful dual-device synchronization. The command
+does not configure SSH, install anything, start services or schedule jobs.
+
+`sync-main` pins one observed `origin/main` commit, checks repository/remote
+identity and each target's state, and reports its main before/after identity:
+
+- A `main` already at the pinned commit is reported unchanged without updating
+  refs or files; no idle-worktree permission is needed for this no-op.
+- If `main` is not checked out in any worktree, fast-forward only that ref.
+  An active non-main branch may remain dirty; its branch, index and files are
+  not changed. Git's non-force update and checked-out-branch protections apply.
+- If `main` is checked out at the configured root, updating files requires a
+  clean worktree, no in-progress Git operation, and explicit caller confirmation
+  that the worktree is idle. Use `--allow-main-worktree local` or repeat that
+  option with the exact configured `host:/absolute/path` target only after
+  confirming no task or running process depends on that worktree's files.
+  Clean status alone does not prove it is idle. A `main` checked out elsewhere
+  is skipped; the command never switches or rewrites that worktree.
+- Divergence, unavailable SSH, identity mismatch or unsafe state is reported
+  per target and produces a nonzero overall result. Preserve successful sides;
+  do not roll back the merge, reset, stash, clean, force-update or retry forever.
+- `--check` performs read-only preflight, including remote discovery, without
+  changing refs or working files. It does not reserve the state for a later run;
+  the actual run repeats the relevant checks. If the pinned commit is absent
+  locally, ancestry remains unverified until the actual fetch.
+
+Report complete synchronization only when every configured target's local
+`main` is verified at the pinned commit. This is a point-in-time result, not
+continuous replication. A merge may succeed while synchronization remains
+partial; report both facts without creating a new product Gate. In-flight
+sessions may retain their approved branch, rules and task baseline. They need
+not adopt every rule update. Before the next new task, the existing
+`start-work` command still fetches, fast-forwards clean `main` and creates the
+work branch; post-merge synchronization does not replace this check.
+
+After a verified squash merge, the local work branch is
 non-authoritative, but delete it only with explicit user approval; squash merge
 rewrites commit ancestry, so reachability alone cannot prove inclusion.
 

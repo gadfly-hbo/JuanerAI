@@ -342,6 +342,40 @@ test('AC-XDESK-006-04: binds every disclosure to canonical payload hash provider
   });
 });
 
+function assertPrivateAssistanceProjection(projection: Record<string, unknown>) {
+  const content = structuredClone(projection);
+  const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+  const identity = (record: Record<string, unknown>, field: string) => {
+    assert.match(requiredString(record, field), uuid, `${field} must remain a contracted UUIDv4`);
+    record[field] = '[UUID]';
+  };
+  // Exact DesktopProjection identity paths only. Free text, extra fields and
+  // nested id-looking keys remain in the complete denylist scan below.
+  for (const [name, fields] of [
+    ['project', ['project_id']],
+    ['session', ['session_id', 'project_id', 'case_id', 'current_revision_id']],
+    ['revision', ['revision_id', 'previous_revision_id', 'snapshot_id', 'confirmation_id', 'current_finding_id', 'current_acceptance_id', 'current_closure_id', 'current_report_id']],
+  ] as const) {
+    const record = requiredRecord(content[name], name);
+    for (const field of fields) if (record[field] !== null || name !== 'revision' || field === 'revision_id') identity(record, field);
+  }
+  for (const [name, fields] of [
+    ['disclosures', ['disclosure_id']],
+    ['attempts', ['attempt_id', 'disclosure_id', 'draft_id']],
+    ['assistance_drafts', ['draft_id', 'attempt_id']],
+  ] as const) for (const record of content[name] as Record<string, unknown>[]) {
+    for (const field of fields) if (record[field] !== null || name !== 'attempts' || field !== 'draft_id') identity(record, field);
+  }
+  // The storage cursor binds project, revision and row version, followed by the
+  // command UUID (desktop-state waitForProjection/readProjection contract).
+  const token = requiredString(projection, 'projection_token').split(':');
+  assert.deepEqual(token.slice(0, 3), [requiredRecord(projection.project, 'project').project_id, requiredRecord(projection.revision, 'revision').revision_id, requiredRecord(projection.revision, 'revision').row_version]);
+  assert.equal(token.length, 4);
+  assert.match(token[3], uuid);
+  content.projection_token = `[UUID]:[UUID]:${token[2]}:[UUID]`;
+  assert.doesNotMatch(JSON.stringify(content), /(?:0001|0002|North|South|members\.csv|orders\.csv|\.xanthil|\/Users\/|AKIA|sk-|PiSession|payload_bytes)/);
+}
+
 test('AC-XDESK-006-05: keeps raw data identifiers paths credentials and Pi internals out of all outbound and retained surfaces', async () => {
   await withIsolatedProject(async (projectRoot) => {
     const draft = await openDraft(projectRoot);
@@ -358,7 +392,25 @@ test('AC-XDESK-006-05: keeps raw data identifiers paths credentials and Pi inter
     assert.equal(createHash('sha256').update(request.payload_bytes).digest('hex'), requiredString(request, 'payload_sha256'));
     assert.doesNotMatch(payloadText, /(?:0001|0002|North|South|members\.csv|orders\.csv|\.xanthil|\/Users\/|AKIA|sk-|PiSession)/);
     const projection = await settledAttempt(draft);
-    assert.doesNotMatch(JSON.stringify(projection), /(?:0001|0002|North|South|members\.csv|orders\.csv|\.xanthil|\/Users\/|AKIA|sk-|PiSession|payload_bytes)/);
+    assertPrivateAssistanceProjection(projection);
+    // CI-PRIVACY-004: replay the observed legal UUID collision at the actual
+    // retained-projection oracle, retaining the real Application's other fields.
+    const collision = '5a70002a-400a-4542-b277-ad0ac6168e7e';
+    const colliding = structuredClone(projection);
+    (colliding.attempts as Record<string, unknown>[])[0].attempt_id = collision;
+    (colliding.assistance_drafts as Record<string, unknown>[])[0].attempt_id = collision;
+    colliding.projection_token = requiredString(colliding, 'projection_token').split(':').slice(0, 3).concat(collision).join(':');
+    assert.doesNotThrow(() => assertPrivateAssistanceProjection(colliding), 'a UUID substring is not a disclosed source member ID');
+    for (const material of ['0001', '0002', 'North', 'South', 'members.csv', 'orders.csv', '.xanthil', '/Users/', 'AKIA', 'sk-', 'PiSession', 'payload_bytes', collision]) {
+      const leaked = structuredClone(colliding);
+      requiredRecord((leaked.assistance_drafts as Record<string, unknown>[])[0].generated_content, 'generated content').question_text = material;
+      assert.throws(() => assertPrivateAssistanceProjection(leaked), { code: 'ERR_ASSERTION' }, `retained content must reject ${material}`);
+    }
+    assert.throws(() => assertPrivateAssistanceProjection({ ...colliding, unexpected_id: collision }), { code: 'ERR_ASSERTION' }, 'unknown id-labelled fields are still private content');
+    assert.throws(() => assertPrivateAssistanceProjection({ ...colliding, projection_token: collision }), { code: 'ERR_ASSERTION' }, 'an arbitrary UUID is not a bound projection cursor');
+    const invalidIdentity = structuredClone(colliding);
+    (invalidIdentity.attempts as Record<string, unknown>[])[0].attempt_id = '0002';
+    assert.throws(() => assertPrivateAssistanceProjection(invalidIdentity), { code: 'ERR_ASSERTION' }, 'a source member ID cannot masquerade as the contracted Attempt UUID');
   });
 });
 
@@ -494,4 +546,13 @@ test('U4 fresh Application reopens a Running Attempt as interrupted exactly once
     release();await new Promise(resolve=>setTimeout(resolve,20));
     assert.deepEqual(await requiredExport<Method>(reopened.application,'readProjection')(draft.owner),after,'the abandoned executor cannot overwrite the terminal state');
   }finally{release();}
+}));
+
+test('P1-C4 issued facade cancellation cannot use cleanup timeout as physical settlement',async t=>withIsolatedProject(async projectRoot=>{
+ const draft=await openDraft(projectRoot),preview=await requiredExport<Method>(draft.application,'prepareAssistanceDisclosure')({contract_version:'1.0',...draft.owner,expected_row_version:'1',action_kind:'organize_question',requested_provider:'offline-test',requested_model:'deterministic'}),module=await loadDesktopModule('adapters/agent-pi/local-analysis.ts'),factory=requiredExport<(c:unknown,i:unknown)=>Record<string,unknown>>(module,'createPiDecisionAssistanceRuntime');
+ let enter!:()=>void,finish!:()=>void,aborted!:()=>void;const entered=new Promise<void>(r=>enter=r),idle=new Promise<void>(r=>finish=r),aborting=new Promise<void>(r=>aborted=r);let disposed=0,settled=false;
+ const runtime=factory({provider:'offline-test',model_id:'deterministic'},{sdkSessionFactory:async()=>Object.freeze({subscribe(){return()=>{};},setActiveTools(){return Object.freeze({active_tool_names:Object.freeze([])});},async prompt(){enter();await idle;return Object.freeze({settled:true});},getActualModel(){assert.fail('late model is not a publication');},async abort(){aborted();return Object.freeze({aborted:true});},async waitForIdle(){await idle;return Object.freeze({idle:true});},dispose(){disposed++;return Object.freeze({disposed:true});}})});
+ await requiredExport<Method>(runtime,'preflightSelection')({requested_provider:'offline-test',requested_model:'deterministic'});t.mock.timers.enable({apis:['setTimeout']});const abort=new AbortController();
+ const pending=requiredExport<Method>(runtime,'executeAssistance')({action_kind:'organize_question',payload_bytes:new TextEncoder().encode(String(preview.payload_text)),payload_sha256:preview.payload_sha256,requested_provider:'offline-test',requested_model:'deterministic',cancellation_signal:abort.signal,deadline_seconds:300}).catch(e=>e).finally(()=>{settled=true;});
+ await entered;abort.abort();await aborting;t.mock.timers.tick(30001);await new Promise(r=>setImmediate(r));const early=settled,earlyDisposal=disposed;finish();const result=await pending;assert.equal(early,false,'elapsed cleanup timeout is not physical settlement');assert.equal(earlyDisposal,0);assert.equal(result.code,'CANCELLED');assert.equal(disposed,1);
 }));
