@@ -182,7 +182,7 @@ test('CI-TIMEOUT-001: only portable regression gets 1080s within the unchanged j
   assertWorkflow(workflow);
   const shell = workflow.split('        run: |\n')[1].split('\n').map(line => line.replace(/^          /, '')).join('\n');
   const definition = shell.slice(shell.indexOf('run_logged() {'), shell.indexOf('\ntest "$(node --version)"'));
-  const commands = ['portable-regression', 'npm-prepare', 'duckdb-download', 'node-gyp-download', 'install-view', 'dependency-install', 'installed-source-check', 'documentation', 'scope-contracts'];
+  const commands = ['portable-regression', 'npm-prepare', 'duckdb-download', 'node-gyp-download', 'install-view', 'dependency-install', 'installed-source-check', 'documentation', 'affected', 'agent-config'];
   const labels = [...commands, 'portable-regression-extra', 'unknown'];
   assert.deepEqual([...workflow.matchAll(/^\s+run_logged (\S+) /gm)].map(match => match[1]).sort(), commands.slice().sort());
   for (const label of labels) {
