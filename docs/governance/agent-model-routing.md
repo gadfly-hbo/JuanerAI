@@ -34,17 +34,19 @@ support use `medium`. The Worker still owns package-level spec/design as well
 as implementation; the lower effort does not move that work back to Controller.
 `.codex/config.toml` pins primary `high` and default subagent `medium`; each role
 TOML pins its table entry. Keep existing sandboxes and concurrency limits.
-There is no automatic upgrade, downgrade, fallback, per-dispatch risk matrix or
-upgrade ledger. A difficult task calls for diagnosis or scoped expertise, not
-an automatic effort change or retry quota.
+There is no automatic model/effort upgrade, downgrade or fallback, per-dispatch
+risk matrix or upgrade ledger. A difficult task calls for diagnosis or scoped
+expertise, not an automatic effort change or retry quota.
 
-At intake or configuration change, verify the active session actually exposes
-the intended role descriptions and settings. A file edit does not prove an
-already open session loaded it. Read back primary/default and actual role
-settings, including any explicit CLI/session overrides; an old `high` override
-can mask the new Worker default. Incompatible role definitions require a bounded
-reload/resumption at a safe boundary; do not launch product work as a probe,
-migrate the original task, or silently substitute a generic role.
+At intake, dispatch or configuration change, apply the sole execution policy's
+Native-first Role Execution section, including explicit user consent for CLI
+role substitution and verified stop/checkpoint transfer when changing routes.
+Verify the active native role descriptions and primary/default/role settings;
+a file edit does not prove an open session loaded them. For a user-consented
+CLI exception, also read back its actual role instructions and CLI/session
+overrides; an old `high` override can mask the Worker default. Incompatible
+definitions require a bounded correction at a safe boundary; do not launch
+product work as a probe, migrate the parent task or silently substitute a role.
 
 Record the actual model/effort with the existing handoff, not a new state system.
 Use the configured roles without redundant model/effort overrides. The default
