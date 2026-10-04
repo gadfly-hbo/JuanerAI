@@ -13,15 +13,15 @@ The product-definition and commercialization charter and the core reference for 
 _Avoid_: executable roadmap, implementation authorization, proof of completion
 
 **Product Development Blueprint**:
-JuanerAI's highest product-development execution guideline. Its four core views connect capability coverage, bounded stage delivery, module responsibility and competitive-value evidence. Blueprint v4.1 is approved under the approval record linked from `docs/planning/README.md`; v1.0–v4.0 remain history. It retains Whitepaper v4.0 adoption and Change 001–003, prioritizes AI-led membership analysis with grouped capabilities and vertical-slice validation, then returns to outcome follow-up and explicit next-Case adoption. Data/semantic expansion follows actual task needs rather than blocking feedback behind a complete platform; bounded trial discussion follows joint P1 acceptance, with separate permissions. Team and Enterprise remain demand-led. Scenario, capability and experience acceptance describe different evidence, not three new approval processes.
+JuanerAI's highest product-development execution guideline. Blueprint v4.2 is approved under the record linked from `docs/planning/README.md`; its reviewed draft labels are historical, while v1.0–v4.1 remain prior versions. The four core views connect capabilities, stage outcomes, architecture and value; capability-led construction is constrained by complete user journeys through a bidirectional task/capability/stage/Change mapping. It retains Whitepaper v4.0, 40 stable capabilities, N01–N20, S1–S6 and Change001–004; approved in-flight Change005 scope and adoption remain unchanged. Near-term delivery uses a PC browser and same-machine service, first a real trial then S1 closure, followed by outcome evaluation and explicit next-Case adoption. Data/semantic and professional expansion follows actual consumers; OSM, Team and Enterprise remain demand-led. Scenario, capability and experience acceptance are different evidence, not three new approval processes. Local rule integration, Git publication and receiver adoption remain separate.
 _Avoid_: Whitepaper copy, OpenSpec, automatic Change authorization
 
 **Xanthil**:
-The first JuanerAI commercial product. Xanthil Desktop is the unified user workbench for PIM and applicable OSM workflows; it reuses JuanerAI's shared analysis, execution and governance capabilities. The name itself grants no execution authority.
+The first JuanerAI commercial product and unified workbench for PIM and applicable OSM workflows, reusing JuanerAI's shared analysis, execution and governance capabilities. Near-term PC delivery uses a browser plus same-machine local service; the existing Desktop implementation is retained while shell packaging and distribution are deferred. The name itself grants no execution authority.
 _Avoid_: JuanerAI platform, Pi wrapper, CLI-first product
 
 **Personal / Team / Enterprise**:
-Product forms and governance scopes, separate from intelligence maturity and action permissions. Xanthil Personal uses the Desktop Free entry; Xanthil Team carries the former Workspace product direction; JuanerAI Enterprise adds enterprise responsibilities. Strategic naming does not rename existing packages or expand a frozen Change.
+Product forms and governance scopes, separate from intelligence maturity, runtime carrier and action permissions. Xanthil Personal carries the former Desktop Free direction, with browser/local-service delivery in the current phase; Xanthil Team carries the former Workspace direction; JuanerAI Enterprise adds enterprise responsibilities. Strategic naming does not rename existing packages or expand a frozen Change.
 _Avoid_: three execution cores, automatic infrastructure or migration authorization
 
 **Product Module**:
@@ -66,7 +66,7 @@ _Avoid_: CPU machine language, prompt, generated SQL alone, cosmetic JSON, autom
 
 ## Decision Loop
 
-These decision-lifecycle meanings were adopted in v2.0 and retained through v4.1. The v4 series changes task-progression responsibility, not the distinction between analysis, a human decision and a completed Loop. Existing accepted states, contracts and evidence are not retroactively rewritten.
+These decision-lifecycle meanings were adopted in v2.0 and retained through v4.2. The v4 series changes task-progression responsibility, not the distinction between analysis, a human decision and a completed Loop. Existing accepted states, contracts and evidence are not retroactively rewritten.
 
 **Evidence-based Analysis (循证分析)**:
 An investigation in which the system advances authorized analysis while people supply business judgment. Hypotheses, supporting and refuting Evidence, alternatives, uncertainty, Forks and bounded Subagent contributions remain traceable before a Finding is accepted; system verification does not fabricate human acceptance.
