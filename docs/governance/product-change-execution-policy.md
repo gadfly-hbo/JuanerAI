@@ -135,11 +135,42 @@ how this task will resume, or disclose the concrete unsupported continuation
 boundary. Report user decisions and completion honestly, not ordinary milestones
 as completion. This introduces no scheduler, polling quota or new permission.
 
-These rules apply to the context and ownership of any already permitted launch
-method, not a compulsory native/CLI migration or authorization for a new one.
-Retain verified role instructions, fixed model/effort, actual sandbox, single
-writer and fresh author-independent final validation. Apply changes in-flight
-only at a safe boundary with receiver readback; preserve the current candidate.
+### Native-first Role Execution
+
+Use the parent task's native `juaner_worker` and independent
+`juaner_validator` by default; optional Spec/Test support follows the same
+native-first preference. Terminal `codex exec` / `codex exec resume` as a
+replacement for an engineering role is a lower-priority exception, not an equal
+alternative. Before using it, obtain the user's explicit consent identifying
+the task/role, concrete reason, bounded scope and endpoint. Historical CLI use,
+general development permission or native-role unavailability is not that
+consent. Reuse still-valid explicit exception consent inside its stated bounds;
+ordinary commands and corrections do not each renew it. A changed exception
+boundary requires the user's decision.
+
+An approved exception retains the role's instructions, fixed model/effort,
+sandbox, permissions, single writer, result collection and author-independent
+final validation. Disclose actual loaded settings; an exception cannot bypass
+a role, safety or permission boundary. Ordinary terminal tests, builds and
+already authorized host verification are not CLI role substitution and retain
+their existing permissions. This adds no launcher, scheduler or approval stage
+to the normal native workflow.
+
+On a user stop, Mini interrupts the affected agents and verified task-owned
+processes through authorized controls, checks that work has stopped and records
+any remaining activity or uncertainty. An interrupted parent turn does not
+prove its children stopped. If controls or authority are missing, disclose the
+specific gap and seek the needed decision; do not claim a completed stop.
+
+Switch routes at a safe boundary only after the previous writer and affected
+task processes have stopped. In the same parent task, Change and worktree,
+transfer a focused checkpoint from existing spec/verification/handoff records:
+candidate identity, valid evidence, interrupted checks, failures/UNKNOWN,
+remaining limits and next action. Do not claim native resumption of a CLI
+session; preserve its history and reuse the receiving Worker thereafter.
+Read back the adopted route and actual roles. Rule adoption or a route change
+does not lift an explicit user pause or reset acceptance and consumed resources.
+
 When claiming efficiency gains, compare equivalent accepted work including Mini,
 Worker, Validator and repair/coordination, distinguishing cached input, other
 input and output from elapsed time and user interventions. Use available logs
