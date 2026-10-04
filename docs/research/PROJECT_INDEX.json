@@ -1,0 +1,1430 @@
+{
+  "date": "2026-10-03",
+  "scope": "locator_and_identity_only_not_revalidation",
+  "source_repository": "research",
+  "source_ledger_sha256": "403bfec62e7e0748275c46f74fc642f0bfa2a9927e26a0258122a89c9229dfca",
+  "projects": [
+    {
+      "id": "PX-2026-001",
+      "name": "假设库与策略库双库建设方案",
+      "recorded_stage": "讨论中",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-001-dual-library",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-001-dual-library/PRODUCT_BRIEF.md",
+          "sha256": "c185f7264a340f7f2c33fe95c1429ae838b576d3fb501ab22df6be616d3dbf20",
+          "bytes": 188671
+        },
+        {
+          "source_path": "explorations/PX-2026-001-dual-library/DEMO_BRIEF.md",
+          "sha256": "0a1d36cb7f2108975abd3d25dc803539365e19453ecf793277c56496960955ef",
+          "bytes": 690272
+        },
+        {
+          "source_path": "explorations/PX-2026-001-dual-library/NEXT_ACTION.md",
+          "sha256": "e79c16b21a6c57a89fd48fd3ca675214b83b38f659e9bd4dd7255192175a73d4",
+          "bytes": 33713
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-002",
+      "name": "双库端到端纵向打通验证",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-002-dual-library-e2e-slice",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-002-dual-library-e2e-slice/PRODUCT_BRIEF.md",
+          "sha256": "cde89cee7118b381fcb59e02f7040b8c0772f4b3ab7bcfd687293926e70102fb",
+          "bytes": 13811
+        },
+        {
+          "source_path": "explorations/PX-2026-002-dual-library-e2e-slice/DEMO_BRIEF.md",
+          "sha256": "3226487f43f2d780a4175d5d5f2de3642e1c1475b9597d47df59f1f23e21d187",
+          "bytes": 63983
+        },
+        {
+          "source_path": "explorations/PX-2026-002-dual-library-e2e-slice/NEXT_ACTION.md",
+          "sha256": "d4fe5df8d3cd9c4b16147edafeaeb032d04201368fa7885cf71b68daab03c279",
+          "bytes": 2587
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-003",
+      "name": "N01-B Semantica Ontology Hub 体验验证",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-003-semantica-ontology-hub",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-003-semantica-ontology-hub/PRODUCT_BRIEF.md",
+          "sha256": "d87d29fc83705c85058868b637d9ffcf89d2db04dda41f7aded3b03cd66b84c8",
+          "bytes": 9852
+        },
+        {
+          "source_path": "explorations/PX-2026-003-semantica-ontology-hub/DEMO_BRIEF.md",
+          "sha256": "016793ccaf3053c5ab181ab2fc4d5ce0378357a1a285564ac095dc117a7915c4",
+          "bytes": 47922
+        },
+        {
+          "source_path": "explorations/PX-2026-003-semantica-ontology-hub/NEXT_ACTION.md",
+          "sha256": "9f4c6c9d3c2bbc943a09a2b968d4bc46d49b084d04b524cc37927713b0d8e799",
+          "bytes": 1758
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-004",
+      "name": "Xanthil Desktop 数分助手静态 Demo",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-004-xanthil-uidemo",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-004-xanthil-uidemo/PRODUCT_BRIEF.md",
+          "sha256": "5459ac377bdbea7ba0d009903bd06f018940b08ea34449bd617e92b74d80928a",
+          "bytes": 11264
+        },
+        {
+          "source_path": "explorations/PX-2026-004-xanthil-uidemo/DEMO_BRIEF.md",
+          "sha256": "f3c2664d7725279f1fc05b0512c801f3a687dca6169b5b25c1b839333a0568db",
+          "bytes": 60902
+        },
+        {
+          "source_path": "explorations/PX-2026-004-xanthil-uidemo/NEXT_ACTION.md",
+          "sha256": "860434ac4a4bc50fa23b4c4edcc2713c7719794508bd44451f80e6c836acceba",
+          "bytes": 1912
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-005",
+      "name": "Model Pack 统一工作区：Phase 1 完整纵向 + Phase 2 静态产品链 Demo",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-005-model-pack-demon",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-005-model-pack-demon/PRODUCT_BRIEF.md",
+          "sha256": "30aa225e1427acfba19a946c68d4d86e1676aa97724b4f7af3734f233b1efa88",
+          "bytes": 21594
+        },
+        {
+          "source_path": "explorations/PX-2026-005-model-pack-demon/DEMO_BRIEF.md",
+          "sha256": "ca7c958f2f35f09829287ee30af770210c1ec9b469fe54a18423ddc605f4d0b4",
+          "bytes": 213648
+        },
+        {
+          "source_path": "explorations/PX-2026-005-model-pack-demon/NEXT_ACTION.md",
+          "sha256": "39d695fff90f1aed8ca7d1d822013fbd22e61efcc8f2f9d52be208f6c992cfeb",
+          "bytes": 2184
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-006",
+      "name": "Xanthil Desktop 快速 / 专业双模式",
+      "recorded_stage": "已Handoff",
+      "recorded_waiting": "`none`",
+      "source_directory": "explorations/PX-2026-006-xanthil-dual-mode",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-006-xanthil-dual-mode/PRODUCT_BRIEF.md",
+          "sha256": "d152f1ca17fab7f8e0f6458b679b65cdb9ded55fb061362d4c569cf056d51464",
+          "bytes": 24447
+        },
+        {
+          "source_path": "explorations/PX-2026-006-xanthil-dual-mode/DEMO_BRIEF.md",
+          "sha256": "f6c4c2f0c931648eeecae70a9b10e8b188178b8659fc19788d6124fe9a27a571",
+          "bytes": 46233
+        },
+        {
+          "source_path": "explorations/PX-2026-006-xanthil-dual-mode/NEXT_ACTION.md",
+          "sha256": "46c70cbd4c2c7364b1b7f6a4cced8afc846f9cfa5dc1a944560db869645ea612",
+          "bytes": 1459
+        },
+        {
+          "source_path": "explorations/PX-2026-006-xanthil-dual-mode/HANDOFF.md",
+          "sha256": "43d6b0a1b31ac33f1408482e508e8f4f5acf4505d432ce932e6c9283a88e5fa5",
+          "bytes": 15728
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-007",
+      "name": "Model Pack 最小可运行链路：MLflow 技术可行性 Spike",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-007-model-pack-mlflow-spike",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-007-model-pack-mlflow-spike/PRODUCT_BRIEF.md",
+          "sha256": "ea9510092b78d73a507376d1e8eff32c332657e4ccae46a5640b3d1eb2f21a7a",
+          "bytes": 9440
+        },
+        {
+          "source_path": "explorations/PX-2026-007-model-pack-mlflow-spike/DEMO_BRIEF.md",
+          "sha256": "b61fc2c4fd6f176b069043076988a3f9e0e4e65f7422b9a485e0ef6d7bc7a7f6",
+          "bytes": 15976
+        },
+        {
+          "source_path": "explorations/PX-2026-007-model-pack-mlflow-spike/NEXT_ACTION.md",
+          "sha256": "7040a07449bd77e91262c8971e93dde6dbad39048f5028c3739a9ef921bf1bf3",
+          "bytes": 1891
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-008",
+      "name": "ModelPackBuilder → versioned Pack → independent Consumer 最小接缝",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-008-model-pack-builder-consumer-spike",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-008-model-pack-builder-consumer-spike/PRODUCT_BRIEF.md",
+          "sha256": "d5f5b7d933df362f89d9ef65ba74cc837ca892bcc4439855144a5106bd23eaa6",
+          "bytes": 12072
+        },
+        {
+          "source_path": "explorations/PX-2026-008-model-pack-builder-consumer-spike/DEMO_BRIEF.md",
+          "sha256": "c07ecf45a46c496a4497956aabdd5e49a6d5f615de16aeb1877e39488ecb9172",
+          "bytes": 31618
+        },
+        {
+          "source_path": "explorations/PX-2026-008-model-pack-builder-consumer-spike/NEXT_ACTION.md",
+          "sha256": "2fca4006ed777456492503ec1941d8b0dec9d41476f51e93b530a366c92fd8de",
+          "bytes": 2172
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-009",
+      "name": "自主探索数据分析 Demo",
+      "recorded_stage": "讨论中",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-009-autonomous-exploration",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-009-autonomous-exploration/PRODUCT_BRIEF.md",
+          "sha256": "3354099098b4f3660647ba24537ae9006c52374eae54e1b3c6eccaf430da7b0f",
+          "bytes": 37049
+        },
+        {
+          "source_path": "explorations/PX-2026-009-autonomous-exploration/DEMO_BRIEF.md",
+          "sha256": "3f8030dc44b4dee550a8bd83787190f1adc0a967f39d63676e82ee87bed29cc3",
+          "bytes": 133604
+        },
+        {
+          "source_path": "explorations/PX-2026-009-autonomous-exploration/NEXT_ACTION.md",
+          "sha256": "0d96dcfd0ce4425347a98fcadbf0a138d52d2a36c2a1c569d969a50e8b0980e2",
+          "bytes": 1298
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-010",
+      "name": "Xanthil 深度研究工作台 Demo",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-010-deep-research-workbench",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-010-deep-research-workbench/PRODUCT_BRIEF.md",
+          "sha256": "f588913f1178a5229aa0360a770b967b2f3e4715e5f2aaeeb405e06edfe9e39a",
+          "bytes": 9242
+        },
+        {
+          "source_path": "explorations/PX-2026-010-deep-research-workbench/DEMO_BRIEF.md",
+          "sha256": "5b1d833ec3d9ba5a3b927089494e5b6f0aea12843b3cd5bf77f314bd97ac8f59",
+          "bytes": 36963
+        },
+        {
+          "source_path": "explorations/PX-2026-010-deep-research-workbench/NEXT_ACTION.md",
+          "sha256": "3b215d26b514942997ec73d4e5b9e9f48daf277eb21839ccc26af67ea2857ac9",
+          "bytes": 2441
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-011",
+      "name": "AnalysisOps 三级裁判与分层 HITL",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-011-analysisops-judge-hitl",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-011-analysisops-judge-hitl/PRODUCT_BRIEF.md",
+          "sha256": "4dcfc615df5bce008b868aa3ec156f690fb1c2aeedb15932159dd3e7b115037d",
+          "bytes": 7441
+        },
+        {
+          "source_path": "explorations/PX-2026-011-analysisops-judge-hitl/DEMO_BRIEF.md",
+          "sha256": "714465893bd120b493fb2f4f7e670d9f5e7c360286d8d0d031b6accbf071d634",
+          "bytes": 19355
+        },
+        {
+          "source_path": "explorations/PX-2026-011-analysisops-judge-hitl/NEXT_ACTION.md",
+          "sha256": "ef23dbf77135d5d1948015147e1683ce66e2b3a8e21c065f5afb76dfb87a4fb2",
+          "bytes": 2342
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-012",
+      "name": "Xanthil 深度研究工作台全自动版",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-012-deep-research-autopilot",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-012-deep-research-autopilot/PRODUCT_BRIEF.md",
+          "sha256": "12a9aefc23de587df44ca203fc4904883cb265fa5f8610d294e9429a756715fb",
+          "bytes": 15186
+        },
+        {
+          "source_path": "explorations/PX-2026-012-deep-research-autopilot/DEMO_BRIEF.md",
+          "sha256": "d1fcb0ae10617f8e414b6756f4f59ef63c81d6d8d1196c90f59097c50d294165",
+          "bytes": 32991
+        },
+        {
+          "source_path": "explorations/PX-2026-012-deep-research-autopilot/NEXT_ACTION.md",
+          "sha256": "f5d1a8cd317be7a1d42a85e66303bb9852feb0e78f17b5953fc95eb69543db0f",
+          "bytes": 2143
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-013",
+      "name": "自主探索 LLM 四接入点验证",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-013-autonomous-exploration-llm",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-013-autonomous-exploration-llm/PRODUCT_BRIEF.md",
+          "sha256": "d4483babc87af45aa9608e75fd43e795fca8cce432328448a664fcd4c3f82d03",
+          "bytes": 18001
+        },
+        {
+          "source_path": "explorations/PX-2026-013-autonomous-exploration-llm/DEMO_BRIEF.md",
+          "sha256": "946c1ac5fa6736751a1370329f69a669acd605df59f9ba1c37c27e000337289e",
+          "bytes": 68451
+        },
+        {
+          "source_path": "explorations/PX-2026-013-autonomous-exploration-llm/NEXT_ACTION.md",
+          "sha256": "82868cbbc48d3b859ba6165f1bf76f17145f75cc48522c9e9372c8fbf623e4c0",
+          "bytes": 1562
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-014",
+      "name": "Analysis IR：JuanerAI 分析编译器",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-014-analysis-ir",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-014-analysis-ir/PRODUCT_BRIEF.md",
+          "sha256": "95e6cfcef58bb4119843b188ac35e89a26fb4d71189f7972e6a2f32cc0c7dc7c",
+          "bytes": 30009
+        },
+        {
+          "source_path": "explorations/PX-2026-014-analysis-ir/DEMO_BRIEF.md",
+          "sha256": "3fbc4465a95514800f91010b0cb3f4787e711eac9dff803d8cd9921378bcb3ff",
+          "bytes": 35954
+        },
+        {
+          "source_path": "explorations/PX-2026-014-analysis-ir/NEXT_ACTION.md",
+          "sha256": "639470e6877ddd148f448900e5acd14c9d64fbff7a3a9cd31f2e439666e1fd89",
+          "bytes": 2143
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-015",
+      "name": "Teach：组织级分析纠错与能力发布",
+      "recorded_stage": "讨论中",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-015-teach",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-015-teach/PRODUCT_BRIEF.md",
+          "sha256": "123d48148226531124c54da1adbbf82de208bd1887393297dbcbe179856b8609",
+          "bytes": 35741
+        },
+        {
+          "source_path": "explorations/PX-2026-015-teach/DEMO_BRIEF.md",
+          "sha256": "bd6bc6d1728c9634a4e3c37ee2d909b5ce9ca858b73430ddb15c8533bd44a436",
+          "bytes": 36983
+        },
+        {
+          "source_path": "explorations/PX-2026-015-teach/NEXT_ACTION.md",
+          "sha256": "e202338cb1d583d86fcf36cecca2c59eef616f37a862d0da64111a58f881943e",
+          "bytes": 1781
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-016",
+      "name": "参考 Domain Pack：会员增长与复购",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-016-domain-pack-reference",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-016-domain-pack-reference/PRODUCT_BRIEF.md",
+          "sha256": "5146cc1a90282566a43c0599c8b808383bac317400d618f92ee3c895b2822df9",
+          "bytes": 19826
+        },
+        {
+          "source_path": "explorations/PX-2026-016-domain-pack-reference/DEMO_BRIEF.md",
+          "sha256": "a73254abb5fdef7547ae34a1d92495aeb340fc029d73bc6c191f46657e2c9cb8",
+          "bytes": 55685
+        },
+        {
+          "source_path": "explorations/PX-2026-016-domain-pack-reference/NEXT_ACTION.md",
+          "sha256": "db43572a19ad645cc1c4420376f0655a449cbae4b4942e715ec02e1bac6cfe8b",
+          "bytes": 2677
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-017",
+      "name": "门店经营 Domain Pack 合同一致性验证",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-017-store-operations-pack-conformance",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-017-store-operations-pack-conformance/PRODUCT_BRIEF.md",
+          "sha256": "5dd79ba3051b2f2dd4b988560deae8df766986c1853f2f788eeeda552dd8b311",
+          "bytes": 13748
+        },
+        {
+          "source_path": "explorations/PX-2026-017-store-operations-pack-conformance/DEMO_BRIEF.md",
+          "sha256": "6c89affe061a0907804df07f985ce62ce05877f4a39ddf1817b52f492fcbceb1",
+          "bytes": 51237
+        },
+        {
+          "source_path": "explorations/PX-2026-017-store-operations-pack-conformance/NEXT_ACTION.md",
+          "sha256": "fe6416e8e26510c436952b07c698618ed2d06ae301fbfae851b231f72d380d16",
+          "bytes": 2227
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-018",
+      "name": "商品经营 Domain Pack 一致性验收",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-018-merchandise-operations-pack-conformance",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-018-merchandise-operations-pack-conformance/PRODUCT_BRIEF.md",
+          "sha256": "99b9fbaf616df7a77d31feaecc54651447d16708f6a30e9196bc8c05eb9a95d4",
+          "bytes": 15552
+        },
+        {
+          "source_path": "explorations/PX-2026-018-merchandise-operations-pack-conformance/DEMO_BRIEF.md",
+          "sha256": "964c15191bcb5d490dc58d879fc328aab390b0c484776fd56ee45aecf28d51c2",
+          "bytes": 41880
+        },
+        {
+          "source_path": "explorations/PX-2026-018-merchandise-operations-pack-conformance/NEXT_ACTION.md",
+          "sha256": "b3e6c2c3186cb172c0be37162aaece989556553750bb697432e6601c8b963002",
+          "bytes": 2639
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-019",
+      "name": "消费者洞察 Domain Pack：身份、分群、来源与隐私边界",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-019-consumer-insight-pack-boundaries",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-019-consumer-insight-pack-boundaries/PRODUCT_BRIEF.md",
+          "sha256": "da6b085532c96573f0f69b44632ea413aad172b465b2da1984b89b5aec1f4017",
+          "bytes": 15114
+        },
+        {
+          "source_path": "explorations/PX-2026-019-consumer-insight-pack-boundaries/DEMO_BRIEF.md",
+          "sha256": "990e3b66b1c4ab57fcaa4537e410aeed7e8b634b1f5461c3a167d828f16cd22b",
+          "bytes": 20046
+        },
+        {
+          "source_path": "explorations/PX-2026-019-consumer-insight-pack-boundaries/NEXT_ACTION.md",
+          "sha256": "cd39f62acdca4d9981c17a2e59436c391942ce007733300738496b2a07cfa68c",
+          "bytes": 1578
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-020",
+      "name": "库存与分货 Domain Pack：受约束建议与人工批准边界",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-020-inventory-allocation-pack-boundaries",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-020-inventory-allocation-pack-boundaries/PRODUCT_BRIEF.md",
+          "sha256": "a528aadd51bdfb110a0a4505af87dc01d6e04612267b8f2908882bdc97a6c2d7",
+          "bytes": 13822
+        },
+        {
+          "source_path": "explorations/PX-2026-020-inventory-allocation-pack-boundaries/DEMO_BRIEF.md",
+          "sha256": "8eefca013bb6db96a1a66b33263c6d92a728d7647e67265438c12c79a5bc9e1d",
+          "bytes": 24046
+        },
+        {
+          "source_path": "explorations/PX-2026-020-inventory-allocation-pack-boundaries/NEXT_ACTION.md",
+          "sha256": "683d980336971654aaae70e1411ede40f839b20953770fb87cb635f5c7900af2",
+          "bytes": 1817
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-021",
+      "name": "数据分析报告模板与周期复用",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-021-report-template-module",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-021-report-template-module/PRODUCT_BRIEF.md",
+          "sha256": "73d9348e46825bf03d986465a625e2eb4de559c17c6d30bd40a645ef1ba4128c",
+          "bytes": 16367
+        },
+        {
+          "source_path": "explorations/PX-2026-021-report-template-module/DEMO_BRIEF.md",
+          "sha256": "2bfcaf02a7e3f20fcd86d6a542ece54321e4abfd50462a6d7fd31039b9f55f25",
+          "bytes": 42665
+        },
+        {
+          "source_path": "explorations/PX-2026-021-report-template-module/NEXT_ACTION.md",
+          "sha256": "dcce3d24c73c6e51eb8f6ba3f40ee53bad36afd45240a787ddb3bb30bff1e42c",
+          "bytes": 1652
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-022",
+      "name": "渠道 ROI 与归因 Domain Pack：增量主张边界",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-022-channel-roi-attribution-pack-boundaries",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-022-channel-roi-attribution-pack-boundaries/PRODUCT_BRIEF.md",
+          "sha256": "acbf9e221e35c18d0ed7ba973354fdcab8f9a8abb0eba2969d60b4f4efb824d3",
+          "bytes": 9688
+        },
+        {
+          "source_path": "explorations/PX-2026-022-channel-roi-attribution-pack-boundaries/DEMO_BRIEF.md",
+          "sha256": "a8aaf1324acaec4eacf332534d91bba834a951b50b14b3993ebc5c0d12e34ac2",
+          "bytes": 13057
+        },
+        {
+          "source_path": "explorations/PX-2026-022-channel-roi-attribution-pack-boundaries/NEXT_ACTION.md",
+          "sha256": "86fa9e8de66e8b98dd02a68433620ee22a7d069f15bec0ea97282eaf53f5e3ad",
+          "bytes": 980
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-023",
+      "name": "流失预警 Domain Pack：风险分层与人工复核边界",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-023-churn-early-warning-pack-boundaries",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-023-churn-early-warning-pack-boundaries/PRODUCT_BRIEF.md",
+          "sha256": "85a1766877f6e01972e5131f38b1e7d110870e2ea73f9c318e5a16cca09b81d3",
+          "bytes": 10901
+        },
+        {
+          "source_path": "explorations/PX-2026-023-churn-early-warning-pack-boundaries/DEMO_BRIEF.md",
+          "sha256": "c5e14327fd3ae5b685eb8b47d7c21658c4a0050102d540ce482310b74f7d0d57",
+          "bytes": 12586
+        },
+        {
+          "source_path": "explorations/PX-2026-023-churn-early-warning-pack-boundaries/NEXT_ACTION.md",
+          "sha256": "d9a982f5d50fcd1cfb9c1521bb718e36987774bfa4de7d36e1f2acc046d32766",
+          "bytes": 1492
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-024",
+      "name": "定价与促销 Domain Pack：价格建议与审批边界",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-024-pricing-promotion-pack-boundaries",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-024-pricing-promotion-pack-boundaries/PRODUCT_BRIEF.md",
+          "sha256": "2bbbe3dfa08dbd99d6941ed076717f3930081a3de253b1b9792b83ec6d2e29a1",
+          "bytes": 11512
+        },
+        {
+          "source_path": "explorations/PX-2026-024-pricing-promotion-pack-boundaries/DEMO_BRIEF.md",
+          "sha256": "d030542c24984db673a8ef5b8984fd41ea7e639ff03730bd51cd246510eb5ad0",
+          "bytes": 14531
+        },
+        {
+          "source_path": "explorations/PX-2026-024-pricing-promotion-pack-boundaries/NEXT_ACTION.md",
+          "sha256": "03a7a9c8d4a412093eeee3bf0c92f847c2e4f6b2c1051c20d02cb6fa822c7410",
+          "bytes": 1504
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-025",
+      "name": "补货与履约 Domain Pack：建议资格与执行隔离",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-025-replenishment-fulfillment-pack-boundaries",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-025-replenishment-fulfillment-pack-boundaries/PRODUCT_BRIEF.md",
+          "sha256": "7c14d01f55e99321d8381ad2e2fffca14b9bdb0d5db383e00f6948206ad5c901",
+          "bytes": 12146
+        },
+        {
+          "source_path": "explorations/PX-2026-025-replenishment-fulfillment-pack-boundaries/DEMO_BRIEF.md",
+          "sha256": "829a2e7af596fca539cc182b73f1ee2d4e0ce1c0fb2df225b20830245d5992f3",
+          "bytes": 13627
+        },
+        {
+          "source_path": "explorations/PX-2026-025-replenishment-fulfillment-pack-boundaries/NEXT_ACTION.md",
+          "sha256": "df55d50d33984a72d501dd4246448fd69de899b0ae7df0f1fb3422e98dfbce8e",
+          "bytes": 1973
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-026",
+      "name": "产品漏斗 Domain Pack：诊断资格与发布隔离",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-026-product-funnel-pack-boundaries",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-026-product-funnel-pack-boundaries/PRODUCT_BRIEF.md",
+          "sha256": "82213e297f5561b3d3a76b42d901b6d0d7e8143384c5ccc53a3de6e0660e26c6",
+          "bytes": 12615
+        },
+        {
+          "source_path": "explorations/PX-2026-026-product-funnel-pack-boundaries/DEMO_BRIEF.md",
+          "sha256": "59dd1e210dfa538194c5a2111af0cc217be838311d185324a97e79a1ce51fc92",
+          "bytes": 12482
+        },
+        {
+          "source_path": "explorations/PX-2026-026-product-funnel-pack-boundaries/NEXT_ACTION.md",
+          "sha256": "3a5ce53a829b9204a66853b72912ebda7c9a8c510419bce743cb8c50e24fe50e",
+          "bytes": 1589
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-027",
+      "name": "营销活动与人群策略 Domain Pack：资格审阅与触达隔离",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-027-marketing-campaign-audience-pack-boundaries",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-027-marketing-campaign-audience-pack-boundaries/PRODUCT_BRIEF.md",
+          "sha256": "939a31ac5641b58733fec29fa9c9d0de2e91245391d8ac27811c305599d9c6b8",
+          "bytes": 8426
+        },
+        {
+          "source_path": "explorations/PX-2026-027-marketing-campaign-audience-pack-boundaries/DEMO_BRIEF.md",
+          "sha256": "f07eb4c3f88994b41d74db05ef12faa19439878481bf747c9c3aa311e2247899",
+          "bytes": 13400
+        },
+        {
+          "source_path": "explorations/PX-2026-027-marketing-campaign-audience-pack-boundaries/NEXT_ACTION.md",
+          "sha256": "ed9222533e01c2291d308f9023de28186e675ab31dfac2854cbb30ccc7a35cee",
+          "bytes": 1661
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-028",
+      "name": "Xanthil Desktop 消费 Domain Pack：能力装配与调用",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-028-domain-pack-workbench-consumption",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-028-domain-pack-workbench-consumption/PRODUCT_BRIEF.md",
+          "sha256": "29d71f67b1ea6a237eca4848ed8d7ad1519eefa8ab6d2db18edde53de37f6fdd",
+          "bytes": 15953
+        },
+        {
+          "source_path": "explorations/PX-2026-028-domain-pack-workbench-consumption/DEMO_BRIEF.md",
+          "sha256": "2a553612e0b18a3619f573bb19c92090e1069711297ff2a890b1bfc0f1f7a6d4",
+          "bytes": 46945
+        },
+        {
+          "source_path": "explorations/PX-2026-028-domain-pack-workbench-consumption/NEXT_ACTION.md",
+          "sha256": "c1e41fcae19bd32c8cc4284e120deb5c6afdf19bb3bca7360e2cda51c0e8941b",
+          "bytes": 1903
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-029",
+      "name": "OSM 目标与策略管理：新增目标经营路线",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`（收束暂停，可恢复）",
+      "source_directory": "explorations/PX-2026-029-osm-objective-strategy",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-029-osm-objective-strategy/PRODUCT_BRIEF.md",
+          "sha256": "89c93d528f1e70adf827716235e1375737d2868f74f31b6e6d5ea593602ae6d9",
+          "bytes": 17085
+        },
+        {
+          "source_path": "explorations/PX-2026-029-osm-objective-strategy/DEMO_BRIEF.md",
+          "sha256": "a3a8e61f91d6e4dda9443419113be46aa3cb20a43c44b971501d2e7abe927dca",
+          "bytes": 36486
+        },
+        {
+          "source_path": "explorations/PX-2026-029-osm-objective-strategy/NEXT_ACTION.md",
+          "sha256": "9754142d41a42ecc92bec1becea0ac9d35440c12747d136671c8cb3ecb6a1c8e",
+          "bytes": 3464
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-030",
+      "name": "分析需求调研与框架共创",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-030-analysis-requirement-co-creation",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-030-analysis-requirement-co-creation/PRODUCT_BRIEF.md",
+          "sha256": "1609c6bc6624f3e71bda7cd92a80fa9aab6cc365e45bcac5d10a0d663dbaab9c",
+          "bytes": 17756
+        },
+        {
+          "source_path": "explorations/PX-2026-030-analysis-requirement-co-creation/DEMO_BRIEF.md",
+          "sha256": "d47564e57dbe0f6c6ab18746a3da58ce3224efa4496634ed3d8fec9d12622787",
+          "bytes": 42919
+        },
+        {
+          "source_path": "explorations/PX-2026-030-analysis-requirement-co-creation/NEXT_ACTION.md",
+          "sha256": "eb8d0ee6c09beca5db1b4d47495ed6f9f892f3342960ecd65ae80c0aa4574438",
+          "bytes": 952
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-031",
+      "name": "任务上下文解析与绑定",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-031-context-resolve-binding",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-031-context-resolve-binding/PRODUCT_BRIEF.md",
+          "sha256": "44ddf4613c18e50aff5cf8f305679158744e593eac404334b71b1db1f0c0cd14",
+          "bytes": 18167
+        },
+        {
+          "source_path": "explorations/PX-2026-031-context-resolve-binding/DEMO_BRIEF.md",
+          "sha256": "e6ebe230776b50522b6f38bc686337deffd3023068aef8893b9bb267a623d357",
+          "bytes": 47677
+        },
+        {
+          "source_path": "explorations/PX-2026-031-context-resolve-binding/NEXT_ACTION.md",
+          "sha256": "4c7f73410a46b41b52cfbe752ca4f29eabd7eeabc80109b5d6f442309fe34f54",
+          "bytes": 1777
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-032",
+      "name": "语义物化、本地计算与业务证据",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-032-semantic-materialization-local-evidence",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-032-semantic-materialization-local-evidence/PRODUCT_BRIEF.md",
+          "sha256": "23a58e44585e060cd7c563d405583711624460dbd326700f6c6eb7e8d9bfd524",
+          "bytes": 20044
+        },
+        {
+          "source_path": "explorations/PX-2026-032-semantic-materialization-local-evidence/DEMO_BRIEF.md",
+          "sha256": "97e9c7ada030a254c7f9aedc4626d412b1c511433532bd6de7a4b11dc405e530",
+          "bytes": 39368
+        },
+        {
+          "source_path": "explorations/PX-2026-032-semantic-materialization-local-evidence/NEXT_ACTION.md",
+          "sha256": "a603d6816597b6337b972ad16e7e027745438ba1e089d725c93de1f6b1c2a38f",
+          "bytes": 2126
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-033",
+      "name": "目标有效性、指标快照与差距生成",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-033-objective-snapshot-gap",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-033-objective-snapshot-gap/PRODUCT_BRIEF.md",
+          "sha256": "599598c907c93b77401055ded7f8bad22d3decf5ae59aba7b9898cdbe0645255",
+          "bytes": 17075
+        },
+        {
+          "source_path": "explorations/PX-2026-033-objective-snapshot-gap/DEMO_BRIEF.md",
+          "sha256": "bb32df0d93e94f27f6eb9633e5eefffc0911254ebbb07b9bbfc03637c095e075",
+          "bytes": 43043
+        },
+        {
+          "source_path": "explorations/PX-2026-033-objective-snapshot-gap/NEXT_ACTION.md",
+          "sha256": "4b047f247da66acaf9d7fa60ecea7d458496e88638d150a28e6ebf20621efa5e",
+          "bytes": 1943
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-034",
+      "name": "策略候选到行动、结果与经营复盘",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-034-strategy-action-outcome-review",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-034-strategy-action-outcome-review/PRODUCT_BRIEF.md",
+          "sha256": "8b92ce0b6acdb40df0b7096fa0140d3c1c89537dc3bab7352c910695c0b23930",
+          "bytes": 20671
+        },
+        {
+          "source_path": "explorations/PX-2026-034-strategy-action-outcome-review/DEMO_BRIEF.md",
+          "sha256": "621d0171b4757b9a60b934d827a7ad6a3c0abc6b324f7c08fb8f28698a8a94a0",
+          "bytes": 37967
+        },
+        {
+          "source_path": "explorations/PX-2026-034-strategy-action-outcome-review/NEXT_ACTION.md",
+          "sha256": "30b091380e8de3513df5da0f2c038526fde66e4e501cdf6c6c50cd81fd9f9422",
+          "bytes": 1357
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-035",
+      "name": "Context Commit 分类回流",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-035-context-commit-routing",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-035-context-commit-routing/PRODUCT_BRIEF.md",
+          "sha256": "f818a99bdfcad4168a51dd3bf7362e325675958f4f5662aff371d62be9995348",
+          "bytes": 22055
+        },
+        {
+          "source_path": "explorations/PX-2026-035-context-commit-routing/DEMO_BRIEF.md",
+          "sha256": "3d5bfeda988c866ba8a1bed9f43b4a2a86072683cf9fd00fef491b523fe1abd1",
+          "bytes": 37032
+        },
+        {
+          "source_path": "explorations/PX-2026-035-context-commit-routing/NEXT_ACTION.md",
+          "sha256": "53a0f5bc036dcfcd0fa12c592229988d2c4de2fd902341f599c2879d97586488",
+          "bytes": 1558
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-036",
+      "name": "经营复盘到 Teach、新 Pack 与显式采用",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-036-review-teach-pack-adoption",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-036-review-teach-pack-adoption/PRODUCT_BRIEF.md",
+          "sha256": "62fe3ad0e710f5011db69e486ecc45eab9e1b04b57b52d4c68ac3ef8f01e0fcb",
+          "bytes": 20446
+        },
+        {
+          "source_path": "explorations/PX-2026-036-review-teach-pack-adoption/DEMO_BRIEF.md",
+          "sha256": "e446e46bbb252cfa2e3ce503422371aec7a93520ab80bc8686a504a048cf9ab5",
+          "bytes": 45182
+        },
+        {
+          "source_path": "explorations/PX-2026-036-review-teach-pack-adoption/NEXT_ACTION.md",
+          "sha256": "7241daa34038083a160738dbf59060d2d0a54c695b9392cc7a290af3bc9fd167",
+          "bytes": 1704
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-037",
+      "name": "未来行动看板：人机决策、执行反馈与经营学习",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-037-future-action-dashboard",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-037-future-action-dashboard/PRODUCT_BRIEF.md",
+          "sha256": "fb9d9515feed3b9c896214d8b3fbda7cac3178e9660a2693cce99bdfa6febdf6",
+          "bytes": 27751
+        },
+        {
+          "source_path": "explorations/PX-2026-037-future-action-dashboard/DEMO_BRIEF.md",
+          "sha256": "80d444f1de212d18bb9fb0161dc779f039c591e1de8c21a9c7c898f9c9b4eec7",
+          "bytes": 45576
+        },
+        {
+          "source_path": "explorations/PX-2026-037-future-action-dashboard/NEXT_ACTION.md",
+          "sha256": "2ceb71a4924722391a61f645776226d97b3222abb4d3716d7667f13e6106cbf7",
+          "bytes": 2190
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-038",
+      "name": "DAME 方法资产→IR→真实计算",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`（已验收收口）",
+      "source_directory": "explorations/PX-2026-038-dame-method-asset-execution",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-038-dame-method-asset-execution/PRODUCT_BRIEF.md",
+          "sha256": "ad750b8603d69eb5de8ed805b7b16fc3585108b82386be14b68bd01ce7d6d171",
+          "bytes": 18414
+        },
+        {
+          "source_path": "explorations/PX-2026-038-dame-method-asset-execution/DEMO_BRIEF.md",
+          "sha256": "6d52c56c7577ad194c2b58f384527966c92052783f4025bc1af90981219762bb",
+          "bytes": 34315
+        },
+        {
+          "source_path": "explorations/PX-2026-038-dame-method-asset-execution/NEXT_ACTION.md",
+          "sha256": "3fec0cad84b3ff2a9df6c0b1be159b1c7c427a669115ff3e775493150ba16aa7",
+          "bytes": 1931
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-039",
+      "name": "A/B Test Analysis 可运行最小闭环",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-039-ab-test-analysis",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-039-ab-test-analysis/PRODUCT_BRIEF.md",
+          "sha256": "cefcaa3b5c95e7c0c6d68477662431e61fe068b6d3e4ce96c47a4a1538a15096",
+          "bytes": 19430
+        },
+        {
+          "source_path": "explorations/PX-2026-039-ab-test-analysis/DEMO_BRIEF.md",
+          "sha256": "82c93b71da89663556bc33ca59bf3b5a5407315ff7e6e5ed3bca8b2fd1b8960f",
+          "bytes": 30266
+        },
+        {
+          "source_path": "explorations/PX-2026-039-ab-test-analysis/NEXT_ACTION.md",
+          "sha256": "86bde144b56bde57c0a6df08becfe38207cb4155f502d64bda1edda57beb759e",
+          "bytes": 2086
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-040",
+      "name": "JuanerAI Agent 测评体系及工具",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-040-agent-evaluation-system",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-040-agent-evaluation-system/PRODUCT_BRIEF.md",
+          "sha256": "3679dde0a0dd72ea60c4b551b501b1f3c5de7b6597e90d055d50cce4e5d0d4a1",
+          "bytes": 34885
+        },
+        {
+          "source_path": "explorations/PX-2026-040-agent-evaluation-system/DEMO_BRIEF.md",
+          "sha256": "33bcd0b98aeebc21be3864d4065b4655f983caefc67383a7f635c6e47aece4bc",
+          "bytes": 37348
+        },
+        {
+          "source_path": "explorations/PX-2026-040-agent-evaluation-system/NEXT_ACTION.md",
+          "sha256": "9a6a6f09e1d1c2177ae1092e2055b8c62fcb4af082cd2ce8779913b8f885bb91",
+          "bytes": 2663
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-041",
+      "name": "本地文件导入→数据质量→不可变快照（路线图 A03）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-041-local-file-quality-snapshot",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-041-local-file-quality-snapshot/PRODUCT_BRIEF.md",
+          "sha256": "975b67d3be2fffd727bb9ee758e7071e7ba02248d989523503cfa70426efdc86",
+          "bytes": 16082
+        },
+        {
+          "source_path": "explorations/PX-2026-041-local-file-quality-snapshot/DEMO_BRIEF.md",
+          "sha256": "1c7e26a5219f4b00426f9916ab94e1641fa1f349f2c1680428d87f114cfa0276",
+          "bytes": 33399
+        },
+        {
+          "source_path": "explorations/PX-2026-041-local-file-quality-snapshot/NEXT_ACTION.md",
+          "sha256": "7b2a390525929befc40bd4cf6ef25518bf72a5d60827e697ce506f24fe7a9766",
+          "bytes": 3231
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-042",
+      "name": "需求→上下文→方法→计算→报告，同一条实际链（路线图 A04）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-042-analysis-chain-e2e",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-042-analysis-chain-e2e/PRODUCT_BRIEF.md",
+          "sha256": "5732428182456984905b229a86f0e795346ae24339d60420699baf771ba011f0",
+          "bytes": 20655
+        },
+        {
+          "source_path": "explorations/PX-2026-042-analysis-chain-e2e/DEMO_BRIEF.md",
+          "sha256": "c843c0fe452f052564f0974755fef397fc2cf4ae553f31756041b209b108d566",
+          "bytes": 103666
+        },
+        {
+          "source_path": "explorations/PX-2026-042-analysis-chain-e2e/NEXT_ACTION.md",
+          "sha256": "c2b13ac05e2f442f81866007688cd9d55fb507835f7c5fe9f2d3c6100e88f788",
+          "bytes": 1150
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-043",
+      "name": "六级裁判对同一证据链的独立判别（路线图 A05）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-043-six-level-judge-chain",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-043-six-level-judge-chain/PRODUCT_BRIEF.md",
+          "sha256": "f3f5db66f875e6c983645d4c982f56abcd49893748d058bd857ba04f34a5ffd5",
+          "bytes": 17679
+        },
+        {
+          "source_path": "explorations/PX-2026-043-six-level-judge-chain/DEMO_BRIEF.md",
+          "sha256": "0474e7e01542def28125f1128eebd3ed5afa8b519f5b5a8134d353458663e542",
+          "bytes": 41055
+        },
+        {
+          "source_path": "explorations/PX-2026-043-six-level-judge-chain/NEXT_ACTION.md",
+          "sha256": "db82b82302543b26c834a33983687c3e13aff33628792de91a903c5a639fea8d",
+          "bytes": 3121
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-044",
+      "name": "外部证据采集与信息底座",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-044-external-evidence-acquisition",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-044-external-evidence-acquisition/PRODUCT_BRIEF.md",
+          "sha256": "1688e2faf50187df734adbf3c52291d2ac92d6b4dea2a22fb4dd6b68b5957767",
+          "bytes": 31570
+        },
+        {
+          "source_path": "explorations/PX-2026-044-external-evidence-acquisition/DEMO_BRIEF.md",
+          "sha256": "eff72f536ac53f76aa61df2d6ca0392355ba6a560003751f9ffa1f0d343907de",
+          "bytes": 68027
+        },
+        {
+          "source_path": "explorations/PX-2026-044-external-evidence-acquisition/NEXT_ACTION.md",
+          "sha256": "c60eb24104f2a3041da5c6c33836d477a61b3d54e6c7ee0ba894cdfdde1c3e61",
+          "bytes": 2109
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-045",
+      "name": "运行退出、取消、重试与人工等待恢复（路线图 A06）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-045-run-recovery",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-045-run-recovery/PRODUCT_BRIEF.md",
+          "sha256": "a57f66d1dad45dbe65fec314c7d7a387c4b8a760c1fa24b84fdb075348145161",
+          "bytes": 20410
+        },
+        {
+          "source_path": "explorations/PX-2026-045-run-recovery/DEMO_BRIEF.md",
+          "sha256": "aec9699203d644327d19220307d5e9cf5d45153fbe06a0c019a726bc309c673e",
+          "bytes": 45797
+        },
+        {
+          "source_path": "explorations/PX-2026-045-run-recovery/NEXT_ACTION.md",
+          "sha256": "b54a0e9524a9e001ceb94512065d18a4e29de646418bb8e907aef3834cbd73fd",
+          "bytes": 3318
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-046",
+      "name": "已安装 Model Pack 的日常推理与业务证据（路线图 A07）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-046-model-pack-daily-inference",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-046-model-pack-daily-inference/PRODUCT_BRIEF.md",
+          "sha256": "c26512801580e34ce732b1602f126b168b06e8a895e17073fdb1a5703c214a5c",
+          "bytes": 22993
+        },
+        {
+          "source_path": "explorations/PX-2026-046-model-pack-daily-inference/DEMO_BRIEF.md",
+          "sha256": "1099bba722a5c6a1ffa66b5c7a38582098987eb9bde3b90c6e5fbc78eb6b4f8c",
+          "bytes": 42154
+        },
+        {
+          "source_path": "explorations/PX-2026-046-model-pack-daily-inference/NEXT_ACTION.md",
+          "sha256": "1ebd5194032cf901825a8ee9eaca20649ed65cd4e2eb85a93cccbd26f7a7ffda",
+          "bytes": 1428
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-047",
+      "name": "本地优先、最小上下文与失效权限（路线图 A08）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-047-local-first-minimal-context",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-047-local-first-minimal-context/PRODUCT_BRIEF.md",
+          "sha256": "7884752472bc1caad8d5890c82d04916d328ccafedb1cf75a955d58c1a4ee44a",
+          "bytes": 22233
+        },
+        {
+          "source_path": "explorations/PX-2026-047-local-first-minimal-context/DEMO_BRIEF.md",
+          "sha256": "4074ba25cf9716bf73c68decaf04b6792e147e0ef91a906528391a27086e5834",
+          "bytes": 108941
+        },
+        {
+          "source_path": "explorations/PX-2026-047-local-first-minimal-context/NEXT_ACTION.md",
+          "sha256": "126cd3d84636b8391404605cbbca0e3a0ee6d86885e9605e64d75942913a5de6",
+          "bytes": 1718
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-048",
+      "name": "目标树、指标驱动与跨目标冲突（路线图 A09）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-048-goal-tree-conflict",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-048-goal-tree-conflict/PRODUCT_BRIEF.md",
+          "sha256": "0e3583e9de8f1d4ac976f5eebf9e3f434d77baee68f9c43e7c59476be677dee0",
+          "bytes": 17362
+        },
+        {
+          "source_path": "explorations/PX-2026-048-goal-tree-conflict/DEMO_BRIEF.md",
+          "sha256": "74cc6944eebced78d0a712fa2adadba2d1acacc7809bcbb70ed3caf00f97145f",
+          "bytes": 58946
+        },
+        {
+          "source_path": "explorations/PX-2026-048-goal-tree-conflict/NEXT_ACTION.md",
+          "sha256": "2e7eae5cac174edd61bc2068ea05ad6d819f4f3a897afce4fb79e4cb4846416e",
+          "bytes": 19516
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-049",
+      "name": "策略组合与资源约束的真实数值决策（A10）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-049-strategy-portfolio-optimization",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-049-strategy-portfolio-optimization/PRODUCT_BRIEF.md",
+          "sha256": "1309afc76d08658d5b9d3d966accf3bff29347996e91c9f65268c793e5d9ea33",
+          "bytes": 10780
+        },
+        {
+          "source_path": "explorations/PX-2026-049-strategy-portfolio-optimization/DEMO_BRIEF.md",
+          "sha256": "3e8ced0e8e5d4a3dbfd7e53e7376c070ae4781e6dde77f61dc03143f150305ce",
+          "bytes": 45001
+        },
+        {
+          "source_path": "explorations/PX-2026-049-strategy-portfolio-optimization/NEXT_ACTION.md",
+          "sha256": "8410063b6ca53c58a40ddcb2626f8a3f8f469eb99cbcc686521f6ecf68b30ae8",
+          "bytes": 1177
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-050",
+      "name": "同一目标案例的经营闭环接续（路线图 A11）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-050-same-goal-business-loop",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-050-same-goal-business-loop/PRODUCT_BRIEF.md",
+          "sha256": "432e30c3e5cd31b6654168543a9b8ac2597f9255b0696836964ddb660574f331",
+          "bytes": 14183
+        },
+        {
+          "source_path": "explorations/PX-2026-050-same-goal-business-loop/DEMO_BRIEF.md",
+          "sha256": "68d1f5d0f546adf4074628ce69b370c9287b4a29b6978dcdb5784ae752e3d777",
+          "bytes": 34666
+        },
+        {
+          "source_path": "explorations/PX-2026-050-same-goal-business-loop/NEXT_ACTION.md",
+          "sha256": "6345ba4f513c40f534d70803e5d25e9609d686430d7c57918372376105f614a8",
+          "bytes": 1186
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-051",
+      "name": "周期报告/目标刷新：新一期真实计算（路线图 A12）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-051-periodic-report-refresh",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-051-periodic-report-refresh/PRODUCT_BRIEF.md",
+          "sha256": "b111c6dc59f0a9a7b9521fb8cf0f6e599bc8c3d20baecfce7252e8c2bf46ae23",
+          "bytes": 14076
+        },
+        {
+          "source_path": "explorations/PX-2026-051-periodic-report-refresh/DEMO_BRIEF.md",
+          "sha256": "50ca4e0d6a160e2920f6c86cbd938f832ea230f39845a7b21f49516b5c1a798d",
+          "bytes": 31289
+        },
+        {
+          "source_path": "explorations/PX-2026-051-periodic-report-refresh/NEXT_ACTION.md",
+          "sha256": "c459aa2b9d46f0c5db79cf4ca787e532f6acfd174bcdedff6a65471f29f5c955",
+          "bytes": 1805
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-052",
+      "name": "真实 LLM 的需求访谈与自主探索质量（路线图 B01）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-052-live-llm-quality",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-052-live-llm-quality/PRODUCT_BRIEF.md",
+          "sha256": "d400c1c1bb26c0999380470e76e54f6eef5d3786a654811a02ad6d042f4d68ad",
+          "bytes": 8461
+        },
+        {
+          "source_path": "explorations/PX-2026-052-live-llm-quality/DEMO_BRIEF.md",
+          "sha256": "50320c35af094877ca402d911c34e8e6a332e0b7f7e6e534adf0300a51bf334e",
+          "bytes": 36163
+        },
+        {
+          "source_path": "explorations/PX-2026-052-live-llm-quality/NEXT_ACTION.md",
+          "sha256": "9e8066e4a207c2265336277e1ab459750b1add1601a256b65ef84f541ccc6d47",
+          "bytes": 1007
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-053",
+      "name": "深度研究实际采证与引用核验（路线图 B02）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-053-local-research-citation-verification",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-053-local-research-citation-verification/PRODUCT_BRIEF.md",
+          "sha256": "a67dd90984cbdd123930493c014c935236382fc18b9628566705d7bdd99d5acc",
+          "bytes": 12079
+        },
+        {
+          "source_path": "explorations/PX-2026-053-local-research-citation-verification/DEMO_BRIEF.md",
+          "sha256": "711fd0b6f2296ccaa1f80e8e89e993d6c34b58926574b84c59b53b3320dd636c",
+          "bytes": 38069
+        },
+        {
+          "source_path": "explorations/PX-2026-053-local-research-citation-verification/NEXT_ACTION.md",
+          "sha256": "bed378e01442fb25d3f51933d70f8c77e5103e9343aac33091db09ecb0a8da9b",
+          "bytes": 878
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-054",
+      "name": "Ontology / Knowledge / Memory 的 Owner 后端接续（路线图 B03）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-054-ontology-owner-backend",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-054-ontology-owner-backend/PRODUCT_BRIEF.md",
+          "sha256": "dfad14dba9c4bcd4e0ae2603a34822cee2404b71521d4e2ac8b22eb018a550f6",
+          "bytes": 10732
+        },
+        {
+          "source_path": "explorations/PX-2026-054-ontology-owner-backend/DEMO_BRIEF.md",
+          "sha256": "de1217cb66292e293c10c72aece9d386b374db08013627ccc9024a81435fa992",
+          "bytes": 35649
+        },
+        {
+          "source_path": "explorations/PX-2026-054-ontology-owner-backend/NEXT_ACTION.md",
+          "sha256": "0f608b1d94399f6d5f25135ce5ce60650c3ae6e954025819d4064f30164a841e",
+          "bytes": 1355
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-055",
+      "name": "通用方法纠错与跨域回归发布（路线图 B04）",
+      "recorded_stage": "Demo中",
+      "recorded_waiting": "`opencode_build`",
+      "source_directory": "explorations/PX-2026-055-method-correction-cross-domain",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-055-method-correction-cross-domain/PRODUCT_BRIEF.md",
+          "sha256": "5b2d88feb067bfc45d0f81a45f32c6dfa67a19ffece63ef06ddd2d5d063aeaab",
+          "bytes": 9164
+        },
+        {
+          "source_path": "explorations/PX-2026-055-method-correction-cross-domain/DEMO_BRIEF.md",
+          "sha256": "8db8e2e5a96ec1b9e34df876fb7898c610b82db7064ae21ba1c14a554b58809f",
+          "bytes": 35176
+        },
+        {
+          "source_path": "explorations/PX-2026-055-method-correction-cross-domain/NEXT_ACTION.md",
+          "sha256": "42d5bbe92da0e9463c1566130a6fbc31ff1b2edf162f345a81d51dd7fe897833",
+          "bytes": 2652
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-056",
+      "name": "高风险 Pack 的实际业务方法：流失评分/校准（路线图 B05）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-056-churn-numerical-method",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-056-churn-numerical-method/PRODUCT_BRIEF.md",
+          "sha256": "1dcbd048e8d80e218571914b2482ea8ac932d467e494aaa96008869fe6331914",
+          "bytes": 10196
+        },
+        {
+          "source_path": "explorations/PX-2026-056-churn-numerical-method/DEMO_BRIEF.md",
+          "sha256": "3172940ae6c0c98491fa614097a862a417ff1117f983a3196f0005d69b51e5dc",
+          "bytes": 39017
+        },
+        {
+          "source_path": "explorations/PX-2026-056-churn-numerical-method/NEXT_ACTION.md",
+          "sha256": "8313916c316d873da69d381624e6d81c7730b4c4896165a55e338ca5d0e5f8ed",
+          "bytes": 773
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-057",
+      "name": "A/B 复杂设计扩展（路线图 B06）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-057-ab-complex-design",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-057-ab-complex-design/PRODUCT_BRIEF.md",
+          "sha256": "b71fd27abe2590d229c29a35f1f32e308a62318de11f1d2a19563b43878302ea",
+          "bytes": 6764
+        },
+        {
+          "source_path": "explorations/PX-2026-057-ab-complex-design/DEMO_BRIEF.md",
+          "sha256": "4c31c423ecea000e263e076ca6ec2ca1e8d9d0ae426b700c7f614f0c0562e47e",
+          "bytes": 25515
+        },
+        {
+          "source_path": "explorations/PX-2026-057-ab-complex-design/NEXT_ACTION.md",
+          "sha256": "4900f00757af6ed377cb657ae50672b4b55df39bf9584e4bfb866a49351b9c90",
+          "bytes": 1304
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-058",
+      "name": "Phase 2 企业 Serving 消费路径（路线图 B07）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-058-enterprise-serving-consumption",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-058-enterprise-serving-consumption/PRODUCT_BRIEF.md",
+          "sha256": "3f04b47abe8ce7a5d809056699157ac527e2054648f5b379ef11719683ebed1a",
+          "bytes": 8852
+        },
+        {
+          "source_path": "explorations/PX-2026-058-enterprise-serving-consumption/DEMO_BRIEF.md",
+          "sha256": "019f5af21a728df1032d8e6f467f8898fe71466ada1ee33176173b8496b4fd55",
+          "bytes": 20236
+        },
+        {
+          "source_path": "explorations/PX-2026-058-enterprise-serving-consumption/NEXT_ACTION.md",
+          "sha256": "941acbe9964bf76e515d8dd741223b2713a85606ffc18d39b12af964f68cf317",
+          "bytes": 825
+        }
+      ]
+    },
+    {
+      "id": "PX-2026-059",
+      "name": "行动任务适配器与独立回执接续（B08）",
+      "recorded_stage": "Demo已评估",
+      "recorded_waiting": "`user_input`",
+      "source_directory": "explorations/PX-2026-059-action-task-adapter",
+      "source_files": [
+        {
+          "source_path": "explorations/PX-2026-059-action-task-adapter/PRODUCT_BRIEF.md",
+          "sha256": "8f76dc97df510f02eace1d2f102b5d9383a1cbe6ca88b9d7dc1fcbd9928eff01",
+          "bytes": 12182
+        },
+        {
+          "source_path": "explorations/PX-2026-059-action-task-adapter/DEMO_BRIEF.md",
+          "sha256": "bb4c8bbe9ca0eeaa96626cc441ee01308520f1b6d77df21007d6bef198754b8b",
+          "bytes": 29278
+        },
+        {
+          "source_path": "explorations/PX-2026-059-action-task-adapter/NEXT_ACTION.md",
+          "sha256": "386fff233c9ab0f193ba4c687db7deb95c4a5b12af26b295c97417a80d194a35",
+          "bytes": 896
+        }
+      ]
+    }
+  ],
+  "source_ledger_preserved_copy": "docs/research/snapshots/2026-10-03/PROJECTS.md"
+}

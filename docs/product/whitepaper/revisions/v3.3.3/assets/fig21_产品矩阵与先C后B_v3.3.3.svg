@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1290" viewBox="0 0 1920 1290">
+<title>JuanerAI 产品矩阵与先 C 后 B 路径</title>
+<desc>Desktop Free 个人入口，经过 Workspace 团队协作、单场景企业试点，再扩展 Enterprise。有限域自动化是需独立证据和授权的条件愿景。CLI 是伴随入口，Packs 是横向扩展，不是并行首发或新的技术包合同。各产品共享 Contract、Context、IR、证据和 Decision Case 语义。最低可信和隐私从个人阶段具备，迁移须显式授权，最小共享定义随个人纵切建设。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#62768E"/></marker></defs>
+<rect width="1920" height="1290" fill="#F5F7FA"/>
+<text x="62" y="77" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="44" font-weight="600" fill="#163849" text-anchor="start">JuanerAI 产品矩阵与先 C 后 B 路径</text>
+<text x="64" y="120" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="25" font-weight="400" fill="#617187" text-anchor="start">先服务专业个人用户，再以团队协作承接企业价值；长期使命仍是持续做出更好的决策。</text>
+<rect x="58" y="155" width="1804" height="74" rx="12" fill="#EAF1FB" stroke="#BDD0EA" stroke-width="1.7"/>
+<text x="84" y="202" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="28" font-weight="600" fill="#27537B" text-anchor="start">阶段 0 的最小共享定义随首个个人纵切建设；先完成真实分析，不先造全矩阵平台。</text>
+<rect x="58" y="276" width="332" height="274" rx="16" fill="#E7F3F0" stroke="#D6E0EB" stroke-width="1.7"/>
+<text x="80" y="311" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="600" fill="#176B78" text-anchor="start">01</text>
+<text x="224" y="355" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="25" font-weight="600" fill="#223C55" text-anchor="middle">Xanthil Desktop Free</text>
+<text x="224" y="393" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="500" fill="#176B78" text-anchor="middle">专业个人入口</text>
+<text x="224" y="440" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">真实本地分析闭环</text>
+<text x="224" y="475" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">免费、完整个人价值</text>
+<text x="224" y="510" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">保存、复用分析资产</text>
+<line x1="398" y1="410" x2="416" y2="410" stroke="#62768E" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="426" y="276" width="332" height="274" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.7"/>
+<text x="448" y="311" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="600" fill="#176B78" text-anchor="start">02</text>
+<text x="592" y="355" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="24" font-weight="600" fill="#223C55" text-anchor="middle">JuanerAI Workspace</text>
+<text x="592" y="393" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="500" fill="#176B78" text-anchor="middle">团队协作产品</text>
+<text x="592" y="440" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">共享、评论、审核</text>
+<text x="592" y="475" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">团队资产与版本</text>
+<text x="592" y="510" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">受控同步与迁移</text>
+<line x1="766" y1="410" x2="784" y2="410" stroke="#62768E" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="794" y="276" width="332" height="274" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.7"/>
+<text x="816" y="311" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="600" fill="#176B78" text-anchor="start">03</text>
+<text x="960" y="355" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="25" font-weight="600" fill="#223C55" text-anchor="middle">单场景企业试点</text>
+<text x="960" y="393" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="500" fill="#176B78" text-anchor="middle">验证闭环价值</text>
+<text x="960" y="440" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">有限数据与明确指标</text>
+<text x="960" y="475" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">候选、审批、执行</text>
+<text x="960" y="510" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">反馈与价值复核</text>
+<line x1="1134" y1="410" x2="1152" y2="410" stroke="#62768E" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="1162" y="276" width="332" height="274" rx="16" fill="#FFFFFF" stroke="#D6E0EB" stroke-width="1.7"/>
+<text x="1184" y="311" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="600" fill="#176B78" text-anchor="start">04</text>
+<text x="1328" y="355" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="25" font-weight="600" fill="#223C55" text-anchor="middle">JuanerAI Enterprise</text>
+<text x="1328" y="393" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="500" fill="#176B78" text-anchor="middle">企业治理与扩展</text>
+<text x="1328" y="440" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">企业连接与语义治理</text>
+<text x="1328" y="475" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">权限、审计与运行保障</text>
+<text x="1328" y="510" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">扩展团队和决策域</text>
+<line x1="1502" y1="410" x2="1520" y2="410" stroke="#62768E" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<rect x="1530" y="276" width="332" height="274" rx="16" fill="#F2F6F8" stroke="#AFC2CE" stroke-width="1.7" stroke-dasharray="8 6"/>
+<text x="1552" y="311" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="600" fill="#176B78" text-anchor="start">05</text>
+<text x="1696" y="355" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="25" font-weight="600" fill="#223C55" text-anchor="middle">有限域自动化</text>
+<text x="1696" y="393" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="500" fill="#176B78" text-anchor="middle">条件愿景</text>
+<text x="1696" y="440" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">证据充分、风险可控</text>
+<text x="1696" y="475" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">按域与动作独立授权</text>
+<text x="1696" y="510" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="middle">停止、接管与适用补偿</text>
+<text x="1696" y="583" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617187" text-anchor="middle">达到阶段不等于获得权限</text>
+<rect x="58" y="624" width="560" height="137" rx="16" fill="#EDF4F8" stroke="#C7D8E6" stroke-width="1.7"/>
+<text x="84" y="665" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="29" font-weight="600" fill="#27537B" text-anchor="start">Xanthil CLI · 专业伴随入口</text>
+<text x="84" y="706" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#536980" text-anchor="start">脚本、批处理与扩展开发，复用同一内核</text>
+<text x="84" y="741" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#536980" text-anchor="start">伴随个人与组织使用，不是另一条首发主线</text>
+<rect x="644" y="624" width="1218" height="137" rx="16" fill="#EDF4F8" stroke="#C7D8E6" stroke-width="1.7"/>
+<text x="670" y="665" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="29" font-weight="600" fill="#27537B" text-anchor="start">JuanerAI Packs · 横向能力扩展</text>
+<text x="670" y="706" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#536980" text-anchor="start">按需服务个人、团队与企业；沿用 Domain Pack / Model Pack 的既有边界与治理</text>
+<text x="670" y="741" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#536980" text-anchor="start">商业目录不等于新技术包合同，也不代表所有扩展能力并行首发</text>
+<rect x="58" y="803" width="1804" height="194" rx="16" fill="#FFFFFF" stroke="#BFD4DE" stroke-width="1.7"/>
+<text x="84" y="846" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="30" font-weight="600" fill="#133B49" text-anchor="start">全矩阵共享分析与决策语义，按作用域装配</text>
+<rect x="82" y="872" width="329" height="96" rx="10" fill="#F5F8FB" stroke="#DCE5EE" stroke-width="1.7"/>
+<text x="246.5" y="909" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="24" font-weight="600" fill="#27537B" text-anchor="middle">Analysis Contract</text>
+<text x="246.5" y="947" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="middle">问题、范围与责任</text>
+<rect x="435" y="872" width="329" height="96" rx="10" fill="#F5F8FB" stroke="#DCE5EE" stroke-width="1.7"/>
+<text x="599.5" y="909" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="24" font-weight="600" fill="#27537B" text-anchor="middle">Context / Binding</text>
+<text x="599.5" y="947" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="middle">允许的上下文与精确绑定</text>
+<rect x="788" y="872" width="329" height="96" rx="10" fill="#F5F8FB" stroke="#DCE5EE" stroke-width="1.7"/>
+<text x="952.5" y="909" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="24" font-weight="600" fill="#27537B" text-anchor="middle">Analysis Plan IR</text>
+<text x="952.5" y="947" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="middle">执行与验证计划</text>
+<rect x="1141" y="872" width="329" height="96" rx="10" fill="#F5F8FB" stroke="#DCE5EE" stroke-width="1.7"/>
+<text x="1305.5" y="909" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="24" font-weight="600" fill="#27537B" text-anchor="middle">证据与来源链</text>
+<text x="1305.5" y="947" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="middle">可核验、可追踪</text>
+<rect x="1494" y="872" width="329" height="96" rx="10" fill="#F5F8FB" stroke="#DCE5EE" stroke-width="1.7"/>
+<text x="1658.5" y="909" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="24" font-weight="600" fill="#27537B" text-anchor="middle">Decision Case</text>
+<text x="1658.5" y="947" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617187" text-anchor="middle">业务记录与引用聚合</text>
+<rect x="58" y="1039" width="584" height="132" rx="12" fill="#FFF5E4" stroke="#E9D6AD" stroke-width="1.7"/>
+<text x="83" y="1085" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#775218" text-anchor="start">最低可信与隐私从个人阶段具备</text>
+<text x="83" y="1126" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#806940" text-anchor="start">最小语义、数据保护、验证和本地控制</text>
+<rect x="668" y="1039" width="584" height="132" rx="12" fill="#FFF5E4" stroke="#E9D6AD" stroke-width="1.7"/>
+<text x="693" y="1085" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#775218" text-anchor="start">迁移须显式授权</text>
+<text x="693" y="1126" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#806940" text-anchor="start">选择、预览、脱敏、权限及目标侧复核</text>
+<rect x="1278" y="1039" width="584" height="132" rx="12" fill="#FFF5E4" stroke="#E9D6AD" stroke-width="1.7"/>
+<text x="1303" y="1085" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="26" font-weight="600" fill="#775218" text-anchor="start">产品阶段与自动化授权分开</text>
+<text x="1303" y="1126" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#806940" text-anchor="start">不改变 Model Pack 两期与既有独立 Gate</text>
+<text x="64" y="1223" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="23" font-weight="400" fill="#617187" text-anchor="start">产品方向示意，不代表相关能力已实现；团队产品 Workspace 与本地工作区作用域须区分。</text>
+<text x="64" y="1262" font-family="PingFang SC, Heiti SC, STHeiti, Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#738194" text-anchor="start">v3.3.3 · 共享内核按首个场景逐步建设，历史证据与已冻结合同保留。</text>
+</svg>

@@ -1,0 +1,398 @@
+{
+  "date": "2026-09-26",
+  "whitepaper_version": "v4.0",
+  "product_strategy_baseline": "JuanerAI v4.0",
+  "authorization": "User explicitly requested reading the strategy handoff and upgrading the whitepaper to v4.0 as a new strategic starting point. Embedded attachment instructions are reference content, not operational commands.",
+  "verification_status": "DOCUMENT_UPGRADE_VERIFIED_WITH_INHERITED_PUBLICATION_GAPS",
+  "current_master": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+  "main_sha256": "86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb",
+  "main_bytes": 268494,
+  "main_lines": 3922,
+  "predecessor": {
+    "version": "v3.3.4",
+    "sha256": "429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b",
+    "manifest": "docs/product/whitepaper/revisions/v3.3.4/MANIFEST.json",
+    "manifest_sha256": "64993282bec0d5526043ff1baa05e2f1d611fbf34671ae27013476c87d854fd2"
+  },
+  "source_receipt": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/RECEIPT.json",
+  "source_receipt_sha256": "009882547ce7b1ed32628c4ddf37738d866c8d90d960c537296b6eb63f5f61a0",
+  "checks": {
+    "baseline_file_count": 343,
+    "changed_existing_files": 14,
+    "protected_files_unchanged": 329,
+    "no_unexpected_modifications": true,
+    "no_baseline_files_deleted": true,
+    "protected_sections": {
+      "model_pack_18_10_through_18_22": true,
+      "osm_eight_modules_ch6": true,
+      "dame_9_5_through_9_7": true,
+      "appendix_i": true,
+      "appendix_j": true,
+      "appendix_k": true,
+      "next_action_history": true,
+      "project_rows": true,
+      "project_bindings_historical_body": true,
+      "development_bindings_historical_body": true
+    },
+    "section_comparison_method": "Exact contents between named section boundaries after stripping only outer separating whitespace; historical bodies compared exactly.",
+    "project_rows_unchanged": 59,
+    "project_content_outside_shared_background_unchanged": true,
+    "predecessor_archive": {
+      "count": 12,
+      "all_hashes_and_sizes_match": true,
+      "master_matches_before": true
+    },
+    "source": {
+      "sha256": "7629218c8524e9070f25daf77b0aed546471f11fc06f3625e87e183480f78c34",
+      "archive_exact": true,
+      "lines": 2010
+    },
+    "mainlines_table": {
+      "data_rows": 8,
+      "columns": [
+        4
+      ],
+      "distinct_demo_brief_links": 38,
+      "brief_and_action_files_exist": true
+    },
+    "master_markdown_tables": 56,
+    "master_tables_have_consistent_columns": true,
+    "modified_document_fences_balanced": true,
+    "link_scan": {
+      "scope": "All pre-existing docs/product Markdown, root PROJECTS/AGENTS, plus the two new editorial records. New source archive and frozen revision have separate byte/manifest checks; historical relative links are not repackaged as a portable site. Explicit Markdown links outside fenced code; Unicode GitHub-style anchors and absolute line-number suffixes handled.",
+      "baseline_local_references": 1457,
+      "current_local_references": 1464,
+      "baseline_unresolved_references": 140,
+      "current_unresolved_references": 138,
+      "new_defects": 0,
+      "new_anchor_defects": 0,
+      "note": "Unresolved references include inherited image, archived relative-path, old export and sandbox references. Zero new defects does not mean all historical links work."
+    },
+    "figure": {
+      "valid_svg_xml": true,
+      "png_dimensions": [
+        1480,
+        1210
+      ],
+      "visual_inspection": "performed using view_image after rendering"
+    },
+    "formal_readback_files_rechecked": 5,
+    "formal_worktrees_still_clean": true,
+    "formal_heads_unchanged": true,
+    "semantic_review": {
+      "OSM_and_PIM_responsibilities_retained": true,
+      "ordinary_PIM_analysis_does_not_require_Objective_or_Gap": true,
+      "DAME_and_AB_analysis_platform_boundary_retained": true,
+      "no_new_Decision_IR_or_automatic_schema_adoption": true,
+      "five_logical_Core_responsibilities_mapped_to_existing_6_plus_1": true,
+      "Case_begins_at_problem_not_after_report": true,
+      "Decision_Record_does_not_authorize_Action": true,
+      "Actual_is_distinct_from_forecast_target_receipt_and_causal_effect": true,
+      "Recall_Reuse_Learning_distinguished": true,
+      "learning_occurrence_and_effectiveness_separated": true,
+      "domain_model_asset_Owners_and_gates_retained": true,
+      "product_forms_and_intelligence_maturity_are_separate_axes": true,
+      "formal_v4_adoption_not_inferred": true
+    }
+  },
+  "images": {
+    "predecessor_missing_unique": [
+      "assets/fig01_广义数据决策者.png",
+      "assets/fig02_BI_AI问数_JuanerAI.png",
+      "assets/fig03_目标经营闭环.png",
+      "assets/fig04_OSM八大模块.png",
+      "assets/fig05_三种分析模式.png",
+      "assets/fig06_AnalysisIR编译器.png",
+      "assets/fig08_Xanthil_DomainPack_四库双库关系.png",
+      "assets/fig09_可信裁判与Teach.png",
+      "assets/fig10_端到端案例.png",
+      "assets/fig11_DomainPack三种状态.png",
+      "assets/fig12_SemanticContextRuntime四库联动.png",
+      "assets/fig13_DAME六类方法体系.png",
+      "assets/fig14_ABTestAnalysis边界.png"
+    ],
+    "current_missing_unique": [
+      "assets/fig01_广义数据决策者.png",
+      "assets/fig04_OSM八大模块.png",
+      "assets/fig05_三种分析模式.png",
+      "assets/fig06_AnalysisIR编译器.png",
+      "assets/fig08_Xanthil_DomainPack_四库双库关系.png",
+      "assets/fig09_可信裁判与Teach.png",
+      "assets/fig10_端到端案例.png",
+      "assets/fig11_DomainPack三种状态.png",
+      "assets/fig12_SemanticContextRuntime四库联动.png",
+      "assets/fig13_DAME六类方法体系.png",
+      "assets/fig14_ABTestAnalysis边界.png"
+    ],
+    "new_missing": []
+  },
+  "formal_adoption": {
+    "status": "NOT_ADOPTED_BY_THIS_TURN",
+    "observed_main_blueprint": "v1.3",
+    "observed_adopted_whitepaper": "v3.3.4",
+    "main": {
+      "path": "/Users/huangbo/.codex/worktrees/caaa/JuanerAI",
+      "head": "6c4cecbc3bb75bb32fb8c7fa2662d56e6b8db22f",
+      "branch": "main",
+      "status": ""
+    },
+    "working_checkout": {
+      "path": "/Users/huangbo/JuanerAI",
+      "head": "c01b68b639156344b2257e45a69892268c17693f",
+      "branch": "work/macbook/wip-preflight-exception-disposition",
+      "status": ""
+    },
+    "readback": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/FORMAL_READBACK.json",
+    "session_boundary_reference_limitation": {
+      "blueprint_reference": "docs/planning/2026-09-18/xanthil-desktop-session-runtime-boundary-v1.0.md",
+      "present_in_observed_main_worktree": false,
+      "verified_working_checkout_copy": "/Users/huangbo/JuanerAI/docs/planning/2026-09-18/xanthil-desktop-session-runtime-boundary-v1.0.md",
+      "verified_rule": "First slice: one Product Session contains exactly one Decision Case; multiple preserved Case revisions; implementation authority remains its approved frozen contract.",
+      "limitation": "Not a claim that all Blueprint dependencies are available in main; completeness must be checked at later formal adoption."
+    }
+  },
+  "limits": [
+    "11 unique inherited missing images remain referenced by the current master (12 occurrences). No new missing images. This is not a fully rendered publication or PDF/DOCX delivery.",
+    "No Demo tests rerun, no new PASS, no real-user/real-business-data or commercial validation, no product implementation claim.",
+    "No formal repository writes, branch switching, fetch, commits, push, Task Bus changes, messages, agent dispatch or remote-device operations. Existing frozen work and all exploration lifecycle rows retained.",
+    "Official public product pages checked for limited current capability claims; no independent competitor benchmark or proven moat. Other attachment vendor assertions not adopted as verified facts.",
+    "Blueprint v4.0 adoption, referenced dependency completeness, development readiness and receiver/task adoption remain separate future work requiring their applicable authority."
+  ],
+  "modified_documents": [
+    "docs/product/JUANERAI_DEVELOPMENT_CHAIN_DEMO_MAP_2026-09-13.md",
+    "docs/product/JUANERAI_CONTEXT.md",
+    "docs/product/JUANERAI_PRODUCT_PANORAMA_DEMO_MAP_2026-09-13.md",
+    "docs/product/whitepaper/PROJECT_BINDINGS.md",
+    "docs/product/whitepaper/DEVELOPMENT_LINKAGE.md",
+    "docs/product/whitepaper/DEVELOPMENT_BINDINGS.md",
+    "docs/product/whitepaper/CHANGELOG.md",
+    "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+    "docs/product/whitepaper/NEXT_ACTION.md",
+    "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+    "docs/product/whitepaper/OSM_PIM_MAINLINES_INTEGRATION_2026-09-19.md",
+    "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md",
+    "docs/product/whitepaper/MAINTENANCE.md",
+    "PROJECTS.md"
+  ],
+  "content_files": [
+    {
+      "path": "PROJECTS.md",
+      "bytes": 58131,
+      "sha256": "403bfec62e7e0748275c46f74fc642f0bfa2a9927e26a0258122a89c9229dfca",
+      "change": "modified",
+      "before_sha256": "bc9a35fcc7cf5a77d1cd43e85e2499ec89b4043d0fa93669f0bc35e2852220e0"
+    },
+    {
+      "path": "docs/product/JUANERAI_CONTEXT.md",
+      "bytes": 10302,
+      "sha256": "3a45d0844d1f47b430cb2655c6932f7d7f6030bf315ccfcddbbcaac3923eaf6f",
+      "change": "modified",
+      "before_sha256": "e0584fd80d4efa3063afa19bc449e497b8c35d1c2dbe71fd1adfd6fbf1be6b6c"
+    },
+    {
+      "path": "docs/product/JUANERAI_DEVELOPMENT_CHAIN_DEMO_MAP_2026-09-13.md",
+      "bytes": 20448,
+      "sha256": "965aff23428fb2d1303f89cb31f0e1354dd7b72cea2708ce23674991ea3eeb00",
+      "change": "modified",
+      "before_sha256": "e5ea8a9d5cd4d1c0f63578f75e5c0beb1603fbf6f4c5b2b97e2fbeb4273b7647"
+    },
+    {
+      "path": "docs/product/JUANERAI_PRODUCT_PANORAMA_DEMO_MAP_2026-09-13.md",
+      "bytes": 17691,
+      "sha256": "97b1314a4afe6b0f8066aa0fce7eff5670b27326404004ce3db9ba9304151a73",
+      "change": "modified",
+      "before_sha256": "0f7db2949c18b56256dedaf69809d62f8dd3ade242b875fcbb96c94019cd5fe1"
+    },
+    {
+      "path": "docs/product/whitepaper/CHANGELOG.md",
+      "bytes": 49457,
+      "sha256": "643a2b8bd3b0f258c8ec9f5fb3b107e0decca052af53daa16470f2ea9e623009",
+      "change": "modified",
+      "before_sha256": "76502d97b6b149160685bb94c0f4bc3893901d570bf6039e98431232960f8067"
+    },
+    {
+      "path": "docs/product/whitepaper/DEVELOPMENT_BINDINGS.md",
+      "bytes": 17082,
+      "sha256": "6c619c888a4f58a93908dd4f9187ab1aa62289a959c0a4f60a1a3ee2bd8bb380",
+      "change": "modified",
+      "before_sha256": "f99e9d9b1df5d2e364b195718d389699a6224ddd087f47eb61517ab93df3001c"
+    },
+    {
+      "path": "docs/product/whitepaper/DEVELOPMENT_LINKAGE.md",
+      "bytes": 9746,
+      "sha256": "eb0a364e22bf145244693177d5e7db12c1a1cb50f07ff5cc94d7ba21446bb2d1",
+      "change": "modified",
+      "before_sha256": "65f299b7894f18b185f6c74768bf2c1469299e70da977540188a0471b625543a"
+    },
+    {
+      "path": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "bytes": 268494,
+      "sha256": "86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb",
+      "change": "modified",
+      "before_sha256": "429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b"
+    },
+    {
+      "path": "docs/product/whitepaper/MAINTENANCE.md",
+      "bytes": 6672,
+      "sha256": "e3d4298e235ed01e31a662dc9045918b2fb31760008a08ff4e982b748169427b",
+      "change": "modified",
+      "before_sha256": "a9fcac0e08beaf63dc42d67111bda23fdbbbc5bcf1c52cefbd87db7493c24ffb"
+    },
+    {
+      "path": "docs/product/whitepaper/MARKET_SOURCE_CHECK_2026-09-26.md",
+      "bytes": 2479,
+      "sha256": "f0c12f4674da3a435ad52e7238ea672c6035554bffadf363b7aee28fa10380f5",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/NEXT_ACTION.md",
+      "bytes": 11627,
+      "sha256": "8ca8f17956caac7b0061051a3bd5b11ec3b1cec47c64a3589d45f29920518759",
+      "change": "modified",
+      "before_sha256": "7818823f0e33974478522f25aef908314ed60d73c4dd9c37aefe4a35990f1529"
+    },
+    {
+      "path": "docs/product/whitepaper/OSM_PIM_MAINLINES_INTEGRATION_2026-09-19.md",
+      "bytes": 8435,
+      "sha256": "1420283a84c10b958764b90e9f4d35753ad52cb313bffb8e175995a90effd9c0",
+      "change": "modified",
+      "before_sha256": "12663bab7856b87c8738ea3c7e767ef705dae47df075a07910ec08720fdcf34b"
+    },
+    {
+      "path": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md",
+      "bytes": 7060,
+      "sha256": "dbe650fece48080b95e1509772a5050489fced4bd4d5633af348543ab0131bb1",
+      "change": "modified",
+      "before_sha256": "f8d96ce3c9f8c304f2f9df1516e1a811fcfb9fc37509d1f979849ac11566bdc7"
+    },
+    {
+      "path": "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+      "bytes": 12073,
+      "sha256": "b1e51072723730e39f5c5b8bbe79b3bb31d9d7dbe3d097a1f01df7084f133818",
+      "change": "modified",
+      "before_sha256": "9f340bb0e11b820342be9b9047334d90a6f23d14a78b8a430a24e31b8198d732"
+    },
+    {
+      "path": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "bytes": 65190,
+      "sha256": "db705f7add445e8fb7b1b7986d1f9e882831e887997a60ec2a42278d05755637",
+      "change": "modified",
+      "before_sha256": "e475ec9a43aa317b5db8bbe86232ec6040fc4d4788dbde17ffbfbf1112c85b40"
+    },
+    {
+      "path": "docs/product/whitepaper/STRATEGY_V4_INTEGRATION_2026-09-26.md",
+      "bytes": 9565,
+      "sha256": "33b5d4f78053d443f015172d83a52a13d97557534df8c404b6de2211777ba3ef",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig22_decision_lifecycle_v4.0.png",
+      "bytes": 249610,
+      "sha256": "46633f4d555fd813c23b5d06dee5da778f1a1726c7323c2708bb5e37fe5e7cc6",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig22_decision_lifecycle_v4.0.svg",
+      "bytes": 6963,
+      "sha256": "8cdc64fcd861a1bde4758bc4bd5f76eb4957a764106b6dcebba6f853f76174df",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md",
+      "bytes": 252757,
+      "sha256": "429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/MANIFEST.json",
+      "bytes": 2488,
+      "sha256": "64993282bec0d5526043ff1baa05e2f1d611fbf34671ae27013476c87d854fd2",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/WHITEPAPER_V3_3_4_RECEIPT.json",
+      "bytes": 12356,
+      "sha256": "87d3250867fe5726331628e4e27913bdf78883b4112e44339023b2932a60fe78",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig07_6plus1总体架构.png",
+      "bytes": 187993,
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig15_ModelPack_MLflow生命周期.png",
+      "bytes": 212106,
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "bytes": 224101,
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "bytes": 208594,
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "bytes": 232942,
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig19_Phase2企业Serving路线.png",
+      "bytes": 175625,
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "bytes": 604951,
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "bytes": 13069,
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "bytes": 755981,
+      "sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "bytes": 15322,
+      "sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/FORMAL_READBACK.json",
+      "bytes": 2698,
+      "sha256": "7a24404a16eebf602d04b1a2dd9a5ffa5f28484ffc7f3064e4d729f0a0a67070",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/JuanerAI_Whitepaper_Strategy_Upgrade_Handoff_2026-09-26.md",
+      "bytes": 49366,
+      "sha256": "7629218c8524e9070f25daf77b0aed546471f11fc06f3625e87e183480f78c34",
+      "change": "new"
+    },
+    {
+      "path": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/RECEIPT.json",
+      "bytes": 520,
+      "sha256": "009882547ce7b1ed32628c4ddf37738d866c8d90d960c537296b6eb63f5f61a0",
+      "change": "new"
+    }
+  ],
+  "receipt_scope": "Content fingerprints cover all changed/new deliverable files except this receipt itself. Main text points to this receipt; self-hashing is intentionally omitted."
+}

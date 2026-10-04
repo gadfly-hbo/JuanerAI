@@ -1,0 +1,3598 @@
+{
+  "date": "2026-10-03",
+  "operation": "canonical_document_relocation_with_read_only_legacy_compatibility",
+  "product_version": "v4.0",
+  "maintenance_revision": "MIGRATION-R1",
+  "source_repository": "research",
+  "target_repository": "JuanerAI",
+  "base_commit": "137d65a8754c448adc7fc2cc690d2bab8d848ade",
+  "branch": "work/macbook/whitepaper-research-migration",
+  "files": [
+    {
+      "source_repository_path": "docs/product/whitepaper/CHANGELOG.md",
+      "source_sha256": "643a2b8bd3b0f258c8ec9f5fb3b107e0decca052af53daa16470f2ea9e623009",
+      "source_bytes": 49457,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/CHANGELOG.md",
+      "current_destination": "docs/product/whitepaper/CHANGELOG.md",
+      "current_sha256": "8161c04a1ef426a99327a15d6e72c2330b9151785f28f046bd6c3abb84ddc6ca",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "source_sha256": "7e3a7b1391a57f78d11f3a2f3d59ab902c44a45be87b9beb45ce711548efd844",
+      "source_bytes": 30446,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "current_destination": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "current_sha256": "443a2902277a2f01435306c3a6eb0fa09aedf2b813886eca465e7f316cbce28b",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/DEVELOPMENT_BINDINGS.md",
+      "source_sha256": "6c619c888a4f58a93908dd4f9187ab1aa62289a959c0a4f60a1a3ee2bd8bb380",
+      "source_bytes": 17082,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/DEVELOPMENT_BINDINGS.md",
+      "current_destination": "docs/product/whitepaper/DEVELOPMENT_BINDINGS.md",
+      "current_sha256": "0749649157cd9f73c5da0faed3228c3126f9d1edba8a881260979746bd63a215",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/DEVELOPMENT_LINKAGE.md",
+      "source_sha256": "eb0a364e22bf145244693177d5e7db12c1a1cb50f07ff5cc94d7ba21446bb2d1",
+      "source_bytes": 9746,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/DEVELOPMENT_LINKAGE.md",
+      "current_destination": "docs/product/whitepaper/DEVELOPMENT_LINKAGE.md",
+      "current_sha256": "bdbb8c782c73dc8d0a321881523b64d1c44035469645775102cecbb457ea0bc1",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "source_sha256": "86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb",
+      "source_bytes": 268494,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/JUANERAI_WHITEPAPER.md",
+      "current_destination": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "current_sha256": "b92a46373d5a25c1ca6f26b5af6418faf2174cb7c8d2e8d3ad4ebead159b79c8",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/MAINTENANCE.md",
+      "source_sha256": "e3d4298e235ed01e31a662dc9045918b2fb31760008a08ff4e982b748169427b",
+      "source_bytes": 6672,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/MAINTENANCE.md",
+      "current_destination": "docs/product/whitepaper/MAINTENANCE.md",
+      "current_sha256": "9bf81d62fc515ea81f1910eef9666d6bc3fcff1ce7910082588343c003973176",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/MARKET_SOURCE_CHECK_2026-09-26.md",
+      "source_sha256": "f0c12f4674da3a435ad52e7238ea672c6035554bffadf363b7aee28fa10380f5",
+      "source_bytes": 2479,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/MARKET_SOURCE_CHECK_2026-09-26.md",
+      "current_destination": "docs/product/whitepaper/MARKET_SOURCE_CHECK_2026-09-26.md",
+      "current_sha256": "ab2c74537402fa23534138b19c9d71471a18e83e51a75ed02d30a5021dada2c1",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/NEXT_ACTION.md",
+      "source_sha256": "8ca8f17956caac7b0061051a3bd5b11ec3b1cec47c64a3589d45f29920518759",
+      "source_bytes": 11627,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/NEXT_ACTION.md",
+      "current_destination": "docs/product/whitepaper/NEXT_ACTION.md",
+      "current_sha256": "bebda883ca40561e9ee7288e5277fed1f5d7120a9c50fc7e8fcd356ca26a3206",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/OSM_PIM_MAINLINES_INTEGRATION_2026-09-19.md",
+      "source_sha256": "1420283a84c10b958764b90e9f4d35753ad52cb313bffb8e175995a90effd9c0",
+      "source_bytes": 8435,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/OSM_PIM_MAINLINES_INTEGRATION_2026-09-19.md",
+      "current_destination": "docs/product/whitepaper/OSM_PIM_MAINLINES_INTEGRATION_2026-09-19.md",
+      "current_sha256": "ab5992e5d3254eb730e7df60a8bed59861941f45f33830e1d39847d37cda09b6",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md",
+      "source_sha256": "dbe650fece48080b95e1509772a5050489fced4bd4d5633af348543ab0131bb1",
+      "source_bytes": 7060,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md",
+      "current_destination": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md",
+      "current_sha256": "3bf5376443db04d5bcb31422836d01ccac6133059ed25d58922132e382a59781",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_R3_RECEIPT.json",
+      "source_sha256": "793000abe3a3bafdd06aa493e9f52cd7fe069bc54af7fbc2f13241c8b50e4062",
+      "source_bytes": 5711,
+      "preserved_destination": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_R3_RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_R3_RECEIPT.json",
+      "current_sha256": "793000abe3a3bafdd06aa493e9f52cd7fe069bc54af7fbc2f13241c8b50e4062",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "source_sha256": "6650fc16cc47690fff34deef393e50552040dd7210d629a1d4fb1ddc758875eb",
+      "source_bytes": 26719,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "current_destination": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "current_sha256": "f8db528b81779eb7bad9bac0df5acbdc3adec41f5e54ab89474828297d45f4b4",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+      "source_sha256": "b1e51072723730e39f5c5b8bbe79b3bb31d9d7dbe3d097a1f01df7084f133818",
+      "source_bytes": 12073,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+      "current_destination": "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+      "current_sha256": "0fa08348ce162898463fd72513bcb88cc88e0b57630a3ee7937730d88f5126d1",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "source_sha256": "db705f7add445e8fb7b1b7986d1f9e882831e887997a60ec2a42278d05755637",
+      "source_bytes": 65190,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/PROJECT_BINDINGS.md",
+      "current_destination": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "current_sha256": "1dbe21445b1bafbf1fa5d3af2ca454e02b0476a1da0612201a3d7ffc560ca425",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/SCAN_RECEIPT_2026-09-11.json",
+      "source_sha256": "9859c635963081c6de407a2513af29bb79ec9facadbd9156b796fbc4063816e5",
+      "source_bytes": 35817,
+      "preserved_destination": "docs/product/whitepaper/SCAN_RECEIPT_2026-09-11.json",
+      "current_destination": "docs/product/whitepaper/SCAN_RECEIPT_2026-09-11.json",
+      "current_sha256": "9859c635963081c6de407a2513af29bb79ec9facadbd9156b796fbc4063816e5",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/STRATEGY_V4_INTEGRATION_2026-09-26.md",
+      "source_sha256": "33b5d4f78053d443f015172d83a52a13d97557534df8c404b6de2211777ba3ef",
+      "source_bytes": 9565,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/STRATEGY_V4_INTEGRATION_2026-09-26.md",
+      "current_destination": "docs/product/whitepaper/STRATEGY_V4_INTEGRATION_2026-09-26.md",
+      "current_sha256": "b8200354bdfdda0ba55da1674bf407e6c86f587f88f71f2ce3ac4ef9663d9b33",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/TAKEOVER_REVIEW.md",
+      "source_sha256": "2964713be65862cc2a5e7874e9b05357c502b13a83920596faec5d33a5af7711",
+      "source_bytes": 10589,
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/TAKEOVER_REVIEW.md",
+      "current_destination": "docs/product/whitepaper/TAKEOVER_REVIEW.md",
+      "current_sha256": "214f2f818830b974ef884ea1ca9ba72ff6ace13ebfa023b6613e363aefaa3275",
+      "disposition": "current_navigation_updated_original_frozen"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/WHITEPAPER_V3_3_2_RECEIPT.json",
+      "source_sha256": "f6e21ba0d8a425c8785750a0448fc1231b8d85c18263801321160b314ab8c1ff",
+      "source_bytes": 4120,
+      "preserved_destination": "docs/product/whitepaper/WHITEPAPER_V3_3_2_RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/WHITEPAPER_V3_3_2_RECEIPT.json",
+      "current_sha256": "f6e21ba0d8a425c8785750a0448fc1231b8d85c18263801321160b314ab8c1ff",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/WHITEPAPER_V3_3_3_RECEIPT.json",
+      "source_sha256": "9a15994de2a728b8fa27f6ac7a0b708539034d5fe0e06c1621cad1ffc1a803e7",
+      "source_bytes": 11226,
+      "preserved_destination": "docs/product/whitepaper/WHITEPAPER_V3_3_3_RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/WHITEPAPER_V3_3_3_RECEIPT.json",
+      "current_sha256": "9a15994de2a728b8fa27f6ac7a0b708539034d5fe0e06c1621cad1ffc1a803e7",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/WHITEPAPER_V3_3_4_RECEIPT.json",
+      "source_sha256": "87d3250867fe5726331628e4e27913bdf78883b4112e44339023b2932a60fe78",
+      "source_bytes": 12356,
+      "preserved_destination": "docs/product/whitepaper/WHITEPAPER_V3_3_4_RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/WHITEPAPER_V3_3_4_RECEIPT.json",
+      "current_sha256": "87d3250867fe5726331628e4e27913bdf78883b4112e44339023b2932a60fe78",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/WHITEPAPER_V4_0_RECEIPT.json",
+      "source_sha256": "15ba6f1ac63db4bbe850a9889177e6bf48947522645ad4f857bda8a0dc65e536",
+      "source_bytes": 18070,
+      "preserved_destination": "docs/product/whitepaper/WHITEPAPER_V4_0_RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/WHITEPAPER_V4_0_RECEIPT.json",
+      "current_sha256": "15ba6f1ac63db4bbe850a9889177e6bf48947522645ad4f857bda8a0dc65e536",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig07_6plus1总体架构.png",
+      "source_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "source_bytes": 187993,
+      "preserved_destination": "docs/product/whitepaper/assets/fig07_6plus1总体架构.png",
+      "current_destination": "docs/product/whitepaper/assets/fig07_6plus1总体架构.png",
+      "current_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig15_ModelPack_MLflow生命周期.png",
+      "source_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "source_bytes": 212106,
+      "preserved_destination": "docs/product/whitepaper/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_destination": "docs/product/whitepaper/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "source_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "source_bytes": 224101,
+      "preserved_destination": "docs/product/whitepaper/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_destination": "docs/product/whitepaper/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "source_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "source_bytes": 208594,
+      "preserved_destination": "docs/product/whitepaper/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_destination": "docs/product/whitepaper/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "source_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "source_bytes": 232942,
+      "preserved_destination": "docs/product/whitepaper/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_destination": "docs/product/whitepaper/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig19_Phase2企业Serving路线.png",
+      "source_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "source_bytes": 175625,
+      "preserved_destination": "docs/product/whitepaper/assets/fig19_Phase2企业Serving路线.png",
+      "current_destination": "docs/product/whitepaper/assets/fig19_Phase2企业Serving路线.png",
+      "current_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "source_sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "source_bytes": 604951,
+      "preserved_destination": "docs/product/whitepaper/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "current_destination": "docs/product/whitepaper/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "current_sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "source_sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "source_bytes": 13069,
+      "preserved_destination": "docs/product/whitepaper/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "current_destination": "docs/product/whitepaper/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "current_sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "source_sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b",
+      "source_bytes": 755981,
+      "preserved_destination": "docs/product/whitepaper/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "current_destination": "docs/product/whitepaper/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "current_sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "source_sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab",
+      "source_bytes": 15322,
+      "preserved_destination": "docs/product/whitepaper/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "current_destination": "docs/product/whitepaper/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "current_sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig22_decision_lifecycle_v4.0.png",
+      "source_sha256": "46633f4d555fd813c23b5d06dee5da778f1a1726c7323c2708bb5e37fe5e7cc6",
+      "source_bytes": 249610,
+      "preserved_destination": "docs/product/whitepaper/assets/fig22_decision_lifecycle_v4.0.png",
+      "current_destination": "docs/product/whitepaper/assets/fig22_decision_lifecycle_v4.0.png",
+      "current_sha256": "46633f4d555fd813c23b5d06dee5da778f1a1726c7323c2708bb5e37fe5e7cc6",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/assets/fig22_decision_lifecycle_v4.0.svg",
+      "source_sha256": "8cdc64fcd861a1bde4758bc4bd5f76eb4957a764106b6dcebba6f853f76174df",
+      "source_bytes": 6963,
+      "preserved_destination": "docs/product/whitepaper/assets/fig22_decision_lifecycle_v4.0.svg",
+      "current_destination": "docs/product/whitepaper/assets/fig22_decision_lifecycle_v4.0.svg",
+      "current_sha256": "8cdc64fcd861a1bde4758bc4bd5f76eb4957a764106b6dcebba6f853f76174df",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A01-dame-method-assets.md",
+      "source_sha256": "86cb707d30e4a594597156ba281f245d913f290d8371d29fd08dd9baa1dd74ef",
+      "source_bytes": 5340,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A01-dame-method-assets.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A01-dame-method-assets.md",
+      "current_sha256": "86cb707d30e4a594597156ba281f245d913f290d8371d29fd08dd9baa1dd74ef",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A02-ab-test-analysis.md",
+      "source_sha256": "45b601f572ab86b38a982056a5f94928e28ebf2c7904355602769ac65d232c81",
+      "source_bytes": 5603,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A02-ab-test-analysis.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A02-ab-test-analysis.md",
+      "current_sha256": "45b601f572ab86b38a982056a5f94928e28ebf2c7904355602769ac65d232c81",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A03-local-import-snapshots.md",
+      "source_sha256": "16bcf39d396aa93d8da7b0d55dd9da642d9f797e9d5e420dec48e6821ecdaf49",
+      "source_bytes": 5281,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A03-local-import-snapshots.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A03-local-import-snapshots.md",
+      "current_sha256": "16bcf39d396aa93d8da7b0d55dd9da642d9f797e9d5e420dec48e6821ecdaf49",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A04-requirements-to-report.md",
+      "source_sha256": "ee10c66e8721c91d3b648f6e306ab78c8f587d3a5a2eda403200e782a335dd1b",
+      "source_bytes": 5854,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A04-requirements-to-report.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A04-requirements-to-report.md",
+      "current_sha256": "ee10c66e8721c91d3b648f6e306ab78c8f587d3a5a2eda403200e782a335dd1b",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A05-six-level-validation.md",
+      "source_sha256": "8df0a54dbd1e5453b6a25ec1b13f034fbccc02440432da0698e7a9f2f8c1eb8b",
+      "source_bytes": 5766,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A05-six-level-validation.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A05-six-level-validation.md",
+      "current_sha256": "8df0a54dbd1e5453b6a25ec1b13f034fbccc02440432da0698e7a9f2f8c1eb8b",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A06-run-recovery.md",
+      "source_sha256": "74b29fb6a90eb1405ce0231712562ded9e35b0779bc03445f54d07e4d09c1d9f",
+      "source_bytes": 5539,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A06-run-recovery.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A06-run-recovery.md",
+      "current_sha256": "74b29fb6a90eb1405ce0231712562ded9e35b0779bc03445f54d07e4d09c1d9f",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A07-model-pack-daily-inference.md",
+      "source_sha256": "004baaea76d372f16f88fe223de7681d0aafc50059643dd5b67e04f2e403a5e0",
+      "source_bytes": 5848,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A07-model-pack-daily-inference.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A07-model-pack-daily-inference.md",
+      "current_sha256": "004baaea76d372f16f88fe223de7681d0aafc50059643dd5b67e04f2e403a5e0",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A08-local-data-permission.md",
+      "source_sha256": "0c896f48547196eeff493af3e78b2d62e026a2ef47b3ad3efe37f9a628be0ee2",
+      "source_bytes": 5733,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A08-local-data-permission.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A08-local-data-permission.md",
+      "current_sha256": "0c896f48547196eeff493af3e78b2d62e026a2ef47b3ad3efe37f9a628be0ee2",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A09-objective-tree.md",
+      "source_sha256": "6dde33397fb8f73f7aa95131a227886b63e01ce6d6fe301d9b34535b7e421cf1",
+      "source_bytes": 5213,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A09-objective-tree.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A09-objective-tree.md",
+      "current_sha256": "6dde33397fb8f73f7aa95131a227886b63e01ce6d6fe301d9b34535b7e421cf1",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A10-strategy-optimization.md",
+      "source_sha256": "4f9f58806409918b44de26446836e004726c55ed2f9afd3f312f306ab6059fdb",
+      "source_bytes": 5639,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A10-strategy-optimization.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A10-strategy-optimization.md",
+      "current_sha256": "4f9f58806409918b44de26446836e004726c55ed2f9afd3f312f306ab6059fdb",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A11-same-case-business-loop.md",
+      "source_sha256": "eae9f8fc4b5ca95a3235d7ec783ee7257dab9a8d555782cf6dae067c36a72b33",
+      "source_bytes": 6326,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A11-same-case-business-loop.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A11-same-case-business-loop.md",
+      "current_sha256": "eae9f8fc4b5ca95a3235d7ec783ee7257dab9a8d555782cf6dae067c36a72b33",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/A12-periodic-analysis.md",
+      "source_sha256": "0afd1597334251a2e6fb28b4705f466a5ffc819641a67cccd6abb47d695267b9",
+      "source_bytes": 5456,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A12-periodic-analysis.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/A12-periodic-analysis.md",
+      "current_sha256": "0afd1597334251a2e6fb28b4705f466a5ffc819641a67cccd6abb47d695267b9",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/ALL_PROMPTS.md",
+      "source_sha256": "3bba702cb9771623afa9a9d3360b7c98f40f858bb3ac333fd4b622349e356ca9",
+      "source_bytes": 115415,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/ALL_PROMPTS.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/ALL_PROMPTS.md",
+      "current_sha256": "3bba702cb9771623afa9a9d3360b7c98f40f858bb3ac333fd4b622349e356ca9",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/B01-live-llm-quality.md",
+      "source_sha256": "2b48d67cadba1a3366c0f441631d81ad0d678a7cb144910c8775ef38c52c83b1",
+      "source_bytes": 5430,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B01-live-llm-quality.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B01-live-llm-quality.md",
+      "current_sha256": "2b48d67cadba1a3366c0f441631d81ad0d678a7cb144910c8775ef38c52c83b1",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/B02-research-evidence-retrieval.md",
+      "source_sha256": "5b50cf35bf0df42898c7711500eeb224cb8f46b2a5df6f667a33602248b90aa3",
+      "source_bytes": 5296,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B02-research-evidence-retrieval.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B02-research-evidence-retrieval.md",
+      "current_sha256": "5b50cf35bf0df42898c7711500eeb224cb8f46b2a5df6f667a33602248b90aa3",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/B03-asset-owner-backend.md",
+      "source_sha256": "c6221e8f9c0246c0934daaaacc84bc5a790b8bf381bd6e72ad12a281d908c749",
+      "source_bytes": 5514,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B03-asset-owner-backend.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B03-asset-owner-backend.md",
+      "current_sha256": "c6221e8f9c0246c0934daaaacc84bc5a790b8bf381bd6e72ad12a281d908c749",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/B04-method-teach-release.md",
+      "source_sha256": "8be9d70a14e0322af59889c7f87bfc9814fc7400f5ee4e3a1a068608b5888ab6",
+      "source_bytes": 5256,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B04-method-teach-release.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B04-method-teach-release.md",
+      "current_sha256": "8be9d70a14e0322af59889c7f87bfc9814fc7400f5ee4e3a1a068608b5888ab6",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/B05-domain-numerical-methods.md",
+      "source_sha256": "1365ab7c3f1f3bd59e7202721c73f88c79b169a16507f6c8d77b304bc0166c66",
+      "source_bytes": 6194,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B05-domain-numerical-methods.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B05-domain-numerical-methods.md",
+      "current_sha256": "1365ab7c3f1f3bd59e7202721c73f88c79b169a16507f6c8d77b304bc0166c66",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/B06-advanced-ab-design.md",
+      "source_sha256": "26c92aeca767d65085d9346495f3a55aefa6efab165ee1df4ea86605452e4117",
+      "source_bytes": 5241,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B06-advanced-ab-design.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B06-advanced-ab-design.md",
+      "current_sha256": "26c92aeca767d65085d9346495f3a55aefa6efab165ee1df4ea86605452e4117",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/B07-enterprise-serving.md",
+      "source_sha256": "679f954fdee66c97f154e64b69c1981f64ded3ea4bc1dd909e6892c668f6a9f1",
+      "source_bytes": 5399,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B07-enterprise-serving.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B07-enterprise-serving.md",
+      "current_sha256": "679f954fdee66c97f154e64b69c1981f64ded3ea4bc1dd909e6892c668f6a9f1",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/B08-action-adapter-receipts.md",
+      "source_sha256": "b49ba9cdddbbc64b8426f1b3b9bd1118938a0b384edc704e86c8f10be8b8b56a",
+      "source_bytes": 5359,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B08-action-adapter-receipts.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/B08-action-adapter-receipts.md",
+      "current_sha256": "b49ba9cdddbbc64b8426f1b3b9bd1118938a0b384edc704e86c8f10be8b8b56a",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/MANIFEST.json",
+      "source_sha256": "04790d601e7bf333e0b762f52f17eff44a1c3bada8c38d7ba927c8f0c7a8848f",
+      "source_bytes": 8633,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/MANIFEST.json",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/MANIFEST.json",
+      "current_sha256": "04790d601e7bf333e0b762f52f17eff44a1c3bada8c38d7ba927c8f0c7a8848f",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/README.md",
+      "source_sha256": "13830997fe1c1b5a8c2b34d95378b6d45887cc822805ecc8bb343626f7430bee",
+      "source_bytes": 3598,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/README.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/README.md",
+      "current_sha256": "13830997fe1c1b5a8c2b34d95378b6d45887cc822805ecc8bb343626f7430bee",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/demo-prompts-2026-09-11/U01-representative-user-study.md",
+      "source_sha256": "e0e874eeba4c95f981f6fd4d5eab51260503cba19adcaff3e4eace409811bcc5",
+      "source_bytes": 3871,
+      "preserved_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/U01-representative-user-study.md",
+      "current_destination": "docs/product/whitepaper/demo-prompts-2026-09-11/U01-representative-user-study.md",
+      "current_sha256": "e0e874eeba4c95f981f6fd4d5eab51260503cba19adcaff3e4eace409811bcc5",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/development-linkage/INTEGRATION_REVIEW.md",
+      "source_sha256": "a1476d4fd3645c0e648af76acb63da7aff5ec0a3dd0e79626c54a3e2ef787ff6",
+      "source_bytes": 3281,
+      "preserved_destination": "docs/product/whitepaper/development-linkage/INTEGRATION_REVIEW.md",
+      "current_destination": "docs/product/whitepaper/development-linkage/INTEGRATION_REVIEW.md",
+      "current_sha256": "a1476d4fd3645c0e648af76acb63da7aff5ec0a3dd0e79626c54a3e2ef787ff6",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/development-linkage/PREPARED_CHANGE.json",
+      "source_sha256": "a75ca6e1f86bd7b0f10a342801eec0fab0eb2b0cde8eac9c91f064597035ee0a",
+      "source_bytes": 3821,
+      "preserved_destination": "docs/product/whitepaper/development-linkage/PREPARED_CHANGE.json",
+      "current_destination": "docs/product/whitepaper/development-linkage/PREPARED_CHANGE.json",
+      "current_sha256": "a75ca6e1f86bd7b0f10a342801eec0fab0eb2b0cde8eac9c91f064597035ee0a",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/development-linkage/juanerai-documentation-change.zip",
+      "source_sha256": "1c3877efc2cea1fe0f42cd832c0234b58e8aa4c00bbafd59f68794083f93fa83",
+      "source_bytes": 1263321,
+      "preserved_destination": "docs/product/whitepaper/development-linkage/juanerai-documentation-change.zip",
+      "current_destination": "docs/product/whitepaper/development-linkage/juanerai-documentation-change.zip",
+      "current_sha256": "1c3877efc2cea1fe0f42cd832c0234b58e8aa4c00bbafd59f68794083f93fa83",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md",
+      "source_sha256": "1a0ab37da206427d1a8354246c5c677a829e14261a593a3bf8e9a41c9a3b63c5",
+      "source_bytes": 190619,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md",
+      "current_sha256": "1a0ab37da206427d1a8354246c5c677a829e14261a593a3bf8e9a41c9a3b63c5",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/MANIFEST.json",
+      "source_sha256": "83cac1b1e55cd59e3ebb63277d253980dd5f0a5c62d40ac43b1d240ea2a744a8",
+      "source_bytes": 2074,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/MANIFEST.json",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/MANIFEST.json",
+      "current_sha256": "83cac1b1e55cd59e3ebb63277d253980dd5f0a5c62d40ac43b1d240ea2a744a8",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig07_6plus1总体架构.png",
+      "source_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "source_bytes": 187993,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig07_6plus1总体架构.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig07_6plus1总体架构.png",
+      "current_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig15_ModelPack_MLflow生命周期.png",
+      "source_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "source_bytes": 212106,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "source_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "source_bytes": 224101,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "source_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "source_bytes": 208594,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "source_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "source_bytes": 232942,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig19_Phase2企业Serving路线.png",
+      "source_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "source_bytes": 175625,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig19_Phase2企业Serving路线.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R2/assets/fig19_Phase2企业Serving路线.png",
+      "current_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/JUANERAI_WHITEPAPER.md",
+      "source_sha256": "6ce15fa734fc454fb136de31c0fab49dfc64511203753e7159d52e846bbf2564",
+      "source_bytes": 211852,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/JUANERAI_WHITEPAPER.md",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/JUANERAI_WHITEPAPER.md",
+      "current_sha256": "6ce15fa734fc454fb136de31c0fab49dfc64511203753e7159d52e846bbf2564",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/MANIFEST.json",
+      "source_sha256": "ee370401bf6607b060d69294d6ba30b7cf4f53b95efd0dd8bdccb801bb77d76d",
+      "source_bytes": 2771,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/MANIFEST.json",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/MANIFEST.json",
+      "current_sha256": "ee370401bf6607b060d69294d6ba30b7cf4f53b95efd0dd8bdccb801bb77d76d",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/OSM_RETAIL_INTEGRATION_R3_RECEIPT.json",
+      "source_sha256": "793000abe3a3bafdd06aa493e9f52cd7fe069bc54af7fbc2f13241c8b50e4062",
+      "source_bytes": 5711,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/OSM_RETAIL_INTEGRATION_R3_RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/OSM_RETAIL_INTEGRATION_R3_RECEIPT.json",
+      "current_sha256": "793000abe3a3bafdd06aa493e9f52cd7fe069bc54af7fbc2f13241c8b50e4062",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig07_6plus1总体架构.png",
+      "source_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "source_bytes": 187993,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig07_6plus1总体架构.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig07_6plus1总体架构.png",
+      "current_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig15_ModelPack_MLflow生命周期.png",
+      "source_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "source_bytes": 212106,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "source_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "source_bytes": 224101,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "source_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "source_bytes": 208594,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "source_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "source_bytes": 232942,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig19_Phase2企业Serving路线.png",
+      "source_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "source_bytes": 175625,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig19_Phase2企业Serving路线.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig19_Phase2企业Serving路线.png",
+      "current_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "source_sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "source_bytes": 604951,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "current_sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "source_sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "source_bytes": 13069,
+      "preserved_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "current_destination": "docs/product/whitepaper/revisions/MP-ALIGN-01-R3/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "current_sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/JUANERAI_WHITEPAPER.md",
+      "source_sha256": "18fb7dd6da75d66b59c29dacdf4847cfb4eef10dfd67833cdf64fc25033724ce",
+      "source_bytes": 212431,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/JUANERAI_WHITEPAPER.md",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/JUANERAI_WHITEPAPER.md",
+      "current_sha256": "18fb7dd6da75d66b59c29dacdf4847cfb4eef10dfd67833cdf64fc25033724ce",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/MANIFEST.json",
+      "source_sha256": "3790b8e6deef7b3dd83b9d6a630ed7ccaf8132b65c5ca550929a6b9da1d0ef62",
+      "source_bytes": 2707,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/MANIFEST.json",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/MANIFEST.json",
+      "current_sha256": "3790b8e6deef7b3dd83b9d6a630ed7ccaf8132b65c5ca550929a6b9da1d0ef62",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/WHITEPAPER_V3_3_2_RECEIPT.json",
+      "source_sha256": "f6e21ba0d8a425c8785750a0448fc1231b8d85c18263801321160b314ab8c1ff",
+      "source_bytes": 4120,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/WHITEPAPER_V3_3_2_RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/WHITEPAPER_V3_3_2_RECEIPT.json",
+      "current_sha256": "f6e21ba0d8a425c8785750a0448fc1231b8d85c18263801321160b314ab8c1ff",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig07_6plus1总体架构.png",
+      "source_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "source_bytes": 187993,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig07_6plus1总体架构.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig07_6plus1总体架构.png",
+      "current_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig15_ModelPack_MLflow生命周期.png",
+      "source_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "source_bytes": 212106,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "source_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "source_bytes": 224101,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "source_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "source_bytes": 208594,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "source_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "source_bytes": 232942,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig19_Phase2企业Serving路线.png",
+      "source_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "source_bytes": 175625,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig19_Phase2企业Serving路线.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig19_Phase2企业Serving路线.png",
+      "current_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "source_sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "source_bytes": 604951,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "current_sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.2/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "source_sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "source_bytes": 13069,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.2/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "current_sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/JUANERAI_WHITEPAPER.md",
+      "source_sha256": "9344f07cff450239a0ac33423a239f0dc47c9ac0aa48de8e86253e2b143300ff",
+      "source_bytes": 235205,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/JUANERAI_WHITEPAPER.md",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/JUANERAI_WHITEPAPER.md",
+      "current_sha256": "9344f07cff450239a0ac33423a239f0dc47c9ac0aa48de8e86253e2b143300ff",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/MANIFEST.json",
+      "source_sha256": "98665deb823dee3ef047dc0bceb0b11b6ae466a63f071823d87decb1d48fb5e9",
+      "source_bytes": 3125,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/MANIFEST.json",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/MANIFEST.json",
+      "current_sha256": "98665deb823dee3ef047dc0bceb0b11b6ae466a63f071823d87decb1d48fb5e9",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/WHITEPAPER_V3_3_3_RECEIPT.json",
+      "source_sha256": "9a15994de2a728b8fa27f6ac7a0b708539034d5fe0e06c1621cad1ffc1a803e7",
+      "source_bytes": 11226,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/WHITEPAPER_V3_3_3_RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/WHITEPAPER_V3_3_3_RECEIPT.json",
+      "current_sha256": "9a15994de2a728b8fa27f6ac7a0b708539034d5fe0e06c1621cad1ffc1a803e7",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig07_6plus1总体架构.png",
+      "source_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "source_bytes": 187993,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig07_6plus1总体架构.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig07_6plus1总体架构.png",
+      "current_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig15_ModelPack_MLflow生命周期.png",
+      "source_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "source_bytes": 212106,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "source_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "source_bytes": 224101,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "source_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "source_bytes": 208594,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "source_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "source_bytes": 232942,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig19_Phase2企业Serving路线.png",
+      "source_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "source_bytes": 175625,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig19_Phase2企业Serving路线.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig19_Phase2企业Serving路线.png",
+      "current_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "source_sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "source_bytes": 604951,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "current_sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "source_sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "source_bytes": 13069,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "current_sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "source_sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b",
+      "source_bytes": 755981,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "current_sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.3/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "source_sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab",
+      "source_bytes": 15322,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.3/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "current_sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md",
+      "source_sha256": "429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b",
+      "source_bytes": 252757,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/JUANERAI_WHITEPAPER.md",
+      "current_sha256": "429a58a6772aacf162b49d66e86b36dc2c5f0b068af7e25b1554206ec7703f4b",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/MANIFEST.json",
+      "source_sha256": "64993282bec0d5526043ff1baa05e2f1d611fbf34671ae27013476c87d854fd2",
+      "source_bytes": 2488,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/MANIFEST.json",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/MANIFEST.json",
+      "current_sha256": "64993282bec0d5526043ff1baa05e2f1d611fbf34671ae27013476c87d854fd2",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/WHITEPAPER_V3_3_4_RECEIPT.json",
+      "source_sha256": "87d3250867fe5726331628e4e27913bdf78883b4112e44339023b2932a60fe78",
+      "source_bytes": 12356,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/WHITEPAPER_V3_3_4_RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/WHITEPAPER_V3_3_4_RECEIPT.json",
+      "current_sha256": "87d3250867fe5726331628e4e27913bdf78883b4112e44339023b2932a60fe78",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig07_6plus1总体架构.png",
+      "source_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "source_bytes": 187993,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig07_6plus1总体架构.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig07_6plus1总体架构.png",
+      "current_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig15_ModelPack_MLflow生命周期.png",
+      "source_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "source_bytes": 212106,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig15_ModelPack_MLflow生命周期.png",
+      "current_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "source_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "source_bytes": 224101,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "current_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "source_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "source_bytes": 208594,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "current_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "source_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "source_bytes": 232942,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "current_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig19_Phase2企业Serving路线.png",
+      "source_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "source_bytes": 175625,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig19_Phase2企业Serving路线.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig19_Phase2企业Serving路线.png",
+      "current_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "source_sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "source_bytes": 604951,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "current_sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "source_sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "source_bytes": 13069,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "current_sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "source_sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b",
+      "source_bytes": 755981,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "current_sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/revisions/v3.3.4/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "source_sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab",
+      "source_bytes": 15322,
+      "preserved_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "current_destination": "docs/product/whitepaper/revisions/v3.3.4/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "current_sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_6plus1总体架构.png",
+      "source_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "source_bytes": 187993,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_6plus1总体架构.png",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_6plus1总体架构.png",
+      "current_sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_Consumer_DesktopRuntime边界.png",
+      "source_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "source_bytes": 208594,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_Consumer_DesktopRuntime边界.png",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_Consumer_DesktopRuntime边界.png",
+      "current_sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelEvol_ModelPack职责映射.png",
+      "source_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "source_bytes": 224101,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelEvol_ModelPack职责映射.png",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelEvol_ModelPack职责映射.png",
+      "current_sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelPack_MLflow生命周期.png",
+      "source_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "source_bytes": 212106,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelPack_MLflow生命周期.png",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelPack_MLflow生命周期.png",
+      "current_sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelPack通用合同与首发Profile.png",
+      "source_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "source_bytes": 232942,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelPack通用合同与首发Profile.png",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_ModelPack通用合同与首发Profile.png",
+      "current_sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_Phase2企业Serving路线.png",
+      "source_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "source_bytes": 175625,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_Phase2企业Serving路线.png",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_3.3.1_Phase2企业Serving路线.png",
+      "current_sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_数据分析与决策操作系统白皮书_v3.3 (1).md",
+      "source_sha256": "afe465e73b0b8df104d590a27a30d11ab072e7e67ffcc8b1da9f3a8c5bca5dfb",
+      "source_bytes": 162483,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_数据分析与决策操作系统白皮书_v3.3 (1).md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_数据分析与决策操作系统白皮书_v3.3 (1).md",
+      "current_sha256": "afe465e73b0b8df104d590a27a30d11ab072e7e67ffcc8b1da9f3a8c5bca5dfb",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_数据分析与决策操作系统白皮书_v3.3.1.md",
+      "source_sha256": "a311ca2ff04d2a469e8b2cc9f969af95ce68433c1740b77857fd0c3aefb318bd",
+      "source_bytes": 187914,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_数据分析与决策操作系统白皮书_v3.3.1.md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_数据分析与决策操作系统白皮书_v3.3.1.md",
+      "current_sha256": "a311ca2ff04d2a469e8b2cc9f969af95ce68433c1740b77857fd0c3aefb318bd",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_ModelPack一致性修订变更清单.md",
+      "source_sha256": "06e561b1c68e9d6dd68aacb55dc073ed9ad34a6870d1af6a41fd511d6778ce97",
+      "source_bytes": 11943,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_ModelPack一致性修订变更清单.md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_ModelPack一致性修订变更清单.md",
+      "current_sha256": "06e561b1c68e9d6dd68aacb55dc073ed9ad34a6870d1af6a41fd511d6778ce97",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_升级说明.md",
+      "source_sha256": "3994dafd2817e2cdda2a8cc87adee3aac4dc0ab2d359886e76fb56f0aa1ab41d",
+      "source_bytes": 3781,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_升级说明.md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_升级说明.md",
+      "current_sha256": "3994dafd2817e2cdda2a8cc87adee3aac4dc0ab2d359886e76fb56f0aa1ab41d",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_配图资产清单.md",
+      "source_sha256": "f5d18095c2e2c24ed71e20fec4a9000279b2fd401d90de542240ec15472c80e4",
+      "source_bytes": 4275,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_配图资产清单.md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_配图资产清单.md",
+      "current_sha256": "f5d18095c2e2c24ed71e20fec4a9000279b2fd401d90de542240ec15472c80e4",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_验证报告.md",
+      "source_sha256": "81ba852218c7b7e6057263a0533eb961a4b6a3a6c65c83fcb8d47023c0fa0501",
+      "source_bytes": 2012,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_验证报告.md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/JuanerAI_白皮书_v3.3.1_验证报告.md",
+      "current_sha256": "81ba852218c7b7e6057263a0533eb961a4b6a3a6c65c83fcb8d47023c0fa0501",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/RECEIPT.json",
+      "source_sha256": "ae9321cb4de1411850c50c85b69db86169bce473b7fb1f8b8ac82397279c87c1",
+      "source_bytes": 7146,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/RECEIPT.json",
+      "current_sha256": "ae9321cb4de1411850c50c85b69db86169bce473b7fb1f8b8ac82397279c87c1",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/original.zip",
+      "source_sha256": "ba918249b0169a82a87e64158b916f34a8ef81f953995ee0773ea8d21315c67a",
+      "source_bytes": 1327128,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/original.zip",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-09-v3.3.1/original.zip",
+      "current_sha256": "ba918249b0169a82a87e64158b916f34a8ef81f953995ee0773ea8d21315c67a",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/JuanerAI_OSM_零售目标管理模型融合方案_v1.0.md",
+      "source_sha256": "c588fd9f5c53ee86d643dc318e4c98d2270b5789b98ed4e1487b5df63d3f71fa",
+      "source_bytes": 40912,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/JuanerAI_OSM_零售目标管理模型融合方案_v1.0.md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/JuanerAI_OSM_零售目标管理模型融合方案_v1.0.md",
+      "current_sha256": "c588fd9f5c53ee86d643dc318e4c98d2270b5789b98ed4e1487b5df63d3f71fa",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/JuanerAI白皮书Controller_OSM融合Prompt.md",
+      "source_sha256": "4e9072375750957448ad5cbfc1c66f361f581349d15f7c18d0dcc8f4a166fed7",
+      "source_bytes": 7497,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/JuanerAI白皮书Controller_OSM融合Prompt.md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/JuanerAI白皮书Controller_OSM融合Prompt.md",
+      "current_sha256": "4e9072375750957448ad5cbfc1c66f361f581349d15f7c18d0dcc8f4a166fed7",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/RECEIPT.json",
+      "source_sha256": "8f868f6639dbdb0721630c55fa71d5e8232aea92a44f409f13b4fb0909318f57",
+      "source_bytes": 1364,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/RECEIPT.json",
+      "current_sha256": "8f868f6639dbdb0721630c55fa71d5e8232aea92a44f409f13b4fb0909318f57",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/零售目标管理模型解读-2.pdf",
+      "source_sha256": "6db51e3e4beb81f9a99914b69028bfca340bb62eec93f946bf35844438cf8e4e",
+      "source_bytes": 1436484,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/零售目标管理模型解读-2.pdf",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/零售目标管理模型解读-2.pdf",
+      "current_sha256": "6db51e3e4beb81f9a99914b69028bfca340bb62eec93f946bf35844438cf8e4e",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/JuanerAI_产品矩阵与C端到B端增长战略方案.md",
+      "source_sha256": "21d573401d1349948d620c01d87aba3f50c38550c99e4064c62eec660ee008a4",
+      "source_bytes": 24763,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/JuanerAI_产品矩阵与C端到B端增长战略方案.md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/JuanerAI_产品矩阵与C端到B端增长战略方案.md",
+      "current_sha256": "21d573401d1349948d620c01d87aba3f50c38550c99e4064c62eec660ee008a4",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/RECEIPT.json",
+      "source_sha256": "731ec1656ebf8287fe1b06e7dd83fba04dbf9c4409d1c1e92f06aee54c453e06",
+      "source_bytes": 1001,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/RECEIPT.json",
+      "current_sha256": "731ec1656ebf8287fe1b06e7dd83fba04dbf9c4409d1c1e92f06aee54c453e06",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/handoff(20260916-160421).md",
+      "source_sha256": "bf461e80ca2d72d6280ed72b8487d05e638193e127e7d44c44849be0b3798d00",
+      "source_bytes": 16323,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/handoff(20260916-160421).md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-17-product-matrix-v1.0/handoff(20260916-160421).md",
+      "current_sha256": "bf461e80ca2d72d6280ed72b8487d05e638193e127e7d44c44849be0b3798d00",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-19-osm-pim/JuanerAI_双主线定位与命名提炼_2026-09-15.md",
+      "source_sha256": "48e525506a1f89ed6b2d19d9a24d83b3d32e82807991e67b4df94ff631c1e384",
+      "source_bytes": 6960,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-19-osm-pim/JuanerAI_双主线定位与命名提炼_2026-09-15.md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-19-osm-pim/JuanerAI_双主线定位与命名提炼_2026-09-15.md",
+      "current_sha256": "48e525506a1f89ed6b2d19d9a24d83b3d32e82807991e67b4df94ff631c1e384",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-19-osm-pim/RECEIPT.json",
+      "source_sha256": "f9dfd1a5309094229d26f6eb03e3e2b92c1c583fa9c20870013d6a62baacd160",
+      "source_bytes": 745,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-19-osm-pim/RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-19-osm-pim/RECEIPT.json",
+      "current_sha256": "f9dfd1a5309094229d26f6eb03e3e2b92c1c583fa9c20870013d6a62baacd160",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/FORMAL_READBACK.json",
+      "source_sha256": "7a24404a16eebf602d04b1a2dd9a5ffa5f28484ffc7f3064e4d729f0a0a67070",
+      "source_bytes": 2698,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/FORMAL_READBACK.json",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/FORMAL_READBACK.json",
+      "current_sha256": "7a24404a16eebf602d04b1a2dd9a5ffa5f28484ffc7f3064e4d729f0a0a67070",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/JuanerAI_Whitepaper_Strategy_Upgrade_Handoff_2026-09-26.md",
+      "source_sha256": "7629218c8524e9070f25daf77b0aed546471f11fc06f3625e87e183480f78c34",
+      "source_bytes": 49366,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/JuanerAI_Whitepaper_Strategy_Upgrade_Handoff_2026-09-26.md",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/JuanerAI_Whitepaper_Strategy_Upgrade_Handoff_2026-09-26.md",
+      "current_sha256": "7629218c8524e9070f25daf77b0aed546471f11fc06f3625e87e183480f78c34",
+      "disposition": "byte_exact_relocation"
+    },
+    {
+      "source_repository_path": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/RECEIPT.json",
+      "source_sha256": "009882547ce7b1ed32628c4ddf37738d866c8d90d960c537296b6eb63f5f61a0",
+      "source_bytes": 520,
+      "preserved_destination": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/RECEIPT.json",
+      "current_destination": "docs/product/whitepaper/sources/2026-09-26-strategy-v4/RECEIPT.json",
+      "current_sha256": "009882547ce7b1ed32628c4ddf37738d866c8d90d960c537296b6eb63f5f61a0",
+      "disposition": "byte_exact_relocation"
+    }
+  ],
+  "research_reference_count": 256,
+  "old_source_rule": "Legacy research bytes are retained read-only by governance so frozen absolute references still work locally; the single writable master is in JuanerAI. Source path/SHA fields inside frozen receipts remain historical.",
+  "publication": "local_work_branch_only_no_commit_push_merge_or_receiver_adoption",
+  "initial_navigation_rewrite_log": [
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../PROJECTS.md",
+      "after": "../../research/REFERENCES.md#ref-d675398008af9012"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-034-strategy-action-outcome-review/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-486531da5724dd90"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-036-review-teach-pack-adoption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-f6afb8c6a85f33d8"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-042-analysis-chain-e2e/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-5b95dbcc69b8ff04"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-dc463de90ced4cee"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-fde73012e5c32d00"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-001-dual-library/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c9b72f777c0e9512"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-001-dual-library/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-266da40de1479f2f"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-001-dual-library/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-42e84d5178893dfd"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-002-dual-library-e2e-slice/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1f71223e92fae3a7"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-002-dual-library-e2e-slice/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-0a1405e75aa5084e"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-002-dual-library-e2e-slice/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-120e0b121b1bd381"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-003-semantica-ontology-hub/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-bdf6366eda7c2095"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-003-semantica-ontology-hub/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-08f54599861abe64"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-003-semantica-ontology-hub/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c386da793a20993f"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-004-xanthil-uidemo/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-cb744e91c46d7c58"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-004-xanthil-uidemo/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-623df1a7dd9729cf"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-004-xanthil-uidemo/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b750706b1be2bf84"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-005-model-pack-demon/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-a0b3e1e4407faa77"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-005-model-pack-demon/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-b39d0a2b13a546e9"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-005-model-pack-demon/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-187dae2f9f6aca45"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-006-xanthil-dual-mode/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-f1e1fd8cee3822e7"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-006-xanthil-dual-mode/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-8a0b65e25d7e78e7"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-006-xanthil-dual-mode/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c18eb8891c2c900d"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-007-model-pack-mlflow-spike/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-f2198c7dded8acb6"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-007-model-pack-mlflow-spike/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-cd0a2a3ded18d944"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-007-model-pack-mlflow-spike/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b483d151961b44a1"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-008-model-pack-builder-consumer-spike/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-68c1bdc7c68af624"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-008-model-pack-builder-consumer-spike/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-2dae197db2405983"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-008-model-pack-builder-consumer-spike/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-45b3b0cf6da8cca8"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-288769c471bf1936"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-fde73012e5c32d00"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-11d0728f247a78fb"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/user-research-u01/RESEARCH_PACK.md",
+      "after": "../../research/REFERENCES.md#ref-7ed32128897cb140"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-010-deep-research-workbench/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-5fe2fd9a7613a130"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-010-deep-research-workbench/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-36fae51200f5fc8b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-010-deep-research-workbench/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1c3f65763b17e53a"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-011-analysisops-judge-hitl/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-84568934a560dfda"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-011-analysisops-judge-hitl/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-12951affb4ba8822"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-011-analysisops-judge-hitl/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-4bc0e70a24d74f39"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-012-deep-research-autopilot/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6951ec38fabfc0a6"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-012-deep-research-autopilot/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-9f49937b56a093c1"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-012-deep-research-autopilot/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-a151576240066b6b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-013-autonomous-exploration-llm/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-7af1d1599c0f3b4d"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-013-autonomous-exploration-llm/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-ad3f944ce2899868"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-013-autonomous-exploration-llm/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-f16e9be12a3368ef"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-014-analysis-ir/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-46ee405b7c3b278d"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-014-analysis-ir/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-16fa35ffe0bccf88"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-014-analysis-ir/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-8281261b1bc9bb5e"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-015-teach/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-e368eb2eb7f51574"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-015-teach/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1f0083ec368d7406"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-015-teach/HANDOFF_SCOPE_DISCUSSION.md",
+      "after": "../../research/REFERENCES.md#ref-90c0e1fe723ea237"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-015-teach/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-19cdf5f431d2dd6c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-016-domain-pack-reference/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-d29516657e2f6441"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-016-domain-pack-reference/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-477130e5303ab3be"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-016-domain-pack-reference/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6aa241fb6dbed94b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-017-store-operations-pack-conformance/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-af27db1c88e0fd1e"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-017-store-operations-pack-conformance/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-adec1069a7b2e898"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-017-store-operations-pack-conformance/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-9af0280ae909f681"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-018-merchandise-operations-pack-conformance/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-7942b732c4c48f2b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-018-merchandise-operations-pack-conformance/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-ea829d0b99e2c740"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-018-merchandise-operations-pack-conformance/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-238d93139cc4ee3b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-019-consumer-insight-pack-boundaries/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b3090a916e6e2915"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-019-consumer-insight-pack-boundaries/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-200d6e2d8227d3b6"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-019-consumer-insight-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-e26d078170177b78"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-020-inventory-allocation-pack-boundaries/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-3fb443686d001cb0"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-020-inventory-allocation-pack-boundaries/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-ce1fa499a12fe7ee"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-020-inventory-allocation-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6cee8ad58d6c4747"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-021-report-template-module/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-dcc987c59bdec467"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-021-report-template-module/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-d30417a2e11d2201"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-021-report-template-module/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-348dea9974c31186"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-022-channel-roi-attribution-pack-boundaries/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-fb68a98d0f546ea7"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-022-channel-roi-attribution-pack-boundaries/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-dbee6243e358f238"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-022-channel-roi-attribution-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ae296aaa3836f621"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-023-churn-early-warning-pack-boundaries/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-3f048f2300719e8c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-023-churn-early-warning-pack-boundaries/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-a1853586d53367f7"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-023-churn-early-warning-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-47d15ab85a43b644"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-024-pricing-promotion-pack-boundaries/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-4e067d63126ab639"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-024-pricing-promotion-pack-boundaries/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-ffc2d7d7200af715"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-024-pricing-promotion-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-4f497e9bbcad1bc0"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-025-replenishment-fulfillment-pack-boundaries/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-2f274e2661ddf72d"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-025-replenishment-fulfillment-pack-boundaries/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-a499afa3904ab777"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-025-replenishment-fulfillment-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-9725a4e3e5a81b15"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-026-product-funnel-pack-boundaries/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-896457c90653e969"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-026-product-funnel-pack-boundaries/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-228fae841d7d751f"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-026-product-funnel-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-355cf86017c9604e"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-027-marketing-campaign-audience-pack-boundaries/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-766c6d27b8a017b5"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-027-marketing-campaign-audience-pack-boundaries/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-88db696f38abf9f1"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-027-marketing-campaign-audience-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-54b0bce5b31b93b4"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-028-domain-pack-workbench-consumption/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-9a2f6798b5e550da"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-028-domain-pack-workbench-consumption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-e02dfb3908303d7c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-028-domain-pack-workbench-consumption/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6e4669bd80664385"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-029-osm-objective-strategy/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c23ccc49f8e22510"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-029-osm-objective-strategy/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-5b6358eb815ea7cf"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-029-osm-objective-strategy/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-028509de0da074f1"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-030-analysis-requirement-co-creation/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-2bfd45fdb053b4ef"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-030-analysis-requirement-co-creation/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-c32af3a8833cf31c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-030-analysis-requirement-co-creation/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-a2fcafb1b89611dd"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-031-context-resolve-binding/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-5ed457c462f827e4"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-031-context-resolve-binding/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-fd671fd5696455db"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-031-context-resolve-binding/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b1901a46e8bbd219"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-032-semantic-materialization-local-evidence/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-60fafd1b2d672a4a"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-032-semantic-materialization-local-evidence/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-836671e5ba3fd934"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-032-semantic-materialization-local-evidence/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b848088ecfa99263"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-033-objective-snapshot-gap/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c661834260537f12"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-033-objective-snapshot-gap/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-1193fc30ae49503b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-033-objective-snapshot-gap/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-52711f3204926ff0"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-034-strategy-action-outcome-review/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-00f4227869baa629"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-034-strategy-action-outcome-review/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-486531da5724dd90"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-034-strategy-action-outcome-review/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ed887f85b1b900ec"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-035-context-commit-routing/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-03034b2764dd36cf"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-035-context-commit-routing/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-da9cb3fd46121587"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-035-context-commit-routing/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b87f20292fee0d82"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-036-review-teach-pack-adoption/PRODUCT_BRIEF.md#决策记录",
+      "after": "../../research/REFERENCES.md#ref-522ac7fc2a52c0ed"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-036-review-teach-pack-adoption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-f6afb8c6a85f33d8"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-036-review-teach-pack-adoption/DEMO_BRIEF.md#用户验收2026-09-13",
+      "after": "../../research/REFERENCES.md#ref-e3c0865b87cf2eb3"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-037-future-action-dashboard/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1d593ebb08cd5d65"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-037-future-action-dashboard/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-7f3be108135933f6"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-037-future-action-dashboard/DEMO_BRIEF.md#第三轮-codex-最终独立复评2026-09-11第二次-changes_requested-返修后",
+      "after": "../../research/REFERENCES.md#ref-dea84501918cda7c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-038-dame-method-asset-execution/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-3d13abafe121c6e1"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-038-dame-method-asset-execution/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-d9eca432c126db16"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-038-dame-method-asset-execution/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-08d3bd5a96ca353a"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-039-ab-test-analysis/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-46a3fad1e11b8cc9"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-039-ab-test-analysis/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-513c52f8c452094f"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-039-ab-test-analysis/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-d1d78b08b5747fd8"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-040-agent-evaluation-system/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-809c57ee42d4c6b5"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-040-agent-evaluation-system/DEMO_BRIEF.md#第三次-codex-最终独立复评repair-round-2-后2026-09-11",
+      "after": "../../research/REFERENCES.md#ref-8178af4efe41825c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-040-agent-evaluation-system/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-1a4a168dd8652b92"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-041-local-file-quality-snapshot/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-adfa20dcc85472a3"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-041-local-file-quality-snapshot/DEMO_BRIEF.md#用户验收2026-09-13",
+      "after": "../../research/REFERENCES.md#ref-55419a5979391fa8"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-041-local-file-quality-snapshot/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-b5f1932e974c6715"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-042-analysis-chain-e2e/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-5522660b476d2b72"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-042-analysis-chain-e2e/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-47fb1d673e0cc2d9"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-042-analysis-chain-e2e/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-5b95dbcc69b8ff04"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-043-six-level-judge-chain/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c91e958009130732"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-043-six-level-judge-chain/DEMO_BRIEF.md#用户验收2026-09-13",
+      "after": "../../research/REFERENCES.md#ref-7c2da61c42c77640"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-043-six-level-judge-chain/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-75cc766df289b5a9"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/source-adoption-v1/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-5135c81c243e3c2b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-044-external-evidence-acquisition/PRODUCT_BRIEF.md#决策记录",
+      "after": "../../research/REFERENCES.md#ref-6da577b824d3b204"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-044-external-evidence-acquisition/DEMO_BRIEF.md#review-round-5--repair-round-4-最终独立复评-pass受限",
+      "after": "../../research/REFERENCES.md#ref-ac5a971272193db7"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-044-external-evidence-acquisition/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-a65bef5f2e8e1dab"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-045-run-recovery/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ac3f5a021018ed6e"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-045-run-recovery/DEMO_BRIEF.md#用户验收2026-09-13",
+      "after": "../../research/REFERENCES.md#ref-e7bb3334ea4accc4"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-045-run-recovery/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-47f2f131e1aabcbb"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/source-adoption-v1/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-5135c81c243e3c2b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-046-model-pack-daily-inference/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-58e21147138aeb27"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-046-model-pack-daily-inference/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-926af386f6605b74"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-046-model-pack-daily-inference/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-6ba8ec37ea896c4c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-047-local-first-minimal-context/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-03e913d1d98117f5"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-047-local-first-minimal-context/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-72a966950155e8e3"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-047-local-first-minimal-context/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-6f92106bff4fcfb5"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-048-goal-tree-conflict/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-7db82877929a0f1d"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-048-goal-tree-conflict/DEMO_BRIEF.md#repair-round-5-后第六轮-codex-最终独立评审2026-09-13",
+      "after": "../../research/REFERENCES.md#ref-84fa04e05dc8afe7"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-048-goal-tree-conflict/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-730f40cab2c6515a"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-049-strategy-portfolio-optimization/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-0af8936508f55c12"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-049-strategy-portfolio-optimization/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-db409aea843e4cdb"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-049-strategy-portfolio-optimization/DEMO_BRIEF.md#c4--repair-round-2-独立复评完成2026-09-13",
+      "after": "../../research/REFERENCES.md#ref-b220086541e8378d"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-049-strategy-portfolio-optimization/review-round-3-independent/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-cf5cb326b12f54cc"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6b605ae37244cddf"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-dc463de90ced4cee"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-906612feff5c7647"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r6/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-14de2c9d22b9f378"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-051-periodic-report-refresh/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-941747cb999a66b4"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-051-periodic-report-refresh/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-85a499b615111129"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-051-periodic-report-refresh/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-ee0b523d352fd980"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-051-periodic-report-refresh/review-round-3/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-e3a53649fc01923b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c4ac6a11ac2ec0c5"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-9191d5de798e1fff"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-f7d085592f252aed"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-79bca37bbac923e2"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-5d8b3c90f70b62ed"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-8cbc112be781b578"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r8/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-98ca30daa839ed56"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-2cb09c8a186032a4"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1362abc030d59a54"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-9d4d98b0e4feb0c2"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/review-r5/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-1c07f0e0cc5d1c9a"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ce46b5871d9f007c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ec1021e63a6eee5b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-3d90afe965142b6a"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/review-r4/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-5c5f9bf6330f5613"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-4c9dea976d33bc02"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-2460133755f53f45"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-de7a3d8cb12ae516"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/review-r6/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-11e1513c33e0dca8"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c3b524dd9233c2dc"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-d5d83d42a0653554"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/review-r2/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-c821d77878279d15"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-cee49552593c9039"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-058-enterprise-serving-consumption/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-9da5e33b829741de"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-058-enterprise-serving-consumption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-cc285407f24892ab"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-058-enterprise-serving-consumption/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-e47d1bb8b598c017"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-058-enterprise-serving-consumption/review-r1/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-aa811bb79c0fadb1"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-058-enterprise-serving-consumption/review-r2/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-c587758e548f1499"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-0152009a09998b1f"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-3a7ae5634cd0963d"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r4/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-19508eccd58ef98e"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-030-analysis-requirement-co-creation/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-c32af3a8833cf31c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-042-analysis-chain-e2e/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-5b95dbcc69b8ff04"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-029-osm-objective-strategy/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-5b6358eb815ea7cf"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-033-objective-snapshot-gap/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-1193fc30ae49503b"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-048-goal-tree-conflict/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-730f40cab2c6515a"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-034-strategy-action-outcome-review/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-486531da5724dd90"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-dc463de90ced4cee"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-3a7ae5634cd0963d"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-004-xanthil-uidemo/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-623df1a7dd9729cf"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-006-xanthil-dual-mode/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-8a0b65e25d7e78e7"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-014-analysis-ir/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-16fa35ffe0bccf88"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-031-context-resolve-binding/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-fd671fd5696455db"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-032-semantic-materialization-local-evidence/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-836671e5ba3fd934"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-004-xanthil-uidemo/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-623df1a7dd9729cf"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-006-xanthil-dual-mode/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-8a0b65e25d7e78e7"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-041-local-file-quality-snapshot/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-b5f1932e974c6715"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-042-analysis-chain-e2e/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-5b95dbcc69b8ff04"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-045-run-recovery/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-47f2f131e1aabcbb"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-047-local-first-minimal-context/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-6f92106bff4fcfb5"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-014-analysis-ir/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-16fa35ffe0bccf88"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-021-report-template-module/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-d30417a2e11d2201"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-051-periodic-report-refresh/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-ee0b523d352fd980"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-fde73012e5c32d00"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-9191d5de798e1fff"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-035-context-commit-routing/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-da9cb3fd46121587"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-036-review-teach-pack-adoption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-f6afb8c6a85f33d8"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-9d4d98b0e4feb0c2"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-034-strategy-action-outcome-review/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-486531da5724dd90"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-dc463de90ced4cee"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-3a7ae5634cd0963d"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-014-analysis-ir/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-16fa35ffe0bccf88"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-016-domain-pack-reference/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-477130e5303ab3be"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-028-domain-pack-workbench-consumption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-e02dfb3908303d7c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-046-model-pack-daily-inference/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-6ba8ec37ea896c4c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-058-enterprise-serving-consumption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-cc285407f24892ab"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-033-objective-snapshot-gap/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-52711f3204926ff0"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-044-external-evidence-acquisition/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-a65bef5f2e8e1dab"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-048-goal-tree-conflict/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c33dd9c15162e89c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-033-objective-snapshot-gap/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-52711f3204926ff0"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-048-goal-tree-conflict/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c33dd9c15162e89c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-034-strategy-action-outcome-review/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ed887f85b1b900ec"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-029-osm-objective-strategy/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-5b6358eb815ea7cf"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-049-strategy-portfolio-optimization/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-5aa8c0cad844aa4c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-034-strategy-action-outcome-review/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-486531da5724dd90"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-3a7ae5634cd0963d"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-dc463de90ced4cee"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-051-periodic-report-refresh/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-ee0b523d352fd980"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-016-domain-pack-reference/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-477130e5303ab3be"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-028-domain-pack-workbench-consumption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-e02dfb3908303d7c"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-033-objective-snapshot-gap/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-52711f3204926ff0"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-035-context-commit-routing/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-da9cb3fd46121587"
+    },
+    {
+      "file": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "before": "../../../explorations/PX-2026-036-review-teach-pack-adoption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-f6afb8c6a85f33d8"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r4/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-19508eccd58ef98e"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r4/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-19508eccd58ef98e"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c3b524dd9233c2dc"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/review-r2/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-c821d77878279d15"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/review-r1/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-134db27b587c4e8f"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c3b524dd9233c2dc"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-d5d83d42a0653554"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-4c9dea976d33bc02"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/review-r6/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-11e1513c33e0dca8"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/review-r5/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-5d2ee03ab33add1f"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/review-r4/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-e0385a489fb89731"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/review-r3/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-d01ce44fb0cb944d"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/review-r2/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-c97b3598fcbf152e"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/review-r1/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-fdc9693ea152cd44"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c3b524dd9233c2dc"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c3b524dd9233c2dc"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-057-ab-complex-design/SOURCE_CHECK.md",
+      "after": "../../research/REFERENCES.md#ref-06d1d9745a4cfcc8"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/review-r4/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-5c5f9bf6330f5613"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-2460133755f53f45"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-056-churn-numerical-method/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-4c9dea976d33bc02"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/review-r5/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-1c07f0e0cc5d1c9a"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/review-r5/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-1c07f0e0cc5d1c9a"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/review-r3/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-2ec764dc4bb0fad8"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r8/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-98ca30daa839ed56"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r8/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-98ca30daa839ed56"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/review-r4/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-7e68c2d93e568e1f"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r7/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-7300e3edd2864521"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/review-r3/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-3ec22dbc2019befb"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/review-r2/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-3bfca3f0f265782a"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r6/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-3efa94911b51d67f"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r5/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-02288270961a736c"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/review-r2/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-9a725ed8078d0c6e"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/review-r1/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-258e4583babdd6ad"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r4/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-59136648da47d569"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r3/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-ad8691777b0191d9"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ec1021e63a6eee5b"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-3d90afe965142b6a"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ce46b5871d9f007c"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-055-method-correction-cross-domain/preflight/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-d86ead00c295e99a"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/review-r1/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-3003ae6cd1298a83"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r2/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-6dbe08ec32264e34"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r6/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-14de2c9d22b9f378"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r6/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-14de2c9d22b9f378"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r1/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-6dfe9fd4f7a6f016"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r5/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-c33addcf13345733"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r4/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-29fc6b2c2910531a"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1362abc030d59a54"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-2cb09c8a186032a4"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r3/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-4b6ca0254a10a10a"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/controller-review/r5/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-1caa517eebef737a"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-5d8b3c90f70b62ed"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-79bca37bbac923e2"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r2/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-29e9670eccbc6885"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/controller-review/r4/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-0fa33b90c02bd645"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/controller-review/r3/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-e14068a3e20de77d"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r1/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-8fb3b8774f8099e3"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/controller-review/r2/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-09421860aeea9d5e"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/controller-review/r1/REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-a17e460fe5e5733d"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-f7d085592f252aed"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-052-live-llm-quality/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c4ac6a11ac2ec0c5"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-906612feff5c7647"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/source-adoption-v1/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-5135c81c243e3c2b"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/UPSTREAM_COMPATIBILITY_REVIEW.md",
+      "after": "../../research/REFERENCES.md#ref-92b5860a7ea32153"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6b605ae37244cddf"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-0152009a09998b1f"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-fde73012e5c32d00"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/user-research-u01/RESEARCH_PACK.md",
+      "after": "../../research/REFERENCES.md#ref-7ed32128897cb140"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-fde73012e5c32d00"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r1/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-3ccc4f361271bd29"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r2/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-1e8095256181b6b1"
+    },
+    {
+      "file": "docs/product/whitepaper/CHANGELOG.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r3/REPORT.md",
+      "after": "../../research/REFERENCES.md#ref-f8c56add330dc9c4"
+    },
+    {
+      "file": "docs/product/whitepaper/TAKEOVER_REVIEW.md",
+      "before": "../../../explorations/PX-2026-005-model-pack-demon/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-a0b3e1e4407faa77"
+    },
+    {
+      "file": "docs/product/whitepaper/TAKEOVER_REVIEW.md",
+      "before": "../../../explorations/PX-2026-005-model-pack-demon/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-187dae2f9f6aca45"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../PROJECTS.md",
+      "after": "../../research/REFERENCES.md#ref-d675398008af9012"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-029-osm-objective-strategy/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-028509de0da074f1"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-033-objective-snapshot-gap/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-52711f3204926ff0"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-048-goal-tree-conflict/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c33dd9c15162e89c"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-030-analysis-requirement-co-creation/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-a2fcafb1b89611dd"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-042-analysis-chain-e2e/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-47fb1d673e0cc2d9"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-004-xanthil-uidemo/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b750706b1be2bf84"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-11d0728f247a78fb"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-010-deep-research-workbench/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1c3f65763b17e53a"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-012-deep-research-autopilot/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-a151576240066b6b"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-006-xanthil-dual-mode/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c18eb8891c2c900d"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-021-report-template-module/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-348dea9974c31186"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-051-periodic-report-refresh/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-85a499b615111129"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-058-enterprise-serving-consumption/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-e47d1bb8b598c017"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-038-dame-method-asset-execution/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-08d3bd5a96ca353a"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-039-ab-test-analysis/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-513c52f8c452094f"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-016-domain-pack-reference/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6aa241fb6dbed94b"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-028-domain-pack-workbench-consumption/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6e4669bd80664385"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-005-model-pack-demon/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-187dae2f9f6aca45"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-046-model-pack-daily-inference/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-926af386f6605b74"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-034-strategy-action-outcome-review/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ed887f85b1b900ec"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-037-future-action-dashboard/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-d6b6ee081e16ed64"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-049-strategy-portfolio-optimization/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-5aa8c0cad844aa4c"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-eafb9d8053a5f724"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-050-same-goal-business-loop/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-906612feff5c7647"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-002-dual-library-e2e-slice/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-120e0b121b1bd381"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-015-teach/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1f0083ec368d7406"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-035-context-commit-routing/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b87f20292fee0d82"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-036-review-teach-pack-adoption/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-a856f8a3804030af"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-054-ontology-owner-backend/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1362abc030d59a54"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-014-analysis-ir/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-8281261b1bc9bb5e"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-031-context-resolve-binding/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b1901a46e8bbd219"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-032-semantic-materialization-local-evidence/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b848088ecfa99263"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-041-local-file-quality-snapshot/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-bd01703607883f86"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-045-run-recovery/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b105346e3e56ac80"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-040-agent-evaluation-system/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-77c48c0a3e9898cc"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-043-six-level-judge-chain/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ae4595e05f9c1349"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-047-local-first-minimal-context/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-72a966950155e8e3"
+    },
+    {
+      "file": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "before": "../../../explorations/PX-2026-053-local-research-citation-verification/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-5d8b3c90f70b62ed"
+    },
+    {
+      "file": "docs/product/whitepaper/NEXT_ACTION.md",
+      "before": "../../../explorations/PX-2026-041-local-file-quality-snapshot/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-b5f1932e974c6715"
+    },
+    {
+      "file": "docs/product/whitepaper/NEXT_ACTION.md",
+      "before": "../../../explorations/PX-2026-038-dame-method-asset-execution/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-3d13abafe121c6e1"
+    },
+    {
+      "file": "docs/product/whitepaper/NEXT_ACTION.md",
+      "before": "../../../explorations/PX-2026-038-dame-method-asset-execution/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-08d3bd5a96ca353a"
+    },
+    {
+      "file": "docs/product/whitepaper/NEXT_ACTION.md",
+      "before": "../../../explorations/PX-2026-039-ab-test-analysis/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-46a3fad1e11b8cc9"
+    },
+    {
+      "file": "docs/product/whitepaper/NEXT_ACTION.md",
+      "before": "../../../explorations/PX-2026-041-local-file-quality-snapshot/PRODUCT_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-adfa20dcc85472a3"
+    },
+    {
+      "file": "docs/product/whitepaper/NEXT_ACTION.md",
+      "before": "../../../explorations/PX-2026-059-action-task-adapter/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-3a7ae5634cd0963d"
+    },
+    {
+      "file": "docs/product/whitepaper/NEXT_ACTION.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-fde73012e5c32d00"
+    },
+    {
+      "file": "docs/product/whitepaper/NEXT_ACTION.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/user-research-u01/RESEARCH_PACK.md",
+      "after": "../../research/REFERENCES.md#ref-7ed32128897cb140"
+    },
+    {
+      "file": "docs/product/whitepaper/NEXT_ACTION.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-fde73012e5c32d00"
+    },
+    {
+      "file": "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+      "before": "/Users/huangbo/JuanerAI/docs/planning/2026-08-27/xanthil-desktop-phase-one-product-plan.md",
+      "after": "../../research/REFERENCES.md#ref-e4643e9106e6d827"
+    },
+    {
+      "file": "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+      "before": "/Users/huangbo/JuanerAI/docs/planning/2026-08-28/xanthil-desktop-d05-productization-decision-package.md",
+      "after": "../../research/REFERENCES.md#ref-75575c00b2e2b35e"
+    },
+    {
+      "file": "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+      "before": "/Users/huangbo/JuanerAI/docs/planning/2026-08-27/model-pack-two-phase-product-plan.md",
+      "after": "../../research/REFERENCES.md#ref-d22a85eff66af0db"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_PIM_MAINLINES_INTEGRATION_2026-09-19.md",
+      "before": "../../../PROJECTS.md",
+      "after": "../../research/REFERENCES.md#ref-d675398008af9012"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../PROJECTS.md",
+      "after": "../../research/REFERENCES.md#ref-d675398008af9012"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-031-context-resolve-binding/demo/README.md",
+      "after": "../../research/REFERENCES.md#ref-b48f8f9057349f61"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-030-analysis-requirement-co-creation/demo/engine.mjs",
+      "after": "../../research/REFERENCES.md#ref-9dae18cee32a427f"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-032-semantic-materialization-local-evidence/demo/core/pipeline.py",
+      "after": "../../research/REFERENCES.md#ref-0f59b1a288c20cdb"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-032-semantic-materialization-local-evidence/demo/core/ir.py",
+      "after": "../../research/REFERENCES.md#ref-4f3c7f59d3a75693"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-035-context-commit-routing/demo/compose.mjs",
+      "after": "../../research/REFERENCES.md#ref-a06d6e98afe01e28"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-036-review-teach-pack-adoption/demo/compose.mjs",
+      "after": "../../research/REFERENCES.md#ref-cfc3b6307a686580"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-037-future-action-dashboard/demo/compose.mjs",
+      "after": "../../research/REFERENCES.md#ref-c95d309996dfdcae"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-037-future-action-dashboard/demo/README.md",
+      "after": "../../research/REFERENCES.md#ref-8428a62abdb8ffa9"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/USER_RESEARCH_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-94108cf676446642"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-001-dual-library/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-42e84d5178893dfd"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-002-dual-library-e2e-slice/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-120e0b121b1bd381"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-003-semantica-ontology-hub/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c386da793a20993f"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-004-xanthil-uidemo/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b750706b1be2bf84"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-005-model-pack-demon/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-187dae2f9f6aca45"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-006-xanthil-dual-mode/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-c18eb8891c2c900d"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-007-model-pack-mlflow-spike/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b483d151961b44a1"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-008-model-pack-builder-consumer-spike/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-45b3b0cf6da8cca8"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-009-autonomous-exploration/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-11d0728f247a78fb"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-010-deep-research-workbench/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1c3f65763b17e53a"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-011-analysisops-judge-hitl/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-4bc0e70a24d74f39"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-012-deep-research-autopilot/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-a151576240066b6b"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-013-autonomous-exploration-llm/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-f16e9be12a3368ef"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-014-analysis-ir/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-8281261b1bc9bb5e"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-015-teach/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-1f0083ec368d7406"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-016-domain-pack-reference/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6aa241fb6dbed94b"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-017-store-operations-pack-conformance/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-9af0280ae909f681"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-018-merchandise-operations-pack-conformance/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-238d93139cc4ee3b"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-019-consumer-insight-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-e26d078170177b78"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-020-inventory-allocation-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6cee8ad58d6c4747"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-021-report-template-module/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-348dea9974c31186"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-022-channel-roi-attribution-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ae296aaa3836f621"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-023-churn-early-warning-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-47d15ab85a43b644"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-024-pricing-promotion-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-4f497e9bbcad1bc0"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-025-replenishment-fulfillment-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-9725a4e3e5a81b15"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-026-product-funnel-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-355cf86017c9604e"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-027-marketing-campaign-audience-pack-boundaries/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-54b0bce5b31b93b4"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-028-domain-pack-workbench-consumption/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-6e4669bd80664385"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-029-osm-objective-strategy/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-028509de0da074f1"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-030-analysis-requirement-co-creation/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-a2fcafb1b89611dd"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-031-context-resolve-binding/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b1901a46e8bbd219"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-032-semantic-materialization-local-evidence/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b848088ecfa99263"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-033-objective-snapshot-gap/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-52711f3204926ff0"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-034-strategy-action-outcome-review/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-ed887f85b1b900ec"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-035-context-commit-routing/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-b87f20292fee0d82"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-036-review-teach-pack-adoption/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-a856f8a3804030af"
+    },
+    {
+      "file": "docs/product/whitepaper/DEMO_VALIDATION_ROADMAP_2026-09-11.md",
+      "before": "../../../explorations/PX-2026-037-future-action-dashboard/DEMO_BRIEF.md",
+      "after": "../../research/REFERENCES.md#ref-d6b6ee081e16ed64"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md:360",
+      "after": "revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md:324",
+      "after": "revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md:536",
+      "after": "revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-033-objective-snapshot-gap/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-1193fc30ae49503b"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-044-external-evidence-acquisition/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-a65bef5f2e8e1dab"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-048-goal-tree-conflict/DEMO_BRIEF.md:15",
+      "after": "../../research/REFERENCES.md#ref-c33dd9c15162e89c"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-049-strategy-portfolio-optimization/DEMO_BRIEF.md:19",
+      "after": "../../research/REFERENCES.md#ref-5aa8c0cad844aa4c"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-029-osm-objective-strategy/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-5b6358eb815ea7cf"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-050-same-goal-business-loop/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-dc463de90ced4cee"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-051-periodic-report-refresh/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-ee0b523d352fd980"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-034-strategy-action-outcome-review/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-486531da5724dd90"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-059-action-task-adapter/NEXT_ACTION.md:10",
+      "after": "../../research/REFERENCES.md#ref-3a7ae5634cd0963d"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-016-domain-pack-reference/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-477130e5303ab3be"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-028-domain-pack-workbench-consumption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-e02dfb3908303d7c"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-035-context-commit-routing/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-da9cb3fd46121587"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-036-review-teach-pack-adoption/NEXT_ACTION.md",
+      "after": "../../research/REFERENCES.md#ref-f6afb8c6a85f33d8"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/JuanerAI/docs/planning/2026-08-27/model-pack-two-phase-product-plan.md:45",
+      "after": "../../research/REFERENCES.md#ref-d22a85eff66af0db"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/JuanerAI_OSM_零售目标管理模型融合方案_v1.0.md",
+      "after": "sources/2026-09-16-osm-retail-v1.0/JuanerAI_OSM_零售目标管理模型融合方案_v1.0.md"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/JuanerAI白皮书Controller_OSM融合Prompt.md",
+      "after": "sources/2026-09-16-osm-retail-v1.0/JuanerAI白皮书Controller_OSM融合Prompt.md"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/sources/2026-09-16-osm-retail-v1.0/零售目标管理模型解读-2.pdf",
+      "after": "sources/2026-09-16-osm-retail-v1.0/零售目标管理模型解读-2.pdf"
+    },
+    {
+      "file": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md",
+      "before": "/Users/huangbo/Dev/Projects/research/docs/product/whitepaper/revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md",
+      "after": "revisions/MP-ALIGN-01-R2/JUANERAI_WHITEPAPER.md"
+    },
+    {
+      "file": "docs/product/JUANERAI_CONTEXT.md",
+      "before": "../governance/PRODUCT_EXPLORATION_LIFECYCLE.md",
+      "after": "../research/REFERENCES.md#ref-8e7e724286ebc5d3"
+    },
+    {
+      "file": "docs/product/JUANERAI_CONTEXT.md",
+      "before": "../governance/INTERACTIVE_ORCHESTRATION.md",
+      "after": "../research/REFERENCES.md#ref-8ddf3bd5f14b5458"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../JuanerAI_数据分析与决策操作系统白皮书_v3.3.md",
+      "after": "../research/REFERENCES.md#ref-13058457ee4b2039"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../explorations/PX-2026-005-model-pack-demon/PRODUCT_BRIEF.md",
+      "after": "../research/REFERENCES.md#ref-a0b3e1e4407faa77"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../explorations/PX-2026-005-model-pack-demon/NEXT_ACTION.md",
+      "after": "../research/REFERENCES.md#ref-b39d0a2b13a546e9"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../explorations/PX-2026-005-model-pack-demon/DEMO_BRIEF.md",
+      "after": "../research/REFERENCES.md#ref-187dae2f9f6aca45"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "/Users/huangbo/JuanerAI/docs/planning/2026-08-27/model-pack-two-phase-product-plan.md",
+      "after": "../research/REFERENCES.md#ref-d22a85eff66af0db"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../explorations/PX-2026-007-model-pack-mlflow-spike/NEXT_ACTION.md",
+      "after": "../research/REFERENCES.md#ref-cd0a2a3ded18d944"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../explorations/PX-2026-008-model-pack-builder-consumer-spike/NEXT_ACTION.md",
+      "after": "../research/REFERENCES.md#ref-2dae197db2405983"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../explorations/PX-2026-005-model-pack-demon/demo/training-slice/evidence/evidence.json",
+      "after": "../research/REFERENCES.md#ref-7d8cec37c79c4373"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../explorations/PX-2026-005-model-pack-demon/demo/training-slice/scripts/contract.py",
+      "after": "../research/REFERENCES.md#ref-7e1aa8bcec2beb54"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../explorations/PX-2026-005-model-pack-demon/demo/training-slice/scripts/consumer.py",
+      "after": "../research/REFERENCES.md#ref-da604e4642dcf694"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../explorations/PX-2026-005-model-pack-demon/demo/training-slice/scripts/builder.py",
+      "after": "../research/REFERENCES.md#ref-7829008dee1ec113"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "../../explorations/PX-2026-005-model-pack-demon/demo/training-slice/scripts/consumer.py",
+      "after": "../research/REFERENCES.md#ref-da604e4642dcf694"
+    },
+    {
+      "file": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "before": "JUANERAI_V3_3_MODEL_PACK_CONTROLLER_PROMPT.md",
+      "after": "../research/REFERENCES.md#ref-bd47210e458a6c16"
+    }
+  ],
+  "rewrite_log_note": "Initial path rewrite pass; current governance files were subsequently replaced by concise current rules. This log is provenance, not a count of final live links.",
+  "additional_background_sources": [
+    {
+      "source_repository_path": "docs/product/JUANERAI_CONTEXT.md",
+      "source_sha256": "3a45d0844d1f47b430cb2655c6932f7d7f6030bf315ccfcddbbcaac3923eaf6f",
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/JUANERAI_CONTEXT.md",
+      "current_destination": "docs/product/JUANERAI_CONTEXT.md",
+      "current_sha256": "27e2a64828b89df0f830558e5f01550681f058cca61a2b04ae1ace76748d84b9"
+    },
+    {
+      "source_repository_path": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "source_sha256": "8e7d57197d3b2b8c2ac3593ec6a67cde96f42dac075a908f936ede76881eadf6",
+      "preserved_destination": "docs/product/whitepaper/revisions/v4.0/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "current_destination": "docs/product/JUANERAI_V3_3_MODEL_PACK_REVIEW.md",
+      "current_sha256": "f29133fe6082b6f1eea95b7174c6464d601b652b3022376b85b2a65667e81906"
+    }
+  ],
+  "navigation_wording_adjustment": "Section 4.5 now explicitly describes links as original Brief/review locators and fingerprints; lifecycle authority stays in research."
+}

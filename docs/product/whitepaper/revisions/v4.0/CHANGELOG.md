@@ -1,0 +1,460 @@
+# JuanerAI 白皮书变更记录
+
+## 2026-09-26 · v4.0 Bottom-up Decision Intelligence战略升级
+
+- 用户明确要求阅读战略输入并升级v4.0；已完成定位、核心原语、共享内核和发展路线结构性融合。详见[融合记录](STRATEGY_V4_INTEGRATION_2026-09-26.md)、[原始来源](sources/2026-09-26-strategy-v4/RECEIPT.json)和[版本收据](WHITEPAPER_V4_0_RECEIPT.json)。
+- 重写摘要、3–4、13、25、27–28；扩展分析/语义、双库、Domain Pack、模型双重评价、OSM接续、Teach/Learning与Report Studio；新增29–31章及附录L，定义Case/System of Record、Graph/Lineage、全产品Future Actual及学习成立条件。4.5保留六主线＋两贯穿能力和38个Demo链接。
+- 产品形态采用Personal→Team→Enterprise，与智能成熟度分轴；Decision Loop MVP需证明结果对后续Case的影响。保留OSM/PIM、DAME、A/B Analysis边界、Model Pack两期及各自Owner；没有冻结新Schema/API或扩大旧Demo。
+- 新增图22总体架构SVG/PNG；前版v3.3.4精确冻结为[12文件快照](revisions/v3.3.4/MANIFEST.json)。旧配图、旧收据、来源、探索产物及R1恢复包保持。
+- 正式只读对账纠正过期信息：本地main的Blueprint v1.3已采用v3.3.4，旧待执行Desktop/Model Pack计划已VOID；v4.0尚待明确蓝图采用。本轮未写正式仓库、fetch、提交、推送、派发任务或操作设备。
+- 同步共同背景、维护/恢复、项目背景、双向索引、联动及历史入口说明。检查结果以本版收据为准；图已渲染及视觉检查，未重跑Demo，未验证真实业务/模型/学习效果，旧缺图仍在，未导出PDF/DOCX。
+
+## 2026-09-19 · v3.3.4 OSM／PIM 双主线与六条主线总览
+
+- 用户明确要求融合双主线文件、升级v3.3.4，并将已讨论的六条主线＋两项贯穿能力四列表写入主稿。PIM正式采用Problem & Insight Management；OSM全称与既有八模块保持，QEA仅作循证逻辑解释。
+- [主稿](JUANERAI_WHITEPAPER.md)4.5加入完整八行产品全景与Demo链接；7.3.1–7.3.4补定位、流程、三种接续及命名；第13章和14.2.1说明统一工作台与共享内核，附录D补术语。普通问题无需先建目标；三模式共同服务双主线，精确来源及审批边界保持。
+- 先C后B、第25章、Model Pack两期与Gate、OSM零售方案、原会员案例及冻结探索保持。对050仅S1、035本地候选路由、054仅Ontology Owner、052未live、055返修等证据边界作明确注记。
+- [融合记录](OSM_PIM_MAINLINES_INTEGRATION_2026-09-19.md)、[来源指纹](sources/2026-09-19-osm-pim/RECEIPT.json)、[v3.3.3快照](revisions/v3.3.3/MANIFEST.json)及[v3.3.4收据](WHITEPAPER_V3_3_4_RECEIPT.json)保留追溯。同步研究入口和双向关联；正式仓库及原R1恢复包继续待合适检查点集成，未写入正式仓库、重跑Demo或启动任务。
+
+## 2026-09-17 · v3.3.3 产品矩阵与先 C 后 B
+
+- 用户要求将两份产品矩阵材料融入白皮书，并明确“更新成v3.3.3版本”。[主稿](JUANERAI_WHITEPAPER.md)采用 **Desktop Free个人价值 → 重复使用 → Workspace团队协作 → 单场景企业试点 → Enterprise → 有条件受控自治**，替代旧第25章CLI先行、OSM先于团队的顺序；CLI保留为专业伴随入口。
+- 同步产品定位、L2产品形态、Packs商业类别与技术归属、个人/团队/企业资产作用域、Decision Case、P0/P1/P2、WVAT和隐私、共享内核、受控学习与自动行动边界；补入图21及可编辑SVG。商业增长效果、具体指标阈值和迁移合同保持待验证/待冻结。
+- 保留18.10–18.22、附录I/J的Model Pack定位及两期Gate、OSM零售八模块和会员案例；不增加个人留存或Workspace完成等Model Pack启动前置条件。
+- [融合记录](PRODUCT_MATRIX_INTEGRATION_2026-09-17.md)区分已批准战略、研究事实与商业假设；更新共同背景、行动卡、项目/开发关联，旧开发图表标记为历史快照。正式仓库与R1恢复包保持待集成，未改代码、冻结Brief、项目阶段或在研任务。
+- [v3.3.2精确快照](revisions/v3.3.2/MANIFEST.json)、[来源档案](sources/2026-09-17-product-matrix-v1.0/RECEIPT.json)及[v3.3.3指纹与检查](WHITEPAPER_V3_3_3_RECEIPT.json)用于追溯。原13张缺图仍为出版限制；本轮未重跑Demo或进行真实用户/商业验证。
+
+## 2026-09-16 · 用户指定融合后版本升级为 v3.3.2
+
+- 用户明确“融合后，要将版本升级到v3.3.2了”。当前[白皮书主稿](JUANERAI_WHITEPAPER.md)版本正式升为 **v3.3.2**，承接已批准的OSM融合内容；R3仅保留为历史修订来源，产品架构基线仍属v3.3。
+- 同步标题、元数据、版本说明、术语、共同背景、维护卡、项目/开发关联与融合记录。保存[R3前版正文和配图](revisions/MP-ALIGN-01-R3/MANIFEST.json)，保留R3原始验证指纹，新增[v3.3.2版本指纹](WHITEPAPER_V3_3_2_RECEIPT.json)。
+- 本轮仅更新版本标识与追溯，不改已融合的功能定义、历史Brief、Model Pack两期或正式开发授权；正式侧R1联动包保持待集成，未写入正式仓库。
+
+## 2026-09-16 · R3 用户批准 OSM 零售目标管理融合
+
+- 用户在[融合评估](OSM_RETAIL_INTEGRATION_REVIEW_2026-09-16.md)后明确“批准融合”；[主稿](JUANERAI_WHITEPAPER.md)升为 **v3.3.1 / MP-ALIGN-01-R3**，产品基线仍为v3.3。采用范围和检查见[融合记录](OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md)。
+- 5.2、第6章、7.4、14.1、15.2、18.9.1、19.3、20.4、第26章及附录A/C/D/K补入目标形成、多维计划一致性、策略预期贡献、指标角色及职责，新增图20及可编辑SVG。权重/修正、分配算法与Pack包装粒度保留具体场景待定条件。
+- 保留OSM现名、八模块、统一Desktop、会员案例、Model Pack两期与Gate；目标候选、预测、执行观察、因果效果分开。未启动Demo、重排正式开发或改写历史Brief/验收。
+- 同步共同背景、恢复卡、维护与项目/开发关联；两份Markdown及原始PDF来源已归档，R2正文和六张原配图保留精确快照。当前新增图不补造原来缺失的13张出版资产。
+- 正式联动仍待合适检查点；既有R1恢复包未修改，R2/R3未写入正式仓库。本轮未提交、推送、合并或进行运行验收。
+
+## 2026-09-14 · B08用户接受受限研究结论（正文不变）
+
+- 用户明确接受 [PX-059第四轮独立评审](../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r4/REPORT.md) 的本地合成受限 PASS；项目保持 Demo已评估/user_input，停留本项等待未来明确方向。
+- 6.7、17、21 正文与生产成熟度不变；不授权 Handoff、正式开发、真实业务连接、生产操作或自动继续其他项目，正式联动待集成。
+
+## 2026-09-14 · B08 Repair R3受限PASS（正文不变）
+
+- [PX-059第四轮评审](../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r4/REPORT.md)：66/66独立复跑；服务自身以实际PX-034公共入口取得的来源锚点，在写前拒绝完整自洽伪造链，直接HTTP、延迟和fresh-process均无业务写入；合法重试保持原任务。
+- Demo已评估/user_input，等待用户方向。6.7、17、21的定义正文不变：本地合成单任务单回执故障切片仅补受限支持证据，不证明写途中崩溃恢复、真实业务或生产成熟度；正式联动待集成，无Handoff或正式开发授权。
+
+## 2026-09-14 · B06用户接受受限研究结论（正文不变）
+
+- 用户明确“接受”，[PX-057](../../../explorations/PX-2026-057-ab-complex-design/PRODUCT_BRIEF.md)已记录接受Repair Round 1本地合成受限PASS；Demo已评估/user_input，停留本项等待未来明确方向，无重复确认事项。
+- 本轮仅同步决定，未重跑测试。10.4–10.5、附录H正文无影响，历史失败保留，正式联动待集成；不授权Handoff、正式开发或自动继续其他项目。
+
+## 2026-09-14 · B06 Repair Round 1受限PASS（正文不变）
+
+- [PX-057复评](../../../explorations/PX-2026-057-ab-complex-design/review-r2/REPORT.md)：N1–N3关闭；59/59、4000次公共入口校准完整复跑及独立参考仿真吻合，必要浏览器和拒绝无副作用验证成立。
+- tau0误报4.55%，两组覆盖95.45%/94.85%，偏差及oracle差异达冻结门限，仅适用冻结本地合成聚类随机模型。旧失败与v1.0保留。
+- Demo已评估/user_input，等待用户确认受限研究结论；10.4–10.5、附录H正文无影响，无真实业务或生产成熟度承诺，正式联动待集成。
+
+## 2026-09-14 · B06 首轮独立评审NEEDS_FIX（正文不变）
+
+- [PX-057首轮报告](../../../explorations/PX-2026-057-ab-complex-design/review-r1/REPORT.md)：49/49复跑、独立原始行公式对照和必要浏览器路径成立；N1冻结随机生成偏离、N2时间合同绕过、N3伪确认替换名册产生新报告，三项P1。
+- 仅6次校准冒烟，Controller未重跑完整4000次；Builder原校准不符合冻结生成器，不提升成熟度。37个demo文件、8pin、118上游文件重算一致，原证据保留。
+- 沿用原Demo授权，进入同范围Repair Round 1，Demo中/opencode_build，用户手动转交；不改变Brief A区。10.4–10.5/附录H正文无影响，正式联动待集成，无Handoff或正式开发。
+
+## 2026-09-14 · B06 用户批准虚拟首发恢复与v1.0冻结（正文不变）
+
+- 用户明确“虚拟一个首发场景，然后重启这个demo，做一下”；[PX-057](../../../explorations/PX-2026-057-ab-complex-design/PRODUCT_BRIEF.md)恢复原ID，按授权虚构40门店促销场景，只选聚类随机。旧“没有实际首发合同就延期”的条件由本次用户决定替代，延期原文与证据保留；无需重复申请相同Demo Gate。
+- 一手方法资料已核对；[冻结Brief v1.0](../../../explorations/PX-2026-057-ab-complex-design/DEMO_BRIEF.md)为40店20/20、每店50名册、14日连续净贡献，门店均值pooled t和独立oracle、4000次真值校准、恰三类失败。当前待Demo/opencode_build，已准备手动接力消息，未自动启动Builder。
+- A02基础入口本日临时STATE复跑37/37，118个历史来源文件重算一致，已有Python/NumPy/SciPy可用；本轮只做准备，B06统计/仿真与浏览器未运行，不提升能力成熟度。
+- 白皮书10.4–10.5/附录H正文无影响；虚拟合同不是新真实业务输入或生产承诺。当前R2不变，正式联动待集成，无Handoff/正式开发授权。
+
+## 2026-09-14 · B05用户接受受限研究结论（正文不变）
+
+- 用户明确“接受”，[PX-056](../../../explorations/PX-2026-056-churn-numerical-method/PRODUCT_BRIEF.md)已记录接受本地合成受限PASS，保持Demo已评估/user_input，停留本项等待未来明确方向，无重复确认事项。
+- 本轮仅同步决定，未重跑测试；9.5、18.9、18.19、19正文定义不变，正式联动待集成；不授权Handoff、正式开发、真实数据或其他域。
+
+## 2026-09-14 · B05 Repair Round 5受限PASS（正文不变）
+
+- [PX-056第六轮报告](../../../explorations/PX-2026-056-churn-numerical-method/review-r6/REPORT.md)：312项独立复跑、必要真实浏览器与延迟/fresh-process检查通过，N1–N6在冻结本地合成范围关闭。
+- 阶段Demo已评估/user_input，待用户确认受限研究结论；保留失败历史、冻结v0.1。9.5、18.9、18.19、19定义正文不变，成熟度仅到合成Demo，不代表真实效果或生产就绪，正式联动待集成。
+
+## 2026-09-14 · B05 Repair Round 4复评 NEEDS_FIX（正文不变）
+
+- [PX-056第五轮报告](../../../explorations/PX-2026-056-churn-numerical-method/review-r5/REPORT.md)：267项独立复跑通过，原Node/HTTP方法漂移拒绝成立；公开执行身份返回可写权威，修改后可绕过，N6仍为P1。
+- 同范围Repair Round 5、Demo中/opencode_build，冻结v0.1及历史不变；9.5、18.9、18.19、19正文/成熟度不变，正式联动待集成。
+
+## 2026-09-14 · B05 Repair Round 3复评 NEEDS_FIX（正文不变）
+
+- [PX-056第四轮报告](../../../explorations/PX-2026-056-churn-numerical-method/review-r4/REPORT.md)：251项独立复跑通过，R3浏览器回调自证原反例已关闭；新增N6/P1，旧进程方法执行与当前磁盘hash不一致，同hash出现不同概率。
+- 同范围Repair Round 4仅修N6、保留N1–N5回归，Demo中/opencode_build；冻结v0.1与历史不变。9.5、18.9、18.19、19正文/成熟度不变，正式联动待集成。
+
+## 2026-09-13 · B05 Repair Round 2复评 NEEDS_FIX（正文不变）
+
+- [PX-056第三轮报告](../../../explorations/PX-2026-056-churn-numerical-method/review-r3/REPORT.md)：251项独立复跑通过，N2原反例及N1 Node分支通过；真实浏览器生成/恢复/接受仍可由调用方回调自证，剩余N1为P1。
+- 同范围Repair Round 3，Demo中/opencode_build，保留冻结v0.1与全部历史；9.5、18.9、18.19、19正文/成熟度不变，正式联动待集成。
+
+## 2026-09-13 · B05 Repair Round 1复评 NEEDS_FIX（正文不变）
+
+- [PX-056第二轮报告](../../../explorations/PX-2026-056-churn-numerical-method/review-r2/REPORT.md)：238项复跑通过，N3/N4/N5原反例及正常HTTP/页面来源漂移已修；N1伪上下文、N2实际日期口径仍有P1。
+- 同范围Repair Round 2，Demo中/opencode_build；保留原记录、冻结v0.1。9.5、18.9、18.19、19正文与成熟度不变，正式联动待集成；不授权Handoff或正式开发。
+
+## 2026-09-13 · B05 首轮独立复评 NEEDS_FIX（正文不变）
+
+- [PX-056首轮报告](../../../explorations/PX-2026-056-churn-numerical-method/review-r1/REPORT.md)：153项复跑、12组独立成本/容量、浏览器恢复成立；来源缓存/伪身份、窗口绑定、可写报告及两项状态/数值问题需同范围返修。
+- 保持Demo中/opencode_build，冻结v0.1与历史证据不变；9.5、18.9、18.19、19正文和成熟度不提升，正式联动待集成，无Handoff或正式开发授权。
+
+
+## 2026-09-13 · B06 用户确认延期（正文不变）
+
+- 用户明确“确认延期，后续再做”；[PX-057](../../../explorations/PX-2026-057-ab-complex-design/PRODUCT_BRIEF.md)按现有延期检查点收口，保持讨论中/user_input，等待后续明确恢复和首发实验合同。
+- 本轮仅记录决定并校验文档一致性，未重跑计算或浏览器。10.4–10.5、附录 H 正文与成熟度无影响；正式联动待集成，未授权构建、Handoff或正式开发。
+
+## 2026-09-13 · B06 首发合同核对后延期（正文不变）
+
+- 登记 [PX-057](../../../explorations/PX-2026-057-ab-complex-design/PRODUCT_BRIEF.md)：A02实际映射PX-039，为用户级二值固定期；022只有地理配对留出的固定汇总资格片段，034只证明固定复盘边界，050已批S1未包含复杂实验采用。未发现可执行首发复杂设计合同，按用户启动约束延期，保持讨论中/user_input，未提出Demo Gate或启动Builder。
+- [本轮来源检查](../../../explorations/PX-2026-057-ab-complex-design/SOURCE_CHECK.md)：A02 37/37（仅重定向临时STATE）、022 39/39、034 21/21；118个上游文件前后SHA一致；编码harness失败记录保留。无B06校准、浏览器或生产结论。
+- R1→R2的9.3外部证据采集修订不改变本项10.4–10.5/附录H范围；正文与成熟度无影响。唯一恢复输入是一份需要四类之一的首发实验合同；正式联动待集成，无Handoff/正式开发授权。
+
+## 2026-09-13 · B04第三次定向返修复评NEEDS_FIX（正文不变）
+
+- [PX-055 review-r4](../../../explorations/PX-2026-055-method-correction-cross-domain/review-r4/REPORT.md)：独立77/77及历轮具体反例、390/1280px通过；拒绝凭证在实际审计缺失/虚构seq时仍获批准，仅继续既有来源关联P1，Demo中/opencode_build。
+- 9.6–9.7、20.1定义不变，失败历史保留，正文无影响，正式联动待集成，无Handoff或正式开发授权。
+
+## 2026-09-13 · B05 用户批准首个领域 Demo（正文不变）
+
+- 用户明确“批准”[PX-056草案](../../../explorations/PX-2026-056-churn-numerical-method/DEMO_BRIEF.md)，按原范围冻结v0.1；仅023四档分类/校准/误判成本，待Demo/opencode_build，用户手动接力。
+- 本轮仅文档冻结、状态及链接核对，未重跑数值或浏览器，未自动启动Builder。9.5、18.9、18.19、19正文/成熟度无变化，正式联动待集成，不授权Handoff或正式开发。
+
+
+## 2026-09-13 · B05 首个领域数值验证准备（正文不变）
+
+- 登记 [PX-056](../../../explorations/PX-2026-056-churn-numerical-method/PRODUCT_BRIEF.md)，仅023流失评分/校准与误判成本；七项输入齐备，讨论中/user_gate，尚未冻结或构建。
+- 旧七Pack检查268通过，023公共主链与动作拒绝状态对照成立；只证明旧资格边界。本项方法与真实模型质量尚未验证。
+- 9.5、18.9、18.19、19定义无变化；R2外部证据修订不扩大本地范围，正文与成熟度不变。正式联动待集成，无Handoff/正式开发授权。
+
+
+## 2026-09-13 · B03用户接受受限PASS（正文不变）
+
+- 用户明确接受[PX-054 review-r5](../../../explorations/PX-2026-054-ontology-owner-backend/review-r5/REPORT.md)本地合成隔离Ontology发布与精确解析结论。本项收口，保持Demo已评估/user_input，等待新指令。
+- 本轮仅记录决定，未重跑测试；第12、15、16.8–16.9、20.1章正文不变，正式联动待集成，不授权Handoff或生产实施，历史失败保留。
+
+## 2026-09-13 · B03第四次最小返修最终受限PASS（正文不变）
+
+- [PX-054 review-r5](../../../explorations/PX-2026-054-ontology-owner-backend/review-r5/REPORT.md)：94/94、独立10组、主链/变体新进程回读与只读宽窄证据核对通过；历史阻断关闭。Demo已评估/user_input，待用户接受。
+- 第12、15、16.8–16.9、20.1章获得本地合成接缝证据，正文不变、不提升为生产成熟；正式联动待集成，历史失败保留。
+
+## 2026-09-13 · B04第二次返修复评NEEDS_FIX（正文不变）
+
+- [PX-055 review-r3](../../../explorations/PX-2026-055-method-correction-cross-domain/review-r3/REPORT.md)：独立72/72及两轮原始反例、390/1280px通过；拒绝记录错配仍获批准、releases根目录链接仍被采用，保持Demo中/opencode_build，定向关闭既有N2/N6根因。
+- 9.6–9.7、20.1定义无变化，数值修复不提升为发布采用全链通过；历史保留，正文不变，正式联动待集成，无Handoff或正式开发授权。
+
+## 2026-09-13 · B02用户接受本地受限PASS（正文不变）
+
+- 用户确认接受[PX-053 r8](../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r8/REVIEW.md)的synthetic/fixed/local研究结论；Demo已评估/user_input，本项收口，等待新的明确输入。
+- 本轮仅记录决定，未重跑测试；第9.3、10.1–10.3、12.4、16.7正文无影响，不提升联网或生产成熟度。正式联动待集成，无Handoff或正式开发授权。
+
+## 2026-09-13 · B02第七轮最小返修受限PASS（正文不变）
+
+- [PX-053 r8](../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r8/REVIEW.md)：25/25、历轮具体反例、浏览器16项通过；规范化后空白字段拒绝，原P1全部关闭，历史失败保留。
+- 仅synthetic/fixed/local证据；Demo已评估/user_input，待用户接受。第9.3、10.1–10.3、12.4、16.7正文无变化，不提升联网/生产成熟度，正式联动待集成。
+
+## 2026-09-13 · B03第三次最小返修复评NEEDS_FIX（正文不变）
+
+- [PX-054 review-r4](../../../explorations/PX-2026-054-ontology-owner-backend/review-r4/REPORT.md)：87/87，旧ID回填修复；完整血缘或双侧hash缺失仍成功投影，保持Demo中/opencode_build最小返修。
+- 第12、15、16.8–16.9、20.1章正文及成熟度不变，正式联动待集成，历史保留。
+
+## 2026-09-13 · B02第六轮最小返修复评NEEDS_FIX（正文不变）
+
+- [PX-053 r7](../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r7/REVIEW.md)：24/24、旧反例和浏览器复跑通过；规范化后空白标题仍被当作未提供，原P1-R6-1未关闭，同范围最小返修。
+- 第9.3、10.1–10.3、12.4、16.7定义无变化，正文与成熟度不变；Demo中/opencode_build，正式联动待集成。
+
+## 2026-09-13 · B03第二次最小返修复评NEEDS_FIX（正文不变）
+
+- [PX-054 review-r3](../../../explorations/PX-2026-054-ontology-owner-backend/review-r3/REPORT.md)：81/81，基线反例关闭、新Proposal输入链已执行；catalog硬编码旧Proposal身份导致新ID/hash错配，保持Demo中/opencode_build同范围返修。
+- 第12、15、16.8–16.9、20.1章定义不变、成熟度不提升，正式联动待集成，旧失败保留。
+
+## 2026-09-13 · B04第二轮独立复评NEEDS_FIX（正文不变）
+
+- [PX-055第二轮](../../../explorations/PX-2026-055-method-correction-cross-domain/review-r2/REPORT.md)：62/62、首轮反例与窄屏关闭；同域尺度替代/重复边界、审批写后拒绝、Store历史覆盖、显式确认类型及发布目录链接仍需同范围返修。
+- 冻结v0.1不变，Demo中/opencode_build；9.6–9.7、20.1正文/成熟度不变，正式联动待集成。
+
+
+## 2026-09-13 · B02第五轮最小返修复评NEEDS_FIX（正文不变）
+
+- [PX-053 r6](../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r6/REVIEW.md)：23/23、旧反例与浏览器通过，父引用空/重复字段被忽略，解析完整性P1继续同范围最小返修。
+- 正文/成熟度不变，正式联动待集成。
+
+## 2026-09-13 · B02第四轮最小返修复评NEEDS_FIX（正文不变）
+
+- [PX-053 r5](../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r5/REVIEW.md)：22/22、旧反例与浏览器通过，父ID/标题已提供字段一致性仍P1，同范围最小返修。
+- 正文/成熟度不变，正式联动待集成。
+
+## 2026-09-13 · B03首轮返修复评NEEDS_FIX（正文不变）
+
+- [PX-054 review-r2](../../../explorations/PX-2026-054-ontology-owner-backend/review-r2/REPORT.md)：74/74独立复跑，变动基线免Owner审核真实发布P1仍在，新Proposal判别待补；同范围手动返修。
+- 第12、15、16.8–16.9、20.1章定义及成熟度不变，Demo中/opencode_build，正式联动待集成，旧失败保留。
+
+## 2026-09-13 · B04首轮独立评审NEEDS_FIX（正文不变）
+
+- [PX-055首轮评审](../../../explorations/PX-2026-055-method-correction-cross-domain/review-r1/REPORT.md)：52/52、两域额外尺度和浏览器复现；报告/批准、历史别名、发布资产接续、拒绝残留四项P1及窄屏P2待修。
+- 冻结v0.1保持，Demo中/opencode_build，待用户手动返修接力；9.6–9.7、20.1正文与成熟度不提升，正式联动待集成。
+
+
+## 2026-09-13 · B02第三轮返修复评NEEDS_FIX（正文不变）
+
+- [PX-053 r4](../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r4/REVIEW.md)：21/21、原反例与浏览器通过，转载父来源子串身份匹配P1继续最小返修。
+- 正文/成熟度不变，正式联动待集成。
+
+## 2026-09-13 · B02第二轮返修复评NEEDS_FIX（正文不变）
+
+- [PX-053 r3](../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r3/REVIEW.md)：19/19、原反例与浏览器通过，合计/虚构句误支持及archive祖先链接两项P1继续同范围返修。
+- 正文/成熟度不变，正式联动待集成。
+
+## 2026-09-13 · B04用户批准最小Demo（正文不变）
+
+- 用户明确“批准”；[PX-055 Brief v0.1](../../../explorations/PX-2026-055-method-correction-cross-domain/DEMO_BRIEF.md) 按原七项输入冻结，范围与验收不变，进入待Demo/opencode_build。
+- [逐项OpenCode接力消息](../../../explorations/PX-2026-055-method-correction-cross-domain/NEXT_ACTION.md) 已保存，待用户手动转交；未启动Builder，本轮未重跑Demo，无新增new-pass/发布采用证据。
+- 9.6–9.7、20.1正文不变：仅批准受限验证，未改变定义或成熟度；正式联动待集成。
+
+## 2026-09-13 · B04最小准备与依赖核验（正文不变）
+
+- 登记 [PX-055](../../../explorations/PX-2026-055-method-correction-cross-domain/PRODUCT_BRIEF.md)，七项输入齐备，草案未冻结，等待唯一 Demo Gate。
+- [本轮核验](../../../explorations/PX-2026-055-method-correction-cross-domain/preflight/REPORT.md)：A01隔离45/45；原入口两域尺度变体复现非零总变化被判零，旧证据字节保持。新版本修复、回归发布和显式采用尚未验证；不修改上游结论。
+- 9.6–9.7、20.1正文无变化：属于实现边界缺口与验证准备，不是新增产品定义或成熟度提升；R2外部采证差异不影响本项。正式联动待集成。
+
+
+## 2026-09-13 · B03首轮独立评审NEEDS_FIX（正文不变）
+
+- [PX-054首轮](../../../explorations/PX-2026-054-ontology-owner-backend/review-r1/REPORT.md)：53/53独立复跑通过，但公共发布Owner/时间校验可绕过、Provider硬拒绝被回读ok覆盖、重复版本拒绝破坏既有manifest、catalog固定日期提前召回；同冻结v0.1范围返修，失败历史保留。
+- 12、15、16.8–16.9、20.1正文和成熟度不变，正式联动待集成；无Handoff、生产或Knowledge/Memory后端扩展。
+
+## 2026-09-13 · B02返修1独立复评NEEDS_FIX（正文不变）
+
+- [PX-053 r2](../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r2/REVIEW.md)：16/16、旧反例和浏览器复跑通过；对象/假设句误支持、最终写入链接、archive快照链接3项P1仍待修。
+- 冻结范围不变，正文与成熟度不提升；正式联动待集成。
+
+## 2026-09-13 · 用户接受A11 S1受限结论（正文不变）
+
+- 用户接受[PX050 S1最终评审](../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r6/REPORT.md)，仅新Gap至待审报告的本地合成研究结论；Demo已评估+user_input，留在本项。
+- 不授权后续段或正式Handoff；第7、12.8、23章正文不变，正式联动待集成，历史失败与限制保留。本轮只同步接受决定，未重跑Demo。
+
+## 2026-09-13 · A11 S1最终受限PASS（正文不变）
+
+- [PX050最终评审](../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r6/REPORT.md)：九组回归与针对性浏览器展示验证通过，历史来源/拒绝/重放反例均已关闭；仅首段新Gap→待审报告受限PASS。
+- Demo已评估+user_input，留在本项等待明确指令；第7、12.8、23章全链成熟度不提升，正式联动待集成，历史失败保留。
+
+## 2026-09-13 · B02首轮独立评审NEEDS_FIX（正文不变）
+
+- [PX-053评审](../../../explorations/PX-2026-053-local-research-citation-verification/controller-review/r1/REVIEW.md)：12套件与浏览器复跑通过，独立反例发现原文语义/单位误支持、未知来源计为独立、输出链接越界，另缺原始字节快照；同范围返修。
+- 9.3、10.1–10.3、12.4、16.7正文与成熟度不变，正式联动待集成。
+
+## 2026-09-13 · A11 S1返修4独立复评（正文不变）
+
+- [PX050复评](../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r5/REPORT.md)：八组和历史重放通过，前轮反例关闭；浏览器发现报告单位/台账窗口/Contract展示不一致，仅R5-UI返修。
+- 第7、12.8、23章正文与成熟度不变，正式联动待集成，不推进后续段。
+
+## 2026-09-13 · A11 S1返修3独立复评（正文不变）
+
+- [PX050复评](../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r4/REPORT.md)：七组与此前原反例复跑通过，历史集合删除已拒绝；A→E→A旧重放回退current指针，NEEDS_FIX，同冻结范围返修。
+- 第7、12.8、23章正文与成熟度不变，正式联动待集成，不推进后续段。
+
+## 2026-09-13 · B03用户批准首轮Ontology Demo（正文不变）
+
+- 用户明确“批准”；[PX-054 Brief v0.1](../../../explorations/PX-2026-054-ontology-owner-backend/DEMO_BRIEF.md)沿用七项草案范围冻结，待Demo/opencode_build；逐项OpenCode手动接力Prompt已保存，未自动启动Builder。
+- 仅合成Ontology候选、Owner审核、隔离后端发布与031新任务精确版本解析。暂无B03全链证据，正文与成熟度不变；Knowledge/Memory后端未建设，正式联动保持待集成。
+
+## 2026-09-13 · B03 Ontology Owner 隔离后端接续准备（正文不变）
+
+- 登记[PX-054](../../../explorations/PX-2026-054-ontology-owner-backend/PRODUCT_BRIEF.md)，首轮仅Ontology，七项最小输入齐备，讨论中/user_gate；尚未批准、冻结或启动Builder。
+- 核对R2与启动Prompt R1差异：外部证据混合采集变更不影响本项12、15、16.8–16.9、20.1范围。035候选和隔离模拟账重启、001固定后端发布对照、031的230项检查实际运行；003仍有固定候选/查询断点，拟本项窄适配，不改上游。
+- 无B03全链验证或新产品定义，白皮书正文/成熟度不变；Knowledge/Memory只记后续合同变体，正式联动保持待集成。
+
+## 2026-09-13 · A11 S1返修2独立复评（正文不变）
+
+- [PX050复评](../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r3/REPORT.md)：六组复跑通过，原反例关闭；删除完整observation历史仍生成报告，NEEDS_FIX，同冻结范围返修。
+- 第7、12.8、23章正文与成熟度不变，正式联动待集成，不推进后续段。
+
+## 2026-09-13 · B01真实Demo授权（正文不变）
+
+- 用户明确通过PX-052真实模型Demo授权，不重复live Gate；沿用合成数据/36请求/零重试/USD2等既定边界，Provider与精确模型仍待指定。
+- 授权不替代真实输出/质量证据，当前未live；正文与成熟度不变，013历史豁免及正式联动待集成保持。
+
+## 2026-09-13 · B01离线复评与封题（正文不变）
+
+- [PX-052 r5](../../../explorations/PX-2026-052-live-llm-quality/controller-review/r5/REVIEW.md)：279/279及四轮probe复验，指定阻断关闭；锁基线后封6题/分离答案，36预览、55输出复跑一致，基线35/36+1失败按零分保留。
+- 仅离线准备受限评估，真实质量未验证；待模型选择及独立live Gate。正文/LLM成熟度不变，013豁免与正式联动待集成保持。
+
+## 2026-09-13 · B02用户批准本地Demo（正文不变）
+
+- 用户明确“批准”；[PX-053 Brief v0.1](../../../explorations/PX-2026-053-local-research-citation-verification/DEMO_BRIEF.md)沿用草案范围冻结，待Demo / opencode_build，逐项手动接力Prompt已保存，未自动启动Builder。
+- 仅本地合成数据的实际检索/抽取与引用核验；暂无B02运行证据，正文与成熟度不变，正式联动待集成。
+
+## 2026-09-13 · B02本地采证与引用核验准备（正文不变）
+
+- 登记[PX-053](../../../explorations/PX-2026-053-local-research-citation-verification/PRODUCT_BRIEF.md)，七项输入齐备，草案等待一次Demo Gate；未冻结、未启动Builder。
+- 已核对R1→R2的9.3混合采集/候选Extractor差异，本项仍限定本地合成文档、确定性抽取与独立核对；无外网/Provider授权，无联网研究引擎结论。
+- 010/012源码与语法检查、031公共入口230/230及磁盘导出对账用于前置核对，不提升旧UI或新B02成熟度；9.3、10.1–10.3、12.4、16.7正文无需修改，正式联动保持待集成。
+
+## 2026-09-13 · A11 S1返修1独立复评（正文不变）
+
+- [PX050复评](../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r2/REPORT.md)：5组复跑通过，原反例已修复，但observation完整身份及来源pin缺失仍被接受，保持NEEDS_FIX并同范围返修。
+- 第7、12.8、23章正文与成熟度不变，正式联动待集成，不推进后续段。
+
+## 2026-09-13 · B01第四次离线评审（正文不变）
+
+- [PX-052 r4](../../../explorations/PX-2026-052-live-llm-quality/controller-review/r4/REVIEW.md)：244/244、旧probes及六阶段合法对照通过；发现非I2阶段仍接受未给出的F1，阶段可见引用闭包待修。
+- 未封题、未live，正文与成熟度不变；013豁免、正式联动待集成保持。
+
+## 2026-09-13 · B01第三次离线评审（正文不变）
+
+- [PX-052 r3](../../../explorations/PX-2026-052-live-llm-quality/controller-review/r3/REVIEW.md)：196/196和旧probes复验，r2问题关闭；实际请求暴露I2合同缺键、I1固定序及后轮事实提前消费，继续同范围返修。
+- 未封题、未live，正文/成熟度不变；013豁免与正式联动待集成保持。
+
+## 2026-09-13 · A11 S1首轮独立评审NEEDS_FIX（正文不变）
+
+- [PX050评审](../../../explorations/PX-2026-050-same-goal-business-loop/review-s1-r1/REPORT.md)：完整套件隔离复跑通过，但公开发布、伪触发快照引用和符号链接来源三个独立反例违反冻结S1；同范围返修，未验收。
+- 第7、12.8、23章正文与成熟度不变，正式联动待集成；不推进Review/Teach或A11全链。
+
+## 2026-09-13 · B01第二次离线评审（正文不变）
+
+- [PX-052 r2](../../../explorations/PX-2026-052-live-llm-quality/controller-review/r2/REVIEW.md)：v0.2的175/175及原probe复验成立，新反例暴露I2嵌套引用/键集残留；仍NEEDS_FIX、同范围返修，未封盲题、未live。
+- 正文与成熟度不变，013历史豁免和正式联动待集成保持。
+
+## 2026-09-13 · B01首次离线评审NEEDS_FIX（正文不变）
+
+- [PX-052评审](../../../explorations/PX-2026-052-live-llm-quality/controller-review/r1/REVIEW.md)复跑131/131及58文件一致，但独立反例发现内容匹配、结构拒绝、请求合同和公平对照缺口；同范围返修，不封盲题、不进入live。
+- 白皮书正文无影响，R2成熟度不提升；013历史豁免与正式联动待集成保持。
+
+## 2026-09-13 · B01 离线Demo批准（正文不变）
+
+- 用户在本session回复“批准”，[PX-052 Brief v0.1](../../../explorations/PX-2026-052-live-llm-quality/DEMO_BRIEF.md)冻结，状态待Demo/opencode_build；手动接力已准备，未启动Builder。
+- Builder先交付基线/Prompt与离线装置，Controller后续封存6个评分题；live模型、发送边界和费用仍需独立授权。没有新增质量证据，013历史豁免保留，正文与R2成熟度不变；正式联动待集成。
+
+
+## 2026-09-13 · B01 / PX-2026-052 验证准备（正文不变）
+
+- [新探索](../../../explorations/PX-2026-052-live-llm-quality/PRODUCT_BRIEF.md)关联9.1、11.1、14.5、16.10；采用R2，外部采集修订不扩大本项。
+- 030规则A/B、013四接入点只读任务/基线、009 Profile本轮实际读取；新盲题、通用规则适配与请求预览待离线Demo Gate后实现，尚未live-ready，真实LLM质量未验证。
+- 013历史LIVE EVIDENCE WAIVED保留，不继承旧调用授权。白皮书影响无：没有新增定义或成熟度证据；正式联动保持待集成。恢复停点见本探索行动卡，不覆盖其他维护任务游标。
+
+
+## 2026-09-13 · A11 S1 Demo Gate批准与冻结（正文不变）
+
+- 用户批准新合成Gap→同案分析→待审报告的S1；[v1.0-S1](../../../explorations/PX-2026-050-same-goal-business-loop/DEMO_BRIEF.md)按既有v0.2草案立即冻结。PX-050为待Demo/opencode_build，提供手动OpenCode接力，未自动启动Builder。
+- 旧草案/依赖等待历史保留；来源采用无需重批，Review/Teach不在本次范围。尚无S1实现或新运行证据，不提升第7、12.8、23章成熟度。
+- 白皮书正文无影响：批准验证既有定义，无新产品定义；正式联动待集成。
+
+
+## 2026-09-13 · A04来源采用source-adoption-v1完成（正文不变）
+
+- 用户批准限定维护后，实际更新A05两文件/A06一文件的七处来源锚，保留旧冻结表、状态和历史证据；[采用回执](../../../explorations/PX-2026-050-same-goal-business-loop/source-adoption-v1/REPORT.md)。
+- 真实来源门禁通过；新空隔离状态A05 Python186/186、Node7/7，A06104/104。首次A05回环沙箱失败日志保留，获准后原样完整重跑exit0；未做本轮Chromium视觉验收或旧状态跨版本迁移。
+- PX-050仅解除来源版本阻塞，进入S1首次Demo Gate，草案未冻结/未构建。白皮书定义和成熟度不提升，正文无影响；正式联动待集成。
+
+
+## 2026-09-13 · A11兼容性回执接收（正文不变）
+
+- [回执](../../../explorations/PX-2026-050-same-goal-business-loop/UPSTREAM_COMPATIBILITY_REVIEW.md)由独立子agent形成，父Controller核对报告与35项日志/文档SHA并重跑真实来源门禁；新隔离状态兼容，旧状态不可透明迁移，真实门禁未恢复。
+- PX-050更新为讨论中/user_gate，等待三消费文件精确来源采用及新状态复验的范围批准；补丁仅准备，未改上游或历史范围。回执已到位，无需重复提供；A11 S1/Review/Teach未开始。
+- 白皮书正文无影响：兼容性不证明同案经营闭环；正式联动待集成。
+
+
+## 2026-09-13 · A11 / PX-2026-050 依赖准备（正文不变）
+
+- [新探索与盘点](../../../explorations/PX-2026-050-same-goal-business-loop/PRODUCT_BRIEF.md)关联第7、12.8、23章；当前R2相对启动R1的外部采集定义不扩大本项。
+- A04/A02及旧链公共入口实跑；A05/A06当前A04来源锚漂移，等待前序兼容性回执；033的90日Gap与A04单月无OSM分析仍需首段适配。草案未冻结、Demo未批准/未开始，不称Review或Teach已贯通。
+- 无正文影响：新增的是依赖证据限制，没有产品定义变化或新链验收。只补关联与探索恢复卡；正式联动保持待集成，不修改历史Brief/PASS、不写正式仓库、不提交推送。
+
+## 2026-09-12 · PX-2026-044 Demo 证据更新（正文版本不变）
+
+- PX-2026-044 首个无 LLM 真实来源技术纵切在四轮 `NEEDS_FIX` 修复历史后，经 Review Round 5 独立复评为 `PASS（受限）`：41/41、Controller 真实公开来源 live/refetch、报告四重哈希、完整状态、no-follow 与真实 Chromium 成立。
+- 用户于 2026-09-13 明确接受该受限 PASS；该决定只关闭首个 Demo 的产品结论，下一步仍需单独决定是否开始 LLM 智能抽取与证据绑定纵切的产品讨论，不授权新 Demo、Handoff 或正式开发。
+- 本证据为主稿 9.3、12.1、12.4、16.7–16.9 的既有混合采集、Provenance、稳定 Port 与受控回流定义增加有限支持；不证明通用爬虫、生产合规/并发/规模、真实企业数据、LLM Extractor、Handoff 或正式集成。
+- 白皮书主稿仍为 v3.3.1 / MP-ALIGN-01-R2，正文不变；只更新项目关联与维护停点。项目当前为 `Demo已评估 + user_input`，等待用户决定是否开始 LLM Extractor 产品讨论，不自动启动下一纵切。
+
+## 2026-09-12 · v3.3.1 · MP-ALIGN-01-R2
+
+- 用户在 PX-2026-044 明确接受“确定性采集 / 清洗 + 按需 LLM 智能抽取”的混合架构，并决定先推进不含 LLM 的首个真实来源 Demo。
+- 主稿 9.3 新增外部证据采集边界：HTTP / API / RSS / 受控浏览器取得原始内容，先形成不可变 Source Snapshot；确定性清洗、OCR、表格和规则抽取优先，LLM 仅作为高价值非结构化或低置信内容的可替换 Extractor。
+- 新增 LLM 派生约束：输出绑定原始位置、快照、模型、Prompt、Schema、Extractor 与运行身份；允许拒答；数值字段确定性复核；外部内容不具备工具、凭证或流程控制权；Schema 合法不等于事实真实。
+- PX-2026-044 冻结 Demo Brief v0.1 不改写，仍先验证真实来源、快照、版本、资产路由与 Evidence Port，不验证外部 LLM / Agent；LLM 抽取留作后续独立纵切。
+- 本修订是产品定义同步，不证明采集或 LLM 能力已实现，不新增真实数据、外部写入、付费服务、正式开发、Handoff 或部署授权；正式 JuanerAI 仓库现有 R1 联动快照不自动更新或集成。
+
+## 2026-09-09 · 联动变更暂缓集成（正文版本不变）
+
+- 用户决定先保持文档联动待集成，选择当前开发的合适检查点再合并。
+- 已保存检查点与恢复包，当前不提交、推送、创建 PR、合并或后台监控；后续相关会话先核对阶段停点、主线及冲突，再恢复集成。
+- 白皮书主稿、正式开发 checkout、14 文件 payload 和恢复包不变。
+
+## 2026-09-09 · 正式开发强联动（正文版本不变）
+
+- 用户明确要求白皮书指导 `/Users/huangbo/JuanerAI` 正式开发并建立强联动。
+- research 新增开发联动规则与正式计划/规范索引，接入 AGENTS、共同背景及维护恢复卡。正式侧准备 AGENTS/CONTEXT 入口、输入/交付模板、联动治理文档和 v3.3.1/R1 冻结快照。
+- 精确链路：版本/SHA/章节 → 采用决定 → Requirement/AC → 实现与完整 head 证据 → 验收/发布状态 → 白皮书反馈。既有 OpenSpec、术语、合同及 Demo 结论不自动修改。
+- 正式仓库有其他未提交工作，使用独立文档工作树；基于本地 main/缓存 origin/main `1fe517a1b820ae4bae1e5dede6a8f69a6bffabbd`，未联网刷新。当前只准备本地变更，未提交、推送或合并。
+- 文件范围、来源、集成状态见 [开发联动](DEVELOPMENT_LINKAGE.md) 和 [变更清单](development-linkage/PREPARED_CHANGE.json)。白皮书正文与 R1 SHA 保持不变。
+
+## 2026-09-09 · 接管 / v3.3.1 · MP-ALIGN-01-R1
+
+- 用户授权：接管 JuanerAI 白皮书统一维护；research 为唯一维护工作区，主稿固定为 [JUANERAI_WHITEPAPER.md](JUANERAI_WHITEPAPER.md)。产品基线仍为 v3.3。
+- 原始交付：`归档.zip`，SHA-256 `ba918249b0169a82a87e64158b916f34a8ef81f953995ee0773ea8d21315c67a`；内含 v3.3.1 / MP-ALIGN-01、旧 v3.3、四份说明、六张 PNG。12 个内容文件按字节归档，12 个 macOS 元数据条目仅留在原 ZIP。
+- 用户补充确认：包内 v3.3 是多放的旧文件，v3.3.1 为最新版；保持现有选择，旧版仅归档。
+- 上游修订复核：原六项 Model Pack 问题在正文中均已得到实质回应；历史 36/71 项检查分别列示，预测→证据→审批→行动边界补齐。详见 [接管校验](TAKEOVER_REVIEW.md)。
+- 主稿维护 R1：将 18.15 的线性 `MP5 → MP6 → MP7` 改为接受/返修两支；返修必须 `MP6 → MP3 → MP4 → MP5`，依据 PX-005 产品讨论第 68–69 行。补 18.13.3、附录 J 的 MP1–MP3 展示别名说明，保留冻结状态名 `planned / assigned / training_evaluating`，不迁移项目枚举。
+- 主稿维护 R1：18.14.1 改为模型任务必须有业务问题/使用目的，OSM Objective / Decision 按适用性关联，依据白皮书 7.3 两类入口；不为普通模型任务强造经营对象。此为消除内部表述矛盾，不新增产品路线。
+- 资产：按来源清单完整 SHA 匹配恢复 6 张图片到正文引用路径；其余 13 张引用图缺失，可编辑图源、PDF/DOCX、生成脚本未收到。保留缺口，不使用替代图冒充原始图。
+- 项目影响：建立 PX-001–035 的关联索引及未专项验证主题入口；项目行、冻结 Brief、历史评审、行动卡均不因接管变更。正文与项目关系按 [维护约定](MAINTENANCE.md) 在后续相关工作中同步。
+- 检查范围和结果见接管校验；未重训、重跑 Demo 或声称正式产品集成完成。
+
+历史版本的来源与当时结论仍见 [共同背景的历史来源](../JUANERAI_CONTEXT.md)。
+
+## 2026-09-11：开发前 Demo 全仓盘点
+
+- 核对 37 个探索的台账、恢复卡和范围/评审入口，抽查关键接缝源码；形成 [验证队列](DEMO_VALIDATION_ROADMAP_2026-09-11.md) 和 [扫描指纹](SCAN_RECEIPT_2026-09-11.json)。
+- 区分已有受限证据、真实产物接续断点、12 项优先单元、8 项条件专项与真人验证；修正关联索引头部 36→37，登记部分 Brief 元信息落后现象。
+- 白皮书影响：无正文变化，不提升历史验证成熟度，不变更探索阶段，不启动 Builder 或正式开发；未重跑 Demo。正式仓库联动继续待集成。
+
+## 2026-09-11：逐项 Controller Session Prompt
+
+- 按用户请求，为验证队列全部 21 项生成 [独立 Prompt、索引与合集](demo-prompts-2026-09-11/README.md)，每项含工作目录、来源、唯一问题、最小范围、依赖查找、批准沿用与手动接力规则。
+- B05/B06 各自先收敛一个具体专项，U01 准备真人研究；没有启动 Builder 或新 session，没有预占 PX ID，也未改变既有探索阶段。
+- 白皮书影响：无正文变更；维护恢复卡与根 PROMPTS 增加入口，正式联动继续待集成。
+
+## 2026-09-13：B08 / PX-2026-059 研究准备
+
+- 登记[行动任务适配器与独立回执接续](../../../explorations/PX-2026-059-action-task-adapter/PRODUCT_BRIEF.md)，绑定6.7、17、21与路线图B08；上游034公共链/21项检查、037只读18项套件已复核，001浏览器历史证据本轮未复跑。
+- 七项输入齐备，讨论中/user_gate；草案未冻结，未启动Builder。白皮书影响：无正文影响，R2外部证据采集差异不改变此接缝；尚无B08实现证据，不提升成熟度。正式联动保持待集成，无正式侧写入。
+
+## 2026-09-13 · U01 代表用户试用准备
+
+恢复 [PX-009](../../../explorations/PX-2026-009-autonomous-exploration/NEXT_ACTION.md) 既有研究并交付 [U01 研究包](../../../explorations/PX-2026-009-autonomous-exploration/user-research-u01/RESEARCH_PACK.md)，复用030/021/037三类独立场景，不新立项或重造Demo。当前 `讨论中 + user_gate`，只获准备授权，真人场次0，等待用户批准有限人工试用；没有联系/招募/录制或Builder授权。原批准与PASS历史保持。
+
+核对v3.3.1 / MP-ALIGN-01-R2第21、22章及路线图来源断点；R1→R2的9.3外部采证修订不扩大本项。正文影响：无，材料准备不提升用户理解或生产成熟度；正式联动继续待集成。不同Demo不冒充同一运行链，037重置依当前服务端内存实现而非旧README末尾描述。
+
+### 2026-09-13：B08 批准但暂缓后续
+
+用户明确批准PX-2026-059 v0.1并要求暂缓执行后续；原范围冻结，状态待Demo/user_input，等待明确恢复。未生成接力、未启动Builder。白皮书正文与成熟度无变化，正式联动仍待集成。
+
+## 2026-09-13 · U01 批准与暂缓执行
+
+用户：“批准，但暂缓执行后续”。[PX-009行动卡](../../../explorations/PX-2026-009-autonomous-exploration/NEXT_ACTION.md)同步为`讨论中 + user_input`；U01研究包已批准，等待用户明确恢复，当前不执行后续。真人场次0，主持人/参与者/同意未齐备；不自动招募、联系、录制、试用或启动Builder。原准备与批准历史保留，不重复请求同一Gate。白皮书正文无影响，正式联动继续待集成。
+
+### 2026-09-14：B08恢复构建接力
+
+用户明确恢复PX-2026-059，沿用v0.1批准且A区未变；65项来源无漂移，034原检查21/21与037只读18/18复跑通过。状态待Demo/opencode_build，手动接力已准备、Builder未启动。无白皮书正文或成熟度变化，正式联动仍待集成。
+
+### 2026-09-14：B08首轮独立评审NEEDS_FIX
+
+[PX-2026-059评审](../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r1/REPORT.md)：48/48与正常浏览器路径复现，但公共HTTP反例持久造成重复任务、原1000行动complete1/1，以及损坏来源恢复未阻断。三项P1原范围返修，Demo中/opencode_build；保留全部失败证据，不提升成熟度。白皮书正文无影响，正式联动保持待集成。
+
+### 2026-09-14：B08第二轮独立复评NEEDS_FIX（Repair R1）
+
+[PX-2026-059第二轮报告](../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r2/REPORT.md)：57/57及必要真实浏览器通过，原直接反例阻断；未验证Approval链仍可重复创建，损坏适配窗口恢复可首次确认过期回执，两项P1持续阻止验收。Demo中/opencode_build，保留全部历史，手动定点返修。无白皮书正文影响或成熟度提升，正式联动保持待集成。
+
+### 2026-09-14：B08第三轮独立复评NEEDS_FIX（Repair R2）
+
+[PX-2026-059第三轮报告](../../../explorations/PX-2026-059-action-task-adapter/review-2026-09-14-r3/REPORT.md)：64/64及必要真实浏览器通过，R2直接反例阻断；完整重算 Approval→Initiative→Manifest→Item 的调用方来源链仍被服务接受并新增任务，P1持续阻止验收。Demo中/opencode_build，保留全部历史，手动定点返修。无白皮书正文影响或成熟度提升，正式联动保持待集成。

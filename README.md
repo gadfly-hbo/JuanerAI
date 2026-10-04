@@ -4,15 +4,18 @@ JuanerAI is a commercial AI decision product family for data analysts and enterp
 
 Data -> Decision -> Action -> Outcome
 
-Xanthil is the first JuanerAI product. Existing JuanerAI features and foundations remain reusable; the next product-development sequence awaits the user's whitepaper-based plan adjustment.
+Xanthil is the first JuanerAI product. Existing JuanerAI features and foundations remain reusable; the current approved product-development sequence is indexed in [Planning](docs/planning/README.md).
 
 ## Current State
 
 The repository retains its approved Xanthil CLI local-analysis slice, TypeScript migration, Model Pack contract-enabler and reusable Product Core/Application/Port/Adapter/Profile boundaries.
 
-On 2026-09-18 the user made all pending Xanthil Desktop and Model Pack development plans **VOID**. See [the current planning decision](docs/planning/README.md). Wait for the user's whitepaper-based adjustment; no old plan, review PASS or execution package is current start authority.
+On 2026-09-18 the user made all pending Xanthil Desktop and Model Pack development plans **VOID**. See [the current planning decision](docs/planning/README.md). Use the current approved Blueprint and applicable execution input; withdrawn plans and historical reviews do not restore execution authority.
 
 ## Start Here
+
+- [Whitepaper and product strategy](docs/product/whitepaper/README.md): canonical product source and adopted version history.
+- [Research results](docs/research/README.md): Demo references, exact source identities and production-adoption boundaries.
 
 - AGENTS.md: engineering constitution and stop lines.
 - CONTEXT.md: product language.

@@ -1,0 +1,284 @@
+{
+  "date": "2026-09-17",
+  "whitepaper_version": "v3.3.3",
+  "product_architecture_baseline": "v3.3",
+  "authorization": "User requests integrating product matrix and C-before-B sequence, then explicitly designates v3.3.3",
+  "current_master": "JUANERAI_WHITEPAPER.md",
+  "main_sha256": "9344f07cff450239a0ac33423a239f0dc47c9ac0aa48de8e86253e2b143300ff",
+  "predecessor": {
+    "version": "v3.3.2",
+    "sha256": "18fb7dd6da75d66b59c29dacdf4847cfb4eef10dfd67833cdf64fc25033724ce",
+    "manifest": "revisions/v3.3.2/MANIFEST.json",
+    "original_receipt": "WHITEPAPER_V3_3_2_RECEIPT.json",
+    "original_receipt_sha256": "f6e21ba0d8a425c8785750a0448fc1231b8d85c18263801321160b314ab8c1ff"
+  },
+  "source_receipt": "sources/2026-09-17-product-matrix-v1.0/RECEIPT.json",
+  "source_receipt_sha256": "731ec1656ebf8287fe1b06e7dd83fba04dbf9c4409d1c1e92f06aee54c453e06",
+  "scope": "Approved strategic product definitions, sequence and research traceability; no formal repository implementation or active task changes",
+  "checks": {
+    "current_entrypoints": {
+      "PROJECTS.md": true,
+      "docs/product/JUANERAI_CONTEXT.md": true,
+      "docs/product/JUANERAI_DEVELOPMENT_CHAIN_DEMO_MAP_2026-09-13.md": true,
+      "docs/product/JUANERAI_PRODUCT_PANORAMA_DEMO_MAP_2026-09-13.md": true,
+      "docs/product/whitepaper/JUANERAI_WHITEPAPER.md": true,
+      "docs/product/whitepaper/NEXT_ACTION.md": true,
+      "docs/product/whitepaper/MAINTENANCE.md": true,
+      "docs/product/whitepaper/PROJECT_BINDINGS.md": true,
+      "docs/product/whitepaper/DEVELOPMENT_BINDINGS.md": true,
+      "docs/product/whitepaper/DEVELOPMENT_LINKAGE.md": true,
+      "docs/product/whitepaper/CHANGELOG.md": true,
+      "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md": true
+    },
+    "protected_sections_unchanged": {
+      "Model Pack 18.10-18.22": true,
+      "OSM chapters 5-8": true,
+      "Member case chapter 23": true,
+      "Model Pack appendices I/J": true,
+      "Retail appendix K": true
+    },
+    "protected_historical_and_formal_files_byte_unchanged": 266,
+    "PROJECTS_only_common_background_changed": true,
+    "archived_sources_match_originals": 2,
+    "v3_3_2_snapshot_files_verified": 10,
+    "old_receipts_and_figures_byte_unchanged": true,
+    "local_links_checked": 981,
+    "new_link_defects": 0,
+    "inherited_link_defects": [
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig01_广义数据决策者.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig02_BI_AI问数_JuanerAI.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig03_目标经营闭环.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig04_OSM八大模块.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig05_三种分析模式.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig06_AnalysisIR编译器.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig08_Xanthil_DomainPack_四库双库关系.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig09_可信裁判与Teach.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig10_端到端案例.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig11_DomainPack三种状态.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig12_SemanticContextRuntime四库联动.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig13_DAME六类方法体系.png"
+      ],
+      [
+        "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+        "missing",
+        "assets/fig14_ABTestAnalysis边界.png"
+      ]
+    ],
+    "code_fences_balanced": true,
+    "diff_whitespace_check": "passed; valid Markdown two-space hard breaks allowed",
+    "svg_xml_valid": true,
+    "new_png_dimensions": [
+      3840,
+      2580
+    ],
+    "visual_review": "PNG inspected by author and Controller; no clipping, overlap or text corruption",
+    "independent_text_review": "Source and chapter 25 review passed; credential migration and Pack mapping clarifications applied. Final independent full-diff review found no material conflicts with approved product strategy, formal Desktop/D05 plans or Model Pack two-phase boundaries."
+  },
+  "images": {
+    "references": 22,
+    "unique_png": 21,
+    "available_png": 8,
+    "inherited_missing_png": [
+      "assets/fig01_广义数据决策者.png",
+      "assets/fig02_BI_AI问数_JuanerAI.png",
+      "assets/fig03_目标经营闭环.png",
+      "assets/fig04_OSM八大模块.png",
+      "assets/fig05_三种分析模式.png",
+      "assets/fig06_AnalysisIR编译器.png",
+      "assets/fig08_Xanthil_DomainPack_四库双库关系.png",
+      "assets/fig09_可信裁判与Teach.png",
+      "assets/fig10_端到端案例.png",
+      "assets/fig11_DomainPack三种状态.png",
+      "assets/fig12_SemanticContextRuntime四库联动.png",
+      "assets/fig13_DAME六类方法体系.png",
+      "assets/fig14_ABTestAnalysis边界.png"
+    ],
+    "new_diagram": "assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+    "new_editable_source": "assets/fig21_产品矩阵与先C后B_v3.3.3.svg"
+  },
+  "modified_documents": [
+    "PROJECTS.md",
+    "docs/product/JUANERAI_CONTEXT.md",
+    "docs/product/JUANERAI_DEVELOPMENT_CHAIN_DEMO_MAP_2026-09-13.md",
+    "docs/product/JUANERAI_PRODUCT_PANORAMA_DEMO_MAP_2026-09-13.md",
+    "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+    "docs/product/whitepaper/NEXT_ACTION.md",
+    "docs/product/whitepaper/MAINTENANCE.md",
+    "docs/product/whitepaper/PROJECT_BINDINGS.md",
+    "docs/product/whitepaper/DEVELOPMENT_BINDINGS.md",
+    "docs/product/whitepaper/DEVELOPMENT_LINKAGE.md",
+    "docs/product/whitepaper/CHANGELOG.md",
+    "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md",
+    "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md"
+  ],
+  "limits": [
+    "13 inherited publication images remain missing",
+    "No Demo reruns, live-model trials, real-user sessions or commercial outcome verification",
+    "No writes to formal repository; original R1 integration package remains pending",
+    "No PDF/DOCX export, commit, push, merge or task dispatch"
+  ],
+  "content_files": [
+    {
+      "path": "PROJECTS.md",
+      "sha256": "6166438c39ecf51a6055839411d1a04c6dbc38ddcbb2a89ff1ffffde38b5d28b",
+      "bytes": 58548
+    },
+    {
+      "path": "docs/product/JUANERAI_CONTEXT.md",
+      "sha256": "9192b3a1ac7f700e2123a3b2e8c0478c9e1ef76183317fd796988ec4e87cb67c",
+      "bytes": 21384
+    },
+    {
+      "path": "docs/product/JUANERAI_DEVELOPMENT_CHAIN_DEMO_MAP_2026-09-13.md",
+      "sha256": "205ec637dff705b25b4bd48b53dd101278a88ec337f563020f999dba07d0d761",
+      "bytes": 19727
+    },
+    {
+      "path": "docs/product/JUANERAI_PRODUCT_PANORAMA_DEMO_MAP_2026-09-13.md",
+      "sha256": "48ce32209326c26dbb0e74b985535ae7706d3e09898419cc9e42ae51ca74663c",
+      "bytes": 16970
+    },
+    {
+      "path": "docs/product/whitepaper/JUANERAI_WHITEPAPER.md",
+      "sha256": "9344f07cff450239a0ac33423a239f0dc47c9ac0aa48de8e86253e2b143300ff",
+      "bytes": 235205
+    },
+    {
+      "path": "docs/product/whitepaper/NEXT_ACTION.md",
+      "sha256": "255abae0377f25c8ce5b6386439344d0780a15361bb8b53b05a0fc9da168b29f",
+      "bytes": 10865
+    },
+    {
+      "path": "docs/product/whitepaper/MAINTENANCE.md",
+      "sha256": "54f7363e6e387d01d8f135ddca6d636f917a61cc54583a00b9c740dbdfeac825",
+      "bytes": 7438
+    },
+    {
+      "path": "docs/product/whitepaper/PROJECT_BINDINGS.md",
+      "sha256": "3b7e0ada00cc91c62f16173cbb73bcefa3a2450db65354414bf0d4881b5b4e10",
+      "bytes": 57828
+    },
+    {
+      "path": "docs/product/whitepaper/DEVELOPMENT_BINDINGS.md",
+      "sha256": "c962884b10437052839205936cfdc6dd3e539b8d2ac623ccd18937e103288ef5",
+      "bytes": 10688
+    },
+    {
+      "path": "docs/product/whitepaper/DEVELOPMENT_LINKAGE.md",
+      "sha256": "e71ada91a354faff4ac50b5bf9575c8e4c1a381aad1ffbc583c03e124018f35f",
+      "bytes": 7578
+    },
+    {
+      "path": "docs/product/whitepaper/CHANGELOG.md",
+      "sha256": "f79a790b9b091cf9f1bb4ca98624a219661a3eecae9157fcc448aa1a0d396857",
+      "bytes": 46560
+    },
+    {
+      "path": "docs/product/whitepaper/OSM_RETAIL_INTEGRATION_CHANGE_2026-09-16.md",
+      "sha256": "8bf602834c7907a5a1413ee67b824434f5a08ccef136512872dd2b0be69067fa",
+      "bytes": 6664
+    },
+    {
+      "path": "docs/product/whitepaper/PRODUCT_MATRIX_INTEGRATION_2026-09-17.md",
+      "sha256": "6de79106b2dc098277ec7f96ba1c5f98c164ce859fc9d3aedf2372d3ee587df8",
+      "bytes": 11446
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig07_6plus1总体架构.png",
+      "sha256": "7bd8c98c7328a7294868b50026e29b012a151a5c0e7c21951c1d749eceb86ec2",
+      "bytes": 187993
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig15_ModelPack_MLflow生命周期.png",
+      "sha256": "de37688b306bd3d1c609935b1abc0fd3aff5013a9312aa8a119f335c0cdedf62",
+      "bytes": 212106
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig16_ModelEvol_ModelPack职责映射.png",
+      "sha256": "afddd0bcd7c8d72436570fd3353a95ceaf31e45c0ba8bfe0e6e74c3e4470683c",
+      "bytes": 224101
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig17_Consumer_DesktopRuntime边界.png",
+      "sha256": "f775f52d5d6ca2b74412660c589e1ac4ff8f2e5320f24779dbb8de8aecefa788",
+      "bytes": 208594
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig18_ModelPack通用合同与首发Profile.png",
+      "sha256": "53eabe95517d039f300dc45ceb93c2294b811686ea456de7a143e72868935976",
+      "bytes": 232942
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig19_Phase2企业Serving路线.png",
+      "sha256": "61f3909b6613940a6b8236a08547d5d4ba2d46e6715c6d826854d9c79fa216ea",
+      "bytes": 175625
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig20_OSM目标形成与多维计划_R3.png",
+      "sha256": "ac05a9baf48c865a74227ff0f3a13c79b752065bd29e07ca03d267ca235519e9",
+      "bytes": 604951
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig21_产品矩阵与先C后B_v3.3.3.png",
+      "sha256": "7d76dcfe097e8ce372814f15d9e75e5698f4e32def0e6783764fc9754cfe686b",
+      "bytes": 755981
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig20_OSM目标形成与多维计划_R3.svg",
+      "sha256": "3fbf378ac3d9d76f06809dd4a8292535cc7cb2ecb2f73c4b8012ff3b963f5161",
+      "bytes": 13069
+    },
+    {
+      "path": "docs/product/whitepaper/assets/fig21_产品矩阵与先C后B_v3.3.3.svg",
+      "sha256": "df2630145b98760aaea7230353be365fc67569aa63f4136f94fda97204f6abab",
+      "bytes": 15322
+    }
+  ]
+}
