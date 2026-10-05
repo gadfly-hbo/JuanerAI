@@ -4,7 +4,46 @@
 
 The [Whitepaper entry](../product/whitepaper/README.md) is now maintained inside this repository. Use [the exact adopted v4.0 source](../product/whitepaper/revisions/v4.0/JUANERAI_WHITEPAPER.md) for the historical SHA `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`; use the [current editorial master](../product/whitepaper/JUANERAI_WHITEPAPER.md) for navigation maintenance. [The migration map](../product/whitepaper/MIGRATION_2026-10-03.md) resolves prior research absolute/relative paths without rewriting frozen Blueprint bytes. [The research index](../research/README.md) locates original Demo evidence; required fixed attachments still travel with each product input. This document-location change does not revise Blueprint v4.1 or receiving-task authority.
 
-## Current approved product-development authority — Blueprint v4.1（2026-10-01）
+## Current approved product-development authority — Blueprint v4.2（2026-10-04）
+
+The user confirmed **Blueprint v4.2** on 2026-10-04. Read the
+[HTML system blueprint](2026-10-04/juanerai-system-blueprint-v4.2.html),
+[reviewed full text](2026-10-04/juanerai-product-development-blueprint-v4.2.md)
+and [approval / rule-integration record](2026-10-04/blueprint-v4.2-approval-and-rule-integration.md).
+The full text retains its reviewed draft bytes; its pre-approval labels and §12
+stop line are historical. The approval record owns the subsequent approval and
+local integration status. [Independent readiness Review001](2026-10-04/reviews/blueprint-v4.2-development-readiness-review-001.md)
+passed for planning, not production execution. Git publication and receiver
+adoption are not established by this local update.
+
+Capability-led construction is constrained by complete user tasks:
+Whitepaper → capability map + user journeys → bidirectional mapping → stage
+outcomes → result-sized Changes. Read §2–3 with the four views (§4, §5–6, §9,
+§10), applicable decisions (§7) and N01–N20 impact ledger (§8).
+All 40 IDs, six-plus-two families, 20 candidate indices and S1–S6 remain.
+No capability is added; no candidate is deleted, renamed or reordered.
+
+Preserve Change001–004 and the approved in-flight Change005 / N01–N02 input.
+Near term: browser plus same-machine service, real internal trial then S1
+closure → N05/N06 follow-up → N07/N08 improvement and next-Case adoption.
+Required data/semantic subsets are consumed with the task; professional,
+OSM, Team and Enterprise work enters by need. §6.2 explicitly distinguishes
+the separately approved 005 multi-source/model decisions from this revision.
+No in-flight task must re-adopt, pause, reapprove or expand because of v4.2.
+
+### New product-input package binding — v4.2
+
+Future packages bind the approved text's exact SHA-256 in the approval record,
+its review, applicable task/capability/stage mapping, closed product decisions
+and valid UI Contract/user UI Gate. Bind actual publication commit/tree when
+available. Existing in-flight packages retain their own effective identities;
+Git sync, publication and receiver adoption are distinct facts. The HTML is a
+planning view, not a product UI Contract, completion dashboard or open work order.
+
+## Historical v4.1 approval snapshot — superseded as route by v4.2
+
+The following preserves the earlier approval and publication state, not current
+instructions to restart the P1 package or require its adoption of a new version.
 
 [JuanerAI Product Development Blueprint v4.1](2026-10-01/juanerai-product-development-blueprint-v4.1.md)
 is the approved product-development guideline in this work branch. Its
@@ -37,7 +76,7 @@ current route and adoption interpretation. The in-progress P1 product/UI package
 must adopt the exact revision explicitly; this update neither edits it nor
 reopens its completed corrections or starts production.
 
-### Current product-input package binding — v4.1
+### Historical product-input package binding — v4.1
 
 Later packages bind the v4.1 file, its exact SHA-256 and eventual publication
 commit/tree; the approval record and independent review; the retained stage
@@ -47,7 +86,12 @@ The approval record links the reviewed identity. Receiver readback must name
 the actual task/device, adopted version and protected work/stop boundary.
 Until then, adoption is unconfirmed; main publication alone does not establish it.
 
-## Approved delivery breakdown and first batch — 2026-10-03
+## Retained approved delivery breakdown and first batch — 2026-10-03
+
+The following is the revision002 approval snapshot. Current consolidated route
+and subsequent 005 differences are in v4.2 §5–8; the browser/verification policy
+has since been published. Do not treat the older pending model/UI/policy text
+below as a new blocker or authority to reopen already approved in-flight input.
 
 The user approved revision 002 of the [full Change roadmap](2026-10-03/juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md) and [next product scope and handoff](2026-10-03/xanthil-task-experience-integration-proposal-v0.1.md), then authorized Git publication and first-batch preparation. Blueprint v4.1 and its capability goals remain unchanged. The [independent review](2026-10-03/reviews/full-change-roadmap-v0.1-readiness-001.md#追加-002浏览器交付与首次内部试用修订审查) covers planning readiness, not production intake.
 
