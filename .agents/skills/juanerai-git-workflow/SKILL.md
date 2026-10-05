@@ -11,10 +11,18 @@ Read `docs/governance/git-development-workflow.md` before acting.
 - Treat `main` as a read-only integration mirror. For tracked-file changes,
   start `work/<device>/<slug>` with `tools/harness/git/start-work <slug>`.
 - Keep one task and one active writing device per branch.
-- Stage and commit only reviewed task paths, push the work branch, and open a
-  pull request to `main`.
+- Stage and commit only reviewed task paths and push the work branch within
+  existing authority. For adopted v0.9 Mini product engineering, daily
+  checkpoints/pushes do not each open a PR; concentrate one PR to `main` at
+  formal Change closeout with applicable independent verification, required
+  user acceptance and required CI. MacBook product/governance delivery keeps
+  its existing path. Use the sole execution policy's MacBook Trial Delivery
+  section for updates of the designated trial copy and actual runtime readback.
 - Preserve the repository's OpenSpec, TDD, validation, and independent-review
   Gates; the Git workflow does not approve product scope or acceptance.
+- Recheck affected failures and changed candidates; keep CI on updates to an
+  existing PR. Daily focused checks and trial feedback do not replace formal
+  acceptance, required CI or branch protection.
 - Squash merge after the PR diff and evidence are accepted. The merging device
   then runs `tools/harness/git/sync-main` to synchronize its own and configured
   SSH peers' `main`, regardless of which device performed the merge. Follow the

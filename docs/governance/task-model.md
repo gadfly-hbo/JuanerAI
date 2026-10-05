@@ -20,11 +20,15 @@ Task Bus state never overrides the approved spec. A handoff never approves
 itself. Engineering Controller approval never converts missing executable
 evidence into PASS; a risk waiver requires the user's explicit decision.
 
-## Engineering-Worker-Validator
+## Engineering Main Agent and Validator
 
 - Product Manager freezes product intent, UI, business boundaries, and product acceptance criteria.
-- Engineering Controller freezes engineering contracts, paths, validations, budgets, and task sequence inside those boundaries.
-- Worker receives a scoped brief and returns evidence.
+- The Mini engineering main Agent (Engineering Controller) determines the
+  result-sized package and directly owns necessary spec/design, tests,
+  implementation, corrections, validation and single engineering state inside
+  approved boundaries. Ordinary private mechanics evolve in that same loop.
+- Worker/Spec/Test assistance is optional, has explicit scoped ownership, and
+  returns evidence without writing engineering state or becoming a mandatory stage.
 - Validator independently checks the frozen artifact and returns a verdict.
 - Engineering Controller records Engineering Acceptance, requests changes, or blocks; the user separately owns Product Acceptance and boundary/risk decisions.
 

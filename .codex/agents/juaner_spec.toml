@@ -1,6 +1,6 @@
 name = "juaner_spec"
-description = "Optional JuanerAI engineering-spec/design specialist for a concrete scoped question after approved product input; not a mandatory pipeline stage."
-model = "gpt-6-astra"
+description = "Optional Mini engineering-spec/design specialist for a concrete scoped question after approved product input; not a mandatory pipeline stage or MacBook product reviewer."
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 developer_instructions = """

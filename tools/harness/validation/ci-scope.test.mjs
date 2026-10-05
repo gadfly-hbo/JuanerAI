@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 
 const classifier = fileURLToPath(new URL('./ci-scope.mjs', import.meta.url));
 const configPath = '.codex/agents/juaner_worker.toml';
-const configBefore = 'name = "juaner_worker"\nmodel = "gpt-6-astra"\nmodel_reasoning_effort = "high"\nsandbox_mode = "workspace-write"\ndeveloper_instructions = "preserve authority"\n';
+const configBefore = 'name = "juaner_worker"\nmodel = "gpt-6.1-sol"\nmodel_reasoning_effort = "high"\nsandbox_mode = "workspace-write"\ndeveloper_instructions = "preserve authority"\n';
 const gitEnv = { ...process.env, GIT_AUTHOR_NAME: 'Scope Test', GIT_AUTHOR_EMAIL: 'scope@example.invalid', GIT_COMMITTER_NAME: 'Scope Test', GIT_COMMITTER_EMAIL: 'scope@example.invalid' };
 async function repository(t, trustedClassifier = null) {
   const root = await mkdtemp(path.join(tmpdir(), 'juanerai-ci-scope-'));
@@ -39,8 +39,8 @@ test('CI-TIER-001: parsed model/effort-only edits take affected, other config se
     ['hidden instructions', configBefore.replace('"high"', '"medium"').replace('preserve authority', 'new authority'), 'full'],
     ['sandbox', configBefore.replace('"high"', '"medium"').replace('workspace-write', 'danger-full-access'), 'full'],
     ['malformed', 'model = [', 'full'],
-    ['duplicate key', configBefore + 'model = "gpt-6-astra"\n', 'full'],
-    ['wrong model', configBefore.replace('gpt-6-astra', 'other'), 'full'],
+    ['duplicate key', configBefore + 'model = "gpt-6.1-sol"\n', 'full'],
+    ['wrong model', configBefore.replace('gpt-6.1-sol', 'other'), 'full'],
     ['wrong effort', configBefore.replace('"high"', '"low"'), 'full'],
     ['extra field', configBefore.replace('"high"', '"medium"') + 'permission = true\n', 'full'],
   ]) await t.test(name, async child => {
@@ -56,6 +56,22 @@ function classify(f, base = f.base, flags = []) {
   delete env.NODE_TEST_CONTEXT;
   return spawnSync(process.execPath, [classifier, ...flags, base], { cwd: f.root, env, encoding: 'utf8' });
 }
+
+test('CI-TIER-006: v0.9 pins Mini roles to Sol without changing MacBook defaults', async t => {
+  for (const kind of ['valid', 'old-astra-role', 'sol-primary', 'sol-default-support']) await t.test(kind, async child => {
+    const f = await repository(child, await readFile(classifier, 'utf8'));
+    await f.put(configPath, configBefore.replace('"high"', '"medium"'));
+    if (kind === 'old-astra-role') await f.put(configPath, configBefore.replace('"high"', '"medium"').replace('gpt-6.1-sol', 'gpt-6-astra'));
+    if (kind === 'sol-primary' || kind === 'sol-default-support') {
+      const current = await readFile(path.join(f.root, '.codex/config.toml'), 'utf8');
+      await f.put('.codex/config.toml', current.replace(kind === 'sol-primary' ? 'model = "gpt-6-astra"' : 'default_subagent_model = "gpt-6-astra"', kind === 'sol-primary' ? 'model = "gpt-6.1-sol"' : 'default_subagent_model = "gpt-6.1-sol"'));
+    }
+    f.commit();
+    const full = spawnSync('python3', ['tools/harness/validation/check-agent-config.py', '--check'], { cwd: f.root, env: process.env, encoding: 'utf8' });
+    assert.equal(full.status === 0, kind === 'valid', full.stderr);
+    assert.equal(classify(f).stdout, kind === 'valid' ? 'affected\n' : 'full\n');
+  });
+});
 
 test('CI-SCOPE-002: only explicit non-runtime documentation qualifies, including safe spaces in paths', async t => {
   const f = await repository(t);

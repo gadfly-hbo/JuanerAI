@@ -1,6 +1,6 @@
 name = "juaner_test"
-description = "Optional JuanerAI test specialist for a scoped acceptance, coverage or causal-RED question; not a mandatory stage before engineering."
-model = "gpt-6-astra"
+description = "Optional Mini test specialist for a scoped acceptance, coverage or causal-RED question; not a mandatory stage before engineering."
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 developer_instructions = """

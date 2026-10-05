@@ -47,10 +47,11 @@ current authority in the semi-automatic dual-device path.
   criteria, product prohibitions, and product-planning records. It freezes
   product inputs but does not pre-freeze ordinary implementation contracts,
   paths, commands, environments, or validation mechanics.
-- The **Mac mini Engineering Controller** receives approved product inputs and
-  owns feasibility, result-sized engineering packages and contract decisions,
-  continuous OpenSpec/SDD and TDD, regression, independent Validator,
-  engineering acceptance and state, and authorized Git delivery/integration/archive.
+- The **Mac mini engineering main Agent (Engineering Controller)** receives
+  approved product inputs and directly owns feasibility, result-sized packages,
+  engineering spec/design, SDD/TDD, implementation, diagnosis, corrections and
+  regression, plus independent Validator dispatch, single engineering state,
+  engineering acceptance and authorized Git delivery/integration/archive.
 - The **user** is the final decision authority. The Engineering Controller asks
   the user directly about product ambiguity, scope expansion, new architecture
   or safety boundaries, extra budget, residual-risk acceptance, missing
@@ -140,6 +141,12 @@ Each non-trivial change belongs to openspec/changes/<change-id>/ and declares al
 
 `origin/main` is the integration authority and local `main` is a read-only mirror. Before changing tracked files, work on `work/macbook/<slug>` or `work/mac-mini/<slug>`; use `tools/harness/git/start-work <slug>` when starting from `main`. One device owns a work branch at a time. Integrate through a GitHub pull request with squash merge, then fast-forward local `main`. Read `docs/governance/git-development-workflow.md` before starting, handing off, merging, or resolving cross-device conflicts.
 
+For Mini product engineering that has adopted v0.9, daily affected checks,
+authorized checkpoints/work-branch pushes and MacBook trial delivery precede
+one concentrated PR/integration closeout for the formal Change. Use the sole
+policy's **MacBook Trial Delivery** section for the designated trial copy;
+MacBook product/governance delivery keeps its existing Git workflow.
+
 ## Reuse and Complexity Control
 
 Before sizing a Change or diagnosing repeated non-convergent work, read `docs/governance/change-complexity-control.md`; Xanthil Changes also read `docs/governance/xanthil-first-slice-reuse-baseline.md`. Check actual complexity and risk within existing engineering/review work, not a reasoning-level-triggered approval stage. Material scope or safety expansion requires the user's decision; ordinary corrections follow the sole execution policy's progress-based stop-loss.
@@ -160,18 +167,30 @@ When changing test assets, read `docs/governance/test-asset-retirement.md`. Pres
 ## Roles
 
 - Product Manager owns the frozen product input and product-planning communication.
-- Engineering Controller owns engineering architecture and contracts within the
+- Mini engineering main Agent (Engineering Controller) directly owns spec/design,
+  tests, implementation, corrections, engineering architecture and contracts within the
   approved product, architecture, security, data, permission, and external-effect
   boundaries, plus engineering Gates, integration, and engineering communication.
-- Engineering agent (`juaner_worker`) owns necessary engineering spec/design, tests, implementation and corrections in the approved work package.
+- Engineering support (`juaner_worker`) owns only its explicitly assigned part
+  of the approved package when concrete parallel or specialist value warrants it.
 - Validator uses an independent read-only context and returns evidence and a verdict; it does not implement or approve.
-- Candidate authors and final Validator remain separate; optional Spec/Test specialists are bounded support, not default stages.
+- Candidate authors and final Validator remain separate; optional Worker/Spec/Test
+  support is bounded assistance, not a default pipeline.
 
 ### Standing Delegation Authority
 
-After policy adoption, approved product/UI input and confirmed intake, the Engineering Controller dispatches `juaner_worker` for the result-sized package and reuses its context through ordinary corrections. After freezing the complete candidate and evidence, it dispatches `juaner_validator` in an independent read-only context. No per-dispatch user confirmation is needed inside the approved scope, resource and permission boundaries.
+After policy adoption, approved product/UI input and confirmed intake, the Mini
+engineering main Agent continuously executes the result-sized package itself.
+It may dispatch bounded `juaner_worker`, `juaner_spec` or `juaner_test` support
+when it has concrete value. After freezing the complete candidate and evidence,
+it dispatches `juaner_validator` in an independent read-only context. No
+per-dispatch user confirmation is needed inside approved boundaries.
 
-At dispatch, progress updates, stopping and resumption, apply the sole execution policy's **Lean Context and Continuous Ownership** section: focused input, same Worker, delta-based coordination, native-first roles with explicitly user-consented CLI exceptions, verified stopping and an explicit continuation path.
+At dispatch, progress updates, stopping and resumption, apply the sole execution
+policy's **Lean Context and Continuous Ownership** section: focused input, the
+same engineering main context, delta-based support, native-first execution with
+explicitly user-consented CLI exceptions, verified stopping and an explicit
+continuation path.
 
 Use `juaner_spec` or `juaner_test` only for a concrete scoped support question; neither creates a Spec Gate, TDD_READY approval or automatic next dispatch. A contributing specialist cannot be the final Validator. A missing role or incompatible loaded configuration must be disclosed and resolved at a safe boundary, not bypassed by author self-review or a silently different role. Product permission, Git authority and old task stops are not granted by dispatch or by editing these instructions.
 
@@ -219,14 +238,14 @@ product input names that Gate.
 
 The human project board is a read-only observability surface. Formal user decisions remain in the Codex CLI conversation; the board may present decision briefs and local browser notes but never submits approvals, starts agents, executes commands, or grants authority.
 
-The Engineering Controller owns `.juanerai/project-control/` for the current
+The Mini engineering main Agent (Engineering Controller) owns `.juanerai/project-control/` for the current
 engineering Change and is its sole writer. It updates the board at meaningful
 lifecycle transitions: Change start, phase transition, task completion,
 blocker discovery, user-decision request or resolution, RED/GREEN/verification
 changes, engineering acceptance, applicable product acceptance, and archive.
 The Product Manager maintains product planning and is not a required writer for
-remote engineering progress. Workers and validators return evidence to the
-Engineering Controller rather than writing project-control state. Ordinary inner-loop test runs do not each require a board update.
+remote engineering progress. Support agents and validators return evidence to
+the engineering main Agent rather than writing project-control state. Ordinary inner-loop test runs do not each require a board update.
 
 Follow the stage-recording and board-update timing in `docs/governance/product-change-execution-policy.md`. Mini maintains the confirmed engineering snapshot at each material transition. A MacBook copy is only its last synchronized view, not a live remote-state claim or a second writable board.
 

@@ -11,8 +11,9 @@ ROLES = {f".codex/agents/juaner_{role}.toml": role for role in ("worker", "spec"
 
 
 def validate(path, data):
-    if data.get("model") != "gpt-6-astra":
-        raise ValueError(f"{path}: expected fixed Astra model")
+    model = "gpt-6-astra" if path == CONFIG else "gpt-6.1-sol"
+    if data.get("model") != model:
+        raise ValueError(f"{path}: expected fixed {model} model")
     effort = "high" if path == CONFIG or ROLES[path] == "validator" else "medium"
     if data.get("model_reasoning_effort") != effort:
         raise ValueError(f"{path}: expected {effort} effort")

@@ -10,7 +10,7 @@ view; it does not change any runtime schema, old State/pause/Ledger or board dat
 | UI_CONTRACT / USER_UI_GATE | applicable UI Contract and required user approval bound |
 | PRODUCT_INPUT_FREEZE | approved product semantics, acceptance, references and prohibitions fixed |
 | ENGINEERING_INTAKE | Mini confirms original task, inputs, live worktree, scope, permissions, resource limits and stop point |
-| IMPLEMENTATION | one engineering agent continuously owns behavior spec -> causal RED -> minimal GREEN -> necessary refactor; real runtime and affected checks run early |
+| IMPLEMENTATION | the Mini engineering main Agent continuously owns behavior spec -> causal RED -> minimal GREEN -> necessary refactor; real runtime and affected checks run early; optional scoped support returns evidence |
 | REGRESSION | applicable quality/regression complete; coverage retirement reconciled in existing evidence |
 | VERIFY | independent read-only evaluation of complete fixed candidate; material findings return to the engineering loop |
 | ENGINEERING_ACCEPT | Mini checks blockers, candidate identity, authority and acceptance obligations |
@@ -25,6 +25,9 @@ or migrate state data merely to change the workflow.
 
 Product preparation belongs to MacBook. Mini is the sole writer of current
 engineering state. Record material results/transitions, not every inner test run.
+Daily checkpoints/pushes and MacBook trial updates under the sole policy's
+MacBook Trial Delivery section remain within implementation; they create no
+new state or Gate and do not establish formal Change completion.
 Independent validation uses new fixed inputs after repair; it does not repeat
 unaffected product preparation or create fresh role/command allowances.
 
