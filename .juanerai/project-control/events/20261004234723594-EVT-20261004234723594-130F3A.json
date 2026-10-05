@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004234723594-130F3A",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T23:47:23.594Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "按用户现实范围移除过度兼容设计，继续工程",
+  "status_after": "active",
+  "evidence_refs": []
+}

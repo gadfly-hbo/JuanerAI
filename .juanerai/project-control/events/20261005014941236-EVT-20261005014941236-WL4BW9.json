@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005014941236-WL4BW9",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T01:49:41.236Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "正常构建消费者读回通过；保留历史FAIL与UNKNOWN，未启动真实服务或Provider",
+  "status_after": "validating",
+  "evidence_refs": []
+}

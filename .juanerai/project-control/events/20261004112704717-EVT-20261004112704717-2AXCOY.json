@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004112704717-2AXCOY",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T11:27:04.717Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "来源持久化增量GREEN；进入Preparation/账本集成，完整Change尚未验收",
+  "status_after": "active",
+  "evidence_refs": []
+}

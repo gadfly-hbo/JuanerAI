@@ -18,6 +18,11 @@ and [product slice §7.2](../planning/2026-10-03/xanthil-task-experience-integra
 published at `d89f7d45f6c5ecab7440d66e4747ee3ef6625826`. It retains formal
 Changes, user UI approval, independent validation and required CI.
 
+The 2026-10-04 efficiency adjustment adds impact-scoped CI and fixed role effort
+under `agent-model-routing.md`. It retains continuous Worker spec/design/TDD,
+independent final validation and the adoption boundary below; it does not
+transfer package design back to Controller or authorize dynamic effort routing.
+
 Publication and adoption are separate. New work must identify the published
 policy version and approved product input. An active Mini task adopts at a safe
 boundary only after reading back that version, its actual loaded roles, the
@@ -90,6 +95,88 @@ A message, Git fetch, published commit or task existence is not receiver
 adoption. Manual forwarding by the user is sufficient; no message automation is
 required. Do not create or migrate tasks without the user's explicit request.
 
+## Lean Context and Continuous Ownership
+
+At initial engineering dispatch, give the Worker a focused task context rather
+than the full Product Manager/Controller conversation. Use the existing work
+package: result and acceptance references, current input/baseline identities,
+allowed roots/effects, limits/stops and unresolved risks, plus accessible source
+and evidence pointers. Read required authority, acceptance, applicable contracts
+and target code before acting; load further material when the current question
+requires it. Context reduction never omits a binding constraint, relevant failure
+or UNKNOWN. A missing reference needed for a decision is a gap, not permission
+to guess; no duplicate briefing document is required.
+
+One Worker owns the result-sized package through engineering design, tests,
+implementation, diagnosis, affected regression and review repairs. Resume that
+context with the changed decision/finding, affected scope and evidence pointers;
+reuse valid inputs instead of resending or rereading the whole package. Refresh
+invalidated inputs when the baseline, authority or task changes. If context is
+unavailable or unreliable, recover from existing spec/verification/handoff and
+live worktree evidence, preserve history and stops, and ensure only one active
+writer owns the package. A routine correction does not start another role.
+
+Worker progress is a concise delta: acceptance point advanced, actual result,
+next action or blocker, and evidence locator. Send it at meaningful outcomes or
+new blockers while continuing authorized work; a progress update is not a task
+return or request to continue. Full handoff is for the package outcome, a real
+decision/execution boundary or diagnosed non-convergence. Keep complete raw
+evidence at its existing root rather than copying logs into both conversations.
+
+Mini uses those deltas for decisions and status, opens underlying evidence when
+needed to assess identity, risk, a blocker or acceptance, and does not replay
+the Worker's ordinary debugging or duplicate the Validator's review. A resolved
+decision returns to the same Worker with the bounded change; unaffected work
+continues. Mini owns result collection and the next authorized action: use the
+available wait/notification mechanism, or an already authorized follow-up, to
+consume returns and continue without another user prompt. Ending a reply while
+a detached process runs is not automatic continuation; before yielding establish
+how this task will resume, or disclose the concrete unsupported continuation
+boundary. Report user decisions and completion honestly, not ordinary milestones
+as completion. This introduces no scheduler, polling quota or new permission.
+
+### Native-first Role Execution
+
+Use the parent task's native `juaner_worker` and independent
+`juaner_validator` by default; optional Spec/Test support follows the same
+native-first preference. Terminal `codex exec` / `codex exec resume` as a
+replacement for an engineering role is a lower-priority exception, not an equal
+alternative. Before using it, obtain the user's explicit consent identifying
+the task/role, concrete reason, bounded scope and endpoint. Historical CLI use,
+general development permission or native-role unavailability is not that
+consent. Reuse still-valid explicit exception consent inside its stated bounds;
+ordinary commands and corrections do not each renew it. A changed exception
+boundary requires the user's decision.
+
+An approved exception retains the role's instructions, fixed model/effort,
+sandbox, permissions, single writer, result collection and author-independent
+final validation. Disclose actual loaded settings; an exception cannot bypass
+a role, safety or permission boundary. Ordinary terminal tests, builds and
+already authorized host verification are not CLI role substitution and retain
+their existing permissions. This adds no launcher, scheduler or approval stage
+to the normal native workflow.
+
+On a user stop, Mini interrupts the affected agents and verified task-owned
+processes through authorized controls, checks that work has stopped and records
+any remaining activity or uncertainty. An interrupted parent turn does not
+prove its children stopped. If controls or authority are missing, disclose the
+specific gap and seek the needed decision; do not claim a completed stop.
+
+Switch routes at a safe boundary only after the previous writer and affected
+task processes have stopped. In the same parent task, Change and worktree,
+transfer a focused checkpoint from existing spec/verification/handoff records:
+candidate identity, valid evidence, interrupted checks, failures/UNKNOWN,
+remaining limits and next action. Do not claim native resumption of a CLI
+session; preserve its history and reuse the receiving Worker thereafter.
+Read back the adopted route and actual roles. Rule adoption or a route change
+does not lift an explicit user pause or reset acceptance and consumed resources.
+
+When claiming efficiency gains, compare equivalent accepted work including Mini,
+Worker, Validator and repair/coordination, distinguishing cached input, other
+input and output from elapsed time and user interventions. Use available logs
+and the existing retrospective; missing measurements remain unknown, not a new
+benchmark stage or evidence of lower cost from quieter UI alone.
+
 ## Continuous SDD and TDD
 
 After approved product/UI input and engineering intake:
@@ -148,20 +235,44 @@ keeps its own authority boundary. Missing approved inputs are setup failures,
 not product RED. Disclose unavailable platform checks; a local subset is not
 CI PASS and a CI definition is not permission to install or download resources.
 
-CI reliability is part of this engineering loop. The canonical validation entry
-owns the applicable harness-contract checks and product suites; local delivery
-and CI use the same entry rather than separate remembered command lists. An
-explicitly classified non-runtime documentation change may use focused checks.
-Mixed, executable, dependency, runtime, schema, test or CI changes require their
-applicable regression; unknown or unverified scope cannot select the lighter
-path. Report the selected scope and omitted checks. A documentation check is
-not product regression PASS, and editing the selection mechanism cannot exempt
-that edit from its own full validation.
+CI reliability is part of this engineering loop. Keep one required CI result;
+select checks by proven impact, not line count, an agent's label or a filename
+containing `desktop`. The trusted PR-base classifier owns this selection:
+
+| CI scope | Selection and evidence |
+|---|---|
+| Documentation | Explicit non-runtime Markdown paths: diff checks; no product dependency installation or unrelated harness selftests. Necessary content/reference checks remain in the applicable product/governance review. |
+| Affected | Only a small explicit mapping with known consumers and closed impact: execute the mapped checks and necessary boundary regression. Initially this covers model/effort-only edits to the existing project/role TOMLs, with parsed non-routing fields unchanged and the complete role configuration checked. It does not cover arbitrary role instructions, permissions or product modules. |
+| Full portable | Unmapped/unknown scope, runtime behavior, safety/permissions, persistence/migration/replay, public contracts, shared dependencies, build configuration, or CI selection/checking machinery itself. Run the canonical portable matrix and applicable configuration checks; native acceptance remains separate. |
+
+Combine mapped checks for a mixed change only when every changed object is
+proven covered; an unmapped or risky object requires the full path. Preserve
+structural fallbacks for deletion, rename/copy, symlink and mode changes. Changes
+to the selector, its mapping, workflow or check helpers cannot grant themselves
+lighter validation. Keep `tools/harness/validation/run` as the complete default
+offline entry and reuse the checked-in CI/check entrypoints locally. Missing
+validation prerequisites fail closed; they do not grant a lighter scope or
+permission to install anything.
+
+The TOML configuration check uses Python 3.11+ standard-library `tomllib`.
+Select an already available compatible interpreter through the command-local
+toolchain when running these checks locally; the older product runner's Python
+minimum alone does not prove this check is available. Do not silently skip it
+or install/upgrade the host to satisfy it.
+
+Report the selected scope and omitted checks. Documentation or affected PASS
+is not complete product regression or formal Change acceptance. Formal Changes
+still finish their applicable regression, independent verification and required
+user acceptance; CI selection does not postpone those to stage end. Extend the
+small mapping only with actual consumer and failure-path evidence, not a new
+dependency-analysis platform or per-change approval process.
 
 Keep deterministic regression for false positives, source/fixture drift,
 scope selection and failure propagation. Retain approved input/trust pins;
 deriving a new hash does not approve its source. Test optimization preserves
 acceptance, negative inputs, isolation and required real-boundary evidence.
+Consolidate equivalent cases only with retained failure sensitivity; prefer
+observable outcomes to incidental file ordering or internal call sequences.
 Measure representative pre/post cost before claiming a performance improvement;
 stream failure output and show suite timings in the existing verification log.
 Classify repeated CI failures from evidence before retrying. A green rerun or a
@@ -172,9 +283,8 @@ Spec and Test specialists are optional scoped support, not mandatory stages;
 they do not import the retired approval chain. A contributing specialist cannot
 validate its own candidate. The final Validator remains fresh and read-only.
 An unavailable role is disclosed, not silently replaced with author self-review.
-Keep the same engineering context through ordinary correction; return to Mini
-at a result-sized outcome, a real decision boundary or non-convergence, not
-after every command or internal spec/test edit.
+Use Lean Context and Continuous Ownership for dispatch, progress and resumption;
+ordinary spec/test edits and commands stay inside that engineering loop.
 
 ## Engineering Decisions and Local Correction
 
@@ -246,8 +356,9 @@ These are work/claim distinctions within the existing lifecycle, not new Gates.
 | Integrated stage | Evaluate scenario, capability and experience on the same integrated product across Changes; reuse valid scoped evidence and disclose remaining gaps. Early trial feedback or individual Change PASS does not establish stage acceptance. |
 
 Use the existing verification/delivery record for each claim and its limitations.
-This cadence does not change CI triggers, scope selection or required checks;
-daily focused checks do not waive the product PR's required portable CI.
+This cadence does not change CI triggers or waive required checks. Apply the
+impact-scoped CI rules above; daily focused checks cannot substitute for the
+PR's selected required checks or the Change's applicable regression.
 
 ## Independent Validation and Acceptance
 
@@ -440,8 +551,9 @@ business tests and verify browser/service connection and cross-site protection,
 file/credential permissions, key calculations/evidence, state persistence and
 stop/recovery. Browser PASS neither closes old native E2 nor erases historical
 failures, waivers or unresolved gaps. Shared correctness/safety defects still
-block the affected browser path. Required CI remains unchanged even when its
-suite names contain `desktop`; this policy does not authorize deleting tests.
+block the affected browser path. Select required CI by the impact rules above,
+not suite names containing `desktop`; browser delivery does not authorize
+deleting shared tests.
 
 Installed-artifact acceptance additionally binds the exact package, resources,
 runtime, signature and installation context. Packaging is an explicit check when

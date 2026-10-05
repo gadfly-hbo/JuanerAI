@@ -1,3 +1,5 @@
+import {membershipModelTurn,membershipModelOutput,membershipModelPrompt,membershipModelResultHash,type MembershipModelResult,type MembershipPhysicalOutcome} from '../../packages/product-core/member-model.ts';
+import type {OperationUsage} from '../../packages/product-core/member-operation.ts';
 import {readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {pathToFileURL} from 'node:url';
@@ -24,7 +26,10 @@ export async function loadLocalPi(){
  return {core,models};
 }
 /** Exactly one installed Pi Agent/ModelRuntime request. No resource/session discovery or tools. */
-export async function runLocalXiaomiText(input:{key:string;text:string;system:string;signal:AbortSignal;maxOutput:number;timeoutMs:number;jsonObject?:boolean}){
+type LocalTextInput={key:string;text:string;system:string;signal:AbortSignal;maxOutput:number;timeoutMs:number;jsonObject?:boolean};
+type TextObservation={attempted:boolean;terminal:boolean;usage:OperationUsage|null};
+export async function runLocalXiaomiText(input:LocalTextInput){const result=await runLocalXiaomiTextObserved(input);if(result.cost_microunits===null)fail('PROVIDER_USAGE_INVALID');return {text:result.text,cost_microunits:result.cost_microunits};}
+async function runLocalXiaomiTextObserved(input:LocalTextInput,observation?:TextObservation){
  if(!input.key||/[\r\n\0]/.test(input.key)||Buffer.byteLength(input.key)>4096)fail('CREDENTIAL_INVALID');
  if(!Number.isInteger(input.maxOutput)||input.maxOutput<1||input.maxOutput>2048||input.timeoutMs<1||input.timeoutMs>60000)fail('VALIDATION_FAILED');
  if(Buffer.byteLength(input.text)+Buffer.byteLength(input.system)>12000||input.text.includes(input.key)||input.system.includes(input.key))fail('OUTBOUND_FORBIDDEN');
@@ -38,9 +43,12 @@ export async function runLocalXiaomiText(input:{key:string;text:string;system:st
   agent=new core.Agent({initialState:{model,systemPrompt:input.system,tools:[],thinkingLevel:'off'},toolExecution:'sequential',shouldStopAfterTurn:()=>true,
    streamFn:(selected:typeof model,context:unknown,options:Record<string,unknown>)=>{
     if(issued||signal.aborted)fail('CANCELLED');issued=true;
-    return models.streamSimple(selected,context,{...options,maxTokens:input.maxOutput,maxRetries:0,maxRetryDelayMs:0,signal,apiKey:input.key,env:{},
+    if(observation)observation.attempted=true;
+    const physicalStream=models.streamSimple(selected,context,{...options,maxTokens:input.maxOutput,maxRetries:0,maxRetryDelayMs:0,signal,apiKey:input.key,env:{},
      onPayload:(body:unknown,m:typeof model)=>{if(input.jsonObject===true)(body as Record<string,unknown>).response_format={type:'json_object'};const payload=JSON.stringify(body);if(m.id!==model.id||m.provider!==model.provider||m.baseUrl!==model.baseUrl||m.api!==model.api||Buffer.byteLength(payload)>16000||payload.includes(input.key))fail('OUTBOUND_FORBIDDEN');},
     });
+    if(observation)void physicalStream.result().then(()=>{observation.terminal=true;},()=>undefined);
+    return physicalStream;
    }});
   const cancelled=new Promise<never>((_,reject)=>{const check=()=>reject(Object.assign(new Error('cancelled'),{code:input.signal.aborted?'CANCELLED':'CONNECTION_TIMEOUT'}));if(signal.aborted)check();else signal.addEventListener('abort',check,{once:true});});
   issuedTurn=agent!.prompt({role:'user',content:input.text,timestamp:Date.now()});
@@ -51,7 +59,10 @@ export async function runLocalXiaomiText(input:{key:string;text:string;system:st
   if(m.provider!==model.provider||m.model!==model.id||!Array.isArray(m.content)||m.content.some(b=>b.type!=='text'&&b.type!=='thinking'))fail('VALIDATION_FAILED');
   const text=m.content.filter(b=>b.type==='text').map(b=>b.text??'').join('');if(text.includes(input.key))fail('OUTBOUND_FORBIDDEN');
   const u=m.usage as {input:number;cacheRead:number;cacheWrite:number;output:number;totalTokens:number};
+  const missing=!u||[u.input,u.cacheRead,u.cacheWrite,u.output,u.totalTokens].every(x=>x===0);
+  if(observation&&missing){observation.usage={input_tokens:{kind:'unknown',reason:'provider_not_reported'},output_tokens:{kind:'unknown',reason:'provider_not_reported'},active_ms:{kind:'unknown',reason:'not_measured'},wait_ms:{kind:'known',value:'0'}};return {text,cost_microunits:null};}
   if(!u||[u.input,u.cacheRead,u.cacheWrite,u.output,u.totalTokens].some(x=>!Number.isSafeInteger(x)||x<0)||u.output>input.maxOutput||u.input+u.cacheRead+u.cacheWrite>16384||u.totalTokens!==u.input+u.cacheRead+u.cacheWrite+u.output)fail('PROVIDER_USAGE_INVALID');
+  if(observation)observation.usage={input_tokens:{kind:'known',value:String(u.input+u.cacheRead+u.cacheWrite)},output_tokens:{kind:'known',value:String(u.output)},active_ms:{kind:'unknown',reason:'not_measured'},wait_ms:{kind:'known',value:'0'}};
   return {text,cost_microunits:((u.input+u.cacheRead+u.cacheWrite)*300+u.output*600)*1000000};
  }catch(error){fail(signal.aborted?(input.signal.aborted?'CANCELLED':'CONNECTION_TIMEOUT'):localConnectionError(error));}
  finally{clearTimeout(timer);signal.removeEventListener('abort',abort);agent?.abort();if(issuedTurn)await issuedTurn.catch(()=>undefined);}
@@ -61,8 +72,16 @@ export async function probeLocalXiaomi(key:string,signal:AbortSignal){
  if(result.text.trim()!=='OK.'&&result.text.trim()!=='OK')fail('CONNECTION_FAILED');
 }
 
-export function createPiStoredCaseAssistantRuntime(credential:()=>string):import('../../packages/ports/case-assistant.ts').CaseAssistantRuntime{
- return {async turn(input){
+type StoredCaseRuntime=import('../../packages/ports/case-assistant.ts').CaseAssistantRuntime & Required<Pick<import('../../packages/ports/case-assistant.ts').CaseAssistantRuntime,'membershipTurn'|'describeMembershipOutcome'>>;
+export function createPiStoredCaseAssistantRuntime(credential:()=>string):StoredCaseRuntime{
+ const outcomes=new WeakMap<object,MembershipPhysicalOutcome>();
+ return {describeMembershipOutcome(value){return value!==null&&typeof value==='object'?outcomes.has(value)?structuredClone(outcomes.get(value)!):null:null;},async membershipTurn(raw){
+  const input=membershipModelTurn(raw),observation:TextObservation={attempted:false,terminal:false,usage:null},began=performance.now();
+  const usage=():OperationUsage=>({...observation.usage??{input_tokens:observation.attempted?{kind:'unknown',reason:'provider_not_reported'}:{kind:'known',value:'0'},output_tokens:observation.attempted?{kind:'unknown',reason:'provider_not_reported'}:{kind:'known',value:'0'},active_ms:{kind:'unknown',reason:'not_measured'},wait_ms:{kind:'known',value:'0'}},active_ms:{kind:'known',value:String(Math.max(0,Math.floor(performance.now()-began)))}});
+  try{if(input.signal.aborted)fail('CANCELLED');const text=await runLocalXiaomiTextObserved({key:credential(),text:JSON.stringify(input.payload),system:membershipModelPrompt,signal:input.signal,maxOutput:input.policy.call_output_tokens,timeoutMs:input.policy.call_ms,jsonObject:true},observation);if(!observation.terminal)fail('PHYSICAL_PENDING');let output;try{output=JSON.parse(text.text);}catch{fail('VALIDATION_FAILED');}
+   const result:MembershipModelResult={version:'2.0',context:input.context,provider:input.policy.provider,model:input.policy.model,output:membershipModelOutput(output,input.payload),usage:usage()};outcomes.set(result,{context:structuredClone(input.context),physical_status:'settled',usage:structuredClone(result.usage),result_sha256:membershipModelResultHash(result)});return result;
+  }catch(error){const code=String((error as {code?:unknown}).code??'CONNECTION_FAILED'),safe=Object.assign(new Error(code),{code,stack:code});outcomes.set(safe,{context:structuredClone(input.context),physical_status:observation.terminal?'settled':observation.attempted?'unknown':'not_started',usage:usage(),result_sha256:null});throw safe;}
+ },async turn(input){
   if(input.provider!==fixedXiaomiModel.provider||input.model!==fixedXiaomiModel.id)fail('AUTHORITY_REQUIRED');
   if(input.cost_reservation_microunits<XIAOMI_CREDIT_RESERVATION)fail('BUDGET_EXHAUSTED');
   const result=await runLocalXiaomiText({key:credential(),text:input.payload,system:assistantPrompt(input),signal:input.signal,maxOutput:2048,timeoutMs:60000});

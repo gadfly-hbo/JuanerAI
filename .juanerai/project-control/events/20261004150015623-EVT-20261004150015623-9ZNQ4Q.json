@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004150015623-9ZNQ4Q",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T15:00:15.623Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "host010实际计量集成通过并独立读回，保留完整候选剩余缺口。",
+  "status_after": "active",
+  "evidence_refs": []
+}

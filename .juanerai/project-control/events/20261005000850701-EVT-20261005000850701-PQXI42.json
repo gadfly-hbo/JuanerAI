@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005000850701-PQXI42",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T00:08:50.701Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "conversion001真实浏览器FAIL，resume001实际Store反例确认；普通工程纠正无需新增产品审批",
+  "status_after": "active",
+  "evidence_refs": []
+}

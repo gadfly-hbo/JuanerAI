@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005030719008-EIQ8GU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T03:07:19.008Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "实际独立Node存活通过；host001网页入口超时FAIL保留，普通修正继续",
+  "status_after": "active",
+  "evidence_refs": []
+}

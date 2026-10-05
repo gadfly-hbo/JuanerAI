@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004154134796-AVBNKO",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T15:41:34.796Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "host003解释报告实际验证已收回，保留所有失败与UNKNOWN",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004155610472-PI91AY",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T15:56:10.472Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "host004澄清完整合成链已收回，历史失败与UNKNOWN保留",
+  "status_after": "active",
+  "evidence_refs": []
+}

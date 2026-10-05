@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005031120008-ERBVFA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T03:11:20.008Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "独立Node与真实网页六条合成整链PASS；继续适用完整验证",
+  "status_after": "active",
+  "evidence_refs": []
+}

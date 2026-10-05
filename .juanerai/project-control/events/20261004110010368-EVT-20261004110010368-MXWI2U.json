@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004110010368-MXWI2U",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T11:00:10.368Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "用户恢复产品执行；原生Astra medium Worker接管；自动跟进仍PAUSED",
+  "status_after": "active",
+  "evidence_refs": []
+}

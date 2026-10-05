@@ -156,7 +156,7 @@ if [ "$scope" = portable ]; then
 else
 run_group desktop-contract node --test tests/contract/xanthil-desktop/*.test.ts
 fi
-run_group desktop-integration node --test tests/integration/xanthil-desktop/*.test.ts
+run_group desktop-integration node --test tests/integration/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/browser-companion-process.test.mjs tests/integration/xanthil-desktop/browser-service-view.test.mjs tests/integration/xanthil-desktop/browser-workspace-view.test.mjs
 if [ "$scope" = full ]; then
 run_group native-fixture node tests/fixtures/case-assistant/build-native-fixture.mjs
 run_group desktop-e2e node --test --test-concurrency=1 tests/e2e/xanthil-desktop/*.test.ts

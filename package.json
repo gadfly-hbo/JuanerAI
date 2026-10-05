@@ -18,7 +18,11 @@
     "desktop:package": "node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64",
     "desktop:test": "node tools/desktop/test-daily.mjs",
     "desktop:test:artifact": "node --test tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts",
-    "desktop:test:native": "node tools/desktop/development-native.mjs"
+    "desktop:test:native": "node tools/desktop/development-native.mjs",
+    "web:start": "node tools/browser/entry.mjs start",
+    "web:open": "node tools/browser/entry.mjs open",
+    "web:stop": "node tools/browser/entry.mjs stop",
+    "web:status": "node tools/browser/entry.mjs status"
   },
   "devDependencies": {
     "@types/node": "22.19.19",

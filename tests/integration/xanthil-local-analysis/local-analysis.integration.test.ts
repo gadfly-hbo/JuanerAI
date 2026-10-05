@@ -568,8 +568,39 @@ const ciMaintenanceTestFiles = [
  'tests/fixtures/xanthil-desktop/member-task-test-support.ts',
 ];
 const approvedCiMaintenanceTsconfig=Object.freeze({...approvedChange004Tsconfig,files:[...approvedChange004Tsconfig.files,...ciMaintenanceTestFiles]});
+const browserMembershipTestFiles = [
+ 'tests/integration/xanthil-desktop/browser-preparation.integration.test.ts',
+ 'tests/integration/xanthil-desktop/browser-membership-recovery.integration.test.ts',
+ 'tests/integration/xanthil-desktop/browser-local-transport.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-membership-plan.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-workspace.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-client.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-model-runtime.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-model-policy.integration.test.ts',
+  'profiles/personal/browser-membership.ts',
+  'tests/integration/xanthil-desktop/browser-companion.integration.test.ts',
+];
+const approvedChange005Tsconfig=Object.freeze({...approvedCiMaintenanceTsconfig,files:[...approvedCiMaintenanceTsconfig.files,...browserMembershipTestFiles]});
+
+const independentWebFiles = [
+  'apps/browser/service-main.ts',
+  'tests/integration/xanthil-desktop/browser-independent-profile.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-project-catalog.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-service-auth.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-node-entry.integration.test.ts',
+];
+const independentWebScripts = {
+  'web:start': 'node tools/browser/entry.mjs start',
+  'web:open': 'node tools/browser/entry.mjs open',
+  'web:stop': 'node tools/browser/entry.mjs stop',
+  'web:status': 'node tools/browser/entry.mjs status',
+};
+const approvedIndependentWebManifest = {...approvedDevelopmentManifest,scripts:{...approvedDevelopmentManifest.scripts,...independentWebScripts}};
+const approvedIndependentWebTsconfig = {...approvedChange005Tsconfig,files:[...approvedChange005Tsconfig.files,...independentWebFiles]};
 
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedIndependentWebManifest, approvedIndependentWebTsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change005IndependentWeb' as const;
+  if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedChange005Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change005' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedCiMaintenanceTsconfig, approvedP5RepositoryConfigurationFiles)) return 'CiMaintenance' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedChange004Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change004' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedChange003Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change003' as const;
@@ -3400,7 +3431,40 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
   assert.equal(assertApprovedConfigurationTuple(approvedDevelopmentManifest,approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles),'Change004');
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'CiMaintenance');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Change005IndependentWeb');
+});
+
+test('BF-R11 H-TUPLE independent web permits only the complete scripts and type roots together',()=>{
+ const check=(manifest:unknown,config:unknown)=>assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles);
+ assert.equal(check(approvedIndependentWebManifest,approvedIndependentWebTsconfig),'Change005IndependentWeb');
+ assert.throws(()=>check(approvedDevelopmentManifest,approvedIndependentWebTsconfig));
+ assert.throws(()=>check(approvedIndependentWebManifest,approvedChange005Tsconfig));
+ for(const key of Object.keys(independentWebScripts)) {
+  const scripts:Record<string,string>={...approvedIndependentWebManifest.scripts};delete scripts[key];
+  assert.throws(()=>check({...approvedIndependentWebManifest,scripts},approvedIndependentWebTsconfig));
+  assert.throws(()=>check({...approvedIndependentWebManifest,scripts:{...approvedIndependentWebManifest.scripts,[key]:'node unapproved.mjs'}},approvedIndependentWebTsconfig));
+ }
+ for(const file of independentWebFiles) {
+  assert.throws(()=>check(approvedIndependentWebManifest,{...approvedIndependentWebTsconfig,files:approvedIndependentWebTsconfig.files.filter(p=>p!==file)}));
+  assert.throws(()=>check(approvedIndependentWebManifest,{...approvedIndependentWebTsconfig,files:[...approvedIndependentWebTsconfig.files,file]}));
+  assert.throws(()=>check(approvedIndependentWebManifest,{...approvedIndependentWebTsconfig,files:approvedIndependentWebTsconfig.files.map(p=>p===file?'unapproved.ts':p)}));
+ }
+ assert.throws(()=>check(approvedIndependentWebManifest,{...approvedIndependentWebTsconfig,files:[...approvedChange005Tsconfig.files,...independentWebFiles.toReversed()]}));
+ assert.throws(()=>check({...approvedIndependentWebManifest,scripts:{...approvedIndependentWebManifest.scripts,unapproved:'node unapproved.mjs'}},approvedIndependentWebTsconfig));
+});
+
+test('BF-R13 H-TUPLE admits exactly the Change005 browser roots while retaining prior negative boundaries',()=>{
+ const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedDevelopmentManifest,config,approvedP5RepositoryConfigurationFiles);
+ assert.equal(check(approvedChange005Tsconfig),'Change005');
+ for(const omitted of [...membershipTestFiles,...ciMaintenanceTestFiles,...browserMembershipTestFiles])assert.throws(()=>check({...approvedChange005Tsconfig,files:approvedChange005Tsconfig.files.filter(file=>file!==omitted)}));
+ for(const [index,file] of browserMembershipTestFiles.entries()){
+  assert.throws(()=>check({...approvedChange005Tsconfig,files:[...approvedCiMaintenanceTsconfig.files,...browserMembershipTestFiles.map((p,i)=>i===index?'tests/unapproved.test.ts':p)]}));
+  assert.throws(()=>check({...approvedChange005Tsconfig,files:[...approvedChange005Tsconfig.files,file]}));
+ }
+ assert.throws(()=>check({...approvedChange005Tsconfig,files:[...approvedCiMaintenanceTsconfig.files,...browserMembershipTestFiles.toReversed()]}));
+ assert.throws(()=>check({...approvedChange005Tsconfig,compilerOptions:{...approvedChange005Tsconfig.compilerOptions,strict:false}}));
+ assert.throws(()=>check({...approvedChange005Tsconfig,configuration_selector:'Change005'}));
+ assert.throws(()=>assertApprovedConfigurationTuple({...approvedDevelopmentManifest,dependencies:{...approvedDevelopmentManifest.dependencies,unapproved:'1.0.0'}},approvedChange005Tsconfig,approvedP5RepositoryConfigurationFiles));
 });
 
 test('CI-CHECK-001 H-TUPLE admits only the explicit CI-maintenance appendix and retains all Change004 roots', () => {

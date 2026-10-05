@@ -1,4 +1,5 @@
-import {validatePlanStart,validateMembershipPlan,validateAnalysisManifest,analysisResult,analysisRatio,membershipJudgment,membershipHash,type MembershipPlan,type AnalysisRunManifest} from '../product-core/member-analysis.ts';
+import {bindQualifiedPreparation,preparedConfirmationContext,validateMemberConfirmation,memberConfirmationDocuments,type PreparedConfirmationRequest,type PreparedConfirmationContext} from '../product-core/member-preparation.ts';
+import {analysisPlanIdentity,analysisArtifactVersion,analysisManifestVersion,validatePlanStart,validateMembershipPlan,validateAnalysisManifest,analysisResult,analysisRatio,analysisJudgment,analysisRefutation,membershipFindingFacts,membershipJudgment,membershipHash,type MembershipPlan,type AnalysisRunManifest} from '../product-core/member-analysis.ts';
 import type { LocalModelAccess } from '../ports/provider-settings.ts';
 import { createHash, randomUUID } from 'node:crypto';
 import { desktopAssistancePayload, validateDesktopAssistanceDraft } from '../product-core/xanthil-desktop-decision-case.ts';
@@ -199,8 +200,8 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
     if(resultPending)failure('RESULT_PENDING');if(!analysis||!runStore||!scheduler)failure('TOOLCHAIN_UNAVAILABLE');
     const command=validatePlanStart(input),owner={project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id};
     const current=await readProjection(owner);if(current.session?.current_revision_id!==owner.revision_id)failure('STALE_REVISION');if(current.revision?.integrity_state!=='ok')failure('INTEGRITY_BLOCKED');
-    const plan=command.contract_version==='2.0'?command.execution_plan:undefined;
-    if(plan){const confirmed=await store.readConfirmedSnapshot({...owner,confirmation_id:command.confirmation_id});const c=JSON.parse(new TextDecoder().decode(confirmed.confirmation.contract_bytes)),binding=JSON.parse(new TextDecoder().decode(confirmed.confirmation.binding_bytes));const parameters={column_mapping:binding,comparison_period:c.comparison_period,current_period:c.current_period,currency:c.currency,time_zone:c.time_zone,valid_statuses:c.valid_statuses,selected_group_mode:c.selected_group_mode};validateMembershipPlan(plan,{members_bytes:confirmed.snapshot.members.bytes,orders_bytes:confirmed.snapshot.orders.bytes},parameters);if(plan.snapshot_id!==confirmed.snapshot.snapshot_id)failure('SOURCE_CHANGED');}
+    const plan=command.contract_version!=='1.0'?command.execution_plan:undefined;if(plan?.version==='2.0'&&!analysis.describeMembershipOutcome)failure('TOOLCHAIN_UNAVAILABLE');
+    if(plan){const confirmed=await store.readConfirmedSnapshot({...owner,confirmation_id:command.confirmation_id});if(plan.version==='2.0'&&(!confirmed.preparation||membershipHash(bindQualifiedPreparation(confirmed.preparation))!==membershipHash(plan.preparation)))failure('SOURCE_CHANGED');const c=JSON.parse(new TextDecoder().decode(confirmed.confirmation.contract_bytes)),binding=JSON.parse(new TextDecoder().decode(confirmed.confirmation.binding_bytes));const parameters={column_mapping:binding,comparison_period:c.comparison_period,current_period:c.current_period,currency:c.currency,time_zone:c.time_zone,valid_statuses:c.valid_statuses,selected_group_mode:c.selected_group_mode};validateMembershipPlan(plan,{members_bytes:confirmed.snapshot.members.bytes,orders_bytes:confirmed.snapshot.orders.bytes},parameters);if(plan.snapshot_id!==confirmed.snapshot.snapshot_id)failure('SOURCE_CHANGED');}
     const description=exactRecord(await analysis.describeImplementation(plan?{execution_plan:plan}:{}),['method_id','method_version','code_identity','duckdb_version','python_version','primary_sql','python_verifier']);
     const started_at=timestamp(),deadline_at=new Date(Date.parse(started_at)+Number(plan?.task_context?.run_ms??300000)).toISOString();
     const random=randomUUID().replaceAll('-',''),hex=Date.parse(started_at).toString(16).padStart(12,'0');
@@ -219,16 +220,19 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
   async function executeAnalysis(owner:OwnerRef,admitted:DesktopProjection,description:Record<string,unknown>,control:{abort:AbortController;reason:string|null},plan?:MembershipPlan):Promise<void>{
     const run=admitted.runs.at(-1)!,run_id=run.run_id,deadline=Date.parse(run.deadline_at),signal=control.abort.signal;
     let manifest:AnalysisRunManifest|undefined,manifestSha:string|undefined;
+    let physical:'settled'|'unresolved'='settled',measuredMs=0;
+    const executeStage=async(stage:'calculate'|'verify',request:Parameters<NonNullable<typeof analysis>['calculate']>[0])=>{if(plan?.version!=='2.0')return analysis![stage](request);physical='unresolved';let value:unknown,result;try{result=await analysis![stage](request);value=result;}catch(error){value=error;}const proof=analysis!.describeMembershipOutcome!(value);if(proof&&proof.version==='1.0'&&proof.run_id===run_id&&proof.plan_sha256===membershipHash(plan)&&proof.stage===stage&&Number.isSafeInteger(proof.active_ms)&&proof.active_ms>=0&&(!result?proof.result_sha256===null:proof.result_sha256===membershipHash(result))){measuredMs+=proof.active_ms;if(proof.physical_status==='settled'||proof.physical_status==='not_started')physical='settled';}if(!result)throw value;if(physical!=='settled')failure('PHYSICAL_PENDING');return result;};
     const scheduled=(scheduler!.schedule as (input:{at_epoch_ms:number;callback:()=>void})=>{cancel():void})({at_epoch_ms:deadline,callback:()=>{control.reason='deadline_exceeded';control.abort.abort();}});
     if(!scheduled||typeof scheduled.cancel!=='function')failure('VALIDATION_FAILED');
     const check=()=>{if(Date.parse(timestamp())>=deadline){control.reason='deadline_exceeded';control.abort.abort();}if(control.abort.signal.aborted)failure(control.reason==='user_cancelled'?'CANCELLED':'DEADLINE_EXCEEDED');};
     const settle=async(terminal:DesktopAnalysisSettlement['terminal'],completed_at:string)=>{
       const current=await store.readProjection(owner),command={contract_version:'1.0' as const,command_id:randomUUID(),...owner,expected_row_version:current.revision!.row_version};
-      const request={command,run_id,terminal,completed_at,input_fingerprint:fingerprint('settle_analysis',command,{run_id,terminal})};
+      const known=(value:string)=>({kind:'known' as const,value}),membership_meter=plan?.version==='2.0'?{version:'1.0' as const,run_id,plan_sha256:membershipHash(plan),physical,usage:{input_tokens:known('0'),output_tokens:known('0'),active_ms:physical==='settled'?known(String(measuredMs)):{kind:'unknown' as const,reason:'physical_pending',known_lower_bound:String(measuredMs)},wait_ms:known('0')}}:undefined;
+      const request={command,run_id,terminal,completed_at,...(membership_meter?{membership_meter}:{}),input_fingerprint:fingerprint('settle_analysis',command,{run_id,terminal,...(membership_meter?{membership_meter}:{})})};
       try{await store.settleAnalysis(request);}catch(error){if((error as {code?:string}).code==='RESULT_PENDING')resultPending=true;throw error;}
     };
     try{
-      check();const snapshot=await store.readConfirmedSnapshot({...owner,confirmation_id:admitted.confirmation!.confirmation_id});
+      check();const snapshot=await store.readConfirmedSnapshot({...owner,confirmation_id:admitted.confirmation!.confirmation_id});if(plan?.version==='2.0'&&(!snapshot.preparation||membershipHash(bindQualifiedPreparation(snapshot.preparation))!==membershipHash(plan.preparation)))failure('SOURCE_CHANGED');
       const contract={...JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(snapshot.confirmation.contract_bytes)),column_mapping:JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(snapshot.confirmation.binding_bytes))};
       // The execution Port receives only the approved business selection, not identity metadata.
       const selection={column_mapping:contract.column_mapping,comparison_period:contract.comparison_period,current_period:contract.current_period,currency:contract.currency,time_zone:contract.time_zone,valid_statuses:contract.valid_statuses,selected_group_mode:contract.selected_group_mode};
@@ -239,26 +243,28 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
       const primary=exactRecord(description.primary_sql,['bytes','sha256','byte_length']),python=exactRecord(description.python_verifier,['bytes','sha256','byte_length']);
       if(!(primary.bytes instanceof Uint8Array)||!(python.bytes instanceof Uint8Array)||hash(primary.bytes)!==primary.sha256||hash(python.bytes)!==python.sha256||String(primary.bytes.length)!==primary.byte_length||String(python.bytes.length)!==python.byte_length)failure('INTEGRITY_BLOCKED');
       const descriptor=(path:string,input:Record<string,unknown>)=>({path,sha256:input.sha256,byte_length:input.byte_length});
-      manifest=validateAnalysisManifest({schema_version:plan?'4.0':'3.0',...(plan?{execution_plan:plan}:{}),run_id,analysis_kind:'membership_repurchase_decision_case',status:'in_progress',started_at:run.started_at,
+      manifest=validateAnalysisManifest({schema_version:analysisManifestVersion(plan),...(plan?{execution_plan:plan}:{}),...(plan?.version==='2.0'?{preparation_sha256:plan.preparation.sha256}:{}),run_id,analysis_kind:'membership_repurchase_decision_case',status:'in_progress',started_at:run.started_at,
         product_context:{...owner,confirmation_id:admitted.confirmation!.confirmation_id,snapshot_id:snapshot.snapshot.snapshot_id},application:{id:'xanthil-desktop',version:'0.1.0'},profile:{id:'personal-desktop'},execution:{kind:'deterministic_local',model_usage:'none'},method:{id:run.method_id,version:run.method_version,code_identity:run.code_identity},tools:{duckdb_version:description.duckdb_version,python_version:description.python_version},
         confirmation:{contract:descriptor('analysis-contract.json',confirmation_files.contract),binding:descriptor('binding.json',confirmation_files.binding),ir:descriptor('ir.json',confirmation_files.ir)},
         sources:(['members','orders'] as const).map(role=>({role,snapshot_id:snapshot.snapshot.snapshot_id,...descriptor(`${owner.session_id}/010_draw/${snapshot.snapshot.snapshot_id}/${role}.csv`,snapshot.snapshot[role]),display_name:snapshot.snapshot[role].display_name,confirmed_at:admitted.snapshot!.confirmed_at})),
         artifacts:[{artifact_id:'primary-query',kind:'query',...descriptor('assets/primary.sql',primary)},{artifact_id:'independent-verifier',kind:'verifier',...descriptor('assets/verify.py',python)}]});
 const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmation_files,code_assets:{primary_sql:bytes(primary.bytes),python_verifier:bytes(python.bytes)},cancellation_signal:signal});manifestSha=text(begun.in_progress_manifest_sha256);
-      const request=()=>{check();return {run_id,expected_code_identity:run.code_identity,contract:plan?{...selection,schema_version:'2.0',execution_plan:plan}:selection,snapshot:raw,group_pseudonym_map,cancellation_signal:signal,deadline_seconds:Math.min(Number(plan?.task_context?.process_seconds??30),Math.max(0,Math.floor((deadline-Date.parse(timestamp()))/1000)))};};
-      const duck=await analysis!.calculate(request());check();const primaryResult=analysisResult(duck.result,plan);
+      const request=()=>{check();return {run_id,expected_code_identity:run.code_identity,contract:plan?{...selection,schema_version:plan.version==='2.0'?'3.0':'2.0',execution_plan:plan}:selection,snapshot:raw,group_pseudonym_map,cancellation_signal:signal,deadline_seconds:Math.min(Number(plan?.task_context?.process_seconds??30),Math.max(0,Math.floor((deadline-Date.parse(timestamp()))/1000)))};};
+      const duck=await executeStage('calculate',request());check();const primaryResult=analysisResult(duck.result,plan);
       const first=await runStore!.recordDuckDbResult({run_id,expected_in_progress_manifest_sha256:manifestSha,bytes:encode(duck),cancellation_signal:signal});manifestSha=text(first.in_progress_manifest_sha256);manifest=validateAnalysisManifest({...manifest,artifacts:[...manifest.artifacts,first.descriptor]});
-      const verifier=await analysis!.verify(request());check();const independentResult=analysisResult(verifier.result,plan);
+      const verifier=await executeStage('verify',request());check();const independentResult=analysisResult(verifier.result,plan);
       const second=await runStore!.recordPythonResult({run_id,expected_in_progress_manifest_sha256:manifestSha,bytes:encode(verifier),cancellation_signal:signal});manifestSha=text(second.in_progress_manifest_sha256);manifest=validateAnalysisManifest({...manifest,artifacts:[...manifest.artifacts,second.descriptor]});
       if(canonicalDesktopJson(primaryResult)!==canonicalDesktopJson(independentResult))failure('VALIDATION_MISMATCH');
-      const artifact_id=randomUUID(),report_id=randomUUID(),finding_id=randomUUID(),judgment=membershipJudgment(primaryResult),limitations=['association_not_causation','no_significance_test','confirmed_local_snapshot_only'];
+      const artifact_id=randomUUID(),report_id=randomUUID(),finding_id=randomUUID(),judgment=analysisJudgment(primaryResult,plan),facts=plan?.version==='2.0'?membershipFindingFacts(primaryResult,plan):undefined,limitations=['association_not_causation','no_significance_test','confirmed_local_snapshot_only'];
       const evidence_refs=[`${run_id}:duckdb-result`,`${run_id}:python-result`], supporting_evidence=[`comparison_repurchase_rate=${analysisRatio(primaryResult.periods.comparison.repurchase_rate)}`,`current_repurchase_rate=${analysisRatio(primaryResult.periods.current.repurchase_rate)}`];
-      const refutation=judgment==='Confirmed'?'association_does_not_establish_cause':judgment==='Rejected'?'current_rate_is_not_lower':'active_member_denominator_is_zero';
-      const source={schema_version:plan?'2.0':'1.0',...(plan?{plan_sha256:membershipHash(plan)}:{}),run_id,finding_id,...manifest.product_context,method:manifest.method};
+      const refutation=analysisRefutation(primaryResult,plan);
+      const source={schema_version:analysisArtifactVersion(plan),...analysisPlanIdentity(plan),run_id,finding_id,...manifest.product_context,method:manifest.method};
       const ratio=analysisRatio;
       const periods=primaryResult.periods;
-      const provenance=`${plan?'Plan: '+plan.id+'\nPlan SHA-256: '+membershipHash(plan)+'\n':''}Run: ${run_id}\nProject: ${owner.project_id}\nSession: ${owner.session_id}\nCase: ${owner.case_id}\nRevision: ${owner.revision_id}\nConfirmation: ${manifest.product_context.confirmation_id}\nSnapshot: ${manifest.product_context.snapshot_id}\nMethod: ${run.method_id} / ${run.method_version}\nCode SHA-256: ${run.code_identity}\n${manifest.sources.map(s=>`${s.role} SHA-256: ${s.sha256}`).join('\n')}`;
-      const readable=`# 会员复购分析 · 证据草稿\n\nH1：当前期复购率低于对比期\n判断：${judgment}\n未接受 · 未闭环 · 未导出\n\n## 两期指标\n\n| 指标 | 对比期 | 当前期 |\n|---|---:|---:|\n| 活跃成员（复购率分母） | ${periods.comparison.active_member_count} | ${periods.current.active_member_count} |\n| 复购成员 | ${periods.comparison.repeat_member_count} | ${periods.current.repeat_member_count} |\n| 复购率（精确分数） | ${ratio(periods.comparison.repurchase_rate)} | ${ratio(periods.current.repurchase_rate)} |\n| 复购收入（分） | ${periods.comparison.repeat_revenue_fen} | ${periods.current.repeat_revenue_fen} |\n\n支持与反证：两期有效订单按成员和时间排序，复购收入只计期内第二笔及以后的有效订单。${judgment==='Confirmed'?'当前期复购率较低，支持此关联假设。':judgment==='Rejected'?'当前期复购率不低于对比期，不支持此假设。':'至少一期活跃成员分母为零，不能作可比较判断。'}\n\n限制：关联不等于因果；不进行显著性检验；仅限已确认的本地快照。\n\n## 精确指标与变化\n\n\`\`\`json\n${canonicalDesktopJson(primaryResult)}\n\`\`\`\n\n## 来源与方法\n\n\`\`\`text\n${provenance}\n\`\`\`\n`;
+      const preparationProvenance=plan?.version==='2.0'&&snapshot.preparation?`Preparation: ${plan.preparation.id}\nPreparation SHA-256: ${plan.preparation.sha256}\nSourceSet: ${plan.preparation.source_set_id}\nSourceSet SHA-256: ${plan.preparation.source_set_sha256}\nPreparation code SHA-256: ${plan.preparation.code_sha256}\n${snapshot.preparation.qualification.source_set.sources.map(s=>`${s.display_name} (${s.format}) SHA-256: ${s.sha256}; sheets: ${s.sheets.map(x=>x.name).join(', ')}`).join('\n')}\nLineage SHA-256: ${plan.preparation.lineage_sha256}\n${snapshot.preparation.qualification.lineage.map(l=>`${l.role} row ${l.normalized_row} <- ${l.source_id}/${l.sheet_id} row ${l.source_row}: ${JSON.stringify(l.columns)}`).join('\n')}\n`:'';
+      const provenance=`${preparationProvenance}${plan?'Plan: '+plan.id+'\nPlan SHA-256: '+membershipHash(plan)+'\n':''}Run: ${run_id}\nProject: ${owner.project_id}\nSession: ${owner.session_id}\nCase: ${owner.case_id}\nRevision: ${owner.revision_id}\nConfirmation: ${manifest.product_context.confirmation_id}\nSnapshot: ${manifest.product_context.snapshot_id}\nMethod: ${run.method_id} / ${run.method_version}\nCode SHA-256: ${run.code_identity}\n${manifest.sources.map(s=>`${s.role} SHA-256: ${s.sha256}`).join('\n')}`;
+      const directionLabel=facts?{decrease:'下降',increase:'上升',equal:'持平',not_comparable:'不可比较'}[facts.comparison_direction]:null;
+      const readable=`# 会员复购分析 · 证据草稿\n\n${facts?`原始问题：${admitted.revision!.question_text}\n用户提出的假设：${facts.intent.user_hypothesis??'未提出'}\n${snapshot.clarifications?.length?'用户补充（所选回答，不代表已核验事实）：\n'+snapshot.clarifications.map(c=>c.reply).join('\n')+'\n':''}本轮总体复购率变化：${directionLabel}\n核验：可得计算经两路独立复算一致；不可算部分不作比较。`:`H1：当前期复购率低于对比期\n判断：${judgment}`}\n未接受 · 未闭环 · 未导出\n\n## 两期指标\n\n| 指标 | 对比期 | 当前期 |\n|---|---:|---:|\n| 活跃成员（复购率分母） | ${periods.comparison.active_member_count} | ${periods.current.active_member_count} |\n| 复购成员 | ${periods.comparison.repeat_member_count} | ${periods.current.repeat_member_count} |\n| 复购率（精确分数） | ${ratio(periods.comparison.repurchase_rate)} | ${ratio(periods.current.repurchase_rate)} |\n| 复购收入（分） | ${periods.comparison.repeat_revenue_fen} | ${periods.current.repeat_revenue_fen} |\n\n支持与反证：两期有效订单按成员和时间排序，复购收入只计期内第二笔及以后的有效订单。${facts?(facts.comparison_direction==='not_comparable'?'至少一期活跃成员分母为零，相关复购率及其差异不可算。':`本轮总体复购率${directionLabel}，这是已核实的描述性差异，不代表用户假设或因果成立。`):judgment==='Confirmed'?'当前期复购率较低，支持此关联假设。':judgment==='Rejected'?'当前期复购率不低于对比期，不支持此假设。':'至少一期活跃成员分母为零，不能作可比较判断。'}\n\n限制：关联不等于因果；不进行显著性检验；仅限已确认的本地快照。\n\n## 精确指标与变化\n\n\`\`\`json\n${canonicalDesktopJson(primaryResult)}\n\`\`\`\n\n## 来源与方法\n\n\`\`\`text\n${provenance}\n\`\`\`\n`;
       const projectedEvidence=[{id:'duckdb-result',title:'DuckDB 主计算',value:duck},{id:'python-result',title:'Python 独立复算',value:verifier}];
       const links=projectedEvidence.map(x=>`[${x.title}](#evidence-${run_id}-${x.id})`).join(' · ');
       const sections=projectedEvidence.map(x=>`## evidence-${run_id}-${x.id}\n\n${x.title}\n\n\`\`\`json\n${canonicalDesktopJson(x.value)}\n\`\`\`\n`).join('\n');
@@ -266,22 +272,22 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
       const escape=(value:string)=>value.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
       const html=`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>会员复购分析 · 证据草稿</title><body><main><pre>${escape(readable)}</pre><nav aria-label="证据回链">${projectedEvidence.map(x=>`<a href="#evidence-${run_id}-${x.id}">${x.title}</a>`).join(' · ')}</nav>${projectedEvidence.map(x=>`<section id="evidence-${run_id}-${x.id}"><h2>${x.title}</h2><pre>${escape(canonicalDesktopJson(x.value))}</pre></section>`).join('')}</main></body></html>`;
       check();const current=await store.readProjection(owner);
-      const publications=await store.publishAnalysisSuccessCandidates({...owner,expected_row_version:current.revision!.row_version,run_id,operation_id:randomUUID(),aggregate:{artifact_id,bytes:encode({schema_version:plan?'2.0':'1.0',...(plan?{plan_sha256:membershipHash(plan)}:{}),artifact_id,run_id,product_context:manifest.product_context,method:manifest.method,result:primaryResult}),method_id:run.method_id,method_version:run.method_version,code_identity:run.code_identity,columns:['period','active_member_count','repeat_member_count','repeat_revenue_fen','repurchase_rate'],measurement_meanings:{repeat_revenue_fen:'sum_of_second_and_later_valid_orders_in_period',repurchase_rate:'repeat_member_count/active_member_count'},group_pseudonym_map},report:{report_id,markdown_bytes:new TextEncoder().encode(markdown),html_bytes:new TextEncoder().encode(html),source,evidence_refs}});
+      const publications=await store.publishAnalysisSuccessCandidates({...owner,expected_row_version:current.revision!.row_version,run_id,operation_id:randomUUID(),aggregate:{artifact_id,bytes:encode({schema_version:analysisArtifactVersion(plan),...analysisPlanIdentity(plan),artifact_id,run_id,product_context:manifest.product_context,method:manifest.method,result:primaryResult}),method_id:run.method_id,method_version:run.method_version,code_identity:run.code_identity,columns:['period','active_member_count','repeat_member_count','repeat_revenue_fen','repurchase_rate'],measurement_meanings:{repeat_revenue_fen:'sum_of_second_and_later_valid_orders_in_period',repurchase_rate:'repeat_member_count/active_member_count'},group_pseudonym_map},report:{report_id,markdown_bytes:new TextEncoder().encode(markdown),html_bytes:new TextEncoder().encode(html),source,evidence_refs}});
       const a=publications.aggregatePublication,r=publications.reportPublication;
-      const evidence={schema_version:plan?'4.0':'3.0',...(plan?{plan_sha256:membershipHash(plan)}:{}),run_id,product_context:manifest.product_context,method:manifest.method,sources:manifest.sources.map(({role,sha256})=>({role,sha256})),calculations:manifest.artifacts.slice(2),equality:{status:'matched',result_sha256:hash(canonicalDesktopJson(primaryResult))},judgment,m2_applicability:primaryResult.m2.status,candidate_publications:{aggregate:{artifact_id:a.artifact_id,locator:a.locator,sha256:a.sha256,byte_length:a.byte_length},report:{report_id:r.report_id,markdown:r.markdown,html:r.html}},limitations};
+      const evidence={schema_version:analysisManifestVersion(plan),...analysisPlanIdentity(plan),run_id,product_context:manifest.product_context,method:manifest.method,sources:manifest.sources.map(({role,sha256})=>({role,sha256})),calculations:manifest.artifacts.slice(2),equality:{status:'matched',result_sha256:hash(canonicalDesktopJson(primaryResult))},judgment,...(facts?{finding_facts:facts}:{}),m2_applicability:primaryResult.m2.status,candidate_publications:{aggregate:{artifact_id:a.artifact_id,locator:a.locator,sha256:a.sha256,byte_length:a.byte_length},report:{report_id:r.report_id,markdown:r.markdown,html:r.html}},limitations};
       const evidence_bytes=encode(evidence),summary_bytes=new TextEncoder().encode(markdown),evidence_document_bytes=new TextEncoder().encode(markdown),completed_at=timestamp();check();
       const terminal_manifest=validateAnalysisManifest({...manifest,status:'succeeded',ended_at:completed_at,artifacts:[...manifest.artifacts,{artifact_id:'run-summary',kind:'summary',...descriptor('summary.md',bytes(summary_bytes))},{artifact_id:'run-evidence',kind:'evidence_document',...descriptor('evidence.md',bytes(evidence_document_bytes))}],evidence:descriptor('evidence.json',bytes(evidence_bytes))});
       const bundle=await runStore!.succeedRun({run_id,expected_in_progress_manifest_sha256:manifestSha,terminal_manifest,evidence_bytes,summary_bytes,evidence_document_bytes,cancellation_signal:signal});
       // The Run terminal is irreversible; a later SQLite failure must not rewrite it.
       manifest=terminal_manifest;manifestSha=text(bundle.manifest_sha256);check();
-      await settle({status:'succeeded',runBundle:bundle as unknown as DesktopTerminalRunBundle,aggregatePublication:a,reportPublication:r,finding:{finding_id,judgment,metrics:primaryResult,supporting_evidence,refutation,limitations,evidence_refs}},completed_at);
+      await settle({status:'succeeded',runBundle:bundle as unknown as DesktopTerminalRunBundle,aggregatePublication:a,reportPublication:r,finding:{finding_id,...(facts?{facts}:{}),judgment,metrics:primaryResult,supporting_evidence,refutation,limitations,evidence_refs}},completed_at);
     }catch(error){
       const code=String((error as {code?:string}).code??'CALCULATION_FAILED');if(code==='RESULT_PENDING'){resultPending=true;throw error;}
       const mapping:Record<string,string>={SOURCE_CHANGED:'source_changed',TOOLCHAIN_UNAVAILABLE:'toolchain_unavailable',CALCULATION_FAILED:'calculation_failed',VALIDATION_MISMATCH:'validation_mismatch',RUN_ARTIFACT_FAILED:'run_artifact_failed',PUBLICATION_FAILED:'publication_failed',DEADLINE_EXCEEDED:'deadline_exceeded',INTEGRITY_BLOCKED:'integrity_blocked',CANCELLED:'user_cancelled'};
       const reason=control.reason??mapping[code]??'calculation_failed',completed_at=timestamp(),cancelled=reason==='user_cancelled';
       if(reason!=='deadline_exceeded'&&Date.parse(completed_at)<deadline&&manifest?.status==='in_progress'&&manifestSha){try{const terminal_manifest=validateAnalysisManifest({...manifest,status:cancelled?'cancelled':'failed',ended_at:completed_at,terminal_detail:{reason}});await runStore![cancelled?'cancelRun':'failRun']({run_id,expected_in_progress_manifest_sha256:manifestSha,terminal_manifest,cancellation_signal:new AbortController().signal});}catch{/* Preserve the incomplete file authority, never fabricate a terminal bundle. */}}
       const current=await store.readProjection(owner);
-      if(current.runs.find(x=>x.run_id===run_id)?.status==='Running')await settle(cancelled?{status:'cancelled',reason:'user_cancelled'}:{status:'failed',reason},completed_at);
+      if(current.runs.find(x=>x.run_id===run_id)?.status==='Running'||plan?.version==='2.0')await settle(cancelled||current.runs.find(x=>x.run_id===run_id)?.status==='Cancelled'?{status:'cancelled',reason:'user_cancelled'}:{status:'failed',reason},completed_at);
     }finally{scheduled.cancel();}
   }
 
@@ -544,7 +550,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
     return inspection;
   }
 
-  async function confirmRevision(input: unknown): Promise<DesktopProjection> {
+  async function confirmRevision(input: unknown, preparation_context?:PreparedConfirmationContext): Promise<DesktopProjection> {
     if (resultPending) failure('RESULT_PENDING');
     if (!record(input)) failure('VALIDATION_FAILED');
     if (record(input.confirmation)) {
@@ -552,7 +558,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
       if (input.confirmation.issues_confirmed !== true || input.confirmation.plan_confirmed !== true) failure('ISSUE_CONFIRMATION_REQUIRED');
     }
     const { source_files, ...publicInput } = input;
-    const valid = validateXanthilDesktopRequest('confirmRevision', publicInput);
+    const valid = preparation_context?validateMemberConfirmation(publicInput):validateXanthilDesktopRequest('confirmRevision',publicInput);if(preparation_context&&valid.contract_version!=='2.0')failure('AUTHORITY_REQUIRED');
     const owner = { project_id: valid.project_id, session_id: valid.session_id, case_id: valid.case_id, revision_id: valid.revision_id };
     const current = await readProjection(owner);
     if (current.session?.current_revision_id !== owner.revision_id) failure('STALE_REVISION');
@@ -562,11 +568,11 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
       // a fresh command cannot publish into an already-confirmed revision.
       const pair = exactRecord(source_files, ['members','orders']);
       const file = (input: unknown) => { const value = exactRecord(input, ['display_name','bytes']); if (typeof value.display_name !== 'string' || !(value.bytes instanceof Uint8Array)) failure('VALIDATION_FAILED'); return { display_name: value.display_name, bytes: new Uint8Array(value.bytes) }; };
-      return publishConfirmed(valid, { members: file(pair.members), orders: file(pair.orders) });
+      return publishConfirmed(valid, { members: file(pair.members), orders: file(pair.orders) },preparation_context);
     }
     if (current.revision.row_version !== valid.expected_row_version) failure('STALE_REVISION');
     if (current.revision.state !== 'Draft') failure('FORBIDDEN');
-    if (![current.revision.question_text, current.revision.hypothesis_display_title].every(value => /[^\p{White_Space}]/u.test(value))) failure('VALIDATION_FAILED');
+    if (!(preparation_context?[current.revision.question_text]:[current.revision.question_text, current.revision.hypothesis_display_title]).every(value => /[^\p{White_Space}]/u.test(value))) failure('VALIDATION_FAILED');
     const previous = inspections.get(JSON.stringify(owner));
     if (!previous || previous.inspection.inspection_token !== valid.inspection_token) failure('SOURCE_CHANGED');
     if (previous.guard !== JSON.stringify({ ...owner, expected_row_version: valid.expected_row_version })) failure('STALE_REVISION');
@@ -583,23 +589,27 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
       return { display_name: expected.display_name, bytes: new Uint8Array(file.bytes) };
     };
     const sources = { members: copy(pair.members, previous.inspection.members), orders: copy(pair.orders, previous.inspection.orders) };
-    return publishConfirmed(valid, sources);
+    return publishConfirmed(valid, sources,preparation_context);
   }
 
-  async function publishConfirmed(valid: ConfirmRevisionRequest, sources: DesktopSourcePair): Promise<DesktopProjection> {
+  async function publishConfirmed(valid: ConfirmRevisionRequest|PreparedConfirmationRequest, sources: DesktopSourcePair, preparation_context?:PreparedConfirmationContext): Promise<DesktopProjection> {
     const owner = { project_id: valid.project_id, session_id: valid.session_id, case_id: valid.case_id, revision_id: valid.revision_id }, choice = valid.confirmation;
     const prepared = prepareDesktopData({ members_bytes: sources.members.bytes, orders_bytes: sources.orders.bytes }, choice);
     const ids = { snapshot_id: randomUUID(), confirmation_id: randomUUID(), operation_id: randomUUID() };
-    const documents = desktopConfirmationDocuments({ ...owner, snapshot_id: ids.snapshot_id, confirmation_id: ids.confirmation_id }, choice);
+    const documents = memberConfirmationDocuments({ ...owner, snapshot_id: ids.snapshot_id, confirmation_id: ids.confirmation_id }, choice);
     const now = clock(); if (!(now instanceof Date) || !Number.isFinite(now.getTime())) failure('VALIDATION_FAILED');
     const { command_id, inspection_token, ...request } = valid; void command_id; void inspection_token;
     const input_fingerprint = createHash('sha256').update(canonicalDesktopJson({ operation_kind: 'confirm_revision', request, sources: { members: createHash('sha256').update(sources.members.bytes).digest('hex'), orders: createHash('sha256').update(sources.orders.bytes).digest('hex') } })).digest('hex');
     try {
-      const result = await store.publishConfirmation({ command: valid, ids, source_files: sources, ...documents, counts: prepared.counts, treatment_basis: choice.issue_treatments, completed_at: now.toISOString(), input_fingerprint });
+      const result = await store.publishConfirmation({ ...(preparation_context?{preparation_context}:{}),command: valid, ids, source_files: sources, ...documents, counts: prepared.counts, treatment_basis: choice.issue_treatments, completed_at: now.toISOString(), input_fingerprint });
       inspections.delete(JSON.stringify(owner));
       return result;
     } catch (error) { if ((error as { code?: string }).code === 'RESULT_PENDING') resultPending = true; throw error; }
   }
 
-  return Object.freeze({ hasModelWork:()=>modelWork.size>0, closeModelWork, openProject, listSessions, readProjection, createSession, createDraftRevision, openSession, acceptFinding, completeCase, checkReportExport, prepareReportExport, recordReportExport, saveForm, waitForProjection, checkImportAdmission, inspectImportFiles, confirmRevision, startAnalysis, cancelAnalysis, reconcileInterrupted, prepareAssistanceDisclosure, decideAssistanceDisclosure, startAssistance, cancelAssistance, disposeAssistanceDraft });
+  async function confirmPreparedRevision(input:unknown) {
+    const x=exactRecord(input,['command','preparation_context']);
+    return confirmRevision(x.command,preparedConfirmationContext(x.preparation_context));
+  }
+  return Object.freeze({ hasModelWork:()=>modelWork.size>0, closeModelWork, openProject, listSessions, readProjection, createSession, createDraftRevision, openSession, acceptFinding, completeCase, checkReportExport, prepareReportExport, recordReportExport, saveForm, waitForProjection, checkImportAdmission, inspectImportFiles, confirmRevision:(input:unknown)=>confirmRevision(input), confirmPreparedRevision, startAnalysis, cancelAnalysis, reconcileInterrupted, prepareAssistanceDisclosure, decideAssistanceDisclosure, startAssistance, cancelAssistance, disposeAssistanceDraft });
 }

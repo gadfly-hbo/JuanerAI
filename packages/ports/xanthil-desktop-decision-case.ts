@@ -1,3 +1,4 @@
+import type {PreparedConfirmationContext,QualifiedMemberPreparation} from '../product-core/member-preparation.ts';
 import type {AnalysisRunManifest,MembershipPlan,MembershipResult,PlannedStart,PlannedSelection} from '../product-core/member-analysis.ts';
 import type { AcceptFindingRequest, CancelAnalysisRequest, CompleteCaseRequest, ConfirmRevisionRequest, CreateDraftRevisionRequest, CreateSessionRequest, DesktopProjection, ExportReportRequest, ExportValue, OwnerRef, RevisionCommand, SaveFormRequest, SessionSummary, StartAnalysisRequest } from '../contracts/xanthil-desktop-ipc.ts';
 import type { DesktopCalculationResult, DesktopFileDescriptor, DesktopReportMaterial, DesktopRunArtifact, DesktopRunManifest, DesktopSelection } from '../product-core/xanthil-desktop-decision-case.ts';
@@ -7,7 +8,9 @@ export type DesktopTerminalRunBundle = Readonly<{run_id: string; locator: string
 export type DesktopAnalysisDescription = Readonly<{method_id:string;method_version:string;code_identity:string;duckdb_version:string;python_version:string;primary_sql:DesktopRunBytes;python_verifier:DesktopRunBytes}>;
 export type DesktopCalculationRequest = Readonly<{run_id:string;expected_code_identity:string;contract:DesktopSelection|PlannedSelection;snapshot:Readonly<{members_bytes:Uint8Array;orders_bytes:Uint8Array}>;group_pseudonym_map:Readonly<Record<string,string>>|null;cancellation_signal:AbortSignal;deadline_seconds:number}>;
 export type DesktopCalculationOutput = Readonly<{schema_version:'1.0'|'2.0';run_id:string;implementation:'duckdb_primary'|'python_independent';method:Readonly<{id:string;version:string;code_identity:string}>;result:MembershipResult}>;
+export type MembershipAnalysisPhysicalOutcome=Readonly<{version:'1.0';run_id:string;plan_sha256:string;stage:'calculate'|'verify';physical_status:'not_started'|'settled'|'unknown';active_ms:number;result_sha256:string|null}>;
 export type DesktopLocalAnalysisExecution = Readonly<{
+  describeMembershipOutcome?(value:unknown):MembershipAnalysisPhysicalOutcome|null;
   describeImplementation(input:Readonly<Record<string,never>>|Readonly<{execution_plan:MembershipPlan}>):Promise<DesktopAnalysisDescription>;
   calculate(input:DesktopCalculationRequest):Promise<DesktopCalculationOutput>;
   verify(input:DesktopCalculationRequest):Promise<DesktopCalculationOutput>;
@@ -25,9 +28,9 @@ export type DesktopRunEvidenceStore = Readonly<{
 }>;
 
 export function defineDesktopLocalAnalysisExecution(implementation:unknown):DesktopLocalAnalysisExecution {
-  const methods=['describeImplementation','calculate','verify'] as const;
+  const methods=['describeImplementation','calculate','verify',...(isRecord(implementation)&&Object.hasOwn(implementation,'describeMembershipOutcome')?['describeMembershipOutcome']:[])];
   if(!isRecord(implementation)||Object.keys(implementation).length!==methods.length||methods.some(key=>typeof implementation[key]!=='function'))fail();
-  return Object.freeze({describeImplementation:implementation.describeImplementation as DesktopLocalAnalysisExecution['describeImplementation'],calculate:implementation.calculate as DesktopLocalAnalysisExecution['calculate'],verify:implementation.verify as DesktopLocalAnalysisExecution['verify']});
+  return Object.freeze({...(Object.hasOwn(implementation,'describeMembershipOutcome')?{describeMembershipOutcome:implementation.describeMembershipOutcome as NonNullable<DesktopLocalAnalysisExecution['describeMembershipOutcome']>}:{}),describeImplementation:implementation.describeImplementation as DesktopLocalAnalysisExecution['describeImplementation'],calculate:implementation.calculate as DesktopLocalAnalysisExecution['calculate'],verify:implementation.verify as DesktopLocalAnalysisExecution['verify']});
 }
 
 export function defineDesktopRunEvidenceStore(implementation:unknown):DesktopRunEvidenceStore {
@@ -43,12 +46,14 @@ export type DesktopPreparedExport=Readonly<{report_id:string;suggested_file_name
 export type DesktopAnalysisCandidates = OwnerRef & Readonly<{expected_row_version:string;run_id:string;operation_id:string;
  aggregate:Readonly<{artifact_id:string;bytes:Uint8Array;method_id:string;method_version:string;code_identity:string;columns:readonly string[];measurement_meanings:Readonly<Record<string,string>>;group_pseudonym_map:Readonly<Record<string,string>>|null}>;
  report:Readonly<{report_id:string;markdown_bytes:Uint8Array;html_bytes:Uint8Array;source:Readonly<Record<string,unknown>>;evidence_refs:readonly string[]}>}>;
-export type DesktopAnalysisSettlement = Readonly<{command:RevisionCommand;run_id:string;completed_at:string;input_fingerprint:string;
- terminal:Readonly<{status:'succeeded';runBundle:DesktopTerminalRunBundle;aggregatePublication:DesktopAggregatePublication;reportPublication:DesktopReportPublication;finding:Readonly<{finding_id:string;judgment:string;metrics:MembershipResult;supporting_evidence:readonly string[];refutation:string;limitations:readonly string[];evidence_refs:readonly string[]}>}>|Readonly<{status:'failed';reason:string}>|Readonly<{status:'cancelled';reason:'user_cancelled'}>}>;
+export type MembershipAnalysisMeter=Readonly<{version:'1.0';run_id:string;plan_sha256:string;physical:'settled'|'unresolved';usage:import('../product-core/member-operation.ts').OperationUsage}>;
+export type DesktopAnalysisSettlement = Readonly<{membership_meter?:MembershipAnalysisMeter;command:RevisionCommand;run_id:string;completed_at:string;input_fingerprint:string;
+ terminal:Readonly<{status:'succeeded';runBundle:DesktopTerminalRunBundle;aggregatePublication:DesktopAggregatePublication;reportPublication:DesktopReportPublication;finding:Readonly<{finding_id:string;facts?:import('../product-core/member-analysis.ts').MembershipFindingFacts;judgment:string;metrics:MembershipResult;supporting_evidence:readonly string[];refutation:string;limitations:readonly string[];evidence_refs:readonly string[]}>}>|Readonly<{status:'failed';reason:string}>|Readonly<{status:'cancelled';reason:'user_cancelled'}>}>;
 
 export type DesktopSourcePair = Readonly<{ members: Readonly<{ display_name: string; bytes: Uint8Array }>; orders: Readonly<{ display_name: string; bytes: Uint8Array }> }>;
 export type DesktopConfirmationPublication = Readonly<{
-  command: ConfirmRevisionRequest;
+  preparation_context?:PreparedConfirmationContext;
+  command: ConfirmRevisionRequest|import('../product-core/member-preparation.ts').PreparedConfirmationRequest;
   ids: Readonly<{ snapshot_id: string; confirmation_id: string; operation_id: string }>;
   source_files: DesktopSourcePair;
   contract_bytes: Uint8Array; binding_bytes: Uint8Array; ir_bytes: Uint8Array;
@@ -57,6 +62,8 @@ export type DesktopConfirmationPublication = Readonly<{
   completed_at: string; input_fingerprint: string;
 }>;
 export type DesktopConfirmedSnapshot = Readonly<{
+  preparation?:QualifiedMemberPreparation;
+  clarifications?:readonly {sha256:string;reply:string}[];
   confirmation: Readonly<{ contract_bytes: Uint8Array; binding_bytes: Uint8Array; ir_bytes: Uint8Array; contract_sha256: string; binding_sha256: string; ir_sha256: string }>;
   snapshot: Readonly<{ snapshot_id: string; members: Readonly<{display_name: string; bytes: Uint8Array; sha256: string; byte_length: string}>; orders: Readonly<{display_name: string; bytes: Uint8Array; sha256: string; byte_length: string}> }>;
 }>;

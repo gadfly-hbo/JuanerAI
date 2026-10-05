@@ -1,0 +1,81 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import {randomUUID} from 'node:crypto';
+import {mkdtempSync,readFileSync} from 'node:fs';
+import {join} from 'node:path';
+import {request} from 'node:http';
+import * as taskApplication from '../../../packages/application/member-task.ts';
+import {startBrowserMembershipServer} from '../../../apps/browser/local-server.ts';
+import {browserEvidenceRoot} from '../../fixtures/xanthil-desktop/browser-evidence.ts';
+import {createFreshBrowserProjectStore} from '../../../adapters/storage-local/desktop-state.ts';
+import {createLocalMembershipTaskStore} from '../../../adapters/storage-local/member-task.ts';
+import {createXanthilDesktopDecisionCaseApplication} from '../../../packages/application/xanthil-desktop-decision-case.ts';
+import {createU12ProjectAdmissionApplication} from '../../fixtures/xanthil-desktop/desktop-contract-drivers.ts';
+
+test('BF-R01/13 E01-a: real loopback read/control uses durable Application/SQLite and rejects cross-site effects',async()=>{
+ const start=startBrowserMembershipServer;
+ const base=browserEvidenceRoot;
+ const root=join(mkdtempSync(join(base,'http-')),'project'),store=createFreshBrowserProjectStore({projectRoot:root});
+ const f=await createU12ProjectAdmissionApplication(root),project_id=randomUUID();
+ const desktop=createXanthilDesktopDecisionCaseApplication({...f.dependencies,store});
+ await desktop.openProject({contract_version:'1.0',command_id:randomUUID(),proposed_project_id:project_id,display_name:'Synthetic local browser'});
+ const membershipStore=createLocalMembershipTaskStore(root);
+ const app=taskApplication.createMembershipTaskApplication({desktop,project_id,store:membershipStore});
+ const task=await app.create('合成只读任务',randomUUID());
+ let server=await start({store:membershipStore});
+ const call=(path:string,method='GET',body?:unknown,headers:Record<string,string>={})=>new Promise<{status:number;headers:Record<string,unknown>;body:Record<string,unknown>}>((resolve,reject)=>{
+  const payload=body===undefined?null:JSON.stringify(body);
+  const req=request(server.origin+path,{method,headers:{...(payload?{'content-type':'application/json','content-length':String(Buffer.byteLength(payload))}:{}),...headers}},res=>{
+   let text='';res.setEncoding('utf8');res.on('data',s=>text+=s);res.on('end',()=>resolve({status:res.statusCode!,headers:res.headers,body:text?JSON.parse(text):null}));
+  });req.on('error',reject);req.end(payload);
+ });
+ try{
+  const path='/v1/tasks/'+task.task_id;
+  const initial=readFileSync(join(root,'.xanthil/desktop/state.sqlite'));
+  assert.equal((await call(path)).status,401);
+  assert.equal((await call('/v1/bootstrap','POST',{token:server.bootstrap},{origin:'https://invalid.example'})).status,403);
+  const boot=await call('/v1/bootstrap','POST',{token:server.bootstrap},{origin:server.origin});
+  assert.equal(boot.status,200);assert.ok(boot.headers['set-cookie']);
+  const cookie=String((boot.headers['set-cookie'] as string[])[0]).split(';')[0],auth={cookie};
+  assert.ok(/HttpOnly/.test(String(boot.headers['set-cookie'])),'session cookie must be HttpOnly');
+  assert.ok(/SameSite=Strict/.test(String(boot.headers['set-cookie'])),'session cookie must be SameSite Strict');
+  assert.equal((await call('/v1/bootstrap','POST',{token:server.bootstrap},{origin:server.origin})).status,401);
+  const read=await call(path,'GET',undefined,auth);assert.equal(read.status,200);assert.equal(read.body.question,'合成只读任务');assert.equal((read.body.case as {revision:{state:string}}).revision.state,'Draft','E01-b: browser must read the actual durable case projection');assert.equal(read.body.source_summary,null);assert.equal((read.body.operations as {totals:{calls:string}}).totals.calls,'0');
+  assert.equal(read.headers['cache-control'],'no-store');assert.equal(read.headers['access-control-allow-origin'],undefined);
+  assert.equal((await call(path,'GET',undefined,{...auth,host:'attacker.invalid'})).status,403);
+  assert.equal((await call(path,'GET',undefined,{...auth,origin:'https://invalid.example'})).status,403);
+  const duplicateHost=await new Promise<number>((resolve,reject)=>{
+   const req=request(server.origin+path,{headers:['Host',server.origin.slice(7),'Host','attacker.invalid','Cookie',cookie]},res=>{res.resume();res.on('end',()=>resolve(res.statusCode!));});
+   req.on('error',reject);req.end();
+  });
+  assert.equal(duplicateHost,403,'strict Host rejects duplicates instead of accepting Node first-value normalization');
+  const command={version:'1.0',command_id:randomUUID()};
+  assert.equal((await call(path+'/stop','POST',command,{...auth,origin:server.origin})).status,403,'another page lacks memory control');
+  assert.deepEqual(readFileSync(join(root,'.xanthil/desktop/state.sqlite')),initial,'denied requests and GET have no write effects');
+  assert.equal(typeof boot.body.control,'string');
+  let control={...auth,origin:server.origin,'x-xanthil-control':String(boot.body.control)};
+  const sessionRead=await call('/v1/session','GET',undefined,auth);assert.equal(sessionRead.body.generation,0);assert.equal('control' in sessionRead.body,false);
+  const takeover={version:'1.0',command_id:randomUUID(),generation:0,confirmed:true};
+  assert.equal((await call('/v1/control','POST',takeover,{origin:server.origin})).status,401);
+  assert.equal((await call('/v1/control','POST',takeover,{...auth,origin:'https://invalid.example'})).status,403);
+  for(const invalid of [{...takeover,confirmed:false},{...takeover,version:'99'},{...takeover,extra:true},{...takeover,generation:1}])assert.notEqual((await call('/v1/control','POST',invalid,{...auth,origin:server.origin})).status,200);
+  const taken=await call('/v1/control','POST',takeover,{...auth,origin:server.origin});assert.equal(taken.status,200);assert.equal(taken.body.generation,1);assert.notEqual(taken.body.control,boot.body.control);
+  assert.equal((await call(path+'/stop','POST',command,control)).status,403,'old page loses control immediately');
+  assert.equal((await call('/v1/control','POST',takeover,{...auth,origin:server.origin})).status,409,'same generation cannot rotate twice');
+  assert.deepEqual(readFileSync(join(root,'.xanthil/desktop/state.sqlite')),initial,'takeover is transport-only');
+  control={...control,'x-xanthil-control':String(taken.body.control)};
+  const stopped=await call(path+'/stop','POST',command,control);assert.equal(stopped.status,200);assert.equal(stopped.body.status,'stopped');
+  assert.deepEqual((await call(path+'/stop','POST',command,control)).body,stopped.body);
+  assert.deepEqual((await call(path+'/receipts/'+command.command_id,'GET',undefined,auth)).body,stopped.body);
+  assert.equal((await call(path+'/stop','POST',{...command,version:'99'},control)).status,400);
+  const settled=readFileSync(join(root,'.xanthil/desktop/state.sqlite'));
+  assert.equal((await call(path+'/stop','POST',{...command,extra:'x'.repeat(4096)},control)).status,413);
+  await server.close();
+  server=await start({store:createLocalMembershipTaskStore(root)});
+  assert.equal((await call(path,'GET',undefined,auth)).status,401,'service restart invalidates the old cookie');
+  const restarted=await call('/v1/bootstrap','POST',{token:server.bootstrap},{origin:server.origin});
+  const freshCookie=String((restarted.headers['set-cookie'] as string[])[0]).split(';')[0];
+  assert.deepEqual((await call(path+'/receipts/'+command.command_id,'GET',undefined,{cookie:freshCookie})).body,stopped.body);
+  assert.deepEqual(readFileSync(join(root,'.xanthil/desktop/state.sqlite')),settled,'restart and receipt GET never resume work');
+ }finally{await server.close();}
+});

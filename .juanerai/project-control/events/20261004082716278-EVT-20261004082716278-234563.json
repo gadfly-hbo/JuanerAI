@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004082716278-234563",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-04T08:27:16.278Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "一次获准主机探针10项通过，独立读回完成；有限证据不替代完整隔离，授权已使用。",
+  "status_after": "active",
+  "evidence_refs": []
+}

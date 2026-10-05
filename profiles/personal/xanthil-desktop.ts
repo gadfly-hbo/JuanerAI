@@ -98,6 +98,25 @@ export function composePersonalXanthilDesktopProfile(dependencies:unknown){
   return createXanthilDesktopDecisionCaseApplication(dependencies);
 }
 
+export async function readPersonalDesktopToolchain(descriptorPath:string){
+    try{
+      const stat=await lstat(descriptorPath);if(!stat.isFile()||stat.isSymbolicLink())failure('TOOLCHAIN_UNAVAILABLE');
+      const raw=JSON.parse(await readFile(descriptorPath,'utf8'));
+      if(!record(raw))failure('TOOLCHAIN_UNAVAILABLE');
+      const bundled=raw.schema_version==='2.0';
+      const descriptor=exactRecord(raw,bundled?['schema_version','duckdb','python','inventory']:['schema_version','duckdb','python']);
+      if(!bundled&&descriptor.schema_version!=='1.0')failure('TOOLCHAIN_UNAVAILABLE');
+      const tools=bundled?await bundledExecutables(descriptor,descriptorPath):descriptor;
+      const duckdb=exactRecord(tools.duckdb,['executable_path','version']),python=exactRecord(tools.python,['executable_path','version']);
+      if(typeof duckdb.executable_path!=='string'||!isAbsolute(duckdb.executable_path)||typeof python.executable_path!=='string'||!isAbsolute(python.executable_path)||duckdb.version!=='1.5.2'||typeof python.version!=='string'||!/^3\.(?:9|[1-9][0-9]+)\.[0-9]+$/.test(python.version))failure('TOOLCHAIN_UNAVAILABLE');
+      for(const path of [duckdb.executable_path,python.executable_path])await access(path,constants.X_OK);
+      const execute=promisify(execFile),options={timeout:30000,maxBuffer:4096,env:{PATH:''},encoding:'utf8' as const};
+      const duck=await execute(duckdb.executable_path,['--version'],options),py=await execute(python.executable_path,['--version'],options);
+      if(/^v?(\d+\.\d+\.\d+)(?:\s|$)/.exec(duck.stdout.trim())?.[1]!==duckdb.version||/^Python (\d+\.\d+\.\d+)(?:\s|$)/.exec(py.stdout.trim())?.[1]!==python.version)failure('TOOLCHAIN_UNAVAILABLE');
+      return {duckdbExecutable:duckdb.executable_path,duckdbVersion:duckdb.version,pythonExecutable:python.executable_path,pythonVersion:python.version};
+    }catch{failure('TOOLCHAIN_UNAVAILABLE');}
+  }
+
 /** The deployment capability is Main-owned, never an IPC/Renderer path. */
 export function createPersonalXanthilDesktopProfile(deployment: unknown) {
   const configured = exactRecord(deployment, ['toolchainDeployment','assistanceConfig','clock','deadlineScheduler',...(record(deployment)&&Object.hasOwn(deployment,'caseAssistantConfig')?['caseAssistantConfig']:[]),...(record(deployment)&&Object.hasOwn(deployment,'providerSettings')?['providerSettings']:[]),...(record(deployment)&&Object.hasOwn(deployment,'membershipConfig')?['membershipConfig']:[])]);
@@ -129,24 +148,7 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
   if(typeof location.descriptor_path!=='string'||!isAbsolute(location.descriptor_path))failure('VALIDATION_FAILED');
   const descriptorPath=location.descriptor_path;
   const schedule=exactRecord(configured.deadlineScheduler,['schedule']);if(typeof schedule.schedule!=='function')failure('VALIDATION_FAILED');
-  async function configuredAnalysis(){
-    try{
-      const stat=await lstat(descriptorPath);if(!stat.isFile()||stat.isSymbolicLink())failure('TOOLCHAIN_UNAVAILABLE');
-      const raw=JSON.parse(await readFile(descriptorPath,'utf8'));
-      if(!record(raw))failure('TOOLCHAIN_UNAVAILABLE');
-      const bundled=raw.schema_version==='2.0';
-      const descriptor=exactRecord(raw,bundled?['schema_version','duckdb','python','inventory']:['schema_version','duckdb','python']);
-      if(!bundled&&descriptor.schema_version!=='1.0')failure('TOOLCHAIN_UNAVAILABLE');
-      const tools=bundled?await bundledExecutables(descriptor,descriptorPath):descriptor;
-      const duckdb=exactRecord(tools.duckdb,['executable_path','version']),python=exactRecord(tools.python,['executable_path','version']);
-      if(typeof duckdb.executable_path!=='string'||!isAbsolute(duckdb.executable_path)||typeof python.executable_path!=='string'||!isAbsolute(python.executable_path)||duckdb.version!=='1.5.2'||typeof python.version!=='string'||!/^3\.(?:9|[1-9][0-9]+)\.[0-9]+$/.test(python.version))failure('TOOLCHAIN_UNAVAILABLE');
-      for(const path of [duckdb.executable_path,python.executable_path])await access(path,constants.X_OK);
-      const execute=promisify(execFile),options={timeout:30000,maxBuffer:4096,env:{PATH:''},encoding:'utf8' as const};
-      const duck=await execute(duckdb.executable_path,['--version'],options),py=await execute(python.executable_path,['--version'],options);
-      if(/^v?(\d+\.\d+\.\d+)(?:\s|$)/.exec(duck.stdout.trim())?.[1]!==duckdb.version||/^Python (\d+\.\d+\.\d+)(?:\s|$)/.exec(py.stdout.trim())?.[1]!==python.version)failure('TOOLCHAIN_UNAVAILABLE');
-      return createDuckDbPythonDesktopLocalAnalysisExecution({duckdbExecutable:duckdb.executable_path,duckdbVersion:duckdb.version,pythonExecutable:python.executable_path,pythonVersion:python.version});
-    }catch{failure('TOOLCHAIN_UNAVAILABLE');}
-  }
+  async function configuredAnalysis(){return createDuckDbPythonDesktopLocalAnalysisExecution(await readPersonalDesktopToolchain(descriptorPath));}
 
   async function openProject(request: unknown) {
     if(membership?.hasWork())failure('BUSY');

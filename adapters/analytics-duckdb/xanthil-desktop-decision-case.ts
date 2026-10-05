@@ -2,7 +2,7 @@ import {plannedSelection,validateMembershipPlan,validateMembershipResult} from '
 import { createHash } from 'node:crypto';
 import { isAbsolute } from 'node:path';
 import { canonicalDesktopJson, checkedDesktopInteger, desktopMetricChanges, desktopRational, desktopRuleFailure, prepareDesktopData, validateDesktopCalculationResult, type DesktopMetricPeriod, type DesktopSelection } from '../../packages/product-core/xanthil-desktop-decision-case.ts';
-import { runAnalysisProcess } from './process.ts';
+import { runAnalysisProcess,runObservedAnalysisProcess,describeAnalysisProcessFailure } from './process.ts';
 
 const sql = `WITH ranked AS (
  SELECT *, row_number() OVER (PARTITION BY period, member_id ORDER BY epoch_seconds, fraction, encode(order_id)) ordinal
@@ -157,16 +157,17 @@ function plannedMethods(x:Request): readonly string[]|null { return record(x.con
 function selectedSql(x:Request):string { return plannedMethods(x)?.length===1?m1Sql:sql; }
 function selectedMethod(x:Request){return {...method,code_identity:sha(canonicalDesktopJson({method_id:method.id,method_version:method.version,primary_sql_sha256:sha(selectedSql(x)),python_verifier_sha256:sha(python)}))};}
 function envelope(x:Request,implementation:'duckdb_primary'|'python_independent',result:unknown) {
- const plan=x.contract.execution_plan,chosen=selectedMethod(x);
+ const plan=x.contract.execution_plan?validateMembershipPlan(x.contract.execution_plan):null,chosen=selectedMethod(x);
  const validated=plan?validateMembershipResult(result,validateMembershipPlan(plan)):validateDesktopCalculationResult(result);
- return plan?{schema_version:'2.0',run_id:x.run_id,implementation,method:chosen,plan_sha256:sha(canonicalDesktopJson(plan)),materialization:{primary_sql_sha256:sha(selectedSql(x)),python_verifier_sha256:sha(python)},result:validated}:{schema_version:'1.0',run_id:x.run_id,implementation,method,result:validated};
+ return plan?{schema_version:plan.version==='2.0'?'3.0':'2.0',...(plan.version==='2.0'?{preparation_sha256:plan.preparation.sha256}:{}),run_id:x.run_id,implementation,method:chosen,plan_sha256:sha(canonicalDesktopJson(plan)),materialization:{primary_sql_sha256:sha(selectedSql(x)),python_verifier_sha256:sha(python)},result:validated}:{schema_version:'1.0',run_id:x.run_id,implementation,method,result:validated};
 }
 const literal=(value:string)=>"'"+value.replaceAll("'","''")+"'";
-export function createDuckDbPythonDesktopLocalAnalysisExecution(config: unknown) {
+export function createDuckDbPythonDesktopLocalAnalysisExecution(config: unknown) {return createExecution(config,runAnalysisProcess);}
+function createExecution(config:unknown,processRunner:typeof runAnalysisProcess) {
  const settings=exact(config,['duckdbExecutable','duckdbVersion','pythonExecutable','pythonVersion']);
  if(typeof settings.duckdbExecutable!=='string'||!isAbsolute(settings.duckdbExecutable)||settings.duckdbVersion!=='1.5.2'||typeof settings.pythonExecutable!=='string'||!isAbsolute(settings.pythonExecutable)||typeof settings.pythonVersion!=='string'||!/^3\.(?:9|[1-9]\d)\.\d+$/.test(settings.pythonVersion))desktopRuleFailure();
  const duckdb=settings.duckdbExecutable,pythonPath=settings.pythonExecutable,pythonVersion=settings.pythonVersion;
- async function run(command:string,args:readonly string[],input:string,signal:AbortSignal,seconds:number){try{return await runAnalysisProcess(command,args,signal,seconds,input);}catch(error){const code=(error as {code?:string}).code;desktopRuleFailure(code==='TIMEOUT'?'DEADLINE_EXCEEDED':code==='CANCELLED'?'CANCELLED':'CALCULATION_FAILED');}}
+ async function run(command:string,args:readonly string[],input:string,signal:AbortSignal,seconds:number){try{return await processRunner(command,args,signal,seconds,input);}catch(error){const code=(error as {code?:string}).code;desktopRuleFailure(code==='TIMEOUT'?'DEADLINE_EXCEEDED':code==='CANCELLED'?'CANCELLED':'CALCULATION_FAILED');}}
  return Object.freeze({
   async describeImplementation(input:unknown){const value=exact(input,record(input)&&Object.hasOwn(input,'execution_plan')?['execution_plan']:[]);const plan=value.execution_plan?validateMembershipPlan(value.execution_plan):null,selected=plan?.methods.length===1?m1Sql:sql;const code_identity=sha(canonicalDesktopJson({method_id:method.id,method_version:method.version,primary_sql_sha256:sha(selected),python_verifier_sha256:sha(python)}));return Object.freeze({method_id:method.id,method_version:method.version,code_identity,duckdb_version:'1.5.2',python_version:pythonVersion,primary_sql:bytes(selected),python_verifier:bytes(python)});},
   async calculate(input:unknown){
@@ -196,4 +197,19 @@ export function createDuckDbPythonDesktopLocalAnalysisExecution(config: unknown)
    return Object.freeze(envelope(x,'python_independent',result));
   }
  });
+}
+
+
+/** Explicit prepared-membership consumer; legacy factory retains exactly three methods. */
+export function createMeteredMembershipAnalysisExecution(config:unknown){
+ const evidence=new WeakMap<object,import('../../packages/ports/xanthil-desktop-decision-case.ts').MembershipAnalysisPhysicalOutcome>();
+ const legacy=createDuckDbPythonDesktopLocalAnalysisExecution(config);
+ async function observed(stage:'calculate'|'verify',input:unknown){
+  const raw=input as Request,plan=validateMembershipPlan(raw?.contract?.execution_plan);if(plan.version!=='2.0'||typeof raw.run_id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(raw.run_id))desktopRuleFailure();
+  let physical:{physical_status:'not_started'|'settled'|'unknown';active_ms:number}={physical_status:'not_started',active_ms:0};
+  const implementation=createExecution(config,async(command,args,signal,seconds,input)=>{try{const result=await runObservedAnalysisProcess(command,args,signal,seconds,input);physical={physical_status:result.physical_status,active_ms:result.active_ms};return result.output;}catch(error){physical=describeAnalysisProcessFailure(error)??{physical_status:'unknown',active_ms:0};throw error;}});
+  const proof=(result_sha256:string|null)=>({version:'1.0' as const,run_id:raw.run_id,plan_sha256:sha(canonicalDesktopJson(plan)),stage,...physical,result_sha256});
+  try{const result=await implementation[stage](input);evidence.set(result,proof(sha(canonicalDesktopJson(result))));return result;}catch(error){if(error instanceof Error)evidence.set(error,proof(null));throw error;}
+ }
+ return Object.freeze({describeImplementation:legacy.describeImplementation,calculate:(input:unknown)=>observed('calculate',input),verify:(input:unknown)=>observed('verify',input),describeMembershipOutcome(value:unknown){return value!==null&&typeof value==='object'&&evidence.has(value)?structuredClone(evidence.get(value)!):null;}});
 }

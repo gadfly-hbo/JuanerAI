@@ -129,6 +129,21 @@
     "tests/fixtures/member-task/native-main.ts",
     "tests/fixtures/member-task/native-renderer.tsx",
     "tests/integration/xanthil-desktop/member-task-retained.integration.test.ts",
-    "tests/fixtures/xanthil-desktop/member-task-test-support.ts"
+    "tests/fixtures/xanthil-desktop/member-task-test-support.ts",
+    "tests/integration/xanthil-desktop/browser-preparation.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-membership-recovery.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-local-transport.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-membership-plan.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-workspace.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-client.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-model-runtime.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-model-policy.integration.test.ts",
+    "profiles/personal/browser-membership.ts",
+    "tests/integration/xanthil-desktop/browser-companion.integration.test.ts",
+    "apps/browser/service-main.ts",
+    "tests/integration/xanthil-desktop/browser-independent-profile.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-project-catalog.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-service-auth.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-node-entry.integration.test.ts"
   ]
 }

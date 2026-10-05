@@ -43,5 +43,7 @@ export interface CaseAssistantStore {
     interruptAll(at: string): Promise<void>;
 }
 export interface CaseAssistantRuntime {
+    membershipTurn?(input:import('../product-core/member-model.ts').MembershipModelTurn):Promise<import('../product-core/member-model.ts').MembershipModelResult>;
+    describeMembershipOutcome?(value:unknown):import('../product-core/member-model.ts').MembershipPhysicalOutcome|null;
     turn(input: AssistantTurn): Promise<AssistantTurnResult>;
 }

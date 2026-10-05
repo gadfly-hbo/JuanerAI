@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004142325883-K4S80C",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T14:23:25.883Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "host007实际失败已收回并交回原Worker；历史结果和UNKNOWN保留。",
+  "status_after": "active",
+  "evidence_refs": []
+}

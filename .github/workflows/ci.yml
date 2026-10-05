@@ -73,6 +73,11 @@ jobs:
           if [ -n "$scope_entry" ]; then
             case "$scope_entry" in '100644 blob '*) ;; *) exit 65 ;; esac
             (set -C; git show "$PR_BASE_SHA:tools/harness/validation/ci-scope.mjs" > "$SCOPE_CHECK")
+            config_entry=$(git ls-tree "$PR_BASE_SHA" -- tools/harness/validation/check-agent-config.py)
+            if [ -n "$config_entry" ]; then
+              case "$config_entry" in '100644 blob '*) ;; *) exit 65 ;; esac
+              (set -C; git show "$PR_BASE_SHA:tools/harness/validation/check-agent-config.py" > "$RUNNER_TEMP/check-agent-config.py")
+            fi
             validation_scope=$(node "$SCOPE_CHECK" "$PR_BASE_SHA")
           else
             validation_scope=full
@@ -80,13 +85,18 @@ jobs:
           case "$validation_scope" in
             documentation)
               run_logged documentation node "$SCOPE_CHECK" --check-docs "$PR_BASE_SHA"
-              run_logged scope-contracts node --test tools/harness/validation/ci-scope.test.mjs tools/harness/validation/ci-workflow.test.mjs
               printf 'DOCUMENTATION ONLY: product regression and native acceptance NOT RUN\n'
+              exit 0
+              ;;
+            affected)
+              run_logged affected node "$SCOPE_CHECK" --check-affected "$PR_BASE_SHA"
+              printf 'AFFECTED ONLY: agent configuration checked; product regression and native acceptance NOT RUN\n'
               exit 0
               ;;
             full) ;;
             *) exit 65 ;;
           esac
+          run_logged agent-config python3 tools/harness/validation/check-agent-config.py --check
           export NPM_CONFIG_USERCONFIG="$RUNNER_TEMP/user.empty.npmrc"
           export NPM_CONFIG_GLOBALCONFIG="$RUNNER_TEMP/global.empty.npmrc"
           export NPM_CONFIG_CACHE="$RUNNER_TEMP/npm-cache"

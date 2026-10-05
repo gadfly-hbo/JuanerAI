@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005031928990-YOKNWW",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T03:19:28.990Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "独立Node崩溃UNKNOWN实际通过；进入完整回归与独立候选验证",
+  "status_after": "validating",
+  "evidence_refs": []
+}

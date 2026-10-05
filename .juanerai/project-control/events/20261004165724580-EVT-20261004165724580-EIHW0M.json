@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004165724580-EIHW0M",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T16:57:24.580Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "首次完整真实Chromium正常主链8checks PASS收回，旧失败与INCOMPLETE全部保留",
+  "status_after": "active",
+  "evidence_refs": []
+}

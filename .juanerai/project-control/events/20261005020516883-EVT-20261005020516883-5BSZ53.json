@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005020516883-5BSZ53",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T02:05:16.883Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "正常开发入口实际启动成功，产品网页HTTP200；controller/product-web-001记录地址、进程与收回入口",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004173252869-UOOWMQ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T17:32:52.869Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "收回完整阶段回归与真实UNKNOWN恢复；进入D5用户决定等待",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -171,6 +171,8 @@ When changing test assets, read `docs/governance/test-asset-retirement.md`. Pres
 
 After policy adoption, approved product/UI input and confirmed intake, the Engineering Controller dispatches `juaner_worker` for the result-sized package and reuses its context through ordinary corrections. After freezing the complete candidate and evidence, it dispatches `juaner_validator` in an independent read-only context. No per-dispatch user confirmation is needed inside the approved scope, resource and permission boundaries.
 
+At dispatch, progress updates, stopping and resumption, apply the sole execution policy's **Lean Context and Continuous Ownership** section: focused input, same Worker, delta-based coordination, native-first roles with explicitly user-consented CLI exceptions, verified stopping and an explicit continuation path.
+
 Use `juaner_spec` or `juaner_test` only for a concrete scoped support question; neither creates a Spec Gate, TDD_READY approval or automatic next dispatch. A contributing specialist cannot be the final Validator. A missing role or incompatible loaded configuration must be disclosed and resolved at a safe boundary, not bypassed by author self-review or a silently different role. Product permission, Git authority and old task stops are not granted by dispatch or by editing these instructions.
 
 Use Orchestration.md and docs/templates/ for multi-domain or multi-agent work.

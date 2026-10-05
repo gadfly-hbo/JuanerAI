@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005010641276-B7M9KB",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T01:06:41.276Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "当前可执行输入一致，完整回归已收回；旧FAIL/UNKNOWN保留，未宣称正式验收",
+  "status_after": "validating",
+  "evidence_refs": []
+}

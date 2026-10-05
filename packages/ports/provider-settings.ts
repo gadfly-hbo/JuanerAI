@@ -14,3 +14,5 @@ export type LocalModelAccess = {
   snapshot(): { generation: number; available: boolean };
   acquire(generation: number,owner?:ModelOccupant): Promise<{ release(): void }>;
 };
+/** Non-secret policy file only; credential access remains in LocalCredentialStore. */
+export interface MembershipPolicyStore {read():Promise<import('../product-core/member-operation.ts').OperationPolicy|null>;}
