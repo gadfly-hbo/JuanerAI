@@ -19,13 +19,14 @@ The sole execution policy defines progress, stop-loss and actual resource limits
 
 - TBD
 
-## MacBook Trial Delivery — optional when delivering a trial update
+## Mac mini Trial and User Acceptance — when preparing user trial or acceptance
 
-Follow the sole execution policy's MacBook Trial Delivery section. Omit this
-section when inapplicable; use the existing reply/handoff, not another ledger.
+Follow the sole execution policy's Mac mini Trial and User Acceptance section.
+Omit this section when inapplicable; use the existing reply/handoff, not another ledger.
 
-- Version: candidate commit and actual runtime version readback result
-- Entry: current MacBook address and necessary start/stop method
+- Version: candidate commit, identified uncommitted differences if any, and actual runtime version readback result
+- Entry: current Mac mini browser address, same-machine service and necessary start/stop method
+- Purpose and user result: trial feedback / required formal Product Acceptance
 - Changes and user steps:
 - Verification and gaps: passed / failed / unverified / unopened scope
 

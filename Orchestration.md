@@ -75,5 +75,6 @@ independence, and MacBook technical sign-off is not required.
 
 Adopted v0.9 Mini engineering uses daily affected checks and authorized
 work-branch checkpoints/pushes, with one formal Change PR/integration closeout.
-Follow the sole policy's MacBook Trial Delivery section for the fixed trial
-copy and runtime readback; trial delivery is not formal completion.
+Follow the sole policy's Mac mini Trial and User Acceptance section for the
+Mini-local candidate, runtime entry readback and required user acceptance;
+trial feedback is not formal completion.

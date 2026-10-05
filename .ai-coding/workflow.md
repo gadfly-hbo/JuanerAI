@@ -29,7 +29,8 @@ After Mini verifies real intake and authorizes the result-sized work package:
    Check important boundary changes before dependent actions. Run the thinnest
    real path early and the applicable type/build, contract and regression checks.
    In adopted v0.9 Mini work, use authorized daily checkpoints/work-branch pushes
-   and the sole policy's MacBook Trial Delivery section for user trial updates.
+   and the sole policy's Mac mini Trial and User Acceptance section for local
+   user trials.
 4. Freeze the complete candidate and evidence. Independent Validator derives
    expectations from acceptance first, then verifies real paths, test integrity,
    boundaries, coverage retirement and evidence in one review.
