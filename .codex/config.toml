@@ -6,7 +6,7 @@ sandbox_mode = "workspace-write"
 enabled = true
 max_concurrent_threads_per_session = 3
 default_subagent_model = "gpt-6-astra"
-default_subagent_reasoning_effort = "high"
+default_subagent_reasoning_effort = "medium"
 interrupt_message = true
 
 [sandbox_workspace_write]

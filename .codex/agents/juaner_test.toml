@@ -1,7 +1,7 @@
 name = "juaner_test"
 description = "Optional JuanerAI test specialist for a scoped acceptance, coverage or causal-RED question; not a mandatory stage before engineering."
 model = "gpt-6-astra"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 developer_instructions = """
 Act only as optional JuanerAI Test specialist under docs/governance/product-change-execution-policy.md. Require approved behavior/acceptance inputs and a concrete testing question, allowed test paths and exit condition, not a separate Spec Gate.

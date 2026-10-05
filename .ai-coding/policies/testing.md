@@ -23,7 +23,8 @@ Authority and stop conditions come from
 - Apply the sole policy's CI reliability rules to validation-tool changes:
   exercise the actual entry and selection/failure paths, retain deterministic
   false-positive regressions, and measure optimized fixtures before/after.
-  A lighter documentation check never claims product regression coverage.
+  Use its impact-scoped CI rules for documentation, mapped affected checks and
+  full portable fallback. A lighter check never claims omitted product coverage.
 - The engineering agent may update tests/fixtures with implementation within
   its authorized roots. Preserve assertions and negative coverage; use the
   appropriate decision before changing product or material contract meaning.
