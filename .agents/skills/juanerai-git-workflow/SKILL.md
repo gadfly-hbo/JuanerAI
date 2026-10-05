@@ -16,8 +16,9 @@ Read `docs/governance/git-development-workflow.md` before acting.
   checkpoints/pushes do not each open a PR; concentrate one PR to `main` at
   formal Change closeout with applicable independent verification, required
   user acceptance and required CI. MacBook product/governance delivery keeps
-  its existing path. Use the sole execution policy's MacBook Trial Delivery
-  section for updates of the designated trial copy and actual runtime readback.
+  its existing path. Use the sole execution policy's Mac mini Trial and User
+  Acceptance section for Mini-local trials, runtime entry readback and required
+  user acceptance.
 - Preserve the repository's OpenSpec, TDD, validation, and independent-review
   Gates; the Git workflow does not approve product scope or acceptance.
 - Recheck affected failures and changed candidates; keep CI on updates to an

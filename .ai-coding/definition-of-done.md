@@ -31,8 +31,9 @@ completion. Complete each Change's applicable regression, independent evaluation
 and required acceptance; batching does not defer them to stage end. Required CI
 remains a merge condition. Apply the Fixed-Code section's browser/Desktop scope:
 deferred shell checks do not waive shared tests or close historical native E2.
-For adopted v0.9 Mini work, daily authorized commits/pushes and the sole policy's
-MacBook Trial Delivery do not require a PR for every increment; formal Change
+For adopted v0.9 Mini work, daily authorized commits/pushes do not require a PR
+for every increment. Apply the sole policy's Mac mini Trial and User Acceptance
+section for local trials and required formal user acceptance; formal Change
 closeout concentrates PR, applicable required CI, squash integration and archive.
 Known low-risk gaps affecting formal acceptance require repair, justified
 non-applicability or explicit user risk acceptance; they are not automatic PASS.

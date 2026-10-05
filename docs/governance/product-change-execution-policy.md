@@ -9,12 +9,14 @@ planning drafts explain the design but are not a second authority.
 The user-approved 2026-10-05 v0.9 revision makes Mini's primary engineering
 agent the continuous author and Engineering Controller, with independent final
 validation. Worker/Spec/Test are optional support, not default handoffs. Daily
-work uses focused checks, authorized branch checkpoints/pushes and the designated
-MacBook trial copy; formal Change closeout retains a concentrated PR/required-CI
+work uses focused checks, authorized branch checkpoints/pushes and local Mac mini
+trial/user acceptance; formal Change closeout retains a concentrated PR/required-CI
 integration checkpoint. MacBook product preparation and its model defaults are
 unchanged. Fixed engineering models live in `agent-model-routing.md`.
 The [v0.9 release definition and diagram](../planning/2026-10-05/mac-mini-lean-engineering-final-rules.md)
 explain this policy; they are not a second execution authority.
+The user's subsequent v0.9 revision moves trial and required user acceptance
+directly to Mac mini, removing the default MacBook runtime-copy delivery step.
 
 The preceding user-approved 2026-09-26 continuous-engineering revision (v0.8) retained the
 2026-09-24 Product Manager / Engineering Controller split. It replaces the
@@ -381,42 +383,36 @@ This cadence does not change CI triggers or waive required checks. Apply the
 impact-scoped CI rules above; daily focused checks cannot substitute for the
 PR's selected required checks or the Change's applicable regression.
 
-### MacBook Trial Delivery
+### Mac mini Trial and User Acceptance
 
-Mini owns authorized trial delivery and safe updates; the user tries the product
-in one designated MacBook runtime copy. This is user feedback, not a MacBook
-technical approval hop, and routine corrections need no extra acceptance Gate.
+Mini's engineering primary prepares the local browser and same-machine service
+for the user to try and, when required, formally accept on Mac mini. Reuse the
+existing approved runtime environment, data root and local credentials. Local
+trial requires an identifiable candidate and affected checks, not a push, PR,
+mainline merge, new clone or delivery of a runtime copy to MacBook. Identify the
+commit and any relevant uncommitted differences; preserve the working scene.
 
-1. Prepare once. Reuse the confirmed isolated trial copy; if none exists, clone
-   the GitHub candidate branch and verify the intended commit. It is a runtime
-   copy, not a second engineering writer. Reuse compatible tools/dependencies
-   after checking lockfile requirements and shared dependency provenance. Keep
-   product-planning worktrees separate; retain local trial data and credentials,
-   never transfer keys. Extra installation, migration or host effects need their
-   own authority; this policy grants none.
-2. Update the same copy. After affected checks and authorized commit/push, fetch
-   and select that exact candidate. Before changing files, confirm directory
-   identity, clean code, no concurrent writer or affected in-flight/unsaved work,
-   using the approved idle window. Dirty, busy, diverged or unreachable copies
-   defer that side's update: preserve the scene and report it, without reset,
-   stash, overwrite or unbounded retry. Do not routinely reclone, package, or
-   require a main merge first. A GitHub transport failure calls for diagnosis,
-   not an automatic full-history bundle or new transfer system.
-3. Refresh or restart according to the actual change. Frontend-only static files
+1. Refresh or restart according to the actual change. Frontend-only static files
    may need only a browser refresh when compatible with the running backend and
    read on request. Backend, startup, toolchain or configuration-loading changes
-   need the product's controlled stop/start after checking affected active work.
-   Investigate unknown state before acting; do not pair new frontend code with
-   an unverified old backend. A start command reusing an old process is not an
-   update, and this path is not automatically HMR.
-4. Read back the actual page/service version, current URL and affected startup/
-   main-path checks on MacBook. Disk HEAD alone does not prove runtime identity.
-   Give the new entry when its address/port changes. Preserve local projects,
-   settings and credentials; startup checks do not authorize real provider calls
-   or data egress. Use existing verification evidence where still valid.
+   need the product's controlled stop/start after checking affected in-flight
+   tasks and unsaved work, using the approved update window. Investigate unknown
+   state before acting. A start command reusing an old process is not an update.
+2. Read back the actual page/service version, current local URL and affected
+   startup/main-path checks on Mini. Disk HEAD alone does not prove runtime
+   identity. Give the new entry when its address/port changes and keep the
+   candidate used for feedback/acceptance identifiable through local updates.
+   Preserve local projects, settings and credentials; new installation, migration,
+   provider/data or host effects keep their existing permission boundaries.
+3. Provide the user the version, entry, steps and gaps below. Record feedback
+   and any required formal user verdict against that candidate in the existing
+   delivery/acceptance record; ordinary corrections continue in the same
+   engineering context. User trial feedback and formal Product Acceptance remain
+   separate claims under the Verification Cadence table.
 
-In the existing reply/handoff give four items: candidate and verified runtime
-version; current entry and necessary start/stop instructions; changes and trial
+In the existing reply/handoff give four items: candidate commit/uncommitted
+differences and verified runtime version; current Mini entry and necessary
+start/stop instructions; changes and trial
 steps; checks, failures, unverified gaps and unopened scope. No new trial ledger
 or per-update environment report is required. Code rollback is not data rollback;
 unknown compatibility/data effects prohibit automatic rollback.

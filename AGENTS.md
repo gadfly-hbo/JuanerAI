@@ -142,10 +142,11 @@ Each non-trivial change belongs to openspec/changes/<change-id>/ and declares al
 `origin/main` is the integration authority and local `main` is a read-only mirror. Before changing tracked files, work on `work/macbook/<slug>` or `work/mac-mini/<slug>`; use `tools/harness/git/start-work <slug>` when starting from `main`. One device owns a work branch at a time. Integrate through a GitHub pull request with squash merge, then fast-forward local `main`. Read `docs/governance/git-development-workflow.md` before starting, handing off, merging, or resolving cross-device conflicts.
 
 For Mini product engineering that has adopted v0.9, daily affected checks,
-authorized checkpoints/work-branch pushes and MacBook trial delivery precede
+authorized checkpoints/work-branch pushes and Mini-local user trials precede
 one concentrated PR/integration closeout for the formal Change. Use the sole
-policy's **MacBook Trial Delivery** section for the designated trial copy;
-MacBook product/governance delivery keeps its existing Git workflow.
+policy's **Mac mini Trial and User Acceptance** section for local trials and
+required formal user acceptance. MacBook product/governance delivery keeps its
+existing Git workflow.
 
 ## Reuse and Complexity Control
 
