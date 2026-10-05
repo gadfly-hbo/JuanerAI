@@ -7,8 +7,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const classifier = fileURLToPath(new URL('./ci-scope.mjs', import.meta.url));
-const configPath = '.codex/agents/juaner_worker.toml';
-const configBefore = 'name = "juaner_worker"\nmodel = "gpt-6.1-sol"\nmodel_reasoning_effort = "high"\nsandbox_mode = "workspace-write"\ndeveloper_instructions = "preserve authority"\n';
+const configPath = '.codex/agents/juaner_validator.toml';
+const configBefore = 'name = "juaner_validator"\nmodel = "gpt-6.1-sol"\nmodel_reasoning_effort = "medium"\nsandbox_mode = "read-only"\ndeveloper_instructions = "preserve authority"\n';
 const gitEnv = { ...process.env, GIT_AUTHOR_NAME: 'Scope Test', GIT_AUTHOR_EMAIL: 'scope@example.invalid', GIT_COMMITTER_NAME: 'Scope Test', GIT_COMMITTER_EMAIL: 'scope@example.invalid' };
 async function repository(t, trustedClassifier = null) {
   const root = await mkdtemp(path.join(tmpdir(), 'juanerai-ci-scope-'));
@@ -21,7 +21,6 @@ async function repository(t, trustedClassifier = null) {
   await put('packages/example.ts', 'export const value = 1;\n');
   await put(configPath, configBefore);
   await put('.codex/config.toml', 'model = "gpt-6-astra"\nmodel_reasoning_effort = "high"\nsandbox_mode = "workspace-write"\n[agents]\nenabled = true\nmax_concurrent_threads_per_session = 3\ndefault_subagent_model = "gpt-6-astra"\ndefault_subagent_reasoning_effort = "medium"\n');
-  for (const role of ['spec', 'test', 'validator']) await put(`.codex/agents/juaner_${role}.toml`, configBefore.replaceAll('juaner_worker', `juaner_${role}`).replace('"high"', role === 'validator' ? '"high"' : '"medium"').replace('workspace-write', role === 'validator' ? 'read-only' : 'workspace-write'));
   if (trustedClassifier !== null) {
     await put('tools/harness/validation/ci-scope.mjs', trustedClassifier);
     await put('tools/harness/validation/check-agent-config.py', await readFile(new URL('./check-agent-config.py', import.meta.url), 'utf8'));
@@ -33,16 +32,16 @@ async function repository(t, trustedClassifier = null) {
 
 test('CI-TIER-001: parsed model/effort-only edits take affected, other config semantics stay full', async t => {
   for (const [name, content, expected] of [
-    ['effort', configBefore.replace('"high"', '"medium"'), 'affected'],
-    ['comments and equivalent spelling', configBefore.replace('"high"', "'medium' # approved"), 'affected'],
-    ['equivalent multiline instructions', configBefore.replace('"high"', '"medium"').replace('"preserve authority"', '\'\'\'preserve authority\'\'\''), 'affected'],
-    ['hidden instructions', configBefore.replace('"high"', '"medium"').replace('preserve authority', 'new authority'), 'full'],
-    ['sandbox', configBefore.replace('"high"', '"medium"').replace('workspace-write', 'danger-full-access'), 'full'],
+    ['effort', configBefore.replace('"medium"', '"high"'), 'affected'],
+    ['comments and equivalent spelling', configBefore.replace('"medium"', "'high' # approved"), 'affected'],
+    ['equivalent multiline instructions', configBefore.replace('"medium"', '"high"').replace('"preserve authority"', '\'\'\'preserve authority\'\'\''), 'affected'],
+    ['hidden instructions', configBefore.replace('"medium"', '"high"').replace('preserve authority', 'new authority'), 'full'],
+    ['sandbox', configBefore.replace('"medium"', '"high"').replace('read-only', 'danger-full-access'), 'full'],
     ['malformed', 'model = [', 'full'],
     ['duplicate key', configBefore + 'model = "gpt-6.1-sol"\n', 'full'],
     ['wrong model', configBefore.replace('gpt-6.1-sol', 'other'), 'full'],
-    ['wrong effort', configBefore.replace('"high"', '"low"'), 'full'],
-    ['extra field', configBefore.replace('"high"', '"medium"') + 'permission = true\n', 'full'],
+    ['wrong effort', configBefore.replace('"medium"', '"low"'), 'full'],
+    ['extra field', configBefore.replace('"medium"', '"high"') + 'permission = true\n', 'full'],
   ]) await t.test(name, async child => {
     const f = await repository(child);
     await f.put(configPath, content); await f.put('README.md', 'updated\n'); f.commit();
@@ -57,11 +56,11 @@ function classify(f, base = f.base, flags = []) {
   return spawnSync(process.execPath, [classifier, ...flags, base], { cwd: f.root, env, encoding: 'utf8' });
 }
 
-test('CI-TIER-006: v0.9 pins Mini roles to Sol without changing MacBook defaults', async t => {
+test('CI-TIER-006: two-role v0.9 pins Validator to Sol/high without changing MacBook defaults', async t => {
   for (const kind of ['valid', 'old-astra-role', 'sol-primary', 'sol-default-support']) await t.test(kind, async child => {
     const f = await repository(child, await readFile(classifier, 'utf8'));
-    await f.put(configPath, configBefore.replace('"high"', '"medium"'));
-    if (kind === 'old-astra-role') await f.put(configPath, configBefore.replace('"high"', '"medium"').replace('gpt-6.1-sol', 'gpt-6-astra'));
+    await f.put(configPath, configBefore.replace('"medium"', '"high"'));
+    if (kind === 'old-astra-role') await f.put(configPath, configBefore.replace('"medium"', '"high"').replace('gpt-6.1-sol', 'gpt-6-astra'));
     if (kind === 'sol-primary' || kind === 'sol-default-support') {
       const current = await readFile(path.join(f.root, '.codex/config.toml'), 'utf8');
       await f.put('.codex/config.toml', current.replace(kind === 'sol-primary' ? 'model = "gpt-6-astra"' : 'default_subagent_model = "gpt-6-astra"', kind === 'sol-primary' ? 'model = "gpt-6.1-sol"' : 'default_subagent_model = "gpt-6.1-sol"'));
@@ -70,6 +69,22 @@ test('CI-TIER-006: v0.9 pins Mini roles to Sol without changing MacBook defaults
     const full = spawnSync('python3', ['tools/harness/validation/check-agent-config.py', '--check'], { cwd: f.root, env: process.env, encoding: 'utf8' });
     assert.equal(full.status === 0, kind === 'valid', full.stderr);
     assert.equal(classify(f).stdout, kind === 'valid' ? 'affected\n' : 'full\n');
+  });
+});
+
+test('CI-TIER-007: retired and renamed engineering roles cannot pass configuration validation', async t => {
+  for (const [file, name] of [
+    ['juaner_worker.toml', 'juaner_worker'], ['juaner_spec.toml', 'juaner_spec'],
+    ['juaner_test.toml', 'juaner_test'], ['renamed.toml', 'juaner_worker'],
+    ['duplicate.toml', 'juaner_validator'],
+  ]) await t.test(file, async child => {
+    const f = await repository(child, await readFile(classifier, 'utf8'));
+    await f.put(configPath, configBefore.replace('"medium"', '"high"'));
+    await f.put(`.codex/agents/${file}`, configBefore.replace('juaner_validator', name));
+    f.commit();
+    const checked = spawnSync('python3', ['tools/harness/validation/check-agent-config.py', '--check'], { cwd: f.root, env: process.env, encoding: 'utf8' });
+    assert.notEqual(checked.status, 0, checked.stderr);
+    assert.equal(classify(f).stdout, 'full\n');
   });
 });
 
@@ -170,7 +185,7 @@ test('CI-SCOPE-002: actual workflow selects trusted base, ignores PR replacement
     const trusted = kind === 'initial-introduction' ? null : kind === 'broken-classifier' ? 'process.exit(19);\n' : kind === 'unknown-result' ? "console.log('skip');\n" : actual;
     const f = await repository(child, trusted);
     await f.put('README.md', 'new documentation\n');
-    if (kind === 'config') await f.put(configPath, configBefore.replace('"high"', '"medium"'));
+    if (kind === 'config') await f.put(configPath, configBefore.replace('"medium"', '"high"'));
     if (kind === 'hostile-pr') await f.put('tools/harness/validation/ci-scope.mjs', "console.log('documentation');\n");
     f.commit();
     const temp = path.join(f.root, 'runner-temp'); await mkdir(temp);
@@ -191,14 +206,14 @@ test('CI-TIER-002: affected validates every candidate role and full workflow exe
   const source = await readFile(new URL('../../../.github/workflows/ci.yml', import.meta.url), 'utf8');
   const command = source.match(/^\s+run_logged agent-config (.+)$/m)?.[1];
   assert.ok(command, 'full lane must execute agent config validation');
-  for (const kind of ['valid', 'invalid-unmodified-role', 'missing-role', 'role-link', 'parent-link']) await t.test(kind, async child => {
+  for (const kind of ['valid', 'invalid-unmodified-primary', 'missing-role', 'role-link', 'parent-link']) await t.test(kind, async child => {
     const f = await repository(child, await readFile(classifier, 'utf8'));
-    await f.put(configPath, configBefore.replace('"high"', '"medium"')); f.commit();
+    await f.put(configPath, configBefore.replace('"medium"', '"high"')); f.commit();
     assert.equal(classify(f).stdout, 'affected\n');
     const target = path.join(f.root, '.codex/agents/juaner_validator.toml');
-    if (kind === 'invalid-unmodified-role') await f.put('.codex/agents/juaner_validator.toml', 'model = [');
+    if (kind === 'invalid-unmodified-primary') await f.put('.codex/config.toml', 'model = [');
     if (kind === 'missing-role' || kind === 'role-link') await rm(target);
-    if (kind === 'role-link') await symlink('juaner_worker.toml', target);
+    if (kind === 'role-link') await symlink('../../README.md', target);
     if (kind === 'parent-link') { await rename(path.join(f.root, '.codex/agents'), path.join(f.root, '.codex/moved')); await symlink('moved', path.join(f.root, '.codex/agents')); }
     const affected = classify(f, f.base, ['--check-affected']);
     const full = spawnSync('/bin/bash', ['-ec', command], { cwd: f.root, env: process.env, encoding: 'utf8' });
@@ -210,7 +225,7 @@ test('CI-TIER-002: affected validates every candidate role and full workflow exe
 test('CI-TIER-004: primary/default routing is parsed and hidden nested permission edits stay full', async t => {
   for (const extra of ['', '\n[sandbox_workspace_write]\nnetwork_access = false\n']) await t.test(extra ? 'hidden permission' : 'support effort', async child => {
     const f = await repository(child);
-    await f.put(configPath, configBefore.replace('"high"', '"medium"'));
+    await f.put(configPath, configBefore.replace('"medium"', '"high"'));
     const current = await readFile(path.join(f.root, '.codex/config.toml'), 'utf8');
     await f.put('.codex/config.toml', current.replace('default_subagent_reasoning_effort = "medium"', 'default_subagent_reasoning_effort = "high"'));
     f.commit(); const base = f.git('rev-parse', 'HEAD');
@@ -224,7 +239,7 @@ test('CI-TIER-004: primary/default routing is parsed and hidden nested permissio
 
 test('CI-TIER-005: unavailable TOML runtime cannot grant affected or pass full config validation', async t => {
   const f = await repository(t, await readFile(classifier, 'utf8'));
-  await f.put(configPath, configBefore.replace('"high"', '"medium"')); f.commit();
+  await f.put(configPath, configBefore.replace('"medium"', '"high"')); f.commit();
   const bin = path.join(f.root, 'no-tomllib'); await mkdir(bin);
   await writeFile(path.join(bin, 'python3'), '#!/bin/sh\nprintf "tomllib unavailable\\n" >&2\nexit 17\n', { mode: 0o755 });
   const env = { ...process.env, PATH: `${bin}:${process.env.PATH}` };
@@ -248,7 +263,7 @@ test('CI-TIER-003 correction: parsed non-routing comparison preserves TOML scala
     ['nested dictionary integer to float', '[fixture]\nvalues = [{nested = {value = 3}}]\n', '[fixture]\nvalues = [{nested = {value = 3.0}}]\n'],
   ]) await t.test(name, async child => {
     const f = await repository(child, await readFile(classifier, 'utf8'));
-    await f.put(configPath, configBefore.replace('"high"', '"medium"'));
+    await f.put(configPath, configBefore.replace('"medium"', '"high"'));
     const current = await readFile(path.join(f.root, '.codex/config.toml'), 'utf8');
     await f.put('.codex/config.toml', current.replace('default_subagent_reasoning_effort = "medium"', 'default_subagent_reasoning_effort = "high"') + beforeExtra);
     f.commit(); const base = f.git('rev-parse', 'HEAD');
@@ -263,7 +278,7 @@ test('CI-TIER-003 correction: parsed non-routing comparison preserves TOML scala
   });
   await t.test('concurrency integer to float fails actual full config step', async child => {
     const f = await repository(child, await readFile(classifier, 'utf8'));
-    await f.put(configPath, configBefore.replace('"high"', '"medium"'));
+    await f.put(configPath, configBefore.replace('"medium"', '"high"'));
     const current = await readFile(path.join(f.root, '.codex/config.toml'), 'utf8');
     await f.put('.codex/config.toml', current.replace('max_concurrent_threads_per_session = 3', 'max_concurrent_threads_per_session = 3.0')); f.commit();
     const direct = classify(f);

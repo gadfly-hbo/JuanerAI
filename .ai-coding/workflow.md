@@ -19,7 +19,7 @@ forecast coverage separately from delivered coverage.
 
 After Mini verifies real intake and authorizes the result-sized work package:
 
-1. The same Mini engineering main Agent states the minimum behavior spec and necessary design:
+1. The same Mini engineering main Agent writes the minimum behavior spec and necessary design in the existing OpenSpec files:
    input/output, success/failure, forbidden effects, acceptance reference and
    material contracts. Resolve load-bearing ambiguity before implementing it.
 2. For that behavior, write and run a test that fails because the behavior is
@@ -46,8 +46,11 @@ After Mini verifies real intake and authorizes the result-sized work package:
 
 These are work activities, not new approvals. No universal Spec Gate, TDD_READY
 dispatch approval, separate retirement Gate or routine Spec/Test agent handoff.
-Worker/Spec/Test support is optional and has explicit scoped ownership; the main
-Agent retains continuous responsibility. Support does not become a pipeline.
+Only the main Agent and independent Validator execute Mini engineering. The
+main Agent retains continuous responsibility; there are no optional engineering
+roles. Persist proposal/reference, specs, tasks and verification; retain necessary
+design and actual RED/GREEN evidence. Apply the sole policy's end-of-turn check
+before finishing a turn; ordinary progress is not a reason to await a restart.
 
 ## Exceptions by Work Type
 

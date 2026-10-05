@@ -8,7 +8,9 @@ planning drafts explain the design but are not a second authority.
 
 The user-approved 2026-10-05 v0.9 revision makes Mini's primary engineering
 agent the continuous author and Engineering Controller, with independent final
-validation. Worker/Spec/Test are optional support, not default handoffs. Daily
+validation. Mini engineering has exactly two roles: the primary and independent
+Validator. All engineering authoring stays with the primary, with no custom or
+generic engineering-support dispatch. Daily
 work uses focused checks, authorized branch checkpoints/pushes and local Mac mini
 trial/user acceptance; formal Change closeout retains a concentrated PR/required-CI
 integration checkpoint. MacBook product preparation and its model defaults are
@@ -17,6 +19,9 @@ The [v0.9 release definition and diagram](../planning/2026-10-05/mac-mini-lean-e
 explain this policy; they are not a second execution authority.
 The user's subsequent v0.9 revision moves trial and required user acceptance
 directly to Mac mini, removing the default MacBook runtime-copy delivery step.
+The subsequent user-approved v0.9 correction removes optional engineering roles
+and strengthens documented SDD/TDD and continuous execution below. MacBook product
+support and the product's own Runtime/subagent capabilities remain unchanged.
 
 The preceding user-approved 2026-09-26 continuous-engineering revision (v0.8) retained the
 2026-09-24 Product Manager / Engineering Controller split. It replaces the
@@ -37,11 +42,16 @@ agent. It does not authorize dynamic effort routing or historical evidence reset
 
 Publication and adoption are separate. New work must identify the published
 policy version and approved product input. An active Mini task adopts at a safe
-boundary only after reading back that version, its actual loaded roles, the
+boundary only after reading back that version, its actual primary settings, the
 preserved task/branch/tree, replaced old restrictions, remaining real resource
 limits, unresolved decisions, and next permitted action. Until then adoption
 is UNCONFIRMED. Receipt alone does not resume a stopped product task.
 Publication does not force other in-flight sessions onto a new baseline.
+Check the primary's effective model and permissions before its affected work;
+check the independent Validator when formal validation is due. Record unavailable
+readback honestly. A later review-role gap does not prevent otherwise authorized,
+safe implementation, but does prevent claiming the required independent review
+or formal closeout. Retired role interfaces are not an intake prerequisite.
 
 An active task keeps its Change identity, branch ownership, code, uncommitted
 work, valid product approvals, evidence, failures, UNKNOWN and spent resources.
@@ -58,7 +68,6 @@ host/destructive operation, Git delivery or release is authorized by this policy
 |---|---|---|
 | MacBook Product Manager | Whitepaper/Demo interpretation; Blueprint; product scope, UI, business meaning, acceptance criteria, prohibitions and planning | routine engineering contracts, paths, commands, environments, repairs, state or technical sign-off |
 | Mac mini engineering primary agent (Engineering Controller) | intake, feasibility, work-package boundaries, necessary spec/design, tests, implementation, diagnosis, integration, affected verification, single engineering state, engineering acceptance and authorized Git delivery | changing product or safety boundaries, granting new permissions/resources, accepting residual risk for the user, claiming Product Acceptance or independently validating its own candidate |
-| Optional engineering support (`juaner_worker`, Spec/Test) | a concrete delegated investigation or non-overlapping work package; Worker may own scoped spec/design, tests and implementation | compulsory serial stages, changing product commitments, writing primary-owned project state, expanding authority or final validation of a candidate it authored |
 | Independent Validator | acceptance-first evaluation of a fixed complete candidate and its evidence | authoring/repairing that candidate, granting acceptance, Git or execution permission |
 | User | final product, scope, boundary, permission, resource, risk and required Product Acceptance decisions | routine in-boundary corrections already delegated |
 
@@ -110,8 +119,8 @@ required. Do not create or migrate tasks without the user's explicit request.
 ## Lean Context and Continuous Ownership
 
 Mini's primary agent works directly from focused approved inputs rather than
-repeating the Product Manager conversation or requiring a Worker dispatch first.
-When optional support is useful, give it focused context. Use the existing work
+repeating the Product Manager conversation or handing implementation to another
+agent. Use the existing work
 package: result and acceptance references, current input/baseline identities,
 allowed roots/effects, limits/stops and unresolved risks, plus accessible source
 and evidence pointers. Read required authority, acceptance, applicable contracts
@@ -136,26 +145,30 @@ return or request to continue. Full handoff is for the package outcome, a real
 decision/execution boundary or diagnosed non-convergence. Keep complete raw
 evidence at its existing root rather than copying logs into both conversations.
 
-Optional Worker/Spec/Test support is justified by a concrete parallel or specialist
-benefit, not a ritual handoff. Define non-overlapping ownership and reuse the same
-support context for ordinary corrections. Mini consumes its deltas and opens
-evidence as needed for identity, risk, blockers or acceptance, without replaying
-ordinary debugging or duplicating the Validator's review. Resolved decisions
-return to the owning context; unaffected work continues. Mini owns result
-collection and the next authorized action: use the
-available wait/notification mechanism, or an already authorized follow-up, to
-consume returns and continue without another user prompt. Ending a reply while
-a detached process runs is not automatic continuation; before yielding establish
-how this task will resume, or disclose the concrete unsupported continuation
-boundary. Report user decisions and completion honestly, not ordinary milestones
-as completion. This introduces no scheduler, polling quota or new permission.
+At an ordinary milestone, report progress and take the next authorized action
+in the same turn. A focused test PASS, spec/design update, local checkpoint or
+trial-ready increment is not the end of an instruction to deliver the complete
+result. End the turn for the requested result, a genuinely required user decision,
+an explicit user stop, or a concrete execution/safety/resource boundary; name the
+affected scope, evidence and next action in existing records. Correct a mistaken
+self-imposed wait when original authority remains valid; do not ask for another
+startup approval. Keep the engineering primary as the single author.
+
+At formal closeout, collect the Validator's result using the available wait or
+notification mechanism and continue authorized acceptance or repairs without
+another user prompt. Ending a reply while a detached process runs is not automatic
+continuation; before yielding establish how this task will resume, or disclose the
+concrete unsupported continuation boundary. Pausing a scheduled/automatic follow-up
+only pauses that mechanism; it does not cancel an explicit instruction to work in
+the current turn. Never infer resumption of an explicitly paused product task
+from that distinction. This introduces no scheduler, polling quota or permission.
 
 ### Native-first Role Execution
 
 Use the current native primary task for continuous engineering and native
-`juaner_validator` for independent formal closeout review. Optional Worker/Spec/Test
-support follows the same native-first preference; no Worker is required before
-the primary can implement. Terminal `codex exec` / `codex exec resume` as a
+`juaner_validator` for independent formal closeout review. Engineering work stays
+with the primary; built-in/generic agents are not alternate support entries.
+Terminal `codex exec` / `codex exec resume` as a
 replacement for an engineering role is a lower-priority exception, not an equal
 alternative. Before using it, obtain the user's explicit consent identifying
 the task/role, concrete reason, bounded scope and endpoint. Historical CLI use,
@@ -188,10 +201,59 @@ Read back the adopted route and actual roles. Rule adoption or a route change
 does not lift an explicit user pause or reset acceptance and consumed resources.
 
 When claiming efficiency gains, compare equivalent accepted work including Mini,
-optional support, Validator and repair/coordination, distinguishing cached input, other
+Validator and repair/coordination, distinguishing cached input, other
 input and output from elapsed time and user interventions. Use available logs
 and the existing retrospective; missing measurements remain unknown, not a new
 benchmark stage or evidence of lower cost from quieter UI alone.
+
+### End-of-turn Check
+
+Before a Mini engineering turn ends, the main Agent reconciles the requested
+result, existing status, OpenSpec tasks/verification, actual evidence and next
+authorized action. Use `node tools/harness/validation/engineering-turn-check.mjs
+--check <actual-engineering-worktree>` for a read-only material/lifecycle check.
+CONTINUE means the recorded engineering loop has more work, not new authority;
+STOP means a recorded boundary or completion; UNKNOWN means the check cannot
+establish applicability. Inspect the actual task rather than inventing PASS or
+blocking all safe work merely because the diagnostic is unavailable. Missing
+spec/tasks/verification must be reconciled before dependent completion claims.
+This tool checks readable materials, not specification semantics or past RED.
+
+The project `.codex/hooks.json` adds a bounded native Stop reminder, not a new
+state machine or scheduler. It only considers schema-valid existing status in
+registered Git worktrees explicitly bound by the main writer to BOTH this
+session and turn: `updated_by.session = mini-engineering:<session_id>:<turn_id>`.
+The read-only UserPromptSubmit handler supplies host-provided IDs to a Sol main
+session without reading/storing the prompt or changing state; Astra MacBook
+sessions receive no added context. It does not approve intake or resume work.
+Use the existing status CLI's `--session` only after current engineering authority
+is confirmed; never bind an unrelated question, MacBook product task or paused
+task. Do not invent host IDs. When supported current-turn IDs are unavailable,
+automatic continuation stays inactive; use the manual check and continue
+authorized engineering normally. Hook availability is not an intake Gate.
+
+Only a unique current binding, active/validating IMPLEMENTATION/REGRESSION/VERIFY
+and no blockers can receive one continuation reminder. Update real stops before
+returning. A final real stop may also carry `JUANERAI_STOP: <reason>` (for example
+USER_PAUSED, WAITING_USER, PERMISSION_REQUIRED, UNSAFE, RESOURCE_LIMIT, COMPLETE
+or UNKNOWN); the hook honors this even if status cannot be updated. Interrupt,
+unbound/stale/ambiguous/unsafe state and already-continued Stop never auto-resume.
+The hook writes no board/counter, runs no test/model/product/Provider command,
+copies no raw status into a prompt and grants no budget/Git/acceptance authority.
+A repeated premature end is disclosed, not recursively forced into a retry loop.
+
+Review and trust the exact hook through supported host controls before claiming
+it enabled; do not bypass trust or restart/migrate an active task as a probe.
+Delivered source/tests, host loading/trust, receiver adoption and task resumption
+are distinct ([official hook contract](https://learn.chatgpt.com/docs/hooks)).
+
+Use available skills as scoped methods inline in the same main context: TDD for
+the current behavior, writing-for-agents for agent instructions, and the existing
+Git skill only for an authorized delivery. Read the applicable skill first;
+project/user authority overrides contradictory generic steps. Reuse approved
+test seams and inputs, not a new seam/PRD/role approval for every inner loop.
+Do not invoke dev-flow as a parallel `.flow` authority, auto-approve scope, add
+fixed retry-renewal gates or duplicate the existing Validator/CI verification.
 
 ## Continuous SDD and TDD
 
@@ -205,12 +267,23 @@ result-sized work package
 -> required Product Acceptance and authorized delivery / integration / archive
 ```
 
-For each behavior, first state the smallest sufficient engineering specification
-in the existing Change: input and observable output, important success/failure
+For each behavior, first write the smallest sufficient engineering specification
+in the existing Change's spec file: input and observable output, important success/failure
 rules, forbidden effects, acceptance reference and any necessary contract
 decision. Resolve load-bearing product ambiguity before implementing it.
 Internal design may evolve; changing an approved commitment requires the
 appropriate decision before dependent implementation.
+
+For every non-trivial behavior Change, retain the applicable proposal/product-input
+reference, OpenSpec requirement delta (`specs/<capability>/spec.md`), `tasks.md`
+and `verification.md` in `openspec/changes/<change-id>/`. Reuse existing equivalent
+spec/task/verification files and stable Requirement/Acceptance IDs rather than
+duplicating them. Maintain `design.md` or the existing engineering-design record
+when interfaces, data/state or important technical decisions need explanation.
+The spec file states the behavior before its dependent production change; a chat
+summary, implementation comment or passing test alone does not replace it.
+Document by the next vertical behavior, not the whole system upfront; routine
+private corrections do not require a new document suite or approval.
 
 Then write and run the test, observe failure caused by the missing behavior,
 implement the minimum change to make it GREEN, and refactor only while GREEN.
@@ -219,6 +292,15 @@ import, locator and fixture failures are not causal RED. A missing prerequisite
 may mask later assertions; disclose that and actually execute all required
 assertions in final verification. Pure refactors use pre/post GREEN and relevant
 equivalence evidence; documentation-only work does not fabricate RED.
+Keep the test source and actual RED/GREEN commands, inputs, exits and decisive
+assertion evidence at the existing persistent root, linked from verification.
+Connect Requirement/Acceptance -> spec -> test -> implementation -> actual result
+using existing records. Run applicable affected regression after GREEN. The
+primary authors these assets; independent Validator checks spec completeness,
+causal ordering, assertion sensitivity and coverage at formal closeout. Tests
+written only after implementation do not establish historical RED; disclose the
+gap instead of backfilling a success claim. Applicable archive updates the
+canonical behavior specs, preserving the Change and its historical evidence.
 
 The same engineering agent writes tests and code within the authorized roots,
 preserving unrelated edits, acceptance assertions and negative/failure cases.
@@ -295,10 +377,10 @@ Classify repeated CI failures from evidence before retrying. A green rerun or a
 larger timeout does not close an unexplained failure, and routine in-boundary
 CI correction follows the same engineering package without another approval.
 
-Spec and Test specialists are optional scoped support, not mandatory stages;
-they do not import the retired approval chain. A contributing specialist cannot
-validate its own candidate. The final Validator remains fresh and read-only.
-An unavailable role is disclosed, not silently replaced with author self-review.
+The engineering primary owns specification, tests and implementation. The final
+Validator remains fresh and read-only; its unavailability is disclosed and blocks
+the required review, not safely isolated implementation. Author self-review is
+not a replacement.
 Use Lean Context and Continuous Ownership for dispatch, progress and resumption;
 ordinary spec/test edits and commands stay inside that engineering loop.
 
@@ -359,6 +441,12 @@ read-only first; stop affected actions if safety remains unknown. After timeout,
 check processes and effects before repeating only known-safe operations.
 An erroneous self-imposed pause may be corrected with evidence only when original
 authority remains valid; it cannot relabel a real stop or missing evidence.
+Classify a stop against the next actual action, not an unfamiliar technical term
+or unrelated failing check. Continue safely independent authorized work; stop
+the whole task only when the boundary covers it or no safe next action exists.
+Once the user supplies the needed decision, continue within its scope without
+another start confirmation. Historical waiting labels do not override a newer
+explicit instruction or convert preserved failures into PASS.
 
 ## Verification Cadence and Internal Trial
 
@@ -475,7 +563,7 @@ Delivery/acceptance/merge/archive order follows the task's actual permissions.
 Mini alone writes `.juanerai/project-control/status.json` through the existing
 CLI at material result, phase, blocker, decision and acceptance transitions.
 MacBook maintains planning; its last synchronized copy is not live Mini status.
-Workers and Validator return evidence, not competing board writes. Existing
+Validator returns evidence, not competing board writes. Existing
 machine label `controller` means Mini Engineering Controller in this mode.
 Do not change the board schema or create a second state authority.
 

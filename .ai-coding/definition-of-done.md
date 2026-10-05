@@ -6,9 +6,12 @@ grant external, Git or release authority.
 A behavior-changing Change is engineering-complete when:
 
 - Approved product input, applicable UI Contract and user UI approval are bound.
-- Current behavior specs cover the delivered acceptance points and necessary
+- Persisted OpenSpec proposal/reference, specs, tasks and verification exist;
+  necessary design is recorded, not replaced by chat. Current specs cover the delivered acceptance points and necessary
   contracts; ambiguity was resolved before affected implementation.
 - Behavior-scoped causal RED precedes implementation; target tests are GREEN.
+  Commands, candidate/input identities, exits and results link to accessible
+  persistent evidence; later tests cannot invent historical RED.
 - Applicable type/build, regression, contract, real-path, architecture and
   safety checks pass or have a justified explicit non-applicability.
 - Scope, compatibility, failures, forbidden effects and important design

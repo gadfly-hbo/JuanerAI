@@ -72,7 +72,7 @@ For each material item, name the earliest useful check that could have prevented
 | contract test | | | |
 | fixture/oracle | | | |
 | test double/harness | | | |
-| Worker handoff pattern | | | |
+| Main-Agent continuity / return point | | | |
 | Validator check | | | |
 | architecture or ADR | | | |
 

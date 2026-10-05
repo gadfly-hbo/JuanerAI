@@ -7,7 +7,7 @@ import sys
 import tomllib
 
 CONFIG = ".codex/config.toml"
-ROLES = {f".codex/agents/juaner_{role}.toml": role for role in ("worker", "spec", "test", "validator")}
+ROLES = {".codex/agents/juaner_validator.toml": "validator"}
 
 
 def validate(path, data):
@@ -73,6 +73,16 @@ try:
             if not stat.S_ISREG(target.lstat().st_mode):
                 raise ValueError(f"{path}: expected regular config")
             validate(path, tomllib.loads(target.read_text(encoding="utf-8")))
+        for target in Path(".codex/agents").glob("*.toml"):
+            if target.as_posix() in ROLES:
+                continue
+            if not stat.S_ISREG(target.lstat().st_mode):
+                raise ValueError(f"{target}: expected regular role config")
+            data = tomllib.loads(target.read_text(encoding="utf-8"))
+            # Keep MacBook product routing separate; retired/renamed Juaner
+            # engineering entries must not silently reintroduce helpers.
+            if target.stem.startswith("juaner_") or str(data.get("name", "")).startswith("juaner_"):
+                raise ValueError(f"{target}: only juaner_validator is a current engineering role")
     else:
         raise ValueError("expected --compare or --check")
 except (ValueError, KeyError, OSError, TypeError) as error:

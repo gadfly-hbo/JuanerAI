@@ -27,8 +27,8 @@ evidence into PASS; a risk waiver requires the user's explicit decision.
   result-sized package and directly owns necessary spec/design, tests,
   implementation, corrections, validation and single engineering state inside
   approved boundaries. Ordinary private mechanics evolve in that same loop.
-- Worker/Spec/Test assistance is optional, has explicit scoped ownership, and
-  returns evidence without writing engineering state or becoming a mandatory stage.
+- Mini has only main Agent and independent Validator; there is no engineering
+  helper dispatch. MacBook product review remains separate and unchanged.
 - Validator independently checks the frozen artifact and returns a verdict.
 - Engineering Controller records Engineering Acceptance, requests changes, or blocks; the user separately owns Product Acceptance and boundary/risk decisions.
 

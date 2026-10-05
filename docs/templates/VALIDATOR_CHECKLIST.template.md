@@ -37,6 +37,10 @@ Formatting preferences and optional template fields are not delivery blockers.
 
 ## Test Integrity
 
+- [ ] Current proposal/reference, persisted specs, tasks and verification support
+  the delivered scope; necessary design and REQ/AC traceability are accessible.
+  Check actual causal ordering, not only file existence or retrospective claims.
+
 - [ ] Expected RED was causal and captured before production implementation.
 - [ ] Tests were not weakened during implementation.
 - [ ] Helper/environment health is independent of target behavior.

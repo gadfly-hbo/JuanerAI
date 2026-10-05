@@ -29,7 +29,7 @@ signature bytes, raw prompt, or raw model output here.
 - Feasibility result:
 - OpenSpec / design / contract / task / allowed-path plan:
 - Dependency, toolchain, commands, environment, validation, and evidence plan:
-- Engineering agent / independent Validator, optional specialist question, real resource limits and stop conditions:
+- Engineering main Agent / independent Validator only, real resource limits and stop conditions:
 - Published rule version / actually loaded roles / replaced old restrictions / retained stops:
 - Git permissions and delivery plan:
 - Intake receipt / state: `UNCONFIRMED` / `ADOPTED_STOP_RETAINED` / `READY_FOR_AUTHORIZED_EXECUTION`:

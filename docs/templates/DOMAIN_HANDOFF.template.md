@@ -48,7 +48,7 @@ evidence; this template does not add approvals, stages or per-command quotas.
 - Role:
 - Model:
 - Reasoning effort:
-- Optional specialist question and exit condition, if needed:
+- Mini engineering route: main Agent / independent Validator only; no helper dispatch:
 
 ## Evidence Required
 
