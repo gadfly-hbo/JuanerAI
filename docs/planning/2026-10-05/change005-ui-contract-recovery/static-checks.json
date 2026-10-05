@@ -1,0 +1,173 @@
+{
+  "scope": "STATIC_ATTACHMENT_ONLY",
+  "device": "MacBook",
+  "checks": [
+    {
+      "name": "reference-byte-identity:clickable/px004/reference.html",
+      "passed": true,
+      "details": {
+        "bytes": 43841,
+        "sha256": "efa572d52458009ccce0573593c05c41213febc837fb3266e105039265e0c990"
+      }
+    },
+    {
+      "name": "reference-byte-identity:clickable/px004/data.js",
+      "passed": true,
+      "details": {
+        "bytes": 3544,
+        "sha256": "24df63d955bba731ceb8d6e5919c593777d1e3b85388621aa3a5f85162d30b7f"
+      }
+    },
+    {
+      "name": "reference-byte-identity:clickable/px004/app.js",
+      "passed": true,
+      "details": {
+        "bytes": 36436,
+        "sha256": "90ab6e4b24899a753fabb47ca60659534393d0534daafcd3261e29895b1e754d"
+      }
+    },
+    {
+      "name": "reference-byte-identity:clickable/px004/styles.css",
+      "passed": true,
+      "details": {
+        "bytes": 23310,
+        "sha256": "c2b5ad6baa712e82600cebcf8dbb8df7cb9ee591cd24faa2dab5bfabb6b75444"
+      }
+    },
+    {
+      "name": "reference-byte-identity:clickable/px006/reference.html",
+      "passed": true,
+      "details": {
+        "bytes": 18004,
+        "sha256": "2a4f823aa7a5365472861b5735e47b57f7d32a5a584ed85aa7b780c9cf175053"
+      }
+    },
+    {
+      "name": "reference-byte-identity:clickable/px006/data.js",
+      "passed": true,
+      "details": {
+        "bytes": 3587,
+        "sha256": "7ad417756e9375b04e38c44cd86d1063d8cbb47f0f14ae8b9bddb8cb58bd07d3"
+      }
+    },
+    {
+      "name": "reference-byte-identity:clickable/px006/app.js",
+      "passed": true,
+      "details": {
+        "bytes": 57680,
+        "sha256": "446bbac17ca195bbd4c9fca5c95d3982b3e21a48bd6e9ed08cfe808584fc2fa9"
+      }
+    },
+    {
+      "name": "reference-byte-identity:clickable/px006/styles.css",
+      "passed": true,
+      "details": {
+        "bytes": 17185,
+        "sha256": "4dae5eae25e59826ea0aab2b0d101d93474f4f896b5e6ea9e838522689b53fa4"
+      }
+    },
+    {
+      "name": "approved-logo-byte-identity",
+      "passed": true
+    },
+    {
+      "name": "javascript-syntax:review.js",
+      "passed": true
+    },
+    {
+      "name": "javascript-syntax:px004/app.js",
+      "passed": true
+    },
+    {
+      "name": "javascript-syntax:px004/data.js",
+      "passed": true
+    },
+    {
+      "name": "javascript-syntax:px006/app.js",
+      "passed": true
+    },
+    {
+      "name": "javascript-syntax:px006/data.js",
+      "passed": true
+    },
+    {
+      "name": "professional-is-full-004-not-006-placeholder",
+      "passed": true
+    },
+    {
+      "name": "default-does-not-load-seeded-demo-scripts",
+      "passed": true
+    },
+    {
+      "name": "juanerai-wordmark-slogan-and-no-image-logo",
+      "passed": true
+    },
+    {
+      "name": "unique-html-ids:index.html",
+      "passed": true
+    },
+    {
+      "name": "local-static-resources:index.html",
+      "passed": true,
+      "details": [
+        "px006/styles.css",
+        "brand.css",
+        "px004/index.html",
+        "review.js"
+      ]
+    },
+    {
+      "name": "unique-html-ids:px004/index.html",
+      "passed": true
+    },
+    {
+      "name": "local-static-resources:px004/index.html",
+      "passed": true,
+      "details": [
+        "styles.css?v=2",
+        "../brand.css",
+        "../review.js"
+      ]
+    },
+    {
+      "name": "unique-html-ids:px004/reference.html",
+      "passed": true
+    },
+    {
+      "name": "local-static-resources:px004/reference.html",
+      "passed": true,
+      "details": [
+        "styles.css?v=2",
+        "data.js?v=3",
+        "app.js?v=12"
+      ]
+    },
+    {
+      "name": "unique-html-ids:px006/reference.html",
+      "passed": true
+    },
+    {
+      "name": "local-static-resources:px006/reference.html",
+      "passed": true,
+      "details": [
+        "styles.css",
+        "data.js",
+        "app.js"
+      ]
+    },
+    {
+      "name": "overlay-no-network-credentials-or-persistence",
+      "passed": true
+    },
+    {
+      "name": "review-controls-and-diff-explicit",
+      "passed": true
+    }
+  ],
+  "total": 27,
+  "passed": 27,
+  "not_run": [
+    "Browser pixel/dimension/click checks: file protocol blocked by tool",
+    "Provider, credentials, real data, services, backend/engineering tests, user UI acceptance"
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "device": "MacBook",
+  "branch": "work/macbook/change005-ui-contract-recovery",
+  "base_commit": "9b8a5f540a4b09477a57aa1a99f1776b3b9264e7",
+  "references": [
+    {
+      "source": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-004-xanthil-uidemo/demo/index.html",
+      "source_bytes": 43841,
+      "sha256": "efa572d52458009ccce0573593c05c41213febc837fb3266e105039265e0c990",
+      "reference": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/reference.html",
+      "reference_bytes": 43841,
+      "reference_sha256": "efa572d52458009ccce0573593c05c41213febc837fb3266e105039265e0c990",
+      "exact": true
+    },
+    {
+      "source": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-004-xanthil-uidemo/demo/data.js",
+      "source_bytes": 3544,
+      "sha256": "24df63d955bba731ceb8d6e5919c593777d1e3b85388621aa3a5f85162d30b7f",
+      "reference": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/data.js",
+      "reference_bytes": 3544,
+      "reference_sha256": "24df63d955bba731ceb8d6e5919c593777d1e3b85388621aa3a5f85162d30b7f",
+      "exact": true
+    },
+    {
+      "source": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-004-xanthil-uidemo/demo/app.js",
+      "source_bytes": 36436,
+      "sha256": "90ab6e4b24899a753fabb47ca60659534393d0534daafcd3261e29895b1e754d",
+      "reference": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/app.js",
+      "reference_bytes": 36436,
+      "reference_sha256": "90ab6e4b24899a753fabb47ca60659534393d0534daafcd3261e29895b1e754d",
+      "exact": true
+    },
+    {
+      "source": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-004-xanthil-uidemo/demo/styles.css",
+      "source_bytes": 23310,
+      "sha256": "c2b5ad6baa712e82600cebcf8dbb8df7cb9ee591cd24faa2dab5bfabb6b75444",
+      "reference": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/styles.css",
+      "reference_bytes": 23310,
+      "reference_sha256": "c2b5ad6baa712e82600cebcf8dbb8df7cb9ee591cd24faa2dab5bfabb6b75444",
+      "exact": true
+    },
+    {
+      "source": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-006-xanthil-dual-mode/demo/index.html",
+      "source_bytes": 18004,
+      "sha256": "2a4f823aa7a5365472861b5735e47b57f7d32a5a584ed85aa7b780c9cf175053",
+      "reference": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px006/reference.html",
+      "reference_bytes": 18004,
+      "reference_sha256": "2a4f823aa7a5365472861b5735e47b57f7d32a5a584ed85aa7b780c9cf175053",
+      "exact": true
+    },
+    {
+      "source": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-006-xanthil-dual-mode/demo/data.js",
+      "source_bytes": 3587,
+      "sha256": "7ad417756e9375b04e38c44cd86d1063d8cbb47f0f14ae8b9bddb8cb58bd07d3",
+      "reference": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px006/data.js",
+      "reference_bytes": 3587,
+      "reference_sha256": "7ad417756e9375b04e38c44cd86d1063d8cbb47f0f14ae8b9bddb8cb58bd07d3",
+      "exact": true
+    },
+    {
+      "source": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-006-xanthil-dual-mode/demo/app.js",
+      "source_bytes": 57680,
+      "sha256": "446bbac17ca195bbd4c9fca5c95d3982b3e21a48bd6e9ed08cfe808584fc2fa9",
+      "reference": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px006/app.js",
+      "reference_bytes": 57680,
+      "reference_sha256": "446bbac17ca195bbd4c9fca5c95d3982b3e21a48bd6e9ed08cfe808584fc2fa9",
+      "exact": true
+    },
+    {
+      "source": "/Users/huangbo/Dev/Projects/research/explorations/PX-2026-006-xanthil-dual-mode/demo/styles.css",
+      "source_bytes": 17185,
+      "sha256": "4dae5eae25e59826ea0aab2b0d101d93474f4f896b5e6ea9e838522689b53fa4",
+      "reference": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px006/styles.css",
+      "reference_bytes": 17185,
+      "reference_sha256": "4dae5eae25e59826ea0aab2b0d101d93474f4f896b5e6ea9e838522689b53fa4",
+      "exact": true
+    }
+  ],
+  "brand": {
+    "source": "/Users/huangbo/Downloads/微信图片_20260912214729_1_71.png",
+    "bytes": 891196,
+    "sha256": "56bdb1196e9f1bbaef64c973c4108d12294246de6e941fa00821a2769e3e0e21"
+  },
+  "note": "Original reference HTML and script/styles are preserved; derived HTML and review/branding overlay are separate. No implementation/Provider/credential acceptance."
+}
