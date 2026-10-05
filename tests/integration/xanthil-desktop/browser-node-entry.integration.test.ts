@@ -1,10 +1,41 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {spawnSync} from 'node:child_process';
-import {mkdtempSync,readFileSync} from 'node:fs';
+import {mkdtempSync,readFileSync,constants} from 'node:fs';
 import {join,resolve} from 'node:path';
 import {browserEvidenceRoot} from '../../fixtures/xanthil-desktop/browser-evidence.ts';
 import {readBrowserServiceIdentity} from '../../../adapters/storage-local/browser-project-origin.ts';
+import {browserServiceEnvironment} from '../../../tools/browser/service-environment.ts';
+
+test('BF-R11 CA: child environment preserves only approved startup inputs',()=>{
+ const source={PATH:'/tools',JUANERAI_TOOLCHAIN_BIN:'/toolchain',NODE_EXTRA_CA_CERTS:'/untrusted.pem',NODE_TLS_REJECT_UNAUTHORIZED:'0',NODE_OPTIONS:'--use-openssl-ca',HTTPS_PROXY:'http://proxy',API_KEY:'synthetic-secret'};
+ const env=browserServiceEnvironment('/profile',source);
+ assert.equal(env.PATH,'/tools');assert.equal(env.JUANERAI_TOOLCHAIN_BIN,'/toolchain');assert.equal(env.JUANERAI_DESKTOP_DEV_ROOT,'/profile');
+ for(const key of ['NODE_TLS_REJECT_UNAUTHORIZED','NODE_OPTIONS','HTTPS_PROXY','API_KEY'])assert.equal(env[key],undefined);
+ assert.notEqual(env.NODE_EXTRA_CA_CERTS,source.NODE_EXTRA_CA_CERTS);
+ assert.equal(source.NODE_EXTRA_CA_CERTS,'/untrusted.pem','parent environment stays unchanged');
+});
+
+test('BF-R11 CA: macOS service uses only the readable public system CA bundle',()=>{
+ const checks:unknown[][]=[];
+ const env=browserServiceEnvironment('/profile',{NODE_EXTRA_CA_CERTS:'/untrusted.pem'},'darwin',(path,mode)=>{checks.push([path,mode]);});
+ assert.equal(env.NODE_EXTRA_CA_CERTS,'/etc/ssl/cert.pem');
+ assert.deepEqual(checks,[['/etc/ssl/cert.pem',constants.R_OK]]);
+});
+
+test('BF-R11 CA: missing or unreadable system bundle retains default TLS trust',()=>{
+ for(const code of ['ENOENT','EACCES']){
+  const env=browserServiceEnvironment('/profile',{NODE_EXTRA_CA_CERTS:'/untrusted.pem'},'darwin',()=>{throw Object.assign(new Error('unavailable'),{code});});
+  assert.equal(env.NODE_EXTRA_CA_CERTS,undefined);assert.equal(env.NODE_TLS_REJECT_UNAUTHORIZED,undefined);
+ }
+});
+
+test('BF-R11 CA: other platforms do not inspect or inherit an extra CA bundle',()=>{
+ for(const platform of ['linux','win32'] as const){
+  const env=browserServiceEnvironment('/profile',{NODE_EXTRA_CA_CERTS:'/untrusted.pem'},platform,()=>assert.fail('macOS bundle must not be inspected'));
+  assert.equal(env.NODE_EXTRA_CA_CERTS,undefined);
+ }
+});
 
 test('BF-R08/11: normal Node startup exits while independent service serves later requests; stop is explicit',async()=>{
  const scripts=JSON.parse(readFileSync('package.json','utf8')).scripts;assert.equal(scripts['web:start'],'node tools/browser/entry.mjs start');

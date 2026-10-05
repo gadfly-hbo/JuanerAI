@@ -3,6 +3,7 @@ import {mkdirSync,openSync,closeSync,constants} from 'node:fs';
 import {join} from 'node:path';
 import {homedir} from 'node:os';
 import {fileURLToPath} from 'node:url';
+import {browserServiceEnvironment} from './service-environment.ts';
 import {prepareDevelopmentRoot} from '../../apps/desktop/development.ts';
 import {readBrowserServiceIdentity,acquireBrowserServiceIdentity} from '../../adapters/storage-local/browser-project-origin.ts';
 const [action,...options]=process.argv.slice(2);
@@ -15,7 +16,7 @@ function quiescent(){try{const lease=acquireBrowserServiceIdentity(directory);le
 let record=await current();
 if(action==='start'&&!record){
  if(!quiescent())throw Error('服务状态尚未确认；不会启动第二个写者。');
- const env={PATH:process.env.PATH??'/usr/bin:/bin',HOME:homedir(),LANG:'en_US.UTF-8',JUANERAI_DESKTOP_DEV_ROOT:root};if(process.env.JUANERAI_TOOLCHAIN_BIN)env.JUANERAI_TOOLCHAIN_BIN=process.env.JUANERAI_TOOLCHAIN_BIN;
+ const env=browserServiceEnvironment(root);
  const log=openSync(join(directory,'service.log'),constants.O_CREAT|constants.O_APPEND|constants.O_WRONLY|constants.O_NOFOLLOW,0o600);
  try{const child=spawn(process.execPath,[fileURLToPath(new URL('./service.mjs',import.meta.url))],{env,detached:true,stdio:['ignore',log,log]});child.unref();}finally{closeSync(log);}
  const until=Date.now()+12000;while(!record&&Date.now()<until){await new Promise(resolve=>setTimeout(resolve,100));record=await current();}
