@@ -25,9 +25,9 @@ or migrate state data merely to change the workflow.
 
 Product preparation belongs to MacBook. Mini is the sole writer of current
 engineering state. Record material results/transitions, not every inner test run.
-Daily checkpoints/pushes and MacBook trial updates under the sole policy's
-MacBook Trial Delivery section remain within implementation; they create no
-new state or Gate and do not establish formal Change completion.
+Daily checkpoints/pushes and Mini-local trials under the sole policy's
+Mac mini Trial and User Acceptance section remain within implementation; they
+create no new state or Gate and do not establish formal Change completion.
 Independent validation uses new fixed inputs after repair; it does not repeat
 unaffected product preparation or create fresh role/command allowances.
 

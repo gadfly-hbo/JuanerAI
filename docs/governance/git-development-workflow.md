@@ -87,13 +87,13 @@ and formal-closeout cadence below, within the same branch/permission protections
 ### Adopted v0.9 Mini Product Engineering
 
 During daily iteration, run affected checks and the relevant main path, explicitly
-stage coherent changes, commit and push the owned work branch within existing
-Git authority. Internal corrections and subtasks do not each require a PR,
-full CI, independent review or packaging. Deliver trial updates through the
-sole execution policy's **MacBook Trial Delivery** section, using the same
-designated independent MacBook copy. A trial copy is a runtime consumer, not
-branch ownership handoff; push, copy update and actual runtime readback are
-separate results. Trial feedback is not formal Change acceptance.
+stage coherent changes, commit and push the owned work branch when needed within
+existing Git authority. Internal corrections and subtasks do not each require a
+PR, full CI, independent review or packaging. The user tries and completes any
+required Product Acceptance directly on Mini under the sole execution policy's
+**Mac mini Trial and User Acceptance** section. A local trial identifies the
+commit and relevant uncommitted differences; push, PR and mainline merge are not
+trial prerequisites. Trial feedback is not formal Change acceptance.
 
 At the formal Change's complete-result closeout, concentrate one PR targeting
 `main`, its complete diff/evidence review, applicable independent verification,

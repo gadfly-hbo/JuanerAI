@@ -57,10 +57,11 @@ Use this when the user asks to commit and push current work.
 11. Report the commit SHA, branch and remote, validation evidence, the selected
     validation scope and remaining worktree state. A push does not merge the
     pull request or authorize the next product Gate.
-    For a MacBook trial update, use the sole execution policy's MacBook Trial
-    Delivery section; report push, copy update and actual runtime readback
-    separately. Existing PR updates retain applicable CI; changed candidates
-    and failures receive affected revalidation without reusing invalidated PASS.
+    For Mini-local trials or required user acceptance, use the sole execution
+    policy's Mac mini Trial and User Acceptance section; report Git publication
+    and actual runtime readback separately. Existing PR updates retain applicable
+    CI; changed candidates and failures receive affected revalidation without
+    reusing invalidated PASS.
 
 Never amend, rebase, reset, force-push, delete branches, or rewrite history
 unless the user explicitly requests that exact operation after its target and
