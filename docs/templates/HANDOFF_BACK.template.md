@@ -1,6 +1,8 @@
 # Handoff Back
 
-Return at meaningful package outcomes, not after every correction. Use applicable
+Return at the requested result or a real decision/stop boundary. Ordinary
+milestones are progress updates followed by the next authorized action, not a
+reason to await another start instruction. Use applicable
 fields and link existing verification/evidence instead of duplicating a ledger.
 Keep one current result/next-action summary and point other reports to it;
 preserve issued receipts and historical failures. Omit inapplicable optional

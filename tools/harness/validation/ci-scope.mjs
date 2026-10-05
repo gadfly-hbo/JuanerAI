@@ -4,7 +4,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const configCheck = fileURLToPath(new URL('./check-agent-config.py', import.meta.url));
-const configPaths = ['.codex/config.toml', ...['worker', 'spec', 'test', 'validator'].map(role => `.codex/agents/juaner_${role}.toml`)];
+const configPaths = ['.codex/config.toml', '.codex/agents/juaner_validator.toml'];
 
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 try {

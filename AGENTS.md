@@ -172,28 +172,32 @@ When changing test assets, read `docs/governance/test-asset-retirement.md`. Pres
   tests, implementation, corrections, engineering architecture and contracts within the
   approved product, architecture, security, data, permission, and external-effect
   boundaries, plus engineering Gates, integration, and engineering communication.
-- Engineering support (`juaner_worker`) owns only its explicitly assigned part
-  of the approved package when concrete parallel or specialist value warrants it.
 - Validator uses an independent read-only context and returns evidence and a verdict; it does not implement or approve.
-- Candidate authors and final Validator remain separate; optional Worker/Spec/Test
-  support is bounded assistance, not a default pipeline.
+- Mini engineering has exactly two roles: engineering main Agent and independent
+  Validator. No Worker/Spec/Test or generic engineering helper is dispatched.
 
 ### Standing Delegation Authority
 
 After policy adoption, approved product/UI input and confirmed intake, the Mini
 engineering main Agent continuously executes the result-sized package itself.
-It may dispatch bounded `juaner_worker`, `juaner_spec` or `juaner_test` support
-when it has concrete value. After freezing the complete candidate and evidence,
+After freezing the complete candidate and evidence,
 it dispatches `juaner_validator` in an independent read-only context. No
 per-dispatch user confirmation is needed inside approved boundaries.
 
 At dispatch, progress updates, stopping and resumption, apply the sole execution
 policy's **Lean Context and Continuous Ownership** section: focused input, the
-same engineering main context, delta-based support, native-first execution with
+same engineering main context, focused Validator input, native-first execution with
 explicitly user-consented CLI exceptions, verified stopping and an explicit
 continuation path.
 
-Use `juaner_spec` or `juaner_test` only for a concrete scoped support question; neither creates a Spec Gate, TDD_READY approval or automatic next dispatch. A contributing specialist cannot be the final Validator. A missing role or incompatible loaded configuration must be disclosed and resolved at a safe boundary, not bypassed by author self-review or a silently different role. Product permission, Git authority and old task stops are not granted by dispatch or by editing these instructions.
+The main Agent writes the actual OpenSpec proposal/reference, behavior specs,
+tasks and verification records; necessary design remains explicit. Preserve
+causal RED before implementation, GREEN, regression and acceptance traceability.
+Before ending an engineering turn, check the current result, real stop boundary
+and next action under the sole policy. A progress milestone is not a stop request.
+A missing Validator blocks final independent verification, not safe independent
+implementation. Never replace it with author self-review. Product permission,
+Git authority and old task stops are not granted by dispatch or these instructions.
 
 Use Orchestration.md and docs/templates/ for multi-domain or multi-agent work.
 
@@ -245,7 +249,7 @@ lifecycle transitions: Change start, phase transition, task completion,
 blocker discovery, user-decision request or resolution, RED/GREEN/verification
 changes, engineering acceptance, applicable product acceptance, and archive.
 The Product Manager maintains product planning and is not a required writer for
-remote engineering progress. Support agents and validators return evidence to
+remote engineering progress. Validator returns evidence to
 the engineering main Agent rather than writing project-control state. Ordinary inner-loop test runs do not each require a board update.
 
 Follow the stage-recording and board-update timing in `docs/governance/product-change-execution-policy.md`. Mini maintains the confirmed engineering snapshot at each material transition. A MacBook copy is only its last synchronized view, not a live remote-state claim or a second writable board.

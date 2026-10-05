@@ -34,12 +34,10 @@ still needs an approved architecture decision.
 
 - The Mini engineering main Agent continuously owns necessary engineering
   spec/design, tests, implementation, debugging and affected verification.
-- `juaner_worker` provides explicitly scoped implementation assistance only
-  when it has concrete parallel or specialist value.
 - `juaner_validator` is fresh, independent and read-only; candidate authors
   cannot perform final validation.
-- `juaner_spec` and `juaner_test` provide scoped specialist assistance when
-  needed. Worker/Spec/Test do not form a required serial path or approve the next role.
+- These are the only two Mini engineering roles. Do not dispatch Worker/Spec/Test
+  or generic implementation helpers. MacBook product review remains unchanged.
 - Mini decides important in-boundary contracts and organizes delivery; it does
   not approve each ordinary correction or duplicate the full Validator review.
 
@@ -51,7 +49,7 @@ than copying it. Models and configuration are owned by `agent-model-routing.md`.
 
 ## Execution and Cross-domain Decisions
 
-Use a small behavior loop: minimum sufficient spec -> causal RED -> minimal
+Use a small behavior loop: persisted minimum sufficient spec -> causal RED -> minimal
 GREEN -> necessary refactor, then the next behavior. Correct private interfaces
 and stale fixtures in that loop. Material public/persistent/authority contracts
 get targeted impact review; user-boundary changes go directly to the user.
@@ -60,8 +58,9 @@ not routine private adjustments.
 
 OpenSpec tasks.md remains the Change plan. AgentOps Task Bus stays inactive
 unless separately authorized; no additional task ledger is introduced.
-Parallel writes require non-overlapping ownership and stable shared boundaries.
-Shared-worktree write-heavy work remains serial; concurrency is not a target.
+The main Agent is the single engineering author and state writer; Validator is
+read-only. At ordinary milestones report progress and continue the approved
+next action, rather than ending the task. Use the sole policy's end-of-turn check.
 
 ## Validation and Delivery
 
