@@ -1,0 +1,218 @@
+{
+  "recorded_date": "2026-10-04",
+  "owning_device": "MacBook",
+  "purpose": "Preserve failed required publication index before staging; not a PASS or waiver",
+  "tool": "mcp__codebase_memory__index_repository",
+  "arguments": {
+    "repo_path": "/Users/huangbo/.codex/worktrees/e1d5/JuanerAI",
+    "name": "JuanerAI_n01_n02_publication_20261004",
+    "mode": "full",
+    "persistence": false
+  },
+  "raw_result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"status\":\"error\",\"outcome\":\"exit_nonzero\",\"hint\":\"Indexing worker crashed on a file. The crash was contained (the server survived). Re-run to retry; a future release isolates the culprit file.\",\"repo_path\":\"/Users/huangbo/.codex/worktrees/e1d5/JuanerAI\"}"
+      }
+    ],
+    "isError": true
+  },
+  "fingerprint_before": {
+    "root": "/Users/huangbo/.codex/worktrees/e1d5/JuanerAI",
+    "branch": "work/macbook/ai-led-member-analysis-product-plan",
+    "head": "989deeb536a770dc0067a82a73f20f17220cbd40",
+    "status": "?? docs/planning/2026-10-04/browser-first-n01-n02/clickable/README.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/clickable/app.js\n?? docs/planning/2026-10-04/browser-first-n01-n02/clickable/discovery.js\n?? docs/planning/2026-10-04/browser-first-n01-n02/clickable/index.html\n?? docs/planning/2026-10-04/browser-first-n01-n02/clickable/styles.css\n?? docs/planning/2026-10-04/browser-first-n01-n02/product-input-v0.1.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-001-inputs.json\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-001.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-002-inputs.json\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-002.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-003-inputs.json\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-003.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-004-inputs.json\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-004.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/revision003-probe-failure.json\n?? docs/planning/2026-10-04/browser-first-n01-n02/ui-contract-v0.1.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/verification.md\n",
+    "diff": "",
+    "stagedDiff": "",
+    "files": [
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/clickable/app.js",
+        "bytes": 81779,
+        "sha256": "7887c602930507ce16651a53f7ddb6ac28f0bce3132a0c247db4d97a42ad6897"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/clickable/discovery.js",
+        "bytes": 20438,
+        "sha256": "899ec6044ea79888fb5e2b01503322169efe5a4bb550b1e73333c1fa0986e100"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/clickable/index.html",
+        "bytes": 748,
+        "sha256": "3a8dfdafb1b64e0a3f91cd69d5058842839d88b61426f3e2c2f141bc9e3033b3"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/clickable/README.md",
+        "bytes": 33019,
+        "sha256": "fe721432c7a2dffb576d54b2d2d67c3492e7b536edebc5a288bf5fe051b05c8b"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/clickable/styles.css",
+        "bytes": 18849,
+        "sha256": "e602e4575f6a802ac3c1e0e8c334730fdf48c8ce772fd05ecd7e3edf7c38287f"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/product-input-v0.1.md",
+        "bytes": 55118,
+        "sha256": "bfffd9fa8b4a5bc877052b934b55f1ed285b04775aa423453d933d4be067b7c7"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-001-inputs.json",
+        "bytes": 136856,
+        "sha256": "25e90efab58578e5a9151e6d1ba386630a6624062f0eacc2c949e997ce98ba58"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-001.md",
+        "bytes": 7473,
+        "sha256": "9c2604590efbc3e171063c383895443c23447034152bc4b8af9a570a628ad7fe"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-002-inputs.json",
+        "bytes": 150784,
+        "sha256": "271e5c8c6928534e57cdd33d3eb7d7a902c89c718a34d3d25fbdc8a91c8c00be"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-002.md",
+        "bytes": 8752,
+        "sha256": "d095a7e68b832fde65b545e663816c3d83a2b64b111a7d8726583b4a357c10e9"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-003-inputs.json",
+        "bytes": 173218,
+        "sha256": "5c65edd4a7718ebc29da22d810fbd3ebcf97645ec005661add05584612984aea"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-003.md",
+        "bytes": 7225,
+        "sha256": "165b9239bd6e1edf2adcba4403bbaf44dce9feba13cb5687afcc92d8063193be"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-004-inputs.json",
+        "bytes": 228254,
+        "sha256": "4f0c0c9a2b4e5c13ade0522ef2a82b99fa65291f5efa6eb6a9c22eb5c4458916"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-004.md",
+        "bytes": 5321,
+        "sha256": "e3ad6ecb57cdc8dcc21d662d633783fc19f3f2389ff594c4ebff17e7be909510"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/revision003-probe-failure.json",
+        "bytes": 87097,
+        "sha256": "a7b0890279f31d661e8c6b968003848f14233faaa6bf4cee37dc4039503cc43c"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/ui-contract-v0.1.md",
+        "bytes": 14872,
+        "sha256": "42c3fa470432d702cbe1af1b2faf3d8cb731ce43e79db8963aba1aa324b71d02"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/verification.md",
+        "bytes": 47358,
+        "sha256": "6eaf2d581a09afa9b49f9f2425c0576c953b6b2421dbe96b1bd6192fce2a23e4"
+      }
+    ]
+  },
+  "fingerprint_after": {
+    "root": "/Users/huangbo/.codex/worktrees/e1d5/JuanerAI",
+    "branch": "work/macbook/ai-led-member-analysis-product-plan",
+    "head": "989deeb536a770dc0067a82a73f20f17220cbd40",
+    "status": "?? docs/planning/2026-10-04/browser-first-n01-n02/clickable/README.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/clickable/app.js\n?? docs/planning/2026-10-04/browser-first-n01-n02/clickable/discovery.js\n?? docs/planning/2026-10-04/browser-first-n01-n02/clickable/index.html\n?? docs/planning/2026-10-04/browser-first-n01-n02/clickable/styles.css\n?? docs/planning/2026-10-04/browser-first-n01-n02/product-input-v0.1.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-001-inputs.json\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-001.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-002-inputs.json\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-002.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-003-inputs.json\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-003.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-004-inputs.json\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-004.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/reviews/revision003-probe-failure.json\n?? docs/planning/2026-10-04/browser-first-n01-n02/ui-contract-v0.1.md\n?? docs/planning/2026-10-04/browser-first-n01-n02/verification.md\n",
+    "diff": "",
+    "stagedDiff": "",
+    "files": [
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/clickable/app.js",
+        "bytes": 81779,
+        "sha256": "7887c602930507ce16651a53f7ddb6ac28f0bce3132a0c247db4d97a42ad6897"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/clickable/discovery.js",
+        "bytes": 20438,
+        "sha256": "899ec6044ea79888fb5e2b01503322169efe5a4bb550b1e73333c1fa0986e100"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/clickable/index.html",
+        "bytes": 748,
+        "sha256": "3a8dfdafb1b64e0a3f91cd69d5058842839d88b61426f3e2c2f141bc9e3033b3"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/clickable/README.md",
+        "bytes": 33019,
+        "sha256": "fe721432c7a2dffb576d54b2d2d67c3492e7b536edebc5a288bf5fe051b05c8b"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/clickable/styles.css",
+        "bytes": 18849,
+        "sha256": "e602e4575f6a802ac3c1e0e8c334730fdf48c8ce772fd05ecd7e3edf7c38287f"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/product-input-v0.1.md",
+        "bytes": 55118,
+        "sha256": "bfffd9fa8b4a5bc877052b934b55f1ed285b04775aa423453d933d4be067b7c7"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-001-inputs.json",
+        "bytes": 136856,
+        "sha256": "25e90efab58578e5a9151e6d1ba386630a6624062f0eacc2c949e997ce98ba58"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-001.md",
+        "bytes": 7473,
+        "sha256": "9c2604590efbc3e171063c383895443c23447034152bc4b8af9a570a628ad7fe"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-002-inputs.json",
+        "bytes": 150784,
+        "sha256": "271e5c8c6928534e57cdd33d3eb7d7a902c89c718a34d3d25fbdc8a91c8c00be"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-002.md",
+        "bytes": 8752,
+        "sha256": "d095a7e68b832fde65b545e663816c3d83a2b64b111a7d8726583b4a357c10e9"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-003-inputs.json",
+        "bytes": 173218,
+        "sha256": "5c65edd4a7718ebc29da22d810fbd3ebcf97645ec005661add05584612984aea"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-003.md",
+        "bytes": 7225,
+        "sha256": "165b9239bd6e1edf2adcba4403bbaf44dce9feba13cb5687afcc92d8063193be"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-004-inputs.json",
+        "bytes": 228254,
+        "sha256": "4f0c0c9a2b4e5c13ade0522ef2a82b99fa65291f5efa6eb6a9c22eb5c4458916"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/readiness-004.md",
+        "bytes": 5321,
+        "sha256": "e3ad6ecb57cdc8dcc21d662d633783fc19f3f2389ff594c4ebff17e7be909510"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/reviews/revision003-probe-failure.json",
+        "bytes": 87097,
+        "sha256": "a7b0890279f31d661e8c6b968003848f14233faaa6bf4cee37dc4039503cc43c"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/ui-contract-v0.1.md",
+        "bytes": 14872,
+        "sha256": "42c3fa470432d702cbe1af1b2faf3d8cb731ce43e79db8963aba1aa324b71d02"
+      },
+      {
+        "path": "docs/planning/2026-10-04/browser-first-n01-n02/verification.md",
+        "bytes": 47358,
+        "sha256": "6eaf2d581a09afa9b49f9f2425c0576c953b6b2421dbe96b1bd6192fce2a23e4"
+      }
+    ]
+  },
+  "fingerprint_match": true,
+  "usable_branch_identity": false,
+  "usable_file_coverage": false,
+  "staging_performed": false,
+  "commit_push_or_dispatch_performed": false,
+  "prior_waiver": "Prior P1 publication-only waiver does not apply to this publication",
+  "next_action": "Seek a one-publication-only user waiver; retain focused validation and actual CI requirements"
+}
