@@ -83,6 +83,44 @@ and formal-closeout cadence below, within the same branch/permission protections
    matrix.
 6. Review the PR diff and evidence, then squash merge. Do not require a second
    human approval when both devices belong to the same developer.
+7. Complete the safe main synchronization and report actual merged and per-device
+   identities under **After Merge**; a work-branch push is not publication closeout.
+
+### Publication Completion — Approved Standing Instruction
+
+On 2026-10-05 the user explicitly required a standard commit-and-merge closeout.
+For an approved, bounded formal product, governance or engineering delivery,
+the user's instruction to submit/push or publish the result authorizes the
+ordinary sequence: commit -> work-branch push -> PR -> applicable review and
+required CI -> squash merge -> safe main synchronization -> delivery readback.
+Continue through this sequence without asking the user again whether to merge
+once its conditions are satisfied. Apply this rule to the named delivery only;
+product/UI approval alone, a status query, or a proposed change grants no Git
+publication authority.
+
+Before merging, verify the exact PR head, complete intended diff, applicable
+independent review and required product/engineering acceptance, current required
+CI, and branch protections. Changed candidates invalidate affected evidence.
+Waiting CI means publication is pending, not complete; use bounded waits and
+continue the authorized closeout. Report an actual failed check, unresolved
+acceptance, conflict, scope/permission expansion or unsafe synchronization with
+its return point instead of bypassing it or requesting a routine merge approval.
+
+Explicit limits take precedence: commit-only, push/checkpoint-only, keep the PR
+open, wait for review, no merge, a prior unresolved stop, or a named release
+restriction remain binding. Adopted v0.9 Mini daily checkpoints and internal
+trials retain their existing cadence; they are not formal deliveries and do not
+each create or merge a PR. CI success supplies no missing product approval,
+engineering acceptance, Provider/data/deployment permission or authority over
+another task's PR.
+
+Default completion is the verified merge plus safe main synchronization, not
+merely a clean worktree, pushed branch or open PR. A skipped peer is reported as
+merged with partial synchronization under **After Merge**, not full completion.
+Do not switch, reset, overwrite or force adoption in an active peer worktree.
+When a handoff is separately authorized, carry the actual publication identity;
+previous fixed inputs and receiver adoption remain valid historical identities.
+This rule starts no scheduler, service, stopped task or inactive Host Loop.
 
 ### Adopted v0.9 Mini Product Engineering
 
