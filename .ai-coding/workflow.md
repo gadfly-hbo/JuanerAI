@@ -19,7 +19,7 @@ forecast coverage separately from delivered coverage.
 
 After Mini verifies real intake and authorizes the result-sized work package:
 
-1. One engineering agent states the minimum behavior spec and necessary design:
+1. The same Mini engineering main Agent states the minimum behavior spec and necessary design:
    input/output, success/failure, forbidden effects, acceptance reference and
    material contracts. Resolve load-bearing ambiguity before implementing it.
 2. For that behavior, write and run a test that fails because the behavior is
@@ -28,12 +28,15 @@ After Mini verifies real intake and authorizes the result-sized work package:
 3. Correct code, fixtures and private design locally inside the authorized roots.
    Check important boundary changes before dependent actions. Run the thinnest
    real path early and the applicable type/build, contract and regression checks.
+   In adopted v0.9 Mini work, use authorized daily checkpoints/work-branch pushes
+   and the sole policy's MacBook Trial Delivery section for user trial updates.
 4. Freeze the complete candidate and evidence. Independent Validator derives
    expectations from acceptance first, then verifies real paths, test integrity,
    boundaries, coverage retirement and evidence in one review.
 5. Repair material findings within the same work package and revalidate the new
    candidate. Mini records engineering acceptance without repeating full review.
-6. Complete required user Product Acceptance and authorized Git delivery/archive
+6. Complete required user Product Acceptance and the concentrated formal Change
+   PR/required-CI/integration/archive closeout within authorized Git permissions
    in the task's agreed order. Update the cumulative capability register and full
    latest map, preserve the Change snapshot, and show scope/status delta, gaps
    and evidence under the sole policy's Blueprint Capability Coverage section.
@@ -42,7 +45,8 @@ After Mini verifies real intake and authorizes the result-sized work package:
 
 These are work activities, not new approvals. No universal Spec Gate, TDD_READY
 dispatch approval, separate retirement Gate or routine Spec/Test agent handoff.
-Optional specialists answer a concrete question without becoming a pipeline.
+Worker/Spec/Test support is optional and has explicit scoped ownership; the main
+Agent retains continuous responsibility. Support does not become a pipeline.
 
 ## Exceptions by Work Type
 

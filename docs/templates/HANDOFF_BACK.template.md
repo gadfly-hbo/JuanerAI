@@ -19,6 +19,16 @@ The sole execution policy defines progress, stop-loss and actual resource limits
 
 - TBD
 
+## MacBook Trial Delivery — optional when delivering a trial update
+
+Follow the sole execution policy's MacBook Trial Delivery section. Omit this
+section when inapplicable; use the existing reply/handoff, not another ledger.
+
+- Version: candidate commit and actual runtime version readback result
+- Entry: current MacBook address and necessary start/stop method
+- Changes and user steps:
+- Verification and gaps: passed / failed / unverified / unopened scope
+
 ## Blueprint Capability Coverage — at Change delivery
 
 Follow the sole execution policy's Blueprint Capability Coverage section. Link

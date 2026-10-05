@@ -3,8 +3,7 @@
 ## Authority and Adoption
 
 Follow `product-change-execution-policy.md`. This configuration implements the
-user-approved continuous-engineering v0.8 and fixed role-effort adjustment of
-2026-10-04; publication, receiver readback and any
+user-approved Mini lean-engineering v0.9 of 2026-10-05; publication, receiver readback and any
 stopped-task resume decision remain separate. Historical dispatch settings are
 not rewritten. The inactive Host Loop is not compatible by inference and stays
 inactive pending its separately authorized alignment.
@@ -13,27 +12,39 @@ inactive pending its separately authorized alignment.
 
 | Role | Agent | Model / reasoning | Sandbox | Use |
 |---|---|---|---|---|
-| Product Manager / Engineering Controller | primary sessions | gpt-6-astra / high | parent session policy | product work / Mini engineering control |
-| Engineering agent | juaner_worker | gpt-6-astra / medium | workspace-write | approved product/UI input, confirmed intake and authorized result-sized package |
-| Independent Validator | juaner_validator | gpt-6-astra / high | read-only | complete candidate and evidence frozen; author-independent review |
-| Spec specialist | juaner_spec | gpt-6-astra / medium | workspace-write | optional bounded spec/design question within approved product input |
-| Test specialist | juaner_test | gpt-6-astra / medium | workspace-write | optional bounded test/coverage question from approved behavior |
-| Other authorized support | support subagents | gpt-6-astra / medium | approved task permissions | bounded review or investigation; not a new mandatory role |
+| MacBook Product Manager | primary session | gpt-6-astra / high (unchanged) | parent session policy | existing product preparation and approval workflow |
+| MacBook product support | support subagents | gpt-6-astra / medium (unchanged) | approved task permissions | existing bounded product review/investigation, not the Mini engineering roles |
+| Mini engineering primary | primary session | gpt-6.1-sol / medium | parent session policy | intake, spec/design, tests, implementation, correction, engineering state/acceptance and authorized delivery |
+| Independent engineering Validator | juaner_validator | gpt-6.1-sol / high | read-only | complete candidate and evidence frozen; author-independent formal closeout review |
+| Optional engineering support | juaner_worker | gpt-6.1-sol / medium | workspace-write | concrete scoped or parallel work with non-overlapping ownership; not a required handoff |
+| Optional Spec / Test | juaner_spec / juaner_test | gpt-6.1-sol / medium | workspace-write | bounded spec/design or test/coverage question; existing no-production-write boundaries |
+| Other Mini support | support subagents | gpt-6.1-sol / medium | approved task permissions | explicit scoped investigation or assistance, not a new mandatory role |
 
-Default: engineering agent -> independent Validator. Spec/Test are not
-mandatory phases. They preserve their scoped no-production-write boundaries,
-but the engineering agent itself may maintain tests and necessary engineering
-spec/design. No candidate author becomes its final Validator.
+Default: Mini primary directly implements -> independent Validator at formal
+closeout. Worker/Spec/Test are optional, not serial phases. The primary owns
+necessary engineering design and tests as well as code; it also remains the
+single engineering-state writer. No candidate author becomes its final Validator.
 
 ## Configuration and Dispatch
 
-All JuanerAI development agents and subagents use GPT-6 Astra (`gpt-6-astra`).
-Reasoning is fixed by role: primary Product Manager/Engineering Controller and
-final Validator use `high`; continuous Worker, optional Spec/Test and other
-support use `medium`. The Worker still owns package-level spec/design as well
-as implementation; the lower effort does not move that work back to Controller.
-`.codex/config.toml` pins primary `high` and default subagent `medium`; each role
-TOML pins its table entry. Keep existing sandboxes and concurrency limits.
+Mini engineering uses GPT-6.1 Sol (`gpt-6.1-sol`): primary and implementation/
+support `medium`, independent final Validator `high`. MacBook product settings
+remain unchanged. Keep existing sandboxes, permissions and concurrency limits.
+
+The shared `.codex/config.toml` remains Astra/high with Astra/medium support,
+preserving MacBook defaults. Each of the four `.codex/agents/juaner_*.toml` files
+pins its Mini engineering entry above; they are not MacBook product-review roles.
+At adoption, select Sol/medium for the Mini primary through the supported native
+session model/effort setting and read back the actual session. Do not edit shared
+defaults, introduce profiles/launchers or change global settings to accomplish
+this. A generic Mini support dispatch must explicitly select Sol/medium because
+the shared support default is still Astra; formal role files need no redundant
+override. MacBook support keeps its existing routing.
+
+Custom-role file model/effort pins take precedence over spawn defaults; generic
+agents resolve explicit dispatch settings before shared defaults and parent
+settings ([official configuration reference](https://learn.chatgpt.com/docs/agent-configuration/subagents)).
+The static config check proves those files, not the Mini primary's loaded model.
 There is no automatic model/effort upgrade, downgrade or fallback, per-dispatch
 risk matrix or upgrade ledger. A difficult task calls for diagnosis or scoped
 expertise, not an automatic effort change or retry quota.
@@ -49,8 +60,7 @@ definitions require a bounded correction at a safe boundary; do not launch
 product work as a probe, migrate the parent task or silently substitute a role.
 
 Record the actual model/effort with the existing handoff, not a new state system.
-Use the configured roles without redundant model/effort overrides. The default
-`medium` support setting does not make a generic support agent the final
+The `medium` support setting does not make a generic support agent the final
 Validator; use the independent `juaner_validator` role with its fixed `high`.
 No role changes these fixed settings or gains permissions from its name. If this
 configuration is unavailable, report the concrete availability or loading
@@ -58,8 +68,9 @@ problem; do not silently substitute a model or create an upgrade approval loop.
 
 ## Context and Concurrency
 
-For initial Worker dispatch, use a fresh focused task context, not a full parent
-history fork. Then reuse it through in-boundary corrections. Follow the sole
+Keep the primary's engineering context continuous. For optional support dispatch,
+use a fresh focused context, not a full parent history fork, and reuse it through
+in-boundary corrections. Follow the sole
 policy's Lean Context and Continuous Ownership section for input selection,
 delta follow-ups, recovery and return handling. Optional specialists receive
 only their concrete question, relevant approved inputs, write roots and exit

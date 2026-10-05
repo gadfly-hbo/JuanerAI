@@ -31,6 +31,11 @@ completion. Complete each Change's applicable regression, independent evaluation
 and required acceptance; batching does not defer them to stage end. Required CI
 remains a merge condition. Apply the Fixed-Code section's browser/Desktop scope:
 deferred shell checks do not waive shared tests or close historical native E2.
+For adopted v0.9 Mini work, daily authorized commits/pushes and the sole policy's
+MacBook Trial Delivery do not require a PR for every increment; formal Change
+closeout concentrates PR, applicable required CI, squash integration and archive.
+Known low-risk gaps affecting formal acceptance require repair, justified
+non-applicability or explicit user risk acceptance; they are not automatic PASS.
 
 At Change completion, update the full Blueprint capability map and preserve the
 snapshot; the delivery response shows the delta, gaps and evidence with the

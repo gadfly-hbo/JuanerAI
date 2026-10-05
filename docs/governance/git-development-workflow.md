@@ -23,7 +23,7 @@ GitHub protects `main`: changes arrive through pull requests, history stays
 linear, and force-push and deletion remain blocked. Pull requests use squash
 merge and merged branches are deleted.
 
-For current product Changes, the Mac mini Engineering Controller organizes
+For current product Changes, the Mac mini engineering main Agent (Engineering Controller) organizes
 branch review, push, PR, squash merge, OpenSpec archive, and delivery readback
 inside the user's granted Git permissions. MacBook Product Manager technical
 sign-off is not required. Engineering Acceptance, user Product Acceptance, and
@@ -70,6 +70,10 @@ them; it does not silently move, stash, reset, or discard them.
 
 ## Develop and Publish
 
+The following ordinary delivery path remains applicable to MacBook product and
+governance work. Mini product engineering that has adopted v0.9 uses the daily
+and formal-closeout cadence below, within the same branch/permission protections.
+
 1. Follow the repository Change and TDD Gates.
 2. Commit coherent, reviewed changes with explicit staging.
 3. Push the work branch to `origin`; never push directly to `main`.
@@ -79,6 +83,30 @@ them; it does not silently move, stash, reset, or discard them.
    matrix.
 6. Review the PR diff and evidence, then squash merge. Do not require a second
    human approval when both devices belong to the same developer.
+
+### Adopted v0.9 Mini Product Engineering
+
+During daily iteration, run affected checks and the relevant main path, explicitly
+stage coherent changes, commit and push the owned work branch within existing
+Git authority. Internal corrections and subtasks do not each require a PR,
+full CI, independent review or packaging. Deliver trial updates through the
+sole execution policy's **MacBook Trial Delivery** section, using the same
+designated independent MacBook copy. A trial copy is a runtime consumer, not
+branch ownership handoff; push, copy update and actual runtime readback are
+separate results. Trial feedback is not formal Change acceptance.
+
+At the formal Change's complete-result closeout, concentrate one PR targeting
+`main`, its complete diff/evidence review, applicable independent verification,
+required user acceptance, required CI, authorized squash merge and archive in
+the task's permitted order. Do not accumulate the whole Blueprint into one PR.
+Failed checks or changed candidates still receive affected revalidation;
+invalidated PASS cannot authorize merge. An existing PR's branch updates may
+trigger CI again: preserve those checks and keep the PR open rather than hiding
+updates to avoid CI. This cadence changes no CI triggers or branch protection;
+verify actual workflows and required checks before merge.
+
+This Mini cadence does not change MacBook product/governance delivery or grant
+Git, installation, host, provider/data or release permissions.
 
 No force-push is part of the normal workflow. If `main` advances, fetch and
 merge `origin/main` into the work branch. The eventual squash merge keeps

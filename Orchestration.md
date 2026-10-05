@@ -8,9 +8,10 @@ a product task or the inactive signed Host Loop.
 ## Responsibilities
 
 MacBook is Product Manager: product intent, terminology, Blueprint, vertical
-scope, UI, acceptance criteria and product-input freeze. Mini is Engineering
-Controller: intake, engineering work packages, important technical decisions,
-progress diagnosis, engineering state, acceptance and authorized delivery.
+scope, UI, acceptance criteria and product-input freeze. Mini's engineering main
+Agent is Engineering Controller and directly owns intake, engineering work
+packages, spec/design, tests, implementation, corrections, important technical
+decisions, single engineering state, acceptance and authorized delivery.
 The user decides product ambiguity, boundary changes, extra actual resources,
 permissions, residual risk and required Product Acceptance directly in Mini.
 
@@ -31,12 +32,14 @@ still needs an approved architecture decision.
 
 ## Roles and Work Packages
 
-- `juaner_worker` is the continuous engineering agent: necessary engineering
+- The Mini engineering main Agent continuously owns necessary engineering
   spec/design, tests, implementation, debugging and affected verification.
+- `juaner_worker` provides explicitly scoped implementation assistance only
+  when it has concrete parallel or specialist value.
 - `juaner_validator` is fresh, independent and read-only; candidate authors
   cannot perform final validation.
 - `juaner_spec` and `juaner_test` provide scoped specialist assistance when
-  needed. They do not form a required serial path or approve the next role.
+  needed. Worker/Spec/Test do not form a required serial path or approve the next role.
 - Mini decides important in-boundary contracts and organizes delivery; it does
   not approve each ordinary correction or duplicate the full Validator review.
 
@@ -69,3 +72,8 @@ and scope/architecture checks occur in this same review.
 Mini records Engineering Acceptance, required user Product Acceptance and
 authorized Git delivery separately. No machine crossing is needed for reviewer
 independence, and MacBook technical sign-off is not required.
+
+Adopted v0.9 Mini engineering uses daily affected checks and authorized
+work-branch checkpoints/pushes, with one formal Change PR/integration closeout.
+Follow the sole policy's MacBook Trial Delivery section for the fixed trial
+copy and runtime readback; trial delivery is not formal completion.
