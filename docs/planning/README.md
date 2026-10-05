@@ -33,12 +33,41 @@ No in-flight task must re-adopt, pause, reapprove or expand because of v4.2.
 
 ### New product-input package binding — v4.2
 
+**2026-10-05 · Change005 UI replacement candidate:** the user stopped Change005
+and requested faithful PX-006 quick/dual-mode plus PX-004 full professional UI,
+with JuanerAI branding. The [replacement UI Contract](2026-10-05/change005-ui-contract-recovery/ui-contract-v1.0.md)
+and its clickable attachment are awaiting user confirmation. Blueprint v4.2 §6.2
+and the fixed revision005 UI approval remain immutable historical identities;
+this dated navigation supplies the prospective replacement binding, not an
+approved v4.3, UI Gate PASS, receiver adoption or engineering resume. Backend
+scope and Mini's unpublished work/stop remain protected. Only after user acceptance
+and separately authorized publication/intake may this candidate replace the old
+frontend contract for resumed Change005. No change is made to the reviewed Blueprint bytes.
+
 Future packages bind the approved text's exact SHA-256 in the approval record,
 its review, applicable task/capability/stage mapping, closed product decisions
 and valid UI Contract/user UI Gate. Bind actual publication commit/tree when
 available. Existing in-flight packages retain their own effective identities;
 Git sync, publication and receiver adoption are distinct facts. The HTML is a
 planning view, not a product UI Contract, completion dashboard or open work order.
+
+**2026-10-05 · 后续增量候选 v1.1：** 用户进一步确认开放分析定位与三核心机制，
+[产品输入 v1.1](2026-10-05/change005-ui-contract-recovery/product-input-v1.1.md)及
+[UI Contract v1.1](2026-10-05/change005-ui-contract-recovery/ui-contract-v1.1.md)
+延续已接受视觉，在快速对话内增加业务理解、可修订框架及可检查成果。
+用户已通过该版UI审核；后续已确认快速主任务允许获准明细供模型读取，
+本地真实计算／独立核验保留，严格明细零外发延期，独立清洗模块只作后续评估方向。
+当前材料文案增量见产品输入§1.1和UI Contract Q11-07；历史批准／审查身份不回写，
+新增决定不构成配置生效、工程恢复或Git发布。
+**后续整包批准及发布授权：**用户已明确“change005新方案审核通过”，授权发布并派发
+已有Mini session `change-005（N01/02）`。有效产品／UI身份及D1～D5实际处置以
+[批准和交接记录](2026-10-05/change005-ui-contract-recovery/approval-and-handoff-v1.1.md)为准；
+Mini须严格沿用确定UI，不得自行另造。冻结／发布／接收状态按该记录的实际后续回执区分。
+这是后续已批准的实质范围增量，不是旧005批准包的同义替换；Blueprint正文、20项索引、
+40能力ID及Mini既有现场不改。Runtime要求在产品输入§1.2／§3.4及OA-RT01～06直接列明，
+随包保留用户标准原件及精确身份；旧v1.0和历史审查不回写。
+Review006及Runtime受影响增量检查已PASS，用户产品／UI接受成立，产品输入已冻结。
+发布与工程接收按批准记录的实际后续回执分别确认，不凭批准宣称已实现。
 
 ## Historical v4.1 approval snapshot — superseded as route by v4.2
 
