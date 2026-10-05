@@ -11,10 +11,10 @@
     "ordinal": 5,
     "total": 6
   },
-  "health": "waiting_user",
-  "summary": "candidate006工程接受完成，独立本机网页已打开，等待用户首试与产品接受",
+  "health": "active",
+  "summary": "browser-workbench-006已通过独立UI/传输验证及完整portable离线回归；准备按用户指定方式推送试用分支并在MacBook独立克隆。",
   "current_objective": "CSV＋XLSX多源准备到M1核验报告和人的分析判断，复用001～004。",
-  "next_action": "用户在网页创建项目并按需要自行配置或授权真实分析；工程保持可收回状态",
+  "next_action": "提交并推送work/mac-mini/n01-n02-browser-membership；在MacBook独立试用目录校验该提交后启动本机网页服务，等待用户产品首试。",
   "blockers": [],
   "milestones": [
     {
@@ -190,7 +190,7 @@
       "mitigation": "浏览器工作不自动关闭原生E2或替代共享安全验证。"
     }
   ],
-  "updated_at": "2026-10-05T04:03:19.654Z",
+  "updated_at": "2026-10-05T06:58:02.959Z",
   "updated_by": {
     "role": "controller",
     "session": "change-N01-02"

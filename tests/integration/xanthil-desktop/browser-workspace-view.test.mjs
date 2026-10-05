@@ -41,13 +41,13 @@ test('BF-R10 UI08: download remains available read-only and visibly disables dur
 
 test('BF-R06 D4: submit captures explicit aggregate consent before busy render rebuilds the form',async()=>{
  const original={document:globalThis.document,sessionStorage:globalThis.sessionStorage,fetch:globalThis.fetch};
- try{for(const selected of [true,false]){
+ try{for(const selected of [true,false,'recommended']){
   let nodes={},posted,complete;const submitted=new Promise(resolve=>{complete=resolve;});
   const app={set innerHTML(_html){nodes={};},querySelector(selector){return nodes[selector]??=(selector.startsWith('#disclose-')?{checked:false}:{});},querySelectorAll:()=>[]};
   globalThis.document={createElement:()=>({}),head:{append(){}},getElementById:()=>app};globalThis.sessionStorage={getItem:()=>null};
   globalThis.fetch=async(path,options)=>{if(options?.method==='POST'){posted=JSON.parse(options.body);complete();return new Response('{}');}return new Response(JSON.stringify(path==='/v1/model-policy'?{sha256:'policy',available:true,policy:{model:'mimo-v2.6-pro'}}:path==='/v1/tasks'?{tasks:[{task_id:'task',question:'问题'}]}:{question:'问题',source_summary:{id:'source',sources:[]},material_grant:null,task:{task_id:'task',epoch:0,row_version:1,status:'idle',reviews:[]},case:{project:{display_name:'合成项目'},revision:{state:'Draft'},reports:[],findings:[]},operations:{totals:{calls:'0',local_runs:'0',unresolved:0}}}));};
-  await startWorkspace({control:'memory'});assert.equal(app.querySelector('#disclose-verified-result').checked,false,'never default consent');app.querySelector('#disclose-question').checked=true;app.querySelector('#disclose-verified-result').checked=selected;
-  app.querySelector('#model-authorization').onsubmit({preventDefault(){}});await submitted;await new Promise(setImmediate);assert.equal(posted.disclose_question,true);assert.equal(posted.disclose_verified_result,selected);assert.equal(app.querySelector('#disclose-verified-result').checked,false,'busy render actually rebuilt unchecked controls');
+  await startWorkspace({control:'memory'});assert.equal(app.querySelector('#disclose-verified-result').checked,false,'never default consent');app.querySelector('#disclose-question').checked=true;app.querySelector('#disclose-verified-result').checked=selected===true;assert.equal(posted,undefined,'rendering never grants disclosure');
+  app.querySelector('#model-authorization').onsubmit({preventDefault(){},submitter:{value:selected==='recommended'?'recommended':'custom'}});await submitted;await new Promise(setImmediate);assert.equal(posted.disclose_question,true);assert.equal(posted.disclose_verified_result,selected!==false);assert.equal(app.querySelector('#disclose-verified-result').checked,false,'busy render actually rebuilt unchecked controls');
  }}finally{Object.assign(globalThis,original);}
 });
 

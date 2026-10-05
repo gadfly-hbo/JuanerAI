@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005053308154-RN0PZI",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T05:33:08.154Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "用户明确要求将技术复杂度移入后台，开始浏览器单工作台简化与视觉重构；旧候选、失败和UNKNOWN保留。",
+  "status_after": "active",
+  "evidence_refs": []
+}
