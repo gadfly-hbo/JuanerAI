@@ -69,6 +69,16 @@ Mini须严格沿用确定UI，不得自行另造。冻结／发布／接收状�
 Review006及Runtime受影响增量检查已PASS，用户产品／UI接受成立，产品输入已冻结。
 发布与工程接收按批准记录的实际后续回执分别确认，不凭批准宣称已实现。
 
+**2026-10-06 · Change005 v1.1 五个关键时刻补充：**用户已审核通过
+[增量产品输入](2026-10-06/change005-five-moments/product-addendum-v1.1.md)与
+[增量UI Contract／可点击稿](2026-10-06/change005-five-moments/ui-addendum-v1.1.md)，
+[独立就绪Review001](2026-10-06/change005-five-moments/reviews/readiness-001.md)为规划PASS。
+[批准与冻结记录](2026-10-06/change005-five-moments/approval-and-freeze.md)绑定原v1.1及六项固定附件：
+口径、可编辑真实计划、业务执行状态、逐条发现依据及同项目方案显式复用，
+并以修改→影响→重算→对照联合验收；不重画UI，不移植旧结论或提前宣称N08学习完成。
+蓝图、40ID、20候选及旧工程历史不变。Git发布及Mini采用分别以实际回执确认；
+用户只要求本session输出转发prompt，不直接派发Mini或开启生产。
+
 ## Historical v4.1 approval snapshot — superseded as route by v4.2
 
 The following preserves the earlier approval and publication state, not current

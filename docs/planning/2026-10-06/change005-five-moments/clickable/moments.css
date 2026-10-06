@@ -1,0 +1,33 @@
+/* 只增量适配卡片；继承已确认 PX-006 / brand / v1.1，不更改来源。 */
+.review-controls { justify-content: flex-start; }
+.app { height: calc(100dvh - 157px); }
+.project-label { font-size: .85rem; color: var(--fine); }
+.sb-new { max-height: 40px; }
+.thread > .message-user { margin-bottom: 2px; }
+.analysis-card { margin-top: 0; }
+.analysis-card .limit { color: #7c5921; margin: 10px 0; }
+.task-header h1 { font-size: 1.2rem; }
+.badge { display: inline-block; padding: 2px 7px; border-radius: 4px; background: #edf5ef; color: #28674e; font-size: .75rem; font-weight: 500; }
+.badge.wait { background: #fcf4e5; color: #795821; }
+.badge.neutral { background: #f0f2f3; color: #53605d; }
+.meaning-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; margin: 12px 0; }
+.meaning-grid div { min-width: 0; }
+.meaning-grid span { display: block; color: var(--fine); font-size: .78rem; }
+.meaning-grid strong { font-size: .9rem; font-weight: 500; }
+.business-steps { list-style: none; padding: 0; margin: 12px 0; }
+.business-steps li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+.business-steps li:last-child { border-bottom: 0; }
+.business-steps .badge { flex-shrink: 0; align-self: start; }
+.card-actions .btn { min-height: 34px; }
+.comparison { overflow: auto; }
+.comparison table { width: 100%; min-width: 390px; border-collapse: collapse; font-size: .86rem; }
+.comparison th,.comparison td { padding: 10px; vertical-align: top; }
+.field { display: block; margin: 16px 0; font-size: .87rem; }
+.field select,.field input { display: block; width: 100%; margin-top: 5px; padding: 9px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font: inherit; color: var(--ink); }
+.workspace-body ul { padding-left: 20px; }
+.chart-bar { height: 12px; background: #418160; border-radius: 2px; margin: 6px 0 13px; }
+#pro-view { height: 100%; display: flex; flex-direction: column; }
+#pro-view iframe { border: 0; flex: 1; width: 100%; min-height: 0; }
+.dialog-note { padding: 10px 12px; border-left: 3px solid #28674e; background: #f1f6f2; font-size: .85rem; margin: 12px 0; }
+@media(max-width:950px) { .drawer { display: none; } .drawer.visible { display: flex; } }
+@media(max-width:700px) { .app { height: calc(100dvh - 210px); } .project-label { display: none; } .meaning-grid { grid-template-columns: 1fr; } .business-steps li { flex-wrap: wrap; } }
