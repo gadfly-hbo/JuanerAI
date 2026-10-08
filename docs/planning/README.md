@@ -79,6 +79,16 @@ Review006及Runtime受影响增量检查已PASS，用户产品／UI接受成立�
 蓝图、40ID、20候选及旧工程历史不变。Git发布及Mini采用分别以实际回执确认；
 用户只要求本session输出转发prompt，不直接派发Mini或开启生产。
 
+**2026-10-08 · Change005 v1.2 需求沙盘／框架共创增量：**用户已审核通过
+[产品增量](2026-10-08/change005-v1.2-requirement-sandbox/product-addendum-v1.2.md)与
+[增量UI／可点击稿](2026-10-08/change005-v1.2-requirement-sandbox/ui-contract-v1.2.md)，
+[新鲜独立Review002](2026-10-08/change005-v1.2-requirement-sandbox/reviews/integration-readiness-002.md)为规划PASS。
+[批准与冻结记录](2026-10-08/change005-v1.2-requirement-sandbox/approval-and-freeze.md)绑定七项固定附件，
+产品输入已冻结，授权正式提交。快速中央按需预演、专业第一阶段同任务框架、只整理／自动保存，
+并要求真实消费Context／Contract／IR；不另建Change、不改蓝图、不重画UI，不覆盖R3或旧005承诺。
+[接收指令](2026-10-08/change005-v1.2-requirement-sandbox/handoff-instructions.md)由用户附固定Git身份转发，
+不直接消息Mini。发布、采用、intake、实现和三类验收以实际回执区分，不能由冻结推导完成。
+
 ## Historical v4.1 approval snapshot — superseded as route by v4.2
 
 The following preserves the earlier approval and publication state, not current
