@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004235538880-RBE230",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T23:55:38.880Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "executor004 22PASS，42记录PID和Unix端点已退出；历史失败保留，旧项目迁移已撤回",
+  "status_after": "validating",
+  "evidence_refs": []
+}

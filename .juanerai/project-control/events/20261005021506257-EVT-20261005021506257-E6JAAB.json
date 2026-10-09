@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005021506257-E6JAAB",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T02:15:06.257Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "旧服务退出原因未确定；product-web-002保存独立进程、新地址与HTTP200，自动跟进仍PAUSED",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

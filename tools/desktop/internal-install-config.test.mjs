@@ -12,6 +12,7 @@ test('INSTALL-005: internal package uses explicit non-existing output and only s
     join(process.env.JUANERAI_INTERNAL_INSTALL_RESOURCES,'toolchain-deployment.json'),
     join(process.env.JUANERAI_INTERNAL_INSTALL_RESOURCES,'toolchain'),
     join(process.env.JUANERAI_INTERNAL_INSTALL_RESOURCES,'THIRD_PARTY_NOTICES'),
+    '.vite/build/xanthil-resources',
   ]);
   assert.equal(config.packagerConfig.asar,true);
   assert.deepEqual(config.makers,[]);

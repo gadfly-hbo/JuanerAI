@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004122004992-TSBPY8",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T12:20:04.992Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "Run5主机集成发现Start3保存失败，保留冻结失败并交同一Worker修正",
+  "status_after": "active",
+  "evidence_refs": []
+}

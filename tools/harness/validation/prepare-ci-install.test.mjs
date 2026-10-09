@@ -158,7 +158,7 @@ test('CI-SOURCE-002: isolated prepare refuses existing paths; finalize rejects e
   await mkdir(join(repo, 'node_modules'));
   await assert.rejects(() => prepare(repo, view, archive), /existing path/);
   await rmdir(join(repo, 'node_modules')); // empty, owned synthetic precondition fixture
-  const manifestIdentity = { bytes: 1539, sha256: 'db19b12f4b3822f11b7567bf87d06347b64a5aca1767f41c6d3753e74bf2dacd' };
+  const manifestIdentity = { bytes: 1757, sha256: '927b08b0659391f2a1b896d9cc5a6e688443f5e905c4842845788fc450ee8736' };
   const lockIdentity = { bytes: 319836, sha256: '861326061cd570b0e81584f149012b13228aec3da6528d82536f89cbb5d535c0' };
   const digest = bytes => ({ bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
   const originals = new Map();

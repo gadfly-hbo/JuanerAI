@@ -1,3 +1,5 @@
+import {approvedMemberPolicy} from '../product-core/member-model-policy.ts';
+import {taskHash} from '../product-core/member-task.ts';
 import { createHash, randomUUID } from 'node:crypto';
 import type { LocalCredentialStore, ConnectionProbe, LocalModelAccess,ModelOccupant } from '../ports/provider-settings.ts';
 import type { ProviderSettingsStatus, ProviderSettingsResult } from '../contracts/provider-settings.ts';
@@ -114,3 +116,6 @@ export function createLocalModelAccess(available:boolean):LocalModelAccess{
  owner=context??{session_id:null,label:'专业模式辅助'};let released=false;return {release(){if(released)return;released=true;owner=null;}};
  }};
 }
+
+/** Read-only product-policy identity plus current shared-slot availability; no credential read/test. */
+export function createMembershipPolicyAccess(store:import('../ports/provider-settings.ts').MembershipPolicyStore,modelAccess:LocalModelAccess){return {async read(){const policy=await store.read();if(!policy)fail('MODEL_POLICY_REQUIRED');const validated=approvedMemberPolicy(policy);return {policy:validated,sha256:taskHash(validated),material_classes:['selected_task_text','source_structure','verified_m1_aggregate'] as const,available:modelAccess.snapshot().available};}};}

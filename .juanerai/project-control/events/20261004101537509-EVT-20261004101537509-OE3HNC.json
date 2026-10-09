@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004101537509-OE3HNC",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-04T10:15:37.509Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "完成410f236规则与实际CLI角色采用，解除本次等规则暂停；从原冻结主机验证点续接。",
+  "status_after": "active",
+  "evidence_refs": []
+}

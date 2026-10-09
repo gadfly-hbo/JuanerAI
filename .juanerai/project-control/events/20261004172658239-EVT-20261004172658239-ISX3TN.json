@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004172658239-ISX3TN",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T17:26:58.239Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "实际UNKNOWN页面发现Stop恢复失败，保留证据并包内修正",
+  "status_after": "active",
+  "evidence_refs": []
+}

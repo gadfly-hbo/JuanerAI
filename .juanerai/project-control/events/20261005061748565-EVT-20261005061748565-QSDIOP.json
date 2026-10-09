@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005061748565-QSDIOP",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T06:17:48.565Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "browser-workbench-003独立FAIL：项目初始草稿跨项目串用；同一Worker开始定向修正，001/002/003失败证据保留。",
+  "status_after": "active",
+  "evidence_refs": []
+}

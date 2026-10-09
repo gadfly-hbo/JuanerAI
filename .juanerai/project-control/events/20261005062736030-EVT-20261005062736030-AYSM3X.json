@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005062736030-AYSM3X",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T06:27:36.030Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "browser-workbench-004独立FAIL：已保存项目的响应丢失恢复未消费绑定草稿；同一Worker开始定向修正，先前失败证据保留。",
+  "status_after": "active",
+  "evidence_refs": []
+}

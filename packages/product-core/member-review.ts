@@ -1,3 +1,4 @@
+import {validateMembershipResult,membershipComparisonDirection,type MembershipPlan} from './member-analysis.ts';
 import type {MembershipDecisionFields} from '../contracts/case-assistant.ts';
 import {validateAssistantDecision,assistantText} from './case-assistant.ts';
 import type {OwnerRef,SaveFormInput} from '../contracts/xanthil-desktop-ipc.ts';
@@ -36,4 +37,11 @@ export function validateReviewDecision(input:unknown,context:Parameters<typeof v
  // guardrail inapplicability in the persisted P1 contract, never as a missing value.
  const checked=validateAssistantDecision({...d,outcome:{...legacy,guardrails:guardrail_applicable?o.guardrails:guardrail_not_applicable_reason}},context);
  return {...checked,outcome:{...checked.outcome,guardrails:o.guardrails as string,dependencies,guardrail_applicable,guardrail_not_applicable_reason}};
+}
+
+/** D6: descriptive M1 evidence suggests an analysis closure, never a business choice. */
+export function preparedAnalysisClosure(plan:MembershipPlan,input:unknown):ReviewClosure {
+ if(plan.version!=='2.0')fail('FORBIDDEN');const result=validateMembershipResult(input,plan);
+ const periods=(['comparison','current'] as const).map(name=>{const p=result.periods[name],range=plan.parameters[name==='comparison'?'comparison_period':'current_period'];return `${name==='comparison'?'对比期':'当前期'} ${range.start_date} 至 ${range.end_date}：活跃成员 ${p.active_member_count}，复购成员 ${p.repeat_member_count}，复购率 ${p.repurchase_rate==='not_applicable'?'不适用（活跃成员分母为零，该期不能比较）':p.repurchase_rate.numerator+'/'+p.repurchase_rate.denominator}。`;}).join(' ');
+ return {kind:'decision_closure',candidates:[],route:'insufficient_evidence',insufficient_reason:`M1 两期描述性比较：总体复购率${{decrease:'下降',increase:'上升',equal:'持平',not_comparable:'不可比较'}[membershipComparisonDirection(result)]}。用户假设：${plan.intent.user_hypothesis??'未提出'}；已核实事实不等于假设或原因成立。${periods} 来源为已确认原始资料及其核验后的规范数据。DuckDB 与独立 Python 的精确指标一致；核验覆盖已确认期间、映射与有效订单范围。描述性差异不能识别因果，也未验证业务方案的收益、风险和适用条件，因此不足以选择业务策略；本轮无方案偏好。`,preferred_candidate_id:null,preferred_reason:null,disposition:'draft',defer_until:null};
 }

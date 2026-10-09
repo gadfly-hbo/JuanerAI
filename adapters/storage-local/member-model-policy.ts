@@ -1,0 +1,12 @@
+import {constants,openSync,closeSync,fstatSync,lstatSync,readFileSync,writeFileSync,fsyncSync,linkSync,unlinkSync} from 'node:fs';
+import {join,isAbsolute,resolve} from 'node:path';
+import {randomUUID} from 'node:crypto';
+import {approvedMemberPolicy,approvedMembershipPolicy} from '../../packages/product-core/member-model-policy.ts';
+import {encodeTask,fail} from '../../packages/product-core/member-task.ts';
+/** Existing local settings responsibility; the caller supplies its owned directory, never an HTTP path. */
+export function createLocalMembershipPolicyStore(directory:string):import('../../packages/ports/provider-settings.ts').MembershipPolicyStore&{initializeApproved():Promise<import('../../packages/product-core/member-operation.ts').OperationPolicy>}{
+ const file=join(directory,'membership-model-policy.json');
+ function parent(){if(!isAbsolute(directory)||resolve(directory)!==directory)fail('MODEL_POLICY_INVALID');const stat=lstatSync(directory);if(!stat.isDirectory()||stat.isSymbolicLink())fail('MODEL_POLICY_INVALID');return stat;}
+ async function read(){let fd:number|undefined;try{parent();try{fd=openSync(file,constants.O_RDONLY|constants.O_NOFOLLOW|constants.O_NONBLOCK);}catch(error){if((error as NodeJS.ErrnoException).code==='ENOENT')return null;throw error;}const stat=fstatSync(fd);if(!stat.isFile()||stat.nlink!==1||stat.size>16384)fail('MODEL_POLICY_INVALID');return approvedMemberPolicy(JSON.parse(readFileSync(fd,'utf8')));}catch{fail('MODEL_POLICY_INVALID');}finally{if(fd!==undefined)closeSync(fd);}}
+ return {read,async initializeApproved(){const current=await read();if(current)return current;const identity=parent(),temporary=join(directory,'.membership-policy-'+randomUUID()+'.tmp');let fd:number|undefined;try{fd=openSync(temporary,constants.O_WRONLY|constants.O_CREAT|constants.O_EXCL|constants.O_NOFOLLOW,0o600);writeFileSync(fd,encodeTask(approvedMembershipPolicy));fsyncSync(fd);closeSync(fd);fd=undefined;const now=parent();if(now.dev!==identity.dev||now.ino!==identity.ino)fail('MODEL_POLICY_INVALID');try{linkSync(temporary,file);}catch(error){if((error as NodeJS.ErrnoException).code!=='EEXIST')throw error;}unlinkSync(temporary);const dir=openSync(directory,constants.O_RDONLY|constants.O_NOFOLLOW);try{fsyncSync(dir);}finally{closeSync(dir);}const saved=await read();if(!saved)fail('MODEL_POLICY_INVALID');return saved;}catch{fail('MODEL_POLICY_INVALID');}finally{if(fd!==undefined)closeSync(fd);try{unlinkSync(temporary);}catch{/* Only this owned staging file. */}}}};
+}

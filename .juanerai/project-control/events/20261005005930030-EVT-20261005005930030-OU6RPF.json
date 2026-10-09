@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005005930030-OU6RPF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T00:59:30.030Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "host006 5PASS，48记录PID与5端点收回；失败/UNKNOWN及旧候选保留",
+  "status_after": "validating",
+  "evidence_refs": []
+}

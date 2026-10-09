@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004071324820-DMWPEE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T07:13:24.820Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "同步多源提取与资格/M1局部GREEN和类型检查结果；Worker继续持久化恢复，完整隔离及用户流程仍未验证。",
+  "status_after": "active",
+  "evidence_refs": []
+}

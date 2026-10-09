@@ -19,7 +19,7 @@ export function memberOutput(input:unknown):MemberOutput{const kind=(input as {k
 export type Outbound={version:'1.0';source_sha256:string;methods:readonly ('M1'|'M2')[];semantics:{metric:'membership_repurchase_comparison';currency:'CNY';time_zone:'Asia/Shanghai';comparison_period:DesktopSelection['comparison_period'];current_period:DesktopSelection['current_period'];status_meanings:'explicitly_confirmed_local'};preparation:{members:string;orders:string};selected_text:string|null;result:Pick<MembershipResult,'periods'|'changes'>|null;tool_result:'prepared'|'verified'|null};
 // Treat path syntax as material, regardless of the local root name. This checks
 // text only; it never resolves, reads or scans any filesystem path.
-function containsPath(text:string){
+export function containsPath(text:string){
  let value=text.normalize('NFKC');
  // Decode only this inspection copy. Each successful pass shortens escapes;
  // invalid UTF-8 must not conceal an adjacent encoded ASCII path separator.

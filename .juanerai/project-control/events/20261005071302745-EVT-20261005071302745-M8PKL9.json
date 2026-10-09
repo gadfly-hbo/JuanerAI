@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005071302745-M8PKL9",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T07:13:02.745Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "Candidate006已按用户指定Git浅克隆方式在MacBook启动本机网页试用；真实模型调用与产品接受仍由用户控制。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

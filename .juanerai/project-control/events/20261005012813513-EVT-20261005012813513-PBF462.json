@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005012813513-PBF462",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T01:28:13.513Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "纠正澄清host001收回：四检查PASS，9个进程及端点已退出，旧失败与UNKNOWN保留",
+  "status_after": "validating",
+  "evidence_refs": []
+}

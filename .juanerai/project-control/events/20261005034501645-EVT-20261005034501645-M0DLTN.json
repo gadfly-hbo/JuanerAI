@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005034501645-M0DLTN",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T03:45:01.645Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "独立FAIL单项控制竞态，原Worker包内修正，旧候选与证据保留",
+  "status_after": "active",
+  "evidence_refs": []
+}

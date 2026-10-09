@@ -1,3 +1,5 @@
+import {preparedConfirmationContext,validateMemberConfirmation,memberConfirmationDocuments} from '../../packages/product-core/member-preparation.ts';
+import {browserProjectRoot,guardBrowserProjectDatabase,type BrowserProjectLease} from './browser-project-origin.ts';
 import {prepareMembershipSidecar,assertMembershipSidecar,migrateMembershipSidecar} from './case-assistant.ts';
 import {validateReviewDecision} from '../../packages/product-core/member-review.ts';
 import type {FormalDecision,AssistantReport} from '../../packages/contracts/case-assistant.ts';
@@ -8,12 +10,16 @@ import {expressionReport,encodeTask,taskHash,type TaskComment} from '../../packa
 import type {TaskGrant,TaskUsage,TaskAttempt} from '../../packages/product-core/member-task.ts';
 import {validateTaskRows} from './member-task-codec.ts';
 import {membershipSchema} from './member-analysis-schema.ts';
-import {validatePlanStart,validateMembershipPlan,validateAnalysisManifest,validateAnalysisEvidence,validateAnalysisOutput,analysisResult,analysisRatio,membershipJudgment,membershipHash,planOf,type MembershipPlan,type AnalysisRunManifest} from '../../packages/product-core/member-analysis.ts';
+import {memberModelSchema,assertMemberModels} from './member-model.ts';
+import {memberOperationSchema} from './member-operation-schema.ts';
+import {assertMemberOperations,reserveMemberOperation,issueMemberOperation,settleMemberOperation,fenceMemberOperations} from './member-operation.ts';
+import {memberSourceSchema,assertMemberSourceSets,resolveMemberPlanPreparation} from './member-source-store.ts';
+import {analysisPlanIdentity,analysisArtifactVersion,analysisManifestVersion,validatePlanStart,validateMembershipPlan,validateAnalysisManifest,validateAnalysisEvidence,validateAnalysisOutput,analysisResult,analysisRatio,analysisJudgment,analysisRefutation,membershipFindingFacts,membershipJudgment,membershipHash,planOf,type MembershipPlan,type AnalysisRunManifest} from '../../packages/product-core/member-analysis.ts';
 import { closeSync, constants, existsSync, fsyncSync, fstatSync, linkSync, lstatSync, mkdirSync, openSync, readFileSync, readSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
 import { createHash, randomUUID } from 'node:crypto';
 import { desktopAssistancePayload, validateDesktopAssistanceDraft } from '../../packages/product-core/xanthil-desktop-decision-case.ts';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, join, resolve, isAbsolute } from 'node:path';
 
 import { validateXanthilDesktopRequest, type CreateSessionRequest, type DesktopProjection, type SaveFormRequest, type SessionSummary } from '../../packages/contracts/xanthil-desktop-ipc.ts';
 import type { DesktopAnalysisCandidates, DesktopAnalysisSettlement, DesktopConfirmedSnapshot, DesktopDecisionCaseStore, DesktopProjectOpen } from '../../packages/ports/xanthil-desktop-decision-case.ts';
@@ -25,7 +31,8 @@ const SCHEMA_VERSION = '1.0';
 const SQLITE_HEADER = 'SQLite format 3\u0000';
 
 /** Separate immutable Run3.0 file authority; no old Run1/2 adoption or scans. */
-export function createLocalDesktopRunEvidenceStore(config: unknown) {
+export function createLocalDesktopRunEvidenceStore(config: unknown) {return createDesktopRunEvidenceStore(config,false);}
+function createDesktopRunEvidenceStore(config:unknown,pureReadback:boolean) {
   const projectRoot = projectRootFrom(config), root = join(projectRoot,'.xanthil','runs');
   // Only this live owner knows the exclusively published output prefix.
   // Reopening a Store never resumes an interrupted in-progress directory.
@@ -84,7 +91,7 @@ export function createLocalDesktopRunEvidenceStore(config: unknown) {
   };
   const bundle = (id: string) => {
     const current = manifest(id); if (current.value.status === 'in_progress') failure('INTEGRITY_BLOCKED'); verifyReferenced(current.value,current.directory);
-    if(current.value.schema_version==='4.0'){const check=openConnection(databasePath(projectRoot),true);try{const persisted=planForRun(check,id),run=check.prepare('SELECT code_identity FROM analysis_runs WHERE run_id=?').get(id);if(membershipHash(persisted)!==membershipHash(current.value.execution_plan)||run?.code_identity!==current.value.method.code_identity)failure('INTEGRITY_BLOCKED');}finally{check.close();}}
+    if(current.value.schema_version!=='3.0'){const check=pureReadback?openReadbackConnection(databasePath(projectRoot)):openConnection(databasePath(projectRoot),true);try{const persisted=planForRun(check,id),run=check.prepare('SELECT code_identity FROM analysis_runs WHERE run_id=?').get(id);if(membershipHash(persisted)!==membershipHash(current.value.execution_plan)||run?.code_identity!==current.value.method.code_identity)failure('INTEGRITY_BLOCKED');}finally{check.close();}}
     try {
       const results=current.value.artifacts.slice(2,4).map((descriptor,index)=>{
         const raw=new TextDecoder('utf-8',{fatal:true}).decode(verifyFile(current.directory,descriptor));
@@ -99,7 +106,7 @@ export function createLocalDesktopRunEvidenceStore(config: unknown) {
         const evidence=validateAnalysisEvidence(value,current.value,results[0]),publications=evidence.candidate_publications as UnknownRecord,aggregate=publications.aggregate as UnknownRecord,report=publications.report as UnknownRecord;
         for(const item of [aggregate,report.markdown,report.html] as UnknownRecord[])verifyFile(projectRoot,{path:text(item.locator),sha256:text(item.sha256),byte_length:text(item.byte_length)});
         const aggregateRaw=new TextDecoder('utf-8',{fatal:true}).decode(bytesAt(projectRoot,text(aggregate.locator)));
-        if(aggregateRaw!==canonicalDesktopJson({schema_version:planOf(current.value)?'2.0':'1.0',...(planOf(current.value)?{plan_sha256:membershipHash(planOf(current.value))}:{}),artifact_id:aggregate.artifact_id,run_id:id,product_context:current.value.product_context,method:current.value.method,result:results[0]}))failure('INTEGRITY_BLOCKED');
+        if(aggregateRaw!==canonicalDesktopJson({schema_version:analysisArtifactVersion(planOf(current.value)),...analysisPlanIdentity(planOf(current.value)),artifact_id:aggregate.artifact_id,run_id:id,product_context:current.value.product_context,method:current.value.method,result:results[0]}))failure('INTEGRITY_BLOCKED');
       }
     }catch{failure('INTEGRITY_BLOCKED');}
     return Object.freeze({run_id:id,locator:`.xanthil/runs/${id}`,manifest:current.value,manifest_sha256:current.sha256,descriptors:[...Object.values(current.value.confirmation),...current.value.sources,...current.value.artifacts,...(current.value.evidence?[current.value.evidence]:[])]});
@@ -115,7 +122,7 @@ export function createLocalDesktopRunEvidenceStore(config: unknown) {
     const context = initial.product_context;
     const committed = await createLocalDesktopDecisionCaseStore({projectRoot}).readConfirmedSnapshot({project_id:context.project_id,session_id:context.session_id,case_id:context.case_id,revision_id:context.revision_id,confirmation_id:context.confirmation_id});
     if (committed.snapshot.snapshot_id !== context.snapshot_id) failure('INTEGRITY_BLOCKED');
-    if(initial.schema_version==='4.0'){validateMembershipPlan(initial.execution_plan,{members_bytes:committed.snapshot.members.bytes,orders_bytes:committed.snapshot.orders.bytes});const planDb=openConnection(databasePath(projectRoot),true);try{const persisted=planForRun(planDb,id);if(membershipHash(persisted)!==membershipHash(initial.execution_plan))failure('INTEGRITY_BLOCKED');}finally{planDb.close();}}
+    if(initial.schema_version!=='3.0'){validateMembershipPlan(initial.execution_plan,{members_bytes:committed.snapshot.members.bytes,orders_bytes:committed.snapshot.orders.bytes});const planDb=openConnection(databasePath(projectRoot),true);try{const persisted=planForRun(planDb,id);if(membershipHash(persisted)!==membershipHash(initial.execution_plan))failure('INTEGRITY_BLOCKED');}finally{planDb.close();}}
     for (const key of ['contract','binding','ir'] as const) if (committed.confirmation[`${key}_sha256`] !== initial.confirmation[key].sha256) failure('INTEGRITY_BLOCKED');
     for (const [index,key] of (['members','orders'] as const).entries()) if (committed.snapshot[key].sha256 !== initial.sources[index].sha256 || committed.snapshot[key].byte_length !== initial.sources[index].byte_length || committed.snapshot[key].display_name !== initial.sources[index].display_name) failure('INTEGRITY_BLOCKED');
     directories(projectRoot,'.xanthil/runs',true); absent(join(root,id));
@@ -156,7 +163,7 @@ export function createLocalDesktopRunEvidenceStore(config: unknown) {
       const evidence = validateAnalysisEvidence(evidenceValue,next,primary), publications = evidence.candidate_publications as UnknownRecord, aggregate = publications.aggregate as UnknownRecord, report = publications.report as UnknownRecord;
       for (const item of [aggregate,report.markdown,report.html] as UnknownRecord[]) verifyFile(projectRoot,{path:text(item.locator),sha256:text(item.sha256),byte_length:text(item.byte_length)});
       const aggregateBytes = bytesAt(projectRoot,text(aggregate.locator)), aggregateText = new TextDecoder('utf-8',{fatal:true}).decode(aggregateBytes);
-      if (aggregateText !== canonicalDesktopJson({schema_version:planOf(current.value)?'2.0':'1.0',...(planOf(current.value)?{plan_sha256:membershipHash(planOf(current.value))}:{}),artifact_id:aggregate.artifact_id,run_id:id,product_context:next.product_context,method:next.method,result:primary})) failure('INTEGRITY_BLOCKED');
+      if (aggregateText !== canonicalDesktopJson({schema_version:analysisArtifactVersion(planOf(current.value)),...analysisPlanIdentity(planOf(current.value)),artifact_id:aggregate.artifact_id,run_id:id,product_context:next.product_context,method:next.method,result:primary})) failure('INTEGRITY_BLOCKED');
       signal(value.cancellation_signal); writeExclusive(current.directory,'evidence.json',value.evidence_bytes as Uint8Array); writeExclusive(current.directory,'summary.md',value.summary_bytes as Uint8Array); writeExclusive(current.directory,'evidence.md',value.evidence_document_bytes as Uint8Array);
     } else if (artifacts.length !== oldArtifacts.length) failure('VALIDATION_FAILED');
     signal(value.cancellation_signal); verifyReferenced(next,current.directory); replaceManifest(current,next); return bundle(id);
@@ -194,7 +201,7 @@ function confirmationChoice(row: UnknownRecord) {
     column_mapping: { member_id_column: text(row.member_id_column), member_group_column: row.member_group_column === null ? null : text(row.member_group_column), order_id_column: text(row.order_id_column), order_member_id_column: text(row.order_member_id_column), paid_at_column: text(row.paid_at_column), amount_column: text(row.amount_column), status_column: text(row.status_column), currency_column: text(row.currency_column) },
     comparison_period: { start_date: text(row.comparison_start_date), end_date: text(row.comparison_end_date) }, current_period: { start_date: text(row.current_start_date), end_date: text(row.current_end_date) },
     currency: 'CNY' as const, time_zone: 'Asia/Shanghai' as const, valid_statuses: JSON.parse(text(row.valid_statuses_json)) as string[], issue_treatments: JSON.parse(text(row.issue_treatments_json)) as {code: string; count: string; treatment: string}[], selected_group_mode: row.selected_group_mode as 'none' | 'mapped',
-    hypothesis_id: 'current_repurchase_rate_lower_than_comparison' as const, method_id: 'membership_repurchase_comparison' as const, method_version: '1.0' as const,
+    ...(row.schema_version==='2.0'?{analysis_kind:'overall_change' as const}:{hypothesis_id:'current_repurchase_rate_lower_than_comparison' as const}), method_id: 'membership_repurchase_comparison' as const, method_version: '1.0' as const,
     authority_confirmed: true as const, issues_confirmed: true as const, plan_confirmed: true as const,
   };
 }
@@ -204,12 +211,12 @@ function confirmedRowsIdentity(rows: Record<string, UnknownRecord[]>): void {
   for (const row of rows.input_confirmations) {
     const snapshot = rows.source_snapshots.find(x => x.snapshot_id === row.snapshot_id), revision = rows.case_revisions.find(x => x.revision_id === row.revision_id);
     if (!snapshot || !revision || revision.confirmation_id !== row.confirmation_id || revision.snapshot_id !== row.snapshot_id || !['Ready','Review','NeedsAttention','Completed'].includes(String(revision.state))) failure('INTEGRITY_BLOCKED');
-    for (const item of [row, snapshot]) if (!['project_id','session_id','case_id','revision_id'].every(key => item[key] === revision[key]) || !isTimestamp(item.created_at) || item.schema_version !== '1.0') failure('INTEGRITY_BLOCKED');
+    for (const item of [row, snapshot]) if (!['project_id','session_id','case_id','revision_id'].every(key => item[key] === revision[key]) || !isTimestamp(item.created_at) || (item===row?!['1.0','2.0'].includes(String(item.schema_version)):item.schema_version!=='1.0')) failure('INTEGRITY_BLOCKED');
     if (![row.confirmation_id, snapshot.snapshot_id].every(id => typeof id === 'string' && UUID.test(id))) failure('INTEGRITY_BLOCKED');
     const choice = confirmationChoice(row);
-    validateXanthilDesktopRequest('confirmRevision', { contract_version: '1.0', command_id: row.confirmation_id, project_id: row.project_id, session_id: row.session_id, case_id: row.case_id, revision_id: row.revision_id, expected_row_version: String(revision.row_version), inspection_token: row.confirmation_id, confirmation: choice });
+    validateMemberConfirmation({ contract_version: row.schema_version, command_id: row.confirmation_id, project_id: row.project_id, session_id: row.session_id, case_id: row.case_id, revision_id: row.revision_id, expected_row_version: String(revision.row_version), inspection_token: row.confirmation_id, confirmation: choice });
     const context = { project_id: text(row.project_id), session_id: text(row.session_id), case_id: text(row.case_id), revision_id: text(row.revision_id), snapshot_id: text(row.snapshot_id), confirmation_id: text(row.confirmation_id) };
-    const documents = desktopConfirmationDocuments(context, choice);
+    const documents = memberConfirmationDocuments(context, choice);
     for (const name of ['contract', 'binding', 'ir'] as const) if (text(row[`${name}_json`]) !== Buffer.from(documents[`${name}_bytes`]).toString('utf8') || digest(text(row[`${name}_json`])) !== row[`${name}_sha256`]) failure('INTEGRITY_BLOCKED');
     if (row.valid_statuses_json !== canonicalDesktopJson(choice.valid_statuses) || row.issue_treatments_json !== canonicalDesktopJson(choice.issue_treatments) || snapshot.treatment_basis_json !== row.issue_treatments_json) failure('INTEGRITY_BLOCKED');
     for (const name of ['authority_confirmed_at','issues_confirmed_at','plan_confirmed_at']) if (row[name] !== row.created_at) failure('INTEGRITY_BLOCKED');
@@ -220,7 +227,7 @@ function confirmedRowsIdentity(rows: Record<string, UnknownRecord[]>): void {
     const receipts = rows.command_receipts.filter(x => x.operation_kind === 'confirm_revision' && x.revision_id === row.revision_id);
     if (receipts.length !== 1 || receipts[0].result_kind !== 'input_confirmation' || receipts[0].result_id !== row.confirmation_id || receipts[0].completed_at !== row.created_at) failure('INTEGRITY_BLOCKED');
     const priorChanges = rows.command_receipts.filter(x => ['save_form','mark_integrity_blocked'].includes(String(x.operation_kind)) && x.revision_id === row.revision_id && BigInt(String(x.receipt_ordinal)) < BigInt(String(receipts[0].receipt_ordinal))).length;
-    const request = { contract_version: '1.0', project_id: row.project_id, session_id: row.session_id, case_id: row.case_id, revision_id: row.revision_id, expected_row_version: String(priorChanges + 1), confirmation: choice };
+    const request = { contract_version: row.schema_version, project_id: row.project_id, session_id: row.session_id, case_id: row.case_id, revision_id: row.revision_id, expected_row_version: String(priorChanges + 1), confirmation: choice };
     if (receipts[0].input_fingerprint !== digest(canonicalDesktopJson({ operation_kind: 'confirm_revision', request, sources: { members: snapshot.members_sha256, orders: snapshot.orders_sha256 } }))) failure('INTEGRITY_BLOCKED');
   }
 }
@@ -237,36 +244,36 @@ function analysisRowsIdentity(rows: Record<string,UnknownRecord[]>): void {
   for (const run of rows.analysis_runs) {
     const revision=rows.case_revisions.find(x=>x.revision_id===run.revision_id), confirmation=rows.input_confirmations.find(x=>x.confirmation_id===run.confirmation_id);
     const deadlinePlan=rows.membership_plans?.find(p=>p.run_id===run.run_id);const runLimit=deadlinePlan?Number(JSON.parse(text(deadlinePlan.body_json)).task_context?.run_ms??300000):300000;
-    if (!revision || !confirmation || !ownerKeys.every(k=>run[k]===revision[k]&&confirmation[k]===run[k]) || !/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(String(run.run_id)) || run.profile_id!=='personal-desktop' || run.method_id!=='membership_repurchase_comparison' || run.method_version!=='1.0' || !/^[0-9a-f]{64}$/.test(String(run.code_identity)) || !isTimestamp(run.started_at) || !isTimestamp(run.deadline_at) || Date.parse(run.deadline_at)-Date.parse(run.started_at)!==runLimit || !['3.0','4.0'].includes(String(run.run_contract_version)) || run.schema_version!=='1.0') failure('INTEGRITY_BLOCKED');
+    if (!revision || !confirmation || !ownerKeys.every(k=>run[k]===revision[k]&&confirmation[k]===run[k]) || !/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(String(run.run_id)) || run.profile_id!=='personal-desktop' || run.method_id!=='membership_repurchase_comparison' || run.method_version!=='1.0' || !/^[0-9a-f]{64}$/.test(String(run.code_identity)) || !isTimestamp(run.started_at) || !isTimestamp(run.deadline_at) || Date.parse(run.deadline_at)-Date.parse(run.started_at)!==runLimit || !['3.0','4.0','5.0'].includes(String(run.run_contract_version)) || run.schema_version!=='1.0') failure('INTEGRITY_BLOCKED');
     const starts=rows.command_receipts.filter(x=>x.operation_kind==='start_analysis'&&x.result_id===run.run_id);
     if(starts.length!==1) failure('INTEGRITY_BLOCKED');
     const start=starts[0], prior=rows.command_receipts.filter(x=>x.revision_id===run.revision_id&&analysisMutations.includes(String(x.operation_kind))&&BigInt(String(x.receipt_ordinal))<BigInt(String(start.receipt_ordinal))).length;
     const planRow=rows.membership_plans?.find(p=>p.run_id===run.run_id),plan=planRow?validateMembershipPlan(JSON.parse(text(planRow.body_json))):undefined;
-    if((run.run_contract_version==='4.0')!==!!plan)failure('INTEGRITY_BLOCKED');
-    const command={contract_version:plan?'2.0':'1.0',...(plan?{execution_plan:plan}:{}),command_id:start.command_id,...Object.fromEntries(ownerKeys.map(k=>[k,run[k]])),expected_row_version:String(prior+1),confirmation_id:run.confirmation_id};
+    if(run.run_contract_version!==analysisManifestVersion(plan))failure('INTEGRITY_BLOCKED');
+    const command={contract_version:plan?.version==='2.0'?'3.0':plan?'2.0':'1.0',...(plan?{execution_plan:plan}:{}),command_id:start.command_id,...Object.fromEntries(ownerKeys.map(k=>[k,run[k]])),expected_row_version:String(prior+1),confirmation_id:run.confirmation_id};
     if(start.result_kind!=='analysis_run'||start.completed_at!==run.started_at||start.input_fingerprint!==analysisFingerprint('start_analysis',command)) failure('INTEGRITY_BLOCKED');
     const ends=rows.command_receipts.filter(x=>['settle_analysis','cancel_analysis','reconcile_interrupted'].includes(String(x.operation_kind))&&x.result_id===run.run_id);
-    const aggregate=rows.aggregate_artifacts.filter(x=>x.run_id===run.run_id), finding=rows.findings.filter(x=>x.run_id===run.run_id), report=rows.report_versions.filter(x=>x.state==='draft'&&finding.some(f=>f.finding_id===x.finding_id)&&!rows.membership_expressions?.some(e=>e.report_id===x.report_id));
+    const aggregate=rows.aggregate_artifacts.filter(x=>x.run_id===run.run_id), finding=rows.findings.filter(x=>x.run_id===run.run_id), report=rows.report_versions.filter(x=>x.state==='draft'&&finding.some(f=>f.finding_id===x.finding_id)&&!rows.membership_expressions?.some(e=>e.report_id===x.report_id)&&!rows.membership_model_reports?.some(e=>e.report_id===x.report_id));
     if(run.status==='Running') { if(ends.length||aggregate.length||finding.length||report.length||!['Ready','Review','Completed'].includes(String(revision.state))) failure('INTEGRITY_BLOCKED'); }
     else {
       if(ends.length!==1||ends[0].result_kind!=='analysis_run'||!isTimestamp(run.ended_at)||run.ended_at<run.started_at||ends[0].completed_at!==run.ended_at) failure('INTEGRITY_BLOCKED');
       if(run.status==='Succeeded') {
         if(aggregate.length!==1||finding.length!==1||report.length!==1||run.aggregate_id!==aggregate[0].artifact_id||run.run_locator!==`.xanthil/runs/${run.run_id}`||finding[0].aggregate_id!==run.aggregate_id||!['Review','Completed'].includes(String(revision.state))) failure('INTEGRITY_BLOCKED');
-        for(const item of [...aggregate,...finding,...report]) if(!ownerKeys.every(k=>item[k]===run[k])||item.created_at!==run.ended_at||item.schema_version!=='1.0') failure('INTEGRITY_BLOCKED');
+        for(const item of [...aggregate,...finding,...report]) if(!ownerKeys.every(k=>item[k]===run[k])||item.created_at!==run.ended_at||(finding.includes(item)?item.schema_version!==(plan?.version==='2.0'?'2.0':'1.0'):item.schema_version!=='1.0')) failure('INTEGRITY_BLOCKED');
         const a=aggregate[0], f=finding[0], r=report[0];
         if(![a.artifact_id,f.finding_id,r.report_id].every(x=>UUID.test(String(x)))||a.snapshot_id!==confirmation.snapshot_id||a.method_id!==run.method_id||a.method_version!==run.method_version||a.code_identity!==run.code_identity||a.locator!==`${run.session_id}/020_clean/${a.artifact_id}/aggregate.json`||r.state!=='draft'||BigInt(String(r.version_sequence))<1n||r.acceptance_id!==null||r.closure_id!==null||r.markdown_locator!==`${run.session_id}/060_reports/${r.report_id}/report.md`||r.html_locator!==`${run.session_id}/060_reports/${r.report_id}/report.html`) failure('INTEGRITY_BLOCKED');
         const metrics=analysisResult(JSON.parse(text(f.metrics_json)),plan);
-        if(f.method_id!==run.method_id||f.method_version!==run.method_version||f.judgment!==membershipJudgment(metrics)) failure('INTEGRITY_BLOCKED');
+        if(f.method_id!==run.method_id||f.method_version!==run.method_version||f.judgment!==analysisJudgment(metrics,plan)) failure('INTEGRITY_BLOCKED');
         const exactJson=(actual:unknown,expected:unknown)=>{if(actual!==canonicalDesktopJson(expected))failure('INTEGRITY_BLOCKED');};
         exactJson(f.metrics_json,metrics);
         exactJson(a.columns_json,['period','active_member_count','repeat_member_count','repeat_revenue_fen','repurchase_rate']);
         exactJson(a.measurement_meanings_json,{repeat_revenue_fen:'sum_of_second_and_later_valid_orders_in_period',repurchase_rate:'repeat_member_count/active_member_count'});
         exactJson(f.supporting_evidence_json,[`comparison_repurchase_rate=${analysisRatio(metrics.periods.comparison.repurchase_rate)}`,`current_repurchase_rate=${analysisRatio(metrics.periods.current.repurchase_rate)}`]);
-        exactJson(f.refutation_json,f.judgment==='Confirmed'?'association_does_not_establish_cause':f.judgment==='Rejected'?'current_rate_is_not_lower':'active_member_denominator_is_zero');
+        exactJson(f.refutation_json,analysisRefutation(metrics,plan));if(plan?.version==='2.0'){const facts=membershipFindingFacts(metrics,plan);exactJson(f.facts_json,facts);if(f.facts_sha256!==membershipHash(facts))failure('INTEGRITY_BLOCKED');}else if(f.facts_json!=null||f.facts_sha256!=null)failure('INTEGRITY_BLOCKED');
         exactJson(f.limitations_json,['association_not_causation','no_significance_test','confirmed_local_snapshot_only']);
         const evidenceRefs=[`${run.run_id}:duckdb-result`,`${run.run_id}:python-result`];
         exactJson(f.evidence_refs_json,evidenceRefs);exactJson(r.evidence_refs_json,evidenceRefs);
-        exactJson(r.source_json,{schema_version:plan?'2.0':'1.0',...(plan?{plan_sha256:membershipHash(plan)}:{}),run_id:run.run_id,finding_id:f.finding_id,...Object.fromEntries(ownerKeys.map(k=>[k,run[k]])),confirmation_id:confirmation.confirmation_id,snapshot_id:confirmation.snapshot_id,method:{id:run.method_id,version:run.method_version,code_identity:run.code_identity}});
+        exactJson(r.source_json,{schema_version:analysisArtifactVersion(plan),...analysisPlanIdentity(plan),run_id:run.run_id,finding_id:f.finding_id,...Object.fromEntries(ownerKeys.map(k=>[k,run[k]])),confirmation_id:confirmation.confirmation_id,snapshot_id:confirmation.snapshot_id,method:{id:run.method_id,version:run.method_version,code_identity:run.code_identity}});
         if(confirmation.selected_group_mode==='none'){
           if(a.group_pseudonym_map_json!==null||metrics.m2.status!==(plan&&!plan.methods.includes('M2')?'not_selected':'not_applicable'))failure('INTEGRITY_BLOCKED');
         }else{
@@ -545,6 +552,7 @@ function prepareDatabaseDirectory(path: string): void {
 }
 
 function rawPreflight(path: string): string {
+  guardBrowserProjectDatabase(path);
   try {
     assertContainedPath(path);
     const identity = fileIdentity(path);
@@ -554,7 +562,7 @@ function rawPreflight(path: string): string {
       if (!stat.isFile() || identity !== JSON.stringify([stat.dev, stat.ino, stat.size, stat.mtimeMs])) failure('SCHEMA_UNSUPPORTED');
       const header = Buffer.alloc(100);
       if (readSync(fd, header, 0, 100, 0) !== 100 || header.subarray(0, 16).toString('utf8') !== SQLITE_HEADER ||
-          header[18] !== 1 || header[19] !== 1 || ![USER_VERSION,110].includes(header.readUInt32BE(60)) || header.readUInt32BE(68) !== APPLICATION_ID) failure('SCHEMA_UNSUPPORTED');
+          header[18] !== 1 || header[19] !== 1 || ![USER_VERSION,110,120].includes(header.readUInt32BE(60)) || header.readUInt32BE(68) !== APPLICATION_ID) failure('SCHEMA_UNSUPPORTED');
     } finally { closeSync(fd); }
     if (optionalIdentity(`${path}-wal`) !== null || optionalIdentity(`${path}-shm`) !== null) failure('SCHEMA_UNSUPPORTED');
     return JSON.stringify([fileIdentity(dirname(path), true), identity, optionalIdentity(`${path}-journal`)]);
@@ -565,6 +573,11 @@ const normalizedSql = (sql: string): string => sql.trim().replace(/\s+/g, ' ');
 const expectedSchema = schema.split(';').map(normalizedSql).filter(Boolean).sort();
 const schema110=schema.replace("CHECK(run_contract_version = '3.0')","CHECK(run_contract_version IN ('3.0','4.0'))")+membershipSchema;
 const expectedP1Schema=schema110.split(';').map(normalizedSql).filter(Boolean).sort();
+const schema120=schema110.replace("CHECK(run_contract_version IN ('3.0','4.0'))","CHECK(run_contract_version IN ('3.0','4.0','5.0'))")
+ .replace(/CREATE TABLE input_confirmations \([\s\S]*?;\n/,table=>table.replace("hypothesis_id TEXT NOT NULL CHECK(hypothesis_id = 'current_repurchase_rate_lower_than_comparison')","hypothesis_id TEXT").replace("schema_version TEXT NOT NULL CHECK(schema_version = '1.0')","schema_version TEXT NOT NULL CHECK(schema_version IN ('1.0','2.0'))").replace('  UNIQUE(revision_id)',"  CHECK((schema_version='1.0' AND hypothesis_id IS NOT NULL AND hypothesis_id='current_repurchase_rate_lower_than_comparison') OR (schema_version='2.0' AND hypothesis_id IS NULL)),\n  UNIQUE(revision_id)"))
+ .replace(/CREATE TABLE findings \([\s\S]*?;\n/,table=>table.replace("judgment IN ('Confirmed','Rejected','Inconclusive')","judgment IN ('Confirmed','Rejected','Inconclusive','Verified')").replace("schema_version TEXT NOT NULL CHECK(schema_version = '1.0')","schema_version TEXT NOT NULL CHECK(schema_version IN ('1.0','2.0')), facts_json TEXT, facts_sha256 TEXT").replace('  UNIQUE(run_id)',"  CHECK((schema_version='1.0' AND judgment IN ('Confirmed','Rejected','Inconclusive') AND facts_json IS NULL AND facts_sha256 IS NULL) OR (schema_version='2.0' AND judgment='Verified' AND facts_json IS NOT NULL AND json_valid(facts_json) AND facts_sha256 IS NOT NULL)),\n  UNIQUE(run_id)"))
+ +memberOperationSchema+memberSourceSchema+memberModelSchema;
+const expectedBrowserSchema=schema120.split(';').map(normalizedSql).filter(Boolean).sort();
 
 function inspectReadOnly(db: DatabaseSync): void {
   let integrity: unknown;
@@ -573,9 +586,11 @@ function inspectReadOnly(db: DatabaseSync): void {
   if (JSON.stringify(integrity) !== '[{"integrity_check":"ok"}]') failure('INTEGRITY_BLOCKED');
   const actual = db.prepare('SELECT sql FROM sqlite_schema WHERE sql IS NOT NULL').all()
     .map((row) => normalizedSql(String(row.sql))).sort();
-  if (JSON.stringify(actual) !== JSON.stringify(Number(pragmaValue(db,'user_version'))===110?expectedP1Schema:expectedSchema)) failure('SCHEMA_UNSUPPORTED');
+  const version=Number(pragmaValue(db,'user_version'));
+  if (JSON.stringify(actual) !== JSON.stringify(version===120?expectedBrowserSchema:version===110?expectedP1Schema:expectedSchema)) failure('SCHEMA_UNSUPPORTED');
   assertExistingIdentity(db);
-  if(Number(pragmaValue(db,'user_version'))===110)assertMembershipIdentity(db);
+  if([110,120].includes(version))assertMembershipIdentity(db);
+  if(version===120){assertMemberOperations(db);assertMemberSourceSets(db);assertMemberModels(db);}
 }
 
 function readOnlyPreflight(path: string): string {
@@ -592,6 +607,9 @@ function readOnlyPreflight(path: string): string {
   return before;
 }
 
+function openReadbackConnection(path:string):DatabaseSync {
+ rawPreflight(path);const db=new DatabaseSync(path,{readOnly:true});try{inspectReadOnly(db);return db;}catch(error){db.close();throw error;}
+}
 function openConnection(path: string, existing: boolean): DatabaseSync {
   if (existing) {
     rawPreflight(path);
@@ -623,7 +641,7 @@ function openConnection(path: string, existing: boolean): DatabaseSync {
 }
 
 function assertExistingIdentity(db: DatabaseSync): void {
-  if (Number(pragmaValue(db, 'application_id')) !== APPLICATION_ID || ![USER_VERSION,110].includes(Number(pragmaValue(db, 'user_version')))) failure('SCHEMA_UNSUPPORTED');
+  if (Number(pragmaValue(db, 'application_id')) !== APPLICATION_ID || ![USER_VERSION,110,120].includes(Number(pragmaValue(db, 'user_version')))) failure('SCHEMA_UNSUPPORTED');
   // Read the complete closed table set before classifying the current tuple.
   const tables = [...schema.matchAll(/CREATE TABLE ([a-z_]+)/g)].map(match => match[1]);
   const rows = Object.fromEntries(tables.map(table => {
@@ -725,8 +743,9 @@ function assertExistingIdentity(db: DatabaseSync): void {
       if (item.result_kind !== 'case_revision' || item.result_id !== item.revision_id || item.completed_at !== revision.updated_at || item.input_fingerprint !== expected) failure('INTEGRITY_BLOCKED');
     }
   }
-  if(Number(pragmaValue(db,'user_version'))===110)rows.membership_plans=db.prepare('SELECT p.*,r.run_id FROM membership_run_plans r JOIN membership_plans p ON p.plan_id=r.plan_id').all();
-  if(Number(pragmaValue(db,'user_version'))===110)rows.membership_expressions=db.prepare("SELECT result_json FROM membership_receipts WHERE json_extract(result_json,'$.kind')='expression_report'").all().map(r=>JSON.parse(text(r.result_json)));
+  if([110,120].includes(Number(pragmaValue(db,'user_version'))))rows.membership_plans=db.prepare('SELECT p.*,r.run_id FROM membership_run_plans r JOIN membership_plans p ON p.plan_id=r.plan_id').all();
+  if(Number(pragmaValue(db,'user_version'))===120)rows.membership_model_reports=db.prepare('SELECT * FROM membership_model_reports').all();
+  if([110,120].includes(Number(pragmaValue(db,'user_version'))))rows.membership_expressions=db.prepare("SELECT result_json FROM membership_receipts WHERE json_extract(result_json,'$.kind')='expression_report'").all().map(r=>JSON.parse(text(r.result_json)));
   try {
     for(const attempt of rows.assistance_attempts){
       const disclosure=rows.model_disclosures.find(d=>d.disclosure_id===attempt.disclosure_id),starts=rows.command_receipts.filter(r=>r.operation_kind==='start_assistance'&&r.result_id===attempt.attempt_id),ends=rows.command_receipts.filter(r=>['settle_assistance','cancel_assistance','reconcile_interrupted'].includes(String(r.operation_kind))&&r.result_id===attempt.attempt_id);
@@ -817,7 +836,7 @@ function assertExistingIdentity(db: DatabaseSync): void {
           const closure=closures.find(c=>c.closure_id===report.closure_id),finding=rows.findings.find(f=>f.finding_id===report.finding_id),run=finding&&rows.analysis_runs.find(r=>r.run_id===finding.run_id),confirmation=run&&rows.input_confirmations.find(c=>c.confirmation_id===run.confirmation_id);
           if(!closure||!finding||!run||!confirmation)failure('INTEGRITY_BLOCKED');
           const source={schema_version:'1.0',run_id:run.run_id,finding_id:finding.finding_id,...Object.fromEntries(ownerKeys.map(k=>[k,revision[k]])),confirmation_id:confirmation.confirmation_id,snapshot_id:confirmation.snapshot_id,method:{id:run.method_id,version:run.method_version,code_identity:run.code_identity},acceptance_id:closure.acceptance_id,form_id:closure.form_id,closure_id:closure.closure_id};
-          if(run.run_contract_version==='4.0'){
+          if(['4.0','5.0'].includes(String(run.run_contract_version))){
             const receipt=db.prepare("SELECT result_json FROM membership_receipts WHERE json_extract(result_json,'$.report_id')=? AND json_extract(result_json,'$.kind')='human_review'").get(text(report.report_id));if(!receipt)failure('INTEGRITY_BLOCKED');const submitted=JSON.parse(text(receipt.result_json)),reviewRow=db.prepare('SELECT * FROM membership_reviews WHERE review_id=? AND version=?').get(submitted.review_id,submitted.review_version);if(!reviewRow)failure('INTEGRITY_BLOCKED');const review=decoded<MembershipReview>(reviewRow),parent=reports.find(p=>p.report_id===review.source.report_id);if(!parent||parent.state!=='draft'||parent.finding_id!==finding.finding_id||parent.markdown_sha256!==review.source.report_sha256||submitted.acceptance_id!==closure.acceptance_id||submitted.closure_id!==closure.closure_id)failure('INTEGRITY_BLOCKED');
             const expected={...JSON.parse(text(parent.source_json)),acceptance_id:closure.acceptance_id,form_id:closure.form_id,closure_id:closure.closure_id,review:{task_id:review.task_id,review_id:review.id,review_version:String(review.sequence),intent_id:review.intent_id,parent_report_id:review.source.report_id,parent_report_sha256:review.source.report_sha256}};if(report.source_json!==canonicalDesktopJson(expected))failure('INTEGRITY_BLOCKED');
           }else if(report.source_json!==canonicalDesktopJson(source))failure('INTEGRITY_BLOCKED');
@@ -832,12 +851,49 @@ function assertExistingIdentity(db: DatabaseSync): void {
   } catch { failure('INTEGRITY_BLOCKED'); }
 }
 
-function createSchema(db: DatabaseSync): void {
-  db.exec(`PRAGMA application_id = ${APPLICATION_ID}; PRAGMA user_version = ${USER_VERSION};`);
-  db.exec(schema);
+function createSchema(db: DatabaseSync, version:100|120): void {
+  db.exec(`PRAGMA application_id = ${APPLICATION_ID}; PRAGMA user_version = ${version};`);
+  db.exec(version===120?schema120:schema);
 }
 
 export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDecisionCaseStore {
+ return createDesktopStore(config,100);
+}
+
+/** Exclusive new-directory creation only. Existing project activation is deliberately absent. */
+export function createFreshBrowserProjectStore(config:unknown):DesktopDecisionCaseStore{
+ const c=exactRecord(config,['projectRoot']),root=text(c.projectRoot);
+ if(!isAbsolute(root)||resolve(root)!==root)failure('VALIDATION_FAILED');
+ try{mkdirSync(root,{mode:0o700});}catch(error){if((error as NodeJS.ErrnoException).code==='EEXIST')failure('EXISTING_PROJECT_ACTIVATION_CLOSED');throw error;}
+ return createDesktopStore(config,120);
+}
+
+/** Only an origin-checked, OS-held native lease can enter the fresh120 reopen path. */
+export function createReopenedBrowserProjectStore(lease:BrowserProjectLease):DesktopDecisionCaseStore{
+ const projectRoot=browserProjectRoot(lease),store=createDesktopStore({projectRoot},120,false,lease);
+ return new Proxy({...store},{get(target,key){const value=Reflect.get(target,key);return typeof value==='function'?(...args:unknown[])=>{lease.check();return Reflect.apply(value,target,args);}:value;}});
+}
+
+export function fenceReopenedBrowserProject(lease:BrowserProjectLease):void{
+ const root=browserProjectRoot(lease);
+ withBrowserMembershipState(root,true,db=>{
+  const at=new Date().toISOString();
+  for(const task of db.prepare('SELECT task_id,status FROM membership_tasks').all()){
+   const taskId=String(task.task_id);fenceMemberOperations(db,taskId);
+   for(const row of db.prepare('SELECT grant_id,body_json FROM membership_grants WHERE task_id=? AND revoked_at IS NULL').all(taskId)){const next={...JSON.parse(String(row.body_json)),revoked_at:at};db.prepare('UPDATE membership_grants SET revoked_at=?,body_json=?,body_sha256=? WHERE grant_id=?').run(at,encodeTask(next),taskHash(next),String(row.grant_id));}
+   if(!['closed','stopped','interrupted'].includes(String(task.status)))db.prepare("UPDATE membership_tasks SET status='interrupted',epoch=epoch+1,row_version=row_version+1 WHERE task_id=?").run(taskId);
+  }
+  for(const row of db.prepare("SELECT execution_id FROM membership_operation_usage WHERE phase='issued'").all()){
+   const execution_id=String(row.execution_id);db.prepare("UPDATE membership_operation_usage SET phase='unresolved' WHERE execution_id=?").run(execution_id);
+   for(const table of ['membership_model_attempts','membership_preparation_attempts']){const saved=db.prepare(`SELECT body_json FROM ${table} WHERE execution_id=?`).get(execution_id);if(saved){const next={...JSON.parse(String(saved.body_json)),status:'unknown',failure_code:'INTERRUPTED'};db.prepare(`UPDATE ${table} SET body_json=?,body_sha256=? WHERE execution_id=?`).run(encodeTask(next),taskHash(next),execution_id);}}
+  }
+ });
+}
+
+export function createBrowserDesktopReadback(projectRoot:string) {
+ const store=createDesktopStore({projectRoot},120,true);return {readProjection:store.readProjection,readReportExport:store.readReportExport};
+}
+function createDesktopStore(config: unknown, initializationVersion:100|120, pureReadback=false,reopenLease?:BrowserProjectLease): DesktopDecisionCaseStore {
   const projectRoot = projectRootFrom(config);
   const path = databasePath(projectRoot);
   let resultPending = false;
@@ -857,6 +913,8 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
     if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(createdAt) || !Number.isFinite(Date.parse(createdAt)) || new Date(createdAt).toISOString() !== createdAt) failure('VALIDATION_FAILED');
     if (fingerprint !== createHash('sha256').update(JSON.stringify({ operation_kind: 'initialize_project', request: { contract_version: '1.0', display_name: displayName } })).digest('hex')) failure('VALIDATION_FAILED');
     const existing = optionalIdentity(path) !== null;
+    if(existing&&initializationVersion===120&&!reopenLease)failure('EXISTING_PROJECT_ACTIVATION_CLOSED');
+    if(reopenLease){reopenLease.check();if(!existing||projectId!==reopenLease.project_id)failure('EXISTING_PROJECT_ACTIVATION_CLOSED');}
     if (!existing) {
       for (const suffix of ['-wal', '-shm', '-journal']) if (optionalIdentity(path + suffix) !== null) failure('SCHEMA_UNSUPPORTED');
       prepareDatabaseDirectory(path);
@@ -872,7 +930,7 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
       }
       db.exec('BEGIN IMMEDIATE');
       try {
-        createSchema(db);
+        createSchema(db,initializationVersion);
         db.prepare('INSERT INTO projects(project_id, display_name, created_at, schema_version) VALUES (?, ?, ?, ?)').run(projectId, displayName, createdAt, SCHEMA_VERSION);
         db.prepare("INSERT INTO command_receipts(command_id, operation_kind, project_id, session_id, case_id, revision_id, input_fingerprint, outcome, result_kind, result_id, rejection_reason, completed_at, schema_version) VALUES (?, 'initialize_project', ?, NULL, NULL, NULL, ?, 'succeeded', 'project', ?, NULL, ?, ?)").run(commandId, projectId, fingerprint, projectId, createdAt, SCHEMA_VERSION);
         db.exec('COMMIT');
@@ -1050,15 +1108,20 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
           return Object.freeze({ display_name: text(snapshot[`${role}_display_name`]), bytes, sha256: text(snapshot[`${role}_sha256`]), byte_length: String(snapshot[`${role}_byte_length`]) });
         } finally { closeSync(fd); }
       };
-      return Object.freeze({ confirmation: Object.freeze({ contract_bytes: new TextEncoder().encode(text(row.contract_json)), binding_bytes: new TextEncoder().encode(text(row.binding_json)), ir_bytes: new TextEncoder().encode(text(row.ir_json)), contract_sha256: text(row.contract_sha256), binding_sha256: text(row.binding_sha256), ir_sha256: text(row.ir_sha256) }), snapshot: Object.freeze({ snapshot_id: text(snapshot.snapshot_id), members: source('members'), orders: source('orders') }) });
+      const link=Number(pragmaValue(db,'user_version'))===120?db.prepare('SELECT context_json,context_sha256 FROM membership_confirmation_preparations WHERE confirmation_id=?').get(text(value.confirmation_id)):undefined;
+      const context=link?preparedConfirmationContext(JSON.parse(text(link.context_json))):null;
+      if(link&&taskHash(context)!==link.context_sha256)failure('INTEGRITY_BLOCKED');
+      const resolved=context?resolveMemberPlanPreparation(db,projectRoot,context,false):undefined,preparation=resolved?.preparation;
+      return Object.freeze({ ...(preparation?{preparation}:{}),...(resolved?.clarifications?{clarifications:resolved.clarifications}:{}),confirmation: Object.freeze({ contract_bytes: new TextEncoder().encode(text(row.contract_json)), binding_bytes: new TextEncoder().encode(text(row.binding_json)), ir_bytes: new TextEncoder().encode(text(row.ir_json)), contract_sha256: text(row.contract_sha256), binding_sha256: text(row.binding_sha256), ir_sha256: text(row.ir_sha256) }), snapshot: Object.freeze({ snapshot_id: text(snapshot.snapshot_id), members: source('members'), orders: source('orders') }) });
     } catch (error) { nativeFailure(error, 'INTEGRITY_BLOCKED'); }
     finally { db.close(); }
   }
 
   async function publishConfirmation(input: unknown): Promise<DesktopProjection> {
     if (resultPending) failure('RESULT_PENDING');
-    const value = exactRecord(input, ['command','ids','source_files','contract_bytes','binding_bytes','ir_bytes','counts','treatment_basis','completed_at','input_fingerprint']);
-    const command = validateXanthilDesktopRequest('confirmRevision', value.command), choice = command.confirmation;
+    const value = exactRecord(input, ['command','ids','source_files','contract_bytes','binding_bytes','ir_bytes','counts','treatment_basis','completed_at','input_fingerprint',...(input&&typeof input==='object'&&Object.hasOwn(input,'preparation_context')?['preparation_context']:[])]);
+    const command = validateMemberConfirmation(value.command), choice = command.confirmation;
+    const preparation_context=value.preparation_context===undefined?null:preparedConfirmationContext(value.preparation_context);if((command.contract_version==='2.0')!==!!preparation_context)failure('AUTHORITY_REQUIRED');
     const ids = exactRecord(value.ids, ['snapshot_id','confirmation_id','operation_id']);
     if (!Object.values(ids).every(id => typeof id === 'string' && UUID.test(id)) || new Set(Object.values(ids)).size !== 3 || !isTimestamp(value.completed_at)) failure('VALIDATION_FAILED');
     const owner = { project_id: command.project_id, session_id: command.session_id, case_id: command.case_id, revision_id: command.revision_id };
@@ -1072,29 +1135,41 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
     const prepared = prepareDesktopData({ members_bytes: members.bytes, orders_bytes: orders.bytes }, choice);
     const treatments = prepared.reviewable_issues.map(issue => ({ code: issue.code, count: issue.count, treatment: issue.treatment_options[0] }));
     if (canonicalDesktopJson(value.counts) !== canonicalDesktopJson(prepared.counts) || canonicalDesktopJson(value.treatment_basis) !== canonicalDesktopJson(treatments) || canonicalDesktopJson(choice.issue_treatments) !== canonicalDesktopJson(treatments)) failure('VALIDATION_FAILED');
-    const documents = desktopConfirmationDocuments({ ...owner, snapshot_id: text(ids.snapshot_id), confirmation_id: text(ids.confirmation_id) }, choice);
+    const documents = memberConfirmationDocuments({ ...owner, snapshot_id: text(ids.snapshot_id), confirmation_id: text(ids.confirmation_id) }, choice);
     for (const name of ['contract','binding','ir'] as const) if (!(value[`${name}_bytes`] instanceof Uint8Array) || !Buffer.from(value[`${name}_bytes`] as Uint8Array).equals(documents[`${name}_bytes`])) failure('VALIDATION_FAILED');
     const { command_id, inspection_token, ...request } = command; void command_id; void inspection_token;
     const fingerprint = digest(canonicalDesktopJson({ operation_kind: 'confirm_revision', request, sources: { members: members.sha256, orders: orders.sha256 } }));
     if (value.input_fingerprint !== fingerprint) failure('VALIDATION_FAILED');
+    const guardPreparation=(db:DatabaseSync)=>{
+      const fresh=Number(pragmaValue(db,'user_version'))===120;
+      const task=fresh&&db.prepare('SELECT task_id FROM membership_tasks WHERE project_id=? AND session_id=? AND case_id=?').get(owner.project_id,owner.session_id,owner.case_id);
+      const selected=task&&db.prepare('SELECT source_set_id FROM membership_source_sets WHERE task_id=?').get(text(task.task_id));
+      if(selected&&!preparation_context)failure('AUTHORITY_REQUIRED');
+      if(preparation_context){const actual=resolveMemberPlanPreparation(db,projectRoot,preparation_context,true);if(canonicalDesktopJson(actual.preparation.owner)!==canonicalDesktopJson(owner)||digest(actual.candidate.members_bytes)!==members.sha256||digest(actual.candidate.orders_bytes)!==orders.sha256)failure('SOURCE_CHANGED');}
+    };
     const findReceipt = (db: DatabaseSync) => {
       const receipt = db.prepare('SELECT * FROM command_receipts WHERE command_id=?').get(command.command_id);
       if (receipt && (receipt.operation_kind !== 'confirm_revision' || receipt.input_fingerprint !== fingerprint || receipt.project_id !== owner.project_id || receipt.session_id !== owner.session_id || receipt.case_id !== owner.case_id || receipt.revision_id !== owner.revision_id)) failure('COMMAND_CONFLICT');
+      if(receipt&&Number(pragmaValue(db,'user_version'))===120){
+        const link=db.prepare('SELECT context_json,context_sha256 FROM membership_confirmation_preparations WHERE confirmation_id=?').get(text(receipt.result_id));
+        if(link?(!preparation_context||link.context_sha256!==taskHash(preparation_context)||link.context_json!==encodeTask(preparation_context)):!!preparation_context)failure('COMMAND_CONFLICT');
+      }
       return receipt;
     };
     let db: DatabaseSync | undefined = openConnection(path, true);
-    try { if (findReceipt(db)) { db.close(); db = undefined; return readProjection(owner); } }
+    try { if (findReceipt(db)) { db.close(); db = undefined; return readProjection(owner); } guardPreparation(db); }
     finally { db?.close(); db = undefined; }
     const projection = await readProjection(owner);
     if (projection.session?.current_revision_id !== owner.revision_id) failure('STALE_REVISION');
     if (projection.revision?.integrity_state !== 'ok') failure('INTEGRITY_BLOCKED');
     if (projection.revision.row_version !== command.expected_row_version) failure('STALE_REVISION');
-    if (projection.revision.state !== 'Draft' || ![projection.revision.question_text, projection.revision.hypothesis_display_title].every(x => /[^\p{White_Space}]/u.test(x))) failure('VALIDATION_FAILED');
+    if (projection.revision.state !== 'Draft' || !(preparation_context?[projection.revision.question_text]:[projection.revision.question_text, projection.revision.hypothesis_display_title]).every(x => /[^\p{White_Space}]/u.test(x))) failure('VALIDATION_FAILED');
     const parent = join(projectRoot, owner.session_id, '010_draw'), target = join(parent, text(ids.snapshot_id));
     const staging = join(dirname(path), 'staging'), stage = join(staging, text(ids.operation_id));
     const absent = (candidate: string) => { try { lstatSync(candidate); } catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return; throw error; } failure('COMMAND_CONFLICT'); };
     let committing = false;
     try {
+      if(preparation_context){db=openConnection(path,true);db.exec('BEGIN IMMEDIATE');if(findReceipt(db)){db.exec('ROLLBACK');db.close();db=undefined;return readProjection(owner);}guardPreparation(db);}
       fileIdentity(projectRoot, true); fileIdentity(join(projectRoot, owner.session_id), true); fileIdentity(parent, true); fileIdentity(staging, true); absent(target);
       mkdirSync(stage, { mode: 0o700 });
       for (const [name, file] of [['members',members],['orders',orders]] as const) {
@@ -1104,7 +1179,8 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
       }
       syncDirectory(stage); syncDirectory(staging); absent(target);
       renameSync(stage, target); syncDirectory(staging); syncDirectory(parent);
-      db = openConnection(path, true); db.exec('BEGIN IMMEDIATE');
+      if(!db){db = openConnection(path, true); db.exec('BEGIN IMMEDIATE');}
+      guardPreparation(db);
       if (findReceipt(db)) { db.exec('ROLLBACK'); db.close(); db = undefined; return readProjection(owner); }
       const query = db.prepare('SELECT r.*,s.current_revision_id FROM case_revisions r JOIN product_sessions s USING(project_id,session_id,case_id) WHERE r.revision_id=?'); query.setReadBigInts(true);
       const row = query.get(owner.revision_id);
@@ -1118,16 +1194,17 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
         included_member_count: BigInt(prepared.counts.included_member_count), excluded_member_count: BigInt(prepared.counts.excluded_member_count), included_order_count: BigInt(prepared.counts.included_order_count), excluded_order_count: BigInt(prepared.counts.excluded_order_count), treatment_basis_json: canonicalDesktopJson(treatments), confirmed_at: timestamp, created_at: timestamp, schema_version: '1.0' });
       insert('input_confirmations', { confirmation_id: text(ids.confirmation_id), ...owner, snapshot_id: text(ids.snapshot_id), ...choice.column_mapping,
         comparison_start_date: choice.comparison_period.start_date, comparison_end_date: choice.comparison_period.end_date, current_start_date: choice.current_period.start_date, current_end_date: choice.current_period.end_date,
-        currency: choice.currency, time_zone: choice.time_zone, valid_statuses_json: canonicalDesktopJson(choice.valid_statuses), issue_treatments_json: canonicalDesktopJson(choice.issue_treatments), selected_group_mode: choice.selected_group_mode, hypothesis_id: choice.hypothesis_id, method_id: choice.method_id, method_version: choice.method_version,
+        currency: choice.currency, time_zone: choice.time_zone, valid_statuses_json: canonicalDesktopJson(choice.valid_statuses), issue_treatments_json: canonicalDesktopJson(choice.issue_treatments), selected_group_mode: choice.selected_group_mode, hypothesis_id: 'hypothesis_id' in choice?choice.hypothesis_id:null, method_id: choice.method_id, method_version: choice.method_version,
         authority_confirmed_at: timestamp, issues_confirmed_at: timestamp, plan_confirmed_at: timestamp,
-        contract_json: Buffer.from(documents.contract_bytes).toString('utf8'), contract_sha256: digest(documents.contract_bytes), binding_json: Buffer.from(documents.binding_bytes).toString('utf8'), binding_sha256: digest(documents.binding_bytes), ir_json: Buffer.from(documents.ir_bytes).toString('utf8'), ir_sha256: digest(documents.ir_bytes), created_at: timestamp, schema_version: '1.0' });
+        contract_json: Buffer.from(documents.contract_bytes).toString('utf8'), contract_sha256: digest(documents.contract_bytes), binding_json: Buffer.from(documents.binding_bytes).toString('utf8'), binding_sha256: digest(documents.binding_bytes), ir_json: Buffer.from(documents.ir_bytes).toString('utf8'), ir_sha256: digest(documents.ir_bytes), created_at: timestamp, schema_version: command.contract_version });
+      if(preparation_context)db.prepare('INSERT INTO membership_confirmation_preparations VALUES(?,?,?,?,?)').run(text(ids.confirmation_id),preparation_context.authority.task_id,preparation_context.preparation.id,encodeTask(preparation_context),taskHash(preparation_context));
       db.prepare("UPDATE case_revisions SET state='Ready',snapshot_id=?,confirmation_id=?,row_version=row_version+1,updated_at=? WHERE revision_id=?").run(text(ids.snapshot_id), text(ids.confirmation_id), timestamp, owner.revision_id);
       db.prepare("INSERT INTO command_receipts(command_id,operation_kind,project_id,session_id,case_id,revision_id,input_fingerprint,outcome,result_kind,result_id,rejection_reason,completed_at,schema_version) VALUES (?,'confirm_revision',?,?,?,?,?,'succeeded','input_confirmation',?,NULL,?,'1.0')").run(command.command_id, owner.project_id, owner.session_id, owner.case_id, owner.revision_id, fingerprint, text(ids.confirmation_id), timestamp);
       committing = true; db.exec('COMMIT');
     } catch (error) {
       try { db?.exec('ROLLBACK'); } catch { /* COMMIT may already be durable. */ }
       db?.close(); db = undefined;
-      if (!committing) { if (['COMMAND_CONFLICT','STALE_REVISION','VALIDATION_FAILED','INTEGRITY_BLOCKED','SCHEMA_UNSUPPORTED'].includes(String((error as {code?: string}).code))) throw error; nativeFailure(error, 'PUBLICATION_FAILED'); }
+      if (!committing) { if (['COMMAND_CONFLICT','STALE_REVISION','VALIDATION_FAILED','INTEGRITY_BLOCKED','SCHEMA_UNSUPPORTED','AUTHORITY_REQUIRED','SOURCE_CHANGED','PHYSICAL_PENDING','NOT_FOUND'].includes(String((error as {code?: string}).code))) throw error; nativeFailure(error, 'PUBLICATION_FAILED'); }
       let check: DatabaseSync | undefined, receipt: UnknownRecord | undefined;
       try { rawPreflight(path); check = new DatabaseSync(path, { readOnly: true }); inspectReadOnly(check); receipt = findReceipt(check); }
       catch { resultPending = true; failure('RESULT_PENDING'); }
@@ -1201,7 +1278,7 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
       resultId=mutate(db,revision)??resultId;
       db.prepare('UPDATE case_revisions SET row_version=row_version+1,updated_at=? WHERE revision_id=?').run(completedAt,owner.revision_id);
       db.prepare("INSERT INTO command_receipts(command_id,operation_kind,project_id,session_id,case_id,revision_id,input_fingerprint,outcome,result_kind,result_id,rejection_reason,completed_at,schema_version) VALUES(?,?,?,?,?,?,?,'succeeded',?,?,NULL,?,'1.0')").run(text(command.command_id),operation,...ownerKeys.map(k=>owner[k]),fingerprint,resultKind,resultId,completedAt);
-      if(operation==='start_analysis'&&command.contract_version==='2.0')inspectReadOnly(db);
+      if(operation==='start_analysis'&&command.contract_version!=='1.0')inspectReadOnly(db);
       committing=true;db.exec('COMMIT');
     } catch(error) {
       try{db?.exec('ROLLBACK');}catch{/* The native response may be lost after durable COMMIT. */}db?.close();db=undefined;
@@ -1458,7 +1535,7 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
     if(projection.revision?.integrity_state!=='ok')failure('INTEGRITY_BLOCKED');
     return analysisTransaction(command,'accept_finding',fingerprint,value.accepted_at,text(value.acceptance_id),(db,revision)=>{
       if(!db.prepare('SELECT finding_id FROM findings WHERE finding_id=? AND project_id=? AND session_id=? AND case_id=? AND revision_id=?').get(command.finding_id,...ownerKeys.map(k=>command[k])))failure('NOT_FOUND');
-      if(db.prepare('SELECT r.run_contract_version FROM analysis_runs r JOIN findings f ON f.run_id=r.run_id WHERE f.finding_id=?').get(command.finding_id)?.run_contract_version==='4.0')failure('FORBIDDEN');
+      if(db.prepare('SELECT r.run_contract_version FROM analysis_runs r JOIN findings f ON f.run_id=r.run_id WHERE f.finding_id=?').get(command.finding_id)?.run_contract_version!=='3.0')failure('FORBIDDEN');
       if(!['Review','Completed'].includes(String(revision.state))||db.prepare("SELECT run_id FROM analysis_runs WHERE revision_id=? AND status='Running'").get(command.revision_id)||db.prepare('SELECT acceptance_id FROM finding_acceptances WHERE finding_id=?').get(command.finding_id))failure('FORBIDDEN');
       db.prepare("INSERT INTO finding_acceptances VALUES(?,?,?,?,?,?,'accept',?,'1.0')").run(text(value.acceptance_id),command.finding_id,...ownerKeys.map(k=>command[k]),text(value.accepted_at));
       if(revision.state!=='Completed'){
@@ -1472,14 +1549,15 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
     const value=exactRecord(input,['command','ids','started_at','deadline_at','profile_id','method_id','method_version','code_identity','input_fingerprint']);
     const command=validatePlanStart(value.command), ids=exactRecord(value.ids,['run_id']);
     const fingerprint=analysisFingerprint('start_analysis',command);
-    if(!/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(String(ids.run_id))||!isTimestamp(value.started_at)||!isTimestamp(value.deadline_at)||Date.parse(value.deadline_at)-Date.parse(value.started_at)!==Number(command.contract_version==='2.0'?command.execution_plan.task_context?.run_ms??300000:300000)||value.profile_id!=='personal-desktop'||value.method_id!=='membership_repurchase_comparison'||value.method_version!=='1.0'||!/^[0-9a-f]{64}$/.test(String(value.code_identity))||value.input_fingerprint!==fingerprint) failure('VALIDATION_FAILED');
+    if(!/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(String(ids.run_id))||!isTimestamp(value.started_at)||!isTimestamp(value.deadline_at)||Date.parse(value.deadline_at)-Date.parse(value.started_at)!==Number(command.contract_version!=='1.0'?command.execution_plan.task_context?.run_ms??300000:300000)||value.profile_id!=='personal-desktop'||value.method_id!=='membership_repurchase_comparison'||value.method_version!=='1.0'||!/^[0-9a-f]{64}$/.test(String(value.code_identity))||value.input_fingerprint!==fingerprint) failure('VALIDATION_FAILED');
     return analysisTransaction(command,'start_analysis',fingerprint,value.started_at,text(ids.run_id),(db,revision)=>{
-      assertTaskRunAdmission(db,command.contract_version==='2.0'?command.execution_plan:undefined,command,text(value.started_at));
+      assertTaskRunAdmission(db,command.contract_version!=='1.0'?command.execution_plan:undefined,command,text(value.started_at));
       if(!['Ready','NeedsAttention','Review','Completed'].includes(String(revision.state))||revision.confirmation_id!==command.confirmation_id) failure('FORBIDDEN');
       if(db.prepare("SELECT run_id FROM analysis_runs WHERE revision_id=? AND status='Running'").get(command.revision_id)) failure('BUSY');
       if(db.prepare("SELECT attempt_id FROM assistance_attempts WHERE revision_id=? AND status='Running'").get(command.revision_id)) failure('BUSY');
-      db.prepare("INSERT INTO analysis_runs(run_id,project_id,session_id,case_id,revision_id,confirmation_id,profile_id,method_id,method_version,code_identity,run_contract_version,status,started_at,deadline_at,ended_at,terminal_reason,run_locator,aggregate_id,schema_version) VALUES(?,?,?,?,?,?,?,?,?,?,?,'Running',?,?,NULL,NULL,NULL,NULL,'1.0')").run(text(ids.run_id),...ownerKeys.map(k=>command[k]),command.confirmation_id,text(value.profile_id),text(value.method_id),text(value.method_version),text(value.code_identity),command.contract_version==='2.0'?'4.0':'3.0',text(value.started_at),text(value.deadline_at));
-      if(command.contract_version==='2.0')persistMembershipPlan(db,command.execution_plan,text(ids.run_id));
+      db.prepare("INSERT INTO analysis_runs(run_id,project_id,session_id,case_id,revision_id,confirmation_id,profile_id,method_id,method_version,code_identity,run_contract_version,status,started_at,deadline_at,ended_at,terminal_reason,run_locator,aggregate_id,schema_version) VALUES(?,?,?,?,?,?,?,?,?,?,?,'Running',?,?,NULL,NULL,NULL,NULL,'1.0')").run(text(ids.run_id),...ownerKeys.map(k=>command[k]),command.confirmation_id,text(value.profile_id),text(value.method_id),text(value.method_version),text(value.code_identity),command.contract_version==='3.0'?'5.0':command.contract_version==='2.0'?'4.0':'3.0',text(value.started_at),text(value.deadline_at));
+      if(command.contract_version!=='1.0')persistMembershipPlan(db,command.execution_plan,text(ids.run_id));
+      if(command.contract_version==='3.0'){const plan=command.execution_plan;if(plan.version!=='2.0')failure('VALIDATION_FAILED');const usage=reserveMemberOperation(db,{task_id:plan.authority.task_id,grant_id:plan.authority.grant_id,kind:'analysis',stage:'calculate',input_sha256:taskHash({preparation_sha256:plan.preparation.sha256,contract_sha256:plan.contract_sha256,intent:plan.intent,methods:plan.methods,code_identity:value.code_identity})});if(usage.phase!=='reserved')failure('ANALYSIS_ALREADY_COMPLETED');issueMemberOperation(db,{task_id:usage.task_id,execution_id:usage.execution_id});db.prepare('INSERT INTO membership_analysis_operations VALUES(?,?,?)').run(text(ids.run_id),usage.execution_id,membershipHash(plan));}
       if(!['Review','Completed'].includes(String(revision.state)))db.prepare("UPDATE case_revisions SET state='Ready' WHERE revision_id=?").run(command.revision_id);
     });
   }
@@ -1501,11 +1579,11 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
     if(!run||run.status!=='Running')failure('FORBIDDEN');
     const aggregate=exactRecord(value.aggregate,['artifact_id','bytes','method_id','method_version','code_identity','columns','measurement_meanings','group_pseudonym_map']),report=exactRecord(value.report,['report_id','markdown_bytes','html_bytes','source','evidence_refs']);
     if(![value.operation_id,aggregate.artifact_id,report.report_id].every(x=>UUID.test(String(x)))||!(aggregate.bytes instanceof Uint8Array)||!(report.markdown_bytes instanceof Uint8Array)||!(report.html_bytes instanceof Uint8Array)||aggregate.method_id!==run.method_id||aggregate.method_version!==run.method_version||aggregate.code_identity!==run.code_identity)failure('VALIDATION_FAILED');
-    const check=openConnection(path,true);let plan:MembershipPlan|undefined;try{plan=planForRun(check,run.run_id);assertTaskRunAdmission(check,plan,owner,new Date().toISOString());}finally{check.close();}
-    const parsed=exactRecord(JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(aggregate.bytes)),['schema_version','artifact_id','run_id','product_context','method','result',...(plan?['plan_sha256']:[])]);
-    const result=analysisResult(parsed.result,plan);if(plan&&parsed.plan_sha256!==membershipHash(plan))failure('INTEGRITY_BLOCKED');
+    const check=openConnection(path,true);let plan:MembershipPlan|undefined;try{plan=planForRun(check,run.run_id);assertTaskRunAdmission(check,plan,owner,new Date().toISOString(),run.run_id);}finally{check.close();}
+    const parsed=exactRecord(JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(aggregate.bytes)),['schema_version','artifact_id','run_id','product_context','method','result',...(plan?['plan_sha256']:[]),...(plan?.version==='2.0'?['preparation_sha256']:[])]);
+    const result=analysisResult(parsed.result,plan);if(plan&&parsed.plan_sha256!==membershipHash(plan)||plan?.version==='2.0'&&parsed.preparation_sha256!==plan.preparation.sha256)failure('INTEGRITY_BLOCKED');
     const context={...owner,confirmation_id:projection.confirmation!.confirmation_id,snapshot_id:projection.snapshot!.snapshot_id};
-    if(canonicalDesktopJson(parsed)!==new TextDecoder().decode(aggregate.bytes)||parsed.schema_version!==(plan?'2.0':'1.0')||parsed.artifact_id!==aggregate.artifact_id||parsed.run_id!==run.run_id||canonicalDesktopJson(parsed.product_context)!==canonicalDesktopJson(context)||canonicalDesktopJson(parsed.method)!==canonicalDesktopJson({id:run.method_id,version:run.method_version,code_identity:run.code_identity}))failure('VALIDATION_FAILED');
+    if(canonicalDesktopJson(parsed)!==new TextDecoder().decode(aggregate.bytes)||parsed.schema_version!==analysisArtifactVersion(plan)||parsed.artifact_id!==aggregate.artifact_id||parsed.run_id!==run.run_id||canonicalDesktopJson(parsed.product_context)!==canonicalDesktopJson(context)||canonicalDesktopJson(parsed.method)!==canonicalDesktopJson({id:run.method_id,version:run.method_version,code_identity:run.code_identity}))failure('VALIDATION_FAILED');
     if(projection.confirmation!.selected_group_mode==='none'?aggregate.group_pseudonym_map!==null:aggregate.group_pseudonym_map===null)failure('VALIDATION_FAILED');
     if(!Array.isArray(aggregate.columns)||aggregate.columns.some(x=>typeof x!=='string')||!record(aggregate.measurement_meanings)||Object.values(aggregate.measurement_meanings).some(x=>typeof x!=='string')||!record(report.source)||!Array.isArray(report.evidence_refs)||report.evidence_refs.some(x=>typeof x!=='string'))failure('VALIDATION_FAILED');
     if(aggregate.group_pseudonym_map!==null){if(!record(aggregate.group_pseudonym_map)||Object.values(aggregate.group_pseudonym_map).some(x=>!UUID.test(String(x)))||new Set(Object.values(aggregate.group_pseudonym_map)).size!==Object.keys(aggregate.group_pseudonym_map).length)failure('VALIDATION_FAILED');const expected=(result.m2 as {groups?:{group_id:string}[]}).groups?.map(x=>x.group_id)??[];if(expected.some(x=>!Object.values(aggregate.group_pseudonym_map as UnknownRecord).includes(x)))failure('VALIDATION_FAILED');}
@@ -1523,34 +1601,65 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
   }
 
   async function settleAnalysis(input:DesktopAnalysisSettlement):Promise<DesktopProjection>{
-    const value=exactRecord(input,['command','run_id','terminal','completed_at','input_fingerprint']);
+    const value=exactRecord(input,['command','run_id','terminal','completed_at','input_fingerprint',...(input.membership_meter?['membership_meter']:[])]);
     const command=exactRecord(value.command,['contract_version','command_id',...ownerKeys,'expected_row_version']);
     const runId=text(value.run_id), terminal=exactRecord(value.terminal, input.terminal.status==='succeeded'?['status','runBundle','aggregatePublication','finding','reportPublication']:['status','reason']);
     validateXanthilDesktopRequest('cancelAnalysis',{...command,run_id:runId});
     if(!isTimestamp(value.completed_at)||!['succeeded','failed','cancelled'].includes(String(terminal.status)))failure('VALIDATION_FAILED');
-    const fingerprint=analysisFingerprint('settle_analysis',command,{run_id:runId,terminal});if(value.input_fingerprint!==fingerprint)failure('VALIDATION_FAILED');
+    const fingerprint=analysisFingerprint('settle_analysis',command,{run_id:runId,terminal,...(input.membership_meter?{membership_meter:input.membership_meter}:{})});if(value.input_fingerprint!==fingerprint)failure('VALIDATION_FAILED');
     const owner=Object.fromEntries(ownerKeys.map(k=>[k,text(command[k])])) as {project_id:string;session_id:string;case_id:string;revision_id:string};
     if(input.terminal.status==='succeeded'){
       const t=input.terminal, bundle=await createLocalDesktopRunEvidenceStore({projectRoot}).readTerminalRun({run_id:runId});
       if(canonicalDesktopJson(t.runBundle)!==canonicalDesktopJson(bundle)||bundle.manifest.status!=='succeeded'||bundle.manifest.ended_at!==value.completed_at||!ownerKeys.every(k=>bundle.manifest.product_context[k]===owner[k]))failure('INTEGRITY_BLOCKED');
+      const findingPlan=planOf(bundle.manifest);exactRecord(t.finding,['finding_id','judgment','metrics','supporting_evidence','refutation','limitations','evidence_refs',...(findingPlan?.version==='2.0'?['facts']:[])]);if(findingPlan?.version==='2.0'&&canonicalDesktopJson(t.finding.facts)!==canonicalDesktopJson(membershipFindingFacts(t.finding.metrics,findingPlan)))failure('INTEGRITY_BLOCKED');
       const aggregate=t.aggregatePublication, report=t.reportPublication;
       const a=verifiedPublication(aggregate.locator,aggregate.sha256,aggregate.byte_length);
       verifiedPublication(report.markdown.locator,report.markdown.sha256,report.markdown.byte_length);verifiedPublication(report.html.locator,report.html.sha256,report.html.byte_length);
       const parsed=JSON.parse(new TextDecoder().decode(a));
-      if(aggregate.locator!==`${owner.session_id}/020_clean/${aggregate.artifact_id}/aggregate.json`||report.markdown.locator!==`${owner.session_id}/060_reports/${report.report_id}/report.md`||report.html.locator!==`${owner.session_id}/060_reports/${report.report_id}/report.html`||canonicalDesktopJson(parsed.result)!==canonicalDesktopJson(t.finding.metrics)||t.finding.judgment!==membershipJudgment(t.finding.metrics)||!UUID.test(t.finding.finding_id))failure('VALIDATION_FAILED');
+      if(aggregate.locator!==`${owner.session_id}/020_clean/${aggregate.artifact_id}/aggregate.json`||report.markdown.locator!==`${owner.session_id}/060_reports/${report.report_id}/report.md`||report.html.locator!==`${owner.session_id}/060_reports/${report.report_id}/report.html`||canonicalDesktopJson(parsed.result)!==canonicalDesktopJson(t.finding.metrics)||t.finding.judgment!==analysisJudgment(t.finding.metrics,planOf(bundle.manifest))||!UUID.test(t.finding.finding_id))failure('VALIDATION_FAILED');
       const evidenceBytes=verifiedPublication(`${bundle.locator}/evidence.json`,bundle.manifest.evidence!.sha256,bundle.manifest.evidence!.byte_length);
       const evidence=validateAnalysisEvidence(JSON.parse(new TextDecoder().decode(evidenceBytes)),bundle.manifest,t.finding.metrics);
       const candidate=exactRecord(evidence.candidate_publications,['aggregate','report']);
       if(canonicalDesktopJson(candidate.aggregate)!==canonicalDesktopJson({artifact_id:aggregate.artifact_id,locator:aggregate.locator,sha256:aggregate.sha256,byte_length:aggregate.byte_length})||canonicalDesktopJson(candidate.report)!==canonicalDesktopJson({report_id:report.report_id,markdown:report.markdown,html:report.html}))failure('INTEGRITY_BLOCKED');
     }
+    const settleMeter=(db:DatabaseSync,preparedPlan:Extract<MembershipPlan,{version:'2.0'}>)=>{
+      const meter=exactRecord(input.membership_meter,['version','run_id','plan_sha256','physical','usage']),link=db.prepare('SELECT * FROM membership_analysis_operations WHERE run_id=?').get(runId);
+      if(!link||meter.version!=='1.0'||meter.run_id!==runId||meter.plan_sha256!==membershipHash(preparedPlan)||link.plan_sha256!==meter.plan_sha256||!['settled','unresolved'].includes(String(meter.physical)))failure('INTEGRITY_BLOCKED');
+      if(input.terminal.status==='succeeded'&&meter.physical!=='settled')failure('PHYSICAL_PENDING');
+      settleMemberOperation(db,{task_id:preparedPlan.authority.task_id,execution_id:link.execution_id,physical:meter.physical,outcome:input.terminal.status==='succeeded'?'succeeded':input.terminal.status==='cancelled'?'stopped':'permanent_failure',usage:meter.usage});
+    };
+    // Cancellation/reconciliation already owns the sole product terminal receipt.
+    // A late trusted process outcome may only settle its exact linked operation.
+    if(input.membership_meter&&input.terminal.status!=='succeeded'){
+      if(resultPending)failure('RESULT_PENDING');
+      const db=openConnection(path,true);let committed=false,late=false;
+      try{
+        db.exec('BEGIN IMMEDIATE');
+        const run=db.prepare('SELECT * FROM analysis_runs WHERE run_id=?').get(runId);
+        if(!run||!ownerKeys.every(k=>run[k]===owner[k]))failure('NOT_FOUND');
+        if(run.status!=='Running'){
+          const preparedPlan=planForRun(db,runId);
+          if(preparedPlan?.version!=='2.0'||!['Cancelled','Failed'].includes(text(run.status)))failure('FORBIDDEN');
+          if((run.status==='Cancelled')!==(input.terminal.status==='cancelled')||text(value.completed_at)<text(run.ended_at))failure('VALIDATION_FAILED');
+          const revision=db.prepare('SELECT row_version FROM case_revisions WHERE revision_id=?').get(owner.revision_id);
+          if(String(revision?.row_version)!==command.expected_row_version)failure('STALE_REVISION');
+          settleMeter(db,preparedPlan);inspectReadOnly(db);late=true;
+          committed=true;db.exec('COMMIT');
+        }else db.exec('ROLLBACK');
+      }catch(error){try{db.exec('ROLLBACK');}catch{}if(committed){resultPending=true;failure('RESULT_PENDING');}throw error;}finally{db.close();}
+      if(late)return readProjection(owner);
+    }
     return analysisTransaction(command,'settle_analysis',fingerprint,value.completed_at,runId,(db,revision)=>{
-      const run=db.prepare('SELECT * FROM analysis_runs WHERE run_id=?').get(runId);if(!run||!ownerKeys.every(k=>run[k]===owner[k]))failure('NOT_FOUND');if(run.status!=='Running')failure('FORBIDDEN');if(text(value.completed_at)<text(run.started_at))failure('VALIDATION_FAILED');
+      const run=db.prepare('SELECT * FROM analysis_runs WHERE run_id=?').get(runId);if(!run||!ownerKeys.every(k=>run[k]===owner[k]))failure('NOT_FOUND');if(text(value.completed_at)<text(run.started_at))failure('VALIDATION_FAILED');
+      const preparedPlan=planForRun(db,runId);if(run.status!=='Running')failure('FORBIDDEN');
+      if(preparedPlan?.version==='2.0')settleMeter(db,preparedPlan);else if(input.membership_meter)failure('FORBIDDEN');
       if(input.terminal.status==='succeeded'){
-        assertTaskRunAdmission(db,planForRun(db,runId),owner,text(value.completed_at));
+        assertTaskRunAdmission(db,planForRun(db,runId),owner,text(value.completed_at),runId);
         const t=input.terminal,a=t.aggregatePublication,r=t.reportPublication,f=t.finding;
         if(text(value.completed_at)>=text(run.deadline_at))failure('DEADLINE_EXCEEDED');
         db.prepare("INSERT INTO aggregate_artifacts VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'1.0')").run(a.artifact_id,...ownerKeys.map(k=>owner[k]),text(revision.snapshot_id),runId,text(run.method_id),text(run.method_version),text(run.code_identity),canonicalDesktopJson(a.columns),canonicalDesktopJson(a.measurement_meanings),a.group_pseudonym_map===null?null:canonicalDesktopJson(a.group_pseudonym_map),a.locator,a.sha256,BigInt(a.byte_length),text(value.completed_at));
-        db.prepare("INSERT INTO findings VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'1.0')").run(f.finding_id,runId,...ownerKeys.map(k=>owner[k]),a.artifact_id,f.judgment,canonicalDesktopJson(f.metrics),canonicalDesktopJson(f.supporting_evidence),canonicalDesktopJson(f.refutation),canonicalDesktopJson(f.limitations),canonicalDesktopJson(f.evidence_refs),text(run.method_id),text(run.method_version),text(value.completed_at));
+        const findingColumns=['finding_id','run_id',...ownerKeys,'aggregate_id','judgment','metrics_json','supporting_evidence_json','refutation_json','limitations_json','evidence_refs_json','method_id','method_version','created_at','schema_version'],findingValues=[f.finding_id,runId,...ownerKeys.map(k=>owner[k]),a.artifact_id,f.judgment,canonicalDesktopJson(f.metrics),canonicalDesktopJson(f.supporting_evidence),canonicalDesktopJson(f.refutation),canonicalDesktopJson(f.limitations),canonicalDesktopJson(f.evidence_refs),text(run.method_id),text(run.method_version),text(value.completed_at),f.facts?'2.0':'1.0'];
+        if(f.facts){findingColumns.push('facts_json','facts_sha256');findingValues.push(canonicalDesktopJson(f.facts),membershipHash(f.facts));}db.prepare(`INSERT INTO findings(${findingColumns.join(',')}) VALUES(${findingColumns.map(()=>'?').join(',')})`).run(...findingValues);
         const sequenceQuery=db.prepare('SELECT max(version_sequence) n FROM report_versions WHERE revision_id=?');sequenceQuery.setReadBigInts(true);const sequence=BigInt(String(sequenceQuery.get(text(command.revision_id))?.n??0))+1n;if(sequence>9223372036854775807n)failure('VALIDATION_FAILED');
         db.prepare("INSERT INTO report_versions VALUES(?,?,?,?,?,?,NULL,NULL,?,'draft',?,?,?,?,?,?,?,?,?,'1.0')").run(r.report_id,...ownerKeys.map(k=>owner[k]),f.finding_id,sequence,r.markdown.locator,r.markdown.sha256,BigInt(r.markdown.byte_length),r.html.locator,r.html.sha256,BigInt(r.html.byte_length),canonicalDesktopJson(r.source),canonicalDesktopJson(r.evidence_refs),text(value.completed_at));
         db.prepare("UPDATE analysis_runs SET status='Succeeded',ended_at=?,run_locator=?,aggregate_id=? WHERE run_id=?").run(text(value.completed_at),t.runBundle.locator,a.artifact_id,runId);
@@ -1600,7 +1709,7 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
     const caseId = text(owner.case_id);
     const revisionId = text(owner.revision_id);
     if (!existsSync(path)) failure('NOT_FOUND');
-    const db = openConnection(path, true);
+    const db = pureReadback ? openReadbackConnection(path) : openConnection(path, true);
     try {
       assertExistingIdentity(db);
       const project = db.prepare('SELECT project_id FROM projects WHERE project_id = ?').get(projectId);
@@ -1638,7 +1747,7 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
       const reportContents=new Map<string,NonNullable<DesktopProjection['reports'][number]['review_content']>>();
       for(const run of runRows.filter(x=>x.status==='Succeeded')) {
         try{
-          const bundle=await createLocalDesktopRunEvidenceStore({projectRoot}).readTerminalRun({run_id:run.run_id});
+          const bundle=await createDesktopRunEvidenceStore({projectRoot},pureReadback).readTerminalRun({run_id:run.run_id});
           if(bundle.manifest.status!=='succeeded'||bundle.locator!==run.run_locator||bundle.manifest.ended_at!==run.ended_at)failure('INTEGRITY_BLOCKED');
           const a=db.prepare('SELECT * FROM aggregate_artifacts WHERE artifact_id=?').get(text(run.aggregate_id))!;
           verifiedPublication(text(a.locator),text(a.sha256),String(a.byte_length));
@@ -1670,7 +1779,7 @@ export function createLocalDesktopDecisionCaseStore(config: unknown): DesktopDec
         runs:runRows.map(r=>({run_id:text(r.run_id),profile_id:text(r.profile_id),method_id:text(r.method_id),method_version:text(r.method_version),code_identity:text(r.code_identity),run_contract_version:text(r.run_contract_version),status:text(r.status),started_at:text(r.started_at),deadline_at:text(r.deadline_at),ended_at:r.ended_at===null?null:text(r.ended_at),terminal_reason:r.terminal_reason===null?null:text(r.terminal_reason),aggregate_id:r.aggregate_id===null?null:text(r.aggregate_id),evidence_available:!damaged&&r.status==='Succeeded'})),
         disclosures:queryRows('model_disclosures').map(r=>({disclosure_id:text(r.disclosure_id),action_kind:text(r.action_kind),categories:JSON.parse(text(r.categories_json)),aggregate_refs:JSON.parse(text(r.aggregate_refs_json)),payload_sha256:text(r.payload_sha256),requested_provider:text(r.requested_provider),requested_model:text(r.requested_model),decision:text(r.decision),free_text_confirmed_at:r.free_text_confirmed_at===null?null:text(r.free_text_confirmed_at),decided_at:text(r.decided_at),created_at:text(r.created_at)})), attempts:queryRows('assistance_attempts').map(r=>({attempt_id:text(r.attempt_id),disclosure_id:text(r.disclosure_id),action_kind:text(r.action_kind),profile_id:text(r.profile_id),runtime_id:text(r.runtime_id),runtime_version:text(r.runtime_version),adapter_id:text(r.adapter_id),adapter_version:text(r.adapter_version),requested_provider:text(r.requested_provider),requested_model:text(r.requested_model),actual_provider:r.actual_provider===null?null:text(r.actual_provider),actual_model:r.actual_model===null?null:text(r.actual_model),status:text(r.status),started_at:text(r.started_at),deadline_at:text(r.deadline_at),ended_at:r.ended_at===null?null:text(r.ended_at),terminal_reason:r.terminal_reason===null?null:text(r.terminal_reason),draft_id:r.draft_id===null?null:text(r.draft_id)})),
         assistance_drafts:queryRows('assistance_drafts').map(r=>({draft_id:text(r.draft_id),attempt_id:text(r.attempt_id),draft_kind:text(r.draft_kind),generated_content:JSON.parse(text(r.generated_content_json)),edited_content:r.edited_content_json===null?null:JSON.parse(text(r.edited_content_json)),disposition:text(r.disposition),target_form:r.target_form===null?null:text(r.target_form),decided_at:r.decided_at===null?null:text(r.decided_at),created_at:text(r.created_at)})),
-        findings:findingRows.map(f=>({finding_id:text(f.finding_id),run_id:text(f.run_id),aggregate_id:text(f.aggregate_id),judgment:text(f.judgment),metrics:text(f.metrics_json),supporting_evidence:JSON.parse(text(f.supporting_evidence_json)),refutation:JSON.parse(text(f.refutation_json)),limitations:JSON.parse(text(f.limitations_json)),evidence_refs:JSON.parse(text(f.evidence_refs_json)),method_id:text(f.method_id),method_version:text(f.method_version),created_at:text(f.created_at)})),acceptances: queryRows('finding_acceptances').map(a=>({acceptance_id:text(a.acceptance_id),finding_id:text(a.finding_id),action:text(a.action),accepted_at:text(a.accepted_at)})), forms: queryRows('decision_forms').map(f=>({form_id:text(f.form_id),form_sequence:String(f.form_sequence),candidates:JSON.parse(text(f.candidates_json)),route:f.route as null|'candidate_comparison'|'insufficient_evidence',insufficient_reason:f.insufficient_reason===null?null:text(f.insufficient_reason),preferred_candidate_id:f.preferred_candidate_id===null?null:text(f.preferred_candidate_id),preferred_reason:f.preferred_reason===null?null:text(f.preferred_reason),disposition:text(f.disposition),disposition_at:f.disposition_at===null?null:text(f.disposition_at),defer_until:f.defer_until===null?null:text(f.defer_until),created_at:text(f.created_at),updated_at:text(f.updated_at)})), closures: queryRows('decision_closures').map(c=>({closure_id:text(c.closure_id),acceptance_id:text(c.acceptance_id),form_id:text(c.form_id),route:text(c.route),completed_at:text(c.completed_at)})),
+        findings:findingRows.map(f=>({finding_id:text(f.finding_id),run_id:text(f.run_id),aggregate_id:text(f.aggregate_id),...(f.schema_version==='2.0'?{facts:JSON.parse(text(f.facts_json))}:{}),judgment:text(f.judgment),metrics:text(f.metrics_json),supporting_evidence:JSON.parse(text(f.supporting_evidence_json)),refutation:JSON.parse(text(f.refutation_json)),limitations:JSON.parse(text(f.limitations_json)),evidence_refs:JSON.parse(text(f.evidence_refs_json)),method_id:text(f.method_id),method_version:text(f.method_version),created_at:text(f.created_at)})),acceptances: queryRows('finding_acceptances').map(a=>({acceptance_id:text(a.acceptance_id),finding_id:text(a.finding_id),action:text(a.action),accepted_at:text(a.accepted_at)})), forms: queryRows('decision_forms').map(f=>({form_id:text(f.form_id),form_sequence:String(f.form_sequence),candidates:JSON.parse(text(f.candidates_json)),route:f.route as null|'candidate_comparison'|'insufficient_evidence',insufficient_reason:f.insufficient_reason===null?null:text(f.insufficient_reason),preferred_candidate_id:f.preferred_candidate_id===null?null:text(f.preferred_candidate_id),preferred_reason:f.preferred_reason===null?null:text(f.preferred_reason),disposition:text(f.disposition),disposition_at:f.disposition_at===null?null:text(f.disposition_at),defer_until:f.defer_until===null?null:text(f.defer_until),created_at:text(f.created_at),updated_at:text(f.updated_at)})), closures: queryRows('decision_closures').map(c=>({closure_id:text(c.closure_id),acceptance_id:text(c.acceptance_id),form_id:text(c.form_id),route:text(c.route),completed_at:text(c.completed_at)})),
         reports:reportRows.map(r=>({report_id:text(r.report_id),finding_id:text(r.finding_id),acceptance_id:r.acceptance_id===null?null:text(r.acceptance_id),closure_id:r.closure_id===null?null:text(r.closure_id),version_sequence:String(r.version_sequence),state:text(r.state),markdown_sha256:text(r.markdown_sha256),markdown_byte_length:String(r.markdown_byte_length),html_sha256:text(r.html_sha256),html_byte_length:String(r.html_byte_length),source:text(r.source_json),evidence_refs:JSON.parse(text(r.evidence_refs_json)),created_at:text(r.created_at),review_content:reportContents.get(text(r.report_id))??null})),
         capabilities: { can_create_draft_revision: !taskOwned&&currentRevision && !directoryDamaged&&!workRunning, can_select_import: !taskOwned&&currentRevision && !damaged && revision.integrity_state === 'ok' && revision.state === 'Draft' && !workRunning, can_confirm_revision: !taskOwned&&currentRevision && !damaged && revision.integrity_state === 'ok' && revision.state === 'Draft' && !workRunning, can_start_analysis: !taskOwned&&currentRevision && !damaged&&revision.integrity_state==='ok'&&['Ready','NeedsAttention','Review','Completed'].includes(String(revision.state))&&!workRunning, can_cancel_analysis: currentRevision && !damaged&&revision.integrity_state==='ok'&&runRows.some(r=>r.status==='Running'), can_prepare_assistance: assistanceEligible && !workRunning, can_start_assistance: assistanceEligible && !workRunning && queryRows('model_disclosures').some(d=>d.decision==='accepted'&&!attemptRows.some(a=>a.disclosure_id===d.disclosure_id)), can_cancel_assistance: currentRevision && !damaged && revision.integrity_state==='ok' && attemptRows.some(a=>a.status==='Running'), can_dispose_assistance_draft: assistanceEligible && !workRunning && queryRows('assistance_drafts').some(d=>d.disposition==='pending'), can_accept_finding: currentRevision&&!damaged&&revision.integrity_state==='ok'&&['Review','Completed'].includes(String(revision.state))&&!workRunning&&findingRows.some(f=>runRows.find(r=>r.run_id===f.run_id)?.run_contract_version==='3.0'&&!queryRows('finding_acceptances').some(a=>a.finding_id===f.finding_id)), can_save_case_fields: !taskOwned&&currentRevision && !damaged && revision.integrity_state === 'ok'&&['Draft','Ready'].includes(String(revision.state))&&!workRunning, can_save_evidence_explanation: !taskOwned&&currentRevision&&!damaged&&revision.integrity_state==='ok'&&revision.state==='Review'&&!workRunning, can_save_decision_closure: !taskOwned&&currentRevision&&!damaged&&revision.integrity_state==='ok'&&(revision.state==='Review'||revision.state==='Completed'&&queryRows('finding_acceptances').some(a=>!queryRows('decision_closures').some(c=>c.acceptance_id===a.acceptance_id)))&&!workRunning, can_complete_case: !taskOwned&&currentRevision&&!damaged&&revision.integrity_state==='ok'&&!workRunning&&queryRows('decision_forms').at(-1)?.disposition==='saved'&&queryRows('finding_acceptances').some(a=>!queryRows('decision_closures').some(c=>c.acceptance_id===a.acceptance_id)), can_export_report: currentRevision&&!directoryDamaged&&reportRows.length>0 },
       });
@@ -1756,13 +1865,35 @@ function migrateMembership(db:DatabaseSync):void{
  for(const {table,rows}of originals)for(const row of rows){const names=Object.keys(row);db.prepare(`INSERT INTO ${table}(${names.join(',')}) VALUES(${names.map(()=>'?').join(',')})`).run(...Object.values(row));}
  db.exec('PRAGMA user_version=110');
 }
+function projectRootForDb(db:DatabaseSync):string {
+ const main=db.prepare('PRAGMA database_list').all().find(r=>r.name==='main'),path=main&&String(main.file);if(!path||!path.endsWith('/.xanthil/desktop/state.sqlite'))failure('INTEGRITY_BLOCKED');return dirname(dirname(dirname(path)));
+}
+function assertPreparedPlan(db:DatabaseSync,plan:MembershipPlan,active:boolean,owningRunId?:string) {
+ if(plan.version!=='2.0')return;
+ const context={version:'2.0',intent:plan.intent,preparation:plan.preparation,authority:plan.authority};
+ resolveMemberPlanPreparation(db,projectRootForDb(db),context,active,owningRunId);
+ const confirmation=db.prepare('SELECT context_json,context_sha256 FROM membership_confirmation_preparations WHERE confirmation_id=?').get(plan.confirmation_id);
+ if(!confirmation||confirmation.context_json!==encodeTask(context)||confirmation.context_sha256!==taskHash(context))failure('SOURCE_CHANGED');
+}
 function planForRun(db:DatabaseSync,runId:string):MembershipPlan|undefined{
  if(Number(pragmaValue(db,'user_version'))===100)return undefined;
  const row=db.prepare('SELECT p.body_json,p.body_sha256 FROM membership_plans p JOIN membership_run_plans r ON r.plan_id=p.plan_id WHERE r.run_id=?').get(runId);
- if(!row)return undefined;const plan=validateMembershipPlan(JSON.parse(text(row.body_json)));if(membershipHash(plan)!==row.body_sha256||canonicalDesktopJson(plan)!==row.body_json)failure('INTEGRITY_BLOCKED');return plan;
+ if(!row)return undefined;const plan=validateMembershipPlan(JSON.parse(text(row.body_json)));if(membershipHash(plan)!==row.body_sha256||canonicalDesktopJson(plan)!==row.body_json)failure('INTEGRITY_BLOCKED');if(plan.version==='2.0'){assertPreparedPlan(db,plan,false);const link=db.prepare('SELECT task_id,preparation_id FROM membership_plan_preparations WHERE plan_id=?').get(plan.id);if(!link||link.task_id!==plan.authority.task_id||link.preparation_id!==plan.preparation.id)failure('INTEGRITY_BLOCKED');}return plan;
+}
+export function membershipReviewPlan(db:DatabaseSync,taskId:string,runId:string):MembershipPlan {
+ const plan=planForRun(db,runId),task=db.prepare('SELECT * FROM membership_tasks WHERE task_id=?').get(taskId);
+ if(!plan||!task||!ownerKeys.slice(0,3).every(k=>plan.owner[k]===task[k]))failure('SOURCE_CHANGED');
+ if(plan.version==='2.0'){
+  if(plan.authority.task_id!==taskId||['stopped','interrupted','closed'].includes(String(task.status)))failure('AUTHORITY_REQUIRED');
+  const row=db.prepare('SELECT m.body_json FROM membership_model_grants m JOIN membership_operation_grants g ON g.grant_id=m.grant_id WHERE m.task_id=? AND g.revoked=0 AND g.epoch=? ORDER BY m.rowid DESC LIMIT 1').get(taskId,task.epoch);
+  if(!row)failure('AUTHORITY_REQUIRED');const material=JSON.parse(String(row.body_json)),resumed=String(task.epoch)!==plan.authority.epoch;
+  if(resumed&&material.reuse?.run_id!==runId)failure('AUTHORITY_REQUIRED');
+  resolveMemberPlanPreparation(db,projectRootForDb(db),{version:'2.0',intent:plan.intent,preparation:plan.preparation,authority:{...plan.authority,grant_id:material.grant_id,epoch:String(task.epoch),...(resumed?{resume_preparation_sha256:plan.preparation.sha256}:{})}},true);
+ }
+ return plan;
 }
 function persistMembershipPlan(db:DatabaseSync,input:MembershipPlan,runId:string):void{
- const plan=validateMembershipPlan(input),owner=ownerKeys.map(k=>plan.owner[k]);
+ const plan=validateMembershipPlan(input),owner=ownerKeys.map(k=>plan.owner[k]);assertPreparedPlan(db,plan,true);
  const c=db.prepare('SELECT * FROM input_confirmations WHERE confirmation_id=?').get(plan.confirmation_id),source=db.prepare('SELECT * FROM source_snapshots WHERE snapshot_id=?').get(plan.snapshot_id);
  if(!c||!source||!ownerKeys.every(k=>c[k]===plan.owner[k]&&source[k]===plan.owner[k])||c.snapshot_id!==plan.snapshot_id)failure('INTEGRITY_BLOCKED');
  const contract=JSON.parse(text(c.contract_json)),selection={column_mapping:JSON.parse(text(c.binding_json)),comparison_period:contract.comparison_period,current_period:contract.current_period,currency:contract.currency,time_zone:contract.time_zone,valid_statuses:contract.valid_statuses,selected_group_mode:contract.selected_group_mode};
@@ -1775,6 +1906,7 @@ function persistMembershipPlan(db:DatabaseSync,input:MembershipPlan,runId:string
  if(task.current_revision_id!==plan.owner.revision_id)db.prepare('UPDATE membership_tasks SET current_revision_id=?,row_version=row_version+1 WHERE task_id=?').run(plan.owner.revision_id,text(task.task_id));
  const prior=db.prepare('SELECT body_sha256 FROM membership_plans WHERE plan_id=?').get(plan.id);
  if(prior){if(prior.body_sha256!==membershipHash(plan))failure('COMMAND_CONFLICT');}else db.prepare('INSERT INTO membership_plans VALUES(?,?,?,?,?,?,?,?,?,?,?,?)').run(plan.id,text(task.task_id),...owner,plan.confirmation_id,plan.snapshot_id,plan.scenario.id,plan.scenario.revision,canonicalDesktopJson(plan),membershipHash(plan));
+ if(plan.version==='2.0')db.prepare('INSERT INTO membership_plan_preparations VALUES(?,?,?) ON CONFLICT(plan_id) DO NOTHING').run(plan.id,plan.authority.task_id,plan.preparation.id);
  db.prepare('INSERT INTO membership_run_plans VALUES(?,?,?,?,?,?)').run(runId,plan.id,...owner);
 }
 function assertMembershipIdentity(db:DatabaseSync):void{
@@ -1789,8 +1921,8 @@ function assertMembershipIdentity(db:DatabaseSync):void{
  for(const c of db.prepare('SELECT * FROM membership_configs').all())if(!plans.some(p=>p.config_id===c.config_id&&p.config_version===c.version)&&!db.prepare("SELECT command_id FROM membership_receipts WHERE json_extract(result_json,'$.kind')='prepared' AND json_extract(result_json,'$.prepared.scenario.id')=? AND json_extract(result_json,'$.prepared.scenario.revision')=?").get(text(c.config_id),text(c.version)))failure('INTEGRITY_BLOCKED');
  for(const task of db.prepare('SELECT * FROM membership_tasks').all())if(!UUID.test(text(task.task_id))||!plans.some(p=>p.task_id===task.task_id)&&!db.prepare('SELECT command_id FROM membership_receipts WHERE task_id=?').get(text(task.task_id))||!db.prepare('SELECT revision_id FROM case_revisions WHERE revision_id=? AND project_id=? AND session_id=? AND case_id=?').get(text(task.current_revision_id),text(task.project_id),text(task.session_id),text(task.case_id)))failure('INTEGRITY_BLOCKED');
  const links=db.prepare('SELECT r.*,a.run_contract_version FROM membership_run_plans r JOIN analysis_runs a ON a.run_id=r.run_id').all();
- if(links.some(l=>l.run_contract_version!=='4.0')||plans.some(p=>!links.some(l=>l.plan_id===p.plan_id)))failure('INTEGRITY_BLOCKED');
- for(const run of db.prepare("SELECT run_id FROM analysis_runs WHERE run_contract_version='4.0'").all())if(!planForRun(db,text(run.run_id)))failure('INTEGRITY_BLOCKED');
+ if(links.some(l=>!['4.0','5.0'].includes(String(l.run_contract_version)))||plans.some(p=>!links.some(l=>l.plan_id===p.plan_id)))failure('INTEGRITY_BLOCKED');
+ for(const run of db.prepare("SELECT run_id FROM analysis_runs WHERE run_contract_version IN ('4.0','5.0')").all())if(!planForRun(db,text(run.run_id)))failure('INTEGRITY_BLOCKED');
 }
 
 /** Adapter-private transaction access; never crosses a business Port or renderer. */
@@ -1824,9 +1956,9 @@ export function appendMembershipExpression(projectRoot:string,db:DatabaseSync,ta
 
 /** C6's state half: actual existing acceptance/form/closure relations and receipts. */
 export function appendMembershipReview(projectRoot:string,db:DatabaseSync,r:MembershipReview,input:ReviewSubmission,fault:(point:string)=>void=()=>{}):ReviewReceipt{
- const revision=db.prepare('SELECT * FROM case_revisions WHERE revision_id=?').get(r.source.owner.revision_id),parent=db.prepare('SELECT * FROM report_versions WHERE report_id=?').get(r.source.report_id),finding=db.prepare('SELECT * FROM findings WHERE finding_id=?').get(r.source.finding_id),plan=planForRun(db,r.source.run_id);
+ const revision=db.prepare('SELECT * FROM case_revisions WHERE revision_id=?').get(r.source.owner.revision_id),parent=db.prepare('SELECT * FROM report_versions WHERE report_id=?').get(r.source.report_id),finding=db.prepare('SELECT * FROM findings WHERE finding_id=?').get(r.source.finding_id),plan=membershipReviewPlan(db,r.task_id,r.source.run_id);
  if(!revision||!parent||!finding||revision.state!=='Review'||revision.current_finding_id!==r.source.finding_id||revision.current_report_id!==r.source.report_id||String(revision.row_version)!==r.source.case_row_version||parent.markdown_sha256!==r.source.report_sha256||String(parent.version_sequence)!==r.source.report_version||finding.run_id!==r.source.run_id||!plan||membershipHash(plan)!==r.source.plan_sha256)failure('SOURCE_CHANGED');
- if(!['analysis','choice'].includes(input.outcome))failure('FORBIDDEN');
+ if(!['analysis','choice'].includes(input.outcome)||plan.version==='2.0'&&input.outcome!=='analysis')failure('FORBIDDEN');
  const form=r.fields.closure;validateDesktopDecisionForm(form);if(form.disposition!=='saved')failure('VALIDATION_FAILED');
  const evidence=JSON.parse(text(finding.evidence_refs_json)) as string[];
  const attached=db.prepare('PRAGMA database_list').all().some(d=>d.name==='assistant'),head=attached?db.prepare('SELECT decision_id FROM assistant.heads WHERE source=?').get(encodeTask(r.source.owner))?.decision_id??null:null;if(head!==r.baseline_decision_id)failure('STALE_DECISION');
@@ -1868,8 +2000,17 @@ export function withMembershipState<T>(projectRoot:string,write:boolean,work:(db
  }catch(error){try{db.exec('ROLLBACK');}catch{}if(committing)failure('RESULT_PENDING');throw error;}finally{db.close();}
 }
 
-function assertTaskRunAdmission(db:DatabaseSync,plan:MembershipPlan|undefined,owner:{project_id:string;session_id:string;case_id:string;revision_id:string},at:string){
- if(Number(pragmaValue(db,'user_version'))!==110){if(plan?.task_context)failure('AUTHORITY_REQUIRED');return;}
+/** Browser ledger GET uses an actual read-only connection and cannot run recovery mutations. */
+export function withBrowserMembershipState<T>(projectRoot:string,write:boolean,work:(db:DatabaseSync)=>T):T{
+ const checked=(db:DatabaseSync)=>{if(Number(pragmaValue(db,'user_version'))!==120)failure('EXISTING_PROJECT_ACTIVATION_CLOSED');return work(db);};
+ if(write)return withMembershipState(projectRoot,true,checked);
+ const path=databasePath(projectRoot);rawPreflight(path);const db=new DatabaseSync(path,{readOnly:true});
+ try{inspectReadOnly(db);return checked(db);}finally{db.close();}
+}
+
+function assertTaskRunAdmission(db:DatabaseSync,plan:MembershipPlan|undefined,owner:{project_id:string;session_id:string;case_id:string;revision_id:string},at:string,owningRunId?:string){
+ if(plan?.version==='2.0'){assertPreparedPlan(db,plan,true,owningRunId);if(!ownerKeys.every(k=>plan.owner[k]===owner[k as keyof typeof owner]))failure('SOURCE_CHANGED');return;}
+ if(![110,120].includes(Number(pragmaValue(db,'user_version')))){if(plan?.task_context)failure('AUTHORITY_REQUIRED');return;}
  const task=db.prepare('SELECT * FROM membership_tasks WHERE project_id=? AND session_id=? AND case_id=?').get(owner.project_id,owner.session_id,owner.case_id);
  const explicit=task&&db.prepare("SELECT command_id FROM membership_receipts WHERE task_id=? AND json_extract(result_json,'$.kind')='task_created'").get(text(task.task_id));
  if(!explicit&&!plan?.task_context)return;
@@ -1880,4 +2021,4 @@ function assertTaskRunAdmission(db:DatabaseSync,plan:MembershipPlan|undefined,ow
  if(g.revoked_at||String(g.epoch)!==c.epoch||Date.parse(at)>=Date.parse(g.expires_at)||a.status!=='running'||u.kind!=='analysis'||u.status!=='issued'||u.local_runs!==1||u.source_sha256!==g.prepared.fingerprint||c.run_ms!==String(g.profile.run_ms)||c.process_seconds!==String(g.profile.process_seconds)||membershipHash(g.prepared.selection)!==plan!.contract_sha256||membershipHash(g.prepared.scenario)!==plan!.scenario_sha256||JSON.stringify(g.prepared.methods)!==JSON.stringify(plan!.methods))failure('AUTHORITY_REQUIRED');
 }
 
-function explicitMembershipTask(db:DatabaseSync,caseId:string):boolean{return Number(pragmaValue(db,'user_version'))===110&&!!db.prepare("SELECT t.task_id FROM membership_tasks t JOIN membership_receipts r ON r.task_id=t.task_id WHERE t.case_id=? AND json_extract(r.result_json,'$.kind')='task_created' LIMIT 1").get(caseId);}
+function explicitMembershipTask(db:DatabaseSync,caseId:string):boolean{return [110,120].includes(Number(pragmaValue(db,'user_version')))&&!!db.prepare("SELECT t.task_id FROM membership_tasks t JOIN membership_receipts r ON r.task_id=t.task_id WHERE t.case_id=? AND json_extract(r.result_json,'$.kind')='task_created' LIMIT 1").get(caseId);}

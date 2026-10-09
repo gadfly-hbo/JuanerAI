@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004065127840-D84O6W",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-10-04T06:51:27.840Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "D2健康检查受到实际沙箱限制；请求一次具体受信主机健康检查，独立工程继续。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,8 +1,9 @@
+import { desktopRuntimeResources } from './tools/desktop/runtime-resources.mjs';
 import { explicitDesktopRestart } from './tools/desktop/development-vite.mjs';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [explicitDesktopRestart()],
+  plugins: [explicitDesktopRestart(), desktopRuntimeResources()],
   build: {
     // Main and Preload changes become active only after an explicit restart.
     watch: null,
