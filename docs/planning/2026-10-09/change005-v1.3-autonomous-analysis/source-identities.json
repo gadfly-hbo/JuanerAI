@@ -1,0 +1,136 @@
+{
+  "date": "2026-10-09",
+  "device": "MacBook",
+  "branch": "work/macbook/change005-v12-requirement-sandbox",
+  "head": "027bf7461e6d255a0849ac80cac0f81aa82a9298",
+  "status": "PRODUCT_UI_CANDIDATE_NOT_FROZEN",
+  "sdk": "0.4.1 upgrade independently forwarded by user; actual receiver adoption to be referenced at intake, not claimed",
+  "files": [
+    {
+      "kind": "user-decisions",
+      "path": "docs/planning/2026-10-09/change005-v1.3-agent-autonomy-decisions.md",
+      "bytes": 10888,
+      "sha256": "70c7304e115011c8add9b5c9f67d2143049bedc83762fa3abe8bad29c2d89146",
+      "reference": "user-approved direction; later preparation and SDK delegation appended"
+    },
+    {
+      "kind": "blueprint",
+      "path": "docs/planning/2026-10-04/juanerai-product-development-blueprint-v4.2.md",
+      "bytes": 61706,
+      "sha256": "3f9600fd44f0d869a2ae4632b92c3f6c182d40d3e2223c7cd75619fb7b438cf3",
+      "reference": "161a58682c73b9868022d6cf424b427d87b34fcd"
+    },
+    {
+      "kind": "blueprint-approval",
+      "path": "docs/planning/2026-10-04/blueprint-v4.2-approval-and-rule-integration.md",
+      "bytes": 7419,
+      "sha256": "73f2c04d9169f9cb2582f85937679edc2988c57f1d7c741cfaec4216091828aa",
+      "reference": "approved historical status via record"
+    },
+    {
+      "kind": "baseline-v11",
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/product-input-v1.1.md",
+      "bytes": 38807,
+      "sha256": "d42d2acbe02356451179e260095336bd5524802cff4780a755d584940cd519a9",
+      "reference": "a940947ece8a07d4777da21e30cfd89ff2d3b76c"
+    },
+    {
+      "kind": "baseline-v11",
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/ui-contract-v1.1.md",
+      "bytes": 8879,
+      "sha256": "7d319f52777b56b257e234e2966b7b07fc09a6fa70aeda88b72a65ba48673ce9",
+      "reference": "a940947ece8a07d4777da21e30cfd89ff2d3b76c"
+    },
+    {
+      "kind": "baseline-v11",
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/approval-and-handoff-v1.1.md",
+      "bytes": 11869,
+      "sha256": "258946d794f8b7249ca584a387892889790815b1f81eea25e034f3a74370fbc3",
+      "reference": "a940947ece8a07d4777da21e30cfd89ff2d3b76c"
+    },
+    {
+      "kind": "baseline-five-moments",
+      "path": "docs/planning/2026-10-06/change005-five-moments/product-addendum-v1.1.md",
+      "bytes": 21581,
+      "sha256": "de324456083441f7529d04bc72b8bf92a7fd10d68546f9ca5aa3ca9a6164955b",
+      "reference": "0c6834d52eaa5da25f107117e7b545098c8ddace"
+    },
+    {
+      "kind": "baseline-five-moments",
+      "path": "docs/planning/2026-10-06/change005-five-moments/ui-addendum-v1.1.md",
+      "bytes": 6107,
+      "sha256": "f2867a54e19b19f17585eaa39605c43d4717d7a34e0ed9a052377154eed8f360",
+      "reference": "0c6834d52eaa5da25f107117e7b545098c8ddace"
+    },
+    {
+      "kind": "baseline-five-moments",
+      "path": "docs/planning/2026-10-06/change005-five-moments/approval-and-freeze.md",
+      "bytes": 5160,
+      "sha256": "79b5388f5d0cc06dbbab87b45dbfb887d120f832f581f85c4182df7b25810b53",
+      "reference": "0c6834d52eaa5da25f107117e7b545098c8ddace"
+    },
+    {
+      "kind": "baseline-v12",
+      "path": "docs/planning/2026-10-08/change005-v1.2-requirement-sandbox/product-addendum-v1.2.md",
+      "bytes": 17110,
+      "sha256": "4ae9e1a5bfeb28b311e4ac4fd96cfef38a60e04f189966112532d4c8b676ba89",
+      "reference": "a762d26d32e034694cb52c08497cf2d5486dcb3e"
+    },
+    {
+      "kind": "baseline-v12",
+      "path": "docs/planning/2026-10-08/change005-v1.2-requirement-sandbox/ui-contract-v1.2.md",
+      "bytes": 6207,
+      "sha256": "0e4f4453c9441470046597a60fbcaa6cf1c9d946ca37a99884a0983d069a23fa",
+      "reference": "a762d26d32e034694cb52c08497cf2d5486dcb3e"
+    },
+    {
+      "kind": "baseline-v12",
+      "path": "docs/planning/2026-10-08/change005-v1.2-requirement-sandbox/approval-and-freeze.md",
+      "bytes": 5242,
+      "sha256": "7cd7ecbbc7e969aed6e835f4978fab491339f7185dbc9e774a7999046552a99c",
+      "reference": "a762d26d32e034694cb52c08497cf2d5486dcb3e"
+    },
+    {
+      "kind": "v13-candidate",
+      "path": "docs/planning/2026-10-09/change005-v1.3-autonomous-analysis/product-input-v1.3.md",
+      "bytes": 33294,
+      "sha256": "387223babe84dc6873cffb05ba1661d8f9da253ce1b16e9ade67b49cc5f360e4",
+      "reference": "local review candidate; NOT_FROZEN"
+    },
+    {
+      "kind": "v13-candidate",
+      "path": "docs/planning/2026-10-09/change005-v1.3-autonomous-analysis/ui-contract-v1.3.md",
+      "bytes": 9328,
+      "sha256": "7b77456358c20515c816d2fedd7b182d29f80c5818043c19df574339ebf58408",
+      "reference": "local review candidate; NOT_FROZEN"
+    },
+    {
+      "kind": "v13-candidate",
+      "path": "docs/planning/2026-10-09/change005-v1.3-autonomous-analysis/flow-comparison.md",
+      "bytes": 5452,
+      "sha256": "a2cbcfbfa089d6d251cf0b3ce294bea070c055da316a941fd142cfcbeac73ff6",
+      "reference": "local review candidate; NOT_FROZEN"
+    },
+    {
+      "kind": "v13-candidate",
+      "path": "docs/planning/2026-10-09/change005-v1.3-autonomous-analysis/clickable/index.html",
+      "bytes": 6810,
+      "sha256": "e9215882f5889bd64d1de203e83141e038ac25fb2ee74e02703cd51fc89d9f97",
+      "reference": "local review candidate; NOT_FROZEN"
+    },
+    {
+      "kind": "v13-candidate",
+      "path": "docs/planning/2026-10-09/change005-v1.3-autonomous-analysis/clickable/autonomy.js",
+      "bytes": 31531,
+      "sha256": "217986276cb9578de672b3f3fe6cdfe8dc61afc2132209805b598abbb46526f0",
+      "reference": "local review candidate; NOT_FROZEN"
+    },
+    {
+      "kind": "v13-candidate",
+      "path": "docs/planning/2026-10-09/change005-v1.3-autonomous-analysis/clickable/autonomy.css",
+      "bytes": 2660,
+      "sha256": "8bf034d927e6a72e4e2a2a9c6a73796a627eb972b96869df25fce429afacd39f",
+      "reference": "local review candidate; NOT_FROZEN"
+    }
+  ]
+}
