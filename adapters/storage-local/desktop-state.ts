@@ -1,7 +1,11 @@
+import {createNativeMemberReview,validateNativeMemberReview,nativeReviewSubmission,type NativeMemberReview,type NativeMemberReviewSaveReceipt,type NativeMemberReviewSubmitReceipt} from '../../packages/product-core/open-member-review.ts';
+import {openAnalysisFactsText} from '../../packages/product-core/open-analysis-report.ts';
+import {qualifyOpenMemberReviewSource,openMemberFindingFacts,validateOpenMemberFindingFacts,openMemberOriginCommand,validateOpenMemberSourceRecord,type OpenMemberSourceRecord,type OpenMemberFindingReceipt} from '../../packages/product-core/open-membership.ts';
+import {createLocalOpenAnalysisStore} from './open-analysis.ts';
 import {preparedConfirmationContext,validateMemberConfirmation,memberConfirmationDocuments} from '../../packages/product-core/member-preparation.ts';
 import {browserProjectRoot,guardBrowserProjectDatabase,type BrowserProjectLease} from './browser-project-origin.ts';
-import {prepareMembershipSidecar,assertMembershipSidecar,migrateMembershipSidecar} from './case-assistant.ts';
-import {validateReviewDecision} from '../../packages/product-core/member-review.ts';
+import {prepareMembershipSidecar,assertMembershipSidecar,migrateMembershipSidecar,migrateNativeMemberSidecar} from './case-assistant.ts';
+import {validateReviewDecision,validateReviewReceipt} from '../../packages/product-core/member-review.ts';
 import type {FormalDecision,AssistantReport} from '../../packages/contracts/case-assistant.ts';
 import {formalDecisionSections} from '../../packages/product-core/case-assistant.ts';
 import type {MembershipReview,ReviewReceipt,ReviewSubmission} from '../../packages/product-core/member-review.ts';
@@ -234,7 +238,7 @@ function confirmedRowsIdentity(rows: Record<string, UnknownRecord[]>): void {
 
 type UnknownRecord = Record<string, unknown>;
 
-const analysisMutations = ['save_form','confirm_revision','mark_integrity_blocked','start_analysis','settle_analysis','cancel_analysis','reconcile_interrupted','accept_finding','complete_case','record_model_disclosure','start_assistance','settle_assistance','cancel_assistance','dispose_assistance_draft'];
+const analysisMutations = ['publish_open_member_finding','save_form','confirm_revision','mark_integrity_blocked','start_analysis','settle_analysis','cancel_analysis','reconcile_interrupted','accept_finding','complete_case','record_model_disclosure','start_assistance','settle_assistance','cancel_assistance','dispose_assistance_draft'];
 const ownerKeys = ['project_id','session_id','case_id','revision_id'] as const;
 const analysisFingerprint = (operation_kind:string, command:UnknownRecord, detail:UnknownRecord = {}) => {
   const {command_id,...request}=command; void command_id;
@@ -285,7 +289,7 @@ function analysisRowsIdentity(rows: Record<string,UnknownRecord[]>): void {
       } else if(aggregate.length||finding.length||report.length) failure('INTEGRITY_BLOCKED');
     }
   }
-  if(rows.aggregate_artifacts.some(x=>!rows.analysis_runs.some(r=>r.run_id===x.run_id&&r.status==='Succeeded'))||rows.findings.some(x=>!rows.analysis_runs.some(r=>r.run_id===x.run_id&&r.status==='Succeeded'))||rows.report_versions.some(x=>!rows.findings.some(f=>f.finding_id===x.finding_id))) failure('INTEGRITY_BLOCKED');
+  if(rows.aggregate_artifacts.some(x=>!rows.analysis_runs.some(r=>r.run_id===x.run_id&&r.status==='Succeeded'))||rows.findings.some(x=>x.schema_version!=='3.0'&&!rows.analysis_runs.some(r=>r.run_id===x.run_id&&r.status==='Succeeded'))||rows.report_versions.some(x=>!rows.findings.some(f=>f.finding_id===x.finding_id))) failure('INTEGRITY_BLOCKED');
   for(const revision of rows.case_revisions){const owned=rows.analysis_runs.filter(r=>r.revision_id===revision.revision_id);if(!owned.length)continue;const expected=rows.decision_closures.some(c=>c.revision_id===revision.revision_id)?'Completed':owned.some(r=>r.status==='Succeeded')?'Review':owned.some(r=>r.status==='Running')?'Ready':'NeedsAttention';if(revision.state!==expected)failure('INTEGRITY_BLOCKED');}
 }
 
@@ -336,7 +340,7 @@ function configure(db: DatabaseSync): void {
   db.exec('PRAGMA foreign_keys = ON; PRAGMA journal_mode = DELETE; PRAGMA synchronous = FULL; PRAGMA busy_timeout = 0;');
 }
 
-/** The physical A1.2 database contract.  No migrations or optional tables exist. */
+/** Immutable base desktop contract; closed explicitly versioned successors are defined below. */
 const schema = `
 CREATE TABLE projects (
   project_id TEXT NOT NULL PRIMARY KEY,
@@ -562,7 +566,7 @@ function rawPreflight(path: string): string {
       if (!stat.isFile() || identity !== JSON.stringify([stat.dev, stat.ino, stat.size, stat.mtimeMs])) failure('SCHEMA_UNSUPPORTED');
       const header = Buffer.alloc(100);
       if (readSync(fd, header, 0, 100, 0) !== 100 || header.subarray(0, 16).toString('utf8') !== SQLITE_HEADER ||
-          header[18] !== 1 || header[19] !== 1 || ![USER_VERSION,110,120].includes(header.readUInt32BE(60)) || header.readUInt32BE(68) !== APPLICATION_ID) failure('SCHEMA_UNSUPPORTED');
+          header[18] !== 1 || header[19] !== 1 || ![USER_VERSION,110,120,130,140,150,160].includes(header.readUInt32BE(60)) || header.readUInt32BE(68) !== APPLICATION_ID) failure('SCHEMA_UNSUPPORTED');
     } finally { closeSync(fd); }
     if (optionalIdentity(`${path}-wal`) !== null || optionalIdentity(`${path}-shm`) !== null) failure('SCHEMA_UNSUPPORTED');
     return JSON.stringify([fileIdentity(dirname(path), true), identity, optionalIdentity(`${path}-journal`)]);
@@ -578,6 +582,110 @@ const schema120=schema110.replace("CHECK(run_contract_version IN ('3.0','4.0'))"
  .replace(/CREATE TABLE findings \([\s\S]*?;\n/,table=>table.replace("judgment IN ('Confirmed','Rejected','Inconclusive')","judgment IN ('Confirmed','Rejected','Inconclusive','Verified')").replace("schema_version TEXT NOT NULL CHECK(schema_version = '1.0')","schema_version TEXT NOT NULL CHECK(schema_version IN ('1.0','2.0')), facts_json TEXT, facts_sha256 TEXT").replace('  UNIQUE(run_id)',"  CHECK((schema_version='1.0' AND judgment IN ('Confirmed','Rejected','Inconclusive') AND facts_json IS NULL AND facts_sha256 IS NULL) OR (schema_version='2.0' AND judgment='Verified' AND facts_json IS NOT NULL AND json_valid(facts_json) AND facts_sha256 IS NOT NULL)),\n  UNIQUE(run_id)"))
  +memberOperationSchema+memberSourceSchema+memberModelSchema;
 const expectedBrowserSchema=schema120.split(';').map(normalizedSql).filter(Boolean).sort();
+const openMemberSourceSchema=`CREATE TABLE open_member_sources (
+ origin_id TEXT NOT NULL PRIMARY KEY,
+ project_id TEXT NOT NULL, session_id TEXT NOT NULL, case_id TEXT NOT NULL, revision_id TEXT NOT NULL,
+ command_id TEXT NOT NULL UNIQUE, body_json TEXT NOT NULL CHECK(json_valid(body_json)), body_sha256 TEXT NOT NULL,
+ FOREIGN KEY(project_id,session_id,case_id,revision_id) REFERENCES case_revisions(project_id,session_id,case_id,revision_id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);`;
+const expectedOpenMemberSchema=(schema120+openMemberSourceSchema).split(';').map(normalizedSql).filter(Boolean).sort();
+const nativeFindingTable=schema120.match(/CREATE TABLE findings \([\s\S]*?;\n/)![0]
+ .replace('run_id TEXT NOT NULL','run_id TEXT').replace('aggregate_id TEXT NOT NULL','aggregate_id TEXT')
+ .replace("schema_version IN ('1.0','2.0')","schema_version IN ('1.0','2.0','3.0')")
+ .replace('facts_sha256 TEXT','facts_sha256 TEXT, open_member_origin_id TEXT UNIQUE REFERENCES open_member_sources(origin_id) ON UPDATE RESTRICT ON DELETE RESTRICT')
+ .replace("CHECK((schema_version='1.0'", "CHECK((schema_version='3.0' AND judgment='Verified' AND run_id IS NULL AND aggregate_id IS NULL AND open_member_origin_id IS NOT NULL AND facts_json IS NOT NULL AND json_valid(facts_json) AND facts_sha256 IS NOT NULL) OR (open_member_origin_id IS NULL AND run_id IS NOT NULL AND aggregate_id IS NOT NULL AND ((schema_version='1.0'")
+ .replace("facts_sha256 IS NOT NULL)),", "facts_sha256 IS NOT NULL)))),");
+const nativeReceiptTable=schema120.match(/CREATE TABLE command_receipts \([\s\S]*?;\n/)![0]
+ .replace("'reconcile_interrupted'))","'reconcile_interrupted','publish_open_member_finding'))")
+ .replace("OR outcome = 'rejected')", "OR (operation_kind='publish_open_member_finding' AND outcome='succeeded' AND result_kind='report_version') OR outcome = 'rejected')");
+const schema140=(schema120+openMemberSourceSchema).replace(/CREATE TABLE findings \([\s\S]*?;\n/,nativeFindingTable).replace(/CREATE TABLE command_receipts \([\s\S]*?;\n/,nativeReceiptTable);
+const expectedNativeFindingSchema=schema140.split(';').map(normalizedSql).filter(Boolean).sort();
+const nativeReviewSchema=`CREATE TABLE native_member_reviews (
+ review_id TEXT NOT NULL PRIMARY KEY, intent_id TEXT NOT NULL, sequence INTEGER NOT NULL CHECK(sequence>0),
+ origin_id TEXT NOT NULL REFERENCES open_member_sources(origin_id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+ body_json TEXT NOT NULL CHECK(json_valid(body_json)), body_sha256 TEXT NOT NULL, UNIQUE(intent_id,sequence)
+);
+CREATE TABLE native_member_review_commands (
+ command_id TEXT NOT NULL PRIMARY KEY, input_sha256 TEXT NOT NULL,
+ review_id TEXT NOT NULL REFERENCES native_member_reviews(review_id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+ result_json TEXT NOT NULL CHECK(json_valid(result_json)), result_sha256 TEXT NOT NULL
+);`;
+const expectedNativeReviewSchema=(schema140+nativeReviewSchema).split(';').map(normalizedSql).filter(Boolean).sort();
+const nativeSubmissionSchema=`CREATE TABLE native_member_review_submissions (
+ command_id TEXT NOT NULL PRIMARY KEY, review_id TEXT NOT NULL UNIQUE REFERENCES native_member_reviews(review_id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+ input_json TEXT NOT NULL CHECK(json_valid(input_json)), input_sha256 TEXT NOT NULL,
+ result_json TEXT NOT NULL CHECK(json_valid(result_json)), result_sha256 TEXT NOT NULL
+);`;
+const expectedNativeSubmissionSchema=(schema140+nativeReviewSchema+nativeSubmissionSchema).split(';').map(normalizedSql).filter(Boolean).sort();
+function upgradeNativeSubmissionSchema(projectRoot:string):void{
+ readOnlyPreflight(databasePath(projectRoot));const db=new DatabaseSync(databasePath(projectRoot));let committing=false;
+ try{const v=Number(pragmaValue(db,'user_version'));if(v===160)return;if(v!==150)failure('EXISTING_PROJECT_ACTIVATION_CLOSED');db.exec('PRAGMA busy_timeout=0; PRAGMA synchronous=FULL; PRAGMA foreign_keys=ON; BEGIN IMMEDIATE');inspectReadOnly(db);db.exec(nativeSubmissionSchema);db.exec('PRAGMA user_version=160');inspectReadOnly(db);committing=true;db.exec('COMMIT');}catch(error){try{db.exec('ROLLBACK');}catch{}if(committing)failure('RESULT_PENDING');throw error;}finally{db.close();}
+}
+function assertNativeReviewSubmissions(db:DatabaseSync):void{
+ for(const row of db.prepare('SELECT * FROM native_member_review_submissions').all()){
+  const input=exactRecord(JSON.parse(text(row.input_json)),['version','command_id','review_id','review_sha256','outcome']),result=exactRecord(JSON.parse(text(row.result_json)),['task_id','review_id','review_version','review_sha256','intent_id','outcome','at','kind','acceptance_id','closure_id','report_id','decision_id','expected_id','command_id']),rr=db.prepare('SELECT body_json FROM native_member_reviews WHERE review_id=?').get(text(row.review_id));if(!rr)failure('INTEGRITY_BLOCKED');const r=validateNativeMemberReview(JSON.parse(text(rr.body_json)));nativeReviewSubmission(r,input.outcome as 'analysis'|'more_evidence'|'choice');const {command_id,kind,...receipt}=result;void command_id;void kind;validateReviewReceipt({...receipt,kind:'human_review'} as ReviewReceipt);if(result.task_id!==r.source.task_id||result.intent_id!==r.intent_id||result.review_version!==r.sequence)failure('INTEGRITY_BLOCKED');
+  if(row.input_sha256!==taskHash(input)||row.result_sha256!==taskHash(result)||input.command_id!==row.command_id||input.review_id!==r.id||input.review_sha256!==r.sha256||result.command_id!==row.command_id||result.review_id!==r.id||result.review_sha256!==r.sha256||result.kind!=='native_human_review'||result.outcome!==input.outcome)failure('INTEGRITY_BLOCKED');
+  if(input.outcome==='more_evidence'){if(['acceptance_id','closure_id','report_id','decision_id','expected_id'].some(k=>result[k]!==null))failure('INTEGRITY_BLOCKED');}
+  else{const a=db.prepare('SELECT finding_id FROM finding_acceptances WHERE acceptance_id=?').get(text(result.acceptance_id)),c=db.prepare('SELECT * FROM decision_closures WHERE closure_id=?').get(text(result.closure_id)),report=db.prepare('SELECT * FROM report_versions WHERE report_id=?').get(text(result.report_id));if(!a||!c||!report||a.finding_id!==r.source.finding_id||c.acceptance_id!==result.acceptance_id||report.closure_id!==result.closure_id||report.finding_id!==r.source.finding_id||report.created_at!==result.at||input.outcome==='analysis'&&(result.decision_id!==null||result.expected_id!==null))failure('INTEGRITY_BLOCKED');}
+ }
+}
+function upgradeNativeReviewSchema(projectRoot:string):void{
+ readOnlyPreflight(databasePath(projectRoot));const db=new DatabaseSync(databasePath(projectRoot));let committing=false;
+ try{const v=Number(pragmaValue(db,'user_version'));if([150,160].includes(v))return;db.exec('PRAGMA busy_timeout=0; PRAGMA synchronous=FULL; PRAGMA foreign_keys=ON; BEGIN IMMEDIATE');if(v!==140)failure('EXISTING_PROJECT_ACTIVATION_CLOSED');inspectReadOnly(db);db.exec(nativeReviewSchema);db.exec('PRAGMA user_version=150');inspectReadOnly(db);committing=true;db.exec('COMMIT');}catch(error){try{db.exec('ROLLBACK');}catch{}if(committing)failure('RESULT_PENDING');throw error;}finally{db.close();}
+}
+function nativeReviewExpectedSource(db:DatabaseSync,r:NativeMemberReview){
+ const origin=db.prepare('SELECT body_json FROM open_member_sources WHERE origin_id=?').get(r.source.origin_id),report=db.prepare('SELECT * FROM report_versions WHERE report_id=?').get(r.source.report_id);if(!origin||!report)failure('SOURCE_CHANGED');
+ const record=validateOpenMemberSourceRecord(JSON.parse(text(origin.body_json))),facts=openMemberFindingFacts(record),publication=JSON.parse(text(report.source_json)) as OpenMemberFindingReceipt;
+ return createNativeMemberReview({id:r.id,intent_id:r.intent_id,sequence:r.sequence,facts,publication,report:{report_id:text(report.report_id),version:String(report.version_sequence),sha256:text(report.markdown_sha256)},baseline_decision_id:r.baseline_decision_id,created_at:r.created_at,fields:r.fields}).source;
+}
+function nativeReviewHead(projectRoot:string,r:NativeMemberReview):string|null{
+ const path=join(projectRoot,'.xanthil','desktop','case-assistant.sqlite');if(!existsSync(path))return null;fileIdentity(path);const db=new DatabaseSync(path,{readOnly:true});try{assertMembershipSidecar(db,r.source.owner.project_id,'main');const row=db.prepare('SELECT decision_id FROM heads WHERE source=?').get(encodeTask(r.source.owner));return row?text(row.decision_id):null;}finally{db.close();}
+}
+function assertNativeMemberReviews(db:DatabaseSync):void{
+ for(const row of db.prepare('SELECT * FROM native_member_reviews ORDER BY intent_id,sequence').all()){
+  const r=validateNativeMemberReview(JSON.parse(text(row.body_json))),f=db.prepare('SELECT * FROM findings WHERE finding_id=?').get(r.source.finding_id),report=db.prepare('SELECT * FROM report_versions WHERE report_id=?').get(r.source.report_id),origin=db.prepare('SELECT body_sha256 FROM open_member_sources WHERE origin_id=?').get(r.source.origin_id);
+  if(taskHash(nativeReviewExpectedSource(db,r))!==taskHash(r.source)||row.review_id!==r.id||row.intent_id!==r.intent_id||row.sequence!==r.sequence||row.origin_id!==r.source.origin_id||row.body_sha256!==taskHash(r)||!f||!report||!origin||origin.body_sha256!==r.source.source_record_sha256||f.open_member_origin_id!==r.source.origin_id||!ownerKeys.every(k=>f[k]===r.source.owner[k])||report.finding_id!==r.source.finding_id||report.markdown_sha256!==r.source.report_sha256||String(report.version_sequence)!==r.source.report_version)failure('INTEGRITY_BLOCKED');
+  const prior=db.prepare('SELECT body_json FROM native_member_reviews WHERE intent_id=? AND sequence=?').get(r.intent_id,r.sequence-1);if(r.sequence!==1&&!prior||prior&&(taskHash(validateNativeMemberReview(JSON.parse(text(prior.body_json))).source)!==taskHash(r.source)||validateNativeMemberReview(JSON.parse(text(prior.body_json))).baseline_decision_id!==r.baseline_decision_id))failure('INTEGRITY_BLOCKED');
+  const commands=db.prepare('SELECT * FROM native_member_review_commands WHERE review_id=?').all(r.id);if(commands.length!==1)failure('INTEGRITY_BLOCKED');const c=commands[0],result=JSON.parse(text(c.result_json));if(c.result_sha256!==taskHash(result)||taskHash(result.review)!==taskHash(r)||result.kind!=='native_member_review_saved'||result.command_id!==c.command_id||c.input_sha256!==taskHash({version:'1.0',command_id:c.command_id,review:r,expected_sequence:r.sequence-1}))failure('INTEGRITY_BLOCKED');
+ }
+}
+function upgradeNativeFindingSchema(projectRoot:string):void{
+ const path=databasePath(projectRoot);readOnlyPreflight(path);const db=new DatabaseSync(path);let committing=false;
+ try{
+  db.exec('PRAGMA busy_timeout=0; PRAGMA synchronous=FULL; PRAGMA foreign_keys=OFF; PRAGMA legacy_alter_table=ON; BEGIN IMMEDIATE');
+  const version=Number(pragmaValue(db,'user_version'));if([140,150,160].includes(version)){db.exec('COMMIT');return;}if(version!==130)failure('EXISTING_PROJECT_ACTIVATION_CLOSED');inspectReadOnly(db);
+  for(const [name,sql] of [['findings',nativeFindingTable],['command_receipts',nativeReceiptTable]]){
+   const columns=db.prepare(`PRAGMA table_info(${name})`).all().map(r=>text(r.name));db.exec(`ALTER TABLE ${name} RENAME TO native_previous_${name}`);db.exec(sql);
+   db.exec(`INSERT INTO ${name}(${columns.join(',')}) SELECT ${columns.join(',')} FROM native_previous_${name}`);db.exec(`DROP TABLE native_previous_${name}`);
+  }
+  db.exec('PRAGMA user_version=140');if(db.prepare('PRAGMA foreign_key_check').all().length)failure('INTEGRITY_BLOCKED');inspectReadOnly(db);committing=true;db.exec('COMMIT');
+ }catch(error){try{db.exec('ROLLBACK');}catch{}if(committing)failure('RESULT_PENDING');throw error;}finally{db.close();}
+}
+function nativeMemberSource(db:DatabaseSync,finding:UnknownRecord):OpenMemberSourceRecord{
+ const row=db.prepare('SELECT * FROM open_member_sources WHERE origin_id=?').get(text(finding.open_member_origin_id));if(!row)failure('INTEGRITY_BLOCKED');const source=validateOpenMemberSourceRecord(JSON.parse(text(row.body_json)));
+ if(!ownerKeys.every(k=>source.owner[k]===finding[k]))failure('INTEGRITY_BLOCKED');return source;
+}
+function nativeFindingRefs(origin_id:string){return [`open-member:${origin_id}:primary`,`open-member:${origin_id}:independent`,`open-member:${origin_id}:source`];}
+function assertNativeMemberFindings(db:DatabaseSync):void{
+ for(const finding of db.prepare("SELECT * FROM findings WHERE schema_version='3.0'").all()){
+  const origin=nativeMemberSource(db,finding),facts=validateOpenMemberFindingFacts(JSON.parse(text(finding.facts_json)),origin),proof=origin.task.outcome!.verification.native_evidence!,refs=nativeFindingRefs(origin.origin_id);
+  if(finding.run_id!==null||finding.aggregate_id!==null||finding.judgment!=='Verified'||finding.facts_sha256!==taskHash(facts)||finding.metrics_json!==canonicalDesktopJson(facts.metrics)||finding.method_id!==exactRecord(proof.primary.method,['id','version','code_identity']).id||finding.method_version!==exactRecord(proof.primary.method,['id','version','code_identity']).version||finding.evidence_refs_json!==canonicalDesktopJson(refs)||finding.supporting_evidence_json!==canonicalDesktopJson(refs.slice(0,2))||finding.refutation_json!==canonicalDesktopJson('not_verified')||finding.limitations_json!==canonicalDesktopJson(['算术核验不证明模型解释、假设或因果。']))failure('INTEGRITY_BLOCKED');
+  const receipt=db.prepare("SELECT * FROM command_receipts WHERE operation_kind='publish_open_member_finding' AND result_id IN (SELECT report_id FROM report_versions WHERE finding_id=?)").all(finding.finding_id);
+  const reports=db.prepare("SELECT * FROM report_versions WHERE finding_id=? AND state='draft'").all(finding.finding_id);if(receipt.length!==1||reports.length!==1)failure('INTEGRITY_BLOCKED');const report=reports[0],saved=JSON.parse(text(report.source_json));const revision=db.prepare('SELECT * FROM case_revisions WHERE revision_id=?').get(text(finding.revision_id));if(!revision||!['Review','Completed'].includes(text(revision.state))||revision.current_finding_id!==finding.finding_id||revision.state==='Review'&&revision.current_report_id!==report.report_id||revision.snapshot_id!==null||revision.confirmation_id!==null)failure('INTEGRITY_BLOCKED');
+  exactRecord(saved,['version','saved','kind','command_id','origin_id','owner','finding_id','report_id','expected_row_version','row_version','source_record_sha256']);
+  const expected={version:'1.0',command_id:saved.command_id,origin_id:origin.origin_id,expected_row_version:saved.expected_row_version};
+  if(saved.version!=='1.0'||saved.saved!==true||saved.kind!=='native_member_finding'||saved.origin_id!==origin.origin_id||saved.finding_id!==finding.finding_id||saved.report_id!==report.report_id||taskHash(saved.owner)!==taskHash(origin.owner)||saved.source_record_sha256!==taskHash(origin)||String(BigInt(saved.expected_row_version)+1n)!==saved.row_version||receipt[0].input_fingerprint!==taskHash(expected)||receipt[0].command_id!==saved.command_id||receipt[0].completed_at!==finding.created_at||report.created_at!==finding.created_at||report.evidence_refs_json!==canonicalDesktopJson(refs))failure('INTEGRITY_BLOCKED');
+ }
+}
+function assertOpenMemberSources(db:DatabaseSync):void{
+ for(const row of db.prepare('SELECT * FROM open_member_sources').all()){
+  try{
+   const record=validateOpenMemberSourceRecord(JSON.parse(text(row.body_json)));
+   if(record.origin_id!==row.origin_id||record.command_id!==row.command_id||ownerKeys.some(k=>record.owner[k]!==row[k])||taskHash(record)!==row.body_sha256)failure('INTEGRITY_BLOCKED');
+  }catch{failure('INTEGRITY_BLOCKED');}
+ }
+}
+
 
 function inspectReadOnly(db: DatabaseSync): void {
   let integrity: unknown;
@@ -587,10 +695,11 @@ function inspectReadOnly(db: DatabaseSync): void {
   const actual = db.prepare('SELECT sql FROM sqlite_schema WHERE sql IS NOT NULL').all()
     .map((row) => normalizedSql(String(row.sql))).sort();
   const version=Number(pragmaValue(db,'user_version'));
-  if (JSON.stringify(actual) !== JSON.stringify(version===120?expectedBrowserSchema:version===110?expectedP1Schema:expectedSchema)) failure('SCHEMA_UNSUPPORTED');
+  if (JSON.stringify(actual) !== JSON.stringify(version===160?expectedNativeSubmissionSchema:version===150?expectedNativeReviewSchema:version===140?expectedNativeFindingSchema:version===130?expectedOpenMemberSchema:version===120?expectedBrowserSchema:version===110?expectedP1Schema:expectedSchema)) failure('SCHEMA_UNSUPPORTED');
   assertExistingIdentity(db);
-  if([110,120].includes(version))assertMembershipIdentity(db);
-  if(version===120){assertMemberOperations(db);assertMemberSourceSets(db);assertMemberModels(db);}
+  if([110,120,130,140,150,160].includes(version))assertMembershipIdentity(db);
+  if([120,130,140,150,160].includes(version)){assertMemberOperations(db);assertMemberSourceSets(db);assertMemberModels(db);}
+  if([130,140,150,160].includes(version))assertOpenMemberSources(db);if([140,150,160].includes(version))assertNativeMemberFindings(db);if([150,160].includes(version))assertNativeMemberReviews(db);if(version===160)assertNativeReviewSubmissions(db);
 }
 
 function readOnlyPreflight(path: string): string {
@@ -641,7 +750,7 @@ function openConnection(path: string, existing: boolean): DatabaseSync {
 }
 
 function assertExistingIdentity(db: DatabaseSync): void {
-  if (Number(pragmaValue(db, 'application_id')) !== APPLICATION_ID || ![USER_VERSION,110,120].includes(Number(pragmaValue(db, 'user_version')))) failure('SCHEMA_UNSUPPORTED');
+  if (Number(pragmaValue(db, 'application_id')) !== APPLICATION_ID || ![USER_VERSION,110,120,130,140,150,160].includes(Number(pragmaValue(db, 'user_version')))) failure('SCHEMA_UNSUPPORTED');
   // Read the complete closed table set before classifying the current tuple.
   const tables = [...schema.matchAll(/CREATE TABLE ([a-z_]+)/g)].map(match => match[1]);
   const rows = Object.fromEntries(tables.map(table => {
@@ -658,7 +767,7 @@ function assertExistingIdentity(db: DatabaseSync): void {
   const currentTables = ['projects', 'product_sessions', 'case_revisions', 'command_receipts', 'source_snapshots', 'input_confirmations','analysis_runs','aggregate_artifacts','findings','report_versions','finding_acceptances','decision_forms','decision_closures','model_disclosures','assistance_attempts','assistance_drafts'];
   if (tables.some(table => !currentTables.includes(table) && rows[table].length !== 0) || rows.command_receipts.some(row => !['initialize_project', 'create_session','create_draft_revision','export_report', ...analysisMutations].includes(String(row.operation_kind)))) failure('FORBIDDEN');
   for (const revision of rows.case_revisions) {
-    if (!['Draft','Ready','Review','NeedsAttention','Completed'].includes(String(revision.state)) || (revision.state === 'Draft' ? revision.snapshot_id !== null || revision.confirmation_id !== null : revision.snapshot_id === null || revision.confirmation_id === null) || (['Review','Completed'].includes(String(revision.state)) ? revision.current_finding_id===null||revision.current_report_id===null : revision.current_finding_id!==null||revision.current_report_id!==null) || typeof revision.evidence_explanation_text !== 'string') failure('FORBIDDEN');
+    if (!['Draft','Ready','Review','NeedsAttention','Completed'].includes(String(revision.state)) || (revision.state === 'Draft' ? revision.snapshot_id !== null || revision.confirmation_id !== null : (revision.snapshot_id === null || revision.confirmation_id === null)&&!rows.findings.some(f=>f.finding_id===revision.current_finding_id&&f.schema_version==='3.0'&&revision.snapshot_id===null&&revision.confirmation_id===null)) || (['Review','Completed'].includes(String(revision.state)) ? revision.current_finding_id===null||revision.current_report_id===null : revision.current_finding_id!==null||revision.current_report_id!==null) || typeof revision.evidence_explanation_text !== 'string') failure('FORBIDDEN');
     const acceptances=rows.finding_acceptances.filter(a=>a.revision_id===revision.revision_id);
     const closedAcceptance=rows.decision_closures.find(c=>c.closure_id===revision.current_closure_id)?.acceptance_id;
     if(revision.current_acceptance_id!==(revision.state==='Completed'?closedAcceptance:acceptances.at(-1)?.acceptance_id??null))failure('INTEGRITY_BLOCKED');
@@ -695,7 +804,7 @@ function assertExistingIdentity(db: DatabaseSync): void {
     const questionAdoptions=rows.command_receipts.filter(r=>r.operation_kind==='dispose_assistance_draft'&&r.revision_id===revision.revision_id&&rows.assistance_drafts.some(d=>d.draft_id===r.result_id&&d.disposition==='adopted'&&d.target_form==='case_fields'));
     const marks = rows.command_receipts.filter(row => row.operation_kind === 'mark_integrity_blocked' && row.revision_id === revision.revision_id);
     const confirmations = rows.command_receipts.filter(row => row.operation_kind === 'confirm_revision' && row.revision_id === revision.revision_id);
-    const analyses = rows.command_receipts.filter(row => ['start_analysis','settle_analysis','cancel_analysis','reconcile_interrupted','accept_finding','complete_case','record_model_disclosure','start_assistance','settle_assistance','cancel_assistance','dispose_assistance_draft'].includes(String(row.operation_kind)) && row.revision_id === revision.revision_id);
+    const analyses = rows.command_receipts.filter(row => ['publish_open_member_finding','start_analysis','settle_analysis','cancel_analysis','reconcile_interrupted','accept_finding','complete_case','record_model_disclosure','start_assistance','settle_assistance','cancel_assistance','dispose_assistance_draft'].includes(String(row.operation_kind)) && row.revision_id === revision.revision_id);
     if (revision.row_version !== BigInt(1 + saves.length + marks.length + confirmations.length + analyses.length)) failure('FORBIDDEN');
     if(index===0&&(!saves.length&&!questionAdoptions.length&&created.input_fingerprint!==expected||created.revision_id!==revision.revision_id))failure('FORBIDDEN');
     if(index>0){const previous=revisions[index-1],receipts=rows.command_receipts.filter(r=>r.operation_kind==='create_draft_revision'&&r.result_id===revision.revision_id);if(receipts.length!==1)failure('INTEGRITY_BLOCKED');const receipt=receipts[0],command={contract_version:'1.0',command_id:receipt.command_id,project_id:revision.project_id,session_id:revision.session_id,case_id:revision.case_id,revision_id:previous.revision_id,expected_row_version:String(previous.row_version)};
@@ -743,9 +852,9 @@ function assertExistingIdentity(db: DatabaseSync): void {
       if (item.result_kind !== 'case_revision' || item.result_id !== item.revision_id || item.completed_at !== revision.updated_at || item.input_fingerprint !== expected) failure('INTEGRITY_BLOCKED');
     }
   }
-  if([110,120].includes(Number(pragmaValue(db,'user_version'))))rows.membership_plans=db.prepare('SELECT p.*,r.run_id FROM membership_run_plans r JOIN membership_plans p ON p.plan_id=r.plan_id').all();
-  if(Number(pragmaValue(db,'user_version'))===120)rows.membership_model_reports=db.prepare('SELECT * FROM membership_model_reports').all();
-  if([110,120].includes(Number(pragmaValue(db,'user_version'))))rows.membership_expressions=db.prepare("SELECT result_json FROM membership_receipts WHERE json_extract(result_json,'$.kind')='expression_report'").all().map(r=>JSON.parse(text(r.result_json)));
+  if([110,120,130,140,150,160].includes(Number(pragmaValue(db,'user_version'))))rows.membership_plans=db.prepare('SELECT p.*,r.run_id FROM membership_run_plans r JOIN membership_plans p ON p.plan_id=r.plan_id').all();
+  if([120,130,140,150,160].includes(Number(pragmaValue(db,'user_version'))))rows.membership_model_reports=db.prepare('SELECT * FROM membership_model_reports').all();
+  if([110,120,130,140,150,160].includes(Number(pragmaValue(db,'user_version'))))rows.membership_expressions=db.prepare("SELECT result_json FROM membership_receipts WHERE json_extract(result_json,'$.kind')='expression_report'").all().map(r=>JSON.parse(text(r.result_json)));
   try {
     for(const attempt of rows.assistance_attempts){
       const disclosure=rows.model_disclosures.find(d=>d.disclosure_id===attempt.disclosure_id),starts=rows.command_receipts.filter(r=>r.operation_kind==='start_assistance'&&r.result_id===attempt.attempt_id),ends=rows.command_receipts.filter(r=>['settle_assistance','cancel_assistance','reconcile_interrupted'].includes(String(r.operation_kind))&&r.result_id===attempt.attempt_id);
@@ -834,7 +943,11 @@ function assertExistingIdentity(db: DatabaseSync): void {
         if(report.version_sequence!==BigInt(index+1)||!UUID.test(String(report.report_id))||!ownerKeys.every(k=>report[k]===revision[k])||!isTimestamp(report.created_at)||report.schema_version!=='1.0'||report.markdown_locator!==`${report.session_id}/060_reports/${report.report_id}/report.md`||report.html_locator!==`${report.session_id}/060_reports/${report.report_id}/report.html`||![report.markdown_sha256,report.html_sha256].every(x=>typeof x==='string'&&/^[0-9a-f]{64}$/.test(x)))failure('INTEGRITY_BLOCKED');
         if(report.state==='final'){
           const closure=closures.find(c=>c.closure_id===report.closure_id),finding=rows.findings.find(f=>f.finding_id===report.finding_id),run=finding&&rows.analysis_runs.find(r=>r.run_id===finding.run_id),confirmation=run&&rows.input_confirmations.find(c=>c.confirmation_id===run.confirmation_id);
-          if(!closure||!finding||!run||!confirmation)failure('INTEGRITY_BLOCKED');
+          if(!closure||!finding)failure('INTEGRITY_BLOCKED');
+          if(finding.schema_version==='3.0'){
+           if(Number(pragmaValue(db,'user_version'))!==160)failure('INTEGRITY_BLOCKED');const row=db.prepare("SELECT result_json,review_id FROM native_member_review_submissions WHERE json_extract(result_json,'$.report_id')=?").get(text(report.report_id));if(!row)failure('INTEGRITY_BLOCKED');const result=JSON.parse(text(row.result_json)),rr=db.prepare('SELECT body_json FROM native_member_reviews WHERE review_id=?').get(text(row.review_id));if(!rr)failure('INTEGRITY_BLOCKED');const review=validateNativeMemberReview(JSON.parse(text(rr.body_json))),parent=reports.find(p=>p.report_id===review.source.report_id);if(!parent||parent.state!=='draft'||parent.markdown_sha256!==review.source.report_sha256||result.acceptance_id!==closure.acceptance_id||result.closure_id!==closure.closure_id)failure('INTEGRITY_BLOCKED');const expected={...JSON.parse(text(parent.source_json)),acceptance_id:closure.acceptance_id,form_id:closure.form_id,closure_id:closure.closure_id,review:{kind:'native_member_review',task_id:review.source.task_id,review_id:review.id,review_version:String(review.sequence),intent_id:review.intent_id,parent_report_id:review.source.report_id,parent_report_sha256:review.source.report_sha256}};if(report.source_json!==canonicalDesktopJson(expected)||report.evidence_refs_json!==finding.evidence_refs_json)failure('INTEGRITY_BLOCKED');continue;
+          }
+          if(!run||!confirmation)failure('INTEGRITY_BLOCKED');
           const source={schema_version:'1.0',run_id:run.run_id,finding_id:finding.finding_id,...Object.fromEntries(ownerKeys.map(k=>[k,revision[k]])),confirmation_id:confirmation.confirmation_id,snapshot_id:confirmation.snapshot_id,method:{id:run.method_id,version:run.method_version,code_identity:run.code_identity},acceptance_id:closure.acceptance_id,form_id:closure.form_id,closure_id:closure.closure_id};
           if(['4.0','5.0'].includes(String(run.run_contract_version))){
             const receipt=db.prepare("SELECT result_json FROM membership_receipts WHERE json_extract(result_json,'$.report_id')=? AND json_extract(result_json,'$.kind')='human_review'").get(text(report.report_id));if(!receipt)failure('INTEGRITY_BLOCKED');const submitted=JSON.parse(text(receipt.result_json)),reviewRow=db.prepare('SELECT * FROM membership_reviews WHERE review_id=? AND version=?').get(submitted.review_id,submitted.review_version);if(!reviewRow)failure('INTEGRITY_BLOCKED');const review=decoded<MembershipReview>(reviewRow),parent=reports.find(p=>p.report_id===review.source.report_id);if(!parent||parent.state!=='draft'||parent.finding_id!==finding.finding_id||parent.markdown_sha256!==review.source.report_sha256||submitted.acceptance_id!==closure.acceptance_id||submitted.closure_id!==closure.closure_id)failure('INTEGRITY_BLOCKED');
@@ -1108,7 +1221,7 @@ function createDesktopStore(config: unknown, initializationVersion:100|120, pure
           return Object.freeze({ display_name: text(snapshot[`${role}_display_name`]), bytes, sha256: text(snapshot[`${role}_sha256`]), byte_length: String(snapshot[`${role}_byte_length`]) });
         } finally { closeSync(fd); }
       };
-      const link=Number(pragmaValue(db,'user_version'))===120?db.prepare('SELECT context_json,context_sha256 FROM membership_confirmation_preparations WHERE confirmation_id=?').get(text(value.confirmation_id)):undefined;
+      const link=[120,130,140,150,160].includes(Number(pragmaValue(db,'user_version')))?db.prepare('SELECT context_json,context_sha256 FROM membership_confirmation_preparations WHERE confirmation_id=?').get(text(value.confirmation_id)):undefined;
       const context=link?preparedConfirmationContext(JSON.parse(text(link.context_json))):null;
       if(link&&taskHash(context)!==link.context_sha256)failure('INTEGRITY_BLOCKED');
       const resolved=context?resolveMemberPlanPreparation(db,projectRoot,context,false):undefined,preparation=resolved?.preparation;
@@ -1141,7 +1254,7 @@ function createDesktopStore(config: unknown, initializationVersion:100|120, pure
     const fingerprint = digest(canonicalDesktopJson({ operation_kind: 'confirm_revision', request, sources: { members: members.sha256, orders: orders.sha256 } }));
     if (value.input_fingerprint !== fingerprint) failure('VALIDATION_FAILED');
     const guardPreparation=(db:DatabaseSync)=>{
-      const fresh=Number(pragmaValue(db,'user_version'))===120;
+      const fresh=[120,130,140,150,160].includes(Number(pragmaValue(db,'user_version')));
       const task=fresh&&db.prepare('SELECT task_id FROM membership_tasks WHERE project_id=? AND session_id=? AND case_id=?').get(owner.project_id,owner.session_id,owner.case_id);
       const selected=task&&db.prepare('SELECT source_set_id FROM membership_source_sets WHERE task_id=?').get(text(task.task_id));
       if(selected&&!preparation_context)failure('AUTHORITY_REQUIRED');
@@ -1150,7 +1263,7 @@ function createDesktopStore(config: unknown, initializationVersion:100|120, pure
     const findReceipt = (db: DatabaseSync) => {
       const receipt = db.prepare('SELECT * FROM command_receipts WHERE command_id=?').get(command.command_id);
       if (receipt && (receipt.operation_kind !== 'confirm_revision' || receipt.input_fingerprint !== fingerprint || receipt.project_id !== owner.project_id || receipt.session_id !== owner.session_id || receipt.case_id !== owner.case_id || receipt.revision_id !== owner.revision_id)) failure('COMMAND_CONFLICT');
-      if(receipt&&Number(pragmaValue(db,'user_version'))===120){
+      if(receipt&&[120,130,140,150,160].includes(Number(pragmaValue(db,'user_version')))){
         const link=db.prepare('SELECT context_json,context_sha256 FROM membership_confirmation_preparations WHERE confirmation_id=?').get(text(receipt.result_id));
         if(link?(!preparation_context||link.context_sha256!==taskHash(preparation_context)||link.context_json!==encodeTask(preparation_context)):!!preparation_context)failure('COMMAND_CONFLICT');
       }
@@ -1757,8 +1870,8 @@ function createDesktopStore(config: unknown, initializationVersion:100|120, pure
       for(const report of reportRows)try{
         const markdown=verifiedPublication(text(report.markdown_locator),text(report.markdown_sha256),String(report.markdown_byte_length));
         verifiedPublication(text(report.html_locator),text(report.html_sha256),String(report.html_byte_length));
-        const finding=findingRows.find(f=>f.finding_id===report.finding_id),run=finding&&readableRuns.get(text(finding.run_id));
-        if(!finding||!run)failure('INTEGRITY_BLOCKED');
+        const finding=findingRows.find(f=>f.finding_id===report.finding_id),run=finding&&finding.run_id!==null&&readableRuns.get(text(finding.run_id));
+        if(!finding)failure('INTEGRITY_BLOCKED');if(finding.schema_version==='3.0'){const origin=nativeMemberSource(db,finding),proof=origin.task.outcome!.verification.native_evidence!,refs=nativeFindingRefs(origin.origin_id);reportContents.set(text(report.report_id),{markdown_text:new TextDecoder('utf-8',{fatal:true}).decode(markdown),evidence:[{evidence_ref:refs[0],title:'DuckDB 主计算',media_type:'application/json',content:encodeTask(proof.primary)},{evidence_ref:refs[1],title:'Python 独立复算',media_type:'application/json',content:encodeTask(proof.independent)},{evidence_ref:refs[2],title:'本版材料与计算来源',media_type:'application/json',content:encodeTask(origin.source)}]});continue;}if(!run)failure('INTEGRITY_BLOCKED');
         const evidence=(['duckdb-result','python-result','run-summary','run-evidence'] as const).map(artifactId=>{
           const descriptor=run.manifest.artifacts.find(x=>x.artifact_id===artifactId);if(!descriptor)failure('INTEGRITY_BLOCKED');
           const bytes=verifiedPublication(`${run.locator}/${descriptor.path}`,descriptor.sha256,descriptor.byte_length);
@@ -1779,7 +1892,7 @@ function createDesktopStore(config: unknown, initializationVersion:100|120, pure
         runs:runRows.map(r=>({run_id:text(r.run_id),profile_id:text(r.profile_id),method_id:text(r.method_id),method_version:text(r.method_version),code_identity:text(r.code_identity),run_contract_version:text(r.run_contract_version),status:text(r.status),started_at:text(r.started_at),deadline_at:text(r.deadline_at),ended_at:r.ended_at===null?null:text(r.ended_at),terminal_reason:r.terminal_reason===null?null:text(r.terminal_reason),aggregate_id:r.aggregate_id===null?null:text(r.aggregate_id),evidence_available:!damaged&&r.status==='Succeeded'})),
         disclosures:queryRows('model_disclosures').map(r=>({disclosure_id:text(r.disclosure_id),action_kind:text(r.action_kind),categories:JSON.parse(text(r.categories_json)),aggregate_refs:JSON.parse(text(r.aggregate_refs_json)),payload_sha256:text(r.payload_sha256),requested_provider:text(r.requested_provider),requested_model:text(r.requested_model),decision:text(r.decision),free_text_confirmed_at:r.free_text_confirmed_at===null?null:text(r.free_text_confirmed_at),decided_at:text(r.decided_at),created_at:text(r.created_at)})), attempts:queryRows('assistance_attempts').map(r=>({attempt_id:text(r.attempt_id),disclosure_id:text(r.disclosure_id),action_kind:text(r.action_kind),profile_id:text(r.profile_id),runtime_id:text(r.runtime_id),runtime_version:text(r.runtime_version),adapter_id:text(r.adapter_id),adapter_version:text(r.adapter_version),requested_provider:text(r.requested_provider),requested_model:text(r.requested_model),actual_provider:r.actual_provider===null?null:text(r.actual_provider),actual_model:r.actual_model===null?null:text(r.actual_model),status:text(r.status),started_at:text(r.started_at),deadline_at:text(r.deadline_at),ended_at:r.ended_at===null?null:text(r.ended_at),terminal_reason:r.terminal_reason===null?null:text(r.terminal_reason),draft_id:r.draft_id===null?null:text(r.draft_id)})),
         assistance_drafts:queryRows('assistance_drafts').map(r=>({draft_id:text(r.draft_id),attempt_id:text(r.attempt_id),draft_kind:text(r.draft_kind),generated_content:JSON.parse(text(r.generated_content_json)),edited_content:r.edited_content_json===null?null:JSON.parse(text(r.edited_content_json)),disposition:text(r.disposition),target_form:r.target_form===null?null:text(r.target_form),decided_at:r.decided_at===null?null:text(r.decided_at),created_at:text(r.created_at)})),
-        findings:findingRows.map(f=>({finding_id:text(f.finding_id),run_id:text(f.run_id),aggregate_id:text(f.aggregate_id),...(f.schema_version==='2.0'?{facts:JSON.parse(text(f.facts_json))}:{}),judgment:text(f.judgment),metrics:text(f.metrics_json),supporting_evidence:JSON.parse(text(f.supporting_evidence_json)),refutation:JSON.parse(text(f.refutation_json)),limitations:JSON.parse(text(f.limitations_json)),evidence_refs:JSON.parse(text(f.evidence_refs_json)),method_id:text(f.method_id),method_version:text(f.method_version),created_at:text(f.created_at)})),acceptances: queryRows('finding_acceptances').map(a=>({acceptance_id:text(a.acceptance_id),finding_id:text(a.finding_id),action:text(a.action),accepted_at:text(a.accepted_at)})), forms: queryRows('decision_forms').map(f=>({form_id:text(f.form_id),form_sequence:String(f.form_sequence),candidates:JSON.parse(text(f.candidates_json)),route:f.route as null|'candidate_comparison'|'insufficient_evidence',insufficient_reason:f.insufficient_reason===null?null:text(f.insufficient_reason),preferred_candidate_id:f.preferred_candidate_id===null?null:text(f.preferred_candidate_id),preferred_reason:f.preferred_reason===null?null:text(f.preferred_reason),disposition:text(f.disposition),disposition_at:f.disposition_at===null?null:text(f.disposition_at),defer_until:f.defer_until===null?null:text(f.defer_until),created_at:text(f.created_at),updated_at:text(f.updated_at)})), closures: queryRows('decision_closures').map(c=>({closure_id:text(c.closure_id),acceptance_id:text(c.acceptance_id),form_id:text(c.form_id),route:text(c.route),completed_at:text(c.completed_at)})),
+        findings:findingRows.map(f=>({finding_id:text(f.finding_id),run_id:f.run_id===null?null:text(f.run_id),aggregate_id:f.aggregate_id===null?null:text(f.aggregate_id),...(f.schema_version==='3.0'?{native_origin:{kind:'open_member_source' as const,origin_id:text(f.open_member_origin_id)}}:{}),...(['2.0','3.0'].includes(text(f.schema_version))?{facts:JSON.parse(text(f.facts_json))}:{}),judgment:text(f.judgment),metrics:text(f.metrics_json),supporting_evidence:JSON.parse(text(f.supporting_evidence_json)),refutation:JSON.parse(text(f.refutation_json)),limitations:JSON.parse(text(f.limitations_json)),evidence_refs:JSON.parse(text(f.evidence_refs_json)),method_id:text(f.method_id),method_version:text(f.method_version),created_at:text(f.created_at)})),acceptances: queryRows('finding_acceptances').map(a=>({acceptance_id:text(a.acceptance_id),finding_id:text(a.finding_id),action:text(a.action),accepted_at:text(a.accepted_at)})), forms: queryRows('decision_forms').map(f=>({form_id:text(f.form_id),form_sequence:String(f.form_sequence),candidates:JSON.parse(text(f.candidates_json)),route:f.route as null|'candidate_comparison'|'insufficient_evidence',insufficient_reason:f.insufficient_reason===null?null:text(f.insufficient_reason),preferred_candidate_id:f.preferred_candidate_id===null?null:text(f.preferred_candidate_id),preferred_reason:f.preferred_reason===null?null:text(f.preferred_reason),disposition:text(f.disposition),disposition_at:f.disposition_at===null?null:text(f.disposition_at),defer_until:f.defer_until===null?null:text(f.defer_until),created_at:text(f.created_at),updated_at:text(f.updated_at)})), closures: queryRows('decision_closures').map(c=>({closure_id:text(c.closure_id),acceptance_id:text(c.acceptance_id),form_id:text(c.form_id),route:text(c.route),completed_at:text(c.completed_at)})),
         reports:reportRows.map(r=>({report_id:text(r.report_id),finding_id:text(r.finding_id),acceptance_id:r.acceptance_id===null?null:text(r.acceptance_id),closure_id:r.closure_id===null?null:text(r.closure_id),version_sequence:String(r.version_sequence),state:text(r.state),markdown_sha256:text(r.markdown_sha256),markdown_byte_length:String(r.markdown_byte_length),html_sha256:text(r.html_sha256),html_byte_length:String(r.html_byte_length),source:text(r.source_json),evidence_refs:JSON.parse(text(r.evidence_refs_json)),created_at:text(r.created_at),review_content:reportContents.get(text(r.report_id))??null})),
         capabilities: { can_create_draft_revision: !taskOwned&&currentRevision && !directoryDamaged&&!workRunning, can_select_import: !taskOwned&&currentRevision && !damaged && revision.integrity_state === 'ok' && revision.state === 'Draft' && !workRunning, can_confirm_revision: !taskOwned&&currentRevision && !damaged && revision.integrity_state === 'ok' && revision.state === 'Draft' && !workRunning, can_start_analysis: !taskOwned&&currentRevision && !damaged&&revision.integrity_state==='ok'&&['Ready','NeedsAttention','Review','Completed'].includes(String(revision.state))&&!workRunning, can_cancel_analysis: currentRevision && !damaged&&revision.integrity_state==='ok'&&runRows.some(r=>r.status==='Running'), can_prepare_assistance: assistanceEligible && !workRunning, can_start_assistance: assistanceEligible && !workRunning && queryRows('model_disclosures').some(d=>d.decision==='accepted'&&!attemptRows.some(a=>a.disclosure_id===d.disclosure_id)), can_cancel_assistance: currentRevision && !damaged && revision.integrity_state==='ok' && attemptRows.some(a=>a.status==='Running'), can_dispose_assistance_draft: assistanceEligible && !workRunning && queryRows('assistance_drafts').some(d=>d.disposition==='pending'), can_accept_finding: currentRevision&&!damaged&&revision.integrity_state==='ok'&&['Review','Completed'].includes(String(revision.state))&&!workRunning&&findingRows.some(f=>runRows.find(r=>r.run_id===f.run_id)?.run_contract_version==='3.0'&&!queryRows('finding_acceptances').some(a=>a.finding_id===f.finding_id)), can_save_case_fields: !taskOwned&&currentRevision && !damaged && revision.integrity_state === 'ok'&&['Draft','Ready'].includes(String(revision.state))&&!workRunning, can_save_evidence_explanation: !taskOwned&&currentRevision&&!damaged&&revision.integrity_state==='ok'&&revision.state==='Review'&&!workRunning, can_save_decision_closure: !taskOwned&&currentRevision&&!damaged&&revision.integrity_state==='ok'&&(revision.state==='Review'||revision.state==='Completed'&&queryRows('finding_acceptances').some(a=>!queryRows('decision_closures').some(c=>c.acceptance_id===a.acceptance_id)))&&!workRunning, can_complete_case: !taskOwned&&currentRevision&&!damaged&&revision.integrity_state==='ok'&&!workRunning&&queryRows('decision_forms').at(-1)?.disposition==='saved'&&queryRows('finding_acceptances').some(a=>!queryRows('decision_closures').some(c=>c.acceptance_id===a.acceptance_id)), can_export_report: currentRevision&&!directoryDamaged&&reportRows.length>0 },
       });
@@ -1955,10 +2068,12 @@ export function appendMembershipExpression(projectRoot:string,db:DatabaseSync,ta
 }
 
 /** C6's state half: actual existing acceptance/form/closure relations and receipts. */
-export function appendMembershipReview(projectRoot:string,db:DatabaseSync,r:MembershipReview,input:ReviewSubmission,fault:(point:string)=>void=()=>{}):ReviewReceipt{
- const revision=db.prepare('SELECT * FROM case_revisions WHERE revision_id=?').get(r.source.owner.revision_id),parent=db.prepare('SELECT * FROM report_versions WHERE report_id=?').get(r.source.report_id),finding=db.prepare('SELECT * FROM findings WHERE finding_id=?').get(r.source.finding_id),plan=membershipReviewPlan(db,r.task_id,r.source.run_id);
- if(!revision||!parent||!finding||revision.state!=='Review'||revision.current_finding_id!==r.source.finding_id||revision.current_report_id!==r.source.report_id||String(revision.row_version)!==r.source.case_row_version||parent.markdown_sha256!==r.source.report_sha256||String(parent.version_sequence)!==r.source.report_version||finding.run_id!==r.source.run_id||!plan||membershipHash(plan)!==r.source.plan_sha256)failure('SOURCE_CHANGED');
- if(!['analysis','choice'].includes(input.outcome)||plan.version==='2.0'&&input.outcome!=='analysis')failure('FORBIDDEN');
+export function appendMembershipReview(projectRoot:string,db:DatabaseSync,r:MembershipReview|NativeMemberReview,input:ReviewSubmission,fault:(point:string)=>void=()=>{}):ReviewReceipt{
+ const revision=db.prepare('SELECT * FROM case_revisions WHERE revision_id=?').get(r.source.owner.revision_id),parent=db.prepare('SELECT * FROM report_versions WHERE report_id=?').get(r.source.report_id),finding=db.prepare('SELECT * FROM findings WHERE finding_id=?').get(r.source.finding_id);
+ if(!revision||!parent||!finding||revision.state!=='Review'||revision.current_finding_id!==r.source.finding_id||revision.current_report_id!==r.source.report_id||String(revision.row_version)!==r.source.case_row_version||parent.markdown_sha256!==r.source.report_sha256||String(parent.version_sequence)!==r.source.report_version)failure('SOURCE_CHANGED');
+ if(r.version==='1.0'){const plan=membershipReviewPlan(db,r.task_id,r.source.run_id);if(finding.run_id!==r.source.run_id||!plan||membershipHash(plan)!==r.source.plan_sha256)failure('SOURCE_CHANGED');if(!['analysis','choice'].includes(input.outcome)||plan.version==='2.0'&&input.outcome!=='analysis')failure('FORBIDDEN');}
+ else{if(finding.schema_version!=='3.0'||taskHash(nativeReviewExpectedSource(db,r))!==taskHash(r.source))failure('SOURCE_CHANGED');nativeReviewSubmission(r,input.outcome);}
+ const sourceTaskId=r.version==='1.0'?r.task_id:r.source.task_id;
  const form=r.fields.closure;validateDesktopDecisionForm(form);if(form.disposition!=='saved')failure('VALIDATION_FAILED');
  const evidence=JSON.parse(text(finding.evidence_refs_json)) as string[];
  const attached=db.prepare('PRAGMA database_list').all().some(d=>d.name==='assistant'),head=attached?db.prepare('SELECT decision_id FROM assistant.heads WHERE source=?').get(encodeTask(r.source.owner))?.decision_id??null:null;if(head!==r.baseline_decision_id)failure('STALE_DECISION');
@@ -1967,7 +2082,7 @@ export function appendMembershipReview(projectRoot:string,db:DatabaseSync,r:Memb
  const owner=r.source.owner,acceptance_id=randomUUID(),form_id=randomUUID(),closure_id=randomUUID(),report_id=randomUUID();
  const baseDir=join(projectRoot,owner.session_id,'060_reports');for(const dir of [projectRoot,join(projectRoot,owner.session_id),baseDir,join(baseDir,r.source.report_id)])fileIdentity(dir,true);
  const oldPath=join(baseDir,r.source.report_id,'report.md');fileIdentity(oldPath);const fd=openSync(oldPath,constants.O_RDONLY|constants.O_NOFOLLOW);let bytes:Buffer;try{bytes=readFileSync(fd);}finally{closeSync(fd);}if(digest(bytes)!==parent.markdown_sha256||String(bytes.length)!==String(parent.markdown_byte_length))failure('INTEGRITY_BLOCKED');
- const formal:FormalDecision|null=decision?{id:randomUUID(),outcome_id:randomUUID(),report_id,sequence:head?Number(JSON.parse(text(db.prepare('SELECT body FROM assistant.decisions WHERE id=?').get(String(head))!.body)).sequence)+1:1,source:owner,source_report_id:r.source.report_id,previous_id:head as string|null,fields:decision,actor:r.fields.actor,adopted_at:input.at,origin:{kind:'membership_review',task_id:r.task_id,review_id:r.id,review_version:r.sequence,intent_id:r.intent_id}}:null;
+ const formal:FormalDecision|null=decision?{id:randomUUID(),outcome_id:randomUUID(),report_id,sequence:head?Number(JSON.parse(text(db.prepare('SELECT body FROM assistant.decisions WHERE id=?').get(String(head))!.body)).sequence)+1:1,source:owner,source_report_id:r.source.report_id,previous_id:head as string|null,fields:decision,actor:r.fields.actor,adopted_at:input.at,origin:{kind:r.version==='1.0'?'membership_review':'native_member_review',task_id:sourceTaskId,review_id:r.id,review_version:r.sequence,intent_id:r.intent_id}}:null;
  const rows=[`人工审阅人：${r.fields.actor}`,`审阅时间：${input.at}`,form.route==='insufficient_evidence'?`证据不足：${form.insufficient_reason}`:'候选比较',...form.candidates.flatMap(c=>[c.title,`证据：${c.evidence_basis}`,`风险与反证：${c.risk_or_refutation}`,`适用条件：${c.applicability_conditions}`,`未来验证：${c.future_validation_metric}`]),...(form.preferred_candidate_id?[`偏好：${form.candidates.find(c=>c.candidate_id===form.preferred_candidate_id)!.title}`,`理由：${form.preferred_reason}`]:[]),`保留问题：${r.fields.questions}`,...(formal?formalDecisionSections(formal).flatMap(s=>[s.title,...s.rows.map(([k,v])=>k+'：'+v)]):['本次仅结束分析，未记录正式业务决策。'])];
  const markdown=new TextDecoder('utf-8',{fatal:true}).decode(bytes)+'\n\n## 人工审阅与分析闭合\n\n'+rows.join('\n\n')+'\n',html='<!doctype html><meta charset="utf-8"><pre>'+markdown.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')+'</pre>',target=join(baseDir,report_id);mkdirSync(target,{mode:0o700});
  for(const [name,content] of [['report.md',markdown],['report.html',html]]){const fd=openSync(join(target,name),constants.O_CREAT|constants.O_EXCL|constants.O_WRONLY|constants.O_NOFOLLOW,0o600);try{writeFileSync(fd,content);fsyncSync(fd);}finally{closeSync(fd);}}syncDirectory(target);syncDirectory(baseDir);
@@ -1976,12 +2091,12 @@ export function appendMembershipReview(projectRoot:string,db:DatabaseSync,r:Memb
  const seq=Number(db.prepare('SELECT max(form_sequence) n FROM decision_forms WHERE revision_id=?').get(owner.revision_id)?.n??0)+1;
  fault('before_form');db.prepare("INSERT INTO decision_forms VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'1.0')").run(form_id,...ownerKeys.map(k=>owner[k]),seq,canonicalDesktopJson(form.candidates),form.route,form.insufficient_reason,form.preferred_candidate_id,form.preferred_reason,form.disposition,input.at,form.defer_until,input.at,input.at);receipt('save_form',{form},'decision_form',form_id);fault('after_form');
  fault('before_closure');db.prepare("INSERT INTO decision_closures VALUES(?,?,?,?,?,?,?,?,?,'1.0')").run(closure_id,...ownerKeys.map(k=>owner[k]),acceptance_id,form_id,form.route,input.at);receipt('complete_case',{acceptance_id,form_id},'decision_closure',closure_id);fault('after_closure');
- const provenance={...JSON.parse(text(parent.source_json)),acceptance_id,form_id,closure_id,review:{task_id:r.task_id,review_id:r.id,review_version:String(r.sequence),intent_id:r.intent_id,parent_report_id:r.source.report_id,parent_report_sha256:r.source.report_sha256}};
+ const provenance={...JSON.parse(text(parent.source_json)),acceptance_id,form_id,closure_id,review:{...(r.version==='2.0'?{kind:'native_member_review'}:{}),task_id:sourceTaskId,review_id:r.id,review_version:String(r.sequence),intent_id:r.intent_id,parent_report_id:r.source.report_id,parent_report_sha256:r.source.report_sha256}};
  const reportSeq=Number(db.prepare('SELECT max(version_sequence) n FROM report_versions WHERE revision_id=?').get(owner.revision_id)!.n)+1;
  fault('before_report');db.prepare("INSERT INTO report_versions VALUES(?,?,?,?,?,?,?,?,?,'final',?,?,?,?,?,?,?,?,?,'1.0')").run(report_id,...ownerKeys.map(k=>owner[k]),r.source.finding_id,acceptance_id,closure_id,reportSeq,`${owner.session_id}/060_reports/${report_id}/report.md`,digest(markdown),Buffer.byteLength(markdown),`${owner.session_id}/060_reports/${report_id}/report.html`,digest(html),Buffer.byteLength(html),canonicalDesktopJson(provenance),parent.evidence_refs_json,input.at);fault('after_report');
  fault('before_completed');db.prepare("UPDATE case_revisions SET state='Completed',current_acceptance_id=?,current_closure_id=?,current_report_id=?,row_version=?,updated_at=? WHERE revision_id=?").run(acceptance_id,closure_id,report_id,version,input.at,owner.revision_id);fault('after_completed');
  if(formal){
-  fault('before_sidecar_migration');migrateMembershipSidecar(db,owner.project_id);fault('after_sidecar_migration');
+  fault('before_sidecar_migration');if(r.version==='2.0')migrateNativeMemberSidecar(db,owner.project_id);else migrateMembershipSidecar(db,owner.project_id);fault('after_sidecar_migration');
   const report:AssistantReport={id:report_id,decision_id:formal.id,source_revision:owner.revision_id,sequence:reportSeq,original_report_id:r.source.report_id,markdown,html,markdown_sha256:digest(markdown),html_sha256:digest(html),created_at:input.at};
   for(const [table,value] of [['decisions',formal],['reports',report]] as const){fault('before_'+table);const body=encodeTask(value);db.prepare(`INSERT INTO assistant.${table} VALUES(?,?,?,?)`).run(value.id,encodeTask(owner),body,digest(body));fault('after_'+table);}
   fault('before_head');db.prepare('INSERT OR REPLACE INTO assistant.heads VALUES(?,?)').run(encodeTask(owner),formal.id);fault('after_head');
@@ -2002,7 +2117,7 @@ export function withMembershipState<T>(projectRoot:string,write:boolean,work:(db
 
 /** Browser ledger GET uses an actual read-only connection and cannot run recovery mutations. */
 export function withBrowserMembershipState<T>(projectRoot:string,write:boolean,work:(db:DatabaseSync)=>T):T{
- const checked=(db:DatabaseSync)=>{if(Number(pragmaValue(db,'user_version'))!==120)failure('EXISTING_PROJECT_ACTIVATION_CLOSED');return work(db);};
+ const checked=(db:DatabaseSync)=>{if(![120,130,140,150,160].includes(Number(pragmaValue(db,'user_version'))))failure('EXISTING_PROJECT_ACTIVATION_CLOSED');return work(db);};
  if(write)return withMembershipState(projectRoot,true,checked);
  const path=databasePath(projectRoot);rawPreflight(path);const db=new DatabaseSync(path,{readOnly:true});
  try{inspectReadOnly(db);return checked(db);}finally{db.close();}
@@ -2010,7 +2125,7 @@ export function withBrowserMembershipState<T>(projectRoot:string,write:boolean,w
 
 function assertTaskRunAdmission(db:DatabaseSync,plan:MembershipPlan|undefined,owner:{project_id:string;session_id:string;case_id:string;revision_id:string},at:string,owningRunId?:string){
  if(plan?.version==='2.0'){assertPreparedPlan(db,plan,true,owningRunId);if(!ownerKeys.every(k=>plan.owner[k]===owner[k as keyof typeof owner]))failure('SOURCE_CHANGED');return;}
- if(![110,120].includes(Number(pragmaValue(db,'user_version')))){if(plan?.task_context)failure('AUTHORITY_REQUIRED');return;}
+ if(![110,120,130,140,150,160].includes(Number(pragmaValue(db,'user_version')))){if(plan?.task_context)failure('AUTHORITY_REQUIRED');return;}
  const task=db.prepare('SELECT * FROM membership_tasks WHERE project_id=? AND session_id=? AND case_id=?').get(owner.project_id,owner.session_id,owner.case_id);
  const explicit=task&&db.prepare("SELECT command_id FROM membership_receipts WHERE task_id=? AND json_extract(result_json,'$.kind')='task_created'").get(text(task.task_id));
  if(!explicit&&!plan?.task_context)return;
@@ -2021,4 +2136,129 @@ function assertTaskRunAdmission(db:DatabaseSync,plan:MembershipPlan|undefined,ow
  if(g.revoked_at||String(g.epoch)!==c.epoch||Date.parse(at)>=Date.parse(g.expires_at)||a.status!=='running'||u.kind!=='analysis'||u.status!=='issued'||u.local_runs!==1||u.source_sha256!==g.prepared.fingerprint||c.run_ms!==String(g.profile.run_ms)||c.process_seconds!==String(g.profile.process_seconds)||membershipHash(g.prepared.selection)!==plan!.contract_sha256||membershipHash(g.prepared.scenario)!==plan!.scenario_sha256||JSON.stringify(g.prepared.methods)!==JSON.stringify(plan!.methods))failure('AUTHORITY_REQUIRED');
 }
 
-function explicitMembershipTask(db:DatabaseSync,caseId:string):boolean{return [110,120].includes(Number(pragmaValue(db,'user_version')))&&!!db.prepare("SELECT t.task_id FROM membership_tasks t JOIN membership_receipts r ON r.task_id=t.task_id WHERE t.case_id=? AND json_extract(r.result_json,'$.kind')='task_created' LIMIT 1").get(caseId);}
+function explicitMembershipTask(db:DatabaseSync,caseId:string):boolean{return [110,120,130,140,150,160].includes(Number(pragmaValue(db,'user_version')))&&!!db.prepare("SELECT t.task_id FROM membership_tasks t JOIN membership_receipts r ON r.task_id=t.task_id WHERE t.case_id=? AND json_extract(r.result_json,'$.kind')='task_created' LIMIT 1").get(caseId);}
+
+
+/** One explicit source admission into the existing operational SQLite. No model or calculation. */
+export function createOpenMemberSourceStore(config:{projectRoot:string}) {
+ const projectRoot=projectRootFrom(config);
+ const decode=(row:UnknownRecord|undefined):OpenMemberSourceRecord|null=>row?validateOpenMemberSourceRecord(JSON.parse(text(row.body_json))):null;
+ function currentFindingFacts(origin_id:string){
+   if(!UUID.test(origin_id))failure('VALIDATION_FAILED');
+   return withBrowserMembershipState(projectRoot,false,db=>{
+    if(![130,140,150,160].includes(Number(pragmaValue(db,'user_version'))))failure('NOT_FOUND');
+    const record=decode(db.prepare('SELECT * FROM open_member_sources WHERE origin_id=?').get(origin_id));if(!record)failure('NOT_FOUND');
+    const task=createLocalOpenAnalysisStore({projectRoot}).read(record.source.task_id);if(!task)failure('NOT_FOUND');
+    if(taskHash(qualifyOpenMemberReviewSource(task))!==taskHash(record.source)||task.question!==record.task.question)failure('SOURCE_CHANGED');
+    const owner=record.owner,revision=db.prepare('SELECT * FROM case_revisions WHERE project_id=? AND session_id=? AND case_id=? AND revision_id=?').get(...ownerKeys.map(k=>owner[k]));
+    if(!revision||revision.integrity_state!=='ok'||revision.question_text!==task.question||db.prepare('SELECT current_revision_id FROM product_sessions WHERE project_id=? AND session_id=? AND case_id=?').get(owner.project_id,owner.session_id,owner.case_id)?.current_revision_id!==owner.revision_id)failure('AUTHORITY_REQUIRED');
+    return openMemberFindingFacts(record);
+   });
+  }
+ return {
+  read(origin_id:string):OpenMemberSourceRecord|null{
+   if(!UUID.test(origin_id))failure('VALIDATION_FAILED');
+   return withBrowserMembershipState(projectRoot,false,db=>[130,140,150,160].includes(Number(pragmaValue(db,'user_version')))?decode(db.prepare('SELECT * FROM open_member_sources WHERE origin_id=?').get(origin_id)):null);
+  },
+  currentFindingFacts,
+  receipt(command_id:string):OpenMemberSourceRecord|null{
+   if(!UUID.test(command_id))failure('VALIDATION_FAILED');
+   return withBrowserMembershipState(projectRoot,false,db=>[130,140,150,160].includes(Number(pragmaValue(db,'user_version')))?decode(db.prepare('SELECT * FROM open_member_sources WHERE command_id=?').get(command_id)):null);
+  },
+  findingForOrigin(origin_id:string):OpenMemberFindingReceipt|null{
+   if(!UUID.test(origin_id))failure('VALIDATION_FAILED');return withBrowserMembershipState(projectRoot,false,db=>{if(![140,150,160].includes(Number(pragmaValue(db,'user_version'))))return null;const row=db.prepare("SELECT r.source_json FROM findings f JOIN report_versions r ON r.finding_id=f.finding_id WHERE f.open_member_origin_id=? AND r.state='draft'").get(origin_id);return row?JSON.parse(text(row.source_json)):null;});
+  },
+  findingReceipt(command_id:string){
+   if(!UUID.test(command_id))failure('VALIDATION_FAILED');return withBrowserMembershipState(projectRoot,false,db=>{
+    if(![140,150,160].includes(Number(pragmaValue(db,'user_version'))))return null;const receipt=db.prepare("SELECT result_id FROM command_receipts WHERE command_id=? AND operation_kind='publish_open_member_finding'").get(command_id);if(!receipt)return null;
+    const row=db.prepare('SELECT source_json FROM report_versions WHERE report_id=?').get(text(receipt.result_id));if(!row)failure('INTEGRITY_BLOCKED');return JSON.parse(text(row.source_json)) as {version:'1.0';saved:true;kind:'native_member_finding';command_id:string;origin_id:string;owner:OpenMemberSourceRecord['owner'];finding_id:string;report_id:string;expected_row_version:string;row_version:string;source_record_sha256:string};
+   });
+  },
+  review(intent_id:string):NativeMemberReview|null{
+   if(!UUID.test(intent_id))failure('VALIDATION_FAILED');return withBrowserMembershipState(projectRoot,false,db=>{if(![150,160].includes(Number(pragmaValue(db,'user_version'))))return null;const row=db.prepare('SELECT body_json FROM native_member_reviews WHERE intent_id=? ORDER BY sequence DESC LIMIT 1').get(intent_id);return row?validateNativeMemberReview(JSON.parse(text(row.body_json))):null;});
+  },
+  reviewForTask(task_id:string):NativeMemberReview|null{
+   if(!UUID.test(task_id))failure('VALIDATION_FAILED');return withBrowserMembershipState(projectRoot,false,db=>{if(![150,160].includes(Number(pragmaValue(db,'user_version'))))return null;const row=db.prepare("SELECT body_json FROM native_member_reviews WHERE json_extract(body_json,'$.source.task_id')=? ORDER BY rowid DESC LIMIT 1").get(task_id);return row?validateNativeMemberReview(JSON.parse(text(row.body_json))):null;});
+  },
+  submissionForReview(review_id:string):NativeMemberReviewSubmitReceipt|null{
+   if(!UUID.test(review_id))failure('VALIDATION_FAILED');return withBrowserMembershipState(projectRoot,false,db=>{if(Number(pragmaValue(db,'user_version'))!==160)return null;const row=db.prepare('SELECT result_json FROM native_member_review_submissions WHERE review_id=?').get(review_id);return row?JSON.parse(text(row.result_json)):null;});
+  },
+  reviewById(review_id:string):NativeMemberReview|null{
+   if(!UUID.test(review_id))failure('VALIDATION_FAILED');return withBrowserMembershipState(projectRoot,false,db=>{if(![150,160].includes(Number(pragmaValue(db,'user_version'))))return null;const row=db.prepare('SELECT body_json FROM native_member_reviews WHERE review_id=?').get(review_id);return row?validateNativeMemberReview(JSON.parse(text(row.body_json))):null;});
+  },
+  reviewReceipt(command_id:string):NativeMemberReviewSaveReceipt|null{
+   if(!UUID.test(command_id))failure('VALIDATION_FAILED');return withBrowserMembershipState(projectRoot,false,db=>{if(![150,160].includes(Number(pragmaValue(db,'user_version'))))return null;const row=db.prepare('SELECT result_json FROM native_member_review_commands WHERE command_id=?').get(command_id);return row?JSON.parse(text(row.result_json)) as {version:'1.0';kind:'native_member_review_saved';command_id:string;review:NativeMemberReview}:null;});
+  },
+  async saveReview(raw:unknown):Promise<NativeMemberReviewSaveReceipt>{
+   const command=exactRecord(raw,['version','command_id','review','expected_sequence']),r=validateNativeMemberReview(command.review);if(command.version!=='1.0'||!UUID.test(text(command.command_id))||!Number.isSafeInteger(command.expected_sequence)||Number(command.expected_sequence)<0||r.sequence!==Number(command.expected_sequence)+1)failure('VALIDATION_FAILED');
+   const command_id=text(command.command_id),prior=withBrowserMembershipState(projectRoot,false,db=>{if(![150,160].includes(Number(pragmaValue(db,'user_version'))))return null;const row=db.prepare('SELECT * FROM native_member_review_commands WHERE command_id=?').get(command_id);if(!row)return null;if(row.input_sha256!==taskHash(command))failure('COMMAND_CONFLICT');return JSON.parse(text(row.result_json));});if(prior)return prior;
+   const current=currentFindingFacts(r.source.origin_id);if(current.source.task_id!==r.source.task_id||current.source.task_run_id!==r.source.task_run_id||current.source.attempt_id!==r.source.attempt_id||current.source.outcome_sha256!==r.source.outcome_sha256)failure('SOURCE_CHANGED');
+   if(nativeReviewHead(projectRoot,r)!==r.baseline_decision_id)failure('STALE_DECISION');const check=(db:DatabaseSync)=>{if(taskHash(nativeReviewExpectedSource(db,r))!==taskHash(r.source))failure('SOURCE_CHANGED');const revision=db.prepare('SELECT * FROM case_revisions WHERE revision_id=?').get(r.source.owner.revision_id),report=db.prepare('SELECT * FROM report_versions WHERE report_id=?').get(r.source.report_id);if(!revision||revision.state!=='Review'||revision.current_finding_id!==r.source.finding_id||revision.current_report_id!==r.source.report_id||String(revision.row_version)!==r.source.case_row_version||!report||report.markdown_sha256!==r.source.report_sha256||String(report.version_sequence)!==r.source.report_version||!ownerKeys.every(k=>revision[k]===r.source.owner[k]))failure('SOURCE_CHANGED');if([150,160].includes(Number(pragmaValue(db,'user_version')))){const latest=db.prepare('SELECT body_json,sequence FROM native_member_reviews WHERE intent_id=? ORDER BY sequence DESC LIMIT 1').get(r.intent_id);if(Number(latest?.sequence??0)!==command.expected_sequence)failure('REVISION_CONFLICT');if(latest&&taskHash(validateNativeMemberReview(JSON.parse(text(latest.body_json))).source)!==taskHash(r.source))failure('SOURCE_CHANGED');}else if(command.expected_sequence!==0)failure('REVISION_CONFLICT');};
+   withBrowserMembershipState(projectRoot,false,check);upgradeNativeReviewSchema(projectRoot);
+   return withMembershipState(projectRoot,true,db=>{check(db);if(taskHash(currentFindingFacts(r.source.origin_id))!==taskHash(current))failure('SOURCE_CHANGED');const saved={version:'1.0' as const,kind:'native_member_review_saved' as const,command_id,review:r};db.prepare('INSERT INTO native_member_reviews VALUES(?,?,?,?,?,?)').run(r.id,r.intent_id,r.sequence,r.source.origin_id,encodeTask(r),taskHash(r));db.prepare('INSERT INTO native_member_review_commands VALUES(?,?,?,?,?)').run(command_id,taskHash(command),r.id,encodeTask(saved),taskHash(saved));return saved;});
+  },
+  submissionReceipt(command_id:string):NativeMemberReviewSubmitReceipt|null{
+   if(!UUID.test(command_id))failure('VALIDATION_FAILED');return withBrowserMembershipState(projectRoot,false,db=>{if(Number(pragmaValue(db,'user_version'))!==160)return null;const row=db.prepare('SELECT result_json FROM native_member_review_submissions WHERE command_id=?').get(command_id);return row?JSON.parse(text(row.result_json)):null;});
+  },
+  async submitReview(raw:unknown):Promise<NativeMemberReviewSubmitReceipt>{
+   const command=exactRecord(raw,['version','command_id','review_id','review_sha256','outcome']);if(command.version!=='1.0'||![command.command_id,command.review_id].every(v=>UUID.test(text(v)))||! /^[a-f0-9]{64}$/.test(text(command.review_sha256))||!['analysis','more_evidence','choice'].includes(text(command.outcome)))failure('VALIDATION_FAILED');
+   const prior=withBrowserMembershipState(projectRoot,false,db=>{if(Number(pragmaValue(db,'user_version'))!==160)return null;const row=db.prepare('SELECT * FROM native_member_review_submissions WHERE command_id=?').get(text(command.command_id));if(!row)return null;if(row.input_sha256!==taskHash(command))failure('COMMAND_CONFLICT');return JSON.parse(text(row.result_json));});if(prior)return prior;
+   const r=withBrowserMembershipState(projectRoot,false,db=>{if(![150,160].includes(Number(pragmaValue(db,'user_version'))))failure('NOT_FOUND');const row=db.prepare('SELECT body_json FROM native_member_reviews WHERE review_id=?').get(text(command.review_id));if(!row)failure('NOT_FOUND');return validateNativeMemberReview(JSON.parse(text(row.body_json)));});if(r.sha256!==command.review_sha256)failure('SOURCE_CHANGED');nativeReviewSubmission(r,command.outcome as 'analysis'|'more_evidence'|'choice');if(command.outcome==='analysis'&&r.fields.closure.disposition!=='saved')failure('VALIDATION_FAILED');
+   const current=currentFindingFacts(r.source.origin_id);if(nativeReviewHead(projectRoot,r)!==r.baseline_decision_id)failure('STALE_DECISION');
+   const check=(db:DatabaseSync)=>{if(taskHash(nativeReviewExpectedSource(db,r))!==taskHash(r.source))failure('SOURCE_CHANGED');const latest=db.prepare('SELECT review_id FROM native_member_reviews WHERE intent_id=? ORDER BY sequence DESC LIMIT 1').get(r.intent_id),revision=db.prepare('SELECT * FROM case_revisions WHERE revision_id=?').get(r.source.owner.revision_id);if(latest?.review_id!==r.id||!revision||revision.state!=='Review'||String(revision.row_version)!==r.source.case_row_version||revision.current_report_id!==r.source.report_id)failure('SOURCE_CHANGED');if(Number(pragmaValue(db,'user_version'))===160&&db.prepare('SELECT command_id FROM native_member_review_submissions WHERE review_id=?').get(r.id))failure('COMMAND_CONFLICT');};withBrowserMembershipState(projectRoot,false,check);upgradeNativeSubmissionSchema(projectRoot);
+   return withMembershipState(projectRoot,true,db=>{check(db);const attached=db.prepare('PRAGMA database_list').all().some(d=>d.name==='assistant'),head=attached?db.prepare('SELECT decision_id FROM assistant.heads WHERE source=?').get(encodeTask(r.source.owner))?.decision_id??null:null;if(head!==r.baseline_decision_id)failure('STALE_DECISION');if(taskHash(currentFindingFacts(r.source.origin_id))!==taskHash(current))failure('SOURCE_CHANGED');const input:ReviewSubmission={task_id:r.source.task_id,review_id:r.id,review_version:r.sequence,review_sha256:r.sha256,intent_id:r.intent_id,outcome:command.outcome as 'analysis'|'more_evidence'|'choice',at:new Date().toISOString()};const result=input.outcome==='more_evidence'?{...input,kind:'human_review' as const,acceptance_id:null,closure_id:null,report_id:null,decision_id:null,expected_id:null}:appendMembershipReview(projectRoot,db,r,input);const saved:NativeMemberReviewSubmitReceipt={...result,kind:'native_human_review',command_id:text(command.command_id)};db.prepare('INSERT INTO native_member_review_submissions VALUES(?,?,?,?,?,?)').run(text(command.command_id),r.id,encodeTask(command),taskHash(command),encodeTask(saved),taskHash(saved));return saved;},{project_id:r.source.owner.project_id,choice:command.outcome==='choice'});
+  },
+  async publishFinding(raw:unknown):Promise<OpenMemberFindingReceipt>{
+   const command=exactRecord(raw,['version','command_id','origin_id','expected_row_version']);if(command.version!=='1.0'||!UUID.test(text(command.command_id))||!UUID.test(text(command.origin_id))||! /^[1-9]\d*$/.test(text(command.expected_row_version)))failure('VALIDATION_FAILED');
+   const command_id=text(command.command_id),origin_id=text(command.origin_id),expected_row_version=text(command.expected_row_version);
+   const prior=withBrowserMembershipState(projectRoot,false,db=>{if(![140,150,160].includes(Number(pragmaValue(db,'user_version'))))return null;const receipt=db.prepare('SELECT * FROM command_receipts WHERE command_id=?').get(command_id);if(!receipt)return null;if(receipt.operation_kind!=='publish_open_member_finding'||receipt.input_fingerprint!==taskHash(command))failure('COMMAND_CONFLICT');const row=db.prepare('SELECT source_json FROM report_versions WHERE report_id=?').get(text(receipt.result_id));if(!row)failure('INTEGRITY_BLOCKED');return JSON.parse(text(row.source_json));});if(prior)return prior;
+   const facts=currentFindingFacts(origin_id),owner=facts.owner;
+   const check=(db:DatabaseSync)=>{const revision=db.prepare('SELECT * FROM case_revisions WHERE revision_id=?').get(owner.revision_id);if(!revision||!ownerKeys.every(k=>revision[k]===owner[k])||String(revision.row_version)!==expected_row_version||revision.state!=='Draft')failure('REVISION_CONFLICT');};withBrowserMembershipState(projectRoot,false,check);
+   upgradeNativeFindingSchema(projectRoot);
+   const id=(kind:string)=>{const h=taskHash({command_id,kind});return `${h.slice(0,8)}-${h.slice(8,12)}-4${h.slice(13,16)}-8${h.slice(17,20)}-${h.slice(20,32)}`;},finding_id=id('finding'),report_id=id('report'),at=new Date().toISOString(),row_version=String(BigInt(expected_row_version)+1n);
+   const origin=withBrowserMembershipState(projectRoot,false,db=>decode(db.prepare('SELECT * FROM open_member_sources WHERE origin_id=?').get(origin_id))!);
+   const saved={version:'1.0' as const,saved:true as const,kind:'native_member_finding' as const,command_id,origin_id,owner,finding_id,report_id,expected_row_version,row_version,source_record_sha256:taskHash(origin)},refs=nativeFindingRefs(origin_id);
+   const markdown=['# JuanerAI 会员分析报告','',origin.task.question,'',openAnalysisFactsText(origin.task.outcome!),'','## 模型解释（不是已核验原因或正式决定）','',origin.task.outcome!.explanation.text,'','## 核验与来源','',...refs,'','算术核验不证明模型解释、假设或因果。',''].join('\n');
+   const esc=(x:string)=>x.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!)),html=`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>JuanerAI 会员分析报告</title><main>${markdown.split('\n').map(t=>`<p>${esc(t)}</p>`).join('')}</main></html>`;
+   const parent=join(projectRoot,owner.session_id,'060_reports'),target=join(parent,report_id);fileIdentity(join(projectRoot,owner.session_id),true);fileIdentity(parent,true);if(!existsSync(target))mkdirSync(target,{mode:0o700});fileIdentity(target,true);
+   for(const [name,value] of [['report.md',markdown],['report.html',html]]){const file=join(target,name),bytes=Buffer.from(value);if(existsSync(file)){fileIdentity(file);if(!readFileSync(file).equals(bytes))failure('PUBLICATION_FAILED');continue;}const fd=openSync(file,constants.O_CREAT|constants.O_EXCL|constants.O_WRONLY|constants.O_NOFOLLOW,0o600);try{writeFileSync(fd,bytes);fsyncSync(fd);}finally{closeSync(fd);}}syncDirectory(target);syncDirectory(parent);
+   return withMembershipState(projectRoot,true,db=>{
+    check(db);if(taskHash(currentFindingFacts(origin_id))!==taskHash(facts))failure('SOURCE_CHANGED');const proof=origin.task.outcome!.verification.native_evidence!;
+    db.prepare("INSERT INTO findings(finding_id,run_id,project_id,session_id,case_id,revision_id,aggregate_id,judgment,metrics_json,supporting_evidence_json,refutation_json,limitations_json,evidence_refs_json,method_id,method_version,created_at,schema_version,facts_json,facts_sha256,open_member_origin_id) VALUES(?,NULL,?,?,?,?,NULL,'Verified',?,?,?,?,?,?,?,?,'3.0',?,?,?)").run(finding_id,...ownerKeys.map(k=>owner[k]),canonicalDesktopJson(facts.metrics),canonicalDesktopJson(refs.slice(0,2)),canonicalDesktopJson('not_verified'),canonicalDesktopJson(['算术核验不证明模型解释、假设或因果。']),canonicalDesktopJson(refs),text(exactRecord(proof.primary.method,['id','version','code_identity']).id),text(exactRecord(proof.primary.method,['id','version','code_identity']).version),at,canonicalDesktopJson(facts),taskHash(facts),origin_id);
+    db.prepare("INSERT INTO report_versions VALUES(?,?,?,?,?,?,NULL,NULL,1,'draft',?,?,?,?,?,?,?,?,?,'1.0')").run(report_id,...ownerKeys.map(k=>owner[k]),finding_id,`${owner.session_id}/060_reports/${report_id}/report.md`,digest(markdown),Buffer.byteLength(markdown),`${owner.session_id}/060_reports/${report_id}/report.html`,digest(html),Buffer.byteLength(html),canonicalDesktopJson(saved),canonicalDesktopJson(refs),at);
+    db.prepare("UPDATE case_revisions SET state='Review',current_finding_id=?,current_report_id=?,row_version=?,updated_at=? WHERE revision_id=?").run(finding_id,report_id,BigInt(row_version),at,owner.revision_id);
+    db.prepare("INSERT INTO command_receipts VALUES(?,'publish_open_member_finding',?,?,?,?,?,'succeeded','report_version',?,NULL,?,'1.0')").run(command_id,...ownerKeys.map(k=>owner[k]),taskHash(command),report_id,at);return saved;
+   });
+  },
+  async admit(input:{owner:OpenMemberSourceRecord['owner'];task_id:string;expected_outcome_sha256:string}):Promise<OpenMemberSourceRecord>{
+   exactRecord(input,['owner','task_id','expected_outcome_sha256']);exactRecord(input.owner,ownerKeys);
+   if(!Object.values(input.owner).every(id=>UUID.test(id))||!UUID.test(input.task_id))failure('VALIDATION_FAILED');
+   withBrowserMembershipState(projectRoot,false,()=>undefined);
+   const tasks=createLocalOpenAnalysisStore({projectRoot});
+   const task=tasks.read(input.task_id);if(!task)failure('NOT_FOUND');const source=qualifyOpenMemberReviewSource(task);
+   if(source.outcome_sha256!==input.expected_outcome_sha256)failure('SOURCE_CHANGED');
+   const command_id=openMemberOriginCommand(input.owner,source);
+   // Read-only preflight rejects legacy activation before any migration starts.
+   withBrowserMembershipState(projectRoot,false,db=>{
+    const session=db.prepare('SELECT * FROM product_sessions WHERE project_id=? AND session_id=? AND case_id=?').get(input.owner.project_id,input.owner.session_id,input.owner.case_id);
+    if(!session||session.current_revision_id!==input.owner.revision_id)failure('AUTHORITY_REQUIRED');
+   });
+   return withMembershipState(projectRoot,true,db=>{
+    const version=Number(pragmaValue(db,'user_version'));if(![120,130,140,150,160].includes(version))failure('EXISTING_PROJECT_ACTIVATION_CLOSED');
+    const owner=input.owner,revision=db.prepare('SELECT * FROM case_revisions WHERE project_id=? AND session_id=? AND case_id=? AND revision_id=?').get(...ownerKeys.map(k=>owner[k]));
+    if(db.prepare('SELECT current_revision_id FROM product_sessions WHERE session_id=? AND project_id=? AND case_id=?').get(owner.session_id,owner.project_id,owner.case_id)?.current_revision_id!==owner.revision_id)failure('AUTHORITY_REQUIRED');
+    if(!revision||revision.integrity_state!=='ok'||revision.question_text!==task.question)failure('SOURCE_CHANGED');
+    const fresh=tasks.read(input.task_id);if(!fresh||taskHash(qualifyOpenMemberReviewSource(fresh))!==taskHash(source)||fresh.question!==task.question)failure('SOURCE_CHANGED');
+    if(version===120){db.exec(openMemberSourceSchema);db.exec('PRAGMA user_version=130');}
+    const prior=decode(db.prepare('SELECT * FROM open_member_sources WHERE command_id=?').get(command_id));
+    if(prior){if(taskHash(prior.source)!==taskHash(source)||taskHash(prior.owner)!==taskHash(owner))failure('COMMAND_CONFLICT');return prior;}
+    if(revision.state!=='Draft')failure('FORBIDDEN');
+    const snapshot={version:fresh.version,identity:fresh.identity,question:fresh.question,source:fresh.source,state:fresh.state,epoch:fresh.epoch,pending_stop_epoch:fresh.pending_stop_epoch,framework:fresh.framework,outcome:fresh.outcome};
+    const body={version:'1.0' as const,origin_id:randomUUID(),command_id,owner,source,task:snapshot,created_at:new Date().toISOString()},record=validateOpenMemberSourceRecord({...body,sha256:taskHash(body)});
+    if(Buffer.byteLength(encodeTask(record))>64*1024*1024)failure('SOURCE_CAPACITY');
+    db.prepare('INSERT INTO open_member_sources VALUES(?,?,?,?,?,?,?,?)').run(record.origin_id,...ownerKeys.map(k=>owner[k]),command_id,encodeTask(record),taskHash(record));
+    return record;
+   });
+  },
+ };
+}

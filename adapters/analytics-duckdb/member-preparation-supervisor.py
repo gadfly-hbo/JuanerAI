@@ -91,7 +91,16 @@ def run(root):
     for item in request['sources']:
         if hashlib.sha256(open(item['path'], 'rb').read()).hexdigest() != item['sha256']:
             raise RuntimeError('PREPARATION_IDENTITY_INVALID')
-    compiled = compile(code, '<preparation>', 'exec')
+    analysis_modules = {}
+    if request.get('analysis_diagnostics') is True:
+        import math, decimal, fractions, statistics
+        analysis_modules = {'math': math, 'decimal': decimal, 'fractions': fractions, 'statistics': statistics}
+    try:
+        compiled = compile(code, '<preparation>', 'exec')
+    except SyntaxError:
+        event('compile_rejected', category='SyntaxError')
+        print(json.dumps({'event': 'compile_rejected'}), flush=True)
+        return 65
     ET.fromstring('<warmup/>')  # initialize only trusted stdlib machinery before policy
     output = request['output_directory']
     sandbox = ctypes.CDLL('/usr/lib/libsandbox.dylib', use_errno=True)
@@ -139,10 +148,26 @@ def run(root):
                      'OUTPUT': output, 'csv': csv, 'io': io, 'json': json, 'zipfile': zipfile,
                      'ET': ET, 'os': os, 'sys': sys, 'ctypes': ctypes, 'native': native,
                      'socket': socket, 'time': time, 'errno': errno, 'signal': signal}
+            scope.update(analysis_modules)
             exec(compiled, scope, scope)
             sys.stdout.flush(); sys.stderr.flush(); os._exit(0)
-        except BaseException:
-            # Never leak traceback, paths or arbitrary code exceptions to a model.
+        except BaseException as failure:
+            # Analysis gets a finite category and owned code line, never traceback/message/path/value.
+            if request.get('analysis_diagnostics') is True:
+                category = type(failure).__name__
+                if category not in ('NameError', 'KeyError', 'TypeError', 'ValueError', 'IndexError', 'PermissionError', 'SyntaxError', 'ZeroDivisionError'):
+                    category = 'OtherError'
+                diagnostic = {'category': category}
+                tb = failure.__traceback__
+                while tb is not None:
+                    if tb.tb_frame.f_code.co_filename == '<preparation>' and 1 <= tb.tb_lineno <= len(code.splitlines()):
+                        diagnostic['payload_line'] = tb.tb_lineno
+                    tb = tb.tb_next
+                name = getattr(failure, 'name', None)
+                if category == 'NameError' and isinstance(name, str) and name.isascii() and name.isidentifier() and len(name) <= 80:
+                    diagnostic['identifier'] = name
+                try: os.write(2, json.dumps(diagnostic).encode('ascii'))
+                except BaseException: pass
             os._exit(70)
     os.close(out_w); os.close(err_w); os.close(ready_w); os.close(go_r)
     stdout = open(os.path.join(root, 'payload.stdout'), 'xb', buffering=0)

@@ -1,3 +1,5 @@
+import {createPiSessionCaseRuntime} from '../../adapters/agent-pi/native-open-analysis.ts';
+import {createLocalAnalysisRequestLedger} from '../../adapters/storage-local/analysis-request-ledger.ts';
 import * as electron from 'electron';
 import {basename,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -5,7 +7,7 @@ import {launchBrowserCompanion} from '../browser/companion-main.ts';
 import {readPersonalDesktopToolchain} from '../../profiles/personal/xanthil-desktop.ts';
 import {createProviderSettings} from '../../packages/application/provider-settings.ts';
 import {createMacOsCredentialStore} from '../../adapters/credentials-macos/index.ts';
-import {createPiStoredCaseAssistantRuntime,probeLocalXiaomi} from '../../adapters/agent-pi/xiaomi-local.ts';
+import {createPiConnectionProbe} from '../../adapters/agent-pi/native-connection-probe.ts';
 import {createLocalMembershipPolicyStore} from '../../adapters/storage-local/member-model-policy.ts';
 
 /** Runs only after the shared Main instance lock and app readiness. */
@@ -13,12 +15,12 @@ export async function startBrowserNativeEntry(entryUrl:string,credentialHelper:s
   const {app,dialog,shell,Menu}=electron;
   const descriptor=app.isPackaged?join(process.resourcesPath,'toolchain-deployment.json'):fileURLToPath(new URL('../../build/xanthil-toolchain-deployment.json',entryUrl));
   const toolchain=await readPersonalDesktopToolchain(descriptor);
-  const settings=createProviderSettings({store:createMacOsCredentialStore(credentialHelper),probe:probeLocalXiaomi});
+  const settings=createProviderSettings({store:createMacOsCredentialStore(credentialHelper),probe:createPiConnectionProbe({root:join(app.getPath('userData'),'connection-tests')})});
   await settings.initialize();
   const policy=createLocalMembershipPolicyStore(app.getPath('userData'));
   await policy.initializeApproved();
   try {
-    const companion=await launchBrowserCompanion({originDirectory:app.getPath('userData'),toolchain,model:{runtime:createPiStoredCaseAssistantRuntime(()=>settings.taskCredential()),access:settings.access,policy},native:{
+    const companion=await launchBrowserCompanion({originDirectory:app.getPath('userData'),toolchain,model:{createRuntime:({projectRoot})=>createPiSessionCaseRuntime({projectRoot,ledger:createLocalAnalysisRequestLedger({projectRoot}),credential:()=>settings.taskCredential()}),access:settings.access,policy},native:{
       async selectProject(){
         const choice=await dialog.showMessageBox({type:'question',message:'打开本机工作项目',detail:'可重开由本浏览器入口创建并保存的项目。其他版本项目尚未开放切换。',buttons:['新建项目','打开已保存项目','取消'],defaultId:0,cancelId:2});
         if(choice.response===2)return null;

@@ -48,11 +48,11 @@ export function desktopAssistancePayload(projection: DesktopProjection, action: 
     return {payload_text:canonicalDesktopJson(payload),categories:['action_schema_labels','user_authored_free_text','period_labels','aggregate_column_names'],aggregate_refs:[] as string[],free_text_present:true};
   }
   if(!['explain_evidence','draft_candidates'].includes(action)||action==='explain_evidence'&&revision.state!=='Review'||action==='draft_candidates'&&!['Review','Completed'].includes(revision.state))desktopRuleFailure('AUTHORITY_REQUIRED');
-  const finding=projection.findings.at(-1);if(!finding)desktopRuleFailure('AUTHORITY_REQUIRED');
+  const finding=projection.findings.at(-1);if(!finding)desktopRuleFailure('AUTHORITY_REQUIRED');if(finding.native_origin||finding.aggregate_id===null)desktopRuleFailure('SOURCE_CHANGED');
   if(action==='draft_candidates'&&!projection.acceptances.some(a=>a.finding_id===finding.finding_id))desktopRuleFailure('AUTHORITY_REQUIRED');
   const metrics=validateDesktopCalculationResult(JSON.parse(finding.metrics));
   const payload={schema_version:'1.0',action_kind:action,method:{id:finding.method_id,version:finding.method_version},confirmed_context:context,aggregate:{artifact_id:finding.aggregate_id,metrics},...(action==='draft_candidates'?{accepted_finding:{finding_id:finding.finding_id,judgment:finding.judgment,supporting_evidence:finding.supporting_evidence,refutation:finding.refutation,limitations:finding.limitations,evidence_refs:finding.evidence_refs}}:{})};
-  return {payload_text:canonicalDesktopJson(payload),categories:['action_schema_labels','user_authored_free_text','verified_pseudonymous_aggregate','method_label',...(action==='draft_candidates'?['accepted_finding']:[])],aggregate_refs:[finding.aggregate_id],free_text_present:true};
+  return {payload_text:canonicalDesktopJson(payload),categories:['action_schema_labels','user_authored_free_text','verified_pseudonymous_aggregate','method_label',...(action==='draft_candidates'?['accepted_finding']:[])],aggregate_refs:finding.aggregate_id===null?[]:[finding.aggregate_id],free_text_present:true};
 }
 
 export type DesktopReportMaterial=Readonly<{manifest:DesktopRunManifest;contract_text:string;binding_text:string;ir_text:string;primary_sql:string;python_verifier:string}>;

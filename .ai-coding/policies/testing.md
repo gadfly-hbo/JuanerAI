@@ -3,7 +3,7 @@
 Authority and stop conditions come from
 `docs/governance/product-change-execution-policy.md`.
 
-- Before each behavior's implementation, state its minimum sufficient spec and
+- Before each behavior's implementation, write its minimum sufficient OpenSpec and
   acceptance reference, write the test, and run a causal expected RED. Then
   implement minimal GREEN and refactor only while GREEN.
 - Pure refactors use pre/post GREEN and relevant equivalence evidence;

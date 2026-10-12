@@ -1,3 +1,19 @@
+## Change005 v1.3 当前累计增量（2026-10-12）
+用户产品/UI验收已通过；v1.2为过渡版，用户已取消比较要求。当前源码完整独立PASS/4304离线PASS，requiredCI及Git集成按release-v13记录推进，不伪称已发布。原001～004、40稳定ID和未覆盖范围保留。
+
+| 六＋二家族 | 当前005已验证子范围 | 未覆盖范围 |
+|---|---|---|
+| C1 业务双主线 | PIM开放需求、沙盘框架、保存追问及独立调查 | 完整OSM行动/Actual闭环 |
+| C2 分析模式 | 假设路径兼容及范围内自主探索、多轮工具 | 完整Deep Research和所有场景质量 |
+| C3 产品矩阵 | Mini个人工作台与本机用户验收 | Team/Enterprise/商业留存 |
+| C4 方法扩展 | R3方法核验覆盖、适用Python探索并披露未核验 | 新算法独立验证器、因果/预测/Model Pack |
+| C5 决策与价值 | 有界主子孙意见回流、版本比较、逐数字证据报告 | 现实行动、Actual/正式效果与完整Report Studio |
+| C6 资产与进化 | 不可变历史、同项目显式方案复用/重新计算 | 双库/Teach、受治理学习及效果验证 |
+| A 数据/语义/执行 | Context/Binding→IR真实消费者、本地计算、原生SDK和持久账本 | 所有资料格式/宿主/方法的全面覆盖 |
+| B 治理与人的责任 | 精确授权、独立核验、停止/UNKNOWN/迟到、用户验收 | 企业治理及现实行动授权 |
+
+C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部实现；其他状态按原范围保留，不把局部证据升级为全能力完成。完整40ID和历史见[当前005快照](snapshots/change005-v13-progress-2026-10-12.md)，验收见[005发布记录](../../../openspec/changes/xanthil-browser-multisource-membership-analysis/release-v13.md)。以下旧“当前”投影为历次采集时点。
+
 # 蓝图能力证据索引
 
 核对日：2026-10-01。首版集成基准：`5a8fe7b38ebdb1c2a8d49dcb5bdc5fa9d4bc3041`（PR #50）；随后核对Change003已发布记录，固定版本为 `2bb18d7356289781a87a672dc3f7b9bd40341d87`（PR #52）。回填003时本地尚在首版基准，使用只读GitHub记录而未同步产品代码，因此新增来源保留固定版本链接。此处描述证据采集时点，不宣称读者当前工作树HEAD；后续文档发布／同步不改变原证据范围。本索引为[能力清单](register.md)提供来源，不代替原始验收记录或工程状态。
@@ -174,3 +190,25 @@ B、完整集成候选及其回归、独立 Validator、工程接受、用户体
 - 本次交付不授权实际Provider/业务数据、安装、发布或下一Change。原始证据根仍为 `/Users/bendandebaba/JuanerAI-artifacts/change-004`（Mac mini）；Git集成不等于这些设备本地原始日志已跨设备备份。
 
 [完整交付快照](snapshots/change-004-delivery-with-e2-waiver-2026-10-02.md)保存固定六＋二覆盖、增量和缺口。
+
+## Change005 R2 待独立审查增量（2026-10-08）
+当前数字引用、通用派生核验、范围/单位反例、版本持久读回及现有数字依据抽屉已实现；不重编号40能力ID或N01～N20。覆盖范围、partial报告、历史失败/UNKNOWN、资源及正式完成缺口见 [R2验证](../../../openspec/changes/xanthil-browser-multisource-membership-analysis/verification-r2-001.md)。稳定最终回归/完整独立审查/用户验收未完成，不标正式交付。
+
+### Change005 R2 继任正常验证050（尚待完整独立复核）
+同一任务真实北区230/270→Coffee80/270、差额与增长率公式、旧新版及刷新/重启无重复、实际下载9875bytes已收回；部分解读与原连接失败未追认。048默认可靠数字和049副本呈现完成因果回归，完整canonical011/继任独立审查未收回，用户ProductAcceptance待后续。40稳定ID、N01/N02、原缺口不重编号或扩展。完整验证与资源118请求见[原Change记录](../../../openspec/changes/xanthil-browser-multisource-membership-analysis/verification-r2-001.md)。
+
+### Change005 R2当前本地候选已接受，待本人产品验收
+完整005独立PASS（2647源码/75证据），108重点/类型012/17适用portable阶段403输入稳定。真实两版数字/范围重算、旧成果/刷新/重启零调用及实际下载成立；数字来源与派生核验不认证因果，旧报告不改写。保留partial解读、FAIL/UNKNOWN/118消耗及CI/Git/archive缺口。40ID/N01～N20不重编号、不升级全部目标完成；[当前快照](snapshots/change005-r2-review-candidate005-2026-10-08.md)、[工程接受](../../../openspec/changes/xanthil-browser-multisource-membership-analysis/engineering-acceptance-r2.md)。
+
+## Change005 R3 审查候选001（2026-10-09，未正式验收）
+
+五类经营方法核验覆盖、不同字段及数据泛化、同任务范围重算与持久报告/证据/核验等级已取得当前执行证据；完整回归17阶段/955PASS15skip。独立正式审查和用户产品验收尚待，不升级完整能力状态。[增量快照](snapshots/change005-r3-review-candidate001-2026-10-09.md)；前序FAIL/UNKNOWN、部分报告、资源及CI/Git/archive缺口保留。
+
+## Change005 R3 本地工程接受150（2026-10-09）
+
+candidate149独立PASS，五方法及适用四类场景本地工程接受；当前实际范围/阶段、差值整体单位换算修正，新报告保存/下载成立，旧失败/UNKNOWN保留。本人产品验收PENDING，正式CI/Git/archive未执行，不提升40能力完整状态。[本次快照](snapshots/change005-r3-local-acceptance150-2026-10-09.md)，[工程接受](../../../openspec/changes/xanthil-browser-multisource-membership-analysis/engineering-acceptance-r3.md)。前段审查候选001是历史停止点。
+
+<a id="e-005-v13-progress"></a>
+## E-005-V13-PROGRESS（2026-10-12，非交付）
+
+见[当前完整能力快照](snapshots/change005-v13-progress-2026-10-12.md)与原Change verification-v13.md。Mini持久证据根controller/v13-autonomous-analysis-001，real175结构回流、report-scope-followup112/full004/real177/real178收据。4273离线通过、18原条件跳过；报告partial/cancelled与UNKNOWN保留，当前UI/AX/最终独立审查及用户接受未闭合。未新增Git/CI或整体接受主张。

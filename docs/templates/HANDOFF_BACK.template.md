@@ -1,6 +1,8 @@
 # Handoff Back
 
-Return at meaningful package outcomes, not after every correction. Use applicable
+Return at the requested result or a real decision/stop boundary. Ordinary
+milestones are progress updates followed by the next authorized action, not a
+reason to await another start instruction. Use applicable
 fields and link existing verification/evidence instead of duplicating a ledger.
 Keep one current result/next-action summary and point other reports to it;
 preserve issued receipts and historical failures. Omit inapplicable optional
@@ -18,6 +20,17 @@ The sole execution policy defines progress, stop-loss and actual resource limits
 ## Completed
 
 - TBD
+
+## Mac mini Trial and User Acceptance — when preparing user trial or acceptance
+
+Follow the sole execution policy's Mac mini Trial and User Acceptance section.
+Omit this section when inapplicable; use the existing reply/handoff, not another ledger.
+
+- Version: candidate commit, identified uncommitted differences if any, and actual runtime version readback result
+- Entry: current Mac mini browser address, same-machine service and necessary start/stop method
+- Purpose and user result: trial feedback / required formal Product Acceptance
+- Changes and user steps:
+- Verification and gaps: passed / failed / unverified / unopened scope
 
 ## Blueprint Capability Coverage — at Change delivery
 

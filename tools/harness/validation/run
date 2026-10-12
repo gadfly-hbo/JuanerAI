@@ -142,7 +142,7 @@ run_group console-unit node --test tests/unit/run-evidence-console/run-evidence.
 run_group console-contract node --test tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts
 run_group console-integration node --test tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts
 run_group console-e2e node --test tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts
-run_group desktop-unit node --test tests/unit/xanthil-desktop/*.test.ts
+run_group desktop-unit node --test tests/unit/xanthil-desktop/*.test.ts tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs
 if [ "$scope" = portable ]; then
   set --
   contract_dir=tests/contract/xanthil-desktop

@@ -6,6 +6,8 @@ import { execFileSync } from 'node:child_process';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+const sdkPath = 'vendor/pi-agent-runtime/0.4.3/475480217d5f644a15264b2f838e5567d3e2c2e431b8a23c061a0665dbdbfa70.tgz';
+const sdkHash = '475480217d5f644a15264b2f838e5567d3e2c2e431b8a23c061a0665dbdbfa70';
 const key = 'node_modules/@electron/node-gyp';
 const parentKey = 'node_modules/@electron/rebuild';
 const commit = '06b29aafb7708acef8b3669835c8a7857ebc92d2';
@@ -28,6 +30,13 @@ export function installView(lock, archive) {
   assert.deepEqual(lock.packages?.[key], expected, 'node-gyp exact approved lock entry');
   assert.equal(lock.packages[parentKey]?.dependencies?.['@electron/node-gyp'], `git+https://github.com/electron/node-gyp.git#${commit}`, 'node-gyp exact original parent edge');
   for (const [name, entry] of Object.entries(lock.packages)) {
+    if (name === 'node_modules/pi-agent-runtime') {
+      assert.equal(entry.version, '0.4.3');
+      assert.equal(entry.resolved, `file:${sdkPath}`);
+      assert.equal(entry.integrity, 'sha512-V01yA4t9M8BZn+O6pAdEGUBWa7di02sCTUYFMrmiLe8qker7sG9/X5ZzqXiL0j/5AZ57MI2OMjgoxSunG3pMaQ==');
+      assert.deepEqual(entry.dependencies, {'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1'});
+      continue;
+    }
     if (name !== key && entry.resolved !== undefined) {
       assert.ok(entry.resolved.startsWith('https://registry.npmjs.org/'), `unapproved source: ${name}`);
       assert.match(entry.integrity ?? '', /^sha512-[A-Za-z0-9+/]+=*$/, `missing registry integrity: ${name}`);
@@ -60,11 +69,15 @@ export async function prepare(repo, view, archivePath) {
   await absent(view);
   const manifest = await file(join(repo, 'package.json'));
   const lock = await file(join(repo, 'package-lock.json'));
-  assert.deepEqual(digest(manifest), { bytes: 1757, sha256: '927b08b0659391f2a1b896d9cc5a6e688443f5e905c4842845788fc450ee8736' }, 'approved repository manifest identity');
-  assert.deepEqual(digest(lock), { bytes: 319836, sha256: '861326061cd570b0e81584f149012b13228aec3da6528d82536f89cbb5d535c0' }, 'approved repository lock identity');
+  assert.deepEqual(digest(manifest), { bytes: 1888, sha256: 'fcd67c6047c38fe49a53c447643b762d333879747c38e3704b17afa98ba901a2' }, 'approved repository manifest identity');
+  assert.deepEqual(digest(lock), { bytes: 375120, sha256: 'aa890cf1e6399841e4e2453842840160527d0b291cfcbd1737ab970edb0d0d26' }, 'approved repository lock identity');
   const archive = await file(archivePath);
   const mapped = installView(JSON.parse(lock), archive);
+  const sdk = await file(join(repo, sdkPath));
+  assert.equal(digest(sdk).sha256, sdkHash, 'fixed SDK archive identity');
   await mkdir(view);
+  await mkdir(dirname(join(view,sdkPath)), {recursive:true});
+  await writeFile(join(view,sdkPath), sdk, {flag:'wx'});
   await writeFile(join(view, 'package.json'), manifest, { flag: 'wx' });
   await writeFile(join(view, 'package-lock.json'), JSON.stringify(mapped, null, 2) + '\n', { flag: 'wx' });
   const receipt = { repo, view, archivePath, manifest: digest(manifest), lock: digest(lock), archive: digest(archive), originalGitRepackSRI: expected.integrity, actualRawSRI: rawSRI, changedFields: [`${key}.resolved`, `${key}.integrity`, `${parentKey}.dependencies.@electron/node-gyp`] };
@@ -91,6 +104,9 @@ export async function finalize(repo, view, archivePath) {
   const manifest = await file(join(repo, 'package.json')), lock = await file(join(repo, 'package-lock.json')), archive = await file(archivePath);
   assert.deepEqual(digest(manifest), receipt.manifest, 'repository manifest unchanged');
   assert.deepEqual(digest(lock), receipt.lock, 'repository lock unchanged');
+  const sdk = await file(join(repo,sdkPath));
+  assert.equal(digest(sdk).sha256, sdkHash, 'fixed SDK archive identity');
+  assert.deepEqual(await file(join(view,sdkPath)), sdk, 'view SDK archive unchanged');
   assert.deepEqual(await file(join(view, 'package.json')), manifest, 'view manifest unchanged');
   assert.deepEqual(JSON.parse(await file(join(view, 'package-lock.json'))), installView(JSON.parse(lock), archive), 'only approved three-field view difference');
   const modules = join(view, 'node_modules');

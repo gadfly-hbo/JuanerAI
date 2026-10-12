@@ -2,6 +2,8 @@ import {validatePreparationPlanBinding,preparationAuthority,type PreparationPlan
 import {createHash} from 'node:crypto';
 import {canonicalDesktopJson, desktopMetricChanges, desktopRuleFailure, prepareDesktopData, validateDesktopCalculationResult, type DesktopCalculationResult, type DesktopMetricPeriod, type DesktopSelection} from './xanthil-desktop-decision-case.ts';
 import type {OwnerRef} from '../contracts/xanthil-desktop-ipc.ts';
+export {compileOpenAnalysisIR,executeOpenAnalysisIR} from './open-analysis-ir.ts';
+export {compileOpenMembershipFramework,materializeOpenMembershipFramework} from './open-membership.ts';
 
 export const membershipHash=(value:unknown)=>createHash('sha256').update(canonicalDesktopJson(value)).digest('hex');
 export const membershipBytesHash=(value:Uint8Array)=>createHash('sha256').update(value).digest('hex');
@@ -60,7 +62,7 @@ export function plannedSelection(input:unknown,snapshot:MembershipSnapshot):Plan
 }
 export type MembershipPeriod=Omit<DesktopMetricPeriod,'repurchase_rate'>&Readonly<{repurchase_rate:DesktopMetricPeriod['repurchase_rate']|'not_applicable'}>;
 export type MembershipResult=Readonly<{periods:Readonly<{comparison:MembershipPeriod;current:MembershipPeriod}>;changes:Omit<DesktopCalculationResult['changes'],'repurchase_rate'>&Readonly<{repurchase_rate:Readonly<{absolute_delta:DesktopCalculationResult['changes']['repurchase_rate']['absolute_delta']|'not_applicable';relative_change:DesktopCalculationResult['changes']['repurchase_rate']['relative_change']}>}>;m2:DesktopCalculationResult['m2']|Readonly<{status:'not_selected'}>}>;
-export function validateMembershipResult(input:unknown,plan:MembershipPlan):MembershipResult{
+export function validateMembershipResult(input:unknown,plan:Pick<MembershipPlan,'methods'>):MembershipResult{
  const r=membershipRecord(input,['periods','changes','m2']),periods=membershipRecord(r.periods,['comparison','current']);
  const legacyPeriods={} as Record<'comparison'|'current',DesktopMetricPeriod>;
  let unavailable=false;
@@ -140,3 +142,5 @@ export function validateAnalysisOutput(input:unknown,manifest:AnalysisRunManifes
  if(plan&&(o.plan_sha256!==membershipHash(plan)||membershipHash(o.materialization)!==membershipHash({primary_sql_sha256:manifest.artifacts[0].sha256,python_verifier_sha256:manifest.artifacts[1].sha256})))desktopRuleFailure('SOURCE_CHANGED');
  return analysisResult(o.result,plan);
 }
+
+export {openAnalysisPreferences,checkOpenAnalysisMethod,openAnalysisMethodCatalog} from './open-analysis-methods.ts';

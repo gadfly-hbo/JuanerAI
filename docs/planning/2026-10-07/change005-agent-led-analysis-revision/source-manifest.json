@@ -1,0 +1,111 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_FROZEN",
+  "copied_fixed_sources": [
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/product-input-v1.1.md",
+      "copy_path": "references/original-product-input-v1.1.md",
+      "bytes": 38807,
+      "sha256": "d42d2acbe02356451179e260095336bd5524802cff4780a755d584940cd519a9"
+    },
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/ui-contract-v1.1.md",
+      "copy_path": "references/original-ui-contract-v1.1.md",
+      "bytes": 8879,
+      "sha256": "7d319f52777b56b257e234e2966b7b07fc09a6fa70aeda88b72a65ba48673ce9"
+    },
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/approval-and-handoff-v1.1.md",
+      "copy_path": "references/original-approval-v1.1.md",
+      "bytes": 11869,
+      "sha256": "258946d794f8b7249ca584a387892889790815b1f81eea25e034f3a74370fbc3"
+    },
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px006/styles.css",
+      "copy_path": "clickable/reference/px006.css",
+      "bytes": 17185,
+      "sha256": "4dae5eae25e59826ea0aab2b0d101d93474f4f896b5e6ea9e838522689b53fa4"
+    },
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/brand.css",
+      "copy_path": "clickable/reference/brand.css",
+      "bytes": 2013,
+      "sha256": "7c7c365713b23b0b666b453c0c02e7df39277a03170ca8610a343f73ddd039e9"
+    },
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/v1.1/workspace.css",
+      "copy_path": "clickable/reference/workspace.css",
+      "bytes": 7581,
+      "sha256": "4f86a21c5fece040f85a7e2e103c75dbb5aabecae648ec39cd32c3e5f80fff10"
+    },
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/index.html",
+      "copy_path": "clickable/reference/px004/index.html",
+      "bytes": 43887,
+      "sha256": "3d572bae679fa5be02d6a7ad463a0fb06a5bc4cbcaff74dbdad83bba4615a674"
+    },
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/app.js",
+      "copy_path": "clickable/reference/px004/app.js",
+      "bytes": 36436,
+      "sha256": "90ab6e4b24899a753fabb47ca60659534393d0534daafcd3261e29895b1e754d"
+    },
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/data.js",
+      "copy_path": "clickable/reference/px004/data.js",
+      "bytes": 3544,
+      "sha256": "24df63d955bba731ceb8d6e5919c593777d1e3b85388621aa3a5f85162d30b7f"
+    },
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/styles.css",
+      "copy_path": "clickable/reference/px004/styles.css",
+      "bytes": 23310,
+      "sha256": "c2b5ad6baa712e82600cebcf8dbb8df7cb9ee591cd24faa2dab5bfabb6b75444"
+    },
+    {
+      "source_commit": "0c6834d52eaa5da25f107117e7b545098c8ddace",
+      "source_path": "docs/planning/2026-10-06/change005-five-moments/product-addendum-v1.1.md",
+      "copy_path": "references/five-moments-product.md",
+      "bytes": 21581,
+      "sha256": "de324456083441f7529d04bc72b8bf92a7fd10d68546f9ca5aa3ca9a6164955b"
+    },
+    {
+      "source_commit": "0c6834d52eaa5da25f107117e7b545098c8ddace",
+      "source_path": "docs/planning/2026-10-06/change005-five-moments/ui-addendum-v1.1.md",
+      "copy_path": "references/five-moments-ui.md",
+      "bytes": 6107,
+      "sha256": "f2867a54e19b19f17585eaa39605c43d4717d7a34e0ed9a052377154eed8f360"
+    },
+    {
+      "source_commit": "0c6834d52eaa5da25f107117e7b545098c8ddace",
+      "source_path": "docs/planning/2026-10-06/change005-five-moments/approval-and-freeze.md",
+      "copy_path": "references/five-moments-approval.md",
+      "bytes": 5160,
+      "sha256": "79b5388f5d0cc06dbbab87b45dbfb887d120f832f581f85c4182df7b25810b53"
+    },
+    {
+      "source_commit": "0c6834d52eaa5da25f107117e7b545098c8ddace",
+      "source_path": "docs/planning/2026-10-06/change005-five-moments/references/分析核心三角.txt",
+      "copy_path": "references/分析核心三角.txt",
+      "bytes": 10966,
+      "sha256": "b1181ae06b2d3a49ba13f7cf720c4ff5f1727a9319f09c56ba41293f63d17bb6"
+    },
+    {
+      "source_commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "source_path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/review.js",
+      "copy_path": "clickable/reference/review.js",
+      "bytes": 15047,
+      "sha256": "7616ec7b0c824e6f8db00d122ec4eb7d8e437583d9b174c45d67957bf04b7f75"
+    }
+  ],
+  "notes": "Copies preserve original bytes and historical labels. Source relative links are historical; current package bindings and review authority are explicit in product-input-revision-v1.1.md."
+}

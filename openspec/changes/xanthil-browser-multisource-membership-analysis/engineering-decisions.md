@@ -566,3 +566,606 @@ This scoped Engineering Acceptance is not user Product Acceptance,real Provider 
 ## 2026-10-05 — MacBook product trial may use the real model
 
 User explicitly authorizes actual Xiaomi model calls and associated token consumption during the MacBook product trial. The independent local web service is therefore transferred with its real Provider path available. Credentials remain local to the receiving MacBook and are neither read, copied nor logged by the transfer. A real call still occurs only through the webpage after the user configures the local key and explicitly authorizes the selected material and request; no background probe, automatic dispatch or use of the Mini trial material is permitted. This authorization supports user Product Acceptance work, not hosted deployment, credential export, automated scheduling, Git publication or a broader external-data boundary.
+
+
+## 2026-10-05 — v1.1 execution resumption and first vertical package
+
+Adopt new frozen inputs and v0.9 in intake supplemental entry. Prior stops released only by current explicit user startup; historical failure and resource records remain authoritative for their candidates. Primary/Controller owns intake, material persistent/public/safety contract decisions and board. Native Worker may own focused first connected open workbench package, necessary private spec/design, tests, source and repairs. No blanket permission to invent public schemas or new Runtime. First read reusable seams and return concrete material contract decision before dependent implementation. Ordinary private corrections close continuously. Existing authorized temporary process/loopback synthetic verification applies only to task-owned bounded test processes, no arbitrary termination or host changes. Untrusted generated-code execution requires already proven isolation and explicit fixed test binding; no unsafe probe. Pending real-call/credential question blocks those effects alone.
+
+
+## 2026-10-05 — bounded Provider/credential permission granted
+
+User explicitly answered “允许指定来源读取及合成材料真实验证” to the consolidated OA-RT01–06 question. Effective scope: backend approved §3.4 specified recipient-matched environment/zcode/pi entries; task synthetic materials; real MiniMax-M3 and mimo-v2.6-flash multi-round/tools/stop-resume/persistent metering. No secret artifacts, no cumulative cap, original plus at most one additional request shared with backup. No real business data, dependency installs, host changes or CLI/Git expansion. The earlier pending statements remain historical; provider-permission.json records resolution. This does not resolve native Worker sandbox mismatch or establish model compatibility. No credential/model execution yet.
+
+
+## 2026-10-05 — overbroad role stop corrected, primary continues
+
+The user points out existing startup authorization requires continuous progress, not another approval. Native Worker sandbox conflict remains real and that optional role stays stopped. v0.9 Lean Context and Native-first explicitly permit current primary to implement directly; main Sol/medium and parent danger-full-access/never are already observed and authorized. The earlier whole-task block was unnecessarily broad. ENGINEERING_INTAKE_CONFIRMED for primary continuous SDD/TDD/implementation in original worktree. Independent final Validator configuration remains an affected closeout condition, not a new prerequisite to primary implementation. No CLI roles, permission changes or acceptance weakening. Real Provider/credential scope follows the user's separately recorded grant. Auto scheduler remains PAUSED.
+
+
+## v1.1 — scoped persistent request ledger consumer decision
+
+Approved OA-RT05/06 requires primary/backup physical requests and one shared extra request across Run/Attempt/restart. Existing membership_operation storage is correctly scope-limited to M1 and mimo-v2.6-pro; silently relabeling its historical rows or weakening its schema checks would be wrong. Add a versioned open-analysis request consumer under the existing storage-local Adapter as one project-scoped SQLite sidecar, following existing case-assistant sidecar pattern; no new storage platform/Runtime, old databases untouched. Only approved new-task backend composition and task-owned synthetic tests initialize it. Existing operational task/semantic/report ownership remains Application responsibility; ledger does not create product tasks or grant permissions. Schema records task/revision/run/attempt, stable logical operation, scope/config/recipient, request sequence, reserved/issued/terminal status, times and existing known/unknown usage types; no prompt/response/key/path/CoT columns. One task stop fence persists separately. Admission+issue commits before network; crash after issue remains UNKNOWN and blocks blind repeat. Same logical key ignores Run/Attempt and recipient, so fallback shares total two. Retry only after settled temporary failure and valid authority; explicit stop/resume does not reset counts. Late completion records usage but cannot publish results after a fence. Readback is side-effect-free. SQLite transactions/unique constraints and private path/schema/hash verification are required. This decision is within approved operational persistence, not migration/activation of existing user projects or formal human effects. No production wiring/complete acceptance claimed by a standalone ledger.
+
+### v1.1 Runtime Adapter protocol correction (2026-10-05)
+The first bounded synthetic real verification (`controller/v11-open-runtime-001/real-synthetic-001`) ended FAIL/CONNECTION_FAILED with zero tools; its one issued attempt and unreported token usage remain preserved. Installed Pi 0.84.2 ModelRuntime dispatches through the provider implementation, so changing a catalog Model.api does not change MiniMax CN's Anthropic dispatcher. The approved Profile endpoint remains `https://api.minimax.cn/v1`; no recipient switch is authorized or performed. The existing Pi loader now exposes the installed pi-ai OpenAI-completions API and the open-analysis Adapter uses that actual API with private explicit credentials. This is a protocol choice inside the same Pi Adapter, not a second runtime. Backup metadata is sourced from official Pi model metadata, while Token Plan invoice cost remains UNKNOWN; SDK zero cost is never billed usage evidence.
+Per-request 30s/4096 output token and 1MiB serialization bounds, at most 32 model turns per invocation (3 in synthetic verification) stop with an explicit incomplete/error state; they are bounded execution conditions, not a cumulative spending ceiling or acceptance substitute. SDK retries are zero and the durable ledger owns the single extra request. No generated code or host-isolation claim is exercised by the trusted fixed CSV tool used here.
+
+### v1.1 first open computation consumer
+Continue a thin connected open method before extending the full method catalogue: immutable selected-source inspection → explicit field binding → versioned dynamic integer-sum IR → actual trusted local computation, with source/binding/plan identities and every row accounted. It is not a membership template, preview sum, generated Python replacement, or full OA-C delivery. Unsupported numeric semantics/decimal scale/methods fail with named gaps rather than invented rules or skipped rows. Application will expose inspected scope and available method through the approved Pi tools, keep model explanation distinct from computation evidence and save only through a version/fence-aware storage Port. Existing source inspection is reused and no arbitrary file, shell, SQL, network or generated-code tool is added. Strict generated Python and broader analysis methods still require their applicable isolation/verification evidence.
+
+#### v1.1 bound correction against frozen §9 D3
+The earlier provisional default 32-turn bound was too broad relative to the approved prohibition on introducing numeric loop limits in place of the accepted budget decision. Removed that production default before any profile wiring. An explicitly supplied turn bound is solely the bounded synthetic verification command condition; production has no new cumulative/model-turn ceiling. Task outcome, missing information/authority, unsafe effect and explicit stop must govern its Application consumer. The previous wording remains attribution history, not current policy.
+
+### v1.1 runtime metadata and first consumer boundary
+Confirmed official exact backup metadata at https://pi.dev/models/xiaomi-token-plan-cn/mimo-v2-6-flash: same approved recipient/model/API, context/output limits and compatibility flags. Its published Pi subscription descriptor has zero estimator rates; these are not actual invoice cost and are never copied into the persistent measured bill. MiniMax official OpenAI API https://platform.minimax.cn/docs/api-reference/text-openai-api confirms fixed endpoint/model and reasoning_split history requirements; use split thinking within Adapter and never return internal thinking as user text. No runtime/SDK version switch or install. Read ADR0003/data-authority/security-boundaries: open-analysis is a narrowly owned capability Port of the existing Pi Adapter, not a second Runtime or universal registry/hot switch; Application contains no Pi SDK type/session.
+The first Application consumer records framing as MODEL_PROPOSAL, including any proposed unit, not an approved business fact. Facts are bound-column values/arithmetic; explanation remains MODEL_EXPLANATION. Persistence callbacks must atomically honor identity/version/stop fencing and be independently read back. Stub callback receipts do not establish that production storage is implemented. The next connected increment is actual task-owned persistent storage and faithful UI wiring; no new business permission or product redesign follows from these local helpers.
+
+
+### v1.1 task/checkpoint/outcome persistence consumer
+The open Application callbacks require actual atomic identity and stop fencing. Add a narrowly scoped operational sidecar under the existing storage-local Adapter for new authorized open tasks, preserving all legacy schemas and rows. Task record owns question, authorized local source inspection, fixed run identity, framework proposal and verified outcome; request usage remains in the existing request ledger. A transaction validates a lease epoch and current run before saving. Stop and restart recovery invalidate prior leases; restart records UNKNOWN and never executes or grants authority. Readback alone has no write/Provider effect. Unknown runs cannot be blindly resumed; reconciliation remains an explicit Application condition. This incremental store is not activation/migration of prior user projects, a new Runtime, UI redesign or proof of OA-RT completion.
+
+
+### v1.1 external local reference permission and endpoint hold
+Read-only deep-research/.zcode study is authorized by current user requests, not an imported external project authority. User chose original endpoint retention when offered api.minimaxi.com/anthropic. Subsequently .zcode readback shows api.minimax.cn/anthropic; a precise same-domain path/protocol question is pending and blocks that change only. Current /v1 OpenAI endpoint and credential selection stay unchanged. No reference SDK upgrades, fallback/retry chain, title backfill or external task execution adopted.
+
+
+### v1.1 user-approved zcode same-domain protocol correction
+User explicitly selected “采用 zcode 同域配置”. This supersedes /v1 endpoint hold for the main model only: MiniMax-M3 uses https://api.minimax.cn/anthropic with anthropic-messages; exact outbound path /anthropic/v1/messages, no redirects. Reuse the authorized recipient-matched zcode source (same key as prior Pi source) and installed Pi0.84.2 Anthropic implementation. No SDK install/upgrade, .com domain, backup change, hidden retry, new data or external effect. Tests were updated to the approved binding before code: 3 causal failures then13 GREEN. Existing historical OpenAI failures and UNKNOWN/resource rows remain untouched. Complete candidate and OA-RT still pending.
+
+
+### v1.1 authorized deep-research endpoint test
+User now explicitly asks to test https://api.minimaxi.com/anthropic using builtin MiniMax-M3/anthropic-messages. Permit a fixed composition-time primaryEndpoint restricted to the two explicitly authorized hosts; no arbitrary URI, registry or hot switch. Test wrapper rebinding of same approved backend key is limited to that frozen synthetic command. Default production remains user-approved .cn; no permanent credential source/global zcode change or SDK upgrade. Existing ledger/provider/Model/run identity and one extra request policy stay intact. Actual PASS would prove this tested consumer only, not full OA-RT or automatic product default adoption.
+
+
+### v1.1 matching installed HTTP transport correction
+Current user asks exact deep-research configuration reproduction and both main/backup verification. Keep exact `.com/anthropic` spelling (minimaxi, extra i) in authorized reference command; previous approved `.cn/anthropic` product default is not silently replaced. Read-only reference confirms builtin M3 and Pi-ai0.86.1; mixed0.84Core/0.86Api diagnostic lost system/tool declarations until normalized, but normalization alone did not repair transport. Installed coding SDK imports npm undici8.9, whose dispatcher is incompatible with Node26 bundled fetch decoding; installed SDK source itself documents this condition. Match the Adapter's default fetch to that same installed undici implementation, retaining request identity, destination guards, redirects=error, stop fencing and zero SDK retry. No dependency upgrade, global fetch replacement, proxy/sandbox/host configuration or new Runtime. Dedicated test override still wins only inside reviewed verification. Main and backup current-consumer two-round real tests PASS; historical failed diagnostics and UNKNOWN/resource rows are retained. User-reported deep-research six-round cost is reference only, not our observed invoice.
+
+### v1.1 continuous main-Agent increments: checkpoints, revisions, methods and mode
+
+Retain the same local sidecar/schema. JSON 1.1 adds durable visible business conversation; 1.2 adds immutable prior task versions. Pi message mapping remains inside the Adapter. Explicit continuation requires settled physical requests, preserves usage and operation retry limits, and reuses completed calculations only for the exact source and framework. UNKNOWN never grants a retry.
+
+IR 1.1 composes real grouping, predicates and count/min/max/exact mean with the retained integer sum consumer. Independent reverse BigInt calculation checks selection and per-group coverage separately. Built-in Skill/Prompt identities and conditions are consumed by the actual Run and persist in version history; neither can widen authority. Multi-source relations and generated analysis Python remain required unfinished work.
+
+Quick/professional views share one browser controller and the exact backend task, revision and ledger. PX004 six-stage navigation uses the approved source styles; materials, plan, tool events and reports are actual readback. Legacy form-page routing is removed from the normal mode switch. The current professional views do not yet satisfy the complete membership actions/collaboration acceptance.
+
+### Shared controlled analysis code isolation
+Reused the existing trusted preparation supervisor and physical settlement mechanism. Output admission is selected by composition: member CSV outputs remain unchanged; analysis admits only result.json. Analysis snapshots bind the immutable IR and complete selected inspection. Python results remain unqualified until the separate BigInt source verifier passes. Durable issued/settled/failed admissions and existing UNKNOWN ownership fence preserve resources and prevent automatic restart. At most two code executions are admitted per operation, including one correction. Analysis-only diagnostics expose a finite exception category and valid NameError identifier; they grant no authority and do not replace supervision or verification. No installation, new Runtime, global configuration, Provider endpoint change or user-data access.
+
+### Controller impact decision: open-task source authority for product003 collaboration
+The existing product003 sidecar owns child lifecycle, exact selected history/report/aggregate, returned result and adoption/rejection. General open tasks must not fabricate Completed Case / Finding / Acceptance / Closure / Decision rows. Add an explicit open-origin source projection resolved synchronously by the composition-selected source authority from the current saved open task and its verified outcome. Legacy OwnerRef is a compatibility locator for this explicitly tagged projection (project, task conversation, task, Run); it does not assert that an official Case exists. The old Case authority remains unchanged. Mutation transactions compare the complete current source projection; source revision/report/hash drift rejects. Open-origin sources have no formal candidate/acceptance/closure and cannot save or adopt formal Decision drafts through the legacy assistant route. This changes only the approved general-task collaboration source compatibility; no new data, external tools, Runtime, schema tables, enterprise behavior or reality-action authority. Main task/model permissions are not copied wholesale to a child; only qualified minimum aggregate and exact selected permitted conversation/report subset can cross the existing child contract.
+
+### Open-outcome judgment persistence impact
+Within frozen OA-08, add optional version-bound judgments to the existing hashed task JSON (no new database, schema or Runtime). Old bodies remain readable; immutable revision snapshots retain prior judgments. Only explicit authenticated user command creates acknowledgment. The record grants no human-formal effect and source collaboration still references independently qualified outcome only. Command receipt traverses retained snapshots; no new workflow Gate.
+
+### Scoped open-origin collaboration metering impact
+The approved uncapped-metered policy cannot be represented by legacy Case cost/turn/total-duration ceilings or invented zero monetary cost. Extend the existing Assistant contract with explicit uncapped_metered consumption only for qualified open_origin sources. Persist unknown monetary cost as null; authoritative actual calls/tokens/durations remain in the existing analysis request ledger. Legacy Case/member ceilings and numeric cost checks stay unchanged. The existing Pi Adapter remains the only Runtime and its per-request timeout/retry admission remains required. This is a scoped compatibility extension, not a second Runtime, new budget approval or weakening of legacy safety.
+
+### Existing003 child composition and persistence
+Reuse same runtime instance and persistent ledger across parent and child. Child business identity uses actual child session/attempt, exact selected context hash and configuration; deterministic operation/grant across identical explicit stop-resume retain retry accounting. Child checkpoint is added to existing hashed attempt body, no extra schema/runtime. Approved exact primary/backup pairs may return unknown monetary cost; other destinations rejected, legacy Case validations unchanged. Readback/startup never invoke credentials or models; recovery marks prior active attempts Interrupted and pending ledger blocks blind resume. User MODEL adoption is still a003 material relation, no formal Case/Decision activation. UI is approved expanded independent subdialog in same workbench; no theme/page redesign.
+## Standard-method reuse correction
+The Application had made generated Python mandatory whenever the native code executor was composed, including already implemented standard sum/query/decimal/union methods. Actual real-union-main-001/002 failures show unnecessary regeneration and ambiguous header/output handling. Within the approved runtime/tool boundary, calculate_and_verify now defaults to the trusted local IR consumer; an explicit code argument still enters the existing isolated code executor and its correction budget. Both paths independently reread and verify original bound rows before persistence. No new Runtime, permission, UI, installer or relaxation of proof is introduced. Actual generated-code acceptance remains required and its evidence is retained; built-in success cannot replace it. This ordinary private method selection is owned by the main engineering Agent.
+
+## Next professional method integration: reuse with task identity preserved
+The next bounded package connects the existing membership M1/M2 preparation/calculation/recomputation into the same open-analysis task and professional six-stage view. It must reuse existing pure source/date/amount/status checks and the existing DuckDB primary/Python independent calculator; not create another model Runtime or route a second membership chat. A standalone method input must name current Task/Run/Attempt, exact selected sources/physical bindings, explicitly supported methods and known business periods/status/currency. It must not fabricate Case/Finding/Decision owners to satisfy legacy execution-plan requirements. Existing adapter method selection/result validation may be factored so direct method consumers can reuse it without those formal owners; old formal routes and provenance remain intact.
+This is an in-boundary engineering contract decision preceding dependent implementation. Persist the new typed framework/result only with current identity, actual source+method digest, qualification and independently matching results; keep old numeric task versions readable. Disabled M2/group fields cannot be inferred, and zero denominators remain not_applicable. Formal human decision/Expected remains an explicit user operation using existing actual records and protections, never a saved-analysis side effect. The same task/version is visible in quick/pro views; no replacement UI or additional approval stage. Full supported file tools and whole OA-RT acceptance remain required. Exact implementation types follow causal SDD/TDD before code.
+
+
+### Open business Context before executable framework
+Within the frozen OA-01/C01/UI requirement, main Agent adopts a private version1 context record on the existing frame/SQLite task body, not a new Runtime or management system. Build Context from exact current/historical user words and authorized source facts before compiling the plan. Keep MODEL_PROPOSAL goal/method/unit/grain/relationship separate from USER_SAID and SOURCE_FACT; undefined business authority stays unknown, not inferred from a header. Bind its SHA to the actual executable IR and save frame+context atomically. Store readback checks exact task-question lineage/source identity and recompiled binding; wrong/missing context or a forged source fact is rejected. Same physical framework may reuse its original Context on expression-only revisions; retained history prevents invented current user words. No new UI gate or per-tool approval, no extra Provider/credential/data permission. Expose concise classified context in the confirmed card/drawer; advanced identity remains inspectable. Existing context-free historical frames retain scoped semantics and must not be relabeled as Context evidence. Focused unit/Application/store/IR/verifier tests named before implementation, causal RED retained.
+
+### Main Agent decision: collaboration lost-reply fencing
+Within existing OA-S06/RT04 scope, reuse product003's receipts table for an open-browser mutation reservation and terminal accepted marker. Namespaced derived UUID avoids collision with internal create/review/return receipts. A reserved record after crash is unresolved, not rolled back or auto-replayed. Client keeps pending until exact receipt read. This is internal command bookkeeping within the current authorized package; no new persistent schema, Runtime, user Gate or execution authority. Existing history and failures remain. Tests and receipt RED precede implementation.
+
+### Open document reader within existing local Profile
+After reading data-authority and security-boundaries, extend the selected-source DTO syntax for frozen document/image formats while retaining every legacy member csv/xlsx eligibility check. Use one trusted local reader Adapter (not generated code, not a new Runtime) on fixed selected bytes; retain original byte hash, source/page/paragraph identity, parser identity and explicit uncertainty. Document extraction is text/structure observation, not a numerical table or proof of business meaning. No installation: existing standard Python/XML, installed PDF/document libraries and headless LibreOffice may be configured by the composition root; unavailable native OCR/legacy conversion is a specific task capability gap, not fabricated content. All child processes owned and time/output bounded; no document macro execution, network retrieval or arbitrary file path input. Code-generated calculations continue through the existing isolated executor and independent verifier. Current parser increment has its own causal RED/GREEN; complete format qualification remains separate from reader code existence.
+
+### Selected image observation (Q11-07, OA-S01/S04/C02)
+Use installed macOS Vision through one fixed trusted native reader, selected bytes only; no remote OCR, document commands, credentials or Provider. Bound source bytes, decoded pixels, process lifetime and output. Persist original source identity, reader source/binary identity and text positions/confidence as an OCR observation, never an independently verified numeric/business fact. Existing Context limitations propagate OCR uncertainty. A missing native reader returns a concrete unsupported condition; no silent image/text fixture substitution. Restricted legacy Office bootstrap failures remain FAIL, not reader success.
+
+### Q11-07 / S03 bounded value-map derivation impact
+Main Agent/Engineering Controller chooses a private IR1.5 wrapper for explicit selected-column value mappings before existing single-source grouped/filter/arithmetic methods. Original bytes and inspection remain immutable. Mapping definition, full derived snapshot digest and first-ten-row Diff share one identity; unmapped/ambiguous/missing cells reject full derivation, never retain old values and call it success. Deterministic local derivation is within existing selected-material authority and needs no per-row confirmation; it cannot write source files, infer business aliases, access another scope or perform formal actions. Existing IR1.0–1.4 persisted semantics/negative tests remain unchanged. No table migration/runtime/dependency/permission added; wrapped arithmetic receives a separately materialized reverse-source mapping recheck. This is the first finite transform method, not arbitrary conversion or full format qualification.
+
+### Browser read projection (Q11-05/07/C03)
+Normal browser transport may explicitly request browser-v1 representation: header+first10 source rows with actual full row count, visible messages and tool-event summaries, same backend identities/result/history. Canonical backend record, full computation/model inputs and existing default read remain unchanged. The representation is labeled, cannot be supplied as execution authority, and never promotes preview to full data. This prevents repeatedly shipping full documents/tool material in ordinary UI polling; user-approved selected material is not used as a reason to expose unnecessary internal execution data.
+
+### Pending source reader closure correction
+Application owns the AbortController and collection promise for source inspection, including amendments. Reuse existing Inspector cancellation/deadline contract and service close; no new store/schema, Runtime, arbitrary process termination or host permission. Uncommitted interrupted inspection remains failed submission, not a saved analysis outcome. Specific UI stop-during-first-inspection and durable submission recovery remain separate unclosed acceptance items.
+
+### 文档引用IR接线决定
+产品输入OA-S01/S04、Q11-07/10要求通用文档可用于真实成果，不能只读取后按数值失败。使用现有IR与成果JSON的加法式分支，不新建任务/存储/Runtime。source_attribution与independent_arithmetic分开；没有独立算术资格的文本不能进入旧会员正式Closure。当前公开类型需增量消费者/负例/兼容回归及最终独立审查，旧版本字节和已有结果不重写。主Agent在批准范围内承担设计/TDD/修正；不新审批产品或擅改UI。
+
+### Initial submission identity and stop before source inspection (OA-RT04/06)
+Main Engineering Controller impact decision within approved local task/SQLite boundaries: add an additive versioned initial-submission receipt in the existing open-analysis DB, with command identity, input fingerprint, state and owner epoch only. No credentials or raw file bytes in the receipt. Exact v1 schema is recognized before transactional migration to v2; corrupted or unknown schemas stay blocked; old task bodies remain byte-preserved. Read-only v1 read does not migrate.
+Reserve before the owned parser; the explicit Stop may fence that command while parsing or configuration lookup. Stop is UNKNOWN until physical read settles; no model may launch from a cancelled reservation. Service restart marks an unfinished receipt UNKNOWN without parser/model/configuration reads or replay. Atomic task creation accepts only the live reservation; old process epochs cannot accept. Browser pending identity is recoverable from the exact receipt and must not enable automatic resubmission. This is a necessary private persistence extension, not a new Runtime, Gate, global coordinator or authorization.
+
+### D2 document child scope compatibility
+Approved D2 admits authorized documents as precise subsets. Extend the existing open-origin source projection to independently rechecked saved IR1.6 quotations. No new Runtime/store/owner or automatic dispatch; keep source_attribution labels and explicit child authorization. Never copy the full source inspection into child material. Existing numeric qualification and formal003 controls remain unchanged.
+
+### Clarification business checkpoint
+Use an optional normalized business proposal in the existing clarification JSON, with identity already bound to exact Task/Run/material scope. Validate classification/shape and canonical normalization on write/read; no schema/table/runtime change. Browser consumes it in the existing business-understanding drawer when no framework is yet available. This preserves current work rather than inventing an executable frame to enable a display.
+
+### Professional formal-member bridge: source authority design
+OA-S02/Q11-10 requires the actual same-version member result to reach explicit analysis-only / request-more-evidence / human Decision-and-Expected review. The existing Plan2 qualified-preparation path is M1-only and forbids business choice; it cannot be repurposed by deleting that guard, fabricating an H0, calling an OpenTask a CaseOwner, relabeling its physical Run or minting a preparation receipt.
+Within approved member formal scope, choose an additive, explicitly versioned open-member evidence-origin bridge to the existing formal Case authority. The existing Case store must create the genuine project/session/case/revision identity. The bridge pins the actual stored OpenTask revision/outcome, selected-source scope, IR1.4 and both actual native proof envelopes; it does not invent a legacy confirmation or change original evidence. A formal Finding is a separately admitted product record of independently checked descriptive member facts, never a causal hypothesis or an accepted business choice. Original evidence identity and every failure/UNKNOWN remain.
+The current open revision and source proof must still match before review/commit. Model suggestions remain draft candidates, valid evidence references must point to actual product records. Human actor/choice/Expected fields are explicit user values under existing completeness, source, baseline, dependency, guardrail and atomic review validators; no automatic model adoption, business action or guessed owner. Analysis-only makes no Decision/Expected; more-evidence keeps work unfinished; only the explicitly completed human choice transaction records both. Reuse existing formal Decision/Expected persistence and rollback/readback checks; do not add a parallel formal outcome store or Runtime.
+This paragraph is implementation design, not completion evidence: current bridge is not yet implemented and existing formal guards stay intact. The next causal test must fail for absent genuine Case origin/admission, then implementation closes the new versioned contract with stale/mutated/unqualified/UNKNOWN/partial-commit negatives and same-version professional UI integration. No user planning Gate or per-command permission is introduced.
+
+### Normal web reader deployment closure
+Normal independent web service currently selects only the numeric toolchain Python unless manual environment variables are supplied. That leaves installed qualified PDF/Office XML and image readers outside the normal entry. Main Controller selects an optional, closed version1 task-local deployment descriptor under ignored build/, pinning existing executable realpaths and SHA-256. Passive startup validates descriptor identity only, never runs a parser, reads credentials or issues Provider requests; absent descriptor preserves existing numeric fallback and its specific unsupported conditions. A configured damaged or mismatched descriptor is a readable unavailable state, not silent fallback. Existing explicit reader environment overrides remain explicit deployment inputs. This does not install/upgrade dependencies or qualify the failed legacy DOC/PPT converter; do not bind that converter as qualified.
+
+### Legacy Office bootstrap correction successor (2026-10-06)
+Confirmed by own actual macOS crash frames, platform dyld-support policy and isolated DOC/PPT experiment: libignition requires read of literal root as openat anchor. Adopt only literal '/' permission in the existing deny-default child profile, not recursive root or user file access. Production policy is persisted within its own job; actual unselected-read/outside-write/network negative checks run that exact policy. Converter/helper SHA jointly identifies actual DOC/PPT reader. This is a private correction within authorized synthetic owned-process tests; no new install, sandbox relaxation to arbitrary files, credential/Provider or real-data authority. Preserve all failed bootstrap/fixture/identity attempts.
+
+### Genuine Case ownership before formal member admission
+Reuse existing desktop Application createSession and durable receipt under actual project authority; no new formal store/parallel runtime. Source-linked deterministic command prevents duplicate Case creation on same-source retry/restart. The returned source-owner association requires before/after exact qualification. This is only the owner prerequisite; Finding source branch, three human outcomes and Expected remain to implement and are not implied by a Draft.
+
+### Scanned PDF observation and genuine Draft owner successors
+Reuse existing installed pypdfium2/PIL plus actual existing Vision reader, only blank text-layer pages, max200 pages/4096 dimension/8M render pixels and enclosing30s maximum source deadline. Preserve selected-byte identity and actual page OCR positions/confidence. Entire mixed observation remains OCR_UNCONFIRMED, never automatically admitted as quantitative evidence or verified quotation. No new dependency/Runtime/Provider/public UI design. Reader helper and applicable binary identity captured before read and checked before publication; own job identity uses the same digest.
+The Case owner prerequisite now reuses existing Application durable create_session receipt. It remains Draft, preserves source qualification and is not a substitute for the pending versioned Finding origin/atomic professional human review. No artificial hypothesis, preparation, confirmation or formal Run was created.
+
+### Controller impact decision: native open-member formal origin
+Scope: OA-S02 and OA-08 genuine source admission under approved current member task; preserve old Plan1/Plan2 schemas and Plan2 choice prohibition. The open native Task Run is not an old confirmed Case Run, so no fabricated H0/confirmation/preparation or rerun to satisfy an old FK. First persist a discriminated immutable open-member origin under genuine existing Case owner in the SAME existing desktop SQLite, with selected inspection/framework/outcome, actual primary/independent proofs and source digest. No second formal store or Runtime.
+Physical desktop schema successor130 adds one closed origin table first; explicit authorized admission alone upgrades current fresh/reopened browser120 transactionally. Pure reads do not migrate; legacy100/110 cannot activate this path. Preserve120 tables/rows/guards verbatim, and validate all added origin rows on pure readback. Owner FK, deterministic source command, immutable payload/digests and current owner/source checks prevent reassociation and replay. Failed/UNKNOWN commit keeps source identity and supports same-operation receipt readback; no model/calc execution. Existing origin registration/lease and actual project authority remain required in normal composition.
+Subsequent formal Finding will use a versioned origin reference rather than counterfeit analysis_runs/input_confirmations. Professional human review must reference current genuine Finding/report/source and atomically reuse existing acceptance/closure and attached Assistant Decision/Expected authority. Merely storing the origin leaves Case Draft and is not formal acceptance. All public consumer source discrimination and legacy/version regression must pass before this successor is a complete candidate. No new product choice, external data, installation, action or visible UI design is introduced.
+
+Report expression uses an optional closed versioned field in the existing open-task record, with no new database/runtime or formal acceptance. Save requires outcome SHA and expression sequence, records USER provenance, and preserves original facts/explanation and task identity. This is an OA-08 in-boundary implementation decision.
+
+### Native formal member Finding continuation
+Qualified origin130 is an immutable prerequisite, not a Finding. The formal successor will extend the SAME desktop Finding/Case/report/receipt authorities with an explicit native origin discriminator; it must not fabricate legacy confirmation, hypothesis, preparation or analysis Run. Native facts schema3 records the exact source-origin SHA, current owner, source-bound method selection, actual Task Run/Attempt/physical Run and native primary/independent proof. Its Verified judgment covers arithmetic, never a model hypothesis or causal claim. Human analysis-only/more-evidence/choice outcomes must use the actual source and existing closure/Decision/Expected semantics in one submitted review. No parallel Runtime/Case store or external action authority. Physical130 stays historical; any changed physical schema gets a distinct tested successor before production use.
+
+### Native Finding publication physical140 impact decision
+Extend the SAME findings table with an explicit open_member_origin_id and facts3 discriminator; legacy Run/aggregate refs are nullable ONLY for native3. Preserve old legacy constraints and exact semantic validation; do not label Task Run as legacy Run. Rebuild only findings and command_receipts in a bounded explicit130→140 transaction using SQLite documented table rebuild, with foreign-key check and all old rows copied unchanged. Passive reads never migrate. Add publish_open_member_finding receipt; existing Case Review/current Finding/report pointers are authoritative. Validate current qualified source/Case Draft before migration and again in publication; write immutable draft report files, then transactionally publish Finding/report/Case/receipt. Interrupted commit remains RESULT_PENDING and pure same-command lookup; no model/recalculation or formal acceptance. Native report evidence derives actual primary/independent/source origin. Final human review remains separate. Current compatibility/public projection adds explicit native_origin/facts3, nullable legacy refs; existing legacy callers remain branch-qualified. Full human closure uses existing acceptance/form/closure/report/Decision authorities later; no parallel management system.
+
+Native human review persistence uses physical150 immutable draft successor; explicit submit uses physical160 successor in the same operational store and existing acceptance/form/closure/report authorities. Both preserve predecessor schema identities and receipts; no parallel Runtime or approval. Ordinary approved overall-review contract implementation, not a new product direction.
+
+Native formal choice uses explicit native_member_review origin in existing FormalDecision and attached case-assistant state103 semantic successor. Existing100–102 physical and origin identities remain; no fake membership task/legacy Run. Same-transaction Case acceptance/closure/report, Decision/Expected/head; final native source read validates actual immutable review and submission. No actual real-world action.
+
+B2 current private recovery transition: approved OA-S05/RT04 requires settled, qualified checkpoint continuation after crash. Preserve startup UNKNOWN/epoch fencing and existing schemas; add only explicit identity-fenced reconcileCheckpoint to current OpenAnalysisStore. Application checks actual ledger/config and Store independently checks current source/framework/proof and complete tool sequence before reconciling. Missing proof/pending tools cannot be treated as stopped; no new grant/retry/Attempt is created. One platform-neutral Product Core predicate is shared by normal client and trusted Store. Exact static route serves only that fixed module, not arbitrary paths. No product/UI redesign, dependency, Provider or host permission expansion. Historical checkpoint/body versions retain validators.
+
+B1 private task-body impact: same existing SQLite tasks/submissions authority and table schema; explicit body1.3 successor permits MODEL_CONVERSATION only, closed fields and exact source/identity/receipt checks. Earlier body validators remain exact and reads never upgrade them. Quantitative outcome/proof remains unchanged; conversations cannot be a qualified native member origin or automatically formalize a human decision. Ordinary report copy/expression/acknowledgement reuse exact generic outcome receipts. Empty selection means only the authorized question/history, no file discovery. Same approved UI component positions; consent copy accurately distinguishes question-only and selected-material submission. This implements already-frozen behavior, not product/safety expansion or a parallel Runtime.
+
+B3 private code-Port successor: keep the callable executor and add an optional qualification callback for the normal local Adapter. Admission v1.1 carries the original operation plus deterministic accepted plan/source step digest. Qualification is a durable append-only record after independent proof, checked against the physical settlement and trusted original snapshot. Existing v1.0 admissions remain historical and unresolved ones block conservatively; no rewrite/migration. Model retry accounting remains separate and unchanged. The primary owns SDD/TDD/correction and uses the current one-time Validator read-only permission exception for independent successor recheck.
+
+B2 source-location correction: the shared browser/server settled-checkpoint predicate is a standard-platform contract helper in packages/contracts, with its type declaration. This preserves the retained native-.ts Product Core graph invariant and lets the browser load the same pure JavaScript predicate through an exact static whitelist. No legacy assertion is weakened, no SDK enters business layers, and the Store remains the full source/framework/proof authority. The prior Core-location candidate is retained in preimages/failure evidence; this is a behavior-equivalent relocation, verified pre/post GREEN, not a new contract version or additional Gate.
+
+Current UI correction full regression revealed retained P1-B-ATOMIC-05 cold sidecar initialization race: child1 database locked, child2 missing main.metadata; both failed before formal publication. This belongs to the existing authorized formal-store adapter/idempotency acceptance, not new multiwriter product authority. Controller resolves privately through exclusive short sidecar identity/initialization gate; schemas and whole formal transaction remain unchanged,1second local wait bound, subsequent main DB locking remains fail-fast. Preserve existing invalid-file refusal; do not repair preexisting zero-byte files. Preimages/causal actual failure under ui-scope-diff-001/atomic-correction and current-canonical015. No user budget/permission or approved UI change.
+
+### Native submit fault-injection target (canonical016 successor)
+The retained lost-reply test previously intercepted every SQLite COMMIT before querying a main-only receipt table. The new atomic sidecar initialization adds a distinct legitimate COMMIT. Restrict only this test injector to the known state.sqlite main filepath using standard PRAGMA database_list. No assertion, negative coverage, operation retry, receipt collection, or storage contract is removed. The production bounded initialization gate remains unchanged; current-canonical016 failure and the test preimage are retained. Focused native-method integration now PASS (native-target-green002.log); the first attempted helper used unavailable tsx and failed before tests, retained separately as native-target-green.log.
+
+### Ordinary reply UI superseded-read correction
+Confirmed UI race, not a requirement to Stop. A prior list captures saved revision1, arrives after revision2 is visibly running, replaces selected state with saved and therefore prevents the running-only poll from continuing. Backend has already saved reply2; Stop's explicit refresh makes it visible. Add private monotonic read/render sequence tokens, discard superseded completion before shared collaboration assignment and DOM commit. Keep normal passive list polling, receipt/UNKNOWN recovery and Stop boundaries unchanged. No model call/retry, UI redesign, schema, or external effect added. Preimage browser-red004 and permanent test causal RED retained; current actual browser GREEN.
+
+### Independent R1 correction and applicable regression reuse
+Candidate004 independentFAIL preserved: direct task reads bypassed refresh sequence and could again halt polling. Add a private selection identity and invalidate list at task-read entry/accepted completion; reject superseded selection after another selection, New Analysis, project change or pagehide. Public seam causal RED before production change; latest current unit and Chrome direct-selection regression support correction. Source delta is limited to this client, its permanent test, and engineering metadata; backend/Runtime/permissions/formal transaction bytes unchanged. Therefore reuse stable complete canonical019 for unaffected modules, run current full Desktop unit, browser view integration, root typecheck/syntax/diff and actual Chrome affected flows. Do not relabel019 as current successor full run; formal hostedCI requirements remain unchanged. Validator004 itself asks for these affected paths, not unnecessary whole-history repetition. focused020 retains FAIL due incorrect npm workspace selector; root npm run typecheck in focused021 is the applicable command. No Provider call or new authority.
+
+R2 correction: factor existing private selectTask(id) and reuse it for task-list and search buttons. Search reads current saved task instead of cached list object. No new abstraction/runtime/UI; refresh/selection/paint guards remain.
+
+R3:one private receiveTask(read, selectionVersion) fences async receipt adoption for recover/resume/stop/revise/initial submission. Bind intended target/question/preferences/materials before async paint; no duplicate dispatch, automatic cancellation or retry. Existing receipt persistence and pending clear remain in client. Independently found006FAIL preserved; current unit/real-browser/affected regression and successor007 required.
+
+## Five Moments implementation scope decision
+Preserve original task/store/profile/runtime and native primary ownership. Start with FM-X/current version selection plus typed impact/finding projection, then task semantic/real editable plan and dependency-qualified partial outcomes, then same-project explicit adoption. This is private bounded task functionality, not a generic DAG/asset/Runtime platform. Existing SQLite task-body/hash store is reused; any optional versioned task metadata needs strict decode/legacy roundtrip/negative tests before use, no destructive migration or new global registry. Outcome proofs remain independent and bound to actual source/plan/operation; never count model self-evaluation. Result-sized increments integrate early and retain all original accepted behavior.
+
+### FM-X proposal-only preparation boundary
+A revision preview reuses the existing Application/Pi Adapter and current selected-material authority, rather than inventing a second Runtime. Application proposal preparation may inspect authorized inputs and compile real Binding/IR, but offers no calculation tool, code execution, verification or outcome publication. It returns a source-bound candidate or a concrete clarification, and does not overwrite the accepted framework/checkpoint/old outcome. Runtime calls still use the existing persistent physical-request ledger and retry boundary when the workspace consumer is connected. Preview is not acceptance or permission. The workspace must durably bind the proposal to the exact baseline revision, source/config and command before exposing adoption; stale proposals must fail closed. Ordinary execution remains unchanged until the consumer and impact/adoption tests exist.
+
+Finding presentation uses the existing standard-platform contracts seam, as the browser and server consume the same pure projection without transpiling Product Core or exposing Pi types. The initial Product Core .mjs preimage is retained under the current evidence root. The domain TypeScript module exports this source-bound contract projection for typed consumers. No calculation or proof creation moves into the browser; incomplete presentation inputs produce no findings, never invented identity/provenance. Evidence focus selects the exact finding; objection only prepares a source/version-labelled user draft and does not imply adoption or computation. FM-X impact/adoption remains required.
+
+### Durable preview metadata and ownership
+Use optional revision_previews in the existing strictly decoded task body, preserving previous body versions and unchanged SQLite tables. Each preparation has a unique command, physical-operation identity and exact original baseline digest (identity/question/source/framework), with current source/config/grant reused only within the current task. Preparing/ready/waiting/failed/stopped/UNKNOWN are distinct. Preparing survives as unresolved after reopening; no read starts or retries a model. Completion must fence the exact baseline and validate compiled candidate/context against actual source and the new question, without modifying accepted frame, outcome, judgments or history. No accepted-state update while preparation is unsettled. Historical preview metadata remains attributable to the corresponding historical baseline after a genuine revision. Unknown physical work remains a Workspace/ledger reconciliation boundary. This metadata is not a new authority, formal acceptance or reusable business asset.
+
+### Explicit preview adoption and execution binding
+Adoption is one atomic task revision against exact ready preview/baseline/question/preferences. The new revision carries that compiled frame, clears prior calculation/verification/tool continuation, and retains the old checked outcome only in immutable history. A task-local confirmed_plan receipt binds user adoption command, revision and plan/context hashes; it is not a formal business decision or asset promotion. The running Application may execute the confirmed plan and inspect current inputs, but cannot silently replace its computational binding through model framing tools: a differing plan requires a new preview/revision. No repeated per-tool user approval is added. Historical confirmation remains verifiable against its own frame; ordinary later revisions must not inherit it as new approval.
+
+### Clarification continuation within a preview
+A reply to the latest waiting preview links the new preparation to that immutable earlier preview in the same task/baseline. Pass only those current-task user requests and corresponding actual clarification questions as standard business text to the existing Runtime; retain literal user words, source/config/grant and each operation's ledger identity. No Pi session identity is copied, no old calculation/tool proof is resumed, and no hidden assumption marks the meaning confirmed. The chain must be ordered, acyclic, source/version-bound and persisted; missing or altered parent fails closed. New observations compile a new candidate against the actual selected source before any adoption/execution.
+
+### Preview with explicitly adopted collaboration material
+Reuse the current Profile's actual stored material-ID resolver and scope/run/result/review checks; browser-supplied material bodies never establish authority. A preview may snapshot that exact selected MODEL/user-adopted subset in the same task/source, expose it as model opinion in the preparation prompt and carry it into the accepted revision/explanation. Computed facts still require local calculation and independent verification; material adoption never imports a proof, grant or causal conclusion. Lost preview replies reuse the exact persisted subset rather than collecting a newer material version. This closes the original Q11-09/FM-X consumer, not a new child capability or engineering role delegation.
+
+### FM-A01 bounded task semantic snapshot decision
+Use optional Context v1.1 alongside exact legacy v1.0 validation; no new database/schema or long-term definition store. assess_meaning records MODEL_CANDIDATE definitions and calculation-affecting conflicts in the same source/plan-bound Context. USER_CONFIRMED requires an exact quotation from the current user question containing the chosen value; tool assertions alone cannot invent confirmation. Existing unresolved conflicts cannot disappear through replacement: only an exact current-user choice among recorded alternatives resolves them. Conflicts block calculate_and_verify and create the existing short clarification, never a questionnaire. A later meaning change after confirmed adoption requires the existing preview/adoption path. Actual plan fields and source snapshot remain authoritative for execution, numerical verification does not verify proposed business meaning. No semantic detector completeness is claimed by a model prompt or these initial tests; integrated open sales/refund scenario remains required.
+
+FM-A01 waiting persistence: optional closed semantics on existing Clarification and RevisionPreview records preserves the exact task-local assessment when no executable frame exists yet. Validation cites current/history/ordered same-scope preview user questions; no browser body can claim SOURCE_FACT/long-term authority. Parent waiting preview passes its stored assessment to the next proposal. Production independent-web Profile requires an actual assess_meaning tool receipt before calculation; a skipped assessment returns a tool prerequisite, not a fabricated request for user confirmation. Older context-free Library fixtures retain their legacy mode for compatibility; new required-mode tests cover the production condition separately. No schema migration, Runtime replacement or authority expansion.
+
+FM-A03 use additive closed version1.0 verified-step receipts in the existing task body, no new database/runtime/queue. The Store checks actual current frame, exact lease, current source, every calculation and independent proof; reads validate historical receipt frames separately from the latest frame. Stable step IDs bind exact execution identity and plan, duplicates return the same receipt, changed data/late writes fail. Save before returning actual tool output; preserve receipt when later steps fail, stop or await input. Proposal-only preparation has no calculation and cannot produce such receipts. Existing ledger/call/stop/configuration boundaries unchanged.
+
+### FM-A05 bounded same-project plan handoff
+The existing project-owned task store is the only lookup authority. Explicit reuse names an exact settled, user-confirmed, independently qualified source task revision/plan hash. A new task receives an immutable structural recipe with human-readable header names and task-local definition candidates; it receives no rows, old facts, verification, decision, grants, session continuation or executable old IR. Current selected files are inspected anew, configuration authorization is rechecked, and fresh task/Run/Attempt/operation/grant identities are created. The existing Runtime must compile current Binding/Context/IR and independently verify current calculation. Read-only preview does not authorize or dispatch. Rejected/stale/cross-project sources do not fall back to arbitrary files. Existing initial-submission receipt recovery prevents blind resubmission. First supported recipe covers checked table aggregates (including union); membership/document/transform recipes remain explicit unsupported gaps until their actual consumers are completed, not claimed FM-A05 PASS.
+
+### FM-A02/03 executable step plan and dependency boundary
+Reuse the existing task/IR/qualified-step store, not a second Runtime or scheduler. A bounded source-owned analysis plan consists of named business steps, explicit acyclic dependencies, hypotheses/evidence needs and method limits. Each executable step compiles the existing actual IR against current inspection/context. A missing method is an honest unsupported branch; it cannot turn into a qualified result or hide dependent work. Only independently qualified prerequisite steps permit dependent execution. A stored final report is forbidden while required steps are pending, failed, stopped, UNKNOWN or unsupported. User amendments use the existing preview→actual impact→new revision path, invalidating affected proof and preserving historical evidence. Cancellation requires explicit scope change/reason, is recorded, and never declares the original goal complete. Implementation proceeds through bounded vertical slices; a dependency state reducer alone is not the product capability.
+
+### Explicit branch cancellation within the declared graph
+Use the approved existing step/branch action, not another workflow. For a settled task, the user names a step and provides a reason; display that step plus dependency descendants and the untouched branches before confirmation. The Application deterministically prepares the remaining existing IR graph against the same selected snapshot, then uses the existing revision/adoption mechanism with an exact receipt. No Provider call is made to prepare cancellation. The new scope/reason and removed branches are preserved by the old/new graph history; original-goal completion is explicitly disclaimed. Current proof is conservatively requalified in the fresh revision rather than copying old proof identities. A running or physically unresolved operation must first use the existing owned Stop/settlement boundary; cancellation does not kill arbitrary processes or bypass UNKNOWN. An interrupted preparation may be read back as preparation only, never cancellation success; no blind resend.
+
+### Actual refund association method (FM-A03 bounded data consumer)
+Add one versioned IR method in the existing open-analysis family, not a Runtime or arbitrary SQL facility: current selected orders/refunds, explicit amount/key/refund-record-ID fields, explicit unit/numeric mode and order-side filter/grouping. It computes only order amount minus matched nonnegative refund amount. No fuzzy matching, many-to-many expansion, implicit deduplication, currency/sign conversion or inferred missing mapping is allowed. Order association keys must identify exactly one order; refund record IDs must be unique; every refund must match exactly one current order. A conflict is a failed association branch and blocks net results/descendants; unrelated checked gross arithmetic remains inspectable. Main calculation and independent verification use separate implementations over original selected rows. Unit/meaning remain task-local declared candidates/explicit user choices, not long-term business authority. Tests must establish actual duplicate association failure, not merely unavailable method. New method remains within approved selected synthetic-material/tool boundary; no credentials/Provider/new installation/data scope is added.
+
+FM-A05 next bounded recipe increment: preserve explicit value mappings and refund-net association as non-authoritative structural candidate fields (header names, no source IDs/rows/results/proofs). Current new task independently binds selected materials and recalculates; method prerequisites and old-period omission remain. Reuse selection never grants current source or Provider authority. Existing recipe v1.0 remains readable.
+
+FM-A05 graph recipe: export only qualified confirmed graph structure as bounded ordered components with relative dependency indexes, human titles/hypotheses/evidence/limits and each non-authoritative method recipe. No old step IDs, Run/grant, facts/proofs or executable source IDs. New Runtime must create fresh step IDs and compile actual current sources; graph reuse reference hashes graph plus active plan. Current field/period/authority checks remain mandatory.
+
+FM-A04 objection reference: ordinary proposal command may name one finding_id from exact current checked outcome. Backend derives persistent revision/outcome/result hash/claim from owned task, refuses fabricated or stale finding before model/config access, and supplies it only as the subject of user objection, never refutation evidence. Exact replay includes this reference; waiting clarification retains it. Existing impact/adoption handles any actual meaning or scope change; direct expression-only report edits remain separate and retain checked facts. No new table, Runtime, approval or UI layout.
+
+FM-A05 remaining supported recipes: membership carries named source roles/columns, M1/M2, currency/timezone/status candidate parameters; omit both old periods and materialized facts. Document carries only source/field/position candidate selection, no quote text/hash/proof; current text observation and actual positions must be reselected and checked. Existing aggregate/transform/refund/graph candidate discipline applies, no new capability or data authority.
+
+FM-A03 persistent step receipts: extend existing task JSON with bounded ordered backend-only step_events, exact identity/lease epoch/sequence and declared step ID. Actual dependency/method failure, local execution start, check start, saved-proof completion and qualified-receipt read create events; no model-supplied progress. Root owned stop/recovery/settlement records active steps UNKNOWN then actual stopped/failed, keeping completed independent receipts. Late old lease cannot append. Revision clears current events and history preserves old events. No table, scheduler, global event bus or new execution authority; existing step/process/record surfaces consume them.
+
+FM-A01 real-model correction: actual main001 run preserved quota failure and backup observation of SEMANTIC_CONFIRMATION_INVALID (model paraphrase was not literal user evidence). Retain exact confirmation fence; clarify tool instructions that a non-null user_quote must be an exact substring of current user question AND contain exact value, otherwise use null/MODEL candidate. No automatically downgrading a submitted false confirmation, no fabricated user selection, no new retry loop. Additional main verification may use already explicitly approved minimaxi.com/anthropic endpoint in command-bound existing Adapter/credential callback; this does not change persisted product configuration or expand credential sources/Provider/scope.
+
+Actual002 model still submits paraphrase as confirmation despite clarified instructions; do not weaken compiler or silently downgrade it. Allow one explicit semantic-argument correction in the existing normal tool conversation, returning a closed instruction/remaining1 receipt; no accepted assessment/proof before correction. A second invalid semantic confirmation ends with SEMANTIC_CORRECTION_EXHAUSTED. This is bounded tool parameter correction, not HTTP/SDK retry, automatic user approval, or a parallel Runtime; persistent model request ledger and existing per-operation physical extra-request ceiling remain unchanged. Main002 minimaxi also returns QUOTA_EXCEEDED; preserve this Provider boundary and usage UNKNOWN, no blind primary retries.
+
+Semantic correction guidance follows actual backup003 failed second submission: the one correction receipt includes suggested definition parameters preserving MODEL value but nulling nonliteral confirmation quotes; exact valid literal quotes may remain. Suggestions are not stored or accepted assessments, no computed evidence or user choice is inferred; Runtime must explicitly submit corrected arguments and normal compiler still validates them. Invalid conflict resolution remains unresolved rather than silently resolved. User has deferred MiniMax five-hour quota retest; no further main requests before that deferred return.
+
+Real backup004 reveals step tool advertised generic strings/plan object although compiler requires exact UUID and supported versioned IR. Expose those existing constraints explicitly in tool schema/description with valid distinct examples and exact aggregate plan shape; no source ID or method inference, no change to compiler/security/output contract. One rejected step-parameter correction may be reported with concrete contract guidance; repeated invalid parameters terminate instead of indefinite normal model turns. No new Runtime, model budget, user approval or interface.
+
+Canonical001 CI-CHECK-001 fails exact accepted fixture inventory because new permanent Five Moments tests were not explicitly registered. Minimal affected test-asset correction in tools/harness/validation/run.test.mjs registers four actual unit files (join, moments, semantics, steps), preserving every existing fixture, ordering, mismatch assertion and independent fixed expectations. No automatic directory acceptance, CI lane/routing change or coverage retirement. Preimage under validation-inventory-preimage; current canonical entry unchanged. This is necessary same-package validation maintenance, not Git publication authority.
+
+### FM-AX2 existing in-flight amendment controls: precise evidence completion
+Extend the existing actual verifier-in-flight test before source changes: question preview and confirmed source replacement while active must reject TASK_BUSY without inspecting replacement or changing current version/proof. Following Stop UNKNOWN, preview/replacement must remain fenced until acknowledgment. These verify existing approved controls, not new behavior or retrospective causal RED. Existing OA-S03/C02 material replacement and FM-AX3/RT04 stopped-preview tests provide settled replacement/late/reopen evidence. Production contracts/UI remain unchanged.
+
+### Actual MiniMax semantic argument correction004
+Current actual model repeats an invalid quote for a paraphrased value and is correctly refused after one correction. Preserve main003/004 FAIL and usage. Improve only field-local tool guidance: null is the ordinary legal value for derived definitions; non-null quote must contain the exact complete value and be a literal current-user substring. Explicitly direct corrected submissions to omit nonliteral authority claims, including new filter definitions. Keep strict compiler, one-correction exhaustion, SDK retry/permissions and UI unchanged. Real failing004 is the causal behavioral RED; permanent strict authority/exhaustion tests remain sensitive.
+
+Main005 actual FAIL retained after field guidance: duplicate metric entries and paraphrase authority claims. Add describe_meaning private business tool with closed keyed definitions, without any quote field, translating explicitly model-proposed values into existing semantic compiler. Real claims stay candidate; original exact confirmation path and bounded guards preserved. Tests require actual calculation/strict no-authority/critical conflict refusal before implementation. No provider/UI/runtime/settings/schema migration.
+
+### Pi untrusted tool-arguments checkpoint codec
+Main007 actual raw message proves version1.1 numeric and filters empty-string in unvalidated step call. Standard business canonical hashing refuses fractional numbers; Adapter checkpoint/input-hash serialization must not abort before tool validation. Encode only untrusted arguments containing fractional numbers (or reserved-codec-key collision) as one reserved __juanerai_untrusted_arguments_json string holding exact standard JSON; decode at Adapter restore before original tool validation. No silent numeric conversion, no accepted IR/proof change, no retry grant. Deterministic installed-Pi test must persist malformed invocation and observe refusal→model correction→real valid execution; passive restore preserves exact fractional argument without executing it. Codec is private Adapter continuation representation through existing opaque arguments map, not a business schema migration/parallel runtime.
+
+Main008/backup007 FAIL retained. A missed old system instruction still demanded assess_meaning for ordinary candidate meanings; align that instruction to approved candidate tool. Nested step plan lacked typed version/filters metadata, allowing repeated numeric version/empty-string filters; specify string version and array filters while original IR compiler and once-correction guards remain authoritative. No supported IR removed; other IR properties remain method-specific and closed by compiler. Current causal real failure supplies RED; subsequent actual primary/backup execution required.
+
+Default production-CN main010 network/model requests succeeded, but declared step IR omitted mandatory goal and referenced itself. Preserve actual FAIL; goal is mandatory in every supported IR, so expose required goal in tool schema and explicit upstream-vs-self dependency description. Original graph cycle/unknown dependency rejection and once-correction ceiling unchanged. This closes missing schema metadata, not a domain expansion.
+
+2026-10-07 FM-UX-P01：直接复用当前快速线程／原展开区／原右抽屉和HTML details作渐进呈现。私有view携带原task.state，不创建持久流程phase或新导航。结果摘要后原生折叠保存口径/方案、计算核验、版本变化，重大限制与真实冲突保持默认可见。后台/Provider/源码加载配置不变；无新上边界决策。
+
+## 2026-10-07 Q11-UX-R02 接续
+用户连续报告模块时机及Stop后才出回复，并提供两张退款净额截图。授权原包普通纠正；保留progressive001及review008为前序，不能宣称用户验收通过。检查三种原因：慢list读回被下一周期作废；辅助读回阻塞绘制；页面／服务版本不一致。新证据controller/v11-reply-timing-002，仅任务合成、既有本机测试与同profile刷新；不新增Provider／资料／Git／自动跟进权限。
+
+### Q11-UX-C03: waiting clarification reply continuity
+User trial reports no response to 万，人民币. Current read-only task has four failed previews, not accepted clarification. Causal composer RED confirms framework presence wrongly routes reply into proposal-only Runtime. Causal meaning RED confirms exact new user unit cannot resolve model alternatives; compiler now appends exact cited user value while preserving old alternatives, other conflicts and invalid-citation rejection. Real primary002 consumed five successful requests yet returned waiting because pending semantic state was not explicit in Runtime context; preserved FAIL and usage. Third causal Application RED→GREEN binds actual pending assessment before tools; no prompt-only confirmation. Existing revise versions/preserves original question/checkpoint/history and runs actual rebind/compute/proof; ordinary plan changes and objections retain preparation/adoption. No schema/config/dependency/Git change. Evidence root controller/v11-clarification-reply-003. Main Agent is sole author/board writer; independent Validator required for complete fixed result. Real tests use only approved-source credentials and task synthetic material, not user task. Automation remains PAUSED.
+
+C03 independent closeout corrections: Validator010 rejected003 compiler/readback disagreement for specific literal units and004 global substring suppression that silently accepted independently mentioned alternatives. Both failures retained in controller/v11-clarification-reply-003/independent-review010. Main Agent extended existing spec and causal RED006/007/008 before each repair. Final choices evaluates individual character occurrences; whole quotation must identify exactly the selected literal. No guessed conversion, new permissions or Runtime. Final006 freeze links005→004→003; affected011159PASS/0SKIP,typecheck007exit0; actualbrowser006 typed万元人民币, computed/independently checked91/2 and reloaded without dispatch. Original万，人民币 browser004/main003/backup001 precise paths remain unaffected;16actualrequests total for this increment,379engineering aggregate/16priorUNKNOWN retained. canonical004 actualPASS childexit0/source_stabletrue/changed[]/419sources/339.37s;desktopintegration806PASS/7explicitSKIP, not seven successes. Prior source-unstable canonical001–003 remain FAIL. Final independent conclusion and user acceptance remain separate; same-profile service refresh requires quiescence and preserves every task/request body, with no automatic user message replay. Administrative conclusion updates are not new implementation source and are separately recorded after freeze.
+
+### Q11-UX-C04 / 2026-10-07：模型解释与后台验证分责
+用户要求修改设计。原C03完整006及其PASS/失败证据不改写。采用design.md的小接口语义Module：模型解释真实上下文并提交规范化含义及引用；Core核验来源/结构/适用范围/计算约束，不用substring确认含义、不把解释标成人工确认。实际单位消费Binding/IR，禁止只改标签。私有版本分派兼容旧JSON/Context，不原地迁移、不新建Runtime/数据库/权限；具体结构与负例在依赖实现前闭合。此次仅设计/规格/任务/验证记录修订，生产代码、服务、模型调用、Git及原试用任务未动；用户批准设计不伪称实现。
+
+C04 Canonical001实际FAIL（child1/source_stabletrue/421files/29.45s）：新增解释测试文件缺少已冻结离线fixture inventory登记。按现有条件路径tools/harness/validation/run.test.mjs只登记这一个新测试；保留精确清单断言、全部旧用例和full检查顺序，不改CI分档/权限/选择器。这是受影响测试资产接线，非新工程Gate。保存该文件preimage，继任candidate002链接001；主备产品Runtime输入未变，无重复真实调用必要。
+
+## C04-B01 独立候选002 FAIL
+Validator011独立33纯Core通过，但真实引文/clear单位解释缺少绑定仍允许390000元标为390000万元。保留独立FAIL与原Canonical PASS分开；unit-bypass-red001、unit-eligibility-red001实际RED。主Agent按已有单位真实消费合同修复执行硬边界、缓存/恢复负例与合法39万元。无新权限。完整继任候选和独立复核随后收回。
+
+## C04-B02 semantic004独立FAIL
+Validator011核对2539输入一致，B01已关闭；34纯CorePASS但2+3件真实数量回归被币种绑定挡住。保留该FAIL及原17组离线PASS；通过LLM结构化无换算非金额声明修复，不匹配件/公斤/任何词语、不放宽货币守卫。可选私有schema兼容决定见design；unscaled-red001已在生产修改前失败。
+
+C04-B02真实非货币补验nonmonetary-primary001 FAIL/3调用：模型正确解释原单位，却在inspect前声明资料范围／公式不明，读取唯一数量列后仍追问是否对2和3求和。保留waiting与账本。按既有产品原则修正通用资料观察顺序及冲突更新提示：先实际inspect再判断结构歧义，资料观察已消除的候选歧义用interpret_meaning更新并继续；无新增程序短语规则，无替用户选择真正业务口径，无移除歧义阻断。
+
+primary016实际FAIL/6调用：模型正确解释原始与输出都是万元，却将输入与输出scale都设为1，误把公共基准当成本轮相同单位；结果45.5万元表面正确，但度量物理基准错误，不记PASS。先明确度量契约固定ISO货币基础单位（例如CNY的1元），倍率永远相对此基准而非本轮任选共用单位；同单位无换算也不能以1覆盖真实倍率。此是通用机器度量基准提示修正，不解析任何用户短语、不把程序当语言理解器。既有受控换算与负例全部保留。当前canonical006源码稳定运行，待收回后才修改并冻结继任，不覆盖006。
+
+
+### R1-B1 当前工程影响决定
+在已批准 R1 的可交付一致报告/真实执行范围内，采用同一业务 Runtime 的无计算报告整理操作、实际短事实引用、聚焦上下文及成功纠正结果投影。不是新增 Runtime、独立事实权威或新的产品 Gate。内部请求目的/序列区分、现有 checkpoint 和 usage ledger 延续，无新持久库；后端可读的当前获准原始材料沿用同任务既有授权，原草稿/失败/UNKNOWN 不进入当前可交付答案但证据不删。
+受信生成程序诊断增加有界代码行，仅 <preparation> 帧，Adapter 白名单不转发 traceback/路径/业务值/异常正文；一次纠正和已安装 sandbox/资源上限不变。REF03/04、RT19/20 的具体设计、先后因果测试与真实失败见 design.md / verification-agent-led-r1.md。最终独立 Validator 仍需审查当前全文、范围与 collateral，main Agent 不自签 B1。
+
+REF05 impact：报告编辑漏实际IR导致goal净额与单源gross混淆；在原Application→Runtime输入内追加execution_plan，不新增公有持久schema/权限/计算或后台语义分类。完整计划是本次实际执行证据，模型目标不是业务认证。测试/当前实测继续，不改变验收和预算。
+
+
+### SEP01 accepted continuation 2026-10-07
+用户确认最小报告职责调整并继续实现/回归/独立审查，到用户验收停。原UI/Runtime/材料/权限/账本不变；自动跟进PAUSED。current-input038继任037，非完整候选。separation001/red.log、application-red.log、scope-red.log为真实因果RED；application-green局部14PASS。当前入口仅接收1.2解释/真实比较引用，后台直接组装实际事实/范围/等级/差额，旧历史合同保留。新增共享测试fixture只跟随协议，保留拒绝/停止/历史断言；网页/真实主备/完整回归/独立验收待收回，不宣称B1关闭。
+
+
+### SEP05 最终整理输入边界（当前继任，2026-10-07）
+接受的 SEP01 报告职责包内修正：自由 Agent 分析仍消费已授权真实资料与工具；最终无工具报告整理只消费真实 execution_plan/独立事实、资料行数概要及实际结构化图。原始单元格、未经核验的探索 summary/observations 不再在此环节重新分析；原 audit/checkpoint、草稿、原件与探索证据保持，图不提升为独立核验。assembly-context-red.log 先实际断言失败，实施后 assembly-context-green.log 17PASS。该私有输入投影不新增 Runtime、模式、权限、重试或用户确认。
+当前真实 main038 11请求两次生成程序 KeyError 后 FAIL；backup028 17请求9凭证/1探索后连接超时 FAIL；browser039 正常 Send 自动失败，无 Stop，6凭证/1探索保留，未形成最终报告。报告探针001主备各1次结构FAIL；002主备各1次结构/事实组装PASS，但主模型解释仍含错误子类归因和Tea稳定概括，因此整体语义FAIL，不能以探针机械PASS关闭B1。
+canonical031全17阶段通过仅继承未变范围；canonical032在前端真实 scope 修改后旧测试仍要求 goal 标题，desktop-unit FAIL 保留。受影响 FM-A03 测试改为实际来源/中性计算标题，其部分失败、证据/等级/无整项完成负例不删。最终独立审查未派发；全部真实失败/UNKNOWN/资源与用户验收停止线不变。
+
+
+### RT22 私有语义资料引用输入简化（设计先于实施）
+backup029 真实失败归因：模型将 64 位指标资料摘要漏写一位，准确 source_id/sheet/row/column 仍被拒绝，并在唯一纠正中复制同一个错误摘要。不能接受错摘要或增加重试。批准 R1 的包内最小修正：新 Agent 资料引用可只提交当前获准资料的精确 source_id/sheet/row/column；后台在当前 task inspection 中唯一查找并补入真实 sha256，再保存原有 1.2 来源记录。显式提交的摘要必须正确；错误/跨资料/不可见/OCR 未确认/不存在单元格均继续拒绝。持久读回仍携带摘要，资料变化或删去已保存摘要仍拒绝。该私有输入简化不是猜业务语义、长期资产权威或新材料权限，不变更存储版本、Runtime 和一次纠正上限。
+
+
+### SEP/RT22 当前完整候选收回（2026-10-07）
+- current-input042继任041，14个实际生产文件；RT22精确当前坐标后台绑定摘要的因果RED rt22-red.log、第一实施缺closed可选字段GREEN失败保留，green002为237PASS/0SKIP；type004 exit0。
+- canonical033全17组exit0，但RT22演进中仅继承未变范围。canonical034当前生产/测试稳定身份全17组exit0，3667 tests / 3652 PASS / 0 FAIL / 15明确SKIP；localportable不代表hostedCI/桌面/用户验收。
+- Report-only003主备各1请求，结构及真实事实/范围/差额、解释的作者读回PASS；仅保留真实browser036凭证上当前无工具整理，不冒称新完整任务。001结构FAIL、002主模型解释FAIL原样保留。
+- main039当前SEP身份16请求自动saved，真实生成Python先失败后唯一纠正成功、实际凭证和430/620/500/550/800/250一致，机械探针PASS。但解释中横向比较称“同方向变化”、两月称“本季”等有措辞/语义风险，全文交独立审查，不宣称模型意见已独立验证。
+- backup0294请求语义摘要漏位FAIL；RT22后backup03021请求已完成10实际凭证/1探索，最终报告CONNECTION_TIMEOUT，整体FAIL，不覆盖旧请求/失败。browser040输入自动键入丢中文属于测试输入错误，独立留79720490；正确输入browser040(36571786)真实FAIL无成果；browser041(45dfd4d2)自行收回failed，主请求CONNECTION_TIMEOUT、唯一备选CONNECTION_FAILED，0凭证/0探索，不点击Stop，不记完整网页PASS。
+- ownQA原服务正常入口受控刷新成功62512；原用户profile、已保存历史、原Git/Provider权限不变。新的完整正常网页、报告下载及当前主备完整运行仍有实际证据缺口，由独立审查评价是否阻断；不把模型连接故障说成产品功能已通过，也不盲目继续重复请求。
+- resources012继任011，1383去重请求，86未完整计量，已知input51329957/output652555/active13297210ms均下界；现有已收回请求pending=0；preR1历史另保留。自动跟进PAUSED、用户产品验收仍必须本人完成。
+### Independent003 / SEP11 用户决定
+完整 independent003 收回 FAIL（controller/v11-agent-led-r1-001/independent-r1-003.md）；2609源码/245当前证据匹配，B2实际退款关联和B3网页机械缺口关闭，B1一般解释仍有排序矛盾、虚构东部来源及错误量化。历史FAIL/UNKNOWN/资源016保留。
+用户在具体问题上回答“允许有界调整并验证”：MiniMax继续理解探索计算推进，仅最后报告解读交现有MiMo，同批合成材料验证；不改UI、不新增Provider/凭据、不增加重试。原工程连续授权及只读Validator豁免有效，自动跟进PAUSED，用户验收停止线/CI/Git权限不变。本次先SDD和因果RED，再最小代码接线；未证明通用语义认证，也不把换模型本身宣称B1关闭。
+### SEP12 / independent004-B4
+SEP13：browser048已收回FAIL/45模型轮，关键净额已实际核验，另4辅助IR漏执行、2空范围NO_DATA，Agent却结束。继续既有授权内修正IR实际消费，不扩大MiMo职责/模型重试。由原Application实际消费已声明且未核验的支持IR，空范围如实不可用并保留；不以新门禁或更多盲测代替执行。设计先于代码；原004与049均保留。
+完整004收回FAIL：8项proof只有1总净额，其他gross，诚实partial不能替代用户要求的净额比较。现有授权内最小工程修正：原Agent对焦/推进时声明关键proposal IR；现有read_analysis_evidence只读编译与proof覆盖反馈，增量保留在既有checkpoint。无新角色、Gate、数据库、自动重试或UI，不认证业务中文。保留1552物理请求/98不完整usage/pending0、current048、004及以前全部FAIL；继任验证未通过前不进入用户验收。
+## E-R2-01 数字报告协议与既有持久边界
+2026-10-08用户批准R2/独立产品就绪PASS后，工程主Agent决策：新增版本化报告引用及派生payload在既有Outcome/JSON持久权威，保持旧读回，不增库表、Runtime或独立资源/权限流程。此为批准行为内必要Port/持久兼容扩展；按原测试/负例/冻结/独立验证实施。未获得业务数据、安装、主机扩权、Git或自动跟进授权。具体设计见design R2节，来源身份及preimage在唯一证据根。共享MacBook Astra配置不变；主会话实际Sol/medium与原生Validator声明Sol/high分清。
+
+## R3 additive IR impact decision
+工程主Agent在既有批准范围内决定新增版本化IR1.9权重绑定，保留旧1.0–1.8读取与哈希。影响Core编译/执行、独立Adapter、Application模型schema与引用、度量、复用、报告及存储校验；必须受影响回归，不新增Runtime/数据库/权限。方法语义和关键边界由已批准R3控制，不由实现默认补齐。
+
+### R3工程合同增量：有限检查
+VC-05已批准仅守恒路径。工程影响决策：探索记录采用可选1.1而非修改旧1.0，total_check绑定现有IR/当前资料/指定图表/成本池proof及实际等级；兼容读回，无法升级完整独立核验。沿原Application/Port/Adapter，不新增资产库、Runtime或权限。保存验证须重核真实池及有限比较；任何模型自称不进入回执。
+
+
+### R3 内部计量纠正：可选原样字段属于已批准加权/成本权重分析的绑定修正，仅扩展原计量契约，不新增知识库、Runtime、数据权限或页面；完成因果 RED/GREEN、原货币和越界负例及保存读回。
+
+
+### 报告1.6影响决定：新增内部呈现规则版本用于R3凭证子项及执行参数的忠实展示，无新增数值计算/Provider/权限/页面。保留原版本校验路径，错误子项与错误参数负例必须成立，不覆盖007历史部分报告。
+
+
+## R3 分摊执行范围纠正（VC-05/13）
+成本池及权重操作数均须逐一核对原 execution_scope；IR2.2 继承成本池 base 不意味着忽略 inputs[1]。allocation-scope-red001 为前置条件导致已拒绝的诊断 PASS，不作因果 RED；red002 使用同一合法分摊计划及固定权重筛选，实际漏拒绝，建立因果 RED。只纠正操作数遍历，不扩大资料、工具或业务算法。
+
+
+## R3 正式离线测试接线（VC-08/11）
+canonical-portable001实际exit1，CI-CHECK-001固定fixture清单遗漏本增量新增测试；新coverage-ui-r3.unit.test.mjs还未出现在正式desktop-unit命令。补齐本期固定清单并显式加入该现有UI测试，不删除旧测试、不自动接受未来未知测试，不改分档/required数量/工具链/真实模型禁用条件。本次保持完整portable入口与失败阻断。
+
+
+### R3 reader restoration successor (2026-10-09)
+User explicitly authorized necessary original Python/LibreOffice dependency restoration. With bundled runtime unavailable and original binaries absent, restore compatible fixed official components only under the sole evidence root, save ignored build descriptor preimage and successor exact identities. CPython3.12.11/pypdf5.9.0/pypdfium2 4.30.0/Pillow11.3.0 and TDF-signed LibreOffice25.2.4.3 are replacement identities, not original package equivalence. Preserve OCR, host/global configuration and converter sandbox; existing PDF/scanned/image and normal-entry regressions execute against restored identities. New Office asks a previously forbidden global user-preference read during libcurl initialization; do not authorize that from install consent. DOC/PPT qualification remains FAIL pending explicit boundary decision; unaffected CSV/PDF engineering continues.
+
+R3 correction145: Controller accepts additive optional numeric report trace_format1.1 compatibility discriminator within existing report contract; old absent marker validates old bytes, new compiler marks corrected formula presentation. No new persistence/schema/runtime/authority. UI actual scope/lifecycle projection distinguishes prior MODEL background without overwriting historical semantic facts. Independent144 FAIL retained.
+
+## V12 SDK checkpoint public-contract boundary — 2026-10-09, decision pending
+Installed canonical SDK0.3.1 AgentRequest contains prompt/system/tools but no acknowledged initial transcript/checkpoint, no awaited durable checkpoint callback and no normal business waiting/yield result. Its drive creates fresh Agent memory, always prompts, and accepts final assistant stop only; onEvent is explicitly observational (errors ignored), so it cannot become a save barrier. Original production contracts retain explicit durable tool continuation, business ask_user yield, stop/late/UNKNOWN and no automatic replay. The stable tool bridge/transport wrapper alone does not close that compatibility. Do not silently replace continuation with model inference, record synthetic replies as physical calls or reach into SDK/Pi private memory.
+Prior shared source permission was fixed-purpose dual-model compatibility. Proposed minimum further shared public contract: explicit host-supplied validated neutral transcript, awaited durable transcript checkpoint before dependent effects/continuation, normal host-declared waiting boundary with explicit resume. Same business task budget/account, immutable purpose plan, permission/publication fences, once-extra ceiling unchanged; no compaction, session discovery or automatic restart/resume. Runtime v0.3 升级与兼容 says “公共契约/安全边界变化说明影响并交用户决定”; concentrated user decision requested this turn. No implementation of that extension or production SDK switch until decision. Other authorized draft UI/readback and existing Provider validation continue.
+Canonical MacBook SSH read was unavailable/bounded-interrupted this turn; prior hash-verified Mini standard receipt fully read, existing fixed SDK export/implementation inspected. Does not prove live canonical MacBook changes or authorize a fork.
+
+## V12 SDK checkpoint public-contract boundary — 用户授权生效 2026-10-09
+
+用户本轮“授权”明确批准前轮提出的最小 SDK 检查点合同扩展。公开接点仅提供宿主显式提交的中性历史、模型及工具结果的持久保存确认屏障、正常业务等待与显式续接；不增加自动恢复、会话发现、compaction 或平行 Runtime。固定用途计划、同任务累计预算、效果与发布授权、停止／迟到／UNKNOWN 保持有效。MacBook SSH 本轮超时；先在既有固定诊断候选中实现和验证，Canonical 包写入及读回待连接恢复，不将本地候选冒称已发布。自动跟进仍暂停，最终停在用户产品验收。
+
+### V12 SDK checkpoint 授权后的当前边界
+
+SDK 0.3.2 本地候选已实现并测试，不写回不可访问的 Canonical 仓库、不覆盖原产品 SDK 安装。MacBook 当前 SSH 超时是接收可用性缺口，不是等待用户重复启动／产品批准。两个 SSH 命令、所有测试及打包命令均已收回，无未收回后台任务。保留待续接的固定候选与 preimage，连接恢复后先核对 Canonical 的当前改动与身份再最小应用。原产品验收及自动跟进 PAUSED 边界不变。
+
+### SDK032 Canonical 现场接收成立
+
+2026-10-09 用户确认 MacBook 上线；实际 SSH 可达。codex/bootstrap 原未提交/unborn 现场保留。九项 preimage 全部一致，锁定最小应用并保存 `artifacts/juanerai-checkpoint-20261009-001/preimage`，写后逐文件 SHA 读回。MacBook Node24.21.0 上核心108／UI2、type/build与独立消费者 offline install 全通过；59379字节固定包 SHA `f4c69616eecae03b50acb5dcaaadb8e7da1738905bc6a2fb12bc340ef94f856e` 与Mini候选一致。原工程 package/lock 写前保存，在原工作树以ignore-scripts/offline固定0.3.2；旧包和生产旧入口保留，尚未冒称整版迁移或真实Gate通过。SDK下一轮仅由真实生产Adapter消费，不再复制原生Pi循环。
+
+### 用户紧急暂停共享 SDK 接入（本轮范围收窄）
+用户明确：“紧急暂停共享 SDK 0.3.2接入JuanerAI，需要重新调整pi-sdk的接入方式，现在只推进需求沙盘”。立即停止共享 SDK 0.3.2 生产迁移、安装/升级、接入验证及相关真实调用，不回滚或删除原包/实现/失败/UNKNOWN/计量/证据，不另造或绕过 SDK。当前全部本轮测试命令已收回，无未收回 SDK 进程；生产 factory 尚未迁移。仅需求沙盘仍授权连续工程，沿既有业务 Runtime Port 接线，对新 SDK 接法有依赖的动作暂停。原自动跟进仍PAUSED；无需重新批准已冻结需求沙盘产品/UI。
+
+### 用户扩大 pi-sdk 停止线（2026-10-09）
+用户原话：“现在涉及到改动pi-sdk的所有开发全部暂停，接下来会有比较大的调整，针对pi-sdk底座这块。”
+即刻停止共享SDK/Pi Adapter/依赖/底座及接入方式的任何新开发，不回滚现有现场。原需求沙盘非SDK的 Product Core/Application/Store/UI范围继续；任何必须改变SDK才能闭合的项保留未完成。收回的两个已有命令：75项离线回归PASS，类型检查FAIL仅新Store回执类型和测试可选值声明；原失败日志保留，普通产品层修正允许。不启动SDK进程/相关真实调用或自动跟进。
+
+
+### V13-NATIVE-TOOLS01 工程影响决定（2026-10-10，主 Agent）
+real010/011/013/014证明产品自制单分发器要求模型把参数二次编码为JSON字符串且把业务名仅列在正文，会发生语法/协议名混淆。按需合同虽将首轮输入降至6131 token，real014仍INVALID_TOOL。停止重复此路径的真实试跑。
+下一最小纠正使用已安装SDK的原生具名Tool接点：新v1.3任务固定声明业务工具名称集合，JSON object参数仍由当前Application工具schema与授权执行前核对；未开放的工具拒绝，不能按猜测名称映射。具体schema只读发现；所有真实调用仍同根账本/原生会话、串行效果和一次额外请求。无需SDK代码/依赖/Provider/权限变化。
+配置身份变化只用于新获准Task。旧任务保持既有dispatcher配置和session；不迁移UNKNOWN、不改账本、不换Task规避消耗。本轮新合成任务仍累计110次/12万输出/既有截止，历史87次38137输出保留。Adapter以既有session用途标签持久区分接法，没有新的会话引擎或业务schema。需因果RED/GREEN、重开/历史配置负例、真实相应用途后才能启用。
+
+
+### V13-NATIVE-SCHEMA02 — 原生声明完整参数
+real017完成真实净额计算与核验，但同轮三个delegate_analysis均遗漏必填kind，第一条反馈后余下调用被严格拒绝。新原生接法不得隐藏当前Application工具参数；每个实际物理请求直接声明当前授权工具完整schema，不依赖先读正文合同。原dispatcher任务与其按需发现保持兼容。删除新接法仅按历史discovery升级schema的重复机制，read_tool_contract仍可只读解释合同。工具名称、授权、执行前严格类型、一次纠正及同Task账本不变；不默填kind、不弱化拒绝、不改SDK。初始输入成本可能增加，须真实验证，不以离线PASS关闭完整协作。
+
+
+### V13-ARGUMENT-FEEDBACK02 — 字段结构反馈（AU04/AC03/AC06）
+real018中interpret_meaning将evidence数组重复写为对象，首次安全反馈只提供路径/keyword，读取完整合同后仍失败。通用dispatcher应从当前可信工具schema的错误schema_path读出字段结构，随第一次pre-effect拒绝返回有界expected_schema。只返回工具声明，不返回无效输入值、异常原文或凭据；不改写模型参数、不推断语义、不扩大工具集合、不增加物理重试或第二次纠正。相同结构对任意工具/字段适用。第二次无效提交继续失败。原生具名工具与旧dispatcher共用校验路径，完整候选仍需真实补验。AC04自由任务文字出处缺口不因此关闭。
+
+
+### V13-MATERIAL-HANDLE01 — 当前材料短引用（AU06/AC03/AC04）
+real019在完成订单/退款分项算术核验后，模型跳过read_delegation_materials并猜测UUID，实际队列拒绝、零后代。当前运行通过只读材料列表提供material:序号，Application保存短引用到真实材料ID的映射；生产委派必须消费此次真实列表才可解析。原UUID兼容仅限同次已读列表，未知/过期引用不猜测，最终队列仍重新检查权威交集。根和后代使用同一规则，回执/历史保留真实ID；模型提示与UI不暴露新增管理流程。引用映射不是资料授权、不关闭自由task文字的AC04缺口。
+
+
+### V13-NATIVE-CATALOG03 — 单一原生业务声明
+当前Provider投影只覆盖原生Tool参数，description仍为SDK通用占位；真实模型主要从长系统正文另找业务含义。修正为当前Application Tool的完整description+parameters共同投影，并在原生模式移除重复正文业务catalog，仅通过真实native declarations提供当前工具职责及合同。旧dispatcher正文保留。当前工具子集、执行前严格校验、计量输入hash仍针对实际出站；不修改SDK，不改变用途或重试。独立因果合同测试须证明首请求正确description且正文无重复catalog。历史失败不改写，仍需真实成功证明。
+
+
+### V13-PROTOCOL-STAGE01 — 同Task分析→方案准备兼容（AS03/AS06/AC06/AC07）
+离线实际Adapter两次连续调用复现：新Task已用analysis_native会话，再进入proposal_prepare，SDK固定purpose仍使用analysis_tool，Provider却把所有工具过滤掉且系统正文要求具名工具。proposal-protocol002-red及observation确认实际空tool声明，0真实Provider。Task固定nativeMode继续用于SDK/会话身份与不可变用途集合；仅实际analysis阶段使用nativeBusinessPhase投影具名工具和对应正文。proposal_prepare保留原dispatcher及系统合同，不改Task/config/授权/账本，不强迁旧方案Task。加入同Task首次分析→准备实际工具执行→返回的永久测试，保留旧/新协议与报告无工具负例。
+
+
+## V13-AC04-INSTRUCTION01 — 用户接受后的委派合同
+用户本轮“接受”确认ac04-handoff-impact001.md的有界调整。工程接缝沿用生产Application委派→持久父子关系→真实Runtime出站，不再询问已批准接缝或产品/UI。
+自动委派指令使用通用专业动作（来源检查、一致性、限制、反证、解释、比较）及选定材料内真实JSON引用路径、完成条件引用。动作不绑定销售/会员示例或固定子任务数量；模型自由选择材料、动作、合法引用、不同子任务和嵌套。未知动作/不存在路径/未选材料在效果前拒绝；不透传任意事实文本。原task自由目的保留为根任务私有历史/自动关系私有元数据，子任务实际目标由可信专业内容和所选引用生成。
+自动关系保存可识别v1指令，既有JSON关系体的前向可选字段，不增数据库表/列，不批量迁移旧关系。已知旧自动队列没有合格指令不得自动出站；原用户明确手动任务仍按旧实际授权。
+所有出站文字（task、initial_text、visible_message、source.case_name、Fork历史、回流source投影）一并处理。自动Fork仅继承系统从所选材料生成的明确历史；保留原生分支/JSONL机制，不复制父完整历史。单写者和当前来源/材料交集、祖先停止、幂等、根账本不变。
+因果RED必须通过实际生产队列后读回child授权payload，显示原行为会夹带根私有目的/历史；GREEN证明子和孙出站无这些文本、选定证据仍可用且不同合法目的可表达。至少两个合法动作、移除/错误路径/未知动作负例、旧人工兼容及跨磁盘读回回归。受控传输不代替真实AS04/AC03。
+
+V13-AC04-METADATA02：自动材料视图也不透传模型自由IR goal；原完整IR及proof身份仍保留，出站提供独立标识的结构投影及原材料hash引用，不把改写内容冒称原hash。当前路径目录与执行前检查均基于同一投影，goal路径不可引用。ac04-metadata002-red已证明goal元数据可夹带同样私有文字；此修正属于已批准全部父子文字投影边界，不新增模型/权限/业务算法。
+
+
+2026-10-10 V13-CALCULATION-REFERENCE01：用户批准消费已绑定计划引用，复用现有任务计划/凭证；最小实现及影响先写design.md与approved-impact.md，spec.md随后同步。无公共持久结构/SDK改动。真实11请求验证执行消费者，完整AS04仍OPEN。
+
+2026-10-10 real042收回exit1，新增28物理请求全部已结算；累计393请求/178149已知输出，历史12288 UNKNOWN预留不重置。2根子任务实际为相同action+路径，其中首子失败；1孙意见已返回，未形成MiMo报告。只诊断并修正根schema_path=#诊断遗漏，不重跑同类失败、扩大预算或透传私有目的。spec/design已在本行为实现前补记。
+
+
+## V13 checkpoint040 — 真实055/056收回与交接边界待决定（2026-10-10T13:09:13.729112+00:00）
+证据根不变：`/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/v13-autonomous-analysis-001`。real055 exit1/3请求已结算；工具参数纠正后仍缺字段，失败保留。real056 exit1/31请求，29次MiniMax成功、2次MiMo60s超时UNKNOWN；7个实际核验步骤、2根子意见返回/被模型读取，但无孙任务、无已保存报告，AS04/AC03不记PASS。诊断见`real056-diagnosis.json`；原structural脚本未含材料ID的去重统计保留，诊断区分2选材仍不冒称2种有效调查。
+portable037固定代码4008PASS/0FAIL/18conditionalSKIP，17阶段全部exit0，source_drift[]。日志完整hash见collected-summary。它不替代真实业务质量、独立Validator、requiredCI或用户验收。
+累计584次/303051已知输出/24576UNKNOWN预留；历史4笔及新583/584均保留，无reserved/issued、055/056进程均已收回、锁已移除。本授权017有效本轮cap590（剩6），累计cap603/56万输出/原截止不变；不自动新增额度或重放UNKNOWN。
+039业务优先目录/职责提示未闭合实际业务协作，触发唯一政策progress-based stop-loss：暂停重复同候选整轮真实调用，提交`business-handoff-impact040.md`的具体最小交接调整供用户决定。未批准不实施，不是新的UI规划/启动审批。原现场、规则/授权及自动跟进暂停保留。完整候选尚未成立，不能交最终Validator或宣称用户验收就绪。
+
+
+## 2026-10-10 V13 有界多摘要业务交接041
+
+本轮用户“确认”批准business-handoff-impact040的有界交接调整；Engineering impact：增加已有Task JSON内选择记录及automatic instruction 1.1，保持旧合同/手动兼容、Task账本/SDK/UI不变。原额度与截止不延长。证据business-handoff041/approval-and-impact.json；历史056失败、6项物理UNKNOWN保留。
+
+
+## V13 063 — pending structured-wire approach decision
+Raw Provider091 repeated malformed lists; bounded062 contrast093 ended earlier on small semantic source row string; no actual collaboration/report improvement. Stop affected real calls under progress stop-loss, all192 remaining calls retained. Proposed use of existing exact JSON string codec for every nested object/array named business tool is pending user choice, not implementation/approval; pure scalar tools and original business Check/authority/IR/SDK/retry remain. Fullportable0604053PASS/18conditionalSKIP/source_drift[] is offline evidence only. Proposal/evidence: controller/v13-autonomous-analysis-001/next-approach-decision063-draft.md and checkpoint063.json.
+
+## V13-NATIVE-JSON03 / checkpoint064 — 用户批准063接入方式
+
+本轮“同意”采用063提案，不重新启动Change。原生命名工具中含嵌套object/array（沿用既有兼容Adapter的properties/anyOf选择规则）的参数采用既有单独arguments_json字符串入口；大合同既有入口保留。纯标量/空参数保持直接入口。小结构合同在当前工具描述中完整提供，大合同仍由read_tool_contract读取；不增加强制往返。旧直接有效调用兼容。
+
+文本仅JSON.parse为实际对象后送原schema/身份/授权/业务消费者；不补值、不改类型、不转换XML。无额外模型纠正/主备重试，无SDK/Core/IR/权限改变。原生JSONL保留原始线格式；协作只读投影精确解码有效单字段对象以关联实际委派/返回/后续消费，不将未执行/失败包装认作成功。
+
+验收：真实安装SDK的生产Adapter公开入口证明小嵌套合同在首轮可见、整数/数组/null/中文文本原样抵达业务消费者及后续模型；字符串行号/畸形/额外包装/撤权无效果，重复未解决错误关闭；纯标量入口不变。磁盘重开协作记录证明真实委派身份与后续消费，读回不调用模型、不重置账本。既有因果负例及直接入口保持。真实完整同任务双子/合法孙任务/回流消费/MiMo报告仍OPEN；一次对照若同类格式仍无进展，停止路径并集中提出具体取舍。
+
+授权020实时时窗已过期（本轮UTC2026-10-10 22:16:46）；已提出只续展时窗请求，未发Provider。848/1040次、475256已知输出、32768 UNKNOWN预留、56万上限不重置；自动跟进PAUSED，用户验收停止线保留。
+
+### checkpoint064 — 实施与受影响验证收回
+
+用户已同意063接入方式。生产native-open-analysis.ts已采用原nested选择规则：嵌套对象/数组用原JSON字符串codec，小原合同仍完整出现在工具描述、大合同读回规则不变，纯标量/空工具和旧直接有效调用兼容。协作只读投影精确解码有效命名工具JSON，JSONL权威不改。原schema/权限/IR/执行/独立核验/预算/一次纠正/停止不变，无SDK/Core/UI/依赖变更。
+
+JSON03因果RED002为6项真实行为缺失（5个小结构仍直接声明、命名文本委派缺created历史）；GREEN004为122/122通过、0跳过，typecheck002退出0。完整生产Profile组合路径在替代模型下实际完成IR计算/核验、双子/孙任务/回流消费/保存报告，不能等同真实Provider的AS04。早先GREEN001/002失败、原失败/UNKNOWN均保留。证据：controller/v13-autonomous-analysis-001/native-json064/causal-evidence.json、preimage-manifest.json、原始log。
+
+下一动作：固定当前source跑portable061并收回全部结果；只在用户续展真实时窗后，按原累计上限一次真实完整对照。当前Provider未发出，本轮无新增消耗；848/1040次、475256已知输出、32768 UNKNOWN预留、56万上限全部保留。AS04/AX01/完整独立审查/适用正式CI/用户产品验收仍未关闭。自动跟进PAUSED。
+
+## checkpoint065 — 064完整离线候选已收回，真实时窗待续展
+
+本轮实施063用户批准的接入方式；不是继续等待产品启动。JSON03因果RED/GREEN与122项受影响回归/类型检查通过，完整portable061为4078项总数、4060通过、18条件性跳过、0失败，17阶段全部exit0，source-before/source-after无漂移。原始log655546字节，SHA-256 eb0187f8237f7d021e86e52912ef7a382f1d942d6fcc4d84bcc8997e80657c31。固定快照及跳过证据见既有controller/v13-autonomous-analysis-001/portable061。
+
+- [x] 063原批准接入调整：原生嵌套参数复用精确JSON文本入口，原业务检查/直接兼容/SDK/模型/UI不变。
+- [x] JSON03因果测试、生产Profile实际IR/核验/双子孙任务/回流/保存（替代模型）以及磁盘历史投影；完整离线回归/类型/source无漂移。
+- [ ] 真实AS04同一任务双子、合法孙任务回流/后续消费和MiMo完整报告；real094已准备，尚未执行。若本次对照仍同类格式不收敛，无盲目追加重跑。
+- [ ] AX01基线/目标、完整候选新鲜独立Validator、适用正式CI和用户产品验收；不借局部/历史PASS关闭。
+
+唯一当前Provider边界：旧authorization020于UTC2026-10-10 20:11:23到期，本轮只采用接入方式而未续展该时窗。已提出续展60分钟请求（仅时窗，不增加额度），尚无答复。下一允许动作：用户批准时窗后固定继任授权021，保留全部848/1040请求、475256已知输出、32768历史UNKNOWN预留、56万上限；按原模型/私有入口/合成材料执行一次已准备real094并收回结果。旧UNKNOWN不重放。
+
+本轮真实请求0；当前无在途/无real lock/无遗留本轮进程。旧失败、未启动092、UNKNOWN、历史资源及分支/HEAD/WIP均保留。代码和当前文档在原工作树，未Git发布，不视为正式归档资产。USER并未暂停工程；自动跟进继续PAUSED，现因真实时窗缺失停止受影响补验，不新增审批阶段或任务。
+
+## checkpoint066 — 094真实完整对照失败，停止同类路线
+
+用户4倍资源对应本次时窗续展240分钟；authority021当前有效，原1040次/56万上限不增加、不重置。真实094已收回，4次请求全部结算，新增1690已知输出；累计852次、476946已知输出、32768历史UNKNOWN预留，无新增UNKNOWN/无在途/无lock。
+
+MiniMax850首次、852明确纠正后，同一interpret_meaning JSON文本第215偏移括号闭合顺序仍错；Provider原文与SDK解码完全相同（real094-diagnosis.json），不是SDK改坏。0真实计算/核验/子孙/报告；describe_business MODEL_PROPOSAL成功不能作为完成。0children下all_returned等vacuous true不算通过。原FAILED及JSONL/请求/输出均保存。离线4060通过证据适用代码未变，但不能关闭AS04。
+
+按063退出条件停止此路线盲目追加。现不是窗口或额度耗尽，不再请求更多尝试；真实补验受模型用途决定影响。已向用户提出一次MiMo Flash工具分析对照（原分工仅报告用途，不自行启用），40次/60分钟计入现有总上限/时窗，不新增Provider/资料/SDK或权限。提案next-model-purpose-decision066-draft.md待答，未实施模型切换。当前代码、历史MiniMax、失败/UNKNOWN、原任务/分支/预算/用户验收及自动跟进PAUSED均保留。
+
+下一允许动作：用户选择实际模型用途方案后在范围内连续实施、因果验证并一次有界对照；未经决定不再发受影响Provider。完整v1.3、AS04/AX01/新鲜完整候选Validator/适用CI/用户产品验收仍OPEN。
+
+
+## V13-MODEL-PURPOSE01 · 067 用户批准 MiMo 工具分析对照
+
+用户已批准一次MiMo Flash工具分析对照，最多40次请求/60分钟，计入1040次/56万总上限，852次/476946已知输出/32768 UNKNOWN预留不重置。只用原后端入口及investigation049合成材料；只创建隔离的新测试任务，旧任务不改配置/不重放。当前默认MiniMax分析与MiMo报告不变。AS04仍未通过，完整候选/独立验证/用户验收未完成。
+
+接受边界：生产Pi Adapter创建时显式选择获准分析型号MiniMax-M3或mimo-v2.6-flash，创建后固定；同一选择进入SDK不可变用途集合的analysis与proposal_prepare，report_edit固定MiMo无工具，retained_case固定历史Pro。不得在transport替换型号或错记返回身份/账本。主根/子孙会话共用实际配置和稳定Task账本；旧Task更换用途集合必须由SDK拒绝，不能清账。恢复原默认无需迁移。未验证用途不对普通生产任务自动启用。
+
+TDD seam沿用户已批准的原生Adapter/实际安装SDK/本地RequestLedger与真实Profile入口：验证工具结果被下一模型轮消费、根与子会话均实际采用所选模型、report无工具且保留用途，Provider/返回身份/历史账一致、非法选择在effects前拒绝、重建后改变旧Task配置拒绝。替身模型机制证据不作为真实MiMo用途PASS。真实对照沿用全部原参数schema与JSON codec/权限/IR/本地计算/独立核验/协作回流/一次纠正及额外请求合同，不修复模型输出或降验收。若再次发生同类非收敛，先保留诊断，不盲重跑。
+
+
+## 068 · MiMo真实对照收回：未完成AS04 / 2026-10-10T22:57:42.471338+00:00
+
+授权022已实际执行095，26请求全部来自实际配置MiMo Flash：计算/独立算术核验、4自主根子及3返回意见保留；0孙任务、报告partial（第4段D3缺少references声明）。868/869超时UNKNOWN各4096不清账；当前878请求/498102已知输出/40960 UNKNOWN预留，无物理在途/锁。原MiniMax默认不改，未把工具参数能通过当用途/整体PASS。
+
+portable062:4061通过、18条件跳过、0失败、17阶段退出0、source无漂移。完整固定候选/独立Validator/AX用户验收仍未完成。AS04固定合同仅要求至少一次真实返回消费，并不要求所有创建子任务成功；all_returned为诊断，不用其替代合同。实际0孙及报告未完整仍有缺口，失败保留符合AS05。
+
+子任务实际拥有delegate_analysis，但受控上下文不发private_purpose/自由goal/根私有历史。当前没有证明省略业务子问题就是根因；next-business-handoff-decision068.md准备最小有界修正，待用户对材料边界决定。不得直接透传私有目的、强派孙任务、降低报告校验或重放UNKNOWN。自动跟进PAUSED，用户验收停止线保留。证据checkpoint068.json、real095-diagnosis.json、原模型输入输出/JSONL/账本及portable062。
+
+## V13-BUSINESS-HANDOFF01 · 069 有界业务子问题
+
+用户明确批准“允许有界业务子问题交接”。新增可选 business_question，作为模型在获准任务及所选核验材料内拟定的具体业务子问题；不是直接转发本地 task/private_purpose、根原话、未选历史或秘密。原 action、精确引用及完成引用仍控制实际材料；问题文字不取得任何额外数据或工具权限，不作为已核验事实。旧无字段指令按原投影读回。
+
+先验证当前身份/停止线和完整材料集合，再校验非空有界文本及拒绝直接复制本地私有目的/根原话；落盘问题与精确引用，并在实际子模型 authorized_context/visible_message 中交付。孙任务可拟定更聚焦问题，但不能重新获取父任务排除材料；问题措辞变化不能绕过祖先同 action/引用工作的重复委派检查。语义是否切题由模型及任务质量验收判断，字段/引用校验不冒称自然语言含义或秘密识别证明。专业内容、执行/核验、原生SDK、重试、预算、未知及停止边界不变。
+
+SDD/TDD沿已批准实际 Application队列→持久子任务→模型授权payload/公开Runtime seam：正例检查具体业务问题、合法孙任务和持久读回；负例覆盖私有目的/根原话直接透传、空/未知字段、未选引用、陈旧身份、停止及重复祖先工作。保留旧隐私负例；不靠夹具生成的孙任务宣称真实AS04。真实验证仅在授权022剩余额度/窗口内，默认MiniMax不变；新问题不保证模型一定委派孙任务。
+
+## 069 有界业务子问题交接 · 2026-10-11
+
+用户明确“允许有界业务子问题交接”，不增加预算、不启用MiMo默认链。规格/设计/决定先于生产改动；可选business_question经实际主/子Agent工具进入原队列、持久指令和子模型输入。精确材料引用、当前身份、停止、后代收窄和祖先重复检查保留；本地private_purpose/根原话/未选历史不直接透传。文本校验不冒称任意秘密或自然语言语义识别。
+
+唯一证据根：/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/v13-autonomous-analysis-001。
+- business-handoff069/red001.log：实际DELEGATION_INSTRUCTION_INVALID行为RED（wrapper未单独保存node退出码，不补猜）；green003.log 88PASS/0FAIL/0SKIP、类型检查exit0。
+- 原UI协作详情同位置显示派生业务问题，标题/布局不改；ui-red001.log实际断言失败exit1 → ui-green001.log 8PASS/0FAIL/0SKIP exit0，HTML转义及旧格式fallback保留。静态渲染不能替代真实页面一致性/用户验收。
+- portable063：4064PASS/0FAIL/18条件SKIP、17阶段exit0/source_drift[]，是UI补齐之前固定代码结果；补齐后的portable064待收回。
+- real096/097夹具ENOENT/CONTEXT_CHANGED，物理请求0；不当产品RED。
+- real098：新隔离测试任务的委派由测试发起，实际Application/Adapter/SDK、原合成来源实际重算及独立算术核验；2次MiMo请求/2580输出，子模型消费具体问题并返回意见；不证明完整自主root/AS04。
+- real099：MiMo自行拟定反证问题并创建2个孙分支，实际孙模型输入消费新字段；7次请求/2632已知输出。883/884/887在HTTP200流60秒超时，新增12288UNKNOWN预留，无孙意见返回；子任务TASK_BUSY，888全局输出准入拦截未发出，exit1。原始失败保留，无锁/物理在途，旧UNKNOWN不重放，模型意见不冒称核验事实。
+
+当前887次请求、503314已知输出、53248UNKNOWN预留，总560000仅剩3438，小于4096单次预留；022对照上限892/原窗口不变。AS04同任务完整双子/合法孙/回流影响及报告、AX01体验条件、完整候选独立审查、requiredCI和用户验收仍OPEN。默认MiniMax不变，自动跟进暂停，原任务/分支/HEAD/WIP保留。停止重复同候选整轮补验，下一真实动作须具体受控材料对照及资源决定。
+
+
+## Checkpoint070 — 授权023缩小材料补验失败及接入诊断（2026-10-11）
+
+授权023已接收：从887次起最多新增40次、对照累计上限927（全局1040不变），输出总上限640000，截止2026-10-11T00:23:12.714Z；历史消耗和UNKNOWN不重置。用户明确要求先验证两期总体摘要的独立反证交接，成功才补完整协作/报告，同类超时则停止该路径。
+
+real100收回exit1：实际Application/Adapter/固定SDK及新身份本地重算、独立算术核验；测试仅选两份核验摘要，根委派由测试发起，不是完整自主根任务验收。8次物理请求、1151已知输出；891/892/895 HTTP200流60秒超时，新增12288 UNKNOWN预留。模型实际创建2个孙分支，0意见返回/0实际回流消费；子任务TASK_BUSY，896被本轮8次诊断保护拦截未发出。第二分支在首次超时后仍被模型创建，该过程保留为失败诊断，不据此声称停止保护的立即中断验收已通过。所有本轮进程收回，锁释放，无物理在途。已停止此补验路径，准备的real101未执行；旧UNKNOWN不重放，不盲跑完整链路。
+
+portable064已收回：4083项，4065 PASS/0 FAIL/18既有条件SKIP/0取消，17阶段exit0，source_drift=[]。output.log完整656450字节，SHA256 18a8d2a48f91acfbf94e92c8c52208389e2f741c84893e0cf641145adcce3d5c；collected-summary.json及因果RED/GREEN原始材料保留。该离线结果包含069业务问题交接和原协作详情的UI投影；不是完整真实协作、实际页面一致性、最终独立审查或用户验收。
+
+只读诊断：产品MiMo Flash配置未声明reasoning；SDK0.4.1把缺省能力视为false，thinkingLevel缺省/off仅不请求开启，合同未承诺强制所有Provider关闭。实际固定SDK的离线fake-fetch复现（0网络/0凭据/0物理请求）显示出站body没有thinking字段。官方MiMo Chat文档说明Flash默认开启深度思考，需thinking.type=disabled显式关闭。真实已成功输出包含reasoning块；这些块完整保留续接，不删除来规避问题。因而产品未能通过当前标准映射显式关闭MiMo思考是确定的能力缺口，但是否导致60秒超时尚未因果验证，不能宣称SDK已确认缺陷或模型故障根因。材料缩减后实际模型请求约25–46KiB，也不能称仅两句纯文本上下文。
+
+证据：唯一根下business-handoff069/mimo-wire-off-diagnostic.mjs及.json、diagnosis070.json、real100原请求/结果/退出、real-authorization023.json、portable064/collected-summary.json和checkpoint070.json。官方来源：https://mimo.mi.com/docs/en-US/api/chat 及 https://mimo.mi.com/docs/en-US/quick-start/usage-guide/other/deep-thinking 。
+
+累计895请求、504465已知输出、65536 UNKNOWN预留（16笔）全部保留。默认MiniMax及固定SDK发行字节不变，自动跟进仍暂停。下一动作：待用户决定是否通过共享SDK正常兼容实现/固定发行补齐MiMo显式思考开关，再在有效原资源内单次对照；不得产品私补fetch、改node_modules或替换固定包。该决定涉及共享模型协议能力/任务配置边界；不是重新批准v1.3或索要启动确认。若不调整，此真实路径继续停止并另行诊断。AS04完整同任务协作/报告、AX01体验条件、完整候选独立Validator、requiredCI和必要用户产品验收均未关闭，v1.3未完成。
+
+
+Checkpoint071: user approves shared SDK explicit MiMo thinking mapping and bounded contrast. Approved local SDK branch codex/mimo-thinking-compat based on 703a2649090e5e145a86479dce0ced675d011035, clean source before change; original product branch/HEAD/WIP unchanged. SDK contract precedes source changes (docs/MIMO-THINKING-CONTRACT.md). Product fixed installed0.4.1 remains unchanged until verified fixed delivery. No new budget/deadline/Git publication inferred. Prior real route stop-loss remains; only substantive approved corrected contrast may follow.
+
+
+Checkpoint071 collected SDK candidate: user authorization024 implemented as explicit opt-in thinkingProtocol=mimo-chat, protocol/capability pre-effect validation and native Pi compatibility encoding. Pi0.86.1 and all other dependencies remain fixed; no direct installed-package patch, provider call, default model activation or product source replacement. SDK causal red001 exit1 preserved; green001 fixture/context-cap failure preserved; corrected assertions check actual positive output cap <=4096. green002 50PASS/0FAIL/0SKIP; full001 196core+2UI PASS/0FAIL/0SKIP, type/build exit0 and source_drift[]. package001 original/new unsealed consumer PASS; packed-mimo-consumer002 actual fixed-package opt-in two-turn/tool consumer PASS, 2 fake model requests/1 tool, 0 network/real calls. Python3.9 extract preflight failure preserved separately; no execution effects.
+Fixed local SDK candidate0.4.2 tgz106189bytes SHA256 f25371b12db238988c2a5beac85f81ff037782a30d5c09d778d570436f2f3c8d; all11 candidate paths independently rehashed source_drift[]. Shared branch codex/mimo-thinking-compat HEAD703a2649090e5e145a86479dce0ced675d011035, candidate001-manifest.json and fixed-package001.json under shared-sdk-thinking071. Not published/released/installed, not product or real Provider PASS.
+Fresh native SDK candidate Validator071 stopped before candidate read because actual host sandbox danger-full-access conflicts with project read-only; native role declaration Sol/high, actual memory model/effort not separately exposed. Current one-time waiver requested; prior waivers not reused. Whole v1.3 final Validator not dispatched, AS04/AX01/real corrected contrast remain OPEN. Product branch/HEAD/WIP preserved, installed SDK0.4.1 and MiniMax default unchanged. Cumulative real895/504465 known output/65536UNKNOWN reserve preserved, no new paid requests and no old UNKNOWN replay. Automatic follow-up PAUSED. SDK Git publication not inferred from compatibility approval; normal fixed delivery remains prerequisite before bounded product contrast.
+
+
+## Checkpoint072/073 — SDK independent review, fixed adoption and collaboration guidance
+Current user one-time sandbox waiver applies only to SDK071. Fresh native Validator returned PASS for MT01–05 offline mechanisms; original message and independent results retained under shared-sdk-thinking071/validator001*. SDK0.4.2 fixed local test delivery (106189 bytes, SHA256 f25371b12db238988c2a5beac85f81ff037782a30d5c09d778d570436f2f3c8d) installed via exact vendor/lock identity. This is not a GitHub release, whole v1.3 review or user acceptance. Pi0.86.1/other dependencies unchanged; old0.4.1 package retained. Old Task configuration/UNKNOWN not replayed; default MiniMax and MiMo report duties unchanged.
+V13-MT01–03 actual Adapter-to-SDK transport causal RED/GREEN and invalid-purpose/old-Task/default-report negative cases collected:24PASS/2 conditional SKIP/type PASS. Exact SDK identity pins updated in existing CI transport and local-analysis lock fixture, without changing CI triggers/tiering or assertions. portable065 exit1/source_drift[] caused by stale lock identity is preserved; corrected local integration exits0.
+real102:8 successful physical MiMo requests with thinking.disabled,0 new physical UNKNOWN, no returned counterview. Parent TASK_BUSY after local8-call probe guard, not PASS. Cumulative903 calls/505819 known output/65536 historical UNKNOWN reserve16 records retained. Actual catalog preferred indices despite material_ids requiring paths, while delegated counterview continued forwarding near-identical questions.073 spec corrects catalog and professional role guidance without weakening authority/repeated-work checks or forcing grandchildren. Causal red002 exit1 -> green003 46PASS/0SKIP/type002 exit0. red001/green001 missing evidence directory and green002 missing toolchain env are preserved as setup failures, not causal RED.
+real103 runs under authority023/024 with original two-period synthetic material freshly recomputed and independently verified, local12-call maximum, effective927/global1040/output640000/Beijing08:23:12 deadline unchanged. First physical failure seals this probe; old UNKNOWN not replayed. Results still being collected, no advance PASS. Automatic follow-up PAUSED. AS04 complete same-Task root/two-child/grandchild/model-consumption/report, AX01, actual UI conformity, complete fresh Validator/requiredCI/user acceptance remain OPEN.
+
+
+Checkpoint074: real10312 successful physical calls, cumulative915/509609 known output/65536 oldUNKNOWN reserve, no new physical UNKNOWN. Probe FAIL/TASK_BUSY remains, no AS04. Existing-history audit found actual finish_result success at914 followed by duplicate finish915 and new admission916 (not dispatched). Native collaboration shouldYield omitted validated result, so accepted opinion did not terminate tool/model loop. New causal actual Adapter→SDK test red001 external reproduction and red002 permanent consumer failed2physical attempts vs1. Corrected result terminal marker and rejection of duplicate same-batch finish; green001 wrong test projection preserved, corrected green00247PASS/0FAIL/0SKIP and type002 exit0. Existing authority/cancel/stale/material guards remain. MODEL opinion contained an incorrect refund-join interpretation, retained, not adopted as verified fact.
+Intermediate portable066 exit0/4069PASS/0FAIL/18 conditionalSKIP but3source_drift due newly diagnosed074 fix during regression; not a stable complete-candidate PASS. Entire receipt/output remains. Current stable rerun portable067 will be collected. real104 is one bounded corrected contrast after definite executable stop repair, max12 remaining physical requests inside927/1040/640000 current08:23:12 deadline, no new authorization/default activation/UNKNOWN replay. All foreground results collected by main; automatic follow-up remains PAUSED. AS04/AX01/UI/full independent review/user acceptance still OPEN.
+
+
+### Checkpoint075 — collected SDK review, terminal handoff and stable regression
+SDK071 independent read-only review PASS under the current SDK-only user waiver; local fixed0.4.2 test delivery/adoption is not hosted publication or whole-v1.3 acceptance. The original fixed SDK candidate was not edited by product terminal repair.
+real104 FAIL: MiMo explicit disabled-thinking is observed, yet response stream aborts at60s; physical917 UNKNOWN4096 remains reserved. Stop-loss applies to MiMo tool-analysis contrast; no default activation/replay. real105 local authority assertion typo1050 versus actual1040 was rejected before dispatch; evidence remains. Corrected external diagnostic real106 used original approved MiniMax:2 requests918/919, accepted finish returned exactly one MODEL opinion and ended without extra model request. This validates V13-FINISH-YIELD01 production mechanism, not full autonomous root/AS04/grandchildren/report. Its rounded-unit and selected-row statements remain unverified MODEL quality findings; not adopted as business facts.
+Stable portable067:4070 PASS/0 FAIL/18 conditional SKIP(total4088), canonical portable exit0, source_drift[]. Historical portable065 failure and portable066 intermediate3-source drift retained. Causal finish RED and47 affected GREEN/type remain accessible. This is offline regression, not hosted CI or user acceptance.
+Current cumulative physical919, known output510477, UNKNOWN reserved69632;17 UNKNOWN request identities retained. No issued request or validation lock; real104/106 processes collected. Existing authorization023 effective cap927/global1040/output640000/2026-10-11T00:23:12.714Z unchanged. Automatic follow-up PAUSED. AS04, AX01, full-candidate independent review, required CI and user product acceptance remain OPEN. Evidence: controller/v13-autonomous-analysis-001/checkpoint075.json, real106-result-receipt.json, portable067/collected-summary.json.
+
+
+### V13-PREPARE-REF01 — choose already validated candidate IR without re-copying
+real110 same-task preparation successfully consumed structural correction and bound source meaning/units. read_analysis_evidence compiled eight actual proposed IRs; repeated serialization of the same long set_analysis_steps JSON failed and the existing correction cap ended preparation. Preserve this failure and stop paid repetition. One bounded engineering hypothesis: proposal preparation returns run-local candidate references for its already validated plans; set_analysis_steps accepts exactly one original plan OR current plan_ref for each step. Agent still chooses title/dependency/hypothesis/evidence/limits and actual candidate. Lookup never repairs model text, manufactures methods, selects a default, computes or adopts. Resolve only candidates issued by this preparation run under identical Task/revision/grant/source/config, semantic and business context; missing, previous-run, changed-context and mixed plan/ref are denied before binding/effects. Recompile the same actual IR through existing Context/Binding consumers and preserve scope/unit validation. Existing complete plan input remains compatible. No new tool names, SDK purpose/config/Runtime, persistent schema, public API, model, permission, or UI. References are private ephemeral transport, not persisted authority; reopen must reread current plans. Formal plan and history continue storing real bound IR, not ephemeral references. Tests use actual Application and real compiler for success/equivalence and negative paths; no Provider until causal RED/GREEN and affected checks. If paid same serialization/loop/timeout recurs, stop that route rather than enlarge correction limits.
+
+## V13-NATIVE-OBJECT01 — approved native object wire (decision026)
+User explicitly approves original Provider object/array/null schemas in the product Pi Adapter, with no SDK/UI/model change. New opted-in Tasks use named native tools for analysis and proposal preparation. Existing sessions retain their exact registered tool/purpose set and legacy JSON-text compatibility; durable owner binding fixes the mode across restart. Full schema and business authority, actual IR compilation/execution/verification, metering and bounded correction remain authoritative; no repair/coercion or automatic replay. Exactly one new synthetic product Task may verify within authorization025 (effective967 requests/640000 output/09:23:20 deadline), historical failure and UNKNOWN unchanged. Causal native SDK declaration/consumer tests plus legacy restart/controls and affected regressions are required; real full-chain success is separate from offline checks.
+
+
+## V13-PLAN-VARIANT080 — approved bound plan reference channel
+
+User decision027 authorizes private Application correction within v1.3. Existing read_analysis_evidence exposes current_plan_ref bound to full current identity, Context, plan and source. required_variants references that exact current plan, names a goal and supplies explicit input-index changes to column, group_by and/or filters. Unspecified fields inherit the referenced plan unchanged. No model, SDK, tool-name registry, UI, persistence schema, budget or authority change. Full required_plans remains compatible.
+
+AC080-01: two meaningful explicit changes produce different complete IR, actual local numbers and independent verification, preserving original method, unit and join. AC080-02: omitted fields remain unchanged; malformed, stale/foreign reference, absent input, unsupported method or nonexistent field denied without effects. AC080-03: existing source, Context and business scope checks, revocation, authorization and required-calculation consumers remain authoritative. Tests use existing Application tool boundary and actual IR/independent verifier, then installed native SDK boundary; external model substitution is offline evidence only.
+
+Allowed: packages/application/open-analysis.ts, private Application variant helper, corresponding integration tests and this OpenSpec. Forbidden: SDK, profiles, UI, model/provider/credentials, public schemas, Task migration/new Task, budget reset or expansion. Same failed Task may only use supported explicit revision continuation after reconciliation; old failure/UNKNOWN remains. Paid time expiry blocks only physical calls, not safe offline engineering.
+
+
+# Proposal phase feedback081
+
+Observed actual957 tool declaration excludes calculate_and_verify but read_analysis_evidence descriptor positively instructs it. Fix only model-facing phase instruction: preparation reads and binds candidate/variants, execution remains unavailable; no hidden transition or permission change. Maintain original full-IR/reference channels. Existing private engineering authority includes this causal correction; paid route remains stopped during diagnosis.
+
+AC081: actual Application and installed native SDK proposal-only tool declaration/receipt never positively instruct unavailable calculation; original phase denies forbidden calculation, allows candidate reference variants and binding; execution phase description and actual calculation remain unchanged.
+
+
+## AC135 - User adopted scoped report references (2026-10-12)
+User approved report-reference-next-route-decision001, not additional resources. Report producer supplies comparison candidates only from actual verified numeric facts with matching method/source/measure/unit and effective coordinate field sets, changing exactly one explicit coordinate. Deduplicated equal facts do not multiply candidates. No region-specific rules, dates or preset numbers; unsupported/ambiguous coordinates do not acquire same-scope proof. Catalog remains bounded by existing report32-derivation contract, indicating truncation rather than claiming exhaustive coverage.
+Current report-edit model format1.4 selects numeric placeholders from base facts and compiler-produced difference/rate references; no authored arithmetic, numeric value or inferred scope name is accepted in this format. Backend builds expressions, exact arithmetic/inverse check, labels and evidence lineage. A selected comparison may describe category or period differences, not causal proof. Optional MODEL commentary remains unverified. New report stores reference_contract1.1 plus original1.4 model document; legacy1.3 documents retain original compile/validation bytes and strict declaration rules.
+Paragraph references are compiler-resolved from actual placeholders, not a duplicated model authority list. Unknown/stale IDs, unit/scope/secret/source conflicts and numeric literals still fail; no guessing or value repairs. Invalid paragraphs preserve valid facts/other paragraphs and partial status. New compatibility schema is additive to the existing immutable outcome/report JSON; no tables/Runtime/SDK/Provider/UI or authority change. Main Engineering Controller impact decision: necessary authorized report producer/consumer correction, user explicitly adopted route; existing business and security boundaries preserved.
+Seams AC135-01 actual report comparison catalog excludes partial-vs-whole and mixed-method pairs and supplies typed correct relations. AC135-02 current1.4 compiler binds known placeholders, rejects unknown/forged expressions or quantities, persists checked scope names and independently validates math; old1.3 partial output unchanged and tamper rejected. AC135-03 production main and normal saved-report followup select current1.4 only through existing report edit; all current opinions, exact sources, ledger, stop and no-recalculation/history guarantees retained.
+Allowed existing report core/Port marker, Application report selection, protocol doubles and relevant tests/OpenSpec. Forbidden shared SDK/install/config/model/UI/source grants, manual old Task/report replacement, new Task, oldUNKNOWN replay or quota reset. Real validation only after fixed tested code within039 remaining88(or current84) requests/deadline07:08:54UTC, atmostone changed-route report contrast; same-class failure stops.
+
+## AC136 private engineering impact decision
+Reuse OpenAnalysisRun.shouldYield after acknowledged saved-report selection. This is an ordinary Application correction within approved report route, not the proposed new preparation-navigation contract. Original Agent chooses tool; no automatic goal classification, calculation, history branch or report approval. Existing native waiting/authority/idle semantics tested at installed SDK seam; no SDK/model/Tool schema/Port/SQLite/UI changes. Release report purpose only after normal producer validation; revoked/cancelled selection cannot publish. Causal Application RED/GREEN and installed-native5PASS recorded at report-scope-followup112.039 expired, so paid continuation awaits effective time authority without resetting historical consumption/UNKNOWN.
+
+
+### 2026-10-12 已取消无工具报告的恢复影响（待用户决定）
+
+real178 的报告请求1448由主Agent通过正常产品停止入口取消；Provider未回报最终用量。物理请求已结束、产品账本为 cancelled、写入归属已释放，但 SDK 原生报告会话仍保留 currentOperationId。real179 因此在MiMo发请求前返回 TASK_UNCONFIRMED；这次新增2次MiniMax请求，AC136在实际准备阶段完成交接。
+
+离线 report-cancel-repro002.mts 从生产 Adapter 的 run / sessionControl 与实际安装SDK0.4.3复现：无工具报告被取消，原生操作仍待结束，下一次报告被拒绝；假运输2次、真实Provider0次。取消用量保留4096 UNKNOWN预留；无工具调用和结束审计。repro001只因误读公开返回对象的view层断言失败，原文件和日志保留，不算产品行为失败。
+
+这是报告取消后恢复条件不足，不是报告引用方案再失败，也不是新额度不足。SDK对取消不写成功终止，产品不能把无用量回执伪造成已知消费，不能删除锁/JSONL或重放原请求。
+
+
+保留UNKNOWN预算；拟仅精确已取消report_edit可由SDK reconcile+原生abort受控结束。新增恢复安全条件不等于旧AC133批准；未实施。具体决策与验收反例：report-scope-followup112/report-cancel-recovery-decision001.md。无SDK/UI/模型/资料/预算扩张。
+
+
+## AC137 · 已取消无工具报告受控结束（用户2026-10-12批准）
+用户明确允许report-cancel-recovery-decision001.md所列受控恢复工程。唯一新增接点为Pi Adapter内部的recoverCancelledReport，不向Agent或UI新增恢复权限。
+可信宿主提供当前精确身份、原生session/branch/operation及物理取消与原进程退出证明；完全匹配实际一对一model.admitted与cancelled REQUEST_CANCELLED收据、用途report_edit且tools=[]、无队列/工具/效果、原owner和跨进程锁空闲才允许。未知用量本身不能变成已知；所有UNKNOWN预留和历史账本保持原值。核对前/SDK reconcile时/执行前重查授权与证明，不用恢复扩大授权窗口。通过现有原生abort结束，保存真实aborted结果、安全恢复回执及审批摘要；不伪造原model.finished/run.finished，不手改JSONL/预算归属。
+拒绝：跨Task/identity/operation/purpose、活跃物理请求或进程、仍有writer、队列、任何tool事件、未知效果、未匹配/漂移回执、撤权、审计/保存失败。迁移、重放、模型请求、新Task与SDK修改禁止。后续报告只在另有有效当前调用许可时执行。
+AC137-01:实装生产Adapter/SDK公开run、sessionControl及新可信控制接点，取消无工具报告可显式结束；取消历史不改写、不退UNKNOWN，Provider0。AC137-02:上述负例均拒绝，不开始新计算/Provider/恢复旧工具。兼容AC133与普通取消/迟到，最终完整候选独立审查仍必需。
+
+
+AC137已获用户明确批准并实施最小Adapter可信接点recoverCancelledReport。SDK公共inspect不显示空闲lane的inbox，故仅在Pi Adapter内部对原生JSONL现有metadata做只读空队列/无工具检查；不写入或仿造原生引擎，实际结束仍由SDK reconcile/abort处理。恢复审批/核账意图在abort前持久审计，防止回执失败留下可继续调用状态；SDK真实aborted结果为完成证据，绝不补写原模型终止成功。
+因果RED report-cancel-recovery-red002（缺少接点）；red001语法设置失败不算因果。GREEN005共37PASS，包含18个AC137正反例、AC136交接及16个AC133历史恢复负例。green001 admission-digest夹具先破坏DB完整性、green002控制时间累计断言、green003发现审批回执后置无法阻止后续调用、green004保存失败留下正常审批意图的断言差异全部保留。已前置审批回执并明确只增真实控制时间/保存失败意图，不减消耗或断言护栏。typecheck002 exit0。所有测试为合成运输，Provider0、原Task未修改。当前4276PASS为上一个AC136候选，新的current candidate006/full006正在运行；尚未对真实Task恢复，后续Provider仍受040截止与次数约束。
+
+AC137 candidate006完整离线回归4294PASS/18条件SKIP/0FAIL、source drift0；真实恢复001因正常页面停止收据reason=STOPPED而非REQUEST_CANCELLED被拒绝，Provider0、账本/归属/JSONL未改。只读recovery-boundary-diagnosis001确认精确原生报告绑定、无队列/工具、cancelled/STOPPED、物理结束、owner/锁空闲。新增stopped-receipt因果RED -> GREEN00638PASS，原38项含历史恢复负例保留。相同已批准物理取消边界兼容STOPPED，恢复不解除产品stop fence；不改SDK/预算/UI/模型/Task。新的candidate007/full007继续，通过后才重试一次恢复，不重复付费路线。

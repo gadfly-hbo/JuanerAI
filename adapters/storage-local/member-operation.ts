@@ -1,4 +1,5 @@
 import {randomUUID} from 'node:crypto';
+export {createLocalAnalysisRequestLedger} from './analysis-request-ledger.ts';
 import type {DatabaseSync} from 'node:sqlite';
 import {membershipRecord as closed,membershipUuid} from '../../packages/product-core/member-analysis.ts';
 import {encodeTask,taskHash} from '../../packages/product-core/member-task.ts';
@@ -10,7 +11,7 @@ type Access=<T>(write:boolean,work:(db:DatabaseSync)=>T)=>T;
 const blank:OperationUsage={input_tokens:{kind:'known',value:'0'},output_tokens:{kind:'known',value:'0'},active_ms:{kind:'known',value:'0'},wait_ms:{kind:'known',value:'0'}};
 /** A reservation has not escaped the process. Issued/unresolved work remains occupied. */
 export function fenceMemberOperations(db:DatabaseSync,taskId:string){
- if(db.prepare('PRAGMA user_version').get()?.user_version!==120)return;
+ if(![120,130,140,150,160].includes(Number(db.prepare('PRAGMA user_version').get()?.user_version)))return;
  db.prepare('UPDATE membership_operation_grants SET revoked=1 WHERE task_id=?').run(taskId);
  db.prepare("UPDATE membership_operation_usage SET phase='settled',outcome='stopped' WHERE task_id=? AND phase='reserved'").run(taskId);
 }
@@ -95,3 +96,5 @@ export function memberOperationMethods(access:Access){return {
   for(const u of usage){totals.calls=String(BigInt(totals.calls)+BigInt(String(u.calls)));totals.local_runs=String(BigInt(totals.local_runs)+BigInt(String(u.local_runs)));if(u.phase!=='settled')totals.unresolved++;for(const key of ['input_tokens','output_tokens','active_ms','wait_ms'] as const){const m=u.usage[key];if(m.kind==='unknown')totals[key].unknown++;totals[key].known=String(BigInt(totals[key].known)+BigInt(m.kind==='known'?m.value:m.known_lower_bound??'0'));}}
   return {operations,usage,totals};});}
 };}
+
+export {createLocalOpenAnalysisStore} from './open-analysis.ts';

@@ -14,14 +14,18 @@ export type AssistanceAction = 'organize_question'|'explain_evidence'|'draft_can
 export type AssistanceSelection = Readonly<{runtime_id:string;runtime_version:string;adapter_id:string;adapter_version:string;requested_provider:string;requested_model:string;ready:boolean}>;
 export type RuntimeAssistanceDraftContent = Readonly<{question_text:string;hypothesis_display_title:string;business_context:string;alternative_explanations:readonly string[]}>|Readonly<{evidence_explanation_text:string}>|Readonly<{candidates:readonly Readonly<{title:string;evidence_basis:string;risk_or_refutation:string;applicability_conditions:string;future_validation_metric:string}>[]}>;
 export type DecisionAssistanceRuntime = Readonly<{
+  taskAuthority?:'shared_session';
   preflightSelection(input:Readonly<{requested_provider:string;requested_model:string}>):Promise<AssistanceSelection>;
-  executeAssistance(input:Readonly<{action_kind:AssistanceAction;payload_bytes:Uint8Array;payload_sha256:string;requested_provider:string;requested_model:string;cancellation_signal:AbortSignal;deadline_seconds:number}>):Promise<Readonly<{actual_provider:string;actual_model:string;draft_kind:'question_fields'|'evidence_explanation'|'candidates';draft_content:RuntimeAssistanceDraftContent}>>;
+  executeAssistance(input:Readonly<{action_kind:AssistanceAction;payload_bytes:Uint8Array;payload_sha256:string;requested_provider:string;requested_model:string;cancellation_signal:AbortSignal;deadline_seconds:number;runtime_authority?:import('./case-assistant.ts').RuntimeTaskAuthority}>):Promise<Readonly<{actual_provider:string;actual_model:string;draft_kind:'question_fields'|'evidence_explanation'|'candidates';draft_content:RuntimeAssistanceDraftContent}>>;
   cancel():Promise<Readonly<{cancelled:true}>>;
 }>;
 
 export function defineDecisionAssistanceRuntime(implementation:unknown):DecisionAssistanceRuntime {
-  admitPort<DecisionAssistanceRuntime>(implementation,['preflightSelection','executeAssistance','cancel']);
-  return Object.freeze({preflightSelection:implementation.preflightSelection,executeAssistance:implementation.executeAssistance,cancel:implementation.cancel});
+  const marker=isRecord(implementation)?implementation.taskAuthority:undefined;
+  if(marker!==undefined&&marker!=='shared_session')fail();
+  if(marker==='shared_session'){const {taskAuthority,...methods}=implementation as Record<string,unknown>;void taskAuthority;admitPort<DecisionAssistanceRuntime>(methods,['preflightSelection','executeAssistance','cancel']);}else admitPort<DecisionAssistanceRuntime>(implementation,['preflightSelection','executeAssistance','cancel']);
+  const accepted=implementation as DecisionAssistanceRuntime;
+  return Object.freeze({...marker==='shared_session'?{taskAuthority:marker}:{},preflightSelection:accepted.preflightSelection,executeAssistance:accepted.executeAssistance,cancel:accepted.cancel});
 }
 export type RuntimeReadiness = Readonly<{
   runtime: Readonly<{ id: string; version: string }>;

@@ -153,13 +153,16 @@ test('CI-SOURCE-002: isolated prepare refuses existing paths; finalize rejects e
   const repo = join(root, 'repo'), view = join(root, 'view');
   await mkdir(repo);
   for (const name of ['package.json', 'package-lock.json']) await cp(new URL(`../../../${name}`, import.meta.url), join(repo, name));
+  const sdkPath='vendor/pi-agent-runtime/0.4.3/475480217d5f644a15264b2f838e5567d3e2c2e431b8a23c061a0665dbdbfa70.tgz';
+  await mkdir(join(repo,'vendor/pi-agent-runtime/0.4.3'),{recursive:true});
+  await cp(new URL('../../../'+sdkPath,import.meta.url),join(repo,sdkPath));
   const archive = process.env.JUANERAI_CI_NODE_GYP_ARCHIVE;
   assert.ok(archive);
   await mkdir(join(repo, 'node_modules'));
   await assert.rejects(() => prepare(repo, view, archive), /existing path/);
   await rmdir(join(repo, 'node_modules')); // empty, owned synthetic precondition fixture
-  const manifestIdentity = { bytes: 1757, sha256: '927b08b0659391f2a1b896d9cc5a6e688443f5e905c4842845788fc450ee8736' };
-  const lockIdentity = { bytes: 319836, sha256: '861326061cd570b0e81584f149012b13228aec3da6528d82536f89cbb5d535c0' };
+  const manifestIdentity = { bytes: 1888, sha256: 'fcd67c6047c38fe49a53c447643b762d333879747c38e3704b17afa98ba901a2' };
+  const lockIdentity = { bytes: 375120, sha256: 'aa890cf1e6399841e4e2453842840160527d0b291cfcbd1737ab970edb0d0d26' };
   const digest = bytes => ({ bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
   const originals = new Map();
   for (const [name, expected] of [['package.json', manifestIdentity], ['package-lock.json', lockIdentity]]) {

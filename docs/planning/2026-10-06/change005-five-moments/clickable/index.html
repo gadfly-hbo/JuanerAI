@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JuanerAI · Xanthil — 五个关键时刻增量审核</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/px006/styles.css">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/brand.css">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/v1.1/workspace.css">
+  <link rel="stylesheet" href="moments.css">
+</head>
+<body data-contract-surface="quick">
+<a class="skip-link" href="#main">跳到分析工作区</a>
+<div class="mock-banner" role="note"><strong>合成审核 · 无后台</strong>　数字、定义、历史与执行状态均为样例。不读取文件、不调用模型、不计算或持久保存。</div>
+<div class="review-controls">
+  <label for="scene">审核场景（非生产流程）</label>
+  <select id="scene"><option value="meaning">分析前 · 口径冲突</option><option value="plan">开始时 · 可编辑计划</option><option value="running">执行中 · 部分异常</option><option value="results">结果 · 逐条发现</option><option value="reuse">下一次 · 沿用方案</option><option value="impact">修改 · 影响预览</option><option value="compare">修改 · 新旧对照</option><option value="reopen">保存后重开</option><option value="unknown">结果待对账</option></select>
+  <a href="../product-addendum-v1.1.md">产品补充</a><a href="../ui-addendum-v1.1.md">UI 增量合同</a>
+</div>
+<div class="window">
+  <header class="titlebar"><div class="tb-title"><span class="brand-name">Juaner<span class="brand-ai">AI</span></span><span class="brand-slogan">持续做出更好的决策</span><span class="tb-sep">·</span><span>Xanthil</span><span class="tb-tag">v1.1 补充 · 待审核</span></div></header>
+  <div class="topbar"><div class="mode-switch" aria-label="工作模式"><button class="mode-btn active" id="quick" type="button" aria-pressed="true">快速模式</button><button class="mode-btn" id="professional" type="button" aria-pressed="false">专业模式</button></div><span class="project-label">华东经营分析 · 合成项目</span><div class="topbar-right"><button class="btn btn-sm" id="details" type="button" aria-expanded="true" aria-controls="drawer">检查详情</button></div></div>
+  <div class="app">
+    <nav class="sidebar" aria-label="项目会话"><button class="sb-new" id="new" type="button">＋ 新建分析</button><div><h2 class="sb-h">本项目会话</h2><ul class="sb-list"><li><button class="sb-item active" id="current" type="button">老客销售变化<span class="sb-meta">本次</span></button></li><li><button class="sb-item" id="history" type="button">上次的分析方案<span class="sb-meta">可沿用</span></button></li></ul></div><div class="sidebar-note"><strong>复用方案，验证新事实</strong><p class="fine">不复制旧数值、结论或正式决定。资料与授权按当前任务核验。</p></div><div class="sb-foot"><span class="pill pill-offline">静态审核样例</span></div></nav>
+    <main class="main" id="main" tabindex="-1">
+      <section id="quick-view" class="quick-surface">
+        <header class="task-header"><div><h1 id="title">老客销售变化</h1><p class="fine" id="summary">理解业务含义，明确分析逻辑，受控执行，交付可信成果。</p></div><button class="btn btn-sm" id="save" type="button">保存状态</button></header>
+        <div class="progress-summary" id="status" role="status" aria-live="polite"></div>
+        <div class="thread" id="thread"></div>
+        <section class="workspace" id="workspace" hidden tabindex="-1" aria-labelledby="workspace-heading"><header class="workspace-header"><h2 id="workspace-heading"></h2><button class="btn btn-sm" id="back" type="button">返回对话</button></header><div class="workspace-body" id="workspace-body"></div></section>
+        <form class="composer-wrap" id="composer"><div class="tool-chips"><button class="chip chip-tool" type="button" data-action="materials">资料与权限</button><button class="chip chip-tool" type="button" data-action="plan-detail">查看方案</button><button class="chip chip-tool" type="button" data-action="evidence">查看证据</button><button class="chip chip-tool" type="button" data-action="reuse">沿用历史方案</button></div><label class="sr-only" for="message">分析需求或追问</label><textarea id="message" rows="2" placeholder="直接说出问题，或调整口径、重点、提出异议……"></textarea><div class="composer-footer"><span class="fine">必要明细可按授权供模型读取 · 本地计算与独立核验</span><div><button class="btn btn-sm" id="stop" type="button">停止</button> <button class="btn btn-primary btn-sm" type="submit">发送</button></div></div></form>
+      </section>
+      <section id="pro-view" hidden><p class="reference-note">保留 PX-004 完整专业六阶段参考。合成回放，不与本页样例共享后台；生产必须同一任务／版本。</p><iframe title="PX-004 专业完整交互来源参考" src="../../../2026-10-05/change005-ui-contract-recovery/clickable/px004/index.html?preview=demo"></iframe></section>
+    </main>
+    <aside class="drawer" id="drawer" aria-label="当前任务检查详情"><header class="drawer-head"><strong id="drawer-title">口径与来源</strong><button class="btn btn-sm" id="close" aria-label="关闭检查详情" type="button">关闭</button></header><div class="detail-content" id="detail" tabindex="-1"></div></aside>
+  </div>
+</div>
+<div class="sr-only" id="notice" aria-live="polite"></div>
+<script src="moments.js"></script>
+</body>
+</html>

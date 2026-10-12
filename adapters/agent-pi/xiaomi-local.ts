@@ -4,6 +4,8 @@ import {readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {fixedXiaomiModel,assistantPrompt,validateAssistantOutput,XIAOMI_CREDIT_RESERVATION} from './case-assistant.ts';
+export {createApprovedProviderCredentials} from './provider-credentials.ts';
+export {createPiOpenAnalysisRuntime} from './open-analysis.ts';
 function fail(code:string):never{throw Object.assign(new Error(code),{code,stack:code});}
 /** SDK error text is classified in memory, never returned, logged or retained. */
 export function localConnectionError(error:unknown):string {
@@ -12,6 +14,7 @@ export function localConnectionError(error:unknown):string {
  const message=String(x?.message??error??'');
  if(x?.status===401||x?.status===403||/\b(?:401|403)\b|invalid.?api.?key|authentication|unauthorized/i.test(message))return 'CREDENTIAL_INVALID';
  if(x?.status===429||/\b429\b|quota|insufficient.*(?:credit|balance)|rate.?limit/i.test(message))return 'QUOTA_EXCEEDED';
+ if(x?.status===529||/^529\b/.test(message)&&/overloaded_error/.test(message))return 'NETWORK_UNAVAILABLE';
  if(/timeout|timed out|ETIMEDOUT/i.test(message))return 'CONNECTION_TIMEOUT';
  if(/ECONN|ENOTFOUND|EAI_AGAIN|network|fetch failed|connection error/i.test(message))return 'NETWORK_UNAVAILABLE';
  return 'CONNECTION_FAILED';
@@ -20,10 +23,17 @@ export async function loadLocalPi(){
  const specifier='@earendil-works/pi-coding-agent';const sdk=await import(specifier);
  if(sdk.VERSION!=='0.84.2')fail('RUNTIME_UNAVAILABLE');const root=sdk.getPackageDir(),nested=join(root,'node_modules','@earendil-works');
  for(const name of ['pi-agent-core','pi-ai'])if(JSON.parse(await readFile(join(nested,name,'package.json'),'utf8')).version!=='0.84.2')fail('RUNTIME_UNAVAILABLE');
+ const {validateToolArguments}=await import(pathToFileURL(join(nested,'pi-ai/dist/utils/validation.js')).href);
  const core=await import(pathToFileURL(join(nested,'pi-agent-core/dist/index.js')).href);
+ // Keep the HTTP decoder with the SDK's installed dispatcher. Importing the
+ // coding SDK loads npm undici; Node 26's bundled fetch is not interchangeable.
+ // Use its fetch locally without replacing globals or changing proxy settings.
+ const http=await import(pathToFileURL(join(root,'node_modules/undici/index.js')).href);
+ const {anthropicMessagesApi}=await import(pathToFileURL(join(nested,'pi-ai/dist/api/anthropic-messages.lazy.js')).href);
+ const {openAICompletionsApi}=await import(pathToFileURL(join(nested,'pi-ai/dist/api/openai-completions.lazy.js')).href);
  const {AuthStorage}=await import(pathToFileURL(join(root,'dist/core/auth-storage.js')).href);
  const models=await sdk.ModelRuntime.create({credentials:AuthStorage.inMemory(),allowModelNetwork:false,refreshOnCreate:false,modelsPath:null});
- return {core,models};
+ return {core,models,validateToolArguments,openAI:openAICompletionsApi(),anthropic:anthropicMessagesApi(),transport:http.fetch as typeof globalThis.fetch};
 }
 /** Exactly one installed Pi Agent/ModelRuntime request. No resource/session discovery or tools. */
 type LocalTextInput={key:string;text:string;system:string;signal:AbortSignal;maxOutput:number;timeoutMs:number;jsonObject?:boolean};

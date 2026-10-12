@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import { syncBuiltinESMExports } from 'node:module';
@@ -1492,4 +1492,24 @@ test('AC-XDESK-008-07: projects every accepted failure with safe retained state 
     assert.equal((projection.runs as unknown[]).length, 0);
     assert.equal((projection.reports as unknown[]).length, 0);
   });
+});
+
+
+test('SDK041-FIX02 professional Application publishes a disclosed draft only after shared native accounting',async()=>{
+ await withIsolatedProject(async(projectRoot)=>{
+  const draft=await openedDraft(projectRoot),fixture=await createU12ProjectAdmissionApplication(projectRoot);
+  const native=await import('../../../adapters/agent-pi/native-open-analysis.ts'),storage=await import('../../../adapters/storage-local/analysis-request-ledger.ts');
+  const ledger=storage.createLocalAnalysisRequestLedger({projectRoot});let calls=0;
+  const runtime=native.createPiSessionDecisionAssistanceRuntime({projectRoot,ledger,credential:()=>assert.fail('offline must not read credentials'),modelTransport:async request=>{calls++;assert.equal(request.model.id,'mimo-v2.6-pro');return {content:[{kind:'text',text:JSON.stringify({draft_kind:'question_fields',draft_content:{question_text:'Synthetic question',hypothesis_display_title:'',business_context:'Synthetic only',alternative_explanations:[]}})}],stop:'complete',usage:{inputTokens:9,outputTokens:4}};}});
+  const module=await loadDesktopModule('packages/application/xanthil-desktop-decision-case.ts');
+  const application=requiredExport<(v:unknown)=>Record<string,unknown>>(module,'createXanthilDesktopDecisionCaseApplication')({...fixture.dependencies,assistanceRuntime:runtime,clock:fixedClock,deadlineScheduler:draft.deadlines.scheduler});
+  await requiredExport<Method>(application,'openProject')({contract_version:'1.0',command_id:desktopTestIds.openProjectCommand,proposed_project_id:desktopTestIds.project,display_name:'Synthetic Project'});
+  let projection=await requiredExport<Method>(application,'readProjection')(draft.owner);
+  const preview=await requiredExport<Method>(application,'prepareAssistanceDisclosure')({contract_version:'1.0',...draft.owner,expected_row_version:stringValue(projection.revision as Record<string,unknown>,'row_version'),action_kind:'organize_question',requested_provider:'xiaomi-token-plan-cn',requested_model:'mimo-v2.6-pro'});
+  projection=await requiredExport<Method>(application,'decideAssistanceDisclosure')({...revisionCommand(draft.owner),expected_row_version:stringValue(projection.revision as Record<string,unknown>,'row_version'),preview_token:preview.preview_token,payload_sha256:preview.payload_sha256,decision:'accepted',free_text_confirmed:true});
+  const disclosure=(projection.disclosures as Record<string,unknown>[]).at(-1)!;
+  projection=await requiredExport<Method>(application,'startAssistance')({...revisionCommand(draft.owner,randomUUID()),expected_row_version:stringValue(projection.revision as Record<string,unknown>,'row_version'),disclosure_id:disclosure.disclosure_id});
+  for(let n=0;n<100&&(projection.attempts as Record<string,unknown>[]).at(-1)?.status==='Running';n++){await new Promise(r=>setTimeout(r,10));projection=await requiredExport<Method>(application,'readProjection')(draft.owner);}
+  assert.equal((projection.attempts as Record<string,unknown>[]).at(-1)?.status,'Succeeded');assert.equal(calls,1);assert.equal(ledger.read(String(draft.owner.session_id)).length,1);assert.equal(ledger.read(String(draft.owner.session_id))[0].status,'succeeded');
+ });
 });

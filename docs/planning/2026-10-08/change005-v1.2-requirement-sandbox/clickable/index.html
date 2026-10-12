@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JuanerAI · Xanthil — 需求与框架增量审核</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/px006/styles.css">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/brand.css">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/v1.1/workspace.css">
+  <link rel="stylesheet" href="../../../2026-10-06/change005-five-moments/clickable/moments.css">
+  <link rel="stylesheet" href="sandbox.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到分析工作区</a>
+<div class="mock-banner" role="note"><strong>合成审核 · 无后台</strong>　只演示新增交互；不读取文件、调用模型、真实计算或持久保存。页面刷新会清空演示修改。</div>
+<div class="review-controls">
+  <label for="scene">审核场景（非生产流程）</label>
+  <select id="scene"><option value="complex">复杂需求 · 不同答案</option><option value="simple">明确需求 · 直接分析</option><option value="saveonly">只理清需求 · 暂不分析</option><option value="savefail">自动保存失败</option><option value="missing">缺关键资料</option><option value="conflict">口径冲突</option><option value="changed">实质修改 · 新旧版本</option><option value="stopped">停止后重开</option><option value="unknown">执行结果待对账</option></select>
+  <a href="../product-addendum-v1.2.md">产品输入</a><a href="../ui-contract-v1.2.md">UI 合同</a>
+  <a href="../../../2026-10-05/change005-ui-contract-recovery/clickable/px004/index.html?preview=demo" target="_blank" rel="noopener">专业六阶段原参考</a>
+</div>
+<div class="window">
+  <header class="titlebar"><div class="tb-title"><span class="brand-name">Juaner<span class="brand-ai">AI</span></span><span class="brand-slogan">持续做出更好的决策</span><span class="tb-sep">·</span><span>Xanthil</span><span class="tb-tag">v1.2 增量 · 待审核</span></div></header>
+  <div class="topbar"><div class="mode-switch" aria-label="工作模式"><button class="mode-btn active" id="quick" type="button" aria-pressed="true">快速模式</button><button class="mode-btn" id="professional" type="button" aria-pressed="false">专业模式</button></div><span class="project-label">会员经营分析 · 合成项目</span><div class="topbar-right"><button class="btn btn-sm" id="details" type="button" aria-expanded="true" aria-controls="drawer">检查详情</button></div></div>
+  <div class="app">
+    <nav class="sidebar" aria-label="项目会话"><button class="sb-new" id="new" type="button">＋ 新建分析</button><h2 class="sb-h">本项目会话</h2><ul class="sb-list"><li><button class="sb-item active" id="current" type="button">会员效果分析<span class="sb-meta">当前任务</span></button></li></ul><div class="sidebar-note"><strong>先把问题想清楚</strong><p class="fine">可以只整理需求并保存。以后从这个任务继续，不必重新开始。</p></div><div class="sb-foot"><span class="pill pill-offline">静态审核样例</span></div></nav>
+    <main class="main" id="main" tabindex="-1"><section class="quick-surface">
+      <header class="task-header"><div><h1 id="title">会员效果分析</h1><p class="fine" id="subtitle">业务理解 → 分析方案 → 执行与核验 → 可信成果</p></div><button class="btn btn-sm" data-action="save" type="button">保存框架</button></header>
+      <div class="progress-summary" id="status" role="status" aria-live="polite"></div>
+      <div class="thread" id="thread"></div>
+      <section class="workspace" id="workspace" hidden tabindex="-1" aria-labelledby="workspace-heading"><header class="workspace-header"><h2 id="workspace-heading">需求与分析框架</h2><button class="btn btn-sm" id="back" type="button">返回对话</button></header><div class="workspace-body" id="workspace-body"></div></section>
+      <form class="composer-wrap" id="composer"><div class="tool-chips"><button class="chip chip-tool" data-action="framework" type="button">查看完整框架</button><button class="chip chip-tool" data-action="preview" type="button">预演不同答案</button><button class="chip chip-tool" data-action="materials" type="button">资料与权限</button></div><label class="sr-only" for="message">分析需求或回答</label><textarea id="message" rows="2" placeholder="说出你希望回答的问题，或者补充、修正我的理解……"></textarea><div class="composer-footer"><span class="fine">自由输入在此仅显示文本，不模拟 AI 理解</span><div><button class="btn btn-sm" data-action="stop" type="button">停止</button> <button class="btn btn-primary btn-sm" type="submit">发送</button></div></div></form>
+    </section></main>
+    <aside class="drawer" id="drawer" aria-label="当前任务检查详情"><header class="drawer-head"><strong>检查详情</strong><button class="btn btn-sm" id="close" type="button" aria-label="关闭检查详情">关闭</button></header><div class="detail-tabs" role="tablist" aria-label="详情分类"><button type="button" role="tab" id="tab-meaning" data-tab="meaning" aria-controls="detail" aria-selected="true">口径</button><button type="button" role="tab" id="tab-plan" data-tab="plan" aria-controls="detail" aria-selected="false" tabindex="-1">方案</button><button type="button" role="tab" id="tab-materials" data-tab="materials" aria-controls="detail" aria-selected="false" tabindex="-1">资料</button><button type="button" role="tab" id="tab-evidence" data-tab="evidence" aria-controls="detail" aria-selected="false" tabindex="-1">证据</button><button type="button" role="tab" id="tab-execution" data-tab="execution" aria-controls="detail" aria-selected="false" tabindex="-1">执行</button></div><div class="detail-content" id="detail" role="tabpanel" aria-labelledby="tab-meaning" tabindex="0"></div></aside>
+  </div>
+</div>
+<dialog id="new-dialog" aria-labelledby="new-heading"><div class="dialog-inner"><h2 id="new-heading">这次想怎样开始？</h2><p>两种入口共用同一个分析任务，以后可以继续。</p><div class="option-list"><button class="btn" data-action="new-direct" type="button">直接开始分析 <span class="fine">· 我已有明确问题</span></button><button class="btn" data-action="new-clarify" type="button">先帮我理清需求 <span class="fine">· 可以保存后暂不分析</span></button></div><p class="fine">这是合成演示；开启新任务会清空当前内存样例。</p><button class="btn btn-sm" id="cancel-new" type="button">返回当前任务</button></div></dialog>
+<div class="sr-only" id="notice" aria-live="polite"></div>
+<script src="sandbox.js"></script>
+</body>
+</html>

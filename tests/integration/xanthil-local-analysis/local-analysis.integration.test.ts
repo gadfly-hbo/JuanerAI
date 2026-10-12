@@ -498,17 +498,18 @@ function assertApprovedRootManifest(manifest: unknown) {
   }
 }
 
-function assertApprovedLock(lock: TestRecord) {
+function assertApprovedLock(lock: TestRecord, sdk041=false) {
   assert.equal(typeof lock, 'object');
   const packages = requiredRecord(lock.packages, 'npm lock packages');
   const root = requiredRecord(packages[''], 'npm lock root');
   assert.deepEqual(root, {
     name: 'xanthil-desktop',
     version: '0.1.0',
-    dependencies: approvedP4RootManifest.dependencies,
+    dependencies: sdk041?approvedSdk043Manifest.dependencies:approvedP4RootManifest.dependencies,
     devDependencies: approvedP4RootManifest.devDependencies,
     engines: approvedP4RootManifest.engines,
   }, 'lock root must be the exact approved closed object');
+  if(sdk041){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'SDK041 lock entry');assert.equal(sdk.version,'0.4.3');assert.equal(sdk.resolved,approvedSdk043Manifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-V01yA4t9M8BZn+O6pAdEGUBWa7di02sCTUYFMrmiLe8qker7sG9/X5ZzqXiL0j/5AZ57MI2OMjgoxSunG3pMaQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1'});}
   for (const [packageName, expected] of Object.entries(approvedDirectPackageHealth)) {
     const entry = requiredRecord(packages[`node_modules/${packageName}`], `${packageName} lock entry`);
     assert.deepEqual(
@@ -598,7 +599,52 @@ const independentWebScripts = {
 const approvedIndependentWebManifest = {...approvedDevelopmentManifest,scripts:{...approvedDevelopmentManifest.scripts,...independentWebScripts}};
 const approvedIndependentWebTsconfig = {...approvedChange005Tsconfig,files:[...approvedChange005Tsconfig.files,...independentWebFiles]};
 
+// Current approved v1.1 increment: independent fixed literal; never derived from the tested tsconfig.
+const openAnalysisV11Files = [
+  'adapters/agent-pi/provider-credentials.ts',
+  'tests/unit/xanthil-desktop/provider-credentials.unit.test.ts',
+  'packages/ports/analysis-request-ledger.ts',
+  'adapters/storage-local/analysis-request-ledger.ts',
+  'tests/integration/xanthil-desktop/open-agent-ledger.integration.test.ts',
+  'adapters/storage-local/open-analysis-collaboration.ts',
+  'tests/integration/xanthil-desktop/open-analysis-collaboration.integration.test.ts',
+  'packages/ports/open-analysis-code.ts',
+  'adapters/analytics-duckdb/open-analysis-code.ts',
+  'tests/integration/xanthil-desktop/open-analysis-code.integration.test.ts',
+  'tests/unit/xanthil-desktop/open-analysis-code-output.unit.test.ts',
+  'packages/ports/open-analysis-runtime.ts',
+  'adapters/agent-pi/open-analysis.ts',
+  'tests/integration/xanthil-desktop/open-agent-runtime.integration.test.ts',
+  'packages/product-core/open-analysis-ir.ts',
+  'tests/unit/xanthil-desktop/open-analysis-ir.unit.test.ts',
+  'tests/unit/xanthil-desktop/open-analysis-workbench.unit.test.ts',
+  'packages/ports/open-analysis-verifier.ts',
+  'adapters/analytics-duckdb/open-analysis-verification.ts',
+  'tests/unit/xanthil-desktop/open-analysis-verifier.unit.test.ts',
+  'packages/application/open-analysis.ts',
+  'tests/integration/xanthil-desktop/open-analysis-application.integration.test.ts',
+  'packages/ports/open-analysis-store.ts',
+  'adapters/storage-local/open-analysis.ts',
+  'tests/integration/xanthil-desktop/open-analysis-storage.integration.test.ts',
+  'packages/application/open-analysis-workspace.ts',
+  'profiles/personal/open-analysis.ts',
+  'tests/integration/xanthil-desktop/open-analysis-workspace.integration.test.ts',
+  'tests/integration/xanthil-desktop/open-analysis-http.integration.test.ts',
+  'packages/product-core/open-analysis-methods.ts',
+  'tests/unit/xanthil-desktop/open-analysis-methods.unit.test.ts',
+  'tests/integration/xanthil-desktop/open-document-source.integration.test.ts',
+  'tests/unit/xanthil-desktop/open-membership-framework.unit.test.ts',
+];
+const approvedOpenAnalysisV11Tsconfig = {...approvedIndependentWebTsconfig, files:[...approvedIndependentWebTsconfig.files,...openAnalysisV11Files]};
+
+const approvedSdk043Manifest={...approvedIndependentWebManifest,dependencies:{...approvedIndependentWebManifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.4.3/475480217d5f644a15264b2f838e5567d3e2c2e431b8a23c061a0665dbdbfa70.tgz'}};
+const approvedSdk041Tsconfig={...approvedOpenAnalysisV11Tsconfig,files:[...approvedOpenAnalysisV11Tsconfig.files,
+ 'tests/integration/xanthil-desktop/shared-runtime-state.integration.test.ts',
+ 'tests/integration/xanthil-desktop/requirement-draft.integration.test.ts',
+ 'tests/integration/xanthil-desktop/shared-analysis-tools.integration.test.ts']};
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk043Manifest,approvedSdk041Tsconfig,approvedP5RepositoryConfigurationFiles))return 'Change005Sdk041' as const;
+  if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedIndependentWebManifest, approvedOpenAnalysisV11Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change005OpenAnalysisV11' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedIndependentWebManifest, approvedIndependentWebTsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change005IndependentWeb' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedChange005Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change005' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedDevelopmentManifest, approvedCiMaintenanceTsconfig, approvedP5RepositoryConfigurationFiles)) return 'CiMaintenance' as const;
@@ -3431,7 +3477,20 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
   assert.equal(assertApprovedConfigurationTuple(approvedDevelopmentManifest,approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles),'Change004');
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Change005IndependentWeb');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Change005Sdk041');
+});
+
+
+test('Change005 v1.1 accepts only the exact retained configuration plus approved open-analysis roots', () => {
+ const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedIndependentWebManifest,config,approvedP5RepositoryConfigurationFiles);
+ assert.equal(check(approvedOpenAnalysisV11Tsconfig),'Change005OpenAnalysisV11');
+ for(const file of openAnalysisV11Files) {
+  assert.throws(()=>check({...approvedOpenAnalysisV11Tsconfig,files:approvedOpenAnalysisV11Tsconfig.files.filter(p=>p!==file)}));
+  assert.throws(()=>check({...approvedOpenAnalysisV11Tsconfig,files:[...approvedOpenAnalysisV11Tsconfig.files,file]}));
+  assert.throws(()=>check({...approvedOpenAnalysisV11Tsconfig,files:approvedOpenAnalysisV11Tsconfig.files.map(p=>p===file?'unapproved-v11.ts':p)}));
+ }
+ assert.throws(()=>check({...approvedOpenAnalysisV11Tsconfig,files:[...approvedIndependentWebTsconfig.files,...openAnalysisV11Files].reverse()}));
+ assert.throws(()=>check({...approvedOpenAnalysisV11Tsconfig,files:[...approvedOpenAnalysisV11Tsconfig.files,'unapproved-v11.ts']}));
 });
 
 test('BF-R11 H-TUPLE independent web permits only the complete scripts and type roots together',()=>{
@@ -3671,7 +3730,7 @@ test('TEST-XCLI-021 [AC-XCLI-001-01, AC-XCLI-007-01, AC-XCLI-008-01, AC-XCLI-016
 
   const manifest = JSON.parse(await readFile(join(repositoryRoot, 'package.json'), 'utf8'));
   const lock = JSON.parse(await readFile(join(repositoryRoot, 'package-lock.json'), 'utf8'));
-  assertApprovedLock(lock);
+  assertApprovedLock(lock,true);
 
   for (const [packageName, expected] of Object.entries(approvedDirectPackageHealth)) {
     await assertInstalledDirectPackage(packageName, expected);
@@ -3778,4 +3837,13 @@ test('Change004 exact typecheck inventory preserves earlier tuples and rejects o
  assert.throws(()=>check({...approvedChange004Tsconfig,compilerOptions:{...approvedChange004Tsconfig.compilerOptions,strict:false}}));
  assert.throws(()=>check({...approvedChange004Tsconfig,configuration_selector:'Change004'}));
  assert.throws(()=>assertApprovedConfigurationTuple({...approvedDevelopmentManifest,dependencies:{...approvedDevelopmentManifest.dependencies,unapproved:'1.0.0'}},approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles));
+});
+
+
+test('SDK041 pinned installation rejects floating SDK paths and missing or reordered new validation roots',()=>{
+ const check=(manifest:unknown,config:unknown)=>assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles);
+ assert.equal(check(approvedSdk043Manifest,approvedSdk041Tsconfig),'Change005Sdk041');
+ for(const path of ['file:/tmp/sdk.tgz','^0.4.1','file:vendor/pi-agent-runtime/0.4.0/old.tgz'])assert.throws(()=>check({...approvedSdk043Manifest,dependencies:{...approvedSdk043Manifest.dependencies,'pi-agent-runtime':path}},approvedSdk041Tsconfig));
+ for(const root of approvedSdk041Tsconfig.files.slice(-3))assert.throws(()=>check(approvedSdk043Manifest,{...approvedSdk041Tsconfig,files:approvedSdk041Tsconfig.files.filter(p=>p!==root)}));
+ assert.throws(()=>check(approvedSdk043Manifest,{...approvedSdk041Tsconfig,files:[...approvedSdk041Tsconfig.files.slice(0,-3),...approvedSdk041Tsconfig.files.slice(-3).reverse()]}));
 });

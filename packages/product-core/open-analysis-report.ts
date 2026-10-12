@@ -1,0 +1,21 @@
+import {taskHash} from './member-task.ts';
+import type {OpenAnalysisOutcome} from '../ports/open-analysis-store.ts';
+import {validateMembershipResult} from './member-analysis.ts';
+export function openAnalysisFactsText(outcome:OpenAnalysisOutcome):string{
+ const plan=outcome.framework,calculation=outcome.calculation;
+ if(plan.version==='1.6'){const quotes=JSON.parse(calculation.value) as {source_name:string;position:string;text:string}[];return ['## 资料原文引用（来源已核对）','',...quotes.flatMap(q=>[`${q.source_name} · ${q.position}`,q.text,'']),'只核对所选资料原文及位置；不证明资料观点正确、数值计算或因果。'].join('\n');}
+ if(plan.version!=='1.4'||!plan.membership)return `本地计算：${calculation.value} ${calculation.unit}`;
+ const frame=plan.membership,result=validateMembershipResult(JSON.parse(calculation.value),{methods:frame.methods});
+ const money=(value:string)=>{let n=BigInt(value),negative=n<0n;n=negative?-n:n;return (negative?'-':'')+(n/100n)+'.'+String(n%100n).padStart(2,'0')+' 元';};
+ const rate=(value:typeof result.periods.current.repurchase_rate)=>value==='not_applicable'?'不适用':value.numerator+'/'+value.denominator;
+ return ['## 已独立核验的会员指标','',`方法：${frame.methods.includes('M2')?'M1 总体复购变化 + M2 分组贡献':'M1 总体复购变化'}`,`比较期：${frame.semantics.comparison_period.start_date} 至 ${frame.semantics.comparison_period.end_date}（结束不含）`,`本期：${frame.semantics.current_period.start_date} 至 ${frame.semantics.current_period.end_date}（结束不含）`,'','| 指标 | 比较期 | 本期 |','| --- | --- | --- |',`| 活跃会员 | ${result.periods.comparison.active_member_count} 人 | ${result.periods.current.active_member_count} 人 |`,`| 复购会员 | ${result.periods.comparison.repeat_member_count} 人 | ${result.periods.current.repeat_member_count} 人 |`,`| 复购率（精确比值） | ${rate(result.periods.comparison.repurchase_rate)} | ${rate(result.periods.current.repurchase_rate)} |`,`| 复购收入 | ${money(result.periods.comparison.repeat_revenue_fen)} | ${money(result.periods.current.repeat_revenue_fen)} |`,'',...(result.m2.status==='applicable'?['### 分组贡献','',...result.m2.groups.map(g=>`${outcome.verification.native_evidence?.group_labels[g.group_id]??'已绑定分组'}：比较期 ${money(g.comparison_repeat_revenue_fen)} → 本期 ${money(g.current_repeat_revenue_fen)}；变化 ${money(g.absolute_delta)}`)]:[result.m2.status==='not_selected'?'本版未选择分组贡献。':'当前两期不具备分组贡献的比较条件。']),'','复购会员：每期至少两笔有效支付订单。复购收入：按支付时间及订单ID排序，首笔之后的实付金额。','独立算术核验不证明业务原因，也不代表正式决定或现实行动。'].join('\n');
+}
+
+/** Presentation-only known grade labels; immutable model evidence is retained. */
+export function openAnalysisReadableText(text:string):string{return text.replace(/\bsource_attribution\b/g,'资料原文对应核对').replace(/\bindependent_arithmetic\b/g,'独立算术核验');}
+
+/** Explorer charts have their own explicit coverage, separate from qualified arithmetic. */
+export function openAnalysisExplorationsText(records:readonly import('../ports/open-analysis-store.ts').OpenExplorationRecord[]):string{
+ const cell=(v:unknown)=>String(v??'').replace(/[<>|\r\n]/g,c=>({'<':'&lt;','>':'&gt;','|':'\\|','\r':' ','\n':' '})[c]!);
+ return records.map(e=>['## 探索结果（尚未独立核验）','',cell(e.plan.goal),cell(e.value.summary),...(e.total_check?['有限检查：'+(e.total_check.status==='passed'?'合计一致':'合计不一致（检查失败）')+' · '+cell(e.total_check.chart_title),cell(e.total_check.limitation)]:[]),...e.value.observations.map(cell),'',...e.value.charts.flatMap(c=>['### '+cell(c.title)+' · '+cell(c.unit),'| 对象 | 探索值 |','| --- | --- |',...c.points.map(p=>'| '+cell(p.label)+' | '+p.value+' |')]),'',`代码身份：${e.receipt.code_sha256}`,`探索计划身份：${taskHash(e.plan)}`,'仅保存实际探索输出；代码成功不证明统计方法、业务解释或因果。关键事实核验范围按独立证据另列。',''].join('\n')).join('\n');
+}

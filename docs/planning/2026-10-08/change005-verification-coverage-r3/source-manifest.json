@@ -1,0 +1,73 @@
+{
+  "version": "r3-draft.1",
+  "status": "USER_REVIEW_PENDING",
+  "device": "Mac mini",
+  "worktree": "/Users/bendandebaba/.codex/worktrees/n01-n02-browser-membership/JuanerAI",
+  "branch": "work/mac-mini/n01-n02-browser-membership",
+  "head": "037e3f8fd8e694000428d65384a545879f1d6f9a",
+  "scope": "Product and UI documents only; not Engineering Intake, freeze or execution",
+  "files": [
+    {
+      "path": "docs/planning/2026-10-08/change005-verification-coverage-r3/README.md",
+      "bytes": 2518,
+      "sha256": "865ace8edd93a594b56ed156845f29cdb8ec682584f417db886b8ffc5d07c809"
+    },
+    {
+      "path": "docs/planning/2026-10-08/change005-verification-coverage-r3/product-input-r3.md",
+      "bytes": 20451,
+      "sha256": "719a52add3db195bf7601b82d1709d3d6853d3ea0a4f447f488f37729a541a58"
+    },
+    {
+      "path": "docs/planning/2026-10-08/change005-verification-coverage-r3/ui-contract-r3.md",
+      "bytes": 8802,
+      "sha256": "278b0016e10ca0b24147d09d679aeeef7b7a7c52e15a40e408cb6b86b00607b1"
+    }
+  ],
+  "source_readback": [
+    {
+      "path": "docs/planning/2026-10-08/change005-numeric-reliability-r2/product-input-r2.md",
+      "bytes": 14809,
+      "sha256": "438448c5935270e3e30de8c678a35c897a7223bcb2496073d3e5fc636faf0cb1"
+    },
+    {
+      "path": "docs/planning/2026-10-08/change005-numeric-reliability-r2/ui-contract-r2.md",
+      "bytes": 7025,
+      "sha256": "5b9b43c88347e334f0dc8f2fe07dad41fd2f453e1e274f8caf479a4a8e17da57"
+    },
+    {
+      "path": "docs/planning/2026-10-08/change005-numeric-reliability-r2/approval-and-freeze-r2.md",
+      "bytes": 1931,
+      "sha256": "0df01f6204e13d79ca6693d63874cc2278e77f0c814e62184e21c59ca9f7399c"
+    },
+    {
+      "path": "openspec/changes/xanthil-browser-multisource-membership-analysis/engineering-acceptance-r2.md",
+      "bytes": 3805,
+      "sha256": "f2519736bbbf89fe307729827ef069c08b0d36a7d972b1e94efeb455e8f055fc"
+    },
+    {
+      "path": "openspec/changes/xanthil-browser-multisource-membership-analysis/spec.md",
+      "bytes": 184855,
+      "sha256": "1506c2f1688348631f4b88083051e1a6299aa082bb5d867f09d62cf3ef1f6c06"
+    },
+    {
+      "path": "docs/planning/2026-10-04/juanerai-product-development-blueprint-v4.2.md",
+      "bytes": 61706,
+      "sha256": "3f9600fd44f0d869a2ae4632b92c3f6c182d40d3e2223c7cd75619fb7b438cf3"
+    },
+    {
+      "path": "docs/planning/2026-10-04/blueprint-v4.2-approval-and-rule-integration.md",
+      "bytes": 7419,
+      "sha256": "73f2c04d9169f9cb2582f85937679edc2988c57f1d7c741cfaec4216091828aa"
+    },
+    {
+      "path": "docs/planning/capability-coverage/register.md",
+      "bytes": 51183,
+      "sha256": "ddc1d2bd340092788a0f11fa4fc5c6146b429cae7a6933fd3a8ae8ff59a8cd51"
+    },
+    {
+      "path": "docs/governance/product-change-execution-policy.md",
+      "bytes": 54329,
+      "sha256": "645a9050bec4f3b96b1fd6b20040b28ad529b434135971b1e63ffe07c4541f10"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {spawnSync} from 'node:child_process';
-import {mkdtempSync,readFileSync,constants} from 'node:fs';
+import {mkdtempSync,readFileSync,constants,mkdirSync,copyFileSync,symlinkSync,writeFileSync,existsSync,realpathSync} from 'node:fs';
 import {join,resolve} from 'node:path';
 import {browserEvidenceRoot} from '../../fixtures/xanthil-desktop/browser-evidence.ts';
 import {readBrowserServiceIdentity} from '../../../adapters/storage-local/browser-project-origin.ts';
@@ -69,4 +69,37 @@ test('BF-R11: missing helper stays visible unavailable and never probes or falls
  const {createMacOsCredentialStore}=await import('../../../adapters/credentials-macos/index.ts'),{createProviderSettings}=await import('../../../packages/application/provider-settings.ts');
  const root=mkdtempSync(join(browserEvidenceRoot,'missing-web-helper-')),settings=createProviderSettings({store:createMacOsCredentialStore(join(root,'not-present-helper')),probe:async()=>assert.fail('no Provider fallback')});
  assert.equal((await settings.request({operation:'read'})).value.state,'unconfigured');const result=await settings.request({operation:'refresh'});assert.equal(result.ok,false);assert.equal(result.value.state,'keychain_unavailable');settings.close();
+});
+
+// A Git source clone has no ignored native build products. The launcher must
+// reject that deployment before opening a page whose first credential action fails.
+for(const helperState of ['missing','not-executable','directory'])test(`BF-R11: source clone with ${helperState} helper never launches a false-ready service`,()=>{
+ const root=realpathSync(mkdtempSync(join(browserEvidenceRoot,'clone-bootstrap-'))),browser=join(root,'tools/browser');mkdirSync(browser,{recursive:true});
+ for(const file of ['entry.mjs','service-environment.ts'])copyFileSync(resolve('tools/browser',file),join(browser,file));
+ for(const directory of ['apps','adapters'])symlinkSync(resolve(directory),join(root,directory),'dir');
+ const marker=join(root,'service-was-launched');
+ writeFileSync(join(browser,'service.mjs'),`import {writeFileSync} from 'node:fs';writeFileSync(${JSON.stringify(marker)},'synthetic service');`);
+ if(helperState!=='missing'){
+  const directory=join(root,'build/development-keychain');mkdirSync(directory,{recursive:true});
+  if(helperState==='directory')mkdirSync(join(directory,'xanthil-keychain'));
+  else writeFileSync(join(directory,'xanthil-keychain'),'synthetic non-executable helper',{mode:0o600});
+ }
+ const result=spawnSync(process.execPath,[join(browser,'entry.mjs'),'start','--no-open'],{env:{...process.env,JUANERAI_DESKTOP_DEV_ROOT:join(root,'profile')},encoding:'utf8',timeout:15000});
+ assert.equal(existsSync(marker),false,'must fail before detaching a service, not at first credential use');
+ assert.equal(result.status,1);assert.match(result.stderr,/本机分析服务的必要组件尚未准备好/);
+ assert.doesNotMatch(result.stdout,/本机网页服务：/);
+});
+
+
+test('OA-S01/Q11-07: normal web reader deployment pins existing executable identity without startup probe or silent corrupt fallback',async()=>{
+ const {createHash}=await import('node:crypto'),module=await import('../../../apps/browser/service-main.ts'),read=Reflect.get(module,'readIndependentWebDocumentReaders');assert.equal(typeof read,'function');
+ const root=mkdtempSync(join(browserEvidenceRoot,'web-reader-deployment-')),python=join(root,'python'),image=join(root,'image'),descriptor=join(root,'readers.json');
+ for(const path of [python,image])writeFileSync(path,'synthetic executable never invoked',{mode:0o700});
+ const entry=(path:string)=>({executable_path:path,sha256:createHash('sha256').update(readFileSync(path)).digest('hex')}),value={version:'1.0',python:entry(python),image:entry(image),legacy_office:null};
+ assert.deepEqual(await read(descriptor,'/numeric-python',{}),{pythonExecutable:'/numeric-python'});
+ writeFileSync(descriptor,JSON.stringify(value));assert.deepEqual(await read(descriptor,'/numeric-python',{}),{pythonExecutable:python,imageExecutable:image});
+ for(const bad of [{...value,unexpected:true},{...value,version:'2.0'},{...value,python:{...value.python,sha256:'0'.repeat(64)}},{...value,python:{...value.python,extra:true}}]){writeFileSync(descriptor,JSON.stringify(bad));await assert.rejects(()=>read(descriptor,'/numeric-python',{}),{code:'WEB_DOCUMENT_READERS_UNAVAILABLE'});}
+ const link=join(root,'linked-python');symlinkSync(python,link);writeFileSync(descriptor,JSON.stringify({...value,python:entry(link)}));await assert.rejects(()=>read(descriptor,'/numeric-python',{}),{code:'WEB_DOCUMENT_READERS_UNAVAILABLE'});
+ const blocked=join(root,'not-executable');writeFileSync(blocked,'not executable',{mode:0o600});writeFileSync(descriptor,JSON.stringify({...value,python:entry(blocked)}));await assert.rejects(()=>read(descriptor,'/numeric-python',{}),{code:'WEB_DOCUMENT_READERS_UNAVAILABLE'});
+ writeFileSync(descriptor,JSON.stringify(value));writeFileSync(image,'different executable',{mode:0o700});await assert.rejects(()=>read(descriptor,'/numeric-python',{}),{code:'WEB_DOCUMENT_READERS_UNAVAILABLE'});
 });

@@ -129,7 +129,7 @@ export function memberSourceReaders(projectRoot:string) {
 }
 export function resolveMemberPlanPreparation(db:DatabaseSync,projectRoot:string,input:unknown,requireActive:boolean,owningRunId?:string) {
   const context=preparedConfirmationContext(input),p=context.preparation,a=context.authority;
-  if(db.prepare('PRAGMA user_version').get()?.user_version!==120)fail('SCHEMA_UNSUPPORTED');
+  if(![120,130,140,150,160].includes(Number(db.prepare('PRAGMA user_version').get()?.user_version)))fail('SCHEMA_UNSUPPORTED');
   const saved=memberSourceReaders(projectRoot).qualified(db,a.task_id,p.execution_id);
   if(taskHash(bindQualifiedPreparation(saved.preparation))!==taskHash(p))fail('SOURCE_CHANGED');
   const task=db.prepare('SELECT * FROM membership_tasks WHERE task_id=?').get(a.task_id),grant=db.prepare('SELECT * FROM membership_operation_grants WHERE task_id=? AND grant_id=?').get(a.task_id,a.grant_id);

@@ -7,9 +7,10 @@
   },
   "dependencies": {
     "@earendil-works/pi-coding-agent": "0.84.2",
-    "typebox": "1.3.7",
+    "pi-agent-runtime": "file:vendor/pi-agent-runtime/0.4.3/475480217d5f644a15264b2f838e5567d3e2c2e431b8a23c061a0665dbdbfa70.tgz",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "typebox": "1.3.7"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -25,16 +26,16 @@
     "web:status": "node tools/browser/entry.mjs status"
   },
   "devDependencies": {
-    "@types/node": "22.19.19",
-    "typescript": "5.9.3",
-    "electron": "44.4.3",
-    "vite": "8.3.0",
-    "@vitejs/plugin-react": "6.1.1",
     "@electron-forge/cli": "7.11.2",
     "@electron-forge/plugin-vite": "7.11.2",
+    "@types/node": "22.19.19",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "playwright-core": "1.63.0"
+    "@vitejs/plugin-react": "6.1.1",
+    "electron": "44.4.3",
+    "playwright-core": "1.63.0",
+    "typescript": "5.9.3",
+    "vite": "8.3.0"
   },
   "name": "xanthil-desktop",
   "productName": "Xanthil",

@@ -1,5 +1,5 @@
 import {spawn} from 'node:child_process';
-import {mkdirSync,openSync,closeSync,constants} from 'node:fs';
+import {mkdirSync,openSync,closeSync,constants,statSync,accessSync} from 'node:fs';
 import {join} from 'node:path';
 import {homedir} from 'node:os';
 import {fileURLToPath} from 'node:url';
@@ -16,6 +16,17 @@ function quiescent(){try{const lease=acquireBrowserServiceIdentity(directory);le
 let record=await current();
 if(action==='start'&&!record){
  if(!quiescent())throw Error('服务状态尚未确认；不会启动第二个写者。');
+ // A source clone omits ignored native artifacts. Reject incomplete local
+ // provisioning before a detached service can advertise a usable workbench.
+ // Inspect only the fixed helper path; never invoke it or read credentials here.
+ const helper=fileURLToPath(new URL('../../build/development-keychain/xanthil-keychain',import.meta.url));
+ try{
+  if(!statSync(helper).isFile())throw Error('not a file');
+  accessSync(helper,constants.X_OK);
+ }catch{
+  process.stderr.write('本机分析服务的必要组件尚未准备好，暂时无法启动。请联系产品维护人员完成本机准备；已有资料不受影响。\n');
+  process.exit(1);
+ }
  const env=browserServiceEnvironment(root);
  const log=openSync(join(directory,'service.log'),constants.O_CREAT|constants.O_APPEND|constants.O_WRONLY|constants.O_NOFOLLOW,0o600);
  try{const child=spawn(process.execPath,[fileURLToPath(new URL('./service.mjs',import.meta.url))],{env,detached:true,stdio:['ignore',log,log]});child.unref();}finally{closeSync(log);}

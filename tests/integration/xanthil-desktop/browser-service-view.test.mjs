@@ -73,7 +73,7 @@ test('BF-UI01/06: failed enable never saves, exposes no raw failure and keeps lo
  const original={document:globalThis.document,fetch:globalThis.fetch,sessionStorage:globalThis.sessionStorage};const app=serviceDom(),posts=[];
  try{globalThis.document={head:{append(){}},createElement:()=>({}),getElementById:()=>app};globalThis.sessionStorage={getItem:()=>null};globalThis.fetch=async(path,options)=>{const body=options.body?JSON.parse(options.body):null;if(body)posts.push(body);return new Response(JSON.stringify(path==='/v1/projects'?{projects:[],current:'p'}:path==='/v1/settings'?body?.operation==='test'?{ok:false,code:'KEYCHAIN_UNAVAILABLE'}:{ok:true,value:{configured:false}}:path==='/v1/tasks'?{tasks:[]}:path==='/v1/model-policy'?{available:false,sha256:'policy',policy:{model:'test'}}:{generation:0}));};
  await views.startServiceWorkspace({control:'owned'});await app.querySelector('#current-project').onclick();app.querySelector('#provider-api-key').value='synthetic-test-value';await app.querySelector('#enable-ai').onsubmit({preventDefault(){}});
- assert.equal(posts.some(p=>p.operation==='save'),false);assert.match(app.innerHTML,/请解锁系统钥匙串后再试/);assert.doesNotMatch(app.innerHTML,/KEYCHAIN_UNAVAILABLE|synthetic-test-value/);assert.ok(app.querySelector('#question'));
+ assert.equal(posts.some(p=>p.operation==='save'),false);assert.match(app.innerHTML,/暂时无法读取已保存的密钥/);assert.doesNotMatch(app.innerHTML,/KEYCHAIN_UNAVAILABLE|synthetic-test-value/);assert.ok(app.querySelector('#question'));
  }finally{Object.assign(globalThis,original);}
 });
 

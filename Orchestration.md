@@ -8,9 +8,10 @@ a product task or the inactive signed Host Loop.
 ## Responsibilities
 
 MacBook is Product Manager: product intent, terminology, Blueprint, vertical
-scope, UI, acceptance criteria and product-input freeze. Mini is Engineering
-Controller: intake, engineering work packages, important technical decisions,
-progress diagnosis, engineering state, acceptance and authorized delivery.
+scope, UI, acceptance criteria and product-input freeze. Mini's engineering main
+Agent is Engineering Controller and directly owns intake, engineering work
+packages, spec/design, tests, implementation, corrections, important technical
+decisions, single engineering state, acceptance and authorized delivery.
 The user decides product ambiguity, boundary changes, extra actual resources,
 permissions, residual risk and required Product Acceptance directly in Mini.
 
@@ -31,12 +32,12 @@ still needs an approved architecture decision.
 
 ## Roles and Work Packages
 
-- `juaner_worker` is the continuous engineering agent: necessary engineering
+- The Mini engineering main Agent continuously owns necessary engineering
   spec/design, tests, implementation, debugging and affected verification.
 - `juaner_validator` is fresh, independent and read-only; candidate authors
   cannot perform final validation.
-- `juaner_spec` and `juaner_test` provide scoped specialist assistance when
-  needed. They do not form a required serial path or approve the next role.
+- These are the only two Mini engineering roles. Do not dispatch Worker/Spec/Test
+  or generic implementation helpers. MacBook product review remains unchanged.
 - Mini decides important in-boundary contracts and organizes delivery; it does
   not approve each ordinary correction or duplicate the full Validator review.
 
@@ -48,7 +49,7 @@ than copying it. Models and configuration are owned by `agent-model-routing.md`.
 
 ## Execution and Cross-domain Decisions
 
-Use a small behavior loop: minimum sufficient spec -> causal RED -> minimal
+Use a small behavior loop: persisted minimum sufficient spec -> causal RED -> minimal
 GREEN -> necessary refactor, then the next behavior. Correct private interfaces
 and stale fixtures in that loop. Material public/persistent/authority contracts
 get targeted impact review; user-boundary changes go directly to the user.
@@ -57,8 +58,9 @@ not routine private adjustments.
 
 OpenSpec tasks.md remains the Change plan. AgentOps Task Bus stays inactive
 unless separately authorized; no additional task ledger is introduced.
-Parallel writes require non-overlapping ownership and stable shared boundaries.
-Shared-worktree write-heavy work remains serial; concurrency is not a target.
+The main Agent is the single engineering author and state writer; Validator is
+read-only. At ordinary milestones report progress and continue the approved
+next action, rather than ending the task. Use the sole policy's end-of-turn check.
 
 ## Validation and Delivery
 
@@ -69,3 +71,9 @@ and scope/architecture checks occur in this same review.
 Mini records Engineering Acceptance, required user Product Acceptance and
 authorized Git delivery separately. No machine crossing is needed for reviewer
 independence, and MacBook technical sign-off is not required.
+
+Adopted v0.9 Mini engineering uses daily affected checks and authorized
+work-branch checkpoints/pushes, with one formal Change PR/integration closeout.
+Follow the sole policy's Mac mini Trial and User Acceptance section for the
+Mini-local candidate, runtime entry readback and required user acceptance;
+trial feedback is not formal completion.

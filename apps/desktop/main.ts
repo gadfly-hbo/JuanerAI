@@ -4,7 +4,7 @@ import {installCollaborationClose} from './collaboration-window-close.ts';
 import {developmentEndpoint, isDevelopmentFrame, prepareDevelopmentRoot, assertDevelopmentPath} from './development.ts';
 import {createProviderSettings} from '../../packages/application/provider-settings.ts';
 import {createMacOsCredentialStore} from '../../adapters/credentials-macos/index.ts';
-import {probeLocalXiaomi} from '../../adapters/agent-pi/xiaomi-local.ts';
+import {createPiConnectionProbe} from '../../adapters/agent-pi/native-connection-probe.ts';
 import { createCaseAssistantHandler } from './case-assistant-main.ts';
 import { basename, dirname, isAbsolute, join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -571,7 +571,7 @@ function startNormalMainEntry(): void {
     delete process.env.XIAOMI_TOKEN_PLAN_CN_API_KEY;
     delete process.env.JUANERAI_CASE_ASSISTANT_ACTIVATION;
     const credentialHelper=credentialHelperPath(entryUrl);
-    const providerSettings=caseAssistantConfig?undefined:createProviderSettings({store:createMacOsCredentialStore(credentialHelper),probe:probeLocalXiaomi});
+    const providerSettings=caseAssistantConfig?undefined:createProviderSettings({store:createMacOsCredentialStore(credentialHelper),probe:createPiConnectionProbe({root:join(app.getPath('userData'),'connection-tests')})});
     void providerSettings?.initialize();
     const productionProfile = createPersonalXanthilDesktopProfile({toolchainDeployment:{descriptor_path},assistanceConfig:null,caseAssistantConfig,...(providerSettings?{providerSettings}:{}),clock: () => new Date(),deadlineScheduler:{schedule({at_epoch_ms,callback}:{at_epoch_ms:number;callback:()=>void}){const timer=setTimeout(callback,Math.max(0,at_epoch_ms-Date.now()));return {cancel(){clearTimeout(timer);}};}}});
     const handlers = createXanthilDesktopIpcHandlers({ productionProfile, nativeDialogs: normalNativeDialogs(),sourceReader:normalSourceReader(),exportWriter:createNativeReportExportWriter(), senderPolicy: isCurrentMainFrame });

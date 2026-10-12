@@ -41,11 +41,14 @@ for(const action of ['organize_question','explain_evidence','draft_candidates'] 
  const {createRealDesktopApplication,openConfirmedDesktopRevision}=await import('../../fixtures/xanthil-desktop/desktop-contract-drivers.ts');
  const {createSessionCommand,desktopTestIds}=await import('../../fixtures/xanthil-desktop/desktop-fixtures.ts');
  const specifier='@earendil-works/pi-coding-agent',sdk=await import(specifier),ai=await import(pathToFileURL(join(sdk.getPackageDir(),'node_modules/@earendil-works/pi-ai/dist/index.js')).href);
- let payload='',calls=0;const originalStream=sdk.ModelRuntime.prototype.streamSimple;let wire:Record<string,unknown>={};
+ let payload='',calls=0,legacyCalls=0;const originalStream=sdk.ModelRuntime.prototype.streamSimple;let wire:Record<string,unknown>={};
  const net=await import('node:net');t.mock.method(net.Socket.prototype,'connect',()=>{throw Error('PS_OFFLINE_SOCKET_FORBIDDEN');});
  const draft=action==='organize_question'?{draft_kind:'question_fields',draft_content:{question_text:'Synthetic question',hypothesis_display_title:'Synthetic hypothesis',business_context:'Synthetic context',alternative_explanations:['Unknown']}}:action==='explain_evidence'?{draft_kind:'evidence_explanation',draft_content:{evidence_explanation_text:'Synthetic evidence; not causal.'}}:{draft_kind:'candidates',draft_content:{candidates:[{title:'Synthetic option',evidence_basis:'Disclosed evidence',risk_or_refutation:'Unknown',applicability_conditions:'Synthetic case',future_validation_metric:'Future metric'}]}};
  let responseText=JSON.stringify(draft);
- t.mock.method(globalThis,'fetch',async(_url:unknown,options:{body:string})=>{wire=JSON.parse(options.body);const chunk={id:'synthetic-helper',object:'chat.completion.chunk',created:0,model:'mimo-v2.6-pro',choices:[{index:0,delta:{role:'assistant',content:responseText},finish_reason:'stop'}],usage:{prompt_tokens:100,completion_tokens:100,total_tokens:200}};return new Response('data: '+JSON.stringify(chunk)+'\n\ndata: [DONE]\n\n',{headers:{'content-type':'text/event-stream'}});});
+ t.mock.method(globalThis,'fetch',async(_url:unknown,options:{body:string;headers:HeadersInit})=>{wire=JSON.parse(options.body);calls++;assert.match(new Headers(options.headers).get('authorization')??'',/synthetic-shared-key/);assert.equal(wire.model,'mimo-v2.6-pro');assert.equal(wire.max_completion_tokens??wire.max_tokens,2048);assert.ok(!wire.tools||Array.isArray(wire.tools)&&wire.tools.length===0);
+  const messages=wire.messages as {role:string;content:string}[],system=messages.find(m=>m.role==='system')!.content,protocol=JSON.parse(system.split('\n')[0]);assert.ok(system.includes('Do not request or simulate file reads'));assert.equal(system.includes('Use analysis_tool with the business tool name'),false);
+  assert.deepEqual(Object.keys(protocol.response_templates),['organize_question','explain_evidence','draft_candidates']);const template=protocol.response_templates[action];assert.equal(template.draft_kind,draft.draft_kind);assert.deepEqual(Object.keys(template).sort(),['draft_content','draft_kind']);validateDesktopAssistanceDraft(template.draft_kind,template.draft_content,true);assert.deepEqual(Object.keys(template.draft_content).sort(),Object.keys(draft.draft_content).sort());assert.match(protocol.instruction,/JSON object/);assert.match(protocol.rules.join(' '),/no extra fields/i);payload=messages.filter(m=>m.role==='user').at(-1)!.content;
+ const chunk={id:'synthetic-helper',object:'chat.completion.chunk',created:0,model:'mimo-v2.6-pro',choices:[{index:0,delta:{role:'assistant',content:responseText},finish_reason:'stop'}],usage:{prompt_tokens:100,completion_tokens:100,total_tokens:200}};return new Response('data: '+JSON.stringify(chunk)+'\n\ndata: [DONE]\n\n',{headers:{'content-type':'text/event-stream'}});});
  t.mock.method(sdk.ModelRuntime.prototype,'streamSimple',function(this:unknown,model:Record<string,unknown>,context:Record<string,unknown>,opts:Record<string,unknown>){
   // PS-06: inspect the actual transmitted protocol, not a fixture-only schema.
   const protocol=JSON.parse(String(context.systemPrompt));
@@ -56,7 +59,7 @@ for(const action of ['organize_question','explain_evidence','draft_candidates'] 
   validateDesktopAssistanceDraft(template.draft_kind,template.draft_content,true);
   assert.deepEqual(Object.keys(template.draft_content).sort(),Object.keys(draft.draft_content).sort());
   assert.match(protocol.instruction,/JSON object/);assert.match(protocol.rules.join(' '),/no extra fields/i);
-  calls++;assert.equal(opts.apiKey,'synthetic-shared-key');assert.equal(model.provider,'xiaomi-token-plan-cn');assert.equal(model.id,'mimo-v2.6-pro');assert.deepEqual(context.tools,[]);assert.equal(opts.maxRetries,0);payload=(context.messages as {content:string}[])[0].content;
+  legacyCalls++;assert.equal(opts.apiKey,'synthetic-shared-key');assert.equal(model.provider,'xiaomi-token-plan-cn');assert.equal(model.id,'mimo-v2.6-pro');assert.deepEqual(context.tools,[]);assert.equal(opts.maxRetries,0);payload=(context.messages as {content:string}[])[0].content;
   return originalStream.call(this,model,context,opts);
  });
  type Projection=import('../../../packages/contracts/xanthil-desktop-ipc.ts').DesktopProjection;
@@ -76,7 +79,8 @@ for(const action of ['organize_question','explain_evidence','draft_candidates'] 
  p=await app.decideAssistanceDisclosure({...command(),preview_token:preview.preview_token,payload_sha256:preview.payload_sha256,decision:'accepted',free_text_confirmed:true});assert.equal(calls,0);
  p=await app.startAssistance({...command(),disclosure_id:p.disclosures.at(-1)!.disclosure_id});
  for(let i=0;i<200&&p.attempts.at(-1)?.status==='Running';i++){await new Promise(r=>setTimeout(r,5));p=await app.readProjection(owner);}
- assert.deepEqual(wire.response_format,action==='draft_candidates'?{type:'json_object'}:undefined,'only candidate output uses native JSON mode');
+ assert.equal(legacyCalls,0,'new production professional tasks must not enter the old private Pi runtime');
+ const {createLocalAnalysisRequestLedger}=await import('../../../adapters/storage-local/analysis-request-ledger.ts');const rows=createLocalAnalysisRequestLedger({projectRoot:root}).read(owner.session_id);assert.equal(rows.length,1);assert.equal(rows[0].status,'succeeded');assert.equal(rows[0].model,'mimo-v2.6-pro');
  assert.equal(p.attempts.at(-1)?.status,'Succeeded');assert.equal(calls,1);assert.equal(payload,preview.payload_text);assert.equal(p.assistance_drafts.length,1);assert.equal(p.assistance_drafts[0].disposition,'pending');assert.equal(settings.status().busy,false);assert.equal(p.closures.length,seed.closures.length);await profile.getCaseAssistant()?.close();settings.close();
  if(action==='draft_candidates'){
   const {createPiDecisionAssistanceRuntime}=await import('../../../adapters/agent-pi/local-analysis.ts');

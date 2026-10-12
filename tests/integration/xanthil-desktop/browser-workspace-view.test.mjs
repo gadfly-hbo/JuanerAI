@@ -35,7 +35,7 @@ test('BF-R10 UI08: download remains available read-only and visibly disables dur
  try{
   globalThis.document={createElement:()=>({click(){},remove(){}}),head:{append(){}},body:{append(){}},getElementById:()=>app};globalThis.sessionStorage={getItem:()=>null};
   globalThis.fetch=async path=>{if(path.endsWith('/copy')){await pending;return new Response('<html>saved report</html>',{headers:{'content-type':'text/html'}});}return new Response(JSON.stringify(path==='/v1/model-policy'?{sha256:'policy',available:false,policy:{model:'mimo-v2.6-pro'}}:path==='/v1/tasks'?{tasks:[{task_id:'task',question:'问题'}]}:{question:'问题',source_summary:null,material_grant:null,task:{status:'closed',reviews:[]},case:{project:{display_name:'合成项目'},revision:{state:'Completed'},reports:[{report_id:'report',state:'final'}],findings:[]},operations:{totals:{calls:'3',local_runs:'2',unresolved:0}}}));};
-  await startWorkspace({control:null});assert.match(app.innerHTML,/<button id="download-report"\s*>/);const done=app.querySelector('#download-report').onclick();try{assert.match(app.innerHTML,/<button id="download-report" disabled>/);}finally{release();await done;}assert.match(app.innerHTML,/已请求下载副本，请检查浏览器下载列表；尚未确认文件已保存到磁盘。/);
+  await startWorkspace({control:null});assert.match(app.innerHTML,/<button id="download-report"\s*>/);const done=app.querySelector('#download-report').onclick();try{assert.match(app.innerHTML,/<button id="download-report" disabled>/);}finally{release();await done;}assert.match(app.innerHTML,/下载已开始，请在浏览器下载列表中查看。/);
  }finally{release();Object.assign(globalThis,original);}
 });
 

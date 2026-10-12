@@ -1,0 +1,55 @@
+import {executeOpenAnalysisIR} from './open-analysis-ir.ts';
+import type {MemberSourceInspection,MemberSourceSheet} from '../ports/member-source.ts';
+import type {OpenFrameworkCheckpoint} from '../ports/open-analysis-store.ts';
+import type {OpenAnalysisIR,OpenAnalysisFilter} from './open-analysis-ir.ts';
+import {membershipRecord as closed,membershipUuid} from './member-analysis.ts';import {taskHash} from './member-task.ts';
+export type OpenExplorationIR=Readonly<{version:'1.0';kind:'exploration';goal:string;context_sha256:string;inspection_sha256:string;snapshot_sha256:string;binding_sha256:string;bindings:readonly Readonly<{source_id:string;source_sha256:string;sheet_id:string;columns:readonly string[];filters:readonly OpenAnalysisFilter[]}>[]}>;
+export type OpenExplorationValue=Readonly<{summary:string;observations:readonly string[];charts:readonly Readonly<{title:string;type:'bar'|'line';unit:string;points:readonly Readonly<{label:string;value:number|string}>[]}>[]}>;
+function fail(code='EXPLORATION_INVALID'):never{throw Object.assign(new Error(code),{code,stack:code});}
+function text(v:unknown,max=2000):string{if(typeof v!=='string'||!v.trim()||v.length>max||v.includes('\0'))fail();return v;}
+function bases(p:OpenAnalysisIR):readonly OpenAnalysisIR[]{return p.base?bases(p.base):p.inputs?p.inputs.flatMap(bases):[p];}
+function number(v:string){if(!/^-?(0|[1-9]\d*)(\.\d+)?$/.test(v)||v.length>2000)fail('NUMERIC_METHOD_UNAVAILABLE');const [w,p='']=v.split('.');return {n:BigInt(w!)*10n**BigInt(p.length)+(w!.startsWith('-')?-1n:1n)*BigInt(p||'0'),d:10n**BigInt(p.length)};}
+/** The executable snapshot, not a prompt, enforces selected columns and the fixed base filters. */
+export function compileOpenExplorationIR(raw:unknown,inspection:MemberSourceInspection,frame:OpenFrameworkCheckpoint):Readonly<{plan:OpenExplorationIR;snapshot:MemberSourceInspection}>{
+ if(!frame.context||frame.plan.inspection_sha256!==taskHash(inspection)||frame.plan.context_sha256!==taskHash(frame.context))fail('FRAMEWORK_REQUIRED');
+ if(frame.context.semantics?.conflicts.some(c=>c.state==='unresolved'))fail('SEMANTIC_CONFLICT');
+ if(frame.plan.membership||frame.plan.value_mappings||frame.plan.base?.value_mappings)fail('EXPLORATION_SCOPE_UNAVAILABLE');
+ const fixedScope=frame.context.business?.execution_scope;
+ const joinPlan=frame.plan.base?.join?frame.plan.base:frame.plan.join?frame.plan:null;
+ const getCell=(row:MemberSourceSheet['rows'][number],column:string)=>{const cells=row.cells.filter(c=>c.column===column);if(cells.length!==1||!['string','number'].includes(cells[0]!.type))fail('ROW_BINDING_INCOMPLETE');return cells[0]!.value;};
+ const matches=(row:MemberSourceSheet['rows'][number],filters:readonly OpenAnalysisFilter[])=>filters.every(f=>{const v=getCell(row,f.column);if(f.operator==='eq')return v===f.value;if(f.operator==='ne')return v!==f.value;const a=number(v),b=number(f.value),delta=a.n*b.d-b.n*a.d;return f.operator==='ge'?delta>=0n:delta<=0n;});
+ let refundBinding:OpenAnalysisIR|undefined,eligibleOrders:Set<string>|undefined;
+ if(joinPlan){executeOpenAnalysisIR(frame.plan,inspection);const order=joinPlan.inputs![0]!,sheet=inspection.sources.find(s=>s.source_id===order.source_id)!.sheets.find(s=>s.sheet_id===order.sheet_id)!;eligibleOrders=new Set(sheet.rows.slice(1).filter(row=>matches(row,fixedScope?.find(b=>b.source_id===order.source_id&&b.sheet_id===order.sheet_id)?.filters??order.filters??[])).map(row=>getCell(row,joinPlan.join!.order_key)));refundBinding=joinPlan.inputs![1]!;}
+ const p=closed(raw,['goal','bindings']);if(!Array.isArray(p.bindings)||!p.bindings.length||p.bindings.length>32)fail();const seen=new Set<string>(),sources:MemberSourceInspection['sources'][number][]=[],bindings:OpenExplorationIR['bindings'][number][]=[];
+ for(const raw of p.bindings){const b=closed(raw,['source_id','sheet_id','columns','filters']);if(!membershipUuid(b.source_id)||typeof b.sheet_id!=='string'||!Array.isArray(b.columns)||!b.columns.length||b.columns.length>200||!Array.isArray(b.filters)||b.filters.length>16)fail();const key=b.source_id+'/'+b.sheet_id;if(seen.has(key))fail();seen.add(key);
+  const srcs=inspection.sources.filter(s=>s.source_id===b.source_id),source=srcs[0],sheets=source?.sheets.filter(s=>s.sheet_id===b.sheet_id),sheet=sheets?.[0];if(srcs.length!==1||sheets?.length!==1||!source||!sheet||sheet.state!=='visible'||source.document?.status==='ocr_unconfirmed'||!sheet.rows.length)fail('BINDING_NOT_FOUND');
+  const bind=(v:unknown)=>{const name=text(v,200),headers=sheet.rows[0]!.cells.filter(c=>c.column===name||c.value===name);if(headers.length!==1)fail('BINDING_NOT_FOUND');return headers[0]!.column;};const columns=b.columns.map(bind);if(new Set(columns).size!==columns.length)fail();
+  if(fixedScope&&!fixedScope.some(a=>a.source_id===b.source_id&&a.sheet_id===b.sheet_id))fail('EXPLORATION_SCOPE_UNAVAILABLE');
+  const inherited=(fixedScope??bases(frame.plan)).filter(a=>a.source_id===b.source_id&&a.sheet_id===b.sheet_id).flatMap(a=>a.filters??[]),extra=b.filters.map(raw=>{const f=closed(raw,['column','operator','value']);if(!['eq','ne','ge','le'].includes(String(f.operator)))fail();return {column:bind(f.column),operator:f.operator as OpenAnalysisFilter['operator'],value:text(f.value,1000)};}),filters=[...inherited,...extra].filter((f,i,list)=>list.findIndex(g=>taskHash(g)===taskHash(f))===i);
+  const rowids=new Set<number>(),get=(row:MemberSourceSheet['rows'][number],column:string)=>{const cells=row.cells.filter(c=>c.column===column);if(cells.length!==1||!['string','number'].includes(cells[0]!.type))fail('ROW_BINDING_INCOMPLETE');return cells[0]!.value;};
+  const kept=sheet.rows.slice(1).filter(row=>{if(!Number.isSafeInteger(row.row)||row.row<=sheet.rows[0]!.row||rowids.has(row.row))fail('SOURCE_UNQUALIFIED');rowids.add(row.row);return matches(row,filters)&&(!(refundBinding?.source_id===b.source_id&&refundBinding?.sheet_id===b.sheet_id)||eligibleOrders!.has(get(row,joinPlan!.join!.refund_order_key)));});if(!kept.length&&!(refundBinding?.source_id===b.source_id&&refundBinding?.sheet_id===b.sheet_id))fail('NO_DATA');
+  const projected={...sheet,rows:[sheet.rows[0]!,...kept].map(row=>({row:row.row,cells:columns.map(column=>{const cells=row.cells.filter(c=>c.column===column);if(cells.length!==1)fail('ROW_BINDING_INCOMPLETE');return structuredClone(cells[0]!);})}))};const prior=sources.find(s=>s.source_id===source.source_id);if(prior){sources.splice(sources.indexOf(prior),1,{...prior,sheets:[...prior.sheets,projected]});}else sources.push({...source,sheets:[projected]});bindings.push({source_id:source.source_id,source_sha256:source.sha256,sheet_id:sheet.sheet_id,columns,filters});
+ }
+ const snapshot:MemberSourceInspection={version:'1.0',sources};return {plan:{version:'1.0',kind:'exploration',goal:text(p.goal),context_sha256:taskHash(frame.context),inspection_sha256:taskHash(inspection),snapshot_sha256:taskHash(snapshot),binding_sha256:taskHash(bindings),bindings},snapshot};
+}
+function presentation(raw:unknown,keys:readonly string[],path=''):Record<string,unknown>{
+ if(!raw||typeof raw!=='object'||Array.isArray(raw))throw Object.assign(new Error('PREPARATION_OUTPUT_INVALID'),{code:'PREPARATION_OUTPUT_INVALID',safe_details:{invalid_fields:[{path:path||'result',expected:'object'}]}});
+ const missing=keys.filter(k=>!Object.hasOwn(raw,k));if(missing.length)throw Object.assign(new Error('PREPARATION_OUTPUT_INVALID'),{code:'PREPARATION_OUTPUT_INVALID',safe_details:{invalid_fields:missing.map(k=>({path:path?path+'.'+k:k,expected:'required property'}))}});
+ return Object.fromEntries(keys.map(k=>[k,Reflect.get(raw,k)]));
+}
+export function validateOpenExplorationValue(raw:unknown):OpenExplorationValue{
+ const x=presentation(raw,['summary','observations','charts']);if(!Array.isArray(x.observations)||x.observations.length>32||!Array.isArray(x.charts)||x.charts.length>8)fail('PREPARATION_OUTPUT_INVALID');
+ const charts=x.charts.map((raw,index)=>{const c=presentation(raw,['title','type','unit','points'],`charts[${index}]`);if(!['bar','line'].includes(String(c.type))||!Array.isArray(c.points)||!c.points.length||c.points.length>200)fail('PREPARATION_OUTPUT_INVALID');return {title:text(c.title,200),type:c.type as 'bar'|'line',unit:text(c.unit,200),points:c.points.map(raw=>{const p=presentation(raw,['label','value']);const n=typeof p.value==='number'?p.value:typeof p.value==='string'&&p.value.length<=200&&String(Number(p.value))===p.value&&!Number.isInteger(Number(p.value))?Number(p.value):NaN;if(!Number.isFinite(n)||Math.abs(n)>1e15)fail('PREPARATION_OUTPUT_INVALID');return {label:text(p.label,200),value:Number.isSafeInteger(n)?n:String(n)};})};});
+ return {summary:text(x.summary,12000),observations:x.observations.map(v=>text(v)),charts};
+}
+export type OpenExplorationTotalCheck=Readonly<{kind:'total_conservation';chart_title:string;pool_plan:import('./open-analysis-ir.ts').OpenAnalysisIR;pool_calculation:import('./open-analysis-ir.ts').OpenAnalysisValue;pool_verification:import('../ports/open-analysis-verifier.ts').OpenAnalysisVerification;total:string;status:'passed'|'failed';grade:'limited_check';limitation:string}>;
+/** Checks a finite conservation relation, not the generated business algorithm. */
+export function checkOpenExplorationTotal(input:Pick<OpenExplorationTotalCheck,'chart_title'|'pool_plan'|'pool_calculation'|'pool_verification'>,raw:OpenExplorationValue):OpenExplorationTotalCheck{
+ const value=validateOpenExplorationValue(raw),charts=value.charts.filter(c=>c.title===input.chart_title),p=input.pool_plan,c=input.pool_calculation,v=input.pool_verification;
+ if(charts.length!==1||p.operation!=='sum'||p.group_by||c.groups||charts[0]!.unit!==c.unit||v.grade!=='independent_arithmetic'||v.plan_sha256!==taskHash(p)||v.result_sha256!==taskHash(c)||v.value!==c.value||v.inspection_sha256!==c.inspection_sha256)fail('LIMITED_CHECK_INVALID');
+ type Q={n:bigint;d:bigint};const reduce=(n:bigint,d:bigint):Q=>{if(d<=0n)fail('LIMITED_CHECK_INVALID');let a=n<0n?-n:n,b=d;while(b){const r=a%b;a=b;b=r;}return {n:n/a,d:d/a};};
+ const decimal=(raw:string|number):Q=>{const s=String(raw),m=/^(-?)(\d+)(?:\.(\d+))?(?:e([+-]?\d+))?$/i.exec(s);if(!m)fail('LIMITED_CHECK_INVALID');const exp=Number(m[4]??'0')-(m[3]?.length??0);if(Math.abs(exp)>324)fail('LIMITED_CHECK_INVALID');const n=BigInt((m[1]??'')+m[2]+(m[3]??''));return reduce(exp>=0?n*10n**BigInt(exp):n,exp>=0?1n:10n**BigInt(-exp));};
+ let sum:Q={n:0n,d:1n};for(const point of charts[0]!.points){const q=decimal(point.value);sum=reduce(sum.n*q.d+q.n*sum.d,sum.d*q.d);}
+ const parts=c.value.split('/');if(parts.length>2||!parts.every(x=>/^-?\d+$/.test(x)))fail('LIMITED_CHECK_INVALID');const pool=reduce(BigInt(parts[0]!),BigInt(parts[1]??'1'));
+ return {kind:'total_conservation',chart_title:input.chart_title,pool_plan:p,pool_calculation:c,pool_verification:v,total:sum.d===1n?String(sum.n):sum.n+'/'+sum.d,status:sum.n*pool.d===pool.n*sum.d?'passed':'failed',grade:'limited_check',limitation:'仅检查指定图表合计与成本池是否一致；逐项分配规则、权重与对象覆盖尚未独立核验。'};
+}

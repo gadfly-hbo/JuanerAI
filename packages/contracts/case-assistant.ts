@@ -3,6 +3,8 @@ import type { OwnerRef, DecisionCandidateInput } from './xanthil-desktop-ipc.ts'
 export type MembershipOrigin = Readonly<{version:'1.0';task_id:string;prepared_sha256:string}>;
 export type AssistantSource = Readonly<{
     membership_origin?: MembershipOrigin;
+    open_history?:readonly Readonly<{id:string;attempt_id:string;role:'user'|'assistant';text:string;index:number;sha256:string}>[];
+    open_origin?:Readonly<{version:'1.0';material_kind?:'verified_step'|'verified_bundle';task_id:string;revision:string;run_id:string;scope_sha256:string;outcome_id:string;outcome_sha256:string}>;
     owner: OwnerRef;
     case_name: string;
     current_revision_id: string;
@@ -70,6 +72,8 @@ export type AssistantLimits = Readonly<{
     currency: string;
 }>;
 export type AssistantConfig = Readonly<{
+    consumption_policy?:'uncapped_metered';
+    authorized_recipients?:readonly Readonly<{provider:string;model:string}>[];
     provider: string;
     model: string;
     authorized: boolean;
@@ -82,6 +86,7 @@ export const ASSISTANT_TOOLS = ['read_case', 'read_evidence', 'read_candidates',
 export type AssistantTool = typeof ASSISTANT_TOOLS[number];
 export type AssistantStatus = 'Running' | 'Waiting' | 'Succeeded' | 'Stopped' | 'Interrupted' | 'WaitExpired' | 'TimedOut' | 'BudgetExhausted' | 'Failed';
 export type AssistantEvent = Readonly<{
+    open_message_origin?:Readonly<{task_id:string;run_id:string;index:number;sha256:string}>;
     id: string;
     attempt_id: string;
     at: string;
@@ -114,6 +119,7 @@ export type Authorization = Readonly<{
     blockers: readonly string[];
 }>;
 export type AssistantAttempt = Readonly<{
+    open_checkpoint?:Readonly<{operation_id:string;checkpoint:import('../ports/open-analysis-runtime.ts').AnalysisTurnCheckpoint}>;
     id: string;
     session_id: string;
     authorization: Authorization;
@@ -123,7 +129,7 @@ export type AssistantAttempt = Readonly<{
     waiting_deadline: string | null;
     turns: number;
     execution_ms: number;
-    cost_microunits: number;
+    cost_microunits: number|null;
     reason: string | null;
 }>;
 export type AssistantDraft = Readonly<{
@@ -153,7 +159,7 @@ export type FormalDecision = Readonly<{
     fields: DecisionFields;
     actor: string;
     adopted_at: string;
-}> & ({draft_id:string;draft_version:number;origin?:never}|{draft_id?:never;draft_version?:never;origin:{kind:'membership_review';task_id:string;review_id:string;review_version:number;intent_id:string}});
+}> & ({draft_id:string;draft_version:number;origin?:never}|{draft_id?:never;draft_version?:never;origin:{kind:'membership_review'|'native_member_review';task_id:string;review_id:string;review_version:number;intent_id:string}});
 export type AssistantReport = Readonly<{
     id: string;
     decision_id: string;
@@ -185,6 +191,8 @@ export type AssistantProjection = Readonly<{
     current_decision_id: string | null;
 }>;
 export type AssistantTurn = Readonly<{
+    runtime_authority?:import('../ports/case-assistant.ts').RuntimeTaskAuthority;
+    open_analysis?:Readonly<{conversation_id?:string;runDelegation?:(work:()=>Promise<void>)=>Promise<void>;identity:import('../ports/open-analysis-runtime.ts').OpenAnalysisRun['identity'];continuation?:import('../ports/open-analysis-runtime.ts').AnalysisTurnCheckpoint;authorize:()=>boolean;saveContinuation:(checkpoint:import('../ports/open-analysis-runtime.ts').AnalysisTurnCheckpoint)=>Promise<void>}>;
     retained_membership?:{version:'1.0'};
     membership?:Readonly<{version:'1.0';purpose?:'comment'}>;
     collaboration?:Readonly<{contract_version:'1.1';purpose:'fork'|'subagent'}>;
@@ -197,7 +205,7 @@ export type AssistantTurn = Readonly<{
 export type AssistantTurnResult = Readonly<{membership_usage?:Readonly<{output_tokens:number}>;
     provider: string;
     model: string;
-    cost_microunits: number;
+    cost_microunits: number|null;
     output: ChildResultValue | Readonly<{
         kind: 'advice' | 'question';
         text: string;

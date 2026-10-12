@@ -10,7 +10,7 @@ view; it does not change any runtime schema, old State/pause/Ledger or board dat
 | UI_CONTRACT / USER_UI_GATE | applicable UI Contract and required user approval bound |
 | PRODUCT_INPUT_FREEZE | approved product semantics, acceptance, references and prohibitions fixed |
 | ENGINEERING_INTAKE | Mini confirms original task, inputs, live worktree, scope, permissions, resource limits and stop point |
-| IMPLEMENTATION | one engineering agent continuously owns behavior spec -> causal RED -> minimal GREEN -> necessary refactor; real runtime and affected checks run early |
+| IMPLEMENTATION | the Mini engineering main Agent continuously owns persisted behavior spec -> causal RED -> minimal GREEN -> necessary refactor; real runtime and affected checks run early |
 | REGRESSION | applicable quality/regression complete; coverage retirement reconciled in existing evidence |
 | VERIFY | independent read-only evaluation of complete fixed candidate; material findings return to the engineering loop |
 | ENGINEERING_ACCEPT | Mini checks blockers, candidate identity, authority and acceptance obligations |
@@ -25,11 +25,17 @@ or migrate state data merely to change the workflow.
 
 Product preparation belongs to MacBook. Mini is the sole writer of current
 engineering state. Record material results/transitions, not every inner test run.
+Daily checkpoints/pushes and Mini-local trials under the sole policy's
+Mac mini Trial and User Acceptance section remain within implementation; they
+create no new state or Gate and do not establish formal Change completion.
 Independent validation uses new fixed inputs after repair; it does not repeat
 unaffected product preparation or create fresh role/command allowances.
 
 BLOCKED names a concrete missing decision/evidence/safe route. Routine errors
 stay in the engineering loop; repeated non-progress goes to Mini diagnosis.
 True user/permission/resource stops are never removed by a role or state rename.
+Before ending a turn, reconcile this lifecycle with the existing status and
+OpenSpec tasks/verification under the sole policy's end-of-turn check. This does
+not add a Gate or a second state store, and does not prove runtime enforcement.
 Receipt, engineering acceptance, Product Acceptance and Git permission remain
 distinct.

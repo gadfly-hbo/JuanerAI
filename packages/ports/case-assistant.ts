@@ -42,7 +42,9 @@ export interface CaseAssistantStore {
     }>): Promise<FormalDecision>;
     interruptAll(at: string): Promise<void>;
 }
+export type RuntimeTaskAuthority=Readonly<{conversation_id?:string;identity:import('./open-analysis-runtime.ts').OpenAnalysisRun['identity'];authorize:()=>boolean;previous_calls:number}>;
 export interface CaseAssistantRuntime {
+ readonly taskAuthority?:'shared_session';
     membershipTurn?(input:import('../product-core/member-model.ts').MembershipModelTurn):Promise<import('../product-core/member-model.ts').MembershipModelResult>;
     describeMembershipOutcome?(value:unknown):import('../product-core/member-model.ts').MembershipPhysicalOutcome|null;
     turn(input: AssistantTurn): Promise<AssistantTurnResult>;

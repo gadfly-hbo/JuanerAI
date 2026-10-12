@@ -1,0 +1,1760 @@
+{
+  "source": {
+    "sources": [
+      {
+        "byte_length": "100",
+        "display_name": "经营.csv",
+        "format": "csv",
+        "sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+        "sheets": [
+          {
+            "name": "CSV",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "收入"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "份数"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "地区"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "期间"
+                  }
+                ],
+                "row": 1
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "100"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "北"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-01"
+                  }
+                ],
+                "row": 2
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "200"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "2"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "南"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-01"
+                  }
+                ],
+                "row": 3
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "300"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "3"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "北"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-02"
+                  }
+                ],
+                "row": 4
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "250"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "南"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-02"
+                  }
+                ],
+                "row": 5
+              }
+            ],
+            "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+            "state": "visible"
+          }
+        ],
+        "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa"
+      },
+      {
+        "byte_length": "18",
+        "display_name": "成本.csv",
+        "format": "csv",
+        "sha256": "50db3be3b8e6ddd55b2bf487f60aea178940fbf8225fec3b20f36dd6af91e03f",
+        "sheets": [
+          {
+            "name": "CSV",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "公共成本"
+                  }
+                ],
+                "row": 1
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "0.05"
+                  }
+                ],
+                "row": 2
+              }
+            ],
+            "sheet_id": "a94aa522-f787-424a-86b0-30ffeec82a9c",
+            "state": "visible"
+          }
+        ],
+        "source_id": "5096d789-b6a3-4b70-8233-f68531f6eff8"
+      },
+      {
+        "byte_length": "32",
+        "display_name": "权重.csv",
+        "format": "csv",
+        "sha256": "adb9e40dda7a09f3d38911d93f88936dd43f0ccd4fcbc25fd31d8b0f7a53e0e0",
+        "sheets": [
+          {
+            "name": "CSV",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "分摊权重"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "对象"
+                  }
+                ],
+                "row": 1
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "A"
+                  }
+                ],
+                "row": 2
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "B"
+                  }
+                ],
+                "row": 3
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "C"
+                  }
+                ],
+                "row": 4
+              }
+            ],
+            "sheet_id": "cc5e07f2-65ea-48b6-b029-053b3f59d8fa",
+            "state": "visible"
+          }
+        ],
+        "source_id": "1d50f1ba-5eca-48b3-9de4-672260ec9979"
+      },
+      {
+        "byte_length": "36",
+        "display_name": "台账.csv",
+        "format": "csv",
+        "sha256": "61cb247e886a91cd4cbbbf428d5f7c0e0fdbcd4551c4135f02f34e125bb3d44f",
+        "sheets": [
+          {
+            "name": "CSV",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "入账金额"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "地区"
+                  }
+                ],
+                "row": 1
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "298"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "北"
+                  }
+                ],
+                "row": 2
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "250"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "南"
+                  }
+                ],
+                "row": 3
+              }
+            ],
+            "sheet_id": "68d1d5ec-d6fe-4fdc-ad45-286027c0a5f2",
+            "state": "visible"
+          }
+        ],
+        "source_id": "6ecc1311-049a-472c-94f1-e70ea262e60c"
+      }
+    ],
+    "version": "1.0"
+  },
+  "identity": {
+    "attempt_id": "333a0b68-f2c8-4605-ad9d-bb905f0f0291",
+    "config_sha256": "aebb0d0a63cf0c16f15fe9c4dd2f4a43d7da31d0299eb665a369f5585dd92032",
+    "grant_id": "7ee971c5-0c17-42f5-a810-04a30156ed2d",
+    "operation_id": "85f7a53f-3479-476f-81ba-d0dc47c6b273",
+    "revision": "1",
+    "run_id": "7df4ab91-2f59-4d58-b000-65e037891d99",
+    "scope_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+    "task_id": "93acb00a-2207-4ea2-986a-61af323291e6"
+  },
+  "document": {
+    "derivations": [],
+    "interpretations": [
+      {
+        "interpretation": "以2026年2月份数为权重计算的收入加权平均为{{F1}}。该结果口径为当月份数加权，独立算术一致不证明业务定义或资料完整性。",
+        "references": [
+          "F1"
+        ]
+      },
+      {
+        "interpretation": "2026年2月按地区分组的收入占比：北地区为{{F2}}，南地区为{{F3}}。分母为同一来源、同一期间筛选总体的收入金额总额，仅覆盖这两个地区分组。",
+        "references": [
+          "F2",
+          "F3"
+        ]
+      },
+      {
+        "interpretation": "1月到2月的地区收入变化：北地区由{{F4/比较期金额}}增至{{F4/本期金额}}，变化{{F4}}；南地区由{{F5/比较期金额}}增至{{F5/本期金额}}，变化{{F5}}。按同范围全部分组总变化为分母，北地区贡献占比{{F4/贡献占比}}，南地区贡献占比{{F5/贡献占比}}；贡献占比是金额变化的算术分解，不代表原因。",
+        "references": [
+          "F4",
+          "F5"
+        ]
+      },
+      {
+        "interpretation": "按权重.csv对成本.csv公共成本作比例分摊（保留2位小数、最大余数分配、余数相同按对象键升序）：对象A分得{{F6}}，对象B分得{{F7}}，对象C分得{{F8}}。该结果为逐对象与合计的算术核对，不证明业务或税务合规。",
+        "references": [
+          "F6",
+          "F7",
+          "F8"
+        ]
+      },
+      {
+        "interpretation": "2月收入与台账入账金额的一对一核对（左减右）：北地区差异{{F9}}，南地区差异{{F10}}。两表存在金额差异或漏配，账目不一致，不能称为账目一致；本次核对仅确认实际差异，未核验原因。探索图表verification=not_performed，不作为核验事实。本次报告未提供差异原因字段，如需归因请补充明细资料；按任务要求不推断原因、不作预测。",
+        "references": [
+          "F9",
+          "F10"
+        ]
+      }
+    ],
+    "status": "ready",
+    "version": "1.3"
+  },
+  "evidence": {
+    "verified_calculations": [
+      {
+        "goal": "2月收入加权平均（按2月份数加权）",
+        "execution_plan": {
+          "base": {
+            "binding_sha256": "3a47b05d19bb8ece942c70c91214ca9e16d6a508ae59419860659a02d1b1f4e5",
+            "column": "A",
+            "filters": [
+              {
+                "column": "D",
+                "operator": "eq",
+                "value": "2026-02"
+              }
+            ],
+            "goal": "2月收入加权平均（按2月份数加权）",
+            "group_by": null,
+            "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+            "numeric_mode": "decimal",
+            "operation": "weighted_mean",
+            "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+            "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+            "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+            "unit": "人民币元",
+            "version": "1.9",
+            "weight_column": "B"
+          },
+          "binding_sha256": "a5f40762e580f004082072ac6cbe0fcaf4d28ba4e790518f634365c484cbf696",
+          "column": "A",
+          "context_sha256": "13e410dac9770acb7eceb05ae3dc27168e30b1e4b93d6340a2d51d1f4c2128e7",
+          "filters": [
+            {
+              "column": "D",
+              "operator": "eq",
+              "value": "2026-02"
+            }
+          ],
+          "goal": "2月收入加权平均（按2月份数加权）",
+          "group_by": null,
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "measure": {
+            "currency": "CNY",
+            "inputs": [
+              {
+                "column": "A",
+                "scale": "1",
+                "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa"
+              }
+            ],
+            "output_label": "人民币元",
+            "output_scale": "1",
+            "unscaled_inputs": [
+              {
+                "column": "B",
+                "label": "份数（无量纲）",
+                "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa"
+              },
+              {
+                "column": "A",
+                "label": "分摊权重（无量纲）",
+                "sheet_id": "cc5e07f2-65ea-48b6-b029-053b3f59d8fa",
+                "source_id": "1d50f1ba-5eca-48b3-9de4-672260ec9979"
+              }
+            ]
+          },
+          "numeric_mode": "decimal",
+          "operation": "weighted_mean",
+          "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+          "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+          "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+          "unit": "人民币元",
+          "version": "1.8",
+          "weight_column": "B"
+        },
+        "calculation": {
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "method": "checked_measured_query",
+          "plan_sha256": "fa4bf242aecfcd958608bfb5e3074f0584073dc448381427e99a2673578cef63",
+          "rows": 2,
+          "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+          "unit": "人民币元",
+          "value": "575/2",
+          "version": "1.0",
+          "weighted": {
+            "numerator": "1150",
+            "weight_total": "4"
+          }
+        },
+        "verification": {
+          "grade": "independent_arithmetic",
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "method": "bigint_source_recheck",
+          "plan_sha256": "fa4bf242aecfcd958608bfb5e3074f0584073dc448381427e99a2673578cef63",
+          "result_sha256": "fbf43657818875ddc575b12eae853c23ac74246d89faa1cec85e56095aa0882e",
+          "rows": 2,
+          "value": "575/2",
+          "version": "1.0"
+        }
+      },
+      {
+        "goal": "2月各地区收入占比",
+        "execution_plan": {
+          "base": {
+            "binding_sha256": "587c4d3ab1cebfb823bee4f8a6291302fe8572f2e34080bf2c29fdf4be1a3b2e",
+            "column": "A",
+            "filters": [
+              {
+                "column": "D",
+                "operator": "eq",
+                "value": "2026-02"
+              }
+            ],
+            "goal": "2月各地区收入占比",
+            "group_by": "C",
+            "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+            "numeric_mode": "decimal",
+            "operation": "sum",
+            "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+            "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+            "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+            "unit": "人民币元",
+            "version": "1.2"
+          },
+          "binding_sha256": "6db28efb02ce75c1bb039dafe1218fd7414adf48923f242db178d1ce54229c84",
+          "column": "A",
+          "context_sha256": "ae8afef92fc93d59ef34cd98f7d7cbb502202f5ab27b93f1369eb23bed1f985f",
+          "filters": [
+            {
+              "column": "D",
+              "operator": "eq",
+              "value": "2026-02"
+            }
+          ],
+          "goal": "2月各地区收入占比",
+          "group_by": "C",
+          "input_unit": "人民币元",
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "numeric_mode": "decimal",
+          "operation": "group_share",
+          "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+          "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+          "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+          "unit": "%",
+          "version": "2.0"
+        },
+        "calculation": {
+          "groups": [
+            {
+              "key": "北",
+              "rows": 1,
+              "value": "600/11"
+            },
+            {
+              "key": "南",
+              "rows": 1,
+              "value": "500/11"
+            }
+          ],
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "method": "checked_share_query",
+          "plan_sha256": "f30fee9cb93b68fbaff474333f8254ec18b28cc73bef22289f77800dfbf46b60",
+          "relation": {
+            "amounts": {
+              "groups": [
+                {
+                  "key": "北",
+                  "rows": 1,
+                  "value": "300"
+                },
+                {
+                  "key": "南",
+                  "rows": 1,
+                  "value": "250"
+                }
+              ],
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "method": "checked_decimal_query",
+              "plan_sha256": "1d7fef82d7a3fa68e3c4fedaab5f6502fa45b43c81862591f858cf1a4641f680",
+              "rows": 2,
+              "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+              "unit": "人民币元",
+              "value": "[{\"key\":\"北\",\"rows\":1,\"value\":\"300\"},{\"key\":\"南\",\"rows\":1,\"value\":\"250\"}]",
+              "version": "1.0"
+            },
+            "total": "550"
+          },
+          "rows": 2,
+          "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+          "unit": "%",
+          "value": "[{\"key\":\"北\",\"rows\":1,\"value\":\"600/11\"},{\"key\":\"南\",\"rows\":1,\"value\":\"500/11\"}]",
+          "version": "1.0"
+        },
+        "verification": {
+          "grade": "independent_arithmetic",
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "method": "bigint_source_recheck",
+          "plan_sha256": "f30fee9cb93b68fbaff474333f8254ec18b28cc73bef22289f77800dfbf46b60",
+          "result_sha256": "72fd908ad86df132c5fccbb8d656b8b884c83937443eee36f046817193241feb",
+          "rows": 2,
+          "value": "[{\"key\":\"北\",\"rows\":1,\"value\":\"600/11\"},{\"key\":\"南\",\"rows\":1,\"value\":\"500/11\"}]",
+          "version": "1.0"
+        }
+      },
+      {
+        "goal": "1月→2月分地区收入变化及对总变化的贡献",
+        "execution_plan": {
+          "base": {
+            "binding_sha256": "f5f4f5bc8dcb0d111fbb416abf42b739b5f3993ddbdc16a572f2e08669bb3605",
+            "column": "A",
+            "comparison_label": "2026-01",
+            "current_label": "2026-02",
+            "filters": [
+              {
+                "column": "D",
+                "operator": "eq",
+                "value": "2026-01"
+              }
+            ],
+            "goal": "1月→2月分地区收入变化及对总变化的贡献",
+            "group_by": "C",
+            "inputs": [
+              {
+                "binding_sha256": "d94ff4163632d9448c5fd21456a16e779d4876dd312b5fd1428fdaf7723eec82",
+                "column": "A",
+                "filters": [
+                  {
+                    "column": "D",
+                    "operator": "eq",
+                    "value": "2026-01"
+                  }
+                ],
+                "goal": "1月→2月分地区收入变化及对总变化的贡献",
+                "group_by": "C",
+                "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+                "numeric_mode": "decimal",
+                "operation": "sum",
+                "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+                "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+                "unit": "人民币元",
+                "version": "1.2"
+              },
+              {
+                "binding_sha256": "587c4d3ab1cebfb823bee4f8a6291302fe8572f2e34080bf2c29fdf4be1a3b2e",
+                "column": "A",
+                "filters": [
+                  {
+                    "column": "D",
+                    "operator": "eq",
+                    "value": "2026-02"
+                  }
+                ],
+                "goal": "1月→2月分地区收入变化及对总变化的贡献",
+                "group_by": "C",
+                "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+                "numeric_mode": "decimal",
+                "operation": "sum",
+                "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+                "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+                "unit": "人民币元",
+                "version": "1.2"
+              }
+            ],
+            "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+            "numeric_mode": "decimal",
+            "operation": "group_change",
+            "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+            "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+            "source_sha256": "f47819342219c56389bf1743cfa1d6ec0027564e86d2d8d0b544a218c48a8992",
+            "unit": "人民币元",
+            "version": "2.1"
+          },
+          "binding_sha256": "73bc88794c2d221725fc5c846509ff03f57c65a261dbc27f6e09b6044bc7f501",
+          "column": "A",
+          "comparison_label": "2026-01",
+          "context_sha256": "c27d40c0a9eca601cd1ad44b2b95f94efd6d18bba50e7463b97daf6997305307",
+          "current_label": "2026-02",
+          "filters": [
+            {
+              "column": "D",
+              "operator": "eq",
+              "value": "2026-01"
+            }
+          ],
+          "goal": "1月→2月分地区收入变化及对总变化的贡献",
+          "group_by": "C",
+          "inputs": [
+            {
+              "binding_sha256": "d94ff4163632d9448c5fd21456a16e779d4876dd312b5fd1428fdaf7723eec82",
+              "column": "A",
+              "filters": [
+                {
+                  "column": "D",
+                  "operator": "eq",
+                  "value": "2026-01"
+                }
+              ],
+              "goal": "1月→2月分地区收入变化及对总变化的贡献",
+              "group_by": "C",
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "numeric_mode": "decimal",
+              "operation": "sum",
+              "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+              "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+              "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+              "unit": "人民币元",
+              "version": "1.2"
+            },
+            {
+              "binding_sha256": "587c4d3ab1cebfb823bee4f8a6291302fe8572f2e34080bf2c29fdf4be1a3b2e",
+              "column": "A",
+              "filters": [
+                {
+                  "column": "D",
+                  "operator": "eq",
+                  "value": "2026-02"
+                }
+              ],
+              "goal": "1月→2月分地区收入变化及对总变化的贡献",
+              "group_by": "C",
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "numeric_mode": "decimal",
+              "operation": "sum",
+              "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+              "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+              "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+              "unit": "人民币元",
+              "version": "1.2"
+            }
+          ],
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "measure": {
+            "currency": "CNY",
+            "inputs": [
+              {
+                "column": "A",
+                "scale": "1",
+                "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa"
+              }
+            ],
+            "output_label": "人民币元",
+            "output_scale": "1",
+            "unscaled_inputs": [
+              {
+                "column": "B",
+                "label": "份数（无量纲）",
+                "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa"
+              },
+              {
+                "column": "A",
+                "label": "分摊权重（无量纲）",
+                "sheet_id": "cc5e07f2-65ea-48b6-b029-053b3f59d8fa",
+                "source_id": "1d50f1ba-5eca-48b3-9de4-672260ec9979"
+              }
+            ]
+          },
+          "numeric_mode": "decimal",
+          "operation": "group_change",
+          "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+          "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+          "source_sha256": "f47819342219c56389bf1743cfa1d6ec0027564e86d2d8d0b544a218c48a8992",
+          "unit": "人民币元",
+          "version": "1.8"
+        },
+        "calculation": {
+          "comparison": {
+            "baseline": {
+              "groups": [
+                {
+                  "key": "北",
+                  "rows": 1,
+                  "value": "100"
+                },
+                {
+                  "key": "南",
+                  "rows": 1,
+                  "value": "200"
+                }
+              ],
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "method": "checked_decimal_query",
+              "plan_sha256": "0dd0eb795bc363ba45b07184136b9fcea2326899faec429b2d8ac25a36e4e9f2",
+              "rows": 2,
+              "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+              "unit": "人民币元",
+              "value": "[{\"key\":\"北\",\"rows\":1,\"value\":\"100\"},{\"key\":\"南\",\"rows\":1,\"value\":\"200\"}]",
+              "version": "1.0"
+            },
+            "current": {
+              "groups": [
+                {
+                  "key": "北",
+                  "rows": 1,
+                  "value": "300"
+                },
+                {
+                  "key": "南",
+                  "rows": 1,
+                  "value": "250"
+                }
+              ],
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "method": "checked_decimal_query",
+              "plan_sha256": "98ae5ee828125fa4147115f39249d6a994c1494a1c3c2968a699b8d036b8dc05",
+              "rows": 2,
+              "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+              "unit": "人民币元",
+              "value": "[{\"key\":\"北\",\"rows\":1,\"value\":\"300\"},{\"key\":\"南\",\"rows\":1,\"value\":\"250\"}]",
+              "version": "1.0"
+            },
+            "groups": [
+              {
+                "baseline": "100",
+                "change": "200",
+                "current": "300",
+                "key": "北",
+                "share": "80"
+              },
+              {
+                "baseline": "200",
+                "change": "50",
+                "current": "250",
+                "key": "南",
+                "share": "20"
+              }
+            ],
+            "total_change": "250"
+          },
+          "groups": [
+            {
+              "key": "北",
+              "rows": 2,
+              "value": "200"
+            },
+            {
+              "key": "南",
+              "rows": 2,
+              "value": "50"
+            }
+          ],
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "method": "checked_measured_query",
+          "plan_sha256": "e94f91840525df85d56c3023204148999f7d44fe1f08acc55a14e01f07c34ac0",
+          "rows": 4,
+          "source_sha256": "f47819342219c56389bf1743cfa1d6ec0027564e86d2d8d0b544a218c48a8992",
+          "unit": "人民币元",
+          "value": "[{\"key\":\"北\",\"value\":\"200\",\"rows\":2},{\"key\":\"南\",\"value\":\"50\",\"rows\":2}]",
+          "version": "1.0"
+        },
+        "verification": {
+          "grade": "independent_arithmetic",
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "method": "bigint_source_recheck",
+          "plan_sha256": "e94f91840525df85d56c3023204148999f7d44fe1f08acc55a14e01f07c34ac0",
+          "result_sha256": "b1b9c622525b7001d5dc15912888007d66786b0208f3b56ab2794f97a4168941",
+          "rows": 4,
+          "value": "[{\"key\":\"北\",\"value\":\"200\",\"rows\":2},{\"key\":\"南\",\"value\":\"50\",\"rows\":2}]",
+          "version": "1.0"
+        }
+      },
+      {
+        "goal": "公共成本按权重A/B/C分摊（2位小数，最大余数分配，余数相同按对象键升序）",
+        "execution_plan": {
+          "base": {
+            "binding_sha256": "0a9a160b366e95fe463f58254736aa2c709fcece6dec6ccf3b689642a5a071c8",
+            "column": "A",
+            "filters": [],
+            "goal": "公共成本按权重A/B/C分摊（2位小数，最大余数分配，余数相同按对象键升序）",
+            "group_by": null,
+            "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+            "numeric_mode": "decimal",
+            "operation": "sum",
+            "sheet_id": "a94aa522-f787-424a-86b0-30ffeec82a9c",
+            "source_id": "5096d789-b6a3-4b70-8233-f68531f6eff8",
+            "source_sha256": "50db3be3b8e6ddd55b2bf487f60aea178940fbf8225fec3b20f36dd6af91e03f",
+            "unit": "原输入数值",
+            "version": "1.2"
+          },
+          "binding_sha256": "4383c9bf25ef475c077fc7656bc59065e9b8ead32b3820df1c646d0b4087a77b",
+          "column": "A",
+          "context_sha256": "fbcf9543cd7b5cbb6a86b5f741cf4afe91ce45e881f8040dc740f34f229e9bd5",
+          "filters": [],
+          "goal": "公共成本按权重A/B/C分摊（2位小数，最大余数分配，余数相同按对象键升序）",
+          "group_by": null,
+          "inputs": [
+            {
+              "base": {
+                "binding_sha256": "0a9a160b366e95fe463f58254736aa2c709fcece6dec6ccf3b689642a5a071c8",
+                "column": "A",
+                "filters": [],
+                "goal": "公共成本按权重A/B/C分摊（2位小数，最大余数分配，余数相同按对象键升序）",
+                "group_by": null,
+                "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+                "numeric_mode": "decimal",
+                "operation": "sum",
+                "sheet_id": "a94aa522-f787-424a-86b0-30ffeec82a9c",
+                "source_id": "5096d789-b6a3-4b70-8233-f68531f6eff8",
+                "source_sha256": "50db3be3b8e6ddd55b2bf487f60aea178940fbf8225fec3b20f36dd6af91e03f",
+                "unit": "原输入数值",
+                "version": "1.2"
+              },
+              "binding_sha256": "1cef0c9f8e741c10f95d252dec5cb38d36b54c1cd5fd83cf1b216919f33bf395",
+              "column": "A",
+              "filters": [],
+              "goal": "公共成本按权重A/B/C分摊（2位小数，最大余数分配，余数相同按对象键升序）",
+              "group_by": null,
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "measure": {
+                "currency": "CNY",
+                "inputs": [
+                  {
+                    "column": "A",
+                    "scale": "1",
+                    "sheet_id": "a94aa522-f787-424a-86b0-30ffeec82a9c",
+                    "source_id": "5096d789-b6a3-4b70-8233-f68531f6eff8"
+                  }
+                ],
+                "output_label": "人民币元",
+                "output_scale": "1",
+                "unscaled_inputs": [
+                  {
+                    "column": "B",
+                    "label": "份数（无量纲）",
+                    "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                    "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa"
+                  },
+                  {
+                    "column": "A",
+                    "label": "分摊权重（无量纲）",
+                    "sheet_id": "cc5e07f2-65ea-48b6-b029-053b3f59d8fa",
+                    "source_id": "1d50f1ba-5eca-48b3-9de4-672260ec9979"
+                  }
+                ]
+              },
+              "numeric_mode": "decimal",
+              "operation": "sum",
+              "sheet_id": "a94aa522-f787-424a-86b0-30ffeec82a9c",
+              "source_id": "5096d789-b6a3-4b70-8233-f68531f6eff8",
+              "source_sha256": "50db3be3b8e6ddd55b2bf487f60aea178940fbf8225fec3b20f36dd6af91e03f",
+              "unit": "人民币元",
+              "version": "1.8"
+            },
+            {
+              "binding_sha256": "034878271246ece91e7a486319ce5900b7872f5b0e8f470c854a99dd2f994ddc",
+              "column": "A",
+              "filters": [],
+              "goal": "公共成本按权重A/B/C分摊（2位小数，最大余数分配，余数相同按对象键升序）",
+              "group_by": "B",
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "numeric_mode": "decimal",
+              "operation": "sum",
+              "sheet_id": "cc5e07f2-65ea-48b6-b029-053b3f59d8fa",
+              "source_id": "1d50f1ba-5eca-48b3-9de4-672260ec9979",
+              "source_sha256": "adb9e40dda7a09f3d38911d93f88936dd43f0ccd4fcbc25fd31d8b0f7a53e0e0",
+              "unit": "权重输入数值",
+              "version": "1.2"
+            }
+          ],
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "measure": {
+            "currency": "CNY",
+            "inputs": [
+              {
+                "column": "A",
+                "scale": "1",
+                "sheet_id": "a94aa522-f787-424a-86b0-30ffeec82a9c",
+                "source_id": "5096d789-b6a3-4b70-8233-f68531f6eff8"
+              }
+            ],
+            "output_label": "人民币元",
+            "output_scale": "1",
+            "unscaled_inputs": [
+              {
+                "column": "B",
+                "label": "份数（无量纲）",
+                "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa"
+              },
+              {
+                "column": "A",
+                "label": "分摊权重（无量纲）",
+                "sheet_id": "cc5e07f2-65ea-48b6-b029-053b3f59d8fa",
+                "source_id": "1d50f1ba-5eca-48b3-9de4-672260ec9979"
+              }
+            ]
+          },
+          "numeric_mode": "decimal",
+          "operation": "proportional_allocation",
+          "rounding": {
+            "decimals": 2,
+            "method": "largest_remainder",
+            "tie_break": "object_key"
+          },
+          "sheet_id": "a94aa522-f787-424a-86b0-30ffeec82a9c",
+          "source_id": "5096d789-b6a3-4b70-8233-f68531f6eff8",
+          "source_sha256": "a80b59c07662fa0e4e5246b2c42c10ea8428d431cc2da963f62a362dcbd5ff0d",
+          "unit": "人民币元",
+          "version": "2.2"
+        },
+        "calculation": {
+          "allocation": {
+            "pool": {
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "method": "checked_measured_query",
+              "plan_sha256": "6d0508b454eb2507c592f9ddc21496f6d1f07a6e8e4773441d5eb543d2b98627",
+              "rows": 1,
+              "source_sha256": "50db3be3b8e6ddd55b2bf487f60aea178940fbf8225fec3b20f36dd6af91e03f",
+              "unit": "人民币元",
+              "value": "1/20",
+              "version": "1.0"
+            },
+            "weight_total": "3",
+            "weights": {
+              "groups": [
+                {
+                  "key": "A",
+                  "rows": 1,
+                  "value": "1"
+                },
+                {
+                  "key": "B",
+                  "rows": 1,
+                  "value": "1"
+                },
+                {
+                  "key": "C",
+                  "rows": 1,
+                  "value": "1"
+                }
+              ],
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "method": "checked_decimal_query",
+              "plan_sha256": "14ec1c4917fe6bdd13d200168e0bcb4b7c6b089b322ee708a547367aa059fa9a",
+              "rows": 3,
+              "source_sha256": "adb9e40dda7a09f3d38911d93f88936dd43f0ccd4fcbc25fd31d8b0f7a53e0e0",
+              "unit": "权重输入数值",
+              "value": "[{\"key\":\"A\",\"rows\":1,\"value\":\"1\"},{\"key\":\"B\",\"rows\":1,\"value\":\"1\"},{\"key\":\"C\",\"rows\":1,\"value\":\"1\"}]",
+              "version": "1.0"
+            }
+          },
+          "groups": [
+            {
+              "key": "A",
+              "rows": 1,
+              "value": "1/50"
+            },
+            {
+              "key": "B",
+              "rows": 1,
+              "value": "1/50"
+            },
+            {
+              "key": "C",
+              "rows": 1,
+              "value": "1/100"
+            }
+          ],
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "method": "checked_allocation_query",
+          "plan_sha256": "7f12732a7d1351806f3570923ac6fb21ec1ce06e4de956f17d1b178d31421ef3",
+          "rows": 4,
+          "source_sha256": "a80b59c07662fa0e4e5246b2c42c10ea8428d431cc2da963f62a362dcbd5ff0d",
+          "unit": "人民币元",
+          "value": "[{\"key\":\"A\",\"rows\":1,\"value\":\"1/50\"},{\"key\":\"B\",\"rows\":1,\"value\":\"1/50\"},{\"key\":\"C\",\"rows\":1,\"value\":\"1/100\"}]",
+          "version": "1.0"
+        },
+        "verification": {
+          "grade": "independent_arithmetic",
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "method": "bigint_source_recheck",
+          "plan_sha256": "7f12732a7d1351806f3570923ac6fb21ec1ce06e4de956f17d1b178d31421ef3",
+          "result_sha256": "4c8332207cd7b1e1de7da515e59565337e4b3bb393149b658dddd543b81ae57f",
+          "rows": 4,
+          "value": "[{\"key\":\"A\",\"rows\":1,\"value\":\"1/50\"},{\"key\":\"B\",\"rows\":1,\"value\":\"1/50\"},{\"key\":\"C\",\"rows\":1,\"value\":\"1/100\"}]",
+          "version": "1.0"
+        }
+      },
+      {
+        "goal": "按地区1:1核对2月收入与台账入账金额",
+        "execution_plan": {
+          "base": {
+            "binding_sha256": "f59f564f93ba5ea471479e256ceb96db688389876fb023df84871fa5c3509151",
+            "cardinality": "one_to_one",
+            "column": "A",
+            "filters": [
+              {
+                "column": "D",
+                "operator": "eq",
+                "value": "2026-02"
+              }
+            ],
+            "goal": "按地区1:1核对2月收入与台账入账金额",
+            "grain": "one_row_per_key",
+            "group_by": "C",
+            "inputs": [
+              {
+                "binding_sha256": "587c4d3ab1cebfb823bee4f8a6291302fe8572f2e34080bf2c29fdf4be1a3b2e",
+                "column": "A",
+                "filters": [
+                  {
+                    "column": "D",
+                    "operator": "eq",
+                    "value": "2026-02"
+                  }
+                ],
+                "goal": "按地区1:1核对2月收入与台账入账金额",
+                "group_by": "C",
+                "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+                "numeric_mode": "decimal",
+                "operation": "sum",
+                "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+                "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+                "unit": "人民币元",
+                "version": "1.2"
+              },
+              {
+                "binding_sha256": "ad0a0044a1c2382b5e5cbe35bdd77f8b9db2ded9fd4443c64b2c519c82bd1ff2",
+                "column": "A",
+                "filters": [],
+                "goal": "按地区1:1核对2月收入与台账入账金额",
+                "group_by": "B",
+                "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+                "numeric_mode": "decimal",
+                "operation": "sum",
+                "sheet_id": "68d1d5ec-d6fe-4fdc-ad45-286027c0a5f2",
+                "source_id": "6ecc1311-049a-472c-94f1-e70ea262e60c",
+                "source_sha256": "61cb247e886a91cd4cbbbf428d5f7c0e0fdbcd4551c4135f02f34e125bb3d44f",
+                "unit": "人民币元",
+                "version": "1.2"
+              }
+            ],
+            "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+            "left_label": "2月收入",
+            "numeric_mode": "decimal",
+            "operation": "reconcile",
+            "right_label": "台账入账金额",
+            "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+            "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+            "source_sha256": "f06c0c431b2b788f58b02bf96c8fb4d51008e688be75c48283b2cc30e5b78a53",
+            "unit": "人民币元",
+            "version": "2.3"
+          },
+          "binding_sha256": "a935fb0dc76663bdb1ee89dc586691b287946a07bde43e6680eb06a9740afbac",
+          "cardinality": "one_to_one",
+          "column": "A",
+          "context_sha256": "5de34cc935e54deaaeee4a37855b760fabf42e96597fa93cdb6f1adf7203d44c",
+          "filters": [
+            {
+              "column": "D",
+              "operator": "eq",
+              "value": "2026-02"
+            }
+          ],
+          "goal": "按地区1:1核对2月收入与台账入账金额",
+          "grain": "one_row_per_key",
+          "group_by": "C",
+          "inputs": [
+            {
+              "binding_sha256": "587c4d3ab1cebfb823bee4f8a6291302fe8572f2e34080bf2c29fdf4be1a3b2e",
+              "column": "A",
+              "filters": [
+                {
+                  "column": "D",
+                  "operator": "eq",
+                  "value": "2026-02"
+                }
+              ],
+              "goal": "按地区1:1核对2月收入与台账入账金额",
+              "group_by": "C",
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "numeric_mode": "decimal",
+              "operation": "sum",
+              "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+              "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+              "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+              "unit": "人民币元",
+              "version": "1.2"
+            },
+            {
+              "binding_sha256": "ad0a0044a1c2382b5e5cbe35bdd77f8b9db2ded9fd4443c64b2c519c82bd1ff2",
+              "column": "A",
+              "filters": [],
+              "goal": "按地区1:1核对2月收入与台账入账金额",
+              "group_by": "B",
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "numeric_mode": "decimal",
+              "operation": "sum",
+              "sheet_id": "68d1d5ec-d6fe-4fdc-ad45-286027c0a5f2",
+              "source_id": "6ecc1311-049a-472c-94f1-e70ea262e60c",
+              "source_sha256": "61cb247e886a91cd4cbbbf428d5f7c0e0fdbcd4551c4135f02f34e125bb3d44f",
+              "unit": "人民币元",
+              "version": "1.2"
+            }
+          ],
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "left_label": "2月收入",
+          "measure": {
+            "currency": "CNY",
+            "inputs": [
+              {
+                "column": "A",
+                "scale": "1",
+                "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa"
+              },
+              {
+                "column": "A",
+                "scale": "1",
+                "sheet_id": "68d1d5ec-d6fe-4fdc-ad45-286027c0a5f2",
+                "source_id": "6ecc1311-049a-472c-94f1-e70ea262e60c"
+              }
+            ],
+            "output_label": "人民币元",
+            "output_scale": "1",
+            "unscaled_inputs": [
+              {
+                "column": "B",
+                "label": "份数（无量纲）",
+                "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+                "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa"
+              },
+              {
+                "column": "A",
+                "label": "分摊权重（无量纲）",
+                "sheet_id": "cc5e07f2-65ea-48b6-b029-053b3f59d8fa",
+                "source_id": "1d50f1ba-5eca-48b3-9de4-672260ec9979"
+              }
+            ]
+          },
+          "numeric_mode": "decimal",
+          "operation": "reconcile",
+          "right_label": "台账入账金额",
+          "sheet_id": "ae8c7b72-ea90-4c86-b654-c57100cd6da0",
+          "source_id": "121a250c-1fe3-4310-a2e2-e87e53d548aa",
+          "source_sha256": "f06c0c431b2b788f58b02bf96c8fb4d51008e688be75c48283b2cc30e5b78a53",
+          "unit": "人民币元",
+          "version": "1.8"
+        },
+        "calculation": {
+          "groups": [
+            {
+              "key": "北",
+              "rows": 2,
+              "value": "2"
+            },
+            {
+              "key": "南",
+              "rows": 2,
+              "value": "0"
+            }
+          ],
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "method": "checked_measured_query",
+          "plan_sha256": "14783b1d7072862d592cb16d584fa00b0b26972235b5012d9d2f1719326b67ef",
+          "reconciliation": {
+            "balanced": false,
+            "entries": [
+              {
+                "difference": "2",
+                "key": "北",
+                "left": "300",
+                "left_rows": 1,
+                "right": "298",
+                "right_rows": 1,
+                "state": "difference"
+              },
+              {
+                "difference": "0",
+                "key": "南",
+                "left": "250",
+                "left_rows": 1,
+                "right": "250",
+                "right_rows": 1,
+                "state": "matched"
+              }
+            ],
+            "left": {
+              "groups": [
+                {
+                  "key": "北",
+                  "rows": 1,
+                  "value": "300"
+                },
+                {
+                  "key": "南",
+                  "rows": 1,
+                  "value": "250"
+                }
+              ],
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "method": "checked_decimal_query",
+              "plan_sha256": "349b70c1dbb37b86c61402027171b006323b029aed1f408c6453d74cd807423c",
+              "rows": 2,
+              "source_sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+              "unit": "人民币元",
+              "value": "[{\"key\":\"北\",\"rows\":1,\"value\":\"300\"},{\"key\":\"南\",\"rows\":1,\"value\":\"250\"}]",
+              "version": "1.0"
+            },
+            "right": {
+              "groups": [
+                {
+                  "key": "北",
+                  "rows": 1,
+                  "value": "298"
+                },
+                {
+                  "key": "南",
+                  "rows": 1,
+                  "value": "250"
+                }
+              ],
+              "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+              "method": "checked_decimal_query",
+              "plan_sha256": "4828e571866114be25c3d7afd3dfbc648d74ad6095755cab127addc4cbab70cb",
+              "rows": 2,
+              "source_sha256": "61cb247e886a91cd4cbbbf428d5f7c0e0fdbcd4551c4135f02f34e125bb3d44f",
+              "unit": "人民币元",
+              "value": "[{\"key\":\"北\",\"rows\":1,\"value\":\"298\"},{\"key\":\"南\",\"rows\":1,\"value\":\"250\"}]",
+              "version": "1.0"
+            }
+          },
+          "rows": 4,
+          "source_sha256": "f06c0c431b2b788f58b02bf96c8fb4d51008e688be75c48283b2cc30e5b78a53",
+          "unit": "人民币元",
+          "value": "[{\"key\":\"北\",\"value\":\"2\",\"rows\":2},{\"key\":\"南\",\"value\":\"0\",\"rows\":2}]",
+          "version": "1.0"
+        },
+        "verification": {
+          "grade": "independent_arithmetic",
+          "inspection_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+          "method": "bigint_source_recheck",
+          "plan_sha256": "14783b1d7072862d592cb16d584fa00b0b26972235b5012d9d2f1719326b67ef",
+          "result_sha256": "f3b502e9c60b5530f89f10c2d8de0266c75a6023a8266ff78c078b7fa28f619d",
+          "rows": 4,
+          "value": "[{\"key\":\"北\",\"value\":\"2\",\"rows\":2},{\"key\":\"南\",\"value\":\"0\",\"rows\":2}]",
+          "version": "1.0"
+        }
+      }
+    ]
+  },
+  "historical_report": {
+    "document": {
+      "derivations": [],
+      "interpretations": [
+        {
+          "interpretation": "以2026年2月份数为权重计算的收入加权平均为{{F1}}。该结果口径为当月份数加权，独立算术一致不证明业务定义或资料完整性。",
+          "references": [
+            "F1"
+          ]
+        },
+        {
+          "interpretation": "2026年2月按地区分组的收入占比：北地区为{{F2}}，南地区为{{F3}}。分母为同一来源、同一期间筛选总体的收入金额总额，仅覆盖这两个地区分组。",
+          "references": [
+            "F2",
+            "F3"
+          ]
+        },
+        {
+          "interpretation": "1月到2月的地区收入变化：北地区由{{F4/比较期金额}}增至{{F4/本期金额}}，变化{{F4}}；南地区由{{F5/比较期金额}}增至{{F5/本期金额}}，变化{{F5}}。按同范围全部分组总变化为分母，北地区贡献占比{{F4/贡献占比}}，南地区贡献占比{{F5/贡献占比}}；贡献占比是金额变化的算术分解，不代表原因。",
+          "references": [
+            "F4",
+            "F5"
+          ]
+        },
+        {
+          "interpretation": "按权重.csv对成本.csv公共成本作比例分摊（保留2位小数、最大余数分配、余数相同按对象键升序）：对象A分得{{F6}}，对象B分得{{F7}}，对象C分得{{F8}}。该结果为逐对象与合计的算术核对，不证明业务或税务合规。",
+          "references": [
+            "F6",
+            "F7",
+            "F8"
+          ]
+        },
+        {
+          "interpretation": "2月收入与台账入账金额的一对一核对（左减右）：北地区差异{{F9}}，南地区差异{{F10}}。两表存在金额差异或漏配，账目不一致，不能称为账目一致；本次核对仅确认实际差异，未核验原因。探索图表verification=not_performed，不作为核验事实。本次报告未提供差异原因字段，如需归因请补充明细资料；按任务要求不推断原因、不作预测。",
+          "references": [
+            "F9",
+            "F10"
+          ]
+        }
+      ],
+      "status": "ready",
+      "version": "1.3"
+    },
+    "identity": {
+      "attempt_id": "333a0b68-f2c8-4605-ad9d-bb905f0f0291",
+      "config_sha256": "aebb0d0a63cf0c16f15fe9c4dd2f4a43d7da31d0299eb665a369f5585dd92032",
+      "grant_id": "7ee971c5-0c17-42f5-a810-04a30156ed2d",
+      "operation_id": "85f7a53f-3479-476f-81ba-d0dc47c6b273",
+      "revision": "1",
+      "run_id": "7df4ab91-2f59-4d58-b000-65e037891d99",
+      "scope_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+      "task_id": "93acb00a-2207-4ea2-986a-61af323291e6"
+    },
+    "issues": [
+      {
+        "code": "NUMERIC_REFERENCE_INVALID",
+        "reference": null
+      },
+      {
+        "code": "REPORT_UNBOUND_NUMBER",
+        "reference": null
+      }
+    ],
+    "report_sha256": "f5a59b00ac3513cdf40fbaeb7bb50549624aa25497c1ad779bd41580627b943b",
+    "scope_contract": "1.5",
+    "status": "partial",
+    "text": "## 已核验事实\n\n仅核对下列当前资料、口径与范围；不代表整个报告或因果通过。\n\n| 实际范围 | 结果 | 单位 | 检查范围 |\n| --- | --- | --- | --- |\n| 经营.csv／CSV · 收入 加权平均 · 权重 份数 · 期间 = 2026-02；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） | [287.50](juanerai-number:F1) | 人民币元 | 本行范围独立核算一致 |\n| 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02 · 各分组金额占比（分母：同一来源与筛选总体的金额总额；原金额单位 人民币元，输出%） · 北 | [54.55](juanerai-number:F2) | % | 本行范围独立核算一致 |\n| 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02 · 各分组金额占比（分母：同一来源与筛选总体的金额总额；原金额单位 人民币元，输出%） · 南 | [45.45](juanerai-number:F3) | % | 本行范围独立核算一致 |\n| 可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北 | [200](juanerai-number:F4) | 人民币元 | 本行范围独立核算一致 |\n| 可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北 · 比较期金额 | [100](juanerai-number:F4%2F%E6%AF%94%E8%BE%83%E6%9C%9F%E9%87%91%E9%A2%9D) | 人民币元 | 本行范围独立核算一致 |\n| 可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北 · 本期金额 | [300](juanerai-number:F4%2F%E6%9C%AC%E6%9C%9F%E9%87%91%E9%A2%9D) | 人民币元 | 本行范围独立核算一致 |\n| 可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北 · 贡献占比 | [80](juanerai-number:F4%2F%E8%B4%A1%E7%8C%AE%E5%8D%A0%E6%AF%94) | % | 本行范围独立核算一致 |\n| 可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南 | [50](juanerai-number:F5) | 人民币元 | 本行范围独立核算一致 |\n| 可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南 · 比较期金额 | [200](juanerai-number:F5%2F%E6%AF%94%E8%BE%83%E6%9C%9F%E9%87%91%E9%A2%9D) | 人民币元 | 本行范围独立核算一致 |\n| 可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南 · 本期金额 | [250](juanerai-number:F5%2F%E6%9C%AC%E6%9C%9F%E9%87%91%E9%A2%9D) | 人民币元 | 本行范围独立核算一致 |\n| 可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南 · 贡献占比 | [20](juanerai-number:F5%2F%E8%B4%A1%E7%8C%AE%E5%8D%A0%E6%AF%94) | % | 本行范围独立核算一致 |\n| 比例成本分摊：成本池 成本.csv／CSV · 公共成本 求和 · 无额外筛选；币种 CNY，输入倍率 成本.csv／CSV／公共成本 × 1；输出倍率 1（人民币元）；对象与权重 权重.csv／CSV · 分摊权重 求和 · 按对象分组 · 无额外筛选；按权重比例，输出 人民币元，小数位 2；最大余数分配，余数相同按对象键排序；逐对象与合计核对，不证明业务或税务合规 · A | [0.02](juanerai-number:F6) | 人民币元 | 本行范围独立核算一致 |\n| 比例成本分摊：成本池 成本.csv／CSV · 公共成本 求和 · 无额外筛选；币种 CNY，输入倍率 成本.csv／CSV／公共成本 × 1；输出倍率 1（人民币元）；对象与权重 权重.csv／CSV · 分摊权重 求和 · 按对象分组 · 无额外筛选；按权重比例，输出 人民币元，小数位 2；最大余数分配，余数相同按对象键排序；逐对象与合计核对，不证明业务或税务合规 · B | [0.02](juanerai-number:F7) | 人民币元 | 本行范围独立核算一致 |\n| 比例成本分摊：成本池 成本.csv／CSV · 公共成本 求和 · 无额外筛选；币种 CNY，输入倍率 成本.csv／CSV／公共成本 × 1；输出倍率 1（人民币元）；对象与权重 权重.csv／CSV · 分摊权重 求和 · 按对象分组 · 无额外筛选；按权重比例，输出 人民币元，小数位 2；最大余数分配，余数相同按对象键排序；逐对象与合计核对，不证明业务或税务合规 · C | [0.01](juanerai-number:F8) | 人民币元 | 本行范围独立核算一致 |\n| 多表核对（左减右）：2月收入 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02；台账入账金额 台账.csv／CSV · 入账金额 求和 · 按地区分组 · 无额外筛选；各表一行一键，精确键一对一匹配；检查差异不等于账目一致；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1，台账.csv／CSV／入账金额 × 1；输出倍率 1（人民币元） · 北 | [2](juanerai-number:F9) | 人民币元 | 本行范围独立核算一致 |\n| 多表核对（左减右）：2月收入 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02；台账入账金额 台账.csv／CSV · 入账金额 求和 · 按地区分组 · 无额外筛选；各表一行一键，精确键一对一匹配；检查差异不等于账目一致；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1，台账.csv／CSV／入账金额 × 1；输出倍率 1（人民币元） · 南 | [0](juanerai-number:F10) | 人民币元 | 本行范围独立核算一致 |\n\n两表存在金额差异或漏配，账目不一致；核验仅确认实际差异。\n\n## 分析解释与推导\n\n以下为 Agent 的解释、假说和限制，未作独立语义或因果核验。\n\n以2026年2月份数为权重计算的收入加权平均为[287.50 人民币元](juanerai-number:F1)。该结果口径为当月份数加权，独立算术一致不证明业务定义或资料完整性。\n2026年2月按地区分组的收入占比：北地区为[54.55](juanerai-number:F2)，南地区为[45.45](juanerai-number:F3)。分母为同一来源、同一期间筛选总体的收入金额总额，仅覆盖这两个地区分组。\n2月收入与台账入账金额的一对一核对（左减右）：北地区差异[2 人民币元](juanerai-number:F9)，南地区差异[0 人民币元](juanerai-number:F10)。两表存在金额差异或漏配，账目不一致，不能称为账目一致；本次核对仅确认实际差异，未核验原因。探索图表verification=not_performed，不作为核验事实。本次报告未提供差异原因字段，如需归因请补充明细资料；按任务要求不推断原因、不作预测。\n\n## 报告检查缺口\n\n部分数值主张或公式缺少相符依据，未采用；已有效的计算结果保留，可查看数字依据与执行记录。",
+    "values": [
+      {
+        "calculation_trace": {
+          "expression": "Σ(数值 × 权重) / Σ权重 = (1150) / (4) × 1 / 1 = 575/2 人民币元",
+          "limitation": "本项分子、权重总额和结果均由原资料独立重算核对；不证明权重业务选择、资料完整性或因果。"
+        },
+        "currency": "CNY",
+        "display": "287.50",
+        "grade": "independent_arithmetic",
+        "id": "F1",
+        "label": "经营.csv／CSV · 收入 加权平均 · 权重 份数 · 期间 = 2026-02；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元）",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "fa4bf242aecfcd958608bfb5e3074f0584073dc448381427e99a2673578cef63",
+        "proof_sha256": "afde4880190d6be11ce2268ffc1037a54049ee1db502c69b9a192b490f6d29c1",
+        "references": [],
+        "result_sha256": "fbf43657818875ddc575b12eae853c23ac74246d89faa1cec85e56095aa0882e",
+        "scope": "经营.csv／CSV · 收入 加权平均 · 权重 份数 · 期间 = 2026-02；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元）",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "575/2"
+      },
+      {
+        "calculation_trace": {
+          "expression": "分组金额 (300) / 总体金额 (550) × 100 = 600/11 %",
+          "limitation": "按同一实际来源与筛选重核各分组及总体金额，再独立检查比例关系；不证明外部总体完整、业务定义或因果。"
+        },
+        "currency": null,
+        "display": "54.55",
+        "grade": "independent_arithmetic",
+        "id": "F2",
+        "label": "经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02 · 各分组金额占比（分母：同一来源与筛选总体的金额总额；原金额单位 人民币元，输出%） · 北",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "f30fee9cb93b68fbaff474333f8254ec18b28cc73bef22289f77800dfbf46b60",
+        "proof_sha256": "e51526b005bb0090d54e4869934c8c1aacb3fa7de48074519631896d7ac8754f",
+        "references": [],
+        "result_sha256": "72fd908ad86df132c5fccbb8d656b8b884c83937443eee36f046817193241feb",
+        "scope": "经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02 · 各分组金额占比（分母：同一来源与筛选总体的金额总额；原金额单位 人民币元，输出%） · 北",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "%",
+        "value": "600/11"
+      },
+      {
+        "calculation_trace": {
+          "expression": "分组金额 (250) / 总体金额 (550) × 100 = 500/11 %",
+          "limitation": "按同一实际来源与筛选重核各分组及总体金额，再独立检查比例关系；不证明外部总体完整、业务定义或因果。"
+        },
+        "currency": null,
+        "display": "45.45",
+        "grade": "independent_arithmetic",
+        "id": "F3",
+        "label": "经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02 · 各分组金额占比（分母：同一来源与筛选总体的金额总额；原金额单位 人民币元，输出%） · 南",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "f30fee9cb93b68fbaff474333f8254ec18b28cc73bef22289f77800dfbf46b60",
+        "proof_sha256": "d54b41eefc57e89f337e2c3ffe43889056be309468442a47abb3581e5944cbec",
+        "references": [],
+        "result_sha256": "72fd908ad86df132c5fccbb8d656b8b884c83937443eee36f046817193241feb",
+        "scope": "经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02 · 各分组金额占比（分母：同一来源与筛选总体的金额总额；原金额单位 人民币元，输出%） · 南",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "%",
+        "value": "500/11"
+      },
+      {
+        "calculation_trace": {
+          "expression": "(300) − (100) × 1 / 1 = 200 人民币元",
+          "limitation": "两侧原资料分别独立重算，差额、分组加总关系与贡献比例经检查；贡献不是因果证明，业务口径与资料完整性仍有边界。"
+        },
+        "currency": "CNY",
+        "display": "200",
+        "grade": "independent_arithmetic",
+        "id": "F4",
+        "label": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "e94f91840525df85d56c3023204148999f7d44fe1f08acc55a14e01f07c34ac0",
+        "proof_sha256": "284ce424b6c0a0c99a0cc58f07e6abff12648d8c761b09ac58b42628e3b7d2cd",
+        "references": [],
+        "result_sha256": "b1b9c622525b7001d5dc15912888007d66786b0208f3b56ab2794f97a4168941",
+        "scope": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "200"
+      },
+      {
+        "calculation_trace": {
+          "expression": "本项原资料聚合与变化关系已独立检查：100 人民币元",
+          "limitation": "两侧原资料分别独立重算，差额、分组加总关系与贡献比例经检查；贡献不是因果证明，业务口径与资料完整性仍有边界。"
+        },
+        "currency": "CNY",
+        "display": "100",
+        "grade": "independent_arithmetic",
+        "id": "F4/比较期金额",
+        "label": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北 · 比较期金额",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "e94f91840525df85d56c3023204148999f7d44fe1f08acc55a14e01f07c34ac0",
+        "proof_sha256": "662855a9c2d785dbdb743d0a582b629e730e731aa89eddecb089c56f5f84d1c6",
+        "references": [],
+        "result_sha256": "b1b9c622525b7001d5dc15912888007d66786b0208f3b56ab2794f97a4168941",
+        "scope": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "100"
+      },
+      {
+        "calculation_trace": {
+          "expression": "本项原资料聚合与变化关系已独立检查：300 人民币元",
+          "limitation": "两侧原资料分别独立重算，差额、分组加总关系与贡献比例经检查；贡献不是因果证明，业务口径与资料完整性仍有边界。"
+        },
+        "currency": "CNY",
+        "display": "300",
+        "grade": "independent_arithmetic",
+        "id": "F4/本期金额",
+        "label": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北 · 本期金额",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "e94f91840525df85d56c3023204148999f7d44fe1f08acc55a14e01f07c34ac0",
+        "proof_sha256": "45ccd12928e212eaed357136989895f58acc3a2108ed2d610f11212dfdaa1ad2",
+        "references": [],
+        "result_sha256": "b1b9c622525b7001d5dc15912888007d66786b0208f3b56ab2794f97a4168941",
+        "scope": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "300"
+      },
+      {
+        "calculation_trace": {
+          "expression": "分组变化 (200) / 总体变化 (250) × 100 = 80 %",
+          "limitation": "两侧原资料分别独立重算，差额、分组加总关系与贡献比例经检查；贡献不是因果证明，业务口径与资料完整性仍有边界。"
+        },
+        "currency": "CNY",
+        "display": "80",
+        "grade": "independent_arithmetic",
+        "id": "F4/贡献占比",
+        "label": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北 · 贡献占比",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "e94f91840525df85d56c3023204148999f7d44fe1f08acc55a14e01f07c34ac0",
+        "proof_sha256": "38b97a6c81c5b261c9ff492c3b5465a162a5dafde2d0e429cfd83123e6b4835e",
+        "references": [],
+        "result_sha256": "b1b9c622525b7001d5dc15912888007d66786b0208f3b56ab2794f97a4168941",
+        "scope": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 北",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "%",
+        "value": "80"
+      },
+      {
+        "calculation_trace": {
+          "expression": "(250) − (200) × 1 / 1 = 50 人民币元",
+          "limitation": "两侧原资料分别独立重算，差额、分组加总关系与贡献比例经检查；贡献不是因果证明，业务口径与资料完整性仍有边界。"
+        },
+        "currency": "CNY",
+        "display": "50",
+        "grade": "independent_arithmetic",
+        "id": "F5",
+        "label": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "e94f91840525df85d56c3023204148999f7d44fe1f08acc55a14e01f07c34ac0",
+        "proof_sha256": "860fb458af6ce64c77bdc03594ec00dc6dbdfccff73c6cdefa18414c65e2323b",
+        "references": [],
+        "result_sha256": "b1b9c622525b7001d5dc15912888007d66786b0208f3b56ab2794f97a4168941",
+        "scope": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "50"
+      },
+      {
+        "calculation_trace": {
+          "expression": "本项原资料聚合与变化关系已独立检查：200 人民币元",
+          "limitation": "两侧原资料分别独立重算，差额、分组加总关系与贡献比例经检查；贡献不是因果证明，业务口径与资料完整性仍有边界。"
+        },
+        "currency": "CNY",
+        "display": "200",
+        "grade": "independent_arithmetic",
+        "id": "F5/比较期金额",
+        "label": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南 · 比较期金额",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "e94f91840525df85d56c3023204148999f7d44fe1f08acc55a14e01f07c34ac0",
+        "proof_sha256": "c1c2a881342f03264d2075509f941ca12fe0f951f25ee45f0f2ec75942d9b34e",
+        "references": [],
+        "result_sha256": "b1b9c622525b7001d5dc15912888007d66786b0208f3b56ab2794f97a4168941",
+        "scope": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "200"
+      },
+      {
+        "calculation_trace": {
+          "expression": "本项原资料聚合与变化关系已独立检查：250 人民币元",
+          "limitation": "两侧原资料分别独立重算，差额、分组加总关系与贡献比例经检查；贡献不是因果证明，业务口径与资料完整性仍有边界。"
+        },
+        "currency": "CNY",
+        "display": "250",
+        "grade": "independent_arithmetic",
+        "id": "F5/本期金额",
+        "label": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南 · 本期金额",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "e94f91840525df85d56c3023204148999f7d44fe1f08acc55a14e01f07c34ac0",
+        "proof_sha256": "d0c4a201dfe1d88c4af5f0f0bdc90c075654dabb425464620eadd7987c75b8a3",
+        "references": [],
+        "result_sha256": "b1b9c622525b7001d5dc15912888007d66786b0208f3b56ab2794f97a4168941",
+        "scope": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "250"
+      },
+      {
+        "calculation_trace": {
+          "expression": "分组变化 (50) / 总体变化 (250) × 100 = 20 %",
+          "limitation": "两侧原资料分别独立重算，差额、分组加总关系与贡献比例经检查；贡献不是因果证明，业务口径与资料完整性仍有边界。"
+        },
+        "currency": "CNY",
+        "display": "20",
+        "grade": "independent_arithmetic",
+        "id": "F5/贡献占比",
+        "label": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南 · 贡献占比",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "e94f91840525df85d56c3023204148999f7d44fe1f08acc55a14e01f07c34ac0",
+        "proof_sha256": "99097f5916d4f0345dc3a7a2a78eff3998f3a4fdb9cd6dc1647cdbb2d101d10f",
+        "references": [],
+        "result_sha256": "b1b9c622525b7001d5dc15912888007d66786b0208f3b56ab2794f97a4168941",
+        "scope": "可加总分组变化：经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02（2026-02） − 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-01（2026-01）；贡献分母为同范围全部分组的总变化，不是原因证明；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1；输出倍率 1（人民币元） · 南",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "%",
+        "value": "20"
+      },
+      {
+        "calculation_trace": {
+          "expression": "成本池 (1/20) × 对象权重 (1) / 权重总额 (3) → 1/50 人民币元；保留2位小数，最大余数分配，余数相同按对象键排序",
+          "limitation": "成本池与权重从原资料独立重核；逐对象比例、余数分配与总额守恒均检查。业务分摊依据及税务合规不在本核验范围。"
+        },
+        "currency": "CNY",
+        "display": "0.02",
+        "grade": "independent_arithmetic",
+        "id": "F6",
+        "label": "比例成本分摊：成本池 成本.csv／CSV · 公共成本 求和 · 无额外筛选；币种 CNY，输入倍率 成本.csv／CSV／公共成本 × 1；输出倍率 1（人民币元）；对象与权重 权重.csv／CSV · 分摊权重 求和 · 按对象分组 · 无额外筛选；按权重比例，输出 人民币元，小数位 2；最大余数分配，余数相同按对象键排序；逐对象与合计核对，不证明业务或税务合规 · A",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "7f12732a7d1351806f3570923ac6fb21ec1ce06e4de956f17d1b178d31421ef3",
+        "proof_sha256": "f4e3e30e0548c95c0faded81b6eb732fec9ac42080dc32d3ed0d90a2ec671df2",
+        "references": [],
+        "result_sha256": "4c8332207cd7b1e1de7da515e59565337e4b3bb393149b658dddd543b81ae57f",
+        "scope": "比例成本分摊：成本池 成本.csv／CSV · 公共成本 求和 · 无额外筛选；币种 CNY，输入倍率 成本.csv／CSV／公共成本 × 1；输出倍率 1（人民币元）；对象与权重 权重.csv／CSV · 分摊权重 求和 · 按对象分组 · 无额外筛选；按权重比例，输出 人民币元，小数位 2；最大余数分配，余数相同按对象键排序；逐对象与合计核对，不证明业务或税务合规 · A",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "1/50"
+      },
+      {
+        "calculation_trace": {
+          "expression": "成本池 (1/20) × 对象权重 (1) / 权重总额 (3) → 1/50 人民币元；保留2位小数，最大余数分配，余数相同按对象键排序",
+          "limitation": "成本池与权重从原资料独立重核；逐对象比例、余数分配与总额守恒均检查。业务分摊依据及税务合规不在本核验范围。"
+        },
+        "currency": "CNY",
+        "display": "0.02",
+        "grade": "independent_arithmetic",
+        "id": "F7",
+        "label": "比例成本分摊：成本池 成本.csv／CSV · 公共成本 求和 · 无额外筛选；币种 CNY，输入倍率 成本.csv／CSV／公共成本 × 1；输出倍率 1（人民币元）；对象与权重 权重.csv／CSV · 分摊权重 求和 · 按对象分组 · 无额外筛选；按权重比例，输出 人民币元，小数位 2；最大余数分配，余数相同按对象键排序；逐对象与合计核对，不证明业务或税务合规 · B",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "7f12732a7d1351806f3570923ac6fb21ec1ce06e4de956f17d1b178d31421ef3",
+        "proof_sha256": "3c33344712796ed04bded8881cfd4e20157fe39fc9fd62546a89814e9cb5800c",
+        "references": [],
+        "result_sha256": "4c8332207cd7b1e1de7da515e59565337e4b3bb393149b658dddd543b81ae57f",
+        "scope": "比例成本分摊：成本池 成本.csv／CSV · 公共成本 求和 · 无额外筛选；币种 CNY，输入倍率 成本.csv／CSV／公共成本 × 1；输出倍率 1（人民币元）；对象与权重 权重.csv／CSV · 分摊权重 求和 · 按对象分组 · 无额外筛选；按权重比例，输出 人民币元，小数位 2；最大余数分配，余数相同按对象键排序；逐对象与合计核对，不证明业务或税务合规 · B",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "1/50"
+      },
+      {
+        "calculation_trace": {
+          "expression": "成本池 (1/20) × 对象权重 (1) / 权重总额 (3) → 1/100 人民币元；保留2位小数，最大余数分配，余数相同按对象键排序",
+          "limitation": "成本池与权重从原资料独立重核；逐对象比例、余数分配与总额守恒均检查。业务分摊依据及税务合规不在本核验范围。"
+        },
+        "currency": "CNY",
+        "display": "0.01",
+        "grade": "independent_arithmetic",
+        "id": "F8",
+        "label": "比例成本分摊：成本池 成本.csv／CSV · 公共成本 求和 · 无额外筛选；币种 CNY，输入倍率 成本.csv／CSV／公共成本 × 1；输出倍率 1（人民币元）；对象与权重 权重.csv／CSV · 分摊权重 求和 · 按对象分组 · 无额外筛选；按权重比例，输出 人民币元，小数位 2；最大余数分配，余数相同按对象键排序；逐对象与合计核对，不证明业务或税务合规 · C",
+        "limitations": [
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "7f12732a7d1351806f3570923ac6fb21ec1ce06e4de956f17d1b178d31421ef3",
+        "proof_sha256": "e60fe8a6b69bb567ce0e50722193d8132bde30916ec6e61a5a4c8999206625f4",
+        "references": [],
+        "result_sha256": "4c8332207cd7b1e1de7da515e59565337e4b3bb393149b658dddd543b81ae57f",
+        "scope": "比例成本分摊：成本池 成本.csv／CSV · 公共成本 求和 · 无额外筛选；币种 CNY，输入倍率 成本.csv／CSV／公共成本 × 1；输出倍率 1（人民币元）；对象与权重 权重.csv／CSV · 分摊权重 求和 · 按对象分组 · 无额外筛选；按权重比例，输出 人民币元，小数位 2；最大余数分配，余数相同按对象键排序；逐对象与合计核对，不证明业务或税务合规 · C",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "1/100"
+      },
+      {
+        "calculation_trace": {
+          "expression": "300 − 298 × 1 / 1 = 2 人民币元；状态 匹配但金额不同",
+          "limitation": "左右原资料按键独立核对金额、行数和差额；无匹配记录只是差额计算中的缺项，不冒称实际金额为零。差异结果可靠不等于账目一致。"
+        },
+        "currency": "CNY",
+        "display": "2",
+        "grade": "independent_arithmetic",
+        "id": "F9",
+        "label": "多表核对（左减右）：2月收入 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02；台账入账金额 台账.csv／CSV · 入账金额 求和 · 按地区分组 · 无额外筛选；各表一行一键，精确键一对一匹配；检查差异不等于账目一致；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1，台账.csv／CSV／入账金额 × 1；输出倍率 1（人民币元） · 北",
+        "limitations": [
+          "两表存在金额差异或漏配，账目不一致；核验仅确认实际差异。",
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "14783b1d7072862d592cb16d584fa00b0b26972235b5012d9d2f1719326b67ef",
+        "proof_sha256": "dff486194e8d5903adcdcddd0eacc6030445f8a55e5c7086b3e7192f845efbfd",
+        "references": [],
+        "result_sha256": "f3b502e9c60b5530f89f10c2d8de0266c75a6023a8266ff78c078b7fa28f619d",
+        "scope": "多表核对（左减右）：2月收入 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02；台账入账金额 台账.csv／CSV · 入账金额 求和 · 按地区分组 · 无额外筛选；各表一行一键，精确键一对一匹配；检查差异不等于账目一致；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1，台账.csv／CSV／入账金额 × 1；输出倍率 1（人民币元） · 北",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "2"
+      },
+      {
+        "calculation_trace": {
+          "expression": "250 − 250 × 1 / 1 = 0 人民币元；状态 匹配且金额一致",
+          "limitation": "左右原资料按键独立核对金额、行数和差额；无匹配记录只是差额计算中的缺项，不冒称实际金额为零。差异结果可靠不等于账目一致。"
+        },
+        "currency": "CNY",
+        "display": "0",
+        "grade": "independent_arithmetic",
+        "id": "F10",
+        "label": "多表核对（左减右）：2月收入 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02；台账入账金额 台账.csv／CSV · 入账金额 求和 · 按地区分组 · 无额外筛选；各表一行一键，精确键一对一匹配；检查差异不等于账目一致；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1，台账.csv／CSV／入账金额 × 1；输出倍率 1（人民币元） · 南",
+        "limitations": [
+          "两表存在金额差异或漏配，账目不一致；核验仅确认实际差异。",
+          "独立算术一致不证明业务定义、资料完整性或因果。"
+        ],
+        "plan_sha256": "14783b1d7072862d592cb16d584fa00b0b26972235b5012d9d2f1719326b67ef",
+        "proof_sha256": "5d5dfad2a7b332935539c075f2fb4388e6675727ac873a4b7729c8cede12cda8",
+        "references": [],
+        "result_sha256": "f3b502e9c60b5530f89f10c2d8de0266c75a6023a8266ff78c078b7fa28f619d",
+        "scope": "多表核对（左减右）：2月收入 经营.csv／CSV · 收入 求和 · 按地区分组 · 期间 = 2026-02；台账入账金额 台账.csv／CSV · 入账金额 求和 · 按地区分组 · 无额外筛选；各表一行一键，精确键一对一匹配；检查差异不等于账目一致；币种 CNY，输入倍率 经营.csv／CSV／收入 × 1，台账.csv／CSV／入账金额 × 1；输出倍率 1（人民币元） · 南",
+        "source_sha256": "75c881efd1d43ad575cc0a69f084bcc0ad6a4185dc2eabe0d41dc55dae9aa3d0",
+        "status": "verified",
+        "unit": "人民币元",
+        "value": "0"
+      }
+    ],
+    "version": "1.0"
+  }
+}

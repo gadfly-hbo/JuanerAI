@@ -1,7 +1,8 @@
 import type {MembershipModelContext,MembershipModelPayload,MembershipModelResult,MembershipPhysicalOutcome} from '../product-core/member-model.ts';
-import type {OperationPolicy} from '../product-core/member-operation.ts';
+import type {OperationPolicy,OperationExecution} from '../product-core/member-operation.ts';
 export type MemberModelAttempt={version:'1.0';context:MembershipModelContext;source_set_id:string|null;policy:OperationPolicy;payload:MembershipModelPayload;status:'issued'|'succeeded'|'failed'|'unknown'|'stopped';failure_code:string|null;result:MembershipModelResult|null};
 export interface MemberModelStore {
+ readOperations?(input:{task_id:string}):Promise<{operations:readonly unknown[];usage:OperationExecution[];totals:{calls:string;local_runs:string;unresolved:number;input_tokens:{known:string;unknown:number};output_tokens:{known:string;unknown:number};active_ms:{known:string;unknown:number};wait_ms:{known:string;unknown:number}}}>;
  answerMemberQuestion(input:unknown):Promise<{grant_id:string;task_id:string;epoch:number;source_set_id:string|null;clarification_sha256:string;created:boolean}>;
  authorizeMemberModel(input:unknown):Promise<{grant_id:string;task_id:string;epoch:number;policy:OperationPolicy;created:boolean}>;
  beginMemberModel(input:unknown):Promise<MemberModelAttempt>;

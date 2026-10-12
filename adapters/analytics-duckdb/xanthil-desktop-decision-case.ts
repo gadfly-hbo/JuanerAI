@@ -1,4 +1,5 @@
-import {plannedSelection,validateMembershipPlan,validateMembershipResult} from '../../packages/product-core/member-analysis.ts';
+import {plannedSelection,validateMembershipPlan,validateMembershipResult,membershipSelection,membershipHash} from '../../packages/product-core/member-analysis.ts';
+export {verifyOpenAnalysisIntegerSum} from './open-analysis-verification.ts';
 import { createHash } from 'node:crypto';
 import { isAbsolute } from 'node:path';
 import { canonicalDesktopJson, checkedDesktopInteger, desktopMetricChanges, desktopRational, desktopRuleFailure, prepareDesktopData, validateDesktopCalculationResult, type DesktopMetricPeriod, type DesktopSelection } from '../../packages/product-core/xanthil-desktop-decision-case.ts';
@@ -131,6 +132,20 @@ if plan is not None:
         if grouped: m2={'status':'not_applicable'}
 print(json.dumps({'periods':periods,'changes':changes,'m2':m2},sort_keys=True,separators=(',',':')))
 `;
+// A standalone business-method consumer has no formal Case/Decision owner.
+// Keep the original verifier source untouched so retained legacy identities
+// remain valid. This separately identified variant uses only explicit methods.
+const standalonePython=python.replace("plan=contract.get('execution_plan')","selected_methods=contract['methods']")
+ .replace("(plan is None or 'M2' in plan['methods'])","('M2' in selected_methods)")
+ .replace("plan is not None and 'M2' not in plan['methods']","'M2' not in selected_methods")
+ .replace("if plan is not None:","if selected_methods:");
+function methods(raw:unknown):readonly ('M1'|'M2')[]{if(!['["M1"]','["M1","M2"]'].includes(JSON.stringify(raw)))desktopRuleFailure();return raw as readonly ('M1'|'M2')[];}
+const standaloneKeys=['column_mapping','comparison_period','current_period','currency','time_zone','valid_statuses','selected_group_mode','method_contract_version','methods','method_contract_sha256'];
+function standalone(contract:Readonly<Record<string,unknown>>){
+ const value=exact(contract,standaloneKeys),{method_contract_version,methods:raw,method_contract_sha256,...selection}=value;const selected=membershipSelection(selection),chosen=methods(raw);
+ if(method_contract_version!=='1.0'||chosen.includes('M2')&&(selected.selected_group_mode!=='mapped'||selected.column_mapping.member_group_column===null))desktopRuleFailure();
+ if(method_contract_sha256!==membershipHash({selection:selected,methods:chosen}))desktopRuleFailure('SOURCE_CHANGED');return {selection:selected,methods:chosen,digest:method_contract_sha256};
+}
 const sha = (bytes: Uint8Array | string) => createHash('sha256').update(bytes).digest('hex');
 const bytes = (text: string) => Object.freeze({ bytes: new TextEncoder().encode(text), sha256: sha(text), byte_length: String(Buffer.byteLength(text)) });
 const method = Object.freeze({ id: 'membership_repurchase_comparison', version: '1.0', code_identity: sha(canonicalDesktopJson({ method_id: 'membership_repurchase_comparison', method_version: '1.0', primary_sql_sha256: sha(sql), python_verifier_sha256: sha(python) })) });
@@ -144,6 +159,7 @@ function request(value: unknown): Request {
   if (x.deadline_seconds===0) desktopRuleFailure('DEADLINE_EXCEEDED');
   exact(x.snapshot,['members_bytes','orders_bytes']); if (!record(x.contract)) desktopRuleFailure();
   if (Object.hasOwn(x.contract,'schema_version') || Object.hasOwn(x.contract,'execution_plan')) plannedSelection(x.contract,x.snapshot as Request['snapshot']);
+  if(Object.hasOwn(x.contract,'method_contract_version'))standalone(x.contract as Record<string,unknown>);
   if(x.expected_code_identity!==selectedMethod(x as Request).code_identity)desktopRuleFailure('SOURCE_CHANGED');
   return x as Request;
 }
@@ -153,11 +169,13 @@ function metric(row?: Row): DesktopMetricPeriod {
   if(active<0n||repeat<0n||repeat>active||revenue<0n)desktopRuleFailure('CALCULATION_FAILED');
   return Object.freeze({active_member_count:String(active),repeat_member_count:String(repeat),repurchase_rate:active===0n?desktopRational(0n,1n):desktopRational(repeat,active),repeat_revenue_fen:String(revenue)});
 }
-function plannedMethods(x:Request): readonly string[]|null { return record(x.contract.execution_plan)?x.contract.execution_plan.methods as readonly string[]:null; }
+function plannedMethods(x:Request): readonly string[]|null { return Object.hasOwn(x.contract,'method_contract_version')?standalone(x.contract).methods:record(x.contract.execution_plan)?x.contract.execution_plan.methods as readonly string[]:null; }
 function selectedSql(x:Request):string { return plannedMethods(x)?.length===1?m1Sql:sql; }
-function selectedMethod(x:Request){return {...method,code_identity:sha(canonicalDesktopJson({method_id:method.id,method_version:method.version,primary_sql_sha256:sha(selectedSql(x)),python_verifier_sha256:sha(python)}))};}
+function selectedPython(x:Request){return Object.hasOwn(x.contract,'method_contract_version')?standalonePython:python;}
+function selectedMethod(x:Request){return {...method,code_identity:sha(canonicalDesktopJson({method_id:method.id,method_version:method.version,primary_sql_sha256:sha(selectedSql(x)),python_verifier_sha256:sha(selectedPython(x))}))};}
 function envelope(x:Request,implementation:'duckdb_primary'|'python_independent',result:unknown) {
  const plan=x.contract.execution_plan?validateMembershipPlan(x.contract.execution_plan):null,chosen=selectedMethod(x);
+ if(Object.hasOwn(x.contract,'method_contract_version')){const bound=standalone(x.contract);return {schema_version:'4.0',run_id:x.run_id,implementation,method:chosen,method_contract_sha256:bound.digest,materialization:{primary_sql_sha256:sha(selectedSql(x)),python_verifier_sha256:sha(selectedPython(x))},result:validateMembershipResult(result,{methods:bound.methods})};}
  const validated=plan?validateMembershipResult(result,validateMembershipPlan(plan)):validateDesktopCalculationResult(result);
  return plan?{schema_version:plan.version==='2.0'?'3.0':'2.0',...(plan.version==='2.0'?{preparation_sha256:plan.preparation.sha256}:{}),run_id:x.run_id,implementation,method:chosen,plan_sha256:sha(canonicalDesktopJson(plan)),materialization:{primary_sql_sha256:sha(selectedSql(x)),python_verifier_sha256:sha(python)},result:validated}:{schema_version:'1.0',run_id:x.run_id,implementation,method,result:validated};
 }
@@ -169,7 +187,10 @@ function createExecution(config:unknown,processRunner:typeof runAnalysisProcess)
  const duckdb=settings.duckdbExecutable,pythonPath=settings.pythonExecutable,pythonVersion=settings.pythonVersion;
  async function run(command:string,args:readonly string[],input:string,signal:AbortSignal,seconds:number){try{return await processRunner(command,args,signal,seconds,input);}catch(error){const code=(error as {code?:string}).code;desktopRuleFailure(code==='TIMEOUT'?'DEADLINE_EXCEEDED':code==='CANCELLED'?'CANCELLED':'CALCULATION_FAILED');}}
  return Object.freeze({
-  async describeImplementation(input:unknown){const value=exact(input,record(input)&&Object.hasOwn(input,'execution_plan')?['execution_plan']:[]);const plan=value.execution_plan?validateMembershipPlan(value.execution_plan):null,selected=plan?.methods.length===1?m1Sql:sql;const code_identity=sha(canonicalDesktopJson({method_id:method.id,method_version:method.version,primary_sql_sha256:sha(selected),python_verifier_sha256:sha(python)}));return Object.freeze({method_id:method.id,method_version:method.version,code_identity,duckdb_version:'1.5.2',python_version:pythonVersion,primary_sql:bytes(selected),python_verifier:bytes(python)});},
+  async describeImplementation(input:unknown){
+   if(record(input)&&Object.hasOwn(input,'methods')){const value=exact(input,['methods']),chosen=methods(value.methods),selected=chosen.length===1?m1Sql:sql,code_identity=sha(canonicalDesktopJson({method_id:method.id,method_version:method.version,primary_sql_sha256:sha(selected),python_verifier_sha256:sha(standalonePython)}));return Object.freeze({method_id:method.id,method_version:method.version,code_identity,duckdb_version:'1.5.2',python_version:pythonVersion,primary_sql:bytes(selected),python_verifier:bytes(standalonePython)});}
+   const value=exact(input,record(input)&&Object.hasOwn(input,'execution_plan')?['execution_plan']:[]);const plan=value.execution_plan?validateMembershipPlan(value.execution_plan):null,selected=plan?.methods.length===1?m1Sql:sql;const code_identity=sha(canonicalDesktopJson({method_id:method.id,method_version:method.version,primary_sql_sha256:sha(selected),python_verifier_sha256:sha(python)}));return Object.freeze({method_id:method.id,method_version:method.version,code_identity,duckdb_version:'1.5.2',python_version:pythonVersion,primary_sql:bytes(selected),python_verifier:bytes(python)});
+  },
   async calculate(input:unknown){
    const x=request(input),prepared=prepareDesktopData(x.snapshot,x.contract),mapped=x.contract.selected_group_mode==='mapped';
    if(mapped?!record(x.group_pseudonym_map):x.group_pseudonym_map!==null)desktopRuleFailure();
@@ -192,7 +213,7 @@ function createExecution(config:unknown,processRunner:typeof runAnalysisProcess)
   async verify(input:unknown){
    const x=request(input);
    const payload=JSON.stringify({contract:x.contract,members:Buffer.from(x.snapshot.members_bytes).toString('base64'),orders:Buffer.from(x.snapshot.orders_bytes).toString('base64'),groups:x.group_pseudonym_map});
-   const output=await run(pythonPath,['-I','-B','-c',python],payload,x.cancellation_signal,x.deadline_seconds);
+   const output=await run(pythonPath,['-I','-B','-c',selectedPython(x)],payload,x.cancellation_signal,x.deadline_seconds);
    let result:unknown;try{result=JSON.parse(output);}catch{desktopRuleFailure('CALCULATION_FAILED');}
    return Object.freeze(envelope(x,'python_independent',result));
   }

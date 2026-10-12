@@ -29,6 +29,7 @@ export function qualifyExtractedMemberSources(inspection:MemberSourceInspection,
  const expected:Record<SourceRole,string[][]>={members:[],orders:[]},lineage:SourceLineage[]=[],consumed=new Set<SourceBinding>(),keys={members:new Set<string>(),orders:new Set<string>()};
  const setSources:SourceSet['sources'][number][]=[];
  for(const source of inspection.sources){
+  if(source.format!=='csv'&&source.format!=='xlsx')desktopRuleFailure('CONVERSION_UNQUALIFIED');
   const sheets:SourceSet['sources'][number]['sheets'][number][]=[];
   for(const sheet of source.sheets){
    const choices=bindings.filter(b=>b.source_id===source.source_id&&b.sheet_id===sheet.sheet_id);

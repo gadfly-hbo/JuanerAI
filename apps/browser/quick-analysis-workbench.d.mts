@@ -1,0 +1,32 @@
+import type {NativeMemberReview,NativeMemberReviewSubmitReceipt} from '../../packages/product-core/open-member-review.ts';
+export type QuickAnalysisTaskView=Readonly<{
+ requirementDraft?:Readonly<Pick<import('../../packages/product-core/open-requirement-framework.ts').RequirementDraft,'revision'|'sequence'|'content'|'history'|'conversation'>&{reviewed?:boolean;executed?:boolean;staleResult?:boolean}>|null;
+ numericValues?:readonly import('../../packages/ports/open-analysis-numeric-report.ts').OpenNumericValue[];numericReportStatus?:'complete'|'partial'|null;focusedNumber?:import('../../packages/ports/open-analysis-numeric-report.ts').OpenNumericValue|null;numberReturn?:string|null;
+ explorations?:readonly Readonly<{total_check?:import('../../packages/product-core/open-analysis-exploration.ts').OpenExplorationTotalCheck|null;id:string;goal:string;summary:string;observations:readonly string[];charts:import('../../packages/product-core/open-analysis-exploration.ts').OpenExplorationValue['charts'];sources:readonly string[];verification:'not_performed';code_sha256:string}>[];
+ executionPlans?:readonly Readonly<{goal:string;scope:readonly Readonly<{label:string;value:string}>[]}>[];
+ stepCancellable?:boolean;scopeReduction?:Readonly<{fromRevision:string;toRevision:string;removed:readonly string[];reason:string}>|null;
+ planReusable?:boolean;reusedPlan?:import('../../packages/product-core/open-analysis-plan-reuse.ts').OpenPlanReuse|null;
+ partials?:readonly Readonly<{id:string;goal:string;value:string;unit:string;grade:string;scope:readonly Readonly<{label:string;value:string}>[];evidence:Readonly<Record<string,string>>}>[];
+ taskState?:'waiting'|'ready'|'running'|'unknown'|'stopped'|'failed'|'saved';
+ id:string;title:string;status:string;
+ formalReview?:Readonly<{review:NativeMemberReview|null;submission:NativeMemberReviewSubmitReceipt|null}>|null;
+ collaboration?:readonly Readonly<{id:string;title:string;status?:string;pending:boolean;summary?:string;returned:boolean;closed?:boolean;usable?:boolean;parentId?:string;parentTitle?:string;depth?:number;kind?:'fork'|'subagent';review:'adopted'|'declined'|null}>[];
+ versions?:readonly RevisionImpact[];
+ messages:readonly Readonly<{role:'user'|'assistant';text:string}>[];
+ context?:Readonly<{summary:string;semantics?:import('../../packages/product-core/open-analysis-semantics.ts').OpenSemanticAssessment|null;business?:Readonly<{purpose:string;object:string;scope:string;deliverables:readonly string[];hypotheses:readonly Readonly<{text:string}>[]}>|null;userText?:string;sources?:readonly Readonly<{name:string;headers:readonly string[];rows:number}>[];proposedGoal?:string|null;unknowns:readonly string[]}>|null;
+ framework:Readonly<{steps?:readonly Readonly<{id:string;title:string;dependencies:readonly string[];status:string;hypotheses:readonly string[];evidence:readonly string[];limitations:readonly string[];scope:readonly Readonly<{label:string;value:string}>[]}>[];goal:string;method:string;binding:string;revision:string;scope?:readonly Readonly<{label:string;value:string}>[];transformation?:Readonly<{rows:number|null;preview:readonly Readonly<{row:number;changes:readonly Readonly<{column:string;before:string;after:string}>[]}>[]}>}>|null;
+ report:Readonly<{conversation?:boolean;expression?:Readonly<{text:string;expression_version:number;origin:'USER'}>|null;text:string;state:'saved'|'pending'|'unknown';revision?:string;acknowledged?:boolean}>|null;
+ materials:readonly Readonly<{id?:string;name:string;summary:string;disclosure:string}>[];
+ events:readonly Readonly<{summary:string}>[];
+}>;
+export type QuickAnalysisWorkbenchState=Readonly<{
+ pendingRequirementMaterials?:number;entryMode?:'analysis'|'requirements';mode?:'quick'|'pro';stage?:'home'|'prepare'|'process'|'analysis'|'report'|'feedback';
+ project:string;tasks:readonly Readonly<{id:string;title:string}>[];current:QuickAnalysisTaskView|null;
+ detail:'context'|'plan'|'files'|'evidence'|'execution'|'more';drawer:boolean;
+ expanded?:'report'|'plan'|'context'|'requirement'|null;readonly?:boolean;pending?:boolean;stoppable?:boolean;notice?:string;
+ connection?:string;skill?:string;prompt?:string;draft?:string;
+}>;
+export function renderQuickAnalysisWorkbench(state:QuickAnalysisWorkbenchState):string;
+
+export type RevisionImpact=Readonly<{revision:string;nextRevision:string;question:string;text:string;changes:readonly Readonly<{label:string;before:string;after:string}>[];impacts:readonly string[];status:string}>;
+export function renderRevisionImpact(version?:RevisionImpact):string;

@@ -1,0 +1,20 @@
+/* 只适配新增框架／预演接缝；原壳层、品牌及组件样式不改。 */
+.sandbox-preview { margin: 16px 0 8px; padding-top: 14px; border-top: 1px solid var(--line); }
+.sandbox-preview > p { font-size: .8rem; color: #795821; }
+.answer-branch { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.answer-branch:last-child { border: 0; }
+.answer-branch h3 { font-size: .87rem; margin: 0 0 6px; }
+.answer-branch p { font-size: .84rem; margin: 5px 0; }
+.question-context { border-left: 3px solid #28674e; padding: 8px 12px; background: #f5f8f4; margin: 12px 0; }
+.question-context p:last-child { margin-bottom: 0; }
+.framework-heading { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.framework-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; margin: 18px 0; }
+.framework-summary > div { min-width: 0; }
+.framework-summary h3 { margin: 0 0 5px; font-size: .82rem; color: var(--fine); font-weight: 500; }
+.framework-summary p { margin: 0; font-size: .88rem; }
+.source-note { font-size: .78rem; color: var(--fine); }
+.pro-stage-context { margin: 0 0 12px; border-bottom: 1px solid var(--line); padding-bottom: 12px; font-size: .85rem; color: var(--ink-2); }
+.framework-history { padding: 12px; border-left: 3px solid #7b8e81; background: #f7f9f6; }
+.notice-inline { font-size: .84rem; padding: 10px 0 0; color: #566359; }
+.stage-ready { color: #28674e; }
+@media(max-width:700px) { .framework-summary { grid-template-columns: 1fr; } }

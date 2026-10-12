@@ -6,9 +6,12 @@ grant external, Git or release authority.
 A behavior-changing Change is engineering-complete when:
 
 - Approved product input, applicable UI Contract and user UI approval are bound.
-- Current behavior specs cover the delivered acceptance points and necessary
+- Persisted OpenSpec proposal/reference, specs, tasks and verification exist;
+  necessary design is recorded, not replaced by chat. Current specs cover the delivered acceptance points and necessary
   contracts; ambiguity was resolved before affected implementation.
 - Behavior-scoped causal RED precedes implementation; target tests are GREEN.
+  Commands, candidate/input identities, exits and results link to accessible
+  persistent evidence; later tests cannot invent historical RED.
 - Applicable type/build, regression, contract, real-path, architecture and
   safety checks pass or have a justified explicit non-applicability.
 - Scope, compatibility, failures, forbidden effects and important design
@@ -31,6 +34,12 @@ completion. Complete each Change's applicable regression, independent evaluation
 and required acceptance; batching does not defer them to stage end. Required CI
 remains a merge condition. Apply the Fixed-Code section's browser/Desktop scope:
 deferred shell checks do not waive shared tests or close historical native E2.
+For adopted v0.9 Mini work, daily authorized commits/pushes do not require a PR
+for every increment. Apply the sole policy's Mac mini Trial and User Acceptance
+section for local trials and required formal user acceptance; formal Change
+closeout concentrates PR, applicable required CI, squash integration and archive.
+Known low-risk gaps affecting formal acceptance require repair, justified
+non-applicability or explicit user risk acceptance; they are not automatic PASS.
 
 At Change completion, update the full Blueprint capability map and preserve the
 snapshot; the delivery response shows the delta, gaps and evidence with the

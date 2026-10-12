@@ -1,0 +1,27 @@
+{
+  "description": "Bounded read-only JuanerAI end-of-turn check; dormant unless the current Mini engineering session and turn are explicitly bound in existing status.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/tools/harness/validation/engineering-turn-check.mjs\" --hook",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/tools/harness/validation/engineering-turn-check.mjs\" --hook",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

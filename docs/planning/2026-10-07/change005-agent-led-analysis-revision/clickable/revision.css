@@ -1,0 +1,19 @@
+/* 仅修改审核稿信息呈现；品牌、字体、组件及色值沿用固定PX006/v1.1。 */
+.app { height:calc(100dvh - 166px); min-height:480px; }
+.titlebar { min-height:38px; padding:0 16px; }
+.thread { gap:18px; }
+.answer { font-size:1.08rem; line-height:1.75; }
+.answer strong { font-size:1.45rem; color:var(--ink); }
+.secondary-links { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.conversation-note { margin:0; color:var(--fine); font-size:.8rem; }
+.detail-tabs { flex-wrap:wrap; }
+.detail-tabs button { min-width:40px; }
+.drawer-head h2 { font-size:.95rem; margin:0; }
+.detail-content ul { padding-left:20px; }
+.detail-content li { margin:9px 0; }
+.more-list { display:flex; flex-direction:column; gap:9px; }
+.bar { height:12px; background:#237354; margin:8px 0 16px; border-radius:3px; }
+.workspace-body { overflow-wrap:anywhere; }
+#progress:empty { display:none; }
+.state-note { margin:10px 0; }
+@media(max-width:700px){.app { height:calc(100dvh - 225px); min-height:460px; } .answer strong { font-size:1.25rem; } .task-header h1{font-size:1rem;} }

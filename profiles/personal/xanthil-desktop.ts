@@ -2,7 +2,8 @@ import {createMembershipTaskApplication} from '../../packages/application/member
 import {createLocalMembershipTaskStore} from '../../adapters/storage-local/member-task.ts';
 import {resourceProfile} from '../../packages/product-core/member-task.ts';
 import {createLocalModelAccess} from '../../packages/application/provider-settings.ts';
-import {createPiStoredCaseAssistantRuntime} from '../../adapters/agent-pi/xiaomi-local.ts';
+import {createPiSessionCaseRuntime,createPiSessionDecisionAssistanceRuntime} from '../../adapters/agent-pi/native-open-analysis.ts';
+import {createLocalAnalysisRequestLedger} from '../../adapters/storage-local/analysis-request-ledger.ts';
 import type {createProviderSettings} from '../../packages/application/provider-settings.ts';
 import { createCaseAssistantApplication } from '../../packages/application/case-assistant.ts';
 import { createLocalCaseAssistantStore } from '../../adapters/storage-local/case-assistant.ts';
@@ -132,15 +133,13 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
   async function closeModelWork(){modelEpoch++;const previousMember=membership;await previousMember?.close();if(membership===previousMember)membership=null;for(const application of applications)application.closeModelWork();applications.clear();const previous=caseAssistant;await previous?.close();if(caseAssistant===previous)caseAssistant=null;}
   const assistantSetting=configured.caseAssistantConfig??null;
   const assistantConfig=assistantSetting===null?null:exactRecord(assistantSetting,['authorization','max_input_bytes','max_output_tokens',...(record(assistantSetting)&&Object.hasOwn(assistantSetting,'deployment')?['deployment']:[])]);
-  const authorization:AssistantConfig|null=providerSettings?{provider:'xiaomi-token-plan-cn',model:'mimo-v2.6-pro',authorized:true,runtime_id:'pi',runtime_version:'0.84.2',adapter_version:'1.0',limits:{turns:8,execution_ms:300000,waiting_ms:120000,cost_microunits:8*XIAOMI_CREDIT_RESERVATION,turn_cost_microunits:XIAOMI_CREDIT_RESERVATION,currency:'XIAOMI_CREDITS'}}:assistantConfig?.authorization as AssistantConfig|null;
+  const authorization:AssistantConfig|null=providerSettings?{provider:'xiaomi-token-plan-cn',model:'mimo-v2.6-pro',authorized:true,consumption_policy:'uncapped_metered',runtime_id:'pi',runtime_version:'0.86.1',adapter_version:'0.4.1',limits:{turns:8,execution_ms:300000,waiting_ms:120000,cost_microunits:8*XIAOMI_CREDIT_RESERVATION,turn_cost_microunits:XIAOMI_CREDIT_RESERVATION,currency:'XIAOMI_CREDITS'}}:assistantConfig?.authorization as AssistantConfig|null;
   const privateDeployment=assistantConfig?.deployment===undefined?null:exactRecord(assistantConfig.deployment,['policy','api_key']);
   const activation=privateDeployment?validateXiaomiActivationPolicy(privateDeployment.policy,privateDeployment.api_key):null;
   const runtimeDeployment=activation?{policy:activation,api_key:privateDeployment!.api_key as string}:undefined;
-  // One deployment runtime owns the allowance across every opened Session/Project.
-  const storedRuntime=providerSettings?createPiStoredCaseAssistantRuntime(()=>providerSettings.taskCredential()):null;
-  const assistantRuntime=providerSettings?{async turn(input:Parameters<NonNullable<typeof storedRuntime>['turn']>[0]){const generation=providerSettings.status().generation;try{return await storedRuntime!.turn(input);}catch(error){providerSettings.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:authorization?.authorized?createPiCaseAssistantRuntime({provider:authorization.provider,model:authorization.model,max_input_bytes:assistantConfig!.max_input_bytes,max_output_tokens:assistantConfig!.max_output_tokens},undefined,runtimeDeployment):null;
-  const storedAssistance=providerSettings?createPiDecisionAssistanceRuntime({provider:'xiaomi-token-plan-cn',model_id:'mimo-v2.6-pro'},undefined,()=>providerSettings.taskCredential()):null;
-  const assistanceRuntime=storedAssistance?{...storedAssistance,async executeAssistance(input:Parameters<typeof storedAssistance.executeAssistance>[0]){const generation=providerSettings!.status().generation;try{return await storedAssistance.executeAssistance(input);}catch(error){providerSettings!.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:configured.assistanceConfig===null?null:createPiDecisionAssistanceRuntime(configured.assistanceConfig);
+  // Production Session ownership is scoped to the selected project and stable business Task.
+  const assistantRuntime=authorization?.authorized&&!providerSettings?createPiCaseAssistantRuntime({provider:authorization.provider,model:authorization.model,max_input_bytes:assistantConfig!.max_input_bytes,max_output_tokens:assistantConfig!.max_output_tokens},undefined,runtimeDeployment):null;
+  const assistanceRuntime=providerSettings||configured.assistanceConfig===null?null:createPiDecisionAssistanceRuntime(configured.assistanceConfig);
   const modelAccess=providerSettings?.access??createLocalModelAccess(!!authorization?.authorized||assistanceRuntime!==null||memberRuntime!==null);
   if (typeof configured.clock !== 'function') failure('VALIDATION_FAILED');
   const clock = configured.clock as Clock;
@@ -177,7 +176,9 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
       async calculate(input:unknown){if(!execution)failure('TOOLCHAIN_UNAVAILABLE');return execution.calculate(input);},
       async verify(input:unknown){if(!execution)failure('TOOLCHAIN_UNAVAILABLE');return execution.verify(input);},
     });
-    const application = composePersonalXanthilDesktopProfile({ store,analysisExecution,runEvidenceStore:createLocalDesktopRunEvidenceStore({projectRoot:selected.projectRoot}),assistanceRuntime, clock,deadlineScheduler:configured.deadlineScheduler,modelAccess });
+    const sharedAssistance=providerSettings?createPiSessionDecisionAssistanceRuntime({projectRoot:selected.projectRoot,ledger:createLocalAnalysisRequestLedger({projectRoot:selected.projectRoot}),credential:()=>providerSettings.taskCredential()}):null;
+    const projectAssistance=sharedAssistance?{...sharedAssistance,async executeAssistance(input:Parameters<typeof sharedAssistance.executeAssistance>[0]){const generation=providerSettings!.status().generation;try{return await sharedAssistance.executeAssistance(input);}catch(error){providerSettings!.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:assistanceRuntime;
+    const application = composePersonalXanthilDesktopProfile({ store,analysisExecution,runEvidenceStore:createLocalDesktopRunEvidenceStore({projectRoot:selected.projectRoot}),assistanceRuntime:projectAssistance, clock,deadlineScheduler:configured.deadlineScheduler,modelAccess });
     applications.add(application);
     const opened = await application.openProject({
       contract_version: '1.0',
@@ -189,7 +190,9 @@ export function createPersonalXanthilDesktopProfile(deployment: unknown) {
     guard();
     const assistantStore=createLocalCaseAssistantStore({projectRoot: selected.projectRoot});
     const membershipStore=createLocalMembershipTaskStore(selected.projectRoot);
-    caseAssistant=createCaseAssistantApplication({store:assistantStore,config:authorization??null,runtime:assistantRuntime,clock,modelAccess,membership:{store:membershipStore,desktop:application,sourceStore:store,profile:memberProfile,runtime:memberRuntime}});
+    const sharedCaseRuntime=providerSettings?createPiSessionCaseRuntime({projectRoot:selected.projectRoot,ledger:createLocalAnalysisRequestLedger({projectRoot:selected.projectRoot}),credential:()=>providerSettings.taskCredential()}):null;
+    const projectAssistantRuntime=sharedCaseRuntime?{...sharedCaseRuntime,async turn(input:Parameters<typeof sharedCaseRuntime.turn>[0]){const generation=providerSettings!.status().generation;try{return await sharedCaseRuntime.turn(input);}catch(error){providerSettings!.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:assistantRuntime;
+    caseAssistant=createCaseAssistantApplication({store:assistantStore,config:authorization??null,runtime:projectAssistantRuntime,clock,modelAccess,membership:{store:membershipStore,desktop:application,sourceStore:store,profile:memberProfile,runtime:memberRuntime}});
     const openedAssistant=caseAssistant;await openedAssistant.reopen();guard();
     membership=createMembershipTaskApplication({desktop:application,project_id:opened.project_id,store:membershipStore,sourceStore:store,profile:memberProfile,runtime:memberRuntime,modelAccess,clock});await membership.reopen();guard();
     const value: ProjectOpenValue = Object.freeze({
