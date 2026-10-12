@@ -1,3 +1,5 @@
+import {join} from 'node:path';
+import {browserEvidenceRoot} from '../../fixtures/xanthil-desktop/browser-evidence.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
@@ -5,7 +7,7 @@ import {mkdtempSync,readdirSync} from 'node:fs';
 import * as adapter from '../../../adapters/analytics-duckdb/open-analysis-code.ts';
 test('OA-RT02/04: controlled code consumer rejects cancelled/unbound input before creating execution evidence',async()=>{
  const create=Reflect.get(adapter,'createLocalOpenAnalysisCodeExecution');assert.equal(typeof create,'function');
- const root=mkdtempSync('/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/v11-web-runtime-001/code-admission-');
+ const root=mkdtempSync(join(browserEvidenceRoot,'code-admission-'));
  const run=create({projectRoot:root,pythonExecutable:'/not-used',pythonVersion:'3.14.4'});
  await assert.rejects(()=>run({identity:{task_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:'a'.repeat(64),config_sha256:'b'.repeat(64)},plan:{version:'1.0',goal:'cancelled',source_id:randomUUID(),sheet_id:'csv',operation:'sum',column:'A',unit:'item',source_sha256:'a'.repeat(64),inspection_sha256:'a'.repeat(64),binding_sha256:'a'.repeat(64)},inspection:{version:'1.0',sources:[]},code:'print(1)',signal:AbortSignal.abort()}),{code:'CANCELLED'});
  assert.deepEqual(readdirSync(root),[]);

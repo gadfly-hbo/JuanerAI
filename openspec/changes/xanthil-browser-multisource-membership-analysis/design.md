@@ -1659,3 +1659,7 @@ AC138-01当前事实/比较完整片段，毛额与净额不能由模型重命�
 
 ## AC143 固定输出夹具根
 复用已有browserEvidenceRoot，只替换该测试mkdtemp前缀位置，不创建另一证据权威或在Linux伪造Mini目录；对配置的持久根实际运行原正反例。生产源不改。
+
+
+## AC144 发布CI宿主夹具补齐
+release-ci003真实失败三项保留：code-admission使用Mini固定目录，CSV消费者依赖ignored本机descriptor，正常Node启动正例依赖ignored本机helper与descriptor。CI源码克隆没有这些本机组件，不是假产品RED。生产启动安全拒绝、Provider与所有原断言不变。取消/未绑定代码负例复用browserEvidenceRoot；真实CSV消费者读取canonical命令批准toolchain的Python实际版本。正常启动正例在独立test-owned source目录复制生产entry/service/composition及apps，链接原依赖/业务模块，写入该目录的真实toolchain descriptor；唯一无凭据helper哨兵只满足此正例部署输入，若被调用即留下标记且测试失败。不在产品build写假helper、不降低组件检查、不跳过Linux正例。原missing/non-executable/directory负例保留；真实本机helper另有原验收与MacBook启用证据。两次start/独立HTTP/bootstrap/projects/显式stop及无helper调用均验收。

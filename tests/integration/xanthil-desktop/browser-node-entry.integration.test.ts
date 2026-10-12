@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {spawnSync} from 'node:child_process';
-import {mkdtempSync,readFileSync,constants,mkdirSync,copyFileSync,symlinkSync,writeFileSync,existsSync,realpathSync} from 'node:fs';
+import {mkdtempSync,readFileSync,cpSync,constants,mkdirSync,copyFileSync,symlinkSync,writeFileSync,existsSync,realpathSync} from 'node:fs';
 import {join,resolve} from 'node:path';
 import {browserEvidenceRoot} from '../../fixtures/xanthil-desktop/browser-evidence.ts';
 import {readBrowserServiceIdentity} from '../../../adapters/storage-local/browser-project-origin.ts';
@@ -39,7 +39,18 @@ test('BF-R11 CA: other platforms do not inspect or inherit an extra CA bundle',(
 
 test('BF-R08/11: normal Node startup exits while independent service serves later requests; stop is explicit',async()=>{
  const scripts=JSON.parse(readFileSync('package.json','utf8')).scripts;assert.equal(scripts['web:start'],'node tools/browser/entry.mjs start');
- const root=mkdtempSync(join(browserEvidenceRoot,'node-entry-')),env={...process.env,JUANERAI_DESKTOP_DEV_ROOT:root},command=resolve('tools/browser/entry.mjs'),directory=join(root,'user-data','web-service');
+ // Source CI has no ignored native provisioning. Isolate only deployment inputs;
+ // entry, service, composition and all business consumers remain production code.
+ const deployment=realpathSync(mkdtempSync(join(browserEvidenceRoot,'node-entry-deployment-')));
+ for(const folder of ['apps','tools/browser'])cpSync(resolve(folder),join(deployment,folder),{recursive:true});
+ for(const folder of ['adapters','profiles','packages','node_modules'])symlinkSync(resolve(folder),join(deployment,folder),'dir');
+ const bin=process.env.JUANERAI_TOOLCHAIN_BIN;assert.ok(bin,'canonical approved toolchain required');
+ const pythonVersion=spawnSync(join(bin,'python3'),['--version'],{encoding:'utf8'});assert.equal(pythonVersion.status,0);
+ mkdirSync(join(deployment,'build/development-keychain'),{recursive:true});
+ const helperInvoked=join(deployment,'helper-invoked');
+ writeFileSync(join(deployment,'build/development-keychain/xanthil-keychain'),`#!/bin/sh\nprintf invoked > '${helperInvoked}'\nexit 97\n`,{mode:0o700});
+ writeFileSync(join(deployment,'build/xanthil-toolchain-deployment.json'),JSON.stringify({schema_version:'1.0',duckdb:{executable_path:join(bin,'duckdb'),version:'1.5.2'},python:{executable_path:join(bin,'python3'),version:pythonVersion.stdout.trim().replace(/^Python /,'')}}));
+ const root=mkdtempSync(join(browserEvidenceRoot,'node-entry-')),env={...process.env,JUANERAI_DESKTOP_DEV_ROOT:root},command=join(deployment,'tools/browser/entry.mjs'),directory=join(root,'user-data','web-service');
  const run=(action:string)=>spawnSync(process.execPath,[command,action,'--no-open'],{env,encoding:'utf8',timeout:20000});
  try{
   const started=run('start');assert.equal(started.status,0,started.stderr);assert.doesNotMatch(started.stdout,/#[a-f0-9]{64}|credential/);
@@ -50,7 +61,7 @@ test('BF-R08/11: normal Node startup exits while independent service serves late
   const boot=await call('/v1/bootstrap',{token:opened.body.token},{origin:first.origin});assert.equal(boot.status,200);
   const projects=await fetch(first.origin+'/v1/projects',{headers:{cookie:boot.cookie!.split(';')[0]}});assert.equal(projects.status,200);assert.deepEqual(await projects.json(),{projects:[],current:null});
   assert.equal((await fetch(first.origin+'/')).status,200,'service remains after startup commands have exited');
- }finally{const stopped=run('stop');assert.equal(stopped.status,0,stopped.stderr);}
+ }finally{const stopped=run('stop');assert.equal(stopped.status,0,stopped.stderr);assert.equal(existsSync(helperInvoked),false,'passive startup/readback/stop must never invoke credentials');}
 });
 
 test('BF-R08: an unreachable service with held ownership is not reported as stopped',async()=>{

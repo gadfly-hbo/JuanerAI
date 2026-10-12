@@ -804,3 +804,7 @@ AC138 current011完整4302PASS/18既有条件SKIP/0FAIL，17阶段/漂移0。真
 
 ## AC142 发布CI实际失败及普通修复
 原CI run38259766558在install-view因六项旧Pi0.84.2 registry entry缺integrity失败，日志release-ci001-failed.log保留。补官方tarball逐包SHA512，未换版本/来源/边；SDK0.4.3不变。安装视图及测试精确lock hash更新，missing integrity仍拒绝。实际approved node-gyp archive输入下合同17PASS/0SKIP/0FAIL（ac142-green001.log），不是豁免CI。旧lock preimage、TLS取包失败、各tarball与官方SRI收据保留。requiredCI必须对修正head重跑通过。
+
+AC144：CI003三项测试环境失败保留于release-ci003-failed.log/full.log；按design AC144修复宿主夹具，要求原消费者与正反例实际运行，不删除或跳过断言；完整required CI未通过前不合入。
+
+AC144 GREEN：ac144-green001.log六项正常启动/三种组件拒绝/取消未绑定/真实CSV消费均通过，0跳过；ac144-typecheck001.log退出0。改动仅测试宿主与既有规格，真实产品源/模型/预算不变。发布CI004及独立补审仍需当前候选证据。

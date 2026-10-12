@@ -1,3 +1,4 @@
+import {execFileSync} from 'node:child_process';
 import {withReportEdit} from '../../fixtures/xanthil-desktop/report-edit-runtime.ts';
 import {taskHash} from '../../../packages/product-core/member-task.ts';
 import {createMemberSourceInspector} from '../../../adapters/analytics-duckdb/member-source-inspection.ts';
@@ -34,8 +35,9 @@ test('OA-C02: same command identity cannot substitute changed source bytes',asyn
 
 test('OA-S01/C01: actual CSV inspector sheet binding is consumed, not a synthetic UUID-only sheet',async()=>{
  const {createMemberSourcePreparation}=await import('../../../adapters/analytics-duckdb/member-source-inspection.ts');
- const {readFileSync}=await import('node:fs');const descriptor=JSON.parse(readFileSync('build/xanthil-toolchain-deployment.json','utf8'));
- const inspect=createMemberSourcePreparation({pythonExecutable:descriptor.python.executable_path,pythonVersion:descriptor.python.version}).inspectSources;
+ const bin=process.env.JUANERAI_TOOLCHAIN_BIN;assert.ok(bin,'canonical approved toolchain required');
+ const pythonExecutable=join(bin,'python3'),pythonVersion=execFileSync(pythonExecutable,['--version'],{encoding:'utf8'}).trim().replace(/^Python /,'');
+ const inspect=createMemberSourcePreparation({pythonExecutable,pythonVersion}).inspectSources;
  const root=mkdtempSync(join(browserEvidenceRoot,'open-web-csv-'));const app=factory()({...options(root,{run:async i=>{const call=(n:string,a={})=>i.tools.find(t=>t.name===n)!.execute(a,i.signal);const data=await call('inspect_selected') as MemberSourceInspection;await call('set_framework',{version:'1.0',goal:'汇总数量',source_id:data.sources[0]!.source_id,sheet_id:data.sources[0]!.sheets[0]!.sheet_id,operation:'sum',column:'A',unit:'数量'} as any);await call('calculate_and_verify');return {text:'合计10',tools:[]};}}),inspect});const command={...input(),sources:[{source_id:randomUUID(),display_name:'数量.csv',format:'csv',bytes:Buffer.from('数量\n7\n3\n')}]};try{await app.submit(command);await app.collect();assert.equal(app.read(command.command_id).state,'saved');const saved=app.read(command.command_id);assert.ok(saved.outcome);assert.equal(saved.outcome!.calculation.value,'10');}finally{await app.close();}
 });
 
