@@ -141,6 +141,8 @@ Each non-trivial change belongs to openspec/changes/<change-id>/ and declares al
 
 `origin/main` is the integration authority and local `main` is a read-only mirror. Before changing tracked files, work on `work/macbook/<slug>` or `work/mac-mini/<slug>`; use `tools/harness/git/start-work <slug>` when starting from `main`. One device owns a work branch at a time. Integrate through a GitHub pull request with squash merge, then fast-forward local `main`. Read `docs/governance/git-development-workflow.md` before starting, handing off, merging, or resolving cross-device conflicts.
 
+For authorized formal publication, follow the Git workflow's **Publication Completion** rule through merge and safe main synchronization without another routine merge question; explicit publication limits and all applicable Gates remain binding.
+
 For Mini product engineering that has adopted v0.9, daily affected checks,
 authorized checkpoints/work-branch pushes and Mini-local user trials precede
 one concentrated PR/integration closeout for the formal Change. Use the sole

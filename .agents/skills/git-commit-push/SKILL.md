@@ -17,7 +17,13 @@ Use this when the user asks to commit and push current work.
    approved work branch before staging.
 4. Before final validation, fingerprint the repository/branch/HEAD identity,
    porcelain status, tracked diffs, and hashes of every intended changed file.
-   Run the applicable final checks from the actual diff, not the task label:
+   Choose the actual claim under the sole execution policy's Verification
+   Cadence and Internal Trial section. Adopted v0.9 Mini daily checkpoints and
+   work-branch pushes use affected checks and the relevant main path; they do
+   not require full CI, independent review or a PR for every increment. Formal
+   Change closeout retains its applicable regression, independent verification,
+   required acceptance and CI. MacBook product/governance delivery is unchanged.
+   For formal delivery, run applicable final checks from the actual diff:
    - A delivery containing only governance documents, instructions, templates
      or development-agent configuration uses complete diff/path review,
      applicable syntax/reference/configuration checks and independent
@@ -51,6 +57,11 @@ Use this when the user asks to commit and push current work.
 11. Report the commit SHA, branch and remote, validation evidence, the selected
     validation scope and remaining worktree state. A push does not merge the
     pull request or authorize the next product Gate.
+    For Mini-local trials or required user acceptance, use the sole execution
+    policy's Mac mini Trial and User Acceptance section; report Git publication
+    and actual runtime readback separately. Existing PR updates retain applicable
+    CI; changed candidates and failures receive affected revalidation without
+    reusing invalidated PASS.
 
 Never amend, rebase, reset, force-push, delete branches, or rewrite history
 unless the user explicitly requests that exact operation after its target and

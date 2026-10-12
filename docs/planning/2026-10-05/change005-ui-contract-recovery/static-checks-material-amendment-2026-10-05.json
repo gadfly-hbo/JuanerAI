@@ -1,0 +1,259 @@
+{
+  "scope": "STATIC_ATTACHMENT_AND_SCRIPT_STATES_ONLY",
+  "device": "MacBook",
+  "checks": [
+    {
+      "name": "unique-html-ids",
+      "passed": true
+    },
+    {
+      "name": "literal-js-dom-targets-exist",
+      "passed": true
+    },
+    {
+      "name": "local-resources-exist",
+      "passed": true,
+      "detail": [
+        "../px006/styles.css",
+        "../brand.css",
+        "workspace.css",
+        "../px004/index.html?preview=demo",
+        "workspace-review.js"
+      ]
+    },
+    {
+      "name": "review-javascript-syntax",
+      "passed": true
+    },
+    {
+      "name": "no-network-persistence-or-credentials",
+      "passed": true
+    },
+    {
+      "name": "no-timed-fake-progress-or-execution",
+      "passed": true
+    },
+    {
+      "name": "no-real-file-selection-or-download",
+      "passed": true
+    },
+    {
+      "name": "free-input-inserted-as-text-not-html",
+      "passed": true
+    },
+    {
+      "name": "synthetic-banner-always-in-shell",
+      "passed": true
+    },
+    {
+      "name": "no-logo-image",
+      "passed": true
+    },
+    {
+      "name": "approved-source-layout-and-green-brand-reused",
+      "passed": true
+    },
+    {
+      "name": "professional-full-reference-not-placeholder",
+      "passed": true
+    },
+    {
+      "name": "scenario-declared:normal",
+      "passed": true
+    },
+    {
+      "name": "scenario-declared:empty",
+      "passed": true
+    },
+    {
+      "name": "scenario-declared:missing",
+      "passed": true
+    },
+    {
+      "name": "scenario-declared:premise",
+      "passed": true
+    },
+    {
+      "name": "scenario-declared:running",
+      "passed": true
+    },
+    {
+      "name": "scenario-declared:failed",
+      "passed": true
+    },
+    {
+      "name": "scenario-declared:stopped",
+      "passed": true
+    },
+    {
+      "name": "scenario-declared:reopen",
+      "passed": true
+    },
+    {
+      "name": "scenario-declared:unknown",
+      "passed": true
+    },
+    {
+      "name": "scenario-declared:change",
+      "passed": true
+    },
+    {
+      "name": "blocked-current-evidence-and-report",
+      "passed": true
+    },
+    {
+      "name": "version-diff-and-no-op-expression-distinguished",
+      "passed": true
+    },
+    {
+      "name": "collaboration-reflow-and-boundary-present",
+      "passed": true
+    },
+    {
+      "name": "budget-and-retry-not-reset",
+      "passed": true
+    },
+    {
+      "name": "drawer-and-mode-keyboard-navigation",
+      "passed": true
+    },
+    {
+      "name": "dialog-native-escape-focus-return",
+      "passed": true
+    },
+    {
+      "name": "responsive-flex-overflow-and-narrow-drawer",
+      "passed": true
+    },
+    {
+      "name": "script-state-default-normal",
+      "passed": true
+    },
+    {
+      "name": "script-blocks-report:missing",
+      "passed": true
+    },
+    {
+      "name": "script-blocks-evidence:missing",
+      "passed": true
+    },
+    {
+      "name": "script-blocks-report:failed",
+      "passed": true
+    },
+    {
+      "name": "script-blocks-evidence:failed",
+      "passed": true
+    },
+    {
+      "name": "script-blocks-report:running",
+      "passed": true
+    },
+    {
+      "name": "script-blocks-evidence:running",
+      "passed": true
+    },
+    {
+      "name": "script-blocks-report:unknown",
+      "passed": true
+    },
+    {
+      "name": "script-blocks-evidence:unknown",
+      "passed": true
+    },
+    {
+      "name": "script-workspace-preserves-conversation",
+      "passed": true
+    },
+    {
+      "name": "script-scope-change-preserves-old-version-reference",
+      "passed": true
+    },
+    {
+      "name": "script-skill-selection-affects-visible-plan",
+      "passed": true
+    },
+    {
+      "name": "script-collaboration-adoption-does-not-change-decision",
+      "passed": true
+    },
+    {
+      "name": "script-unknown-blocks-collaboration",
+      "passed": true
+    },
+    {
+      "name": "script-stop-no-automatic-resume",
+      "passed": true
+    },
+    {
+      "name": "script-reopen-explicit-authorization-reuse",
+      "passed": true
+    },
+    {
+      "name": "script-free-input-remains-text",
+      "passed": true
+    },
+    {
+      "name": "script-member-review-preserves-three-exits",
+      "passed": true
+    },
+    {
+      "name": "script-judgment-unknown-not-success",
+      "passed": true
+    },
+    {
+      "name": "script-judgment-save-failure-separate-from-result",
+      "passed": true
+    },
+    {
+      "name": "script-empty-has-no-fabricated-plan",
+      "passed": true
+    },
+    {
+      "name": "script-running-record-not-verified-success",
+      "passed": true
+    },
+    {
+      "name": "product-package-local-links:product-input-v1.1.md",
+      "passed": true
+    },
+    {
+      "name": "product-package-local-links:ui-contract-v1.1.md",
+      "passed": true
+    },
+    {
+      "name": "prior-attachment-and-eight-source-identities-retained",
+      "passed": true,
+      "detail": "旧附件27项通过；不用于证明新版行为"
+    }
+  ],
+  "total": 54,
+  "passed": 54,
+  "identities": [
+    {
+      "file": "product-input-v1.1.md",
+      "sha256": "d301f2b53b532f38cbece02c747395859acbf0084fcd1a461ae13ebd9a852c05"
+    },
+    {
+      "file": "ui-contract-v1.1.md",
+      "sha256": "7d319f52777b56b257e234e2966b7b07fc09a6fa70aeda88b72a65ba48673ce9"
+    },
+    {
+      "file": "clickable/v1.1/index.html",
+      "sha256": "a5328c18b5a7f2b47ed76776d370669ca8a06f044e8adbff981bfd76ee03705c"
+    },
+    {
+      "file": "clickable/v1.1/workspace.css",
+      "sha256": "4f86a21c5fece040f85a7e2e103c75dbb5aabecae648ec39cd32c3e5f80fff10"
+    },
+    {
+      "file": "clickable/v1.1/workspace-review.js",
+      "sha256": "85b63438b1296f9a9656f5da81a2a53219ae91c2d9c7f1e53946ff7d111f94a1"
+    }
+  ],
+  "not_run": [
+    "真实浏览器视觉/点击/尺寸检查：尚未获本机静态预览许可；DOM替身不证明浏览器行为",
+    "真实Provider、业务资料、生产执行、后台保存、安全隔离及工程验收",
+    "用户产品与UI Gate"
+  ]
+}

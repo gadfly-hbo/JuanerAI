@@ -33,12 +33,74 @@ No in-flight task must re-adopt, pause, reapprove or expand because of v4.2.
 
 ### New product-input package binding — v4.2
 
+**2026-10-05 · Change005 UI replacement candidate:** the user stopped Change005
+and requested faithful PX-006 quick/dual-mode plus PX-004 full professional UI,
+with JuanerAI branding. The [replacement UI Contract](2026-10-05/change005-ui-contract-recovery/ui-contract-v1.0.md)
+and its clickable attachment are awaiting user confirmation. Blueprint v4.2 §6.2
+and the fixed revision005 UI approval remain immutable historical identities;
+this dated navigation supplies the prospective replacement binding, not an
+approved v4.3, UI Gate PASS, receiver adoption or engineering resume. Backend
+scope and Mini's unpublished work/stop remain protected. Only after user acceptance
+and separately authorized publication/intake may this candidate replace the old
+frontend contract for resumed Change005. No change is made to the reviewed Blueprint bytes.
+
 Future packages bind the approved text's exact SHA-256 in the approval record,
 its review, applicable task/capability/stage mapping, closed product decisions
 and valid UI Contract/user UI Gate. Bind actual publication commit/tree when
 available. Existing in-flight packages retain their own effective identities;
 Git sync, publication and receiver adoption are distinct facts. The HTML is a
 planning view, not a product UI Contract, completion dashboard or open work order.
+
+**2026-10-05 · 后续增量候选 v1.1：** 用户进一步确认开放分析定位与三核心机制，
+[产品输入 v1.1](2026-10-05/change005-ui-contract-recovery/product-input-v1.1.md)及
+[UI Contract v1.1](2026-10-05/change005-ui-contract-recovery/ui-contract-v1.1.md)
+延续已接受视觉，在快速对话内增加业务理解、可修订框架及可检查成果。
+用户已通过该版UI审核；后续已确认快速主任务允许获准明细供模型读取，
+本地真实计算／独立核验保留，严格明细零外发延期，独立清洗模块只作后续评估方向。
+当前材料文案增量见产品输入§1.1和UI Contract Q11-07；历史批准／审查身份不回写，
+新增决定不构成配置生效、工程恢复或Git发布。
+**后续整包批准及发布授权：**用户已明确“change005新方案审核通过”，授权发布并派发
+已有Mini session `change-005（N01/02）`。有效产品／UI身份及D1～D5实际处置以
+[批准和交接记录](2026-10-05/change005-ui-contract-recovery/approval-and-handoff-v1.1.md)为准；
+Mini须严格沿用确定UI，不得自行另造。冻结／发布／接收状态按该记录的实际后续回执区分。
+这是后续已批准的实质范围增量，不是旧005批准包的同义替换；Blueprint正文、20项索引、
+40能力ID及Mini既有现场不改。Runtime要求在产品输入§1.2／§3.4及OA-RT01～06直接列明，
+随包保留用户标准原件及精确身份；旧v1.0和历史审查不回写。
+Review006及Runtime受影响增量检查已PASS，用户产品／UI接受成立，产品输入已冻结。
+发布与工程接收按批准记录的实际后续回执分别确认，不凭批准宣称已实现。
+
+**2026-10-06 · Change005 v1.1 五个关键时刻补充：**用户已审核通过
+[增量产品输入](2026-10-06/change005-five-moments/product-addendum-v1.1.md)与
+[增量UI Contract／可点击稿](2026-10-06/change005-five-moments/ui-addendum-v1.1.md)，
+[独立就绪Review001](2026-10-06/change005-five-moments/reviews/readiness-001.md)为规划PASS。
+[批准与冻结记录](2026-10-06/change005-five-moments/approval-and-freeze.md)绑定原v1.1及六项固定附件：
+口径、可编辑真实计划、业务执行状态、逐条发现依据及同项目方案显式复用，
+并以修改→影响→重算→对照联合验收；不重画UI，不移植旧结论或提前宣称N08学习完成。
+蓝图、40ID、20候选及旧工程历史不变。Git发布及Mini采用分别以实际回执确认；
+用户只要求本session输出转发prompt，不直接派发Mini或开启生产。
+
+**2026-10-08 · Change005 v1.2 需求沙盘／框架共创增量：**用户已审核通过
+[产品增量](2026-10-08/change005-v1.2-requirement-sandbox/product-addendum-v1.2.md)与
+[增量UI／可点击稿](2026-10-08/change005-v1.2-requirement-sandbox/ui-contract-v1.2.md)，
+[新鲜独立Review002](2026-10-08/change005-v1.2-requirement-sandbox/reviews/integration-readiness-002.md)为规划PASS。
+[批准与冻结记录](2026-10-08/change005-v1.2-requirement-sandbox/approval-and-freeze.md)绑定七项固定附件，
+产品输入已冻结，授权正式提交。快速中央按需预演、专业第一阶段同任务框架、只整理／自动保存，
+并要求真实消费Context／Contract／IR；不另建Change、不改蓝图、不重画UI，不覆盖R3或旧005承诺。
+[接收指令](2026-10-08/change005-v1.2-requirement-sandbox/handoff-instructions.md)由用户附固定Git身份转发，
+不直接消息Mini。发布、采用、intake、实现和三类验收以实际回执区分，不能由冻结推导完成。
+
+**2026-10-10 · Change005 v1.3 自主分析增量已批准／冻结：**用户已整包接受
+[产品输入 AU-01–10](2026-10-09/change005-v1.3-autonomous-analysis/product-input-v1.3.md)、
+[增量 UI Contract／可点击附件](2026-10-09/change005-v1.3-autonomous-analysis/ui-contract-v1.3.md)与流程，
+[新鲜独立 Review002](2026-10-09/change005-v1.3-autonomous-analysis/reviews/development-readiness-002.md)为规划PASS；
+新增／受影响UI Gate PASS及Product Input Freeze见
+[批准／冻结与前向适用记录](2026-10-09/change005-v1.3-autonomous-analysis/approval-and-freeze.md)。
+它保留Blueprint v4.2、40ID、20候选、原Change005及v1.1／FM／RS／R3义务，仅在接收后的v1.3
+替代旧“协作只能人工发起／固定单层顺序”和探索回流手动前置等限制；需求沙盘和人的正式效力不变。
+受审正文的旧待审核／停止标签保持历史，以后续批准记录为准；不改蓝图固定正文或accepted specs。
+[工程接收／启动指令](2026-10-09/change005-v1.3-autonomous-analysis/handoff-instructions.md)
+由用户附实际固定Git发布身份转给原Mini任务，MacBook不直接发送；SDK0.4.1升级仍由用户单独转交。
+发布、Mini采用／intake、实现及产品接受分别确认；不据此宣称工程完成或恢复旧自动循环。
 
 ## Historical v4.1 approval snapshot — superseded as route by v4.2
 

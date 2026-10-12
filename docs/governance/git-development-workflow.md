@@ -23,7 +23,7 @@ GitHub protects `main`: changes arrive through pull requests, history stays
 linear, and force-push and deletion remain blocked. Pull requests use squash
 merge and merged branches are deleted.
 
-For current product Changes, the Mac mini Engineering Controller organizes
+For current product Changes, the Mac mini engineering main Agent (Engineering Controller) organizes
 branch review, push, PR, squash merge, OpenSpec archive, and delivery readback
 inside the user's granted Git permissions. MacBook Product Manager technical
 sign-off is not required. Engineering Acceptance, user Product Acceptance, and
@@ -70,6 +70,10 @@ them; it does not silently move, stash, reset, or discard them.
 
 ## Develop and Publish
 
+The following ordinary delivery path remains applicable to MacBook product and
+governance work. Mini product engineering that has adopted v0.9 uses the daily
+and formal-closeout cadence below, within the same branch/permission protections.
+
 1. Follow the repository Change and TDD Gates.
 2. Commit coherent, reviewed changes with explicit staging.
 3. Push the work branch to `origin`; never push directly to `main`.
@@ -79,6 +83,68 @@ them; it does not silently move, stash, reset, or discard them.
    matrix.
 6. Review the PR diff and evidence, then squash merge. Do not require a second
    human approval when both devices belong to the same developer.
+7. Complete the safe main synchronization and report actual merged and per-device
+   identities under **After Merge**; a work-branch push is not publication closeout.
+
+### Publication Completion — Approved Standing Instruction
+
+On 2026-10-05 the user explicitly required a standard commit-and-merge closeout.
+For an approved, bounded formal product, governance or engineering delivery,
+the user's instruction to submit/push or publish the result authorizes the
+ordinary sequence: commit -> work-branch push -> PR -> applicable review and
+required CI -> squash merge -> safe main synchronization -> delivery readback.
+Continue through this sequence without asking the user again whether to merge
+once its conditions are satisfied. Apply this rule to the named delivery only;
+product/UI approval alone, a status query, or a proposed change grants no Git
+publication authority.
+
+Before merging, verify the exact PR head, complete intended diff, applicable
+independent review and required product/engineering acceptance, current required
+CI, and branch protections. Changed candidates invalidate affected evidence.
+Waiting CI means publication is pending, not complete; use bounded waits and
+continue the authorized closeout. Report an actual failed check, unresolved
+acceptance, conflict, scope/permission expansion or unsafe synchronization with
+its return point instead of bypassing it or requesting a routine merge approval.
+
+Explicit limits take precedence: commit-only, push/checkpoint-only, keep the PR
+open, wait for review, no merge, a prior unresolved stop, or a named release
+restriction remain binding. Adopted v0.9 Mini daily checkpoints and internal
+trials retain their existing cadence; they are not formal deliveries and do not
+each create or merge a PR. CI success supplies no missing product approval,
+engineering acceptance, Provider/data/deployment permission or authority over
+another task's PR.
+
+Default completion is the verified merge plus safe main synchronization, not
+merely a clean worktree, pushed branch or open PR. A skipped peer is reported as
+merged with partial synchronization under **After Merge**, not full completion.
+Do not switch, reset, overwrite or force adoption in an active peer worktree.
+When a handoff is separately authorized, carry the actual publication identity;
+previous fixed inputs and receiver adoption remain valid historical identities.
+This rule starts no scheduler, service, stopped task or inactive Host Loop.
+
+### Adopted v0.9 Mini Product Engineering
+
+During daily iteration, run affected checks and the relevant main path, explicitly
+stage coherent changes, commit and push the owned work branch when needed within
+existing Git authority. Internal corrections and subtasks do not each require a
+PR, full CI, independent review or packaging. The user tries and completes any
+required Product Acceptance directly on Mini under the sole execution policy's
+**Mac mini Trial and User Acceptance** section. A local trial identifies the
+commit and relevant uncommitted differences; push, PR and mainline merge are not
+trial prerequisites. Trial feedback is not formal Change acceptance.
+
+At the formal Change's complete-result closeout, concentrate one PR targeting
+`main`, its complete diff/evidence review, applicable independent verification,
+required user acceptance, required CI, authorized squash merge and archive in
+the task's permitted order. Do not accumulate the whole Blueprint into one PR.
+Failed checks or changed candidates still receive affected revalidation;
+invalidated PASS cannot authorize merge. An existing PR's branch updates may
+trigger CI again: preserve those checks and keep the PR open rather than hiding
+updates to avoid CI. This cadence changes no CI triggers or branch protection;
+verify actual workflows and required checks before merge.
+
+This Mini cadence does not change MacBook product/governance delivery or grant
+Git, installation, host, provider/data or release permissions.
 
 No force-push is part of the normal workflow. If `main` advances, fetch and
 merge `origin/main` into the work branch. The eventual squash merge keeps
