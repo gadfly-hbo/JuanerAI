@@ -800,3 +800,7 @@ AC138 current009 canonical portable：4300PASS/18既有条件SKIP/0FAIL，17阶�
 AC138当前短句显示采用reference_contract1.4；首版事实片段reference1.3维持原长句编译与读回，doc1.5不重写。真实185保存字节离线readback因NUMERIC_REPORT_CHANGED的RED已保留；history-red001→green001七项AC138通过，real185原保存报告重新校验GREEN。未改旧报告/Task或补造成功，新增标记仅区分同一1.5文档的显示合同；旧1.3/1.4文档合同继续原样。full010若发生这轮源码漂移如实保留，当前011重新冻结后收齐完整回归，再041剩余10次内一次同Task187对照。
 AC138 current011完整4302PASS/18既有条件SKIP/0FAIL，17阶段/漂移0。真实187同Task正常answered、短句1.5/reference1.4、2已结算请求，数字对应及实际字段/关联参数表述改善；仍partial，两处REPORT_UNSUPPORTED_CLAIM。逐段只读诊断确认一处为“需要退款发生原因记录等证据才能验证”的待证假说误拦，另一段“所有数字均经过独立算术核验”不符合D派生公式等级，继续拒绝。原输出、历史、source及41JSONL前缀保留；1456请求/901446已知输出/81920 UNKNOWN/0在途。停止该付费路径连续重跑，未清UNKNOWN/新Task/放宽等级。
 在已批准事实片段＋MODEL分责内修正检查语义：仅完成态正面认证触发原因/业务/完整性认证拒绝；缺证待验证不等于已认证，正面认证负例与混合核验等级夸大保持拒绝。检查器从不授予MODEL语义通过。当前参考合同1.5；首版长句1.3和短句1.4按各自谓词及字节读回，旧报告不追改。assertion-red001→green001八项AC138，新增旧1.4误拦历史读回负例；后续当前012全回归，真实补验只在041有效窗口内，过期等待最小时间续展，不自动增加次数或输出额度。
+
+
+## AC142 发布CI实际失败及普通修复
+原CI run38259766558在install-view因六项旧Pi0.84.2 registry entry缺integrity失败，日志release-ci001-failed.log保留。补官方tarball逐包SHA512，未换版本/来源/边；SDK0.4.3不变。安装视图及测试精确lock hash更新，missing integrity仍拒绝。实际approved node-gyp archive输入下合同17PASS/0SKIP/0FAIL（ac142-green001.log），不是豁免CI。旧lock preimage、TLS取包失败、各tarball与官方SRI收据保留。requiredCI必须对修正head重跑通过。

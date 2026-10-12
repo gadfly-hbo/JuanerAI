@@ -1651,3 +1651,7 @@ AC138-01当前事实/比较完整片段，毛额与净额不能由模型重命�
 
 ## AC140 B004-01 普通修正：停止输入范围重叠（2026-10-12）
 只修改 Application 的私有停止 guard：按真实材料身份分解 bundle，比较相同 action 下的 input reference 路径段重叠（相等或任一为另一的祖先）。忽略 completion reference 的变化对停止准入的影响，避免模型扩大范围或换完成条件恢复已停工作。保留 parent epoch、closed child、source eligibility 和根 authority guard。通用 sameAutomaticDelegationWork 在祖先递归等其他用途保持原合同。先通过真实 LocalStore queue/lifecycle seam 复现扩大引用绕过的因果 RED，再实现最小修正，逐项加入子树、完成条件、bundle 负例和不重叠允许路径，最后受影响及完整回归。
+
+
+## AC142 CI固定依赖完整性修复
+实际release-ci001失败先于更改。只为六个已固定0.84.2 registry节点补公开dist.integrity，下载官方tarball另算SHA512验证；lock图、版本、来源和SDK0.4.3不变。原PythonTLS传输失败未修改锁，改用正常TLS curl，不用insecure。更新安装视图及测试的精确lock bytes/hash；补missing-integrity负例而不放宽校验。实际cloud原始node-gyp档案用于本机合同补验，发布requiredCI重跑。

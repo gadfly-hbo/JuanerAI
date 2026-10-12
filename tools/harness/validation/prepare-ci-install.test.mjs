@@ -162,7 +162,7 @@ test('CI-SOURCE-002: isolated prepare refuses existing paths; finalize rejects e
   await assert.rejects(() => prepare(repo, view, archive), /existing path/);
   await rmdir(join(repo, 'node_modules')); // empty, owned synthetic precondition fixture
   const manifestIdentity = { bytes: 1888, sha256: 'fcd67c6047c38fe49a53c447643b762d333879747c38e3704b17afa98ba901a2' };
-  const lockIdentity = { bytes: 375120, sha256: 'aa890cf1e6399841e4e2453842840160527d0b291cfcbd1737ab970edb0d0d26' };
+  const lockIdentity = { bytes: 375828, sha256: '01572365eea02246f6dd9b77b500c785c229f48b47914a6c9570232166aacfaa' };
   const digest = bytes => ({ bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
   const originals = new Map();
   for (const [name, expected] of [['package.json', manifestIdentity], ['package-lock.json', lockIdentity]]) {
@@ -238,4 +238,42 @@ test('CI-SOURCE-002: isolated prepare refuses existing paths; finalize rejects e
   assert.deepEqual(JSON.parse(await readFile(join(secondView, 'installed-identity.json'))), result);
   assert.deepEqual(await readFile(join(repo, 'package-lock.json')), await readFile(new URL('../../../package-lock.json', import.meta.url)));
   await assert.rejects(() => finalize(repo, secondView, archive), /existing path/);
+});
+
+
+test('CI-SOURCE-142: retained Pi compatibility packages have verified publisher integrity and missing integrity stays rejected', async t => {
+ const lock=JSON.parse(await readFile(new URL('../../../package-lock.json',import.meta.url)));
+ const expected={
+  "@earendil-works/pi-agent-core": {
+    "version": "0.84.2",
+    "integrity": "sha512-8Pn3wSCxj0cfo5I6jxQYVB/3uuQRmHhAlEclyjqpOuMEdQMIODHizRogv56FLdbU+dTiGnybeHQ2N+sV1/L2YA=="
+  },
+  "@earendil-works/pi-ai": {
+    "version": "0.84.2",
+    "integrity": "sha512-6MzsrYIYNVlE7SfpbL2yYb67Qo58p/7Q+xWG1RZvoX1P80aRCHSod2/13aFpxkow1lPO2LEh3c495J0Gwmyjig=="
+  },
+  "@earendil-works/pi-client": {
+    "version": "0.84.2",
+    "integrity": "sha512-/RFSPhD/bZbpOp1oJj+UneSUFSgZhWxzcSENUY+8+8xhoBrWXMYI2t77XNx4Yf+c8YK2qTHquForhNcelYpXvg=="
+  },
+  "@earendil-works/pi-protocol": {
+    "version": "0.84.2",
+    "integrity": "sha512-jbBh03fkeckWEroHpcZBr4w5/Ibat8WwdXFlXHivYQImrQNFtLpDeL0t1cku4hmK0q3pceIRQHkw4fwbM4YILQ=="
+  },
+  "@earendil-works/pi-telemetry": {
+    "version": "0.84.2",
+    "integrity": "sha512-wg5caea7uIv1BHRBm2Y116RvFG4oSAiP5qk9tA2463PDGIr4K8M1Ceyyg5DOpF/shUUl0gk826yQJAeAcHYB9g=="
+  },
+  "@earendil-works/pi-tui": {
+    "version": "0.84.2",
+    "integrity": "sha512-ds2TLihOnM5sLJB3VpXV6y0uR5efVuHf4MN7yDpsty6hA2DUO/EDVzjp/0od0G2JslzVLMjT8T8zavtxVb+qbg=="
+  }
+};
+ for(const [name,value] of Object.entries(expected)){
+  const entry=lock.packages['node_modules/@earendil-works/pi-coding-agent/node_modules/'+name];
+  assert.equal(entry.version,value.version);assert.equal(entry.integrity,value.integrity);
+ }
+ if(cloudArchiveUnavailable(t))return;
+ const archive=await readFile(process.env.JUANERAI_CI_NODE_GYP_ARCHIVE);
+ for(const name of Object.keys(expected)){const changed=structuredClone(lock);delete changed.packages['node_modules/@earendil-works/pi-coding-agent/node_modules/'+name].integrity;assert.throws(()=>installView(changed,archive),/missing registry integrity/);}
 });

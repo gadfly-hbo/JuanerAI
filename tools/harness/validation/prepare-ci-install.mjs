@@ -70,7 +70,7 @@ export async function prepare(repo, view, archivePath) {
   const manifest = await file(join(repo, 'package.json'));
   const lock = await file(join(repo, 'package-lock.json'));
   assert.deepEqual(digest(manifest), { bytes: 1888, sha256: 'fcd67c6047c38fe49a53c447643b762d333879747c38e3704b17afa98ba901a2' }, 'approved repository manifest identity');
-  assert.deepEqual(digest(lock), { bytes: 375120, sha256: 'aa890cf1e6399841e4e2453842840160527d0b291cfcbd1737ab970edb0d0d26' }, 'approved repository lock identity');
+  assert.deepEqual(digest(lock), { bytes: 375828, sha256: '01572365eea02246f6dd9b77b500c785c229f48b47914a6c9570232166aacfaa' }, 'approved repository lock identity');
   const archive = await file(archivePath);
   const mapped = installView(JSON.parse(lock), archive);
   const sdk = await file(join(repo, sdkPath));
