@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004162316707-3KSCNZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T16:23:16.707Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "首次真实Chromium入口暴露上传状态失败，已收回全部本次进程",
+  "status_after": "active",
+  "evidence_refs": []
+}

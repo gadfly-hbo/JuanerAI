@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004064413202-A0FM9W",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-04T06:44:13.202Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "工程合同决定及受限合成测试效果已记录，进入实现阶段。",
+  "status_after": "active",
+  "evidence_refs": []
+}

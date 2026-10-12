@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004101719657-Y6RZO8",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-04T10:17:19.657Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "原冻结主机包首例准入失败，已交同一medium Worker修正；普通纠正自动续接。",
+  "status_after": "active",
+  "evidence_refs": []
+}

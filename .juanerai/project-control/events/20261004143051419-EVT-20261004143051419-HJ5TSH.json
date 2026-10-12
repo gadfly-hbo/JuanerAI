@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004143051419-HJ5TSH",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T14:30:51.419Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "host008实际PASS已收回；明确剩余M1操作计量和正常入口缺口。",
+  "status_after": "active",
+  "evidence_refs": []
+}

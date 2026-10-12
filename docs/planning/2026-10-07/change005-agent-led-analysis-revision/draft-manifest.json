@@ -1,0 +1,147 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_FROZEN",
+  "version": "Change005 v1.1 requirements revision R1",
+  "branch": "work/mac-mini/n01-n02-browser-membership",
+  "head": "037e3f8fd8e694000428d65384a545879f1d6f9a",
+  "predecessor_reviews": [
+    "reviews/readiness002-input.json",
+    "reviews/readiness002-advisory-input.json"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1049,
+      "sha256": "35990b9ef5fbf25cfe0075c1b0e4a4e9867fd98fe856d70ca305546c3ec73938"
+    },
+    {
+      "path": "clickable/index.html",
+      "bytes": 6001,
+      "sha256": "b223c0ad92d7dfcbf17839470c632c17d0c38bb8f22cad003037ed8dd8490003"
+    },
+    {
+      "path": "clickable/reference/brand.css",
+      "bytes": 2013,
+      "sha256": "7c7c365713b23b0b666b453c0c02e7df39277a03170ca8610a343f73ddd039e9"
+    },
+    {
+      "path": "clickable/reference/px004/app.js",
+      "bytes": 36436,
+      "sha256": "90ab6e4b24899a753fabb47ca60659534393d0534daafcd3261e29895b1e754d"
+    },
+    {
+      "path": "clickable/reference/px004/data.js",
+      "bytes": 3544,
+      "sha256": "24df63d955bba731ceb8d6e5919c593777d1e3b85388621aa3a5f85162d30b7f"
+    },
+    {
+      "path": "clickable/reference/px004/index.html",
+      "bytes": 43887,
+      "sha256": "3d572bae679fa5be02d6a7ad463a0fb06a5bc4cbcaff74dbdad83bba4615a674"
+    },
+    {
+      "path": "clickable/reference/px004/styles.css",
+      "bytes": 23310,
+      "sha256": "c2b5ad6baa712e82600cebcf8dbb8df7cb9ee591cd24faa2dab5bfabb6b75444"
+    },
+    {
+      "path": "clickable/reference/px006.css",
+      "bytes": 17185,
+      "sha256": "4dae5eae25e59826ea0aab2b0d101d93474f4f896b5e6ea9e838522689b53fa4"
+    },
+    {
+      "path": "clickable/reference/review.js",
+      "bytes": 15047,
+      "sha256": "7616ec7b0c824e6f8db00d122ec4eb7d8e437583d9b174c45d67957bf04b7f75"
+    },
+    {
+      "path": "clickable/reference/workspace.css",
+      "bytes": 7581,
+      "sha256": "4f86a21c5fece040f85a7e2e103c75dbb5aabecae648ec39cd32c3e5f80fff10"
+    },
+    {
+      "path": "clickable/revision.css",
+      "bytes": 1077,
+      "sha256": "dccfbceafae22326100eda182345fd57a1386ffb9e1aae063a5a01d3f5cbc45b"
+    },
+    {
+      "path": "clickable/revision.js",
+      "bytes": 16867,
+      "sha256": "92731a2d2b9fa49b5cce5af1b8bd6d613e7f865ca106ce111d4e913b6b9cba45"
+    },
+    {
+      "path": "product-input-revision-v1.1.md",
+      "bytes": 17766,
+      "sha256": "fccf54361aec1b7f81759395ca6fafed2b5caf3e51d52caab7473a31fe407899"
+    },
+    {
+      "path": "references/five-moments-approval.md",
+      "bytes": 5160,
+      "sha256": "79b5388f5d0cc06dbbab87b45dbfb887d120f832f581f85c4182df7b25810b53"
+    },
+    {
+      "path": "references/five-moments-product.md",
+      "bytes": 21581,
+      "sha256": "de324456083441f7529d04bc72b8bf92a7fd10d68546f9ca5aa3ca9a6164955b"
+    },
+    {
+      "path": "references/five-moments-ui.md",
+      "bytes": 6107,
+      "sha256": "f2867a54e19b19f17585eaa39605c43d4717d7a34e0ed9a052377154eed8f360"
+    },
+    {
+      "path": "references/original-approval-v1.1.md",
+      "bytes": 11869,
+      "sha256": "258946d794f8b7249ca584a387892889790815b1f81eea25e034f3a74370fbc3"
+    },
+    {
+      "path": "references/original-product-input-v1.1.md",
+      "bytes": 38807,
+      "sha256": "d42d2acbe02356451179e260095336bd5524802cff4780a755d584940cd519a9"
+    },
+    {
+      "path": "references/original-ui-contract-v1.1.md",
+      "bytes": 8879,
+      "sha256": "7d319f52777b56b257e234e2966b7b07fc09a6fa70aeda88b72a65ba48673ce9"
+    },
+    {
+      "path": "references/分析核心三角.txt",
+      "bytes": 10966,
+      "sha256": "b1181ae06b2d3a49ba13f7cf720c4ff5f1727a9319f09c56ba41293f63d17bb6"
+    },
+    {
+      "path": "reviews/readiness-001.md",
+      "bytes": 2657,
+      "sha256": "41bd2fac8e81da0b308ff00789629db476a214de406977e0c599276ca222b66c"
+    },
+    {
+      "path": "reviews/readiness-002.md",
+      "bytes": 3362,
+      "sha256": "f3258369759272a29a9f89d61b40838cc72b6cc268e54873e35e10256fafb0fb"
+    },
+    {
+      "path": "reviews/readiness002-advisory-input.json",
+      "bytes": 1447,
+      "sha256": "68a7c6271c9700f10f94341a0886487a87c1afab5a35d3af698d0179e1ab93b3"
+    },
+    {
+      "path": "reviews/readiness002-input.json",
+      "bytes": 1367,
+      "sha256": "9ae48f7da00ea76ad0523bd664388f9662735868d032726e9242f10c1c8d4a84"
+    },
+    {
+      "path": "source-manifest.json",
+      "bytes": 5436,
+      "sha256": "5e6a9792fb1d74bf39f9bad48501e4aaadfb69ad29bebfe75d7917efb8c4a8ef"
+    },
+    {
+      "path": "ui-contract-revision-v1.1.md",
+      "bytes": 7859,
+      "sha256": "904b7fc7e7cd21fea65c1af7dd3cf5466ff9de535be5e6930aa1b258d2ab3273"
+    },
+    {
+      "path": "verification.md",
+      "bytes": 2758,
+      "sha256": "875cc75729ab5a1fb919a006c37d65af631ba5ab9eb6a2a05cd56c59e8fcec17"
+    }
+  ]
+}

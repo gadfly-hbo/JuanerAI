@@ -1,0 +1,322 @@
+{
+  "provenance": {
+    "kind": "recorded-fixed-synthetic-contract-fixture",
+    "manifest_sha256": "446c7fae9da7f01a2565c435a1784e7b6be1260d69f79f2ec6d9e9b6bd503e5c",
+    "scope": "Contract and deterministic calculation test input; not a current host execution claim."
+  },
+  "preparation": {
+    "bindings_sha256": "a732186a1c42b52fae30114a36a05a8c5cab604bbec263e2645447c6af533b6c",
+    "code_sha256": "eaabcc2a78ff432c276080c867aeb1aee15c8ddc3b6b47e576e001157b1eb1c1",
+    "context": {
+      "epoch": 0,
+      "execution_id": "bd95d527-9f55-4386-ba67-dc97f65b286f",
+      "operation_id": "2fc9db17-a803-410f-9439-110d5c3f8b34",
+      "task_id": "cd5ec2a8-3300-473b-9b89-cc46aebabf81"
+    },
+    "extraction_version": "1.0",
+    "id": "510aee05-f498-4cd1-8874-7eb222c7ec84",
+    "lineage_sha256": "0e72123a9ade78aaaf4541bd169f5e2e352a9aa1f55dc76dffca35724fec5845",
+    "owner": {
+      "case_id": "fce81c22-1f0d-465c-ac07-cd3a3716a73e",
+      "project_id": "1a55eae3-92ec-4c2c-bfb4-13a2a62024ab",
+      "revision_id": "e12ea331-5cac-4dd8-904d-4285e2620cfc",
+      "session_id": "84faba6c-fe44-4ca2-b6da-2bd27c65df81"
+    },
+    "previous_execution_id": null,
+    "qualification": {
+      "bindings": [
+        {
+          "columns": {
+            "member_group": "member_group",
+            "member_id": "member_id"
+          },
+          "role": "members",
+          "sheet_id": "csv",
+          "source_id": "01991a00-0000-4000-8000-000000000001"
+        },
+        {
+          "columns": {
+            "amount": "amount",
+            "currency": "currency",
+            "order_id": "order_id",
+            "order_member_id": "order_member_id",
+            "paid_at": "paid_at",
+            "status": "status"
+          },
+          "role": "orders",
+          "sheet_id": "1",
+          "source_id": "01991a00-0000-4000-8000-000000000002"
+        },
+        {
+          "columns": {
+            "amount": "amount",
+            "currency": "currency",
+            "order_id": "order_id",
+            "order_member_id": "order_member_id",
+            "paid_at": "paid_at",
+            "status": "status"
+          },
+          "role": "orders",
+          "sheet_id": "2",
+          "source_id": "01991a00-0000-4000-8000-000000000002"
+        },
+        {
+          "columns": {
+            "amount": "amount",
+            "currency": "currency",
+            "order_id": "order_id",
+            "order_member_id": "order_member_id",
+            "paid_at": "paid_at",
+            "status": "status"
+          },
+          "role": "orders",
+          "sheet_id": "csv",
+          "source_id": "01991a00-0000-4000-8000-000000000003"
+        }
+      ],
+      "bindings_sha256": "a732186a1c42b52fae30114a36a05a8c5cab604bbec263e2645447c6af533b6c",
+      "extraction_sha256": "e6583dddcf30f380acb8785879456275ae25e096dad0a0f76c3728f0a45198ad",
+      "lineage": [
+        {
+          "columns": {
+            "member_group": "B",
+            "member_id": "A"
+          },
+          "normalized_row": 2,
+          "role": "members",
+          "sheet_id": "csv",
+          "source_id": "01991a00-0000-4000-8000-000000000001",
+          "source_row": 2
+        },
+        {
+          "columns": {
+            "member_group": "B",
+            "member_id": "A"
+          },
+          "normalized_row": 3,
+          "role": "members",
+          "sheet_id": "csv",
+          "source_id": "01991a00-0000-4000-8000-000000000001",
+          "source_row": 3
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 2,
+          "role": "orders",
+          "sheet_id": "1",
+          "source_id": "01991a00-0000-4000-8000-000000000002",
+          "source_row": 2
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 3,
+          "role": "orders",
+          "sheet_id": "1",
+          "source_id": "01991a00-0000-4000-8000-000000000002",
+          "source_row": 3
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 4,
+          "role": "orders",
+          "sheet_id": "2",
+          "source_id": "01991a00-0000-4000-8000-000000000002",
+          "source_row": 2
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 5,
+          "role": "orders",
+          "sheet_id": "2",
+          "source_id": "01991a00-0000-4000-8000-000000000002",
+          "source_row": 3
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 6,
+          "role": "orders",
+          "sheet_id": "csv",
+          "source_id": "01991a00-0000-4000-8000-000000000003",
+          "source_row": 2
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 7,
+          "role": "orders",
+          "sheet_id": "csv",
+          "source_id": "01991a00-0000-4000-8000-000000000003",
+          "source_row": 3
+        }
+      ],
+      "normalized": {
+        "members": {
+          "byte_length": "41",
+          "sha256": "9e1d3f1107ff240292034a2c16290c48802cb397a9c549e2d33cad91ea0b2f05"
+        },
+        "orders": {
+          "byte_length": "248",
+          "sha256": "a76dccb69047599ca29da31454657ef018e3aff4a9bfc800ba11beb242ccf864"
+        }
+      },
+      "qualification_sha256": "f9b85bf7c7a3d45ea09ecba7e20ec776e5e811b049297472c2ca4b66c51822ae",
+      "source_set": {
+        "sources": [
+          {
+            "byte_length": "41",
+            "display_name": "成员.csv",
+            "format": "csv",
+            "sha256": "9e1d3f1107ff240292034a2c16290c48802cb397a9c549e2d33cad91ea0b2f05",
+            "sheets": [
+              {
+                "name": "CSV",
+                "row_count": 3,
+                "sheet_id": "csv",
+                "state": "visible",
+                "unmapped_columns": []
+              }
+            ],
+            "source_id": "01991a00-0000-4000-8000-000000000001"
+          },
+          {
+            "byte_length": "4009",
+            "display_name": "订单.xlsx",
+            "format": "xlsx",
+            "sha256": "c675d5cd7ee6033b1331a956ceb60ceac3afa4d99189b4b9857ee7d4369fd1b6",
+            "sheets": [
+              {
+                "name": "比较期",
+                "row_count": 3,
+                "sheet_id": "1",
+                "state": "visible",
+                "unmapped_columns": []
+              },
+              {
+                "name": "本期",
+                "row_count": 3,
+                "sheet_id": "2",
+                "state": "visible",
+                "unmapped_columns": []
+              }
+            ],
+            "source_id": "01991a00-0000-4000-8000-000000000002"
+          },
+          {
+            "byte_length": "120",
+            "display_name": "补充订单.csv",
+            "format": "csv",
+            "sha256": "bdc0a142f1bb9890d53f42cd3830fd50d31eccdc92b50dcb8c49045b6e16a61b",
+            "sheets": [
+              {
+                "name": "CSV",
+                "row_count": 3,
+                "sheet_id": "csv",
+                "state": "visible",
+                "unmapped_columns": []
+              }
+            ],
+            "source_id": "01991a00-0000-4000-8000-000000000003"
+          }
+        ],
+        "version": "1.0"
+      },
+      "source_set_sha256": "74ccce463d3620ed377ccba635b170971ab527770a53e4a081178d5b22369e41",
+      "status": "qualified",
+      "version": "1.0"
+    },
+    "receipt": {
+      "code_sha256": "eaabcc2a78ff432c276080c867aeb1aee15c8ddc3b6b47e576e001157b1eb1c1",
+      "helper_sha256": "e9693d12898744988820e913914d2d3115d8e00f45f78fc248d375d20730fb5d",
+      "operation_context": {
+        "epoch": 0,
+        "execution_id": "bd95d527-9f55-4386-ba67-dc97f65b286f",
+        "operation_id": "2fc9db17-a803-410f-9439-110d5c3f8b34",
+        "task_id": "cd5ec2a8-3300-473b-9b89-cc46aebabf81"
+      },
+      "outcome_sha256": "b4f8d62564067e78173eaf16479437e64872864569b77e6de46b22b26155e058",
+      "outputs": {
+        "members": {
+          "byte_length": 41,
+          "sha256": "9e1d3f1107ff240292034a2c16290c48802cb397a9c549e2d33cad91ea0b2f05"
+        },
+        "orders": {
+          "byte_length": 248,
+          "sha256": "a76dccb69047599ca29da31454657ef018e3aff4a9bfc800ba11beb242ccf864"
+        }
+      },
+      "policy_sha256": "136bd8aefe78aca446421b53aae94f6971d5630191ce3a5d06b8db80d71cfe9c",
+      "request_sha256": "4d0389fcd01cdecdcd5684e5e98040bc21e8e3cf8535bf2a775702133001499b",
+      "sources": [
+        {
+          "byte_length": 41,
+          "sha256": "9e1d3f1107ff240292034a2c16290c48802cb397a9c549e2d33cad91ea0b2f05",
+          "source_id": "01991a00-0000-4000-8000-000000000001"
+        },
+        {
+          "byte_length": 4009,
+          "sha256": "c675d5cd7ee6033b1331a956ceb60ceac3afa4d99189b4b9857ee7d4369fd1b6",
+          "source_id": "01991a00-0000-4000-8000-000000000002"
+        },
+        {
+          "byte_length": 120,
+          "sha256": "bdc0a142f1bb9890d53f42cd3830fd50d31eccdc92b50dcb8c49045b6e16a61b",
+          "source_id": "01991a00-0000-4000-8000-000000000003"
+        }
+      ],
+      "status": "unqualified",
+      "version": "1.0"
+    },
+    "receipt_sha256": "5761086aaab591ed6b3a09170396f8fb041669000148ec4e61a9cedc75bd3c0c",
+    "sha256": "91ef02989e1771770f40276d5a7c9e2dd3ca4fcc37c6e5e928778d108521227d",
+    "source_set_id": "4c9788f6-44e5-444b-aca6-b7b5e45b7a72",
+    "source_set_sha256": "0c0622c7a4af077976919a79b49f3088d5bdbe1d9a6fc99f94d4f087c0b53974",
+    "stages": {
+      "conversion": "qualified",
+      "execution": "settled",
+      "extraction": "verified"
+    },
+    "status": "qualified",
+    "version": "1.0"
+  }
+}

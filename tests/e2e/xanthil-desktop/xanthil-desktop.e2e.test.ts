@@ -734,11 +734,11 @@ test('AC-XDESK-012-01: retains the exact P4 package and lock identity as histori
   assert.equal(packageLock.byteLength,319836);
   assert.equal(createHash('sha256').update(packageLock).digest('hex'),'861326061cd570b0e81584f149012b13228aec3da6528d82536f89cbb5d535c0');
   const p4=JSON.parse(packageJson);delete p4.main;delete p4.config;
-  for(const key of ['desktop:start','desktop:package','desktop:test','desktop:test:artifact','desktop:test:native'])delete p4.scripts[key];
+  for(const key of ['desktop:start','desktop:package','desktop:test','desktop:test:artifact','desktop:test:native','web:start','web:open','web:stop','web:status'])delete p4.scripts[key];
   p4.scripts.test='tools/harness/validation/run'; // Restore only the separately exact-checked accepted DEV-04 delta.
   const p4Bytes=Buffer.from(JSON.stringify(p4,null,2)+'\n');
   assert.equal(p4Bytes.byteLength,808);
-  assert.equal(createHash('sha256').update(p4Bytes).digest('hex'),'5a5e225cab86826b78afb2b94eb18a4064ab75c1115aa27dfb1342a927ed264a','only the separately checked approved P5 and DEV-04 additions differ from the exact retained P4 object');
+  assert.equal(createHash('sha256').update(p4Bytes).digest('hex'),'5a5e225cab86826b78afb2b94eb18a4064ab75c1115aa27dfb1342a927ed264a','only the separately checked approved P5, DEV-04 and independent-web script additions differ from the exact retained P4 object');
 });
 
 test('AC-XDESK-012-02: retains exact accepted Desktop scripts and canonical validation phases [DEV-04]', async () => {
@@ -753,6 +753,10 @@ test('AC-XDESK-012-02: retains exact accepted Desktop scripts and canonical vali
     'desktop:test':'node tools/desktop/test-daily.mjs',
     'desktop:test:artifact':'node --test tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts',
     'desktop:test:native':'node tools/desktop/development-native.mjs',
+    'web:start':'node tools/browser/entry.mjs start',
+    'web:open':'node tools/browser/entry.mjs open',
+    'web:stop':'node tools/browser/entry.mjs stop',
+    'web:status':'node tools/browser/entry.mjs status',
   });
   // Exact 68-root/compiler/config-inventory equality and mixed-tuple negatives
   // are independently asserted by TEST-XCLI-021-CF-RESTORATION, not inferred here.

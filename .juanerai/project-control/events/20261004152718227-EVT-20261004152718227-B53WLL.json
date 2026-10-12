@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004152718227-B53WLL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T15:27:18.227Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "自动链范围内实际通过，解释报告与完整用户路径仍开放。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004083415798-32EVU4",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-04T08:34:15.798Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "用户授权四类剩余隔离验证并要求恢复自动推进；已恢复同一Worker，常规工程与范围内主机验证无需逐项确认。",
+  "status_after": "active",
+  "evidence_refs": []
+}

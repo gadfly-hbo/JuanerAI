@@ -1,6 +1,8 @@
 import type {AssistantSource,AssistantEvent,AssistantSession,AssistantAttempt,AssistantEvent as Event} from './case-assistant.ts';
 export type ChildKind='fork'|'subagent';
-export type ChildPreview=Readonly<{
+export type AutomaticDelegationInstruction=Readonly<{version:'1.0'|'1.1';action:'inspect_sources'|'check_consistency'|'check_limitations'|'challenge'|'explain'|'compare';reference_paths:readonly string[];completion_reference_paths:readonly string[];private_purpose:string;business_question?:string}>;
+export type ChildPreview=Readonly<{creation_command_id?:string;
+ automatic_instruction?:AutomaticDelegationInstruction;
  id:string;parent_session_id:string;kind:ChildKind;task:string;cutoff_id:string|null;
  source:AssistantSource;baseline_decision_id:string|null;
  selected_history:readonly AssistantEvent[];

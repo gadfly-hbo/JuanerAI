@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005065802959-Y7RN3Y",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T06:58:02.959Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "Candidate006完整portable PASS，进入用户已指定的受控Git试用交付；历史FAIL/UNKNOWN保持，未运行真实模型。",
+  "status_after": "active",
+  "evidence_refs": []
+}

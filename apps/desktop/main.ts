@@ -1,9 +1,10 @@
 import {createMembershipTaskHandler} from './member-task-main.ts';
+import {startBrowserNativeEntry} from './browser-native.ts';
 import {installCollaborationClose} from './collaboration-window-close.ts';
 import {developmentEndpoint, isDevelopmentFrame, prepareDevelopmentRoot, assertDevelopmentPath} from './development.ts';
 import {createProviderSettings} from '../../packages/application/provider-settings.ts';
 import {createMacOsCredentialStore} from '../../adapters/credentials-macos/index.ts';
-import {probeLocalXiaomi} from '../../adapters/agent-pi/xiaomi-local.ts';
+import {createPiConnectionProbe} from '../../adapters/agent-pi/native-connection-probe.ts';
 import { createCaseAssistantHandler } from './case-assistant-main.ts';
 import { basename, dirname, isAbsolute, join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -25,6 +26,8 @@ if (development) {
   app.setPath('sessionData', development.cache);
   app.setAppLogsPath(development.logs);
 }
+
+function credentialHelperPath(entryUrl:string){return development?fileURLToPath(new URL('../../build/development-keychain/xanthil-keychain',entryUrl)):join(dirname(process.execPath),'xanthil-keychain');}
 
 export type XanthilDesktopSenderPolicy = (sender: unknown) => boolean;
 
@@ -567,8 +570,8 @@ function startNormalMainEntry(): void {
     const caseAssistantConfig=development ? null : loadPersonalCaseAssistantActivation(process.env);
     delete process.env.XIAOMI_TOKEN_PLAN_CN_API_KEY;
     delete process.env.JUANERAI_CASE_ASSISTANT_ACTIVATION;
-    const credentialHelper=development?fileURLToPath(new URL('../../build/development-keychain/xanthil-keychain',entryUrl)):join(dirname(process.execPath),'xanthil-keychain');
-    const providerSettings=caseAssistantConfig?undefined:createProviderSettings({store:createMacOsCredentialStore(credentialHelper),probe:probeLocalXiaomi});
+    const credentialHelper=credentialHelperPath(entryUrl);
+    const providerSettings=caseAssistantConfig?undefined:createProviderSettings({store:createMacOsCredentialStore(credentialHelper),probe:createPiConnectionProbe({root:join(app.getPath('userData'),'connection-tests')})});
     void providerSettings?.initialize();
     const productionProfile = createPersonalXanthilDesktopProfile({toolchainDeployment:{descriptor_path},assistanceConfig:null,caseAssistantConfig,...(providerSettings?{providerSettings}:{}),clock: () => new Date(),deadlineScheduler:{schedule({at_epoch_ms,callback}:{at_epoch_ms:number;callback:()=>void}){const timer=setTimeout(callback,Math.max(0,at_epoch_ms-Date.now()));return {cancel(){clearTimeout(timer);}};}}});
     const handlers = createXanthilDesktopIpcHandlers({ productionProfile, nativeDialogs: normalNativeDialogs(),sourceReader:normalSourceReader(),exportWriter:createNativeReportExportWriter(), senderPolicy: isCurrentMainFrame });
@@ -607,9 +610,12 @@ function startNormalMainEntry(): void {
 if (!app.requestSingleInstanceLock()) {
   app.quit();
 } else {
-  app.on('second-instance', () => mainWindow?.focus());
+  const browserMode=process.argv.includes('--xanthil-browser');
+  let browserCompanion:Awaited<ReturnType<typeof startBrowserNativeEntry>>=null;
+  app.on('second-instance', () => {if(browserMode)void browserCompanion?.open();else mainWindow?.focus();});
   app.on('activate', () => {
+    if(browserMode){void browserCompanion?.open();return;}
     if (BrowserWindow.getAllWindows().length === 0) startNormalMainEntry();
   });
-  void app.whenReady().then(startNormalMainEntry);
+  void app.whenReady().then(async()=>{if(browserMode)browserCompanion=await startBrowserNativeEntry(typeof __filename==='string'?`file://${__filename}`:import.meta.url,credentialHelperPath(typeof __filename==='string'?`file://${__filename}`:import.meta.url));else startNormalMainEntry();}).catch(async()=>{await electron.dialog.showMessageBox({type:'error',message:'工作区未能启动。请核对本机运行环境与所选项目，未自动重试。'});app.quit();});
 }

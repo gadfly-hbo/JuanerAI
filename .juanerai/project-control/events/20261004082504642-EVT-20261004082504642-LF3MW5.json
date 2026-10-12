@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004082504642-LF3MW5",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T08:25:04.642Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "Worker已交回并停止；Mini核验部分实现和探针，现等待新的具体主机权限决定。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

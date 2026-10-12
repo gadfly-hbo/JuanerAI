@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004122629877-7FZOCE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T12:26:29.877Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "Run5草稿报告链与9项主机集成PASS，保留中间失败并继续完整接受缺口",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005060953933-2LZLOZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T06:09:53.933Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "browser-workbench-002独立FAIL：切换项目后外层标题未同步，可能误导用户；同一Worker开始定向修正，前三项修复保持。",
+  "status_after": "active",
+  "evidence_refs": []
+}

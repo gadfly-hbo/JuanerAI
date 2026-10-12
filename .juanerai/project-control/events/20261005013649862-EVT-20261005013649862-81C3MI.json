@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005013649862-81C3MI",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T01:36:49.862Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "候选003保留FAIL：两项正常入口缺陷，不涉及新增产品审批或真实凭据读取",
+  "status_after": "active",
+  "evidence_refs": []
+}

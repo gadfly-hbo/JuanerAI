@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005034008963-370LOI",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T03:40:08.963Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "candidate005完整冻结；新鲜原生Astra high Validator独立审阅",
+  "status_after": "validating",
+  "evidence_refs": []
+}

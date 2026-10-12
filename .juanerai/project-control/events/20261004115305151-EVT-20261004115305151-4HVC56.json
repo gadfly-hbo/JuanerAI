@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004115305151-4HVC56",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T11:53:05.151Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "Preparation业务消费者主机RED/GREEN完成；继续完整结果链",
+  "status_after": "active",
+  "evidence_refs": []
+}

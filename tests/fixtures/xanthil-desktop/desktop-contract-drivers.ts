@@ -244,6 +244,7 @@ const control = () => {
   return current;
 };
 export const app = Object.freeze({
+  getPath: () => '/synthetic/UserData',
   requestSingleInstanceLock: () => control().requestSingleInstanceLock(),
   whenReady: () => control().whenReady(),
   on: (event, handler) => control().onApp(event, handler),

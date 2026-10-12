@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004085735646-GK04NL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T08:57:35.646Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "遵从用户新停止线：暂停自动推进，保留当前Worker交回点，等待开发模式规则。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004170400260-J5WDBR",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T17:04:00.260Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "fresh120实际重开已收回；旧在途请求真实反例保留为D5未关闭边界",
+  "status_after": "active",
+  "evidence_refs": []
+}

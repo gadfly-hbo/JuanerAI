@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005020010824-0457J4",
+  "event_type": "accepted",
+  "occurred_at": "2026-10-05T02:00:10.824Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "候选004工程范围接受；清除已解决的工程阻塞与旧运行状态，待具体本人试用权限，历史证据保留",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

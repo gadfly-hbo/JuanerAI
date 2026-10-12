@@ -1,0 +1,6 @@
+import type {OpenTaskIdentity} from './open-analysis-store.ts';
+import type {OpenAnalysisIR} from '../product-core/open-analysis-ir.ts';
+import type {MemberSourceInspection} from './member-source.ts';
+import type {OpenAnalysisValue} from '../product-core/open-analysis-ir.ts';
+import type {OpenAnalysisVerification} from './open-analysis-verifier.ts';
+export type OpenAnalysisCodeExecution=((input:Readonly<{identity:OpenTaskIdentity;plan:OpenAnalysisIR;inspection:MemberSourceInspection;code:string;signal:AbortSignal}>)=>Promise<Readonly<{value:unknown;receipt:Readonly<Record<string,unknown>>}>>) & {explore?:(input:Readonly<{identity:OpenTaskIdentity;plan:import('../product-core/open-analysis-exploration.ts').OpenExplorationIR;frame:import('./open-analysis-store.ts').OpenFrameworkCheckpoint;inspection:MemberSourceInspection;code:string;signal:AbortSignal}>)=>Promise<Readonly<{value:import('../product-core/open-analysis-exploration.ts').OpenExplorationValue;receipt:Readonly<Record<string,unknown>>}>>;qualify?:(input:Readonly<{identity:OpenTaskIdentity;plan:OpenAnalysisIR;inspection:MemberSourceInspection;calculation:OpenAnalysisValue;verification:OpenAnalysisVerification;receipt:Readonly<Record<string,unknown>>}>)=>Promise<void>};

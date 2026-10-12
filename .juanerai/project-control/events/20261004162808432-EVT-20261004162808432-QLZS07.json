@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004162808432-QLZS07",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T16:28:08.432Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "真实UI002失败收回，已检查截图并记录现有验收口径修正",
+  "status_after": "active",
+  "evidence_refs": []
+}

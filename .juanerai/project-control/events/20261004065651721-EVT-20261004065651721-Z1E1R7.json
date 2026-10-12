@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004065651721-Z1E1R7",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-04T06:56:51.721Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "用户授权的一次受信主机健康检查成功；授权已用完，完整隔离仍未验证。",
+  "status_after": "active",
+  "evidence_refs": []
+}

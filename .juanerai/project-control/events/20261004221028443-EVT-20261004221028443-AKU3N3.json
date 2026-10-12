@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004221028443-AKU3N3",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T22:10:28.443Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "D5用户选择方案1，解除该方案选择等待",
+  "status_after": "active",
+  "evidence_refs": []
+}

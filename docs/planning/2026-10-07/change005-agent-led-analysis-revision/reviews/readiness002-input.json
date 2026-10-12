@@ -1,0 +1,46 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_PRODUCT_FREEZE",
+  "review_input": "r1-corrected-readiness002",
+  "files": [
+    {
+      "path": "product-input-revision-v1.1.md",
+      "bytes": 17766,
+      "sha256": "fccf54361aec1b7f81759395ca6fafed2b5caf3e51d52caab7473a31fe407899"
+    },
+    {
+      "path": "ui-contract-revision-v1.1.md",
+      "bytes": 7859,
+      "sha256": "904b7fc7e7cd21fea65c1af7dd3cf5466ff9de535be5e6930aa1b258d2ab3273"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1049,
+      "sha256": "35990b9ef5fbf25cfe0075c1b0e4a4e9867fd98fe856d70ca305546c3ec73938"
+    },
+    {
+      "path": "verification.md",
+      "bytes": 1023,
+      "sha256": "36916f083a024f44b77ba13f5c293e4400fe6cf1cba2a5182cb1a2b37a365c2e"
+    },
+    {
+      "path": "source-manifest.json",
+      "bytes": 5436,
+      "sha256": "5e6a9792fb1d74bf39f9bad48501e4aaadfb69ad29bebfe75d7917efb8c4a8ef"
+    },
+    {
+      "path": "clickable/index.html",
+      "bytes": 6001,
+      "sha256": "b223c0ad92d7dfcbf17839470c632c17d0c38bb8f22cad003037ed8dd8490003"
+    },
+    {
+      "path": "clickable/revision.js",
+      "bytes": 16685,
+      "sha256": "b8bd428180b388d25d6713593dc5da0256bae280b8e0dbcdbd63736f7954d9ed"
+    },
+    {
+      "path": "clickable/revision.css",
+      "bytes": 1077,
+      "sha256": "dccfbceafae22326100eda182345fd57a1386ffb9e1aae063a5a01d3f5cbc45b"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+import type {OpenStoredTask} from '../ports/open-analysis-store.ts';
+export type OpenFinding=Readonly<{id:string;claim:string;value:string;unit:string;group:string|null;rows:number;status:'independent_arithmetic'|'source_attribution';evidence:Readonly<{task_id:string;revision:string;run_id:string;outcome_id:string;scope_sha256:string;plan_sha256:string;inspection_sha256:string;result_sha256:string;method:string;group:string|null}>;support:Readonly<{status:'checked';description:string}>;counterevidence:Readonly<{status:'not_checked';description:string}>;unknowns:readonly string[];limitations:readonly string[]}>;
+export function openAnalysisFindings(task:OpenStoredTask):readonly OpenFinding[];

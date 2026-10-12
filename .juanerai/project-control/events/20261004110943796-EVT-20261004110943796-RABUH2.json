@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004110943796-RABUH2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T11:09:43.796Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "host002实际CPU失败；同一原生Worker纠正，历史与资源记录保留",
+  "status_after": "active",
+  "evidence_refs": []
+}

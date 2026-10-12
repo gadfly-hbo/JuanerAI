@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004144441179-NDCT2C",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T14:44:41.179Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "host009实际失败已收回，CI清单增量修正通过。",
+  "status_after": "active",
+  "evidence_refs": []
+}

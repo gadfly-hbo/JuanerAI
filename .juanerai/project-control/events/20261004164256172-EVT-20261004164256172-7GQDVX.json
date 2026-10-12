@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004164256172-7GQDVX",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T16:42:56.172Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "授权UI缺陷实跑修复，正常报告链通过；下载失败保留并回交同一Worker",
+  "status_after": "active",
+  "evidence_refs": []
+}

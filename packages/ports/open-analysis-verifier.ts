@@ -1,0 +1,4 @@
+import type {OpenAnalysisIR,OpenAnalysisValue} from '../product-core/open-analysis-ir.ts';
+import type {MemberSourceInspection} from './member-source.ts';
+export type OpenAnalysisVerification=Readonly<{version:'1.0';grade:'independent_arithmetic'|'source_attribution';method:'bigint_source_recheck'|'python_member_source_recheck'|'source_quote_recheck';plan_sha256:string;inspection_sha256:string;result_sha256:string;value:string;rows:number;native_evidence?:Readonly<{physical_run_id:string;task_run_id:string;attempt_id:string;code_identity:string;materialization_sha256:string;primary_sha256:string;independent_sha256:string;group_labels:Readonly<Record<string,string>>;primary:Readonly<Record<string,unknown>>;independent:Readonly<Record<string,unknown>>}>}>;
+export type OpenAnalysisVerifier=(plan:OpenAnalysisIR,result:OpenAnalysisValue,independentlyReadInspection:MemberSourceInspection)=>OpenAnalysisVerification|Promise<OpenAnalysisVerification>;

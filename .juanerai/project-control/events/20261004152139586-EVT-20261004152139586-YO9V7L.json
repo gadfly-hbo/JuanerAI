@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004152139586-YO9V7L",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T15:21:39.586Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "自动链首次实际失败已收回，报告解释持久缺口明确。",
+  "status_after": "active",
+  "evidence_refs": []
+}

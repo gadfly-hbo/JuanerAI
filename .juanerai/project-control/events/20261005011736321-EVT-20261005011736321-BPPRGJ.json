@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005011736321-BPPRGJ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T01:17:36.321Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "Validator002 FAIL1P1，既有3063PASS与host0065PASS保留，不冒称整体完成",
+  "status_after": "active",
+  "evidence_refs": []
+}

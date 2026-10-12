@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005015822381-HUVD5Q",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T01:58:22.381Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "工程候选已收回，无运行中Worker或测试；未宣称产品验收、发布或正式Change完成",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

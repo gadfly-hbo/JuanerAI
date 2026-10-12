@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005023312799-0T1O2E",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T02:33:12.799Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "独立网页版私有服务契约已关闭，同一原生Worker实施；旧验收按历史范围保留",
+  "status_after": "active",
+  "evidence_refs": []
+}

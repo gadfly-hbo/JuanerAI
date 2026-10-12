@@ -1,0 +1,96 @@
+{
+  "status": "DRAFT_NOT_APPROVED_NOT_FROZEN",
+  "created_at": "2026-10-08T03:28:58.759702+00:00",
+  "change": "Change005 v1.1 R2 incremental planning",
+  "device": "Mac mini",
+  "worktree": "/Users/bendandebaba/.codex/worktrees/n01-n02-browser-membership/JuanerAI",
+  "branch": "work/mac-mini/n01-n02-browser-membership",
+  "head": "037e3f8fd8e694000428d65384a545879f1d6f9a",
+  "product_inputs": [
+    {
+      "commit": "a940947ece8a07d4777da21e30cfd89ff2d3b76c",
+      "tree": "55c4018b28dc3f36824dfd3283e32193a2542e93",
+      "use": "Retained v1.1 reference; not refetched in this planning turn"
+    },
+    {
+      "commit": "0c6834d52eaa5da25f107117e7b545098c8ddace",
+      "tree": "0c4d99efaed11d85a2794fbcbab2fc6c1301e855",
+      "use": "Retained five moments reference; not refetched in this planning turn"
+    }
+  ],
+  "draft_files": [
+    {
+      "path": "docs/planning/2026-10-08/change005-numeric-reliability-r2/README.md",
+      "bytes": 1494,
+      "sha256": "4582a6dd8f4d29cc4559892d0c3fc54fd22a53491e22a68d09cec85c60bbb3e7"
+    },
+    {
+      "path": "docs/planning/2026-10-08/change005-numeric-reliability-r2/clickable/index.html",
+      "bytes": 4138,
+      "sha256": "51a55629699d6d8a7835c7ec0395e25af14bfa8f77429d0af4d56afdbfe81afb"
+    },
+    {
+      "path": "docs/planning/2026-10-08/change005-numeric-reliability-r2/clickable/moments.css",
+      "bytes": 1751,
+      "sha256": "0a1154dbf35d588ca09dd292888324c3f1d95bfbdf61fc2aabd518678d39aedc"
+    },
+    {
+      "path": "docs/planning/2026-10-08/change005-numeric-reliability-r2/clickable/moments.js",
+      "bytes": 10435,
+      "sha256": "2a6f2487585fc8dec32a8a91642e4202091966ac7d4f59ace750db783093f646"
+    },
+    {
+      "path": "docs/planning/2026-10-08/change005-numeric-reliability-r2/product-input-r2.md",
+      "bytes": 14809,
+      "sha256": "438448c5935270e3e30de8c678a35c897a7223bcb2496073d3e5fc636faf0cb1"
+    },
+    {
+      "path": "docs/planning/2026-10-08/change005-numeric-reliability-r2/ui-contract-r2.md",
+      "bytes": 7025,
+      "sha256": "5b9b43c88347e334f0dc8f2fe07dad41fd2f453e1e274f8caf479a4a8e17da57"
+    }
+  ],
+  "current_local_references": [
+    {
+      "path": "docs/planning/2026-10-07/change005-agent-led-analysis-revision/product-input-revision-v1.1.md",
+      "bytes": 17766,
+      "sha256": "fccf54361aec1b7f81759395ca6fafed2b5caf3e51d52caab7473a31fe407899"
+    },
+    {
+      "path": "docs/planning/2026-10-07/change005-agent-led-analysis-revision/ui-contract-revision-v1.1.md",
+      "bytes": 7859,
+      "sha256": "904b7fc7e7cd21fea65c1af7dd3cf5466ff9de535be5e6930aa1b258d2ab3273"
+    },
+    {
+      "path": "docs/planning/2026-10-07/change005-agent-led-analysis-revision/approval-and-freeze-r1.md",
+      "bytes": 1715,
+      "sha256": "0c82f112a2c4d2185331b37df4f966e19e0f7811b8a12dd6ac64d5ef8f0b9d1f"
+    },
+    {
+      "path": "docs/planning/2026-10-07/change005-agent-led-analysis-revision/clickable/reference/px006.css",
+      "bytes": 17185,
+      "sha256": "4dae5eae25e59826ea0aab2b0d101d93474f4f896b5e6ea9e838522689b53fa4"
+    },
+    {
+      "path": "docs/planning/2026-10-07/change005-agent-led-analysis-revision/clickable/reference/brand.css",
+      "bytes": 2013,
+      "sha256": "7c7c365713b23b0b666b453c0c02e7df39277a03170ca8610a343f73ddd039e9"
+    },
+    {
+      "path": "docs/planning/2026-10-07/change005-agent-led-analysis-revision/clickable/reference/workspace.css",
+      "bytes": 7581,
+      "sha256": "4f86a21c5fece040f85a7e2e103c75dbb5aabecae648ec39cd32c3e5f80fff10"
+    },
+    {
+      "path": "docs/planning/2026-10-07/change005-agent-led-analysis-revision/clickable/reference/px004/index.html",
+      "bytes": 43887,
+      "sha256": "3d572bae679fa5be02d6a7ad463a0fb06a5bc4cbcaff74dbdad83bba4615a674"
+    }
+  ],
+  "evidence_root": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/numeric-reliability-planning-r2-001",
+  "readiness_review": "NOT_PERFORMED",
+  "user_ui_approval": "NOT_PERFORMED",
+  "product_implementation": "NOT_PERFORMED",
+  "browser_visual_review": "NOT_PERFORMED_FILE_PROTOCOL_BLOCKED",
+  "scope": "Planning files only; no OpenSpec, production code, model/service command, board binding, Git publication or automatic follow-up change"
+}

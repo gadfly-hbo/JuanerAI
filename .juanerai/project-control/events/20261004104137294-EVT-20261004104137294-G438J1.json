@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004104137294-G438J1",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T10:41:37.294Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "PR67规则采用与接管checkpoint已准备；暂停保留，原生角色缺口已记录。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

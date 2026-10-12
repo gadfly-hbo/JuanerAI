@@ -53,8 +53,8 @@ module.exports = {
     prune: true,
     ignore: file => file.includes('/node_modules/.') || Boolean(file) && !(/^\/(?:\.vite(?:\/|$)|node_modules(?:\/|$)|package\.json$)/.test(file)),
     extraResource: internalResources
-      ? [path.join(internalResources, 'toolchain-deployment.json'), path.join(internalResources, 'toolchain'), path.join(internalResources, 'THIRD_PARTY_NOTICES')]
-      : ['build/xanthil-toolchain-deployment.json'],
+      ? [path.join(internalResources, 'toolchain-deployment.json'), path.join(internalResources, 'toolchain'), path.join(internalResources, 'THIRD_PARTY_NOTICES'), '.vite/build/xanthil-resources']
+      : ['build/xanthil-toolchain-deployment.json', '.vite/build/xanthil-resources'],
     afterCopyExtraResources: internalResources ? [] : [renameToolchainDeploymentResource],
     ...(electronZipDir ? { electronZipDir } : {}),
   },

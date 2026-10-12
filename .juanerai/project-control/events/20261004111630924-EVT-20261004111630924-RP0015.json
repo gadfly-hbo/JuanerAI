@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004111630924-RP0015",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T11:16:30.924Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "host003实际22项PASS；继续剩余授权集成工程，不宣称完整Change接受",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005035300227-S1H8X4",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T03:53:00.227Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "candidate006完整冻结，独立复验并发控制修复",
+  "status_after": "validating",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004135235023-IJPNCR",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T13:52:35.023Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "模型授权与准备准入增量闭合，进入浏览器连续推进链。",
+  "status_after": "active",
+  "evidence_refs": []
+}

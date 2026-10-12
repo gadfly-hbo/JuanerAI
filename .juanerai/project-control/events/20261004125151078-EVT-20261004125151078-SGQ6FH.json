@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004125151078-SGQ6FH",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T12:51:51.078Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "浏览器创建上传增量通过；记录D5最小bootstrap澄清，继续原包工程。",
+  "status_after": "active",
+  "evidence_refs": []
+}

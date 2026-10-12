@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005064650095-86CNG6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T06:46:50.095Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "Candidate006独立验证在限定UI/传输范围PASS，开始完整portable回归；历史FAIL/UNKNOWN保持。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

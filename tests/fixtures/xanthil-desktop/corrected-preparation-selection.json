@@ -1,0 +1,342 @@
+{
+  "provenance": {
+    "kind": "recorded-fixed-synthetic-correction-selection",
+    "bundle": "worker/browser-validator-host-002",
+    "manifest_sha256": "5abe66d34865215772ff7c596f7981b80affba7c6d720d5508aff3390b5db220",
+    "result_sha256": "2ae153361b70e377d988bd05f020336b09afd1f071df02334b7357bd0136484c",
+    "database_sha256": "6781368246b8899c3e4f89fb047aac20d4eaf6249b55fe8d41520c4fec0fed3c"
+  },
+  "preparation": {
+    "bindings_sha256": "9e52319c11a99292a8ef0aceda5036428bed8fbd214a1f8ac0965a2863cce99f",
+    "code_sha256": "eaabcc2a78ff432c276080c867aeb1aee15c8ddc3b6b47e576e001157b1eb1c1",
+    "context": {
+      "epoch": 0,
+      "execution_id": "697a38e9-5b75-4f9e-80d4-d7b96537495b",
+      "operation_id": "98d3b794-766b-4ea8-be3d-bbcc913daf22",
+      "task_id": "83a974c5-2893-40c1-8cf8-b3930bd2153e"
+    },
+    "extraction_version": "1.0",
+    "id": "74ab4537-049d-492a-a84a-0ae922b82687",
+    "lineage_sha256": "8832d6423236535674f3627a50e9444a65588ab7d12639841ed26b1f96291ad2",
+    "owner": {
+      "case_id": "92111eac-da71-4b9a-86b6-219569ad3fa1",
+      "project_id": "9a8ff77a-e3d6-4fbd-9098-b037ff8f3bd9",
+      "revision_id": "4c6d35d2-845e-4ddf-bc2c-35d1b22953c1",
+      "session_id": "5284157f-9034-49fe-8d0a-7376ed520e74"
+    },
+    "previous_execution_id": "eeaec635-7157-46f9-9721-6ae1a620024b",
+    "qualification": {
+      "bindings": [
+        {
+          "columns": {
+            "member_group": "member_group",
+            "member_id": "member_id"
+          },
+          "role": "members",
+          "sheet_id": "csv",
+          "source_id": "5ebb1c04-4112-4f43-8851-49b907bf2fd9"
+        },
+        {
+          "columns": {
+            "amount": "amount",
+            "currency": "currency",
+            "order_id": "order_id",
+            "order_member_id": "order_member_id",
+            "paid_at": "paid_at",
+            "status": "status"
+          },
+          "role": "orders",
+          "sheet_id": "1",
+          "source_id": "1c0ab8ac-7a7f-493b-afd6-cff3db743dad"
+        },
+        {
+          "columns": {
+            "amount": "amount",
+            "currency": "currency",
+            "order_id": "order_id",
+            "order_member_id": "order_member_id",
+            "paid_at": "paid_at",
+            "status": "status"
+          },
+          "role": "orders",
+          "sheet_id": "2",
+          "source_id": "1c0ab8ac-7a7f-493b-afd6-cff3db743dad"
+        },
+        {
+          "columns": {
+            "amount": "amount",
+            "currency": "currency",
+            "order_id": "order_id",
+            "order_member_id": "order_member_id",
+            "paid_at": "paid_at",
+            "status": "status"
+          },
+          "role": "orders",
+          "sheet_id": "csv",
+          "source_id": "5f4b1fd7-bf73-4468-8ce1-cc7f21868ffe"
+        }
+      ],
+      "bindings_sha256": "9e52319c11a99292a8ef0aceda5036428bed8fbd214a1f8ac0965a2863cce99f",
+      "extraction_sha256": "4e36ead25e65ec5e451cf0963c951b58420e7cc8f80fd356a3ee144b0b1faf1c",
+      "lineage": [
+        {
+          "columns": {
+            "member_group": "B",
+            "member_id": "A"
+          },
+          "normalized_row": 2,
+          "role": "members",
+          "sheet_id": "csv",
+          "source_id": "5ebb1c04-4112-4f43-8851-49b907bf2fd9",
+          "source_row": 2
+        },
+        {
+          "columns": {
+            "member_group": "B",
+            "member_id": "A"
+          },
+          "normalized_row": 3,
+          "role": "members",
+          "sheet_id": "csv",
+          "source_id": "5ebb1c04-4112-4f43-8851-49b907bf2fd9",
+          "source_row": 3
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 2,
+          "role": "orders",
+          "sheet_id": "1",
+          "source_id": "1c0ab8ac-7a7f-493b-afd6-cff3db743dad",
+          "source_row": 2
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 3,
+          "role": "orders",
+          "sheet_id": "1",
+          "source_id": "1c0ab8ac-7a7f-493b-afd6-cff3db743dad",
+          "source_row": 3
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 4,
+          "role": "orders",
+          "sheet_id": "2",
+          "source_id": "1c0ab8ac-7a7f-493b-afd6-cff3db743dad",
+          "source_row": 2
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 5,
+          "role": "orders",
+          "sheet_id": "2",
+          "source_id": "1c0ab8ac-7a7f-493b-afd6-cff3db743dad",
+          "source_row": 3
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 6,
+          "role": "orders",
+          "sheet_id": "csv",
+          "source_id": "5f4b1fd7-bf73-4468-8ce1-cc7f21868ffe",
+          "source_row": 2
+        },
+        {
+          "columns": {
+            "amount": "D",
+            "currency": "F",
+            "order_id": "A",
+            "order_member_id": "B",
+            "paid_at": "C",
+            "status": "E"
+          },
+          "normalized_row": 7,
+          "role": "orders",
+          "sheet_id": "csv",
+          "source_id": "5f4b1fd7-bf73-4468-8ce1-cc7f21868ffe",
+          "source_row": 3
+        }
+      ],
+      "normalized": {
+        "members": {
+          "byte_length": "41",
+          "sha256": "9e1d3f1107ff240292034a2c16290c48802cb397a9c549e2d33cad91ea0b2f05"
+        },
+        "orders": {
+          "byte_length": "248",
+          "sha256": "a76dccb69047599ca29da31454657ef018e3aff4a9bfc800ba11beb242ccf864"
+        }
+      },
+      "qualification_sha256": "7d47c0bf3837b768fa346e7f91c9b559f33ecce76c87cd078cb912660cf6d36f",
+      "source_set": {
+        "sources": [
+          {
+            "byte_length": "41",
+            "display_name": "成员.csv",
+            "format": "csv",
+            "sha256": "9e1d3f1107ff240292034a2c16290c48802cb397a9c549e2d33cad91ea0b2f05",
+            "sheets": [
+              {
+                "name": "CSV",
+                "row_count": 3,
+                "sheet_id": "csv",
+                "state": "visible",
+                "unmapped_columns": []
+              }
+            ],
+            "source_id": "5ebb1c04-4112-4f43-8851-49b907bf2fd9"
+          },
+          {
+            "byte_length": "4009",
+            "display_name": "订单.xlsx",
+            "format": "xlsx",
+            "sha256": "c675d5cd7ee6033b1331a956ceb60ceac3afa4d99189b4b9857ee7d4369fd1b6",
+            "sheets": [
+              {
+                "name": "比较期",
+                "row_count": 3,
+                "sheet_id": "1",
+                "state": "visible",
+                "unmapped_columns": []
+              },
+              {
+                "name": "本期",
+                "row_count": 3,
+                "sheet_id": "2",
+                "state": "visible",
+                "unmapped_columns": []
+              }
+            ],
+            "source_id": "1c0ab8ac-7a7f-493b-afd6-cff3db743dad"
+          },
+          {
+            "byte_length": "120",
+            "display_name": "补充订单.csv",
+            "format": "csv",
+            "sha256": "bdc0a142f1bb9890d53f42cd3830fd50d31eccdc92b50dcb8c49045b6e16a61b",
+            "sheets": [
+              {
+                "name": "CSV",
+                "row_count": 3,
+                "sheet_id": "csv",
+                "state": "visible",
+                "unmapped_columns": []
+              }
+            ],
+            "source_id": "5f4b1fd7-bf73-4468-8ce1-cc7f21868ffe"
+          }
+        ],
+        "version": "1.0"
+      },
+      "source_set_sha256": "7ea9c0d560a755e343a11086b9e78f245f5f3d56cf71f4d8f0df3834fadb0eff",
+      "status": "qualified",
+      "version": "1.0"
+    },
+    "receipt": {
+      "code_sha256": "eaabcc2a78ff432c276080c867aeb1aee15c8ddc3b6b47e576e001157b1eb1c1",
+      "helper_sha256": "e9693d12898744988820e913914d2d3115d8e00f45f78fc248d375d20730fb5d",
+      "operation_context": {
+        "epoch": 0,
+        "execution_id": "697a38e9-5b75-4f9e-80d4-d7b96537495b",
+        "operation_id": "98d3b794-766b-4ea8-be3d-bbcc913daf22",
+        "task_id": "83a974c5-2893-40c1-8cf8-b3930bd2153e"
+      },
+      "outcome_sha256": "11b3feee4e2467a117aed78a038998ab7839eff603dfcaf006cd9869ee88ca41",
+      "outputs": {
+        "members": {
+          "byte_length": 41,
+          "sha256": "9e1d3f1107ff240292034a2c16290c48802cb397a9c549e2d33cad91ea0b2f05"
+        },
+        "orders": {
+          "byte_length": 248,
+          "sha256": "a76dccb69047599ca29da31454657ef018e3aff4a9bfc800ba11beb242ccf864"
+        }
+      },
+      "policy_sha256": "0590d6c4a1715509f9ecd606ece8a4641f49ec2d62eb52eff0dcda96ead057c2",
+      "request_sha256": "3934e4b597c1af63bc152e5fd8ec352c020953233feb45c0680318b1cfae2b16",
+      "sources": [
+        {
+          "byte_length": 41,
+          "sha256": "9e1d3f1107ff240292034a2c16290c48802cb397a9c549e2d33cad91ea0b2f05",
+          "source_id": "5ebb1c04-4112-4f43-8851-49b907bf2fd9"
+        },
+        {
+          "byte_length": 4009,
+          "sha256": "c675d5cd7ee6033b1331a956ceb60ceac3afa4d99189b4b9857ee7d4369fd1b6",
+          "source_id": "1c0ab8ac-7a7f-493b-afd6-cff3db743dad"
+        },
+        {
+          "byte_length": 120,
+          "sha256": "bdc0a142f1bb9890d53f42cd3830fd50d31eccdc92b50dcb8c49045b6e16a61b",
+          "source_id": "5f4b1fd7-bf73-4468-8ce1-cc7f21868ffe"
+        }
+      ],
+      "status": "unqualified",
+      "version": "1.0"
+    },
+    "receipt_sha256": "9ebb6814eed4d8ea491cc7c7dd5a77a73ab386bc2d4a544b1734407b27258e6c",
+    "sha256": "f5747424d18fabe9d01bc3efeffa9be3128ef53cf12b2468d852aba6bf6a23e5",
+    "source_set_id": "748333cc-e220-4c9c-8d54-a82e6e8b29d3",
+    "source_set_sha256": "d5c29bc8d3d4f3293f00e65359728bd098b22c50878494844ef7a6828089d067",
+    "stages": {
+      "conversion": "qualified",
+      "execution": "settled",
+      "extraction": "verified"
+    },
+    "status": "qualified",
+    "version": "1.0"
+  },
+  "attempts": [
+    {
+      "execution_id": "7e62da47-eac3-4a67-a746-53d04a4ce2cc",
+      "task_id": "83a974c5-2893-40c1-8cf8-b3930bd2153e",
+      "body_json": "{\"context\":{\"epoch\":0,\"execution_id\":\"7e62da47-eac3-4a67-a746-53d04a4ce2cc\",\"operation_id\":\"9002dd93-5d54-4bf2-8215-9812b2fee5ae\",\"task_id\":\"83a974c5-2893-40c1-8cf8-b3930bd2153e\"},\"failure_code\":null,\"payload\":{\"clarifications\":[{\"reply\":\"paid表示已支付\",\"sha256\":\"de22497df2647d80c376773ef33bb3ab2dae2fef3b2bc5efa93e267f3bf6adf0\"}],\"diagnostic\":null,\"result\":null,\"selected_text\":\"比较2026-01-01至2026-01-29与2026-02-01至2026-03-01的会员总体复购变化；请核实变化。\",\"semantics\":null,\"source_set_sha256\":\"d5c29bc8d3d4f3293f00e65359728bd098b22c50878494844ef7a6828089d067\",\"stage\":\"generate_preparation\",\"structure\":[{\"sheets\":[{\"columns\":[{\"name\":\"member_id\",\"types\":[\"string\"]},{\"name\":\"member_group\",\"types\":[\"string\"]}],\"sheet_id\":\"csv\"}],\"source_id\":\"5ebb1c04-4112-4f43-8851-49b907bf2fd9\"},{\"sheets\":[{\"columns\":[{\"name\":\"order_id\",\"types\":[\"string\"]},{\"name\":\"order_member_id\",\"types\":[\"string\"]},{\"name\":\"paid_at\",\"types\":[\"string\"]},{\"name\":\"amount\",\"types\":[\"string\"]},{\"name\":\"status\",\"types\":[\"string\"]},{\"name\":\"currency\",\"types\":[\"string\"]}],\"sheet_id\":\"1\"},{\"columns\":[{\"name\":\"order_id\",\"types\":[\"string\"]},{\"name\":\"order_member_id\",\"types\":[\"string\"]},{\"name\":\"paid_at\",\"types\":[\"string\"]},{\"name\":\"amount\",\"types\":[\"string\"]},{\"name\":\"status\",\"types\":[\"string\"]},{\"name\":\"currency\",\"types\":[\"string\"]}],\"sheet_id\":\"2\"}],\"source_id\":\"1c0ab8ac-7a7f-493b-afd6-cff3db743dad\"},{\"sheets\":[{\"columns\":[{\"name\":\"order_id\",\"types\":[\"string\"]},{\"name\":\"order_member_id\",\"types\":[\"string\"]},{\"name\":\"paid_at\",\"types\":[\"string\"]},{\"name\":\"amount\",\"types\":[\"string\"]},{\"name\":\"status\",\"types\":[\"string\"]},{\"name\":\"currency\",\"types\":[\"string\"]}],\"sheet_id\":\"csv\"}],\"source_id\":\"5f4b1fd7-bf73-4468-8ce1-cc7f21868ffe\"}],\"version\":\"2.0\"},\"policy\":{\"approval_reference\":\"Change005/D4/product-bfffd9fa8b4a5bc877052b934b55f1ed285b04775aa423453d933d4be067b7c7\",\"call_ms\":60000,\"call_output_tokens\":2048,\"consumption_policy\":{\"mode\":\"uncapped_metered\"},\"id\":\"d244ce8c-ecb2-4b72-997a-56ca19e59094\",\"max_input_bytes\":12000,\"model\":\"mimo-v2.6-pro\",\"model_retries\":1,\"preparation_corrections\":1,\"process_seconds\":4,\"provider\":\"xiaomi-token-plan-cn\",\"purpose\":\"membership_analysis\",\"revision\":\"1\",\"version\":\"1.0\"},\"result\":{\"context\":{\"epoch\":0,\"execution_id\":\"7e62da47-eac3-4a67-a746-53d04a4ce2cc\",\"operation_id\":\"9002dd93-5d54-4bf2-8215-9812b2fee5ae\",\"task_id\":\"83a974c5-2893-40c1-8cf8-b3930bd2153e\"},\"model\":\"mimo-v2.6-pro\",\"output\":{\"analysis\":{\"comparison_period\":{\"end_date\":\"2026-01-29\",\"start_date\":\"2026-01-01\"},\"currency\":\"CNY\",\"current_period\":{\"end_date\":\"2026-03-01\",\"start_date\":\"2026-02-01\"},\"period_evidence\":\"2026-01-01至2026-01-29与2026-02-01至2026-03-01\",\"statuses\":[{\"evidence\":\"paid表示已支付\",\"meaning\":\"已支付\",\"value\":\"paid\"}],\"time_zone\":\"Asia/Shanghai\"},\"bindings\":[{\"columns\":{\"member_group\":\"member_group\",\"member_id\":\"member_id\"},\"role\":\"members\",\"sheet_id\":\"csv\",\"source_id\":\"5ebb1c04-4112-4f43-8851-49b907bf2fd9\"},{\"columns\":{\"amount\":\"amount\",\"currency\":\"currency\",\"order_id\":\"order_id\",\"order_member_id\":\"order_member_id\",\"paid_at\":\"paid_at\",\"status\":\"status\"},\"role\":\"orders\",\"sheet_id\":\"1\",\"source_id\":\"1c0ab8ac-7a7f-493b-afd6-cff3db743dad\"},{\"columns\":{\"amount\":\"amount\",\"currency\":\"currency\",\"order_id\":\"order_id\",\"order_member_id\":\"order_member_id\",\"paid_at\":\"paid_at\",\"status\":\"status\"},\"role\":\"orders\",\"sheet_id\":\"2\",\"source_id\":\"1c0ab8ac-7a7f-493b-afd6-cff3db743dad\"},{\"columns\":{\"amount\":\"amount\",\"currency\":\"currency\",\"order_id\":\"order_id\",\"order_member_id\":\"order_member_id\",\"paid_at\":\"paid_at\",\"status\":\"status\"},\"role\":\"orders\",\"sheet_id\":\"csv\",\"source_id\":\"5f4b1fd7-bf73-4468-8ce1-cc7f21868ffe\"}],\"code\":\"\\nwith open(SOURCES[0], newline='') as f:\\n    members=list(csv.reader(f))\\norders=[]\\nwith zipfile.ZipFile(SOURCES[1]) as book:\\n    for name in ['xl/worksheets/sheet1.xml','xl/worksheets/sheet2.xml']:\\n        tree=ET.fromstring(book.read(name))\\n        rows=[]\\n        for row in tree.findall('.//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}row'):\\n            rows.append([''.join(c.itertext()) for c in row])\\n        if not orders: orders=rows\\n        else: orders.extend(rows[1:])\\nwith open(SOURCES[2], newline='') as f:\\n    extra=list(csv.reader(f)); orders.extend(extra[1:])\\nfor name,rows in [('members.csv',members),('orders.csv',orders)]:\\n    with open(os.path.join(OUTPUT,name),'w',newline='') as f:\\n        csv.writer(f,lineterminator='\\\\n').writerows(rows)\\nprint(json.dumps({'event':'allowed_work_completed','members':len(members)-1,'orders':len(orders)-1}),flush=True)\\n\\nwith open(os.path.join(OUTPUT,'orders.csv'),newline='') as f: rows=list(csv.reader(f))\\nrows[1][3]='999.00'\\nwith open(os.path.join(OUTPUT,'orders.csv'),'w',newline='') as f: csv.writer(f,lineterminator='\\\\n').writerows(rows)\\n\",\"kind\":\"preparation\"},\"provider\":\"xiaomi-token-plan-cn\",\"usage\":{\"active_ms\":{\"kind\":\"known\",\"value\":\"3\"},\"input_tokens\":{\"kind\":\"known\",\"value\":\"20\"},\"output_tokens\":{\"kind\":\"known\",\"value\":\"12\"},\"wait_ms\":{\"kind\":\"known\",\"value\":\"0\"}},\"version\":\"2.0\"},\"source_set_id\":\"748333cc-e220-4c9c-8d54-a82e6e8b29d3\",\"status\":\"succeeded\",\"version\":\"1.0\"}",
+      "body_sha256": "c525af63abb84908b9bbac55455e3d091134f6f3d5e13a3ce447ac356d12a324",
+      "phase": "settled",
+      "outcome": "succeeded"
+    },
+    {
+      "execution_id": "9be20314-42ea-4578-8fa5-ff5ba47d4112",
+      "task_id": "83a974c5-2893-40c1-8cf8-b3930bd2153e",
+      "body_json": "{\"context\":{\"epoch\":0,\"execution_id\":\"9be20314-42ea-4578-8fa5-ff5ba47d4112\",\"operation_id\":\"83bf2a05-c1c5-467b-9496-9f318c39517b\",\"task_id\":\"83a974c5-2893-40c1-8cf8-b3930bd2153e\"},\"failure_code\":null,\"payload\":{\"clarifications\":[{\"reply\":\"paid表示已支付\",\"sha256\":\"de22497df2647d80c376773ef33bb3ab2dae2fef3b2bc5efa93e267f3bf6adf0\"}],\"diagnostic\":\"CONVERSION_UNQUALIFIED\",\"result\":null,\"selected_text\":\"比较2026-01-01至2026-01-29与2026-02-01至2026-03-01的会员总体复购变化；请核实变化。\",\"semantics\":null,\"source_set_sha256\":\"d5c29bc8d3d4f3293f00e65359728bd098b22c50878494844ef7a6828089d067\",\"stage\":\"correct_preparation\",\"structure\":[{\"sheets\":[{\"columns\":[{\"name\":\"member_id\",\"types\":[\"string\"]},{\"name\":\"member_group\",\"types\":[\"string\"]}],\"sheet_id\":\"csv\"}],\"source_id\":\"5ebb1c04-4112-4f43-8851-49b907bf2fd9\"},{\"sheets\":[{\"columns\":[{\"name\":\"order_id\",\"types\":[\"string\"]},{\"name\":\"order_member_id\",\"types\":[\"string\"]},{\"name\":\"paid_at\",\"types\":[\"string\"]},{\"name\":\"amount\",\"types\":[\"string\"]},{\"name\":\"status\",\"types\":[\"string\"]},{\"name\":\"currency\",\"types\":[\"string\"]}],\"sheet_id\":\"1\"},{\"columns\":[{\"name\":\"order_id\",\"types\":[\"string\"]},{\"name\":\"order_member_id\",\"types\":[\"string\"]},{\"name\":\"paid_at\",\"types\":[\"string\"]},{\"name\":\"amount\",\"types\":[\"string\"]},{\"name\":\"status\",\"types\":[\"string\"]},{\"name\":\"currency\",\"types\":[\"string\"]}],\"sheet_id\":\"2\"}],\"source_id\":\"1c0ab8ac-7a7f-493b-afd6-cff3db743dad\"},{\"sheets\":[{\"columns\":[{\"name\":\"order_id\",\"types\":[\"string\"]},{\"name\":\"order_member_id\",\"types\":[\"string\"]},{\"name\":\"paid_at\",\"types\":[\"string\"]},{\"name\":\"amount\",\"types\":[\"string\"]},{\"name\":\"status\",\"types\":[\"string\"]},{\"name\":\"currency\",\"types\":[\"string\"]}],\"sheet_id\":\"csv\"}],\"source_id\":\"5f4b1fd7-bf73-4468-8ce1-cc7f21868ffe\"}],\"version\":\"2.0\"},\"policy\":{\"approval_reference\":\"Change005/D4/product-bfffd9fa8b4a5bc877052b934b55f1ed285b04775aa423453d933d4be067b7c7\",\"call_ms\":60000,\"call_output_tokens\":2048,\"consumption_policy\":{\"mode\":\"uncapped_metered\"},\"id\":\"d244ce8c-ecb2-4b72-997a-56ca19e59094\",\"max_input_bytes\":12000,\"model\":\"mimo-v2.6-pro\",\"model_retries\":1,\"preparation_corrections\":1,\"process_seconds\":4,\"provider\":\"xiaomi-token-plan-cn\",\"purpose\":\"membership_analysis\",\"revision\":\"1\",\"version\":\"1.0\"},\"result\":{\"context\":{\"epoch\":0,\"execution_id\":\"9be20314-42ea-4578-8fa5-ff5ba47d4112\",\"operation_id\":\"83bf2a05-c1c5-467b-9496-9f318c39517b\",\"task_id\":\"83a974c5-2893-40c1-8cf8-b3930bd2153e\"},\"model\":\"mimo-v2.6-pro\",\"output\":{\"analysis\":{\"comparison_period\":{\"end_date\":\"2026-01-29\",\"start_date\":\"2026-01-01\"},\"currency\":\"CNY\",\"current_period\":{\"end_date\":\"2026-03-01\",\"start_date\":\"2026-02-01\"},\"period_evidence\":\"2026-01-01至2026-01-29与2026-02-01至2026-03-01\",\"statuses\":[{\"evidence\":\"paid表示已支付\",\"meaning\":\"已支付\",\"value\":\"paid\"}],\"time_zone\":\"Asia/Shanghai\"},\"bindings\":[{\"columns\":{\"member_group\":\"member_group\",\"member_id\":\"member_id\"},\"role\":\"members\",\"sheet_id\":\"csv\",\"source_id\":\"5ebb1c04-4112-4f43-8851-49b907bf2fd9\"},{\"columns\":{\"amount\":\"amount\",\"currency\":\"currency\",\"order_id\":\"order_id\",\"order_member_id\":\"order_member_id\",\"paid_at\":\"paid_at\",\"status\":\"status\"},\"role\":\"orders\",\"sheet_id\":\"1\",\"source_id\":\"1c0ab8ac-7a7f-493b-afd6-cff3db743dad\"},{\"columns\":{\"amount\":\"amount\",\"currency\":\"currency\",\"order_id\":\"order_id\",\"order_member_id\":\"order_member_id\",\"paid_at\":\"paid_at\",\"status\":\"status\"},\"role\":\"orders\",\"sheet_id\":\"2\",\"source_id\":\"1c0ab8ac-7a7f-493b-afd6-cff3db743dad\"},{\"columns\":{\"amount\":\"amount\",\"currency\":\"currency\",\"order_id\":\"order_id\",\"order_member_id\":\"order_member_id\",\"paid_at\":\"paid_at\",\"status\":\"status\"},\"role\":\"orders\",\"sheet_id\":\"csv\",\"source_id\":\"5f4b1fd7-bf73-4468-8ce1-cc7f21868ffe\"}],\"code\":\"\\nwith open(SOURCES[0], newline='') as f:\\n    members=list(csv.reader(f))\\norders=[]\\nwith zipfile.ZipFile(SOURCES[1]) as book:\\n    for name in ['xl/worksheets/sheet1.xml','xl/worksheets/sheet2.xml']:\\n        tree=ET.fromstring(book.read(name))\\n        rows=[]\\n        for row in tree.findall('.//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}row'):\\n            rows.append([''.join(c.itertext()) for c in row])\\n        if not orders: orders=rows\\n        else: orders.extend(rows[1:])\\nwith open(SOURCES[2], newline='') as f:\\n    extra=list(csv.reader(f)); orders.extend(extra[1:])\\nfor name,rows in [('members.csv',members),('orders.csv',orders)]:\\n    with open(os.path.join(OUTPUT,name),'w',newline='') as f:\\n        csv.writer(f,lineterminator='\\\\n').writerows(rows)\\nprint(json.dumps({'event':'allowed_work_completed','members':len(members)-1,'orders':len(orders)-1}),flush=True)\\n\",\"kind\":\"preparation\"},\"provider\":\"xiaomi-token-plan-cn\",\"usage\":{\"active_ms\":{\"kind\":\"known\",\"value\":\"1\"},\"input_tokens\":{\"kind\":\"known\",\"value\":\"20\"},\"output_tokens\":{\"kind\":\"known\",\"value\":\"12\"},\"wait_ms\":{\"kind\":\"known\",\"value\":\"0\"}},\"version\":\"2.0\"},\"source_set_id\":\"748333cc-e220-4c9c-8d54-a82e6e8b29d3\",\"status\":\"succeeded\",\"version\":\"1.0\"}",
+      "body_sha256": "549ecf174824ec07240f022ed13b612ac12dfd6693fe3507cd1548f57f660ae2",
+      "phase": "settled",
+      "outcome": "succeeded"
+    }
+  ]
+}

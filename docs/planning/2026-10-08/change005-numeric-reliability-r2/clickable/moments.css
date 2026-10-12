@@ -1,0 +1,22 @@
+/* 仅为审核附件适配；沿用已确认 PX-006/R1 品牌与组件，不是生产修改。 */
+html, body { height:100%; }
+body { display:flex; flex-direction:column; overflow:hidden; }
+.mock-banner, .review-controls, .titlebar, .topbar { flex-shrink:0; }
+.window { display:flex; flex-direction:column; flex:1; min-height:0; max-width:none; width:100%; margin:0; border:0; border-radius:0; box-shadow:none; }
+.app { flex:1; height:auto; min-height:0; }
+.thread { max-width:none; max-height:none; overflow-wrap:anywhere; }
+.answer { font-size:1.06rem; line-height:1.85; }
+.num { color:var(--brand); background:none; border:0; border-bottom:1px dotted var(--brand); padding:0 1px; font:inherit; font-weight:600; border-radius:0; }
+.num:hover { background:#e9f3ec; }
+.secondary-links { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+.drawer h2 { font-size:1rem; margin:0; }
+.detail-content h3 { margin-top:18px; }
+.detail-content ul { padding-left:18px; }
+.detail-content li { margin:8px 0; }
+.mode-switch a { text-decoration:none; }
+.composer-wrap textarea { resize:none; }
+.review-controls { background:#f7f9f6; }
+.report-table { width:100%; border-collapse:collapse; font-size:.9rem; }
+.report-table th, .report-table td { padding:8px; border-bottom:1px solid var(--line); text-align:left; }
+@media(max-width:700px){ .window { margin:0; } .app { height:auto; min-height:0; } .titlebar { padding:8px; } .mock-banner { font-size:.75rem; text-align:left; } .task-header h1 { font-size:1.05rem; } .review-controls { font-size:.78rem; } .composer-footer .fine { max-width:65%; } }
+@media(max-height:650px){ .task-header { padding-top:8px; padding-bottom:5px; } .task-header p { display:none; } .composer-wrap textarea { min-height:45px; } }

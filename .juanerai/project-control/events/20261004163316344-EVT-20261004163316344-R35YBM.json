@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004163316344-R35YBM",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T16:33:16.344Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "UI003持续解释缺口确认，原失败及实际消费保留",
+  "status_after": "active",
+  "evidence_refs": []
+}

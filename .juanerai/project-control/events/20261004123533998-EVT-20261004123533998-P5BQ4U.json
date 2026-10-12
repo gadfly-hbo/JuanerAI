@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004123533998-P5BQ4U",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T12:35:33.998Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "D6人审失败恢复增量GREEN，记录超时UNKNOWN与剩余浏览器/生命周期缺口",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -73,3 +73,22 @@ test('DEV-04 npm test selects canonical portable checks and current daily Deskto
  const {scripts}=JSON.parse(await readFile('package.json','utf8'));
  assert.equal(scripts.test,'node tools/desktop/test-daily.mjs --all');
 });
+
+import {runInNewContext} from 'node:vm';
+import {EventEmitter} from 'node:events';
+test('BF-R11 DEV: real launcher preserves explicit browser flag through wrapper and installed Forge option',async()=>{
+ const source=(await readFile('tools/desktop/development-start.mjs','utf8')).replace(/^import .*;\s*$/gm,'').replaceAll('import.meta.url',JSON.stringify('file:///synthetic/development-start.mjs')).replaceAll('await import(','await loadModule(');
+ for(const flag of [['--xanthil-browser'],[]]){
+  const effects:unknown[]=[],signals:unknown[]=[],timers:(()=>void)[]=[],child=Object.assign(new EventEmitter(),{pid:1234});
+  const outer=Object.assign(new EventEmitter(),{argv:['node','script',...flag],execPath:'/fixed/node',env:{PATH:'/fixed',HOME:'/synthetic',JUANERAI_TOOLCHAIN_BIN:'/fixed',JUANERAI_DESKTOP_DEV_ROOT:'/owned/dev',SECRET:'not-forwarded'},exitCode:0,kill:(pid:number,signal:string)=>signals.push([pid,signal])});
+  await runInNewContext('(async()=>{'+source+'})()',{process:outer,fileURLToPath:()=>'/synthetic/development-start.mjs',spawn:(executable:string,args:string[],options:unknown)=>{effects.push({executable,args,options});return child;},setTimeout:(fn:()=>void)=>timers.push(fn),console:{log(){},error(){}},loadModule:()=>assert.fail('outer must not import build/Forge')});
+  const captured=effects[0] as {args:string[];options:{env:Record<string,string>}};assert.equal(captured.options.env.SECRET,undefined);assert.equal(captured.options.env.JUANERAI_DESKTOP_DEV_ROOT,'/owned/dev');
+  outer.emit('SIGINT');outer.emit('SIGTERM');assert.deepEqual(signals,[[-1234,'SIGTERM']]);assert.equal(timers.length,1);timers[0]();assert.deepEqual(signals,[[-1234,'SIGTERM'],[-1234,'SIGKILL']]);child.emit('exit',7);assert.equal(outer.exitCode,7);
+  let options:Record<string,unknown>|undefined;const imports:string[]=[];
+  await runInNewContext('(async()=>{'+source+'})()',{process:{argv:['node','script','--forge',...flag],cwd:()=>'/synthetic'},loadModule:async(id:string)=>{imports.push(id);if(id.includes('prepare-toolchain'))return {};if(id.includes('build-keychain'))return {buildDevelopmentKeychainHelper(){imports.push('build-helper');}};assert.equal(id,'@electron-forge/core');return {api:{async start(value:Record<string,unknown>){options=value;}}};}});
+  assert.deepEqual({outer:Array.from(captured.args),inner:options!.args?Array.from(options!.args as string[]):undefined},{outer:['/synthetic/development-start.mjs','--forge',...flag],inner:flag});assert.equal(options!.interactive,false);assert.equal(options!.dir,'/synthetic');assert.deepEqual(imports,['./prepare-toolchain-deployment.mjs','./build-keychain-helper.cjs','build-helper','@electron-forge/core']);
+ }
+ for(const args of [['--unknown'],['--xanthil-browser','--unknown'],['--xanthil-browser','--xanthil-browser']])for(const internal of [false,true]){
+  let effects=0;await assert.rejects(()=>runInNewContext('(async()=>{'+source+'})()',{process:{argv:['node','script',...(internal?['--forge']:[]),...args],env:{}},spawn:()=>{effects++;},loadModule:()=>{effects++;},fileURLToPath:()=>'',console:{log(){}}}));assert.equal(effects,0,'invalid args rejected before effects');
+ }
+});

@@ -22,9 +22,9 @@ test('TEST-XDESK-CF-RESTORATION requires full Console then Desktop phases withou
     "node --test tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts",
     "node --test tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts",
     "node --test tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts",
-    "node --test tests/unit/xanthil-desktop/*.test.ts",
+    "node --test tests/unit/xanthil-desktop/*.test.ts tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs",
     "node --test tests/contract/xanthil-desktop/*.test.ts",
-    "node --test tests/integration/xanthil-desktop/*.test.ts",
+    "node --test tests/integration/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/browser-companion-process.test.mjs tests/integration/xanthil-desktop/browser-service-view.test.mjs tests/integration/xanthil-desktop/browser-workspace-view.test.mjs",
     "node --test --test-concurrency=1 tests/e2e/xanthil-desktop/*.test.ts",
   ];
   assert.deepEqual(actual,expected);
@@ -60,8 +60,36 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/unit/xanthil-desktop/coverage-map.test.ts",
     "tests/unit/xanthil-desktop/development-main.test.ts",
     "tests/unit/xanthil-desktop/development-mode.test.ts",
+    "tests/unit/xanthil-desktop/member-task-canonical.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-allocation-r3.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-autonomous-arguments.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-code-output.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-contribution-r3.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-exploration.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-input-references.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-interpretation.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-ir.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-join.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-limited-check-r3.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-methods.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-mixed-measure-r3.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-moments.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-reconciliation-r3.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-report-references-r3.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-semantic-feedback-r3.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-semantics.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-share-r3.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-steps.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-verifier.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-weighted-r3.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-workbench.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-membership-framework.unit.test.ts",
+    "tests/unit/xanthil-desktop/provider-credentials.unit.test.ts",
     "tests/unit/xanthil-desktop/provider-settings.unit.test.ts",
-    "tests/unit/xanthil-desktop/xanthil-desktop.unit.test.ts"
+    "tests/unit/xanthil-desktop/xanthil-desktop.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs",
+    "tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs",
+    "tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs"
   ],
   [
     "tests/contract/xanthil-desktop/case-assistant-ipc.contract.test.ts",
@@ -79,15 +107,57 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/contract/xanthil-desktop/xanthil-desktop-store.contract.test.ts"
   ],
   [
+    "tests/integration/xanthil-desktop/browser-client.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-companion.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-independent-profile.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-local-transport.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-membership-plan.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-membership-recovery.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-model-policy.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-model-runtime.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-node-entry.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-preparation.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-project-catalog.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-service-auth.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-workspace.integration.test.ts",
     "tests/integration/xanthil-desktop/case-assistant.integration.test.ts",
     "tests/integration/xanthil-desktop/case-collaboration-lifecycle.integration.test.ts",
     "tests/integration/xanthil-desktop/case-collaboration.integration.test.ts",
     "tests/integration/xanthil-desktop/member-analysis-chain.integration.test.ts",
     "tests/integration/xanthil-desktop/member-task-retained.integration.test.ts",
     "tests/integration/xanthil-desktop/member-task.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-agent-ledger.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-agent-runtime.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-application.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-autonomous-collaboration.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-autonomous-drive.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-autonomous-native-session.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-child-runtime.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-code.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-collaboration.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-exploration-history-r3.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-http.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-limited-check-r3.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-numeric-report.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-operating-r3.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-report-grounding.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-storage-read-cache.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-storage.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-analysis-workspace.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-document-source.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-membership-method.integration.test.ts",
     "tests/integration/xanthil-desktop/provider-settings.integration.test.ts",
+    "tests/integration/xanthil-desktop/requirement-draft.integration.test.ts",
+    "tests/integration/xanthil-desktop/sdk041-case-session.integration.test.ts",
+    "tests/integration/xanthil-desktop/sdk041-connection-probe.integration.test.ts",
+    "tests/integration/xanthil-desktop/sdk041-session-purposes.integration.test.ts",
+    "tests/integration/xanthil-desktop/shared-analysis-tools.integration.test.ts",
+    "tests/integration/xanthil-desktop/shared-runtime-state.integration.test.ts",
     "tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts",
-    "tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts"
+    "tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-companion-process.test.mjs",
+    "tests/integration/xanthil-desktop/browser-service-view.test.mjs",
+    "tests/integration/xanthil-desktop/browser-workspace-view.test.mjs"
   ],
   [
     "tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts",
@@ -180,6 +250,60 @@ const CHANGE004_TSCONFIG_APPENDIX = Object.freeze([
 const CI_MAINTENANCE_TSCONFIG_APPENDIX = Object.freeze([
   'tests/integration/xanthil-desktop/member-task-retained.integration.test.ts',
   'tests/fixtures/xanthil-desktop/member-task-test-support.ts',
+]);
+// Change005 accepted D1/D3/D5 consumers append without moving retained roots.
+const CHANGE005_TSCONFIG_APPENDIX = Object.freeze([
+  'tests/integration/xanthil-desktop/browser-preparation.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-membership-recovery.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-local-transport.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-membership-plan.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-workspace.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-client.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-model-runtime.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-model-policy.integration.test.ts',
+  'profiles/personal/browser-membership.ts',
+  'tests/integration/xanthil-desktop/browser-companion.integration.test.ts',
+  'apps/browser/service-main.ts',
+  'tests/integration/xanthil-desktop/browser-independent-profile.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-project-catalog.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-service-auth.integration.test.ts',
+  'tests/integration/xanthil-desktop/browser-node-entry.integration.test.ts',
+  'adapters/agent-pi/provider-credentials.ts',
+  'tests/unit/xanthil-desktop/provider-credentials.unit.test.ts',
+  'packages/ports/analysis-request-ledger.ts',
+  'adapters/storage-local/analysis-request-ledger.ts',
+  'tests/integration/xanthil-desktop/open-agent-ledger.integration.test.ts',
+  'adapters/storage-local/open-analysis-collaboration.ts',
+  'tests/integration/xanthil-desktop/open-analysis-collaboration.integration.test.ts',
+  'packages/ports/open-analysis-code.ts',
+  'adapters/analytics-duckdb/open-analysis-code.ts',
+  'tests/integration/xanthil-desktop/open-analysis-code.integration.test.ts',
+  'tests/unit/xanthil-desktop/open-analysis-code-output.unit.test.ts',
+  'packages/ports/open-analysis-runtime.ts',
+  'adapters/agent-pi/open-analysis.ts',
+  'tests/integration/xanthil-desktop/open-agent-runtime.integration.test.ts',
+  'packages/product-core/open-analysis-ir.ts',
+  'tests/unit/xanthil-desktop/open-analysis-ir.unit.test.ts',
+  'tests/unit/xanthil-desktop/open-analysis-workbench.unit.test.ts',
+  'packages/ports/open-analysis-verifier.ts',
+  'adapters/analytics-duckdb/open-analysis-verification.ts',
+  'tests/unit/xanthil-desktop/open-analysis-verifier.unit.test.ts',
+  'packages/application/open-analysis.ts',
+  'tests/integration/xanthil-desktop/open-analysis-application.integration.test.ts',
+  'packages/ports/open-analysis-store.ts',
+  'adapters/storage-local/open-analysis.ts',
+  'tests/integration/xanthil-desktop/open-analysis-storage.integration.test.ts',
+  'packages/application/open-analysis-workspace.ts',
+  'profiles/personal/open-analysis.ts',
+  'tests/integration/xanthil-desktop/open-analysis-workspace.integration.test.ts',
+  'tests/integration/xanthil-desktop/open-analysis-http.integration.test.ts',
+  'packages/product-core/open-analysis-methods.ts',
+  'tests/unit/xanthil-desktop/open-analysis-methods.unit.test.ts',
+  'tests/integration/xanthil-desktop/open-document-source.integration.test.ts',
+  'tests/unit/xanthil-desktop/open-membership-framework.unit.test.ts',
+  'tests/integration/xanthil-desktop/shared-runtime-state.integration.test.ts',
+  'tests/integration/xanthil-desktop/requirement-draft.integration.test.ts',
+  'tests/integration/xanthil-desktop/shared-analysis-tools.integration.test.ts',
 ]);
 const C0_ROOT_COUNT = 43;
 const DEVELOPMENT_TSCONFIG_APPENDIX = Object.freeze([
@@ -280,7 +404,9 @@ async function currentRunnerTuple(root = REPO_ROOT) {
   assert.deepEqual(files.slice(DESKTOP_ROOT_START,CHANGE004_ROOT_START),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX,...DEVELOPMENT_TSCONFIG_APPENDIX],'retained Desktop roots are independent literals, never derived from actual files');
   const maintenanceStart = CHANGE004_ROOT_START + CHANGE004_TSCONFIG_APPENDIX.length;
   assert.deepEqual(files.slice(CHANGE004_ROOT_START,maintenanceStart),CHANGE004_TSCONFIG_APPENDIX,'original Change004 roots remain exact');
-  assert.deepEqual(files.slice(maintenanceStart),CI_MAINTENANCE_TSCONFIG_APPENDIX,'CI maintenance roots and total length are fixed by the independent ordered inventory');
+  const browserStart = maintenanceStart + CI_MAINTENANCE_TSCONFIG_APPENDIX.length;
+  assert.deepEqual(files.slice(maintenanceStart,browserStart),CI_MAINTENANCE_TSCONFIG_APPENDIX,'CI maintenance roots remain the exact independent ordered inventory');
+  assert.deepEqual(files.slice(browserStart),CHANGE005_TSCONFIG_APPENDIX,'Change005 roots and total length are fixed independent literals');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }
@@ -291,8 +417,8 @@ function expectedRunnerChildren(tuple) {
 }
 function expectedRunnerTestTargets(tuple) {
   return tuple==='C0'?C0_RUNNER_TEST_TARGETS:[...C0_RUNNER_TEST_TARGETS,...CF_CONSOLE_PATHS,
-    'tests/unit/xanthil-desktop/*.test.ts','tests/contract/xanthil-desktop/*.test.ts',
-    'tests/integration/xanthil-desktop/*.test.ts','tests/e2e/xanthil-desktop/*.test.ts'];
+    'tests/unit/xanthil-desktop/*.test.ts','tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs','tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs','tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs','tests/contract/xanthil-desktop/*.test.ts',
+    'tests/integration/xanthil-desktop/*.test.ts','tests/integration/xanthil-desktop/browser-companion-process.test.mjs','tests/integration/xanthil-desktop/browser-service-view.test.mjs','tests/integration/xanthil-desktop/browser-workspace-view.test.mjs','tests/e2e/xanthil-desktop/*.test.ts'];
 }
 
 function testTargetsFromRunnerSource(source) {
@@ -394,9 +520,11 @@ case "$1" in
       *tools/harness/validation/*) group=validation ;;
     esac; done
     target=unknown
+    target_failed=false
     for arg in "$@"; do case "$arg" in
       *.test.*)
         target="\${arg##*/}"
+        if [ "\${CVR_FIXTURE_FAIL_TARGET:-}" = "$target" ]; then target_failed=true; fi
         printf '%s:%s:%s\\n' "$group" "$target" "\${XANTHIL_REAL_PI_ACCEPTANCE-unset}" >> "$CVR_OBSERVATION"
         ;;
     esac; done
@@ -404,7 +532,7 @@ case "$1" in
     printf 'native %s stdout\\n' "$group"
     printf 'native %s stderr\\n' "$group" >&2
     if [ "\${CVR_FIXTURE_FAIL:-}" = "$group" ]; then exit 23; fi
-    if [ "\${CVR_FIXTURE_FAIL_TARGET:-}" = "$target" ]; then exit 31; fi
+    if [ "$target_failed" = true ]; then exit 31; fi
     ;;
   *) printf 'unexpected fake node invocation: %s\\n' "$*" >&2; exit 64 ;;
 esac
@@ -538,7 +666,8 @@ test('Final CF checkpoint preserves mapped roots and complete offline behavior c
 test('CI-CHECK-001: fixed Desktop fixture inventory matches actual suite files', async () => {
   for (const [index, group] of ['unit', 'contract', 'integration', 'e2e'].entries()) {
     const directory = `tests/${group}/xanthil-desktop`;
-    const actual = (await readdir(path.join(REPO_ROOT, directory))).filter(name => name.endsWith('.test.ts')).sort().map(name => `${directory}/${name}`);
+    const names=await readdir(path.join(REPO_ROOT,directory));
+    const actual=[...names.filter(name=>name.endsWith('.test.ts')).sort(),...(['tests/integration/xanthil-desktop','tests/unit/xanthil-desktop'].includes(directory)?names.filter(name=>name.endsWith('.test.mjs')).sort():[])].map(name=>`${directory}/${name}`);
     assert.deepEqual(actual, CF_DESKTOP_GROUPS[index], 'new source tests require explicit fixture coverage, not automatic acceptance');
   }
 });
@@ -787,4 +916,28 @@ test('CI-CHECK-001: CI maintenance roots reject omission, substitution, duplicat
       await assert.rejects(() => currentRunnerTuple(root), { code: 'ERR_ASSERTION' });
     });
   }
+});
+
+test('BF-R13 CI-CHANGE005: browser roots reject omission, substitution, duplication, reordering and extra roots', async t => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'juanerai-cvr-change005-'));
+  t.after(() => rm(root, {recursive:true, force:true}));
+  for (const name of C1A_TUPLE_CONFIGURATION_FILES) await cp(path.join(REPO_ROOT,name),path.join(root,name));
+  assert.equal(await currentRunnerTuple(root),'CF');
+  const original = JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8'));
+  const start = CHANGE004_ROOT_START + CHANGE004_TSCONFIG_APPENDIX.length + CI_MAINTENANCE_TSCONFIG_APPENDIX.length;
+  const mutations = [
+    ['extra trailing root', files => [...files,'tests/unapproved.test.ts']],
+    ...CHANGE005_TSCONFIG_APPENDIX.flatMap((_,offset) => {const index=start+offset;return [
+      [`${offset} omitted`,files=>files.filter((_,position)=>position!==index)],
+      [`${offset} substituted`,files=>files.map((file,position)=>position===index?'tests/unapproved.test.ts':file)],
+      [`${offset} duplicated`,files=>files.map((file,position)=>position===index?files[index-1]:file)],
+      [`${offset} reordered`,files=>files.map((file,position)=>position===index?files[index-1]:position===index-1?files[index]:file)],
+    ];}),
+  ];
+  for (const [name,mutate] of mutations) await t.test(name,async()=>{
+    await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files:mutate(original.files)}));
+    await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});
+  });
+  await writeFile(path.join(root,'tsconfig.json'),JSON.stringify(original));
+  assert.equal(await currentRunnerTuple(root),'CF');
 });

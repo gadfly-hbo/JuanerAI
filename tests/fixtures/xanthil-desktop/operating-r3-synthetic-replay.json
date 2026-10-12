@@ -1,0 +1,645 @@
+{
+  "source": {
+    "version": "1.0",
+    "sources": [
+      {
+        "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1",
+        "display_name": "经营.csv",
+        "format": "csv",
+        "sha256": "ea7182a250bde155351584f5eee802266233c59640cd1cdb0a018f93bea2f919",
+        "byte_length": "100",
+        "sheets": [
+          {
+            "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+            "name": "CSV",
+            "state": "visible",
+            "rows": [
+              {
+                "row": 1,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "收入"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "份数"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "地区"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "期间"
+                  }
+                ]
+              },
+              {
+                "row": 2,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "100"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "北"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-01"
+                  }
+                ]
+              },
+              {
+                "row": 3,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "200"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "2"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "南"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-01"
+                  }
+                ]
+              },
+              {
+                "row": 4,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "300"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "3"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "北"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-02"
+                  }
+                ]
+              },
+              {
+                "row": 5,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "250"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "南"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-02"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "source_id": "8ad6dc16-f1c6-4500-a404-06ab9f5364f8",
+        "display_name": "成本.csv",
+        "format": "csv",
+        "sha256": "50db3be3b8e6ddd55b2bf487f60aea178940fbf8225fec3b20f36dd6af91e03f",
+        "byte_length": "18",
+        "sheets": [
+          {
+            "sheet_id": "a80a0f7d-dfb8-4948-9846-b9865d07e126",
+            "name": "CSV",
+            "state": "visible",
+            "rows": [
+              {
+                "row": 1,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "公共成本"
+                  }
+                ]
+              },
+              {
+                "row": 2,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "0.05"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "source_id": "b0bf21d5-6aae-4e89-b32f-4e788e875cd6",
+        "display_name": "权重.csv",
+        "format": "csv",
+        "sha256": "adb9e40dda7a09f3d38911d93f88936dd43f0ccd4fcbc25fd31d8b0f7a53e0e0",
+        "byte_length": "32",
+        "sheets": [
+          {
+            "sheet_id": "82e126c9-fa47-4c78-9da1-58a254bd3799",
+            "name": "CSV",
+            "state": "visible",
+            "rows": [
+              {
+                "row": 1,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "分摊权重"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "对象"
+                  }
+                ]
+              },
+              {
+                "row": 2,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "A"
+                  }
+                ]
+              },
+              {
+                "row": 3,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "B"
+                  }
+                ]
+              },
+              {
+                "row": 4,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "C"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "source_id": "c69aac33-41c4-44c7-b2c0-ae60170487b3",
+        "display_name": "台账.csv",
+        "format": "csv",
+        "sha256": "61cb247e886a91cd4cbbbf428d5f7c0e0fdbcd4551c4135f02f34e125bb3d44f",
+        "byte_length": "36",
+        "sheets": [
+          {
+            "sheet_id": "b45f8756-dfd9-4ef0-9cb3-8f5af363be12",
+            "name": "CSV",
+            "state": "visible",
+            "rows": [
+              {
+                "row": 1,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "入账金额"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "地区"
+                  }
+                ]
+              },
+              {
+                "row": 2,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "298"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "北"
+                  }
+                ]
+              },
+              {
+                "row": 3,
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "250"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "南"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "question": "请完成一份简短经营分析：用2026年2月的份数作权重计算收入加权平均；计算当月各地区收入占比；按地区拆解1月到2月收入变化及各地区对总变化的贡献；按权重.csv把成本.csv的公共成本按比例分到各对象，金额保留2位小数，最大余数分配，余数相同时对象键升序；按地区将2月收入与台账入账金额作一行一键一对一核对，列出差异与漏配。所有金额为人民币元，份数和分摊权重无量纲。数据仅为本任务合成资料，全部记录允许使用。不要推断原因或预测，发现差异不称账目一致；按实际工具检查给出结论，不需要逐步骤确认。",
+  "calls": [
+    {
+      "name": "inspect_selected",
+      "args": {}
+    },
+    {
+      "name": "describe_business",
+      "args": {
+        "deliverables": [
+          "2月收入加权平均",
+          "2月各地区收入占比",
+          "1月→2月各地区收入变化及对总变化贡献",
+          "公共成本按比例分摊到A/B/C（保留2位、最大余数、键升序）",
+          "2月地区收入与台账入账金额一行一键核对"
+        ],
+        "execution_scope": [
+          {
+            "filters": [],
+            "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+            "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1"
+          },
+          {
+            "filters": [],
+            "sheet_id": "a80a0f7d-dfb8-4948-9846-b9865d07e126",
+            "source_id": "8ad6dc16-f1c6-4500-a404-06ab9f5364f8"
+          },
+          {
+            "filters": [],
+            "sheet_id": "82e126c9-fa47-4c78-9da1-58a254bd3799",
+            "source_id": "b0bf21d5-6aae-4e89-b32f-4e788e875cd6"
+          },
+          {
+            "filters": [],
+            "sheet_id": "b45f8756-dfd9-4ef0-9cb3-8f5af363be12",
+            "source_id": "c69aac33-41c4-44c7-b2c0-ae60170487b3"
+          }
+        ],
+        "hypotheses": [
+          "收入按地区有北/南；2月仅北/南",
+          "权重列A/B/C各=1，3对象均分公共成本",
+          "台账入账金额按地区一对一核对"
+        ],
+        "object": "收入加权平均、地区占比、地区贡献拆解、共享成本分摊、入账核对",
+        "purpose": "基于2026年1-2月经营/成本/权重/台账资料完成一份简短经营分析",
+        "scope": "经营.csv（收入/份数/地区/期间）、成本.csv（公共成本）、权重.csv（分摊权重/对象）、台账.csv（入账金额/地区）",
+        "unknowns": [
+          "成本.csv金额单位需在bind_measurement绑定",
+          "台账是否与2月地区收入核对需确认期间口径"
+        ]
+      }
+    },
+    {
+      "name": "bind_measurement",
+      "args": {
+        "currency": "CNY",
+        "inputs": [
+          {
+            "column": "A",
+            "scale": "1",
+            "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+            "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1"
+          },
+          {
+            "column": "A",
+            "scale": "1",
+            "sheet_id": "a80a0f7d-dfb8-4948-9846-b9865d07e126",
+            "source_id": "8ad6dc16-f1c6-4500-a404-06ab9f5364f8"
+          },
+          {
+            "column": "A",
+            "scale": "1",
+            "sheet_id": "b45f8756-dfd9-4ef0-9cb3-8f5af363be12",
+            "source_id": "c69aac33-41c4-44c7-b2c0-ae60170487b3"
+          }
+        ],
+        "output_label": "元",
+        "output_scale": "1"
+      }
+    },
+    {
+      "name": "interpret_meaning",
+      "args": {
+        "conflicts": [],
+        "interpretations": [
+          {
+            "dimension": "unit",
+            "evidence": [
+              {
+                "message_id": "57d49b8f50e5dbbeec1d821f49724999bc6a29aef805186642c8ca4f5a3f6e02"
+              }
+            ],
+            "status": "clear",
+            "value": "金额以人民币元（CNY）表示，输入与输出均为元，份数与权重无量纲"
+          }
+        ]
+      }
+    },
+    {
+      "name": "bind_measurement",
+      "args": {
+        "currency": "CNY",
+        "inputs": [
+          {
+            "column": "A",
+            "scale": "1",
+            "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+            "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1"
+          },
+          {
+            "column": "A",
+            "scale": "1",
+            "sheet_id": "a80a0f7d-dfb8-4948-9846-b9865d07e126",
+            "source_id": "8ad6dc16-f1c6-4500-a404-06ab9f5364f8"
+          },
+          {
+            "column": "A",
+            "scale": "1",
+            "sheet_id": "b45f8756-dfd9-4ef0-9cb3-8f5af363be12",
+            "source_id": "c69aac33-41c4-44c7-b2c0-ae60170487b3"
+          }
+        ],
+        "output_label": "元",
+        "output_scale": "1"
+      }
+    },
+    {
+      "name": "read_analysis_evidence",
+      "args": {
+        "required_plans": [
+          {
+            "column": "A",
+            "filters": [
+              {
+                "column": "D",
+                "operator": "eq",
+                "value": "2026-02"
+              }
+            ],
+            "goal": "2026-02收入按份数加权平均",
+            "group_by": null,
+            "operation": "weighted_mean",
+            "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+            "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1",
+            "unit": "元",
+            "version": "1.9",
+            "weight_column": "B"
+          },
+          {
+            "column": "A",
+            "filters": [
+              {
+                "column": "D",
+                "operator": "eq",
+                "value": "2026-02"
+              }
+            ],
+            "goal": "2026-02各地区收入占当月总收入比例",
+            "group_by": "C",
+            "input_unit": "元",
+            "operation": "group_share",
+            "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+            "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1",
+            "unit": "%",
+            "version": "2.0"
+          },
+          {
+            "comparison_label": "2026-01",
+            "current_label": "2026-02",
+            "goal": "2026-01→2026-02按地区收入变化与各地区对总变化的贡献",
+            "inputs": [
+              {
+                "column": "A",
+                "filters": [
+                  {
+                    "column": "D",
+                    "operator": "eq",
+                    "value": "2026-01"
+                  }
+                ],
+                "group_by": "C",
+                "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+                "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1"
+              },
+              {
+                "column": "A",
+                "filters": [
+                  {
+                    "column": "D",
+                    "operator": "eq",
+                    "value": "2026-02"
+                  }
+                ],
+                "group_by": "C",
+                "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+                "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1"
+              }
+            ],
+            "operation": "group_change",
+            "unit": "元",
+            "version": "2.1"
+          },
+          {
+            "goal": "将公共成本按权重比例分摊到A/B/C，保留2位小数、最大余数分配、余数相同时对象键升序",
+            "inputs": [
+              {
+                "column": "A",
+                "filters": [],
+                "group_by": null,
+                "sheet_id": "a80a0f7d-dfb8-4948-9846-b9865d07e126",
+                "source_id": "8ad6dc16-f1c6-4500-a404-06ab9f5364f8"
+              },
+              {
+                "column": "A",
+                "filters": [],
+                "group_by": "B",
+                "sheet_id": "82e126c9-fa47-4c78-9da1-58a254bd3799",
+                "source_id": "b0bf21d5-6aae-4e89-b32f-4e788e875cd6"
+              }
+            ],
+            "measure": {
+              "currency": "CNY",
+              "inputs": [
+                {
+                  "column": "A",
+                  "scale": "1",
+                  "sheet_id": "a80a0f7d-dfb8-4948-9846-b9865d07e126",
+                  "source_id": "8ad6dc16-f1c6-4500-a404-06ab9f5364f8"
+                }
+              ],
+              "output_label": "元",
+              "output_scale": "1"
+            },
+            "operation": "proportional_allocation",
+            "rounding": {
+              "decimals": 2,
+              "method": "largest_remainder",
+              "tie_break": "object_key"
+            },
+            "unit": "元",
+            "version": "2.2"
+          },
+          {
+            "cardinality": "one_to_one",
+            "goal": "2月各地区收入与台账入账金额一行一键一对一核对",
+            "grain": "one_row_per_key",
+            "inputs": [
+              {
+                "column": "A",
+                "filters": [
+                  {
+                    "column": "D",
+                    "operator": "eq",
+                    "value": "2026-02"
+                  }
+                ],
+                "group_by": "C",
+                "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+                "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1"
+              },
+              {
+                "column": "A",
+                "filters": [],
+                "group_by": "B",
+                "sheet_id": "b45f8756-dfd9-4ef0-9cb3-8f5af363be12",
+                "source_id": "c69aac33-41c4-44c7-b2c0-ae60170487b3"
+              }
+            ],
+            "left_label": "2026-02经营收入",
+            "operation": "reconcile",
+            "right_label": "台账入账金额",
+            "unit": "元",
+            "version": "2.3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "calculate_and_verify",
+      "args": {
+        "plan": {
+          "column": "A",
+          "filters": [
+            {
+              "column": "D",
+              "operator": "eq",
+              "value": "2026-02"
+            }
+          ],
+          "goal": "2026-02收入按份数加权平均",
+          "group_by": null,
+          "operation": "weighted_mean",
+          "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+          "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1",
+          "unit": "元",
+          "version": "1.9",
+          "weight_column": "B"
+        }
+      }
+    },
+    {
+      "name": "calculate_and_verify",
+      "args": {
+        "plan": {
+          "column": "A",
+          "filters": [
+            {
+              "column": "D",
+              "operator": "eq",
+              "value": "2026-02"
+            }
+          ],
+          "goal": "2026-02各地区收入占当月总收入比例",
+          "group_by": "C",
+          "input_unit": "元",
+          "operation": "group_share",
+          "sheet_id": "b12bab9d-ea25-4a2b-b046-2c97fe73cb9e",
+          "source_id": "d22393d6-74d1-4877-99bc-128c635da9d1",
+          "unit": "%",
+          "version": "2.0"
+        }
+      }
+    }
+  ]
+}

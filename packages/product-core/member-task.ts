@@ -19,7 +19,7 @@ export function memberOutput(input:unknown):MemberOutput{const kind=(input as {k
 export type Outbound={version:'1.0';source_sha256:string;methods:readonly ('M1'|'M2')[];semantics:{metric:'membership_repurchase_comparison';currency:'CNY';time_zone:'Asia/Shanghai';comparison_period:DesktopSelection['comparison_period'];current_period:DesktopSelection['current_period'];status_meanings:'explicitly_confirmed_local'};preparation:{members:string;orders:string};selected_text:string|null;result:Pick<MembershipResult,'periods'|'changes'>|null;tool_result:'prepared'|'verified'|null};
 // Treat path syntax as material, regardless of the local root name. This checks
 // text only; it never resolves, reads or scans any filesystem path.
-function containsPath(text:string){
+export function containsPath(text:string){
  let value=text.normalize('NFKC');
  // Decode only this inspection copy. Each successful pass shortens escapes;
  // invalid UTF-8 must not conceal an adjacent encoded ASCII path separator.
@@ -77,7 +77,10 @@ export function validatePrepared(input:PreparedTask){closed(input,['version','ow
  validateMembershipPlan({version:'1.0',id:input.scenario.id,owner:input.owner,confirmation_id:input.scenario.id,snapshot_id:input.scenario.id,scenario:input.scenario,scenario_sha256:membershipHash(input.scenario),contract_sha256:membershipHash(input.selection),binding_sha256:membershipHash(input.selection.column_mapping),sources:Object.fromEntries(Object.entries(input.sources).map(([k,v])=>[k,{sha256:v.sha256,byte_length:v.byte_length}])),methods:input.methods,parameters:input.selection,verification:'python_independent_exact'});return input;}
 export function protectText(text:string,protectedValues:readonly string[]){if(protectedValues.some(v=>v&&text.includes(v)))fail('OUTBOUND_FORBIDDEN');return text;}
 export function encodeTask(value:unknown):string{
- const normalize=(v:unknown):unknown=>{if(Array.isArray(v))return v.map(normalize);if(v!==null&&typeof v==='object'){if(Object.getPrototypeOf(v)!==Object.prototype)fail();return Object.fromEntries(Object.keys(v).sort((a,b)=>{const x=Array.from(a,c=>c.codePointAt(0)!),y=Array.from(b,c=>c.codePointAt(0)!);for(let i=0;i<Math.min(x.length,y.length);i++)if(x[i]!==y[i])return x[i]-y[i];return x.length-y.length;}).map(k=>[k,normalize((v as Record<string,unknown>)[k])]));}if(typeof v==='number'&&!Number.isSafeInteger(v)||typeof v==='bigint'||v===undefined||typeof v==='function')fail();return v;};return JSON.stringify(normalize(value));
+ // Preserve Unicode code-point ordering, including unpaired surrogates, without
+ // allocating two complete character arrays for each sort comparison.
+ const compareKeys=(a:string,b:string)=>{let i=0,j=0;while(i<a.length&&j<b.length){const x=a.codePointAt(i)!,y=b.codePointAt(j)!;if(x!==y)return x-y;i+=x>0xffff?2:1;j+=y>0xffff?2:1;}return i===a.length?(j===b.length?0:-1):1;};
+ const normalize=(v:unknown):unknown=>{if(Array.isArray(v))return v.map(normalize);if(v!==null&&typeof v==='object'){if(Object.getPrototypeOf(v)!==Object.prototype)fail();return Object.fromEntries(Object.keys(v).sort(compareKeys).map(k=>[k,normalize((v as Record<string,unknown>)[k])]));}if(typeof v==='number'&&!Number.isSafeInteger(v)||typeof v==='bigint'||v===undefined||typeof v==='function')fail();return v;};return JSON.stringify(normalize(value));
 }
 export const taskHash=(value:unknown)=>createHash('sha256').update(encodeTask(value)).digest('hex');
 

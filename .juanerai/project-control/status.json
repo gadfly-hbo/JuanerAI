@@ -3,49 +3,49 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "Xanthil Desktop — AI-led membership analysis"
+    "product": "Xanthil — 浏览器多源会员分析"
   },
   "phase": {
-    "id": "DELIVERED",
-    "label": "Change004附E2豁免交付并归档",
-    "ordinal": 6,
+    "id": "PRODUCT_EVALUATION",
+    "label": "独立网页用户首试与产品接受",
+    "ordinal": 5,
     "total": 6
   },
-  "health": "complete",
-  "summary": "PR59已squash合并；独立复核009/010及Hosted portable CI通过，归档完成。E2待修，用户体验后置；MacBook由用户后续手动同步。",
-  "current_objective": "Change004获授权工程交付与OpenSpec归档已完成。",
-  "next_action": "后续修复E2并由用户完成产品体验；MacBook由用户后续手动同步。",
+  "health": "waiting_user",
+  "summary": "browser-workbench-006已通过独立验证和完整portable，并已作为df70967在MacBook独立浅克隆启动网页试用，等待用户首试与产品接受。",
+  "current_objective": "CSV＋XLSX多源准备到M1核验报告和人的分析判断，复用001～004。",
+  "next_action": "用户在MacBook网页完成单工作台首试：提出分析问题、选择资料、确认模型首次启用并在需要时显式发起真实分析；反馈体验与业务结果。",
   "blockers": [],
   "milestones": [
     {
       "id": "intake",
-      "label": "批准输入与工程接收",
+      "label": "固定输入与工程接收",
       "status": "completed"
     },
     {
-      "id": "stage_a",
-      "label": "A：计划、分析与待审报告离线实现",
+      "id": "contracts",
+      "label": "工程合同和可行性",
       "status": "completed"
     },
     {
-      "id": "stage_b",
-      "label": "B：点评、恢复与人审离线实现",
+      "id": "implementation",
+      "label": "新建项目CSV/XLSX/M1合成工程候选",
       "status": "completed"
     },
     {
       "id": "verification",
-      "label": "工程接受：E1通过，E2用户豁免",
-      "status": "completed"
+      "label": "适用回归与固定候选独立PASS",
+      "status": "active"
     },
     {
       "id": "product",
-      "label": "用户后续产品/体验验收",
+      "label": "用户首试/产品接受",
       "status": "pending"
     },
     {
       "id": "delivery",
-      "label": "授权Git交付与归档",
-      "status": "completed"
+      "label": "获准交付与归档",
+      "status": "pending"
     }
   ],
   "agents": [
@@ -54,73 +54,145 @@
       "label": "Mac mini Engineering Controller",
       "model": "gpt-6-astra/high",
       "status": "controller",
-      "activation": "原change-004用户已明确开工；唯一工程状态写入者。"
+      "activation": "实际turn_context核验；唯一看板写者。"
     },
     {
       "id": "juaner_worker",
       "label": "Continuous Engineering Worker",
-      "model": "gpt-6-astra/high/workspace-write/never; CLI turn_context verified",
-      "status": "complete",
-      "activation": "隔离副本已保留；无进展时安全中断，Controller仅接手两文件CI修正。"
+      "model": "gpt-6-astra/medium",
+      "status": "waiting",
+      "activation": "Candidate006 frozen; author idle."
     },
     {
       "id": "juaner_validator",
       "label": "Independent Validator",
-      "model": "gpt-6-astra/high/never; source read-only, isolated artifact writes approved and verified",
-      "status": "complete",
-      "activation": "review009/010 PASS；E1 PASS，E2 BLOCKED保留并按用户豁免交付。"
+      "model": "gpt-6-astra/high",
+      "status": "active",
+      "activation": "Author-independent native high/read-only validator rechecks candidate006."
     }
   ],
   "metrics": [],
   "evidence": [
     {
-      "id": "CHANGE004-INTAKE",
-      "label": "用户启动与固定工程接收",
-      "path": "openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/intake.md",
+      "id": "CHANGE005-INTAKE",
+      "label": "批准、固定身份、WIP、路由与可开工范围",
+      "path": "openspec/changes/xanthil-browser-multisource-membership-analysis/intake.md",
       "status": "verified"
     },
     {
-      "id": "CHANGE004-CANDIDATE",
-      "label": "固定候选 corrected-offline-005 与独立复核006",
-      "path": "openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/engineering-decisions.md",
+      "id": "D2-HEALTH-FAILURE",
+      "label": "内层沙箱安装失败与权限请求",
+      "path": "openspec/changes/xanthil-browser-multisource-membership-analysis/engineering-decisions.md",
+      "status": "failed"
+    },
+    {
+      "id": "D2-HOST-HEALTH",
+      "label": "一次受信主机健康检查通过；完整隔离未验证",
+      "path": "openspec/changes/xanthil-browser-multisource-membership-analysis/engineering-decisions.md",
       "status": "verified"
     },
     {
-      "id": "CHANGE004-COVERAGE",
-      "label": "完整六＋二覆盖及 E1关闭/E2剩余限制",
-      "path": "docs/planning/capability-coverage/latest.md",
+      "id": "SOURCE-M1-PARTIAL-GREEN",
+      "label": "中间版本16项来源/M1测试与类型检查通过，未做最终独立验收",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/progress-20261004-1513/readback.json",
       "status": "verified"
     },
     {
-      "id": "CHANGE004-GIT-DELIVERY",
-      "label": "PR59合并、CI与逐设备同步回执",
-      "path": "openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/git-delivery.md",
+      "id": "IMPLEMENTATION-BOUNDARY-001",
+      "label": "Mini独立接收当前源码与证据；末次28项及类型检查PASS",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/implementation-boundary-review-001/review.json",
       "status": "verified"
+    },
+    {
+      "id": "D2-BOUNDED-HOST-PASS",
+      "label": "一次固定10项主机探针通过，完整隔离仍未验证",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/host-isolation-probe-001/receiver-readback.json",
+      "status": "verified"
+    },
+    {
+      "id": "EXECUTOR-HOST-001-FAIL",
+      "label": "首个health在身份准入失败；0/22完成，负载未执行",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/executor-host-001-readback/readback.json",
+      "status": "failed"
+    },
+    {
+      "id": "NATIVE-ROLE-ALIGNMENT-001",
+      "label": "项目配置对齐与实际原生接口读回；USER_PAUSED",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/native-role-alignment-001/readback.json",
+      "status": "verified"
+    },
+    {
+      "id": "HOST002-PORTABLE-PASS",
+      "label": "完整portable PASS；desktop integration530项，通过绑定修复前候选",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/worker/loops/host002-portable-002/result.json",
+      "status": "verified"
+    },
+    {
+      "id": "HOST002-CPU-FAIL",
+      "label": "host002真实7 PASS、CPU FAIL及清理读回",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/executor-host-002-readback/result.json",
+      "status": "failed"
+    },
+    {
+      "id": "HOST003-22-PASS",
+      "label": "固定合成产品执行器四领域22/22实际PASS；范围受限",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/executor-host-003-readback/result.json",
+      "status": "verified"
+    },
+    {
+      "id": "CANDIDATE004-INDEPENDENT-PASS",
+      "label": "历史候选004限定独立PASS；独立网页版需继任候选验证",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/validator-004/report.md",
+      "status": "verified"
+    },
+    {
+      "id": "CANDIDATE004-ENGINEERING-ACCEPTANCE",
+      "label": "历史Electron承载候选004限定工程接受；不能证明独立网页版",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/complete-candidate-004-readback/engineering-acceptance.json",
+      "status": "verified"
+    },
+    {
+      "id": "INDEPENDENT-WEB-HOST001-FAIL",
+      "label": "独立Node启动通过，真实浏览器项目入口超时FAIL；进程收回",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/browser-independent-host-001-readback/result.json",
+      "status": "failed"
+    },
+    {
+      "id": "INDEPENDENT-WEB-HOST002-PASS",
+      "label": "真实网页项目/设置/CSV-XLSX/M1/人审与独立Node生命周期六条PASS",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/browser-independent-host-002-readback/result.json",
+      "status": "verified"
+    },
+    {
+      "id": "INDEPENDENT-NODE-UNKNOWN-PASS",
+      "label": "实际自有Node崩溃→网页重开UNKNOWN→拒绝继续→Stop保留占用PASS",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/browser-independent-unknown-host-001-readback/result.json",
+      "status": "verified"
+    },
+    {
+      "id": "CANDIDATE005-INDEPENDENT-FAIL",
+      "label": "新鲜独立审阅FAIL：异步项目选择与页面接管竞态",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/validator-005/report.md",
+      "status": "failed"
     }
   ],
   "risks": [
     {
-      "id": "UX-DEFERRED",
-      "label": "真人体验及模型质量未验证",
+      "id": "REAL-EXECUTION",
+      "label": "真实模型、材料、服务与体验前置尚待实际核验",
       "level": "medium",
-      "mitigation": "按用户指示后置体验；验收时如实区分工程证据与用户判断。"
+      "mitigation": "仅停受影响执行；安全隔离的授权工程继续。"
     },
     {
-      "id": "RUNTIME-ACTIVATION",
-      "label": "真实运行权限及资源配置待明确",
+      "id": "LEGACY-E2",
+      "label": "旧Change004 E2待修记录保留",
       "level": "medium",
-      "mitigation": "离线合成验证；未配置或未获准的真实Provider/数据使用拒绝准入。"
-    },
-    {
-      "id": "E2-DEFERRED",
-      "label": "用户接受E2延后修复",
-      "level": "medium",
-      "mitigation": "保留SIGABRT及桌面服务拒绝证据；补齐原生交互、清理及当前包/full native canonical后才关闭。"
+      "mitigation": "浏览器工作不自动关闭原生E2或替代共享安全验证。"
     }
   ],
-  "updated_at": "2026-10-02T11:31:29.788Z",
+  "updated_at": "2026-10-05T07:13:02.745Z",
   "updated_by": {
     "role": "controller",
-    "session": "change-004"
+    "session": "change-N01-02"
   }
 }

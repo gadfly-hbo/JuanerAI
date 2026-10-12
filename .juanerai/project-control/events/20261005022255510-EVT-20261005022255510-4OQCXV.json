@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261005022255510-4OQCXV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-05T02:22:55.510Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "用户明确网页版独立启动；既有服务已退出且未发送信号，退出原因UNKNOWN；连续工程恢复，自动跟进PAUSED",
+  "status_after": "active",
+  "evidence_refs": []
+}

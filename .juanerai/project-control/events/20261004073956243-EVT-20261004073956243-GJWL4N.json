@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004073956243-GJWL4N",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T07:39:56.243Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "同步15:39实际进程、146项回归、4项计量修正及未闭合类型检查；不宣称完整候选通过。",
+  "status_after": "active",
+  "evidence_refs": []
+}

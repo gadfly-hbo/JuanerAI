@@ -1,0 +1,1 @@
+export function bootstrapWorkspace(deps:{location:Pick<Location,'hash'|'pathname'>;history:Pick<History,'replaceState'>;request:(path:string,options?:RequestInit)=>Promise<Response>;load:()=>Promise<{startWorkspace(input:{control:string|null}):Promise<void>}>;status:(text:string)=>void}):Promise<boolean>;

@@ -1,3 +1,5 @@
+import {sameAutomaticDelegationWork,assertAutomaticDelegationSubset,automaticDelegationProjection} from '../../packages/product-core/open-analysis-delegation-instruction.ts';
+import {validateNativeMemberReview} from '../../packages/product-core/open-member-review.ts';
 import {validateReviewDecision,type MembershipReview} from '../../packages/product-core/member-review.ts';
 import {assistantRecord} from '../../packages/product-core/case-assistant.ts';
 import {validateChildResult} from '../../packages/product-core/case-collaboration.ts';
@@ -36,16 +38,20 @@ CREATE TABLE collaboration_results(id TEXT PRIMARY KEY,child_id TEXT NOT NULL RE
 CREATE TABLE collaboration_returns(id TEXT PRIMARY KEY REFERENCES collaboration_results(id),parent TEXT NOT NULL REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);
 CREATE TABLE collaboration_reviews(id TEXT PRIMARY KEY REFERENCES collaboration_results(id),parent TEXT NOT NULL REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);`;
 function identity(db:DatabaseSync){return encode(db.prepare('SELECT type,name,tbl_name,sql FROM sqlite_schema ORDER BY type,name').all());}
-const schemaIdentities=([100,101,102] as const).map(version=>{const db=new DatabaseSync(':memory:');try{
- db.exec(version===100?schema:schema.replace("version='1.0'",version===101?"version='1.1'":"version='1.2'"));
+const schemaIdentities=([100,101,102,103] as const).map(version=>{const db=new DatabaseSync(':memory:');try{
+ db.exec(version===100?schema:schema.replace("version='1.0'",version===101?"version='1.1'":version===102?"version='1.2'":"version='1.3'"));
  if(version>=101)db.exec(collaborationSchema);return identity(db);
 }finally{db.close();}});
 const sourceKey = (owner: OwnerRef) => encode(owner);
 const same = (a: unknown, b: unknown) => encode(a) === encode(b);
 const escape = (text: string) => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+type OpenBrowserCommand=Readonly<{project_id:string;command_id:string;task_id:string;action:string;body:unknown}>;
+type OpenCommandReceipt=Readonly<{version:'1.0';command_id:string;task_id:string;action:string;status:'unknown'|'accepted'}>;
 export function createLocalCaseAssistantStore(config: {
     projectRoot: string;
-}): CaseAssistantStore {
+    openSource?:(owner:OwnerRef)=>AssistantSource|null;
+    collaborationPolicy?:'open_analysis_v13';
+}): CaseAssistantStore & {importOpenHistory(sessionId:string,source:AssistantSource,at:string):Promise<void>;reserveOpenCommand(command:OpenBrowserCommand):Promise<'new'|'accepted'>;finishOpenCommand(command:OpenBrowserCommand):Promise<void>;readOpenCommand(task_id:string,command_id:string):Promise<OpenCommandReceipt|null>} {
     const root = realpathSync(config.projectRoot), base = join(root, '.xanthil', 'desktop', 'state.sqlite'), path = join(dirname(base), 'case-assistant.sqlite');
     const original = createLocalDesktopDecisionCaseStore({ projectRoot: root });
     let pending = false;
@@ -83,14 +89,19 @@ export function createLocalCaseAssistantStore(config: {
                 }
             }
             const metadata = db.prepare('SELECT * FROM metadata').all(), version=Number(db.prepare('PRAGMA user_version').get()?.user_version);
-            if (metadata.length !== 1 || ![100,101,102].includes(version) || metadata[0].version !== (version===100?'1.0':version===101?'1.1':'1.2') || projectId && metadata[0].project_id !== projectId || Number(db.prepare('PRAGMA application_id').get()?.application_id) !== 1480802625)
+            if (metadata.length !== 1 || ![100,101,102,103].includes(version) || metadata[0].version !== (version===100?'1.0':version===101?'1.1':version===102?'1.2':'1.3') || projectId && metadata[0].project_id !== projectId || Number(db.prepare('PRAGMA application_id').get()?.application_id) !== 1480802625)
                 assistantFailure('SCHEMA_UNSUPPORTED');
             if (identity(db) !== schemaIdentities[version-100])
                 assistantFailure('SCHEMA_UNSUPPORTED');
             for (const table of tables)
                 for (const row of db.prepare(`SELECT * FROM ${table}`).all()) {
                     const value = decode(row);
-                    if(table==='decisions'&&value.origin!==undefined){if(version!==102)assistantFailure('SCHEMA_UNSUPPORTED');validateMembershipFormal(value);const state=new DatabaseSync(base,{readOnly:true});try{const origin=value.origin as FormalDecision['origin'];const receipt=state.prepare("SELECT result_json FROM membership_receipts WHERE command_id=?").get(origin!.intent_id),r=state.prepare('SELECT body_json,body_sha256 FROM membership_reviews WHERE review_id=? AND version=?').get(origin!.review_id,origin!.review_version);if(!receipt||!r||hash(String(r.body_json))!==r.body_sha256)assistantFailure('INTEGRITY_BLOCKED');const result=JSON.parse(String(receipt.result_json)),review=JSON.parse(String(r.body_json)) as MembershipReview,finding=state.prepare('SELECT evidence_refs_json FROM findings WHERE finding_id=?').get(review.source.finding_id);if(!finding||result.decision_id!==value.id||result.expected_id!==value.outcome_id||result.report_id!==value.report_id||result.review_sha256!==review.sha256||result.task_id!==origin!.task_id||!same(value.source,review.source.owner)||value.source_report_id!==review.source.report_id||value.actor!==review.fields.actor||value.adopted_at!==result.at||!same(value.fields,validateReviewDecision(review.fields.decision,{evidence_refs:JSON.parse(String(finding.evidence_refs_json)),finding_id:review.source.finding_id,candidates:review.fields.closure.candidates})))assistantFailure('INTEGRITY_BLOCKED');}finally{state.close();}}
+                    if(table==='decisions'&&value.origin!==undefined){if(![102,103].includes(version))assistantFailure('SCHEMA_UNSUPPORTED');validateMembershipFormal(value);const state=new DatabaseSync(base,{readOnly:true});try{
+                     const origin=value.origin as NonNullable<FormalDecision['origin']>,native=origin.kind==='native_member_review';if(native&&version!==103)assistantFailure('SCHEMA_UNSUPPORTED');
+                     const receipt=native?state.prepare('SELECT result_json FROM native_member_review_submissions WHERE review_id=?').get(origin.review_id):state.prepare('SELECT result_json FROM membership_receipts WHERE command_id=?').get(origin.intent_id),r=native?state.prepare('SELECT body_json,body_sha256 FROM native_member_reviews WHERE review_id=? AND sequence=?').get(origin.review_id,origin.review_version):state.prepare('SELECT body_json,body_sha256 FROM membership_reviews WHERE review_id=? AND version=?').get(origin.review_id,origin.review_version);
+                     if(!receipt||!r||hash(String(r.body_json))!==r.body_sha256)assistantFailure('INTEGRITY_BLOCKED');const result=JSON.parse(String(receipt.result_json)),review=native?validateNativeMemberReview(JSON.parse(String(r.body_json))):JSON.parse(String(r.body_json)) as MembershipReview,finding=state.prepare('SELECT evidence_refs_json FROM findings WHERE finding_id=?').get(review.source.finding_id);
+                     if(!finding||result.decision_id!==value.id||result.expected_id!==value.outcome_id||result.report_id!==value.report_id||result.review_sha256!==review.sha256||result.task_id!==origin.task_id||result.intent_id!==origin.intent_id||result.outcome!=='choice'||!same(value.source,review.source.owner)||value.source_report_id!==review.source.report_id||value.actor!==review.fields.actor||value.adopted_at!==result.at||!same(value.fields,validateReviewDecision(review.fields.decision,{evidence_refs:JSON.parse(String(finding.evidence_refs_json)),finding_id:review.source.finding_id,candidates:review.fields.closure.candidates})))assistantFailure('INTEGRITY_BLOCKED');
+                    }finally{state.close();}}
                     if ((table === 'drafts' ? `${value.id}:${value.version}` : value.id) !== row.id)
                         assistantFailure('INTEGRITY_BLOCKED');
                 }
@@ -124,7 +135,7 @@ export function createLocalCaseAssistantStore(config: {
         if (!db)
             assistantFailure('NOT_FOUND');
         try {
-            if (source) {
+            if (source&&!source.open_origin) {
                 safe(base);
                 db.prepare('ATTACH DATABASE ? AS original').run(base);
             }
@@ -151,6 +162,7 @@ export function createLocalCaseAssistantStore(config: {
     function checkSource(db: DatabaseSync, source: AssistantSource) {
         if (!source.eligible)
             assistantFailure('SOURCE_INELIGIBLE');
+        if(source.open_origin){const current=config.openSource?.(source.owner);if(!current||!current.eligible||!same(current,source)||source.finding_id||source.acceptance_id||source.closure_id||source.candidates.length)assistantFailure('STALE_REVISION');return;}
         const o = source.owner;
         const s = db.prepare('SELECT * FROM original.product_sessions WHERE session_id=? AND project_id=? AND case_id=?').get(o.session_id, o.project_id, o.case_id);
         const r = db.prepare('SELECT * FROM original.case_revisions WHERE revision_id=? AND project_id=? AND session_id=? AND case_id=?').get(o.revision_id, o.project_id, o.session_id, o.case_id);
@@ -161,6 +173,7 @@ export function createLocalCaseAssistantStore(config: {
         if(!aggregate||aggregate.sha256!==source.aggregate.sha256||!same(JSON.parse(String(aggregate.columns_json)),source.aggregate.fields)||!report||report.state!=='final'||report.markdown_sha256!==source.report.sha256||Number(report.version_sequence)!==source.report.version)assistantFailure('STALE_REVISION');
     }
     async function readSource(owner: OwnerRef): Promise<AssistantSource> {
+        const open=config.openSource?.(owner);if(open?.open_origin)return structuredClone(open);
         const p = await original.readProjection(owner), r = p.revision, f = p.findings.find(f => f.finding_id === r?.current_finding_id), a = p.acceptances.find(a => a.acceptance_id === r?.current_acceptance_id), c = p.closures.find(c => c.closure_id === r?.current_closure_id), report = p.reports.find(x => x.report_id === r?.current_report_id), form = p.forms.find(x => x.form_id === c?.form_id);
         const missing = [];
         if (p.session?.current_revision_id !== owner.revision_id)
@@ -216,7 +229,12 @@ export function createLocalCaseAssistantStore(config: {
             get(db,'sessions',id);
             if(explicitClose)migrate(db);
             const modern=Number(db.prepare('PRAGMA user_version').get()?.user_version)>=101;
-            const ids=[id,...(modern&&!child(db,id)?db.prepare('SELECT id FROM collaboration_children WHERE parent=?').all(id).map(r=>String(r.id)):[])];
+            const ids=[id],visited=new Set(ids);
+            if(modern)for(let i=0;i<ids.length;i++)for(const row of db.prepare('SELECT * FROM collaboration_children WHERE parent=?').all(ids[i]!)){
+                const relation=decode<ChildRelation>(row),childId=String(row.id);
+                if(relation.parent_session_id!==ids[i]||relation.child_session_id!==childId||visited.has(childId))assistantFailure('INTEGRITY_BLOCKED');
+                visited.add(childId);ids.push(childId);
+            }
             for(const sessionId of ids){
                 if(modern){const old=lifecycle(db,sessionId);if(old.open){const body=encode({open:false,epoch:old.epoch+1});db.prepare('INSERT INTO collaboration_lifecycle VALUES(?,?,?) ON CONFLICT(id) DO UPDATE SET body=excluded.body,sha256=excluded.sha256').run(sessionId,body,hash(body));}}
                 for(const attempt of rows<AssistantAttempt>(db,'attempts',sessionId))if(['Running','Waiting'].includes(attempt.status))write(db,'attempts',attempt.id,sessionId,{...attempt,status:'Interrupted',ended_at:at,waiting_deadline:null,reason:'session_closed'},true);
@@ -236,12 +254,12 @@ export function createLocalCaseAssistantStore(config: {
         }
     }
     async function reopenSession(id:string,epoch:number){return transaction(db=>{
-        get(db,'sessions',id);const old=lifecycle(db,id);if(old.epoch!==epoch)assistantFailure('LIFECYCLE_STALE');if(old.open)return old;
+        get(db,'sessions',id);const old=lifecycle(db,id);if(old.epoch!==epoch)assistantFailure('LIFECYCLE_STALE');const relation=child(db,id);if(relation)parentOpen(db,relation.parent_session_id);if(old.open)return old;
         const state={open:true,epoch:epoch+1},body=encode(state);db.prepare('UPDATE collaboration_lifecycle SET body=?,sha256=? WHERE id=?').run(body,hash(body),id);return state;
     });}
     async function readParentCollaboration(id:string):Promise<ParentCollaboration>{
         const db=connect();if(!db)assistantFailure('NOT_FOUND');try{
-            get<AssistantSession>(db,'sessions',id);if(child(db,id))assistantFailure('FORBIDDEN');
+            get<AssistantSession>(db,'sessions',id);const relation=child(db,id);if(relation&&(config.collaborationPolicy!=='open_analysis_v13'||!relation.source.open_origin))assistantFailure('FORBIDDEN');
             if(Number(db.prepare('PRAGMA user_version').get()?.user_version)===100)return {children:[],results:[],deliveries:[],reviews:[],materials:[]};
             const children=db.prepare('SELECT * FROM collaboration_children WHERE parent=? ORDER BY rowid').all(id).map(r=>decode<ChildRelation>(r));
             const results=db.prepare('SELECT r.* FROM collaboration_results r JOIN collaboration_children c ON r.child_id=c.id WHERE c.parent=? ORDER BY r.rowid').all(id).map(r=>decode<ChildResult>(r));
@@ -255,7 +273,7 @@ export function createLocalCaseAssistantStore(config: {
         const row=db.prepare('SELECT * FROM collaboration_results WHERE id=?').get(target.result_id);if(!row)assistantFailure('NOT_FOUND');const result=decode<ChildResult>(row);
         if(result.version!==target.result_version||result.sha256!==target.result_sha256)assistantFailure('STALE_RESULT');return result;
     }
-    function parentOpen(db:DatabaseSync,id:string){const row=db.prepare('SELECT * FROM collaboration_lifecycle WHERE id=?').get(id);if(row&&!decode<{open:boolean}>(row).open)assistantFailure('PARENT_CLOSED');}
+    function parentOpen(db:DatabaseSync,id:string){const visited=new Set<string>();let ancestor:string|null=id;while(ancestor){if(visited.has(ancestor))assistantFailure('INTEGRITY_BLOCKED');visited.add(ancestor);if(!lifecycle(db,ancestor).open)assistantFailure('PARENT_CLOSED');ancestor=child(db,ancestor)?.parent_session_id??null;}}
     function checkResultSource(db:DatabaseSync,result:ChildResult,source:AssistantSource){
         if(!same(result.source,source)||(db.prepare('SELECT decision_id FROM heads WHERE source=?').get(sourceKey(source.owner))?.decision_id??null)!==result.baseline_decision_id)assistantFailure('AUTHORIZATION_STALE');
         parentOpen(db,result.parent_session_id);
@@ -272,6 +290,24 @@ export function createLocalCaseAssistantStore(config: {
             throw error;
         }
     }
+    function openCommandKey(id:string){return hash(encode({purpose:'open-browser-command',id}));}
+    function openCommandFingerprint(command:OpenBrowserCommand){return hash(encode(command));}
+    function decodeOpenReceipt(row:Record<string,unknown>,task_id:string,command_id:string):OpenCommandReceipt{
+        const value=JSON.parse(String(row.result)) as OpenCommandReceipt;
+        if(value.version!=='1.0'||value.task_id!==task_id||value.command_id!==command_id||!['unknown','accepted'].includes(value.status))assistantFailure('INTEGRITY_BLOCKED');return value;
+    }
+    async function reserveOpenCommand(command:OpenBrowserCommand):Promise<'new'|'accepted'>{
+        if(![command.project_id,command.task_id,command.command_id].every(v=>/^[a-f0-9-]{36}$/.test(v))||!['create','start','stop','send','return','review'].includes(command.action))assistantFailure('INVALID_REQUEST');
+        connect(true,command.project_id)!.close();return transaction(db=>{
+            const key=openCommandKey(command.command_id),fingerprint=openCommandFingerprint(command),prior=db.prepare('SELECT * FROM receipts WHERE id=?').get(key);
+            if(prior){if(prior.fingerprint!==fingerprint)assistantFailure('COMMAND_CONFLICT');if(decodeOpenReceipt(prior,command.task_id,command.command_id).status!=='accepted')assistantFailure('RESULT_PENDING');return 'accepted';}
+            const receipt:OpenCommandReceipt={version:'1.0',task_id:command.task_id,command_id:command.command_id,action:command.action,status:'unknown'};db.prepare('INSERT INTO receipts VALUES(?,?,?)').run(key,fingerprint,encode(receipt));return 'new';
+        });
+    }
+    async function finishOpenCommand(command:OpenBrowserCommand){transaction(db=>{
+        const key=openCommandKey(command.command_id),prior=db.prepare('SELECT * FROM receipts WHERE id=?').get(key);if(!prior||prior.fingerprint!==openCommandFingerprint(command))assistantFailure('COMMAND_CONFLICT');const receipt=decodeOpenReceipt(prior,command.task_id,command.command_id);db.prepare('UPDATE receipts SET result=? WHERE id=?').run(encode({...receipt,status:'accepted'}),key);
+    });}
+    async function readOpenCommand(task_id:string,command_id:string):Promise<OpenCommandReceipt|null>{const db=connect();if(!db)return null;try{const prior=db.prepare('SELECT * FROM receipts WHERE id=?').get(openCommandKey(command_id));if(!prior)return null;const value=JSON.parse(String(prior.result));if(value.task_id!==task_id)return null;return decodeOpenReceipt(prior,task_id,command_id);}finally{db.close();}}
     async function returnChild(id:string,target:ResultTarget,commandId:string,at:string,source:AssistantSource,signal:AbortSignal):Promise<ChildDelivery>{
         const fresh=await readSource(source.owner);if(!same(fresh,source))assistantFailure('AUTHORIZATION_STALE');
         return collaborationCommit(commandId,hash(encode({kind:'return_result',id,target})),source,db=>{
@@ -355,15 +391,28 @@ export function createLocalCaseAssistantStore(config: {
             const prior=db.prepare('SELECT * FROM receipts WHERE id=?').get(commandId);
             if(prior){if(prior.fingerprint!==fingerprint)assistantFailure('COMMAND_CONFLICT');const found=child(db,String(prior.result));if(!found)assistantFailure('INTEGRITY_BLOCKED');return found;}
             const parent=get<AssistantSession>(db,'sessions',preview.parent_session_id);
-            if(child(db,parent.id)||!same(parent.source,session.source)||!same(session.source,preview.source.owner))assistantFailure('FORBIDDEN');
-            const visible=rows<AssistantEvent>(db,'events',parent.id).filter(e=>['user','advice','question','tool'].includes(e.kind)&&e.source_revision===preview.source.owner.revision_id);
+            const parentRelation=child(db,parent.id);
+            assertAutomaticDelegationSubset(parentRelation?.automatic_instruction,preview.automatic_instruction);
+            if(parentRelation&&(config.collaborationPolicy!=='open_analysis_v13'||!fresh.open_origin)||!same(parent.source,session.source)||!same(session.source,preview.source.owner))assistantFailure('FORBIDDEN');
+            parentOpen(db,parent.id);
+            if(parentRelation){
+                if(preview.aggregate&&(!parentRelation.aggregate||!same(preview.aggregate,parentRelation.aggregate))||preview.selected_reports.some(report=>!parentRelation.selected_reports.some(selected=>same(selected,report))))assistantFailure('FORBIDDEN');
+                const visited=new Set<string>();let ancestor:ChildRelation|null=parentRelation;while(ancestor){if(visited.has(ancestor.child_session_id))assistantFailure('INTEGRITY_BLOCKED');visited.add(ancestor.child_session_id);if(sameAutomaticDelegationWork(ancestor.automatic_instruction,preview.automatic_instruction)||ancestor.task.trim().replace(/\s+/g,' ')===preview.task.trim().replace(/\s+/g,' '))assistantFailure('REPEATED_DELEGATION');ancestor=child(db,ancestor.parent_session_id);}
+            }else if(config.collaborationPolicy==='open_analysis_v13'&&fresh.open_origin){
+                const reports=[{id:fresh.report.report_id,summary:fresh.report.summary},...rows<AssistantReport>(db,'reports',parent.id).map(r=>({id:r.id,summary:JSON.stringify(rows<FormalDecision>(db,'decisions',parent.id).find(d=>d.id===r.decision_id))}))];
+                if(preview.aggregate&&!same(preview.aggregate,fresh.aggregate)||preview.selected_reports.some(report=>!reports.some(selected=>same(selected,report))))assistantFailure('FORBIDDEN');
+            }
+            const automatic=preview.automatic_instruction?automaticDelegationProjection(preview.automatic_instruction,fresh,preview.created_at):null;
+            if(automatic&&(preview.task!==automatic.task||!same(preview.selected_history,preview.kind==='fork'?[automatic.history]:[])))assistantFailure('FORBIDDEN');
+            const visible=automatic?[automatic.history]:[...(parentRelation?.selected_history??[]),...rows<AssistantEvent>(db,'events',parent.id).filter(e=>['user','advice','question','tool'].includes(e.kind)&&e.source_revision===preview.source.owner.revision_id)].filter((e,i,all)=>all.findIndex(v=>v.id===e.id)===i);
             const cutoff=visible.findIndex(e=>e.id===preview.cutoff_id);
             if((preview.kind==='fork'||preview.cutoff_id!==null)&&cutoff<0)assistantFailure('INVALID_CUTOFF');
             const available=preview.cutoff_id===null?visible:visible.slice(0,cutoff+1);
             if(new Set(preview.selected_history.map(e=>e.id)).size!==preview.selected_history.length||preview.selected_history.some(e=>!available.some(saved=>same(saved,e))))assistantFailure('INVALID_SELECTION');
             const head=db.prepare('SELECT decision_id FROM heads WHERE source=?').get(sourceKey(session.source));
             if((head?.decision_id??null)!==preview.baseline_decision_id)assistantFailure('AUTHORIZATION_STALE');
-            if(rows<AssistantAttempt>(db,'attempts').some(a=>['Running','Waiting'].includes(a.status)))assistantFailure('BUSY');
+            const queuedAncestors=new Set<string>();if(config.collaborationPolicy==='open_analysis_v13'&&fresh.open_origin){let cursor=parent.id;for(;;){if(queuedAncestors.has(cursor))assistantFailure('INTEGRITY_BLOCKED');queuedAncestors.add(cursor);const relation=child(db,cursor);if(!relation)break;cursor=relation.parent_session_id;}}
+            if(rows<AssistantAttempt>(db,'attempts').some(a=>['Running','Waiting'].includes(a.status)&&!queuedAncestors.has(a.session_id)))assistantFailure('BUSY');
             migrate(db);
             const life=db.prepare('SELECT * FROM collaboration_lifecycle WHERE id=?').get(parent.id);
             if(life){const state=decode<{epoch:number;open:boolean}>(life);if(!state.open||state.epoch!==preview.parent_epoch)assistantFailure('INTERRUPTED');}
@@ -418,11 +467,19 @@ export function createLocalCaseAssistantStore(config: {
     }
     else if (rows<AssistantAttempt>(db, 'attempts', session.id).some(a => ['Running', 'Waiting'].includes(a.status)))
         assistantFailure('BUSY'); write(db, 'attempts', attempt.id, session.id, attempt, true); }); }
+    async function importOpenHistory(sessionId:string,source:AssistantSource,at:string){
+        if(!source.open_origin||!source.open_history||!source.eligible||!Number.isFinite(Date.parse(at)))assistantFailure('FORBIDDEN');
+        return transaction(db=>{const session=get<AssistantSession>(db,'sessions',sessionId);if(child(db,sessionId)||!same(session.source,source.owner))assistantFailure('FORBIDDEN');
+            for(const entry of source.open_history!){const prior=db.prepare('SELECT * FROM events WHERE id=?').get(entry.id);if(prior){const saved=decode<AssistantEvent>(prior);if(saved.text!==entry.text||saved.open_message_origin?.sha256!==entry.sha256)assistantFailure('INTEGRITY_BLOCKED');continue;}
+                write(db,'events',entry.id,sessionId,{id:entry.id,attempt_id:entry.attempt_id,at,kind:entry.role==='user'?'user':'advice',text:entry.text,tool:null,status:'imported_visible_history',source_revision:source.owner.revision_id,open_message_origin:{task_id:source.open_origin!.task_id,run_id:source.open_origin!.run_id,index:entry.index,sha256:entry.sha256}} satisfies AssistantEvent);
+            }
+        },source);
+    }
     async function appendEvent(sessionId: string, event: AssistantEvent, signal?: AbortSignal) { transaction(db => { if (signal?.aborted)
         assistantFailure('INTERRUPTED'); const attempt = get<AssistantAttempt>(db, 'attempts', event.attempt_id); if (event.kind !== 'status' && !['Running', 'Waiting'].includes(attempt.status) || attempt.session_id !== sessionId || event.source_revision !== attempt.authorization.source.owner.revision_id)
         assistantFailure('FORBIDDEN'); write(db, 'events', event.id, sessionId, event); }); }
     async function saveDraft(draft: AssistantDraft, signal?: AbortSignal) { transaction(db => { if (signal?.aborted)
-        assistantFailure('INTERRUPTED'); if(child(db,draft.session_id))assistantFailure('FORBIDDEN');const attempt = get<AssistantAttempt>(db, 'attempts', draft.attempt_id); if (draft.manual_base_id) {
+        assistantFailure('INTERRUPTED'); if(child(db,draft.session_id))assistantFailure('FORBIDDEN');const attempt = get<AssistantAttempt>(db, 'attempts', draft.attempt_id);if(attempt.authorization.source.open_origin)assistantFailure('FORBIDDEN'); if (draft.manual_base_id) {
         const formal = get<FormalDecision>(db, 'decisions', draft.manual_base_id);if(formal.origin)assistantFailure('FORBIDDEN');const session = get<AssistantSession>(db, 'sessions', draft.session_id), origin = get<AssistantDraft>(db, 'drafts', `${formal.draft_id}:${formal.draft_version}`);
         if (!same(session.source, formal.source) || origin.attempt_id !== draft.attempt_id || draft.baseline_decision_id !== formal.id || draft.source_revision !== formal.source.revision_id)
             assistantFailure('FORBIDDEN');
@@ -452,6 +509,7 @@ export function createLocalCaseAssistantStore(config: {
         db.close();
     } }
     async function adopt(input: Parameters<CaseAssistantStore['adopt']>[0]): Promise<FormalDecision> {
+        if(input.source.open_origin)assistantFailure('FORBIDDEN');
         const fingerprint = hash(encode({ kind: 'adopt', command_id: input.command_id, draft_id: input.draft_id, draft_version: input.draft_version, session_id: input.session_id, actor: input.actor, owner: input.source.owner }));
         const probe = connect();
         if (!probe)
@@ -528,29 +586,32 @@ export function createLocalCaseAssistantStore(config: {
         return; transaction(db => { for (const attempt of rows<AssistantAttempt>(db, 'attempts'))
         if (['Running', 'Waiting'].includes(attempt.status))
             write(db, 'attempts', attempt.id, attempt.session_id, { ...attempt, status: 'Interrupted', ended_at: at, waiting_deadline: null, reason: 'application_closed' }, true); }); }
-    return { readLifecycle,closeFamily,reopenSession,readParentCollaboration,returnChild,failChildReturn,reviewChild,childResults,finishChild,readChild,createChild,readSource, listSessions, createSession, readSession, saveAttempt, appendEvent, saveDraft, findFormalDraft, formalHistory, adopt, interruptAll };
+    return { reserveOpenCommand,finishOpenCommand,readOpenCommand,importOpenHistory,readLifecycle,closeFamily,reopenSession,readParentCollaboration,returnChild,failChildReturn,reviewChild,childResults,finishChild,readChild,createChild,readSource, listSessions, createSession, readSession, saveAttempt, appendEvent, saveDraft, findFormalDraft, formalHistory, adopt, interruptAll };
 }
 
 /** Only the explicit P1 formal submission calls this local sidecar activation. */
 export function prepareMembershipSidecar(projectRoot:string,projectId:string):string{
  const root=realpathSync(projectRoot),path=join(root,'.xanthil','desktop','case-assistant.sqlite');
  for(const file of [join(root,'.xanthil'),dirname(path),path,...['-journal','-wal','-shm'].map(s=>path+s)])if(existsSync(file)&&lstatSync(file).isSymbolicLink())assistantFailure('INTEGRITY_BLOCKED');
- const existed=existsSync(path),db=new DatabaseSync(path);try{
- db.exec('PRAGMA busy_timeout=0; PRAGMA synchronous=FULL;');
- if(!existed){db.exec('BEGIN IMMEDIATE');try{db.exec(schema);db.exec('PRAGMA application_id=1480802625;PRAGMA user_version=100');db.prepare("INSERT INTO metadata VALUES(?,'1.0')").run(projectId);db.exec('COMMIT');}catch(e){try{db.exec('ROLLBACK');}catch{}throw e;}}
- assertMembershipSidecar(db,projectId,'main');
- }finally{db.close();}return path;
+ const existed=existsSync(path),db=new DatabaseSync(path);let locked=false;try{
+ // Cold creators cannot inspect each other's uncommitted schema. This wait is
+ // connection-local and bounded; formal effect transactions remain fail-fast.
+ db.exec('PRAGMA busy_timeout=1000; PRAGMA synchronous=FULL; BEGIN EXCLUSIVE');locked=true;
+ const empty=Number(db.prepare('PRAGMA user_version').get()?.user_version)===0&&db.prepare('SELECT count(*) n FROM sqlite_schema').get()?.n===0;
+ if(!existed&&empty){db.exec(schema);db.exec('PRAGMA application_id=1480802625;PRAGMA user_version=100');db.prepare("INSERT INTO metadata VALUES(?,'1.0')").run(projectId);}
+ assertMembershipSidecar(db,projectId,'main');db.exec('COMMIT');locked=false;db.exec('PRAGMA busy_timeout=0');
+ }catch(error){if(locked)try{db.exec('ROLLBACK');}catch{}throw error;}finally{db.close();}return path;
 }
 export function assertMembershipSidecar(db:DatabaseSync,projectId:string,name:'main'|'assistant'){
  const version=Number(db.prepare(`PRAGMA ${name}.user_version`).get()?.user_version),metadata=db.prepare(`SELECT * FROM ${name}.metadata`).all();
  const actual=encode(db.prepare(`SELECT type,name,tbl_name,sql FROM ${name}.sqlite_schema ORDER BY type,name`).all());
- if(![100,101,102].includes(version)||Number(db.prepare(`PRAGMA ${name}.application_id`).get()?.application_id)!==1480802625||metadata.length!==1||metadata[0].project_id!==projectId||metadata[0].version!==({100:'1.0',101:'1.1',102:'1.2'} as Record<number,string>)[version]||actual!==schemaIdentities[version-100])assistantFailure('SCHEMA_UNSUPPORTED');
+ if(![100,101,102,103].includes(version)||Number(db.prepare(`PRAGMA ${name}.application_id`).get()?.application_id)!==1480802625||metadata.length!==1||metadata[0].project_id!==projectId||metadata[0].version!==({100:'1.0',101:'1.1',102:'1.2',103:'1.3'} as Record<number,string>)[version]||actual!==schemaIdentities[version-100])assistantFailure('SCHEMA_UNSUPPORTED');
  if(db.prepare(`PRAGMA ${name}.journal_mode`).get()?.journal_mode!=='delete'||Number(db.prepare(`PRAGMA ${name}.synchronous`).get()?.synchronous)!==2||JSON.stringify(db.prepare(`PRAGMA ${name}.integrity_check`).all())!=='[{"integrity_check":"ok"}]'||db.prepare(`PRAGMA ${name}.foreign_key_check`).all().length)assistantFailure('INTEGRITY_BLOCKED');
  for(const table of [...tables,...(version>=101?['collaboration_children','collaboration_lifecycle','collaboration_results','collaboration_returns','collaboration_reviews']:[])])for(const row of db.prepare(`SELECT * FROM ${name}.${table}`).all())if(typeof row.body!=='string'||hash(row.body)!==row.sha256)assistantFailure('INTEGRITY_BLOCKED');
  return version;
 }
 export function migrateMembershipSidecar(db:DatabaseSync,projectId:string,name:'assistant'|'main'='assistant'){
- const version=assertMembershipSidecar(db,projectId,name);if(version===102)return;
+ const version=assertMembershipSidecar(db,projectId,name);if(version>=102)return;
  db.exec(`DROP TABLE ${name}.metadata;CREATE TABLE ${name}.metadata(project_id TEXT PRIMARY KEY,version TEXT NOT NULL CHECK(version='1.2'));`);db.prepare(`INSERT INTO ${name}.metadata VALUES(?,'1.2')`).run(projectId);
  if(version===100)db.exec(collaborationSchema.replaceAll('CREATE TABLE ',`CREATE TABLE ${name}.`));
  db.exec(`PRAGMA ${name}.user_version=102`);assertMembershipSidecar(db,projectId,name);
@@ -559,5 +620,10 @@ export function migrateMembershipSidecar(db:DatabaseSync,projectId:string,name:'
 function validateMembershipFormal(value:unknown){
  const f=assistantRecord(value,['id','outcome_id','report_id','sequence','source','source_report_id','previous_id','fields','actor','adopted_at','origin']),o=assistantRecord(f.origin,['kind','task_id','review_id','review_version','intent_id']),owner=assistantRecord(f.source,['project_id','session_id','case_id','revision_id']);
  const uuid=(v:unknown)=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(v);
- if(o.kind!=='membership_review'||![f.id,f.outcome_id,f.report_id,f.source_report_id,o.task_id,o.review_id,o.intent_id,...Object.values(owner)].every(uuid)||f.previous_id!==null&&!uuid(f.previous_id)||!Number.isSafeInteger(f.sequence)||Number(f.sequence)<1||!Number.isSafeInteger(o.review_version)||Number(o.review_version)<1||!assistantText(f.actor)||typeof f.adopted_at!=='string'||!Number.isFinite(Date.parse(f.adopted_at)))assistantFailure('INTEGRITY_BLOCKED');
+ if(!['membership_review','native_member_review'].includes(String(o.kind))||![f.id,f.outcome_id,f.report_id,f.source_report_id,o.task_id,o.review_id,o.intent_id,...Object.values(owner)].every(uuid)||f.previous_id!==null&&!uuid(f.previous_id)||!Number.isSafeInteger(f.sequence)||Number(f.sequence)<1||!Number.isSafeInteger(o.review_version)||Number(o.review_version)<1||!assistantText(f.actor)||typeof f.adopted_at!=='string'||!Number.isFinite(Date.parse(f.adopted_at)))assistantFailure('INTEGRITY_BLOCKED');
+}
+
+/** Explicit native-source semantic successor, same authority and atomic attached transaction. */
+export function migrateNativeMemberSidecar(db:DatabaseSync,projectId:string){
+ const v=assertMembershipSidecar(db,projectId,'assistant');if(v===103)return;migrateMembershipSidecar(db,projectId);db.exec("DROP TABLE assistant.metadata; CREATE TABLE assistant.metadata(project_id TEXT PRIMARY KEY,version TEXT NOT NULL CHECK(version='1.3'));");db.prepare("INSERT INTO assistant.metadata VALUES(?,'1.3')").run(projectId);db.exec('PRAGMA assistant.user_version=103');assertMembershipSidecar(db,projectId,'assistant');
 }

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261004102325452-DQ1OEB",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-04T10:23:25.452Z",
+  "actor": {
+    "role": "controller",
+    "session": "change-N01-02"
+  },
+  "summary": "遵从用户立即停止指令；Worker和验证进程已退出，等待更正规则。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

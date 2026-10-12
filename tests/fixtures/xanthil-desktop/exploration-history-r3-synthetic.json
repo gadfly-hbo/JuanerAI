@@ -1,0 +1,805 @@
+{
+  "source": {
+    "sources": [
+      {
+        "byte_length": "36",
+        "display_name": "book.csv",
+        "format": "csv",
+        "sha256": "917c3d2203cce37971d0ab245c1723d4ea3c9c8cc2d961fe33493a1656f1e837",
+        "sheets": [
+          {
+            "name": "CSV",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "分部"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "账载收入"
+                  }
+                ],
+                "row": 1
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "东"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "495"
+                  }
+                ],
+                "row": 2
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "西"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "100"
+                  }
+                ],
+                "row": 3
+              }
+            ],
+            "sheet_id": "csv",
+            "state": "visible"
+          }
+        ],
+        "source_id": "e8b70e9c-1f9b-47c2-9430-8f2fcb82b410"
+      },
+      {
+        "byte_length": "44",
+        "display_name": "drivers.csv",
+        "format": "csv",
+        "sha256": "e90a6c5783ed6e52c865a3c77278f32e6a7eb3fccc8ee5e7bbe783f77bb5307c",
+        "sheets": [
+          {
+            "name": "CSV",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "承担单元"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "分配系数"
+                  }
+                ],
+                "row": 1
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "甲"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "3"
+                  }
+                ],
+                "row": 2
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "乙"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "2"
+                  }
+                ],
+                "row": 3
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "丙"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "2"
+                  }
+                ],
+                "row": 4
+              }
+            ],
+            "sheet_id": "csv",
+            "state": "visible"
+          }
+        ],
+        "source_id": "117cd9f5-3f27-4ec7-87d9-0219469c8740"
+      },
+      {
+        "byte_length": "18",
+        "display_name": "pool.csv",
+        "format": "csv",
+        "sha256": "44a3d37af9507b08ab0dc9944ae2ccf0cac24bf95424288ffb63afed5e1f20a3",
+        "sheets": [
+          {
+            "name": "CSV",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "共享费用"
+                  }
+                ],
+                "row": 1
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "0.07"
+                  }
+                ],
+                "row": 2
+              }
+            ],
+            "sheet_id": "csv",
+            "state": "visible"
+          }
+        ],
+        "source_id": "d906e467-6715-4c4d-8f2c-b6ecfdaf71e1"
+      },
+      {
+        "byte_length": "111",
+        "display_name": "regional.csv",
+        "format": "csv",
+        "sha256": "85cd5a08f002ad14aaccabec0e9b5d1ca8e5cf0fdad4b1294d81854ebed5087f",
+        "sheets": [
+          {
+            "name": "CSV",
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "营业收入"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "业务权重"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "分部"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "月份"
+                  }
+                ],
+                "row": 1
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "200"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "2"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "东"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-03"
+                  }
+                ],
+                "row": 2
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "50"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "1"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "西"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-03"
+                  }
+                ],
+                "row": 3
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "500"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "2"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "东"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-04"
+                  }
+                ],
+                "row": 4
+              },
+              {
+                "cells": [
+                  {
+                    "column": "A",
+                    "type": "string",
+                    "value": "100"
+                  },
+                  {
+                    "column": "B",
+                    "type": "string",
+                    "value": "3"
+                  },
+                  {
+                    "column": "C",
+                    "type": "string",
+                    "value": "西"
+                  },
+                  {
+                    "column": "D",
+                    "type": "string",
+                    "value": "2026-04"
+                  }
+                ],
+                "row": 5
+              }
+            ],
+            "sheet_id": "csv",
+            "state": "visible"
+          }
+        ],
+        "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a"
+      }
+    ],
+    "version": "1.0"
+  },
+  "identity": {
+    "attempt_id": "9699f98e-c0e6-4e78-871b-eb91d71f47e2",
+    "config_sha256": "22c686d5f828e8ac97863ef0a49abe47c99be726a4533b6adf722612997cc7e1",
+    "grant_id": "4a6c0fae-eff2-40ae-b9af-9a5f1df82c59",
+    "operation_id": "f44757c8-a499-4d8d-852e-1bc376b7ad8a",
+    "revision": "3",
+    "run_id": "2adacdaa-6b93-4c0f-a433-fce6942222ed",
+    "scope_sha256": "fd8688d59a77791a4d0745575bf9531658bd1659b0f782095f0868dd96a7f01e",
+    "task_id": "68fa96a2-4ec5-4efb-baa1-94598538e5c1"
+  },
+  "earlier_question": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+  "exploration_question": "请准备本任务的新版本方案，保留原来失败和对话历史。资料、全部五项交付与计算口径不变：所有金额人民币元；业务权重与分配系数无量纲；共享费用为0.07元；book是4月账载收入，只核对实际差异，不改原件、不推断原因。请把五项交付实际绑定为完整可执行方案，先准备，采纳前不执行计算。",
+  "exploration": {
+    "classification": "MODEL_EXPLORATION",
+    "exploration_id": "5ab486e7-909c-4c38-a997-27206841eb20",
+    "framework": {
+      "context": {
+        "business": {
+          "classification": "MODEL_PROPOSAL",
+          "deliverables": [
+            "4月按业务权重加权平均收入",
+            "4月分部收入占比",
+            "3月到4月各分部变化额与对总变化的贡献",
+            "pool按drivers系数分到甲/乙/丙，保留2位，最大余数处理尾差",
+            "regional 4月收入 vs book 账载收入按分部一对一核账及差异定位"
+          ],
+          "execution_scope": [
+            {
+              "filters": [],
+              "sheet_id": "csv",
+              "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a"
+            },
+            {
+              "filters": [],
+              "sheet_id": "csv",
+              "source_id": "d906e467-6715-4c4d-8f2c-b6ecfdaf71e1"
+            },
+            {
+              "filters": [],
+              "sheet_id": "csv",
+              "source_id": "117cd9f5-3f27-4ec7-87d9-0219469c8740"
+            },
+            {
+              "filters": [],
+              "sheet_id": "csv",
+              "source_id": "e8b70e9c-1f9b-47c2-9430-8f2fcb82b410"
+            }
+          ],
+          "hypotheses": [
+            {
+              "classification": "MODEL_HYPOTHESIS",
+              "text": "regional各金额单位为人民币元"
+            },
+            {
+              "classification": "MODEL_HYPOTHESIS",
+              "text": "pool共享费用0.07单位为人民币元"
+            },
+            {
+              "classification": "MODEL_HYPOTHESIS",
+              "text": "book账载为各分部4月账载金额"
+            }
+          ],
+          "object": "regional.csv(收入)、pool.csv(共享费用)、drivers.csv(分配系数)、book.csv(账载收入)",
+          "purpose": "基于合成经营材料完成五项独立分析：4月加权平均收入、4月分部占比、3-4月分部变化及贡献、共享费用按系数分配、regional与book按分部核账差异",
+          "scope": "2026年3-4月营业收入与4月共享费用分配；regional仅4月收入与book按分部一对一对账",
+          "unknowns": []
+        },
+        "inspection_sha256": "fd8688d59a77791a4d0745575bf9531658bd1659b0f782095f0868dd96a7f01e",
+        "proposal": {
+          "classification": "MODEL_PROPOSAL",
+          "plan": {
+            "base": {
+              "column": "A",
+              "filters": [
+                {
+                  "column": "D",
+                  "operator": "eq",
+                  "value": "2026-03"
+                }
+              ],
+              "goal": "3月各分部收入",
+              "group_by": "C",
+              "numeric_mode": "decimal",
+              "operation": "sum",
+              "sheet_id": "csv",
+              "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a",
+              "unit": "人民币元",
+              "version": "1.2"
+            },
+            "measure": {
+              "currency": "CNY",
+              "inputs": [
+                {
+                  "column": "A",
+                  "scale": "1",
+                  "sheet_id": "csv",
+                  "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a"
+                }
+              ],
+              "output_label": "人民币元",
+              "output_scale": "1",
+              "unscaled_inputs": [
+                {
+                  "column": "B",
+                  "label": "分配系数",
+                  "sheet_id": "csv",
+                  "source_id": "117cd9f5-3f27-4ec7-87d9-0219469c8740"
+                },
+                {
+                  "column": "B",
+                  "label": "业务权重",
+                  "sheet_id": "csv",
+                  "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a"
+                }
+              ]
+            },
+            "version": "1.8"
+          }
+        },
+        "question": {
+          "classification": "USER_SAID",
+          "text": "请准备本任务的新版本方案，保留原来失败和对话历史。资料、全部五项交付与计算口径不变：所有金额人民币元；业务权重与分配系数无量纲；共享费用为0.07元；book是4月账载收入，只核对实际差异，不改原件、不推断原因。请把五项交付实际绑定为完整可执行方案，先准备，采纳前不执行计算。"
+        },
+        "semantics": {
+          "conflicts": [],
+          "definitions": [
+            {
+              "classification": "USER_INTERPRETED",
+              "dimension": "unit",
+              "interpretation": {
+                "evidence": [
+                  {
+                    "end": 144,
+                    "message_id": "0f520778ec92c16708b778e8b46d2a7c30250dede715dc6d782a123d80a547a4",
+                    "question": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+                    "quote": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+                    "start": 0
+                  }
+                ],
+                "status": "clear",
+                "unit": {
+                  "currency": "CNY",
+                  "inputs": [
+                    {
+                      "column": "A",
+                      "scale": "1",
+                      "sheet_id": "csv",
+                      "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a"
+                    },
+                    {
+                      "column": "A",
+                      "scale": "1",
+                      "sheet_id": "csv",
+                      "source_id": "d906e467-6715-4c4d-8f2c-b6ecfdaf71e1"
+                    },
+                    {
+                      "column": "B",
+                      "scale": "1",
+                      "sheet_id": "csv",
+                      "source_id": "e8b70e9c-1f9b-47c2-9430-8f2fcb82b410"
+                    }
+                  ],
+                  "output_label": "人民币元",
+                  "output_scale": "1",
+                  "unscaled_inputs": [
+                    {
+                      "column": "B",
+                      "label": "分配系数",
+                      "sheet_id": "csv",
+                      "source_id": "117cd9f5-3f27-4ec7-87d9-0219469c8740"
+                    },
+                    {
+                      "column": "B",
+                      "label": "业务权重",
+                      "sheet_id": "csv",
+                      "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a"
+                    }
+                  ]
+                }
+              },
+              "user_question": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+              "user_quote": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+              "value": "所有金额均为人民币元；业务权重与分配系数为无量纲数值"
+            },
+            {
+              "classification": "SOURCE_INTERPRETED",
+              "dimension": "population",
+              "interpretation": {
+                "evidence": [
+                  {
+                    "end": 7,
+                    "message_id": "f3b6e247c36f405fe7e740f9b4f6f6b046b7e9a85c78261886b4cd88a963a05b",
+                    "question": "2026-03",
+                    "quote": "2026-03",
+                    "source": {
+                      "column": "D",
+                      "row": 2,
+                      "sheet_id": "csv",
+                      "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a",
+                      "source_sha256": "85cd5a08f002ad14aaccabec0e9b5d1ca8e5cf0fdad4b1294d81854ebed5087f"
+                    },
+                    "start": 0
+                  }
+                ],
+                "status": "clear",
+                "unit": null
+              },
+              "user_question": null,
+              "user_quote": null,
+              "value": "2026年3月、2026年4月，分部=东/西"
+            },
+            {
+              "classification": "SOURCE_INTERPRETED",
+              "dimension": "grain",
+              "interpretation": {
+                "evidence": [
+                  {
+                    "end": 2,
+                    "message_id": "e77f58095d050c01f5a8b2455df3cb898fac39d91f3538899a6d7e767734e07d",
+                    "question": "分部",
+                    "quote": "分部",
+                    "source": {
+                      "column": "C",
+                      "row": 1,
+                      "sheet_id": "csv",
+                      "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a",
+                      "source_sha256": "85cd5a08f002ad14aaccabec0e9b5d1ca8e5cf0fdad4b1294d81854ebed5087f"
+                    },
+                    "start": 0
+                  }
+                ],
+                "status": "clear",
+                "unit": null
+              },
+              "user_question": null,
+              "user_quote": null,
+              "value": "按(分部, 月份)单行"
+            },
+            {
+              "classification": "USER_INTERPRETED",
+              "dimension": "metric",
+              "interpretation": {
+                "evidence": [
+                  {
+                    "end": 144,
+                    "message_id": "0f520778ec92c16708b778e8b46d2a7c30250dede715dc6d782a123d80a547a4",
+                    "question": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+                    "quote": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+                    "start": 0
+                  }
+                ],
+                "status": "clear",
+                "unit": null
+              },
+              "user_question": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+              "user_quote": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+              "value": "4月加权平均=sum(收入×权重)/sum(权重)按月筛选；4月占比=分部收入/4月合计；变化=4月-3月；贡献=变化/总变化；pool分配=0.07×系数/7按最大余数保留2位；核账=4月收入与book按分部一对一差值=左-右"
+            },
+            {
+              "classification": "USER_INTERPRETED",
+              "dimension": "formula",
+              "interpretation": {
+                "evidence": [
+                  {
+                    "end": 144,
+                    "message_id": "0f520778ec92c16708b778e8b46d2a7c30250dede715dc6d782a123d80a547a4",
+                    "question": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+                    "quote": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+                    "start": 0
+                  }
+                ],
+                "status": "clear",
+                "unit": null
+              },
+              "user_question": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+              "user_quote": "沿用原需求：包括共享费用0.07在内，所有金额都是人民币元；业务权重与分配系数无量纲。book是同一4月营业收入的账载值，仅定位与regional的实际差异，不改变任一表数值，也不改作净额。0.07元按最大余数保留两位可以分配，无需因金额小而改单位。请按已明确口径继续五项真实计算和核验。",
+              "value": "1) weighted_mean按月=2026-04；2) group_share按分部按月=2026-04；3) 差值按分部；4) proportional_allocation pool/驱动；5) reconcile 4月收入 vs book账载按分部"
+            }
+          ],
+          "scope": "current_task",
+          "task_id": "68fa96a2-4ec5-4efb-baa1-94598538e5c1",
+          "version": "1.2"
+        },
+        "source_facts": [
+          {
+            "classification": "SOURCE_FACT",
+            "data_rows": 4,
+            "display_name": "regional.csv",
+            "headers": [
+              {
+                "column": "A",
+                "type": "string",
+                "value": "营业收入"
+              },
+              {
+                "column": "B",
+                "type": "string",
+                "value": "业务权重"
+              },
+              {
+                "column": "C",
+                "type": "string",
+                "value": "分部"
+              },
+              {
+                "column": "D",
+                "type": "string",
+                "value": "月份"
+              }
+            ],
+            "sheet_id": "csv",
+            "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a",
+            "source_sha256": "85cd5a08f002ad14aaccabec0e9b5d1ca8e5cf0fdad4b1294d81854ebed5087f"
+          }
+        ],
+        "unknowns": [
+          "模型提出的单位、方法和业务解释不因字段同名而成为权威业务事实；未明确的语义或原因仍需资料与必要澄清。"
+        ],
+        "version": "1.2"
+      },
+      "execution_mode": "agent_led",
+      "identity": {
+        "attempt_id": "9699f98e-c0e6-4e78-871b-eb91d71f47e2",
+        "config_sha256": "22c686d5f828e8ac97863ef0a49abe47c99be726a4533b6adf722612997cc7e1",
+        "grant_id": "4a6c0fae-eff2-40ae-b9af-9a5f1df82c59",
+        "operation_id": "f44757c8-a499-4d8d-852e-1bc376b7ad8a",
+        "revision": "3",
+        "run_id": "2adacdaa-6b93-4c0f-a433-fce6942222ed",
+        "scope_sha256": "fd8688d59a77791a4d0745575bf9531658bd1659b0f782095f0868dd96a7f01e",
+        "task_id": "68fa96a2-4ec5-4efb-baa1-94598538e5c1"
+      },
+      "origin": "MODEL_PROPOSAL",
+      "plan": {
+        "base": {
+          "binding_sha256": "fd966783189f9341030c1ba173b9dcb3725e148dd1b5c691ca97e3eaab95d518",
+          "column": "A",
+          "filters": [
+            {
+              "column": "D",
+              "operator": "eq",
+              "value": "2026-03"
+            }
+          ],
+          "goal": "3月各分部收入",
+          "group_by": "C",
+          "inspection_sha256": "fd8688d59a77791a4d0745575bf9531658bd1659b0f782095f0868dd96a7f01e",
+          "numeric_mode": "decimal",
+          "operation": "sum",
+          "sheet_id": "csv",
+          "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a",
+          "source_sha256": "85cd5a08f002ad14aaccabec0e9b5d1ca8e5cf0fdad4b1294d81854ebed5087f",
+          "unit": "人民币元",
+          "version": "1.2"
+        },
+        "binding_sha256": "211ba8d1db5dc4e9c6daa040a2a67f42983c4f5040f2f99df6e0b69cb0ea5681",
+        "column": "A",
+        "context_sha256": "3b6eef26d520bc3dd7fda6d6bf2a0a7601aa5ce2670a38c1732481390fb725bf",
+        "filters": [
+          {
+            "column": "D",
+            "operator": "eq",
+            "value": "2026-03"
+          }
+        ],
+        "goal": "3月各分部收入",
+        "group_by": "C",
+        "inspection_sha256": "fd8688d59a77791a4d0745575bf9531658bd1659b0f782095f0868dd96a7f01e",
+        "measure": {
+          "currency": "CNY",
+          "inputs": [
+            {
+              "column": "A",
+              "scale": "1",
+              "sheet_id": "csv",
+              "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a"
+            }
+          ],
+          "output_label": "人民币元",
+          "output_scale": "1",
+          "unscaled_inputs": [
+            {
+              "column": "B",
+              "label": "分配系数",
+              "sheet_id": "csv",
+              "source_id": "117cd9f5-3f27-4ec7-87d9-0219469c8740"
+            },
+            {
+              "column": "B",
+              "label": "业务权重",
+              "sheet_id": "csv",
+              "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a"
+            }
+          ]
+        },
+        "numeric_mode": "decimal",
+        "operation": "sum",
+        "sheet_id": "csv",
+        "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a",
+        "source_sha256": "85cd5a08f002ad14aaccabec0e9b5d1ca8e5cf0fdad4b1294d81854ebed5087f",
+        "unit": "人民币元",
+        "version": "1.8"
+      },
+      "version": "1.0"
+    },
+    "identity": {
+      "attempt_id": "9699f98e-c0e6-4e78-871b-eb91d71f47e2",
+      "config_sha256": "22c686d5f828e8ac97863ef0a49abe47c99be726a4533b6adf722612997cc7e1",
+      "grant_id": "4a6c0fae-eff2-40ae-b9af-9a5f1df82c59",
+      "operation_id": "f44757c8-a499-4d8d-852e-1bc376b7ad8a",
+      "revision": "3",
+      "run_id": "2adacdaa-6b93-4c0f-a433-fce6942222ed",
+      "scope_sha256": "fd8688d59a77791a4d0745575bf9531658bd1659b0f782095f0868dd96a7f01e",
+      "task_id": "68fa96a2-4ec5-4efb-baa1-94598538e5c1"
+    },
+    "plan": {
+      "binding_sha256": "e71f72ec998b86ca1aaeb6dbe6daf9f43a43586f1a5a0745f75486352c88cba9",
+      "bindings": [
+        {
+          "columns": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "filters": [],
+          "sheet_id": "csv",
+          "source_id": "2cb2adcf-5c1d-468a-a300-0b09e1d5ea7a",
+          "source_sha256": "85cd5a08f002ad14aaccabec0e9b5d1ca8e5cf0fdad4b1294d81854ebed5087f"
+        }
+      ],
+      "context_sha256": "3b6eef26d520bc3dd7fda6d6bf2a0a7601aa5ce2670a38c1732481390fb725bf",
+      "goal": "独立核验3→4月变化、贡献与4月占比(基于regional.csv)",
+      "inspection_sha256": "fd8688d59a77791a4d0745575bf9531658bd1659b0f782095f0868dd96a7f01e",
+      "kind": "exploration",
+      "snapshot_sha256": "d7886a23e2c3b8d43d4587b02828246952140b238760c3f5d37d71ec8a2e6e69",
+      "version": "1.0"
+    },
+    "receipt": {
+      "classification": "MODEL_EXPLORATION",
+      "code_sha256": "a080e6238370f9eb60cddbe1814c4c7621bb49c09e7f1e6cc220b12e4ab346bc",
+      "execution_id": "5ab486e7-909c-4c38-a997-27206841eb20",
+      "helper_sha256": "9bfb2afc9051830fb87b27d640f65840af5f6e406a37b4b494449c5995385f6d",
+      "operation_context": {
+        "epoch": 0,
+        "execution_id": "5ab486e7-909c-4c38-a997-27206841eb20",
+        "operation_id": "f44757c8-a499-4d8d-852e-1bc376b7ad8a",
+        "task_id": "68fa96a2-4ec5-4efb-baa1-94598538e5c1"
+      },
+      "outcome_sha256": "88f18e7ed0c582c2fbc53b92b8b5b50792ec343d4bb8ce9f059405710f94080d",
+      "outputs": {
+        "result": {
+          "byte_length": 664,
+          "sha256": "8aaf184a9caf4dec6aaf97ca12f29f0b18bec9718318060801f5dbabea33bec2"
+        }
+      },
+      "policy_sha256": "e991e2873e05ddf0a26ffe81946fc50665ad318d3f74700eb46ace47a16bcf9b",
+      "request_sha256": "647cd1fd859abdf6e8bcbfc834c4cb934a567cc9fa191f75b73905e061d35063",
+      "snapshot_sha256": "56f83e0b21ed695b56eeeee7897120a56237e9c952eb32c9a4679c17d5e1443f",
+      "sources": [
+        {
+          "byte_length": 2026,
+          "sha256": "56f83e0b21ed695b56eeeee7897120a56237e9c952eb32c9a4679c17d5e1443f",
+          "source_id": "5dd333e2-8eaa-4ca1-aca3-4ab2a25dd222"
+        }
+      ],
+      "status": "unqualified",
+      "step_sha256": "ad719f154d5eb7365c02fce5583acac4427cacddcb7d7a598645698c9b7af34c",
+      "value_sha256": "84c371cb5a2ade21676e3b43eb77b67373e968a53f005d2b390295b3d841be4e",
+      "verification": "not_performed",
+      "version": "1.0"
+    },
+    "value": {
+      "charts": [],
+      "observations": [
+        "3月合计=250元,4月合计=600元,总变化=+350元",
+        "东:+300元贡献85.7143%",
+        "西:+50元贡献14.2857%",
+        "4月占比:东83.3333%西16.6667%"
+      ],
+      "summary": "{\"apr_total\": 600, \"apr_breakdown\": {\"东\": 500, \"西\": 100}, \"mar_total\": 250, \"mar_breakdown\": {\"东\": 200, \"西\": 50}, \"total_change\": 350, \"change_groups\": [{\"key\": \"东\", \"apr\": 500, \"mar\": 200, \"change\": 300, \"contrib_pct\": 85.7143}, {\"key\": \"西\", \"apr\": 100, \"mar\": 50, \"change\": 50, \"contrib_pct\": 14.2857}], \"apr_share\": [{\"key\": \"东\", \"share_pct\": 83.3333}, {\"key\": \"西\", \"share_pct\": 16.6667}]}"
+    },
+    "verification": "not_performed",
+    "version": "1.0"
+  }
+}
