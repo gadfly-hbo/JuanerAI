@@ -2,12 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdtempSync,mkdirSync,writeFileSync,lstatSync,symlinkSync,linkSync} from 'node:fs';
 import {join} from 'node:path';
+import {browserEvidenceRoot} from '../../fixtures/xanthil-desktop/browser-evidence.ts';
 import * as executor from '../../../adapters/analytics-duckdb/member-preparation-executor.ts';
 
 test('OA-C01/RT02: analysis result admission uses a fixed JSON output and preserves isolation file negatives',()=>{
  const read=Reflect.get(executor,'readAnalysisCodeOutput');
  assert.equal(typeof read,'function','actual analysis output consumer is missing');
- const root=mkdtempSync('/Users/bendandebaba/JuanerAI-artifacts/n01-n02/controller/v11-web-runtime-001/code-output-');
+ const root=mkdtempSync(join(browserEvidenceRoot,'code-output-'));
  for(const variant of ['valid','extra','malformed','oversize','symlink','hardlink','identity']){
   const directory=join(root,variant);mkdirSync(directory);
   const content=variant==='malformed'?'{':variant==='oversize'?'x'.repeat(1048577):'{"value":"9","rows":2}';

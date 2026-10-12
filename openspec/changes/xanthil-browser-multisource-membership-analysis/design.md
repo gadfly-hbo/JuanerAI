@@ -1655,3 +1655,7 @@ AC138-01当前事实/比较完整片段，毛额与净额不能由模型重命�
 
 ## AC142 CI固定依赖完整性修复
 实际release-ci001失败先于更改。只为六个已固定0.84.2 registry节点补公开dist.integrity，下载官方tarball另算SHA512验证；lock图、版本、来源和SDK0.4.3不变。原PythonTLS传输失败未修改锁，改用正常TLS curl，不用insecure。更新安装视图及测试的精确lock bytes/hash；补missing-integrity负例而不放宽校验。实际cloud原始node-gyp档案用于本机合同补验，发布requiredCI重跑。
+
+
+## AC143 固定输出夹具根
+复用已有browserEvidenceRoot，只替换该测试mkdtemp前缀位置，不创建另一证据权威或在Linux伪造Mini目录；对配置的持久根实际运行原正反例。生产源不改。

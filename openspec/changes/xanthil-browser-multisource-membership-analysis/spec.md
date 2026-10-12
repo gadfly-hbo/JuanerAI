@@ -1403,3 +1403,7 @@ OA-S01/AC04/AC07 的宿主验证必须绑定当前 descriptor、源码和实际�
 
 ### AC142 正式CI依赖完整性
 保留固定依赖图和SDK0.4.3，仅为现有六项Pi兼容0.84.2 registry依赖补官方tarball SHA512校验。实际公开包字节必须与声明一致；CI继续拒绝缺失或不合法SRI，不升级版本、不绕过固定安装视图。规格先行，当前真实CI install-view因missing registry integrity退出1为RED，保留旧锁及失败。锁定字节变化须同步精确安装identity，再跑合同、类型及当前CI。
+
+
+### AC143 测试证据根可移植性
+OA-C01/RT02固定输出的既有正反例必须在CI配置的JUANERAI_TEST_EVIDENCE_DIR内实际运行，不依赖Mini用户目录。保留所有大小/额外文件/畸形/符号与硬链接/身份拒绝断言。原CI run38260548884的ENOENT是夹具可移植性失败，非产品因果RED；原安全断言继续。
