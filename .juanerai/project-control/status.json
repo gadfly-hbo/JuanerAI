@@ -6,15 +6,15 @@
     "product": "Xanthil — Change006项目口径复用与净销售复盘"
   },
   "phase": {
-    "id": "INTEGRATION",
-    "label": "Change006具名接受后正式Git交付",
-    "ordinal": 4,
+    "id": "CI",
+    "label": "Change006 PR80最终head CI与Git收口",
+    "ordinal": 5,
     "total": 6
   },
-  "health": "active",
-  "summary": "Change006工程接受与用户接受附具名限制成立；012后代独立旁侧PASS，47执行源固定。正式提交/推送、PR actual-head CI及squash/main尚待执行。",
+  "health": "validating",
+  "summary": "实现提交1d40027已推送并创建PR80；工程/用户具名接受及归档/完整能力图成立，47源不变。正在收齐最终PR head Canonical CI，之后squash及安全main读回。",
   "current_objective": "按冻结产品和UI完成项目六指标精确资产复用及净销售真实链。",
-  "next_action": "固定仅文档/覆盖/归档后代，复核角色处置及必要旁侧；显式scope提交推送、PR required CI/审查后squash及安全main同步。",
+  "next_action": "检查最终PR80 head CI及完整文件scope，满足已授权条件后squash并安全FF每端main ref，保留005现场和最终回执。",
   "blockers": [],
   "milestones": [
     {
@@ -108,6 +108,12 @@
       "label": "独立011代码证据与012具名处置/归档旁侧结论",
       "path": "openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/independent-verification.md",
       "status": "verified"
+    },
+    {
+      "id": "GIT_PUBLICATION",
+      "label": "PR80与最终实际CI/merge/main回执定位",
+      "path": "openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/publication.md",
+      "status": "present"
     }
   ],
   "risks": [
@@ -130,7 +136,7 @@
       "mitigation": "不称角色合规或正式Validator PASS；原BLOCKED及只读遵守证据保持，不改全局规则。"
     }
   ],
-  "updated_at": "2026-10-13T12:40:51.232Z",
+  "updated_at": "2026-10-13T12:43:50.042Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a13539-6a65-7fd1-8103-e1f0e6d7d4a3"

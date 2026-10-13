@@ -14,4 +14,5 @@
 - [x] 正式作者正常入口评价完成；首轮FAIL及修正后首次/二次计时、帮助、限制完整保留。
 - [x] 正式产品接受及具名未测项豁免；用户主动时间/维护劳动/独立理解测试仍UNKNOWN，不声称量化达标。
 - [x] 完整固定候选、适用回归/质量及独立代码/证据复核；用户具名角色风险豁免后记录Engineering Acceptance，不冒正式Validator PASS。
-- [ ] 获准交付、能力map/snapshot、适用用户验收/required CI/发布/归档。
+- [x] 正式交付获准；工程/用户具名接受、能力全map/snapshot与适用归档落地，实现已提交推送并绑定PR80。
+- Git最终收口条件：required CI在最终head通过、squash及每端safe-main读回；以publication.md绑定的PR原生状态和实际最终本机回执判读，不将本清单的提交时点冒作这些效果已完成。

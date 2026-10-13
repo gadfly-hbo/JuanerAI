@@ -1,6 +1,6 @@
 ## Change006当前收口增量 · 2026-10-13
 
-用户直接“确认”具名角色风险例外、现有结果/二次partial和未测劳动项处置、正式Git集中交付；Engineering Acceptance及Product Acceptance附具名限制成立。candidate011独立代码/证据通过，正式Validator角色BLOCKED原文保留，风险豁免不称Validator PASS。47源码固定；完整portable 17组exit0，desktop integration1430 PASS/15既有SKIP。当前CI/merge/main尚待实际结果，不伪称已集成。
+用户直接“确认”具名角色风险例外、现有结果/二次partial和未测劳动项处置、正式Git集中交付；Engineering Acceptance及Product Acceptance附具名限制成立。candidate011独立代码/证据通过，正式Validator角色BLOCKED原文保留，风险豁免不称Validator PASS。47源码固定；完整portable 17组exit0，desktop integration1430 PASS/15既有SKIP。本段是具名接受/归档时点；实现已提交并创建PR80，Git集成由下列publication绑定的PR原生CI/merge及同机最终回执确认，不凭覆盖文档自称已集成。
 
 八项稳定能力新增已接受子范围：A-02/03/05、C6-01、C4-01、B-01/02/03。其广义目标仍局部实现；C4-07完整Domain Pack及S1阶段未完成。40ID、长期完成条件、001～005事实/历史及Desktop E2/UNKNOWN全部保留。
 
