@@ -22,6 +22,7 @@
 - 类型检查：`tsc -p tsconfig.json --noEmit` PASS。
 - 受影响回归：`open-analysis-autonomous-native-session.integration.test.ts` 与 `open-analysis-workspace.integration.test.ts` 合计 226 PASS、0 FAIL、0 SKIP。首次复跑未提供规范化证据根和工具链路径，分别得到 `ASSET_STORE_UNSAFE`／`SOURCE_READER_UNAVAILABLE`；失败输出保留，随后使用隔离的 `/private/tmp` 证据根与只指向 `/usr/bin/python3` 的临时工具链目录复跑通过，没有安装依赖或修改仓库。
 - canonical 全量离线验证已尝试，但在第一个 `validation-contracts` 组停止：431 PASS、16 FAIL、3 SKIP。固定本机 PATH 只找到 Python 3.9.6，`check-agent-config.py` 导入 `tomllib` 失败，连带 Agent 配置分类断言走到 `full`；产品测试组尚未执行。该失败不冒充产品回归，也不声明全量 PASS，交由 PR CI 的受控 Python 环境复核。
+- PR #82 首次 canonical CI 在完整产品回归中得到 1,449 项中的 1,433 PASS、1 FAIL、15 SKIP：`V13-SCOPE-CHOICES109` 的旧精确对象断言仍要求小资料工具结果与原 inspection 完全相等，未包含本修复明确新增的 `full_data_rows`／`full_column_count`。生产行为、完整数据读取和数值结果均无失败；该断言现按固定工具结果契约显式核对新增计数。修正后该文件完整 122 PASS、原受影响回归 226 PASS、四项大资料边界包含在回归内并继续 PASS，类型检查 PASS；首次 CI 失败日志保留，PR CI 重新执行。
 
 持久证据根：`/Users/huangbo/JuanerAI-artifacts/n01-n02/repairs/inspect-selected-2026-10-13/`
 
@@ -36,6 +37,10 @@
 - `impacted-regression.log`：受影响回归 226 PASS。
 - `typecheck.log`：当前候选类型检查 PASS。
 - `canonical-validation.log`：全量离线验证的上述环境／合同组失败原始输出。
+- `pr82-canonical-ci-attempt1.log`：PR #82 首次 canonical CI 的 1 条过期精确对象断言失败；该次失败不作为当前候选 PASS。
+- `pr82-numeric-report-final.log`：修正旧断言后该文件完整 122 PASS，SHA-256 `23d197cf3a431c582505db08f46cb0c300947c9e95def7d5e6a13b149008950c`。
+- `pr82-impacted-regression-final.log`：修正后原受影响回归 226 PASS，SHA-256 `08e1101192c6220c1b0a9c3e5130b4bc6c520451b60d2a09afab4b44aba852cc`。
+- `pr82-typecheck-final.log`：修正后类型检查 PASS，SHA-256 `fc881feeb8f204316f6e31c28cd9efbb46850ff944a39e75bb911098dbd565cb`。
 - `live-source-projection-readback.json`：现场任务只读尺寸、完整行列数、预览范围与失败状态，不含原始单元格内容。
 
 ## 本机部署与剩余边界
