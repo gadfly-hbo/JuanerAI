@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013080145995-Z97I2I",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-13T08:01:45.995Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a1342d-1e65-72d2-b513-f354b2791f97"
+  },
+  "summary": "真实合成链发现问题后完成针对修正；保留005基线和006两次失败，第三候选继续",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013073748205-GRS02N",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-13T07:37:48.205Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a1342d-1e65-72d2-b513-f354b2791f97"
+  },
+  "summary": "用户批准合成试用及必要出站；核对候选与保护现场后继续",
+  "status_after": "active",
+  "evidence_refs": []
+}

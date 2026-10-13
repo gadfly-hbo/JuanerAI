@@ -6,7 +6,7 @@ import type {OpenAnalysisVerification} from './open-analysis-verifier.ts';
 export type OpenTaskIdentity=OpenAnalysisRun['identity'];
 export type OpenFrameworkCheckpoint=Readonly<{version:'1.0';execution_mode?:'agent_led';identity:OpenTaskIdentity;origin:'MODEL_PROPOSAL';plan:OpenAnalysisIR;context?:import('../product-core/open-analysis-context.ts').OpenAnalysisContext;steps?:import('../product-core/open-analysis-steps.ts').OpenAnalysisSteps}>;
 export type OpenVerifiedStep=Readonly<{version:'1.0';step_id:string;identity:OpenTaskIdentity;framework:OpenFrameworkCheckpoint;calculation:OpenAnalysisValue;verification:OpenAnalysisVerification}>;
-export type OpenAnalysisOutcome=Readonly<{version:'1.0';outcome_id:string;identity:OpenTaskIdentity;framework:OpenAnalysisIR;calculation:OpenAnalysisValue;verification:OpenAnalysisVerification;explanation:{kind:'MODEL_EXPLANATION';text:string};human_judgment:'not_recorded';numeric_report?:import('./open-analysis-numeric-report.ts').OpenNumericReport}>;
+export type OpenAnalysisOutcome=Readonly<{asset_adoption?:import('../product-core/metric-asset-adoption.ts').MetricAssetAdoption;version:'1.0';outcome_id:string;identity:OpenTaskIdentity;framework:OpenAnalysisIR;calculation:OpenAnalysisValue;verification:OpenAnalysisVerification;explanation:{kind:'MODEL_EXPLANATION';text:string};human_judgment:'not_recorded';numeric_report?:import('./open-analysis-numeric-report.ts').OpenNumericReport}>;
 export type OpenConversationOutcome=Readonly<{version:'1.0';outcome_id:string;identity:OpenTaskIdentity;kind:'MODEL_CONVERSATION';text:string;verification:'not_performed';human_judgment:'not_recorded'}>;
 export type OpenTaskLease=Readonly<{task_id:string;epoch:number;identity:OpenTaskIdentity}>;
 export type OpenAnalysisCheckpoint=AnalysisTurnCheckpoint & Readonly<{calculation:OpenAnalysisValue|null;verification:OpenAnalysisVerification|null}>;
@@ -24,7 +24,9 @@ export type OpenRevisionPreview=Readonly<{
 }>;
 export type OpenStepEvent=Readonly<{version:'1.0';identity:OpenTaskIdentity;epoch:number;seq:number;step_id:string;phase:'blocked'|'unsupported'|'running'|'checking'|'verified'|'failed'|'stopped'|'unknown';code:string|null;receipt_step_id:string|null}>;
 export type OpenExplorationRecord=Readonly<{version:'1.0'|'1.1';total_check?:import('../product-core/open-analysis-exploration.ts').OpenExplorationTotalCheck;exploration_id:string;identity:OpenTaskIdentity;framework:OpenFrameworkCheckpoint;plan:import('../product-core/open-analysis-exploration.ts').OpenExplorationIR;value:import('../product-core/open-analysis-exploration.ts').OpenExplorationValue;receipt:Readonly<Record<string,unknown>>;classification:'MODEL_EXPLORATION';verification:'not_performed'}>;
+export type MetricAssetChoice=Readonly<{id:string;version:string}>;
 export type OpenStoredTask=Readonly<{
+ metric_asset_choice?:MetricAssetChoice;
  requirement_reviews?:readonly import('../product-core/open-requirement-framework.ts').RequirementReview[];
  requirement_execution?:import('../product-core/open-requirement-framework.ts').RequirementExecution;
  requirement_materials?:readonly Readonly<{command_id:string;input_sha256:string;analysis_revision:string;scope_sha256:string}>[];
@@ -77,10 +79,10 @@ export interface OpenAnalysisStore {
  acknowledge(task_id:string,input:unknown):OpenAnalysisJudgment;
  judgmentReceipt(task_id:string,command_id:string):OpenAnalysisJudgment|null;
  list():readonly OpenStoredTask[];
- create(input:{identity:OpenTaskIdentity;question:string;source:MemberSourceInspection;preferences?:OpenAnalysisPreferences;entry_mode?:'requirements';reused_plan?:import('../product-core/open-analysis-plan-reuse.ts').OpenPlanReuse}):OpenStoredTask;
+ create(input:{identity:OpenTaskIdentity;question:string;source:MemberSourceInspection;preferences?:OpenAnalysisPreferences;metric_asset_choice?:MetricAssetChoice;entry_mode?:'requirements';reused_plan?:import('../product-core/open-analysis-plan-reuse.ts').OpenPlanReuse}):OpenStoredTask;
  read(task_id:string):OpenStoredTask|null;
  begin(task_id:string):OpenTaskLease;
- revise(task_id:string,input:{command_id:string;expected_revision:string;question:string;identity:OpenTaskIdentity;preferences:OpenAnalysisPreferences;source?:MemberSourceInspection;context_materials?:readonly OpenContextMaterial[];adopt_preview_command_id?:string}):OpenStoredTask;
+ revise(task_id:string,input:{command_id:string;expected_revision:string;question:string;identity:OpenTaskIdentity;preferences:OpenAnalysisPreferences;metric_asset_choice?:MetricAssetChoice;source?:MemberSourceInspection;context_materials?:readonly OpenContextMaterial[];adopt_preview_command_id?:string}):OpenStoredTask;
  /** Explicit settled-recovery reconciliation only; caller fences physical requests and current authority. */
  reconcileCheckpoint(task_id:string,identity:OpenTaskIdentity):OpenStoredTask;
  /** Called only after authoritative terminal Runtime/effect reconciliation. */

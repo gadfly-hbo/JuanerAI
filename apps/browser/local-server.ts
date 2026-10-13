@@ -64,7 +64,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       const code = error instanceof HttpFailure ? null : (error as {code?: unknown})?.code;
       const status = error instanceof HttpFailure ? error.status : code === 'NOT_FOUND' ? 404 : code === 'COMMAND_CONFLICT' ? 409 : 400;
       const sourceReasons:Record<string,string>={MATERIAL_REQUIRED:'还没有分析资料。方案已保存，添加资料后再开始。',FRAMEWORK_REVIEW_REQUIRED:'方案或资料已调整，请再确认一下方案后开始。',ALREADY_STARTED:'这个版本已经开始分析，请先查看结果；停止后可以选择继续。',DRAFT_UNCONFIRMED:'正在确认这次回复是否已保存，请先查看保存结果。',CONFIG_CHANGED:'AI 连接设置与这次任务不一致。方案已保存，请检查连接设置。',SOURCE_LEGACY_READER_UNAVAILABLE:'暂时无法读取旧版 Word/PPT，请导出为 DOCX/PPTX 后添加，原文件不变。',SOURCE_LEGACY_CONVERSION_FAILED:'这份旧版 Word/PPT 没有读取成功，请导出为 DOCX/PPTX 后添加，原文件不变。',SOURCE_IMAGE_READER_UNAVAILABLE:'本机图片识别尚未就绪，可先提供文字版资料。',SOURCE_IMAGE_READER_FAILED:'本机图片识别未完成，原资料保留。请提供清晰图片或文字版。',SOURCE_IMAGE_INVALID:'图片无法可靠解码或超过读取范围，请导出标准PNG/JPEG后重试。',SOURCE_IMAGE_TEXT_EMPTY:'图片中未识别到可读文字，请提供清晰图片或对应文字资料。',SOURCE_PDF_OCR_REQUIRED:'此PDF含扫描页或没有可读取的文字层。请提供文字版PDF，或清晰图片并核对识别结果；原资料保留。',SOURCE_PDF_READER_UNAVAILABLE:'本机PDF文字读取器尚未就绪。可先提供文字版Markdown或Excel资料，原PDF保留。',SOURCE_READER_UNAVAILABLE:'此资料格式的本机读取器尚未就绪。请提供对应文字版或CSV/Excel资料；原资料保留。',SOURCE_UNREADABLE:'这份资料暂时无法可靠解析。请检查文件是否完整，或导出标准文字版/CSV/Excel后再试。',SOURCE_ENCRYPTED:'这份资料已加密，尚未读取。请在本机导出可读取的副本后添加，原件不会改动。',SOURCE_CONTENT_UNSUPPORTED:'资料包含宏、嵌入程序或不支持的内容，未执行。请导出不含这些内容的资料副本。',SOURCE_ARCHIVE_INVALID:'文档内部结构不符合安全读取条件，未继续。请重新导出标准文件。',SOURCE_CAPACITY:'这次资料量超过读取上限，尚未发送给模型。请减少本次资料。'};
-      const reason=typeof code==='string'?sourceReasons[code]:undefined;reply(res, status, {error: 'REQUEST_REJECTED',...(reason?{reason}:{})});
+      const assetReasons:Record<string,string>={SAP_YAML_INVALID:'发布文件格式无效，候选未保存；请换正确文件。',SAP_YAML_UNSAFE:'发布文件含重复、别名或不支持的标签，未导入。',SAP_ENCODING:'发布文件不是有效UTF-8，未导入。',SAP_FILE_SIZE:'发布文件超出安全读取范围，未导入。',SAP_STRUCTURE:'发布包结构不符合冻结合同，未导入。',SAP_UNKNOWN_FIELD:'发布包含未知字段，未导入；请提供符合合同的版本。',SAP_VERSION:'发布包版本不受支持，未导入。',SAP_RUNTIME_STATE:'发布包不是支持的设计态实例，未导入。',SAP_FINGERPRINT_MISMATCH:'发布包指纹不符，未导入；原配置保留。',SAP_REGISTRY_MISMATCH:'发布登记与包身份不一致，未导入。',SAP_UNREVIEWED:'发布包审核要求未满足，未导入。',SAP_DUPLICATE_IDENTITY:'发布包含重复身份，未导入。',SAP_DANGLING_REFERENCE:'发布包引用不完整，未导入。',SAP_SCENARIO_CYCLE:'发布场景存在循环，未导入。',ASSET_IDENTITY_COLLISION:'同一精确版本的字节不同，未覆盖原候选。',ASSET_RELEASE_UNVERIFIED:'候选发布登记尚未核对，不能批准；请添加匹配登记。',ASSET_UNCOMPUTABLE:'此候选不支持所选复盘，不能批准；请查看具体缺口。',ASSET_OWNER_REQUIRED:'维护者不符或未明确，项目配置未改变。',ASSET_APPROVAL_REVOKED:'本任务口径批准已失效，尚未形成新的成功结果；历史报告保留。',ASSET_DISCLOSURE_REQUIRED:'本次口径材料尚未获得模型外发许可，任务未继续。'};const reason=typeof code==='string'?sourceReasons[code]??assetReasons[code]:undefined;reply(res, status, {error: 'REQUEST_REJECTED',...(reason?{reason}:{})});
     });
   });
   async function handle(req: IncomingMessage, res: ServerResponse) {
@@ -140,6 +140,22 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
     }
     if(deps.open&&path.startsWith('/v1/open-analysis')){
       const present=(task:OpenStoredTask)=>req.headers['x-xanthil-view']==='browser-v1'?browserOpenTask(task):task;
+      const assetReceipt=/^\/v1\/open-analysis\/metric-assets\/commands\/([a-f0-9-]{36})$/.exec(path);if(assetReceipt&&req.method==='GET'){reply(res,200,deps.open.metricAssetCommandReceipt(assetReceipt[1]));return;}
+      if(path==='/v1/open-analysis/metric-assets'){
+        if(req.method==='GET'){reply(res,200,deps.open.metricAssets());return;}
+        if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);
+        const raw=await json(req,6*1024*1024);if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new HttpFailure(400);
+        if(Reflect.get(raw,'action')==='import'){
+          if(Object.keys(raw).sort().join()!==['action','package_base64',...(Object.hasOwn(raw,'registry_base64')?['registry_base64']:[])].sort().join())throw new HttpFailure(400);
+          const decode=(key:string)=>{const value=Reflect.get(raw,key);if(typeof value!=='string'||!value.length)throw new HttpFailure(400);const bytes=Buffer.from(value,'base64');if(bytes.length>2*1024*1024||bytes.toString('base64')!==value)throw new HttpFailure(400);return bytes;};
+          reply(res,200,deps.open.metricAssetCommand({action:'import',bytes:decode('package_base64'),...(Object.hasOwn(raw,'registry_base64')?{registry:decode('registry_base64')}:{})}));return;
+        }
+        reply(res,200,deps.open.metricAssetCommand(raw));return;
+      }
+      const assetAction=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/(metric-asset|metric-asset-execute)$/.exec(path);
+      if(assetAction&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req);reply(res,200,present(await (assetAction[2]==='metric-asset'?deps.open.selectMetricAsset(assetAction[1],body):deps.open.executeMetricAssetRevision(assetAction[1],body))));return;}
+      const assetCopy=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/adoption-receipts\/([1-9][0-9]*)\/([a-f0-9-]{36})\/copy$/.exec(path);
+      if(assetCopy&&req.method==='GET'){const value=deps.open.metricAssetReceiptCopy(assetCopy[1],assetCopy[2],assetCopy[3]);res.writeHead(200,{'content-type':value.media_type,'content-disposition':`attachment; filename="${value.suggested_file_name}"`,'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"});res.end(value.bytes);return;}
       if(path==='/v1/open-analysis/methods'&&req.method==='GET'){reply(res,200,deps.open.methods());return;}
       if(path==='/v1/open-analysis'&&req.method==='GET'){reply(res,200,deps.open.list().map(present));return;}
       if(path==='/v1/open-analysis'&&req.method==='POST'){

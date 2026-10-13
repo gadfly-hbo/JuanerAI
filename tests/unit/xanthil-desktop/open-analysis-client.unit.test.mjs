@@ -4,6 +4,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {renderQuickAnalysisWorkbench} from '../../../apps/browser/quick-analysis-workbench.mjs';
 import {createQuickAnalysisClient,openTaskView} from '../../../apps/browser/quick-analysis-client.mjs';
+test('MFUI-05/07: lost task asset choice reads the exact version receipt and never reissues selection or execution',async()=>{const values=new Map(),storage={getItem:k=>values.get(k),setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)},id=crypto.randomUUID();let body,writes=0;const client=createQuickAnalysisClient({storage,control:'owned',request:async(_path,opt)=>{writes++;body=JSON.parse(opt.body);throw Error('lost reply');}});await assert.rejects(()=>client.selectMetricAsset(id,'1',{id:'net-sales-instance',version:'1.1.1'}));assert.equal(writes,1);let exact=false;const reopened=createQuickAnalysisClient({storage,request:async(_path,opt)=>{assert.equal(opt.method,undefined);return new Response(JSON.stringify({identity:{task_id:id,revision:'2'},revision_command_id:body.command_id,metric_asset_choice:{id:body.id,version:exact?'1.1.1':'1.1.0'},state:'ready'}));}});await assert.rejects(()=>reopened.recover());exact=true;const task=await reopened.recover();assert.equal(task.state,'ready');assert.equal(reopened.pending(),null);assert.equal(writes,1);});
+test('MFUI-01/02/07: lost project decision recovers exact project command without resend; receipt download retry never executes',async()=>{const values=new Map(),storage={getItem:k=>values.get(k),setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)},project=crypto.randomUUID();let body,writes=0;const client=createQuickAnalysisClient({storage,control:'owned',request:async(_path,opt)=>{writes++;body=JSON.parse(opt.body);throw Error('lost reply');}});await assert.rejects(()=>client.assetCommand(project,{action:'approve',id:'net-sales-instance',version:'1.1.0',owner:'maintainer',use_for_new_tasks:true}));let same=false;const recovered=createQuickAnalysisClient({storage,request:async path=>new Response(JSON.stringify(path.endsWith('/metric-assets')?{project_id:same?project:crypto.randomUUID(),candidates:[]}: {command_id:body.command_id,result:{}}))});await assert.rejects(()=>recovered.recover());same=true;await recovered.recover();assert.equal(recovered.pending(),null);assert.equal(writes,1);let copies=0;const copy=createQuickAnalysisClient({request:async(path,opt)=>{assert.equal(opt.method,undefined);assert.ok(path.includes('/adoption-receipts/2/'));copies++;return copies===1?new Response('{}',{status:500}):new Response('{"task_id":"immutable"}',{headers:{'content-type':'application/json'}});}});const task=crypto.randomUUID(),outcome=crypto.randomUUID();await assert.rejects(()=>copy.copyAdoption(task,'2',outcome));assert.equal((await copy.copyAdoption(task,'2',outcome)).name,'JuanerAI-adoption-v2.receipt.json');assert.equal(copies,2);assert.equal(copy.pending(),null);});
 test('RSUI-02/09: existing drawer shows current saved requirement meaning and methods before execution',()=>{
  const business={purpose:'解释经营变化',object:'本项目订单',scope:'两期',deliverables:['比较净额'],unknowns:['退款字段待核对']},task={identity:{task_id:crypto.randomUUID(),revision:'1',scope_sha256:'scope'},question:'旧初始问题',state:'ready',source:{sources:[]},requirement_draft:{revision:1,sequence:1,receipts:[{sequence:1}],content:{business,methods:['按订单关联核对'],evidence:['订单与退款资料'],previews:[]},history:[]}};
  const view=openTaskView(task);
@@ -539,4 +541,38 @@ test('P0-02: shared leaf parses one successful GET, preserves caller options and
  const headers={'x-xanthil-view':'browser-v1'},options={headers},value={state:'unknown'};let count=0;
  const result=await readJson(async(path,input)=>{count++;assert.equal(path,'/synthetic');assert.deepEqual(input,{credentials:'same-origin',cache:'no-store',headers});return {ok:true,json:async()=>value};},'/synthetic','failure',options);
  assert.equal(result,value);assert.equal(count,1);assert.deepEqual(options,{headers});
+});
+
+test('MFUI-01: selecting SAP and registry immediately shows selected names without sending or importing',async()=>{
+ const {startQuickWorkspace}=await import('../../../apps/browser/quick-analysis-client.mjs');
+ const keys=['document','window','sessionStorage','fetch','setInterval','clearInterval'],prior=Object.fromEntries(keys.map(k=>[k,globalThis[k]]));
+ const listeners={},elements=[],app={innerHTML:'',addEventListener:(n,f)=>{listeners[n]=f;},querySelector:()=>({focus(){}})};let dispose,writes=0;
+ const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
+ try{
+ globalThis.document={getElementById:()=>app,createElement:()=>{const e={value:'',append(){},replaceChildren(){},setAttribute(){},showModal(){},close(){}};elements.push(e);return e;},head:{append(){}},body:{append(){}}};
+ globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_n,f)=>{dispose=f;}};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
+ globalThis.fetch=async(path,o)=>{if(o?.method==='POST')writes++;return new Response(JSON.stringify(path==='/v1/projects'?{projects:[]}:path.endsWith('/metric-assets')?{project_id:'synthetic',candidates:[],current:null}:path.endsWith('/methods')?{skills:[],prompts:[]}:[]));};
+ await startQuickWorkspace({control:'owned'});listeners.click({target:{closest:()=>({type:'button',dataset:{action:'project'}})}});await settle();await elements.find(e=>e.textContent==='分析口径').onclick();await settle();
+ listeners.change({target:{id:'asset-package',files:[{name:'1.1.0.sap.yaml'}]}});await settle();assert.match(app.innerHTML,/1\.1\.0\.sap\.yaml/);
+ listeners.change({target:{id:'asset-registry',files:[{name:'index.yaml'}]}});await settle();assert.match(app.innerHTML,/index\.yaml/);assert.equal(writes,0);
+ }finally{dispose?.();Object.assign(globalThis,prior);}
+});
+
+
+test('MFUI-03: successful project switch clears private import files and unsent draft; failed switch preserves them',async()=>{
+ const {startQuickWorkspace}=await import('../../../apps/browser/quick-analysis-client.mjs');
+ const keys=['document','window','sessionStorage','fetch','setInterval','clearInterval'],prior=Object.fromEntries(keys.map(k=>[k,globalThis[k]]));
+ const listeners={},elements=[],app={innerHTML:'',addEventListener:(n,f)=>{listeners[n]=f;},querySelector:()=>({focus(){}})};let dispose,current='first',failSwitch=true,writes=0;
+ const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
+ const action=async(name)=>{listeners.click({target:{closest:()=>({type:'button',dataset:{action:name}})}});await settle();};
+ try{
+ globalThis.document={getElementById:()=>app,createElement:()=>{const e={value:'',append(){},replaceChildren(){},setAttribute(){},showModal(){},close(){}};elements.push(e);return e;},head:{append(){}},body:{append(){}}};
+ globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_n,f)=>{dispose=f;}};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
+ globalThis.fetch=async(path,o)=>{if(o?.method==='POST')writes++;if(path==='/v1/projects/select'){if(failSwitch)return new Response('{}',{status:409});current='second';return new Response(JSON.stringify({control:'owned-second'}));}return new Response(JSON.stringify(path==='/v1/projects'?{current,projects:[{project_id:'first',display_name:'项目一'},{project_id:'second',display_name:'项目二'}]}:path.endsWith('/metric-assets')?{project_id:current,candidates:[],current:null}:path.endsWith('/methods')?{skills:[],prompts:[]}:[]));};
+ await startQuickWorkspace({control:'owned',service:true});await action('project');await elements.find(e=>e.textContent==='分析口径').onclick();await settle();
+ listeners.change({target:{id:'asset-package',files:[{name:'first-private.sap.yaml'}]}});listeners.change({target:{id:'asset-registry',files:[{name:'first-private-index.yaml'}]}});listeners.input({target:{id:'analysis-message',value:'项目一未发送的私有需求'}});await settle();
+ await action('project');await elements.filter(e=>e.textContent==='项目二').at(-1).onclick();await settle();assert.match(app.innerHTML,/first-private\.sap\.yaml/,'failed switch must retain selected files');
+ failSwitch=false;await action('project');await elements.filter(e=>e.textContent==='项目二').at(-1).onclick();await settle();assert.doesNotMatch(app.innerHTML,/项目一未发送的私有需求|项目暂时不能切换/,'new project must not inherit old draft or notice');
+ await action('project');await elements.filter(e=>e.textContent==='分析口径').at(-1).onclick();await settle();assert.doesNotMatch(app.innerHTML,/first-private/,'new project must not inherit old import file selection');assert.equal(writes,2,'only explicit project switch attempts issue writes');
+ }finally{dispose?.();Object.assign(globalThis,prior);}
 });

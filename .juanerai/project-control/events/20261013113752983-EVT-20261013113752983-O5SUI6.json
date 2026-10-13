@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013113752983-O5SUI6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-13T11:37:52.983Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a13505-241e-7ae1-8171-88ddff8f8a18"
+  },
+  "summary": "Change006交付准备完成，固定源码及保护现场不变，集中决定待答复",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

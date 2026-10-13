@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013094558154-X6NDMT",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-13T09:45:58.154Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a134a5-0fb8-7193-b806-a6a0fa34c339"
+  },
+  "summary": "用户形成性试用PASS且采用正式目标；同一主chat继续确认后的正式评价",
+  "status_after": "active",
+  "evidence_refs": []
+}

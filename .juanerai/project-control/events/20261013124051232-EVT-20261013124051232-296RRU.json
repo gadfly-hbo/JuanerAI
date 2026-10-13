@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013124051232-296RRU",
+  "event_type": "accepted",
+  "occurred_at": "2026-10-13T12:40:51.232Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a13539-6a65-7fd1-8103-e1f0e6d7d4a3"
+  },
+  "summary": "Change006独立旁侧通过，具名工程/产品接受成立，准备正式发布",
+  "status_after": "active",
+  "evidence_refs": []
+}

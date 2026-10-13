@@ -498,14 +498,14 @@ function assertApprovedRootManifest(manifest: unknown) {
   }
 }
 
-function assertApprovedLock(lock: TestRecord, sdk041=false) {
+function assertApprovedLock(lock: TestRecord, sdk041=false, metricAssets=false) {
   assert.equal(typeof lock, 'object');
   const packages = requiredRecord(lock.packages, 'npm lock packages');
   const root = requiredRecord(packages[''], 'npm lock root');
   assert.deepEqual(root, {
     name: 'xanthil-desktop',
     version: '0.1.0',
-    dependencies: sdk041?approvedSdk043Manifest.dependencies:approvedP4RootManifest.dependencies,
+    dependencies: metricAssets?approvedMetricAssetsManifest.dependencies:sdk041?approvedSdk043Manifest.dependencies:approvedP4RootManifest.dependencies,
     devDependencies: approvedP4RootManifest.devDependencies,
     engines: approvedP4RootManifest.engines,
   }, 'lock root must be the exact approved closed object');
@@ -642,7 +642,20 @@ const approvedSdk041Tsconfig={...approvedOpenAnalysisV11Tsconfig,files:[...appro
  'tests/integration/xanthil-desktop/shared-runtime-state.integration.test.ts',
  'tests/integration/xanthil-desktop/requirement-draft.integration.test.ts',
  'tests/integration/xanthil-desktop/shared-analysis-tools.integration.test.ts']};
+const metricAssetsFiles = [
+ 'tests/integration/xanthil-desktop/metric-assets-import.integration.test.ts',
+ 'tests/integration/xanthil-desktop/metric-assets-store.integration.test.ts',
+ 'tests/unit/xanthil-desktop/metric-assets-analysis.unit.test.ts',
+ 'tests/integration/xanthil-desktop/metric-assets-application.integration.test.ts',
+ 'tests/integration/xanthil-desktop/metric-assets-workspace.integration.test.ts',
+ 'tests/unit/xanthil-desktop/metric-assets-report.unit.test.ts',
+ 'tests/unit/xanthil-desktop/metric-assets-workbench.unit.test.ts',
+ 'tests/integration/xanthil-desktop/metric-assets-browser.integration.test.ts',
+];
+const approvedMetricAssetsManifest={...approvedSdk043Manifest,dependencies:{...approvedSdk043Manifest.dependencies,yaml:'2.9.0'}};
+const approvedMetricAssetsTsconfig={...approvedSdk041Tsconfig,files:[...approvedSdk041Tsconfig.files,...metricAssetsFiles]};
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedMetricAssetsManifest,approvedMetricAssetsTsconfig,approvedP5RepositoryConfigurationFiles))return 'Change006MetricAssets' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk043Manifest,approvedSdk041Tsconfig,approvedP5RepositoryConfigurationFiles))return 'Change005Sdk041' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedIndependentWebManifest, approvedOpenAnalysisV11Tsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change005OpenAnalysisV11' as const;
   if (matchesApprovedConfigurationTuple(manifest, tsconfig, configurationFiles, approvedIndependentWebManifest, approvedIndependentWebTsconfig, approvedP5RepositoryConfigurationFiles)) return 'Change005IndependentWeb' as const;
@@ -3477,7 +3490,7 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
   assert.equal(assertApprovedConfigurationTuple(approvedDevelopmentManifest,approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles),'Change004');
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Change005Sdk041');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Change006MetricAssets');
 });
 
 
@@ -3730,7 +3743,7 @@ test('TEST-XCLI-021 [AC-XCLI-001-01, AC-XCLI-007-01, AC-XCLI-008-01, AC-XCLI-016
 
   const manifest = JSON.parse(await readFile(join(repositoryRoot, 'package.json'), 'utf8'));
   const lock = JSON.parse(await readFile(join(repositoryRoot, 'package-lock.json'), 'utf8'));
-  assertApprovedLock(lock,true);
+  assertApprovedLock(lock,true,true);
 
   for (const [packageName, expected] of Object.entries(approvedDirectPackageHealth)) {
     await assertInstalledDirectPackage(packageName, expected);
@@ -3839,6 +3852,21 @@ test('Change004 exact typecheck inventory preserves earlier tuples and rejects o
  assert.throws(()=>assertApprovedConfigurationTuple({...approvedDevelopmentManifest,dependencies:{...approvedDevelopmentManifest.dependencies,unapproved:'1.0.0'}},approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles));
 });
 
+
+test('Change006 exact YAML dependency and eight validation roots preserve Change005 tuples and reject drift',()=>{
+ const check=(manifest:unknown,config:unknown)=>assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles);
+ assert.equal(check(approvedMetricAssetsManifest,approvedMetricAssetsTsconfig),'Change006MetricAssets');
+ assert.equal(check(approvedSdk043Manifest,approvedSdk041Tsconfig),'Change005Sdk041');
+ assert.throws(()=>check(approvedSdk043Manifest,approvedMetricAssetsTsconfig));
+ assert.throws(()=>check(approvedMetricAssetsManifest,approvedSdk041Tsconfig));
+ for(const yaml of ['^2.9.0','2.9.1'])assert.throws(()=>check({...approvedMetricAssetsManifest,dependencies:{...approvedMetricAssetsManifest.dependencies,yaml}},approvedMetricAssetsTsconfig));
+ for(const root of metricAssetsFiles){
+  assert.throws(()=>check(approvedMetricAssetsManifest,{...approvedMetricAssetsTsconfig,files:approvedMetricAssetsTsconfig.files.filter(p=>p!==root)}));
+  assert.throws(()=>check(approvedMetricAssetsManifest,{...approvedMetricAssetsTsconfig,files:[...approvedMetricAssetsTsconfig.files,root]}));
+  assert.throws(()=>check(approvedMetricAssetsManifest,{...approvedMetricAssetsTsconfig,files:approvedMetricAssetsTsconfig.files.map(p=>p===root?'tests/unapproved.ts':p)}));
+ }
+ assert.throws(()=>check(approvedMetricAssetsManifest,{...approvedMetricAssetsTsconfig,files:[...approvedSdk041Tsconfig.files,...metricAssetsFiles.toReversed()]}));
+});
 
 test('SDK041 pinned installation rejects floating SDK paths and missing or reordered new validation roots',()=>{
  const check=(manifest:unknown,config:unknown)=>assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles);

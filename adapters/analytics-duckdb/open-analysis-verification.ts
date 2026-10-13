@@ -1,3 +1,4 @@
+import {verifyMetricAssetAnalysis} from './metric-assets-verification.ts';
 import {verifyOpenReconciliationIR} from './open-analysis-reconciliation-verification.ts';
 import {verifyOpenAllocationIR} from './open-analysis-allocation-verification.ts';
 import {verifyOpenContributionIR} from './open-analysis-contribution-verification.ts';
@@ -13,6 +14,7 @@ import {taskHash} from '../../packages/product-core/member-task.ts';
 function fail():never{throw Object.assign(new Error('VERIFICATION_FAILED'),{code:'VERIFICATION_FAILED',stack:'VERIFICATION_FAILED'});}
 /** Independently recalculates from the reread inspection; never calls the main executor. */
 export function verifyOpenAnalysisIntegerSum(plan:OpenAnalysisIR,result:OpenAnalysisValue,inspection:MemberSourceInspection):OpenAnalysisVerification{
+ if(plan.version==='2.4')return verifyMetricAssetAnalysis(plan,result,inspection);
  if(plan.version==='2.3')return verifyOpenReconciliationIR(plan,result,inspection);
  if(plan.version==='2.2')return verifyOpenAllocationIR(plan,result,inspection);
  if(plan.version==='2.1')return verifyOpenContributionIR(plan,result,inspection);

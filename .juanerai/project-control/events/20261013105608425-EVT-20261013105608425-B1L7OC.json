@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013105608425-B1L7OC",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-13T10:56:08.425Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a134a5-0fb8-7193-b806-a6a0fa34c339"
+  },
+  "summary": "Change006金额修正GREEN与重开读回，完整回归进行中；角色约束差异保留",
+  "status_after": "active",
+  "evidence_refs": []
+}

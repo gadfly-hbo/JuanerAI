@@ -107,6 +107,22 @@ export function createPiSessionOpenAnalysisRuntime(config:{projectRoot:string;le
   const result={status:'tool_contract',name,description:business.description,parameters:parameters as import('pi-agent-runtime').JsonObject,executed:false,instruction:'Exact current contract returned; original arguments were not validated or executed. In the next model turn explicitly submit parameters matching this contract. No business result or verification has occurred.'};observations.push({name,result});return result;
  });
  const selectedTools=()=>nativeBusinessPhase(live())?nativeTools:[tool];
+ function cancelledModelProof(input:OpenAnalysisRun,session:string,operation:string){
+  const id=input.identity,binding=state.readBinding(operation),accounting=state.readAccounting(id.task_id),rows=config.ledger.read(id.task_id),audit=state.readAudit(id.task_id);
+  if(!binding||binding.taskId!==id.task_id||binding.sessionId!==session||binding.branch!=='main'||binding.purpose!==sessionOwner(input)||!accounting||accounting.owner!==null||state.readWriterLock()||config.ledger.pending?.().length)return null;
+  const events=audit.filter(e=>e.session?.operationId===operation),admissions=events.filter(e=>e.kind==='model.admitted'),admission=admissions[0];
+  if(admissions.length!==1||!admission||events.some(e=>e.kind.startsWith('tool.')||e.kind==='model.finished'||e.kind==='run.finished')||events.some(e=>e.session?.sessionId!==session||e.session.branch!=='main'||e.contextVersions.revision!==admission.contextVersions.revision||! /^[1-9][0-9]*$/.test(e.contextVersions.revision)||! /^[1-9][0-9]*$/.test(id.revision)||BigInt(e.contextVersions.revision)>BigInt(id.revision)||e.contextVersions.scope!==id.scope_sha256||e.contextVersions.configuration!==id.config_sha256))return null;
+  const matches=rows.filter(r=>(['task_id','grant_id','scope_sha256','config_sha256'] as const).every(k=>r[k]===id[k])&&r.revision===admission.contextVersions.revision&&r.status==='cancelled'&&['REQUEST_CANCELLED','STOPPED'].includes(r.reason??'')&&!r.publishable&&/^[a-f0-9]{64}$/.test(r.input_sha256)&&/^[a-f0-9]{64}$/.test(admission.digest??'')&&r.provider===admission.provider&&r.model===admission.model&&r.usage.input_tokens.kind==='unknown'&&r.usage.output_tokens.kind==='unknown'&&r.started_at!==null&&r.ended_at!==null&&Number.isFinite(Date.parse(r.started_at))&&Number.isFinite(Date.parse(r.ended_at))&&Date.parse(r.started_at)>=Date.parse(admission.at)&&Date.parse(r.ended_at)>=Date.parse(r.started_at));
+  if(matches.length!==1||accounting.reservations.filter(r=>r.owner===admission.runId&&r.tokens===limits.maxOutputTokens).length!==1)return null;
+  const storage=state.sessionStorage(async()=>true),paths=readdirSync(storage.directory,{recursive:true}).filter((f):f is string=>typeof f==='string'&&f.endsWith('_'+session+'.jsonl'));
+  if(paths.length!==1)return null;const file=paths[0]!;
+  for(let i=1;i<=file.split('/').length;i++)if(lstatSync(join(storage.directory,...file.split('/').slice(0,i))).isSymbolicLink())return null;
+  const path=join(storage.directory,file);if(!lstatSync(path).isFile())return null;const prefix=readFileSync(path);
+  const nativeSafe=()=>{try{const values=new Map<string,unknown>();for(const line of readFileSync(path,'utf8').trim().split('\n'))for(const entry of [JSON.parse(line)].flat(Infinity))if(entry?.kind==='value'&&entry.op==='set')values.set(entry.namespace+':'+entry.key,entry.value);const lane=values.get('pi.lane.state:main') as {currentOperationId?:string;inbox?:unknown[]}|undefined;return lane?.currentOperationId===operation&&Array.isArray(lane.inbox)&&lane.inbox.length===0;}catch{return false;}};
+  const unchanged=()=>!input.signal.aborted&&input.authorize()&&!config.ledger.pending?.().length&&hash(config.ledger.read(id.task_id))===hash(rows)&&hash(state.readAccounting(id.task_id)?.reservations)===hash(accounting.reservations)&&hash(state.readAudit(id.task_id).slice(0,audit.length))===hash(audit)&&readFileSync(path).subarray(0,prefix.length).equals(prefix);
+  if(!nativeSafe()||!unchanged())return null;
+  return {check:(task:string,s:string,branch:string,op:string)=>task===id.task_id&&s===session&&branch==='main'&&op===operation&&nativeSafe()&&unchanged(),unchanged,accounting};
+ }
  function knownClosedEffects(taskId:string,sessionId:string,branch:string,operationId:string):boolean{
   const input=current;if(!input||taskId!==input.identity.task_id||input.signal.aborted||!input.authorize()||config.ledger.pending?.().length)return false;
   if(knownIdleAbort&&cancelledReportCheck)return cancelledReportCheck(taskId,sessionId,branch,operationId);
@@ -476,13 +492,15 @@ export function createPiSessionOpenAnalysisRuntime(config:{projectRoot:string;le
    if(input.command.kind==='abort'&&!prior){
     const pending=(await engine.inspect(sessionId,undefined,input.signal)).pending;
     if(!pending)return {};
-    if(!knownClosedEffects(input.identity.task_id,sessionId,'main',pending.operationId))fail('TASK_UNCONFIRMED');
-    knownIdleAbort=true;
+    const proof=purpose==='analysis'?cancelledModelProof(current!,sessionId,pending.operationId):null;
+    if(!proof&&!knownClosedEffects(input.identity.task_id,sessionId,'main',pending.operationId))fail('TASK_UNCONFIRMED');
+    cancelledReportCheck=proof?.check;knownIdleAbort=true;migrationRetiring=!!proof;
     try{
      const result=await engine.run({taskId:input.identity.task_id,purpose,sessionId,tools:selectedTools(),prompt:'',system:'显式停止已核账的中断操作，不执行或重放任何工具。',contextVersions:{scope:input.identity.scope_sha256,configuration:input.identity.config_sha256,revision:input.identity.revision},limits,modelRecovery:{extraAttempts:1 as const},signal:input.signal,operation:'abort'});
      if(result.status!=='cancelled'||result.reason!=='CANCELLED'||(await engine.inspect(sessionId,undefined,input.signal)).pending)fail('TASK_UNCONFIRMED');
+     if(proof&&(!proof.unchanged()||(await engine.result(sessionId,pending.operationId,input.signal))?.status!=='aborted'))fail('TASK_UNCONFIRMED');
      return {};
-    }finally{knownIdleAbort=false;}
+    }finally{cancelledReportCheck=undefined;knownIdleAbort=false;migrationRetiring=false;}
    }
    let reply:{entryId?:string;cancelled?:boolean;snapshot?:Pick<import('pi-agent-runtime').HarnessSnapshot,'branch'|'tipId'|'operationId'|'queued'|'activeTools'|'faulted'>},queueAvailable=true;
    try{reply=await engine.control({taskId:input.identity.task_id,purpose,sessionId,signal:input.signal,command:input.command});}
@@ -542,6 +560,18 @@ export function createPiSessionOpenAnalysisRuntime(config:{projectRoot:string;le
    if(purpose==='report_edit'&&!['analysis','analysis_native','analysis_objects','proposal_objects','proposal_prepare'].some(p=>state.readSession(input.identity.task_id,p)))fail('LEGACY_TASK_RECONCILIATION_REQUIRED');
    const owner=sessionOwner(input);let session=state.readSelectedSession(input.identity.task_id,owner);
    if(!session){if(config.ledger.read(input.identity.task_id).length&&!state.hasNativeSession(input.identity.task_id))fail('LEGACY_TASK_RECONCILIATION_REQUIRED');const created=await engine.create(input.signal);state.selectSession(input.identity.task_id,owner,created.id);session=created.id;}
+   if(purpose==='analysis'&&!input.sessionAdvance&&!input.conversation_id){
+    const previous=await engine.inspect(session,undefined,input.signal);
+    if(previous.pending){
+     const proof=cancelledModelProof(input,session,previous.pending.operationId);if(proof){
+     cancelledReportCheck=proof.check;knownIdleAbort=true;migrationRetiring=true;
+     try{
+      const stopped=await engine.run({...request,sessionId:session,tools:selectedTools(),prompt:'',system:'仅结束已物理取消且无工具效果的模型操作；不执行或重放模型、工具、排队消息。',operation:'abort'}),terminal=await engine.result(session,previous.pending.operationId,input.signal),after=state.readAccounting(input.identity.task_id);
+      if(stopped.status!=='cancelled'||stopped.reason!=='CANCELLED'||terminal?.status!=='aborted'||(await engine.inspect(session,undefined,input.signal)).pending||!proof.unchanged()||!after||after.owner!==null||state.readWriterLock()||Object.entries(proof.accounting.usage).some(([k,v])=>k==='activeMs'?after.usage.activeMs<Number(v):after.usage[k as keyof typeof after.usage]!==v))fail('TASK_UNCONFIRMED');
+     }finally{cancelledReportCheck=undefined;knownIdleAbort=false;migrationRetiring=false;}
+     }
+    }
+   }
    if(purpose==='report_edit'){
     // Short fact IDs belong to this report's evidence, never an earlier report.
     // Native navigation preserves old entries and the fixed session/Task ledger.
