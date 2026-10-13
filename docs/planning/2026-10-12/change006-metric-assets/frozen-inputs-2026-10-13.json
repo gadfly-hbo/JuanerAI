@@ -1,0 +1,319 @@
+{
+  "kind": "PRODUCT_INPUT_FREEZE",
+  "frozen_on": "2026-10-13",
+  "change": "Change006",
+  "product_approval": "PASS_USER_DIRECT",
+  "ui_gate": "PASS_USER_DIRECT",
+  "readiness_review": "reviews/development-readiness-003.md",
+  "review_verdict": "PASS_PRODUCT_PLAN_READINESS_ONLY",
+  "historical_reviews_preserved": true,
+  "review_code_baseline": "4df7604621fff2c8ec27281d59cf4a788deae47b",
+  "publication_base": "fa5a30b822cfedad349d4c6ecfc9f47146b1f983",
+  "supplier_commit": "8f47913c954f5650c8718a341add9feeea50d5d0",
+  "supplier_tree": "47672b4110444190afecbfdc841d26bfa301ee76",
+  "production_authority": "NONE_WAIT_FOR_USER_START",
+  "receiver_adoption": "UNCONFIRMED",
+  "file_scope": "Current product package and retained source/review history, before approval/handoff administration; relative to this manifest directory",
+  "files": [
+    {
+      "path": "attachments/metric-factory-1.1/docs/net-sales-method-refs-v0.1.md",
+      "bytes": 7040,
+      "sha256": "d610a26eed0276536fb25cf6d03000106bfffbc8b56ad0641bba6d56f92dc40d"
+    },
+    {
+      "path": "attachments/metric-factory-1.1/docs/sap-consumption-guide.md",
+      "bytes": 10446,
+      "sha256": "206dfb5ab4780f1c0f53296b7fcb53178aa2966afed4bfadf4ee754c5bf8efe4"
+    },
+    {
+      "path": "attachments/metric-factory-1.1/examples/net-sales-instance.yaml",
+      "bytes": 13006,
+      "sha256": "0b708a6f004e78048094cdfdf7e8f87ef8bf554d6c64ea421631a1bd2be6405d"
+    },
+    {
+      "path": "attachments/metric-factory-1.1/releases/index.yaml",
+      "bytes": 2357,
+      "sha256": "ddf064c7f49004671da81150bf0db0b967cbd767ff389a81b16780ab6abf9e9f"
+    },
+    {
+      "path": "attachments/metric-factory-1.1/releases/net-sales-instance/1.1.0.sap.yaml",
+      "bytes": 42363,
+      "sha256": "5fec3d3f9695b690066b397b79f25d80aa6d649b845dd842482ced340cd13363"
+    },
+    {
+      "path": "attachments/metric-factory-1.1/releases/net-sales-instance/1.1.1.sap.yaml",
+      "bytes": 42364,
+      "sha256": "5a926e16240b1a10828967d91544d06df5dc1f57c52971299c20e2e5637fa67e"
+    },
+    {
+      "path": "attachments/metric-factory-1.1/source-handoff.md",
+      "bytes": 9238,
+      "sha256": "abbe514344dc26050dad411f6027b2809976672e3eaf0477895d9afab4a736df"
+    },
+    {
+      "path": "attachments/metric-factory-1.1/test/unit/net-sales-oracle.test.ts",
+      "bytes": 34199,
+      "sha256": "ed05c3a5c6d5e070c0cb5fc98777137590e54c85f62bc4e605eb2f51739eb4b1"
+    },
+    {
+      "path": "attachments/metric-factory/docs/juanerai-semantic-asset-contract-v0.1.md",
+      "bytes": 31989,
+      "sha256": "d736d8fc6ba148f328fae1d00b12e68cfc789b45730d43954be49d049dab8564"
+    },
+    {
+      "path": "attachments/metric-factory/docs/sap-consumption-guide.md",
+      "bytes": 8963,
+      "sha256": "0710dba65aa1ae0920caf7666033b4a8ab9f014513c6dd9d44d6fc97d6ed751e"
+    },
+    {
+      "path": "attachments/metric-factory/releases/index.yaml",
+      "bytes": 936,
+      "sha256": "c3f829fef3981827b048ccf8b6adbf22bad71d1987ee5beb51780a2973eadb98"
+    },
+    {
+      "path": "attachments/metric-factory/releases/net-sales-instance/1.0.0.sap.yaml",
+      "bytes": 35709,
+      "sha256": "f78f606b96035d282c9d0ca8153ea9af87016747e45ddfb9c34f6936857f3343"
+    },
+    {
+      "path": "attachments/metric-factory/releases/net-sales-instance/1.0.1.sap.yaml",
+      "bytes": 35710,
+      "sha256": "319fd15f4681a1df105b9b490f246021018bc49202ed9549dfb68366a2dedef7"
+    },
+    {
+      "path": "attachments/metric-factory/src/sap/canonical.ts",
+      "bytes": 5055,
+      "sha256": "5d87029fdba8c7f11595548e4236c7455a072bcab663dc1919cf17f4a7760c28"
+    },
+    {
+      "path": "attachments/metric-factory/src/sap/receipt.ts",
+      "bytes": 6926,
+      "sha256": "8e50269d109a1ee1a83a23ec78a567f3d11a8ee68a17526815280e5a4993188e"
+    },
+    {
+      "path": "attachments/metric-factory/src/sap/validate.ts",
+      "bytes": 5634,
+      "sha256": "1aafaecef973c384a555aa40808b46827cd93fa4b936edba5b53316e12a62cd5"
+    },
+    {
+      "path": "attachments/metric-factory/src/schema/mapping.ts",
+      "bytes": 984,
+      "sha256": "c0632c26ac2b44d19661d23bb41787fa771a99bf7ff8c52bb00810d629bcc8dc"
+    },
+    {
+      "path": "attachments/metric-factory/src/schema/scenario.ts",
+      "bytes": 3000,
+      "sha256": "42d9a8d4e5b95ecff4abbefd183b4c9e76d6e2b315c710016b9f441397e09b74"
+    },
+    {
+      "path": "attachments/metric-factory/src/schema/template.ts",
+      "bytes": 5081,
+      "sha256": "935f31c24e20aeb7293036efece869e8d7ffa1c33ca2df9d537710d4a5facf8b"
+    },
+    {
+      "path": "checks/probe-supplier-oracle.mjs",
+      "bytes": 1865,
+      "sha256": "d2c888779bc96bb0df0c95dc0a5586e3697f888275c28b27776a6be3a45e48b8"
+    },
+    {
+      "path": "checks/publication-readback.json",
+      "bytes": 1435,
+      "sha256": "dd53d77003b4b08a3784f6c47f26421b03b649d0d63809470e9d22acfaafbe89"
+    },
+    {
+      "path": "checks/supplier-oracle-probes.json",
+      "bytes": 822,
+      "sha256": "cfdae5c066d6359925614fb01fd3b5e1e8105115ac1d331693634982aebaaec5"
+    },
+    {
+      "path": "checks/verify-supplier-release.mjs",
+      "bytes": 8136,
+      "sha256": "de47c87fff63aa8286c1732be9292acb175e393567089c9f36effb38c439ed75"
+    },
+    {
+      "path": "clickable/assets.css",
+      "bytes": 3564,
+      "sha256": "88b76d25e32fba3c2df9c2d78b9a90decac0149d68433840530ef7b280e2822b"
+    },
+    {
+      "path": "clickable/assets.js",
+      "bytes": 22450,
+      "sha256": "8379351aa6a1a0e255846f8239e9b4a2ad834089ef6bf9db1505e2ad3815163d"
+    },
+    {
+      "path": "clickable/check-memory.mjs",
+      "bytes": 8169,
+      "sha256": "4f76b9bad22996af47923bff3434b4a5314c71b8df8f430fb196064542b7ac85"
+    },
+    {
+      "path": "clickable/index.html",
+      "bytes": 7997,
+      "sha256": "12332f70e3ebe9b6d3133c789d2cbb0242775a26278f3931fa36edff9d2e8abd"
+    },
+    {
+      "path": "decisions-2026-10-13.md",
+      "bytes": 3757,
+      "sha256": "168f8d8916e6d088f52a433188dcf13da5ef9a0a2a228add69a9466d5a33689a"
+    },
+    {
+      "path": "metric-factory-correction-release-prompt.md",
+      "bytes": 14313,
+      "sha256": "73c5c1c915595313359e2b9a3932316f9023eae735c04ce72ac8926f7bae628b"
+    },
+    {
+      "path": "proposal-v0.1.md",
+      "bytes": 38573,
+      "sha256": "ce3d1a06821a3e5cf109ca84caa852d6f003f3b2b3deb5bb2048f5b275f0e50c"
+    },
+    {
+      "path": "reviews/candidate-001-originals/clickable/assets.js",
+      "bytes": 21016,
+      "sha256": "de2749fef2540e9e54addd18f9e2498ec97193dce25c7c29753d3e6bebefa017"
+    },
+    {
+      "path": "reviews/candidate-001-originals/clickable/check-memory.mjs",
+      "bytes": 7511,
+      "sha256": "cbddcfe49a9cf297a7739d861b7cfe659db67a05b279ed7178ee5f89b1375333"
+    },
+    {
+      "path": "reviews/candidate-001-originals/clickable/index.html",
+      "bytes": 7652,
+      "sha256": "3c3b9d43fbfad971ce146dbea17b139072ee745d3c6492f33e8adeb4e6134859"
+    },
+    {
+      "path": "reviews/candidate-001-originals/proposal-v0.1.md",
+      "bytes": 33242,
+      "sha256": "6f0ffd8834de018c958f45bd6efc3d6a4b6bb9105b023c251fce5082c3aebe9a"
+    },
+    {
+      "path": "reviews/candidate-001-originals/source-readback.json",
+      "bytes": 6397,
+      "sha256": "f40fb30eaa3738e9d1608e1ddd9b61f7589b243ca7324424a7d15940d0f08729"
+    },
+    {
+      "path": "reviews/candidate-001-originals/ui-contract-v0.1.md",
+      "bytes": 7089,
+      "sha256": "c760a94a2a829699958e0444e338a55dec436afa5229c05e65529457c139bcf5"
+    },
+    {
+      "path": "reviews/candidate-001-originals/verification.md",
+      "bytes": 3857,
+      "sha256": "49ea9f52dee469278aa1d419f4be27642cd1127bc8989e7bafebee4f28251966"
+    },
+    {
+      "path": "reviews/candidate-001.json",
+      "bytes": 3764,
+      "sha256": "1f6f6f4b1c3da846a0c81362fa679e81180d16550a6556f315fa35df90f4f3a9"
+    },
+    {
+      "path": "reviews/candidate-002-originals/clickable/assets.js",
+      "bytes": 22299,
+      "sha256": "4584cc68811e33652a8a50abe00a920a55a3c2075ca33ea949583988686777c1"
+    },
+    {
+      "path": "reviews/candidate-002-originals/clickable/index.html",
+      "bytes": 7938,
+      "sha256": "a9468c18f0ca4e2250a0966a651603468f83fb5e85894464507e80cec8580c46"
+    },
+    {
+      "path": "reviews/candidate-002-originals/proposal-v0.1.md",
+      "bytes": 36342,
+      "sha256": "e0d7cbf38f09be5c3029c5e4454fe86b7bb5e31d266c761202de86cb35dab242"
+    },
+    {
+      "path": "reviews/candidate-002-originals/static-feasibility.md",
+      "bytes": 10758,
+      "sha256": "5c80351ef3418894a6138235f3d8897557ce321204d59c848eb03cb2b89bec21"
+    },
+    {
+      "path": "reviews/candidate-002-originals/ui-contract-v0.1.md",
+      "bytes": 7767,
+      "sha256": "9224d279b3056456d764f4b320ce6c8afaeb0b62f4817c74f79e23c98f5cc1c1"
+    },
+    {
+      "path": "reviews/candidate-002-originals/verification.md",
+      "bytes": 4517,
+      "sha256": "5e3c0e1ab61d00ab17e91ad65b9a4fd659060d0c373484246ac21190167f7272"
+    },
+    {
+      "path": "reviews/candidate-002.json",
+      "bytes": 4090,
+      "sha256": "432d5e19b04215b78ed6dd32d18b1a21886c553b1ce359d010fbbf72c0688dc8"
+    },
+    {
+      "path": "reviews/candidate-003-originals/proposal-v0.1.md",
+      "bytes": 38508,
+      "sha256": "fa89a76ca1d903d6d99df6a382d82995b04ba444381057d48ca6110dbd100b70"
+    },
+    {
+      "path": "reviews/candidate-003-originals/verification.md",
+      "bytes": 7188,
+      "sha256": "b0f1d4165a86340cc7e005150fff6228753f6274aded5870113c1c7304d4910f"
+    },
+    {
+      "path": "reviews/candidate-003.json",
+      "bytes": 6984,
+      "sha256": "430b6291891c0069736cf0be196150201d71e2252b4c82f7c572e45d9080b2c7"
+    },
+    {
+      "path": "reviews/development-readiness-001.md",
+      "bytes": 11416,
+      "sha256": "f4c6b233fd67619f2c7b80f27da86c6042eec848c4219bf956a914dfdc422498"
+    },
+    {
+      "path": "reviews/development-readiness-002.md",
+      "bytes": 9504,
+      "sha256": "17733e44b80f526a415d687a0d9d36a51846312ff04971d3740d8a16f2584537"
+    },
+    {
+      "path": "reviews/development-readiness-003.md",
+      "bytes": 10428,
+      "sha256": "4def63e10cbdef1fae24ce149489ab8bf09c6de797f1eac96fcf294f44e50b03"
+    },
+    {
+      "path": "reviews/review-brief-001.md",
+      "bytes": 2426,
+      "sha256": "7926b493fe6cc0e710b6a9e51a5744fc1d393936d1a18d6c04ffaa8bd0241c10"
+    },
+    {
+      "path": "reviews/review-brief-002.md",
+      "bytes": 2045,
+      "sha256": "e56616feb9b258e0ca71874d47e3d952fc406d4f39bd74938e59c0cf61674357"
+    },
+    {
+      "path": "reviews/review-brief-003.md",
+      "bytes": 3193,
+      "sha256": "0f9ac263d2e18e0fdb4b6ba10abc7b76710290effd2d6fc13c88a5bc38ceeedf"
+    },
+    {
+      "path": "source-readback.json",
+      "bytes": 6767,
+      "sha256": "10727318e91786fc33cc6b27e1e8ca2c5e4e88a65329c897241925bf019cb68d"
+    },
+    {
+      "path": "static-feasibility.md",
+      "bytes": 11080,
+      "sha256": "9ed2cd70b72bc6e59ea6baa7deff3628219de05980930336343675e677e34be3"
+    },
+    {
+      "path": "supplier-receipt-2026-10-13.md",
+      "bytes": 7032,
+      "sha256": "ad6e8153a6d9e24cc3987ae9919f06f4b2b5d86ee6ceb39fcb4ea858544a4989"
+    },
+    {
+      "path": "supplier-release-readback-2026-10-13.json",
+      "bytes": 6791,
+      "sha256": "cfb25c9afc0ab01b456182e6026bc42f9aeab9b62b9f6cf82277459c13ace822"
+    },
+    {
+      "path": "ui-contract-v0.1.md",
+      "bytes": 7905,
+      "sha256": "1e17c06c6f1a4d8f6a5070fbc29467a5d0888a1681d7bf5d0f90870f93598240"
+    },
+    {
+      "path": "verification.md",
+      "bytes": 8799,
+      "sha256": "bf52c840c57c03db0d913ff9e08968863d0029ace54aba1a5cfba30613b9bee9"
+    }
+  ]
+}

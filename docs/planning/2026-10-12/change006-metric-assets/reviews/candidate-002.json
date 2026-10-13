@@ -1,0 +1,118 @@
+{
+  "kind": "READ_ONLY_REVIEW_CANDIDATE_NOT_PRODUCT_FREEZE",
+  "prepared_on": "2026-10-13",
+  "consumer_baseline": "4df7604621fff2c8ec27281d59cf4a788deae47b",
+  "supplier_commit": "a7c08185ee1691e641011b53d5bb87374d0b5b89",
+  "prior_review": "reviews/development-readiness-001.md",
+  "prior_candidate_recoverable": true,
+  "product_ui_gate": "PENDING",
+  "D1_actual_positive_attachments": "MISSING",
+  "production_authority": "NONE",
+  "files": [
+    {
+      "path": "attachments/metric-factory/docs/juanerai-semantic-asset-contract-v0.1.md",
+      "bytes": 31989,
+      "sha256": "d736d8fc6ba148f328fae1d00b12e68cfc789b45730d43954be49d049dab8564"
+    },
+    {
+      "path": "attachments/metric-factory/docs/sap-consumption-guide.md",
+      "bytes": 8963,
+      "sha256": "0710dba65aa1ae0920caf7666033b4a8ab9f014513c6dd9d44d6fc97d6ed751e"
+    },
+    {
+      "path": "attachments/metric-factory/releases/index.yaml",
+      "bytes": 936,
+      "sha256": "c3f829fef3981827b048ccf8b6adbf22bad71d1987ee5beb51780a2973eadb98"
+    },
+    {
+      "path": "attachments/metric-factory/releases/net-sales-instance/1.0.0.sap.yaml",
+      "bytes": 35709,
+      "sha256": "f78f606b96035d282c9d0ca8153ea9af87016747e45ddfb9c34f6936857f3343"
+    },
+    {
+      "path": "attachments/metric-factory/releases/net-sales-instance/1.0.1.sap.yaml",
+      "bytes": 35710,
+      "sha256": "319fd15f4681a1df105b9b490f246021018bc49202ed9549dfb68366a2dedef7"
+    },
+    {
+      "path": "attachments/metric-factory/src/sap/canonical.ts",
+      "bytes": 5055,
+      "sha256": "5d87029fdba8c7f11595548e4236c7455a072bcab663dc1919cf17f4a7760c28"
+    },
+    {
+      "path": "attachments/metric-factory/src/sap/receipt.ts",
+      "bytes": 6926,
+      "sha256": "8e50269d109a1ee1a83a23ec78a567f3d11a8ee68a17526815280e5a4993188e"
+    },
+    {
+      "path": "attachments/metric-factory/src/sap/validate.ts",
+      "bytes": 5634,
+      "sha256": "1aafaecef973c384a555aa40808b46827cd93fa4b936edba5b53316e12a62cd5"
+    },
+    {
+      "path": "attachments/metric-factory/src/schema/mapping.ts",
+      "bytes": 984,
+      "sha256": "c0632c26ac2b44d19661d23bb41787fa771a99bf7ff8c52bb00810d629bcc8dc"
+    },
+    {
+      "path": "attachments/metric-factory/src/schema/scenario.ts",
+      "bytes": 3000,
+      "sha256": "42d9a8d4e5b95ecff4abbefd183b4c9e76d6e2b315c710016b9f441397e09b74"
+    },
+    {
+      "path": "attachments/metric-factory/src/schema/template.ts",
+      "bytes": 5081,
+      "sha256": "935f31c24e20aeb7293036efece869e8d7ffa1c33ca2df9d537710d4a5facf8b"
+    },
+    {
+      "path": "clickable/assets.css",
+      "bytes": 3564,
+      "sha256": "88b76d25e32fba3c2df9c2d78b9a90decac0149d68433840530ef7b280e2822b"
+    },
+    {
+      "path": "clickable/assets.js",
+      "bytes": 22299,
+      "sha256": "4584cc68811e33652a8a50abe00a920a55a3c2075ca33ea949583988686777c1"
+    },
+    {
+      "path": "clickable/check-memory.mjs",
+      "bytes": 8169,
+      "sha256": "4f76b9bad22996af47923bff3434b4a5314c71b8df8f430fb196064542b7ac85"
+    },
+    {
+      "path": "clickable/index.html",
+      "bytes": 7938,
+      "sha256": "a9468c18f0ca4e2250a0966a651603468f83fb5e85894464507e80cec8580c46"
+    },
+    {
+      "path": "proposal-v0.1.md",
+      "bytes": 36342,
+      "sha256": "e0d7cbf38f09be5c3029c5e4454fe86b7bb5e31d266c761202de86cb35dab242"
+    },
+    {
+      "path": "reviews/review-brief-002.md",
+      "bytes": 2045,
+      "sha256": "e56616feb9b258e0ca71874d47e3d952fc406d4f39bd74938e59c0cf61674357"
+    },
+    {
+      "path": "source-readback.json",
+      "bytes": 6767,
+      "sha256": "10727318e91786fc33cc6b27e1e8ca2c5e4e88a65329c897241925bf019cb68d"
+    },
+    {
+      "path": "static-feasibility.md",
+      "bytes": 10758,
+      "sha256": "5c80351ef3418894a6138235f3d8897557ce321204d59c848eb03cb2b89bec21"
+    },
+    {
+      "path": "ui-contract-v0.1.md",
+      "bytes": 7767,
+      "sha256": "9224d279b3056456d764f4b320ce6c8afaeb0b62f4817c74f79e23c98f5cc1c1"
+    },
+    {
+      "path": "verification.md",
+      "bytes": 4517,
+      "sha256": "5e3c0e1ab61d00ab17e91ad65b9a4fd659060d0c373484246ac21190167f7272"
+    }
+  ]
+}

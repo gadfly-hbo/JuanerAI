@@ -1,0 +1,17 @@
+releases:
+  - package: net-sales-instance
+    version: 1.0.0
+    content_fingerprint: sha256:f8a9d88e7c854b4b5d1ff1f7eda2fa9270e03f4e8207ba5e62225b040e0860f4
+    package_fingerprint: sha256:6330f6b0a0a4823d6d3ebc9bb046bad651ddf1f2cf0d99cac7fb7e02e890f284
+    created_at: 2026-10-12T03:49:25.064Z
+    released_by: huangbo
+    note: 净销售样板首个发布：销售额/退款额/净销售额与退款归属期间口径
+    file: net-sales-instance/1.0.0.sap.yaml
+  - package: net-sales-instance
+    version: 1.0.1
+    content_fingerprint: sha256:e1511fdf5bd552c608bfb213a4c68fbbb251e98b472d1a1299dbd50d73392df0
+    package_fingerprint: sha256:c7e8f864e580d2195aef0c03d864f2b3ced123001042bc0cbfa85638a1e48f81
+    created_at: 2026-10-12T06:39:39.197Z
+    released_by: huangbo
+    note: 演示：退款归属期间翻转（支付期间→退款完成期间），供消费端验收计算变化
+    file: net-sales-instance/1.0.1.sap.yaml

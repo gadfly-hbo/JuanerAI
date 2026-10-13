@@ -1,0 +1,34 @@
+{
+  "kind": "SUPPLIER_ORACLE_REFERENCE_LIMITATIONS",
+  "scope": "Two synthetic in-memory negative probes of the fixed test helper; no original test suite or consumer execution",
+  "probes": {
+    "cross_component_currencies": {
+      "accepted": true,
+      "rows": [
+        {
+          "gross": 100,
+          "refund": 30,
+          "net": 70,
+          "queueNumerator": 0,
+          "queueDenominator": 1,
+          "refundRate": 0,
+          "status": "full_complete"
+        }
+      ]
+    },
+    "completed_refund_of_unqualified_order": {
+      "accepted": true,
+      "rows": [
+        {
+          "gross": 100,
+          "refund": 0,
+          "net": 100,
+          "queueNumerator": 0,
+          "queueDenominator": 1,
+          "refundRate": 0,
+          "status": "full_complete"
+        }
+      ]
+    }
+  }
+}

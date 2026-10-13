@@ -1,0 +1,174 @@
+# Metric Factory 企业实例（fork 自 ecommerce-marketplace@0.1.0）
+# 净销售样板（v1.1.x 修正版）：消除 gmv=uv*cvr*aov 依赖环与双重扣减口径。
+# 修正要点：
+#   - gmv 改为原始成交金额基础度量（含后来退款的订单，gross 只计一次，不先净额化）
+#   - order_count 翻为含退款订单（include_refund=true），作支付队列退款率分母
+#   - 新增 refunded_order_count（支付队列分子，1:N 退款按订单去重）
+#   - refund_rate 补显式分子/分母引用（ratio_policy: recompute_from_parts）
+#   - refund_amount 资格/身份/归属/阻断规则完整化；发布序列：先以 refund_to_payment_period=true
+#     发布 v1.1.0，再翻为 false 发布 v1.1.1，仓库定格态=v1.1.1（两版仅此开关与元信息不同）
+#   - 场景 net_sales_review 升级 v0.2.0：13 周周序列 + 两期描述性拆解 + 总体/声明分组 + 受限完成规则
+# 未选其余 49 项模板指标保留为未消费设计参考（模板默认口径，未随本修正重做）。
+# 微调方式：编辑 caliber_switches / added / removed / modified，用 validate 校验、diff 查看变更
+instance:
+  created_at: "2026-10-13T00:00:00.000Z"
+  company: 净销售样板公司
+base: ecommerce-marketplace@0.1.0
+answers:
+  revenue_model: 交易抽佣
+  user_structure: 双边市场
+  core_loop: 交易
+  caliber:
+    gmv:
+      include_refund: true
+    order_count:
+      include_refund: true
+caliber_switches:
+  order_count:
+    include_refund: true
+removed:
+  - gmv
+  - refund_rate
+modified:
+  - name: order_count
+    definition: "支付时间在所选窗口内的合格成功支付去重订单数（基础度量，业务键 count-distinct 订单身份）。作为分母时包含符合资格的已退款支付订单（include_refund=true，与 gmv 资格与窗口一致，开关与描述不得相互矛盾）；不含未支付、支付失败与取消订单；一笔订单多次支付只计最终成功一笔。边界 [开始,结束)，时区与观察截止由任务 Binding 显式声明。"
+added:
+  - name: gmv
+    display_name: 成交总额
+    display_name_en: Gross Merchandise Value
+    type: simple
+    definition: "合格成功支付订单的原始成交金额合计（基础度量，sum）。原始成交金额按订单实际支付金额汇总，每笔订单原始 gross 只计一次：包含后来发生退款的订单；不得先做净额化再扣退款，退款调整只经 net_sales 表达，本指标自身不剔除退款（include_refund=true，与 net_sales 公式勾稽）。不含运费（include_shipping=false）与内部渠道（exclude_inner_channel=true）均为设计态声明默认，实际字段与状态映射由任务 Binding 确定，不预设客户配置。期间按订单支付时间归属，边界 [开始,结束)；时区、观察截止与金额单位由任务 Binding 显式声明，单币种聚合，混币阻断；订单身份唯一，重复订单身份阻断依赖。"
+    dimensions: [channel, category, region, user_tier]
+    time_grains: [day, week, month]
+    owner_role: 电商业务负责人
+    caliber_switches:
+      include_refund: true
+      include_shipping: false
+      exclude_inner_channel: true
+    caliber_type:
+      - refund_adjustment
+      - scope_inclusion
+    provenance:
+      origin: manual
+      note: "净销售修正（v1.1.x）：移除 gmv=uv*cvr*aov 恒等式（与 aov.numerator=gmv 构成依赖环，且 cvr 按用户、aov 按订单，不构成金额恒等式）；改为原始成交金额基础度量。fork 自 ecommerce-marketplace@0.1.0 gmv。"
+    review:
+      required: false
+  - name: refund_amount
+    display_name: 退款额
+    type: simple
+    definition: "合格完成退款的金额合计（基础度量，sum，仅计截至观察截止已完成的退款）。资格与身份：退款身份唯一，重复退款身份阻断；每笔退款恰关联一个合格订单，关联不上即孤儿退款，阻断依赖、不静默剔除；状态必须为已完成，退款中、失败、取消不计入（include_pending_refund=false；首期不支持翻为 true，翻 true 的效果未定义）；金额为正且币种与关联订单一致，负退款、混币阻断；同一订单允许多笔退款（1:N 合法），逐笔计金额；同一订单累计退款超过其可退款金额而无合法解释时阻断。期间归属由 refund_to_payment_period 决定：true=按关联订单支付时间归属期间，跨期才完成的退款不得遗漏；false=按退款完成时间归属期间，支付发生在期前的历史订单必须可关联并核验其资格，不得先按本期支付窗口过滤丢弃。边界 [开始,结束)，时区、观察截止与金额单位由任务 Binding 显式声明；分组使用已声明的关联订单属性，不暗改分类。"
+    dimensions: [channel, category, region, user_tier]
+    time_grains: [day, week, month]
+    owner_role: 电商业务负责人
+    caliber_switches:
+      refund_to_payment_period: false
+      include_pending_refund: false
+    caliber_type:
+      - refund_adjustment
+      - measurement_anchor
+    provenance:
+      origin: manual
+      note: "净销售修正（v1.1.x）：补齐资格/身份/单位/超额阻断与两种期间归属的精确语义；开关即证据 SOP 延续"
+    review:
+      required: false
+  - name: net_sales
+    display_name: 净销售额
+    type: derived
+    definition: "净销售额 = gmv − refund_amount（同包派生，expr 显式声明）。勾稽前提：gmv.include_refund 必须为 true（原始成交含后来退款的订单，gross 不先净额化），否则公式双重扣减；refund_amount 的期间归属由 refund_to_payment_period 决定，与本指标同期自洽。完成归属口径下本期完成退款可超过本期成交，期净额可为负：这是合法结果，不得因净额为负拒绝合格非全空输入。时区、边界、金额单位与 gmv、refund_amount 一致。"
+    dimensions: [channel, category, region, user_tier]
+    time_grains: [day, week, month]
+    owner_role: 电商业务负责人
+    caliber_switches: {}
+    type_params:
+      expr: "gmv - refund_amount"
+    caliber_type:
+      - refund_adjustment
+    provenance:
+      origin: manual
+      note: "净销售修正（v1.1.x）：显式声明净额可为负与归属自洽前提"
+    review:
+      required: false
+  - name: refunded_order_count
+    display_name: 退款订单数（支付队列）
+    type: simple
+    definition: "支付订单队列中，截至观察截止至少有一笔合格完成退款的去重订单数（基础度量，业务键 count-distinct 订单身份）。队列 = 支付时间在所选窗口内的合格成功支付去重订单（与 order_count 同队列、同窗口、同截止，作退款率分子）；同一订单多笔完成退款只计一次。队列口径不随 refund_to_payment_period 金额归属开关变化：完成归属下历史订单的本期退款计入本期退款额，但该历史订单不进入本期支付队列。边界 [开始,结束)，时区与观察截止由任务 Binding 显式声明；分组使用已声明的关联订单属性，不暗改分类。"
+    dimensions: [channel, category, region]
+    time_grains: [day, week, month]
+    owner_role: 电商业务负责人
+    caliber_switches:
+      include_pending_refund: false
+    caliber_type:
+      - refund_adjustment
+    provenance:
+      origin: manual
+      note: "净销售修正（v1.1.x）：新增支付队列退款率分子，消除『仅文字描述、LLM 临时编公式』缺口"
+    review:
+      required: false
+  - name: refund_rate
+    display_name: 退款率
+    type: ratio
+    definition: "支付订单队列退款率 = refunded_order_count / order_count（分子分母显式引用包内指标；比率必须按实际分子分母重算，不得聚合比率值、不得平均组内比例、总体去重数不得机械相加）。该队列口径不随 refund_to_payment_period 金额归属开关变化，也不等于本期全部完成退款金额的风险占比（完成归属下历史订单退款计入退款额但不入本期支付队列），报告须明确区分两者。分母为 0（所选窗口无合格支付订单）且输入为合格非全空时，退款率证据不足：不得填 0%、Infinity 或据此宣称风险正常（受限完成规则见 net_sales_review 场景 output_spec）；退款中、失败、取消的退款不计入分子（include_pending_refund=false，首期不支持翻 true）。"
+    dimensions: [category, channel]
+    time_grains: [day, week, month]
+    owner_role: 电商业务负责人
+    caliber_switches:
+      include_pending_refund: false
+    type_params:
+      numerator: refunded_order_count
+      denominator: order_count
+    aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_type:
+      - refund_adjustment
+    provenance:
+      origin: manual
+      note: "净销售修正（v1.1.x）：补显式分子/分母引用与队列口径声明，替换模板『仅文字比率』定义"
+    review:
+      required: false
+added_scenarios:
+  - id: net_sales_review
+    version: 0.2.0
+    title: 净销售额复盘
+    decision_purpose: 定位净销售额两期变化的销售侧与退款侧来源，决定促销售与退款治理之间的资源分配
+    question_tree:
+      - id: net_sales_root
+        label: 净销售额变化多大
+        metric: net_sales
+      - id: sales_side
+        label: 成交总额侧贡献多少
+        parent: net_sales_root
+        metric: gmv
+      - id: refund_side
+        label: 退款侧拖累多少
+        parent: net_sales_root
+        metric: refund_amount
+      - id: refund_queue_check
+        label: 支付队列退款率是否异常
+        parent: refund_side
+        metric: refund_rate
+    metric_usages:
+      - metric: net_sales
+        role: outcome
+        note: "复盘的量化对象（用户指定两段期间比较）"
+      - metric: gmv
+        role: driver
+        note: "销售侧拆解：原始成交总额（含后来退款的订单，gross 只计一次），与 net_sales 公式勾稽"
+      - metric: refund_amount
+        role: driver
+        note: "退款侧拆解：合格完成退款，归属期间随 refund_to_payment_period 开关"
+      - metric: refund_rate
+        role: guardrail
+        note: "支付队列退款率（分子 refunded_order_count／分母 order_count）；队列口径不随金额归属开关变化；退款治理动作不得只压退款率而牺牲净销售额"
+      - metric: refunded_order_count
+        role: guardrail
+        note: "退款率分子：支付队列中至少一笔完成退款的去重订单数；1:N 退款只计一次；历史订单的本期退款不入本期队列"
+      - metric: order_count
+        role: guardrail
+        note: "退款率分母与队列基数：包含已退款订单的合格成功支付去重订单数"
+    method_refs:
+      - "dame.descriptive_delta_decomposition@0.1.0"
+    evidence_requirements: 近 13 周周粒度 gmv/refund_amount/net_sales 序列及其订单与退款原始记录：订单含订单身份、支付时间、支付金额、币种、支付状态、已声明的分组属性（category）；退款含退款身份、关联订单、退款金额、币种、退款状态、退款完成时间。须显式声明时区、[开始,结束) 期间边界（周按声明时区自然周）、观察截止与金额单位；两段比较期间由用户在 13 周内明确指定；支持总体与声明适用分组（category，按关联订单属性）；合格范围内无交易周须明确展示（金额 0、退款率证据不足），不得与全空输入混淆。
+    output_spec: 近 13 周周序列（净额组件与支付队列退款率）+ 用户指定两段期间的描述性拆解：Δ净额 = Δ成交总额 − Δ退款额（总体与声明分组各一份；分组退款率由分子分母重算；逐对核验恒等式 Δnet = Δgmv − Δrefund）。完成规则：合格非全空输入且退款率分母为 0 时，若净额组件与不足判定均通过独立核验，可交付「分析完成 · 退款率证据不足」受限报告，不填 0%、Infinity 或风险正常——受限可完成的终点=净额序列与拆解；必须保持未完成的终点=退款率数值判断与风险结论（若承诺可用风险护栏，仍为部分结果完成，不得以受限报告取消承诺）。全空输入、资格失败、孤儿退款、重复身份、负退款、混币、无合法解释的超额退款阻断整个依赖，不静默剔除异常。
+    review_rules: 业务负责人确认退款金额归属口径（refund_to_payment_period）、时区、观察截止、两段比较期间与分组适用性后定稿；方法引用 dame.descriptive_delta_decomposition@0.1.0 为设计态定义（docs/net-sales-method-refs-v0.1.md），消费方未实现前不得臆造，不得硬别名到会员 M2 方法（dame.m2.driver_decomposition@1.0.0）。
