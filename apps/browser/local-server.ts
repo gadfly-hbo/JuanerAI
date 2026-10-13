@@ -13,6 +13,12 @@ class HttpFailure extends Error {
   readonly status: number;
   constructor(status: number) { super('Local request rejected'); this.status = status; }
 }
+function decodeOpenSource(entry:unknown) {
+  if(!entry||typeof entry!=='object'||Object.keys(entry).sort().join()!=='base64,display_name,format,source_id')throw new HttpFailure(400);
+  const b=Reflect.get(entry,'base64');if(typeof b!=='string'||b.length>Math.ceil(8*1024*1024/3)*4)throw new HttpFailure(400);
+  const bytes=Buffer.from(b,'base64');if(bytes.toString('base64')!==b)throw new HttpFailure(400);
+  const {base64,...rest}=entry as Record<string,unknown>;void base64;return {...rest,bytes};
+}
 async function json(req: IncomingMessage,maximum=4096): Promise<unknown> {
   if (req.headers['content-type'] !== 'application/json' || req.headers['content-encoding']) throw new HttpFailure(400);
   const chunks: Buffer[] = []; let size = 0;
@@ -81,7 +87,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       if(path==='/v1/service/stop'){reply(res,200,{stopping:true});setImmediate(()=>{void deps.service!.stop();});return;}
       throw new HttpFailure(404);
     }
-    const assets:Record<string,[string,string]>={'/':['index.html','text/html'],'/bootstrap.mjs':['bootstrap.mjs','text/javascript'],'/workspace.mjs':['workspace.mjs','text/javascript'],'/client.mjs':['client.mjs','text/javascript'],'/styles.css':['styles.css','text/css'],'/quick-analysis-workbench.mjs':['quick-analysis-workbench.mjs','text/javascript'],'/quick-analysis-client.mjs':['quick-analysis-client.mjs','text/javascript'],'/packages/contracts/open-analysis-findings.mjs':['../../packages/contracts/open-analysis-findings.mjs','text/javascript'],'/packages/contracts/open-analysis-recovery.mjs':['../../packages/contracts/open-analysis-recovery.mjs','text/javascript'],'/quick-analysis-workbench.css':['quick-analysis-workbench.css','text/css'],'/assets/logo.png':['../desktop/assets/juanerai-logo-slogan.png','image/png']};
+    const assets:Record<string,[string,string]>={'/':['index.html','text/html'],'/bootstrap.mjs':['bootstrap.mjs','text/javascript'],'/workspace.mjs':['workspace.mjs','text/javascript'],'/client.mjs':['client.mjs','text/javascript'],'/read-json.mjs':['read-json.mjs','text/javascript'],'/styles.css':['styles.css','text/css'],'/quick-analysis-workbench.mjs':['quick-analysis-workbench.mjs','text/javascript'],'/quick-analysis-client.mjs':['quick-analysis-client.mjs','text/javascript'],'/packages/contracts/open-analysis-findings.mjs':['../../packages/contracts/open-analysis-findings.mjs','text/javascript'],'/packages/contracts/open-analysis-recovery.mjs':['../../packages/contracts/open-analysis-recovery.mjs','text/javascript'],'/quick-analysis-workbench.css':['quick-analysis-workbench.css','text/css'],'/assets/logo.png':['../desktop/assets/juanerai-logo-slogan.png','image/png']};
     const asset=deps.workspace?assets[path]:undefined;
     if (!asset&&!/^\/v1\/[a-z0-9/-]+$/.test(path)) throw new HttpFailure(404);
     if (req.method !== 'GET' && req.method !== 'POST') throw new HttpFailure(405);
@@ -139,12 +145,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       if(path==='/v1/open-analysis'&&req.method==='POST'){
         if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);
         const raw=await json(req,45*1024*1024);if(!raw||typeof raw!=='object'||!Array.isArray(Reflect.get(raw,'sources')))throw new HttpFailure(400);
-        const sources=Reflect.get(raw,'sources').map((entry:unknown)=>{
-          if(!entry||typeof entry!=='object'||Object.keys(entry).sort().join()!=='base64,display_name,format,source_id')throw new HttpFailure(400);
-          const b=Reflect.get(entry,'base64');if(typeof b!=='string'||b.length>Math.ceil(8*1024*1024/3)*4)throw new HttpFailure(400);
-          const bytes=Buffer.from(b,'base64');if(bytes.toString('base64')!==b)throw new HttpFailure(400);
-          const {base64,...rest}=entry as Record<string,unknown>;void base64;return {...rest,bytes};
-        });
+        const sources=Reflect.get(raw,'sources').map(decodeOpenSource);
         reply(res,200,present(await deps.open.submit({...raw,sources})));return;
       }
       const reusable=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/reusable-plan\/([1-9][0-9]*)$/.exec(path);if(reusable&&req.method==='GET'){reply(res,200,deps.open.reusablePlan(reusable[1],reusable[2]));return;}
@@ -162,7 +163,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       const requirementDraft=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-draft$/.exec(path);if(requirementDraft&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,present(deps.open.saveRequirementDraft(requirementDraft[1],await json(req,128*1024))));return;}
       const requirementMaterials=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-materials$/.exec(path);if(requirementMaterials&&req.method==='POST'){
        if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const raw=await json(req,45*1024*1024),selected=raw&&typeof raw==='object'?Reflect.get(raw,'sources'):null;if(!Array.isArray(selected))throw new HttpFailure(400);
-       const sources=selected.map((entry:unknown)=>{if(!entry||typeof entry!=='object'||Object.keys(entry).sort().join()!=='base64,display_name,format,source_id')throw new HttpFailure(400);const b=Reflect.get(entry,'base64');if(typeof b!=='string'||b.length>Math.ceil(8*1024*1024/3)*4)throw new HttpFailure(400);const bytes=Buffer.from(b,'base64');if(bytes.toString('base64')!==b)throw new HttpFailure(400);const {base64,...rest}=entry as Record<string,unknown>;void base64;return {...rest,bytes};});reply(res,200,present(await deps.open.addRequirementMaterials(requirementMaterials[1],{...(raw as Record<string,unknown>),sources})));return;
+       const sources=selected.map(decodeOpenSource);reply(res,200,present(await deps.open.addRequirementMaterials(requirementMaterials[1],{...(raw as Record<string,unknown>),sources})));return;
       }
       const requirementAction=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-(review|start)$/.exec(path);if(requirementAction&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req,16*1024);reply(res,200,present(requirementAction[2]==='review'?deps.open.reviewRequirement(requirementAction[1],body):await deps.open.startRequirement(requirementAction[1],body)));return;}
       const requirementDiscussion=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-discussion$/.exec(path);if(requirementDiscussion&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,present(await deps.open.discussRequirement(requirementDiscussion[1],await json(req,64*1024))));return;}
@@ -181,7 +182,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       if(match&&req.method==='GET'&&match[2]==='requests'){deps.open.read(match[1]);reply(res,200,deps.open.requests(match[1]));return;}
       if(match&&req.method==='POST'&&match[2]==='stop'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req);if(!body||typeof body!=='object'||Object.keys(body).length)throw new HttpFailure(400);reply(res,200,present(deps.open.stop(match[1])));return;}
       if(match&&req.method==='POST'&&match[2]==='resume'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req);if(!body||typeof body!=='object'||Object.keys(body).length)throw new HttpFailure(400);reply(res,200,present(await deps.open.resume(match[1])));return;}
-      if(match&&req.method==='POST'&&match[2]==='revise'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const raw=await json(req,45*1024*1024);if(raw&&typeof raw==='object'&&Object.hasOwn(raw,'sources')){const selected=Reflect.get(raw,'sources');if(!Array.isArray(selected))throw new HttpFailure(400);const sources=selected.map((entry:unknown)=>{if(!entry||typeof entry!=='object'||Object.keys(entry).sort().join()!=='base64,display_name,format,source_id')throw new HttpFailure(400);const b=Reflect.get(entry,'base64');if(typeof b!=='string'||b.length>Math.ceil(8*1024*1024/3)*4)throw new HttpFailure(400);const bytes=Buffer.from(b,'base64');if(bytes.toString('base64')!==b)throw new HttpFailure(400);const {base64,...rest}=entry as Record<string,unknown>;void base64;return {...rest,bytes};});reply(res,200,present(await deps.open.revise(match[1],{...raw,sources})));}else reply(res,200,present(await deps.open.revise(match[1],raw)));return;}
+      if(match&&req.method==='POST'&&match[2]==='revise'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const raw=await json(req,45*1024*1024);if(raw&&typeof raw==='object'&&Object.hasOwn(raw,'sources')){const selected=Reflect.get(raw,'sources');if(!Array.isArray(selected))throw new HttpFailure(400);const sources=selected.map(decodeOpenSource);reply(res,200,present(await deps.open.revise(match[1],{...raw,sources})));}else reply(res,200,present(await deps.open.revise(match[1],raw)));return;}
       throw new HttpFailure(404);
     }
     const copy=/^\/v1\/tasks\/([a-f0-9-]{36})\/reports\/([a-f0-9-]{36})\/copy$/.exec(path);if(copy&&req.method==='GET'){const value=await deps.store.readBrowserReportCopy({task_id:copy[1],report_id:copy[2]});res.writeHead(200,{'content-type':value.media_type,'content-disposition':`attachment; filename="${value.suggested_file_name}"`,'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"});res.end(value.bytes);return;}

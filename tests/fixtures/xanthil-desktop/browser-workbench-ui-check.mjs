@@ -10,7 +10,7 @@ const root=new URL('../../../',import.meta.url);
 async function scenario(options,check){const browser=await chromium.launch({channel:'chrome',headless:true});try{const page=await browser.newPage(),calls=[];let fail=options.fail,control=options.readonly?null:'synthetic-control',current='p',createdTask=null,projects=[{project_id:'p',display_name:'会员分析'},{project_id:'p2',display_name:'另一项目'}];page.setDefaultTimeout(4000);
 await page.route('**/*',async route=>{const req=route.request(),path=new URL(req.url()).pathname,payload=req.postData()?JSON.parse(req.postData()):null;let body,type='application/json',status=200;if(path.startsWith('/v1/'))calls.push({path,payload});
 if(path==='/'){type='text/html';body=`<html lang="zh-CN"><meta charset="utf-8"><div id="app"></div><script type="module">import {startServiceWorkspace} from '/workspace.mjs';await startServiceWorkspace({control:${JSON.stringify(control)}});</script></html>`;}
-else if(['/workspace.mjs','/client.mjs','/styles.css'].includes(path)){body=await readFile(new URL('apps/browser'+path,root));type=path.endsWith('.css')?'text/css':'text/javascript';}
+else if(['/workspace.mjs','/client.mjs','/read-json.mjs','/styles.css'].includes(path)){body=await readFile(new URL('apps/browser'+path,root));type=path.endsWith('.css')?'text/css':'text/javascript';}
 else if(path==='/assets/logo.png'){body=await readFile(new URL('apps/desktop/assets/juanerai-logo-slogan.png',root));type='image/png';}
 else if(path==='/v1/projects')body=JSON.stringify({projects,current});
 else if(path==='/v1/projects/select'){current=payload.project_id??'new-'+projects.length;if(payload.name)projects.push({project_id:current,display_name:payload.name});body=JSON.stringify({control:'synthetic-control'});}
