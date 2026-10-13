@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013073023374-KFQP83",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-13T07:30:23.374Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a133b8-180f-7d42-963d-c1cd8283db55"
+  },
+  "summary": "Change006固定候选离线17组PASS；集中请求真实合成试用/必要SAP外发/Provider权限，下一动作等待用户，独立验证及接受不冒PASS。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -180,6 +180,14 @@
     "tests/unit/xanthil-desktop/open-membership-framework.unit.test.ts",
     "tests/integration/xanthil-desktop/shared-runtime-state.integration.test.ts",
     "tests/integration/xanthil-desktop/requirement-draft.integration.test.ts",
-    "tests/integration/xanthil-desktop/shared-analysis-tools.integration.test.ts"
+    "tests/integration/xanthil-desktop/shared-analysis-tools.integration.test.ts",
+    "tests/integration/xanthil-desktop/metric-assets-import.integration.test.ts",
+    "tests/integration/xanthil-desktop/metric-assets-store.integration.test.ts",
+    "tests/unit/xanthil-desktop/metric-assets-analysis.unit.test.ts",
+    "tests/integration/xanthil-desktop/metric-assets-application.integration.test.ts",
+    "tests/integration/xanthil-desktop/metric-assets-workspace.integration.test.ts",
+    "tests/unit/xanthil-desktop/metric-assets-report.unit.test.ts",
+    "tests/unit/xanthil-desktop/metric-assets-workbench.unit.test.ts",
+    "tests/integration/xanthil-desktop/metric-assets-browser.integration.test.ts"
   ]
 }

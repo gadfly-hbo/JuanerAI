@@ -96,6 +96,8 @@ function assembledReport(x:any,evidence:{verified_calculations:readonly any[]},s
 function reportFactValue(f:any){if(f.grade!=='source_attribution')return reportLiteral(f.value);let quotes:any;try{quotes=JSON.parse(f.value);}catch{fail();}if(!Array.isArray(quotes)||!quotes.length)fail();return quotes.map(q=>{if(typeof q.source_name!=='string'||typeof q.position!=='string'||typeof q.text!=='string')fail();return reportLiteral(q.source_name)+' · '+reportLiteral(q.position)+'：'+reportLiteral(q.text);}).join('；');}
 function reportLiteral(value:unknown){return String(value).replace(/[\r\n]+/g,' ').replace(/[\\`*_{}\[\]<>#|]/g,'\\$&');}
 export function reportPlan(plan:any,sources:any):string{
+ if(plan.version==='2.4'){const a=plan.asset_analysis,p=a.parameters;return '净销售复盘 · '+reportLiteral(a.asset.id)+'@'+reportLiteral(a.asset.version)+' · '+reportLiteral(p.window.start)+' 至 '+reportLiteral(p.window.end)+'（结束不含） · 自然周/周一 · '+reportLiteral(p.timezone)+' · '+reportLiteral(p.currency)+' · 观察截止 '+reportLiteral(p.observed_at)+' · 退款金额按'+(a.asset.metrics.find((m:any)=>m.name==='refund_amount').caliber_switches.refund_to_payment_period?'支付':'完成')+'期间归属 · 退款率保持同一支付队列 · 描述性差额不证明因果';}
+
  if(plan.version==='2.3')return '多表核对（左减右）：'+reportLiteral(plan.left_label)+' '+reportPlan(plan.inputs[0],sources)+'；'+reportLiteral(plan.right_label)+' '+reportPlan(plan.inputs[1],sources)+'；各表一行一键，精确键一对一匹配；检查差异不等于账目一致';
  if(plan.version==='2.2')return '比例成本分摊：成本池 '+reportPlan(plan.inputs[0],sources)+'；对象与权重 '+reportPlan(plan.inputs[1],sources)+'；按权重比例，输出 '+reportLiteral(plan.unit)+'，小数位 '+plan.rounding.decimals+'；最大余数分配，余数相同按对象键排序；逐对象与合计核对，不证明业务或税务合规';
  if(plan.version==='2.1')return '可加总分组变化：'+reportPlan(plan.inputs[1],sources)+'（'+reportLiteral(plan.current_label)+'） − '+reportPlan(plan.inputs[0],sources)+'（'+reportLiteral(plan.comparison_label)+'）；贡献分母为同范围全部分组的总变化，不是原因证明';
@@ -125,6 +127,7 @@ function reportScopeContext(fact:any,sources:any){
 export function reportFactFragmentLabel(value:{id:string;label:string},evidence:any,sources:any){
  if(value.id.startsWith('D'))return value.label.replace(/;+/g,';').replace(/；+/g,'；');
  const fact=groundedReportFacts(evidence).find(f=>f.reference_id===value.id.split('/')[0]);if(!fact)return value.label;
+ if(fact.execution_plan.version==='2.4')return value.label;
  const plan=fact.execution_plan,base=plan.version==='1.8'?plan.base:plan,kind=base.join?.kind??base.operation??base.version;
  const names:Record<string,string>={refund_net:'订单金额减关联退款',sum:'求和',count:'数据行计数',mean:'均值',min:'最小值',max:'最大值',weighted_mean:'加权平均',membership_compare:'会员比较','2.0':'金额占比','2.1':'分组变化','2.2':'比例成本分摊','2.3':'多表核对',source_quotes:'资料原文对应'};
  if(!names[kind])return value.label;

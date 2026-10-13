@@ -11,6 +11,26 @@ import {createLocalAnalysisRequestLedger} from '../../../adapters/storage-local/
 import {createPersistentRuntimeState} from '../../../adapters/agent-pi/persistent-runtime-state.ts';
 import type {ModelTransport} from 'pi-agent-runtime';
 
+for(const boundary of ['closed','new-revision','revoked','unknown','ambiguous','identity','new-scope','tool-effect','queued'] as const)test(`MF-STOP-01 (${boundary}): explicit continuation retires only a physically cancelled model with no tool or queued effect and retains UNKNOWN`,async()=>{
+ const root=mkdtempSync(join(browserEvidenceRoot,'metric-cancelled-model-')),ledger=createLocalAnalysisRequestLedger({projectRoot:root}),controller=new AbortController();let calls=0,effects=0;
+ const identity={task_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:'a'.repeat(64),config_sha256:'b'.repeat(64)};
+ const base={identity,nativeBusinessTools:true,prompt:'合成净销售复盘',system:'只处理获准合成资料',tools:[{name:'calculate_and_verify',description:'current calculation',parameters:{type:'object',properties:{},additionalProperties:false},execute:async()=>{effects++;return {value:7};}}],signal:new AbortController().signal,authorize:()=>true};
+ const make=(read=ledger.read)=>createPiSessionOpenAnalysisRuntime({projectRoot:root,nativeObjectArguments:true,ledger:{...ledger,read},credentials:createApprovedProviderCredentials({environment:{}}),modelTransport:async request=>{
+  calls++;if(calls>1)return {content:[{kind:'text',text:'用户明确继续后得到的回答'}],stop:'complete',usage:{inputTokens:4,outputTokens:2}};
+  if(boundary==='queued')await first.sessionControl!({...base,command:{kind:'followUp',text:'不得在恢复时重放的排队消息'}});
+  return new Promise<never>((_,reject)=>{request.signal.addEventListener('abort',()=>reject(Object.assign(new Error('CANCELLED'),{code:'CANCELLED'})),{once:true});setImmediate(()=>controller.abort());});
+ }});
+ const first=make();await assert.rejects(()=>first.run({...base,signal:controller.signal}));await first.collect!(identity.task_id);
+ const before=ledger.read(identity.task_id),state=createPersistentRuntimeState({projectRoot:root});assert.equal(before.length,1);assert.equal(before[0]!.status,'cancelled');assert.equal(before[0]!.usage.input_tokens.kind,'unknown');assert.equal(state.readAccounting(identity.task_id)!.reservations.length,1);
+ writeFileSync(join(root,'stop-readback.json'),JSON.stringify({identity,rows:before,accounting:state.readAccounting(identity.task_id),audit:state.readAudit(identity.task_id)}));
+ if(boundary==='tool-effect'){const admission=state.readAudit(identity.task_id).findLast(e=>e.kind==='model.admitted')!;await state.audit.append({...admission,kind:'tool.admitted',sequence:admission.sequence+1,toolName:'unconfirmed_tool'},base.signal);}
+ const reopened=make(boundary==='unknown'?(task)=>ledger.read(task).map(row=>({...row,status:'unknown' as const})):boundary==='ambiguous'?(task)=>[...ledger.read(task),...ledger.read(task)]:ledger.read);assert.equal(calls,1,'reopening alone must not dispatch');
+ if(boundary==='closed'){await reopened.sessionControl!({...base,command:{kind:'abort'}});assert.equal(calls,1,'explicit retirement itself must never dispatch');const result=await reopened.run(base);assert.match(result.text,/明确继续/);assert.equal(calls,2);const view=await reopened.sessionControl!({...base,command:{kind:'snapshot'}});assert.equal(view.view!.operationId,null);}
+ else if(boundary==='new-revision'){const result=await reopened.run({...base,identity:{...identity,revision:'2',run_id:randomUUID(),attempt_id:randomUUID()}});assert.match(result.text,/明确继续/);assert.equal(calls,2);}
+ else{await assert.rejects(()=>reopened.run({...base,identity:boundary==='identity'?{...identity,grant_id:randomUUID()}:boundary==='new-scope'?{...identity,scope_sha256:'c'.repeat(64)}:identity,authorize:()=>boundary!=='revoked'}));assert.equal(calls,1,'unconfirmed effects and queues must block new dispatch');}
+ assert.equal(effects,0);assert.deepEqual(ledger.read(identity.task_id).slice(0,1),before);assert.equal(state.readAccounting(identity.task_id)!.reservations.length,1);assert.equal(state.readAccounting(identity.task_id)!.usage.reservedOutputTokens,4096);
+});
+
 for(const scenario of ['duplicate-paths','over-total','one-twelve','two-six','eight-one'] as const)test(`V13-DELEGATION115 (${scenario}): native schema enforces the existing common-path limits before business effects and retains all boundary choices`,async()=>{
  const {delegationToolSchema}=await import('../../../packages/application/open-analysis-delegation.ts');
  const {Check}=await import('typebox/value');

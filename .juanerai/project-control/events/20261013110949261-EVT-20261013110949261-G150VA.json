@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013110949261-G150VA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-13T11:09:49.261Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a134a5-0fb8-7193-b806-a6a0fa34c339"
+  },
+  "summary": "Change006代码独立复核通过但角色收口BLOCKED；集中请求用户正式接受/角色处置/Git权限",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

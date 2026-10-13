@@ -1,3 +1,5 @@
+import {metricAssetFrameworkParameters} from '../../../packages/contracts/metric-asset-tools.ts';
+import {assetProposal} from '../../fixtures/metric-assets.ts';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {mkdtempSync} from 'node:fs';
@@ -116,4 +118,37 @@ test('V13-FAIR126 / RT04: IO progresses before local effect and revocation at th
  const controller=new AbortController();current=input([local],controller.signal);setImmediate(()=>controller.abort());
  await assert.rejects(()=>dispatch.execute({name:'local',arguments_json:'{}'},signal),{code:'CANCELLED'});assert.equal(effects,1);
  current=input([local]);setImmediate(()=>{current=input([local])});await assert.rejects(()=>dispatch.execute({name:'local',arguments_json:'{}'},signal),{code:'TASK_CHANGED'});assert.equal(effects,1);
+});
+
+
+test('MF-03 native SDK catalog exposes approved asset tools and consumes their actual results',async()=>{
+ let effects=0,turns=0,authorized=true;
+ const schema={type:'object',properties:{asset_id:{type:'string'},version:{type:'string'}},required:['asset_id','version'],additionalProperties:false};
+ const current={...input([
+  {name:'read_project_metric_asset',description:'host-approved six definitions only',parameters:{type:'object',properties:{},additionalProperties:false},execute:async()=>({asset_id:'approved',version:'1.1.0'})},
+  {name:'set_metric_asset_framework',description:'bind original current asset',parameters:schema,execute:async args=>{effects++;return {bound:args};}},
+ ]),authorize:()=>authorized};
+ const tools=adapter.createNativeBusinessTools(()=>current);
+ for(const name of current.tools.map(t=>t.name))assert.ok(tools.some(t=>t.name===name),'native SDK must advertise '+name);
+ const state=createPersistentRuntimeState({projectRoot:mkdtempSync(join(browserEvidenceRoot,'metric-native-dispatch-'))});
+ const transport=async(request:ModelRequest)=>{
+  turns++;
+  if(turns===1)return {content:[{kind:'tool' as const,id:'asset-read',name:'read_project_metric_asset',arguments:{}}],stop:'tools' as const,usage:{inputTokens:1,outputTokens:5}};
+  if(turns===2){assert.ok(request.messages.some(m=>m.role==='tool'&&m.text.includes('1.1.0')));return {content:[{kind:'tool' as const,id:'asset-bind',name:'set_metric_asset_framework',arguments:{asset_id:'approved',version:'1.1.0'}}],stop:'tools' as const,usage:{inputTokens:1,outputTokens:5}};}
+  assert.ok(request.messages.some(m=>m.role==='tool'&&m.text.includes('bound')));return {content:[{kind:'text' as const,text:'actual asset binding observed'}],stop:'complete' as const,usage:{inputTokens:1,outputTokens:5}};
+ };
+ const runtime=createRuntime({...state,model,transport,authorize:async()=>true,purposes:[{id:'analysis',mode:'agent',model,transport,tools}]});
+ const result=await runtime.runAgent({taskId:'asset-task',purpose:'analysis',prompt:'consume approved asset',limits,tools});
+ assert.equal(result.status,'succeeded');assert.equal(effects,1);assert.equal(turns,3);
+ const bind=tools.find(t=>t.name==='set_metric_asset_framework')!;
+ await assert.rejects(bind.execute({asset_id:'approved',version:'1.1.0',grant:true},current.signal),{code:'TOOL_ARGUMENT_INVALID'});
+ authorized=false;await assert.rejects(bind.execute({asset_id:'approved',version:'1.1.0'},current.signal),{code:'AUTHORITY_REQUIRED'});assert.equal(effects,1);
+});
+
+
+test('MF-BIND-02 asset channel parameters reject empty exclusions before effects and permit one explicit omission',async()=>{
+ let effects=0;const p=assetProposal(),args={goal:p.goal,unit:p.unit,bindings:p.bindings,parameters:p.parameters};const current={...input([{name:'set_metric_asset_framework',description:'current approved asset',parameters:metricAssetFrameworkParameters,execute:async a=>{effects++;return {bound:a};}}]),recoverInvalidArguments:true};
+ const native=adapter.createNativeBusinessTools(()=>current).find(t=>t.name==='set_metric_asset_framework')!,signal=new AbortController().signal;
+ const rejected=await native.execute({...args,parameters:{...args.parameters,internal_values:[]}},signal);assert.equal(Reflect.get(rejected as object,'status'),'invalid_arguments');assert.equal(effects,0,'unsupported empty exclusions must not reach the source-bound consumer');
+ const accepted=await native.execute(args,signal);assert.deepEqual(Reflect.get(accepted as object,'bound'),args);assert.equal(effects,1);
 });

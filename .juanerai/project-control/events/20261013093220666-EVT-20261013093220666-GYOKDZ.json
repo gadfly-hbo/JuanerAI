@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013093220666-GYOKDZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-13T09:32:20.666Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a1342d-1e65-72d2-b513-f354b2791f97"
+  },
+  "summary": "实际复用/换版/停止与保护证据已收齐，入口交用户；等待冻结D3形成性反馈，调用许可已批准",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

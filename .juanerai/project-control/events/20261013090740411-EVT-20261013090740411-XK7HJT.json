@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013090740411-XK7HJT",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-13T09:07:40.411Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a1342d-1e65-72d2-b513-f354b2791f97"
+  },
+  "summary": "停止收尾因果RED与151原生检查PASS；实际换版继续推进",
+  "status_after": "active",
+  "evidence_refs": []
+}

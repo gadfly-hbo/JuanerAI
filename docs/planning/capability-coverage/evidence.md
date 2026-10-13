@@ -212,3 +212,11 @@ candidate149独立PASS，五方法及适用四类场景本地工程接受；当�
 ## E-005-V13-PROGRESS（2026-10-12，非交付）
 
 见[当前完整能力快照](snapshots/change005-v13-progress-2026-10-12.md)与原Change verification-v13.md。Mini持久证据根controller/v13-autonomous-analysis-001，real175结构回流、report-scope-followup112/full004/real177/real178收据。4273离线通过、18原条件跳过；报告partial/cancelled与UNKNOWN保留，当前UI/AX/最终独立审查及用户接受未闭合。未新增Git/CI或整体接受主张。
+
+## E-006
+
+2026-10-13 Change006项目专业口径与净销售复用：冻结产品/UI包60项身份/65tracked字节保留；candidate011固定47源码/测试/CI（identity SHA256 `8aa95b09175033f5eaf12a76cd7f9234538929d8b59fd117faade4641a0b4025`），完整portable17组exit0/1430PASS15SKIP，独立011代码及受影响证据通过/41检查。原010金额FAIL、16因果RED、原命令失败/UNKNOWN与005现场保留。原生用户“确认”批准本Change角色例外、正式接受现有结果/partial及未测劳动项处置、Git集中交付。角色豁免不称正式Validator PASS；用户劳动和独立理解测试UNKNOWN，不追认量化目标。
+
+[Engineering Acceptance](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/engineering-acceptance.md)、[直接用户决定](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/user-experience-decisions.md)、[完整六＋二/40ID快照](snapshots/change006-accepted-with-named-limits-2026-10-13.md)、[实际Git交付](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/publication.md)。Mini唯一原始证据root `/Users/bendandebaba/JuanerAI-artifacts/change006/controller`，原独立报告和真实150/160成果/安全回执、101请求97success4cancel、重开零自动调用保持。同机源文件可读不等于跨设备备份。
+
+仅八项有限增量；C4-07全DomainPack、S1、Supplier条件NOT_RUN、nativeE2 OPEN/BLOCKED、模型语义/因果及真实业务效果不闭合。Git/CI/merge/main仅以publication实际记录成立；快照生成时尚未执行。

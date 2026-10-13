@@ -1,3 +1,22 @@
+## Change006当前收口增量 · 2026-10-13
+
+用户直接“确认”具名角色风险例外、现有结果/二次partial和未测劳动项处置、正式Git集中交付；Engineering Acceptance及Product Acceptance附具名限制成立。candidate011独立代码/证据通过，正式Validator角色BLOCKED原文保留，风险豁免不称Validator PASS。47源码固定；完整portable 17组exit0，desktop integration1430 PASS/15既有SKIP。本段是具名接受/归档时点；实现已提交并创建PR80，Git集成由下列publication绑定的PR原生CI/merge及同机最终回执确认，不凭覆盖文档自称已集成。
+
+八项稳定能力新增已接受子范围：A-02/03/05、C6-01、C4-01、B-01/02/03。其广义目标仍局部实现；C4-07完整Domain Pack及S1阶段未完成。40ID、长期完成条件、001～005事实/历史及Desktop E2/UNKNOWN全部保留。
+
+[006完整六＋二/40ID快照](snapshots/change006-accepted-with-named-limits-2026-10-13.md) · [006工程接受](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/engineering-acceptance.md) · [006Git实际结果](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/publication.md)。以下旧“当前”标签是原时点历史，按各段证据阅读。
+
+| 六＋二家族 | 当前累计范围与006增量 | 未覆盖/具名限制 |
+|---|---|---|
+| C1 业务双主线 | 承继005开放PIM/任务历史，本次不增完整OSM | 行动/Actual/完整OSM闭环 |
+| C2 分析模式 | 承继005支持模式；本次净销售任务复用相同执行核心 | 完整Deep Research/所有场景质量 |
+| C3 产品矩阵 | Mini个人正常工作台与本机用户接受 | Team/Enterprise/商业效果；用户劳动未测 |
+| C4 方法扩展 | 精确净销售描述性差额及六指标专业定义 | 因果/预测/任意方法；完整Domain/Model Pack |
+| C5 决策与价值 | 承继原协作和报告，新增采用来源/保存回执 | 现实行动/Actual/完整Report Studio；二次partial |
+| C6 资产与进化 | 项目配置一次批准、第二任务当前资料复用、旧历史不变 | 跨项目/自动学习/Teach/效果验证 |
+| A 数据语义执行 | 精确SAP→Context/Binding→有限IR→实际计算/独立核验 | 通用Ontology/复杂DSL/全资料格式 |
+| B 治理与责任 | 选定定义授权、原始快照核验、版本/停止/UNKNOWN及用户具名处置 | 企业治理/现实行动/语义因果核验；角色例外风险 |
+
 ## Change005 v1.3 当前累计增量（2026-10-12）
 用户产品/UI验收已通过；v1.2为过渡版，用户已取消比较要求。当前源码完整独立PASS/4304离线PASS，requiredCI及Git集成按release-v13记录推进，不伪称已发布。原001～004、40稳定ID和未覆盖范围保留。
 

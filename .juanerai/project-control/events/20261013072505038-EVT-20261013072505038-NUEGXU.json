@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013072505038-NUEGXU",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-13T07:25:05.038Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a133b8-180f-7d42-963d-c1cd8283db55"
+  },
+  "summary": "Change006资产/持久任务/双模式离线增量42PASS；固定候选完整回归及实际试用权限闭合进入下一阶段。",
+  "status_after": "active",
+  "evidence_refs": []
+}

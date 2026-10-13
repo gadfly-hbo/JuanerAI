@@ -61,6 +61,9 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/unit/xanthil-desktop/development-main.test.ts",
     "tests/unit/xanthil-desktop/development-mode.test.ts",
     "tests/unit/xanthil-desktop/member-task-canonical.unit.test.ts",
+    "tests/unit/xanthil-desktop/metric-assets-analysis.unit.test.ts",
+    "tests/unit/xanthil-desktop/metric-assets-report.unit.test.ts",
+    "tests/unit/xanthil-desktop/metric-assets-workbench.unit.test.ts",
     "tests/unit/xanthil-desktop/open-analysis-allocation-r3.unit.test.ts",
     "tests/unit/xanthil-desktop/open-analysis-autonomous-arguments.unit.test.ts",
     "tests/unit/xanthil-desktop/open-analysis-code-output.unit.test.ts",
@@ -126,6 +129,11 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/integration/xanthil-desktop/member-analysis-chain.integration.test.ts",
     "tests/integration/xanthil-desktop/member-task-retained.integration.test.ts",
     "tests/integration/xanthil-desktop/member-task.integration.test.ts",
+    "tests/integration/xanthil-desktop/metric-assets-application.integration.test.ts",
+    "tests/integration/xanthil-desktop/metric-assets-browser.integration.test.ts",
+    "tests/integration/xanthil-desktop/metric-assets-import.integration.test.ts",
+    "tests/integration/xanthil-desktop/metric-assets-store.integration.test.ts",
+    "tests/integration/xanthil-desktop/metric-assets-workspace.integration.test.ts",
     "tests/integration/xanthil-desktop/open-agent-ledger.integration.test.ts",
     "tests/integration/xanthil-desktop/open-agent-runtime.integration.test.ts",
     "tests/integration/xanthil-desktop/open-analysis-application.integration.test.ts",
@@ -305,6 +313,17 @@ const CHANGE005_TSCONFIG_APPENDIX = Object.freeze([
   'tests/integration/xanthil-desktop/requirement-draft.integration.test.ts',
   'tests/integration/xanthil-desktop/shared-analysis-tools.integration.test.ts',
 ]);
+// Change006 additive, independently fixed roots; the Change005 inventory stays intact.
+const CHANGE006_TSCONFIG_APPENDIX = Object.freeze([
+  'tests/integration/xanthil-desktop/metric-assets-import.integration.test.ts',
+  'tests/integration/xanthil-desktop/metric-assets-store.integration.test.ts',
+  'tests/unit/xanthil-desktop/metric-assets-analysis.unit.test.ts',
+  'tests/integration/xanthil-desktop/metric-assets-application.integration.test.ts',
+  'tests/integration/xanthil-desktop/metric-assets-workspace.integration.test.ts',
+  'tests/unit/xanthil-desktop/metric-assets-report.unit.test.ts',
+  'tests/unit/xanthil-desktop/metric-assets-workbench.unit.test.ts',
+  'tests/integration/xanthil-desktop/metric-assets-browser.integration.test.ts',
+]);
 const C0_ROOT_COUNT = 43;
 const DEVELOPMENT_TSCONFIG_APPENDIX = Object.freeze([
   'apps/desktop/development.ts', 'apps/desktop/desktop-work.ts',
@@ -406,7 +425,9 @@ async function currentRunnerTuple(root = REPO_ROOT) {
   assert.deepEqual(files.slice(CHANGE004_ROOT_START,maintenanceStart),CHANGE004_TSCONFIG_APPENDIX,'original Change004 roots remain exact');
   const browserStart = maintenanceStart + CI_MAINTENANCE_TSCONFIG_APPENDIX.length;
   assert.deepEqual(files.slice(maintenanceStart,browserStart),CI_MAINTENANCE_TSCONFIG_APPENDIX,'CI maintenance roots remain the exact independent ordered inventory');
-  assert.deepEqual(files.slice(browserStart),CHANGE005_TSCONFIG_APPENDIX,'Change005 roots and total length are fixed independent literals');
+  const metricStart=browserStart+CHANGE005_TSCONFIG_APPENDIX.length;
+  assert.deepEqual(files.slice(browserStart,metricStart),CHANGE005_TSCONFIG_APPENDIX,'Change005 roots remain fixed independent literals');
+  assert.deepEqual(files.slice(metricStart),CHANGE006_TSCONFIG_APPENDIX,'Change006 roots and total length are fixed independent literals');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }
@@ -941,3 +962,5 @@ test('BF-R13 CI-CHANGE005: browser roots reject omission, substitution, duplicat
   await writeFile(path.join(root,'tsconfig.json'),JSON.stringify(original));
   assert.equal(await currentRunnerTuple(root),'CF');
 });
+
+test('CI-CHANGE006: every new root remains exact without weakening Change005 coverage',async t=>{const root=await mkdtemp(path.join(os.tmpdir(),'juanerai-cvr-change006-'));t.after(()=>rm(root,{recursive:true,force:true}));for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-CHANGE006_TSCONFIG_APPENDIX.length;for(let i=start;i<original.files.length;i++)for(const [label,files] of [['omit',original.files.filter((_,n)=>n!==i)],['replace',original.files.map((f,n)=>n===i?'tests/unapproved.test.ts':f)],['duplicate',original.files.map((f,n)=>n===i?original.files[i-1]:f)],['reorder',original.files.map((f,n)=>n===i?original.files[i-1]:n===i-1?original.files[i]:f)]])await t.test(i+' '+label,async()=>{await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});});});
