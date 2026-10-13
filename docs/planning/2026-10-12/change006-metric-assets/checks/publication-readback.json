@@ -1,0 +1,21 @@
+{
+  "observed_on": "2026-10-13",
+  "scope": "Read-only Git object, remote main and GitHub PR/CI metadata; no fetch, checkout, merge or task wakeup",
+  "supplier_commit": "8f47913c954f5650c8718a341add9feeea50d5d0",
+  "supplier_tree": "47672b4110444190afecbfdc841d26bfa301ee76",
+  "remote_main": "8f47913c954f5650c8718a341add9feeea50d5d0",
+  "pr": {
+    "url": "https://github.com/gadfly-hbo/metric-factory/pull/1",
+    "state": "MERGED",
+    "merged_at": "2026-10-13T02:41:45Z",
+    "head": "02e801204d1e7d2ce2e0658da37c986663257ea3",
+    "merge_commit": "8f47913c954f5650c8718a341add9feeea50d5d0"
+  },
+  "checks": [
+    {"name": "verify", "status": "COMPLETED", "conclusion": "SUCCESS", "url": "https://github.com/gadfly-hbo/metric-factory/actions/runs/38337953605/job/115102243161", "head": "02e801204d1e7d2ce2e0658da37c986663257ea3"},
+    {"run": 38338109312, "status": "completed", "conclusion": "success", "head": "8f47913c954f5650c8718a341add9feeea50d5d0", "url": "https://github.com/gadfly-hbo/metric-factory/actions/runs/38338109312"}
+  ],
+  "supplier_worktree_preserved": "main; M examples/ecommerce-instance.yaml",
+  "consumer_worktree_preserved": "work/macbook/change006-metric-assets; HEAD 4df7604621fff2c8ec27281d59cf4a788deae47b; only current planning directory untracked",
+  "not_claimed": ["Supplier full checks rerun locally", "Consumer execution", "User UI acceptance", "Product input freeze", "Engineering intake"]
+}

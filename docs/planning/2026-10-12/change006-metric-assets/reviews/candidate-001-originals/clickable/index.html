@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>JuanerAI · Xanthil — 专业口径采用审核</title><link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/px006/styles.css">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/brand.css">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/v1.1/workspace.css">
+  <link rel="stylesheet" href="../../../2026-10-06/change005-five-moments/clickable/moments.css">
+  <link rel="stylesheet" href="../../../2026-10-09/change005-v1.3-autonomous-analysis/clickable/autonomy.css">
+  <link rel="stylesheet" href="assets.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到工作区</a>
+<div class="mock-banner"><strong>合成审核 · 不是实现证据</strong>　正向资产为 D1 待发布占位；无真实读取、模型、计算、持久保存或下载。刷新清空。</div>
+<div class="review-controls">
+  <label for="scene">审核场景（非生产控件）</label>
+  <select id="scene">
+    <option value="normal">正常复盘与第二次复用</option><option value="original">原发布包 · 合法但不可算</option>
+    <option value="tamper">篡改 · 整体拒绝</option><option value="collision">同版本身份冲突</option>
+    <option value="missing">缺退款完成时间</option><option value="ambiguity">两种口径适用 · 等待选择</option>
+    <option value="version">改归属版本 · 旧报告不变</option><option value="savefail">采用配置保存失败</option>
+    <option value="calcfail">新版本核验失败</option><option value="stopped">停止／重开不自动执行</option>
+    <option value="downloadfail">回执下载失败</option>
+  </select>
+  <button id="advance" class="btn btn-sm">推进合成事件</button>
+  <a href="../proposal-v0.1.md" target="_blank" rel="noopener">产品方案</a>
+  <a href="../../../2026-10-09/change005-v1.3-autonomous-analysis/clickable/index.html" target="_blank" rel="noopener">保留005完整参考</a>
+</div>
+<div class="window">
+  <header class="titlebar"><div class="tb-title"><span class="brand-name">Juaner<span class="brand-ai">AI</span></span><span class="brand-slogan">持续做出更好的决策</span><span>· Xanthil</span><span class="tb-tag">Change006 · 待审核</span></div></header>
+  <div class="topbar">
+    <div class="mode-switch"><button class="mode-btn active" id="quick" aria-pressed="true">快速模式</button><button class="mode-btn" id="professional" aria-pressed="false">专业模式</button></div>
+    <span class="project-label">经营复盘 · 合成项目</span>
+    <div class="topbar-right"><button id="manage" class="btn btn-sm">分析口径</button><button id="details" class="btn btn-sm" aria-expanded="false" aria-controls="drawer">检查详情</button></div>
+  </div>
+  <div class="app">
+    <nav class="sidebar" aria-label="项目会话">
+      <button id="new" class="sb-new">＋ 新建分析</button>
+      <h2 class="sb-h">本项目会话</h2>
+      <button class="sb-item active" id="current-session">净销售复盘<span class="sb-meta">当前</span></button>
+      <button class="sb-item" id="history">上次已保存的报告<span class="sb-meta">历史</span></button>
+      <p class="fine sidebar-note">口径由维护者配置一次。日常任务仍从自然对话开始。</p>
+      <div class="sb-foot"><span class="fine">本页为合成评审；未启用后台服务。</span></div>
+    </nav>
+    <main class="main" id="main" tabindex="-1">
+      <section class="quick-surface">
+        <header class="task-header"><div><h1 id="task-title">净销售复盘</h1><p class="fine">业务含义 → 分析逻辑 → 受控执行 → 可信成果</p></div><button class="btn btn-sm" id="stop">停止整个任务</button></header>
+        <div id="status" class="progress-summary" role="status" aria-live="polite"></div>
+        <div id="professional-view" hidden><p class="state-note">PX-004完整六阶段参考；下方原样例与本页合成任务不共享状态。生产须在原检查面接入同一资产版本／证据。</p><iframe title="PX-004完整专业交互参考" src="../../../2026-10-05/change005-ui-contract-recovery/clickable/px004/index.html?preview=demo"></iframe></div>
+        <div id="thread" class="thread"></div>
+        <section id="workspace" class="workspace" hidden tabindex="-1"><header class="workspace-header"><h2 id="workspace-heading">分析口径</h2><button id="back" class="btn btn-sm">返回对话</button></header><div id="workspace-body" class="workspace-body"></div></section>
+        <form id="composer" class="composer-wrap">
+          <div class="tool-chips"><a class="chip chip-tool" href="../../../2026-10-09/change005-v1.3-autonomous-analysis/clickable/index.html" target="_blank" rel="noopener">需求／框架／协作 · 005参考</a><button type="button" class="chip chip-tool" id="material-summary">所选资料与授权</button></div>
+          <label class="sr-only" for="message">补充分析需求</label><textarea id="message" rows="2" placeholder="补充问题、资料或质疑结果……"></textarea>
+          <div class="composer-footer"><span class="fine">输入仅安全显示，不伪装已理解或执行</span><button class="btn btn-primary btn-sm">发送</button></div>
+        </form>
+      </section>
+    </main>
+    <aside id="drawer" class="drawer" aria-label="检查详情" hidden>
+      <header class="drawer-head"><strong>同一任务 · 检查详情</strong><button id="close" class="btn btn-sm">关闭</button></header>
+      <div class="detail-tabs" role="tablist" aria-label="检查分类">
+        <button id="tab-meaning" role="tab" data-tab="meaning" aria-selected="true" aria-controls="detail">口径</button>
+        <button id="tab-plan" role="tab" data-tab="plan" aria-selected="false" aria-controls="detail" tabindex="-1">方案</button>
+        <button id="tab-materials" role="tab" data-tab="materials" aria-selected="false" aria-controls="detail" tabindex="-1">资料</button>
+        <button id="tab-evidence" role="tab" data-tab="evidence" aria-selected="false" aria-controls="detail" tabindex="-1">证据</button>
+        <button id="tab-execution" role="tab" data-tab="execution" aria-selected="false" aria-controls="detail" tabindex="-1">执行</button>
+      </div>
+      <div id="detail" class="detail-content" role="tabpanel" aria-labelledby="tab-meaning" tabindex="0"></div>
+    </aside>
+  </div>
+</div>
+<dialog id="version-dialog" aria-labelledby="version-title"><div class="dialog-inner">
+  <h2 id="version-title">换一个退款归属口径</h2>
+  <p>从“支付期间”改为“退款完成期间”。跨期退款的净额会在不同期间体现；不是销售业务本身发生了新变化。</p>
+  <p class="review-warning">两版均为 D1 待发布的合成占位；当前演示不产生真实批准、版本或执行。</p>
+  <ul><li>项目启用：以后新任务沿用新版，旧任务不变。</li><li>当前任务采纳：产生新修订、重新检查与计算；旧报告仍保留。</li></ul>
+  <div class="actions"><button id="activate-version" class="btn">仅为以后新任务启用</button><button id="adopt-version" class="btn btn-primary">当前任务也采用 · 待重算</button><button id="cancel-version" class="btn btn-sm">保留原口径</button></div>
+</div></dialog>
+<div id="notice" class="sr-only" aria-live="polite"></div>
+<script src="assets.js"></script>
+</body></html>

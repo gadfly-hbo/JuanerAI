@@ -1,0 +1,194 @@
+{
+  "kind": "READ_ONLY_SUPPLIER_IDENTITY_AND_SELECTED_CLOSURE_CHECK",
+  "prepared_on": "2026-10-13",
+  "consumer_baseline": "4df7604621fff2c8ec27281d59cf4a788deae47b",
+  "supplier_commit": "8f47913c954f5650c8718a341add9feeea50d5d0",
+  "supplier_tree": "47672b4110444190afecbfdc841d26bfa301ee76",
+  "source_mode": "fixed_git_objects_only",
+  "attachments": [
+    {
+      "source_path": "releases/net-sales-instance/1.1.0.sap.yaml",
+      "local_path": "attachments/metric-factory-1.1/releases/net-sales-instance/1.1.0.sap.yaml",
+      "bytes": 42363,
+      "sha256": "5fec3d3f9695b690066b397b79f25d80aa6d649b845dd842482ced340cd13363",
+      "git_blob": "902cb8a7d9960fa3ef3d634fe752e28d42ebd118",
+      "byte_identical_to_fixed_source": true
+    },
+    {
+      "source_path": "releases/net-sales-instance/1.1.1.sap.yaml",
+      "local_path": "attachments/metric-factory-1.1/releases/net-sales-instance/1.1.1.sap.yaml",
+      "bytes": 42364,
+      "sha256": "5a926e16240b1a10828967d91544d06df5dc1f57c52971299c20e2e5637fa67e",
+      "git_blob": "5bbed6284acd4fe8265246855982c362e29dcbde",
+      "byte_identical_to_fixed_source": true
+    },
+    {
+      "source_path": "releases/index.yaml",
+      "local_path": "attachments/metric-factory-1.1/releases/index.yaml",
+      "bytes": 2357,
+      "sha256": "ddf064c7f49004671da81150bf0db0b967cbd767ff389a81b16780ab6abf9e9f",
+      "git_blob": "05879a25e351938dd8d350c826e51d66ae2e1501",
+      "byte_identical_to_fixed_source": true
+    },
+    {
+      "source_path": "docs/net-sales-method-refs-v0.1.md",
+      "local_path": "attachments/metric-factory-1.1/docs/net-sales-method-refs-v0.1.md",
+      "bytes": 7040,
+      "sha256": "d610a26eed0276536fb25cf6d03000106bfffbc8b56ad0641bba6d56f92dc40d",
+      "git_blob": "b3f18656b0595d6dea6b1dabb35256ad1b5eaea4",
+      "byte_identical_to_fixed_source": true
+    },
+    {
+      "source_path": "docs/sap-consumption-guide.md",
+      "local_path": "attachments/metric-factory-1.1/docs/sap-consumption-guide.md",
+      "bytes": 10446,
+      "sha256": "206dfb5ab4780f1c0f53296b7fcb53178aa2966afed4bfadf4ee754c5bf8efe4",
+      "git_blob": "9c8b900a8e4a2298b21115af6bced1aa8e4be2e4",
+      "byte_identical_to_fixed_source": true
+    },
+    {
+      "source_path": "examples/net-sales-instance.yaml",
+      "local_path": "attachments/metric-factory-1.1/examples/net-sales-instance.yaml",
+      "bytes": 13006,
+      "sha256": "0b708a6f004e78048094cdfdf7e8f87ef8bf554d6c64ea421631a1bd2be6405d",
+      "git_blob": "54e0f52ffbf2d7d2013b46dac4a815deb26cddde",
+      "byte_identical_to_fixed_source": true
+    },
+    {
+      "source_path": "test/unit/net-sales-oracle.test.ts",
+      "local_path": "attachments/metric-factory-1.1/test/unit/net-sales-oracle.test.ts",
+      "bytes": 34199,
+      "sha256": "ed05c3a5c6d5e070c0cb5fc98777137590e54c85f62bc4e605eb2f51739eb4b1",
+      "git_blob": "295a310d2767b2a5e7cd5d43313b6e1cd5272327",
+      "byte_identical_to_fixed_source": true
+    }
+  ],
+  "packages": [
+    {
+      "id": "net-sales-instance",
+      "version": "1.1.0",
+      "package_fingerprint": "sha256:140e9ecf1510d3d64bf9f954a2d402cfa55bb88c398452c991ea53dec19dfa5b",
+      "content_fingerprint": "sha256:128bb1dc71a2104a0e11eb37968514c70c94b226eb78383417595a118b775595",
+      "generator": "metric-factory@0.1.0+88a8d82",
+      "metrics": 56,
+      "scenarios": 2,
+      "bindings": 0,
+      "selected_closure": [
+        "gmv",
+        "order_count",
+        "refund_amount",
+        "net_sales",
+        "refunded_order_count",
+        "refund_rate"
+      ],
+      "unselected_metric_count": 50,
+      "dependencies": {
+        "gmv": [],
+        "order_count": [],
+        "refund_amount": [],
+        "net_sales": [
+          "gmv",
+          "refund_amount"
+        ],
+        "refunded_order_count": [],
+        "refund_rate": [
+          "refunded_order_count",
+          "order_count"
+        ]
+      },
+      "scenario": "net_sales_review@0.2.0",
+      "method": "dame.descriptive_delta_decomposition@0.1.0"
+    },
+    {
+      "id": "net-sales-instance",
+      "version": "1.1.1",
+      "package_fingerprint": "sha256:6252da0699b8ab492351b44271e67e1dc9991a22ce1aa2f8161457ff7d1198bf",
+      "content_fingerprint": "sha256:3b4cd8cfa7f62ab7526dbef454b8fc2e8cad883cbdded44e0ce788406c573675",
+      "generator": "metric-factory@0.1.0+88a8d82",
+      "metrics": 56,
+      "scenarios": 2,
+      "bindings": 0,
+      "selected_closure": [
+        "gmv",
+        "order_count",
+        "refund_amount",
+        "net_sales",
+        "refunded_order_count",
+        "refund_rate"
+      ],
+      "unselected_metric_count": 50,
+      "dependencies": {
+        "gmv": [],
+        "order_count": [],
+        "refund_amount": [],
+        "net_sales": [
+          "gmv",
+          "refund_amount"
+        ],
+        "refunded_order_count": [],
+        "refund_rate": [
+          "refunded_order_count",
+          "order_count"
+        ]
+      },
+      "scenario": "net_sales_review@0.2.0",
+      "method": "dame.descriptive_delta_decomposition@0.1.0"
+    }
+  ],
+  "pair_full_diff": [
+    {
+      "path": "metrics.52.caliber_switches.refund_to_payment_period",
+      "from": true,
+      "to": false
+    },
+    {
+      "path": "package.created_at",
+      "from": "2026-10-13T02:37:26.306Z",
+      "to": "2026-10-13T02:37:39.537Z"
+    },
+    {
+      "path": "package.fingerprint",
+      "from": "sha256:140e9ecf1510d3d64bf9f954a2d402cfa55bb88c398452c991ea53dec19dfa5b",
+      "to": "sha256:6252da0699b8ab492351b44271e67e1dc9991a22ce1aa2f8161457ff7d1198bf"
+    },
+    {
+      "path": "package.version",
+      "from": "1.1.0",
+      "to": "1.1.1"
+    },
+    {
+      "path": "review.exported_at",
+      "from": "2026-10-13T02:37:26.306Z",
+      "to": "2026-10-13T02:37:39.537Z"
+    }
+  ],
+  "pair_business_diff": [
+    {
+      "path": "metrics.52.caliber_switches.refund_to_payment_period",
+      "from": true,
+      "to": false
+    }
+  ],
+  "old_release_bytes_preserved": true,
+  "old_first_two_registry_entries_preserved": true,
+  "original_11_attachments_preserved": true,
+  "old_authority_sources_unchanged_at_new_commit": [
+    "docs/juanerai-semantic-asset-contract-v0.1.md",
+    "releases/net-sales-instance/1.0.0.sap.yaml",
+    "releases/net-sales-instance/1.0.1.sap.yaml",
+    "src/sap/canonical.ts",
+    "src/sap/receipt.ts",
+    "src/sap/validate.ts",
+    "src/schema/template.ts",
+    "src/schema/scenario.ts",
+    "src/schema/mapping.ts"
+  ],
+  "diagnostic": "PASS",
+  "limits": [
+    "No supplier test/CLI or consumer execution",
+    "No complete producer schema validation rerun",
+    "No IR/compute/independent consumer verification",
+    "No Provider, real data, service or Git mutation"
+  ],
+  "supplier_count_correction": "56 total minus 6 selected equals 50 unselected, not the handoff stated 49"
+}

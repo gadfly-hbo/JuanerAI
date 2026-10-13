@@ -1,0 +1,1296 @@
+bindings: []
+concept_refs: []
+dimensions:
+  - channel
+  - category
+  - region
+  - user_tier
+  - platform
+  - seller_tier
+metrics:
+  - caliber_switches:
+      include_refund: true
+    caliber_type:
+      - refund_adjustment
+    definition: "支付时间在所选窗口内的合格成功支付去重订单数（基础度量，业务键 count-distinct 订单身份）。作为分母时包含符合资格的已退款支付订单（include_refund=true，与 gmv 资格与窗口一致，开关与描述不得相互矛盾）；不含未支付、支付失败与取消订单；一笔订单多次支付只计最终成功一笔。边界 [开始,结束)，时区与观察截止由任务 Binding 显式声明。"
+    dimensions:
+      - channel
+      - category
+      - region
+    display_name: "支付订单数"
+    name: order_count
+    owner_role: "电商业务负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: simple
+  - caliber_switches:
+      exclude_inner_channel: true
+    caliber_type:
+      - scope_inclusion
+    definition: "统计周期内去重访问用户数，按设备与账号联合去重；默认剔除内部渠道与机器流量"
+    dimensions:
+      - channel
+      - region
+      - platform
+    display_name: "访客数"
+    display_name_en: "Unique Visitors"
+    name: uv
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: simple
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "下单用户数 / 访客数，衡量流量到订单的转化效率"
+    dimensions:
+      - channel
+      - region
+    display_name: "下单转化率"
+    display_name_en: "Conversion Rate"
+    name: cvr
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: ratio
+    type_params:
+      denominator: uv
+      numerator: order_user_count
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches:
+      include_refund: false
+    caliber_type:
+      - refund_adjustment
+    definition: "成交总额 / 支付订单数；分子默认剔除退款"
+    dimensions:
+      - channel
+      - category
+      - user_tier
+    display_name: "客单价"
+    display_name_en: "Average Order Value"
+    name: aov
+    owner_role: "电商业务负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: ratio
+    type_params:
+      denominator: order_count
+      numerator: gmv
+  - caliber_switches: {}
+    definition: "统计周期内至少完成一笔支付成功的去重用户数"
+    dimensions:
+      - channel
+      - region
+      - user_tier
+    display_name: "付费用户数"
+    name: paid_user_count
+    owner_role: "用户运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: simple
+  - caliber_switches: {}
+    caliber_type:
+      - validity_threshold
+    definition: "统计周期内完成注册（含第三方授权注册）的去重新用户数；默认剔除注册后未激活的机器账号"
+    dimensions:
+      - channel
+      - region
+    display_name: "新注册用户数"
+    name: signup_count
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: simple
+  - caliber_switches: {}
+    definition: "当日启动 App 或访问站点的去重用户数（活跃 = 至少一次有效访问）"
+    dimensions:
+      - platform
+      - channel
+    display_name: "日活跃用户数"
+    name: app_dau
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+    type: simple
+  - caliber_switches: {}
+    definition: "统计周期内至少产生一笔支付成功订单的去重商家数"
+    dimensions:
+      - category
+      - seller_tier
+    display_name: "动销商家数"
+    name: active_seller_count
+    owner_role: "平台运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: simple
+  - caliber_switches: {}
+    definition: "统计周期内首次上架并通过审核的商品数"
+    dimensions:
+      - category
+    display_name: "新上架商品数"
+    name: new_listing_count
+    owner_role: "平台运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - week
+      - month
+    type: simple
+  - caliber_switches: {}
+    definition: "统计周期内使用站内搜索的去重用户数"
+    dimensions:
+      - channel
+      - platform
+    display_name: "搜索访客数"
+    name: search_uv
+    owner_role: "搜索负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: simple
+  - caliber_switches:
+      include_refund: false
+    caliber_type:
+      - refund_adjustment
+    definition: "平台按成交金额与类目佣金率计提的交易佣金收入；分子口径与 GMV 一致（默认剔除退款）"
+    dimensions:
+      - category
+    display_name: "佣金收入"
+    name: commission_revenue
+    owner_role: "平台财务负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: derived
+    type_params:
+      expr: "gmv * take_rate"
+  - caliber_switches: {}
+    definition: "统计周期内至少完成一笔支付成功的去重用户数（与 paid_user_count 同口径，用于转化率分母场景）"
+    dimensions:
+      - channel
+      - region
+    display_name: "下单用户数"
+    name: order_user_count
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: simple
+  - caliber_switches: {}
+    caliber_type:
+      - validity_threshold
+    definition: "统计周期内下单 ≥2 次的去重用户数（复购率分子）"
+    dimensions:
+      - channel
+      - user_tier
+    display_name: "复购买家数"
+    name: repeat_buyer_count
+    owner_role: "用户运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: simple
+  - caliber_switches: {}
+    caliber_type:
+      - scope_inclusion
+    definition: "统计周期内外部渠道投放费用合计（不含平台内部资源位）"
+    dimensions:
+      - channel
+    display_name: "投放费用"
+    name: marketing_spend
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: simple
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - validity_threshold
+    definition: "统计周期内下单 ≥2 次的用户数 / 下单用户数"
+    dimensions:
+      - channel
+      - user_tier
+    display_name: "复购率"
+    name: buy_repeat_rate
+    owner_role: "用户运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: ratio
+    type_params:
+      denominator: order_user_count
+      numerator: repeat_buyer_count
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches:
+      active_by_pay: false
+    caliber_type:
+      - validity_threshold
+    definition: "新用户首访后 30 日内再次活跃的用户占比；默认活跃 = 再次访问，可收紧为再次支付"
+    dimensions:
+      - channel
+    display_name: "30 日留存率"
+    name: retention_30d
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - refund_adjustment
+    definition: "统计周期内退货订单数 / 支付订单数（退货 = 已发货后退回商品，区别于未发货仅退款）"
+    dimensions:
+      - category
+      - channel
+    display_name: "退货率"
+    name: return_rate
+    owner_role: "电商业务负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - week
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "统计周期内用户主动取消 + 超时未支付关闭的订单数 / 下单订单数"
+    dimensions:
+      - channel
+      - category
+    display_name: "订单取消率"
+    name: order_cancel_rate
+    owner_role: "电商业务负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - validity_threshold
+    definition: "统计周期内 1–2 星评价数 / 有效评价数"
+    dimensions:
+      - category
+    display_name: "差评率"
+    name: negative_review_rate
+    owner_role: "商品质量负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - week
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "统计周期内已评价订单数 / 确认收货订单数"
+    dimensions:
+      - category
+    display_name: "评价率"
+    name: review_rate
+    owner_role: "商品质量负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - caliber_switches: {}
+    definition: "统计周期内有效评价的算术平均星级（1–5）"
+    dimensions:
+      - category
+    display_name: "平均评分"
+    name: avg_rating
+    owner_role: "商品质量负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: simple
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - measurement_anchor
+    definition: "按承诺发货时间准时发货的订单数 / 应发货订单数"
+    dimensions:
+      - category
+      - region
+    display_name: "履约准时率"
+    name: fulfillment_ok_rate
+    owner_role: "供应链负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - week
+      - month
+    type: ratio
+  - caliber_switches: {}
+    caliber_type:
+      - measurement_anchor
+    definition: "支付成功到确认收货的平均自然日天数"
+    dimensions:
+      - region
+      - category
+    display_name: "平均到货时长"
+    display_name_en: "Average Delivery Days"
+    name: deliver_avg_days
+    owner_role: "供应链负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: simple
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "统计周期内因库存不足导致的不可售商品曝光次数 / 商品总曝光次数"
+    dimensions:
+      - category
+      - seller_tier
+    display_name: "缺货率"
+    name: out_of_stock_rate
+    owner_role: "供应链负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - week
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "统计周期内发起客诉的订单数 / 支付订单数"
+    dimensions:
+      - channel
+      - category
+    display_name: "客诉率"
+    name: complaint_rate
+    owner_role: "客服负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - caliber_switches: {}
+    definition: "推荐者占比（9–10 分）− 贬损者占比（0–6 分），基于周期性调研问卷"
+    dimensions:
+      - user_tier
+    display_name: "净推荐值"
+    display_name_en: "Net Promoter Score"
+    name: nps
+    owner_role: "用户运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - quarter
+    type: simple
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - scope_inclusion
+    definition: "新客（统计周期内首次购买用户）贡献 GMV / 全站 GMV，衡量增长对拉新的依赖度"
+    dimensions:
+      - channel
+    display_name: "新客 GMV 占比"
+    name: new_user_gmv_share
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "GMV 最高的三个品类合计占比，衡量品类结构分散度"
+    dimensions:
+      - region
+    display_name: "TOP3 品类 GMV 集中度"
+    name: category_top3_gmv_share
+    owner_role: "平台运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "GMV 前 10 名商家合计 GMV / 全站 GMV，衡量供给侧对头部商家的依赖"
+    dimensions:
+      - category
+    display_name: "头部商家集中度"
+    name: seller_top10_gmv_share
+    owner_role: "平台运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - scope_inclusion
+    definition: "入驻 90 日内商家的 GMV / 全站 GMV，衡量供给侧新鲜度"
+    dimensions:
+      - category
+    display_name: "新商家 GMV 占比"
+    name: new_seller_gmv_share
+    owner_role: "平台运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - scope_inclusion
+    definition: "移动端（App + 移动 Web）GMV / 全站 GMV"
+    dimensions:
+      - region
+      - category
+    display_name: "移动端 GMV 占比"
+    name: mobile_gmv_share
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "付费渠道（投放入口）带来的访问量 / 总访问量"
+    dimensions:
+      - platform
+    display_name: "付费流量占比"
+    name: paid_traffic_share
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - validity_threshold
+    definition: "统计周期内购买 ≥2 个品类商品的用户数 / 购买用户数"
+    dimensions:
+      - user_tier
+    display_name: "跨品类购买率"
+    name: cross_category_buy_rate
+    owner_role: "用户运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "统计周期内产生销售的商品数（SKU）/ 在架商品数"
+    dimensions:
+      - category
+      - seller_tier
+    display_name: "动销率"
+    name: sell_through_rate
+    owner_role: "平台运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "平均库存金额 / 统计周期内日均销售成本（商家侧库存效率，平台聚合口径）"
+    dimensions:
+      - category
+    display_name: "库存周转天数"
+    name: inventory_turnover_days
+    owner_role: "供应链负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: simple
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches:
+      include_refund: false
+    caliber_type:
+      - refund_adjustment
+    definition: "佣金收入 / GMV，衡量平台从交易中提取价值的比例"
+    dimensions:
+      - category
+    display_name: "平台货币化率"
+    name: take_rate
+    owner_role: "平台财务负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: ratio
+    type_params:
+      denominator: gmv
+      numerator: commission_revenue
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "GMV / 动销商家数"
+    dimensions:
+      - category
+      - seller_tier
+    display_name: "商家平均 GMV"
+    name: gmv_per_seller
+    owner_role: "平台运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+      - quarter
+    type: ratio
+    type_params:
+      denominator: active_seller_count
+      numerator: gmv
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches:
+      include_refund: false
+    caliber_type:
+      - refund_adjustment
+    definition: "GMV / 活跃用户数（分母默认访问活跃）"
+    dimensions:
+      - user_tier
+      - channel
+    display_name: "人均贡献 GMV"
+    display_name_en: "Average Revenue Per User"
+    name: arpu
+    owner_role: "电商业务负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+    type_params:
+      denominator: app_dau
+      numerator: gmv
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - attribution_window
+    definition: "归因到投放渠道的 GMV / 投放费用（归因窗口默认 7 日点击）"
+    dimensions:
+      - channel
+    display_name: "营销投放 ROI"
+    name: marketing_roi
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - scope_inclusion
+    definition: "参与营销活动（大促/券/补贴）订单的 GMV / 总 GMV"
+    dimensions:
+      - channel
+      - category
+    display_name: "营销活动 GMV 占比"
+    name: marketing_gmv_share
+    owner_role: "电商业务负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches:
+      include_platform_subsidy: false
+    caliber_type:
+      - fee_composition
+    definition: "补贴金额（券 + 价格补贴）/ GMV；默认不含平台承担的运费补贴"
+    dimensions:
+      - channel
+    display_name: "补贴率"
+    name: subsidy_rate
+    owner_role: "平台财务负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "总物流成本 / 支付订单数"
+    dimensions:
+      - region
+    display_name: "单均物流成本"
+    name: logistics_cost_per_order
+    owner_role: "供应链负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "总客服成本（人力 + 智能客服） / 支付订单数"
+    dimensions:
+      - channel
+    display_name: "单均客服成本"
+    name: customer_service_cost_per_order
+    owner_role: "客服负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - validity_threshold
+    definition: "新注册用户在注册后 7 日内完成关键行为（默认：首单浏览 ≥3 个商品详情）的占比"
+    dimensions:
+      - channel
+    display_name: "新用户激活率"
+    name: activation_rate
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - week
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "新注册用户在注册后 7 日内完成首笔支付成功的占比"
+    dimensions:
+      - channel
+    display_name: "新用户 7 日首购率"
+    name: first_order_within_7d_rate
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - week
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "搜索后点击进入商品详情的用户数 / 搜索用户数"
+    dimensions:
+      - channel
+    display_name: "搜索到详情转化率"
+    name: search_to_detail_cvr
+    owner_role: "搜索负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "浏览商品详情后加入购物车的用户数 / 详情页用户数"
+    dimensions:
+      - channel
+      - category
+    display_name: "加购率"
+    name: detail_to_cart_rate
+    owner_role: "用户运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "购物车内商品最终支付成功的用户数 / 加购用户数"
+    dimensions:
+      - channel
+    display_name: "购物车下单转化率"
+    name: cart_to_order_rate
+    owner_role: "用户运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    caliber_type:
+      - validity_threshold
+      - measurement_anchor
+    definition: "近 90 日无任何访问的存量用户 / 期末存量用户"
+    dimensions:
+      - channel
+    display_name: "沉默用户占比"
+    name: silent_user_share
+    owner_role: "用户运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches: {}
+    definition: "触达的沉默用户在 14 日内回访的占比"
+    dimensions:
+      - channel
+    display_name: "召回率"
+    name: comeback_rate
+    owner_role: "用户运营负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - month
+    type: ratio
+  - caliber_switches: {}
+    caliber_type:
+      - validity_threshold
+    definition: "单次有效访问的平均时长（秒），剔除 <5 秒的误触访问"
+    dimensions:
+      - platform
+    display_name: "平均访问时长"
+    name: session_avg_duration
+    owner_role: "增长负责人"
+    provenance:
+      origin: template
+      template_ref: "ecommerce-marketplace@0.1.0"
+    review:
+      required: false
+    time_grains:
+      - week
+      - month
+    type: simple
+  - caliber_switches:
+      exclude_inner_channel: true
+      include_refund: true
+      include_shipping: false
+    caliber_type:
+      - refund_adjustment
+      - scope_inclusion
+    definition: "合格成功支付订单的原始成交金额合计（基础度量，sum）。原始成交金额按订单实际支付金额汇总，每笔订单原始 gross 只计一次：包含后来发生退款的订单；不得先做净额化再扣退款，退款调整只经 net_sales 表达，本指标自身不剔除退款（include_refund=true，与 net_sales 公式勾稽）。不含运费（include_shipping=false）与内部渠道（exclude_inner_channel=true）均为设计态声明默认，实际字段与状态映射由任务 Binding 确定，不预设客户配置。期间按订单支付时间归属，边界 [开始,结束)；时区、观察截止与金额单位由任务 Binding 显式声明，单币种聚合，混币阻断；订单身份唯一，重复订单身份阻断依赖。"
+    dimensions:
+      - channel
+      - category
+      - region
+      - user_tier
+    display_name: "成交总额"
+    display_name_en: "Gross Merchandise Value"
+    name: gmv
+    owner_role: "电商业务负责人"
+    provenance:
+      note: "净销售修正（v1.1.x）：移除 gmv=uv*cvr*aov 恒等式（与 aov.numerator=gmv 构成依赖环，且 cvr 按用户、aov 按订单，不构成金额恒等式）；改为原始成交金额基础度量。fork 自 ecommerce-marketplace@0.1.0 gmv。"
+      origin: manual
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: simple
+  - caliber_switches:
+      include_pending_refund: false
+      refund_to_payment_period: true
+    caliber_type:
+      - refund_adjustment
+      - measurement_anchor
+    definition: "合格完成退款的金额合计（基础度量，sum，仅计截至观察截止已完成的退款）。资格与身份：退款身份唯一，重复退款身份阻断；每笔退款恰关联一个合格订单，关联不上即孤儿退款，阻断依赖、不静默剔除；状态必须为已完成，退款中、失败、取消不计入（include_pending_refund=false；首期不支持翻为 true，翻 true 的效果未定义）；金额为正且币种与关联订单一致，负退款、混币阻断；同一订单允许多笔退款（1:N 合法），逐笔计金额；同一订单累计退款超过其可退款金额而无合法解释时阻断。期间归属由 refund_to_payment_period 决定：true=按关联订单支付时间归属期间，跨期才完成的退款不得遗漏；false=按退款完成时间归属期间，支付发生在期前的历史订单必须可关联并核验其资格，不得先按本期支付窗口过滤丢弃。边界 [开始,结束)，时区、观察截止与金额单位由任务 Binding 显式声明；分组使用已声明的关联订单属性，不暗改分类。"
+    dimensions:
+      - channel
+      - category
+      - region
+      - user_tier
+    display_name: "退款额"
+    name: refund_amount
+    owner_role: "电商业务负责人"
+    provenance:
+      note: "净销售修正（v1.1.x）：补齐资格/身份/单位/超额阻断与两种期间归属的精确语义；开关即证据 SOP 延续"
+      origin: manual
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: simple
+  - caliber_switches: {}
+    caliber_type:
+      - refund_adjustment
+    definition: "净销售额 = gmv − refund_amount（同包派生，expr 显式声明）。勾稽前提：gmv.include_refund 必须为 true（原始成交含后来退款的订单，gross 不先净额化），否则公式双重扣减；refund_amount 的期间归属由 refund_to_payment_period 决定，与本指标同期自洽。完成归属口径下本期完成退款可超过本期成交，期净额可为负：这是合法结果，不得因净额为负拒绝合格非全空输入。时区、边界、金额单位与 gmv、refund_amount 一致。"
+    dimensions:
+      - channel
+      - category
+      - region
+      - user_tier
+    display_name: "净销售额"
+    name: net_sales
+    owner_role: "电商业务负责人"
+    provenance:
+      note: "净销售修正（v1.1.x）：显式声明净额可为负与归属自洽前提"
+      origin: manual
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: derived
+    type_params:
+      expr: "gmv - refund_amount"
+  - caliber_switches:
+      include_pending_refund: false
+    caliber_type:
+      - refund_adjustment
+    definition: "支付订单队列中，截至观察截止至少有一笔合格完成退款的去重订单数（基础度量，业务键 count-distinct 订单身份）。队列 = 支付时间在所选窗口内的合格成功支付去重订单（与 order_count 同队列、同窗口、同截止，作退款率分子）；同一订单多笔完成退款只计一次。队列口径不随 refund_to_payment_period 金额归属开关变化：完成归属下历史订单的本期退款计入本期退款额，但该历史订单不进入本期支付队列。边界 [开始,结束)，时区与观察截止由任务 Binding 显式声明；分组使用已声明的关联订单属性，不暗改分类。"
+    dimensions:
+      - channel
+      - category
+      - region
+    display_name: "退款订单数（支付队列）"
+    name: refunded_order_count
+    owner_role: "电商业务负责人"
+    provenance:
+      note: "净销售修正（v1.1.x）：新增支付队列退款率分子，消除『仅文字描述、LLM 临时编公式』缺口"
+      origin: manual
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: simple
+  - aggregation:
+      allowed_dimensions: []
+      disallowed_dimensions: []
+      ratio_policy: recompute_from_parts
+    caliber_switches:
+      include_pending_refund: false
+    caliber_type:
+      - refund_adjustment
+    definition: "支付订单队列退款率 = refunded_order_count / order_count（分子分母显式引用包内指标；比率必须按实际分子分母重算，不得聚合比率值、不得平均组内比例、总体去重数不得机械相加）。该队列口径不随 refund_to_payment_period 金额归属开关变化，也不等于本期全部完成退款金额的风险占比（完成归属下历史订单退款计入退款额但不入本期支付队列），报告须明确区分两者。分母为 0（所选窗口无合格支付订单）且输入为合格非全空时，退款率证据不足：不得填 0%、Infinity 或据此宣称风险正常（受限完成规则见 net_sales_review 场景 output_spec）；退款中、失败、取消的退款不计入分子（include_pending_refund=false，首期不支持翻 true）。"
+    dimensions:
+      - category
+      - channel
+    display_name: "退款率"
+    name: refund_rate
+    owner_role: "电商业务负责人"
+    provenance:
+      note: "净销售修正（v1.1.x）：补显式分子/分母引用与队列口径声明，替换模板『仅文字比率』定义"
+      origin: manual
+    review:
+      required: false
+    time_grains:
+      - day
+      - week
+      - month
+    type: ratio
+    type_params:
+      denominator: order_count
+      numerator: refunded_order_count
+package:
+  created_at: "2026-10-13T02:37:26.306Z"
+  fingerprint: "sha256:140e9ecf1510d3d64bf9f954a2d402cfa55bb88c398452c991ea53dec19dfa5b"
+  generator: "metric-factory@0.1.0+88a8d82"
+  id: net-sales-instance
+  kind: instance
+  namespace: mf.net-sales-instance
+  version: 1.1.0
+review:
+  exported_at: "2026-10-13T02:37:26.306Z"
+  gate: metric-factory-export-gate
+  unreviewed: []
+runtime_state: design_only
+sap: "0.1"
+scenarios:
+  - decision_purpose: "定位 GMV 与目标差距的量价来源，决定流量、转化、客单三侧的资源投放优先级"
+    evidence_requirements: "近 13 周周粒度 gmv/uv/cvr/aov 序列与同期目标值"
+    id: gmv_gap_diagnosis
+    method_refs:
+      - "dame.m2.driver_decomposition@1.0.0"
+    metric_usages:
+      - metric: gmv
+        note: "差距量化对象，对齐北极星候选 gmv 的模板口径"
+        role: outcome
+      - metric: uv
+        note: "规模侧第一层拆解（revenue 树：gmv = uv * cvr * aov）"
+        role: driver
+      - metric: cvr
+        role: driver
+      - metric: aov
+        role: driver
+      - metric: retention_30d
+        note: "诊断期流量加码不得损伤 30 日留存"
+        role: guardrail
+      - metric: refund_rate
+        note: "转化抢救动作不得推高退款率"
+        role: guardrail
+    output_spec: "一页差距归因结论 + 流量/转化/客单三侧行动优先级清单"
+    question_tree:
+      - id: gap_root
+        label: "GMV 与目标差距多大"
+        metric: gmv
+      - id: uv_gap
+        label: "访客规模是否拖累"
+        metric: uv
+        parent: gap_root
+      - id: cvr_gap
+        label: "下单转化是否恶化"
+        metric: cvr
+        parent: gap_root
+      - id: aov_gap
+        label: "客单价是否下滑"
+        metric: aov
+        parent: gap_root
+    review_rules: "业务负责人确认目标口径与归因窗口后定稿"
+    title: "GMV 差距诊断"
+    version: 0.1.0
+  - decision_purpose: "定位净销售额两期变化的销售侧与退款侧来源，决定促销售与退款治理之间的资源分配"
+    evidence_requirements: "近 13 周周粒度 gmv/refund_amount/net_sales 序列及其订单与退款原始记录：订单含订单身份、支付时间、支付金额、币种、支付状态、已声明的分组属性（category）；退款含退款身份、关联订单、退款金额、币种、退款状态、退款完成时间。须显式声明时区、[开始,结束) 期间边界（周按声明时区自然周）、观察截止与金额单位；两段比较期间由用户在 13 周内明确指定；支持总体与声明适用分组（category，按关联订单属性）；合格范围内无交易周须明确展示（金额 0、退款率证据不足），不得与全空输入混淆。"
+    id: net_sales_review
+    method_refs:
+      - "dame.descriptive_delta_decomposition@0.1.0"
+    metric_usages:
+      - metric: net_sales
+        note: "复盘的量化对象（用户指定两段期间比较）"
+        role: outcome
+      - metric: gmv
+        note: "销售侧拆解：原始成交总额（含后来退款的订单，gross 只计一次），与 net_sales 公式勾稽"
+        role: driver
+      - metric: refund_amount
+        note: "退款侧拆解：合格完成退款，归属期间随 refund_to_payment_period 开关"
+        role: driver
+      - metric: refund_rate
+        note: "支付队列退款率（分子 refunded_order_count／分母 order_count）；队列口径不随金额归属开关变化；退款治理动作不得只压退款率而牺牲净销售额"
+        role: guardrail
+      - metric: refunded_order_count
+        note: "退款率分子：支付队列中至少一笔完成退款的去重订单数；1:N 退款只计一次；历史订单的本期退款不入本期队列"
+        role: guardrail
+      - metric: order_count
+        note: "退款率分母与队列基数：包含已退款订单的合格成功支付去重订单数"
+        role: guardrail
+    output_spec: "近 13 周周序列（净额组件与支付队列退款率）+ 用户指定两段期间的描述性拆解：Δ净额 = Δ成交总额 − Δ退款额（总体与声明分组各一份；分组退款率由分子分母重算；逐对核验恒等式 Δnet = Δgmv − Δrefund）。完成规则：合格非全空输入且退款率分母为 0 时，若净额组件与不足判定均通过独立核验，可交付「分析完成 · 退款率证据不足」受限报告，不填 0%、Infinity 或风险正常——受限可完成的终点=净额序列与拆解；必须保持未完成的终点=退款率数值判断与风险结论（若承诺可用风险护栏，仍为部分结果完成，不得以受限报告取消承诺）。全空输入、资格失败、孤儿退款、重复身份、负退款、混币、无合法解释的超额退款阻断整个依赖，不静默剔除异常。"
+    question_tree:
+      - id: net_sales_root
+        label: "净销售额变化多大"
+        metric: net_sales
+      - id: sales_side
+        label: "成交总额侧贡献多少"
+        metric: gmv
+        parent: net_sales_root
+      - id: refund_side
+        label: "退款侧拖累多少"
+        metric: refund_amount
+        parent: net_sales_root
+      - id: refund_queue_check
+        label: "支付队列退款率是否异常"
+        metric: refund_rate
+        parent: refund_side
+    review_rules: "业务负责人确认退款金额归属口径（refund_to_payment_period）、时区、观察截止、两段比较期间与分组适用性后定稿；方法引用 dame.descriptive_delta_decomposition@0.1.0 为设计态定义（docs/net-sales-method-refs-v0.1.md），消费方未实现前不得臆造，不得硬别名到会员 M2 方法（dame.m2.driver_decomposition@1.0.0）。"
+    title: "净销售额复盘"
+    version: 0.2.0

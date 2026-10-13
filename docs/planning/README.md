@@ -102,6 +102,19 @@ Review006及Runtime受影响增量检查已PASS，用户产品／UI接受成立�
 由用户附实际固定Git发布身份转给原Mini任务，MacBook不直接发送；SDK0.4.1升级仍由用户单独转交。
 发布、Mini采用／intake、实现及产品接受分别确认；不据此宣称工程完成或恢复旧自动循环。
 
+**2026-10-13 · Change006 专业资产采用已批准／冻结：**用户接受
+[产品方案](2026-10-12/change006-metric-assets/proposal-v0.1.md)及
+[增量UI Contract／可点击附件](2026-10-12/change006-metric-assets/ui-contract-v0.1.md)，
+[新鲜独立Review003](2026-10-12/change006-metric-assets/reviews/development-readiness-003.md)为产品计划就绪PASS；
+新增UI Gate PASS和Product Input Freeze见[追加批准记录](2026-10-12/change006-metric-assets/approval-and-freeze.md)，
+[60项冻结身份](2026-10-12/change006-metric-assets/frozen-inputs-2026-10-13.json)保留新旧附件与历史审查。
+006有界承接N04必要子集：本项目一次批准精确净销售资产，当前数据重新绑定并真实消费Context／Binding／IR、
+计算／独立核验及持久报告／采用回执；正向供应固定8f47913c下@1.1.0／@1.1.1与登记已核对。
+不批准其余50指标，不改Blueprint v4.2／40ID／20候选／后续回访路线，不重画005工作台。
+用户授权有界Git发布并自行转发[只读接收指令](2026-10-12/change006-metric-assets/handoff-instructions.md)，
+**暂不启动开发**；Git发布、Mini采用及开发授权分别确认，接收后仍等待用户启动。
+旧待确认标签及001／002的NEEDS_CLARIFICATION原件不回写；批准不将合成／浏览器NOT_RUN变成工程证据。
+
 ## Historical v4.1 approval snapshot — superseded as route by v4.2
 
 The following preserves the earlier approval and publication state, not current

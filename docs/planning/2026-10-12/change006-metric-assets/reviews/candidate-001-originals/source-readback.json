@@ -1,0 +1,170 @@
+{
+  "prepared_on": "2026-10-12",
+  "consumer": {
+    "device": "MacBook",
+    "worktree": "/Users/huangbo/.codex/worktrees/e1d5/JuanerAI",
+    "branch": "work/macbook/change006-metric-assets",
+    "baseline": "4df7604621fff2c8ec27281d59cf4a788deae47b",
+    "initial_worktree": "clean",
+    "publication": "NOT_AUTHORIZED"
+  },
+  "supplier": {
+    "repository": "/Users/huangbo/Dev/Projects/metric-factory",
+    "commit": "a7c08185ee1691e641011b53d5bb87374d0b5b89",
+    "dirty_path_preserved": "examples/ecommerce-instance.yaml",
+    "source_mode": "fixed_git_objects_only"
+  },
+  "probe_scope": "Read-only full YAML parsing, fixed pure canonical helper and attachment byte comparison; not supplier/product runtime or business acceptance",
+  "attachments": [
+    {
+      "source_path": "docs/juanerai-semantic-asset-contract-v0.1.md",
+      "local_path": "attachments/metric-factory/docs/juanerai-semantic-asset-contract-v0.1.md",
+      "bytes": 31989,
+      "sha256": "d736d8fc6ba148f328fae1d00b12e68cfc789b45730d43954be49d049dab8564",
+      "git_blob": "a5607bcc342345229c1ff40a9d2ad0f51dbe2a44",
+      "byte_identical": true
+    },
+    {
+      "source_path": "docs/sap-consumption-guide.md",
+      "local_path": "attachments/metric-factory/docs/sap-consumption-guide.md",
+      "bytes": 8963,
+      "sha256": "0710dba65aa1ae0920caf7666033b4a8ab9f014513c6dd9d44d6fc97d6ed751e",
+      "git_blob": "1154893140336467f3923f550a76754e3c1b228c",
+      "byte_identical": true
+    },
+    {
+      "source_path": "releases/index.yaml",
+      "local_path": "attachments/metric-factory/releases/index.yaml",
+      "bytes": 936,
+      "sha256": "c3f829fef3981827b048ccf8b6adbf22bad71d1987ee5beb51780a2973eadb98",
+      "git_blob": "3899b41fedf60cb55ce3bd545c12fd48ea570638",
+      "byte_identical": true
+    },
+    {
+      "source_path": "releases/net-sales-instance/1.0.0.sap.yaml",
+      "local_path": "attachments/metric-factory/releases/net-sales-instance/1.0.0.sap.yaml",
+      "bytes": 35709,
+      "sha256": "f78f606b96035d282c9d0ca8153ea9af87016747e45ddfb9c34f6936857f3343",
+      "git_blob": "24da5c7a00f40e80b5f7c8596a04122f4baed621",
+      "byte_identical": true
+    },
+    {
+      "source_path": "releases/net-sales-instance/1.0.1.sap.yaml",
+      "local_path": "attachments/metric-factory/releases/net-sales-instance/1.0.1.sap.yaml",
+      "bytes": 35710,
+      "sha256": "319fd15f4681a1df105b9b490f246021018bc49202ed9549dfb68366a2dedef7",
+      "git_blob": "54c0657ec32c4cf241847c28685dc2c444ba3bf1",
+      "byte_identical": true
+    },
+    {
+      "source_path": "src/sap/canonical.ts",
+      "local_path": "attachments/metric-factory/src/sap/canonical.ts",
+      "bytes": 5055,
+      "sha256": "5d87029fdba8c7f11595548e4236c7455a072bcab663dc1919cf17f4a7760c28",
+      "git_blob": "f5611cb283c4dd56d2598a5c4f97f0f64030c32a",
+      "byte_identical": true
+    },
+    {
+      "source_path": "src/sap/receipt.ts",
+      "local_path": "attachments/metric-factory/src/sap/receipt.ts",
+      "bytes": 6926,
+      "sha256": "8e50269d109a1ee1a83a23ec78a567f3d11a8ee68a17526815280e5a4993188e",
+      "git_blob": "c298e257cc579e8a8d54c019ceb3331112dc6ec5",
+      "byte_identical": true
+    },
+    {
+      "source_path": "src/sap/validate.ts",
+      "local_path": "attachments/metric-factory/src/sap/validate.ts",
+      "bytes": 5634,
+      "sha256": "1aafaecef973c384a555aa40808b46827cd93fa4b936edba5b53316e12a62cd5",
+      "git_blob": "412d757f836b64c8bf3c173eabe8641460626943",
+      "byte_identical": true
+    },
+    {
+      "source_path": "src/schema/template.ts",
+      "local_path": "attachments/metric-factory/src/schema/template.ts",
+      "bytes": 5081,
+      "sha256": "935f31c24e20aeb7293036efece869e8d7ffa1c33ca2df9d537710d4a5facf8b",
+      "git_blob": "024615f785951256ee1859666c5ec16c51dfca6c",
+      "byte_identical": true
+    },
+    {
+      "source_path": "src/schema/scenario.ts",
+      "local_path": "attachments/metric-factory/src/schema/scenario.ts",
+      "bytes": 3000,
+      "sha256": "42d9a8d4e5b95ecff4abbefd183b4c9e76d6e2b315c710016b9f441397e09b74",
+      "git_blob": "8030b6cd836f00c2f326b5148c52408cef029bd9",
+      "byte_identical": true
+    }
+  ],
+  "packages": [
+    {
+      "id": "net-sales-instance",
+      "version": "1.0.0",
+      "metric_count": 55,
+      "scenario_count": 2,
+      "package_fingerprint": "sha256:6330f6b0a0a4823d6d3ebc9bb046bad651ddf1f2cf0d99cac7fb7e02e890f284",
+      "content_fingerprint": "sha256:f8a9d88e7c854b4b5d1ff1f7eda2fa9270e03f4e8207ba5e62225b040e0860f4",
+      "fingerprints_match": true,
+      "gmv_expr": "uv * cvr * aov",
+      "aov_numerator": "gmv",
+      "gmv_include_refund": true,
+      "refund_to_payment_period": true,
+      "refund_rate_type_params": null,
+      "bindings_count": 0,
+      "net_sales_method_refs": [
+        "dame.m2.driver_decomposition@1.0.0"
+      ]
+    },
+    {
+      "id": "net-sales-instance",
+      "version": "1.0.1",
+      "metric_count": 55,
+      "scenario_count": 2,
+      "package_fingerprint": "sha256:c7e8f864e580d2195aef0c03d864f2b3ced123001042bc0cbfa85638a1e48f81",
+      "content_fingerprint": "sha256:e1511fdf5bd552c608bfb213a4c68fbbb251e98b472d1a1299dbd50d73392df0",
+      "fingerprints_match": true,
+      "gmv_expr": "uv * cvr * aov",
+      "aov_numerator": "gmv",
+      "gmv_include_refund": true,
+      "refund_to_payment_period": false,
+      "refund_rate_type_params": null,
+      "bindings_count": 0,
+      "net_sales_method_refs": [
+        "dame.m2.driver_decomposition@1.0.0"
+      ]
+    }
+  ],
+  "differences": [
+    {
+      "path": "metrics.53.caliber_switches.refund_to_payment_period",
+      "before": true,
+      "after": false
+    },
+    {
+      "path": "package.created_at",
+      "before": "2026-10-12T03:49:25.064Z",
+      "after": "2026-10-12T06:39:39.197Z"
+    },
+    {
+      "path": "package.fingerprint",
+      "before": "sha256:6330f6b0a0a4823d6d3ebc9bb046bad651ddf1f2cf0d99cac7fb7e02e890f284",
+      "after": "sha256:c7e8f864e580d2195aef0c03d864f2b3ced123001042bc0cbfa85638a1e48f81"
+    },
+    {
+      "path": "package.generator",
+      "before": "metric-factory@0.1.0+da69a06",
+      "after": "metric-factory@0.1.0+f525be6"
+    },
+    {
+      "path": "package.version",
+      "before": "1.0.0",
+      "after": "1.0.1"
+    },
+    {
+      "path": "review.exported_at",
+      "before": "2026-10-12T03:49:25.064Z",
+      "after": "2026-10-12T06:39:39.197Z"
+    }
+  ]
+}
