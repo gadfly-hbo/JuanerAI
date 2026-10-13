@@ -34,3 +34,13 @@ candidate-006 manifest SHA-256 `6a8205c7bb5a8055296258e3f41e284da377e73d59cbd6e3
 固定后实际checks/PASS、准确commit/PR/merge SHA、每个main同步结果及产品保护回读由publication-007的不可覆盖发布receipt保存。新证据不覆盖旧失败/PASS。CI、full portable、native/package/Release、Provider/业务资料、产品采用各为独立主张；本地不重新跑无关native或整套portable，PR所选canonical范围以实际workflow/log为准。合并完成且安全同步逐项返回后停止，不自动接入产品、改流程/CI或清理分支。
 
 本轮新执行（均目标4df7604）：`pub007-affected` 148PASS/0FAIL/0SKIP，包含已有Chrome真实首提交/读资料中停止；`pub007-inputs` 20PASS/3NOT_RUN；`pub007-typecheck` exit0；`pub007-quality` exit0，五个还原文件逐字HEAD、query源码/构建/bundle/installed package均不存在，helper认证加载200/未认证401及撤回route404。无需重新安装、构建query或改同步机制。新候选固定后的独立结论只补本轮发布差异和证据适用性，旧候选不变。
+
+## 首次CI与最小兼容修正（008）
+
+PR78原head `781169405b14ab2a7e42f584755163099fb828d6` 的canonical run `38339837177` FAIL：CI-CHECK-001固定Desktop文件清单拒绝新增read-json单测文件，P0行为用例未失败。007候选/PASS及完整失败log保持不变。最小修正将相同3个P0读取用例逐字移入既有open-analysis-client单测，原93用例逐字保留，删除独立文件；仅新增其必需import，不修改清单、runner、workflow或断言。生产实现与006/007一致，原同步机制仍不改。
+
+该首次CI的三项cloud归档检查实际PASS，已保存完整输出；本地三项仍NOT_RUN，不混淆证据级别。修正后的准确head必须再次完成适用canonical CI，旧CI归档PASS不能代替新head。
+
+publication-008另存受影响测试/固定清单、候选008完整manifest、独立只读复核与后续准确Git/CI/合并/安全同步回读。已有HTTP/权限/CSRF/浏览器/类型及边界证据只按未变实现、输入和环境复用。测试资产变更仅位置变化，搬移body摘要与原93用例摘要保存，负例无删除。
+
+008补充检查：`pub008-unit` 96PASS/0FAIL/0SKIP；`pub008-affected` 14PASS/0FAIL/0SKIP（3个P0及既有CI-CHECK-001合同/清单负例）；`git diff --check` PASS。类型/生产实现/原浏览器行为输入未变，复用007适用结果；准确新head CI尚待运行，不能提前宣称通过。
