@@ -104,3 +104,19 @@ test('SDK040-01/02 normal Profile and authenticated HTTP consume native sessions
   const forked=await post(path,{version:'1.0',expected_revision:'1',command:{kind:'fork'}},headers);assert.equal(forked.status,200);assert.ok((await forked.json()).sessionId);const forkView=await post(path,{version:'1.0',expected_revision:'1',command:{kind:'snapshot'}},headers),view=(await forkView.json()).view;assert.equal(forkView.status,200);assert.ok(view.history.length);assert.equal(view.queueAvailable,false,'fresh fork lacks queue authority until an explicit run, not a known empty queue');const entryId=view.history[0].entryId;const navigated=await post(path,{version:'1.0',expected_revision:'1',command:{kind:'navigate',entryId,summarize:false}},headers);assert.equal(navigated.status,200);assert.equal(calls,1,'explicit position selection does not run a model');assert.equal(open.read(id).state,'saved');
  }finally{finish();await server.close();await open.close();}
 });
+
+test('P0-01 upload envelope/canonical Base64 and admission stay equivalent at all three routes',async()=>{
+ let accepted:any[]=[];const accept=async(...args:any[])=>{accepted.push(args.at(-1));return {identity:{task_id:'task'},source:{sources:[]}};};
+ const server=await startBrowserMembershipServer({store:{} as any,open:{submit:accept,revise:accept,addRequirementMaterials:accept} as any});
+ try{const boot=await fetch(server.origin+'/v1/bootstrap',{method:'POST',headers:{origin:server.origin,'content-type':'application/json'},body:JSON.stringify({token:server.bootstrap})});const cookie=boot.headers.get('set-cookie')!.split(';')[0],{control}=await boot.json();
+ const source={source_id:'synthetic',display_name:'synthetic.csv',format:'csv',base64:'YQo='};
+ for(const path of ['/v1/open-analysis','/v1/open-analysis/aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa/revise','/v1/open-analysis/aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa/requirement-materials']){
+  const post=(sources:any,headers={})=>fetch(server.origin+path,{method:'POST',headers:{cookie,origin:server.origin,'content-type':'application/json','x-xanthil-control':control,...headers},body:JSON.stringify({sources})});
+  assert.equal((await post([source],{'x-xanthil-control':'wrong'})).status,403);assert.equal((await post([source],{'sec-fetch-site':'cross-site'})).status,403);
+  for(const value of [null,{},[{...source,extra:true}],[{...source,base64:'YQ'}],[{...source,base64:'YR=='}],[{...source,base64:'YQ==\n'}],[{...source,base64:'A'.repeat(Math.ceil(8*1024*1024/3)*4+1)}]]){const r=await post(value);assert.equal(r.status,400);assert.deepEqual(await r.json(),{error:'REQUEST_REJECTED'});}
+  assert.equal((await post([source])).status,200);assert.deepEqual([...accepted.at(-1).sources[0].bytes],[97,10]);assert.equal('base64' in accepted.at(-1).sources[0],false);
+  assert.equal((await post([{...source,base64:''}])).status,200,'open transport allows empty; downstream business owns material rules');
+ }
+ assert.equal(accepted.length,6);
+ }finally{await server.close();}
+});

@@ -1,9 +1,10 @@
+import {readJson} from './read-json.mjs';
 /** Transport state only. Business state remains in the local Application and durable Store. */
 export function createWorkspaceClient({request=globalThis.fetch,storage=null,control=null}={}) {
  const key='xanthil.pending-command.v1';let pending=null;
  try{const value=JSON.parse(storage?.getItem(key)??'null');if(value&&/^[a-f0-9-]{36}$/.test(value.command_id)&&['create','sources','stop','review_open','review_save','review_submit','model_authorization','clarification'].includes(value.kind))pending=value;}catch{/* A denied storage API grants no control. */}
  const remember=value=>{pending=value;try{if(value)storage?.setItem(key,JSON.stringify(value));else storage?.removeItem(key);}catch{/* Control is never stored; a refreshed page remains read-only. */}};
- async function read(path){const response=await request(path,{credentials:'same-origin',cache:'no-store'});if(!response.ok)throw new Error('暂时无法打开，请稍后重试。');return response.json();}
+ const read=path=>readJson(request,path,'暂时无法打开，请稍后重试。');
  async function write(kind,path,body){if(!control||pending)throw new Error('目前只能查看，请先确认上次提交的结果。');remember({kind,command_id:body.command_id,task_id:body.task_id??null,definite:false});let response;
   try{response=await request(path,{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json','x-xanthil-control':control},body:JSON.stringify(body)});const result=await response.json();if(!response.ok){if(response.status===403)control=null;remember({...pending,definite:true});throw new Error('请求没有完成，请先查看保存结果。');}remember(null);return result;}
   catch(error){if(response&&!response.ok&&pending)remember({...pending,definite:true});throw error;}

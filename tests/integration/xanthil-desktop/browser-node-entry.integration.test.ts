@@ -114,3 +114,11 @@ test('OA-S01/Q11-07: normal web reader deployment pins existing executable ident
  const blocked=join(root,'not-executable');writeFileSync(blocked,'not executable',{mode:0o600});writeFileSync(descriptor,JSON.stringify({...value,python:entry(blocked)}));await assert.rejects(()=>read(descriptor,'/numeric-python',{}),{code:'WEB_DOCUMENT_READERS_UNAVAILABLE'});
  writeFileSync(descriptor,JSON.stringify(value));writeFileSync(image,'different executable',{mode:0o700});await assert.rejects(()=>read(descriptor,'/numeric-python',{}),{code:'WEB_DOCUMENT_READERS_UNAVAILABLE'});
 });
+
+
+test('P0ONLY-RB01: withdrawn query pilot has no dependency or build activation',()=>{
+ const value=JSON.parse(readFileSync('package.json','utf8'));
+ assert.equal(value.dependencies['@tanstack/query-core'],undefined);
+ assert.equal(value.scripts['web:build'],undefined);
+ assert.equal(value.scripts['web:start'],'node tools/browser/entry.mjs start');
+});
