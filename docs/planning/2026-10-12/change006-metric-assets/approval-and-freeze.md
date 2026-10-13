@@ -27,6 +27,8 @@
 | [增量CSS](clickable/assets.css) | 3564 | `88b76d25e32fba3c2df9c2d78b9a90decac0149d68433840530ef7b280e2822b` |
 | [独立复审003全文](reviews/development-readiness-003.md) | 10428 | `4def63e10cbdef1fae24ce149489ab8bf09c6de797f1eac96fcf294f44e50b03` |
 
+有效蓝图绑定为[Blueprint v4.2正式正文](../../2026-10-04/juanerai-product-development-blueprint-v4.2.md)，61706字节，SHA-256 `3f9600fd44f0d869a2ae4632b92c3f6c182d40d3e2223c7cd75619fb7b438cf3`；其[批准／规则整合记录](../../2026-10-04/blueprint-v4.2-approval-and-rule-integration.md) SHA-256为`73f2c04d9169f9cb2582f85937679edc2988c57f1d7c741cfaec4216091828aa`。两文件随实际固定JuanerAI发布提交读取，不采用源供应材料中的旧蓝图。
+
 规划／审查代码基线为`4df7604621fff2c8ec27281d59cf4a788deae47b`。发布前远端已有已合并浏览器修正`fa5a30b822cfedad349d4c6ecfc9f47146b1f983`，当前产品分支正常快进至该提交，未覆盖规划材料；该差异不修改本包产品、UI或权威规则。旧身份保持原时点，不回写为新发布基线。
 
 正式供应身份仍为`metric-factory@8f47913c954f5650c8718a341add9feeea50d5d0`，tree `47672b4110444190afecbfdc841d26bfa301ee76`；新@1.1.0／@1.1.1与登记、方法和旧反例附件已在本包，不要求Mini访问MacBook供应仓。身份和限制见[接收结论](supplier-receipt-2026-10-13.md)与[接收清单](supplier-release-readback-2026-10-13.json)。各自56指标、所选6项、未选50项；历史55计数和49项源文案不能扩大或改变批准范围。

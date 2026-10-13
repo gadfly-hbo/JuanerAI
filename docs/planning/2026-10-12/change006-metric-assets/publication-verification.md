@@ -10,6 +10,7 @@
 - 当前可点击JS及内存检查脚本、两个供应诊断脚本语法通过；16组element-stub状态断言通过，真实浏览器、消费者计算／持久Store／下载未运行。
 - 只读供应诊断再次通过：新7原件与8f47913c固定对象逐字相符，双指纹／登记／六指标闭包及版本差异一致，旧附件保留；两项合成源oracle漏拒绝再次观察到，仍为消费者负例要求，不冒供应测试或消费者正确性通过。
 - 新鲜[独立发布一致性审查001](reviews/publication-consistency-001.md)实际PASS。产品计划就绪复用Review003，产品／UI批准来自用户，不重跑产品方向Gate。
+- 首次提交后仅补明既有Blueprint v4.2及批准记录的精确字节／SHA，独立受影响追加核验PASS；60项冻结文件仍完全相同。按正常PR更新重新运行CI，不以旧head的检查替代新head，不隐藏旧运行状态。
 - 远端main使用active规则集`main-protection`（ID 21155736）：禁止删除／非快进、要求线性历史和PR。传统branch-protection接口404不表示无保护；实际规则集未列required_status_checks，仍按项目Publication Completion要求等待本PR的Canonical validation成功，不绕过CI或修改远端规则。
 
 ## 证据及限制
