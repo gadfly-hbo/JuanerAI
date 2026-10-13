@@ -1,0 +1,202 @@
+{
+  "kind": "user-approved-product-input-freeze",
+  "change": "Change007",
+  "approved_on": "2026-10-13",
+  "planning_baseline_commit": "8dfc50528d342028ae1fcc3d0911ebca4a213e95",
+  "planning_baseline_tree": "d622004e2f80c3b5127c169cc346a05e16c8d7c2",
+  "file_scope": "relative to this planning directory; approval, handoff and subsequent publication records excluded from recursive hashing",
+  "files": [
+    {
+      "path": "architecture-evaluation-request.md",
+      "bytes": 4656,
+      "sha256": "156c4709d5c0e908db178b9d00e091b0b25b6c6ee260b8baeecafaf675bc22fa"
+    },
+    {
+      "path": "baseline-readback.md",
+      "bytes": 7230,
+      "sha256": "1cbee6d0d8086a80a8d49fc61f54a1e7f476bf5e401e87984ebe813af836d9b7"
+    },
+    {
+      "path": "clickable/index.html",
+      "bytes": 7202,
+      "sha256": "eb5f1ca19220770f9b19c4b507e8f7bed0ff414f41bcef7d8c1c52fb26f67262"
+    },
+    {
+      "path": "clickable/review.css",
+      "bytes": 4460,
+      "sha256": "51b31cb25f2ffe2fefaf3a7abf57bc841c3a12f78fbc6307cd4b188de5cfbb63"
+    },
+    {
+      "path": "clickable/review.js",
+      "bytes": 29766,
+      "sha256": "466d498c86526f55a4bffb53185791dc56e763199a1aa343566e4aea39986570"
+    },
+    {
+      "path": "decisions.md",
+      "bytes": 3113,
+      "sha256": "0aec484539755714ea9e0e8b43cdef5e3f6cc8002f828a3363d4c8890ddf7bba"
+    },
+    {
+      "path": "proposal-v0.1.md",
+      "bytes": 28847,
+      "sha256": "3e54b2d5b4253b119500160af3f8452af461f93fbb76097c0ec3b01b8777f259"
+    },
+    {
+      "path": "prototype-check.mjs",
+      "bytes": 11459,
+      "sha256": "316537c4b1aead7bc06f6deb54fc9534d6a7934b4be90b10674949c041aae8c4"
+    },
+    {
+      "path": "reviews/candidate-001-originals/baseline-readback.md",
+      "bytes": 6440,
+      "sha256": "9b831a3703bd4e7be95ea295929d54a1ad35f105c42f7a9bc5c35bbafc83b816"
+    },
+    {
+      "path": "reviews/candidate-001-originals/clickable/index.html",
+      "bytes": 7177,
+      "sha256": "b2d75e7038f8f6baf6770bce09a9374ed1feca135268b514e8b95de68674ac0a"
+    },
+    {
+      "path": "reviews/candidate-001-originals/clickable/review.js",
+      "bytes": 22521,
+      "sha256": "eef542445abf0da1a554ae2980107919f47c09f6978fbf1da54daf10823a8928"
+    },
+    {
+      "path": "reviews/candidate-001-originals/decisions.md",
+      "bytes": 2681,
+      "sha256": "1860f9b3903c658b63d21321ce1c0edb1df05fa9dfeb44024d791108338d04d1"
+    },
+    {
+      "path": "reviews/candidate-001-originals/proposal-v0.1.md",
+      "bytes": 23483,
+      "sha256": "425461a69d3d5ab40bbde0202ad470531463f9c9daa5bbac3ed093b6e6d85901"
+    },
+    {
+      "path": "reviews/candidate-001-originals/prototype-check.mjs",
+      "bytes": 6501,
+      "sha256": "2b83b070591f56b4bc9d82308cfd04c2a80562093e66b9c54d6eeeda074b90e9"
+    },
+    {
+      "path": "reviews/candidate-001-originals/source-readback.json",
+      "bytes": 2565,
+      "sha256": "acf20163ebce2892e753d0dc27af91e117f918b30b777f0666f87ad216b17446"
+    },
+    {
+      "path": "reviews/candidate-001-originals/ui-contract-v0.1.md",
+      "bytes": 7763,
+      "sha256": "75f922d0a488f63065e65f6eef73585cc6f231b3152c6e90c465e2a61749594d"
+    },
+    {
+      "path": "reviews/candidate-001-originals/verification.md",
+      "bytes": 1928,
+      "sha256": "b7d45cd9720457d2160f8d7db05b9f706a57afd32d0eba26b0dad5ea402eebe1"
+    },
+    {
+      "path": "reviews/candidate-001.json",
+      "bytes": 1648,
+      "sha256": "38d2fceb06324999e71e3603fceab5626c2edee7b7ee06d02db3d5c89e8ef22f"
+    },
+    {
+      "path": "reviews/candidate-002-originals/clickable/review.js",
+      "bytes": 28708,
+      "sha256": "e6237c67d8ee3a96f7308bdf3788a04a6230c7aa1f606a20a3f59d37829878d8"
+    },
+    {
+      "path": "reviews/candidate-002-originals/prototype-check.mjs",
+      "bytes": 10195,
+      "sha256": "1757b278bec33540cf24182e05ee87f7bc55c3675b6a1fb3bfcfacc281be31fb"
+    },
+    {
+      "path": "reviews/candidate-002-originals/verification.md",
+      "bytes": 5147,
+      "sha256": "73f91817c116855808e239b592a3e28b29fede4ff576595d58df8eaed6ec3fd6"
+    },
+    {
+      "path": "reviews/candidate-002.json",
+      "bytes": 2000,
+      "sha256": "1b460c40317fed86401bb1dd2794ed58e81a13c34240fb54705ee4783afb03b5"
+    },
+    {
+      "path": "reviews/candidate-003-originals/verification.md",
+      "bytes": 6567,
+      "sha256": "e6840ea5a1dfc9bebdb52394d307ae6b09666301185632b775c7996f37771be5"
+    },
+    {
+      "path": "reviews/candidate-003.json",
+      "bytes": 2000,
+      "sha256": "b4afc87b9c449e65a94a4a726e3b3ac6ec0f11e14f0431c6c6f8ddad55d56760"
+    },
+    {
+      "path": "reviews/development-readiness-001.md",
+      "bytes": 6381,
+      "sha256": "aff63ab40d9883a14c9049a205f02b707cbd1e958a6a2760fc5902939fe2adc2"
+    },
+    {
+      "path": "reviews/development-readiness-002.md",
+      "bytes": 5795,
+      "sha256": "0a5a8fdd7ed7d9fc70c95184c68df3d7cbae9de758d199a2f80581dc7c21d1c3"
+    },
+    {
+      "path": "reviews/development-readiness-003.md",
+      "bytes": 7212,
+      "sha256": "b909bd60ea50c87f770ce36bea72f15717ee20f7f1e0ad438bdd6a17f892444b"
+    },
+    {
+      "path": "reviews/review-brief-001.md",
+      "bytes": 2301,
+      "sha256": "51bd7daf29af793951831ab018d7fe0c1e9bd1eba1fd895cc86a263330f99b44"
+    },
+    {
+      "path": "reviews/review-brief-002.md",
+      "bytes": 1889,
+      "sha256": "1bb6e8b210c5c48325124c1f2f821cec6c646ab5cbeb80ea763de0f083a1e5fa"
+    },
+    {
+      "path": "reviews/review-brief-003.md",
+      "bytes": 1627,
+      "sha256": "42c3e2a20d33ee4049a438599352a4607ec826c3a863f7dfb5eb1a26b5bf9c57"
+    },
+    {
+      "path": "source-readback.json",
+      "bytes": 2942,
+      "sha256": "aed64065a04d04182e88ac5100cba1ec6f4fdbaceed4a0b14c5b40fcd2f74baa"
+    },
+    {
+      "path": "ui-contract-v0.1.md",
+      "bytes": 8907,
+      "sha256": "70ff14a68c560510385600a42b88c38184e13c69192c1a64e52f48fdc54ae9f2"
+    },
+    {
+      "path": "verification.md",
+      "bytes": 7508,
+      "sha256": "b8f7193c07f38925739e48e18204e093938697b4bca70ef15ecc8d1466891497"
+    }
+  ],
+  "authorities": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 25485,
+      "sha256": "5eae9bada9f1de48c5c686086c21c954f0e7694715e2420a0e496799ceda3d01"
+    },
+    {
+      "path": "docs/planning/2026-10-04/juanerai-product-development-blueprint-v4.2.md",
+      "bytes": 61706,
+      "sha256": "3f9600fd44f0d869a2ae4632b92c3f6c182d40d3e2223c7cd75619fb7b438cf3"
+    },
+    {
+      "path": "docs/planning/2026-10-04/blueprint-v4.2-approval-and-rule-integration.md",
+      "bytes": 7419,
+      "sha256": "73f2c04d9169f9cb2582f85937679edc2988c57f1d7c741cfaec4216091828aa"
+    },
+    {
+      "path": "docs/governance/product-change-execution-policy.md",
+      "bytes": 54329,
+      "sha256": "645a9050bec4f3b96b1fd6b20040b28ad529b434135971b1e63ffe07c4541f10"
+    },
+    {
+      "path": "docs/governance/git-development-workflow.md",
+      "bytes": 12751,
+      "sha256": "f01becde72a807a211fc96e6cefdf19757ba9c6366f123ff58ce2be23d0d8e09"
+    }
+  ]
+}
