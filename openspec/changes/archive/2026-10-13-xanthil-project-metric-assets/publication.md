@@ -15,3 +15,7 @@
 本文件保留提交/PR创建时点证据，不把等待CI当完成。**最终交付条件**：PR原生check在最终head通过、适用独立证据及具名接受有效、actual squash合并成立、每端main安全读回。最终checks/mergedAt/mergeCommit可直接从上述PR及其Checks读取；Mini最终完整回执持久保存在sole证据root的closeout001/publication-final.json、publication-final.md及相关CI/Git读回。回执只有实际完成后生成；不存在则本机最终效果未确认。GitHub原生PR/commit是集成事实，本机receipt是每端main/保护现场的时点证据，文档不代替它们。
 
 规则读回：传统branch protection API返回Branch not protected（404），实际main rules含PR、linear history、禁止force/deletion，required approving count0；没有额外强制status规则不免除项目必需Canonical CI。允许squash；当前Git权限按用户直接确认及Publication Completion闭合。只读sync-main预检显示Mini与MacBook main均f6e5395，分别为活动非main工作分支；实际合并后允许安全仅FF main ref，禁止改活动branch/index/files。
+
+## Preserved failed CI / current repair
+
+首run38399159378及记录后代run38399464094实际FAIL：CI-SOURCE-002测试旧manifest/lock identity，与当前批准原件不符。两份失败job/log原样留存于sole root；原artifact源和Git历史不删。修正仅两个固定fixture常量，原负例/断言与生产manifest/lock/代码不变；显式cloud archive本机17/17零skip，受影响整组及独立复核收齐后更新同一PR的新head，旧失败不作PASS。最终集成仍仅以最新head的实际Canonical CI、PR merge及每端main回执成立。

@@ -54,3 +54,7 @@ CI变更仅维护现行固定manifest/lock的yaml直接声明和8项独立类型
 # MF-05/MFC-03 原始金额资格修正（candidate010独立发现）
 
 含运费支付额相减后的非负值不能证明原始支付额和运费合法。Product Core主算分别拒绝负原始支付额、负原始运费及运费大于支付额；Analytics Adapter从获准快照独立重读并分别实施同样的资格规则，不调用主算的资格函数。所有合格订单均检查，即使支付时间不在报告窗口；原有观察截止、期间和分类筛选继续各自重建。正比例单位换算不改变符号；零运费合法。此修正不改变资产定义、归属版本、持久结构、UI或Provider权限。
+
+## CI-SOURCE-002 current-input fixture alignment
+
+正式GitHub CI执行现有云归档路径，暴露测试仍固定旧manifest/lock字节身份。仅更新prepare-ci-install.test.mjs两个独立常量为当前获准yaml2.9.0清单的精确1909/375853字节及固定SHA；不从被测prepare模块反推期待、不动态计算期待、不删除或弱化任何原断言/负例。实际package/lock、依赖、运行实现及原CI策略不变。原旧tuple随Git历史及owned before-source留存，当前合同始终要求当前批准原件；这不是供应/运行模型或产品权限变化。

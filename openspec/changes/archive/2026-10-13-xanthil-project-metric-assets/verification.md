@@ -164,3 +164,13 @@ NEXT_ACTION：完成canonical行为规格与完整Change归档、全图八项有
 ## Git提交及PR建立时点
 
 显式88文件candidate013提交1d4002771d3002c45122f10212f70dbc75dfb1bd并推送；PR80 base与head及88文件完整读回一致，正常attach已成功。Canonical CI首head运行38399159378已触发，收口记录变化后须取最终head CI。代码47文件仍为011 identity，归档/具名接受/8有限增量仍适用；最终Git/每端main依据publication.md绑定的原生PR及完成后才生成的sole final receipt。此段当前推进中，不把未来CI/merge结果填PASS。
+
+## Hosted CI fixture failure and narrow correction
+
+PR80首head1d400277与仅记录后代2cb7bf63的Canonical runs38399159378/38399464094均因CI-SOURCE-002旧当前清单夹具失败，原完整job/log持久保留；不是取消或随机超时。validation-contracts449PASS/1FAIL，原17组本机portable未提供这个cloud归档路径证明，不能用其PASS遮盖新失败。两个实际批准package/lock字节为1909/375853，SHA分别056a9062798ee3a693089bd0cf6c48bbc495d1bfd7a32f11ccbb8fbf625eb13d与99617668ec37096e96434edf94032906da52ebb70324794371e06198b8168509。
+
+先复用原批准node-gyp tar并核对完整SHA512 SRI，复制到sole closeout001/ci-fix019/、另读回一致；没有下载/安装或执行包脚本。本机以实际GITHUB_ACTIONS=true+批准archive执行原永久test，red001实际17例16PASS/1相同fixture断言FAIL，然后仅修正两个独立常量。green001实际17PASS/0SKIP，cloud归档/成员/篡改/原子拒绝真实路径均执行；原断言、未知成员/额外改动/same-size source漂移等负例不减。受影响validation-contracts整组在相同显式archive环境运行；详情见ci-fix019/affected-validation-contracts001.log及results001.json。产品47源全部不变，新增受影响CI永久测试文件使最终source/test/CI面为48，不以原47文件identity冒最终完整候选。
+
+下一动作：固定这项测试/记录后代，独立复核现有云分支断言与pin的一致性；通过后仅正常新提交/push同一PR，检查最终head Canonical CI全组及原授权Git收口。无需新产品/UI/角色审批；历史CI FAIL/旧接受边界和全部UNKNOWN保留。
+
+014原生独立受影响复核PASS已收齐，原文及独立hash读回见closeout001/validator014-report.md、manifest。91固定文件/原47字节/第48旧test两常量/批准archive和七篡改反例/17及450零skip实际记录/两hosted FAIL均独立核对。没有新增实质阻断；仅结论/board记录后代不修改测试pin或行为。下一动作正常提交push同一PR80，实际最终head完整Canonical CI后squash/safe-main，禁止将局部PASS冒全CI。

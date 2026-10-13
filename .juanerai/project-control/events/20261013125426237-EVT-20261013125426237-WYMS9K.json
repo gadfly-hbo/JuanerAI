@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261013125426237-WYMS9K",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-13T12:54:26.237Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a133ac-a0b0-76c3-8569-0531d1f017e8:01a13539-6a65-7fd1-8103-e1f0e6d7d4a3"
+  },
+  "summary": "Change006 CI-pin独立复核通过，继续PR80最终head完整CI",
+  "status_after": "validating",
+  "evidence_refs": []
+}

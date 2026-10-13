@@ -9,3 +9,9 @@
 唯一格式建议：archive/design.md末尾一个额外空行；原012不能声称staged diff --check通过。主Agent移除该空行，留存最终staging身份并重查，不影响已固定代码证据，不重复无变化测试。其后结论/观测记录属于结果记录，执行源保持固定。
 
 当前工程接受以独立代码证据及用户具名风险豁免成立；用户产品接受、Git权限、required CI及最终合并为不同事实。无新增Provider/资料/服务效果，后续Git按publication实际读回。
+
+## CI pin affected verification · candidate014
+
+独立014受影响复核PASS，无新增实质阻断。91固定文件匹配，原47执行面与011完全一致，第48项仅既有prepare-ci-install.test.mjs的两个current-input常量；其余断言/反例字节不改。新期待精确匹配已批准011 manifest/lock1909/375853字节及SHA，批准node-gyp archive/SHA512独立核验，通过纯内存三运输字段及七关键篡改反例。原cloud RED16/1、GREEN17/17零skip、整组450/450零skip顺序与完整记录一致，两云端FAIL/449PASS1FAIL保留；canonical016不冒该cloud路径证明。原文closeout001/validator014-report.md，1607字节，SHA256 8f9d3ba701dd44f243617a894d87a056dafa677ef61daca18cfcab947b3a0367，另读回一致。
+
+仅此测试pin后代可正常提交；最终head全CI仍必须实际通过。新增源/测试面48不使用旧47-file hash冒最终整体身份；产品运行源码47保持011字节，角色豁免/partial/UNKNOWN/历史BLOCKED、供应及native限界均未变。作者只随后记录结论/观测，没有新执行源增量。
