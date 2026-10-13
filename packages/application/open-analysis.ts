@@ -18,7 +18,68 @@ import {semanticDimensions,compileOpenSemanticInterpretation,semanticMessageId,b
 import {randomUUID} from 'node:crypto';
 import {taskHash} from '../product-core/member-task.ts';
 import {compileOpenAnalysisIR,executeOpenAnalysisIR,openAnalysisProposal,type OpenAnalysisIR,type OpenAnalysisValue} from '../product-core/open-analysis-ir.ts';
-import type {MemberSourceInspection} from '../ports/member-source.ts';
+import type {MemberSourceCell,MemberSourceInspection} from '../ports/member-source.ts';
+
+const modelSelectedSourceBudget=768*1024;
+
+function projectSelectedHeaderCell(cell:MemberSourceCell,maxValueBytes=384){
+ const full_value_bytes=Buffer.byteLength(cell.value);
+ if(full_value_bytes<=maxValueBytes)return cell;
+ let value=cell.value.slice(0,maxValueBytes);
+ while(Buffer.byteLength(value)>maxValueBytes)value=value.slice(0,-1);
+ return {...cell,value,full_value_bytes,value_truncated:true as const};
+}
+
+/** Keep model-facing inspection below the native tool-result ceiling.
+ * Calculations and verification continue to read the unmodified full inspection.
+ */
+export function projectSelectedSourceForModel(inspection:MemberSourceInspection){
+ const enriched={version:inspection.version,sources:inspection.sources.map(source=>({...source,sheets:source.sheets.map(sheet=>({...sheet,full_data_rows:Math.max(0,sheet.rows.length-1),full_column_count:sheet.rows[0]?.cells.length??0}))}))};
+ if(Buffer.byteLength(JSON.stringify(enriched))<=modelSelectedSourceBudget)return enriched;
+ const projected={version:enriched.version,sources:enriched.sources.map(source=>({...source,sheets:source.sheets.map(sheet=>{const header=sheet.rows[0];return {...sheet,rows:header?[{...header,cells:[] as (typeof header.cells)[number][]}]:[] as {row:number;cells:(typeof sheet.rows)[number]['cells'][number][]}[]};})}))};
+ let bytes=Buffer.byteLength(JSON.stringify(projected));
+ const sheets=inspection.sources.flatMap((source,sourceIndex)=>source.sheets.map((sheet,sheetIndex)=>({rows:sheet.rows,target:projected.sources[sourceIndex]!.sheets[sheetIndex]!.rows,header:projected.sources[sourceIndex]!.sheets[sheetIndex]!.rows[0],done:false})));
+ // Reserve one minimal field identity for every sheet before any sheet spends
+ // preview bytes. This keeps later sheets bindable even for many-sheet files.
+ for(const sheet of sheets){
+  const original=sheet.rows[0]?.cells[0];
+  if(!original||!sheet.header)continue;
+  const cell=projectSelectedHeaderCell(original,0),addition=Buffer.byteLength(JSON.stringify(cell));
+  if(bytes+addition>modelSelectedSourceBudget)fail('SOURCE_PREVIEW_TOO_WIDE');
+  sheet.header.cells.push(cell);bytes+=addition;
+ }
+ for(let cellIndex=0;sheets.some(sheet=>!sheet.done);cellIndex++){
+  let added=false;
+  for(const sheet of sheets){
+   const original=sheet.rows[0]?.cells[cellIndex],cell=original&&projectSelectedHeaderCell(original);
+   if(!cell||!sheet.header){sheet.done=true;continue;}
+   if(cellIndex===0){
+    const current=sheet.header.cells[0]!;
+    const addition=Buffer.byteLength(JSON.stringify(cell))-Buffer.byteLength(JSON.stringify(current));
+    if(bytes+addition>modelSelectedSourceBudget){sheet.done=true;continue;}
+    sheet.header.cells[0]=cell;bytes+=addition;added=true;continue;
+   }
+   const addition=Buffer.byteLength(JSON.stringify(cell))+1;
+   if(bytes+addition>modelSelectedSourceBudget){sheet.done=true;continue;}
+   sheet.header.cells.push(cell);bytes+=addition;added=true;
+  }
+  if(!added)break;
+ }
+ for(const sheet of sheets)sheet.done=false;
+ for(let rowIndex=1;sheets.some(sheet=>!sheet.done);rowIndex++){
+  let added=false;
+  for(const sheet of sheets){
+   const row=sheet.rows[rowIndex];
+   if(!row){sheet.done=true;continue;}
+   const columns=new Set(sheet.header?.cells.map(cell=>cell.column)??[]),preview={...row,cells:row.cells.filter(cell=>columns.has(cell.column))};
+   const addition=Buffer.byteLength(JSON.stringify(preview))+(sheet.target.length?1:0);
+   if(bytes+addition>modelSelectedSourceBudget){sheet.done=true;continue;}
+   sheet.target.push(preview);bytes+=addition;added=true;
+  }
+  if(!added)break;
+ }
+ return projected;
+}
 
 const planChangesParameters={type:'array',minItems:1,maxItems:32,items:{type:'object',properties:{input_index:{type:'integer',minimum:0},column:{type:'string'},group_by:{anyOf:[{type:'null'},{type:'string'}]},filters:{type:'array',maxItems:16,items:{type:'object',properties:{column:{type:'string'},operator:{type:'string',enum:['eq','ne','ge','le']},value:{type:'string'}},required:['column','operator','value'],additionalProperties:false}}},required:['input_index'],additionalProperties:false}};
 function referencedFrameworkParameters(full:Record<string,unknown>){const reference={type:'object',properties:{plan_ref:{type:'string',pattern:'^[a-f0-9]{64}$',description:'本轮read_analysis_evidence.current_plan_ref，沿用已绑定的真实方法、来源、单位和关联。'},goal:{type:'string',minLength:1,maxLength:2000},changes:planChangesParameters},required:['plan_ref','goal'],additionalProperties:false};return {type:'object',properties:{...(full.properties as Record<string,unknown>),...reference.properties},anyOf:[reference,full]};}
@@ -273,7 +334,7 @@ export function createOpenAnalysisApplication(config:{metricAssets?:import('../p
      {name:'read_project_metric_asset',description:'读取本项目已批准的精确净销售口径。只提供所选六指标和场景，不执行未选条目。若缺口径外发许可，正文不返回。已绑定任务保持精确版本；项目默认用于新采用。',parameters:emptyArguments,execute:async(raw:Readonly<Record<string,unknown>>)=>{membershipRecord(raw,[]);check();if(!config.metricAssetDisclosureAllowed)return {status:'disclosure_required',calculation_performed:false};const selected=currentMetricAsset();if(!selected)return {status:'no_approved_asset',calculation_performed:false};return {status:'approved',definition_authority:'project_approved_asset',refund_attribution:selected.asset.metrics.find(m=>m.name==='refund_amount')!.caliber_switches.refund_to_payment_period?'payment':'completion',asset_id:selected.asset.id,asset_version:selected.asset.version,metrics:selected.asset.metrics.filter(m=>netSalesMetrics.includes(m.name as typeof netSalesMetrics[number])),scenario:selected.asset.scenarios.find(s=>s.id==='net_sales_review'&&s.version==='0.2.0'),unselected_metrics:selected.asset.metrics.length-6,scope:selected.approval.scope,refund_rate_scope:'相同支付队列，截至观察截止的完成退款；不由金额归属改变',instruction:'该精确版本已由本项目维护者批准并固定用于本任务，是当前生效定义，不是等待用户确认的候选。退款金额按refund_attribution及实际refund_amount开关归属；不得因为本次用户未重复写出口径而重复确认。支付队列退款率保持refund_rate_scope，不随退款金额归属切换。用户明确提出不同口径时说明差异，沿用原明确换版流程；实际资料或业务范围确有冲突才澄清。先inspect_selected读取当前获准资料。只根据用户陈述和实际资料绑定金额、状态、单位、时区、范围、观察截止、近13周和两段期间；真实歧义才ask_user。用set_metric_asset_framework实际消费所选定义，不以gross或旧退款净额方法替代。'};}},
      {name:'set_metric_asset_framework',description:'在原任务Context/Binding/IR中消费已批准净销售资产。资产与批准身份由后台注入；只绑定当前获准订单/退款资料及有依据的业务参数。不能提交SAP正文、公式或伪造批准。一次绑定的资产计算已含六指标、13周、品类、两段期间及总体/品类差额，不是普通sum；不需用旧工具另建这些已覆盖的分组或期间。此动作只保存框架；需求整理阶段不计算。',parameters:metricAssetFrameworkParameters,execute:async(raw:Readonly<Record<string,unknown>>)=>{membershipRecord(raw,['goal','unit','bindings','parameters']);check();if(!config.metricAssetDisclosureAllowed)fail('ASSET_DISCLOSURE_REQUIRED');const selected=currentMetricAsset();if(!selected)fail('ASSET_APPROVAL_REQUIRED');const current=await source(),a=selected.approval,proposal={...raw,version:'2.4',asset:selectedNetSalesAsset(selected.asset),asset_approval:{command_id:a.command_id,owner:a.owner,project_id:a.project_id,definition_sha256:a.definition_sha256}},ctx=compileOpenAnalysisContext(proposal,input.question,current,business,semantics),next=compileOpenAnalysisIR(ctx.proposal.plan,current);return persistFramework(next,current,ctx);}},
     ]:[]),
-    {name:'inspect_selected',description:'读取当前任务获准的完整资料与结构；不访问其他项目。',parameters:emptyArguments,execute:async()=>source()},
+    {name:'inspect_selected',description:'读取当前任务获准资料的来源／工作表身份、完整行列数与有界字段／内容预览；不访问其他项目。本地计算和核验仍使用完整资料。',parameters:emptyArguments,execute:async()=>projectSelectedSourceForModel(await source())},
     {name:'set_framework',description:'已有当前方案时优先read_analysis_evidence取得current_plan_ref，再提交plan_ref、goal及明确changes；无需修改参数时省略changes，禁止与完整参数混用。保存本任务分析框架提议，绑定实际字段。source_id/sheet_id使用inspect_selected真实ID或唯一完整资料名/可见工作表名；字段可用实际列ID或唯一完整表头。支持安全整数及显式十进制精确求和/计数/极值/平均、显式权重字段加权平均及字段分组、筛选组合，不猜测币种/单位。',parameters:referencedFrameworkParameters({type:'object',properties:{value_mappings:{type:'array',maxItems:16,items:{type:'object',properties:{column:{type:'string'},pairs:{type:'array',maxItems:256,items:{type:'object',properties:{from:{type:'string'},to:{type:'string'}},required:['from','to'],additionalProperties:false}}},required:['column','pairs'],additionalProperties:false},description:'只按明确给出的值映射派生；原件保留，前十行Diff及全量派生绑定同一身份。不得猜别名、缺值或异常处理规则。'},numeric_mode:{type:'string',enum:['integer','decimal'],description:'仅sum/count/min/max/mean适用；十进制数值用decimal，默认integer保持原安全整数方法。weighted_mean内置精确有理数，必须省略numeric_mode。'},goal:{type:'string'},source_id:{type:'string'},sheet_id:{type:'string'},operation:{type:'string',enum:['sum','count','min','max','mean','weighted_mean']},column:{type:'string'},weight_column:{type:'string',description:'weighted_mean必填真实权重字段；非负且缺失不默认零。仅加权平均使用。'},unit:{type:'string'},group_mode:{type:'string',enum:['none','column'],description:'none means no grouping; column requires group_by as a real field.'},group_by:{description:'一个实际分组字段；多维分组用explore_with_python，不把C,D或多个字段拼成不存在的列。无需分组时省略或使用JSON null，禁止写字符串null。',anyOf:[{type:'null'},{type:'string'}]},filters:{type:'array',maxItems:16,items:{type:'object',properties:{column:{type:'string'},operator:{type:'string',enum:['eq','ne','ge','le']},value:{type:'string'}},required:['column','operator','value'],additionalProperties:false}}},required:['goal','source_id','sheet_id','operation','column','unit','group_mode'],additionalProperties:false}),execute:async(raw)=>{if(Object.hasOwn(raw,'plan_ref'))return persistReferencedFramework(raw);
      const current=await source(),{group_mode,numeric_mode,value_mappings,...proposal}=raw;if(numeric_mode!==undefined&&!['integer','decimal'].includes(String(numeric_mode)))fail('PLAN_INVALID');if(group_mode!==undefined&&!['none','column'].includes(String(group_mode)))fail('PLAN_INVALID');if(group_mode==='column'&&(typeof raw.group_by!=='string'||!raw.group_by))fail('BINDING_NOT_FOUND');if(raw.operation==='weighted_mean'&&(value_mappings!==undefined||numeric_mode!==undefined))throw Object.assign(new Error('PLAN_INVALID'),{code:'PLAN_INVALID',safe_details:{kind:'method_parameters',operation:'weighted_mean',invalid_fields:[...(value_mappings!==undefined?['value_mappings']:[]),...(numeric_mode!==undefined?['numeric_mode']:[])],instruction:'weighted_mean使用独立精确有理数方法，不接受numeric_mode或value_mappings；省略这些字段，保留实际数值列、权重列、单位及筛选，重新提交set_framework。未绑定、未计算，不能声称候选成功。'}});const proposed=raw.operation==='weighted_mean'?{...proposal,version:'1.9',group_by:group_mode==='none'?null:raw.group_by??null,filters:raw.filters??[]}:value_mappings!==undefined?{...proposal,version:'1.5',numeric_mode:numeric_mode??'integer',group_by:group_mode==='none'?null:raw.group_by??null,filters:raw.filters??[],value_mappings}:numeric_mode==='decimal'?{...proposal,version:'1.2',numeric_mode:'decimal',group_by:group_mode==='none'?null:raw.group_by??null,filters:raw.filters??[]}:raw.operation!=='sum'||group_mode!==undefined||Object.hasOwn(raw,'group_by')||Object.hasOwn(raw,'filters')?{...proposal,version:'1.1',group_by:group_mode==='none'?null:raw.group_by??null,filters:raw.filters??[]}:{version:'1.0',...proposal};const ctx=compileOpenAnalysisContext(resolveOpenAnalysisInputReferences(proposed,current),input.question,current,business,semantics),next=compileOpenAnalysisIR(ctx.proposal.plan,current);return persistFramework(next,current,ctx);
     }},
