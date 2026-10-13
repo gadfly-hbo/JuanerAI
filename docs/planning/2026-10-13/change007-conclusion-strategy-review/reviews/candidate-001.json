@@ -1,0 +1,18 @@
+{
+  "kind":"planning-review-candidate-not-product-freeze",
+  "baseline":"8dfc50528d342028ae1fcc3d0911ebca4a213e95",
+  "files":[
+    {"path":"proposal-v0.1.md","bytes":23483,"sha256":"425461a69d3d5ab40bbde0202ad470531463f9c9daa5bbac3ed093b6e6d85901"},
+    {"path":"ui-contract-v0.1.md","bytes":7763,"sha256":"75f922d0a488f63065e65f6eef73585cc6f231b3152c6e90c465e2a61749594d"},
+    {"path":"decisions.md","bytes":2681,"sha256":"1860f9b3903c658b63d21321ce1c0edb1df05fa9dfeb44024d791108338d04d1"},
+    {"path":"architecture-evaluation-request.md","bytes":4656,"sha256":"156c4709d5c0e908db178b9d00e091b0b25b6c6ee260b8baeecafaf675bc22fa"},
+    {"path":"baseline-readback.md","bytes":6440,"sha256":"9b831a3703bd4e7be95ea295929d54a1ad35f105c42f7a9bc5c35bbafc83b816"},
+    {"path":"source-readback.json","bytes":2565,"sha256":"acf20163ebce2892e753d0dc27af91e117f918b30b777f0666f87ad216b17446"},
+    {"path":"verification.md","bytes":1928,"sha256":"b7d45cd9720457d2160f8d7db05b9f706a57afd32d0eba26b0dad5ea402eebe1"},
+    {"path":"prototype-check.mjs","bytes":6501,"sha256":"2b83b070591f56b4bc9d82308cfd04c2a80562093e66b9c54d6eeeda074b90e9"},
+    {"path":"clickable/index.html","bytes":7177,"sha256":"b2d75e7038f8f6baf6770bce09a9374ed1feca135268b514e8b95de68674ac0a"},
+    {"path":"clickable/review.css","bytes":4460,"sha256":"51b31cb25f2ffe2fefaf3a7abf57bc841c3a12f78fbc6307cd4b188de5cfbb63"},
+    {"path":"clickable/review.js","bytes":22521,"sha256":"eef542445abf0da1a554ae2980107919f47c09f6978fbf1da54daf10823a8928"},
+    {"path":"reviews/review-brief-001.md","bytes":2301,"sha256":"51bd7daf29af793951831ab018d7fe0c1e9bd1eba1fd895cc86a263330f99b44"}
+  ]
+}

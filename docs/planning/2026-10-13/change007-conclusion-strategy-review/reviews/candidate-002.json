@@ -1,0 +1,66 @@
+{
+  "kind": "planning-review-candidate-not-product-freeze",
+  "baseline": "8dfc50528d342028ae1fcc3d0911ebca4a213e95",
+  "files": [
+    {
+      "path": "proposal-v0.1.md",
+      "bytes": 28847,
+      "sha256": "3e54b2d5b4253b119500160af3f8452af461f93fbb76097c0ec3b01b8777f259"
+    },
+    {
+      "path": "ui-contract-v0.1.md",
+      "bytes": 8907,
+      "sha256": "70ff14a68c560510385600a42b88c38184e13c69192c1a64e52f48fdc54ae9f2"
+    },
+    {
+      "path": "decisions.md",
+      "bytes": 3113,
+      "sha256": "0aec484539755714ea9e0e8b43cdef5e3f6cc8002f828a3363d4c8890ddf7bba"
+    },
+    {
+      "path": "architecture-evaluation-request.md",
+      "bytes": 4656,
+      "sha256": "156c4709d5c0e908db178b9d00e091b0b25b6c6ee260b8baeecafaf675bc22fa"
+    },
+    {
+      "path": "baseline-readback.md",
+      "bytes": 7230,
+      "sha256": "1cbee6d0d8086a80a8d49fc61f54a1e7f476bf5e401e87984ebe813af836d9b7"
+    },
+    {
+      "path": "source-readback.json",
+      "bytes": 2942,
+      "sha256": "aed64065a04d04182e88ac5100cba1ec6f4fdbaceed4a0b14c5b40fcd2f74baa"
+    },
+    {
+      "path": "verification.md",
+      "bytes": 5147,
+      "sha256": "73f91817c116855808e239b592a3e28b29fede4ff576595d58df8eaed6ec3fd6"
+    },
+    {
+      "path": "prototype-check.mjs",
+      "bytes": 10195,
+      "sha256": "1757b278bec33540cf24182e05ee87f7bc55c3675b6a1fb3bfcfacc281be31fb"
+    },
+    {
+      "path": "clickable/index.html",
+      "bytes": 7202,
+      "sha256": "eb5f1ca19220770f9b19c4b507e8f7bed0ff414f41bcef7d8c1c52fb26f67262"
+    },
+    {
+      "path": "clickable/review.css",
+      "bytes": 4460,
+      "sha256": "51b31cb25f2ffe2fefaf3a7abf57bc841c3a12f78fbc6307cd4b188de5cfbb63"
+    },
+    {
+      "path": "clickable/review.js",
+      "bytes": 28708,
+      "sha256": "e6237c67d8ee3a96f7308bdf3788a04a6230c7aa1f606a20a3f59d37829878d8"
+    },
+    {
+      "path": "reviews/review-brief-002.md",
+      "bytes": 1889,
+      "sha256": "1bb6e8b210c5c48325124c1f2f821cec6c646ab5cbeb80ea763de0f083a1e5fa"
+    }
+  ]
+}

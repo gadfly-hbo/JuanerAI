@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>JuanerAI · Xanthil — 结论与建议审核</title><link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/px006/styles.css">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/brand.css">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/v1.1/workspace.css">
+  <link rel="stylesheet" href="../../../2026-10-06/change005-five-moments/clickable/moments.css">
+  <link rel="stylesheet" href="../../../2026-10-09/change005-v1.3-autonomous-analysis/clickable/autonomy.css">
+  <link rel="stylesheet" href="review.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到工作区</a>
+<div class="mock-banner"><strong>合成审核 · 不是实现证据</strong>　所有资料、审查、进度和保存反馈均为内存预演；无模型、计算、真实保存或下载，刷新清空。</div>
+<div class="review-controls">
+  <label for="scene">审核场景（非生产控件）</label>
+  <select id="scene">
+    <option value="normal">审查中 → 可选下一步</option><option value="conditional">有条件支持 · 一题改变建议</option>
+    <option value="insufficient">证据不足</option><option value="conflict">存在冲突</option>
+    <option value="strategy">观察有据，但建议不可推荐</option><option value="revised">修订前后与重审</option>
+    <option value="partial">数字partial，不被审查升级</option><option value="changed">期间改变 · 需重审</option>
+    <option value="strategyChanged">仅建议条件改变</option><option value="failed">审查无法完成</option>
+    <option value="stopped">停止／重开不自动执行</option><option value="unknown">停止效果UNKNOWN</option>
+    <option value="savefail">后端保存失败</option><option value="downloadfail">下载失败</option>
+    <option value="analysisOnly">仅分析 · 策略不适用</option>
+  </select>
+  <button id="advance" class="btn btn-sm">推进合成事件</button>
+  <a href="../proposal-v0.1.md" target="_blank" rel="noopener">产品方案</a>
+  <a href="../../../2026-10-09/change005-v1.3-autonomous-analysis/clickable/index.html" target="_blank" rel="noopener">005完整参考</a>
+</div>
+<div class="window">
+  <header class="titlebar"><div class="tb-title"><span class="brand-name">Juaner<span class="brand-ai">AI</span></span><span class="brand-slogan">持续做出更好的决策</span><span>· Xanthil</span><span class="tb-tag">Change007 · 待审核</span></div></header>
+  <div class="topbar">
+    <div class="mode-switch"><button class="mode-btn active" id="quick" aria-pressed="true">快速模式</button><button class="mode-btn" id="professional" aria-pressed="false">专业模式</button></div>
+    <span class="project-label">经营复盘 · 合成项目</span>
+    <div class="topbar-right"><button id="details" class="btn btn-sm" aria-expanded="false" aria-controls="drawer">检查详情</button></div>
+  </div>
+  <div class="app">
+    <nav class="sidebar" aria-label="项目会话">
+      <button id="new" class="sb-new">＋ 新建分析</button>
+      <h2 class="sb-h">本项目会话</h2>
+      <button class="sb-item active" id="current-session">净销售变化与下一步<span class="sb-meta">当前</span></button>
+      <button class="sb-item" id="history">原报告与审查历史<span class="sb-meta">历史</span></button>
+      <p class="fine sidebar-note">Agent推进调查与审查。你只处理关键业务缺口、授权变化和判断。</p>
+      <div class="sb-foot"><a href="../../../2026-10-12/change006-metric-assets/clickable/index.html" target="_blank" rel="noopener">006 · 口径维护与采用参考</a><p class="fine">本页不启动后台任务。</p></div>
+    </nav>
+    <main class="main" id="main" tabindex="-1">
+      <section class="quick-surface">
+        <header class="task-header"><div><h1>净销售变化与下一步</h1><p class="fine">业务含义 → 分析逻辑 → 受控执行 → 可信成果</p></div><button class="btn btn-sm" id="stop">停止整个任务</button></header>
+        <nav id="stages" class="stages" aria-label="专业模式原六阶段" hidden>
+          <button data-stage="1">1 新建分析</button><button data-stage="2">2 数据准备</button><button data-stage="3">3 本地处理</button><button data-stage="4">4 证据分析</button><button data-stage="5" class="active" aria-current="step">5 报告</button><button data-stage="6">6 执行反馈</button>
+        </nav>
+        <p id="professional-note" class="state-note" hidden>原六阶段的新增位置预演；下方与快速模式共用本页合成状态，不是生产专业流程。<a href="../../../2026-10-05/change005-ui-contract-recovery/clickable/px004/index.html?preview=demo" target="_blank" rel="noopener">PX-004完整交互参考</a></p>
+        <div id="status" class="progress-summary" role="status" aria-live="polite"></div>
+        <div id="thread" class="thread"></div>
+        <form id="composer" class="composer-wrap">
+          <div class="tool-chips"><a class="chip chip-tool" href="../../../2026-10-09/change005-v1.3-autonomous-analysis/clickable/index.html" target="_blank" rel="noopener">沙盘／框架／协作 · 005参考</a><button type="button" id="materials" class="chip chip-tool">所选资料与授权</button></div>
+          <label class="sr-only" for="message">补充业务问题</label><textarea id="message" rows="2" placeholder="补充问题、质疑结论或说明建议条件……"></textarea>
+          <div class="composer-footer"><span class="fine">自由输入仅显示；不执行新分析或真实审查</span><button class="btn btn-primary btn-sm">发送</button></div>
+        </form>
+      </section>
+    </main>
+    <aside id="drawer" class="drawer" aria-label="同一任务检查详情" hidden>
+      <header class="drawer-head"><strong>同一任务 · 检查详情</strong><button id="close" class="btn btn-sm">关闭</button></header>
+      <div class="detail-tabs" role="tablist" aria-label="检查分类">
+        <button id="tab-meaning" role="tab" data-tab="meaning" aria-selected="false" aria-controls="detail" tabindex="-1">口径</button>
+        <button id="tab-plan" role="tab" data-tab="plan" aria-selected="false" aria-controls="detail" tabindex="-1">方案</button>
+        <button id="tab-materials" role="tab" data-tab="materials" aria-selected="false" aria-controls="detail" tabindex="-1">资料</button>
+        <button id="tab-evidence" role="tab" data-tab="evidence" aria-selected="true" aria-controls="detail">证据</button>
+        <button id="tab-execution" role="tab" data-tab="execution" aria-selected="false" aria-controls="detail" tabindex="-1">执行</button>
+      </div>
+      <div id="detail" class="detail-content" role="tabpanel" aria-labelledby="tab-evidence" tabindex="0"></div>
+    </aside>
+  </div>
+</div>
+<div id="notice" class="sr-only" role="status" aria-live="polite"></div>
+<script src="review.js"></script>
+</body></html>
