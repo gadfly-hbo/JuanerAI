@@ -9,7 +9,70 @@ import {createPiSessionOpenAnalysisRuntime} from '../../../adapters/agent-pi/nat
 import {createApprovedProviderCredentials} from '../../../adapters/agent-pi/provider-credentials.ts';
 import {createLocalAnalysisRequestLedger} from '../../../adapters/storage-local/analysis-request-ledger.ts';
 import {createPersistentRuntimeState} from '../../../adapters/agent-pi/persistent-runtime-state.ts';
+import {createOpenAnalysisApplication} from '../../../packages/application/open-analysis.ts';
+import {taskHash} from '../../../packages/product-core/member-task.ts';
+import type {MemberSourceInspection} from '../../../packages/ports/member-source.ts';
 import type {ModelTransport} from 'pi-agent-runtime';
+
+test('OA-SOURCE-RESULT01: native inspect_selected keeps complete row counts and a bounded model preview for large selected CSVs',async()=>{
+ const rows=Array.from({length:6001},(_,index)=>index===0?{row:1,cells:[{column:'A',type:'string' as const,value:'画像标签'},{column:'B',type:'string' as const,value:'画像值'}]}:{row:index+1,cells:[{column:'A',type:'string' as const,value:'标签'+index},{column:'B',type:'string' as const,value:'值'.repeat(120)+index}]});
+ const source:MemberSourceInspection={version:'1.0',sources:[{source_id:randomUUID(),display_name:'large.csv',format:'csv',sha256:'a'.repeat(64),byte_length:'1',sheets:[{sheet_id:'csv',name:'CSV',state:'visible',rows}]}]};
+ assert.ok(Buffer.byteLength(JSON.stringify(source))>1024*1024,'precondition: complete inspection exceeds the native tool-result limit');
+ const root=mkdtempSync(join(browserEvidenceRoot,'native-large-source-')),ledger=createLocalAnalysisRequestLedger({projectRoot:root});let calls=0,reads=0;
+ const runtime=createPiSessionOpenAnalysisRuntime({projectRoot:root,ledger,nativeObjectArguments:true,credentials:createApprovedProviderCredentials({environment:{}}),modelTransport:async request=>{
+  calls++;if(calls===1)return {content:[{kind:'tool',id:'inspect-large',name:'inspect_selected',arguments:{}}],stop:'tools',usage:{inputTokens:4,outputTokens:2}};
+  const result=JSON.parse(request.messages.filter(message=>message.role==='tool').at(-1)!.text);
+  assert.equal(result.sources[0].sheets[0].full_data_rows,6000);assert.ok(Buffer.byteLength(JSON.stringify(result))<=768*1024);assert.deepEqual(result.sources[0].sheets[0].rows[0],source.sources[0]!.sheets[0]!.rows[0]);assert.ok(result.sources[0].sheets[0].rows.length<source.sources[0]!.sheets[0]!.rows.length);
+  return {content:[{kind:'text',text:'已读取完整行数和有界预览。'}],stop:'complete',usage:{inputTokens:4,outputTokens:2}};
+ }});
+ const identity={task_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:taskHash(source),config_sha256:'c'.repeat(64)};
+ const app=createOpenAnalysisApplication({runtime,loadSelectedSource:async()=>{reads++;return source;},isAuthorized:()=>true,saveFramework:async()=>assert.fail('inspection-only run must not save a framework'),verify:async()=>assert.fail('inspection-only run must not verify'),saveOutcome:async()=>assert.fail('inspection-only run must not save an outcome')});
+ await assert.rejects(()=>app.run({identity,question:'读取所选大表',signal:new AbortController().signal}),{code:'ANALYSIS_INCOMPLETE'});
+ assert.equal(calls,2);assert.ok(reads>=1);assert.equal(source.sources[0]!.sheets[0]!.rows.length,6001);assert.equal(ledger.pending().length,0);
+});
+
+test('OA-SOURCE-RESULT02: bounded inspection gives every wide selected sheet explicit column counts and header structure',async()=>{
+ const makeSource=(name:string)=>{const cells=Array.from({length:10000},(_,index)=>({column:'C'+index,type:'string' as const,value:`字段-${name}-${index}`}));return {source_id:randomUUID(),display_name:name+'.csv',format:'csv' as const,sha256:'a'.repeat(64),byte_length:'1',sheets:[{sheet_id:'csv',name:'CSV',state:'visible' as const,rows:[{row:1,cells},{row:2,cells:cells.map(cell=>({...cell,value:'值-'+cell.column}))}]}]};};
+ const source:MemberSourceInspection={version:'1.0',sources:[makeSource('甲'),makeSource('乙')]};
+ assert.ok(Buffer.byteLength(JSON.stringify(source))>1024*1024,'precondition: complete wide inspection exceeds the native tool-result limit');
+ const root=mkdtempSync(join(browserEvidenceRoot,'native-wide-source-')),ledger=createLocalAnalysisRequestLedger({projectRoot:root});let calls=0;
+ const runtime=createPiSessionOpenAnalysisRuntime({projectRoot:root,ledger,nativeObjectArguments:true,credentials:createApprovedProviderCredentials({environment:{}}),modelTransport:async request=>{
+  calls++;if(calls===1)return {content:[{kind:'tool',id:'inspect-wide',name:'inspect_selected',arguments:{}}],stop:'tools',usage:{inputTokens:4,outputTokens:2}};
+  const result=JSON.parse(request.messages.filter(message=>message.role==='tool').at(-1)!.text);
+  assert.ok(Buffer.byteLength(JSON.stringify(result))<=768*1024);assert.deepEqual(result.sources.map((item:any)=>item.sheets[0].full_column_count),[10000,10000]);assert.ok(result.sources.every((item:any)=>item.sheets[0].rows[0].cells.length>0));
+  return {content:[{kind:'text',text:'已读取每个工作表的字段规模和有界结构。'}],stop:'complete',usage:{inputTokens:4,outputTokens:2}};
+ }});
+ const identity={task_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:taskHash(source),config_sha256:'c'.repeat(64)},app=createOpenAnalysisApplication({runtime,loadSelectedSource:async()=>source,isAuthorized:()=>true,saveFramework:async()=>assert.fail('inspection-only run must not save a framework'),verify:async()=>assert.fail('inspection-only run must not verify'),saveOutcome:async()=>assert.fail('inspection-only run must not save an outcome')});
+ await assert.rejects(()=>app.run({identity,question:'读取两个超宽工作表',signal:new AbortController().signal}),{code:'ANALYSIS_INCOMPLETE'});assert.equal(calls,2);assert.equal(ledger.pending().length,0);
+});
+
+test('OA-SOURCE-RESULT03: oversized header values keep every selected sheet bindable with explicit truncation metadata',async()=>{
+ const sources=Array.from({length:32},(_,index)=>({source_id:randomUUID(),display_name:`header${index}.csv`,format:'csv' as const,sha256:'a'.repeat(64),byte_length:'24579',sheets:[{sheet_id:'csv',name:'CSV',state:'visible' as const,rows:[{row:1,cells:[{column:'A',type:'string' as const,value:'字段'.repeat(4096)}]},{row:2,cells:[{column:'A',type:'string' as const,value:'1'}]}]}]})),source:MemberSourceInspection={version:'1.0',sources},fullBytes=Buffer.byteLength(JSON.stringify(source));
+ assert.ok(fullBytes>768*1024&&fullBytes<1024*1024,`precondition: complete inspection fits the native ceiling but exceeds the model preview budget, received ${fullBytes}`);
+ const root=mkdtempSync(join(browserEvidenceRoot,'native-many-headers-')),ledger=createLocalAnalysisRequestLedger({projectRoot:root});let calls=0;
+ const runtime=createPiSessionOpenAnalysisRuntime({projectRoot:root,ledger,nativeObjectArguments:true,credentials:createApprovedProviderCredentials({environment:{}}),modelTransport:async request=>{
+  calls++;if(calls===1)return {content:[{kind:'tool',id:'inspect-many-headers',name:'inspect_selected',arguments:{}}],stop:'tools',usage:{inputTokens:4,outputTokens:2}};
+  const result=JSON.parse(request.messages.filter(message=>message.role==='tool').at(-1)!.text);
+  assert.ok(Buffer.byteLength(JSON.stringify(result))<=768*1024);assert.equal(result.sources.length,32);assert.ok(result.sources.every((item:any)=>{const sheet=item.sheets[0],header=sheet.rows[0].cells[0];return sheet.full_column_count===1&&sheet.rows.length===2&&sheet.rows[0].cells.length===1&&header.column==='A'&&header.value_truncated===true&&header.full_value_bytes===24576;}));
+  return {content:[{kind:'text',text:'已读取全部工作表的可绑定列标识和显式截断表头。'}],stop:'complete',usage:{inputTokens:4,outputTokens:2}};
+ }});
+ const identity={task_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:taskHash(source),config_sha256:'c'.repeat(64)},app=createOpenAnalysisApplication({runtime,loadSelectedSource:async()=>source,isAuthorized:()=>true,saveFramework:async()=>assert.fail('inspection-only run must not save a framework'),verify:async()=>assert.fail('inspection-only run must not verify'),saveOutcome:async()=>assert.fail('inspection-only run must not save an outcome')});
+ await assert.rejects(()=>app.run({identity,question:'读取全部小表',signal:new AbortController().signal}),{code:'ANALYSIS_INCOMPLETE'});assert.equal(calls,2);assert.equal(ledger.pending().length,0);
+});
+
+test('OA-SOURCE-RESULT04: bounded inspection reserves a bindable column for every sheet before spending preview bytes',async()=>{
+ const sources=Array.from({length:32},(_,sourceIndex)=>({source_id:randomUUID(),display_name:`workbook${sourceIndex}.xlsx`,format:'xlsx' as const,sha256:'a'.repeat(64),byte_length:'84257',sheets:Array.from({length:64},(_,sheetIndex)=>({sheet_id:`sheet-${sheetIndex}`,name:`Sheet${sheetIndex+1}`,state:'visible' as const,rows:[{row:1,cells:[{column:'A',type:'string' as const,value:'字段'.repeat(128)}]},{row:2,cells:[{column:'A',type:'string' as const,value:'1'}]}]}))})),source:MemberSourceInspection={version:'1.0',sources};
+ assert.ok(Buffer.byteLength(JSON.stringify(source))>1024*1024,'precondition: complete many-sheet inspection exceeds the native tool-result limit');
+ const root=mkdtempSync(join(browserEvidenceRoot,'native-many-sheets-')),ledger=createLocalAnalysisRequestLedger({projectRoot:root});let calls=0;
+ const runtime=createPiSessionOpenAnalysisRuntime({projectRoot:root,ledger,nativeObjectArguments:true,credentials:createApprovedProviderCredentials({environment:{}}),modelTransport:async request=>{
+  calls++;if(calls===1)return {content:[{kind:'tool',id:'inspect-many-sheets',name:'inspect_selected',arguments:{}}],stop:'tools',usage:{inputTokens:4,outputTokens:2}};
+  const result=JSON.parse(request.messages.filter(message=>message.role==='tool').at(-1)!.text),sheets=result.sources.flatMap((item:any)=>item.sheets);
+  assert.ok(Buffer.byteLength(JSON.stringify(result))<=768*1024);assert.equal(sheets.length,2048);assert.ok(sheets.every((sheet:any)=>sheet.full_column_count===1&&sheet.rows[0].cells.length===1&&sheet.rows[0].cells[0].column==='A'&&sheet.rows[0].cells[0].value_truncated===true&&sheet.rows[0].cells[0].full_value_bytes===768));
+  return {content:[{kind:'text',text:'已读取全部工作表的可绑定列标识。'}],stop:'complete',usage:{inputTokens:4,outputTokens:2}};
+ }});
+ const identity={task_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:taskHash(source),config_sha256:'c'.repeat(64)},app=createOpenAnalysisApplication({runtime,loadSelectedSource:async()=>source,isAuthorized:()=>true,saveFramework:async()=>assert.fail('inspection-only run must not save a framework'),verify:async()=>assert.fail('inspection-only run must not verify'),saveOutcome:async()=>assert.fail('inspection-only run must not save an outcome')});
+ await assert.rejects(()=>app.run({identity,question:'读取全部工作簿和工作表',signal:new AbortController().signal}),{code:'ANALYSIS_INCOMPLETE'});assert.equal(calls,2);assert.equal(ledger.pending().length,0);
+});
 
 for(const boundary of ['closed','new-revision','revoked','unknown','ambiguous','identity','new-scope','tool-effect','queued'] as const)test(`MF-STOP-01 (${boundary}): explicit continuation retires only a physically cancelled model with no tool or queued effect and retains UNKNOWN`,async()=>{
  const root=mkdtempSync(join(browserEvidenceRoot,'metric-cancelled-model-')),ledger=createLocalAnalysisRequestLedger({projectRoot:root}),controller=new AbortController();let calls=0,effects=0;
