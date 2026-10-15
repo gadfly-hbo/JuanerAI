@@ -39,7 +39,7 @@ RP-01～05全为NOT RUN，原真实Provider SKIP不改；原1-token归因仍UNKN
 4. 历史Task迁移/恢复/重放、其他项目/产品升级仍不操作。
 5. 原获准本任务离线服务 `http://127.0.0.1:54638/` 保持原状态，不启动新服务或自动重试。入口“待验收”文案及启动时PENDING收据是此前时点，不是最新用户决定；本记录和项目板为当前结论，原启动快照不改写。
 
-[当前全六＋二能力图](../../../docs/planning/capability-coverage/latest.md) 与 [用户接受40ID快照](../../../docs/planning/capability-coverage/snapshots/pi-r1-r4-repair-product-accepted-2026-10-15.md) 仅增加限定接受子范围，原40ID定义/长期目标/累计状态保持。
+[当前全六＋二能力图](../../../../docs/planning/capability-coverage/latest.md) 与 [用户接受40ID快照](../../../../docs/planning/capability-coverage/snapshots/pi-r1-r4-repair-product-accepted-2026-10-15.md) 仅增加限定接受子范围，原40ID定义/长期目标/累计状态保持。
 
 原话收据与固定身份：[USER-PRODUCT-ACCEPTANCE-001.json](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/product-acceptance-001/USER-PRODUCT-ACCEPTANCE-001.json)。本轮记录允许路径/前后哈希与旧证据保护见 [PRODUCT-ACCEPTANCE-VERIFICATION-001.json](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/product-acceptance-001/PRODUCT-ACCEPTANCE-VERIFICATION-001.json)。
 

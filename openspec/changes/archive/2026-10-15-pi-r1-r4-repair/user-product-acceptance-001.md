@@ -155,7 +155,7 @@ F-ROLE-01仅承接已有本候选的沙箱残余风险决定，不扩展至新�
 
 下列都是既有证据，直接打开文件即可；不要运行JSON/日志中记载的命令。E28仅供核查历史准确命令/环境/退出码，不是本轮执行清单。各引用的字节数/SHA256见本轮专属资料根 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/product-acceptance-preparation-001/EVIDENCE-REFERENCES-001.json`；本文不复制或改写旧证据。
 
-- **E01** [工程接收与具名边界](/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI/openspec/changes/pi-r1-r4-repair/engineering-acceptance.md)
+- **E01** [工程接收与具名边界](/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI/openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md)
 - **E02** [原始完整 Validator 报告（正式 BLOCKED）](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/validator-report-001.md)
 - **E03** [当前冻结候选 canonical002 汇总](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/canonical-summary-002.json)
 - **E04** [当前独立47项原生链路日志](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/fresh-key-native-001.log)
@@ -176,10 +176,10 @@ F-ROLE-01仅承接已有本候选的沙箱残余风险决定，不扩展至新�
 - **E19** [当前受影响持久化/枚举/账本18项日志](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/fresh-persistence-contracts-001.log)
 - **E20** [当前准备正文/兼容/失效29项日志](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/fresh-preparation-guards-001.log)
 - **E21** [当前界面/read/业务回归20项最终日志](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/fresh-collateral-ui-002.log)
-- **E22** [旧19跳过逐项原因与18补验返回点](/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI/openspec/changes/pi-r1-r4-repair/skipped-19-followup.md)
+- **E22** [旧19跳过逐项原因与18补验返回点](/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI/openspec/changes/archive/2026-10-15-pi-r1-r4-repair/skipped-19-followup.md)
 - **E23** [本候选SDK实际安装/解析/lock身份](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/product-installation-recheck-001.json)
 - **E24** [F-ROLE-01用户具名豁免原件](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/engineering-closeout-001/F-ROLE-01-WAIVER-001.json)
-- **E25** [完整007矩阵与005/006历史关系](/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI/openspec/changes/pi-r1-r4-repair/joint-verification-matrix-007.md)
+- **E25** [完整007矩阵与005/006历史关系](/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI/openspec/changes/archive/2026-10-15-pi-r1-r4-repair/joint-verification-matrix-007.md)
 - **E26** [1366×768静态截图](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/independent-ui-768-m6YfgG/ui-1366x768.png)
 - **E27** [1440×900静态截图](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/independent-ui-768-m6YfgG/ui-1440x900.png)
 - **E28** [准确检查命令/环境/退出码（只读，不执行）](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/commands-executed-001.json)

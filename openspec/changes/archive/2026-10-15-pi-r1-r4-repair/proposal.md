@@ -1,3 +1,7 @@
+## 当前正式归档准备（2026-10-15）
+
+原路径完整WIP已固定在源提交 `cd491fcb9da4bebf91937f2ccdc65a34b855061c`，包含原冻结技术字节和接受记录；本分支现将该Change归档并提升已接受行为到当前规格。归档/链接和正式收据复制是记录层变更，不是新的实现或生产采用。历史快照不改写，旧相对路径按源提交读取；当前最新清单/全图指向本归档。原始完整Validator BLOCKED、F-ROLE-01、历史失败/UNKNOWN保留。PR/CI/merge/sync尚待实际完成，不以本段称已发布。
+
 ## 当前正式Git交付授权（2026-10-15）
 
 用户已在本任务明确授权本冻结离线候选正式Git交付及OpenSpec归档，当前按 [publication.md](publication.md) 推进。此授权取代下文“Git/归档未授权”的历史停止点，仅限本任务；真实Provider、生产、其他产品与共享SDK正式发布边界不变。保留F-ROLE-01具名豁免、原Validator BLOCKED/历史失败/UNKNOWN，不改写为无条件PASS。

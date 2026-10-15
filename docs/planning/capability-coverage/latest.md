@@ -1,10 +1,14 @@
+## pi-r1-r4-repair正式Git交付/归档定位（2026-10-15）
+
+已接受离线子范围的源码、测试、固定依赖、原件与规格进入本任务正式Git/归档交付。当前 [归档记录](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/publication.md) 与 [完整六＋二/40ID快照](snapshots/pi-r1-r4-repair-git-delivery-2026-10-15.md) 绑定实际PR/最终head CI/merge/sync回执；未完成效果不预报PASS。原接受范围/40ID/完整目标/累计状态不变，F-ROLE-01及原正式BLOCKED、历史失败/UNKNOWN保留，生产/Provider/共享SDK发布不放行。旧快照按源提交读取，当前链接使用归档路径。
+
 ## pi-r1-r4-repair 用户产品接受 · 2026-10-15
 
 用户原话“采纳，接受产品”。本冻结R1～R4＋D1～D8 A既有离线合成/显式opt-in交付范围已有Engineering Acceptance（附本候选F-ROLE-01具名豁免）与明确用户Product Acceptance。**原正式Validator BLOCKED保留，技术PASS不变，不称无条件Validator PASS。** 用户没有逐条16项操作回执，不补造本人复跑，也不把真实Provider/生产未测项标通过。
 
 增量为C3-01、C6-01、A-03/04/05、B-01/02/03的本候选限定离线接受子范围；40稳定ID/定义/完整目标/累计状态保持，不升级完整能力或S1。代码/SDK/测试未改，Git集成/归档/生产仍未执行，原FAIL/UNKNOWN全部保留。以下旧“未产品接受”段落是原时点历史。
 
-[产品接受原话与边界](../../../openspec/changes/pi-r1-r4-repair/product-acceptance.md) · [全40ID接受快照](snapshots/pi-r1-r4-repair-product-accepted-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-product-20261015)
+[产品接受原话与边界](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/product-acceptance.md) · [全40ID接受快照](snapshots/pi-r1-r4-repair-product-accepted-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-product-20261015)
 
 | 六＋二家族 | 本次接受范围/增量 | 仍保留的缺口 |
 |---|---|---|
@@ -24,7 +28,7 @@
 
 本次支持 C6-01、A-03/04/05、B-01/02/03 的已有消费者；40稳定ID、全部目标/完成条件、累计状态、此前已接受子范围不变。不把离线工程结果提升为用户 Product Acceptance、S1 或新全目标交付。原失败、旧字段、UNKNOWN 和 Provider/生产/Git 停止线保留。下文旧“当前”按历史时点阅读。
 
-[工程接收与具名限制](../../../openspec/changes/pi-r1-r4-repair/engineering-acceptance.md) · [六＋二/40ID固定快照](snapshots/pi-r1-r4-repair-engineering-waiver-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-20261015)
+[工程接收与具名限制](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md) · [六＋二/40ID固定快照](snapshots/pi-r1-r4-repair-engineering-waiver-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-20261015)
 
 | 六＋二家族 | 本次离线工程增量 | 保留的产品缺口 |
 |---|---|---|

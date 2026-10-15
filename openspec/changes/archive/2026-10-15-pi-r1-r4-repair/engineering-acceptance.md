@@ -44,6 +44,6 @@ REQ/AC、因果 RED、GREEN、负向、旧配置兼容及完整命令/退出码�
 
 ## 覆盖地图及准确返回点
 
-本修复支持 C6-01、A-03/04/05、B-01/02/03 的既有消费者链路；不新增稳定 ID，不改变40项能力的定义、完整目标或累计登记状态。见 [全图](../../../docs/planning/capability-coverage/latest.md)、[登记](../../../docs/planning/capability-coverage/register.md)及 [固定快照](../../../docs/planning/capability-coverage/snapshots/pi-r1-r4-repair-engineering-waiver-2026-10-15.md)。离线工程接收不构成新产品能力全目标、S1、业务效果或用户体验验收。
+本修复支持 C6-01、A-03/04/05、B-01/02/03 的既有消费者链路；不新增稳定 ID，不改变40项能力的定义、完整目标或累计登记状态。见 [全图](../../../../docs/planning/capability-coverage/latest.md)、[登记](../../../../docs/planning/capability-coverage/register.md)及 [固定快照](../../../../docs/planning/capability-coverage/snapshots/pi-r1-r4-repair-engineering-waiver-2026-10-15.md)。离线工程接收不构成新产品能力全目标、S1、业务效果或用户体验验收。
 
 NEXT_ACTION：本候选离线工程接收及本次记录回填完成；没有需自动重启的修复或新 SDK 等待。真实 Provider/凭据/业务数据须另行对象、数据边界、命令和预算授权；生产准入参数仍 UNKNOWN，采用/部署/服务须另行授权。用户 Product Acceptance、历史 Task 迁移/恢复/重放、其他产品升级、Git 提交/推送/合并/发布和正式归档保持原停止线。本地 WIP 与证据尚非 Git 集成资产或跨设备备份；未向其他聊天发消息。

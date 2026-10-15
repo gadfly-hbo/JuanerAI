@@ -1,3 +1,7 @@
+## 当前正式归档准备（2026-10-15）
+
+原路径完整WIP已固定在源提交 `cd491fcb9da4bebf91937f2ccdc65a34b855061c`，包含原冻结技术字节和接受记录；本分支现将该Change归档并提升已接受行为到当前规格。归档/链接和正式收据复制是记录层变更，不是新的实现或生产采用。历史快照不改写，旧相对路径按源提交读取；当前最新清单/全图指向本归档。原始完整Validator BLOCKED、F-ROLE-01、历史失败/UNKNOWN保留。PR/CI/merge/sync尚待实际完成，不以本段称已发布。
+
 ## 当前正式Git交付授权（2026-10-15）
 
 用户已在本任务明确授权本冻结离线候选正式Git交付及OpenSpec归档，当前按 [publication.md](publication.md) 推进。此授权取代下文“Git/归档未授权”的历史停止点，仅限本任务；真实Provider、生产、其他产品与共享SDK正式发布边界不变。保留F-ROLE-01具名豁免、原Validator BLOCKED/历史失败/UNKNOWN，不改写为无条件PASS。
@@ -188,3 +192,11 @@ NEXT_ACTION：等待用户本人在本机地址操作并反馈具名结论；产
 当前明确用户决定已按 [product-acceptance.md](product-acceptance.md) 回填；仅记录层，原独立BLOCKED/F-ROLE-01/历史失败/UNKNOWN保留，不改冻结技术候选。能力覆盖累计目标状态不提升，增加本候选离线接受子范围和固定快照。
 
 NEXT_ACTION：授权范围内工程/产品接受记录已闭合；真实Provider、生产参数/激活、Git和正式归档沿原停止点，不自行执行。原本任务离线服务保持运行；不自动重试、恢复、重放或迁移历史Task。
+
+## 正式归档执行（2026-10-15直接授权）
+
+- [x] 已接受技术WIP固定源提交；原活动路径源提交可读，Change迁入本归档、当前canonical规格整合、全图与最新引用更新。
+- [x] 118文件完整归档候选独立一致性评估PASS；正式BLOCKED F-ROLE-01原样保留；原技术候选29/51/10身份未变，原本候选具名豁免仅维持原范围。
+- [ ] 正式Git推送、PR最终head托管CI、squash及每端main同步：执行后以原生PR/Actions/merge和publication-final.json/md逐项回执，不预填成功。
+
+本节取代历史NEXT_ACTION的Git未授权时点，仅本任务离线/显式opt-in候选获得本轮正式Git及归档权限；Provider、生产、其他产品与共享SDK正式发布停止线不变。

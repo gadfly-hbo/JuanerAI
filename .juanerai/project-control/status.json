@@ -12,9 +12,9 @@
     "total": 6
   },
   "health": "validating",
-  "summary": "用户已授权本任务正式Git交付/OpenSpec归档；origin/main仍8265a392基线，冻结质量29/SDK51无漂移。产品接受与F-ROLE-01具名豁免保留，原正式Validator BLOCKED不改。提交/PR/CI/merge/sync进行中，不预报完成。",
+  "summary": "已接受WIP源提交cd491fcb9da4已固定；本分支OpenSpec归档/当前行为规格准备就绪，冻结产品/SDK/测试未变，待独立归档核对及实际最终head CI/PR/squash/safe sync。原BLOCKED/F-ROLE-01/UNKNOWN保留。",
   "current_objective": "Preserve the explicit user product acceptance of the frozen offline candidate and retained limits; no new implementation or delivery authority.",
-  "next_action": "在原分支显式提交已接受WIP，再完成归档/当前规格/适用独立核对，推送PR并取得实际最终head必需CI后squash和安全main同步。Provider/生产/其他项目/SDK发布仍禁。",
+  "next_action": "核对完整归档差异/固定字节与具名豁免适用性，显式提交并推送同分支，创建PR、等待必需最终head Canonical CI，通过后squash和sync-main逐端读回。",
   "blockers": [],
   "milestones": [
     {
@@ -89,85 +89,85 @@
     {
       "id": "SDD_INPUT",
       "label": "Authorization and isolated intake",
-      "path": "openspec/changes/pi-r1-r4-repair/proposal.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/proposal.md",
       "status": "present"
     },
     {
       "id": "SDK_DRAFT",
       "label": "Historical initial SDK draft; actual aligned fixed .3 result is in engineering acceptance",
-      "path": "openspec/changes/pi-r1-r4-repair/design.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/design.md",
       "status": "present"
     },
     {
       "id": "SDD_TASKS",
       "label": "Tasks and open items",
-      "path": "openspec/changes/pi-r1-r4-repair/tasks.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/tasks.md",
       "status": "present"
     },
     {
       "id": "SDD_VERIFICATION",
       "label": "Read-only evidence and return point",
-      "path": "openspec/changes/pi-r1-r4-repair/verification.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/verification.md",
       "status": "present"
     },
     {
       "id": "SDD_SPEC",
       "label": "Behavior and applicability",
-      "path": "openspec/changes/pi-r1-r4-repair/spec.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/spec.md",
       "status": "present"
     },
     {
       "id": "CONSUMER_HANDOFF",
       "label": "Frozen SDK consumer contract and evidence package",
-      "path": "openspec/changes/pi-r1-r4-repair/consumer/SDK-CONSUMER-CONTRACT.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/consumer/SDK-CONSUMER-CONTRACT.md",
       "status": "present"
     },
     {
       "id": "R3_LOCAL_GREEN",
       "label": "Historical correction evidence; current whole offline engineering result separately recorded",
-      "path": "openspec/changes/pi-r1-r4-repair/verification.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/verification.md",
       "status": "verified"
     },
     {
       "id": "API_ALIGNMENT_001",
       "label": "Verified SDK intermediate API and precise pending package seams",
-      "path": "openspec/changes/pi-r1-r4-repair/sdk-api-alignment-001.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/sdk-api-alignment-001.md",
       "status": "present"
     },
     {
       "id": "R3_TOOL_AUDIT",
       "label": "27 dynamic tools and three dependency categories",
-      "path": "openspec/changes/pi-r1-r4-repair/remaining-work-and-tool-output-audit.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/remaining-work-and-tool-output-audit.md",
       "status": "present"
     },
     {
       "id": "SKIP_19",
       "label": "18 local complements PASS; real Provider remains not run",
-      "path": "openspec/changes/pi-r1-r4-repair/skipped-19-followup.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/skipped-19-followup.md",
       "status": "present"
     },
     {
       "id": "R1_CODEC_POLICY",
       "label": "9 actual old-package/offline codec samples and source mapping design; token policy UNKNOWN",
-      "path": "openspec/changes/pi-r1-r4-repair/sdk-api-alignment-001.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/sdk-api-alignment-001.md",
       "status": "present"
     },
     {
       "id": "READ_API004_ACCEPTED",
       "label": "Actual installation and scoped independent read result; full change OPEN",
-      "path": "openspec/changes/pi-r1-r4-repair/joint-verification-matrix-006.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/joint-verification-matrix-006.md",
       "status": "verified"
     },
     {
       "id": "R3_CONTRACT_REVIEW001",
       "label": "D1-D8 A approved and implemented; current accepted scope in engineering acceptance",
-      "path": "openspec/changes/pi-r1-r4-repair/r3-preparation-contract-proposal-001.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/r3-preparation-contract-proposal-001.md",
       "status": "present"
     },
     {
       "id": "ENGINEERING_ACCEPTANCE_FROLE01",
       "label": "Frozen offline engineering acceptance with named user waiver; formal BLOCKED retained",
-      "path": "openspec/changes/pi-r1-r4-repair/engineering-acceptance.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md",
       "status": "verified"
     },
     {
@@ -185,25 +185,25 @@
     {
       "id": "USER_ACCEPTANCE_CHECKLIST_001",
       "label": "User overall frozen offline Product Acceptance recorded separately; individual16 scenario verdicts not invented",
-      "path": "openspec/changes/pi-r1-r4-repair/user-product-acceptance-001.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/user-product-acceptance-001.md",
       "status": "present"
     },
     {
       "id": "OFFLINE_INTERACTIVE_ENVIRONMENT_001",
       "label": "Authorized6-scenario local offline environment; overall user acceptance received, original startup snapshots retained",
-      "path": "openspec/changes/pi-r1-r4-repair/offline-interactive-acceptance-001.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/offline-interactive-acceptance-001.md",
       "status": "present"
     },
     {
       "id": "USER_PRODUCT_ACCEPTANCE_001",
       "label": "Explicit user quote: frozen offline product accepted; retained limits and stops",
-      "path": "openspec/changes/pi-r1-r4-repair/product-acceptance.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/product-acceptance.md",
       "status": "verified"
     },
     {
       "id": "GIT_DELIVERY_AUTHORIZATION",
       "label": "Current explicit frozen offline Git/archive authorization and exact readback plan",
-      "path": "openspec/changes/pi-r1-r4-repair/publication.md",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/publication.md",
       "status": "present"
     }
   ],
@@ -227,7 +227,7 @@
       "mitigation": "User acceptance is limited to delivered frozen offline scope. Preserve UNKNOWN and real Provider NOT RUN; no deployment, Git, archive or historical replay is inferred."
     }
   ],
-  "updated_at": "2026-10-15T05:00:42.227Z",
+  "updated_at": "2026-10-15T05:03:54.121Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13dea-bf9e-76d1-84d9-0d100e326db6"

@@ -1,0 +1,154 @@
+{
+  "head": "8265a3920ee1205faec7dede8b0c84e648105d9d",
+  "files": [
+    {
+      "path": "adapters/agent-pi/native-open-analysis.ts",
+      "bytes": 111296,
+      "sha256": "1bb40c53c66cb3ecca40a9b8a976690d6978b4ba8043a4f270dea9fb0ad15d1c"
+    },
+    {
+      "path": "adapters/agent-pi/open-analysis-collaboration.ts",
+      "bytes": 17278,
+      "sha256": "a151cfbb76d18538fa80c593bed2de625b1b2e6942c3f328087743907648c939"
+    },
+    {
+      "path": "adapters/agent-pi/open-analysis.ts",
+      "bytes": 40305,
+      "sha256": "8b37c6acdfe9e3a99f548ad0d4ec05a725d91cee339bf3ce3dd64770e5abb91d"
+    },
+    {
+      "path": "adapters/agent-pi/persistent-runtime-state.ts",
+      "bytes": 35582,
+      "sha256": "a63d4e8683b277f9ab40b0af33b3371b4b08853cb09b7b713d00a81590106e1f"
+    },
+    {
+      "path": "adapters/storage-local/open-analysis-collaboration.ts",
+      "bytes": 11505,
+      "sha256": "faac55b4ca62fe817ad8d235b2a281d02d0d2350cc8b3ba2ec3eb5a844014283"
+    },
+    {
+      "path": "adapters/storage-local/open-analysis.ts",
+      "bytes": 75849,
+      "sha256": "6d49fe054b3bdab83a1b308400f38a70ed3c06b090e9e6516f386fbad8f19a3a"
+    },
+    {
+      "path": "apps/browser/local-server.ts",
+      "bytes": 34535,
+      "sha256": "be70d642db2c7be01d4993c7af2ec7c4558f1942f01ca095d7416e71dc2fecb9"
+    },
+    {
+      "path": "apps/browser/quick-analysis-client.d.mts",
+      "bytes": 1350,
+      "sha256": "7135868d72c42d19471b14e1b6a05cc7a1f651cc62061dc98a115fe1c3861bb8"
+    },
+    {
+      "path": "apps/browser/quick-analysis-client.mjs",
+      "bytes": 134025,
+      "sha256": "b6e7397185a7148fc2d7dcc0f7b26d848b092920620d49c3434c68d4b8827030"
+    },
+    {
+      "path": "apps/browser/quick-analysis-workbench.d.mts",
+      "bytes": 5349,
+      "sha256": "bfc03b62dd35cd5faa415951a6e733a69f4e1408fbd8602b4db893282db2eebc"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 375902,
+      "sha256": "2fb013723061655abad37b4c3509d8505be315c6327a3270ce46b85c7d37295b"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1916,
+      "sha256": "baafe78f2c1fd2ba3ec2bb4fdc6331e54c41008b2b64479768c4161fe60629a9"
+    },
+    {
+      "path": "packages/application/open-analysis-delegation.ts",
+      "bytes": 33961,
+      "sha256": "b2fee117e9cc96dcc55ce32e0a1a8fc029c83af410bd0080da85d10b8d8ceafc"
+    },
+    {
+      "path": "packages/application/open-analysis-preparation.ts",
+      "bytes": 3011,
+      "sha256": "465902df46f4b95a73ce7564aa7f5cab32cdae3634e831b607ed87a324577483"
+    },
+    {
+      "path": "packages/application/open-analysis-workspace.ts",
+      "bytes": 56700,
+      "sha256": "16300500f3bad67efad1f76e4f8ebd61b3f836b614443e578f8d073eea3af47e"
+    },
+    {
+      "path": "packages/application/open-analysis.ts",
+      "bytes": 221307,
+      "sha256": "44ff15bb2686f68f544577ed8959327d76c3a0715035da72eef160563bc1ce36"
+    },
+    {
+      "path": "packages/ports/open-analysis-runtime.ts",
+      "bytes": 7359,
+      "sha256": "3bdb133b3b937074a6d78b15e10d686d220c53978b01171e20fe07cd11d96b04"
+    },
+    {
+      "path": "packages/ports/open-analysis-store.ts",
+      "bytes": 12005,
+      "sha256": "794e5cfa0113cd49a19bc5630c9e232f5cb392815207e17bb4288b527467ec6b"
+    },
+    {
+      "path": "profiles/personal/open-analysis.ts",
+      "bytes": 19256,
+      "sha256": "74f36a39050b68abc7eff868f9680b2b5e0182d6ca3f4e27f4618fae5f37582a"
+    },
+    {
+      "path": "tests/integration/xanthil-desktop/open-analysis-application.integration.test.ts",
+      "bytes": 225770,
+      "sha256": "bc311c31b76362436317c0f37acc8bcb22e13b6a7570859874136696e457103e"
+    },
+    {
+      "path": "tests/integration/xanthil-desktop/open-analysis-autonomous-collaboration.integration.test.ts",
+      "bytes": 143097,
+      "sha256": "81309473f8f4b91fa5aa8045d60536182412ee3b6148b447e18d127e550c1f94"
+    },
+    {
+      "path": "tests/integration/xanthil-desktop/open-analysis-autonomous-native-session.integration.test.ts",
+      "bytes": 390218,
+      "sha256": "05f7884b3a00d86aa603a0ab35a1e8c71e0ff60e2d79d474170519718a707eb5"
+    },
+    {
+      "path": "tests/integration/xanthil-desktop/open-analysis-collaboration.integration.test.ts",
+      "bytes": 18617,
+      "sha256": "aa962e4e6df7a15faf6c7a1a83d626da0bd900e489f8c6bb4c118a82b0785170"
+    },
+    {
+      "path": "tests/integration/xanthil-desktop/shared-runtime-state.integration.test.ts",
+      "bytes": 91929,
+      "sha256": "2e961bbe60b37cd3c6524bd1a373e380005d836cf35a38d787347fbf8e12aa4a"
+    },
+    {
+      "path": "tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts",
+      "bytes": 261325,
+      "sha256": "0dc01540138f2c43ac765366bc20511530da6dda0ec8a9bbe47188b515b8ca0c"
+    },
+    {
+      "path": "tools/harness/validation/prepare-ci-install.mjs",
+      "bytes": 9589,
+      "sha256": "9680d59bca21dffc380bc2f7edb1fa93aa35c6942769f9b3aa5eed5908290009"
+    },
+    {
+      "path": "tools/harness/validation/prepare-ci-install.test.mjs",
+      "bytes": 18860,
+      "sha256": "bff9eafe824e2017e7acb197af1d6ce7ead2a79dfa2348666190a99fe3e6c14d"
+    },
+    {
+      "path": "vendor/pi-agent-runtime/0.5.1-r1r4.2/d2ba42634e98e356f1d82f5a4fe39fe451d8284e44a64e74c42102bf52922998.tgz",
+      "bytes": 142876,
+      "sha256": "d2ba42634e98e356f1d82f5a4fe39fe451d8284e44a64e74c42102bf52922998"
+    },
+    {
+      "path": "vendor/pi-agent-runtime/0.5.1-r1r4.3/e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce.tgz",
+      "bytes": 146131,
+      "sha256": "e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce"
+    }
+  ],
+  "deltaFromQuality001": [
+    "tests/integration/xanthil-desktop/open-analysis-autonomous-native-session.integration.test.ts"
+  ],
+  "reason": "Added PREP-J05 actual opt-in personal Profile adoption through declared IR, calculation, goal review, report and HTTP/UI. Production code unchanged."
+}

@@ -1,0 +1,42 @@
+{
+  "recordedAt": "2026-10-15T04:40:50.524557+00:00",
+  "authority": "Current explicit human user in the original task",
+  "userExactText": "采纳，接受产品",
+  "decision": "User Product Acceptance of this frozen candidate as delivered in the offline synthetic opt-in scope",
+  "candidate": {
+    "worktree": "/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI",
+    "branch": "work/mac-mini/pi-r1-r4-repair",
+    "headBaselineOnly": "8265a3920ee1205faec7dede8b0c84e648105d9d",
+    "original87Aggregate": "a5f0a8c11c3b4760b92953c7ce198d2ad2fff336d85b54b7651ad984804b8fd4",
+    "accepted88Aggregate": "b9b796ee8c0cb624fc7640c37f32c2b08f2c2b692b69bb5cfb9d192b6cf1a16a",
+    "SDK": "0.5.1-r1r4.3",
+    "SDKsha256": "e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce"
+  },
+  "scope": "Existing R1-R4 and approved D1-D8 A offline synthetic opt-in result; existing evidence and the delivered task-only local browser environment. No broader production or real-Provider acceptance.",
+  "namedWaiver": "Existing F-ROLE-01 applies only to frozen reviewed candidate; no new waiver or extension",
+  "formalValidatorVerdict": "BLOCKED F-ROLE-01 retained unchanged",
+  "technicalAssessment": "Existing independent offline PASS; not re-executed this turn",
+  "individualScenarioUserVerdicts": "Not supplied; do not auto-fill16 checklist rows or imply all were personally rerun",
+  "actualSyntheticBusinessPlan": "Separate read-only OFFLINE-TASK-READBACK-001.json; do not manufacture a click/adoption/Outcome from the product acceptance message",
+  "remainingNotVerified": [
+    "RP-01 real token/protocol/image admission",
+    "RP-02 real Provider failure/usage/cancellation settlement",
+    "RP-03 real model large-material/summary/report quality",
+    "RP-04 real Provider fallback",
+    "RP-05 TEST-XCLI-013 real acceptance",
+    "production overhead/margin/image UNKNOWN",
+    "original1-token fault cause UNKNOWN"
+  ],
+  "notAuthorizedByAcceptance": [
+    "real Provider/credentials/business data",
+    "production activation/deployment/profile switch",
+    "Git commit/push/merge/release",
+    "formal archive/integration",
+    "historical Task migration/recovery/replay",
+    "other projects or product upgrades"
+  ],
+  "GitIntegrated": false,
+  "formalArchivePerformed": false,
+  "serviceLifecycle": "Existing authorized task-only offline service remains running; no new service started/stopped by this receipt",
+  "recordOnly": true
+}
