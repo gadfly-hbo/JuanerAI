@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015053207861-6UXRR5",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T05:32:07.861Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13dea-bf9e-76d1-84d9-0d100e326db6"
+  },
+  "summary": "Retained PR83 cloud failure; corrected only missing native host opt-in test header; final CI and affected independent review pending",
+  "status_after": "validating",
+  "evidence_refs": []
+}

@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "VERIFY",
-    "label": "Authorized frozen offline Git delivery: explicit commit, archive, exact-head CI and merge/readback",
+    "label": "Exact-head CI host applicability correction, retained failure, affected independent review",
     "ordinal": 6,
     "total": 6
   },
   "health": "validating",
-  "summary": "已接受WIP源提交cd491fcb9da4已固定；本分支OpenSpec归档/当前行为规格准备就绪，冻结产品/SDK/测试未变，待独立归档核对及实际最终head CI/PR/squash/safe sync。原BLOCKED/F-ROLE-01/UNKNOWN保留。",
-  "current_objective": "Preserve the explicit user product acceptance of the frozen offline candidate and retained limits; no new implementation or delivery authority.",
-  "next_action": "核对完整归档差异/固定字节与具名豁免适用性，显式提交并推送同分支，创建PR、等待必需最终head Canonical CI，通过后squash和sync-main逐端读回。",
+  "summary": "PR83旧head托管CI保留3项宿主测试失败；只补既有JUANERAI_OPEN_CODE_HOST_TEST显式opt-in入口，全部测试体与生产/SDK未变。on3PASS/off3明确SKIP、类型通过；待最终新head完整CI、fresh受影响评审与豁免适用性结论，未合并/同步。",
+  "current_objective": "Deliver only the accepted offline opt-in candidate, with necessary host-test applicability correction and exact independent/CI evidence; preserve original BLOCKED and named waiver scope.",
+  "next_action": "固定仅测试header与记录层修正的新head，推送PR83并跑必需完整CI；fresh Validator复核测试覆盖与身份，明确原豁免是否适用；不得预填合并/同步或无条件PASS。",
   "blockers": [],
   "milestones": [
     {
@@ -65,6 +65,11 @@
     {
       "id": "authorized-delivery-archive",
       "label": "Explicit Git/PR/required CI/squash/safe main sync/OpenSpec archive delivery authorized and in progress",
+      "status": "active"
+    },
+    {
+      "id": "publication-host-applicability",
+      "label": "Retained CI failure; native host opt-in header correction only; final CI and fresh affected review pending",
       "status": "active"
     }
   ],
@@ -222,12 +227,12 @@
     },
     {
       "id": "REAL_VALIDATION_DELIVERY_PENDING",
-      "label": "Real Provider/production policy and Git/formal archive remain unverified or unauthorized",
+      "label": "Real Provider/production parameters remain NOT RUN/UNKNOWN; Git publication authorized but final CI/merge/sync pending",
       "level": "high",
-      "mitigation": "User acceptance is limited to delivered frozen offline scope. Preserve UNKNOWN and real Provider NOT RUN; no deployment, Git, archive or historical replay is inferred."
+      "mitigation": "Keep offline acceptance limits and original F-ROLE-01 waiver scope. No production, Provider, shared SDK release or automatic historical replay."
     }
   ],
-  "updated_at": "2026-10-15T05:03:54.121Z",
+  "updated_at": "2026-10-15T05:32:07.860Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13dea-bf9e-76d1-84d9-0d100e326db6"

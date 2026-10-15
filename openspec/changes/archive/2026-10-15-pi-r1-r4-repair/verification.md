@@ -302,3 +302,13 @@ NEXT_ACTION：等待用户本人在本机地址操作并反馈具名结论；产
 当前明确用户决定已按 [product-acceptance.md](product-acceptance.md) 回填；仅记录层，原独立BLOCKED/F-ROLE-01/历史失败/UNKNOWN保留，不改冻结技术候选。能力覆盖累计目标状态不提升，增加本候选离线接受子范围和固定快照。
 
 NEXT_ACTION：授权范围内工程/产品接受记录已闭合；真实Provider、生产参数/激活、Git和正式归档沿原停止点，不自行执行。原本任务离线服务保持运行；不自动重试、恢复、重放或迁移历史Task。
+
+## Git交付CI失败与宿主测试适用性修正（2026-10-15）
+
+最终原head `4c6233aa8ed3f196f7e3d9edd7d6f6a4c7c14816` 的GitHub run38685333308失败保留：前16组exit0，desktop-integration exit1，1597PASS/3FAIL/17SKIP，portable-regression exit1。三项均为R3-EXPLORATION-READ-01 current/stale/outside；Linux实际受控执行器不支持隔离，任务冻结为unknown，未达到测试预设的Mac原生结果。直接job日志CI-FAILED-JOBLOG-003.txt完整保留；gh run view首次缓存日志不完整及gh api拒绝escape输出的失败另留，不覆盖。
+
+工程决定（改测试前）：沿用已有 `JUANERAI_OPEN_CODE_HOST_TEST=1` 宿主测试显式opt-in入口，仅为上述三项补遗漏的同一入口条件。macOS已授权开启后仍完整执行所有原断言；未开启时应明确三项SKIP，绝不称Linux原生隔离/完整图表读取PASS。不改变生产代码、SDK、隔离支持、策略、旧恢复或任何测试体/负向断言。原宿主入口及Linux拒绝已有browser-preparation等覆盖，补丁不是放宽执行安全边界。
+
+此为验证资产适用性修正，不制造新的产品行为因果RED。实际托管失败为RED；本机同一窄测试3PASS，而未opt-in仍执行的适用性检查before-off为RED。修正后须检查on仍3PASS、off为3明确SKIP、类型/相关验证合同、最终新head托管全部17组及fresh独立审查。原冻结源和旧F-ROLE-01豁免原件不改写；测试header身份变化单独记录并重新确认原豁免适用性，不先行声称新候选无条件PASS或Git合并完成。唯一证据根git-delivery-001/ci-diagnosis-001/。
+
+适用性修正的已执行结果：before-off内层3PASS但违反未opt-in不得执行的预期，外层exit1；after-off为0PASS/3SKIP、exit0；after-on为3PASS/0SKIP、exit0；TypeScript noEmit exit0。全部原测试体逐字节不变，唯一技术差异是已存在宿主测试入口条件。类型、原云失败和全部窄命令输出见git-delivery-001/ci-diagnosis-001/。新最终head托管CI及fresh独立评审尚待实际回交，旧head失败不得改写。
