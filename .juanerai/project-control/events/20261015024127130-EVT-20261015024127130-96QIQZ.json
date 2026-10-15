@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015024127130-96QIQZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T02:41:27.130Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13d2c-5493-7523-b1c4-96b7fcb337d1"
+  },
+  "summary": "User interrupted; child absent and no known task test command found; frozen candidate and partial independent evidence retained, no verdict",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

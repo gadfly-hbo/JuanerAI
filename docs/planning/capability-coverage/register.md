@@ -1,3 +1,47 @@
+## pi-r1-r4-repair正式Git交付/归档定位（2026-10-15）
+
+已接受离线子范围的源码、测试、固定依赖、原件与规格进入本任务正式Git/归档交付。当前 [归档记录](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/publication.md) 与 [完整六＋二/40ID快照](snapshots/pi-r1-r4-repair-git-delivery-2026-10-15.md) 绑定实际PR/最终head CI/merge/sync回执；未完成效果不预报PASS。原接受范围/40ID/完整目标/累计状态不变，F-ROLE-01及原正式BLOCKED、历史失败/UNKNOWN保留，生产/Provider/共享SDK发布不放行。旧快照按源提交读取，当前链接使用归档路径。
+
+## pi-r1-r4-repair 用户产品接受 · 2026-10-15
+
+用户原话“采纳，接受产品”。本冻结R1～R4＋D1～D8 A既有离线合成/显式opt-in交付范围已有Engineering Acceptance（附本候选F-ROLE-01具名豁免）与明确用户Product Acceptance。**原正式Validator BLOCKED保留，技术PASS不变，不称无条件Validator PASS。** 用户没有逐条16项操作回执，不补造本人复跑，也不把真实Provider/生产未测项标通过。
+
+增量为C3-01、C6-01、A-03/04/05、B-01/02/03的本候选限定离线接受子范围；40稳定ID/定义/完整目标/累计状态保持，不升级完整能力或S1。代码/SDK/测试未改，Git集成/归档/生产仍未执行，原FAIL/UNKNOWN全部保留。以下旧“未产品接受”段落是原时点历史。
+
+[产品接受原话与边界](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/product-acceptance.md) · [全40ID接受快照](snapshots/pi-r1-r4-repair-product-accepted-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-product-20261015)
+
+| 六＋二家族 | 本次接受范围/增量 | 仍保留的缺口 |
+|---|---|---|
+| C1 业务双主线 | 复用原PIM/任务链，未新增完整OSM验收 | 行动/Actual/完整OSM闭环 |
+| C2 分析模式 | 既有消费者离线修复获接受，未新增模式验收 | 完整Deep Research/所有场景模型质量 |
+| C3 产品矩阵 | C3-01当前冻结浏览器离线交付面获用户产品接受 | 正常生产采用、持续真实使用、Team/Enterprise/价值留存 |
+| C4 方法扩展 | 既有IR/计算/独立核验链保留，无新方法全目标验收 | 因果/预测/完整Domain或Model Pack |
+| C5 决策与价值 | 准备/采纳/保存/正式效果区分的既有链保留 | 现实行动/Actual/完整Report Studio |
+| C6 资产与进化 | C6-01准备正文/重开/失效/旧历史兼容的限定离线子范围接受 | 通用恢复/跨项目学习/长期效果；历史Task迁移未授权 |
+| A 数据语义执行 | A-03/04/05固定SDK .3实际IR/准入/计量/证据/主备离线子范围接受 | 真实Provider、生产参数UNKNOWN、通用方法和所有数据格式 |
+| B 治理与责任 | B-01/02/03安全诊断/UNKNOWN/Owner/授权/显式采纳限定离线子范围接受，保留具名F-ROLE-01 | 强制只读沙箱残余风险、企业治理/现实行动；生产/Git权限未授予 |
+
+
+## pi-r1-r4-repair 工程接收回填 · 2026-10-15
+
+本冻结 R1～R4＋D1～D8 A **离线合成 opt-in Engineering Acceptance，附 F-ROLE-01 用户具名豁免**。Validator 原正式 BLOCKED 保留，技术评估 PASS，非无条件 Validator PASS；4610 PASS/1 Provider SKIP，独立131 PASS。仅回填收口记录，原代码/SDK/测试不变，未执行 Git 集成或正式归档。
+
+本次支持 C6-01、A-03/04/05、B-01/02/03 的已有消费者；40稳定ID、全部目标/完成条件、累计状态、此前已接受子范围不变。不把离线工程结果提升为用户 Product Acceptance、S1 或新全目标交付。原失败、旧字段、UNKNOWN 和 Provider/生产/Git 停止线保留。下文旧“当前”按历史时点阅读。
+
+[工程接收与具名限制](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md) · [六＋二/40ID固定快照](snapshots/pi-r1-r4-repair-engineering-waiver-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-20261015)
+
+| 六＋二家族 | 本次离线工程增量 | 保留的产品缺口 |
+|---|---|---|
+| C1 业务双主线 | 复用原 PIM/任务链，无新增全目标验收 | 完整 OSM/行动/Actual 闭环 |
+| C2 分析模式 | 既有模式消费者回归，无新增模式验收 | 完整 Deep Research/所有场景质量 |
+| C3 产品矩阵 | 现有 HTTP/client/UI 诊断与读回受影响验证 | 用户 Product Acceptance、Team/Enterprise/价值留存 |
+| C4 方法扩展 | 原 IR/计算/核验链受影响回归，无新方法 | 因果/预测/完整 Domain/Model Pack |
+| C5 决策与价值 | proposalOnly、保存/采纳与正式效果分列 | 现实行动/Actual/完整 Report Studio |
+| C6 资产与进化 | C6-01 准备正文所有权、失效、重开及旧历史兼容的离线工程证据 | 通用恢复/跨项目学习/效果；历史 Task 迁移未授权 |
+| A 数据语义执行 | A-03/04/05：固定 .3 实际链路、准入、物理用量、主备与完整证据/IR | 真实 Provider、生产准入参数 UNKNOWN、通用方法/全部数据格式 |
+| B 治理与责任 | B-01/02/03：安全失败、UNKNOWN/迟到、作用域、Owner 与显式采纳；工程接收附 F-ROLE-01 | 强制只读沙箱残余风险、产品接受、企业治理/现实行动授权 |
+
+
 ## Change006当前收口增量 · 2026-10-13
 
 用户直接“确认”具名角色风险例外、现有结果/二次partial和未测劳动项处置、正式Git集中交付；Engineering Acceptance及Product Acceptance附具名限制成立。candidate011独立代码/证据通过，正式Validator角色BLOCKED原文保留，风险豁免不称Validator PASS。47源码固定；完整portable 17组exit0，desktop integration1430 PASS/15既有SKIP。本段是具名接受/归档时点；实现已提交并创建PR80，Git集成由下列publication绑定的PR原生CI/merge及同机最终回执确认，不凭覆盖文档自称已集成。
@@ -156,6 +200,7 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 未覆盖：蓝图完整 Personal 闭环、多场景重复使用证据、尚未激活的 Skill／Prompt 等能力、其他平台适用范围；留存价值另看 C3-04。
 - 关联 Change／在研预计：001、002、003；003已激活批准的Fork/Subagent，其他Preview保持；开发模式不算业务增量。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)、[E-DEV](evidence.md#e-dev)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：当前冻结产品浏览器离线交付面及6项交互入口，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### C3-02 Team 协作、复核与复用
 
@@ -374,6 +419,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001、002、003；父子精确材料引用已交付，不等于知识库或学习。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-LEGACY](evidence.md#e-legacy)、[E-003](evidence.md#e-003)。
 - Change006已接受子范围（2026-10-13）：第二任务复用项目配置并重新绑定当前获准资料。跨项目/自动学习/广义资产提升仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：准备正文持久/重开/失效和旧历史兼容，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：具名准备正文保存/重开/失效及旧历史兼容，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### C6-02 改进候选与受治理版本
 
@@ -438,6 +485,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001 的已验收路径可作为后续核验入口；002/003 不自动补齐通用 IR。
 - 验证证据：[E-BP](evidence.md#e-bp)、[E-001](evidence.md#e-001)、[E-LEGACY](evidence.md#e-legacy)。
 - Change006已接受子范围（2026-10-13）：有限六指标IR驱动13周、总体/category、两期及独立原始快照核验。全指标/复杂DSL/通用方法平台仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：显式采纳后的实际 IR/计算/核验/Outcome 链，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：显式采纳后的IR/计算/独立核验/Outcome链，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### A-04 受控计算、模型调用与运行管理
 
@@ -448,6 +497,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 未覆盖：超出003单层顺序范围的运行／模型及任务边界；不含第二Runtime、fallback、任意代码／工具或自主平台。
 - 关联 Change／在研预计：001、002、003的限定范围已验收；实际Provider和更广运行范围另需证据及授权。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：固定 SDK 的最终准入、物理账本与主备链，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：固定SDK的准入、计量、主备和安全停止，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### A-05 精确来源、版本、不可变历史与重放条件
 
@@ -459,6 +510,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001、002、003；003父子精确版本与失效处理已交付。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)。
 - Change006已接受子范围（2026-10-13）：两版来源/批准/精确任务选择、不可变采用回执及旧成果。跨环境模型逐字重放/长期Outcome链仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：唯一正文、精确身份、冻结 UNKNOWN 与独立迟到事实，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：原文/精确来源、不可变历史及UNKNOWN/迟到分列，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ## B — 可信治理与人的责任
 
@@ -472,6 +525,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001、002、003；反证／限制协作已交付，不自动升级意见的证据等级。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)。
 - Change006已接受子范围（2026-10-13）：原始快照独立核算、零分母/未绑定表述拒绝/UNKNOWN可见。模型解释及业务含义的独立语义判断仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：安全诊断与不确定性、独立技术证据及具名角色豁免，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：安全诊断/限制/不确定性和独立证据，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### B-02 精确授权、隐私与作用域控制
 
@@ -483,6 +538,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001、002、003；父子隔离已交付，不授予新外部权限。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)。
 - Change006已接受子范围（2026-10-13）：资产正文有效外发权限、仅所选六指标投影、停止/持久计量。企业/第二Runtime/真实业务权限仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：材料/候选精确授权、撤权和外发准入，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：精确资料/候选授权及撤权边界，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### B-03 人工审阅、Owner 责任与正式确认
 
@@ -494,6 +551,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001、002、003；003已交付回流审阅和采纳，无新的正式决定写权限。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)。
 - Change006已接受子范围（2026-10-13）：维护者一次批准、当前换版/以后默认分离、明确继续。供应登记/自动发布/现实行动仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：proposalOnly、Owner、保存回执及显式正式采纳分离，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：proposalOnly、Owner、保存回执与正式采纳分离，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### B-04 有限域行动自动化
 

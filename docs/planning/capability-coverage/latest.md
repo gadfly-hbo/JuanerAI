@@ -1,3 +1,47 @@
+## pi-r1-r4-repair正式Git交付/归档定位（2026-10-15）
+
+已接受离线子范围的源码、测试、固定依赖、原件与规格进入本任务正式Git/归档交付。当前 [归档记录](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/publication.md) 与 [完整六＋二/40ID快照](snapshots/pi-r1-r4-repair-git-delivery-2026-10-15.md) 绑定实际PR/最终head CI/merge/sync回执；未完成效果不预报PASS。原接受范围/40ID/完整目标/累计状态不变，F-ROLE-01及原正式BLOCKED、历史失败/UNKNOWN保留，生产/Provider/共享SDK发布不放行。旧快照按源提交读取，当前链接使用归档路径。
+
+## pi-r1-r4-repair 用户产品接受 · 2026-10-15
+
+用户原话“采纳，接受产品”。本冻结R1～R4＋D1～D8 A既有离线合成/显式opt-in交付范围已有Engineering Acceptance（附本候选F-ROLE-01具名豁免）与明确用户Product Acceptance。**原正式Validator BLOCKED保留，技术PASS不变，不称无条件Validator PASS。** 用户没有逐条16项操作回执，不补造本人复跑，也不把真实Provider/生产未测项标通过。
+
+增量为C3-01、C6-01、A-03/04/05、B-01/02/03的本候选限定离线接受子范围；40稳定ID/定义/完整目标/累计状态保持，不升级完整能力或S1。代码/SDK/测试未改，Git集成/归档/生产仍未执行，原FAIL/UNKNOWN全部保留。以下旧“未产品接受”段落是原时点历史。
+
+[产品接受原话与边界](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/product-acceptance.md) · [全40ID接受快照](snapshots/pi-r1-r4-repair-product-accepted-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-product-20261015)
+
+| 六＋二家族 | 本次接受范围/增量 | 仍保留的缺口 |
+|---|---|---|
+| C1 业务双主线 | 复用原PIM/任务链，未新增完整OSM验收 | 行动/Actual/完整OSM闭环 |
+| C2 分析模式 | 既有消费者离线修复获接受，未新增模式验收 | 完整Deep Research/所有场景模型质量 |
+| C3 产品矩阵 | C3-01当前冻结浏览器离线交付面获用户产品接受 | 正常生产采用、持续真实使用、Team/Enterprise/价值留存 |
+| C4 方法扩展 | 既有IR/计算/独立核验链保留，无新方法全目标验收 | 因果/预测/完整Domain或Model Pack |
+| C5 决策与价值 | 准备/采纳/保存/正式效果区分的既有链保留 | 现实行动/Actual/完整Report Studio |
+| C6 资产与进化 | C6-01准备正文/重开/失效/旧历史兼容的限定离线子范围接受 | 通用恢复/跨项目学习/长期效果；历史Task迁移未授权 |
+| A 数据语义执行 | A-03/04/05固定SDK .3实际IR/准入/计量/证据/主备离线子范围接受 | 真实Provider、生产参数UNKNOWN、通用方法和所有数据格式 |
+| B 治理与责任 | B-01/02/03安全诊断/UNKNOWN/Owner/授权/显式采纳限定离线子范围接受，保留具名F-ROLE-01 | 强制只读沙箱残余风险、企业治理/现实行动；生产/Git权限未授予 |
+
+
+## pi-r1-r4-repair 工程接收回填 · 2026-10-15
+
+本冻结 R1～R4＋D1～D8 A **离线合成 opt-in Engineering Acceptance，附 F-ROLE-01 用户具名豁免**。Validator 原正式 BLOCKED 保留，技术评估 PASS，非无条件 Validator PASS；4610 PASS/1 Provider SKIP，独立131 PASS。仅回填收口记录，原代码/SDK/测试不变，未执行 Git 集成或正式归档。
+
+本次支持 C6-01、A-03/04/05、B-01/02/03 的已有消费者；40稳定ID、全部目标/完成条件、累计状态、此前已接受子范围不变。不把离线工程结果提升为用户 Product Acceptance、S1 或新全目标交付。原失败、旧字段、UNKNOWN 和 Provider/生产/Git 停止线保留。下文旧“当前”按历史时点阅读。
+
+[工程接收与具名限制](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md) · [六＋二/40ID固定快照](snapshots/pi-r1-r4-repair-engineering-waiver-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-20261015)
+
+| 六＋二家族 | 本次离线工程增量 | 保留的产品缺口 |
+|---|---|---|
+| C1 业务双主线 | 复用原 PIM/任务链，无新增全目标验收 | 完整 OSM/行动/Actual 闭环 |
+| C2 分析模式 | 既有模式消费者回归，无新增模式验收 | 完整 Deep Research/所有场景质量 |
+| C3 产品矩阵 | 现有 HTTP/client/UI 诊断与读回受影响验证 | 用户 Product Acceptance、Team/Enterprise/价值留存 |
+| C4 方法扩展 | 原 IR/计算/核验链受影响回归，无新方法 | 因果/预测/完整 Domain/Model Pack |
+| C5 决策与价值 | proposalOnly、保存/采纳与正式效果分列 | 现实行动/Actual/完整 Report Studio |
+| C6 资产与进化 | C6-01 准备正文所有权、失效、重开及旧历史兼容的离线工程证据 | 通用恢复/跨项目学习/效果；历史 Task 迁移未授权 |
+| A 数据语义执行 | A-03/04/05：固定 .3 实际链路、准入、物理用量、主备与完整证据/IR | 真实 Provider、生产准入参数 UNKNOWN、通用方法/全部数据格式 |
+| B 治理与责任 | B-01/02/03：安全失败、UNKNOWN/迟到、作用域、Owner 与显式采纳；工程接收附 F-ROLE-01 | 强制只读沙箱残余风险、产品接受、企业治理/现实行动授权 |
+
+
 ## Change006当前收口增量 · 2026-10-13
 
 用户直接“确认”具名角色风险例外、现有结果/二次partial和未测劳动项处置、正式Git集中交付；Engineering Acceptance及Product Acceptance附具名限制成立。candidate011独立代码/证据通过，正式Validator角色BLOCKED原文保留，风险豁免不称Validator PASS。47源码固定；完整portable 17组exit0，desktop integration1430 PASS/15既有SKIP。本段是具名接受/归档时点；实现已提交并创建PR80，Git集成由下列publication绑定的PR原生CI/merge及同机最终回执确认，不凭覆盖文档自称已集成。

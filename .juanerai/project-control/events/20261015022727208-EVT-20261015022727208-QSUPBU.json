@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015022727208-QSUPBU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T02:27:27.208Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13d2c-5493-7523-b1c4-96b7fcb337d1"
+  },
+  "summary": "Full current canonical 4610 PASS and one retained Provider SKIP; freeze complete R1-R4 candidate for independent review",
+  "status_after": "active",
+  "evidence_refs": []
+}

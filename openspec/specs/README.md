@@ -8,3 +8,5 @@ No baseline product specification is written before the detailed Xanthil plan is
 - [Membership analysis task](member-analysis-task/spec.md): Change004 engineering delivery with explicit E2 waiver; human experience remains deferred.
 
 - [Project metric assets](project-metric-assets/spec.md): Change006项目六指标、净销售描述性计算及独立核验；接受附具名角色/未测项和partial限制。
+
+- [Open analysis runtime boundaries](open-analysis-runtime-boundaries/spec.md): R1～R4与D1～D8 A限定离线opt-in行为；用户接受并保留F-ROLE-01/原BLOCKED、Provider/生产UNKNOWN停止线。

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014230000220-QZR698",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T23:00:00.220Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13c7e-67b9-7b60-ba34-d6b8e5500145"
+  },
+  "summary": "Read/API004 candidate002 independent PASS and scoped engineering acceptance; original failure retained, full R3 owner/reopen return point remains blocked only for dependent projections; no full change acceptance.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

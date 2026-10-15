@@ -220,3 +220,31 @@ candidate149独立PASS，五方法及适用四类场景本地工程接受；当�
 [Engineering Acceptance](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/engineering-acceptance.md)、[直接用户决定](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/user-experience-decisions.md)、[完整六＋二/40ID快照](snapshots/change006-accepted-with-named-limits-2026-10-13.md)、[实际Git交付](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/publication.md)。Mini唯一原始证据root `/Users/bendandebaba/JuanerAI-artifacts/change006/controller`，原独立报告和真实150/160成果/安全回执、101请求97success4cancel、重开零自动调用保持。同机源文件可读不等于跨设备备份。
 
 仅八项有限增量；C4-07全DomainPack、S1、Supplier条件NOT_RUN、nativeE2 OPEN/BLOCKED、模型语义/因果及真实业务效果不闭合。Git/CI/merge/main仅以publication实际记录成立；快照生成时尚未执行。
+
+<a id="e-pi-r1-r4-20261015"></a>
+
+## E-PI-R1-R4-20261015 — 冻结候选离线工程接收，附 F-ROLE-01
+
+2026-10-15 Mini 本机原任务记录回填；本节是本次读回，前面“未读 Mini 原件”等为各次历史采集限制。本次没有重跑产品测试或调用 Provider。结论为 Engineering Acceptance with named user waiver；独立正式 BLOCKED F-ROLE-01 和技术 PASS 分列，不是无条件 Validator PASS。
+
+来源 HEAD `8265a3920ee1205faec7dede8b0c84e648105d9d` 仅基线，接收绑定88文件 WIP aggregate `b9b796ee8c0cb624fc7640c37f32c2b08f2c2b692b69bb5cfb9d192b6cf1a16a`；本次新增记录层另列身份，未替换旧冻结清单。SDK .3 tgz 146131 bytes/SHA256 `e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce`，51安装文件与 package/lock 保持。原报告18151 bytes/SHA256 `f418f9b0dda05632ca09dd3856a1588e6e9032cbea4649eb74d2f2c523c9a5b7` 保持原件。
+
+canonical002：17组 exit0，4610 PASS/1真实 Provider SKIP/0FAIL；独立131 PASS/0FAIL/0SKIP及实际两尺寸 UI/类型 exit0。F-ROLE-01只接受本候选原生 danger-full-access/never 缺少强制只读沙箱的风险，以核验只读行为及前后哈希一致为依据；不延伸至未来候选或其他执行限制。
+
+实际 [工程接收与逐接点边界](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md)、[全40ID快照](snapshots/pi-r1-r4-repair-engineering-waiver-2026-10-15.md)、[原始报告](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/validator-report-001.md)、[具名收据](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/engineering-closeout-001/F-ROLE-01-WAIVER-001.json)、[本次记录核验](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/engineering-record-backfill-001/RECORD-BACKFILL-VERIFICATION-001.json)。本地证据非跨设备备份，WIP尚非Git集成资产。
+
+只增加 C6-01、A-03/04/05、B-01/02/03 的离线工程支持证据，40ID目标/状态不变。产品验收/完整阶段、真实Provider/业务数据、生产准入参数和激活、服务、其他项目升级、历史迁移恢复重放、Git与正式归档均不由本记录放行；历史失败/UNKNOWN、旧字段和旧包继续保留。
+
+<a id="e-pi-r1-r4-product-20261015"></a>
+
+## E-PI-R1-R4-PRODUCT-20261015 — 用户明确产品接受
+
+2026-10-15本任务用户原话：“采纳，接受产品”。本冻结R1～R4＋D1～D8 A既有离线合成/opt-in产品交付范围接受；不是工程Agent代签。正式Validator BLOCKED F-ROLE-01、原本候选具名豁免、全部历史失败与UNKNOWN保留；不声称无条件Validator PASS，不补填16条本人操作或真实Provider项。
+
+HEAD8265a3920ee1205faec7dede8b0c84e648105d9d仅基线；接受绑定88文件aggregate b9b796ee8c0cb624fc7640c37f32c2b08f2c2b692b69bb5cfb9d192b6cf1a16a；SDK .3 tgz146131 bytes/SHA256 e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce。51安装文件与29质量输入不变，复用4610PASS/1ProviderSKIP、独立131PASS及完整原始证据，不制造新测试通过。
+
+[正式产品接受记录](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/product-acceptance.md)、[用户原话JSON](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/product-acceptance-001/USER-PRODUCT-ACCEPTANCE-001.json)、[记录层核验](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/product-acceptance-001/PRODUCT-ACCEPTANCE-VERIFICATION-001.json)、[全40ID快照](snapshots/pi-r1-r4-repair-product-accepted-2026-10-15.md)。C3-01、C6-01、A-03/04/05、B-01/02/03仅增加限定离线接受子范围，40目标状态不提升。真实Provider五项NOT RUN、生产参数UNKNOWN、Git及正式归档/其他停止线继续保留；本地WIP未Git集成，不称跨设备备份。
+
+## E-PI-R1-R4-GIT-20261015 — 正式交付授权与归档
+
+用户明确授权本冻结离线候选提交推送/PR/必需CI/审查/squash/安全main同步/OpenSpec归档。原路径源提交 `cd491fcb9da4bebf91937f2ccdc65a34b855061c`；当前 [归档publication](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/publication.md) 与 [当前规格](../../../openspec/specs/open-analysis-runtime-boundaries/spec.md)。[原BLOCKED](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/evidence/validator-report-original-001.md)、[F-ROLE-01原件](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/evidence/F-ROLE-01-WAIVER-original-001.json)保留。40ID/目标/状态和用户接受边界不变；PR/CI/merge/sync只按实际回执确认，不等于Provider/生产或共享SDK正式发布。

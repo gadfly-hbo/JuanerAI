@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014232303601-SMYM8Y",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T23:23:03.601Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13cb8-6009-7621-967b-26df121df844"
+  },
+  "summary": "Resume existing R3 contract review on same task and WIP, preserving read/API004 narrow PASS and all stop lines.",
+  "status_after": "active",
+  "evidence_refs": []
+}

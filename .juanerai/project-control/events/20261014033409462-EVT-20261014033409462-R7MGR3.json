@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014033409462-R7MGR3",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-14T03:34:09.462Z",
+  "actor": {
+    "role": "controller",
+    "session": "pi-r1-r4-repair"
+  },
+  "summary": "Consumer 002 delivered locally; R3 RED/GREEN and portable passed; remaining SDK dependency recorded",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

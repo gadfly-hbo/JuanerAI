@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014233612942-KOX6O4",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T23:36:12.942Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13cb8-6009-7621-967b-26df121df844"
+  },
+  "summary": "R3 concrete 8-decision proposal delivered, new durable contract unapproved; two current-contract fixes causal GREEN/484 affected, complete R1R4 still OPEN.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014143543044-R5OVSM",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T14:35:43.044Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a1394f-a008-7850-9d11-7111f6dc093b"
+  },
+  "summary": "Saved IR and24-step graph RED/GREEN plus actual codec context recovery recorded; prior canonical source snapshot008 preserved.",
+  "status_after": "active",
+  "evidence_refs": []
+}

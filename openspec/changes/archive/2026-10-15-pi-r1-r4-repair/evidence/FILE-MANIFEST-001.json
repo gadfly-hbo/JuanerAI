@@ -1,0 +1,62 @@
+{
+  "sourceCommitBeforeArchive": "cd491fcb9da4bebf91937f2ccdc65a34b855061c",
+  "historicalReceipts": "Original bytes. Fields such as no Git authorization/PENDING describe receipt creation time; current human Git authorization/publication.md and product-acceptance.md govern subsequent actions.",
+  "files": [
+    {
+      "path": "validator-report-original-001.md",
+      "bytes": 18151,
+      "sha256": "f418f9b0dda05632ca09dd3856a1588e6e9032cbea4649eb74d2f2c523c9a5b7",
+      "sourceDevice": "Mac mini",
+      "source": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/validator-report-001.md"
+    },
+    {
+      "path": "F-ROLE-01-WAIVER-original-001.json",
+      "bytes": 2595,
+      "sha256": "e0b2ac1d08567d13e782c5c680065ad91ad02138cdf4bad0a8d85a63b7211b2e",
+      "sourceDevice": "Mac mini",
+      "source": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/engineering-closeout-001/F-ROLE-01-WAIVER-001.json"
+    },
+    {
+      "path": "ENGINEERING-ACCEPTANCE-original-001.json",
+      "bytes": 2636,
+      "sha256": "68390eef070d8edfb9eec6bce91cdfde6680fb106967adbeae99cd02708cd64e",
+      "sourceDevice": "Mac mini",
+      "source": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/engineering-closeout-001/ENGINEERING-ACCEPTANCE-001.json"
+    },
+    {
+      "path": "USER-PRODUCT-ACCEPTANCE-original-001.json",
+      "bytes": 2461,
+      "sha256": "35801d20009339aedd284e8df2bf2786aba793754986d2433df03e2e5a47acda",
+      "sourceDevice": "Mac mini",
+      "source": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/product-acceptance-001/USER-PRODUCT-ACCEPTANCE-001.json"
+    },
+    {
+      "path": "canonical-summary-002.json",
+      "bytes": 1004,
+      "sha256": "333a2a7e42561fee9fc999be45800a8587d0762972e6a8177e069a193463da8d",
+      "sourceDevice": "Mac mini",
+      "source": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/canonical-summary-002.json"
+    },
+    {
+      "path": "quality-code-identity-002.json",
+      "bytes": 5849,
+      "sha256": "78477a1cc5e7db0e9b8c5fd48ed122fe84a6d40f4567df6b65bf7b983fb98910",
+      "sourceDevice": "Mac mini",
+      "source": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/quality-code-identity-002.json"
+    },
+    {
+      "path": "product-installation-recheck-001.json",
+      "bytes": 9206,
+      "sha256": "6e2150d675abc0799b08e1541dcf191a806699ed0cefcf020563cd883419e06e",
+      "sourceDevice": "Mac mini",
+      "source": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/product-installation-recheck-001.json"
+    },
+    {
+      "path": "full-candidate-manifest-original-001.json",
+      "bytes": 18255,
+      "sha256": "2d73763afafd2b883d08c2ff6c94e1bf5fec460dbab187aaae5f0a794b684e26",
+      "sourceDevice": "Mac mini",
+      "source": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/full-candidate-manifest-001.json"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014125717311-B38LVI",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T12:57:17.311Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a1394f-a008-7850-9d11-7111f6dc093b"
+  },
+  "summary": "Large child Context four authority cases and scoped proof-body projection completed; evidence levels and remaining full-case verification recorded.",
+  "status_after": "active",
+  "evidence_refs": []
+}

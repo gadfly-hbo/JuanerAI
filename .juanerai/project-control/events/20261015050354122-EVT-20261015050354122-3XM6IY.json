@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015050354122-3XM6IY",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-15T05:03:54.122Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13dea-bf9e-76d1-84d9-0d100e326db6"
+  },
+  "summary": "原路径已接受WIP已固定源提交；本Change归档/当前规格准备，原件/旧路径源提交可读，技术产品不变，等待独立归档核对和最终head CI/合并/安全同步",
+  "status_after": "validating",
+  "evidence_refs": []
+}
