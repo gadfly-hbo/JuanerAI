@@ -38,6 +38,9 @@ For adopted v0.9 Mini work, daily authorized commits/pushes do not require a PR
 for every increment. Apply the sole policy's Mac mini Trial and User Acceptance
 section for local trials and required formal user acceptance; formal Change
 closeout concentrates PR, applicable required CI, squash integration and archive.
+For MacBook trial or bounded repair, apply the sole policy's MacBook Trial and
+Bounded Bug Repair section; repair verification/publication does not establish
+Mini's active Change acceptance or receiving-task adoption.
 Known low-risk gaps affecting formal acceptance require repair, justified
 non-applicability or explicit user risk acceptance; they are not automatic PASS.
 

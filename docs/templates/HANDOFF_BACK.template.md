@@ -21,13 +21,16 @@ The sole execution policy defines progress, stop-loss and actual resource limits
 
 - TBD
 
-## Mac mini Trial and User Acceptance — when preparing user trial or acceptance
+## Product Trial and User Acceptance — when preparing user trial or acceptance
 
-Follow the sole execution policy's Mac mini Trial and User Acceptance section.
+Follow the sole policy's Mac mini Trial and User Acceptance or MacBook Trial and
+Bounded Bug Repair section, according to the actual trial device.
 Omit this section when inapplicable; use the existing reply/handoff, not another ledger.
 
 - Version: candidate commit, identified uncommitted differences if any, and actual runtime version readback result
-- Entry: current Mac mini browser address, same-machine service and necessary start/stop method
+- Device and worktree; service host:
+- Entry: current browser address, identified service and necessary start/stop method
+- Repair only: source baseline, receiving branch, overlapping-work ownership and receiving-task adoption status
 - Purpose and user result: trial feedback / required formal Product Acceptance
 - Changes and user steps:
 - Verification and gaps: passed / failed / unverified / unopened scope
