@@ -30,6 +30,11 @@ Mini-only trial default; Mini-local trial remains supported. It neither creates
 automatic runtime-copy delivery nor transfers an active Mini task. MacBook's
 Product Manager duties and existing model configuration remain unchanged.
 
+The user-approved 2026-10-15 plugin responsibility revision adds **Mini-led
+Plugin Integration** below: Mini prepares the task-specific product input and
+leads its authorized engineering delivery without a required MacBook handoff.
+General product planning and the existing approval/verification lifecycle remain.
+
 The preceding user-approved 2026-09-26 continuous-engineering revision (v0.8) retained the
 2026-09-24 Product Manager / Engineering Controller split. It replaces the
 default four-role serial pipeline, universal Spec Gate and TDD_READY dispatch
@@ -89,7 +94,9 @@ outside its approved boundary go directly to the user in that repair task.
 
 ## Product Input and Engineering Intake
 
-MacBook freezes the existing Product Input Package: Change identity, approved
+By default, MacBook freezes the existing Product Input Package; user-initiated
+plugin integrations follow **Mini-led Plugin Integration** below. The package
+retains: Change identity, approved
 objective/scope/non-goals, business and failure semantics, exact UI Contract and
 user UI approval, acceptance criteria, prohibitions, reference versions and
 known safety/data/permission/resource boundaries. Reuse valid same-batch product,
@@ -127,6 +134,51 @@ ordinary corrections do not each restart product preparation or the full workflo
 A message, Git fetch, published commit or task existence is not receiver
 adoption. Manual forwarding by the user is sufficient; no message automation is
 required. Do not create or migrate tasks without the user's explicit request.
+
+### Mini-led Plugin Integration
+
+When the user starts a JuanerAI plugin-integration task on Mini, the same Mini
+primary owns plugin/host study, the task-specific integration proposal and
+product-input preparation, then authorized engineering and Git delivery.
+MacBook PM preparation, technical sign-off or cross-device handoff is not a
+prerequisite; MacBook product help is available when the user requests it.
+This is a scoped product-preparation exception, not transfer of general
+Whitepaper/Blueprint ownership or permission to change their approved direction.
+
+Use the existing proposal/product-input locations to describe the user path,
+scope/non-goals, applicable UI Contract, plugin/host responsibilities, version,
+data, permission and lifecycle boundaries, acceptance and known gaps. The user
+decides product/UI, architecture/safety expansion and missing permissions in
+that Mini task. Study/planning permission does not authorize installation,
+implementation, Provider/data access or external effects.
+
+The same existing Product Plan Development-Readiness Gate applies to new or
+materially revised plans: Mini as plan owner arranges its fresh read-only review,
+resolves NEEDS_CLARIFICATION directly with the user, and reuses valid reviews
+and product/UI decisions. This is the existing product-plan review, not another
+engineering role or a Spec/Test/Worker pipeline. Its PASS is not user approval;
+the plan author never substitutes self-review. No affected implementation starts
+with unresolved load-bearing product gaps or missing required user/UI approval.
+
+After applicable readiness and user approval, Mini freezes the approved product
+input and confirms Engineering Intake in the same task using existing records;
+no second task, duplicate package or MacBook approval is required. Record actual
+implementation and Git permissions alongside that scope, reuse still-valid
+explicit grants and ask only for missing authority in a consolidated decision.
+Approval does not extend ungranted installation, host, data/Provider, budget or
+deployment permissions. This policy itself grants none of those task permissions.
+
+Retain the existing formal Change, SDD/TDD loop, affected regression, independent final
+Validator, Engineering Acceptance, required user Product Acceptance and authorized
+PR/required-CI/squash integration, safe main synchronization and applicable
+archive. Ordinary in-boundary choices/corrections need no repeated approval.
+Publishing to main is not deployment, runtime loading or receiving-task adoption.
+
+An in-flight integration keeps its original task, branch/worktree, product
+decisions, contracts, WIP, evidence, failures/UNKNOWN, resources and stops.
+Read this rule at a natural safe boundary without switching its code baseline
+or restarting services. Resolve only affected gaps; retain valid work rather
+than recreating preparation or treating this rule as approval of a pending plan.
 
 ## Lean Context and Continuous Ownership
 

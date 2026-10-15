@@ -23,7 +23,10 @@ TDD_READY and TEST_ASSET_RETIREMENT in old records remain historical, not
 requirements to recreate in adopted continuous work. Do not rewrite old records
 or migrate state data merely to change the workflow.
 
-Product preparation belongs to MacBook. Mini is the sole writer of current
+Product preparation normally belongs to MacBook; Mini-led plugin preparation
+uses the sole policy's Mini-led Plugin Integration section in the original task,
+retaining PRODUCT_INPUT_FREEZE and ENGINEERING_INTAKE without a device handoff.
+Mini is the sole writer of current
 engineering state. Record material results/transitions, not every inner test run.
 Daily checkpoints/pushes and Mini-local trials under the sole policy's
 Mac mini Trial and User Acceptance section remain within implementation; they
