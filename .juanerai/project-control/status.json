@@ -6,15 +6,15 @@
     "product": "Xanthil - Pi R1-R4 repair"
   },
   "phase": {
-    "id": "SDK051_PUBLICATION",
-    "label": "Official SDK051 accepted; authorized Git publication in progress, final native receipt authoritative for effects",
+    "id": "SDK051_DELIVERED_PARTIAL_SYNC",
+    "label": "Official SDK051 adoption merged; Mini main synced, peer timeout retained as UNKNOWN/PARTIAL",
     "ordinal": 6,
     "total": 6
   },
-  "health": "validating",
-  "summary": "正式0.5.1已工程接收，本次仅授权该采用增量Git交付；技术候选未变，复用限定只读CLI PASS，保留原BLOCKED/FAIL/UNKNOWN及旧豁免边界。提交/PR/最终CI/squash/main同步逐项以实际回执为准。",
-  "current_objective": "Deliver only accepted official051 adoption through reviewed exact-head PR CI, squash and safe main sync; preserve frozen technical bytes and historical verdicts.",
-  "next_action": "完成显式提交推送、PR和精确最终head Canonical validation，通过后squash及安全sync-main；Provider/生产/其他项目停止，不启动第二次CLI复审或扩展豁免。",
+  "health": "complete",
+  "summary": "正式SDK051采用PR84已squash1375d599，精确head完整CI4590PASS/0FAIL/21SKIP；Mini main安全ref-only同步。MacBook连接超时/最终mainUNKNOWN，按授权安全跳过，整体PARTIAL。技术冻结未变，旧BLOCKED/FAIL/UNKNOWN和旧豁免边界保留。",
+  "current_objective": "Accepted official051 adoption delivered through PR84 and exact-head CI, Mini main synchronized; preserve explicit peer synchronization uncertainty and record-only closeout.",
+  "next_action": "本次采用Git交付和Mini同步完成，仅保存实际收口记录；MacBook可达后返回同项目main安全同步，不强制更新/切换活跃工作树，不重问已授Git启动权限。Provider/生产/服务/其他项目及历史Task操作停止线不变。",
   "blockers": [],
   "milestones": [
     {
@@ -76,6 +76,11 @@
       "id": "sdk051-controlled-adoption",
       "label": "Official051 adopted/verified; scoped readonly CLI independent PASS and Engineering Acceptance recorded; old native BLOCKED retained",
       "status": "completed"
+    },
+    {
+      "id": "sdk051-git-publication",
+      "label": "PR84 squash1375d599/exact-head CI passed; Mini synchronized; peer timeout UNKNOWN/PARTIAL safely retained",
+      "status": "completed"
     }
   ],
   "agents": [
@@ -83,8 +88,8 @@
       "id": "controller",
       "label": "Current native Mini Engineering Controller; sole writer",
       "model": "Native primary; exact effective model and effort readback unavailable",
-      "status": "active",
-      "activation": "Current user authorizes only official051 adoption Git delivery; prior engineering acceptance preserved, Provider/production/other projects stopped."
+      "status": "complete",
+      "activation": "Authorized adoption delivery completed with explicit safe peer skip; no new technical changes, Provider, production or other projects."
     },
     {
       "id": "juaner_validator",
@@ -281,6 +286,12 @@
       "label": "Authorized SDK051 PR/exact-head CI/squash/safe sync; actual effects read from final native receipt, never prefilled",
       "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/sdk-0.5.1-git-delivery-001.md",
       "status": "present"
+    },
+    {
+      "id": "SDK051_NATIVE_PUBLICATION_READBACK_001",
+      "label": "Actual PR84 merge/full CI/Mini sync; peer timeout exit1 and UNKNOWN/PARTIAL preserved",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/git-delivery-001/pr-merged-readback-001.stdout",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -307,9 +318,15 @@
       "label": "Historical native SDK051 role BLOCKED preserved; later scoped compliant readonly CLI PASS",
       "level": "high",
       "mitigation": "Original native report/hash retained. Current frozen candidate passed one explicitly authorized Sol/high/read-only CLI review with OS write denial and unchanged hashes; no old waiver extended. Future candidates/routes are not covered."
+    },
+    {
+      "id": "SDK051_PEER_SYNC_UNKNOWN",
+      "label": "MacBook actual main state UNKNOWN after SSH timeout; overall sync PARTIAL",
+      "level": "high",
+      "mitigation": "Previous preflight07f6ec36 is historical only. Preserve failed safe-main-sync001 exit1. When endpoint becomes reachable, verify repository/main occupancy and safe FF; no forced update or repeated blind retries."
     }
   ],
-  "updated_at": "2026-10-15T08:30:51.090Z",
+  "updated_at": "2026-10-15T08:54:06.495Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13eab-68cd-76d3-8c92-55a9a8895afe"

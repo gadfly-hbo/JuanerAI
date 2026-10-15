@@ -1,3 +1,11 @@
+## 正式SDK0.5.1 Git交付回读 · 2026-10-15（当前）
+
+受控采用 [PR84](https://github.com/gadfly-hbo/JuanerAI/pull/84) 已squash为 `1375d5992f57efdffc71ba329bc971444bfc93af`；精确head完整CI **4590PASS／0FAIL／21SKIP**，限定独立只读复审与工程接收分别成立。Mini main安全ref-only同步；MacBook连接超时，最终main **UNKNOWN／PARTIAL**，未强行更新或宣称双端完成。仅本任务；不增加用户产品接受、生产／Provider权限，不扩展旧豁免。历史BLOCKED／FAIL／UNKNOWN原件保留。以下原Git尚未完成段落为先前时点。
+
+本次无业务能力增量，40ID／定义／目标／累计状态保持；只把已接受的正式SDK采用从本机WIP保存到技术集成来源。C3-01、C6-01、A-03/04/05、B-01/02/03的受控采用证据及所有既有六＋二缺口继续见下图／原登记；不提升全能力或S1。生产准入参数UNKNOWN，真实Provider与生产／服务仍停止。
+
+[交付原生证据及peer返回点](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/sdk-0.5.1-git-delivery-001.md#正式sdk051实际git交付回读--2026-10-15) · [同提交register全40ID固定快照](snapshots/pi-r1-r4-sdk051-git-delivery-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-sdk051-delivery-20261015)
+
 ## 正式 SDK 0.5.1 受控采用工程接收 · 2026-10-15（当前增量）
 
 本任务冻结候选2931文件 aggregate `e5e2b3ae7622810ea7b4c7f0c1470d9b9a33577719d2eca3f8dac223129890dc` 的正式0.5.1受控采用，现已 **Engineering Acceptance（仅离线合成／显式opt-in）**。本次一次性Sol/high/read-only CLI独立复审为限定正式PASS；55新检查及复用700／120分列。原生BLOCKED F-ROLE-01、旧具名豁免、历史FAIL与UNKNOWN原件保留，不扩展豁免。正式包53安装文件身份匹配，技术候选未改。

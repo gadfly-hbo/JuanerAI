@@ -1,3 +1,5 @@
+> 当前：PR84技术采用已合并，Mini已同步；MacBook超时，最终main UNKNOWN，整体PARTIAL。详见文末实际回读及最终原生回执。以下执行计划与先前停止线按历史时点阅读。
+
 # 正式 SDK 0.5.1 受控采用 Git 交付001
 
 2026-10-15用户直接授权仅本任务提交推送、PR、适用审查／必需CI，通过后squash合并与安全同步main；沿用 work/mac-mini/pi-r1-r4-repair 与当前工作树/WIP，不重启功能开发。
@@ -21,3 +23,14 @@ Git提交、PR、最终head CI、squash与逐目标main同步在实际发生后�
 ## 停止线与历史
 
 原生Validator BLOCKED F-ROLE-01及旧FAIL／UNKNOWN原件保留；新的只读CLI限定PASS单独记录，旧豁免不延伸。生产overhead／margin／image仍UNKNOWN；512/8192合成值及961743bytes观察值不放行。Provider、凭据／业务数据、生产／服务／其他项目停止；不触碰原PID8407，不自动迁移／恢复／重放历史Task，不清账／退款UNKNOWN。仅按既有sync-main保护规则同步main；活跃工作树不切换／覆盖，不能安全同步的目标跳过并据实报告。
+
+
+## 正式SDK0.5.1实际Git交付回读 · 2026-10-15
+
+本任务 [PR #84](https://github.com/gadfly-hbo/JuanerAI/pull/84) 已于2026-10-15T08:50:06Z squash合并，技术采用提交 `1375d5992f57efdffc71ba329bc971444bfc93af`，tree `0ca9dbfcb2c727f51ff57834e15087cedd19454d`，与受交付文件树一致。精确PR head `668b7834bab853425d4978d9cca8c5c2f2d50c16` 的 [Canonical validation](https://github.com/gadfly-hbo/JuanerAI/actions/runs/38706548191) SUCCESS，portable15组 **4590 PASS／0 FAIL／21 SKIP**，exit0；完整stdout／stderr及原生job日志保存在本目录指定证据根。`gh run view --log`展示缺少尾部统计，另下载原生job日志核实，不从缺失片段补造总数。
+
+21项SKIP按原名完整列入 `CI-PORTABLE-SUMMARY-001.json`：1真实Pi／Provider入口未授权；3浏览器检查未配置验收可执行入口；13宿主／生成代码检查缺少显式host opt-in；4本机PDF／旧Office／OCR能力未配置相应可执行入口。本轮不将SKIP称PASS，不改变工作流／断言以减少SKIP；匹配的旧原件与本任务本机适用证据分别保留，不把SDK或托管PASS等同真实Provider／生产验收。
+
+Mini `main`／`origin/main`已安全ref-only快进到 `1375d5992f57efdffc71ba329bc971444bfc93af`，活动分支／文件未切换。MacBook配置目标 `macbook:/Users/huangbo/JuanerAI` 在实际同步时连接100.79.77.14超时；**最终main UNKNOWN，整体同步为PARTIAL**。此前预检07f6ec36只是历史，不推断最终仍旧或已更新。`safe-main-sync-001` exit1、stdout／stderr原样保留；不重试刷写／强制切换／覆盖活跃工作树。准确返回点：目标重新可达后，核验该仓库与活跃／main占用状态，再按现有sync-main规则安全快进；已有本任务授权不被重问，无可核验安全更新时继续跳过。
+
+本段及项目板／能力图仅保存已发生的采用交付事实与受允许的peer跳过结果，不新增产品功能、Git豁免、Provider／生产／服务权限；原始BLOCKED／FAIL／UNKNOWN不改写，旧F-ROLE-01豁免不扩展。后续纯记录保存的PR／CI／最终main身份继续进入同目录 `FINAL-PUBLICATION-READBACK-001.json`，其版本不改变本段技术采用来源。
