@@ -28,6 +28,9 @@ engineering state. Record material results/transitions, not every inner test run
 Daily checkpoints/pushes and Mini-local trials under the sole policy's
 Mac mini Trial and User Acceptance section remain within implementation; they
 create no new state or Gate and do not establish formal Change completion.
+MacBook trial/repair follows the sole policy's MacBook Trial and Bounded Bug
+Repair section; it neither transfers Mini's active Change nor creates a second
+engineering-state writer. The repair retains the applicable SDD/TDD lifecycle.
 Independent validation uses new fixed inputs after repair; it does not repeat
 unaffected product preparation or create fresh role/command allowances.
 

@@ -150,6 +150,12 @@ policy's **Mac mini Trial and User Acceptance** section for local trials and
 required formal user acceptance. MacBook product/governance delivery keeps its
 existing Git workflow.
 
+For MacBook product trial or user-assigned bounded bug repair, read the sole
+policy's **MacBook Trial and Bounded Bug Repair** and the Git workflow's
+**MacBook Trial and Repair Branches**. Mini remains the main development device;
+MacBook uses an isolated worktree without becoming a technical approval hop or
+taking ownership of Mini's active state. Product Manager duties are unchanged.
+
 ## Reuse and Complexity Control
 
 Before sizing a Change or diagnosing repeated non-convergent work, read `docs/governance/change-complexity-control.md`; Xanthil Changes also read `docs/governance/xanthil-first-slice-reuse-baseline.md`. Check actual complexity and risk within existing engineering/review work, not a reasoning-level-triggered approval stage. Material scope or safety expansion requires the user's decision; ordinary corrections follow the sole execution policy's progress-based stop-loss.
