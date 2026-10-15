@@ -47,3 +47,28 @@ REQ/AC、因果 RED、GREEN、负向、旧配置兼容及完整命令/退出码�
 本修复支持 C6-01、A-03/04/05、B-01/02/03 的既有消费者链路；不新增稳定 ID，不改变40项能力的定义、完整目标或累计登记状态。见 [全图](../../../../docs/planning/capability-coverage/latest.md)、[登记](../../../../docs/planning/capability-coverage/register.md)及 [固定快照](../../../../docs/planning/capability-coverage/snapshots/pi-r1-r4-repair-engineering-waiver-2026-10-15.md)。离线工程接收不构成新产品能力全目标、S1、业务效果或用户体验验收。
 
 NEXT_ACTION：本候选离线工程接收及本次记录回填完成；没有需自动重启的修复或新 SDK 等待。真实 Provider/凭据/业务数据须另行对象、数据边界、命令和预算授权；生产准入参数仍 UNKNOWN，采用/部署/服务须另行授权。用户 Product Acceptance、历史 Task 迁移/恢复/重放、其他产品升级、Git 提交/推送/合并/发布和正式归档保持原停止线。本地 WIP 与证据尚非 Git 集成资产或跨设备备份；未向其他聊天发消息。
+
+
+## 正式 SDK 0.5.1 工程接收003 · 2026-10-15（当前）
+
+用户直接授权：“按本次独立复审 PASS 完成正式 SDK 0.5.1 受控采用的工程接收，回填现有 OpenSpec、项目板和能力地图，仅更新收口记录，不改冻结技术候选。保留原始 BLOCKED、历史失败和 UNKNOWN，不扩展旧豁免；Provider、生产及 Git 写操作停止线不变。”
+
+Engineering Controller 接收结论：**正式 SDK 0.5.1 本任务受控采用 Engineering Acceptance 成立，仅限本冻结候选及既有离线合成／显式 opt-in 范围**。依据本次独立 CLI Validator 的限定正式 PASS，材料性阻挡为零；不是作者自审替代，不沿用或扩展旧 F-ROLE-01 豁免，不宣称无条件或全产品 Validator PASS。
+
+### 受接收身份与独立证据
+
+- 工作树 `/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI`；分支 `work/mac-mini/pi-r1-r4-repair`；HEAD `cadeca0e75e5cbeac3fbc65fc58cce947283fa08` ＋完整受审 WIP。受审2931文件 aggregate `e5e2b3ae7622810ea7b4c7f0c1470d9b9a33577719d2eca3f8dac223129890dc`，来源清单 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/FINAL-WIP-MANIFEST-001.json`；HEAD不能独自代表修复。本轮仅记录变化另列，原冻结清单保持原件，不将收口后全树哈希冒称仍等于受审aggregate。
+- 正式tgz148236 bytes，SHA256 `3af3f895a2466b7947b9b9b0025231f856e3a5c4773782c9dabd460e924bfad9`；SRI `sha512-8mfN4/Aw5wr0/ur8WK9wphP+7l6BLL3IX5MwokjSvj8GGzvU5+laAVwomt/HdHXvIJJhsAdiW8Zj7BJtaS7BhQ==`。实际解析本任务 `node_modules/pi-agent-runtime/dist/index.js`，53安装文件匹配。23dist／41SDK源码测试／151SDK非root锁项及764其他产品锁项未变的适用证据已独立核验。
+- 独立原件 [/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-cli-readonly-002/report.md](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-cli-readonly-002/report.md)：6574 bytes，SHA256 `54eca02a35efdd7de9b8bf26614bfabf3efe0f1a48c47251bea7ad0b69856064`。本次仅一次CLI例外，Reviewer `01a13e8a-7783-71f3-86a7-cd52b819ad5c`，实际 `gpt-6.1-sol / high / read-only / approval never`；前后原生元数据和非写入式OS sandbox查询核验，候选源码／测试／SDK写入被拒绝。旧CLI启动模型HTTP400及同一会话续接现有应用CLI的过程原样保留；无第二Reviewer、无换模型或安装升级。Reviewer不能独立读取可执行文件版本的限制仍保留，主Agent外层版本核验不冒称独立证明。
+- 新独立55项：26准入／factory／计量、5实际codec／内存native Runtime、9CI安装视图、15现有持久资料到当前UI投影；39次SQLite只读打开。类型及diff检查exit0。作者700 PASS、旧独立120 PASS与3份Chrome证据仅按匹配身份复用，未把它们重复计入55，也未声称新跑完整回归、持久Session、HTTP、浏览器、构建或托管CI。
+- 新证据31文件逐项读回，见 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-cli-readonly-002/EVIDENCE-MANIFEST-002.json`、`SHA256SUMS-002`、`MANIFEST-VERIFIED-002.json`。当前独立证据与旧故障／失败探针均不改写。
+
+### 历史、接受范围和停止点
+
+旧原生报告 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-review-001/report.md` 仍为 **BLOCKED F-ROLE-01／技术PASS**，14521 bytes、SHA256 `c318c7c831dbae32cd270d4f3966efd64d8c6fc729fec9832c34f6a252c83ab8`。本次合规只读CLI复审形成新的限定PASS，解除了当前采用的独立评审阻挡；它不倒写旧报告，也不扩展旧精确候选豁免。旧 .3／002／003、历史FAIL、未知用量与冻结UNKNOWN、晚到事实、旧恢复字段和全部原件继续保留。
+
+SDK051-ID／LOCK／ORACLE／JOINT／REVIEW在本任务离线范围内已满足，本次完成工程接收。原R1～R4＋D1～D8 A旧候选的用户接受与PR83历史有效性保持；**本轮没有新的用户Product Acceptance、Git交付／集成或生产激活**。本轮记录仅在现有工作树WIP，Git尚未保存／集成，不宣称正式Git交付完成。
+
+生产overhead／margin／image仍UNKNOWN；512／8192仅合成参数，961743 bytes仅观察值。真实Provider、凭据／业务数据、生产／服务／部署、Git index/ref/commit/push/merge、其他项目／产品升级及历史Task迁移／恢复／重放仍停止。不清账、不退款UNKNOWN、不自动重放，不让旧版自动resume新状态，不新增通用仓库或恢复机制。原PID8407未触碰，不把旧进程称为正式0.5.1运行实例。
+
+NEXT_ACTION：本次受控采用工程接收及记录回填收口；无剩余已授权技术改动。保持现有候选与WIP，等待仅针对后续Git交付或其他停止线的明确授权；不主动启用Provider／生产／服务。记录层前后差异、逐文件身份及技术候选不变读回保存在 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/engineering-acceptance-records-003`。

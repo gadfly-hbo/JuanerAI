@@ -200,3 +200,30 @@ NEXT_ACTION：授权范围内工程/产品接受记录已闭合；真实Provider
 - [ ] 正式Git推送、PR最终head托管CI、squash及每端main同步：执行后以原生PR/Actions/merge和publication-final.json/md逐项回执，不预填成功。
 
 本节取代历史NEXT_ACTION的Git未授权时点，仅本任务离线/显式opt-in候选获得本轮正式Git及归档权限；Provider、生产、其他产品与共享SDK正式发布停止线不变。
+
+
+## 正式 SDK 0.5.1 受控采用001（2026-10-15新直接授权）
+
+按 [同任务采用合同](sdk-0.5.1-controlled-adoption-001.md) 执行，原归档/接受/精确豁免/失败按历史身份保留；本轮采用及独立评审单独记录，Provider/生产/Git写操作不授权。证据：/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001。当前：规格先行，下一步旧固定输入健康基线与专属安装树；不伪造新产品行为RED。
+
+正式0.5.1采用001推进：独立离线安装716包exit0，产品实际解析/53安装文件匹配，764其他lock不变；最终受影响700PASS/0FAIL/0SKIP及类型exit0，旧oracle不匹配/原始FAIL和UNKNOWN保留。生产逻辑未改，固定身份测试按静态新常量更新并保留旧tuple。准备冻结后fresh独立Validator；原F-ROLE-01不扩展，当前不声明新候选工程接受。
+
+
+## 正式0.5.1采用001当前回交（独立评审已完成）
+
+已安装0.5.1并完成受影响700PASS/类型；fresh native独立120PASS、2930文件及53安装前后无漂移，正式BLOCKED F-ROLE-01／技术PASS。原豁免不扩展，无新Engineering/Product Acceptance，无Git写操作/Provider/生产。当前唯一真实返回点为本精确候选的独立角色强制只读合规或用户新具名风险决定；不需要重启功能开发。原历史NEXT_ACTION按时点保留，当前以sdk-0.5.1-controlled-adoption-001.md最终段及本段为准。原报告 /Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-review-001/report.md，SHA256 c318c7c831dbae32cd270d4f3966efd64d8c6fc729fec9832c34f6a252c83ab8；安装/完整命令/退出码/旧失败和复用表均在/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001。关闭时仅改记录，技术候选不变。
+
+
+## 正式 SDK 0.5.1 工程接收003 · 2026-10-15（当前）
+
+- [x] 直接工程接收授权与2931受审文件／53安装文件／Git index／原新报告身份复核；原材料31文件校验一致。
+- [x] 独立CLI Sol/high/read-only正式限定PASS，55新检查与复用700／120分列，实际模型／权限及OS拒写已核验；旧原生BLOCKED原件保留，未扩展旧豁免。
+- [x] Engineering Controller在原离线合成／显式opt-in范围工程接收；不代签新Product Acceptance，不声称CI、Git集成或生产采用。
+- [x] 回填现有OpenSpec、sole-writer项目板与六＋二／40ID能力地图及新固定快照；只改收口记录，不改生产代码、SDK、依赖、测试、配置或原始证据。记录层前后身份单独核验。
+
+NEXT_ACTION：本轮记录收口；详细接受结论及停止点见 [工程接收003](engineering-acceptance.md#正式-sdk-051-工程接收003--2026-10-15当前)。Git写操作／Provider／生产及历史Task操作停止线不变。旧未勾项和NEXT_ACTION属于其原时点，不能将本次接收冒称新Git交付或真实Provider验收。
+
+
+## 正式SDK0.5.1 Git交付001（2026-10-15直接授权）
+
+工程接收003已成立，技术冻结身份不变；当前仅追加Git交付记录，按 [采用Git交付001](sdk-0.5.1-git-delivery-001.md) 完成提交／PR／精确head CI／squash／安全main同步。原Git停止线仅对本任务本次交付解除，Provider／生产／其他项目与旧豁免边界不变。实际完成项以该文指定的 FINAL-PUBLICATION-READBACK-001.json 及原生GitHub记录为准，不预填成功。

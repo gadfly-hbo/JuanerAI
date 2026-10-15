@@ -1,3 +1,12 @@
+<a id="e-pi-r1-r4-sdk051-20261015"></a>
+## 正式 SDK 0.5.1 工程接收003 · 2026-10-15
+
+- [当前工程接收及准确停止点](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md#正式-sdk-051-工程接收003--2026-10-15当前)；仅现有受控离线合成／opt-in范围，无新用户Product Acceptance或Git交付。
+- 新独立CLI原件 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-cli-readonly-002/report.md`，6574bytes/SHA256 `54eca02a35efdd7de9b8bf26614bfabf3efe0f1a48c47251bea7ad0b69856064`；限定PASS、55项新检查，700／120按匹配证据复用。Sol/high/read-only/never及OS拒写实核。
+- 旧原生 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-review-001/report.md`：BLOCKED F-ROLE-01／技术PASS，14521bytes/SHA256 `c318c7c831dbae32cd270d4f3966efd64d8c6fc729fec9832c34f6a252c83ab8`；旧具名豁免不扩展，原件不改。
+- 受审2931文件aggregate `e5e2b3ae7622810ea7b4c7f0c1470d9b9a33577719d2eca3f8dac223129890dc`、HEAD cadeca0e＋WIP；正式tgz148236bytes/SHA256 `3af3f895a2466b7947b9b9b0025231f856e3a5c4773782c9dabd460e924bfad9`及53安装文件一致；仅收口记录变化另列 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/engineering-acceptance-records-003`，不改技术候选。
+- 全六＋二／40ID [固定快照](snapshots/pi-r1-r4-sdk051-engineering-accepted-2026-10-15.md)；状态／目标不提升。真实Provider／生产／Git及历史Task停止线、UNKNOWN及旧失败保持。证据为Mini本地持久材料，不冒称跨设备已接收。
+
 ## Change005 v1.3 当前累计增量（2026-10-12）
 用户产品/UI验收已通过；v1.2为过渡版，用户已取消比较要求。当前源码完整独立PASS/4304离线PASS，requiredCI及Git集成按release-v13记录推进，不伪称已发布。原001～004、40稳定ID和未覆盖范围保留。
 

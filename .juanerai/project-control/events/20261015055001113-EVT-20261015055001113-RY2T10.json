@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015055001113-RY2T10",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T05:50:01.113Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13dea-bf9e-76d1-84d9-0d100e326db6"
+  },
+  "summary": "PR83 exact head Canonical CI passed; affected technical PASS and formal BLOCKED retained; awaiting current-candidate named F-ROLE-01 decision before merge",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

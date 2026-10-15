@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015081910989-JOH86L",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-15T08:19:10.989Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13ea1-73a7-7921-934d-c4a45c3e4a35"
+  },
+  "summary": "正式SDK0.5.1受控采用工程接收003：限定只读CLI独立PASS，旧原生BLOCKED/旧豁免/历史失败/UNKNOWN保留；仅回填OpenSpec/项目板/全能力地图，不改技术候选，Git/Provider/生产停止。",
+  "status_after": "complete",
+  "evidence_refs": []
+}

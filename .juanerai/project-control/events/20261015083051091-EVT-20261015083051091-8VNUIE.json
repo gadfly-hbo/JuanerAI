@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015083051091-8VNUIE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T08:30:51.091Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13eab-68cd-76d3-8c92-55a9a8895afe"
+  },
+  "summary": "正式051 Git交付预检：ruleset生效、原技术树不变、固定CI工具17PASS/类型exit0；明确既有独立证据复用及最终实际发布回执路径。",
+  "status_after": "validating",
+  "evidence_refs": []
+}
