@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015055659062-VD68WW",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T05:56:59.062Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13dea-bf9e-76d1-84d9-0d100e326db6"
+  },
+  "summary": "Final receipt links distinguish historical pre-renewal readiness from actual named waiver and merged delivery; exact MacBook main-owning worktree recorded",
+  "status_after": "complete",
+  "evidence_refs": []
+}

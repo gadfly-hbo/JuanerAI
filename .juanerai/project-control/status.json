@@ -6,15 +6,15 @@
     "product": "Xanthil - Pi R1-R4 repair"
   },
   "phase": {
-    "id": "VERIFY",
-    "label": "Exact-head CI host applicability correction, retained failure, affected independent review",
+    "id": "SDK051_PUBLICATION",
+    "label": "Official SDK051 accepted; authorized Git publication in progress, final native receipt authoritative for effects",
     "ordinal": 6,
     "total": 6
   },
   "health": "validating",
-  "summary": "PR83旧head托管CI保留3项宿主测试失败；只补既有JUANERAI_OPEN_CODE_HOST_TEST显式opt-in入口，全部测试体与生产/SDK未变。on3PASS/off3明确SKIP、类型通过；待最终新head完整CI、fresh受影响评审与豁免适用性结论，未合并/同步。",
-  "current_objective": "Deliver only the accepted offline opt-in candidate, with necessary host-test applicability correction and exact independent/CI evidence; preserve original BLOCKED and named waiver scope.",
-  "next_action": "固定仅测试header与记录层修正的新head，推送PR83并跑必需完整CI；fresh Validator复核测试覆盖与身份，明确原豁免是否适用；不得预填合并/同步或无条件PASS。",
+  "summary": "正式0.5.1已工程接收，本次仅授权该采用增量Git交付；技术候选未变，复用限定只读CLI PASS，保留原BLOCKED/FAIL/UNKNOWN及旧豁免边界。提交/PR/最终CI/squash/main同步逐项以实际回执为准。",
+  "current_objective": "Deliver only accepted official051 adoption through reviewed exact-head PR CI, squash and safe main sync; preserve frozen technical bytes and historical verdicts.",
+  "next_action": "完成显式提交推送、PR和精确最终head Canonical validation，通过后squash及安全sync-main；Provider/生产/其他项目停止，不启动第二次CLI复审或扩展豁免。",
   "blockers": [],
   "milestones": [
     {
@@ -64,13 +64,18 @@
     },
     {
       "id": "authorized-delivery-archive",
-      "label": "Explicit Git/PR/required CI/squash/safe main sync/OpenSpec archive delivery authorized and in progress",
-      "status": "active"
+      "label": "PR83 integrated and archived; Mini and MacBook main both verified07f6ec36, historical protective skip retained",
+      "status": "completed"
     },
     {
       "id": "publication-host-applicability",
-      "label": "Retained CI failure; native host opt-in header correction only; final CI and fresh affected review pending",
-      "status": "active"
+      "label": "Existing host opt-in header fixed, current CI/independent technical checks passed; exact current-candidate F-ROLE-01 renewed by direct user",
+      "status": "completed"
+    },
+    {
+      "id": "sdk051-controlled-adoption",
+      "label": "Official051 adopted/verified; scoped readonly CLI independent PASS and Engineering Acceptance recorded; old native BLOCKED retained",
+      "status": "completed"
     }
   ],
   "agents": [
@@ -79,14 +84,14 @@
       "label": "Current native Mini Engineering Controller; sole writer",
       "model": "Native primary; exact effective model and effort readback unavailable",
       "status": "active",
-      "activation": "Current human explicitly authorizes this frozen offline candidate formal Git and OpenSpec archive delivery; no new product/provider/production/SDK-release authority."
+      "activation": "Current user authorizes only official051 adoption Git delivery; prior engineering acceptance preserved, Provider/production/other projects stopped."
     },
     {
       "id": "juaner_validator",
-      "label": "Independent full candidate review completed; original formal BLOCKED retained",
-      "model": "Native juaner_validator Sol/high; actual danger-full-access/never, verified read-only conduct; candidate-only F-ROLE-01 waiver",
+      "label": "SDK051 readonly CLI re-review scoped PASS; original native BLOCKED preserved",
+      "model": "Actual gpt-6.1-sol/high/read-only/never; OS candidate write denial independently verified pre/post",
       "status": "complete",
-      "activation": "Review already returned; current explicit human candidate-only waiver accepts the named sandbox residual risk, not an unconditional Validator PASS."
+      "activation": "One user-authorized CLI reviewer, 55 new writefree checks; matching700/120 reused; previous nativeBLOCKED and old waivers retained, not extended."
     }
   ],
   "metrics": [],
@@ -210,6 +215,72 @@
       "label": "Current explicit frozen offline Git/archive authorization and exact readback plan",
       "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/publication.md",
       "status": "present"
+    },
+    {
+      "id": "CURRENT_CANDIDATE_RISK_RETURN",
+      "label": "Historical pre-renewal ready receipt; current named decision and merged/sync outcome are separate final receipts",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/git-delivery-001/PUBLICATION-READY-003.json",
+      "status": "verified"
+    },
+    {
+      "id": "CURRENT_AFFECTED_VALIDATOR",
+      "label": "Current affected technical PASS / formal BLOCKED F-ROLE-01; no automatic waiver extension",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/git-delivery-001/independent-ci-applicability-001/validator-report-001.md",
+      "status": "verified"
+    },
+    {
+      "id": "FORMAL_GIT_FINAL_RECEIPT",
+      "label": "Historical initial merged delivery receipt with protective peer skip; current completed sync is recorded separately in SYNC_READBACK_002",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/git-delivery-001/publication-final.json",
+      "status": "verified"
+    },
+    {
+      "id": "CURRENT_CANDIDATE_WAIVER_003",
+      "label": "Direct exact-head user answer, original waiver unchanged",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/git-delivery-001/CURRENT-CANDIDATE-WAIVER-003.json",
+      "status": "verified"
+    },
+    {
+      "id": "SYNC_READBACK_002",
+      "label": "User completed peer sync; read-only check verifies both main/origin-main07f6ec36, exit0, original skip retained",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/git-delivery-001/sync-readback-002/SYNC-READBACK-002.json",
+      "status": "verified"
+    },
+    {
+      "id": "SDK051_ADOPTION_001",
+      "label": "Current authorized controlled adoption; prior release readback distinct",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/sdk-0.5.1-controlled-adoption-001.md",
+      "status": "present"
+    },
+    {
+      "id": "SDK051_INDEPENDENT_001",
+      "label": "Original new formal BLOCKED F-ROLE-01 / technical PASS, independent120 and hashes preserved",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-review-001/report.md",
+      "status": "verified"
+    },
+    {
+      "id": "SDK051_CLI_INDEPENDENT_002",
+      "label": "Scoped formal PASS, actual Sol/high/read-only+OS enforcement;55 new checks, historical native BLOCKED untouched",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-cli-readonly-002/report.md",
+      "status": "verified"
+    },
+    {
+      "id": "SDK051_ENGINEERING_ACCEPTANCE_003",
+      "label": "Direct-authorized bounded official051 Engineering Acceptance, records only; Git/Provider/production stopped",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md",
+      "status": "verified"
+    },
+    {
+      "id": "SDK051_COVERAGE_SNAPSHOT_003",
+      "label": "All40 IDs/targets/status unchanged; bounded adoption engineering evidence only",
+      "path": "docs/planning/capability-coverage/snapshots/pi-r1-r4-sdk051-engineering-accepted-2026-10-15.md",
+      "status": "present"
+    },
+    {
+      "id": "SDK051_GIT_PUBLICATION_001",
+      "label": "Authorized SDK051 PR/exact-head CI/squash/safe sync; actual effects read from final native receipt, never prefilled",
+      "path": "openspec/changes/archive/2026-10-15-pi-r1-r4-repair/sdk-0.5.1-git-delivery-001.md",
+      "status": "present"
     }
   ],
   "risks": [
@@ -221,20 +292,26 @@
     },
     {
       "id": "F-ROLE-01",
-      "label": "Candidate-only named sandbox residual risk waiver; formal Validator BLOCKED retained",
+      "label": "Original and current named F-ROLE-01 waivers retained; formal BLOCKED unchanged",
       "level": "high",
-      "mitigation": "Only this frozen technical candidate; verified read-only conduct and before/after hashes. No unconditional Validator PASS or future-candidate waiver."
+      "mitigation": "Direct user renewal only for cadeca0e/header-only current candidate, independently verified read-only conduct and120-file before/after hashes. Never unconditional PASS or future-candidate waiver; exact decision preserved in squash commit body and PR."
     },
     {
       "id": "REAL_VALIDATION_DELIVERY_PENDING",
-      "label": "Real Provider/production parameters remain NOT RUN/UNKNOWN; Git publication authorized but final CI/merge/sync pending",
+      "label": "Real Provider and production policy remain NOT RUN/UNKNOWN; Git/archive integrated only in accepted offline scope",
       "level": "high",
-      "mitigation": "Keep offline acceptance limits and original F-ROLE-01 waiver scope. No production, Provider, shared SDK release or automatic historical replay."
+      "mitigation": "Preserve synthetic limits, historical failures/UNKNOWN and no production, shared SDK release or historical replay. Git merge and readable receipts are not activation/adoption."
+    },
+    {
+      "id": "SDK051-F-ROLE-01",
+      "label": "Historical native SDK051 role BLOCKED preserved; later scoped compliant readonly CLI PASS",
+      "level": "high",
+      "mitigation": "Original native report/hash retained. Current frozen candidate passed one explicitly authorized Sol/high/read-only CLI review with OS write denial and unchanged hashes; no old waiver extended. Future candidates/routes are not covered."
     }
   ],
-  "updated_at": "2026-10-15T05:32:07.860Z",
+  "updated_at": "2026-10-15T08:30:51.090Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13dea-bf9e-76d1-84d9-0d100e326db6"
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13eab-68cd-76d3-8c92-55a9a8895afe"
   }
 }

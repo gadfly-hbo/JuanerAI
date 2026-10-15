@@ -1,3 +1,22 @@
+## 正式 SDK 0.5.1 受控采用工程接收 · 2026-10-15（当前增量）
+
+本任务冻结候选2931文件 aggregate `e5e2b3ae7622810ea7b4c7f0c1470d9b9a33577719d2eca3f8dac223129890dc` 的正式0.5.1受控采用，现已 **Engineering Acceptance（仅离线合成／显式opt-in）**。本次一次性Sol/high/read-only CLI独立复审为限定正式PASS；55新检查及复用700／120分列。原生BLOCKED F-ROLE-01、旧具名豁免、历史FAIL与UNKNOWN原件保留，不扩展豁免。正式包53安装文件身份匹配，技术候选未改。
+
+本次仅为C3-01、C6-01、A-03/04/05、B-01/02/03既有消费者补正式SDK采用与工程接收证据，**40项ID、定义、完整目标、累计状态及原已接受范围不变**；无新功能或全目标／S1接受、无新的用户Product Acceptance。原段落按历史时点阅读。本次记录尚未Git保存／集成，Provider／生产／Git写操作停止线不变。
+
+[工程接收003](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md#正式-sdk-051-工程接收003--2026-10-15当前) · [完整六＋二／40ID快照](snapshots/pi-r1-r4-sdk051-engineering-accepted-2026-10-15.md) · [独立证据](evidence.md#e-pi-r1-r4-sdk051-20261015)
+
+| 六＋二家族 | 本次工程接收增量 | 保留缺口与停止点 |
+|---|---|---|
+| C1 业务双主线 | 原PIM／任务链复用；无新能力验收 | 完整OSM／行动／Actual闭环 |
+| C2 分析模式 | 既有消费者受影响验证；无新模式验收 | 完整Deep Research／真实模型质量 |
+| C3 产品矩阵 | C3-01原HTTP/client/UI链的固定SDK采用证据 | 新候选用户接受不代签；生产常态使用／Team／Enterprise／价值留存 |
+| C4 方法扩展 | 原IR／计算／核验链未改，无新方法 | 完整Domain／Model Pack、因果／预测 |
+| C5 决策与价值 | proposalOnly／保存／采纳／正式效果原边界保留 | 现实行动／Actual／完整Report Studio |
+| C6 资产与进化 | C6-01准备正文／重开／失效／旧历史兼容证据复用 | 通用恢复／学习／效果，历史Task操作未授权 |
+| A 数据语义执行 | A-03/04/05正式0.5.1准入、计量、主备、安全read与证据链工程接收 | 真实Provider未测、生产准入UNKNOWN、全格式／通用方法未验收 |
+| B 治理与责任 | B-01/02/03本候选合规只读独立PASS，授权／UNKNOWN／Owner边界保留 | 原生BLOCKED及旧风险历史不改写；企业治理／现实行动不授权 |
+
 ## pi-r1-r4-repair正式Git交付/归档定位（2026-10-15）
 
 已接受离线子范围的源码、测试、固定依赖、原件与规格进入本任务正式Git/归档交付。当前 [归档记录](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/publication.md) 与 [完整六＋二/40ID快照](snapshots/pi-r1-r4-repair-git-delivery-2026-10-15.md) 绑定实际PR/最终head CI/merge/sync回执；未完成效果不预报PASS。原接受范围/40ID/完整目标/累计状态不变，F-ROLE-01及原正式BLOCKED、历史失败/UNKNOWN保留，生产/Provider/共享SDK发布不放行。旧快照按源提交读取，当前链接使用归档路径。

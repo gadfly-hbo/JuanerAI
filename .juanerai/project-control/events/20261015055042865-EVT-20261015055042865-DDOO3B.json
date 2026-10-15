@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015055042865-DDOO3B",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T05:50:42.865Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13dea-bf9e-76d1-84d9-0d100e326db6"
+  },
+  "summary": "Exact current-candidate F-ROLE-01 named decision is sole remaining pre-merge boundary; all required exact-head CI and affected technical checks passed",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

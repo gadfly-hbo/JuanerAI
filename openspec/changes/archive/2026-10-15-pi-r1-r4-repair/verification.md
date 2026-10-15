@@ -1,3 +1,5 @@
+> 当前结论（2026-10-15工程接收003）：正式0.5.1受控采用已工程接收，仅限受审冻结候选及离线合成／显式opt-in范围。后续限定CLI正式PASS与旧原生BLOCKED分列；旧段落按历史时点阅读。详见 [工程接收003](engineering-acceptance.md#正式-sdk-051-工程接收003--2026-10-15当前)。不扩展旧豁免，Provider／生产／Git停止线保持。
+
 ## 当前正式归档准备（2026-10-15）
 
 原路径完整WIP已固定在源提交 `cd491fcb9da4bebf91937f2ccdc65a34b855061c`，包含原冻结技术字节和接受记录；本分支现将该Change归档并提升已接受行为到当前规格。归档/链接和正式收据复制是记录层变更，不是新的实现或生产采用。历史快照不改写，旧相对路径按源提交读取；当前最新清单/全图指向本归档。原始完整Validator BLOCKED、F-ROLE-01、历史失败/UNKNOWN保留。PR/CI/merge/sync尚待实际完成，不以本段称已发布。
@@ -312,3 +314,25 @@ NEXT_ACTION：授权范围内工程/产品接受记录已闭合；真实Provider
 此为验证资产适用性修正，不制造新的产品行为因果RED。实际托管失败为RED；本机同一窄测试3PASS，而未opt-in仍执行的适用性检查before-off为RED。修正后须检查on仍3PASS、off为3明确SKIP、类型/相关验证合同、最终新head托管全部17组及fresh独立审查。原冻结源和旧F-ROLE-01豁免原件不改写；测试header身份变化单独记录并重新确认原豁免适用性，不先行声称新候选无条件PASS或Git合并完成。唯一证据根git-delivery-001/ci-diagnosis-001/。
 
 适用性修正的已执行结果：before-off内层3PASS但违反未opt-in不得执行的预期，外层exit1；after-off为0PASS/3SKIP、exit0；after-on为3PASS/0SKIP、exit0；TypeScript noEmit exit0。全部原测试体逐字节不变，唯一技术差异是已存在宿主测试入口条件。类型、原云失败和全部窄命令输出见git-delivery-001/ci-diagnosis-001/。新最终head托管CI及fresh独立评审尚待实际回交，旧head失败不得改写。
+
+
+## 正式 SDK 0.5.1 受控采用001（2026-10-15新直接授权）
+
+按 [同任务采用合同](sdk-0.5.1-controlled-adoption-001.md) 执行，原归档/接受/精确豁免/失败按历史身份保留；本轮采用及独立评审单独记录，Provider/生产/Git写操作不授权。证据：/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001。当前：规格先行，下一步旧固定输入健康基线与专属安装树；不伪造新产品行为RED。
+
+正式0.5.1采用001推进：独立离线安装716包exit0，产品实际解析/53安装文件匹配，764其他lock不变；最终受影响700PASS/0FAIL/0SKIP及类型exit0，旧oracle不匹配/原始FAIL和UNKNOWN保留。生产逻辑未改，固定身份测试按静态新常量更新并保留旧tuple。准备冻结后fresh独立Validator；原F-ROLE-01不扩展，当前不声明新候选工程接受。
+
+
+## 正式0.5.1采用001当前回交（独立评审已完成）
+
+已安装0.5.1并完成受影响700PASS/类型；fresh native独立120PASS、2930文件及53安装前后无漂移，正式BLOCKED F-ROLE-01／技术PASS。原豁免不扩展，无新Engineering/Product Acceptance，无Git写操作/Provider/生产。当前唯一真实返回点为本精确候选的独立角色强制只读合规或用户新具名风险决定；不需要重启功能开发。原历史NEXT_ACTION按时点保留，当前以sdk-0.5.1-controlled-adoption-001.md最终段及本段为准。原报告 /Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-review-001/report.md，SHA256 c318c7c831dbae32cd270d4f3966efd64d8c6fc729fec9832c34f6a252c83ab8；安装/完整命令/退出码/旧失败和复用表均在/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001。关闭时仅改记录，技术候选不变。
+
+
+## 正式 SDK 0.5.1 工程接收003 · 2026-10-15（当前）
+
+以 [工程接收003](engineering-acceptance.md#正式-sdk-051-工程接收003--2026-10-15当前) 为本增量当前结论及NEXT_ACTION。独立CLI原件 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-cli-readonly-002/report.md`，SHA256 `54eca02a35efdd7de9b8bf26614bfabf3efe0f1a48c47251bea7ad0b69856064`。记录层独立前后身份见 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/engineering-acceptance-records-003`；历史报告／收据／失败不变。
+
+
+## 正式SDK0.5.1 Git交付001（2026-10-15直接授权）
+
+工程接收003已成立，技术冻结身份不变；当前仅追加Git交付记录，按 [采用Git交付001](sdk-0.5.1-git-delivery-001.md) 完成提交／PR／精确head CI／squash／安全main同步。原Git停止线仅对本任务本次交付解除，Provider／生产／其他项目与旧豁免边界不变。实际完成项以该文指定的 FINAL-PUBLICATION-READBACK-001.json 及原生GitHub记录为准，不预填成功。
