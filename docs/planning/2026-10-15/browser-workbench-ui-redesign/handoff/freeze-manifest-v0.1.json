@@ -1,0 +1,242 @@
+{
+  "packageId": "BUI-20261015-PI-v0.1",
+  "state": "PRODUCT_INPUT_FREEZE_LOCAL",
+  "approvedCandidate": "BUI-20261015-004",
+  "candidateManifest": {
+    "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/candidate-004.json",
+    "bytes": 4408,
+    "sha256": "2a169062cacc2c0ff2ec83a4c0c1ad75cddea3a0f268ec4529c6021f32a85fcc"
+  },
+  "productApproval": "PASS",
+  "userUiGate": "PASS",
+  "implementationAuthorized": false,
+  "transmission": "NOT_SENT",
+  "engineeringIntake": "NOT_STARTED",
+  "sourceBaseline": "b182d5d05e4c1e4a924855e29a4ebbe8f53bda8d",
+  "excluded": [
+    "this manifest itself",
+    "post-generation transfer-receipt-v0.1.md"
+  ],
+  "files": [
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/approval-and-freeze-v0.1.md",
+      "bytes": 6085,
+      "sha256": "2528ef82fd389a85c5e910fd4930aa419b8e4c4c32395f7a0b7f1c85db417047"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/baseline-and-coverage.md",
+      "bytes": 8066,
+      "sha256": "d5def4839afffa0476cbbc4def9e96c169a6d6ac7bdd13a9ef24552a772f7785"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/clickable/check.mjs",
+      "bytes": 7854,
+      "sha256": "5f31533d20431c34d9bc3d00237120877394aa2ddb0d7612e54946fc49f2ddad"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/clickable/index.html",
+      "bytes": 1080,
+      "sha256": "8da914f6bdb48d48f6d2aa4c906759733e4b55f57e0e48de96b1e049f02caf97"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/clickable/model.js",
+      "bytes": 7550,
+      "sha256": "492183eca1c183837bb678921f68554ca03026084677c56d207030c0194a5398"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/clickable/preview.mjs",
+      "bytes": 1602,
+      "sha256": "aee90cc9512783a4bfb5bba8210c208ea471524beedc111a310f661e87996040"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/clickable/prototype.js",
+      "bytes": 42890,
+      "sha256": "ecc3658cdbfe8d5aded09270d5059615a34aa59d0c943fb23b51f0fdaed0e0c7"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/clickable/style.css",
+      "bytes": 11404,
+      "sha256": "644d009b740e1358634728f3b14b26770d275a2b1fd00e0dde4e7ccaa21f8e37"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/handoff/engineering-handoff-v0.1.md",
+      "bytes": 7932,
+      "sha256": "5947d38994b6e8ff17e9acf288a8292c6fe6bb36110a76cabea3eb97d71bae1e"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/handoff/mini-start-prompt-readonly-v0.1.md",
+      "bytes": 4873,
+      "sha256": "2051336a342631d76a3817849d52a6782a83b9813ab44e4f2b98585f762aa816"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/handoff/README.md",
+      "bytes": 1325,
+      "sha256": "ca2daeeea742fc18aef3c1b3ddeab413e35e1f5bc394cef401dd07c1154977c3"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/proposal-v0.1.md",
+      "bytes": 19406,
+      "sha256": "bc4cd7a83c4cd39326f596986c599eb07b154b44868e696749cfdf4636229b4d"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/README.md",
+      "bytes": 3078,
+      "sha256": "d33dbd00a623dcb5d2eadbb0185c1a2a07b5350ecfae822b0a484e1b3c1daf21"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/01_首页.png",
+      "bytes": 115004,
+      "sha256": "1d81b713ffc5ee6c8c603f46a4fd44f31157496266aa39a73364af16211a0452"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/02_口径确认.png",
+      "bytes": 145820,
+      "sha256": "7586acc801b0d3f75da2c782ab14144e2493a0810bc9835cf2b4b8ed5f0c2dff"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/03_对话与证据.png",
+      "bytes": 191707,
+      "sha256": "51a39be1feeb89b53cff4a961728649c8c5527447513d4ee30a5fc3fd1c80c1e"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/04_报告编审.png",
+      "bytes": 191445,
+      "sha256": "982572d6b5214b0d8c80cf548470466020dfe6ebce44925d2dc35ed6a227eeca"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/05_窄屏回退.png",
+      "bytes": 81174,
+      "sha256": "620c15dfe5854b31e09ae439325e77d458db6e68f8518646d4cd8b312fd101c5"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/06_数据选区.png",
+      "bytes": 154060,
+      "sha256": "8d566562d3dfc8821f4ff07d6035f412a094c5dc0d7e60ada8e1f15669b00bdb"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/JuanerAI_UI_Demo_v0.1.html",
+      "bytes": 105070,
+      "sha256": "daa360f6f3d3e4ea1c027380a71e6746895c5c5e784ae280d5b3fa66d716a346"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/JuanerAI_UI_首期方案与Demo_v0.1.zip",
+      "bytes": 894445,
+      "sha256": "1e8df02217d6e0a72dc7089b9cb4c773fad7a6ee0fc699a53b0f051b96d26ed7"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/JuanerAI_前端UI首期改造方案_v0.1.md",
+      "bytes": 22696,
+      "sha256": "f5df34277adc2114a0115cc397a868205a01987d652e53c181a8dedf7e611eb4"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/阅读说明.md",
+      "bytes": 1648,
+      "sha256": "8ae8f9bf5ee5efbeca5acba4ad57c02af6ca84071837b48c8f32d6db766b9253"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/attachment/验收记录.md",
+      "bytes": 3496,
+      "sha256": "92d65e10af9e22c326ff5682f911198bc0323b9a8b3d890a14e6e80d44e6672d"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reference/source-record.md",
+      "bytes": 1322,
+      "sha256": "108eb8670518233ed124fefce0b2d7985441242ae061f7e47bad73369f74b8e7"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/candidate-001.json",
+      "bytes": 4560,
+      "sha256": "e939ff9c861a66f27a26e9ef297b0a33b4eff0e34430c626e13a3f1a57d62144"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/candidate-002.json",
+      "bytes": 4409,
+      "sha256": "a9338e3f95a9701d9113273a48baae9205faa9baaacfaef1b67b45f19a11d32a"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/candidate-003.json",
+      "bytes": 4408,
+      "sha256": "8acf33af69c66a6e7110fc1c45cf6f4e9c534669bf60bb3e7ced98e2a88d306e"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/candidate-004.json",
+      "bytes": 4408,
+      "sha256": "2a169062cacc2c0ff2ec83a4c0c1ad75cddea3a0f268ec4529c6021f32a85fcc"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/final-status.md",
+      "bytes": 1736,
+      "sha256": "9ee5a29cf69012caf7568c2372023665286ae9e325c9034beece3f4659824375"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/README.md",
+      "bytes": 442,
+      "sha256": "ef2ce177ec86b2657d1218212a680c7ababe0627e1bd6128642ed252133fc0c6"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/review-001.md",
+      "bytes": 3828,
+      "sha256": "c73dcc23043fc472674d48ff96dec8790d2bdfefab0fa7d9adf79fd0f9d387f7"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/review-002.md",
+      "bytes": 3868,
+      "sha256": "7c144ad20cdbdd51ab1bb043f8ed8b43c44f52635079750ba48810c72b2e7779"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/review-003.md",
+      "bytes": 1236,
+      "sha256": "1033275de45fe9404b249373c498391958592334bdaa3c7404c53a102465daac"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/review-004.md",
+      "bytes": 1124,
+      "sha256": "975c21c815b0e6ca22c6a41011611dabd3e89084a244130701ecda3eac3c2993"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/review-brief-001.md",
+      "bytes": 2171,
+      "sha256": "661eb7aea9f76ec18f481db786944cab59bc94556894991d3a287443676fecb5"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/review-brief-002.md",
+      "bytes": 2003,
+      "sha256": "7dcca43d4901538f96eac8c435cb62d91b49f4abcc70fbd8ad804cd05caa1f6a"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/review-brief-003.md",
+      "bytes": 983,
+      "sha256": "d7e93d34d6fa609c5b050f0303acefa21c6f30caf012c606ea0314f3f3e3e1f2"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/reviews/review-brief-004.md",
+      "bytes": 954,
+      "sha256": "d57154dc95d1b5c02d174613c38f89b77e23dad0b3e50b339ff98a7140d3dd01"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/runtime-receipt.md",
+      "bytes": 2248,
+      "sha256": "228bc307a6853b6f5718f7044920d884e7d3a64b6d45b72e4d5e0b019cfd2179"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/ui-contract-v0.1.md",
+      "bytes": 12560,
+      "sha256": "4e5e37489d8748a77f11304e00bb3cd9880bb0826641ca111b6d5a329bfc96e3"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/verification.md",
+      "bytes": 7267,
+      "sha256": "dd467e1467babc9d9363ab1f3cd375c3f777b64a7ba01bbd5e9ffc898344b084"
+    },
+    {
+      "file": "docs/planning/2026-10-15/browser-workbench-ui-redesign/visual-system.md",
+      "bytes": 2127,
+      "sha256": "2f692e94cd9093cf3296bfde7d376ae8ec11a6092276277dd63d41037a52ba81"
+    },
+    {
+      "file": "docs/planning/README.md",
+      "bytes": 64945,
+      "sha256": "0df78f3f8e8ca3cb479e4c87eff87a7391ed09eb852cbc6d75f07746aac05a95"
+    }
+  ]
+}

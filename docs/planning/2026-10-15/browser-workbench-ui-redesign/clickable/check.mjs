@@ -1,0 +1,38 @@
+// Contract-prototype checks only, NOT product tests or acceptance.
+import {readFileSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {resolve,dirname} from 'node:path';
+import {runInNewContext} from 'node:vm';
+import assert from 'node:assert/strict';
+const here=dirname(fileURLToPath(import.meta.url));
+const ctx={};runInNewContext(readFileSync(resolve(here,'model.js'),'utf8'),ctx);
+const M=ctx.ContractModel;let count=0;
+function test(name,f){f();count++;console.log(`PASS ${String(count).padStart(2,'0')} ${name}`);}
+test('四店总额与附件合成值一致',()=>{assert.equal(M.rows.reduce((s,r)=>s+r.before,0),1280000);assert.equal(M.rows.reduce((s,r)=>s+r.after,0),1126400);assert.equal(((123600/153600)*100).toFixed(1),'80.5');});
+test('确认不形成业务决定，重复确认无重复记录',()=>{const x=M.create().sales;M.confirm(x);M.confirm(x);assert.equal(x.confirmations.length,1);assert.equal(M.currentConfirmation(x).v,1);assert.equal(x.decision,undefined);});
+test('无内容变化保存不加版本、不使确认失效',()=>{const x=M.create().sales;M.confirm(x);M.save(x);assert.equal(x.doc.v,1);assert.ok(M.currentConfirmation(x));});
+test('未保存改动禁止新确认但不改保存版',()=>{const x=M.create().sales;M.confirm(x);x.draft+=' 追加说明';assert.ok(M.confirmBlock(x));assert.equal(x.doc.v,1);assert.equal(x.doc.text,M.original);});
+test('保存不同表达使旧确认失效并保留历史',()=>{const x=M.create().sales;M.confirm(x);x.draft+=' 优先补证。';M.save(x);assert.equal(x.doc.v,2);assert.equal(M.currentConfirmation(x),undefined);assert.ok(x.confirmations[0].invalid);assert.equal(x.history[0].text,M.original);});
+test('保存失败保留草稿、主稿及旧确认',()=>{const x=M.create().sales;M.confirm(x);x.draft='待保存的用户表达';x.failNext=true;M.save(x);assert.equal(x.doc.v,1);assert.equal(x.draft,'待保存的用户表达');assert.ok(M.currentConfirmation(x));assert.ok(x.error);});
+test('建议未应用不写报告，放弃不加版本',()=>{const x=M.create().sales;M.generate(x);assert.equal(x.doc.v,1);assert.ok(M.confirmBlock(x));x.pending=null;assert.equal(x.doc.v,1);});
+test('应用建议只改表达、记录版本与确认失效',()=>{const x=M.create().sales;M.confirm(x);M.generate(x);M.apply(x);assert.equal(x.doc.text,M.suggestion);assert.equal(x.doc.v,2);assert.equal(x.pending,null);assert.equal(M.currentConfirmation(x),undefined);});
+test('另一端保存后旧建议不可应用',()=>{const x=M.create().sales;M.generate(x);M.write(x,'新版本表达','另一端保存');assert.ok(M.staleSuggestion(x));M.apply(x);assert.equal(x.doc.text,'新版本表达');assert.ok(x.pending);});
+test('生成后本地编辑使建议过期',()=>{const x=M.create().sales;M.generate(x);x.draft+=' 未保存';M.apply(x);assert.equal(x.doc.text,M.original);assert.ok(M.staleSuggestion(x));});
+test('结果行引用按稳定ID选取，不按排序位置',()=>{const x=M.create().sales;M.citeRows(x,['S02','S01']);assert.equal(x.citations[0].ids.join(','),'S01,S02');assert.equal(x.citations[0].analysis,1);});
+test('两任务草稿与引用隔离',()=>{const s=M.create();M.citeRows(s.sales,['S01']);s.sales.draft='任务A草稿';assert.equal(s.member.citations.length,0);assert.equal(s.member.draft,'');assert.equal(s.sales.citations.length,1);});
+test('来源更新保留旧引用、历史并阻止发送',()=>{const x=M.create().sales;M.citeRows(x,['S01']);M.confirm(x);M.refreshSource(x);assert.ok(M.staleCitation(x,x.citations[0]));M.send(x,'请解释');assert.equal(x.messages.length,0);assert.ok(x.history.length);assert.equal(M.currentConfirmation(x),undefined);});
+test('解释改版使文本引用过期、行引用仍绑定原来源',()=>{const x=M.create().sales;M.citeText(x,M.original);M.citeRows(x,['S02']);x.draft+=' 补证';M.save(x);assert.ok(M.staleCitation(x,x.citations[0]));assert.equal(M.staleCitation(x,x.citations[1]),false);});
+test('拒绝跨段类型、超长和不属于当前段的文字',()=>{const x=M.create().sales;M.citeText(x,'x'.repeat(1501));M.citeText(x,'无关内容');M.citeText(x,M.original,'other');assert.equal(x.citations.length,0);M.citeText(x,M.factText,'facts');assert.equal(x.citations.length,1);});
+test('已知有效引用发送只保存合成消息，不形成后台执行',()=>{const x=M.create().sales;M.citeRows(x,['S03']);M.send(x,'请核对');assert.equal(x.messages.length,1);assert.equal(x.citations.length,0);assert.equal(x.status,'saved');});
+test('只读禁止保存、确认、应用与发送',()=>{const x=M.create().sales;M.generate(x);x.readonly=true;x.draft='不能写入';M.save(x);M.confirm(x);M.apply(x);M.send(x,'不能发送');assert.equal(x.doc.v,1);assert.equal(x.confirmations.length,0);assert.equal(x.messages.length,0);});
+test('UNKNOWN先读回，不重复保存或确认、不自动恢复',()=>{const x=M.create().sales;x.status='unknown';x.draft='未知草稿';M.save(x);M.confirm(x);assert.equal(x.doc.v,1);assert.equal(x.confirmations.length,0);M.readback(x);assert.equal(x.status,'saved');assert.equal(x.draft,'未知草稿');assert.equal(x.doc.v,1);});
+test('partial确认带限定，不变成任务完成',()=>{const x=M.create().sales;x.status='partial';M.confirm(x);assert.equal(M.currentConfirmation(x).partial,true);assert.equal(x.status,'partial');});
+test('运行／停止中不能确认，空任务不能伪造报告',()=>{const s=M.create();s.sales.status='stopping';M.confirm(s.sales);M.confirm(s.member);assert.equal(s.sales.confirmations.length,0);assert.equal(s.member.confirmations.length,0);});
+test('纳入发现属于内容变化，确认失效',()=>{const x=M.create().sales;M.confirm(x);M.write(x,x.doc.text,'纳入发现',true);assert.equal(x.doc.extra,true);assert.equal(x.doc.v,2);assert.equal(M.currentConfirmation(x),undefined);});
+test('静态入口具备CSP且所有脚本样式本地可读',()=>{const h=readFileSync(resolve(here,'index.html'),'utf8');assert.ok(h.includes("connect-src 'none'"));for(const f of ['style.css','model.js','prototype.js'])assert.ok(readFileSync(resolve(here,f)).length>0);assert.ok(h.includes('lang="zh-CN"'));});
+test('无网络／存储API、原生单段编辑器和六阶段均存在',()=>{const source=readFileSync(resolve(here,'prototype.js'),'utf8');assert.equal(/\b(?:fetch|XMLHttpRequest|WebSocket|localStorage|sessionStorage)\s*[.(]/.test(source),false);for(const label of ['新建分析','数据准备','本地处理','循证分析','报告','执行反馈'])assert.ok(source.includes(label));assert.ok(source.includes('id="report-editor"'));});
+test('评审B1：另一端保存不得覆盖本地脏稿，需冲突面',()=>{const x=M.create().sales;M.generate(x);x.draft='本地未保存且必须保留的表达';M.write(x,'另一端的新表达','合成另一端保存',false,true);assert.equal(x.draft,'本地未保存且必须保留的表达');assert.equal(x.doc.text,'另一端的新表达');assert.ok(x.conflict);});
+test('评审B2：无结果任务不能引用另一任务的全局结果',()=>{const x=M.create().member;M.citeRows(x,['S01']);M.citeText(x,M.original);assert.equal(x.citations.length,0);});
+test('评审B3：当前与历史保留原文／用户／采纳建议来源',()=>{const x=M.create().sales;assert.equal(x.doc.origin,'MODEL');x.draft+=' 用户编辑';M.save(x);assert.equal(x.doc.origin,'USER');assert.equal(x.history[0].origin,'MODEL');M.generate(x);M.apply(x);assert.equal(x.doc.origin,'MODEL_SUGGESTION_USER_APPLIED');assert.equal(x.history.at(-1).origin,'USER');});
+test('仅纳入发现不误标未修改解释段为用户手改',()=>{const x=M.create().sales;M.write(x,x.doc.text,'纳入发现',true);assert.equal(x.doc.origin,'MODEL');assert.equal(x.doc.extra,true);assert.equal(x.doc.v,2);});
+console.log(`SUMMARY ${count} PASS / 0 FAIL · synthetic contract only`);

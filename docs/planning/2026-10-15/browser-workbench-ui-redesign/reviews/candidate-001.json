@@ -1,0 +1,141 @@
+{
+  "candidate": "BUI-20261015-001",
+  "base": "b182d5d05e4c1e4a924855e29a4ebbe8f53bda8d",
+  "files": [
+    {
+      "file": "baseline-and-coverage.md",
+      "bytes": 7946,
+      "sha256": "1210691255e29f67ae1b65e4c7870b7c986317b038e60d85db42f23f084b0af7"
+    },
+    {
+      "file": "clickable/check.mjs",
+      "bytes": 6680,
+      "sha256": "3d4d7a788347900b5ecbde5c68c390f755aaf2b844a4f12fc6247383db02fbdd"
+    },
+    {
+      "file": "clickable/index.html",
+      "bytes": 1080,
+      "sha256": "8da914f6bdb48d48f6d2aa4c906759733e4b55f57e0e48de96b1e049f02caf97"
+    },
+    {
+      "file": "clickable/model.js",
+      "bytes": 6774,
+      "sha256": "3b55c51a0f63a32ebddfc81483914908fd1e0f2777d80824870f94fb41572219"
+    },
+    {
+      "file": "clickable/preview.mjs",
+      "bytes": 1602,
+      "sha256": "aee90cc9512783a4bfb5bba8210c208ea471524beedc111a310f661e87996040"
+    },
+    {
+      "file": "clickable/prototype.js",
+      "bytes": 39323,
+      "sha256": "c01b3631e90be38a82355e65346682feb96488d58eff9ac8e7dff0564ba74118"
+    },
+    {
+      "file": "clickable/style.css",
+      "bytes": 11404,
+      "sha256": "644d009b740e1358634728f3b14b26770d275a2b1fd00e0dde4e7ccaa21f8e37"
+    },
+    {
+      "file": "proposal-v0.1.md",
+      "bytes": 19406,
+      "sha256": "bc4cd7a83c4cd39326f596986c599eb07b154b44868e696749cfdf4636229b4d"
+    },
+    {
+      "file": "README.md",
+      "bytes": 3078,
+      "sha256": "d33dbd00a623dcb5d2eadbb0185c1a2a07b5350ecfae822b0a484e1b3c1daf21"
+    },
+    {
+      "file": "reference/attachment/01_首页.png",
+      "bytes": 115004,
+      "sha256": "1d81b713ffc5ee6c8c603f46a4fd44f31157496266aa39a73364af16211a0452"
+    },
+    {
+      "file": "reference/attachment/02_口径确认.png",
+      "bytes": 145820,
+      "sha256": "7586acc801b0d3f75da2c782ab14144e2493a0810bc9835cf2b4b8ed5f0c2dff"
+    },
+    {
+      "file": "reference/attachment/03_对话与证据.png",
+      "bytes": 191707,
+      "sha256": "51a39be1feeb89b53cff4a961728649c8c5527447513d4ee30a5fc3fd1c80c1e"
+    },
+    {
+      "file": "reference/attachment/04_报告编审.png",
+      "bytes": 191445,
+      "sha256": "982572d6b5214b0d8c80cf548470466020dfe6ebce44925d2dc35ed6a227eeca"
+    },
+    {
+      "file": "reference/attachment/05_窄屏回退.png",
+      "bytes": 81174,
+      "sha256": "620c15dfe5854b31e09ae439325e77d458db6e68f8518646d4cd8b312fd101c5"
+    },
+    {
+      "file": "reference/attachment/06_数据选区.png",
+      "bytes": 154060,
+      "sha256": "8d566562d3dfc8821f4ff07d6035f412a094c5dc0d7e60ada8e1f15669b00bdb"
+    },
+    {
+      "file": "reference/attachment/JuanerAI_UI_Demo_v0.1.html",
+      "bytes": 105070,
+      "sha256": "daa360f6f3d3e4ea1c027380a71e6746895c5c5e784ae280d5b3fa66d716a346"
+    },
+    {
+      "file": "reference/attachment/JuanerAI_UI_首期方案与Demo_v0.1.zip",
+      "bytes": 894445,
+      "sha256": "1e8df02217d6e0a72dc7089b9cb4c773fad7a6ee0fc699a53b0f051b96d26ed7"
+    },
+    {
+      "file": "reference/attachment/JuanerAI_前端UI首期改造方案_v0.1.md",
+      "bytes": 22696,
+      "sha256": "f5df34277adc2114a0115cc397a868205a01987d652e53c181a8dedf7e611eb4"
+    },
+    {
+      "file": "reference/attachment/阅读说明.md",
+      "bytes": 1648,
+      "sha256": "8ae8f9bf5ee5efbeca5acba4ad57c02af6ca84071837b48c8f32d6db766b9253"
+    },
+    {
+      "file": "reference/attachment/验收记录.md",
+      "bytes": 3496,
+      "sha256": "92d65e10af9e22c326ff5682f911198bc0323b9a8b3d890a14e6e80d44e6672d"
+    },
+    {
+      "file": "reference/source-record.md",
+      "bytes": 1322,
+      "sha256": "108eb8670518233ed124fefce0b2d7985441242ae061f7e47bad73369f74b8e7"
+    },
+    {
+      "file": "reviews/README.md",
+      "bytes": 442,
+      "sha256": "ef2ce177ec86b2657d1218212a680c7ababe0627e1bd6128642ed252133fc0c6"
+    },
+    {
+      "file": "reviews/review-brief-001.md",
+      "bytes": 2171,
+      "sha256": "661eb7aea9f76ec18f481db786944cab59bc94556894991d3a287443676fecb5"
+    },
+    {
+      "file": "runtime-receipt.md",
+      "bytes": 2248,
+      "sha256": "228bc307a6853b6f5718f7044920d884e7d3a64b6d45b72e4d5e0b019cfd2179"
+    },
+    {
+      "file": "ui-contract-v0.1.md",
+      "bytes": 11971,
+      "sha256": "1e5ff86d8a9706d48a8bbc3f583cf61174e7da1fc458ba37ec4cb32b04a2e819"
+    },
+    {
+      "file": "verification.md",
+      "bytes": 4926,
+      "sha256": "bfc79dbe6526ccf92cd2752fd15d08572d92db7846e737d15c9dd1d6d63df28b"
+    },
+    {
+      "file": "visual-system.md",
+      "bytes": 2127,
+      "sha256": "2f692e94cd9093cf3296bfde7d376ae8ec11a6092276277dd63d41037a52ba81"
+    }
+  ]
+}
