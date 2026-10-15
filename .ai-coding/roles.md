@@ -10,6 +10,9 @@ conditions. Model/sandbox configuration lives in `docs/governance/agent-model-ro
   implementation, diagnosis, corrections, important engineering decisions,
   single engineering state, Engineering Acceptance and authorized delivery. It asks the user
   directly for genuinely missing decisions, not routine correction permission.
+  For user-initiated plugin tasks, it also owns task-specific product preparation
+  under the sole policy's Mini-led Plugin Integration section; user approval and
+  independent reviews remain separate.
 - **Validator:** independent read-only evaluation of the complete fixed
   candidate. Derives key acceptance cases before reading the author's solution;
   returns evidence, material blockers and advisory findings, not repairs or

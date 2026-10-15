@@ -6,7 +6,12 @@ second policy or an instruction to resume an existing stopped task.
 
 ## Product Preparation
 
-Product Manager clarifies intent and the smallest useful result, prepares the
+For user-initiated plugin integration on Mini, the Mini primary owns the product
+preparation below under the sole policy's Mini-led Plugin Integration section;
+no MacBook handoff or duplicate preparation is required. Otherwise the Product
+Manager remains the owner.
+
+That owner clarifies intent and the smallest useful result, prepares the
 product proposal and applicable clickable UI Contract, completes the existing
 development-readiness review for new/material product plans, and obtains user
 product/UI approval. Reuse valid existing inputs; do not repeat these steps for

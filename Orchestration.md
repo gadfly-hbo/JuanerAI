@@ -20,6 +20,11 @@ policy's MacBook Trial and Bounded Bug Repair section. Its repair main Agent
 asks the user directly in that task; Mini retains primary development and its
 single engineering state. This is not Product Manager engineering sign-off.
 
+For user-initiated plugin integration, apply the sole policy's Mini-led Plugin
+Integration section. Mini also prepares the task-specific proposal and approved
+product input in the original task; no MacBook planning/approval handoff is
+required. Existing user decisions, readiness review and engineering checks remain.
+
 ## Domains
 
 | Domain | Owns | Does not own |
