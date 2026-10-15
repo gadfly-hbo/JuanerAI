@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014030045193-KAUL2S",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-10-14T03:00:45.193Z",
+  "actor": {
+    "role": "controller",
+    "session": "pi-r1-r4-repair-intake"
+  },
+  "summary": "Isolated repair intake waiting for full audit report. Existing tasks remain untouched.",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

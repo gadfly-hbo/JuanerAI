@@ -2,7 +2,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {existsSync,lstatSync,mkdirSync,realpathSync,openSync,closeSync,writeSync,fstatSync,unlinkSync,readFileSync,constants} from 'node:fs';
 import {dirname,join} from 'node:path';
 import {createHash} from 'node:crypto';
-import {RuntimeFault,type AuditEvent,type AuditSink,type BudgetStore,type Limits,type Usage,type ConversationCheckpoint,type SessionBinding,type SessionStorage,type UncappedLimits,type UncappedBudgetLease,type UncappedUsage} from 'pi-agent-runtime';
+import {RuntimeFault,ModelFailure,ToolOutputFailure,type AuditEvent,type AuditSink,type BudgetStore,type Limits,type Usage,type ConversationCheckpoint,type SessionBinding,type SessionStorage,type UncappedLimits,type UncappedBudgetLease,type UncappedUsage} from 'pi-agent-runtime';
 
 export const approvedUncappedAnalysisLimits:Readonly<UncappedLimits>=Object.freeze({cumulative:'unlimited',maxOutputTokens:4096,modelTimeoutMs:30000,toolTimeoutMs:60000,controlTimeoutMs:10000});
 export const approvedAnalysisLimits:Readonly<Limits>=Object.freeze({modelCalls:1000,toolCalls:5000,outputTokens:4000000,wallTimeMs:18000000});
@@ -18,6 +18,17 @@ function limitsValid(v:Limits){return v&&integer(v.modelCalls,1)&&integer(v.tool
 function isUncapped(v:Limits|UncappedLimits):v is UncappedLimits{return 'cumulative' in v&&v.cumulative==='unlimited';}
 function uncappedValid(v:UncappedLimits){return v&&Object.keys(v).length===5&&v.cumulative==='unlimited'&&['maxOutputTokens','modelTimeoutMs','toolTimeoutMs','controlTimeoutMs'].every(k=>integer(Reflect.get(v,k),1)&&Reflect.get(v,k)<=2147483647);}
 function fault(reason:ConstructorParameters<typeof RuntimeFault>[0]):never{throw new RuntimeFault(reason);}
+/** One SDK observation per physical attempt; the existing reservation is the
+ * atomic precondition. Partial observations retain its full unknown reserve. */
+type ReportedUsage=Parameters<NonNullable<UncappedBudgetLease['recordModelUsage']>>[1];
+function recordUsage(v:State,owner:string,reserved:number,usage:ReportedUsage){
+ if(!integer(reserved,1)||!usage||typeof usage.final!=='boolean'||Object.keys(usage).some(k=>!['inputTokens','outputTokens','final'].includes(k))||usage.inputTokens!==undefined&&!integer(usage.inputTokens)||usage.outputTokens!==undefined&&!integer(usage.outputTokens))fault('INVALID_REQUEST');
+ const index=v.reservations.findIndex(r=>r.owner===owner&&r.tokens===reserved);if(index<0)fault('STATE_FAILED');
+ const final=usage.final&&usage.outputTokens!==undefined,input=(v.usage.inputTokens??0)+(usage.inputTokens??0),output=final?v.usage.outputTokens-reserved+usage.outputTokens!:v.usage.outputTokens+Math.max(0,(usage.outputTokens??0)-reserved);
+ if(!integer(input)||!integer(output))fault('STATE_FAILED');
+ v.usage.inputTokens=input;v.usage.outputTokens=output;
+ if(final){v.reservations.splice(index,1);if(isUncapped(v.limits))v.usage.reservedOutputTokens!-=reserved;}
+}
 
 /** Atomic project-local SDK accounting. Active leases never expire or auto-resume. */
 export function createPersistentRuntimeState(config:{projectRoot:string;historicalUsage?:(task:string)=>HistoricalUsage}){
@@ -53,12 +64,30 @@ export function createPersistentRuntimeState(config:{projectRoot:string;historic
  const save=(db:DatabaseSync,task:string,v:State)=>{if(Object.values(v.usage).some(n=>!integer(n)))fault('STATE_FAILED');const body=JSON.stringify(v);db.prepare('INSERT INTO budgets VALUES(?,?,?) ON CONFLICT(task_id) DO UPDATE SET body=excluded.body,digest=excluded.digest').run(task,body,digest(body));};
  const safeLabel=(v:unknown)=>typeof v==='string'&&/^[A-Za-z0-9_.:/-]{1,256}$/.test(v);
  const audit:AuditSink={async append(event,signal){
-  if(signal.aborted)fault('CANCELLED');
-  const keys=['version','taskId','runId','sequence','kind','at','provider','model','contextVersions','digest','toolName','reason','attempt','failureCategory','session','invocation','toolFailed'];
+  // This records an existing effect; it grants no cancelled model/tool action.
+  // New v1 terminal facts are independently acknowledged after the frozen
+  // cancellation result. All other cancelled writes retain their old fence.
+  const terminalReason=event.reason??event.toolOutcome?.reason;
+  const late=signal.aborted&&['CANCELLED','DEADLINE_EXCEEDED'].includes(terminalReason??'')&&(event.kind==='model.finished'&&event.modelOutcome!==undefined||event.kind==='tool.finished'&&event.toolOutcome!==undefined);
+  if(signal.aborted&&!late)fault('CANCELLED');
+  const keys=['version','taskId','runId','sequence','kind','at','provider','model','contextVersions','digest','toolName','reason','attempt','failureCategory','session','invocation','toolFailed','modelOutcome','toolOutcome'];
   if(Object.keys(event).some(k=>!keys.includes(k))||event.version!=='1.0'||![event.taskId,event.runId,event.provider,event.model].every(safeLabel)||!integer(event.sequence,1)||!['run.started','model.admitted','model.finished','tool.admitted','tool.finished','run.finished','session.control'].includes(event.kind)||!Number.isFinite(Date.parse(event.at))||!event.contextVersions||Object.entries(event.contextVersions).some(([k,v])=>!safeLabel(k)||!(/^[a-f0-9]{64}$/.test(v)||/^\d+(?:\.\d+)*$/.test(v)||/^[a-f0-9-]{36}$/.test(v)))||event.digest!==undefined&&!/^[a-f0-9]{64}$/.test(event.digest)||event.toolName!==undefined&&!safeLabel(event.toolName)||event.reason!==undefined&&!/^[A-Z_]+$/.test(event.reason)||event.attempt!==undefined&&!integer(event.attempt)||event.failureCategory!==undefined&&!['quota','rate-limit','unavailable','network'].includes(event.failureCategory))fault('AUDIT_FAILED');
   const identityValid=(v:unknown,invocation=false)=>{if(!v||typeof v!=='object'||Array.isArray(v))return false;const keys=invocation?['sessionId','branch','operationId','invocationId','toolCallId']:['sessionId','branch','operationId'];return Object.keys(v).length===keys.length&&keys.every(k=>safeLabel(Reflect.get(v,k)));};
   if(event.session!==undefined&&!identityValid(event.session)||event.invocation!==undefined&&(!identityValid(event.invocation,true)||!event.session||['sessionId','branch','operationId'].some(k=>Reflect.get(event.invocation!,k)!==Reflect.get(event.session!,k)))||event.toolFailed!==undefined&&typeof event.toolFailed!=='boolean')fault('AUDIT_FAILED');
-  const body=JSON.stringify(event);access(true,db=>{if(signal.aborted)fault('CANCELLED');db.prepare('INSERT INTO audit VALUES(?,?,?,?,?)').run(event.taskId,event.runId,event.sequence,body,digest(body));});
+  const fields=(v:unknown,required:readonly string[],optional:readonly string[]=[])=>!!v&&typeof v==='object'&&!Array.isArray(v)&&required.every(k=>Object.hasOwn(v,k))&&Object.keys(v).every(k=>required.includes(k)||optional.includes(k));
+  try{
+   if(event.modelOutcome!==undefined){
+    const out=event.modelOutcome,token=(v:unknown)=>fields(v,['kind'],['value','reported'])&&(Reflect.get(v as object,'kind')==='known'?fields(v,['kind','value']):Reflect.get(v as object,'kind')==='unknown'&&fields(v,['kind'],['reported']));
+    if(!fields(out,['model','stop','physicalStatus','usageFinal','usage','diagnostic'],['responseModel','category','httpStatus'])||!fields(out.model,['provider','id','protocol'])||!fields(out.usage,['inputTokens','outputTokens'])||!token(out.usage.inputTokens)||!token(out.usage.outputTokens)||out.model.provider!==event.provider||out.model.id!==event.model)fault('AUDIT_FAILED');
+    new ModelFailure(out); // Validate the actual SDK safe carrier; never drop extra raw fields to accept it.
+   }
+   if(event.toolOutcome!==undefined){
+    const out=event.toolOutcome;
+    if(!fields(out,['name','effect','status','modelOutput','resourceUnits'],['receiptId','invocation','reason','failureCategory'])||out.name!==event.toolName||!safeLabel(out.name)||out.reason!==undefined&&!/^[A-Z_]+$/.test(out.reason)||out.invocation!==undefined&&!identityValid(out.invocation,true)||['sessionId','branch','operationId','invocationId','toolCallId'].some(k=>Reflect.get(out.invocation??{},k)!==Reflect.get(event.invocation??{},k)))fault('AUDIT_FAILED');
+    new ToolOutputFailure(out);
+   }
+  }catch{fault('AUDIT_FAILED');}
+  const body=JSON.stringify(event);access(true,db=>{if(signal.aborted&&!late)fault('CANCELLED');db.prepare('INSERT INTO audit VALUES(?,?,?,?,?)').run(event.taskId,event.runId,event.sequence,body,digest(body));});
  }};
  const checkpointBody=(checkpoint:Readonly<ConversationCheckpoint>):string=>{
   if(!checkpoint||checkpoint.version!=='1.0'||!safeLabel(checkpoint.taskId)||!['ready','waiting','completed','tool-admitted'].includes(checkpoint.state)||!Array.isArray(checkpoint.messages))fault('STATE_FAILED');
@@ -167,6 +196,7 @@ export function createPersistentRuntimeState(config:{projectRoot:string;historic
    async reserveModelUpTo(maximum){return mutate(v=>{if(!integer(maximum,1))fault('INVALID_REQUEST');v.usage.modelCalls++;v.usage.resourceUnits++;v.usage.outputTokens+=maximum;v.usage.reservedOutputTokens+=maximum;v.reservations.push({owner,tokens:maximum});return maximum;});},
    async settleModel(){fault('INVALID_REQUEST');},
    async settleModelUsage(reserved,usage){mutate(v=>{if(!integer(reserved,1)||!integer(usage.inputTokens)||!integer(usage.outputTokens))fault('INVALID_REQUEST');const i=v.reservations.findIndex(r=>r.owner===owner&&r.tokens===reserved);if(i<0)fault('STATE_FAILED');v.reservations.splice(i,1);v.usage.inputTokens+=usage.inputTokens;v.usage.outputTokens+=usage.outputTokens-reserved;v.usage.reservedOutputTokens-=reserved;});},
+   async recordModelUsage(reserved:number,usage:ReportedUsage){mutate(v=>recordUsage(v,owner,reserved,usage));},
    async reserveTool(units){mutate(v=>{if(!integer(units))fault('INVALID_REQUEST');v.usage.toolCalls++;v.usage.resourceUnits+=units;});},
    async release(activeMs){if(!integer(activeMs))fault('INVALID_REQUEST');mutate(v=>{v.usage.activeMs+=Math.max(activeMs,Math.floor(performance.now()-began));v.owner=null;});released=true;},
   };
@@ -197,6 +227,7 @@ export function createPersistentRuntimeState(config:{projectRoot:string;historic
    async reserveModel(){return reserve(fixed.outputTokens);},
    async reserveModelUpTo(maximum:number){return reserve(maximum);},
    async settleModel(reserved:number,actual:number){mutate(v=>{if(!integer(reserved,1)||!integer(actual)||actual>reserved)fault('INVALID_REQUEST');const index=v.reservations.findIndex(r=>r.owner===owner&&r.tokens===reserved);if(index<0)fault('STATE_FAILED');v.reservations.splice(index,1);v.usage.outputTokens-=reserved-actual;});},
+   async recordModelUsage(reserved:number,usage:ReportedUsage){mutate(v=>recordUsage(v,owner,reserved,usage));},
    async reserveTool(units:number){mutate(v=>{open(v);if(isUncapped(v.limits))fault('CONFIGURATION_CHANGED');if(!integer(units))fault('INVALID_REQUEST');if(v.usage.toolCalls>=v.limits.toolCalls||v.limits.resourceUnits!==undefined&&v.usage.resourceUnits+units>v.limits.resourceUnits)fault('BUDGET_EXHAUSTED');v.usage.toolCalls++;v.usage.resourceUnits+=units;});},
    async release(activeMs:number){if(!integer(activeMs))fault('INVALID_REQUEST');mutate(v=>{const elapsed=Math.max(activeMs,Math.floor(performance.now()-began));if(!integer(v.usage.activeMs+elapsed))fault('STATE_FAILED');v.usage.activeMs+=elapsed;v.owner=null;});released=true;},
   };

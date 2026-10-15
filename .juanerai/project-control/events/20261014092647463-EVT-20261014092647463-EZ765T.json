@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014092647463-EZ765T",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T09:26:47.463Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a1394f-a008-7850-9d11-7111f6dc093b"
+  },
+  "summary": "R1/R2 actual App/IR/Outcome/HTTP 12-case matrix PASS; R4 purpose/codec PASS; R3 large verified result RED/GREEN with full local groups retained.",
+  "status_after": "active",
+  "evidence_refs": []
+}

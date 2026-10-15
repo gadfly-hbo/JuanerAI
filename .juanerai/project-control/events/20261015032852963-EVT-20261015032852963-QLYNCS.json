@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015032852963-QLYNCS",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T03:28:52.963Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13d96-5c6f-7f41-998c-abe4f12d71e4"
+  },
+  "summary": "本冻结候选用户验收清单已备：16离线证据审阅/5真实Provider返回点；本人验收仍PENDING，未启动服务/Provider/生产/Git，原BLOCKED和具名豁免保留",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

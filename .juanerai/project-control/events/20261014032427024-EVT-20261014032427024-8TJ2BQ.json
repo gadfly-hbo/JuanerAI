@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014032427024-8TJ2BQ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T03:24:27.024Z",
+  "actor": {
+    "role": "controller",
+    "session": "pi-r1-r4-repair"
+  },
+  "summary": "Audit verified; consumer delivery and independent correction resumed",
+  "status_after": "active",
+  "evidence_refs": []
+}

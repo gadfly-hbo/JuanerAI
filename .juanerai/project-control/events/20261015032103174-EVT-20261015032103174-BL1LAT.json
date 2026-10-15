@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015032103174-BL1LAT",
+  "event_type": "accepted",
+  "occurred_at": "2026-10-15T03:21:03.174Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13d8f-9254-7e03-9e80-a278ccd3a5ec"
+  },
+  "summary": "本冻结候选F-ROLE-01具名豁免及离线Engineering Acceptance回填；原Validator BLOCKED、失败与UNKNOWN保留；仅记录层，无技术变更或Provider/生产/Git授权",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

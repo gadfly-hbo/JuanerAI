@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014054935745-0I8HO5",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T05:49:35.745Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a138b0-134d-76a3-9916-7c5a91cd5bee"
+  },
+  "summary": "Independent codec/mapping work completed; exact fixed-package and R2/R3 API resource boundary recorded. No full acceptance or user pause.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

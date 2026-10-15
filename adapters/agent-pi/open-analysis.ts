@@ -7,7 +7,7 @@ import type {AnalysisRequestLedger} from '../../packages/ports/analysis-request-
 import {analysisRequestReasons,type AnalysisRequestReason} from '../../packages/ports/analysis-request-ledger.ts';
 import type {OpenAnalysisRuntime,OpenAnalysisRun,AnalysisHistoryMessage} from '../../packages/ports/open-analysis-runtime.ts';
 import type {OperationUsage} from '../../packages/product-core/member-operation.ts';
-import type {Tool,JsonValue} from 'pi-agent-runtime';
+import {ToolOutputFailure,type Tool,type JsonValue} from 'pi-agent-runtime';
 import {Check,Errors} from 'typebox/value';
 import type {TSchema} from 'typebox';
 export {createPiSessionOpenAnalysisRuntime} from './native-open-analysis.ts';
@@ -54,13 +54,13 @@ function relevantArgumentErrors(schema:TSchema,value:unknown){
 }
 
 /** Fixed SDK metadata; the Application's current tool subset remains authoritative. */
-export function createSharedAnalysisTool(current:()=>OpenAnalysisRun,modelTurn?:()=>number):Tool {
+export function createSharedAnalysisTool(current:()=>OpenAnalysisRun,modelTurn?:()=>number,preserveEffects=false):Tool {
  const rejected=new WeakMap<OpenAnalysisRun,Set<string>>(),feedbackTurn=new WeakMap<OpenAnalysisRun,number>();
  return {
   name:'analysis_tool',description:'Execute one currently authorized JuanerAI business tool. Use the current task tool catalog; arguments_json must encode its exact arguments.',
   effect:'write',resourceUnits:1,executionMode:'sequential',
   parameters:{type:'object',properties:{name:{type:'string',minLength:1},arguments_json:{type:'string',maxLength:262144}},required:['name','arguments_json'],additionalProperties:false},
-  async execute(args,signal){
+  async execute(args,signal,invocation){
    const input=current(),assertAuthority=()=>{if(signal.aborted||input.signal.aborted)fail('CANCELLED');if(!input.authorize())fail('AUTHORITY_REQUIRED');if(current()!==input)fail('TASK_CHANGED');};
    assertAuthority();
    // Synchronous business batches must leave a turn for native storage, stop and page IO.
@@ -99,7 +99,8 @@ export function createSharedAnalysisTool(current:()=>OpenAnalysisRun,modelTurn?:
    if(!decoded||typeof decoded!=='object'||Array.isArray(decoded))return reject([{path:'/',keyword:'object'}]);
    let valid=false;try{valid=Check(tool.parameters as TSchema,decoded);}catch{fail('TOOL_ARGUMENT_INVALID');}
    if(!valid)return reject(relevantArgumentErrors(tool.parameters as TSchema,decoded).map(e=>({path:e.instancePath,keyword:e.keyword,schema_path:e.schemaPath,...(e.keyword==='required'&&Array.isArray(e.params.requiredProperties)?{required_properties:e.params.requiredProperties.filter((v):v is string=>typeof v==='string').slice(0,32)}:{})})));
-   assertAuthority();const result=await tool.execute(decoded as Readonly<Record<string,unknown>>,AbortSignal.any([signal,input.signal]));assertAuthority();
+   assertAuthority();const result=await tool.execute(decoded as Readonly<Record<string,unknown>>,AbortSignal.any([signal,input.signal]));
+   try{assertAuthority();
    // Normalize only the platform JSON boundary, never tool arguments or business numbers.
    let text:string|undefined;try{text=JSON.stringify(result,(_key,value)=>{if(typeof value==='number'&&!Number.isFinite(value)||typeof value==='function'||typeof value==='symbol')fail('TOOL_RESULT_INVALID');return value;});}catch{fail('TOOL_RESULT_INVALID');}if(text===undefined)fail('TOOL_RESULT_INVALID');
    // A successfully executed and publishable original operation resolves its structural feedback.
@@ -107,6 +108,9 @@ export function createSharedAnalysisTool(current:()=>OpenAnalysisRun,modelTurn?:
    // Program generation/correction keeps its separately bounded existing allowance.
    if(!['explore_with_python','correct_exploration_code'].includes(tool.name))rejected.get(input)?.delete(tool.name);
    return JSON.parse(text) as JsonValue;
+   }catch(error){
+    if(preserveEffects){const code=(error as {code?:string}).code;throw new ToolOutputFailure({name:'analysis_tool',effect:'write',status:'completed',modelOutput:'failed',resourceUnits:1,...invocation?{invocation}:{}},code==='CANCELLED'?'CANCELLED':code==='AUTHORITY_REQUIRED'?'AUTHORITY_REQUIRED':'TOOL_FAILED');}throw error;
+   }
   },
  };
 }
@@ -293,17 +297,18 @@ export function createPiOpenAnalysisRuntime(config:{ledger:AnalysisRequestLedger
 
 
 /** Fixed names for the autonomous native protocol. Phase authority remains the current Application subset. */
-export function createNativeBusinessTools(current:()=>OpenAnalysisRun,modelTurn?:()=>number,beforeArguments?:(name:string,args:Readonly<Record<string,unknown>>,signal:AbortSignal)=>JsonValue|undefined):readonly Tool[]{
- const dispatcher=createSharedAnalysisTool(current,modelTurn);
+export function createNativeBusinessTools(current:()=>OpenAnalysisRun,modelTurn?:()=>number,beforeArguments?:(name:string,args:Readonly<Record<string,unknown>>,signal:AbortSignal)=>JsonValue|undefined,preserveEffects=false):readonly Tool[]{
+ const dispatcher=createSharedAnalysisTool(current,modelTurn,preserveEffects);
  const names=['ask_user','assess_meaning','bind_measurement','calculate_and_verify','correct_exploration_code','delegate_analysis','describe_business','describe_meaning','execute_step','explore_with_python','finish_result','inspect_selected','interpret_meaning','read_analysis_evidence','read_authorized_context','read_delegation_materials','read_delegation_results','read_project_metric_asset','read_tool_contract','rewrite_saved_report','set_analysis_steps','set_document_framework','set_framework','set_joined_framework','set_membership_framework','set_metric_asset_framework','set_multisource_framework'];
- return names.map(name=>({name,description:name==='read_tool_contract'?'Read the exact parameters for one currently authorized business tool. Arguments: {name: tool_name}. No execution or new permission.':'JuanerAI business operation '+name+'. Use the current phase catalog and read_tool_contract for exact parameters. Unavailable operations are rejected.',parameters:{type:'object',additionalProperties:true},effect:'write' as const,resourceUnits:1,executionMode:'sequential' as const,execute:async(args,signal)=>{
+ return names.map(name=>({name,description:name==='read_tool_contract'?'Read the exact parameters for one currently authorized business tool. Arguments: {name: tool_name}. No execution or new permission.':'JuanerAI business operation '+name+'. Use the current phase catalog and read_tool_contract for exact parameters. Unavailable operations are rejected.',parameters:{type:'object',additionalProperties:true},effect:'write' as const,resourceUnits:1,executionMode:'sequential' as const,execute:async(args,signal,invocation)=>{
+  const dispatch=async(text:string)=>{try{return await dispatcher.execute({name,arguments_json:text},signal,invocation);}catch(error){if(preserveEffects&&error instanceof ToolOutputFailure&&error.outcome.name==='analysis_tool')throw new ToolOutputFailure({...error.outcome,name},error.reason);throw error;}};
   // Reuse the existing exact JSON wire codec; never repair, coerce or replay business parameters.
   let original:Readonly<Record<string,unknown>>=args;let text=JSON.stringify(args);
   if(Object.keys(args).length===1&&typeof args.arguments_json==='string'){
-   text=args.arguments_json;if(Buffer.byteLength(text)>262144)return dispatcher.execute({name,arguments_json:text},signal);
-   try{const decoded:unknown=JSON.parse(text);if(decoded&&typeof decoded==='object'&&!Array.isArray(decoded))original=decoded as Readonly<Record<string,unknown>>;else return dispatcher.execute({name,arguments_json:text},signal);}catch{return dispatcher.execute({name,arguments_json:text},signal);}
+   text=args.arguments_json;if(Buffer.byteLength(text)>262144)return dispatch(text);
+   try{const decoded:unknown=JSON.parse(text);if(decoded&&typeof decoded==='object'&&!Array.isArray(decoded))original=decoded as Readonly<Record<string,unknown>>;else return dispatch(text);}catch{return dispatch(text);}
   }
   const discovery=beforeArguments?.(name,original,signal);if(discovery!==undefined)return discovery;
-  return dispatcher.execute({name,arguments_json:text},signal);
+  return dispatch(text);
  }}));
 }

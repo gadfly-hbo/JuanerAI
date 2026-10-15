@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015015610052-H9JX3J",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T01:56:10.052Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13d2c-5493-7523-b1c4-96b7fcb337d1"
+  },
+  "summary": "Task1.4 specific preparation persistence and first fixed SDK joint slice GREEN; full candidate remains in progress.",
+  "status_after": "active",
+  "evidence_refs": []
+}

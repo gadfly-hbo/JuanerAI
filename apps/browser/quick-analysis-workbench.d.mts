@@ -8,6 +8,7 @@ export type QuickAnalysisTaskView=Readonly<{
  stepCancellable?:boolean;scopeReduction?:Readonly<{fromRevision:string;toRevision:string;removed:readonly string[];reason:string}>|null;
  planReusable?:boolean;reusedPlan?:import('../../packages/product-core/open-analysis-plan-reuse.ts').OpenPlanReuse|null;
  partials?:readonly Readonly<{id:string;goal:string;value:string;unit:string;grade:string;scope:readonly Readonly<{label:string;value:string}>[];evidence:Readonly<Record<string,string>>}>[];
+ resumable?:boolean;resumeLabel?:string;historical?:boolean;latestRevision?:string;displayRevision?:string;
  taskState?:'waiting'|'ready'|'running'|'unknown'|'stopped'|'failed'|'saved';
  id:string;title:string;status:string;
  formalReview?:Readonly<{review:NativeMemberReview|null;submission:NativeMemberReviewSubmitReceipt|null}>|null;

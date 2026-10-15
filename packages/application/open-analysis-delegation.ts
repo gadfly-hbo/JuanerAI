@@ -4,11 +4,54 @@ import type {OpenAnalysisCollaboration} from '../ports/open-analysis-collaborati
 import type {OpenAnalysisStore,OpenTaskIdentity} from '../ports/open-analysis-store.ts';
 import type {OwnerRef} from '../contracts/xanthil-desktop-ipc.ts';
 import type {AssistantSource} from '../contracts/case-assistant.ts';
-import type {AutomaticDelegationInstruction} from '../contracts/case-collaboration.ts';
+import type {AutomaticDelegationInstruction,ChildResult} from '../contracts/case-collaboration.ts';
 import type {createCaseAssistantApplication} from './case-assistant.ts';
 
 function fail(code:string,safe_details?:Record<string,unknown>):never{throw Object.assign(new Error(code),{code,stack:code,...(safe_details?{safe_details}:{})});}
 function command(value:unknown){const d=taskHash(value);return [d.slice(0,8),d.slice(8,12),'4'+d.slice(13,16),'a'+d.slice(17,20),d.slice(20,32)].join('-');}
+
+function returnedModelResult(entry:unknown):ChildResult|undefined{
+ if(!entry||typeof entry!=='object'||Reflect.get(entry,'classification')!=='MODEL')return;
+ const result=Reflect.get(entry,'result');
+ if(!result||typeof result!=='object'||typeof result.id!=='string'||!Number.isSafeInteger(result.version)||result.version<1||typeof result.sha256!=='string'||!/^[a-f0-9]{64}$/.test(result.sha256)||result.value?.kind!=='result'||typeof result.value.summary!=='string'||!Array.isArray(result.value.references)||!Array.isArray(result.value.limitations)||!Array.isArray(result.value.unknowns))return;
+ return result as ChildResult;
+}
+const resultValuePath=(result:ChildResult)=>`collaboration-result/${result.id}/${result.version}/${result.sha256}/value.txt`;
+
+/** Private model view of acknowledged Case results. Canonical results and status
+ * rows remain owned by the existing Case store; this is not a result repository. */
+export function projectOpenDelegationResultsForModel(entries:readonly unknown[]){
+ if(Buffer.byteLength(JSON.stringify(entries))<=65536)return entries;
+ return entries.map(entry=>{
+  const result=returnedModelResult(entry);if(!result||Buffer.byteLength(JSON.stringify(result.value))<=8192)return entry;
+  return {...entry as Record<string,unknown>,result:{...result,value:{kind:'saved_result_view',...Buffer.byteLength(result.value.summary)<=8192?{summary:result.value.summary}:{},references:result.value.references,limitations_count:result.value.limitations.length,unknowns_count:result.value.unknowns.length,full_value:{path:resultValuePath(result),offset:1},classification:'MODEL',instruction:'完整意见、限制与未知保留在原Case结果；用原生read读取，不把MODEL意见当独立核验或正式决定。'}}};
+ });
+}
+
+/** Reads only an exact result still present in the caller's freshly authorized
+ * result set. The path is a business locator, never a filesystem capability. */
+export function readOpenDelegationResultForModel(entries:readonly unknown[],location:string){
+ const result=entries.map(returnedModelResult).find(result=>result&&resultValuePath(result)===location);if(!result)fail('ENOENT');
+ const text=JSON.stringify({classification:'MODEL',result_id:result.id,result_version:result.version,result_sha256:result.sha256,value:result.value}),parts=[...text],lines=[JSON.stringify({kind:'saved_model_result_json',classification:'MODEL',result_id:result.id,result_version:result.version,result_sha256:result.sha256,unicode_code_points:parts.length,instruction:'既有真实Case结果的完整MODEL意见JSON，不是独立核验或正式决定。'})];
+ for(let start=0;start<parts.length;start+=512)lines.push(JSON.stringify({start,text:parts.slice(start,start+512).join('')}));
+ return lines.join('\n');
+}
+
+type DelegationCatalog=Awaited<ReturnType<ReturnType<typeof createDelegationMaterialReferences>['read']>>;
+// Native producer rewrites advisory argument guidance. Read identity binds real
+// material/label/authority views, not those non-authoritative wire instructions.
+const delegationCatalogIdentity=(catalog:DelegationCatalog)=>taskHash(catalog.map(m=>({material_id:m.material_id,label:m.label,verification:m.verification,actions:m.instruction_contract?.actions??[],views:m.views,...m.views.length?{}:{reference_paths:m.instruction_contract?.reference_paths??[]}})));
+const delegationCatalogPath=(catalog:DelegationCatalog)=>`delegation-materials/${delegationCatalogIdentity(catalog)}/catalog.txt`;
+export function projectOpenDelegationCatalogForModel(catalog:DelegationCatalog){
+ if(Buffer.byteLength(JSON.stringify(catalog))<=65536)return catalog;
+ return {kind:'material_catalog_view',materials:catalog.map(m=>({material_id:m.material_id,label_preview:[...m.label].slice(0,160).join(''),label_truncated:[...m.label].length>160,verification:m.verification,actions:m.instruction_contract?.actions??[],views_count:m.views.length})),full_catalog:{path:delegationCatalogPath(catalog),offset:1},instruction:'全部真实材料仍列在此；用原生read读取当前完整目录的label/views/view_ref/路径，再明确选择。目录不是必选清单，读取不创建子任务或增加资料权限。'};
+}
+export function readOpenDelegationCatalogForModel(catalog:DelegationCatalog,location:string){
+ if(delegationCatalogPath(catalog)!==location)fail('ENOENT');
+ const text=JSON.stringify(catalog),parts=[...text],lines=[JSON.stringify({kind:'delegation_material_catalog_json',catalog_identity_sha256:delegationCatalogIdentity(catalog),content_sha256:taskHash(catalog),materials_count:catalog.length,unicode_code_points:parts.length,instruction:'当前原目录完整JSON，按start连接text；短ref/views身份只适用同一当前授权。参数以本轮真实工具声明或read_tool_contract为准；目录中的旧业务格式说明不增加参数或资料权限。'})];
+ for(let start=0;start<parts.length;start+=512)lines.push(JSON.stringify({start,text:parts.slice(start,start+512).join('')}));
+ return lines.join('\n');
+}
 
 /** Coordinates business children around native idle boundaries; owns no model loop. */
 export function createOpenAnalysisDelegation(config:{

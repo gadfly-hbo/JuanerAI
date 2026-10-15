@@ -1,0 +1,180 @@
+# R3 唯一正文、proposalOnly 与旧恢复字段：具体合同决策包 001
+
+日期：2026-10-15，Mac mini。状态：**可审查草案，尚未批准新持久合同**。任务仍为 pi-r1-r4-repair，工作树 `/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI`，分支 `work/mac-mini/pi-r1-r4-repair`，来源 HEAD `8265a3920ee1205faec7dede8b0c84e648105d9d` 加当前 WIP。SDK 保持已核验的 0.5.1-r1r4.3，不改包或 lock。
+
+本包只解决当前返回点：语义/业务解释在 Framework 保存前没有业务正文所有者；proposalOnly 的中间候选不等于正式采纳或最终 Preview 已保存；两处旧工具结果有真实恢复消费者。它不建设通用仓库、通用读取、分页、压缩或恢复框架，不升级其他产品，不自动启用真实 Task 的迁移/恢复/重放。
+
+## 1. 已核对的实际对象与消费者
+
+| 对象/返回点 | 当前写入与真实所有者 | 当前重开入口、缺口与最小建议 |
+|---|---|---|
+| assess_meaning / describe_meaning | Application 的 semantics 变量；后者转调用 assess 或 interpret。非准备路径已有 plan 时通过 persistFramework 保存完整 Context | 无 plan 或 proposalOnly 时只有变量/原工具历史，不是业务 Store 原件。不得用 SOURCE 原文重新猜 MODEL 选择、冲突、解释。建议具名任务准备快照 |
+| interpret_meaning | 完整 OpenSemanticAssessment，含实际用户/资料引用、原句和位置；已有正式 plan 时编译 Context 并保存 | 保存的框架可重开读回；框架前的完整语义没有等价持久原件。新增快照不升级 USER_INTERPRETED / SOURCE_INTERPRETED 的可信等级 |
+| bind_measurement | 同一 semantics 的 measurement / magnitude，与真实字段和倍率绑定；已有 plan 时重编译并保存 | 不能从标题、单位标签或 Source 单元格猜缺失倍率；随准备快照完整保存，改变已确认含义仍遵守原修订合同 |
+| describe_business | business 变量，工具明确 saved:false；下一次 source-bound framework 才保存；真实业务等待时 saveClarification 保存 | 不创建假等待来保存。当前 proposalOnly waiting 返回可带 business，但 Workspace.completePreview 只保存 semantics，business 没有对应字段。具名准备快照保留它，不借 Clarification 改业务状态 |
+| proposalOnly framework / steps / candidates | set_* 与步骤工具只编译本轮候选；保存回调在 Workspace 是 PREVIEW_WRITE_FORBIDDEN。运行结束的 proposal 才 completePreview(state:ready, framework, text) | ready Preview 是真实保存的候选，采纳通过 adoptRevision，另行核账/授权；preparing / failed / unknown 中间变量不是 ready 原件。候选持久准备快照不能使其提前 ready |
+| required_calculations.execution_plan | read_analysis_evidence 返回完整声明 IR，checkpoint.messages 中保留 requirement_identity + 完整 execution_plan | Application 启动逐条读取匹配 identity 的旧工具历史，重编译/核对声明与真实 proof。现无等价业务声明载体。保留完整字段，不替换为 locator 或散列 |
+| finish_result.result | Child Runtime 校验合法引用后返回完整 ChildResultValue；只是 MODEL/pending。Application case-assistant 随后调用 Store.finishChild 才生成持久 ChildResult | 旧 continuation.messages 与 native response.history 都读取此字段，再 validateChildResult；工具成功不等于 finishChild 保存成功。保留字段及旧恢复语义；已保存 ChildResult 的后续小投影继续复用现有读取 |
+
+源码依据（本轮以实际 WIP 读回，图谱位置有漂移时以快照为准）：
+
+- `packages/application/open-analysis.ts`：semantics/business 初始化、persistFramework、savedModelPlanHash、modelResult、meaning namespace、requiredCalculations 恢复、各语义/步骤工具与 proposalOnly 最终分支。
+- `packages/application/open-analysis-workspace.ts`：launchPreview、completePreview、adoptRevision；启动时 preparing Preview 被标为 unknown/RECOVERY_REQUIRED，不自动继续。
+- `packages/ports/open-analysis-store.ts` 与 `adapters/storage-local/open-analysis.ts`：Task/Framework/Clarification/Preview 的闭合形状、身份校验及保存；SQL tasks 只有 task_id/body_json/body_sha256。
+- `adapters/agent-pi/open-analysis-collaboration.ts`：finish_result 和两种历史读取；`packages/application/case-assistant.ts`：validateChildResult → finishChild → Succeeded / 可选投递。
+- 原 `r3-unsaved-lifecycle-impact-001.md`、R3-BOUND-MEANING-READ-01 与 R3-SAVED-PLAN-READ-01；完整未保存语义的真实 guard 拒绝仍是历史证据，不能说已解决可读性。
+
+## 2. 总体推荐与替代
+
+**推荐 A：只在现有 Task 业务记录中增加一种具名、类型封闭的“分析准备快照”；正式 Framework、Preview、ChildResult 和旧控制字段继续各自拥有内容。** 这样框架前的完整语义以及准备中的候选有真实可重开原件，但快照不表示采纳、执行、核验、用户确认或运行恢复。
+
+替代 B：只完成现合同内真实性修正，继续保留大未保存正文/旧控制字段，越限失败关闭。它无需新持久结构，但不能宣称大未绑定语义及全部 proposalOnly 输出问题已关闭。
+
+不推荐把 MODEL 解释变成 SOURCE 重建、把 Native Session/audit 当业务仓库、把 Clarification 当草稿容器，或为所有工具保存任意 JSON。上述方法会改变 authority 或扩大范围。
+
+## 3. 逐项确认（D1～D8）
+
+### D1：业务所有权与权限
+
+我的建议 A：准备快照属于当前 OpenAnalysis Task / revision；创建与读取由 Application 编排，Storage Adapter 仅负责原子保存和闭合验证。正式 Context、用户澄清、已采纳框架与 ChildResult 不被它替代。
+
+原因：MODEL 解释不可由源资料确定性重建；持久保存应保留其生成身份和依据，而不是升级为 SOURCE_FACT、已核验事实、长期资产或用户决定。
+
+替代 B：暂不赋予新正文所有者，保持原越限失败边界。用户决定：**待确认**。
+
+### D2：粒度、身份与最小物理形状
+
+我的建议 A：复用现有 `tasks.body_json/body_sha256`，增加一个可选的 `preparation_snapshots` 数组；不建表、文件仓库、目录注册表、通用 CRUD 或跨 Base 存储。每个元素代表本 Task/revision、运行 epoch 与一个准备所有者下的完整一致快照，不是任意 tool output。
+
+以下是**建议新增合同**，不是现有 API；名称与载体版本在接受后进入 OpenSpec/Port/严格读取器，当前不落代码：
+
+| 字段 | 含义、类型与空值规则 |
+|---|---|
+| version | 快照自身建议 `'1.0'`；新 Task 业务载体建议 `'1.4'`，与 SDK 版本/Runtime 配置身份分开 |
+| snapshot_id | 宿主生成 UUIDv4，不由模型提交；跨修订不复用 |
+| identity | 完整现有 OpenTaskIdentity，含 Task/revision/run/attempt/operation/grant/scope/config 身份；不得用 Task ID 代替全匹配 |
+| epoch | 当前 Task 执行 lease 的 epoch；Preview 准备使用其当前授权校验所绑定的 epoch，不授予运行 lease |
+| preview_command_id | 非准备运行为 null；proposalOnly 为已有 Preview command_id。与 identity/baseline 同时验证，不能指向别的 Preview |
+| previous_snapshot_id | 同一 identity/epoch/Preview 所有者的上一快照 ID；首项 null；只能指向此前实际保存项 |
+| producer | 宿主已注册的本次具名生产者，不由模型选择保存类型；仅本包 D3 的有限实际工具集合，无任意工具/通用payload分支 |
+| created_at | 宿主保存时的 UTC ISO 时间；用于来源时序，不作为授权有效期、TTL 或新的运行截止时间 |
+| semantics | OpenSemanticAssessment 或 null；null 表示尚未形成，不补空壳语义或未知单位；完整保留 classification、conflict、evidence、quote/位置/measurement |
+| business | OpenBusinessProposal 或 null；完整目的/对象/范围/交付/假设/unknowns/execution_scope，仍为 MODEL 提议 |
+| framework | OpenFrameworkCheckpoint 或 null；仅已经真实编译的当前候选。plan/context/steps 必须互相匹配，null 不伪造候选 |
+| candidate_plans | 当前已编译候选 IR 数组，可为空；只含现有候选生成器实际产物，不保存模型猜的 plan_ref。相同 Context 下仍遵守既有 64 个候选引用上界；临时句柄不变成持久身份 |
+| content_sha256 | 用既有 taskHash 对 identity/epoch/preview_command_id 与四个正文组 semantics/business/framework/candidate_plans 计算；排除自身、随机ID/前驱/保存时间/producer，便于同内容幂等；全快照 envelope 仍受原 Task body_sha256 保护，不能跨 Task 用同一正文 SHA 读取 |
+
+数组仅追加有效内容变化的完整快照；相同所有者/内容重提交返回已保存项，不重复写入，不免除既有工具计量。旧快照不自动删除、覆盖或提取给别的任务。新逻辑字段版本、严格解码与回滚不兼容必须显式说明，即使 SQL schema 不变仍是持久合同变化。
+
+生成模型/实际用量通过同一 Task/run/attempt 的既有受信 Runtime 观察关联；不由模型文本填写 Provider、也不复制原始协议异常。准备问题来自 Task 或对应 Preview 原件，Source 版本来自 identity.scope_sha256 及原 Source，semantic evidence 保留实际引用和原句。若不能关联真实生成事实，仅保留明确未知，不补造模型身份或历史来源。
+
+原因：一种封闭业务准备对象足以承载当前生产者，避免给每个工具造任意结果仓库。替代 B：不新增数组，继续使用已完成 Framework/Preview 原件，框架前仍未解决。用户决定：**待确认**。
+
+### D3：写入、生命周期与失败关闭
+
+我的建议 A：仅真实语义/业务/候选变化的具名生产者触发保存，完成 compile/validate 与源/权限检查后，由 Application 注入具名保存回调；回调不得接受任意 name/payload。允许生产者仅为现有 assess/describe/interpret/bind_measurement/describe_business、set_*_framework、set_analysis_steps 与准备阶段候选生成。required_calculations 和 finish_result 不塞入该快照。
+
+producer 建议封闭为当前已注册的13个名称：`assess_meaning`、`describe_meaning`、`interpret_meaning`、`bind_measurement`、`describe_business`、`set_framework`、`set_multisource_framework`、`set_joined_framework`、`set_membership_framework`、`set_document_framework`、`set_metric_asset_framework`、`set_analysis_steps`、`read_analysis_evidence`。最后一项仅保存准备阶段实际生成的 candidate_plans，不保存 required_calculations 任意结果；后续新增工具不得因命名相似自动进入此枚举。
+
+生命周期顺序：
+
+1. 真实观察/解释/编译形成内存候选；此时 saved:false，无可重开保证。
+2. 当前 identity、owner、epoch、Source SHA、权限仍有效，原子保存快照，获得完整身份及 content SHA 的确认；才可向模型提供“小准备回执＋具名读取位置”。回执须明示保存的是草稿，framework_saved/adoption/calculation/verification 不因此成为 true。
+3. 正常执行路径仍用原 saveFramework 保存正式框架；快照历史保留，不把草稿保存替代正式框架确认。
+4. proposalOnly 仍在完整运行完成并满足原验证后，completePreview 才可 ready；等待保持 waiting，普通回答保持 answered。保存快照不能绕过采纳控件、改变基线或刷新有效授权。
+5. 取消、超时、撤权及 epoch 变化关闭后续正常写入/发布。已经物理提交但未取得确认的情况保留 UNKNOWN 和可能已存原件，不能据此成功继续、退款或自动重复写入。
+
+失败关闭：磁盘/事务/解码/hash/保存确认丢失均不投影成可读成功；Model 成功或 Tool completed 不代替正文确认。SDK 现有 write 效果、invocation、资源消耗、audit 与预留独立保留，不引入软成功或伪技术 receipt。快照原文只进获准业务 Store，不写安全 audit。
+
+原因：内容写入和模型交付是不同事实。替代 B：只保留当前业务完成时的 Framework/Preview 保存，中间失败无新业务正文。用户决定：**待确认**。
+
+### D4：重开、读取与失效
+
+我的建议 A：只在现有获准材料读取回调中增加固定任务准备视图，建议路径 `preparation/<snapshot_id>/<content_sha256>/{semantics,business,framework,candidates}.txt`。只解析这四个具名对象，不接受任意字段/path/FS/查询，不新增 SDK 引用格式、分页、搜索或压缩机制。实际 offset/limit 仍交给固定 SDK 原生 read，已有窄 JSON 文本投影复用。
+
+每次读取：重查已保存快照闭合形状/hash、当前 Task/revision/owner/Source/config/权限；框架与语义上下文匹配。当前 owner 只能读取其已确认快照；旧快照可保留为历史证据，但不能因 URI 尚存在就成为当前模型输入。错误 owner/SHA/版本/Source、撤权或不可读正文拒绝，未知不回退“latest”。
+
+**重开是重新读取已保存正文，不是重启执行。** 只读 Store/HTTP/UI 不新增 Model/Tool/计算；需要模型读取时仍是一次真实、已授权、计量的 read。原 preparing→unknown 的启动处理、物理 UNKNOWN/未结效果否决和显式恢复权限保持。不得把 Native compaction 之后找回草稿当作自动恢复或重新提交。临时 candidate/plan_ref 在新运行中按同一实际 IR/Context重新生成，旧随机句柄不能跨运行复用；不能通过 Source 原文猜回丢失的 MODEL 解释。
+
+原因：可读正文与可继续运行的授权不同。替代 B：不开放新 namespace，继续只读已有保存 Framework/Preview。用户决定：**待确认**。
+
+### D5：proposalOnly 的保留与采纳边界
+
+我的建议 A：准备用快照保留完整 business/semantics/IR/steps/candidate_plans；最终 Preview 仍拥有本轮候选和说明，原正式 Framework/Outcome 不改。父 waiting Preview 的后继准备只可在同一 baseline/来源和实际用户回答下复用明确的准备正文，再走现有编译/冲突验证；不得把旧候选的成功状态、数值或临时引用继承为新成果。
+
+ready 的保存候选可重开审查；preparing/unknown/stopped/failed 的快照只说明保存过哪些正文，不允许自动 ready/adopt/execute。adoptRevision 仍要求用户现有采纳操作、精确 ready Preview、无未结物理请求/效果、同一配置和基线、当前授权；不能以草稿持久化减少必要的实质业务采纳，也不能新增重复“开始”确认。
+
+本轮现合同修正单独实施：assess_meaning 在 proposalOnly 返回 saved:false；meaning namespace 只接受当前实际已保存 plan 身份。候选编译原文保留，没有新保存点。
+
+原因：当前准备工具可以绑定候选，但 Workspace 明确禁止其写正式框架。替代 B：保持只在最终 Preview 保存候选，途中正文越限继续失败关闭。用户决定：**待确认**。
+
+### D6：旧 required_calculations.execution_plan
+
+我的建议 A：保留完整控制字段和当前消费者；不将其装入通用 output 保存，不借准备快照删除它。旧 checkpoint.messages 是已有的业务恢复资料；只有匹配 requirement_identity 的成功 read_analysis_evidence 返回可被当前声明集合读取，是否 verified 仍由重编译后的真实 IR/Source 与实际 proof 判定。
+
+重开/修订时保留旧 identity 的原件，不自动把声明搬到新 scope 或新 Context。不能仅凭已有 fact、plan_sha 或短摘要恢复所有目标/筛选/分组/单位/关联。原 16MiB checkpoint 保存校验仍是该合同的物理限制，绝不是 token 准入证明。
+
+后续若确需缩小这段模型反馈，必须先提出**业务计算声明的具名持久合同与旧消费者并存规则**并证明等价恢复；本包不实施、不假定现有 requirement_execution 已拥有全部旧 IR，也不增加 SDK 通用恢复。当前超限安全停止是明确限制，不能作为 R3 全面完成的豁免。
+
+原因：删字段会使声明的计算要求无法恢复并可能误称完成。替代 B：批准删除旧字段将涉及旧 Task 兼容/恢复退役，当前不推荐也无授权。用户决定：**待确认保留**。
+
+### D7：旧 finish_result.result
+
+我的建议 A：保留完整 ChildResultValue 与两条旧历史读取；既有 validateChildResult 保证引用当前 allowed_references。真正持久所有者是 Store.finishChild 后的 ChildResult（ID/version/SHA/owner/attempt/来源），不能把工具回包的 MODEL/pending 当已保存 ChildResult 或用户采纳。
+
+finishChild 保存失败时原工具事实/历史与已知消费保持，原未结效果/UNKNOWN规则继续，不自动执行 finish_result 或重新生成意见。已保存结果的 parent/child read_delegation_results 小投影与 current/stale/revoked 读取继续复用，保持 MODEL 待审、不升级为 proof。
+
+若以后改变旧字段，须先让现有 finishChild 发布顺序、幂等/确认丢失、allowed_references、持久 ID 与旧 Runtime/Continuation 恢复接口形成具体替代；本包不增加回调或把 finish_result 提前变成业务保存，更不改 SDK。
+
+原因：模型提交意见和业务结果成功落库有时间差，真实旧历史仍读取完整值。替代 B：仅返回已存在 ChildResult 的技术 ID，但当前 finish_result 执行时该 ID尚未产生，不能实施。用户决定：**待确认保留**。
+
+### D8：兼容、激活、回滚与最小验证
+
+我的建议 A：若采纳 D1～D5 的新快照，仅对明确选择新业务载体与材料策略的**新合成/新授权任务**启用；旧 Task `'1.0'～'1.3'` 无字段保持原样，缺省不代表可恢复草稿，不回填 Native 历史。SDK版本/lock不变；新增材料策略须用新的固定产品策略身份，不能热绑旧 Task 的 config hash。
+
+新严格读取器同时校验旧无字段与新具名字段；旧版本对新状态不可自动 resume。回滚冻结新准备写入/读引用，保留原 JSON、历史与已知消费/UNKNOWN，不删字段、清账或退款；必要时只读审查，不降级重放。新 Task `'1.4'` 只是建议业务载体版本，不宣称当前已支持。历史 Task 的迁移/恢复/重放仍另行授权。
+
+建议最小验证：
+
+| 验证 | 必要正/负与实际返回点 |
+|---|---|
+| 前框架语义/业务正文 | 实际工具→Store 确认→小回执→固定 SDK read→完整语义/原句/单位/冲突恢复；缺保存/错 SHA/撤权不投影 |
+| 准备候选 | 两批真实 steps、全部标题/限制与候选 IR 本地一致；prepare 不计算，ready才可采纳；普通问答、等待、失败状态各自保持 |
+| 重开/只读 | HOST/App 重构读全量对象且零模型/工具调用；Native显式恢复只在原授权和无UNKNOWN时另验，不混算两者 |
+| 保存故障/取消/迟到 | 保存前拒绝、commit后确认丢失、late/epoch变更、audit/ledger故障；原效果/已知usage保真，无退款、重放、伪ready |
+| 旧恢复 | 同 Task/历史原 required IR、finish_result 原文/合法引用可由原消费者读取；新旧混合/外Task/新scope拒绝、不回填 |
+| 大资料与模型后失败 | 原大 semantic / business / steps/recipes 样本，小回执与全原件关联；工具完成后模型失败仍保留已确认正文，不把 bytes 或合成512/8192当生产token证明 |
+
+新快照数目/总保存量/单次保存边界需在批准后的工程设计中复用当前真实工具/存储约束或明确闭合，不从 16MiB checkpoint、64候选数或原观察字节推导生产参数；不提供未经测量的新业务默认值、TTL或自动GC。本包没有预算豁免；生产overhead/margin/image仍UNKNOWN。
+
+原因：新增业务字段与读能力需要明示激活和向后/回滚边界。替代 B：不启用新载体，只保留现有真实性修正和失败关闭。用户决定：**待确认**。
+
+## 4. 决策台账与完整性检查
+
+| 项号 | 推荐 | 用户决定 | 状态与一致性 |
+|---|---|---|---|
+| D1 所有权 | Task/revision准备正文，非业务事实 | 未收到 | 待确认，不写“一致” |
+| D2 粒度/形状 | 一个具名快照数组，复用现有Task JSON | 未收到 | 待确认 |
+| D3 生命周期/发布 | 原子确认后才小回执，原UNKNOWN/效果不变 | 未收到 | 待确认 |
+| D4 重开/读取/失效 | 固定四对象视图、逐次授权、无自动恢复 | 未收到 | 待确认 |
+| D5 proposalOnly | 中间草稿与最终Preview/采纳分开 | 未收到 | 待确认；两项现合同缺陷修正另记 |
+| D6 required IR | 保留旧完整字段与消费者 | 未收到本包确认 | 原合同继续有效，非删除授权 |
+| D7 child result | 保留旧完整字段，finishChild才持久 | 未收到本包确认 | 原合同继续有效，非新保存机制 |
+| D8 兼容/激活/回滚 | 新任务显式采用，旧不回填/自动恢复 | 未收到 | 待确认 |
+
+检查13类结构问题：业务目的/所有者 D1；对象/粒度/身份/字段/空值/关系 D2；生命周期/版本/来源 D2～D3；写读入口 D3～D4；校验/审计/治理 D3～D5；兼容/回滚 D8；跨Base影响无（仅Task业务域，没有Data/Ontology/Memory/Knowledge共享schema）；阶段是支持性业务准备记录，四文本只是ReadModel，不是新产品或资产；索引/唯一性用现Task主键与严格数组身份校验，无新SQL索引；删除/TTL不纳入本轮。未知物理保存参数由后续批准的工程设计关闭，未把沉默当默认。
+
+## 5. 最小实施顺序与本轮结果
+
+先完成现合同内的真实性缺陷修正与受影响回归；本轮已建立两项因果 RED（错误 saved:true、未保存语义被已有保存 namespace 接受），仅两处判断最小修正，完整候选/旧字段不丢失。原 read/API004 narrow PASS 是此前固定候选结论，不自动成为当前新增 App 修正的独立验收。
+
+若整体采纳 A：先把批准台账写入本Change的规格/Port/严格载体和保存/失败合同；逐个实际生产者按TDD接通具名快照，再接固定SDK read与只读重开、proposalOnly完整链、负向/兼容；最后与原R1/R2/R4证据整合成**完整**候选后独立Validator。新机制相关断言当前全是待验证，不用模拟存储通过冒称产品采用。
+
+本轮不实施 D1～D5 新持久结构、不迁移旧Task；D6/D7保留原件。需整体确认的是具名草稿合同及兼容激活范围，**不是重新授予 R1～R4 启动权限**。若暂不采纳新正文所有权，精确边界为框架前/准备中唯一大内容无法保证重开，原guard/输出限额失败关闭继续保留。
+
+Provider、凭据/真实业务数据、生产/服务、其他项目、Git提交/推送/合并/发布均未授权。完整R1～R4工程与用户验收未完成，生产参数UNKNOWN，不归档Change。
+
+
+## 2026-10-15 用户整体批准接续（原草案/未确认标签为历史）
+
+用户明确：整体批准D1～D8推荐方案A，沿用现任务/分支/工作树/WIP，工程闭合必要参数后继续SDD/TDD、固定SDK联合与完整候选独立评审，不重复启动确认。D1～D8逐项用户决定均为A，状态Confirmed、一致；D6/D7继续保留旧完整字段。批准新增具名Task准备快照，不授权通用仓库/恢复、真实Provider/业务数据/生产服务/Git或历史Task迁移重放。工程实施/验证状态见r3-preparation-implementation-design-001.md、tasks/verification；批准不等于已实现或验收。

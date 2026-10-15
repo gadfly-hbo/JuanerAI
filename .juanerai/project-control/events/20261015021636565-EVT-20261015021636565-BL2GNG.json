@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015021636565-BL2GNG",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T02:16:36.565Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13d2c-5493-7523-b1c4-96b7fcb337d1"
+  },
+  "summary": "Behavior-specific preparation proofs complete; enter complete current offline verification",
+  "status_after": "active",
+  "evidence_refs": []
+}
