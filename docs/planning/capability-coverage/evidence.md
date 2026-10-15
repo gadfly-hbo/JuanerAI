@@ -1,3 +1,10 @@
+<a id="e-pi-r1-r4-sdk051-delivery-20261015"></a>
+## 正式SDK0.5.1 Git交付原生回读（2026-10-15）
+
+[PR84](https://github.com/gadfly-hbo/JuanerAI/pull/84)／技术采用 `1375d5992f57efdffc71ba329bc971444bfc93af`／[精确head完整CI](https://github.com/gadfly-hbo/JuanerAI/actions/runs/38706548191)：4590PASS／0FAIL／21SKIP。原始21项及15组计数见 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/git-delivery-001/CI-PORTABLE-SUMMARY-001.json`，完整命令／原生job日志／失败材料同目录。Mini main已ref-only快进；MacBook实际SSH超时／最终mainUNKNOWN／整体PARTIAL，先前预检不冒充最终同步，exit1保留。
+
+[当前交付记录及peer准确返回点](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/sdk-0.5.1-git-delivery-001.md#正式sdk051实际git交付回读--2026-10-15) · [完整40ID固定快照](snapshots/pi-r1-r4-sdk051-git-delivery-2026-10-15.md)。技术未改，原独立BLOCKED／限定CLI PASS／用户精确旧豁免分列，旧豁免不扩展。无能力状态提升／新Product Acceptance／Provider／生产／其他项目操作。
+
 <a id="e-pi-r1-r4-sdk051-20261015"></a>
 ## 正式 SDK 0.5.1 工程接收003 · 2026-10-15
 

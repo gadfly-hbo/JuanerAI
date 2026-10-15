@@ -336,3 +336,13 @@ NEXT_ACTION：授权范围内工程/产品接受记录已闭合；真实Provider
 ## 正式SDK0.5.1 Git交付001（2026-10-15直接授权）
 
 工程接收003已成立，技术冻结身份不变；当前仅追加Git交付记录，按 [采用Git交付001](sdk-0.5.1-git-delivery-001.md) 完成提交／PR／精确head CI／squash／安全main同步。原Git停止线仅对本任务本次交付解除，Provider／生产／其他项目与旧豁免边界不变。实际完成项以该文指定的 FINAL-PUBLICATION-READBACK-001.json 及原生GitHub记录为准，不预填成功。
+
+
+## 正式SDK0.5.1实际Git交付回读 · 2026-10-15
+
+- [x] 仅正式0.5.1采用与记录27路径已提交推送；原技术文件身份不变。旧squash历史11冲突逐项证明对方为原基线，精确保留采用blob，合并前后tree一致；失败及原始冲突材料保留。
+- [x] 复用匹配独立复审／接收证据，精确head完整CI4590PASS／0FAIL／21SKIP后PR84 squash；Mini main已安全ref-only同步1375d599。
+- [x] MacBook实际同步超时，exit1／最终UNKNOWN／PARTIAL如实记录，按用户允许跳过，不冒称全同步。
+- [x] 追加实际交付／21项SKIP／peer返回点与六＋二／40ID固定快照；仅保存收口记录，无新技术候选或旧豁免扩展。
+
+NEXT_ACTION：本次采用Git交付与Mini同步完成，MacBook为已记录的安全跳过；可达后仅返回同项目main安全同步点。Provider／生产／其他项目及历史Task停止线不变。准确原生证据与最终记录保存结果见 [实际回读](sdk-0.5.1-git-delivery-001.md#正式sdk051实际git交付回读--2026-10-15)。
