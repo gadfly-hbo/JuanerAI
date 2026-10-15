@@ -1,0 +1,136 @@
+{
+  "candidate": "BUI-20261015-002",
+  "base": "b182d5d05e4c1e4a924855e29a4ebbe8f53bda8d",
+  "files": [
+    {
+      "file": "baseline-and-coverage.md",
+      "bytes": 7946,
+      "sha256": "1210691255e29f67ae1b65e4c7870b7c986317b038e60d85db42f23f084b0af7"
+    },
+    {
+      "file": "clickable/check.mjs",
+      "bytes": 7623,
+      "sha256": "2d1f6fb137c5429e4b61fce575a28dbaf8a8ff6df133e54c95be4a716a3030c1"
+    },
+    {
+      "file": "clickable/index.html",
+      "bytes": 1080,
+      "sha256": "8da914f6bdb48d48f6d2aa4c906759733e4b55f57e0e48de96b1e049f02caf97"
+    },
+    {
+      "file": "clickable/model.js",
+      "bytes": 7512,
+      "sha256": "d436e968b1043cae5bef9749f8bb4534d5cee14923e0c7bee5e99025f24c90ca"
+    },
+    {
+      "file": "clickable/preview.mjs",
+      "bytes": 1602,
+      "sha256": "aee90cc9512783a4bfb5bba8210c208ea471524beedc111a310f661e87996040"
+    },
+    {
+      "file": "clickable/prototype.js",
+      "bytes": 42604,
+      "sha256": "914caa026311ec53790df483507e03794d33b711247436636202e2049be9beb9"
+    },
+    {
+      "file": "clickable/style.css",
+      "bytes": 11404,
+      "sha256": "644d009b740e1358634728f3b14b26770d275a2b1fd00e0dde4e7ccaa21f8e37"
+    },
+    {
+      "file": "proposal-v0.1.md",
+      "bytes": 19406,
+      "sha256": "bc4cd7a83c4cd39326f596986c599eb07b154b44868e696749cfdf4636229b4d"
+    },
+    {
+      "file": "README.md",
+      "bytes": 3078,
+      "sha256": "d33dbd00a623dcb5d2eadbb0185c1a2a07b5350ecfae822b0a484e1b3c1daf21"
+    },
+    {
+      "file": "reference/attachment/01_首页.png",
+      "bytes": 115004,
+      "sha256": "1d81b713ffc5ee6c8c603f46a4fd44f31157496266aa39a73364af16211a0452"
+    },
+    {
+      "file": "reference/attachment/02_口径确认.png",
+      "bytes": 145820,
+      "sha256": "7586acc801b0d3f75da2c782ab14144e2493a0810bc9835cf2b4b8ed5f0c2dff"
+    },
+    {
+      "file": "reference/attachment/03_对话与证据.png",
+      "bytes": 191707,
+      "sha256": "51a39be1feeb89b53cff4a961728649c8c5527447513d4ee30a5fc3fd1c80c1e"
+    },
+    {
+      "file": "reference/attachment/04_报告编审.png",
+      "bytes": 191445,
+      "sha256": "982572d6b5214b0d8c80cf548470466020dfe6ebce44925d2dc35ed6a227eeca"
+    },
+    {
+      "file": "reference/attachment/05_窄屏回退.png",
+      "bytes": 81174,
+      "sha256": "620c15dfe5854b31e09ae439325e77d458db6e68f8518646d4cd8b312fd101c5"
+    },
+    {
+      "file": "reference/attachment/06_数据选区.png",
+      "bytes": 154060,
+      "sha256": "8d566562d3dfc8821f4ff07d6035f412a094c5dc0d7e60ada8e1f15669b00bdb"
+    },
+    {
+      "file": "reference/attachment/JuanerAI_UI_Demo_v0.1.html",
+      "bytes": 105070,
+      "sha256": "daa360f6f3d3e4ea1c027380a71e6746895c5c5e784ae280d5b3fa66d716a346"
+    },
+    {
+      "file": "reference/attachment/JuanerAI_UI_首期方案与Demo_v0.1.zip",
+      "bytes": 894445,
+      "sha256": "1e8df02217d6e0a72dc7089b9cb4c773fad7a6ee0fc699a53b0f051b96d26ed7"
+    },
+    {
+      "file": "reference/attachment/JuanerAI_前端UI首期改造方案_v0.1.md",
+      "bytes": 22696,
+      "sha256": "f5df34277adc2114a0115cc397a868205a01987d652e53c181a8dedf7e611eb4"
+    },
+    {
+      "file": "reference/attachment/阅读说明.md",
+      "bytes": 1648,
+      "sha256": "8ae8f9bf5ee5efbeca5acba4ad57c02af6ca84071837b48c8f32d6db766b9253"
+    },
+    {
+      "file": "reference/attachment/验收记录.md",
+      "bytes": 3496,
+      "sha256": "92d65e10af9e22c326ff5682f911198bc0323b9a8b3d890a14e6e80d44e6672d"
+    },
+    {
+      "file": "reference/source-record.md",
+      "bytes": 1322,
+      "sha256": "108eb8670518233ed124fefce0b2d7985441242ae061f7e47bad73369f74b8e7"
+    },
+    {
+      "file": "reviews/review-brief-002.md",
+      "bytes": 2003,
+      "sha256": "7dcca43d4901538f96eac8c435cb62d91b49f4abcc70fbd8ad804cd05caa1f6a"
+    },
+    {
+      "file": "runtime-receipt.md",
+      "bytes": 2248,
+      "sha256": "228bc307a6853b6f5718f7044920d884e7d3a64b6d45b72e4d5e0b019cfd2179"
+    },
+    {
+      "file": "ui-contract-v0.1.md",
+      "bytes": 12560,
+      "sha256": "4e5e37489d8748a77f11304e00bb3cd9880bb0826641ca111b6d5a329bfc96e3"
+    },
+    {
+      "file": "verification.md",
+      "bytes": 6399,
+      "sha256": "858c635d4c484f35befd957b35c06feb92a45d554568f28c3c1d465c7861ffa4"
+    },
+    {
+      "file": "visual-system.md",
+      "bytes": 2127,
+      "sha256": "2f692e94cd9093cf3296bfde7d376ae8ec11a6092276277dd63d41037a52ba81"
+    }
+  ]
+}

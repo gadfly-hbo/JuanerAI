@@ -31,6 +31,7 @@ export type OpenStepEvent=Readonly<{version:'1.0';identity:OpenTaskIdentity;epoc
 export type OpenExplorationRecord=Readonly<{version:'1.0'|'1.1';total_check?:import('../product-core/open-analysis-exploration.ts').OpenExplorationTotalCheck;exploration_id:string;identity:OpenTaskIdentity;framework:OpenFrameworkCheckpoint;plan:import('../product-core/open-analysis-exploration.ts').OpenExplorationIR;value:import('../product-core/open-analysis-exploration.ts').OpenExplorationValue;receipt:Readonly<Record<string,unknown>>;classification:'MODEL_EXPLORATION';verification:'not_performed'}>;
 export type MetricAssetChoice=Readonly<{id:string;version:string}>;
 export type OpenStoredTask=Readonly<{
+ report_content_events?:readonly import('../product-core/browser-report-content.ts').ReportContentEvent[];
  preparation_snapshots?:readonly OpenPreparationSnapshot[];
  metric_asset_choice?:MetricAssetChoice;
  requirement_reviews?:readonly import('../product-core/open-requirement-framework.ts').RequirementReview[];
@@ -63,6 +64,9 @@ export type OpenStoredTask=Readonly<{
 }>;
 export type OpenSubmissionReceipt=Readonly<{version:'1.0';command_id:string;input_sha256:string;epoch:number;state:'reading'|'unknown'|'stopped'|'failed'|'accepted'}>;
 export interface OpenAnalysisStore {
+ reportContent?(task_id:string):ReturnType<typeof import('../product-core/browser-report-content.ts').projectReportContent>;
+ reportContentCommand?(task_id:string,input:unknown):import('../product-core/browser-report-content.ts').ReportContentEvent;
+ reportContentReceipt?(task_id:string,command_id:string):import('../product-core/browser-report-content.ts').ReportContentEvent|null;
  savePreparation?:(owner:OpenPreparationOwner,input:OpenPreparationContent&Readonly<{producer:OpenPreparationProducer}>)=>OpenPreparationReceipt;
  addRequirementMaterials(task_id:string,input:{command_id:string;input_sha256:string;expected_identity:OpenTaskIdentity;source:MemberSourceInspection}):OpenStoredTask;
  reviewRequirement(task_id:string,input:unknown):OpenStoredTask;

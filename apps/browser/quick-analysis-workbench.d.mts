@@ -1,5 +1,6 @@
 import type {NativeMemberReview,NativeMemberReviewSubmitReceipt} from '../../packages/product-core/open-member-review.ts';
 export type QuickAnalysisTaskView=Readonly<{
+ content?:ReturnType<typeof import('../../packages/product-core/browser-report-content.ts').projectReportContent>;
  metricAsset?:Readonly<{id:string;version:string;attribution?:'payment'|'completion';owner?:string;fingerprint?:string}>|null;assetRevisionReady?:boolean;
  requirementDraft?:Readonly<Pick<import('../../packages/product-core/open-requirement-framework.ts').RequirementDraft,'revision'|'sequence'|'content'|'history'|'conversation'>&{reviewed?:boolean;executed?:boolean;staleResult?:boolean}>|null;
  numericValues?:readonly import('../../packages/ports/open-analysis-numeric-report.ts').OpenNumericValue[];numericReportStatus?:'complete'|'partial'|null;focusedNumber?:import('../../packages/ports/open-analysis-numeric-report.ts').OpenNumericValue|null;numberReturn?:string|null;
@@ -22,6 +23,8 @@ export type QuickAnalysisTaskView=Readonly<{
  events:readonly Readonly<{summary:string}>[];
 }>;
 export type QuickAnalysisWorkbenchState=Readonly<{
+ viewMode?:'conversation'|'results'|'evidence';resultMode?:'overview'|'data'|'report';reportDraft?:string|null;reportBaseSha?:string|null;reportParagraphId?:string|null;selectedRows?:readonly string[];reverseRows?:boolean;
+ references?:readonly Readonly<{kind:'finding'|'paragraph';id:string;quote:string;label:string;task_id:string;revision:string;scope_sha256:string;content_sha256:string;at:string}>[];
  pendingRequirementMaterials?:number;entryMode?:'analysis'|'requirements';mode?:'quick'|'pro';stage?:'home'|'prepare'|'process'|'analysis'|'report'|'feedback';
  project:string;tasks:readonly Readonly<{id:string;title:string}>[];current:QuickAnalysisTaskView|null;
  detail:'context'|'plan'|'files'|'evidence'|'execution'|'more';drawer:boolean;
