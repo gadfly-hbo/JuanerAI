@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Report Studio · 接入 UI 审核</title><link rel="icon" href="data:,"><link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/px006/styles.css"><link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/brand.css"><link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/v1.1/workspace.css"><link id="studio-style" rel="stylesheet" href="reference/studio.css" media="not all"><link rel="stylesheet" href="integration.css"></head>
+<body><a class="skip-link" href="#main">跳到工作区</a><div class="mock-banner"><strong>合成审核，不是实现证据</strong> · v0.2 · 不调用模型、不读文件、不下载、不持久保存；刷新重置</div>
+<div class="review-controls"><label for="scene">审核场景</label><select id="scene"></select><button class="btn btn-sm" data-action="reset">重置本场景</button><a href="../ui-contract-v0.2.md">UI 合同</a><span class="fine">下拉框和合成推进按钮不属于产品</span></div>
+<div id="surface"></div>
+<dialog id="modal" aria-labelledby="modal-title"><div class="dialog-inner"><h2 id="modal-title"></h2><div id="modal-body"></div><div class="modal-actions"><button class="btn btn-sm" id="close-modal">返回</button></div></div></dialog>
+<div id="announce" class="sr-only" aria-live="polite"></div><script src="integration.js"></script></body></html>

@@ -1,0 +1,247 @@
+{
+  "package": "report-studio-minimal-integration",
+  "freezeVersion": "1.0",
+  "date": "2026-10-15",
+  "timezone": "Asia/Shanghai",
+  "state": "PRODUCT_INPUT_FROZEN_NO_DEVELOPMENT",
+  "userApproval": "两机兼容范围和新增 UI 合同审核通过，把完整接入方案整理冻结，暂不开发。",
+  "approvedCandidateSha256": "cfc6b254d2066305b5b5ea3ea5d81d6b62ec80ec877a5adee35f1cbb21678193",
+  "branch": "work/mac-mini/report-studio-minimal-integration-plan",
+  "baselineHead": "187c356625260d84ca58bc1f5741e081e89662cd",
+  "gitPublication": "NOT_AUTHORIZED_BY_THIS_FREEZE_NOT_PERFORMED",
+  "engineeringIntake": "NOT_STARTED",
+  "readinessReview": "reviews/development-readiness-004.md",
+  "productUiGate": "USER_PASS_NOT_TOOL_EXECUTION_PROOF",
+  "files": [
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/README.md",
+      "bytes": 1575,
+      "sha256": "5a583707cc894da59ca6ab582bb44f6354b5dd69ee46f4691e3435bbcac38431"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/approval-and-next-action.md",
+      "bytes": 6624,
+      "sha256": "5030550d1846edcbb32f6d83175ce76cc7d14755eacbfc2d60369eddd270779c"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/candidate-v0.2.json",
+      "bytes": 1737,
+      "sha256": "cfc6b254d2066305b5b5ea3ea5d81d6b62ec80ec877a5adee35f1cbb21678193"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/clickable/index.html",
+      "bytes": 1560,
+      "sha256": "cd9d745401fccb6080e7328c36653562472c9b024273f8419858690833ab415c"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/clickable/integration.css",
+      "bytes": 5048,
+      "sha256": "d02d8674fceca6683a18ed45b2b8fdef4deff34b01905cd5905279daad865645"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/clickable/integration.js",
+      "bytes": 35152,
+      "sha256": "be0c7a260a48adeaba171cbbedb1aa6adb0c0fbf7c2a4592c79b43aee8461e57"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/clickable/reference/studio.css",
+      "bytes": 16242,
+      "sha256": "87ea9de574d4bdf416ce6d4cc2388e81d80348aa830c892353a56cdf07301adb"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/compatibility-v0.2.md",
+      "bytes": 6480,
+      "sha256": "6052de6729a67c79bec91cd1c6df5ad970dc766c5bee6b727285aabb24071f96"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/freeze-v1.0.md",
+      "bytes": 4848,
+      "sha256": "4f68945719c1e9212cfea1aee670c31a935e58c693085bbfdc43071522d5aa78"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/frozen-plan-v1.0.md",
+      "bytes": 39418,
+      "sha256": "66dff3fb93bf661fffa5efabdbb4aa1f158b4d15054c73f352d34e84fae6cecf"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/proposal-v0.1.md",
+      "bytes": 24230,
+      "sha256": "2d5cab2afb95b26d06d63371d9f80a4df5e0d8c12e4afb8c41d7c253005c99ec"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/reviews/development-readiness-001.md",
+      "bytes": 9462,
+      "sha256": "9be44fbaf1568d1af65661c4084c41e73dafd159b30ffe908c44aabf18091607"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/reviews/development-readiness-002.md",
+      "bytes": 8055,
+      "sha256": "3416dfd5b32b25661d4bc069550e79d95a3b5bcdfc79f696750484fd7b4efef4"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/reviews/development-readiness-003.md",
+      "bytes": 5504,
+      "sha256": "c4ca32ea6765bcb1416bd27ca21ff656dd964b999eff6a60ca9923e132fa151b"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/reviews/development-readiness-004.md",
+      "bytes": 4110,
+      "sha256": "7de8f2e738b633fd10d1c3a1d820ee777a43ffc1b12a705bcf7c1216e3c5f087"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/ui-contract-v0.2.md",
+      "bytes": 10573,
+      "sha256": "da7f4f27a1bcbd2c22a74ca8756114b4fbbd8c02e793907c69812b41e36e042c"
+    },
+    {
+      "path": "docs/planning/2026-10-15/report-studio-minimal-integration/verification-v0.2.md",
+      "bytes": 4535,
+      "sha256": "89510c45269c02edc5adf85ecbf9b80c811d36747a64837a913859ee8d79f913"
+    }
+  ],
+  "uiReferenceFiles": [
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/brand.css",
+      "bytes": 2013,
+      "sha256": "7c7c365713b23b0b666b453c0c02e7df39277a03170ca8610a343f73ddd039e9"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/index.html",
+      "bytes": 15350,
+      "sha256": "4085a5022a13cc0ef5d310e81a3682eaa938c6299f0f0923cc96a429d3b99b1e"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/app.js",
+      "bytes": 36436,
+      "sha256": "90ab6e4b24899a753fabb47ca60659534393d0534daafcd3261e29895b1e754d"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/data.js",
+      "bytes": 3544,
+      "sha256": "24df63d955bba731ceb8d6e5919c593777d1e3b85388621aa3a5f85162d30b7f"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/index.html",
+      "bytes": 43887,
+      "sha256": "3d572bae679fa5be02d6a7ad463a0fb06a5bc4cbcaff74dbdad83bba4615a674"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/reference.html",
+      "bytes": 43841,
+      "sha256": "efa572d52458009ccce0573593c05c41213febc837fb3266e105039265e0c990"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px004/styles.css",
+      "bytes": 23310,
+      "sha256": "c2b5ad6baa712e82600cebcf8dbb8df7cb9ee591cd24faa2dab5bfabb6b75444"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px006/app.js",
+      "bytes": 57680,
+      "sha256": "446bbac17ca195bbd4c9fca5c95d3982b3e21a48bd6e9ed08cfe808584fc2fa9"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px006/data.js",
+      "bytes": 3587,
+      "sha256": "7ad417756e9375b04e38c44cd86d1063d8cbb47f0f14ae8b9bddb8cb58bd07d3"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px006/reference.html",
+      "bytes": 18004,
+      "sha256": "2a4f823aa7a5365472861b5735e47b57f7d32a5a584ed85aa7b780c9cf175053"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/px006/styles.css",
+      "bytes": 17185,
+      "sha256": "4dae5eae25e59826ea0aab2b0d101d93474f4f896b5e6ea9e838522689b53fa4"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/review.js",
+      "bytes": 15047,
+      "sha256": "7616ec7b0c824e6f8db00d122ec4eb7d8e437583d9b174c45d67957bf04b7f75"
+    },
+    {
+      "path": "docs/planning/2026-10-05/change005-ui-contract-recovery/clickable/v1.1/workspace.css",
+      "bytes": 7581,
+      "sha256": "4f86a21c5fece040f85a7e2e103c75dbb5aabecae648ec39cd32c3e5f80fff10"
+    },
+    {
+      "path": "docs/planning/2026-10-09/change005-v1.3-autonomous-analysis/approval-and-freeze.md",
+      "bytes": 6681,
+      "sha256": "8c675c36bb7135c32904e043e07b5dae80e0286131948cd658baacba887aca0e"
+    },
+    {
+      "path": "docs/planning/2026-10-09/change005-v1.3-autonomous-analysis/ui-contract-v1.3.md",
+      "bytes": 9328,
+      "sha256": "7b77456358c20515c816d2fedd7b182d29f80c5818043c19df574339ebf58408"
+    }
+  ],
+  "deviceLocalReferences": [
+    {
+      "path": "/Users/bendandebaba/.agents/ui-design/DESIGN.md",
+      "bytes": 8222,
+      "sha256": "3adee42c822f3fc2b098a703a466859e71d94c82c9705d0a32e25e2e17dcaf2a"
+    },
+    {
+      "path": "/Users/bendandebaba/.agents/ui-design/DEVICE-README.md",
+      "bytes": 4383,
+      "sha256": "7cf4bc2f168152fabc1012bedb4053892b14f7aeb1fadbc49eb0f299ea309654"
+    },
+    {
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/reports-factory-assessment-20261015/compatibility-ui/devices.json",
+      "bytes": 1823,
+      "sha256": "23cfa60e58d83f0672fbacd8c0499e8bc57a09ed328880d36adf0f95b02bd8ed"
+    }
+  ],
+  "adoptedPolicy": {
+    "commit": "b182d5d05e4c1e4a924855e29a4ebbe8f53bda8d",
+    "worktreeNotChanged": true,
+    "files": [
+      {
+        "path": "AGENTS.md",
+        "bytes": 26242,
+        "sha256": "60d06ad1333b3430a7ca4b03e4ffd6bb24a33fdbabd4b242679bf90b1b19ab36"
+      },
+      {
+        "path": "Orchestration.md",
+        "bytes": 5144,
+        "sha256": "437fb27c5dbe203455c46ead40436bb02664f25b08d109071413f57ed957464c"
+      },
+      {
+        "path": ".ai-coding/roles.md",
+        "bytes": 1608,
+        "sha256": "d8cc7a00791263b67546b49e3fec6d2785a6f26c8a606c1e3782d5e15cbb7700"
+      },
+      {
+        "path": ".ai-coding/workflow.md",
+        "bytes": 4041,
+        "sha256": "0cd13850cc8a4fca6e4206e3446311bbfa45523686738581fd0c63a69266617e"
+      },
+      {
+        "path": ".ai-coding/state-machine.md",
+        "bytes": 3289,
+        "sha256": "d5fe99da5753a084e29de954cbf34c3e71d47ecc42e33cdb009c40ffc9d5f09e"
+      },
+      {
+        "path": "docs/governance/product-change-execution-policy.md",
+        "bytes": 62798,
+        "sha256": "26d7f4165670766e504249b71e43bacaa6cdf25980e7c682caecfb44b8e6b7ee"
+      },
+      {
+        "path": "docs/templates/PRODUCT_CHANGE_AUTHORITY_PACKAGE.template.md",
+        "bytes": 3882,
+        "sha256": "247b763e125414d3f2928faeaf0d3182e3ea65e0dd942952c535ce5ef7d7015a"
+      }
+    ]
+  },
+  "notRun": [
+    "browser_visual",
+    "browser_click_flow",
+    "keyboard",
+    "responsive_rendering",
+    "clean_install",
+    "provider_generation",
+    "Keynote_editing",
+    "integration_engineering_acceptance"
+  ]
+}
