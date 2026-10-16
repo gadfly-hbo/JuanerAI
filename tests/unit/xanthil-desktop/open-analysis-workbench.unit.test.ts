@@ -35,7 +35,7 @@ test('FM-A03/FUI-03: qualified partial results remain inspectable beside a real 
 function progressiveFixture():any{return {id:'t',title:'退款后净额',taskState:'saved',status:'本轮成果已保存',messages:[],materials:[],events:[],planEditable:true,planReusable:true,context:{summary:'净额',unknowns:[],semantics:{version:'1.0',scope:'current_task',definitions:[{dimension:'metric',value:'净额',classification:'MODEL_CANDIDATE'}],conflicts:[]}},framework:{goal:'净额',method:'求和',binding:'订单.csv',revision:'1',steps:[{id:'net',title:'扣除退款',dependencies:[],status:'verified',scope:[],hypotheses:[],evidence:[],limitations:[]}]},partials:[{id:'net',goal:'扣除退款',value:'45.5',unit:'元',grade:'independent_arithmetic',scope:[],evidence:{}}],findings:[{id:'f',claim:'净额45.5元',value:'45.5',unit:'元',support:{description:'当前资料独立核验'},counterevidence:{description:'尚未取得'},limitations:['不能据此证明原因']}],report:{state:'saved',text:'净额45.5元'}};}
 test('R1-UX01/UI-RV01: saved quick answer stays a conversation; full meaning, plan and steps are inspected on demand',()=>{
  const current=progressiveFixture();current.messages=[{role:'user',text:'销售额扣除退款是多少？'},{role:'assistant',text:'扣除退款后45.5元；不能据此证明原因。'}];
- const html=render({project:'Mini',tasks:[],current,drawer:false,detail:'context'}),thread=html.slice(html.indexOf('<div class="thread"'),html.indexOf('<section class="workspace"'));
+ const html=render({project:'Mini',tasks:[],current,drawer:false,detail:'context'}),thread=html.slice(html.indexOf('<div class="thread"'),html.indexOf('</div><aside class="same-task-assistant"'));
  assert.match(thread,/扣除退款后45.5元/);assert.match(thread,/不能据此证明原因/);assert.doesNotMatch(thread,/<h2>分析口径|<h2>分析方案|各步骤的核验成果|口径与方案/);
  const inspected=render({project:'Mini',tasks:[],current,drawer:true,detail:'plan'});assert.match(inspected,/已绑定资料/);assert.match(inspected,/扣除退款/);
 });
@@ -58,7 +58,7 @@ test('FM-UX-P01/R1-UX01: saved answer leads; prior meaning, plan, receipts and r
 });
 test('FM-UX-P01: conflict, preview and UNKNOWN outrank a stale saved report; no success or hidden actionable conflict',()=>{
  const current=progressiveFixture();current.taskState='unknown';current.status='UNKNOWN';
- let html=render({project:'Mini',tasks:[],current,drawer:false,detail:'execution'});const thread=html.slice(html.indexOf('<div class="thread"'),html.indexOf('<section class="workspace"'));
+ let html=render({project:'Mini',tasks:[],current,drawer:false,detail:'execution'});const thread=html.slice(html.indexOf('<div class="thread"'),html.indexOf('</div><aside class="same-task-assistant"'));
  assert.match(thread,/data-analysis-moment="execution"/);assert.doesNotMatch(thread,/净额45.5元|<h2>分析成果/);assert.match(thread,/扣除退款|部分成果/);
  current.taskState='saved';current.context.semantics.conflicts=[{dimension:'metric',question:'订单额还是净额？',alternatives:['订单额','净额'],state:'unresolved'}];html=render({project:'Mini',tasks:[],current,drawer:false,detail:'context'});assert.match(html,/data-analysis-moment="meaning"/);assert.match(html,/订单额还是净额？/);
  current.context.semantics.conflicts=[];current.preview={state:'waiting',text:'请说明修改后的期间'};html=render({project:'Mini',tasks:[],current,drawer:false,detail:'plan'});assert.match(html,/data-analysis-moment="amendment"/);assert.match(html,/请说明修改后的期间/);

@@ -1,8 +1,9 @@
 import {reportStudioHttp,type ReportStudioHttpServices} from './report-studio-http.ts';
 import {reportUserHistory} from '../../packages/product-core/open-analysis-report-review.ts';
+import {projectReportContent} from '../../packages/product-core/browser-report-content.ts';
 import {readFileSync} from 'node:fs';
 import {createServer, type IncomingMessage, type ServerResponse} from 'node:http';
-import {randomBytes, timingSafeEqual} from 'node:crypto';
+import {randomBytes, timingSafeEqual,createHash} from 'node:crypto';
 import {membershipUuid} from '../../packages/product-core/member-analysis.ts';
 import {createBrowserMembershipReadbackApplication} from '../../packages/application/browser-membership.ts';
 import type {OpenStoredTask} from '../../packages/ports/open-analysis-store.ts';
@@ -41,7 +42,7 @@ function reply(res: ServerResponse, status: number, value: unknown) {
 
 /** Presentation only; storage, Runtime and calculation retain the full snapshot. */
 function browserOpenTask(task: Omit<OpenStoredTask,'history'> & {history?:OpenStoredTask['history']}): unknown {
- return {...task,browser_view:'1.0',revision_preview_supported:true,plan_reuse_supported:true,source:{...task.source,sources:task.source.sources.map(source=>({...source,sheets:source.sheets.map(sheet=>({...sheet,full_data_rows:Math.max(0,sheet.rows.length-1),rows:sheet.rows.slice(0,11)}))}))},
+ return {...task,browser_report:projectReportContent(task as OpenStoredTask),browser_view:'1.0',revision_preview_supported:true,plan_reuse_supported:true,source:{...task.source,sources:task.source.sources.map(source=>({...source,sheets:source.sheets.map(sheet=>({...sheet,full_data_rows:Math.max(0,sheet.rows.length-1),rows:sheet.rows.slice(0,11)}))}))},
  checkpoint:task.checkpoint?{...task.checkpoint,messages:reportUserHistory(task.checkpoint.messages,task.identity.task_id).map(message=>{
  if(message.speaker==='tool'){const {result,...visible}=message;void result;return visible;}
  if(message.speaker==='assistant'){const {calls,...visible}=message;void calls;return visible;}
@@ -53,6 +54,7 @@ export type BrowserServiceCommands={credential:string;check?():void;stop():Promi
 /** Task-owned loopback composition. No provider, credentials, file selection or service activation. */
 export async function startBrowserMembershipServer(deps: {store: BrowserMembershipReadback;reportStudio?:ReportStudioHttpServices;workspace?:BrowserWorkspaceCommands;service?:BrowserServiceCommands;formalMember?:ReturnType<typeof import('../../packages/application/browser-membership.ts').createOpenMemberCaseAdmission>;open?:ReturnType<typeof import('../../profiles/personal/open-analysis.ts').createPersonalOpenAnalysisWorkspace>}) {
   const app = createBrowserMembershipReadbackApplication(deps.store);
+  const workbenchVersion={contract:'BUI-20261015-004',started_at:new Date().toISOString(),pid:process.pid,node:process.version,source_sha256:Object.fromEntries(['apps/browser/local-server.ts','apps/browser/quick-analysis-client.mjs','apps/browser/quick-analysis-workbench.mjs','apps/browser/browser-workbench.css','packages/application/open-analysis-workspace.ts','packages/product-core/browser-report-content.ts','adapters/storage-local/open-analysis.ts'].map(path=>[path,createHash('sha256').update(readFileSync(new URL('../../'+path,import.meta.url))).digest('hex')]))};
   const bootstrap = secret(), session = secret();
   let control=secret(),generation=0,owned=!deps.service,selecting=false;
   const bootstraps=new Map<string,number>(),sessions=new Set<string>();
@@ -93,7 +95,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       if(path==='/v1/service/stop'){reply(res,200,{stopping:true});setImmediate(()=>{void deps.service!.stop();});return;}
       throw new HttpFailure(404);
     }
-    const assets:Record<string,[string,string]>={'/':['index.html','text/html'],'/bootstrap.mjs':['bootstrap.mjs','text/javascript'],'/workspace.mjs':['workspace.mjs','text/javascript'],'/client.mjs':['client.mjs','text/javascript'],'/read-json.mjs':['read-json.mjs','text/javascript'],'/styles.css':['styles.css','text/css'],'/report-studio-client.mjs':['report-studio-client.mjs','text/javascript'],'/quick-analysis-workbench.mjs':['quick-analysis-workbench.mjs','text/javascript'],'/quick-analysis-client.mjs':['quick-analysis-client.mjs','text/javascript'],'/packages/contracts/open-analysis-findings.mjs':['../../packages/contracts/open-analysis-findings.mjs','text/javascript'],'/packages/contracts/open-analysis-recovery.mjs':['../../packages/contracts/open-analysis-recovery.mjs','text/javascript'],'/quick-analysis-workbench.css':['quick-analysis-workbench.css','text/css'],'/assets/logo.png':['../desktop/assets/juanerai-logo-slogan.png','image/png']};
+    const assets:Record<string,[string,string]>={'/browser-workbench.css':['browser-workbench.css','text/css'],'/':['index.html','text/html'],'/bootstrap.mjs':['bootstrap.mjs','text/javascript'],'/workspace.mjs':['workspace.mjs','text/javascript'],'/client.mjs':['client.mjs','text/javascript'],'/read-json.mjs':['read-json.mjs','text/javascript'],'/styles.css':['styles.css','text/css'],'/report-studio-client.mjs':['report-studio-client.mjs','text/javascript'],'/quick-analysis-workbench.mjs':['quick-analysis-workbench.mjs','text/javascript'],'/quick-analysis-client.mjs':['quick-analysis-client.mjs','text/javascript'],'/packages/contracts/open-analysis-findings.mjs':['../../packages/contracts/open-analysis-findings.mjs','text/javascript'],'/packages/contracts/open-analysis-recovery.mjs':['../../packages/contracts/open-analysis-recovery.mjs','text/javascript'],'/quick-analysis-workbench.css':['quick-analysis-workbench.css','text/css'],'/assets/logo.png':['../desktop/assets/juanerai-logo-slogan.png','image/png']};
     const asset=deps.workspace?assets[path]:undefined;
     if (!asset&&!/^\/v1\/[a-z0-9/-]+$/.test(path)&&!/^\/v1\/report-studio\/[A-Za-z0-9_/-]+$/.test(path)) throw new HttpFailure(404);
     if (req.method !== 'GET' && req.method !== 'POST') throw new HttpFailure(405);
@@ -113,6 +115,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
     if (!consumed || cookies.length !== 1 || !(deps.service?sessions.has(cookies[0].slice(cookieName.length+1)):equal(cookies[0].slice(cookieName.length + 1), session))) throw new HttpFailure(401);
     if(asset){if(req.method!=='GET')throw new HttpFailure(405);serve();return;}
     if(path==='/v1/session'&&req.method==='GET'){reply(res,200,{authenticated:true,generation,...(deps.service?{service:true,owned}:{})});return;}
+    if(path==='/v1/workbench-version'&&req.method==='GET'){reply(res,200,workbenchVersion);return;}
     if(path==='/v1/control'&&req.method==='POST'){
       const body=await json(req);
       if(!body||typeof body!=='object'||Object.keys(body).sort().join()!=='command_id,confirmed,generation,version'||Reflect.get(body,'version')!=='1.0'||Reflect.get(body,'confirmed')!==true||!membershipUuid(Reflect.get(body,'command_id'))||!Number.isSafeInteger(Reflect.get(body,'generation')))throw new HttpFailure(400);
@@ -147,6 +150,13 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
     }
     if(deps.open&&path.startsWith('/v1/open-analysis')){
       const present=(task:OpenStoredTask)=>req.headers['x-xanthil-view']==='browser-v1'?browserOpenTask(task):task;
+      const content=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/(report-content|report-content-receipts\/[a-f0-9-]{36}|resolve-references)$/.exec(path);
+      if(content){const id=content[1]!,kind=content[2]!;
+       if(req.method==='GET'&&kind==='report-content'){reply(res,200,deps.open.reportContent(id));return;}
+       if(req.method==='GET'&&kind.startsWith('report-content-receipts/')){reply(res,200,deps.open.reportContentReceipt(id,kind.slice('report-content-receipts/'.length)));return;}
+       if(req.method!=='POST'||!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);
+       const body=await json(req,512*1024);reply(res,200,kind==='resolve-references'?deps.open.resolveReferences(id,body):await deps.open.reportContentCommand(id,body));return;
+      }
       const assetReceipt=/^\/v1\/open-analysis\/metric-assets\/commands\/([a-f0-9-]{36})$/.exec(path);if(assetReceipt&&req.method==='GET'){reply(res,200,deps.open.metricAssetCommandReceipt(assetReceipt[1]));return;}
       if(path==='/v1/open-analysis/metric-assets'){
         if(req.method==='GET'){reply(res,200,deps.open.metricAssets());return;}
@@ -193,7 +203,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       const cancelStep=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/cancel-step$/.exec(path);if(cancelStep&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,present(await deps.open.cancelStep(cancelStep[1],await json(req,64*1024))));return;}
       const versionChoice=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/select-version$/.exec(path);if(versionChoice&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,present(deps.open.selectVersion(versionChoice[1],await json(req,64*1024))));return;}
       const reportCopy=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/reports\/([1-9][0-9]*)\/([a-f0-9-]{36})\/copy$/.exec(path);
-      if(reportCopy&&req.method==='GET'){const value=deps.open.reportCopy(reportCopy[1],reportCopy[2],reportCopy[3]);res.writeHead(200,{'content-type':value.media_type,'content-disposition':`attachment; filename="${value.suggested_file_name}"`,'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"});res.end(value.bytes);return;}
+      if(reportCopy&&req.method==='GET'){const value=deps.open.reportCopy(reportCopy[1],reportCopy[2],reportCopy[3],req.headers['x-xanthil-report-content']==='1.0');res.writeHead(200,{'content-type':value.media_type,'content-disposition':`attachment; filename="${value.suggested_file_name}"`,'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"});res.end(value.bytes);return;}
       const reportEdit=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/(report-edit-target|report-edit|report-edits\/[a-f0-9-]{36})$/.exec(path);
       if(reportEdit&&req.method==='GET'&&reportEdit[2]==='report-edit-target'){reply(res,200,deps.open.reportEditTarget(reportEdit[1]));return;}
       if(reportEdit&&req.method==='GET'&&reportEdit[2].startsWith('report-edits/')){reply(res,200,deps.open.reportEditReceipt(reportEdit[1],reportEdit[2].slice('report-edits/'.length)));return;}

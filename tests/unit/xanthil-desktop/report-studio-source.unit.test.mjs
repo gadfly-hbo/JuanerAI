@@ -95,3 +95,26 @@ test('RS-CONTINUE-01 deleted working project disables only continue and keeps im
  const unknown=renderReportStudioDeliveries([{...row,studio_project_state:'unknown'}],'2');assert.match(unknown,/暂不可核对工作项目/);assert.match(unknown,/data-studio-action="check"/);assert.match(unknown,/data-studio-action="continue"[^>]*disabled/);
  const dormant=renderReportStudioDeliveries([{...row,studio_project_state:'not_checked'}],'2');assert.doesNotMatch(dormant,/data-studio-action="continue"[^>]*disabled/);
 });
+
+test('RS-MAIN-COMPAT-036/RUI01: accepted main shell retains the working Studio menu without calling a model',async()=>{
+ const {renderQuickAnalysisWorkbench}=await import('../../../apps/browser/quick-analysis-workbench.mjs');
+ const html=renderQuickAnalysisWorkbench({project:'合成项目',tasks:[],current:null,detail:'context',drawer:false});
+ assert.match(html,/data-action="plugins"[^>]*>插件与产品能力</);
+ assert.doesNotMatch(html,/产品能力 · 未接入/);
+});
+
+for(const projected of [false,true])for(const mode of ['quick','pro'])test(`RS-MAIN-COMPAT-036/RUI07: ${mode} ${projected?'current content':'legacy report'} keeps one exact linked delivery beside original content`,async()=>{
+ const {renderQuickAnalysisWorkbench}=await import('../../../apps/browser/quick-analysis-workbench.mjs');
+ const {openTaskView}=await import('../../../apps/browser/quick-analysis-client.mjs');
+ const {reportFixture}=await import('../../fixtures/xanthil-desktop/browser-ui-report.ts');
+ const fixture=reportFixture(),task=fixture.store.read(fixture.id),view=openTaskView({...task,...(projected?{browser_report:fixture.content()}: {})});
+ view.studioReports=[{delivery_id:'saved-delivery',association_id:'original-association',sequence:1,format:'html',source:{task_id:fixture.id,revision:'1'},created_at:'2026-10-16T00:00:00Z',warnings:['合成质检提示'],studio_project_state:'missing'}];
+ const html=renderQuickAnalysisWorkbench({project:'合成项目',tasks:[],current:view,mode,stage:'report',viewMode:mode==='quick'?'results':'conversation',resultMode:'report',detail:'context',drawer:false});
+ assert.equal((html.match(/<h2>关联报告<\/h2>/g)??[]).length,1);
+ assert.match(html,/data-studio-delivery="saved-delivery"/);
+ assert.match(html,/data-studio-action="continue"[^>]*disabled/);
+ assert.doesNotMatch(html,/data-studio-action="download"[^>]*disabled/);
+ assert.match(html,/合成质检提示/);
+ assert.match(html,/原因尚需调查/);
+ if(projected)assert.match(html,/计算事实 · 只读/);
+});
