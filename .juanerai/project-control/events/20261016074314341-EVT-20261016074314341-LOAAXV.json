@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016074314341-LOAAXV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T07:43:14.341Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1437c-c50c-7160-ac6b-8715b547b142"
+  },
+  "summary": "019图检后edit执行前范围停止/UNKNOWN16384保留，唯一场景已使用；正常收尾，不补测/部署/Git",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

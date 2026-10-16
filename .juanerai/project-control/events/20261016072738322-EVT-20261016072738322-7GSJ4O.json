@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016072738322-7GSJ4O",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T07:27:38.322Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1437c-c50c-7160-ac6b-8715b547b142"
+  },
+  "summary": "019明确批准/新候选预检通过，正常UI前Provider0；限定一次真实验收启动",
+  "status_after": "active",
+  "evidence_refs": []
+}

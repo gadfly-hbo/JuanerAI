@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015175623972-6J6IC4",
+  "event_type": "task_completed",
+  "occurred_at": "2026-10-15T17:56:23.972Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14052-87a4-7773-94ff-beabac69eba4"
+  },
+  "summary": "宿主正常用户路径的离线子范围通过；完整Change仍在实施",
+  "status_after": "active",
+  "evidence_refs": []
+}

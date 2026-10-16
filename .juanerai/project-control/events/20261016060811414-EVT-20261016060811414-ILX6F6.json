@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016060811414-ILX6F6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T06:08:11.414Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14348-e40f-7673-b427-8b2449d9cb7a"
+  },
+  "summary": "013唯一真实场景015限定框架PASS，4MiMo/4工具/技能全文/两页待确认，新预留0，正常收尾；原失败和全部缺口保留，不追加真实范围",
+  "status_after": "active",
+  "evidence_refs": []
+}

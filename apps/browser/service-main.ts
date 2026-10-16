@@ -1,3 +1,4 @@
+import {readPersonalReportStudioDeployment,createPersonalReportStudioOwner} from '../../profiles/personal/report-studio.ts';
 import {createPiSessionCaseRuntime} from '../../adapters/agent-pi/native-open-analysis.ts';
 import {createLocalAnalysisRequestLedger} from '../../adapters/storage-local/analysis-request-ledger.ts';
 import {taskHash} from '../../packages/product-core/member-task.ts';
@@ -37,23 +38,51 @@ export async function readIndependentWebDocumentReaders(descriptor:string,fallba
  return {...readers,...(env.JUANERAI_DOCUMENT_PYTHON?{pythonExecutable:env.JUANERAI_DOCUMENT_PYTHON}:{}),...(env.JUANERAI_IMAGE_READER?{imageExecutable:env.JUANERAI_IMAGE_READER}:{}),...(env.JUANERAI_SOFFICE?{sofficeExecutable:env.JUANERAI_SOFFICE}:{})};
 }
 
+/** Studio refusal must leave the host, workspace and identity usable. One owned shutdown at a time. */
+export function createReportStudioAwareShutdown(parts:{studio?:()=>Promise<unknown>;server:()=>Promise<unknown>;workspace:()=>Promise<unknown>;release():void}):()=>Promise<void>{
+ let pending:Promise<void>|undefined;
+ return ()=>pending??=(async()=>{
+   await parts.studio?.();
+   try{await parts.server();}finally{try{await parts.workspace();}finally{parts.release();}}
+ })().catch(error=>{pending=undefined;throw error;});
+}
+
+/** Native interaction owns the visible dialogs; only real readback permits close. */
+export async function runReportStudioExit(parts:{lifecycle():Promise<import('../../adapters/report-studio/gateway.ts').ReportStudioLifecycle>;exitIntent(intent:'wait'|'stop'|'cancel'):Promise<unknown>;close():Promise<unknown>;choose(state:import('../../adapters/report-studio/gateway.ts').ReportStudioLifecycle):Promise<'wait'|'stop'|'cancel'>;observe(read:()=>Promise<import('../../adapters/report-studio/gateway.ts').ReportStudioLifecycle>):Promise<'ready'|'cancel'>}):Promise<boolean>{
+ const state=await parts.lifecycle();
+ if(state.pending){
+  const choice=await parts.choose(state);if(!['wait','stop','cancel'].includes(choice))throw Error('RS_EXIT_CHOICE_INVALID');
+  if(choice==='cancel'){await parts.exitIntent('cancel');return false;}
+  await parts.exitIntent(choice);
+  try{
+   if(await parts.observe(parts.lifecycle)==='cancel'){await parts.exitIntent('cancel');return false;}
+   if((await parts.lifecycle()).pending)throw Object.assign(Error('RS_PROJECT_PENDING'),{code:'RS_PROJECT_PENDING'});
+  }catch(error){await parts.exitIntent('cancel');throw error;}
+ }
+ await parts.close();return true;
+}
+
 /** Node composition only. Passive startup never reads credentials or dispatches models. */
-export async function startIndependentBrowserService(root:string,options:Readonly<{metricAssetDisclosureAllowed?:boolean}>={}){
+export async function startIndependentBrowserService(root:string,options:Readonly<{metricAssetDisclosureAllowed?:boolean;deployment?:Readonly<{resourcesRoot:string;credentialHelper:string}>}>={}){
  if(options.metricAssetDisclosureAllowed!==undefined&&typeof options.metricAssetDisclosureAllowed!=='boolean')throw new Error('ASSET_DISCLOSURE_AUTHORITY_INVALID');
- const paths=prepareDevelopmentRoot(root),directory=join(paths.userData,'web-service');mkdirSync(directory,{recursive:true,mode:0o700});
+ const deployment=options.deployment;
+ if(deployment&&(!isAbsolute(deployment.resourcesRoot)||realpathSync(deployment.resourcesRoot)!==deployment.resourcesRoot||!isAbsolute(deployment.credentialHelper)))throw Error('WEB_DEPLOYMENT_INVALID');
+ const resources=deployment?.resourcesRoot??fileURLToPath(new URL('../../build/',import.meta.url));
+ const paths=prepareDevelopmentRoot(root,deployment?'installed-browser':'development'),directory=join(paths.userData,'web-service');mkdirSync(directory,{recursive:true,mode:0o700});
  const identity=acquireBrowserServiceIdentity(directory);
  let manager:Awaited<ReturnType<typeof createPersonalBrowserServiceWorkspace>>|undefined,server:Awaited<ReturnType<typeof startBrowserMembershipServer>>|undefined;
- const credentialStore=createMacOsCredentialStore(fileURLToPath(new URL('../../build/development-keychain/xanthil-keychain',import.meta.url)));
+ const credentialStore=createMacOsCredentialStore(deployment?.credentialHelper??join(resources,'development-keychain/xanthil-keychain'));
  const settings=createProviderSettings({store:credentialStore,probe:createPiConnectionProbe({root:join(paths.userData,'connection-tests')})});
- let closing:Promise<void>|undefined;
- const close=()=>closing??=(async()=>{try{await server?.close();}finally{try{await manager?.close();}finally{settings.close();identity.close();}}})();
+ const reportStudio=await readPersonalReportStudioDeployment({resourcesRoot:resources,userData:paths.userData});
+ const close=createReportStudioAwareShutdown({...(reportStudio.state==='configured'?{studio:()=>reportStudio.runtime.close()}:{}),server:async()=>{await server?.close();},workspace:async()=>{await manager?.close();},release:()=>{settings.close();identity.close();}});
  try{
-  const toolchain=await readIndependentWebToolchain(fileURLToPath(new URL('../../build/xanthil-toolchain-deployment.json',import.meta.url)));
+  const toolchain=await readIndependentWebToolchain(join(resources,deployment?'toolchain-deployment.json':'xanthil-toolchain-deployment.json'));
   const policy=createLocalMembershipPolicyStore(paths.userData);await policy.initializeApproved();
   const credentials=createApprovedProviderCredentials({backupStore:credentialStore});
-  const openModel={requireSemanticAssessment:true,metricAssetDisclosureAllowed:options.metricAssetDisclosureAllowed===true,documentReader:await readIndependentWebDocumentReaders(fileURLToPath(new URL('../../build/xanthil-document-readers.json',import.meta.url)),toolchain.pythonExecutable),createRuntime:(ledger:import('../../packages/ports/analysis-request-ledger.ts').AnalysisRequestLedger,context:Readonly<{projectRoot:string}>)=>createPiSessionOpenAnalysisRuntime({projectRoot:context.projectRoot,ledger,credentials,nativeObjectArguments:true,reportThinking:'off'}),authorizeConfiguration:async()=>{const status=await credentials.refresh(true);if(status.primary.state!=='configured'&&!(status.primary.state==='missing'&&status.backup.state==='configured'))throw Object.assign(new Error('CREDENTIAL_UNAVAILABLE'),{code:'CREDENTIAL_UNAVAILABLE'});return {config_sha256:taskHash({version:'1.0',primary:{...status.primary,model:'MiniMax-M3',endpoint:'https://api.minimaxi.com/anthropic'},backup:{...status.backup,model:'mimo-v2.6-flash'}})};}};
-  manager=await createPersonalBrowserServiceWorkspace({originDirectory:paths.userData,projectsRoot:paths.projects,toolchain,openModel,model:{createRuntime:({projectRoot})=>createPiSessionCaseRuntime({projectRoot,ledger:createLocalAnalysisRequestLedger({projectRoot}),credential:()=>settings.taskCredential()}),access:settings.access,policy}});
-  server=await startBrowserMembershipServer({store:manager.store,workspace:manager.workspace,open:manager.open,formalMember:manager.formalMember,service:{credential:identity.credential,check:identity.check,stop:close,projects:manager.projects,receipt:manager.receipt,select:manager.select,settings:settings.request}});
-  identity.publish(server.origin);return {origin:server.origin,close};
+  const openModel={requireSemanticAssessment:true,metricAssetDisclosureAllowed:options.metricAssetDisclosureAllowed===true,documentReader:await readIndependentWebDocumentReaders(join(resources,'xanthil-document-readers.json'),toolchain.pythonExecutable,deployment?{}:process.env),createRuntime:(ledger:import('../../packages/ports/analysis-request-ledger.ts').AnalysisRequestLedger,context:Readonly<{projectRoot:string}>)=>createPiSessionOpenAnalysisRuntime({projectRoot:context.projectRoot,ledger,credentials,nativeObjectArguments:true,reportThinking:'off'}),authorizeConfiguration:async()=>{const status=await credentials.refresh(true);if(status.primary.state!=='configured'&&!(status.primary.state==='missing'&&status.backup.state==='configured'))throw Object.assign(new Error('CREDENTIAL_UNAVAILABLE'),{code:'CREDENTIAL_UNAVAILABLE'});return {config_sha256:taskHash({version:'1.0',primary:{...status.primary,model:'MiniMax-M3',endpoint:'https://api.minimaxi.com/anthropic'},backup:{...status.backup,model:'mimo-v2.6-flash'}})};}};
+  manager=await createPersonalBrowserServiceWorkspace({...(reportStudio.state==='configured'?{reportStudio:reportStudio.runtime}:{}),originDirectory:paths.userData,projectsRoot:paths.projects,toolchain,openModel,model:{createRuntime:({projectRoot})=>createPiSessionCaseRuntime({projectRoot,ledger:createLocalAnalysisRequestLedger({projectRoot}),credential:()=>settings.taskCredential()}),access:settings.access,policy}});
+  server=await startBrowserMembershipServer({reportStudio:reportStudio.state==='configured'?{runtime:reportStudio.runtime,project:manager.reportStudioProject}:{unavailable:reportStudio.state},store:manager.store,workspace:manager.workspace,open:manager.open,formalMember:manager.formalMember,service:{credential:identity.credential,check:identity.check,stop:close,projects:manager.projects,receipt:manager.receipt,select:manager.select,settings:settings.request}});
+  if(reportStudio.state==='configured')reportStudio.runtime.connectOwner(createPersonalReportStudioOwner({origin:()=>{if(!server)throw Object.assign(Error('RS_OWNER_UNAVAILABLE'),{code:'RS_OWNER_UNAVAILABLE'});return server.origin;},project:manager.reportStudioOriginal}));
+  identity.publish(server.origin);return {origin:server.origin,close,lifecycle:async()=>reportStudio.state==='configured'?reportStudio.runtime.lifecycle():{intent:'none' as const,pending:false,request_count:0,configuration_unknown:false,operations:[]},exitIntent:async(intent:'wait'|'stop'|'cancel')=>reportStudio.state==='configured'?reportStudio.runtime.exitIntent(intent):undefined,async open(){const response=await fetch(server!.origin+'/v1/service/open',{method:'POST',headers:{'x-xanthil-service':identity.credential,'content-type':'application/json'},body:'{}',signal:AbortSignal.timeout(5000),redirect:'error'});if(!response.ok)throw Error('WEB_OPEN_UNAVAILABLE');const value=closed(await response.json(),['token']);if(typeof value.token!=='string'||! /^[a-f0-9]{64}$/.test(value.token))throw Error('WEB_OPEN_UNAVAILABLE');return server!.origin+'/#'+value.token;}};
  }catch(error){await close();throw error;}
 }

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015221606704-WBYJJJ",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-15T22:16:06.704Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14052-87a4-7773-94ff-beabac69eba4"
+  },
+  "summary": "User approves installation-request-002 Mini-only install/start/Keynote synthetic acceptance; no Provider or other-machine/Git authority",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016031734765-RHOZ3Q",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T03:17:34.765Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a142aa-2a0b-7e41-aa03-ed1898b3a194"
+  },
+  "summary": "native008已安装；追加MiMo框架INVALID_TOOL失败，全部证据和Provider次数边界保留",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

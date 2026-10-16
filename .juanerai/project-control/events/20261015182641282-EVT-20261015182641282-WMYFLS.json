@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015182641282-WMYFLS",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-15T18:26:41.282Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14052-87a4-7773-94ff-beabac69eba4"
+  },
+  "summary": "Offline fixed-SDK main/image ledger and effect admission passed; preview undeclared request RED to GREEN, execution routes remain closed",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -21,6 +21,13 @@ test('BF-R01 E01-d: fragment is cleared before exchange; invalid and rejected li
  for(const hash of ['#invalid','#'+token,'']){events.length=0;loaded=0;assert.equal(await bootstrapWorkspace({...common,location:{hash,pathname:'/'},request:async()=>new Response('{}',{status:401})}),false);assert.equal(loaded,0);assert.deepEqual(events,['clear:/']);}
 });
 
+test('RS-RETURN-01 bootstrap keeps source identity in memory while removing URL fragment/query before authenticated load',async()=>{
+ const project='00000001-1111-4111-a111-111111111111',task='00000002-1111-4111-a111-111111111111',events:string[]=[],search=`?report-studio-project=${project}&report-studio-task=${task}&report-studio-revision=1`;let loaded=0;
+ const deps={history:{replaceState(_data:unknown,_unused:string,url?:string|URL|null){events.push(String(url));}},status(_text:string){},request:async(path:string)=>{assert.deepEqual(events,['/']);assert.equal(path,'/v1/session');return new Response(JSON.stringify({service:true}),{status:200});},load:async()=>({async startWorkspace(input:unknown){loaded++;assert.deepEqual(input,{control:null,service:true,reportStudioReturn:{project_id:project,task_id:task,revision:'1'}});}})};
+ assert.equal(await bootstrapWorkspace({...deps,location:{hash:'',pathname:'/',search}}),true);assert.equal(loaded,1);
+ for(const bad of [search+'&control=forbidden',search.replace('revision=1','revision=0'),search+'&report-studio-revision=2']){events.length=0;loaded=0;assert.equal(await bootstrapWorkspace({...deps,location:{hash:'',pathname:'/',search:bad}}),false);assert.equal(loaded,0);}
+});
+
 
 test('BF-R01/07 E01-e: takeover is explicit and uncertain response never restores or persists control',async()=>{
  let posts=0,lost=true;const values=new Map<string,string>();const storage={getItem:(k:string)=>values.get(k)??null,setItem:(k:string,v:string)=>values.set(k,v),removeItem:(k:string)=>values.delete(k)};

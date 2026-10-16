@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016072233484-QV91N2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T07:22:33.484Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1437c-c50c-7160-ac6b-8715b547b142"
+  },
+  "summary": "018整套控制离线24PASS/原账不变，019新候选真实授权待批；Provider禁止线保留",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

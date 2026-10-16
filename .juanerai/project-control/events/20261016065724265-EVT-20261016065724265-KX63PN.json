@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016065724265-KX63PN",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T06:57:24.265Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1437c-c50c-7160-ac6b-8715b547b142"
+  },
+  "summary": "018已授权连续离线工程；整套控制验证与新候选授权准备，Provider禁止",
+  "status_after": "active",
+  "evidence_refs": []
+}

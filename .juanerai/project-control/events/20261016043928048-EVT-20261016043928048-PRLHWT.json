@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016043928048-PRLHWT",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T04:39:28.048Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a142f0-2b7d-7f81-9a74-f881c9ec8e90"
+  },
+  "summary": "RS-DIAG-01离线92PASS，原真实根因UNKNOWN；Provider010待用户，未启动服务/部署/Git",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

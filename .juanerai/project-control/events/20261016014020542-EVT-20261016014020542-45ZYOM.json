@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016014020542-45ZYOM",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-16T01:40:20.542Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14258-8539-70e3-b51c-2dea60a8a016"
+  },
+  "summary": "用户明确暂缓MiMo单独场景，保留两家配置/未消耗B次数；不追认回退或图片接线通过，不增加Provider调用",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -1,3 +1,4 @@
+import {reportStudioHttp,type ReportStudioHttpServices} from './report-studio-http.ts';
 import {reportUserHistory} from '../../packages/product-core/open-analysis-report-review.ts';
 import {readFileSync} from 'node:fs';
 import {createServer, type IncomingMessage, type ServerResponse} from 'node:http';
@@ -50,7 +51,7 @@ function browserOpenTask(task: Omit<OpenStoredTask,'history'> & {history?:OpenSt
 export type BrowserServiceCommands={credential:string;check?():void;stop():Promise<void>;projects():Promise<unknown>;receipt?(id:string):Promise<unknown>;select(input:unknown):Promise<unknown>;settings(input:unknown):Promise<unknown>};
 
 /** Task-owned loopback composition. No provider, credentials, file selection or service activation. */
-export async function startBrowserMembershipServer(deps: {store: BrowserMembershipReadback;workspace?:BrowserWorkspaceCommands;service?:BrowserServiceCommands;formalMember?:ReturnType<typeof import('../../packages/application/browser-membership.ts').createOpenMemberCaseAdmission>;open?:ReturnType<typeof import('../../profiles/personal/open-analysis.ts').createPersonalOpenAnalysisWorkspace>}) {
+export async function startBrowserMembershipServer(deps: {store: BrowserMembershipReadback;reportStudio?:ReportStudioHttpServices;workspace?:BrowserWorkspaceCommands;service?:BrowserServiceCommands;formalMember?:ReturnType<typeof import('../../packages/application/browser-membership.ts').createOpenMemberCaseAdmission>;open?:ReturnType<typeof import('../../profiles/personal/open-analysis.ts').createPersonalOpenAnalysisWorkspace>}) {
   const app = createBrowserMembershipReadbackApplication(deps.store);
   const bootstrap = secret(), session = secret();
   let control=secret(),generation=0,owned=!deps.service,selecting=false;
@@ -74,7 +75,12 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
     if (req.socket.remoteAddress !== '127.0.0.1' || req.headers.host !== origin.slice(7)
       || req.headers.origin !== undefined && req.headers.origin !== origin
       || req.headers['sec-fetch-site'] === 'cross-site') throw new HttpFailure(403);
-    const path = req.url ?? '';
+    const rawPath=req.url??'';
+    // Public shell only: exact non-secret source identity, not a query credential
+    // or a general route/query relaxation. Browser code still authenticates.
+    const uuid='[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}';
+    const sourceReturn=new RegExp('^/\\?report-studio-project='+uuid+'&report-studio-task='+uuid+'&report-studio-revision=[1-9][0-9]{0,63}$').test(rawPath);
+    const path = sourceReturn?'/':rawPath;
     if(deps.service&&path.startsWith('/v1/service/')){
       if(req.method!=='POST'||req.headers.origin!==undefined||req.headers.cookie!==undefined||req.headers['sec-fetch-site']!==undefined||!equal(req.headers['x-xanthil-service'],deps.service.credential))throw new HttpFailure(403);
       const body=await json(req);if(!body||typeof body!=='object'||Array.isArray(body)||Object.keys(body).length)throw new HttpFailure(400);
@@ -87,9 +93,9 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       if(path==='/v1/service/stop'){reply(res,200,{stopping:true});setImmediate(()=>{void deps.service!.stop();});return;}
       throw new HttpFailure(404);
     }
-    const assets:Record<string,[string,string]>={'/':['index.html','text/html'],'/bootstrap.mjs':['bootstrap.mjs','text/javascript'],'/workspace.mjs':['workspace.mjs','text/javascript'],'/client.mjs':['client.mjs','text/javascript'],'/read-json.mjs':['read-json.mjs','text/javascript'],'/styles.css':['styles.css','text/css'],'/quick-analysis-workbench.mjs':['quick-analysis-workbench.mjs','text/javascript'],'/quick-analysis-client.mjs':['quick-analysis-client.mjs','text/javascript'],'/packages/contracts/open-analysis-findings.mjs':['../../packages/contracts/open-analysis-findings.mjs','text/javascript'],'/packages/contracts/open-analysis-recovery.mjs':['../../packages/contracts/open-analysis-recovery.mjs','text/javascript'],'/quick-analysis-workbench.css':['quick-analysis-workbench.css','text/css'],'/assets/logo.png':['../desktop/assets/juanerai-logo-slogan.png','image/png']};
+    const assets:Record<string,[string,string]>={'/':['index.html','text/html'],'/bootstrap.mjs':['bootstrap.mjs','text/javascript'],'/workspace.mjs':['workspace.mjs','text/javascript'],'/client.mjs':['client.mjs','text/javascript'],'/read-json.mjs':['read-json.mjs','text/javascript'],'/styles.css':['styles.css','text/css'],'/report-studio-client.mjs':['report-studio-client.mjs','text/javascript'],'/quick-analysis-workbench.mjs':['quick-analysis-workbench.mjs','text/javascript'],'/quick-analysis-client.mjs':['quick-analysis-client.mjs','text/javascript'],'/packages/contracts/open-analysis-findings.mjs':['../../packages/contracts/open-analysis-findings.mjs','text/javascript'],'/packages/contracts/open-analysis-recovery.mjs':['../../packages/contracts/open-analysis-recovery.mjs','text/javascript'],'/quick-analysis-workbench.css':['quick-analysis-workbench.css','text/css'],'/assets/logo.png':['../desktop/assets/juanerai-logo-slogan.png','image/png']};
     const asset=deps.workspace?assets[path]:undefined;
-    if (!asset&&!/^\/v1\/[a-z0-9/-]+$/.test(path)) throw new HttpFailure(404);
+    if (!asset&&!/^\/v1\/[a-z0-9/-]+$/.test(path)&&!/^\/v1\/report-studio\/[A-Za-z0-9_/-]+$/.test(path)) throw new HttpFailure(404);
     if (req.method !== 'GET' && req.method !== 'POST') throw new HttpFailure(405);
     if (req.method === 'POST' && req.headers.origin !== origin) throw new HttpFailure(403);
     const serve=()=>{res.writeHead(200,{'content-type':asset![1],'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"});res.end(readFileSync(new URL(asset![0],import.meta.url)));};
@@ -113,6 +119,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       if(Reflect.get(body,'generation')!==generation)throw new HttpFailure(409);
       control=secret();owned=true;generation++;reply(res,200,{control,generation});return;
     }
+    if(path.startsWith('/v1/report-studio/')){await reportStudioHttp(req,res,{services:deps.reportStudio,canWrite:owned&&equal(req.headers['x-xanthil-control'],control),json,reply,reject(status):never{throw new HttpFailure(status);}});return;}
     if(deps.service){
       const projectReceipt=/^\/v1\/projects\/commands\/([a-f0-9-]{36})$/.exec(path);if(projectReceipt&&req.method==='GET'){reply(res,200,await deps.service.receipt?.(projectReceipt[1])??null);return;}
       if(path==='/v1/projects'&&req.method==='GET'){reply(res,200,await deps.service.projects());return;}

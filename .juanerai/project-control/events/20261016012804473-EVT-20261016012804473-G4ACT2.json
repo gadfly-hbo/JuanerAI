@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016012804473-G4ACT2",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-10-16T01:28:04.473Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14238-6be2-71a3-a64b-cf105f13475b"
+  },
+  "summary": "图片和标题修改通过；原生界面/收尾通过但物理中断未证实；等待B本人配置/正常UI测试安排决定，保留全部停止线",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

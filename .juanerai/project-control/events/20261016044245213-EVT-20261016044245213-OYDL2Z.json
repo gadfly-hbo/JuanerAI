@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016044245213-OYDL2Z",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T04:42:45.213Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a142f0-2b7d-7f81-9a74-f881c9ec8e90"
+  },
+  "summary": "用户批准010一次限定诊断；固定MiMo/6派发/10分钟/read与框架，不部署不Git",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016011824346-PXETHE",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-16T01:18:24.346Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14238-6be2-71a3-a64b-cf105f13475b"
+  },
+  "summary": "004唯一图片补测通过并收回实图描述/已结算用量；旧未知不清，继续原A未执行范围",
+  "status_after": "active",
+  "evidence_refs": []
+}

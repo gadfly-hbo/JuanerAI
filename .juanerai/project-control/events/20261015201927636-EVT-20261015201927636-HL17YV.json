@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015201927636-HL17YV",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-15T20:19:27.636Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14052-87a4-7773-94ff-beabac69eba4"
+  },
+  "summary": "Report Studio owner loss/version guards and real UNKNOWN UI subset GREEN; execution and external-effect stop lines retained",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -8,8 +8,8 @@ export default defineConfig({
     // Main and Preload changes become active only after an explicit restart.
     watch: null,
     lib: {
-      entry: 'apps/desktop/main.ts',
-      fileName: () => '[name].cjs',
+      entry: process.env.JUANERAI_REPORT_STUDIO_PACKAGE==='1'?'apps/browser/installed-main.ts':'apps/desktop/main.ts',
+      fileName: () => process.env.JUANERAI_REPORT_STUDIO_PACKAGE==='1'?'main.cjs':'[name].cjs',
       formats: ['cjs'],
     },
     rollupOptions: {

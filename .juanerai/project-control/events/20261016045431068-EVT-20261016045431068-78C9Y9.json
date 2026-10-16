@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016045431068-78C9Y9",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T04:54:31.068Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a142f0-2b7d-7f81-9a74-f881c9ec8e90"
+  },
+  "summary": "010唯一场景5MiMo/4read范围停止；16384未知保留，原根因UNKNOWN；进程端口已退出，不部署Git",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

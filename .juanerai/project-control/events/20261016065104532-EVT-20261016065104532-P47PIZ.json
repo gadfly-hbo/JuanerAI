@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016065104532-P47PIZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T06:51:04.532Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1436e-2e60-7893-a6b4-434d212245a3"
+  },
+  "summary": "017离线接缝/封装/Mini更新完成；实际安装115+2通过，103真实文件/五预算未变，Provider停止线保留",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

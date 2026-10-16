@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016063500305-2SRPLJ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T06:35:00.305Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1435d-8065-7922-bedd-c2ad022a8d2e"
+  },
+  "summary": "016离线控制关键FAIL，按批准停止线停止真实准入；Provider0/场景未消耗，需另决源码/安装接缝修复，保留所有失败与旧未知",
+  "status_after": "active",
+  "evidence_refs": []
+}

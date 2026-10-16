@@ -1,0 +1,19 @@
+// Actual normal host HTTP/bootstrap/browser. One explicitly synthetic analysis,
+// no supplier bundle activation, Provider, real files, installation or deployment.
+import {test} from 'node:test';import assert from 'node:assert/strict';import {mkdtemp,realpath,rm,mkdir,writeFile} from 'node:fs/promises';import {join} from 'node:path';import {tmpdir} from 'node:os';import {randomUUID} from 'node:crypto';import {pathToFileURL} from 'node:url';
+import {createPersonalOpenAnalysisWorkspace} from '../../profiles/personal/open-analysis.ts';
+import {startBrowserMembershipServer} from '../../apps/browser/local-server.ts';
+const supplier=process.env.JUANERAI_REPORT_STUDIO_SOURCE,evidence=process.env.JUANERAI_REPORT_STUDIO_BROWSER_EVIDENCE;assert(supplier&&evidence);const {chromium}=await import(pathToFileURL(join(supplier,'node_modules/playwright/index.mjs')).href);
+test('RS-RETURN-01 real authenticated host opens only exact saved source; invalid project/revision never creates or recomputes',async t=>{
+ const root=await realpath(await mkdtemp(join(tmpdir(),'studio-return-host-'))),projectId=randomUUID(),taskId=randomUUID();let calls=0;
+ const open=createPersonalOpenAnalysisWorkspace({projectRoot:root,project_id:projectId,inspect:async()=>assert.fail('no files'),authorizeConfiguration:async()=>({config_sha256:'b'.repeat(64)}),runtime:{async run(){calls++;return {text:JSON.stringify({kind:'answer',text:'仅合成原分析回复；返回不会重新计算。'}),tools:[]};}}});await open.submit({version:'1.0',command_id:taskId,question:'精确返回的合成来源',confirmed:true,sources:[]});await open.collect();assert.equal(open.read(taskId).state,'saved');
+ const host=await startBrowserMembershipServer({store:{},workspace:{},open}),browser=await chromium.launch(),context=await browser.newContext({viewport:{width:1440,height:900}}),page=await context.newPage();t.after(async()=>{await mkdir(evidence,{recursive:true});await page.screenshot({path:join(evidence,'last-state.png'),fullPage:true});await writeFile(join(evidence,'last-state.html'),await page.content());await browser.close();await host.close();await open.close();await rm(root,{recursive:true,force:true});});
+ const errors=[],writes=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',request=>{if(request.method()==='POST'&&!request.url().endsWith('/v1/bootstrap'))writes.push(request.url());});
+ await page.goto(host.origin+'/#'+host.bootstrap);await page.getByRole('button',{name:/精确返回的合成来源/}).waitFor({timeout:5000});
+ const target=(project=projectId,revision='1',task=taskId)=>host.origin+`/?report-studio-project=${project}&report-studio-task=${task}&report-studio-revision=${revision}`;
+ await page.goto(target());await page.getByText(/已返回来源分析版本 1/).waitFor({timeout:5000});assert(!page.url().includes('report-studio-'),'identity consumed from URL into memory before workspace load');
+ const dialog=page.getByRole('dialog');if(await dialog.isVisible())await dialog.getByRole('button',{name:'返回',exact:true}).click();await page.getByText('仅合成原分析回复；返回不会重新计算。',{exact:true}).filter({visible:true}).first().waitFor({timeout:5000});await mkdir(evidence,{recursive:true});await page.screenshot({path:join(evidence,'host-return-source-1440.png'),fullPage:true});
+ await page.goto(target(projectId,'2'));await page.getByText(/返回原分析未完成/).waitFor({timeout:5000});assert.equal(await page.getByText('仅合成原分析回复；返回不会重新计算。',{exact:true}).count(),0);
+ await page.goto(target(randomUUID()));await page.getByText(/原分析项目不匹配/).waitFor({timeout:5000});assert.equal(await page.getByText('仅合成原分析回复；返回不会重新计算。',{exact:true}).count(),0);
+ assert.deepEqual(writes,[]);assert.deepEqual(errors,[]);assert.equal(calls,1);await writeFile(join(evidence,'result.json'),JSON.stringify({source_project:projectId,source_task:taskId,source_revision:'1',synthetic_analysis_calls:calls,provider_calls:0,return_writes:writes,missing_revision:'no_fallback',wrong_project:'no_read_or_create',full_installation:'NOT_RUN'},null,2));
+});
