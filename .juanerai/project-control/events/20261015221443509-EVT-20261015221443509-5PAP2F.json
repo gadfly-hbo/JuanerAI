@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015221443509-5PAP2F",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-10-15T22:14:43.509Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14052-87a4-7773-94ff-beabac69eba4"
+  },
+  "summary": "Concrete fixed Mini native candidate ready; request only additional local install/start/Keynote scope, not repeated dependency authority",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

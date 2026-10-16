@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016052538980-R7GAA1",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T05:25:38.980Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14323-5c36-78c3-bfca-a113680205a3"
+  },
+  "summary": "012更新及离线验收完成；013真实Provider具体授权范围待用户决定",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

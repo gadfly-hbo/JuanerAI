@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016030457508-96VEJ2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T03:04:57.508Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a142aa-2a0b-7e41-aa03-ed1898b3a194"
+  },
+  "summary": "接收用户追加一次MiMo两页补测批准；继续同一Mini工程任务",
+  "status_after": "active",
+  "evidence_refs": []
+}

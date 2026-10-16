@@ -11,14 +11,15 @@ export function developmentEndpoint(packaged: boolean, compiled: unknown): strin
 export function isDevelopmentFrame(url: string, endpoint: string): boolean {
   return url.split('#',1)[0] === endpoint;
 }
-export function prepareDevelopmentRoot(path: string) {
+export function prepareDevelopmentRoot(path: string,kind:'development'|'installed-browser'='development') {
   if (!isAbsolute(path) || resolve(path) !== path) throw new Error('Development root must be an absolute normalized path');
   mkdirSync(path, {recursive:true, mode:0o700});
   // Do not turn an existing unrelated directory or symlink into a dev workspace.
   if (realpathSync(path) !== path) throw new Error('Development root must not use symlinks');
-  const marker = join(path,'.xanthil-development-root');
-  if (readdirSync(path).length === 0) writeFileSync(marker,'xanthil-desktop-development-v1\n',{flag:'wx',mode:0o600});
-  if (readFileSync(marker,'utf8') !== 'xanthil-desktop-development-v1\n') throw new Error('Not a development workspace');
+  if(!['development','installed-browser'].includes(kind))throw new Error('Unknown workspace kind');
+  const marker = join(path,kind==='development'?'.xanthil-development-root':'.juanerai-installed-browser-root'),identity=kind==='development'?'xanthil-desktop-development-v1\n':'juanerai-installed-browser-v1\n';
+  if (readdirSync(path).length === 0) writeFileSync(marker,identity,{flag:'wx',mode:0o600});
+  if (readFileSync(marker,'utf8') !== identity) throw new Error('Not a development workspace');
   for (const name of ['user-data','cache','logs','Projects']) {
     const child=join(path,name);mkdirSync(child,{recursive:true,mode:0o700});
     if(realpathSync(child)!==child)throw new Error('Development directory must not use symlinks');

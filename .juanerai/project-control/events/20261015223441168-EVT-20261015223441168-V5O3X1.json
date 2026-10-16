@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015223441168-V5O3X1",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T22:34:41.168Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14052-87a4-7773-94ff-beabac69eba4"
+  },
+  "summary": "Mini native trial found PptxGenJS XLSX table-range defect; causal RED/GREEN and real Keynote edits verified, full candidate pending",
+  "status_after": "active",
+  "evidence_refs": []
+}

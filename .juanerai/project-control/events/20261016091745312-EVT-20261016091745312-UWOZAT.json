@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016091745312-UWOZAT",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T09:17:45.312Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a143fd-92d7-7d12-98ee-b8e7d61b9d25"
+  },
+  "summary": "用户明确恢复Mini有界离线工程025；原021/023失败和UNKNOWN/预留保留，原方案/UI审查复用，不授真实调用或安装发布。",
+  "status_after": "active",
+  "evidence_refs": []
+}

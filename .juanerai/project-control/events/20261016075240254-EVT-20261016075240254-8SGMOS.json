@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016075240254-8SGMOS",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T07:52:40.254Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a143ac-3a6e-7492-aa1e-091c3e2e4342"
+  },
+  "summary": "用户授权020离线评估与授权稿准备；未授权真实调用或控制实现，不清账/部署/Git",
+  "status_after": "active",
+  "evidence_refs": []
+}

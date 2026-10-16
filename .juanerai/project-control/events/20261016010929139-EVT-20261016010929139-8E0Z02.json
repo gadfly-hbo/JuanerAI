@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016010929139-8E0Z02",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-16T01:09:29.139Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14238-6be2-71a3-a64b-cf105f13475b"
+  },
+  "summary": "004已批准，图片实际首包/14图片与64供应测试通过；旧未知保留，固定新包与完整回归进行中",
+  "status_after": "active",
+  "evidence_refs": []
+}

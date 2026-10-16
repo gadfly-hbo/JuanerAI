@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016141157128-LKY43G",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-10-16T14:11:57.128Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a144df-9d81-7343-a8b0-bbba1f515f76"
+  },
+  "summary": "032 normal integration evidenced; native Keynote page2 overlap FAIL; stopped normally, all history preserved; waiting033 explicit correction permission",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

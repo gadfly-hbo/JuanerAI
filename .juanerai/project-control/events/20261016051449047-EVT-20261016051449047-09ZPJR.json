@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016051449047-09ZPJR",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T05:14:49.047Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14315-6d8d-7cf3-a8d0-06046b3a765a"
+  },
+  "summary": "011接续明确复用有效安装授权，新增真实Provider仍另确认",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

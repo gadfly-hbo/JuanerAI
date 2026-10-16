@@ -1,0 +1,68 @@
+{
+  "schema_version": "1",
+  "name": "buffers",
+  "version": "0.1.1",
+  "declared_package_license": null,
+  "upstream_license_declaration": "MIT/X11",
+  "resolved_spdx": "MIT",
+  "license_commit": "1b745ee35d33eb166e15ef1866073a07c6d7de87",
+  "license_commit_author": "James Halliday",
+  "license_commit_url": "https://github.com/bitpay/node-buffers/commit/1b745ee35d33eb166e15ef1866073a07c6d7de87",
+  "copyright_text_source": "https://sources.debian.org/copyright/license/node-buffers/0.1.1-2/",
+  "notice_sha256": "07c8215a9a8fa4d4b4be18ab2b8748fd95870916789ba1e2238ed997bc3364a2",
+  "bundled_files": [
+    {
+      "path": "README.markdown",
+      "bytes": 2757,
+      "sha256": "99e8a68c4949c4cbe64b480c8717fb616d1d78ea7715c0e394a5186e6c3a5ace",
+      "upstream_sha256": "3d43971a444ee578cefe75c5a532ad0e5e7bd7492ed6721545f2cc712d0c0c90",
+      "upstream_url": "https://raw.githubusercontent.com/bitpay/node-buffers/1b745ee35d33eb166e15ef1866073a07c6d7de87/README.markdown",
+      "relation": "license-declaration-only-addition"
+    },
+    {
+      "path": "examples/slice.js",
+      "bytes": 224,
+      "sha256": "8bff15364cb53bc2c6523dbec1dea1017696eb8b59fdf4c8d7cd31eea3a3750b",
+      "upstream_sha256": "8bff15364cb53bc2c6523dbec1dea1017696eb8b59fdf4c8d7cd31eea3a3750b",
+      "upstream_url": "https://raw.githubusercontent.com/bitpay/node-buffers/1b745ee35d33eb166e15ef1866073a07c6d7de87/examples/slice.js",
+      "relation": "exact"
+    },
+    {
+      "path": "examples/splice.js",
+      "bytes": 366,
+      "sha256": "edf9fc9a0cfab7ed73edfff9a1409e65918b8f2cd34eeef04b3c6a1838ffc1cb",
+      "upstream_sha256": "edf9fc9a0cfab7ed73edfff9a1409e65918b8f2cd34eeef04b3c6a1838ffc1cb",
+      "upstream_url": "https://raw.githubusercontent.com/bitpay/node-buffers/1b745ee35d33eb166e15ef1866073a07c6d7de87/examples/splice.js",
+      "relation": "exact"
+    },
+    {
+      "path": "index.js",
+      "bytes": 7057,
+      "sha256": "97801e296ba5f3c32242f647e1daac5917e300367fed7935ab1e62f40adb1b8a",
+      "upstream_sha256": "97801e296ba5f3c32242f647e1daac5917e300367fed7935ab1e62f40adb1b8a",
+      "upstream_url": "https://raw.githubusercontent.com/bitpay/node-buffers/1b745ee35d33eb166e15ef1866073a07c6d7de87/index.js",
+      "relation": "exact"
+    },
+    {
+      "path": "package.json",
+      "bytes": 424,
+      "sha256": "7091616d3b687b0de9dfbc6a1f8ab61e01742a3ec87f977bef64d1f299e231b9",
+      "upstream_sha256": "eb42a43d5b685e6de2f2f4a5e18a70255be72349def7eedf504b912dd908913e",
+      "upstream_url": "https://raw.githubusercontent.com/bitpay/node-buffers/1b745ee35d33eb166e15ef1866073a07c6d7de87/package.json",
+      "relation": "license-declaration-only-addition"
+    },
+    {
+      "path": "test/buffers.js",
+      "bytes": 6548,
+      "sha256": "9d0d9671bde206620d50e08f9f855fe7898efd74727d4b6f0913650ea252997f",
+      "upstream_sha256": "9d0d9671bde206620d50e08f9f855fe7898efd74727d4b6f0913650ea252997f",
+      "upstream_url": "https://raw.githubusercontent.com/bitpay/node-buffers/1b745ee35d33eb166e15ef1866073a07c6d7de87/test/buffers.js",
+      "relation": "exact"
+    }
+  ],
+  "license_declaration_diff": {
+    "README.markdown": "--- bundled/README.markdown\n+++ licensed-upstream/README.markdown\n@@ -120,3 +120,8 @@\n \n Decodes and returns a string from the buffer collection.\n Works just like `Buffer.prototype.toString`\n+\n+license\n+=======\n+\n+MIT/X11\n",
+    "package.json": "--- bundled/package.json\n+++ licensed-upstream/package.json\n@@ -10,5 +10,6 @@\n     },\n     \"engines\" : {\n         \"node\" : \">=0.2.0\"\n-    }\n+    },\n+    \"license\" : \"MIT/X11\"\n }\n"
+  },
+  "scope": "Exact fixed files only; does not change upstream metadata, imply an app-wide legal assurance, or resolve other UNKNOWNs."
+}

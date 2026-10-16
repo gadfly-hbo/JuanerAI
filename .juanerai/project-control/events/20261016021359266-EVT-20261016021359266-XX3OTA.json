@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016021359266-XX3OTA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T02:13:59.266Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1425f-49fe-7fa1-9e8d-30c77d1fe0b6"
+  },
+  "summary": "MiMo小图PASS；B截图后INVALID_REQUEST失败，离线修复不追加Provider场景",
+  "status_after": "active",
+  "evidence_refs": []
+}

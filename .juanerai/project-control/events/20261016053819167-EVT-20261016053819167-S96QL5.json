@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016053819167-S96QL5",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T05:38:19.167Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1432d-a316-7a20-8710-9630393999a4"
+  },
+  "summary": "013已批准但本地403模型前阻断，Provider0/场景未消耗，按停线正常收尾",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

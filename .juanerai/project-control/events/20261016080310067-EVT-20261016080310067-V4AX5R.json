@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016080310067-V4AX5R",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T08:03:10.067Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a143ac-3a6e-7492-aa1e-091c3e2e4342"
+  },
+  "summary": "021明确批准；A离线工程启动，B仅在全部先决验证/冻结后允许一次，不部署/Git",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -7,3 +7,11 @@
 @media(max-width:767px){.topbar{height:auto;min-height:66px;gap:7px;flex-wrap:wrap}.crumb{max-width:calc(100% - 60px);flex-basis:calc(100% - 60px)}.mode-switch{margin-right:auto}.task-header{display:block}.task-header h1{font-size:21px}.task-header>.btn{margin-top:10px}.home-wrap{padding:22px 18px;margin-top:24px}.home-wrap>h1{font-size:25px}.home-wrap .progress-summary{padding:0}.startergrid,.compare{grid-template-columns:1fr}.drawer{width:100%}.composer-footer>span{max-width:100%}.composer-footer>div{margin-left:auto}.result-bars>div{grid-template-columns:70px minmax(50px,1fr) 70px}.message-user{max-width:95%}.entry{gap:5px}.viewtabs{gap:26px}.stagebar{padding:8px 12px}.locked-facts{padding:14px}.report-document .artifactbar{display:block}.card,.analysis-card{padding:14px}.reading-layout{padding:18px}.sidebar-tools .btn{min-height:36px}dialog{padding:18px}.sidebar{max-width:86vw}}
 .sidebar-close{display:none}@media(max-width:1023px){.sidebar-close{display:inline-flex;align-self:flex-end}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Approved Report Studio seam; retain the existing workbench shell and button system. */
+.studio-plugin-row{padding:14px 0;border-top:1px solid var(--border,#dfe3ea);border-bottom:1px solid var(--border,#dfe3ea)}
+.studio-plugin-row h3,.studio-report-row h3{font-size:15px;margin:0 0 6px}
+.studio-material-choice{display:flex;align-items:center;gap:8px;margin:14px 0 6px}
+.dialog-inner details pre{max-height:220px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:13px;padding:10px;background:#f5f6f8}
+.studio-report-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--border,#dfe3ea)}
+.studio-report-row>div{min-width:0;overflow-wrap:anywhere}.studio-reports .fine{overflow-wrap:anywhere}

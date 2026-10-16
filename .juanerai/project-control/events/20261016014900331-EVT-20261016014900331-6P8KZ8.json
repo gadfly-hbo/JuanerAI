@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016014900331-6P8KZ8",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T01:49:00.331Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1425f-49fe-7fa1-9e8d-30c77d1fe0b6"
+  },
+  "summary": "007因果RED四项失败已保留，进入MiMo图像兼容实现",
+  "status_after": "active",
+  "evidence_refs": []
+}

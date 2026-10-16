@@ -660,7 +660,35 @@ const approvedMetricAssetsTsconfig={...approvedSdk041Tsconfig,files:[...approved
 const approvedPiR1R4Manifest={...approvedMetricAssetsManifest,dependencies:{...approvedMetricAssetsManifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.5.1-r1r4.2/d2ba42634e98e356f1d82f5a4fe39fe451d8284e44a64e74c42102bf52922998.tgz'}};
 const approvedReadCarrierManifest={...approvedPiR1R4Manifest,dependencies:{...approvedPiR1R4Manifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.5.1-r1r4.3/e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce.tgz'}};
 const approvedSdk051Manifest={...approvedReadCarrierManifest,dependencies:{...approvedReadCarrierManifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.5.1/3af3f895a2466b7947b9b9b0025231f856e3a5c4773782c9dabd460e924bfad9.tgz'}};
+// Independently literal Report Studio increment; retain every earlier tuple below.
+const reportStudioFiles = [
+  'packages/contracts/report-studio.ts',
+  'adapters/report-studio/bundle.ts',
+  'tests/contract/xanthil-desktop/report-studio-bundle.contract.test.ts',
+  'packages/application/report-studio-source.ts',
+  'tests/unit/xanthil-desktop/report-studio-source.unit.test.ts',
+  'packages/ports/report-studio.ts',
+  'adapters/report-studio/store.ts',
+  'tests/contract/xanthil-desktop/report-studio-store.contract.test.ts',
+  'packages/application/report-studio.ts',
+  'tests/integration/xanthil-desktop/report-studio-workspace.integration.test.ts',
+  'adapters/report-studio/local-access.ts',
+  'tests/integration/xanthil-desktop/report-studio-local-access.integration.test.ts',
+  'adapters/report-studio/gateway.ts',
+  'tests/contract/xanthil-desktop/report-studio-gateway.contract.test.ts',
+  'adapters/report-studio/process.ts',
+  'tests/integration/xanthil-desktop/report-studio-process.integration.test.ts',
+  'profiles/personal/report-studio.ts',
+  'tests/integration/xanthil-desktop/report-studio-profile.integration.test.ts',
+  'apps/browser/report-studio-http.ts',
+  'tests/integration/xanthil-desktop/report-studio-http.integration.test.ts',
+  'adapters/report-studio/policy.ts',
+  'tests/contract/xanthil-desktop/report-studio-policy.contract.test.ts',
+  'apps/browser/installed-main.ts',
+];
+const approvedReportStudioTsconfig={...approvedMetricAssetsTsconfig,files:[...approvedMetricAssetsTsconfig.files,...reportStudioFiles]};
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedReportStudioTsconfig,approvedP5RepositoryConfigurationFiles))return 'ReportStudioIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedMetricAssetsTsconfig,approvedP5RepositoryConfigurationFiles))return 'Sdk051FormalAdoption' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedReadCarrierManifest,approvedMetricAssetsTsconfig,approvedP5RepositoryConfigurationFiles))return 'PiReadCarrierRepair' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedPiR1R4Manifest,approvedMetricAssetsTsconfig,approvedP5RepositoryConfigurationFiles))return 'PiR1R4Repair' as const;
@@ -3499,7 +3527,7 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
   assert.equal(assertApprovedConfigurationTuple(approvedDevelopmentManifest,approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles),'Change004');
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'Sdk051FormalAdoption');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'ReportStudioIntegration');
 });
 
 
@@ -3892,4 +3920,18 @@ test('PiR1R4 exact fixed adoption retains historical tuples and rejects replacem
  for(const path of ['^0.5.1','file:vendor/pi-agent-runtime/0.5.1-r1r4.2/'+ '0'.repeat(64)+'.tgz','file:/tmp/alternate.tgz'])assert.throws(()=>check({...approvedPiR1R4Manifest,dependencies:{...approvedPiR1R4Manifest.dependencies,'pi-agent-runtime':path}},approvedMetricAssetsTsconfig));
  assert.throws(()=>check(approvedPiR1R4Manifest,{...approvedMetricAssetsTsconfig,files:approvedMetricAssetsTsconfig.files.slice(1)}));assert.throws(()=>check(approvedPiR1R4Manifest,{...approvedMetricAssetsTsconfig,files:[...approvedMetricAssetsTsconfig.files,'unapproved.ts']}));
  const original=JSON.parse(await readFile(join(repositoryRoot,'package-lock.json'),'utf8'));assertApprovedLock(original,true,true,true,true,true);for(const [field,value]of [['version','0.5.2'],['version','0.5.1-r1r4.3'],['integrity','unapproved'],['resolved','file:/tmp/alternate.tgz']]){const lock=structuredClone(original);lock.packages['node_modules/pi-agent-runtime'][field!]=value;assert.throws(()=>assertApprovedLock(lock,true,true,true,true,true));}
+});
+
+
+test('RS-CI-01 exact Report Studio roots extend fixed SDK051 without accepting partial or extra tuples',()=>{
+ const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedSdk051Manifest,config,approvedP5RepositoryConfigurationFiles);
+ assert.equal(check(approvedReportStudioTsconfig),'ReportStudioIntegration');
+ assert.equal(check(approvedMetricAssetsTsconfig),'Sdk051FormalAdoption');
+ for(const file of reportStudioFiles){
+  assert.throws(()=>check({...approvedReportStudioTsconfig,files:approvedReportStudioTsconfig.files.filter(p=>p!==file)}));
+  assert.throws(()=>check({...approvedReportStudioTsconfig,files:[...approvedReportStudioTsconfig.files,file]}));
+  assert.throws(()=>check({...approvedReportStudioTsconfig,files:approvedReportStudioTsconfig.files.map(p=>p===file?'unapproved.ts':p)}));
+ }
+ assert.throws(()=>check({...approvedReportStudioTsconfig,files:[...approvedMetricAssetsTsconfig.files,...reportStudioFiles.toReversed()]}));
+ assert.throws(()=>check({...approvedReportStudioTsconfig,files:[...approvedReportStudioTsconfig.files,'unapproved.ts']}));
 });

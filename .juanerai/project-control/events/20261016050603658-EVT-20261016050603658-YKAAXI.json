@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016050603658-YKAAXI",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T05:06:03.658Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14315-6d8d-7cf3-a8d0-06046b3a765a"
+  },
+  "summary": "011离线修复授权接续，保留所有UNKNOWN与旧账本",
+  "status_after": "active",
+  "evidence_refs": []
+}

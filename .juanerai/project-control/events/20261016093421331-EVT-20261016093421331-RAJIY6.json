@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016093421331-RAJIY6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T09:34:21.331Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a143fd-92d7-7d12-98ee-b8e7d61b9d25"
+  },
+  "summary": "025离线临时控制修正及40项适用验证通过，真实114文件/五预算和产品安装不变。026建议0Provider补剩余本地导出/查看待审，原FAIL/UNKNOWN/预留与正式Gates保留；未真实启动/安装/部署/Git。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

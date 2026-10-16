@@ -1,0 +1,5 @@
+# RS-BROWSER-01：真实内置Studio的浏览器会话和精确项目
+
+对应RUI01/04与AC05/10。仅内置构建在挂载既有React工作台之前消费宿主签发的一次性bootstrap。token只经URL fragment进入本次页面内存，立即移除fragment，不入localStorage、query、日志或后续请求URL。以相同Origin JSON请求换取HttpOnly cookie；失败不挂载工作台，显示返回JuanerAI重新打开的说明。已有有效cookie可刷新，无需重复创建项目/模型调用。
+
+打开明确project参数时必须选择该项目；不存在则显示项目不可用，不默认打开列表中的另一项目。普通项目切换和独立新建仍保留。此增量先验证会话和定位，不冒充来源条/回传/完整制作权限UI已经完成。独立上游构建不启用此bootstrap行为。

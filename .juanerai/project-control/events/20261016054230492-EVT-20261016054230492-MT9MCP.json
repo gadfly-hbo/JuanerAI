@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016054230492-MT9MCP",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T05:42:30.492Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14339-96e4-7902-b0a7-3272527dde99"
+  },
+  "summary": "014用户授权离线入口403诊断/修复，013批准保留但本轮禁止真实调用",
+  "status_after": "active",
+  "evidence_refs": []
+}

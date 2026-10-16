@@ -469,15 +469,17 @@ test('SDK040-04 cancellation and revoked grant cannot publish a late physical re
  assert.equal(published,false);assert.equal(ledger.read(identity.task_id).length,1);assert.equal(ledger.read(identity.task_id)[0].publishable,false);assert.equal(createPersistentRuntimeState({projectRoot:root}).readAudit(identity.task_id).filter(e=>e.kind==='model.admitted').length,1);
 });
 
-test('SDK041-01 durable uncapped accounting preserves known input, over-limit output and unknown reservations across reopen',async()=>{
+test('SDK041-01 durable uncapped accounting preserves known input, over-limit output and unknown reservations across reopen',async t=>{
+ let elapsed=0;t.mock.method(performance,'now',()=>elapsed);
  const root=mkdtempSync(join(browserEvidenceRoot,'uncapped-durable-'));
  const limits={cumulative:'unlimited' as const,maxOutputTokens:4096,modelTimeoutMs:30000,toolTimeoutMs:60000,controlTimeoutMs:10000};
  const state=createPersistentRuntimeState({projectRoot:root});assert.equal(typeof state.budgets.claimUncapped,'function');
  const lease=await state.budgets.claimUncapped!('uncapped-task','run-1','configuration',limits);
  const first=await lease.reserveModelUpTo!(10);await lease.settleModelUsage(first,{inputTokens:37,outputTokens:12});
- await lease.reserveModelUpTo!(8);await lease.reserveTool(3);await lease.release(100);
+ await lease.reserveModelUpTo!(8);await lease.reserveTool(3);elapsed=144;await lease.release(100);
  const next=await createPersistentRuntimeState({projectRoot:root}).budgets.claimUncapped!('uncapped-task','run-2','configuration',limits);
- assert.deepEqual(next.snapshot(),{modelCalls:2,toolCalls:1,inputTokens:37,outputTokens:20,reservedOutputTokens:8,resourceUnits:5,activeMs:100});
+ // release charges the greater of supplied and measured monotonic elapsed time.
+ assert.deepEqual(next.snapshot(),{modelCalls:2,toolCalls:1,inputTokens:37,outputTokens:20,reservedOutputTokens:8,resourceUnits:5,activeMs:144});
  await assert.rejects(state.budgets.claimUncapped!('uncapped-task','conflict','configuration',limits),{reason:'TASK_BUSY'});
  await next.release(0);
  await assert.rejects(state.budgets.claim('uncapped-task','old','configuration',{modelCalls:10,toolCalls:10,outputTokens:100,wallTimeMs:1000}),{reason:'CONFIGURATION_CHANGED'});

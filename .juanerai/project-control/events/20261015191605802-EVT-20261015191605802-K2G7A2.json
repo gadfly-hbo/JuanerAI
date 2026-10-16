@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015191605802-K2G7A2",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-15T19:16:05.802Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14052-87a4-7773-94ff-beabac69eba4"
+  },
+  "summary": "Actual settings/responsive UI and synthetic production Host passed; single-owner and close preflight safeguards in progress; no Provider or deployment",
+  "status_after": "active",
+  "evidence_refs": []
+}

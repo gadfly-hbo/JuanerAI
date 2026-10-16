@@ -1,0 +1,2 @@
+import type {ReportStudioBundleManifest,ReportStudioBundleIdentity} from '../../packages/contracts/report-studio.ts';
+export function buildReportStudioBundle(config:{supplierRoot:string;nodeFile:string;nodeLicense:string;browserRoot:string;output:string;version:string;sourceCommit:string;lockSha256:string;keychainHelper?:string;keychainHelperSha256?:string}):Promise<{manifest:ReportStudioBundleManifest;identity:ReportStudioBundleIdentity;license_review:string}>;

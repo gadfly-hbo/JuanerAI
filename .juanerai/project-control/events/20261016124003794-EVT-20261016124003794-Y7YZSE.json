@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016124003794-Y7YZSE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T12:40:03.794Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a144b2-ac9d-7662-a9d6-214578d39854"
+  },
+  "summary": "进入整体收尾030：执行最终离线检查并准备独立固定候选审查，非接受或发布。",
+  "status_after": "active",
+  "evidence_refs": []
+}

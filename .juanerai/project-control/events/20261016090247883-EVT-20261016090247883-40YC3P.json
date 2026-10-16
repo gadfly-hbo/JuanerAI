@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016090247883-40YC3P",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T09:02:47.883Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a143ac-3a6e-7492-aa1e-091c3e2e4342"
+  },
+  "summary": "022已批准且定向核对+13ms通过；021唯一真实续作4MiMo/6工具及双图结论取得，PPTX保存下载后临时updated_at控制FAIL按首错停止。全部证据/旧未知保留，正常收尾，不追加场景/Provider/安装/部署/Git。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

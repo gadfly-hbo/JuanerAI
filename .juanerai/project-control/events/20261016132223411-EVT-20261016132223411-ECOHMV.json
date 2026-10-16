@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016132223411-ECOHMV",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-16T13:22:23.411Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a144df-9d81-7343-a8b0-bbba1f515f76"
+  },
+  "summary": "032 A+B and own-code bundle rights approved; AC01 user-authorized acceptance without empirical clean-environment proof; no deploy or Git grant",
+  "status_after": "active",
+  "evidence_refs": []
+}

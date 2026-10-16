@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016152903944-VKEVTX",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-16T15:29:03.944Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1454b-7233-7c51-a64d-948d1e6b99d1"
+  },
+  "summary": "036 bounded Git delivery approved; continue original branch with preserved WIP/evidence; no MacBook writes/install/Provider/deploy",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016055526711-7FAHG0",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T05:55:26.711Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14339-96e4-7902-b0a7-3272527dde99"
+  },
+  "summary": "014入口离线修正验证及正常收尾完成，认证不变；Provider禁止线和013批准保留，所有UNKNOWN不关闭",
+  "status_after": "active",
+  "evidence_refs": []
+}

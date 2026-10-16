@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016042214377-W9UFN0",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T04:22:14.377Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a142f0-2b7d-7f81-9a74-f881c9ec8e90"
+  },
+  "summary": "用户继续授权离线三分支排查；不新增Provider、不部署不Git，原FAIL/UNKNOWN保留",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -198,7 +198,7 @@ test('Q11-03/12: unchanged consumed scope does not falsely claim that a follow-u
 for(const action of ['read','task','search'])test('Q11-02/11: late saved read cannot replace newer running conversation or stop passive reply collection ('+action+')',async()=>{
  const {startQuickWorkspace}=await import('../../../apps/browser/quick-analysis-client.mjs');
  const keys=['document','window','sessionStorage','fetch','setInterval','clearInterval'],prior=Object.fromEntries(keys.map(k=>[k,globalThis[k]]));
- const elements=[];const element=()=>{const e={value:'',children:[],append(...items){this.children.push(...items);},replaceChildren(...items){this.children=items;},setAttribute(){},showModal(){},close(){}};elements.push(e);return e;};const listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(name,fn)=>{listeners[name]=fn;}};let poll,dispose,release,releaseTask,hold=false,holdTask=false,writes=0;
+ const elements=[];const element=()=>{const e={value:'',children:[],append(...items){this.children.push(...items);},replaceChildren(...items){this.children=items;},setAttribute(){},addEventListener(){},showModal(){},close(){}};elements.push(e);return e;};const listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(name,fn)=>{listeners[name]=fn;}};let poll,dispose,release,releaseTask,hold=false,holdTask=false,writes=0;
  const task=(revision,state)=>({identity:{task_id:'synthetic-task',revision},question:'问题'+revision,state,source:{sources:[]},checkpoint:null,framework:null,outcome:null,conversation_outcome:state==='saved'?{text:'回复'+revision,kind:'MODEL_CONVERSATION'}:null,preferences:{skill:'general',prompt:'professional'}});let current=task('1','running');
  const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
  const click=dataset=>listeners.click({target:{closest:()=>({type:'button',dataset})}});
@@ -228,7 +228,7 @@ for(const action of ['read','resume','stop','revise','initial'])for(const destin
  const a='11111111-1111-4111-8111-111111111111',b='22222222-2222-4222-8222-222222222222';
  const task=id=>({identity:{task_id:id,revision:'1'},question:id===a?'旧会话A':'新会话B',state:id===a&&action==='resume'?'stopped':id===a&&action==='stop'?'running':'saved',source:{sources:[]},framework:null,outcome:null,conversation_outcome:{text:id===a?'回答A':'回答B',kind:'MODEL_CONVERSATION'}});
  const listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,fn)=>{listeners[n]=fn;}},elements=[];
- const element=()=>{const e={value:'',children:[],append(...x){this.children.push(...x);},replaceChildren(...x){this.children=x;},setAttribute(){},showModal(){},close(){}};elements.push(e);return e;};
+ const element=()=>{const e={value:'',children:[],append(...x){this.children.push(...x);},replaceChildren(...x){this.children=x;},setAttribute(){},addEventListener(){},showModal(){},close(){}};elements.push(e);return e;};
  let hold=false,release,dispose,writes=0;const values=new Map(action==='read'?[['juanerai.open.pending.v1',JSON.stringify({task_id:a})]]:[]);
  const settle=async()=>{for(let i=0;i<16;i++)await new Promise(setImmediate);};const click=dataset=>listeners.click({target:{closest:()=>({type:'button',dataset})}});
  try{
@@ -321,7 +321,7 @@ test('FM-A03: resolved prerequisite clears obsolete blocked projection while pre
 test('Q11-UX-R02: slow passive read survives subsequent timer ticks and publishes reply without Stop or dispatch',async()=>{
  const {startQuickWorkspace}=await import('../../../apps/browser/quick-analysis-client.mjs');
  const keys=['document','window','sessionStorage','fetch','setInterval','clearInterval'],prior=Object.fromEntries(keys.map(k=>[k,globalThis[k]]));
- const listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,fn)=>{listeners[n]=fn;}},element=()=>({value:'',append(){},replaceChildren(){},setAttribute(){},showModal(){},close(){}});
+ const listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,fn)=>{listeners[n]=fn;}},element=()=>({value:'',append(){},replaceChildren(){},setAttribute(){},addEventListener(){},showModal(){},close(){}});
  let poll,dispose,hold=false,reads=0,writes=0;const releases=[];
  const task=state=>({identity:{task_id:'slow-task',revision:'1'},question:'慢速回复',state,source:{sources:[]},framework:null,outcome:null,conversation_outcome:state==='saved'?{text:'自动收回的回复',kind:'MODEL_CONVERSATION'}:null});let current=task('running');
  const settle=async()=>{for(let i=0;i<16;i++)await new Promise(setImmediate);};
@@ -345,7 +345,7 @@ test('Q11-UX-R02: persisted final conversation reply appears even when continuat
 test('Q11-UX-C03: composer answers explicit waiting clarification despite a proposed framework; ordinary plan changes still preview',async()=>{
  const {startQuickWorkspace}=await import('../../../apps/browser/quick-analysis-client.mjs');
  const keys=['document','window','sessionStorage','fetch','setInterval','clearInterval'],prior=Object.fromEntries(keys.map(k=>[k,globalThis[k]]));
- const element=()=>({value:'',append(){},replaceChildren(){},setAttribute(){},showModal(){},close(){}}),settle=async()=>{for(let i=0;i<24;i++)await new Promise(setImmediate);};
+ const element=()=>({value:'',append(){},replaceChildren(){},setAttribute(){},addEventListener(){},showModal(){},close(){}}),settle=async()=>{for(let i=0;i<24;i++)await new Promise(setImmediate);};
  try{for(const [state,clarification,expected] of [['waiting',{text:'金额单位和币种？'},'revise'],['saved',null,'preview'],['waiting',null,'preview']]){
   const listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,fn)=>{listeners[n]=fn;}},id=crypto.randomUUID(),writes=[];
   const task={identity:{task_id:id,revision:'1'},question:'销售额扣除退款后是多少',state,source:{sources:[]},revision_preview_supported:true,clarification,framework:{plan:{version:'1.1',goal:'销售净额',operation:'sum',source_id:'source',sheet_id:'CSV',column:'C',unit:'待确认',filters:[],group_by:null}}};
@@ -367,7 +367,7 @@ test('R1-UX02: existing unselected projects open normally, project methods load 
  const {startQuickWorkspace}=await import('../../../apps/browser/quick-analysis-client.mjs');
  const keys=['document','window','sessionStorage','fetch','setInterval','clearInterval'],prior=Object.fromEntries(keys.map(k=>[k,globalThis[k]]));
  const elements=[],listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,fn)=>listeners[n]=fn};
- const element=()=>{const e={children:[],append(...x){this.children.push(...x);},replaceChildren(...x){this.children=x;},setAttribute(){},showModal(){},close(){}};elements.push(e);return e;};let selected=false,methods=0,writes=0;
+ const element=()=>{const e={children:[],append(...x){this.children.push(...x);},replaceChildren(...x){this.children=x;},setAttribute(){},addEventListener(){},showModal(){},close(){}};elements.push(e);return e;};let selected=false,methods=0,writes=0;
  try{globalThis.document={getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.window={addEventListener(){}};globalThis.sessionStorage={getItem:()=>null};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
  globalThis.fetch=async(path,o)=>{let value;if(path==='/v1/projects')value={projects:[{project_id:'existing',display_name:'现有项目'}],current:null};else if(path==='/v1/projects/select'){assert.equal(JSON.parse(o.body).project_id,'existing');selected=true;writes++;value={control:'project-owned',project:{project_id:'existing',display_name:'现有项目'}};}else if(path.endsWith('/methods')){methods++;if(!selected)return new Response('{}',{status:400});value={skills:[],prompts:[]};}else if(path==='/v1/open-analysis')value=[];else throw Error(path);return new Response(JSON.stringify(value));};
  await assert.doesNotReject(()=>startQuickWorkspace({service:true,control:'service-owned'}));assert.equal(methods,0);assert.equal(writes,0);assert.ok(elements.some(e=>e.textContent==='现有项目'));
@@ -398,7 +398,7 @@ test('R1-UX05: inline detail controls open the real existing drawer without issu
  const {startQuickWorkspace}=await import('../../../apps/browser/quick-analysis-client.mjs');
  const keys=['document','window','sessionStorage','fetch','setInterval','clearInterval'],prior=Object.fromEntries(keys.map(k=>[k,globalThis[k]]));
  const listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,f)=>{listeners[n]=f;}};let dispose,writes=0;
- const element=()=>({value:'',append(){},replaceChildren(){},setAttribute(){},showModal(){},close(){}});
+ const element=()=>({value:'',append(){},replaceChildren(){},setAttribute(){},addEventListener(){},showModal(){},close(){}});
  const task={identity:{task_id:'detail-task',revision:'1'},question:'分析执行失败',state:'failed',source:{sources:[]},framework:null,outcome:null,checkpoint:null,preferences:{skill:'general',prompt:'professional'}};
  const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
  const click=dataset=>listeners.click({target:{closest:()=>({type:'button',dataset})}});
@@ -436,7 +436,7 @@ test('NU01: new analysis clears the old selected-file notice when it clears its 
  const {startQuickWorkspace}=await import('../../../apps/browser/quick-analysis-client.mjs');
  const keys=['document','window','sessionStorage','fetch','setInterval','clearInterval'],prior=Object.fromEntries(keys.map(k=>[k,globalThis[k]]));
  const listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,f)=>{listeners[n]=f;}};let dispose,input,writes=0;
- const element=()=>({value:'',append(){},replaceChildren(){},setAttribute(){},showModal(){},close(){},click(){}});
+ const element=()=>({value:'',append(){},replaceChildren(){},setAttribute(){},addEventListener(){},showModal(){},close(){},click(){}});
  const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
  const click=dataset=>listeners.click({target:{closest:()=>({type:'button',dataset})}});
  try{
@@ -549,7 +549,7 @@ test('MFUI-01: selecting SAP and registry immediately shows selected names witho
  const listeners={},elements=[],app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,f)=>{listeners[n]=f;},querySelector:()=>({focus(){}})};let dispose,writes=0;
  const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
  try{
- globalThis.document={getElementById:()=>app,createElement:()=>{const e={value:'',append(){},replaceChildren(){},setAttribute(){},showModal(){},close(){}};elements.push(e);return e;},head:{append(){}},body:{append(){}}};
+ globalThis.document={getElementById:()=>app,createElement:()=>{const e={value:'',append(){},replaceChildren(){},setAttribute(){},addEventListener(){},showModal(){},close(){}};elements.push(e);return e;},head:{append(){}},body:{append(){}}};
  globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_n,f)=>{dispose=f;}};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
  globalThis.fetch=async(path,o)=>{if(o?.method==='POST')writes++;return new Response(JSON.stringify(path==='/v1/projects'?{projects:[]}:path.endsWith('/metric-assets')?{project_id:'synthetic',candidates:[],current:null}:path.endsWith('/methods')?{skills:[],prompts:[]}:[]));};
  await startQuickWorkspace({control:'owned'});listeners.click({target:{closest:()=>({type:'button',dataset:{action:'project'}})}});await settle();await elements.find(e=>e.textContent==='分析口径').onclick();await settle();
@@ -566,7 +566,7 @@ test('MFUI-03: successful project switch clears private import files and unsent 
  const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
  const action=async(name)=>{listeners.click({target:{closest:()=>({type:'button',dataset:{action:name}})}});await settle();};
  try{
- globalThis.document={getElementById:()=>app,createElement:()=>{const e={value:'',append(){},replaceChildren(){},setAttribute(){},showModal(){},close(){}};elements.push(e);return e;},head:{append(){}},body:{append(){}}};
+ globalThis.document={getElementById:()=>app,createElement:()=>{const e={value:'',append(){},replaceChildren(){},setAttribute(){},addEventListener(){},showModal(){},close(){}};elements.push(e);return e;},head:{append(){}},body:{append(){}}};
  globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_n,f)=>{dispose=f;}};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
  globalThis.fetch=async(path,o)=>{if(o?.method==='POST')writes++;if(path==='/v1/projects/select'){if(failSwitch)return new Response('{}',{status:409});current='second';return new Response(JSON.stringify({control:'owned-second',project:{project_id:'second',display_name:'项目二'}}));}return new Response(JSON.stringify(path==='/v1/projects'?{current,projects:[{project_id:'first',display_name:'项目一'},{project_id:'second',display_name:'项目二'}]}:path.endsWith('/metric-assets')?{project_id:current,candidates:[],current:null}:path.endsWith('/methods')?{skills:[],prompts:[]}:[]));};
  await startQuickWorkspace({control:'owned',service:true});await action('project');await elements.find(e=>e.textContent==='分析口径').onclick();await settle();

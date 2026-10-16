@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016093930814-RBBWZX",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T09:39:30.814Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a143fd-92d7-7d12-98ee-b8e7d61b9d25"
+  },
+  "summary": "用户明确批准026本地续验，Provider/SDK模型工具0；仅启动一次本次服务，HTML/PDF各一次保存下载，三格式只读查看。",
+  "status_after": "active",
+  "evidence_refs": []
+}

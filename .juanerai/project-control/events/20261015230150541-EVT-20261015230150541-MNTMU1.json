@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015230150541-MNTMU1",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-10-15T23:01:50.541Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a141c2-9eeb-7911-a7af-12d3be4d294d"
+  },
+  "summary": "Mini修正版安装复验完成；请求003分别列明Provider/消费与MacBook离线权限，等待用户，不发布Git",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

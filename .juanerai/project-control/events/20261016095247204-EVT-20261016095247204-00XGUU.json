@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016095247204-00XGUU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T09:52:47.204Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1441e-95d0-7e91-908b-d67e877dfbde"
+  },
+  "summary": "确认用户继续Mini工程：027离线修复，复用方案/UI/readiness，保留026及全部旧失败和未知",
+  "status_after": "active",
+  "evidence_refs": []
+}
