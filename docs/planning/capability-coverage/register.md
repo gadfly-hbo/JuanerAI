@@ -1,3 +1,9 @@
+## Report Studio 062 · 2026-10-17（当前）
+
+036融合源码独立验证PASS（实际Sol/high/read-only/never，711.75秒），最终工程接受PASS；canonical17组4837PASS/0FAIL/24历史SKIP、定向136/宿主浏览器3/资源构建4及所有历史保全经独立核实。PR[#91](https://github.com/gadfly-hbo/JuanerAI/pull/91)最终head托管CI、squash和仅Mini安全main同步仍待真实执行，不能提前称Git完成。归档/当前规格在PR实际合并后生效。Mini现装仍034，MacBook本轮未更新且用户免测；AC01用户风险接受/NOT_MEASURED及所有FAIL/UNKNOWN/未知预留保持。C5-09仍局部实现，40稳定ID类别变化0，不关闭S1/S4或整个能力族。
+
+[当前交付/返回点](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-036.md) · [全40ID图](latest.md)。
+
 ## Report Studio 036融合候选 · 2026-10-17（当前）
 
 036融合候选最终canonical17组4861tests/4837PASS/0FAIL/24历史SKIP，exit0/341.84秒；非记录源码与本次开跑身份逐字一致。定向136、实际合成浏览器3和资源/实际Vite构建/VM4项通过，三项UI接线与资源形状因果RED均保留。Main/Preload及内置浏览器入口只作隔离构建，没有重新封装.app/安装/启动现装服务/Provider；Mini仍034，MacBook用户免测且未更新。63原Change材料准备归档，9外部相对链接调整，全部独立报告原字节保持；当前等036独立受影响复核及确切PR head托管CI/实际合并，不提前称主线完成。 C5-09仍为局部实现，最小接入已取得限定接受，完整能力/阶段不升级；40稳定ID整体类别变化0。当前Git/CI集成仍待执行，不能因准备归档宣布正式完成。

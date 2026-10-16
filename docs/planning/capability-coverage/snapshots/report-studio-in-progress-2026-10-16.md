@@ -755,3 +755,10 @@ A01～05/B01～03及C1/C3/C4/C5原稳定ID的批准子范围已取得149独立PA
 ## Report Studio增量058 · 035A Mini现装PASS／Git权限待批
 
 用户仅批准035A；Mini已实际采用固定034通知包，25593应用项/22716模块资源/签名/通知读回PASS，159项原Studio数据及所有旧计量/UNKNOWN/预留保持。原027原件和独立应用/数据备份已读回。1794项非记录源码与034已审快照逐字不变；无新实现/测试，不重跑有效检查。MacBook由用户直接接受且免做034新验证，本轮未访问/更新该机，不伪称同包实测。当前固定候选工程接受PASS；正式Change完成仍待required CI/授权Git集成/适用归档。原分支/HEAD/WIP不变，本轮应用/服务启动、Provider/SDK调用、Git写入、部署均0。036具体Git交付范围待批准，不新增安装/Provider/部署或MacBook写入，全部历史失败/UNKNOWN保留。 C5-09/N11仍IN_PROGRESS、40稳定ID正式累计接受增量0；不声明整个能力族或S1/S4完成。见[035](../../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/notice-install-result-035.md)、[工程接受](../../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/engineering-acceptance.md)、[036](../../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-authorization-036.md)。
+
+
+## Report Studio 062 · 2026-10-17（当前）
+
+036融合源码独立验证PASS（实际Sol/high/read-only/never，711.75秒），最终工程接受PASS；canonical17组4837PASS/0FAIL/24历史SKIP、定向136/宿主浏览器3/资源构建4及所有历史保全经独立核实。PR[#91](https://github.com/gadfly-hbo/JuanerAI/pull/91)最终head托管CI、squash和仅Mini安全main同步仍待真实执行，不能提前称Git完成。归档/当前规格在PR实际合并后生效。Mini现装仍034，MacBook本轮未更新且用户免测；AC01用户风险接受/NOT_MEASURED及所有FAIL/UNKNOWN/未知预留保持。C5-09仍局部实现，40稳定ID类别变化0，不关闭S1/S4或整个能力族。
+
+[全40ID图](../latest.md)；原在研快照与所有时点历史保留。

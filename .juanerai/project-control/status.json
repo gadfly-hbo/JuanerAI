@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "VERIFY",
-    "label": "060：融合候选回归与构建通过／最终矩阵及独立复核准备",
-    "ordinal": 5,
+    "label": "062：融合源码独立PASS／最终head CI与授权交付",
+    "ordinal": 6,
     "total": 7
   },
-  "health": "active",
-  "summary": "036授权交付执行中；实现已保存bfa44ac，固定main5e14913正常合入，四处冲突按双方批准意图修复。新主稿/菜单5项因果回归和定向136、实际合成浏览器3及资源/真实Vite构建夹具4项PASS；首次完整canonical4837PASS/0FAIL/24SKIP，资源更新后的最终矩阵仍运行。63项原Change材料已准备归档，9处外部相对链接调整，全部独立报告原字节不变；归档尚未main集成。所有失败/UNKNOWN/预留保留，无新.app封装、安装、Provider或MacBook操作。",
+  "health": "validating",
+  "summary": "036独立受影响验证PASS，实际Sol/high/read-only/never，3268源码/19收据与ee3c8ec树一致。融合源码Engineering Acceptance PASS；最终17组4837PASS/0FAIL/24历史SKIP。PR91最终head CI/实际merge/仅Mini同步仍待完成。现装Mini034及所有FAIL/UNKNOWN/预留、MacBook免测未更新保持。",
   "current_objective": "report-studio-minimal-integration: approved M01–M10, AC01–14, RUI01–10; independently maintained fixed bundled Studio with free creation and explicit stable delivery.",
-  "next_action": "收齐最终canonical，固定融合源码/归档/证据，经031既有实际Sol/high/read-only通道受影响复核，再PR确切head required CI/squash及Mini安全同步。Git授权有效，无新增真实效果授权。",
+  "next_action": "提交本次实际接受与独立报告记录；功能源码不变读回、推送同PR、确切最终head CI成功后squash及仅Mini安全main同步。不新增安装/Provider/部署或MacBook写入。",
   "blockers": [],
   "milestones": [
     {
@@ -44,12 +44,12 @@
     },
     {
       "id": "independent",
-      "label": "031/033/034 valid reviews retained;036 affected integrated candidate awaiting final review",
-      "status": "active"
+      "label": "031/033/034有效审查保留；036实际受影响独立PASS",
+      "status": "completed"
     },
     {
       "id": "acceptance",
-      "label": "034/035 fixed acceptance retained; integrated source final affected evaluation/CI pending",
+      "label": "034/035包接受保留；036融合源码工程接受PASS，CI/Git待完成",
       "status": "completed"
     }
   ],
@@ -57,7 +57,7 @@
     {
       "id": "controller",
       "label": "Mini Engineering Controller; sole author",
-      "model": "Actual native gpt-6.1-sol/medium; parent danger-full-access/never",
+      "model": "Actual gpt-6.1-sol/high, explicitly user-authorized; same primary danger-full-access/never",
       "status": "active",
       "activation": "036明确Git交付授权，原连续主工程处理集成至安全完成。"
     },
@@ -65,8 +65,8 @@
       "id": "juaner_validator",
       "label": "Independent final Validator",
       "model": "031 actual gpt-6.1-sol/high/read-only/never, configured existing CLI",
-      "status": "waiting",
-      "activation": "036新融合及归档固定后再派既有已批准CLI通道；尚未启动本次评审。"
+      "status": "complete",
+      "activation": "036受影响固定完整候选；既有031CLI例外，实际新turn01a14579-2a90-7af1-88ae-b062424b62ae/Sol-high-read-only-never核实。"
     }
   ],
   "metrics": [],
@@ -343,7 +343,7 @@
     },
     {
       "id": "RS_ENGINEERING_ACCEPTANCE",
-      "label": "PASS for current fixed candidate; formal CI/Git/archive pending",
+      "label": "036融合源码Engineering Acceptance PASS；最终CI/Git待真实完成",
       "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/engineering-acceptance.md",
       "status": "verified"
     },
@@ -358,6 +358,12 @@
       "label": "036 authorized normal integration, scoped RED/GREEN/browser/build, original failures retained",
       "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-036.md",
       "status": "present"
+    },
+    {
+      "id": "RS_INDEPENDENT_036",
+      "label": "036 actual independent PASS; exact frozen integrated source, no new app acceptance",
+      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-036.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -371,7 +377,7 @@
       "id": "RS_RETAINED_ACCEPTANCE_GAPS",
       "label": "历史UNKNOWN/预留及正式交付Gates保留",
       "level": "high",
-      "mitigation": "033限定产品接受、034独立验证及035A Mini现装核对已完成；固定候选工程接受PASS。MacBook由用户免测直接接受，未采用034。本次无新Provider，Git/CI/归档仍未授权或执行。"
+      "mitigation": "033产品接受/034独立及035A现装PASS保留，036融合源码独立与工程接受PASS；用户036已授权Git，最终head CI/merge/同步待执行。旧UNKNOWN/预留不回填，MacBook免测未更新。"
     },
     {
       "id": "RS_HTML_EXPORT_STYLE",
@@ -419,22 +425,28 @@
       "id": "HISTORY_G031_02",
       "label": "正常集成主路径接通；AC12原生质量FAIL，AC14条件未满足",
       "level": "medium",
-      "mitigation": "转历史风险保留，不冒充清账或根因关闭。033实际原生质量和正常集成/关联续作已通过，用户条件式接受满足；原032FAIL永久保留，等待独立受影响补证。"
+      "mitigation": "历史原判定保留；033原生质量与交付2已通过，用户条件式接受满足，033独立补证已通过；036不改历史。"
     },
     {
       "id": "HISTORY_RS_NATIVE_PPTX_OVERLAP_032",
       "label": "032 Keynote第二页遮挡；033新增真实修正待批准",
       "level": "medium",
-      "mitigation": "转历史风险保留，不冒充清账或根因关闭。033实际原生质量和正常集成/关联续作已通过，用户条件式接受满足；原032FAIL永久保留，等待独立受影响补证。"
+      "mitigation": "032原FAIL保留；033已获授权并实际修正通过，独立033补证完成；未来报告质量不保证。"
     },
     {
       "id": "RS_MACBOOK_034_USER_WAIVER",
       "label": "MacBook034新包未安装/实测，用户明确免测直接接受",
       "level": "medium",
       "mitigation": "仅执行035A；不再请求该机同一验证，不伪称MacBook034实测/已安装。本轮无SSH/该机写入，旧027和原限定接受按历史保留。"
+    },
+    {
+      "id": "PRIMARY_EFFORT_VARIANCE_036",
+      "label": "主会话实际Sol/high：用户直接确认授权",
+      "level": "low",
+      "mitigation": "用户针对实际high回读明确“我授权的，没关系”；同一主工程角色/边界不变，旧medium标签差异保留为历史，不再作为未决权限。"
     }
   ],
-  "updated_at": "2026-10-16T16:00:17.574Z",
+  "updated_at": "2026-10-16T16:23:32.106Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1454b-7233-7c51-a64d-948d1e6b99d1"

@@ -278,3 +278,12 @@ NEXT_ACTION_036：035A全部授权动作已完成，见[035结果](notice-instal
 - [ ] PR确切head required CI、squash、Mini安全main同步及交付读回；当前均未声称完成。
 
 NEXT_ACTION_036_FINAL：冻结完整候选及证据，031既有实际Sol/high/read-only通道作受影响独立评估；通过后推进PR/托管CI/实际合并及Mini安全同步，不在里程碑停。原所有FAIL/UNKNOWN/预留、MacBook免测与未同步保持；不新.app封装/安装、Provider或部署。
+
+
+### 062融合源码最终接受（覆盖NEXT_ACTION_036_FINAL）
+
+- [x] 036实际独立Sol/high/read-only/never PASS，原报告完整保存；融合源码Engineering Acceptance PASS。
+- [x] 两条非阻塞建议/原失败和路由限制如实说明，用户授权主会话Sol/high；无功能/规格/测试变化。
+- [ ] PR最终head托管CI、实际squash与Mini安全main同步；待实际结果而非预填PASS。
+
+NEXT_ACTION_036_DELIVERY：连续完成本PR最终记录提交/推送、确切head CI和授权squash/仅Mini安全main同步。归档与当前规格于本PR合并生效；真实结果看GitHub和Mini持久交付回执。旧安装/用户接受不外推新融合.app，禁止新增安装/Provider/部署及MacBook写入。

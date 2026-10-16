@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016161023965-NNX08U",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-16T16:10:23.965Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1454b-7233-7c51-a64d-948d1e6b99d1"
+  },
+  "summary": "ee3c8ec frozen complete3268-source candidate under actual Sol/high/read-only031-route review; draft PR CI in parallel; not merged or deployed",
+  "status_after": "validating",
+  "evidence_refs": []
+}

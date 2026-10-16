@@ -658,3 +658,17 @@ PDF两页原生显示/页码、100/120/135、样式、中文、来源/声明/边
 036融合候选最终canonical17组4861tests/4837PASS/0FAIL/24历史SKIP，exit0/341.84秒；非记录源码与本次开跑身份逐字一致。定向136、实际合成浏览器3和资源/实际Vite构建/VM4项通过，三项UI接线与资源形状因果RED均保留。Main/Preload及内置浏览器入口只作隔离构建，没有重新封装.app/安装/启动现装服务/Provider；Mini仍034，MacBook用户免测且未更新。63原Change材料准备归档，9外部相对链接调整，全部独立报告原字节保持；当前等036独立受影响复核及确切PR head托管CI/实际合并，不提前称主线完成。
 
 首次完整17组4837PASS/0FAIL/24SKIP保持；资源变更后重跑最终矩阵也通过。构建夹具的环境/相对chunk解析/固定计数/Forge配置失败逐项见[036记录](git-delivery-036.md)，不隐藏或算作产品因果RED。原临时源码、输出、命令/退出及截图继续位于同一git-delivery-036/持久根。必要相对链接修正外，旧独立报告和历史失败原字节不改；候选冻结后仅做独立只读评估。
+
+
+## 062：受影响独立PASS及当前连续交付（2026-10-17）
+
+[独立036](independent-validator-result-036.md)完整原文保存，实际Sol/high/read-only/never，exit0/711.75秒。融合固定源码ee3c8ec/tree36bd5db、3268文件和19份收据匹配，合并兼容/资源闭合/测试保留/归档均PASS，无已确认源码阻塞；主工程据此记录融合源码Engineering Acceptance PASS。原031/033/034及全部历史不回填。
+
+独立建议一已落实为准确说明：`merge-seam-red-native-exit-036.json`的`first_failure`是前次tsx环境失败的遗留注释，不能解释本次native RED。native原日志10PASS/3FAIL与独立在内存重建的机械合并反例支持本次UI因果RED；原收据原字节保留。建议二为已披露提交顺序问题，原866字节作者patch及首个空白检查失败不改写、不冒称PASS，也不改全局策略。
+
+Validator只读环境曾拒绝系统Git缓存和ps；一次慢字符diff未取得完成回执，未纳入证据。后续原生Git树/逐行对比完整通过，原失败与进程确认限制保留。它不构成模型/安装/真实服务授权。主会话Sol/high现由用户直接确认授权，旧medium标签不再是待决权限，历史不回填。
+
+PR[#91](https://github.com/gadfly-hbo/JuanerAI/pull/91)已创建并绑定本任务。下一动作是在同PR提交这些实际结论与当前状态，核实功能源码不变，并等待最终head required CI；满足条件才squash及仅Mini安全main同步。当前不新增产品Provider、.app封装/安装、部署或MacBook写入；Mini034现装身份和原159项数据不因源码交付改变。实际合并/同步读回保存在既有持久根git-delivery-036/，不预填未来结果。
+
+
+062补记：首个PR head ee3c8ec的托管Canonical validation已实际success（run38929769782）。追加当前记录会产生新head，必须等待新head CI，不复用旧head替代。状态CLI首次因agent枚举误写completed、第二次因event误写verification_changed拒绝，均在写入前exit1；按既有complete/validation_changed枚举后通过，原两失败收据与输入保留，不改schema/权限或产品代码。
