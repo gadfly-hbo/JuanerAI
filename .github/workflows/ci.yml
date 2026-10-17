@@ -90,7 +90,7 @@ jobs:
               ;;
             affected)
               run_logged affected node "$SCOPE_CHECK" --check-affected "$PR_BASE_SHA"
-              printf 'AFFECTED ONLY: agent configuration checked; product regression and native acceptance NOT RUN\n'
+              printf 'AFFECTED ONLY: agent configuration structure checked; instruction semantics require independent review; product regression and native acceptance NOT RUN\n'
               exit 0
               ;;
             full) ;;
