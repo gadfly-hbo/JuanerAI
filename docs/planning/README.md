@@ -1,5 +1,15 @@
 # JuanerAI Product Planning Index
 
+## 2026-10-17 · Change007 审查保证边界修订：产品／UI批准并冻结
+
+用户已确认将自然中文语义质量交由独立审查与固定样例验收，不再承诺生成／审查共同误判时宿主仍确定性纠正全部中文含义；权限、计算、来源／版本、未审／审后变更阻断、正确有用内容正式交付及原真实质量要求保留。
+[本次审核包](2026-10-17/change007-review-guarantee-boundary/README.md)集中提供产品输入、显式验收差异及必要UI说明／原工作台可点击增量。
+这是实质保证调整，不是“原门槛全不变”的澄清；原样例、原包、旧FAIL／UNKNOWN及108现场不回写。
+用户已回复“审核通过”，批准[本版产品／验收差异／必要UI](2026-10-17/change007-review-guarantee-boundary/approval-record.md)；[Review004](2026-10-17/change007-review-guarantee-boundary/reviews/readiness-review-004.md)仅规划PASS。已审13项原字节不改，正文待审标签为审查前快照，当前采用本批准记录。
+用户现已授权[本次冻结与正式Git发布](2026-10-17/change007-review-guarantee-boundary/freeze-and-release.md)，并由其手动转交[只读接收补充正文](2026-10-17/change007-review-guarantee-boundary/handoff-instructions.md)。本地冻结、实际PR／CI／合并和Mini采用分别以固定清单／发布回执／接收回执核对，不预填结果。
+**108继续锁定；Mini仅只读接收核对后停止，不启动开发、109或真实调用，不换模型。** 本次产品发布不代表007工程／真实质量／正式产品验收通过，也不自动发送消息或恢复旧任务。
+下列原冻结记录保持其历史效力，不由本导航追认实现或重判失败。
+
 ## 2026-10-17 · Change007 正式成果表达增量已批准／冻结
 
 用户已接受[产品增量](2026-10-17/change007-authoritative-delivery/product-addendum-v0.1.md)及

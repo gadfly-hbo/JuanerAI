@@ -1,0 +1,160 @@
+{
+  "package": "C007-GB-20261017-v0.1",
+  "date": "2026-10-17",
+  "kind": "user-approved-product-input-freeze-not-engineering-candidate",
+  "authority": "freeze-and-release.md",
+  "user_approval": "approval-record.md",
+  "review": "reviews/readiness-review-004.md",
+  "current_product": "product-addendum-v0.1.md",
+  "acceptance_delta": "acceptance-delta-v0.1.md",
+  "current_ui": "ui-addendum-v0.3.md",
+  "current_clickable": "clickable/index.html",
+  "handoff": "handoff-instructions.md",
+  "history": "Reviewed input bytes and old labels retained; latest approval/freeze records determine planning status. No historical FAIL or UNKNOWN reclassification.",
+  "stop": "User manual forwarding only. Mini read-only receipt then stop. 108 locked; no109/no implementation/no Provider/no model change; original cases preserved.",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3422,
+      "sha256": "d5f181980fc867c203bec7f9e7e39a5327976f030703a4cd82576d1328c71416"
+    },
+    {
+      "path": "acceptance-delta-v0.1.md",
+      "bytes": 9679,
+      "sha256": "78c0088396a9831118b7d57624c406b579ec543536fbca6818767bed18df73d8"
+    },
+    {
+      "path": "approval-record.md",
+      "bytes": 3015,
+      "sha256": "19cafc2ff993fa97ec465eb013c50f32ea0fb66b34005b8e954c42a629419aa2"
+    },
+    {
+      "path": "attachments/mechanism-interface-assessment108-001.md",
+      "bytes": 35247,
+      "sha256": "9d7d7351ac94f99a095857cabf41935a7fc62e3a3dfc75b384e60ee301018920"
+    },
+    {
+      "path": "attachments/prototype108-result.md",
+      "bytes": 14982,
+      "sha256": "63e766eebee0b7cd11f13180c88edfb87cbdb86e000ca284c5f472c8e34e00d5"
+    },
+    {
+      "path": "clickable/boundary.js",
+      "bytes": 6400,
+      "sha256": "cf3a49747aa9e6ab81081b45de6833cedeccd18e27e2730c97b150e6352480ab"
+    },
+    {
+      "path": "clickable/index.html",
+      "bytes": 1585,
+      "sha256": "e11e2a132af6255b703d0d0779b5a095553833be1f4a03ab034fe29a6aa87f77"
+    },
+    {
+      "path": "freeze-and-release.md",
+      "bytes": 4325,
+      "sha256": "2e2034523c401566d524d032774495d3bb8e8904aa7bb050fcc8fac8ed41eeaa"
+    },
+    {
+      "path": "handoff-instructions.md",
+      "bytes": 6586,
+      "sha256": "1c57ded6fa9307eeebb5fb024a2c3234596c2ca6ffcd51539c4b49161a500733"
+    },
+    {
+      "path": "product-addendum-v0.1.md",
+      "bytes": 13343,
+      "sha256": "d5c5750471135bb6b093b42766acfb7c0a0ffd67e4f4855b23732925eaf3af0e"
+    },
+    {
+      "path": "qa-results.json",
+      "bytes": 1354,
+      "sha256": "acaaa12fcae8898c64533cdbdf8124799f420a1eb629df55285d8e57272c20f5"
+    },
+    {
+      "path": "qa.mjs",
+      "bytes": 8747,
+      "sha256": "7ebff738e16ca6cf193f3421b214cb3538a422e531ef224911f169586f6043da"
+    },
+    {
+      "path": "reviews/readiness-brief-004.md",
+      "bytes": 4572,
+      "sha256": "164ce27105ce40f086d7f8251a9544e67a9539b995775e4ece4315092994f8a5"
+    },
+    {
+      "path": "reviews/readiness-review-004.md",
+      "bytes": 6761,
+      "sha256": "c16845963b4af2d62472779b5f6d6a121437b31ed2c2548411754ed03889fc83"
+    },
+    {
+      "path": "reviews/review-inputs-004.json",
+      "bytes": 2456,
+      "sha256": "72fc92074f7e69a1bdfee06ea4bb60782bc551abcb8e1cd02a6f1cac7f93e606"
+    },
+    {
+      "path": "source-readback.json",
+      "bytes": 5911,
+      "sha256": "10499357b189f43e6856e9c0e5cab03f7da94d3fbb81d0569bca384167379a82"
+    },
+    {
+      "path": "ui-addendum-v0.3.md",
+      "bytes": 6691,
+      "sha256": "379be6eda13a05360591d8caf5f06bcb7fc0740c02787aa504549d00304e9385"
+    },
+    {
+      "path": "verification.md",
+      "bytes": 3139,
+      "sha256": "9784e32bc97cac6d3c1823c7e0ccc1e271b175717f369a3da852906fbf1a8d9f"
+    }
+  ],
+  "inherited_ui_assets": [
+    {
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/reference/accepted-workbench/clickable/style.css",
+      "bytes": 11404,
+      "sha256": "644d009b740e1358634728f3b14b26770d275a2b1fd00e0dde4e7ccaa21f8e37"
+    },
+    {
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/reference/accepted-workbench/clickable/model.js",
+      "bytes": 7550,
+      "sha256": "492183eca1c183837bb678921f68554ca03026084677c56d207030c0194a5398"
+    },
+    {
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/clickable-v0.2/alignment.css",
+      "bytes": 1209,
+      "sha256": "a94314400a044076062cd29f1e944111fae3ab2244169768c4e5e3b2ff5e30a3"
+    },
+    {
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/clickable-v0.2/samples.js",
+      "bytes": 6610,
+      "sha256": "3d583a26ad25e3267500799721d6d5e4ec1873be37983ae19c708ac34d0ce0d4"
+    },
+    {
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/clickable-v0.2/delivery.js",
+      "bytes": 25212,
+      "sha256": "8fa4356178a6413040bd6f472e96e3a4bd13783ed48934d54704bdea5ecaace9"
+    },
+    {
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/clickable-v0.2/workbench.js",
+      "bytes": 44740,
+      "sha256": "b88750a40a76a1e980a2147eebc1bbcf04ea9a4ea38019fd9b75b6a9585afbd6"
+    }
+  ],
+  "retained_packages": [
+    {
+      "package": "C007 original input",
+      "path": "docs/planning/2026-10-13/change007-conclusion-strategy-review/frozen-inputs-2026-10-13.json",
+      "bytes": 6945,
+      "sha256": "262a3244779b711f0939449e3052f4e3e22093fb5a6facdecf51a854fe8325bc",
+      "count": 33,
+      "previous_fixed_commit": "abeb6e97e45fb499f2ca8e358e0481d0c29423d9",
+      "usage": "retained historical bytes; only affected guarantee semantics superseded prospectively"
+    },
+    {
+      "package": "C007-FD-20261017-v0.1",
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/frozen-inputs-2026-10-17.json",
+      "bytes": 8825,
+      "sha256": "84a01c062162f9f3f01b1cb099d091f85291c5d9a6fce3bbbd7cf47f6360d312",
+      "count": 49,
+      "previous_fixed_commit": "abeb6e97e45fb499f2ca8e358e0481d0c29423d9",
+      "usage": "retained historical bytes; only affected guarantee semantics superseded prospectively"
+    }
+  ],
+  "manifest_scope": "files relative to this package; inherited assets and retained manifests repo-relative; manifest itself excluded from recursive hashing"
+}

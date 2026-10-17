@@ -1,0 +1,27 @@
+{
+  "kind": "documentation_static_and_memory_synthetic_only",
+  "result": "PASS",
+  "count": 14,
+  "checks": [
+    "9个旧情境业务内容不变；extra仅改说明，不伪造检测",
+    "原布局与全部原始交互API保留；未换壳层",
+    "新增说明入口及合成成功情境命名不暗示共同误判保底",
+    "完整内容仍有资格；缺项、失败、过期、缺本期资料均不得选择",
+    "运行、停止和UNKNOWN仍不得选择",
+    "完整报告、对话、依据、检查器、人审及导出同含有限判断说明",
+    "专业六阶段仍消费既有交互，必要说明不新增流程",
+    "历史F107与名称说明无采用入口；明确FAIL及原始对象区别",
+    "合成条件回答先失效、再重审；已答未知不重复追问",
+    "编辑保存后旧审查失效；保存失败和未知不冒成功",
+    "2份Mini来源副本字节与固定SHA完全相同",
+    "前包49项冻结身份在工作区及固定发布对象均未改变",
+    "原007的33项冻结身份在工作区及固定发布对象均未改变",
+    "新HTML加载引用及四份产品说明本地链接均可解析"
+  ],
+  "not_run": [
+    "browser layout/click/keyboard/responsive",
+    "production/backend/integration",
+    "Provider/original real-quality cases/QS04",
+    "engineering Validator/required CI"
+  ]
+}
