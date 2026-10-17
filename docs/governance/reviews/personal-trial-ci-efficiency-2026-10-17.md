@@ -54,8 +54,37 @@ Desktop integration 428s; workflow created-to-completed was 8m38s. Original job
 log: 924364 bytes, SHA256
 `eefb7b38b66faaff0f035c2a36881f5ba5581828beccdde23398bcfbf082a5b2`.
 Node 26.0.0/npm 11.12.1/Python 3.12.3/DuckDB 1.5.2, parallelism 4, AMD EPYC
-9V45, CPU quota UNKNOWN. New-lane measurement is pending; this baseline is not
-PR #97's different runner/timing, nor a same-host microbenchmark.
+9V45, CPU quota UNKNOWN.
+
+The implementation PR's head `d1fe80b5a30ec7157624f13be0233508f8c9b935`
+also passed full portable against that old base:
+[run 39025619765](https://github.com/gadfly-hbo/JuanerAI/actions/runs/39025619765),
+job 117375906811, 17 groups and 8 outer commands exit 0. Portable took 868s,
+Desktop integration 753s; the required job took 14m57s. Original job log:
+928206 bytes, SHA256
+`89f2bf81724ab934e3eec13c85584cefeccccff1e7d61938cc7ca7e81d9124f0`.
+Runtime versions/parallelism matched the baseline, CPU AMD EPYC 7763, quota
+UNKNOWN. PR #98 merged as `d3334bb9404440a4def4e5ed392c9ff4d1d3eac4`.
+
+After a normal merge of that trusted base, follow-up head
+`46dc3a081199716e48c8d5a1273a3be1be304896` contains only the Validator text,
+checklist and this record relative to it:
+[run 39026832343](https://github.com/gadfly-hbo/JuanerAI/actions/runs/39026832343),
+job 117379362424, selected affected, `EXIT affected 0`. Created-to-completed
+was 18s (required job 13s, affected command 1s). Original job log: 29815 bytes,
+SHA256 `889e84adfbd5132d6142781bba2c10c1773a01439be4f876300c34b136702595`.
+The log explicitly leaves product regression and native acceptance NOT RUN
+and requires independent instruction review. No full-lane install/runtime
+benchmark exists for this affected run because that lane does not install them.
+
+Thus this actual mapped governance/instruction delivery moved from 8m38s to
+18s overall; it also includes the checklist alignment and updated record in the
+new run. These are different hosted runs, not a same-host microbenchmark or a
+claim that product/full CI became faster. Product runtime, safety, persistence,
+public contracts, unknown scope and CI machinery still require full portable.
+This evidence update is documentary; final current-head CI and independent
+review are recorded against [PR #99](https://github.com/gadfly-hbo/JuanerAI/pull/99),
+not inferred from the earlier head's PASS.
 
 ## Coverage and failure sensitivity
 
@@ -76,8 +105,15 @@ cloud-archive SKIP out of 603 tests. The focused scope/workflow files passed
 159/159; independent scope review reran 118/118. Python full-config and diff
 checks passed. Python 3.9 setup failures were not causal RED; valid RED selected
 full for the eligible text change, and the minimum comparator repair made it
-GREEN. Hosted full regression and final instruction review need their own
-candidate-bound results, not these local subsets.
+GREEN. The full hosted result above covers the implementation candidate;
+the follow-up's required check and independent instruction review retain their
+own candidate identities, not these local subsets.
+
+The `apps`, `adapters`, `packages`, `profiles`, product `tests`, `package.json`
+and lockfile Git objects are identical at the old base, PR #98 merge and measured
+follow-up head. This includes Change007's actual business implementation; the
+changed executable tests belong only to the CI harness. No business behavior,
+product tests or dependency versions were changed to obtain these results.
 
 ## Adoption and preserved scope
 
