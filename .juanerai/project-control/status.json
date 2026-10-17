@@ -6,15 +6,15 @@
     "product": "decision-platform fixed integration"
   },
   "phase": {
-    "id": "INTEGRATION",
-    "label": "012源码保全及主线融合完成；归档/最终CI待核对",
+    "id": "ARCHIVE",
+    "label": "012 Git交付、正式归档及双机main引用同步完成",
     "ordinal": 9,
     "total": 9
   },
-  "health": "validating",
-  "summary": "012接受及具名风险保留；原WIP已提交67441ed、主线融合0cda29b。归档63项，产品代码/SDK不变；尚未PR合并，最终HEAD验证进行中。",
-  "current_objective": "完成012经授权Git交付与正式归档，不改变已批准产品范围。",
-  "next_action": "融合对象验证、归档/规范链接与固定字节检查；最终提交推送PR，确认精确HEAD CI后squash及安全主线同步。无安装/真实Provider/生产权限。",
+  "health": "complete",
+  "summary": "PR100已squash合并f803ddc；最终HEAD b617ff1托管CI与本机融合验证均4936PASS/0FAIL/21SKIP。归档与当前规格已在主线，Mini/MacBook main引用同步完成；原012 BLOCKED/具名风险与历史保留。未安装/真实Provider/生产切换。",
+  "current_objective": "012本次获准Git交付及正式归档已完成；保持原工作分支/固定候选/历史证据，接受及能力范围不扩大。",
+  "next_action": "无当前获准待执行项。原分支HEAD b617ff1保留，主线f803ddc；本次不安装、启动采用或切生产。未来运行/真实Provider/生产另依对应明确授权；归档README和036外部completion回执为返回点。",
   "blockers": [],
   "milestones": [
     {
@@ -48,7 +48,7 @@
       "id": "controller",
       "label": "Mini同一主Agent",
       "model": "Native session; exact model/effort not exposed by readback",
-      "status": "active",
+      "status": "complete",
       "activation": "006r1 UI通过；用户授权固定源码取材并开始推进"
     },
     {
@@ -290,6 +290,24 @@
       "label": "012获准Git交付/归档与最终结果回执入口",
       "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/git-delivery-036.md",
       "status": "present"
+    },
+    {
+      "id": "pr100merged",
+      "label": "PR100实际squash合并f803ddc",
+      "path": "https://github.com/gadfly-hbo/JuanerAI/pull/100",
+      "status": "verified"
+    },
+    {
+      "id": "finalci036",
+      "label": "最终b617ff1托管CI全19组成功、数值退出0",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/git-delivery-036-20261017T110102Z/final-ci-summary.json",
+      "status": "verified"
+    },
+    {
+      "id": "mainsync036",
+      "label": "Mini和MacBook main均ref-only同步到f803ddc",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/git-delivery-036-20261017T110102Z/sync-main.txt",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -312,7 +330,7 @@
       "mitigation": "保留原BLOCKED/danger-full-access及运行时读回限制，不改称角色合规PASS，不扩权限或其他候选。"
     }
   ],
-  "updated_at": "2026-10-17T11:02:40.102Z",
+  "updated_at": "2026-10-17T11:17:26.137Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a14983-c531-7120-89f4-69c3a375efee"
