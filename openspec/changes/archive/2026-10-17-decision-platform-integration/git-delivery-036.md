@@ -5,7 +5,7 @@
 ## 固定接受对象及融合
 
 - 固定012源码manifest `28ce87cbae9f8aa47db8ff85025b9a375d752aac21b4fa9cc6b22302750e387a`，3522项；证据manifest `58eaa98eecc2571690987e57e3146fac11acd779ccbfd6e026f5f0055b92c7b1`，405项；原010/011/012不覆盖。
-- 原基线 `a0b6491ddc4700fef881317f44f2c51c699d8f9c`，原WIP先保全为 `67441ed`，原分支 `work/mac-mini/decision-platform-integration` 不切换。常规merge取得已发布主线 `d3334bb` 的3个提交；融合提交 `0cda29b`。没有rebase、reset或force-push。
+- 原基线 `a0b6491ddc4700fef881317f44f2c51c699d8f9c`，原WIP先保全为 `67441ed`，原分支 `work/mac-mini/decision-platform-integration` 不切换。常规merge取得已发布主线 `d3334bb` 的3个提交；融合提交 `0cda29b`。PR等待期间主线另合入仅Validator说明/清单及CI效率记录的 `a25ec8b`（#99），再以常规merge接入；没有产品/测试/SDK变化，不覆盖正在执行的037输入。没有rebase、reset或force-push。
 - 主线增量为两项工作流政策/CI更新及XLSX兼容修复，唯一重叠自动融合文件为验证入口合同测试，保留主线新增XLSX清单项及012断言。012产品代码、原生参考UI、依赖锁及SDK不作修改；上游c11f8da修复仍归原仓，插件SDK0.4.1/宿主0.5.1不升级。
 - 原始diff-check报告4个EOF空行，涉及固定参考素材/声明与历史工程任务记录；作为原接受字节保留，不以排版清理改动012。它们不是测试PASS或新业务缺陷。
 
