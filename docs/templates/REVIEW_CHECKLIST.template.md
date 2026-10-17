@@ -13,7 +13,7 @@ second full source/test audit after Validator. Link existing evidence.
 
 - [ ] Candidate identity matches what Validator evaluated; material repairs were rechecked.
 - [ ] Material blockers are resolved or have a specific explicit user risk waiver; advisory tidying is not treated as a blocker.
-- [ ] Approved acceptance coverage, causal RED/GREEN, applicable regression/quality and changed-test coverage are supported by the independent review.
+- [ ] Approved acceptance coverage, applicable behavior evidence under the sole policy's Continuous SDD and TDD section, regression/quality and changed-test coverage are supported by the independent review.
 - [ ] Scope, important contract decisions, actual resource limits and permissions remain valid.
 - [ ] Failures, UNKNOWN and unverified/residual risk are disclosed; no new evidence impersonates historical PASS.
 - [ ] Current engineering state and verification refer to the same result; no duplicate per-command status log is required.

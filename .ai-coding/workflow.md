@@ -24,24 +24,22 @@ forecast coverage separately from delivered coverage.
 
 After Mini verifies real intake and authorizes the result-sized work package:
 
-1. The same Mini engineering main Agent writes the minimum behavior spec and necessary design in the existing OpenSpec files:
-   input/output, success/failure, forbidden effects, acceptance reference and
-   material contracts. Resolve load-bearing ambiguity before implementing it.
-2. For that behavior, write and run a test that fails because the behavior is
-   absent; implement the smallest GREEN change; refactor only while GREEN.
-   Repeat this small vertical loop, not a whole-system test-first stage.
-3. Correct code, fixtures and private design locally inside the authorized roots.
-   Check important boundary changes before dependent actions. Run the thinnest
-   real path early and the applicable type/build, contract and regression checks.
-   In adopted v0.9 Mini work, use authorized daily checkpoints/work-branch pushes
-   and the sole policy's Mac mini Trial and User Acceptance section for local
-   user trials.
-4. Freeze the complete candidate and evidence. Independent Validator derives
-   expectations from acceptance first, then verifies real paths, test integrity,
-   boundaries, coverage retirement and evidence in one review.
-5. Repair material findings within the same work package and revalidate the new
-   candidate. Mini records engineering acceptance without repeating full review.
-6. Complete required user Product Acceptance and the concentrated formal Change
+1. Reuse approved goals/UI and name one complete user result in the original
+   Change's thin spec. Keep necessary design explicit; update ordinary behavior,
+   failure and verification in one existing record, not a recreated document suite.
+2. The same primary develops and runs the normal user path from the first runnable
+   thin slice, using representative inputs, actual tools/storage and the target
+   model within existing permissions. Apply the sole policy's Continuous SDD and
+   TDD evidence rules. Keep ordinary feedback, corrections and affected checks in
+   this loop; neither a full offline matrix nor a Validator precedes every trial.
+   Check the exposed path's safety/result, then give its version, entry, steps and
+   gaps for user trial under Mac mini Trial and User Acceptance.
+3. At complete-result closeout, freeze the candidate and concentrate applicable
+   regression and independent acceptance-first verification of real paths and
+   key risks. Repair findings in the same context and recheck affected/collateral
+   risks without restarting unaffected preparation. Mini records engineering
+   acceptance, not a second full review.
+4. Complete required user Product Acceptance and the concentrated formal Change
    PR/required-CI/integration/archive closeout within authorized Git permissions
    in the task's agreed order. Update the cumulative capability register and full
    latest map, preserve the Change snapshot, and show scope/status delta, gaps
@@ -53,13 +51,14 @@ These are work activities, not new approvals. No universal Spec Gate, TDD_READY
 dispatch approval, separate retirement Gate or routine Spec/Test agent handoff.
 Only the main Agent and independent Validator execute Mini engineering. The
 main Agent retains continuous responsibility; there are no optional engineering
-roles. Persist proposal/reference, specs, tasks and verification; retain necessary
-design and actual RED/GREEN evidence. Apply the sole policy's end-of-turn check
+roles. Use the sole policy's thin Mini records and applicable evidence; preserve
+existing specifications and history. Apply the sole policy's end-of-turn check
 before finishing a turn; ordinary progress is not a reason to await a restart.
 
 ## Exceptions by Work Type
 
-Behavior additions and fixes use causal RED before implementation. Pure
+Adopted Mini engineering and assigned MacBook repair use the sole policy's deterministic versus exploration/model-
+quality evidence rules; other work retains causal RED before behavior implementation. Pure
 refactors use pre/post GREEN and relevant equivalence checks. Documentation-only
 work uses scope, consistency and evidence review; no fake RED or product UI work.
 Risk-sensitive checks run before affected dangerous actions, not only at final

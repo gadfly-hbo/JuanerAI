@@ -9,7 +9,7 @@ JuanerAI uses OpenSpec-based SDD/TDD as its development control system. AI may e
 - Human intent and approved specifications define correct behavior.
 - Observable behavior has an approved Change before production implementation.
 - Tests derive from approved Acceptance Criteria.
-- Expected RED precedes production implementation.
+- Apply the sole execution policy's behavior-evidence rules; outside adopted Mini engineering and assigned MacBook repair, expected RED precedes behavior implementation.
 - Implementation changes production code rather than weakening tests.
 - Replaceable infrastructure satisfies Port contract tests.
 - Independent verification precedes acceptance unless a documented risk waiver applies.

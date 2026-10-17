@@ -94,8 +94,8 @@ async function hook(event) {
   const { result } = matches[0];
   if (result.status !== 'CONTINUE') return {};
   if (event.stop_hook_active !== false) return { systemMessage: 'JuanerAI end check: continuation already used or unknown. Do not loop; reconcile the real result and stop boundary.' };
-  return { decision: 'block', reason: 'JuanerAI: the current explicitly bound engineering turn remains active. Read the existing status and OpenSpec tasks/verification, then continue only the next already-authorized safe action. A milestone is not completion. Preserve spec-before-code and causal RED/GREEN; do not invent evidence. If the user paused, authority/resources are missing or there is no safe action, record the real boundary and stop. This reminder grants no new authority.' +
-    (result.missing.length ? ` Missing readable material: ${result.missing.join(', ')}; reconcile existing records, not a new approval pipeline.` : '') };
+  return { decision: 'block', reason: 'JuanerAI: the current explicitly bound engineering turn remains active. Read the existing status and Change result record, then continue only the next already-authorized safe action. A milestone is not completion. Apply the behavior/material/evidence rules in docs/governance/product-change-execution-policy.md; do not invent evidence. If the user paused, authority/resources are missing or there is no safe action, record the real boundary and stop. This reminder grants no new authority.' +
+    (result.missing.length ? ` Legacy material categories not found: ${result.missing.join(', ')}; check necessary existing records under that policy, not a redundant document suite or new approval pipeline.` : '') };
 }
 
 try {

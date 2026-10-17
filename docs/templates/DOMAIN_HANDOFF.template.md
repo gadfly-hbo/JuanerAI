@@ -53,7 +53,7 @@ evidence; this template does not add approvals, stages or per-command quotas.
 ## Evidence Required
 
 - Healthy baseline:
-- Causal expected RED:
+- Applicable behavior evidence under the sole policy (causal RED/GREEN or authorized exploration/model-quality observations):
 - Positive:
 - Negative:
 - Contract:
