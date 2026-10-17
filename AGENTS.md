@@ -68,6 +68,15 @@ For user-initiated JuanerAI plugin integration on Mini, apply that policy's
 product-input preparation and authorized engineering delivery. MacBook is not a
 mandatory planning or approval hop; user decisions and existing Gates remain.
 
+For first-time plugin integration, an assessment of integration compatibility,
+or an upgrade to a fixed plugin version, read the [plugin integration entry](docs/engineering/plugin-integration/README.md)
+before relevant design or changes. Use its standard and applicable acceptance
+checklist; consult the reference Adapter when needed. In existing integration/verification
+records, identify the actual standard commit, applicable items and missing
+materials. If unavailable, do not invent host contracts or claim conformance;
+continue unrelated authorized work. This pointer grants no implementation,
+upgrade, Provider or publication authority.
+
 ## Startup Stop Line
 
 The approved Blueprint v4.2 and retained attachments are referenced from `docs/planning/README.md`. It preserves Change001–004 and the approved in-flight Change005 / N01–N02 package. Follow §5–6: browser plus same-machine service, early real trial then S1 closure, N05/N06 outcome follow-up, then N07/N08 improvement and explicit next-Case adoption; data/semantic dependencies and necessary professional subsets enter by actual need. Desktop-shell delivery is deferred, not deleted or accepted by browser evidence. This revision neither changes in-flight scope nor requires active sessions to adopt it. Close applicable new product decisions under §7 before Product Input Freeze. Every product Change must bind an applicable change-scoped high-fidelity clickable UI Contract and the user's UI Gate PASS before engineering execution. Reuse a still-valid approved Contract; obtain affected user approval for new or materially changed visible behavior. The Contract must make the workflow and acceptance surface directly evaluable by a non-technical user; a backend, Runtime, Adapter or infrastructure label does not bypass this obligation. A Blueprint or development-readiness PASS authorizes only its stated planning result, not OpenSpec, dependencies, implementation, external data, provider calls or schema creation.

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017013531059-CDLIH2",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T01:35:31.059Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14778-e957-74c1-a5b4-9ebd0e259c00"
+  },
+  "summary": "Native R0 review complete with sandbox BLOCKED; user approved this R0 readonly CLI route, freeze and review",
+  "status_after": "validating",
+  "evidence_refs": []
+}

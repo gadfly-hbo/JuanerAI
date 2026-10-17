@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017014004941-EGSK16",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T01:40:04.941Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14778-e957-74c1-a5b4-9ebd0e259c00"
+  },
+  "summary": "R0 local pointer and readonly CLI independent review complete; no Git publication or receiver adoption",
+  "status_after": "complete",
+  "evidence_refs": []
+}

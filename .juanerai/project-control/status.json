@@ -3,142 +3,95 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "JuanerAI reusable plugin integration assets — R0 local review only"
+    "product": "R0 plugin-standard conditional read entry - authorized Git delivery"
   },
   "phase": {
     "id": "VERIFY",
-    "label": "Git delivery005: current candidate review and full CI",
-    "ordinal": 4,
-    "total": 5
+    "label": "Integration006 affected readonly review and new exact-head full CI",
+    "ordinal": 3,
+    "total": 4
   },
   "health": "validating",
-  "summary": "User authorized this task Git delivery. 004 saved unchanged, main abeb6e97 merged normally. Minimal status edits, not yet published. Current candidate review and exact-head full CI pending.",
-  "current_objective": "plugin-integration-consolidation: PIC-A/B/C/D/E R0 documentation and offline reference use",
-  "next_action": "Freeze current candidate, independent affected read-only review, work branch PR/full CI, squash and safe dual-device sync-main; no install/Provider/runtime changes.",
+  "summary": "Latest main advanced during successful first-head CI. Normal merge of bf7814d3 adds only upstream Change007 planning, unchanged rule/policy/assets; own records qualify history. First premerge gate stopped correctly, original full CI result retained. New candidate review and actual CI pending.",
+  "current_objective": "plugin-standard-read-entry REQ-ENTRY01/02/03 and PRESERVE01; scoped rule Git delivery",
+  "next_action": "Freeze integrated R0 candidate, scoped authorized affected readonly CLI review, push existing PR94 and required full CI, exact-head gates then squash/safe dual main ref sync/readback. No Change007 adoption/engineering, product runtime or next plugin.",
   "blockers": [],
   "milestones": [
     {
       "id": "intake",
-      "label": "输入／现行权威／原正式发布／新专用树",
+      "label": "Verified input/current rules/old task/dedicated tree",
       "status": "completed"
     },
     {
-      "id": "assets",
-      "label": "标准／参考Adapter／通用清单及只读回流状态",
+      "id": "pointer",
+      "label": "Single conditional entry plus minimal records",
       "status": "completed"
     },
     {
-      "id": "verification",
-      "label": "文档一致性／合成正负例／固定候选",
+      "id": "review",
+      "label": "Document evidence and independent read-only review",
       "status": "completed"
     },
     {
-      "id": "independent",
-      "label": "原生独立只读复核与本地可审交回",
-      "status": "completed"
-    },
-    {
-      "id": "git_delivery005",
-      "label": "Exact PR/full CI/squash/safe main sync",
+      "id": "git005",
+      "label": "Scoped rule Git integration and safe main sync",
       "status": "active"
     }
   ],
   "agents": [
     {
       "id": "controller",
-      "label": "当前Mini主工程，唯一作者",
-      "model": "actual gpt-6.1-sol/high, user-authorized current session; danger-full-access/never",
+      "label": "Same Mini primary, sole author",
+      "model": "Current session gpt-6.1-sol/high, existing explicit user consent; parent permissions unchanged",
       "status": "active",
-      "activation": "用户当前session明确启动本地R0沉淀范围"
+      "activation": "Same task and session; current explicit user Git-delivery authority"
     },
     {
       "id": "juaner_validator",
-      "label": "独立只读最终复核",
-      "model": "actual CLI gpt-6.1-sol/high/read-only/never; role instructions verified",
-      "status": "waiting",
-      "activation": "本任务明确授权限定CLI；新独立上下文003复核PASS，原生BLOCKED历史保留"
+      "label": "Original scoped independent review; record-only identity binding",
+      "model": "Actual CLI gpt-6.1-sol/high/read-only/never, exact role instructions verified",
+      "status": "complete",
+      "activation": "Original003 scoped PASS only; no new review or other-session messaging. Current005 is record-only binding if content/base unchanged."
     }
   ],
   "metrics": [],
   "evidence": [
     {
-      "id": "PIC_INPUT",
-      "label": "v0.3核验输入／已获授权范围",
-      "path": "openspec/changes/plugin-integration-consolidation/proposal.md",
+      "id": "R0_INPUT",
+      "label": "Current verified input and bounded scope",
+      "path": "openspec/changes/plugin-standard-read-entry/proposal.md",
       "status": "verified"
     },
     {
-      "id": "PIC_TASKS",
-      "label": "本地交付任务及下一动作",
-      "path": "openspec/changes/plugin-integration-consolidation/tasks.md",
+      "id": "R0_TASKS",
+      "label": "Task and permitted next action",
+      "path": "openspec/changes/plugin-standard-read-entry/tasks.md",
       "status": "present"
     },
     {
-      "id": "PIC_VERIFICATION",
-      "label": "现行验证／缺件与证据根",
-      "path": "openspec/changes/plugin-integration-consolidation/verification.md",
+      "id": "R0_VERIFICATION",
+      "label": "Checks/evidence/limits",
+      "path": "openspec/changes/plugin-standard-read-entry/verification.md",
       "status": "present"
     },
     {
-      "id": "PIC_ASSETS",
-      "label": "单入口与三项资产，未发布",
-      "path": "docs/engineering/plugin-integration/README.md",
-      "status": "present"
-    },
-    {
-      "id": "PIC_MAP",
-      "label": "全40ID类别与业务范围增量0，保留原图",
-      "path": "docs/planning/capability-coverage/snapshots/plugin-integration-consolidation-local-reviewed-2026-10-17.md",
-      "status": "present"
-    },
-    {
-      "id": "PIC_NATIVE_REVIEW",
-      "label": "原生完整报告：内容无实质缺陷，正式角色BLOCKED",
-      "path": "openspec/changes/plugin-integration-consolidation/independent-review-native-001.md",
-      "status": "present"
-    },
-    {
-      "id": "PIC_CLI_REVIEW",
-      "label": "限定CLI正式独立PASS及实际设置证明",
-      "path": "openspec/changes/plugin-integration-consolidation/independent-review-cli-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "PIC_GIT005",
-      "label": "Git005 authorization, scope, evidence and real receipt",
-      "path": "openspec/changes/plugin-integration-consolidation/git-delivery-005.md",
+      "id": "GIT005",
+      "label": "Current user authority, evidence binding and actual Git receipt entry",
+      "path": "openspec/changes/plugin-standard-read-entry/git-delivery-005.md",
       "status": "present"
     }
   ],
   "risks": [
     {
-      "id": "PIC_UPSTREAM_UNKNOWN",
-      "label": "本机无原仓当前维护线／两中立修复回流收据",
-      "level": "medium",
-      "mitigation": "仅记录可读固定来源、接入修复及目标包含性；回流实际状态UNKNOWN，不联系其他session、不回流/升级，不作新增启动前置。"
-    },
-    {
-      "id": "PIC_NOT_PUBLISHED",
-      "label": "本地草案未获Git／发布权限",
+      "id": "ADOPTION_NOT_PROVED",
+      "label": "Rule integration does not prove session loading or implementation conformance",
       "level": "low",
-      "mitigation": "只交本地可审资产与固定证据，未集成不声称正式发布或现行跨项目规则。"
-    },
-    {
-      "id": "PIC_NATIVE_READONLY_GAP",
-      "label": "旧原生只读沙箱缺口保持历史，当前CLI替代已核实",
-      "level": "low",
-      "mitigation": "旧BLOCKED不抹去；用户本任务明确授权CLI，实际Sol/high/read-only/never与角色原文已核对，正式003复核PASS。"
-    },
-    {
-      "id": "PIC_PROFILE_ENV",
-      "label": "新树三例Profile缺依赖，未新验证成功",
-      "level": "medium",
-      "mitigation": "原95PASS/3FAIL保留，不安装；92PASS不替代三例。此R0无产品变更，独立报告限定接受适用范围。"
+      "mitigation": "Report real Git and sync identities separately; no forced migration or runtime claim."
     }
   ],
-  "updated_at": "2026-10-17T00:38:57.950Z",
+  "updated_at": "2026-10-17T02:14:30.979Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14749-03e6-7340-acba-441fe49f0754"
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1478c-f3b0-7932-82ca-3435e71602e1"
   }
 }
