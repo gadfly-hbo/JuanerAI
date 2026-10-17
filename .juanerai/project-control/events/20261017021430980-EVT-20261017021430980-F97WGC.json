@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017021430980-F97WGC",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T02:14:30.980Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1478c-f3b0-7932-82ca-3435e71602e1"
+  },
+  "summary": "Main advanced during first successful CI; normal planning-only integration, affected review and new-head CI required",
+  "status_after": "validating",
+  "evidence_refs": []
+}

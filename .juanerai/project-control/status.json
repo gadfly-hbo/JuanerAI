@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "VERIFY",
-    "label": "Git005 record binding, exact-head required CI and integration",
+    "label": "Integration006 affected readonly review and new exact-head full CI",
     "ordinal": 3,
     "total": 4
   },
   "health": "validating",
-  "summary": "Current user authorized this R0 rule task Git delivery. Original004/8 paths match and saved atfeaf9b7; fresh latest main6756546 has no delta, normal integration up to date. Rule bytes unchanged from reviewed003; record-only evidence binding and actual PR head CI pending.",
+  "summary": "Latest main advanced during successful first-head CI. Normal merge of bf7814d3 adds only upstream Change007 planning, unchanged rule/policy/assets; own records qualify history. First premerge gate stopped correctly, original full CI result retained. New candidate review and actual CI pending.",
   "current_objective": "plugin-standard-read-entry REQ-ENTRY01/02/03 and PRESERVE01; scoped rule Git delivery",
-  "next_action": "Finish document/scope/history checks and record-only binding; commit/push/PR, actual selected CI and rules, squash then safe dual-device main sync/readback. No app/package release, runtime loading or conformance claim.",
+  "next_action": "Freeze integrated R0 candidate, scoped authorized affected readonly CLI review, push existing PR94 and required full CI, exact-head gates then squash/safe dual main ref sync/readback. No Change007 adoption/engineering, product runtime or next plugin.",
   "blockers": [],
   "milestones": [
     {
@@ -89,7 +89,7 @@
       "mitigation": "Report real Git and sync identities separately; no forced migration or runtime claim."
     }
   ],
-  "updated_at": "2026-10-17T01:53:43.524Z",
+  "updated_at": "2026-10-17T02:14:30.979Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1478c-f3b0-7932-82ca-3435e71602e1"
