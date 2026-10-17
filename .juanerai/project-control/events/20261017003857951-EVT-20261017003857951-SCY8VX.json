@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017003857951-SCY8VX",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T00:38:57.951Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14749-03e6-7340-acba-441fe49f0754"
+  },
+  "summary": "Git005 authorized; 004 preserved and main merged, candidate review and full CI pending",
+  "status_after": "validating",
+  "evidence_refs": []
+}

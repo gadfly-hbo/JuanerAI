@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017002647231-NQNQ2X",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T00:26:47.231Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1473a-8cbf-7b82-ad42-564bf1f15edd"
+  },
+  "summary": "限定独立CLI复核PASS且实际设置符合；本地三资产交回，旧FAIL/UNKNOWN不变，无Git发布权限",
+  "status_after": "complete",
+  "evidence_refs": []
+}

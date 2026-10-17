@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017000307043-DTW8IH",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T00:03:07.043Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1471f-c80a-7801-b9e5-1ffc7a98a219"
+  },
+  "summary": "R0 assets and scoped92 plus minimal15 synthetic checks PASS; first dependency failures and UNKNOWN retained; freeze for native review",
+  "status_after": "validating",
+  "evidence_refs": []
+}
