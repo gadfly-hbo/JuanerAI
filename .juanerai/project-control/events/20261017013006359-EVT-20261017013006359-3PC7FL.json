@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017013006359-3PC7FL",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T01:30:06.359Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14778-e957-74c1-a5b4-9ebd0e259c00"
+  },
+  "summary": "New R0 read-entry candidate: one conditional pointer, own tree, no Git or runtime permissions",
+  "status_after": "validating",
+  "evidence_refs": []
+}
