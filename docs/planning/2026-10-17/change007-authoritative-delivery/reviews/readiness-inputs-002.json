@@ -1,0 +1,61 @@
+{
+  "kind": "planning_readiness002_input_not_engineering_candidate",
+  "date": "2026-10-17",
+  "files": [
+    {
+      "path": "product-addendum-v0.1.md",
+      "bytes": 16001,
+      "sha256": "4583cee29daa4daac19234ea93f8386378264fa30ab31952a5201b85e61cbdf1"
+    },
+    {
+      "path": "ui-addendum-v0.1.md",
+      "bytes": 8210,
+      "sha256": "69a1c73311089f3f0f6c3a9fa54c49d596bae307dfa538c0ef6dd8d82096c991"
+    },
+    {
+      "path": "acceptance-basis.md",
+      "bytes": 8451,
+      "sha256": "821f787a87908f162b94c48024353b43fb54f575bc6866acfca7316829a9b750"
+    },
+    {
+      "path": "source-readback.json",
+      "bytes": 7338,
+      "sha256": "329bee6cfdeff49218cf74173e64222459248e66b835b377bcaaa55b11e83d87"
+    },
+    {
+      "path": "verification.md",
+      "bytes": 3660,
+      "sha256": "9b714168bf21bf28a30db80d73c21a089e9dbb8430334d85c0fb452899e78dfd"
+    },
+    {
+      "path": "clickable/index.html",
+      "bytes": 7256,
+      "sha256": "0d19e7f840aa26cbf97d99676dc088d82a165cc049a1482090746017e13b17b8"
+    },
+    {
+      "path": "clickable/authority.js",
+      "bytes": 24566,
+      "sha256": "ede2b6cf75424c833cb079ffb93263f8f4727f7009de44dc2672706fecbedbd8"
+    },
+    {
+      "path": "clickable/authority.css",
+      "bytes": 1123,
+      "sha256": "767b7fe237ca41ea02bc4f02d5e30e9c54ad91ee8fee6df8481200ba6cfdda1c"
+    },
+    {
+      "path": "prototype-check.mjs",
+      "bytes": 8258,
+      "sha256": "36ac1828b3a66610db418e5cf0b390b052f1b33fabb3e89b7522ed74da2724e2"
+    },
+    {
+      "path": "attachments/fulltext-authority-delivery-assessment107-001.md",
+      "bytes": 31427,
+      "sha256": "c8f925265e0aa173494274513fd29b61b7ace08e8898a82cbf1f572d8271d7d7"
+    },
+    {
+      "path": "attachments/formal-acceptance-originals.json",
+      "bytes": 16821,
+      "sha256": "91bf1d6bf3f5ca39633cea67d37e4d7d11bdd88a3ba6681036bf487f602ae58c"
+    }
+  ]
+}

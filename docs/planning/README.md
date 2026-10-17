@@ -1,5 +1,16 @@
 # JuanerAI Product Planning Index
 
+## 2026-10-17 · Change007 正式成果表达增量已批准／冻结
+
+用户已接受[产品增量](2026-10-17/change007-authoritative-delivery/product-addendum-v0.1.md)及
+[最新已验收工作台上的UI v0.2](2026-10-17/change007-authoritative-delivery/ui-addendum-v0.2.md)。
+[批准／冻结](2026-10-17/change007-authoritative-delivery/approval-and-freeze.md)绑定同一007、
+FD-01～06及固定输入；[新鲜Review003](2026-10-17/change007-authoritative-delivery/reviews/development-readiness-003.md)
+仅规划PASS。保留开放分析和正确有用内容正式交付，原稿无全文资格；旧错误UI和FAIL／UNKNOWN不回写。
+用户授权本批发布并自行转发[补充指令](2026-10-17/change007-authoritative-delivery/handoff-instructions.md)。
+**Mini只读接收后停止：不启动108、不恢复真实调用、不换模型、不改原样例和门槛。**
+Git发布、实际采用和工程继续分别以固定回执／另行授权确认，不由本导航推导完成。
+
 ## Product sources and research navigation — 2026-10-03
 
 The [Whitepaper entry](../product/whitepaper/README.md) is now maintained inside this repository. Use [the exact adopted v4.0 source](../product/whitepaper/revisions/v4.0/JUANERAI_WHITEPAPER.md) for the historical SHA `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`; use the [current editorial master](../product/whitepaper/JUANERAI_WHITEPAPER.md) for navigation maintenance. [The migration map](../product/whitepaper/MIGRATION_2026-10-03.md) resolves prior research absolute/relative paths without rewriting frozen Blueprint bytes. [The research index](../research/README.md) locates original Demo evidence; required fixed attachments still travel with each product input. This document-location change does not revise Blueprint v4.1 or receiving-task authority.

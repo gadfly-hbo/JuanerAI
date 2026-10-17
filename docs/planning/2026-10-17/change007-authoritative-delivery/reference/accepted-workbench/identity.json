@@ -1,0 +1,97 @@
+{
+  "kind": "accepted_ui_reference_not_receiver_adoption",
+  "workbench": {
+    "product": "BUI-20261015-004",
+    "implementation": "BUI-MACBOOK-IMPLEMENTATION-003",
+    "publication_pr": 90,
+    "commit": "5e14913e04c079f4a2f16b9c3308c8246e4b7ec4",
+    "user_acceptance": "使用通过，UI验收通过",
+    "files": [
+      {
+        "path": "clickable/index.html",
+        "source": "docs/planning/2026-10-15/browser-workbench-ui-redesign/clickable/index.html",
+        "bytes": 1080,
+        "sha256": "8da914f6bdb48d48f6d2aa4c906759733e4b55f57e0e48de96b1e049f02caf97"
+      },
+      {
+        "path": "clickable/model.js",
+        "source": "docs/planning/2026-10-15/browser-workbench-ui-redesign/clickable/model.js",
+        "bytes": 7550,
+        "sha256": "492183eca1c183837bb678921f68554ca03026084677c56d207030c0194a5398"
+      },
+      {
+        "path": "clickable/prototype.js",
+        "source": "docs/planning/2026-10-15/browser-workbench-ui-redesign/clickable/prototype.js",
+        "bytes": 42890,
+        "sha256": "ecc3658cdbfe8d5aded09270d5059615a34aa59d0c943fb23b51f0fdaed0e0c7"
+      },
+      {
+        "path": "clickable/style.css",
+        "source": "docs/planning/2026-10-15/browser-workbench-ui-redesign/clickable/style.css",
+        "bytes": 11404,
+        "sha256": "644d009b740e1358634728f3b14b26770d275a2b1fd00e0dde4e7ccaa21f8e37"
+      },
+      {
+        "path": "ui-contract-v0.1.md",
+        "source": "docs/planning/2026-10-15/browser-workbench-ui-redesign/ui-contract-v0.1.md",
+        "bytes": 12560,
+        "sha256": "4e5e37489d8748a77f11304e00bb3cd9880bb0826641ca111b6d5a329bfc96e3"
+      },
+      {
+        "path": "visual-system.md",
+        "source": "docs/planning/2026-10-15/browser-workbench-ui-redesign/visual-system.md",
+        "bytes": 2127,
+        "sha256": "2f692e94cd9093cf3296bfde7d376ae8ec11a6092276277dd63d41037a52ba81"
+      },
+      {
+        "path": "approval-and-freeze-v0.1.md",
+        "source": "docs/planning/2026-10-15/browser-workbench-ui-redesign/approval-and-freeze-v0.1.md",
+        "bytes": 6085,
+        "sha256": "2528ef82fd389a85c5e910fd4930aa419b8e4c4c32395f7a0b7f1c85db417047"
+      },
+      {
+        "path": "proposal-v0.1.md",
+        "source": "docs/planning/2026-10-15/browser-workbench-ui-redesign/proposal-v0.1.md",
+        "bytes": 19406,
+        "sha256": "bc4cd7a83c4cd39326f596986c599eb07b154b44868e696749cfdf4636229b4d"
+      },
+      {
+        "path": "baseline-and-coverage.md",
+        "source": "docs/planning/2026-10-15/browser-workbench-ui-redesign/baseline-and-coverage.md",
+        "bytes": 8066,
+        "sha256": "d5def4839afffa0476cbbc4def9e96c169a6d6ac7bdd13a9ef24552a772f7785"
+      },
+      {
+        "path": "product-acceptance.md",
+        "source": "openspec/changes/archive/2026-10-16-browser-workbench-ui-redesign/product-acceptance.md",
+        "bytes": 3897,
+        "sha256": "55333c03a9bb303c553fe54b0e51bb83d051a0114928393140d8f2657e6cfab3"
+      }
+    ]
+  },
+  "later_main_readonly": {
+    "commit": "3deeaae7b352b49afb46d4811fbd17689d2c277a",
+    "pr": 91,
+    "delta": "Report Studio接入；不替换工作台壳层、不扩大007支持资格",
+    "files": [
+      {
+        "path": "ui-contract-v0.2.md",
+        "bytes": 10573,
+        "sha256": "da7f4f27a1bcbd2c22a74ca8756114b4fbbd8c02e793907c69812b41e36e042c"
+      },
+      {
+        "path": "freeze-v1.0.md",
+        "bytes": 4848,
+        "sha256": "4f68945719c1e9212cfea1aee670c31a935e58c693085bbfdc43071522d5aa78"
+      },
+      {
+        "path": "product-acceptance.md",
+        "bytes": 2429,
+        "sha256": "f44926afdd555975131f2459dfc160cf8eeadc9da9ec8510d7059a2d8ebe1efe"
+      }
+    ]
+  },
+  "current_branch_changed": false,
+  "mini_adoption": "NOT_CLAIMED",
+  "note": "原样附件的相对引用保留原字节；本README和当前UI说明提供本包可用导航，不用源附件旧PENDING否认后续批准。"
+}
