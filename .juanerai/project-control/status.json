@@ -3,452 +3,142 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "Xanthil — Report Studio minimal integration"
+    "product": "JuanerAI reusable plugin integration assets — R0 local review only"
   },
   "phase": {
     "id": "VERIFY",
-    "label": "062：融合源码独立PASS／最终head CI与授权交付",
-    "ordinal": 6,
-    "total": 7
+    "label": "Git delivery005: current candidate review and full CI",
+    "ordinal": 4,
+    "total": 5
   },
   "health": "validating",
-  "summary": "036独立受影响验证PASS，实际Sol/high/read-only/never，3268源码/19收据与ee3c8ec树一致。融合源码Engineering Acceptance PASS；最终17组4837PASS/0FAIL/24历史SKIP。PR91最终head CI/实际merge/仅Mini同步仍待完成。现装Mini034及所有FAIL/UNKNOWN/预留、MacBook免测未更新保持。",
-  "current_objective": "report-studio-minimal-integration: approved M01–M10, AC01–14, RUI01–10; independently maintained fixed bundled Studio with free creation and explicit stable delivery.",
-  "next_action": "提交本次实际接受与独立报告记录；功能源码不变读回、推送同PR、确切最终head CI成功后squash及仅Mini安全main同步。不新增安装/Provider/部署或MacBook写入。",
+  "summary": "User authorized this task Git delivery. 004 saved unchanged, main abeb6e97 merged normally. Minimal status edits, not yet published. Current candidate review and exact-head full CI pending.",
+  "current_objective": "plugin-integration-consolidation: PIC-A/B/C/D/E R0 documentation and offline reference use",
+  "next_action": "Freeze current candidate, independent affected read-only review, work branch PR/full CI, squash and safe dual-device sync-main; no install/Provider/runtime changes.",
   "blockers": [],
   "milestones": [
     {
       "id": "intake",
-      "label": "Approved fixed inputs, native role and WIP intake",
+      "label": "输入／现行权威／原正式发布／新专用树",
       "status": "completed"
     },
     {
-      "id": "bundle",
-      "label": "Pinned bundle verification: causal RED/GREEN31; actual bundle still pending",
+      "id": "assets",
+      "label": "标准／参考Adapter／通用清单及只读回流状态",
       "status": "completed"
     },
     {
-      "id": "association",
-      "label": "Exact source, materials and stable idempotent delivery; 032 actual normal UI evidence; native quality separate FAIL",
-      "status": "completed"
-    },
-    {
-      "id": "ui-lifecycle",
-      "label": "Normal host/Studio UI and lifecycle; 032 actual normal UI evidence; native quality separate FAIL",
-      "status": "completed"
-    },
-    {
-      "id": "packaging",
-      "label": "Mini034 actual installed identity/data PASS; MacBook027 prior acceptance + user waives034 test/update",
+      "id": "verification",
+      "label": "文档一致性／合成正负例／固定候选",
       "status": "completed"
     },
     {
       "id": "independent",
-      "label": "031/033/034有效审查保留；036实际受影响独立PASS",
+      "label": "原生独立只读复核与本地可审交回",
       "status": "completed"
     },
     {
-      "id": "acceptance",
-      "label": "034/035包接受保留；036融合源码工程接受PASS，CI/Git待完成",
-      "status": "completed"
+      "id": "git_delivery005",
+      "label": "Exact PR/full CI/squash/safe main sync",
+      "status": "active"
     }
   ],
   "agents": [
     {
       "id": "controller",
-      "label": "Mini Engineering Controller; sole author",
-      "model": "Actual gpt-6.1-sol/high, explicitly user-authorized; same primary danger-full-access/never",
+      "label": "当前Mini主工程，唯一作者",
+      "model": "actual gpt-6.1-sol/high, user-authorized current session; danger-full-access/never",
       "status": "active",
-      "activation": "036明确Git交付授权，原连续主工程处理集成至安全完成。"
+      "activation": "用户当前session明确启动本地R0沉淀范围"
     },
     {
       "id": "juaner_validator",
-      "label": "Independent final Validator",
-      "model": "031 actual gpt-6.1-sol/high/read-only/never, configured existing CLI",
-      "status": "complete",
-      "activation": "036受影响固定完整候选；既有031CLI例外，实际新turn01a14579-2a90-7af1-88ae-b062424b62ae/Sol-high-read-only-never核实。"
+      "label": "独立只读最终复核",
+      "model": "actual CLI gpt-6.1-sol/high/read-only/never; role instructions verified",
+      "status": "waiting",
+      "activation": "本任务明确授权限定CLI；新独立上下文003复核PASS，原生BLOCKED历史保留"
     }
   ],
   "metrics": [],
   "evidence": [
     {
-      "id": "SDD_INPUT",
-      "label": "Approved input and confirmed intake",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/proposal.md",
-      "status": "present"
-    },
-    {
-      "id": "SDD_SPEC",
-      "label": "RS-BUNDLE-01 behavior",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/specs/report-studio/spec.md",
-      "status": "present"
-    },
-    {
-      "id": "SDD_TASKS",
-      "label": "Full result tasks and next action",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/tasks.md",
-      "status": "present"
-    },
-    {
-      "id": "SDD_VERIFICATION",
-      "label": "Actual evidence and preserved NOT_RUN",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/verification.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_AUTHORIZATION_003",
-      "label": "A/B/C approved; failure stop line and user MacBook acceptance recorded",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/acceptance-authorization-003.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_LIVE_RESULT_003",
-      "label": "Actual A partial/C bounded user acceptance, image failure and next decision",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/acceptance-result-003.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_IMAGE_RETEST_004",
-      "label": "图片补测FAIL及离线回归PASS；等待004决定",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/acceptance-authorization-004.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_CONTINUATION_005",
-      "label": "图片通过/定向修改通过/原生退出partial及B配置接续",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/acceptance-continuation-005.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_MIMO_008",
-      "label": "MiMo图像PASS、原B/追加008 FAIL、新版安装及停止线",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-vision-007.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_DIAG_009",
-      "label": "三分支离线92PASS，010实际scope-stop/16384未知保留",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-tool-diagnosis-009.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_DIAG_010_RESULT",
-      "label": "010范围停止/未知消费/服务正常退出，完整12文件及截图保留",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-tool-diagnosis-009.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_SKILL_REPAIR_011",
-      "label": "011固定技能离线及015限定真实读取通过；完整制作未通过",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/skill-read-repair-011.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_PACKAGE_UPDATE_012",
-      "label": "012安装更新/离线复验通过；Provider0",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/package-update-012.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_DIAG_AUTHORIZATION_013",
-      "label": "013已批准并经015执行完唯一场景；仅框架PASS，余量不授新请求",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-diagnosis-authorization-013.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_LOCAL_ENTRY_014",
-      "label": "014原认证保持，原生入口/会话/刷新200；工具观察失败另存，Provider0",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/local-entry-403-014.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_DIAG_RESULT_015",
-      "label": "013唯一真实场景：仅MiMo4派发/4工具/技能全文/两页待确认，新预留0，正常收尾",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-diagnosis-result-015.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_AUTHORIZATION_016",
-      "label": "016已批准；控制FAIL/真实场景未开始，批准及未消耗保留",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-production-authorization-016.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_RESULT_016",
-      "label": "016离线控制阻断、原型/失败/合成反例保留，Provider0；最小后续建议",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-production-result-016.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_TOOL_OBSERVER_017",
-      "label": "017创建时接缝RED/GREEN、Mini更新及离线复验；所有原账不变/Provider0",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/tool-execution-observer-017.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_TRIAL_CONTROL_018",
-      "label": "018整套控制离线24PASS，Provider0/安装与原账不变，旧失败保留",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/trial-control-offline-018.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_AUTHORIZATION_019",
-      "label": "019已批准并用完唯一场景，范围停止/UNKNOWN，余量不授补测",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-production-authorization-019.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_RESULT_019",
-      "label": "019范围停止/新增16384 UNKNOWN、草稿两页两图及原账保留，正常收尾",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-production-result-019.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_ASSESSMENT_020",
-      "label": "020正常headline修正项/原edit意图UNKNOWN/旧证明失效反例，Provider0",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/post-look-assessment-020.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_AUTHORIZATION_021",
-      "label": "021全部批准且唯一场景已执行，导出控制FAIL停止；不追加场景",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-correction-authorization-021.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_OFFLINE_021",
-      "label": "原37项检查及严格正例FAIL保留；未覆盖真实导出project.json锁组合",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-correction-offline-021.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_AMENDMENT_022",
-      "label": "022用户批准；019核对仅activeMs+13ms，其余六项/16384及消费UNKNOWN保留",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-reconciliation-amendment-022.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_RESULT_023",
-      "label": "021真实4MiMo/6工具/双图与结论，PPTX保存下载后临时元数据控制FAIL，正常收尾/全部历史保留",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-correction-result-023.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_NORMAL_FLOW_025",
-      "label": "完整真实锁集合正常保存RED/GREEN、40适用检查、Provider0/原账不变",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/normal-flow-control-025.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_LOCAL_EXPORT_AUTH_026",
-      "label": "026用户已批准并执行：HTML视觉FAIL后停止，不自动重试",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/local-export-authorization-026.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_LOCAL_EXPORT_RESULT_026",
-      "label": "HTML保存下载PASS/原生视觉FAIL、全部SDK计量不变及正常收尾",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/local-export-result-026.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_EXPORT_CSS_027",
-      "label": "完整文档隔离因果RED/GREEN、当前86适用检查及原两页HTML/实际PDF重放，固定未安装候选",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/html-export-repair-027.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_INSTALL_LOCAL_028",
-      "label": "028待审：固定新候选Mini安装更新及一次Provider0本地续验，尚未执行",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/install-local-authorization-028.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_LOCAL_RESULT_028",
-      "label": "028 Mini更新PASS、HTML显示及两格式下载PASS，Preview工具超时/PARTIAL，Provider0正常收尾",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/install-local-result-028.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_NATIVE_VIEW_RESULT_029",
-      "label": "029 Preview/Keynote双页与原生文字对象选择PASS；质量局限/中文搜索UNKNOWN及旧失败保留，Provider0",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/native-view-result-029.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_VALIDATOR_031",
-      "label": "Independent whole candidate + scoped supplement; actual route verified; overall BLOCKED",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-031.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_PERMISSION_032",
-      "label": "032 A+B approved and executed; native PPTX quality FAIL; AC01 risk and own rights accepted",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/remaining-acceptance-authorization-032.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_RESULT_032",
-      "label": "Actual normal integrated flow, native PPTX FAIL, preservation and normal exit",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/acceptance-result-032.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_PERMISSION_033",
-      "label": "033全部范围直接批准；固定应用/数据/Task起点通过，开始唯一修正",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/pptx-layout-correction-authorization-033.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_RESULT_033",
-      "label": "033 actual native quality/three-format/stable delivery PASS; original032FAIL preserved",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/acceptance-result-033.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_INDEPENDENT_033",
-      "label": "033 independent affectedPASS; wholeBLOCKED G03104 only",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-033.md",
-      "status": "present"
-    },
-    {
-      "id": "RS_PERMISSION_034",
-      "label": "034已直接批准并完成全部离线范围",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/third-party-notice-assessment-034.md",
+      "id": "PIC_INPUT",
+      "label": "v0.3核验输入／已获授权范围",
+      "path": "openspec/changes/plugin-integration-consolidation/proposal.md",
       "status": "verified"
     },
     {
-      "id": "RS_LICENSE_RESULT_034",
-      "label": "034作者/独立PASS，固定通知候选；实际安装未执行",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/license-notice-result-034.md",
-      "status": "verified"
-    },
-    {
-      "id": "RS_INDEPENDENT_034",
-      "label": "034 independent scopedPASS, actual route verified, G03104 fixed candidate resolved",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-034.md",
-      "status": "verified"
-    },
-    {
-      "id": "RS_PERMISSION_035",
-      "label": "035A directly approved/completed PASS; B NOT_RUN; MacBook user accepted without034 test",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/notice-install-authorization-035.md",
-      "status": "verified"
-    },
-    {
-      "id": "RS_RESULT_035",
-      "label": "Mini034 installed identity/data/backups PASS; app/service/Provider/MacBook0",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/notice-install-result-035.md",
-      "status": "verified"
-    },
-    {
-      "id": "RS_ENGINEERING_ACCEPTANCE",
-      "label": "036融合源码Engineering Acceptance PASS；最终CI/Git待真实完成",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/engineering-acceptance.md",
-      "status": "verified"
-    },
-    {
-      "id": "RS_PERMISSION_036",
-      "label": "036 full bounded Git delivery approved; no MacBook/install/Provider/deploy",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-authorization-036.md",
-      "status": "verified"
-    },
-    {
-      "id": "RS_GIT_036",
-      "label": "036 authorized normal integration, scoped RED/GREEN/browser/build, original failures retained",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-036.md",
+      "id": "PIC_TASKS",
+      "label": "本地交付任务及下一动作",
+      "path": "openspec/changes/plugin-integration-consolidation/tasks.md",
       "status": "present"
     },
     {
-      "id": "RS_INDEPENDENT_036",
-      "label": "036 actual independent PASS; exact frozen integrated source, no new app acceptance",
-      "path": "openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-036.md",
+      "id": "PIC_VERIFICATION",
+      "label": "现行验证／缺件与证据根",
+      "path": "openspec/changes/plugin-integration-consolidation/verification.md",
+      "status": "present"
+    },
+    {
+      "id": "PIC_ASSETS",
+      "label": "单入口与三项资产，未发布",
+      "path": "docs/engineering/plugin-integration/README.md",
+      "status": "present"
+    },
+    {
+      "id": "PIC_MAP",
+      "label": "全40ID类别与业务范围增量0，保留原图",
+      "path": "docs/planning/capability-coverage/snapshots/plugin-integration-consolidation-local-reviewed-2026-10-17.md",
+      "status": "present"
+    },
+    {
+      "id": "PIC_NATIVE_REVIEW",
+      "label": "原生完整报告：内容无实质缺陷，正式角色BLOCKED",
+      "path": "openspec/changes/plugin-integration-consolidation/independent-review-native-001.md",
+      "status": "present"
+    },
+    {
+      "id": "PIC_CLI_REVIEW",
+      "label": "限定CLI正式独立PASS及实际设置证明",
+      "path": "openspec/changes/plugin-integration-consolidation/independent-review-cli-001.md",
       "status": "verified"
+    },
+    {
+      "id": "PIC_GIT005",
+      "label": "Git005 authorization, scope, evidence and real receipt",
+      "path": "openspec/changes/plugin-integration-consolidation/git-delivery-005.md",
+      "status": "present"
     }
   ],
   "risks": [
     {
-      "id": "RS_MIMO_TOOL_FAILURE",
-      "label": "原008工具故障根因UNKNOWN；021整套场景因临时导出控制FAIL",
-      "level": "high",
-      "mitigation": "021有限真实制作/双图检查通过，新预留0；PPTX保存下载后首错停止，不追加HTML/PDF或Provider。保留所有原失败、旧预留及正式Gates；临时控制兼容问题仅只读定位。"
-    },
-    {
-      "id": "RS_RETAINED_ACCEPTANCE_GAPS",
-      "label": "历史UNKNOWN/预留及正式交付Gates保留",
-      "level": "high",
-      "mitigation": "033产品接受/034独立及035A现装PASS保留，036融合源码独立与工程接受PASS；用户036已授权Git，最终head CI/merge/同步待执行。旧UNKNOWN/预留不回填，MacBook免测未更新。"
-    },
-    {
-      "id": "RS_HTML_EXPORT_STYLE",
-      "label": "旧026 FAIL保留；027修复/028更新/029原生查看完成",
-      "level": "high",
-      "mitigation": "当前HTML/PDF双页可读，原工具超时及PPTX末字独行/PDF精确搜索UNKNOWN保留，不称完整接受。"
-    },
-    {
-      "id": "RS_PDF_LITERAL_SEARCH_UNKNOWN",
-      "label": "PDF中文部首码点提取/精确搜索UNKNOWN",
-      "level": "high",
-      "mitigation": "保留原始提取/失败与明确范围。可见版面、数值及来源文本层有证据，不冒充精确中文检索或完整PDF体验PASS；不为此改字体/限制自由制作。"
-    },
-    {
-      "id": "RS_AC01_USER_ACCEPTANCE",
-      "label": "AC01用户明确授权通过，未取得干净环境实测",
+      "id": "PIC_UPSTREAM_UNKNOWN",
+      "label": "本机无原仓当前维护线／两中立修复回流收据",
       "level": "medium",
-      "mitigation": "保留未实测事实和最初打包承诺，不再要求该测试或重复确认；未授权新账户/移动源码/卸载工具。"
+      "mitigation": "仅记录可读固定来源、接入修复及目标包含性；回流实际状态UNKNOWN，不联系其他session、不回流/升级，不作新增启动前置。"
     },
     {
-      "id": "RS_NATIVE_PPTX_032",
-      "label": "MiMo产物Keynote页面2遮挡来源/限制",
-      "level": "high",
-      "mitigation": "033原生无遮挡实际通过且独立受影响核实；原032FAIL永不回填，不外推未来所有报告质量。"
-    },
-    {
-      "id": "HISTORY_RS_MIMO_DIAG_SCOPE_STOP",
-      "label": "008原根因UNKNOWN；021有限制作/图检通过但整套验收未完成",
-      "level": "medium",
-      "mitigation": "转历史风险保留，不冒充清账或根因关闭。021正常4MiMo/6工具/新双图和逐页结论，不回推008/010根因或019原edit意图；导出控制FAIL及旧2048/16384/16384消费UNKNOWN、全部历史失败和未验证保留。"
-    },
-    {
-      "id": "HISTORY_RS_LOCAL_403_BEFORE_DIAG_013",
-      "label": "013历史403/工具原因UNKNOWN；014离线入口已通",
-      "level": "medium",
-      "mitigation": "转历史风险保留，不冒充清账或根因关闭。014原生入口在015真实固定模块正常进入，认证不改；013历史请求分支/工具暂停和014 DOM超时原因仍UNKNOWN，不追认关闭或宣称工具通道修复。"
-    },
-    {
-      "id": "HISTORY_RS_HTML_EXPORT_STYLE_026",
-      "label": "026原FAIL保留；027/028 HTML修复实际通过，029原生副本已验",
-      "level": "medium",
-      "mitigation": "转历史风险保留，不冒充清账或根因关闭。028 HTML/PDF保存下载及HTML双页，029 Preview/Keynote双页/原生对象已有证据；028工具超时历史保留。PPTX标题末字独行列质量局限、PDF精确中文搜索UNKNOWN未关闭，不作完整质量或正式接受。"
-    },
-    {
-      "id": "HISTORY_G031_02",
-      "label": "正常集成主路径接通；AC12原生质量FAIL，AC14条件未满足",
-      "level": "medium",
-      "mitigation": "历史原判定保留；033原生质量与交付2已通过，用户条件式接受满足，033独立补证已通过；036不改历史。"
-    },
-    {
-      "id": "HISTORY_RS_NATIVE_PPTX_OVERLAP_032",
-      "label": "032 Keynote第二页遮挡；033新增真实修正待批准",
-      "level": "medium",
-      "mitigation": "032原FAIL保留；033已获授权并实际修正通过，独立033补证完成；未来报告质量不保证。"
-    },
-    {
-      "id": "RS_MACBOOK_034_USER_WAIVER",
-      "label": "MacBook034新包未安装/实测，用户明确免测直接接受",
-      "level": "medium",
-      "mitigation": "仅执行035A；不再请求该机同一验证，不伪称MacBook034实测/已安装。本轮无SSH/该机写入，旧027和原限定接受按历史保留。"
-    },
-    {
-      "id": "PRIMARY_EFFORT_VARIANCE_036",
-      "label": "主会话实际Sol/high：用户直接确认授权",
+      "id": "PIC_NOT_PUBLISHED",
+      "label": "本地草案未获Git／发布权限",
       "level": "low",
-      "mitigation": "用户针对实际high回读明确“我授权的，没关系”；同一主工程角色/边界不变，旧medium标签差异保留为历史，不再作为未决权限。"
+      "mitigation": "只交本地可审资产与固定证据，未集成不声称正式发布或现行跨项目规则。"
+    },
+    {
+      "id": "PIC_NATIVE_READONLY_GAP",
+      "label": "旧原生只读沙箱缺口保持历史，当前CLI替代已核实",
+      "level": "low",
+      "mitigation": "旧BLOCKED不抹去；用户本任务明确授权CLI，实际Sol/high/read-only/never与角色原文已核对，正式003复核PASS。"
+    },
+    {
+      "id": "PIC_PROFILE_ENV",
+      "label": "新树三例Profile缺依赖，未新验证成功",
+      "level": "medium",
+      "mitigation": "原95PASS/3FAIL保留，不安装；92PASS不替代三例。此R0无产品变更，独立报告限定接受适用范围。"
     }
   ],
-  "updated_at": "2026-10-16T16:23:32.106Z",
+  "updated_at": "2026-10-17T00:38:57.950Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1454b-7233-7c51-a64d-948d1e6b99d1"
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14749-03e6-7340-acba-441fe49f0754"
   }
 }
