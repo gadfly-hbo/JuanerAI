@@ -43,6 +43,7 @@ Formatting preferences and optional template fields are not delivery blockers.
   document requirements. Check substance, not a recreated document suite.
 
 - [ ] Behavior evidence and causal ordering match that section's applicable rules; exploration/model quality is not proved by a double, and no later test impersonates past RED.
+- [ ] Deterministic contracts and model quality use their distinct evidence under the sole policy; structural success or model agreement does not certify task understanding, and important known quality errors remain failures.
 - [ ] Tests were not weakened during implementation.
 - [ ] Helper/environment health is independent of target behavior.
 - [ ] Material invariants use independent positive, negative, boundary, failure, and forbidden-side-effect leaves where applicable.
@@ -74,8 +75,8 @@ Formatting preferences and optional template fields are not delivery blockers.
 ## Data and Security
 
 - [ ] Data classification and model-egress boundaries match the approved Profile.
-- [ ] Credentials, environment values, raw provider/SDK content, transcripts, sensitive rows, and unrelated files are absent from prompts, logs, fixtures, traces, and artifacts.
-- [ ] Tool inventory is least-capability and contains no generic or unexpected network/filesystem/code execution path.
+- [ ] Credentials, secrets, unapproved environment values and unrelated files stay out of prompts, logs, fixtures, traces and artifacts. Selected data and authorized business content follow the sole policy's task-level data, recipient and evidence-retention boundaries; an approved selection is not an absolute content ban or permission for raw internal Provider/SDK traces.
+- [ ] Tool inventory is declared, task-authorized and least-capability, with no undeclared or unscoped network/filesystem/code execution path; engineering permissions do not grant product data/effect access.
 - [ ] Failure outputs are closed and sanitized.
 
 ## Evidence and Read Models
