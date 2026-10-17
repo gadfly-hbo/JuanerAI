@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>JuanerAI · Xanthil — 正式成果与原稿</title><link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/px006/styles.css">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/brand.css">
+  <link rel="stylesheet" href="../../../2026-10-05/change005-ui-contract-recovery/clickable/v1.1/workspace.css">
+  <link rel="stylesheet" href="../../../2026-10-06/change005-five-moments/clickable/moments.css">
+  <link rel="stylesheet" href="../../../2026-10-09/change005-v1.3-autonomous-analysis/clickable/autonomy.css">
+  <link rel="stylesheet" href="../../../2026-10-13/change007-conclusion-strategy-review/clickable/review.css">
+  <link rel="stylesheet" href="authority.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到工作区</a>
+<div class="mock-banner"><strong>产品／UI审核样例 · 未实现</strong>　所有文字、判断、进度和操作均为合成内存预演；无模型、计算、保存或下载。刷新清空，不启动108。</div>
+<div class="review-controls" id="review-controls">
+  <label for="scene">增量场景（非生产控件）</label>
+  <select id="scene">
+    <option value="complete">B · 完整核对建议</option>
+    <option value="extra">B · 原稿附加促销，正式建议保持完整</option>
+    <option value="gap">B · 必需解释无法正式交付</option>
+    <option value="conditional">B · 时间未知，只问一题</option>
+    <option value="material">B · 新期间尚未导入</option>
+    <option value="cost">B · 保留有据成本与等义表达</option>
+    <option value="sales">A · 净销售与品类复盘</option>
+    <option value="failed">审查无法完成</option>
+    <option value="stale">建议内容修改，需重新审查</option>
+  </select>
+  <button id="advance" class="btn btn-sm" disabled>推进合成重审</button>
+  <a href="../product-addendum-v0.1.md" target="_blank" rel="noopener">产品增量</a>
+  <a href="../ui-addendum-v0.1.md" target="_blank" rel="noopener">UI说明</a>
+  <a href="../../../2026-10-13/change007-conclusion-strategy-review/clickable/index.html" target="_blank" rel="noopener">原007完整审核页</a>
+</div>
+<div class="window">
+  <header class="titlebar"><div class="tb-title"><span class="brand-name">Juaner<span class="brand-ai">AI</span></span><span class="brand-slogan">持续做出更好的决策</span><span>· Xanthil</span><span class="tb-tag">007产品增量 · 待审核</span></div></header>
+  <div class="topbar" id="topbar">
+    <div class="mode-switch"><button class="mode-btn active" id="quick" aria-pressed="true">快速模式</button><button class="mode-btn" id="professional" aria-pressed="false">专业模式</button></div>
+    <span class="project-label">经营复盘 · 合成项目</span>
+    <div class="topbar-right"><button id="details" class="btn btn-sm" aria-expanded="false" aria-controls="drawer">检查详情</button></div>
+  </div>
+  <div class="app">
+    <nav class="sidebar" aria-label="项目会话">
+      <button id="new" class="sb-new">＋ 新建分析</button>
+      <h2 class="sb-h">本项目会话</h2>
+      <button class="sb-item active" id="current-session">当前分析成果<span class="sb-meta">当前</span></button>
+      <button class="sb-item" id="history">原稿与修订历史<span class="sb-meta">查看</span></button>
+      <p class="fine sidebar-note">开放调查与解释继续保留。正式支持只对应当前具体内容，不给原稿全文盖章。</p>
+      <div class="sb-foot"><a href="../../../2026-10-09/change005-v1.3-autonomous-analysis/clickable/index.html" target="_blank" rel="noopener">005 · 沙盘／框架／协作参考</a><p class="fine">本页不启动后台任务。</p></div>
+    </nav>
+    <main class="main" id="main" tabindex="-1">
+      <section class="quick-surface">
+        <header class="task-header"><div><h1 id="task-title">分别汇总，再核对归属</h1><p class="fine">业务含义 → 分析逻辑 → 受控执行 → 可信成果</p></div><button class="btn btn-sm" id="stop">停止整个任务 · 样例</button></header>
+        <nav id="stages" class="stages" aria-label="专业模式原六阶段" hidden>
+          <button data-stage="1">1 新建分析</button><button data-stage="2">2 数据准备</button><button data-stage="3">3 本地处理</button><button data-stage="4">4 证据分析</button><button data-stage="5" class="active" aria-current="step">5 报告</button><button data-stage="6">6 执行反馈</button>
+        </nav>
+        <p id="professional-note" class="state-note" hidden>仅预演本增量在原第4／5／6阶段的位置，不证明专业流程已接通。<a href="../../../2026-10-05/change005-ui-contract-recovery/clickable/px004/index.html?preview=demo" target="_blank" rel="noopener">PX-004完整专业参考</a></p>
+        <div id="status" class="progress-summary" role="status" aria-live="polite"></div>
+        <div id="thread" class="thread"></div>
+        <form id="composer" class="composer-wrap">
+          <div class="tool-chips"><a class="chip chip-tool" href="../../../2026-10-09/change005-v1.3-autonomous-analysis/clickable/index.html" target="_blank" rel="noopener">沙盘／框架／协作 · 原参考</a><button type="button" id="materials" class="chip chip-tool">所选资料与授权</button></div>
+          <label class="sr-only" for="message">补充分析需求或质疑成果</label><textarea id="message" rows="2" placeholder="继续追问、提出其他解释，或质疑这份建议……"></textarea>
+          <div class="composer-footer"><span class="fine">保留自然对话；此样例仅显示输入，不执行新分析</span><button class="btn btn-primary btn-sm">发送</button></div>
+        </form>
+      </section>
+    </main>
+    <aside id="drawer" class="drawer" aria-label="同一任务检查详情" hidden>
+      <header class="drawer-head"><strong id="drawer-title">同一任务 · 检查详情</strong><button id="close" class="btn btn-sm">关闭</button></header>
+      <div class="detail-tabs" role="tablist" aria-label="检查分类">
+        <button id="tab-meaning" role="tab" data-tab="meaning" aria-selected="false" aria-controls="detail" tabindex="-1">口径</button>
+        <button id="tab-plan" role="tab" data-tab="plan" aria-selected="false" aria-controls="detail" tabindex="-1">方案</button>
+        <button id="tab-materials" role="tab" data-tab="materials" aria-selected="false" aria-controls="detail" tabindex="-1">资料</button>
+        <button id="tab-evidence" role="tab" data-tab="evidence" aria-selected="true" aria-controls="detail">证据</button>
+        <button id="tab-execution" role="tab" data-tab="execution" aria-selected="false" aria-controls="detail" tabindex="-1">执行</button>
+      </div>
+      <div id="detail" class="detail-content" role="tabpanel" aria-labelledby="tab-evidence" tabindex="0"></div>
+    </aside>
+  </div>
+</div>
+<div id="notice" class="sr-only" role="status" aria-live="polite"></div>
+<script src="authority.js"></script>
+</body></html>

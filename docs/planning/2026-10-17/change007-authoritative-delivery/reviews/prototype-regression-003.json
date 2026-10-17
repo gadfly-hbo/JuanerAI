@@ -1,0 +1,30 @@
+{
+  "kind": "STATIC_AND_MOCK_DOM_ONLY_NOT_BROWSER_OR_PRODUCT",
+  "checksPassed": 19,
+  "checks": [
+    "完整B保留核对主行动、解释和原成本",
+    "附加动作不拼入正式样例或导出预览",
+    "原稿原句可查但无选择入口",
+    "关闭来源不改变正式资格",
+    "必需内容缺失不能用来源补成完成",
+    "能安排必须先重审才可选",
+    "不能安排是冲突且不可选",
+    "R2：已答未知后问题实际收起而非仅播报",
+    "R2：用户主动更新才重新展开问题",
+    "新期间无旧数值或当前建议资格",
+    "已有上限等义表达保留正确完整建议",
+    "A可决策示例有独立的自然内容",
+    "失败或需重审不发布本版建议资格",
+    "专业第6阶段共享同版人的下一步",
+    "自然输入仅安全显示不执行",
+    "合成停止后不产生新建议资格",
+    "本候选相对引用可取得",
+    "R1：既有协议、标准与合成输入逐字节保持",
+    "原007冻结33项输入未改变"
+  ],
+  "relativeReferences": 50,
+  "exactHistoricalSourceBodies": 13,
+  "frozenOriginalsUnchanged": 33,
+  "browser": "NOT_RUN: file URL security policy",
+  "providerCalls": false
+}

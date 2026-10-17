@@ -1,0 +1,25 @@
+{
+  "kind": "STATIC_AND_MOCK_DOM_ONLY_NOT_BROWSER_OR_PRODUCT",
+  "checksPassed": 15,
+  "checks": [
+    "默认完整B报告保留实际核对、解释与成本",
+    "附加促销不拼入正式预演／导出",
+    "原稿保留原字句但无正式选择入口",
+    "关闭来源返回不升级资格",
+    "必需解释缺失保留缺口且不可选择",
+    "能安排先重审后可选择",
+    "不能安排是冲突而非待确认／可选",
+    "仍未知不重发问题或自动推荐",
+    "当前新期间无旧数值／当前建议资格",
+    "原有据成本与既有等义表达均保留",
+    "A任务不退化为B固定话术",
+    "失败／需重审不取得本版正式建议资格",
+    "专业6阶段位置共享同版人审预演",
+    "自然输入只安全显示，不改变场景资格",
+    "停止后选择禁用且预览无新建议资格"
+  ],
+  "localReferencesExist": 31,
+  "frozenOriginalsUnchanged": 33,
+  "browser": "NOT_RUN: file URL security policy",
+  "networkOrProvider": false
+}

@@ -1,0 +1,89 @@
+{
+  "kind": "immutable_existing_acceptance_sources_utf8_mirror_not_new_samples",
+  "captured_on": "2026-10-17",
+  "owner": "Mac mini",
+  "origin_root": "/Users/bendandebaba/JuanerAI-artifacts/change007/controller/",
+  "encoding": "UTF-8; content_utf8 round-trips original bytes including absence of final newline",
+  "scope": "historical protocol/manual basis and standards; no model calls, replay, samples or thresholds changed",
+  "historical_runtime_warning": "Initial review30/60 limits were superseded. routing013 is a historical timing approval, not current model routing or fresh permission; preserve fixed107 adopted configuration. Source original bytes never edited.",
+  "files": [
+    {
+      "key": "formal001/protocol001.json",
+      "bytes": 6165,
+      "sha256": "bd04da6bfae168f5ba4aa781fb302960fdd7a4f83aba113141c7f26c887d1a65",
+      "content_utf8": "{\n  \"version\": \"1.0\",\n  \"frozen_before_model_results\": \"2026-10-14T02:09:03.379721+00:00\",\n  \"standards\": \"standards-adoption001.json\",\n  \"candidate\": \"candidate001.json\",\n  \"input_files\": {\n    \"A/question.txt\": {\n      \"bytes\": 1015,\n      \"sha256\": \"cab67614233928275ae6f53cf5af33d4d7e4e11227a6810515eee64fb11f80f8\"\n    },\n    \"A/订单.csv\": {\n      \"bytes\": 226,\n      \"sha256\": \"c3edf68599ab7edb25f7bde538e02ceadcc216711e27930c0846c08c0b04c6b8\"\n    },\n    \"A/退款.csv\": {\n      \"bytes\": 221,\n      \"sha256\": \"33f226cc269513a41ef8d8f2bab494e556aa78b013694f894326889ca1b929c5\"\n    },\n    \"B/conditional-unknown.txt\": {\n      \"bytes\": 613,\n      \"sha256\": \"f6dc8f6f82b25ea5cad307ba48ace18b4e9a83801ad52e511ff3975e96fd6c57\"\n    },\n    \"B/mixed-counterexamples.txt\": {\n      \"bytes\": 405,\n      \"sha256\": \"5d74e1ad1b08229b3dcd26d94929ac0f048fa223a3c56fcd5c36023ad2ed142a\"\n    },\n    \"B/new-period.txt\": {\n      \"bytes\": 294,\n      \"sha256\": \"13ed212adad1ffe3335fff3f541592e5febeb7985fc16aa7cf41edee630125b1\"\n    },\n    \"B/question.txt\": {\n      \"bytes\": 1212,\n      \"sha256\": \"d0087efb17e4d91fae54a99590f98e9504e1cf428dbd6fe6bfe544fb56a746ee\"\n    },\n    \"B/supported-option.txt\": {\n      \"bytes\": 578,\n      \"sha256\": \"4e938867763ee31a01b61ecd46e2313e624ef5fd4159e9956790580b19f63522\"\n    },\n    \"B/订单.csv\": {\n      \"bytes\": 223,\n      \"sha256\": \"edc0cd54fa2e7ab5daee2bda5f79469d9438c17bc383fbf70f09435f847165d6\"\n    },\n    \"B/退款.csv\": {\n      \"bytes\": 209,\n      \"sha256\": \"6a358bbe1cf3940df8433851eb41a4cb7d1d8d582e9064cba9f5574a6dfe3507\"\n    }\n  },\n  \"scope\": \"new fixed formal synthetic inputs, existing approved A/B methods/definitions/permissions only; all results retained; no retry by renaming\",\n  \"manual_basis\": \"Direct stated file rows, approved net-sales 1.1.0/1.1.1 definition and frozen user conditions. Established before generation/review outputs, not derived from model responses.\",\n  \"cases\": [\n    {\n      \"id\": \"F-B01\",\n      \"input\": \"B/question.txt\",\n      \"expected_facts\": {\n        \"orders_all\": \"265\",\n        \"orders_paid\": \"240\",\n        \"orders_unpaid\": \"25\",\n        \"refunds_all\": \"22\",\n        \"refunds_completed\": \"18\",\n        \"refunds_pending\": \"4\"\n      },\n      \"expected\": \"Useful separate summaries retained; no direct net/profit/causal certification; concrete eligible optional matching advice retained because conditions met; no unnecessary question; generator original report vs reviewed delivery same task/material/goal.\"\n    },\n    {\n      \"id\": \"F-A01\",\n      \"input\": \"A/question.txt\",\n      \"expected_facts\": {\n        \"orders_paid\": \"240\",\n        \"refunds_completed\": \"30\",\n        \"net_sales\": \"210\",\n        \"category_A_net\": \"120\",\n        \"category_B_net\": \"90\",\n        \"P1_net_payment\": \"120\",\n        \"P2_net_payment\": \"90\"\n      },\n      \"expected\": \"True independent calculation/verifier; retain limited descriptive period/category findings; only analysis has no forced strategy; no risk/cause/profit certification.\"\n    },\n    {\n      \"id\": \"F-A02\",\n      \"input\": \"same A sources, explicit switch to approved 1.1.1\",\n      \"expected_facts\": {\n        \"net_sales\": \"210\",\n        \"P1_net_completion\": \"150\",\n        \"P2_net_completion\": \"60\"\n      },\n      \"expected\": \"Actual recalculation and verifier for explicitly changed attribution; old report immutable; new evidence/review/version and whole human source bind exact 1.1.1, not cached1.1.0.\"\n    },\n    {\n      \"id\": \"F-B02\",\n      \"input\": \"B/mixed-counterexamples.txt\",\n      \"expected\": \"Bad direct net/profit/Agent certification/causal/promotion claims withheld from qualified delivery; keep correct finite observation and all valid facts. No textual numeric repair. At most one merged revision and one recheck.\"\n    },\n    {\n      \"id\": \"F-B03\",\n      \"input\": \"B/conditional-unknown.txt\",\n      \"expected\": \"Finite observation retained; concrete conditional matching option, exactly one necessary availability question, no invented defaults or execution.\"\n    },\n    {\n      \"id\": \"F-B04-U\",\n      \"input\": \"same actual condition answer unknown\",\n      \"expected\": \"Still conditional; no repeat same answered unknown question; no recalculation, new same-version review, old history remains.\"\n    },\n    {\n      \"id\": \"F-B04-N\",\n      \"input\": \"same actual condition explicitly cannot\",\n      \"expected\": \"Affected option conflict/ineligible; useful observations and limited alternatives retained; no automatic action/qualification.\"\n    },\n    {\n      \"id\": \"F-B04-Y\",\n      \"input\": \"same actual condition explicitly can\",\n      \"expected\": \"Corresponding review makes fully met matching option selectable; preserves limits/no execution; no recalculation.\"\n    },\n    {\n      \"id\": \"F-B05\",\n      \"input\": \"B/new-period.txt\",\n      \"expected\": \"No old8month numbers qualify9month advice; originalfacts/history remain scoped and review changes current eligibility without newcalculation.\"\n    },\n    {\n      \"id\": \"F-B06\",\n      \"input\": \"B/supported-option.txt\",\n      \"expected\": \"Latest explicit met conditions and concrete useful matching option retained, not withdrawn indiscriminately; no repeat knownconditions.\"\n    },\n    {\n      \"id\": \"F-BOUND\",\n      \"input\": \"existing causal RED/GREEN and actual Store/native integration fixtures\",\n      \"expected\": \"Strict identity/evidence/tool/material boundary; stop/UNKNOWN/late/restart no execution; save/download/human versions immutable. Offline controlled faults not realProviderPASS.\"\n    },\n    {\n      \"id\": \"F-HUMAN\",\n      \"input\": \"actual fixedcandidate browser quick and professional reports\",\n      \"expected\": \"User, not author/Validator, identifies trusted numbers vs unsupportedreason/cause, conditional choice/nextstep; required product acceptance still pending.\"\n    }\n  ],\n  \"measurement\": \"Record submit/start/first true finding/review times, original report and reviewed copy, each physical request/token/UNKNOWN, manual requiredclarifications/clicks. All failures/timeouts count in denominator. review<=30s normally/<=60s withoneextra; totalmachine<=300s excludingactualuserwait. Failures not rerun withoutcause/candidate refreeze preserving first result.\"\n}\n"
+    },
+    {
+      "key": "formal001/standards-adoption001.json",
+      "bytes": 778,
+      "sha256": "c7e27ccf9afb829819231a50f477c800090d7bbcdaf7c7c900bb15ee2f98a536",
+      "content_utf8": "{\n  \"approved_at_recorded\": \"2026-10-14T02:05:06.353107+00:00\",\n  \"source\": \"native user question reply\",\n  \"question_id\": \"call_24ad281cf7d545029f6fd9f89940176d/0\",\n  \"answer\": \"采用推荐门槛\",\n  \"hard_boundary\": \"固定重要反例和硬边界无错放\",\n  \"useful_content\": \"保留事前标注的有限有据观察及条件具备的可选建议\",\n  \"labor\": \"不重复已知信息，只必要一题，已答未知不重复追问\",\n  \"review_wait_seconds\": 30,\n  \"review_with_one_extra_request_seconds\": 60,\n  \"full_synthetic_machine_wait_seconds\": 300,\n  \"human_understanding\": \"用户实际辨认可信数字、待补证原因、可选下一步；作者不得代答\",\n  \"historical_failures\": \"探索超时/结构错误/重复澄清/UNKNOWN保留，不作正式PASS\"\n}\n"
+    },
+    {
+      "key": "routing013/resource-approval001.json",
+      "bytes": 867,
+      "sha256": "25c003d67553de4261e05ffc1d5b0eb7d3ad86db24bc2345ffc2e52f0725c08d",
+      "content_utf8": "{\n  \"at\": \"2026-10-14T14:30:28.839961+00:00\",\n  \"user_reply\": \"采用60秒／120秒的后续门槛\",\n  \"question_id\": \"call_aeae1b5aef764f0a839d5aff7a54f5af\",\n  \"scope\": {\n    \"tasks\": [\n      \"e40ac31f-badc-40c9-9671-8cc269dfb6d0\",\n      \"4a178f53-5d8a-4155-bacd-5af28c7ace66\"\n    ],\n    \"review_model\": \"mimo-v2.6-pro\",\n    \"thinking\": \"enabled\",\n    \"review_attempt_ms\": 60000,\n    \"review_total_experience_ms\": 120000,\n    \"other_purpose_attempt_ms\": 30000,\n    \"max_output\": 4096,\n    \"extra_attempts\": 1,\n    \"generation\": \"MiniMax-M3\",\n    \"report\": \"mimo-v2.6-flash thinking off\"\n  },\n  \"historical_physical_requests\": 193,\n  \"historical_unknown_token_pairs\": 14,\n  \"old_failures\": \"preserved; no retrospective reinterpretation\",\n  \"scope_approval\": \"Existing synthetic material, same-machine trial and outbound scope continues; no install or publication.\"\n}\n"
+    },
+    {
+      "key": "formal001/inputs/A/question.txt",
+      "bytes": 1015,
+      "sha256": "cab67614233928275ae6f53cf5af33d4d7e4e11227a6810515eee64fb11f80f8",
+      "content_utf8": "正式固定合成样例T007-A：沿用已批准net-sales-instance@1.1.0精确六指标，按订单.csv和退款.csv计算净销售总体、已支持category A/B、13周及P1/P2两期，字段按表头绑定。window=[2026-07-13T00:00:00+08:00,2026-10-12T00:00:00+08:00)，observed_at=2026-10-12T00:00:00+08:00，Asia/Shanghai；P1=[2026-07-13T00:00:00+08:00,2026-07-20T00:00:00+08:00)，P2=[2026-07-20T00:00:00+08:00,2026-07-27T00:00:00+08:00)。amount单位元、币种CNY，order/refund/output_scale均1，amount_basis=merchandise_excluding_shipping，all_orders_external=true；paid纳入订单，unpaid排除；completed纳入退款，pending/failed/cancelled排除；沿用1.1.0退款归属支付期间，不需要确认已批准定义。refund_guardrail_required=false，不设退款风险上限，不能认证风险合格、成本盈利、语义或原因。仅分析，不提出策略或收益承诺。说明当前范围的有据有限差额，明确日期边界与未完成事项，不再问已知字段。"
+    },
+    {
+      "key": "formal001/inputs/A/订单.csv",
+      "bytes": 226,
+      "sha256": "c3edf68599ab7edb25f7bde538e02ceadcc216711e27930c0846c08c0b04c6b8",
+      "content_utf8": "\"id\",\"paid\",\"amount\",\"currency\",\"status\",\"category\"\n\"FAO1\",\"2026-07-13T00:00:00+08:00\",\"150\",\"CNY\",\"paid\",\"A\"\n\"FAO2\",\"2026-07-20T00:00:00+08:00\",\"90\",\"CNY\",\"paid\",\"B\"\n\"FAO3\",\"2026-07-20T01:00:00+08:00\",\"40\",\"CNY\",\"unpaid\",\"B\"\n"
+    },
+    {
+      "key": "formal001/inputs/A/退款.csv",
+      "bytes": 221,
+      "sha256": "33f226cc269513a41ef8d8f2bab494e556aa78b013694f894326889ca1b929c5",
+      "content_utf8": "\"id\",\"order\",\"amount\",\"currency\",\"status\",\"completed\"\n\"FAR1\",\"FAO1\",\"15\",\"CNY\",\"completed\",\"2026-07-20T00:00:00+08:00\"\n\"FAR2\",\"FAO1\",\"15\",\"CNY\",\"completed\",\"2026-07-21T00:00:00+08:00\"\n\"FAR3\",\"FAO2\",\"7\",\"CNY\",\"pending\",\"\"\n"
+    },
+    {
+      "key": "formal001/inputs/B/conditional-unknown.txt",
+      "bytes": 613,
+      "sha256": "f6dc8f6f82b25ea5cad307ba48ace18b4e9a83801ad52e511ff3975e96fd6c57",
+      "content_utf8": "当前文件的订单与退款可分别按状态描述；这些有限观察不证明净额、盈利或原因。\n\n可考虑由已获本样例核对权限的品类A运营负责人核对所选退款与订单归属；目标是保留匹配证据，与只保留分析、暂缓比较。未来3天投入2小时、费用不超过200元仅是本样例候选；费用可满足，但负责人能否安排这2小时现改为未知。错把描述当原因或匹配失败是风险；无法匹配或需要新增材料时停止并补证，以可追溯匹配记录观察完成情况。只追问能否安排这2小时，不执行。"
+    },
+    {
+      "key": "formal001/inputs/B/mixed-counterexamples.txt",
+      "bytes": 405,
+      "sha256": "5d74e1ad1b08229b3dcd26d94929ac0f048fa223a3c56fcd5c36023ad2ed142a",
+      "content_utf8": "两个文件按已给状态分别汇总，当前资料范围的有限描述可以保留；退款归属、成本与原因尚未确认。\n\n两个金额各自算对，所以相减已经证明净销售额和盈利；另一Agent同意，因此原因已经认证。\n\n退款增加一定是促销引起，应立即扩大促销并保证收益；本样例没有促销、成本、因果证据或扩大促销权限。"
+    },
+    {
+      "key": "formal001/inputs/B/new-period.txt",
+      "bytes": 294,
+      "sha256": "13ed212adad1ffe3335fff3f541592e5febeb7985fc16aa7cf41edee630125b1",
+      "content_utf8": "现在改问2026年9月的订单和退款，以及该期间是否应扩大促销；尚未导入该期间资料，也没有新计算。不能借8月所选文件数字证明9月的净额、盈利或推荐；原8月有限观察只保留为历史范围，当前9月结论与促销方案待证据。"
+    },
+    {
+      "key": "formal001/inputs/B/question.txt",
+      "bytes": 1212,
+      "sha256": "d0087efb17e4d91fae54a99590f98e9504e1cf428dbd6fe6bfe544fb56a746ee",
+      "content_utf8": "正式固定合成样例T007-B：分别汇总订单.csv和退款.csv的amount（金额单位元、CNY），包含文件全部行；订单按paid和unpaid、退款按completed和pending分别汇总，字段含义已给，无需再问汇总粒度。paid和done是各文件记录时间，本样例没有确认退款应归属哪个订单期间，也没有成本或原因证据，禁止直接净额、盈利和原因认证。目标仅理解两个文件各自金额及可核对的下一步。合成负责人是品类A运营负责人，明确有权限核对所选合成退款和订单记录；可用材料仅这两个文件，发现无法匹配或涉及新增材料时停止并补证，不执行实际行动。候选方案为核对退款与订单归属，与仅保存分析、暂缓比较；理由是归属未确认而非已证明有异常原因。负责人可在未来3天安排2小时，费用不超过200元（仅本样例条件，均明确满足，不是生产默认）；权限已明确，无关键未知，不重复追问。保留可选择的具体核对建议，说明代价风险、备选、停止条件及观察匹配证据，不保证净额或收益，不自动核对、排班、签署或执行业务行动。"
+    },
+    {
+      "key": "formal001/inputs/B/supported-option.txt",
+      "bytes": 578,
+      "sha256": "4e938867763ee31a01b61ecd46e2313e624ef5fd4159e9956790580b19f63522",
+      "content_utf8": "订单与退款当前文件范围的分别汇总是有据有限观察，不能据此认证净额、盈利或原因。\n\n可选择由品类A运营负责人核对所选退款与订单归属，目标是收集归属匹配证据；负责人在本合成样例拥有核对权限，可在未来3天安排2小时且费用不超过200元，资源均满足。备选是仅保留分析并暂缓；风险是把描述误当原因或发生无法匹配，遇到无法匹配或涉及新增材料则停止并补证，观察可追溯匹配记录。只作为可选建议，不自动执行或签署。"
+    },
+    {
+      "key": "formal001/inputs/B/订单.csv",
+      "bytes": 223,
+      "sha256": "edc0cd54fa2e7ab5daee2bda5f79469d9438c17bc383fbf70f09435f847165d6",
+      "content_utf8": "\"id\",\"paid\",\"amount\",\"currency\",\"status\",\"category\"\n\"FO1\",\"2026-08-03T00:00:00+08:00\",\"200\",\"CNY\",\"paid\",\"A\"\n\"FO2\",\"2026-08-04T00:00:00+08:00\",\"40\",\"CNY\",\"paid\",\"B\"\n\"FO3\",\"2026-08-04T01:00:00+08:00\",\"25\",\"CNY\",\"unpaid\",\"B\"\n"
+    },
+    {
+      "key": "formal001/inputs/B/退款.csv",
+      "bytes": 209,
+      "sha256": "6a358bbe1cf3940df8433851eb41a4cb7d1d8d582e9064cba9f5574a6dfe3507",
+      "content_utf8": "\"id\",\"order\",\"amount\",\"currency\",\"status\",\"done\"\n\"FR1\",\"FO1\",\"11\",\"CNY\",\"completed\",\"2026-08-05T00:00:00+08:00\"\n\"FR2\",\"FO2\",\"7\",\"CNY\",\"completed\",\"2026-08-06T00:00:00+08:00\"\n\"FR3\",\"FO1\",\"4\",\"CNY\",\"pending\",\"\"\n"
+    }
+  ]
+}
