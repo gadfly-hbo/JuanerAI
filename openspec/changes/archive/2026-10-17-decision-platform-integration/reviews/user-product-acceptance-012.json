@@ -1,0 +1,14 @@
+{
+  "source": "direct human user message in original task",
+  "receivedAt": "2026-10-17T18:53:35.546982+08:00",
+  "exactMessage": "012产品验收通过。沿原任务继续完成其余已授权收口，保留原BLOCKED、具名豁免和历史证据；不扩大权限、不调用真实Provider、不发布。",
+  "candidate": "012",
+  "sourceManifestSha256": "28ce87cbae9f8aa47db8ff85025b9a375d752aac21b4fa9cc6b22302750e387a",
+  "evidenceManifestSha256": "58eaa98eecc2571690987e57e3146fac11acd779ccbfd6e026f5f0055b92c7b1",
+  "productAcceptance": "PASS_BY_EXPLICIT_USER_VERDICT",
+  "scope": "approved006r1 browser host integration, fixed012, synthetic model and isolated data only",
+  "independentValidator": "original BLOCKED retained; actualdanger-full-access and named waivers unchanged",
+  "observed034Data": "two saved synthetic analyses, plugin reports0, no plugin child, business writes0; user click-by-click trace NOT_ASSERTED",
+  "mechanismEvidence": "frozen029/032 and independent012 valid scoped reuse; do not substitute declaration for unseen actions",
+  "permissions": "no new Provider/data/SDK/Git/publication/production authority"
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017025926753-615AIF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T02:59:26.753Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "固定004独立产品就绪PASS，提交用户UI审核；浏览器NOT_RUN，工程未启动",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

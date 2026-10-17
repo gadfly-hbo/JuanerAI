@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017040603751-QXLKDL",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-17T04:06:03.751Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "用户审核通过：006r1 UI Gate PASS，冻结产品输入，下一步固定运行材料",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017104922807-I4JYVO",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T10:49:22.807Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a14972-cec5-72c0-82e3-be57dc32141d"
+  },
+  "summary": "012具名风险工程接受；034同机合成产品验收入口就绪",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

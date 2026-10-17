@@ -1,3 +1,14 @@
+## decision-platform 012 · 获准Git交付与归档036（2026-10-17）
+
+用户已授权本任务Git交付、PR、最终HEAD CI、合并、安全主线同步及正式归档；沿原分支保全012，再正常融合已发布主线。归档与当前规格随[PR100](https://github.com/gadfly-hbo/JuanerAI/pull/100)实际合并生效，最终Git/CI/逐设备同步身份见[交付036](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/git-delivery-036.md)及其本机完成回执，未有实际结果不提前称完成。012用户产品接受及工程具名风险不变，原独立BLOCKED不改。全40稳定ID类别增量0；六加二/完整阶段、正式Decision/Actual、现实业务结果、真实Provider质量、安装及生产缺口保持。
+
+以下本地接受及历史保持原时点。
+
+<a id="e-decision-platform-012"></a>
+## E-DECISION-PLATFORM-012 · 限定本地产品接受
+
+固定012 manifest28ce87cb…50e387a；用户明确产品接受，工程接受具名风险处置，原Validator BLOCKED保持。合成浏览器/同机宿主和真实固定SDK证据，不是现实业务结果或发布/生产接受。见[产品接受](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/product-acceptance.md)、[工程接受](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/engineering-acceptance.md)、[完整验证与历史](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/verification.md)、[当前收口](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/local-closeout.md)。40ID类别变化0，不关闭完整能力/阶段。
+
 ## 插件接入沉淀 · 正式Git交付005（候选时记录，实际结果见回执）
 
 同一任务已获Git交付授权；003 PASS/004仅原作用域复用，新状态及main整合另验并取得确切head full CI。[当前交付与身份](../../../openspec/changes/plugin-integration-consolidation/git-delivery-005.md)。40ID业务能力增量0，C5-09局部、S1/S4不关闭；以下旧记录保持原时点。

@@ -687,7 +687,44 @@ const reportStudioFiles = [
   'apps/browser/installed-main.ts',
 ];
 const approvedReportStudioTsconfig={...approvedMetricAssetsTsconfig,files:[...approvedMetricAssetsTsconfig.files,...reportStudioFiles]};
+
+// DP-CI-02: independently fixed appendix; never derived from the tested tsconfig.
+const decisionPlatformFiles = [
+  "adapters/decision-platform/ingress.ts",
+  "tests/integration/decision-platform/ingress.integration.test.ts",
+  "adapters/decision-platform/process.ts",
+  "adapters/decision-platform/child.ts",
+  "adapters/decision-platform/material-policy.ts",
+  "packages/ports/decision-platform.ts",
+  "tests/integration/decision-platform/process.integration.test.ts",
+  "tests/integration/decision-platform/material-policy.integration.test.ts",
+  "adapters/decision-platform/store.ts",
+  "adapters/decision-platform/gateway.ts",
+  "packages/application/decision-platform.ts",
+  "tests/integration/decision-platform/store.integration.test.ts",
+  "tests/integration/decision-platform/gateway.integration.test.ts",
+  "tests/integration/decision-platform/workspace.integration.test.ts",
+  "adapters/decision-platform/history.ts",
+  "adapters/decision-platform/runtime-channel.ts",
+  "adapters/decision-platform/materials.ts",
+  "adapters/decision-platform/effects-gateway.ts",
+  "adapters/decision-platform/extraction-scope.ts",
+  "adapters/decision-platform/runtime-authorization.ts",
+  "packages/application/decision-sources.ts",
+  "packages/application/decision-effects.ts",
+  "tests/integration/decision-platform/sources.integration.test.ts",
+  "tests/integration/decision-platform/host-http.integration.test.ts",
+  "tests/integration/decision-platform/runtime-authorization.integration.test.ts",
+  "tests/integration/decision-platform/effects.integration.test.ts",
+  "tests/integration/decision-platform/extraction-scope.integration.test.ts",
+  "profiles/personal/decision-platform.ts",
+  "apps/browser/decision-platform-http.ts",
+  "tests/integration/decision-platform/materials.integration.test.ts",
+  "tests/integration/decision-platform/effects-gateway.integration.test.ts"
+];
+const approvedDecisionPlatformTsconfig={...approvedReportStudioTsconfig,files:[...approvedReportStudioTsconfig.files,...decisionPlatformFiles]};
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedDecisionPlatformTsconfig,approvedP5RepositoryConfigurationFiles))return 'DecisionPlatformIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedReportStudioTsconfig,approvedP5RepositoryConfigurationFiles))return 'ReportStudioIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedMetricAssetsTsconfig,approvedP5RepositoryConfigurationFiles))return 'Sdk051FormalAdoption' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedReadCarrierManifest,approvedMetricAssetsTsconfig,approvedP5RepositoryConfigurationFiles))return 'PiReadCarrierRepair' as const;
@@ -3527,7 +3564,7 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
   assert.equal(assertApprovedConfigurationTuple(approvedDevelopmentManifest,approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles),'Change004');
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'ReportStudioIntegration');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'DecisionPlatformIntegration');
 });
 
 
@@ -3934,4 +3971,23 @@ test('RS-CI-01 exact Report Studio roots extend fixed SDK051 without accepting p
  }
  assert.throws(()=>check({...approvedReportStudioTsconfig,files:[...approvedMetricAssetsTsconfig.files,...reportStudioFiles.toReversed()]}));
  assert.throws(()=>check({...approvedReportStudioTsconfig,files:[...approvedReportStudioTsconfig.files,'unapproved.ts']}));
+});
+
+
+test('DP-CI-02 exact decision-platform appendix preserves prior tuples and rejects incomplete or expanded configuration',async()=>{
+ const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedSdk051Manifest,config,approvedP5RepositoryConfigurationFiles);
+ assert.equal(check(approvedReportStudioTsconfig),'ReportStudioIntegration');
+ assert.equal(check(approvedDecisionPlatformTsconfig),'DecisionPlatformIntegration');
+ assert.deepEqual(JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8')),approvedDecisionPlatformTsconfig);
+ for(const file of decisionPlatformFiles){
+  assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:approvedDecisionPlatformTsconfig.files.filter(p=>p!==file)}));
+  assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,file]}));
+  assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:approvedDecisionPlatformTsconfig.files.map(p=>p===file?'unapproved.ts':p)}));
+ }
+ assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:[...approvedReportStudioTsconfig.files,...decisionPlatformFiles.toReversed()]}));
+ assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,'unapproved.ts']}));
+ assert.throws(()=>check({...approvedDecisionPlatformTsconfig,compilerOptions:{...approvedDecisionPlatformTsconfig.compilerOptions,strict:false}}));
+ assert.throws(()=>check({...approvedDecisionPlatformTsconfig,configuration_selector:'DecisionPlatformIntegration'}));
+ assert.throws(()=>assertApprovedConfigurationTuple({...approvedSdk051Manifest,dependencies:{...approvedSdk051Manifest.dependencies,unapproved:'1.0.0'}},approvedDecisionPlatformTsconfig,approvedP5RepositoryConfigurationFiles));
+ assert.throws(()=>assertApprovedConfigurationTuple(approvedSdk051Manifest,approvedDecisionPlatformTsconfig,[...approvedP5RepositoryConfigurationFiles,'unapproved.config.cjs']));
 });

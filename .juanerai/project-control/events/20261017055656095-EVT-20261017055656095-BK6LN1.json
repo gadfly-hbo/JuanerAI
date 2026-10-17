@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017055656095-BK6LN1",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-10-17T05:56:56.095Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "候选007实现缺陷均关闭；历史RED、浏览器证据及只读环境三项边界已集中提出",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

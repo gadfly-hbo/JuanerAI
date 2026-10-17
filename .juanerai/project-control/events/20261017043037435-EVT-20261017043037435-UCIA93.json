@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017043037435-UCIA93",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-17T04:30:37.435Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "用户授权隔离安装及固定插件合成运行，继续同一工程任务",
+  "status_after": "active",
+  "evidence_refs": []
+}

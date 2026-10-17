@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017080034692-Y5K0HR",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T08:00:34.692Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "010独立限定PASS；非浏览器可执行项收敛，保留真实UI及未授权发行边界",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

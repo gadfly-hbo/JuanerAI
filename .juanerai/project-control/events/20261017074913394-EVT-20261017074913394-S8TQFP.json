@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017074913394-S8TQFP",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T07:49:13.394Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "009本地资源搬移与合成闭环完成，进入独立复核",
+  "status_after": "active",
+  "evidence_refs": []
+}

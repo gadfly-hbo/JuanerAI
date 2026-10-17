@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017043002405-Q2ENP2",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-17T04:30:02.405Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "固定材料核验及ingress GREEN；隔离插件合成运行方案待授权",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

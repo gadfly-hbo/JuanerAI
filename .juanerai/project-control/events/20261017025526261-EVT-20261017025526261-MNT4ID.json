@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017025526261-MNT4ID",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-17T02:55:26.261Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "decision-platform 产品准备：固定Prompt/用户方向/UI候选002；工程未启动",
+  "status_after": "validating",
+  "evidence_refs": []
+}

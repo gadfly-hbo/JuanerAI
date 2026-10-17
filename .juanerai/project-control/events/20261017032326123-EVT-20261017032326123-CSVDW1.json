@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017032326123-CSVDW1",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T03:23:26.123Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "用户UI纠偏：004旧外壳作废，005复用PR90新版，复核中",
+  "status_after": "validating",
+  "evidence_refs": []
+}

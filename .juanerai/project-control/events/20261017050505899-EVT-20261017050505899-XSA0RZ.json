@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017050505899-XSA0RZ",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T05:05:05.899Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "宿主来源/意图/实际插件子进程闭环PASS；27项受影响检查PASS",
+  "status_after": "validating",
+  "evidence_refs": []
+}
