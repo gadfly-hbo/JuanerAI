@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016010058741-87YP5R",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-16T01:00:58.741Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14238-6be2-71a3-a64b-cf105f13475b"
+  },
+  "summary": "用户明确批准请求004，原A/B剩余次数与全部停止线保留",
+  "status_after": "active",
+  "evidence_refs": []
+}

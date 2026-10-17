@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015044050579-I7JIGJ",
+  "event_type": "accepted",
+  "occurred_at": "2026-10-15T04:40:50.579Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13dd9-ce83-74a1-a1ba-b598229727a4"
+  },
+  "summary": "用户明确“采纳，接受产品”：本冻结离线产品范围接受；保留F-ROLE-01、原Validator BLOCKED、历史失败/UNKNOWN，Provider/生产/Git/归档停止线不变",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

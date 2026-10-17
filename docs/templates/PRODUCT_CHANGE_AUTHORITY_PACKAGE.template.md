@@ -4,13 +4,14 @@ This pre-existing template is optional/reference-only when already selected by
 the Change. Normally record the same applicable information once in existing
 OpenSpec/handoff records; do not add a mandatory package or approval stage.
 
-For the current semi-automatic path, the MacBook Product Manager freezes the
-Product Input section and the Mac mini Engineering Controller fills the
-Engineering Intake section. The signed sections apply only to the separately
-authorized inactive Host Loop. Never place a secret, private key, credential,
+For the current semi-automatic path, the product-input owner freezes the Product
+Input section: normally MacBook Product Manager, or Mini primary under the sole
+policy's Mini-led Plugin Integration section. Mini fills Engineering Intake;
+the plugin path needs no cross-device handoff. The signed sections apply only to
+the separately authorized inactive Host Loop. Never place a secret, private key, credential,
 signature bytes, raw prompt, or raw model output here.
 
-## Product Input — MacBook Product Manager
+## Product Input — applicable product-input owner
 
 - Change ID / product objective:
 - Product scope / non-goals / prohibited outcomes / deferred returns:

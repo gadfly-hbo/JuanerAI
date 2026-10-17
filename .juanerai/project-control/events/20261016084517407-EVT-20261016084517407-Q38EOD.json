@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016084517407-Q38EOD",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T08:45:17.407Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a143ac-3a6e-7492-aa1e-091c3e2e4342"
+  },
+  "summary": "021离线控制及冻结完成；原严格activeMs条件FAIL，真实前停于022单项决定，Provider0/原账保留",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

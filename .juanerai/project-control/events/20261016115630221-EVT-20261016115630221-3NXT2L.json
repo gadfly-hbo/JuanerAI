@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016115630221-3NXT2L",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T11:56:30.221Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14485-e837-7500-9013-b250e6b07011"
+  },
+  "summary": "028批准A+B已执行：更新PASS、HTML/PDF保存下载与HTML显示PASS，Preview工具超时按首错停止；Provider0/计量和旧UNKNOWN不变，服务正常退出。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

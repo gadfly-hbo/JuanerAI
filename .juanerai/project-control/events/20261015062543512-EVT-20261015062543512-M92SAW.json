@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015062543512-M92SAW",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T06:25:43.512Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13e38-20e2-7fa0-8653-1f6b69586d98"
+  },
+  "summary": "User-reported peer sync completed; read-only check verifies GitHub/Mini/MacBook main07f6ec36, closing sync gap while retaining original SKIPPED and all BLOCKED/UNKNOWN history",
+  "status_after": "complete",
+  "evidence_refs": []
+}

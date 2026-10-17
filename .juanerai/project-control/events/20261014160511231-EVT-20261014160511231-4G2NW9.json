@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014160511231-4G2NW9",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T16:05:11.231Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a1394f-a008-7850-9d11-7111f6dc093b"
+  },
+  "summary": "Current offline verification finished; scoped open contract return points recorded with real public/product reproductions.",
+  "status_after": "active",
+  "evidence_refs": []
+}

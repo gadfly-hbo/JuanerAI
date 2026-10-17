@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016013703234-VNZ7LS",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T01:37:03.234Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14258-8539-70e3-b51c-2dea60a8a016"
+  },
+  "summary": "B就绪回执后核实两家均配置；只读确认固定MiMo官方全模态能力，等待用户完成仅MiMo配置安排，无新Provider调用",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

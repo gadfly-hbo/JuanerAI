@@ -22,7 +22,7 @@ test('TEST-XDESK-CF-RESTORATION requires full Console then Desktop phases withou
     "node --test tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts",
     "node --test tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts",
     "node --test tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts",
-    "node --test tests/unit/xanthil-desktop/*.test.ts tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs",
+    "node --test tests/unit/xanthil-desktop/*.test.ts tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs",
     "node --test tests/contract/xanthil-desktop/*.test.ts",
     "node --test tests/integration/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/browser-companion-process.test.mjs tests/integration/xanthil-desktop/browser-service-view.test.mjs tests/integration/xanthil-desktop/browser-workspace-view.test.mjs",
     "node --test --test-concurrency=1 tests/e2e/xanthil-desktop/*.test.ts",
@@ -89,10 +89,12 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/unit/xanthil-desktop/open-membership-framework.unit.test.ts",
     "tests/unit/xanthil-desktop/provider-credentials.unit.test.ts",
     "tests/unit/xanthil-desktop/provider-settings.unit.test.ts",
+    "tests/unit/xanthil-desktop/report-studio-source.unit.test.ts",
     "tests/unit/xanthil-desktop/xanthil-desktop.unit.test.ts",
     "tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs",
     "tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs",
-    "tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs"
+    "tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs",
+    "tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs"
   ],
   [
     "tests/contract/xanthil-desktop/case-assistant-ipc.contract.test.ts",
@@ -103,6 +105,10 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/contract/xanthil-desktop/member-task-runtime.contract.test.ts",
     "tests/contract/xanthil-desktop/member-task-ui.contract.test.ts",
     "tests/contract/xanthil-desktop/provider-settings-runtime.contract.test.ts",
+    "tests/contract/xanthil-desktop/report-studio-bundle.contract.test.ts",
+    "tests/contract/xanthil-desktop/report-studio-gateway.contract.test.ts",
+    "tests/contract/xanthil-desktop/report-studio-policy.contract.test.ts",
+    "tests/contract/xanthil-desktop/report-studio-store.contract.test.ts",
     "tests/contract/xanthil-desktop/xanthil-desktop-analysis.contract.test.ts",
     "tests/contract/xanthil-desktop/xanthil-desktop-assistance.contract.test.ts",
     "tests/contract/xanthil-desktop/xanthil-desktop-ipc.contract.test.ts",
@@ -122,6 +128,9 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/integration/xanthil-desktop/browser-preparation.integration.test.ts",
     "tests/integration/xanthil-desktop/browser-project-catalog.integration.test.ts",
     "tests/integration/xanthil-desktop/browser-service-auth.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-ui-http.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-ui-live.integration.test.ts",
+    "tests/integration/xanthil-desktop/browser-ui-report-content.integration.test.ts",
     "tests/integration/xanthil-desktop/browser-workspace.integration.test.ts",
     "tests/integration/xanthil-desktop/case-assistant.integration.test.ts",
     "tests/integration/xanthil-desktop/case-collaboration-lifecycle.integration.test.ts",
@@ -155,6 +164,11 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/integration/xanthil-desktop/open-document-source.integration.test.ts",
     "tests/integration/xanthil-desktop/open-membership-method.integration.test.ts",
     "tests/integration/xanthil-desktop/provider-settings.integration.test.ts",
+    "tests/integration/xanthil-desktop/report-studio-http.integration.test.ts",
+    "tests/integration/xanthil-desktop/report-studio-local-access.integration.test.ts",
+    "tests/integration/xanthil-desktop/report-studio-process.integration.test.ts",
+    "tests/integration/xanthil-desktop/report-studio-profile.integration.test.ts",
+    "tests/integration/xanthil-desktop/report-studio-workspace.integration.test.ts",
     "tests/integration/xanthil-desktop/requirement-draft.integration.test.ts",
     "tests/integration/xanthil-desktop/sdk041-case-session.integration.test.ts",
     "tests/integration/xanthil-desktop/sdk041-connection-probe.integration.test.ts",
@@ -324,6 +338,53 @@ const CHANGE006_TSCONFIG_APPENDIX = Object.freeze([
   'tests/unit/xanthil-desktop/metric-assets-workbench.unit.test.ts',
   'tests/integration/xanthil-desktop/metric-assets-browser.integration.test.ts',
 ]);
+// Report Studio adds independent exact roots; no earlier inventory is weakened.
+const REPORT_STUDIO_TSCONFIG_APPENDIX = Object.freeze([
+  'packages/contracts/report-studio.ts',
+  'adapters/report-studio/bundle.ts',
+  'tests/contract/xanthil-desktop/report-studio-bundle.contract.test.ts',
+  'packages/application/report-studio-source.ts',
+  'tests/unit/xanthil-desktop/report-studio-source.unit.test.ts',
+  'packages/ports/report-studio.ts',
+  'adapters/report-studio/store.ts',
+  'tests/contract/xanthil-desktop/report-studio-store.contract.test.ts',
+  'packages/application/report-studio.ts',
+  'tests/integration/xanthil-desktop/report-studio-workspace.integration.test.ts',
+  'adapters/report-studio/local-access.ts',
+  'tests/integration/xanthil-desktop/report-studio-local-access.integration.test.ts',
+  'adapters/report-studio/gateway.ts',
+  'tests/contract/xanthil-desktop/report-studio-gateway.contract.test.ts',
+  'adapters/report-studio/process.ts',
+  'tests/integration/xanthil-desktop/report-studio-process.integration.test.ts',
+  'profiles/personal/report-studio.ts',
+  'tests/integration/xanthil-desktop/report-studio-profile.integration.test.ts',
+  'apps/browser/report-studio-http.ts',
+  'tests/integration/xanthil-desktop/report-studio-http.integration.test.ts',
+  'adapters/report-studio/policy.ts',
+  'tests/contract/xanthil-desktop/report-studio-policy.contract.test.ts',
+  'apps/browser/installed-main.ts',
+]);
+
+test('CI-REPORT-STUDIO-001: new roots reject omission, substitution, duplication, reordering and extras', async t => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'juanerai-cvr-report-studio-'));
+  t.after(() => rm(root, {recursive:true,force:true}));
+  for (const name of C1A_TUPLE_CONFIGURATION_FILES) await cp(path.join(REPO_ROOT,name),path.join(root,name));
+  assert.equal(await currentRunnerTuple(root),'CF');
+  const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8'));
+  const start=original.files.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length;
+  for(let i=start;i<original.files.length;i++) {
+    for(const [label,files] of [
+      ['omit',original.files.filter((_,n)=>n!==i)],
+      ['replace',original.files.map((f,n)=>n===i?'tests/unapproved.test.ts':f)],
+      ['duplicate',original.files.map((f,n)=>n===i?original.files[i-1]:f)],
+      ['reorder',original.files.map((f,n)=>n===i?original.files[i-1]:n===i-1?original.files[i]:f)],
+      ['extra',[...original.files,'tests/unapproved.test.ts']],
+    ]) await t.test(i+' '+label,async()=>{
+      await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));
+      await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});
+    });
+  }
+});
 const C0_ROOT_COUNT = 43;
 const DEVELOPMENT_TSCONFIG_APPENDIX = Object.freeze([
   'apps/desktop/development.ts', 'apps/desktop/desktop-work.ts',
@@ -427,7 +488,9 @@ async function currentRunnerTuple(root = REPO_ROOT) {
   assert.deepEqual(files.slice(maintenanceStart,browserStart),CI_MAINTENANCE_TSCONFIG_APPENDIX,'CI maintenance roots remain the exact independent ordered inventory');
   const metricStart=browserStart+CHANGE005_TSCONFIG_APPENDIX.length;
   assert.deepEqual(files.slice(browserStart,metricStart),CHANGE005_TSCONFIG_APPENDIX,'Change005 roots remain fixed independent literals');
-  assert.deepEqual(files.slice(metricStart),CHANGE006_TSCONFIG_APPENDIX,'Change006 roots and total length are fixed independent literals');
+  const studioStart=metricStart+CHANGE006_TSCONFIG_APPENDIX.length;
+  assert.deepEqual(files.slice(metricStart,studioStart),CHANGE006_TSCONFIG_APPENDIX,'Change006 roots remain fixed independent literals');
+  assert.deepEqual(files.slice(studioStart),REPORT_STUDIO_TSCONFIG_APPENDIX,'Report Studio roots and total length are fixed independent literals');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }
@@ -438,7 +501,7 @@ function expectedRunnerChildren(tuple) {
 }
 function expectedRunnerTestTargets(tuple) {
   return tuple==='C0'?C0_RUNNER_TEST_TARGETS:[...C0_RUNNER_TEST_TARGETS,...CF_CONSOLE_PATHS,
-    'tests/unit/xanthil-desktop/*.test.ts','tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs','tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs','tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs','tests/contract/xanthil-desktop/*.test.ts',
+    'tests/unit/xanthil-desktop/*.test.ts','tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs','tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs','tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs','tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs','tests/contract/xanthil-desktop/*.test.ts',
     'tests/integration/xanthil-desktop/*.test.ts','tests/integration/xanthil-desktop/browser-companion-process.test.mjs','tests/integration/xanthil-desktop/browser-service-view.test.mjs','tests/integration/xanthil-desktop/browser-workspace-view.test.mjs','tests/e2e/xanthil-desktop/*.test.ts'];
 }
 
@@ -963,4 +1026,4 @@ test('BF-R13 CI-CHANGE005: browser roots reject omission, substitution, duplicat
   assert.equal(await currentRunnerTuple(root),'CF');
 });
 
-test('CI-CHANGE006: every new root remains exact without weakening Change005 coverage',async t=>{const root=await mkdtemp(path.join(os.tmpdir(),'juanerai-cvr-change006-'));t.after(()=>rm(root,{recursive:true,force:true}));for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-CHANGE006_TSCONFIG_APPENDIX.length;for(let i=start;i<original.files.length;i++)for(const [label,files] of [['omit',original.files.filter((_,n)=>n!==i)],['replace',original.files.map((f,n)=>n===i?'tests/unapproved.test.ts':f)],['duplicate',original.files.map((f,n)=>n===i?original.files[i-1]:f)],['reorder',original.files.map((f,n)=>n===i?original.files[i-1]:n===i-1?original.files[i]:f)]])await t.test(i+' '+label,async()=>{await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});});});
+test('CI-CHANGE006: every new root remains exact without weakening Change005 coverage',async t=>{const root=await mkdtemp(path.join(os.tmpdir(),'juanerai-cvr-change006-'));t.after(()=>rm(root,{recursive:true,force:true}));for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length-CHANGE006_TSCONFIG_APPENDIX.length;for(let i=start;i<original.files.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length;i++)for(const [label,files] of [['omit',original.files.filter((_,n)=>n!==i)],['replace',original.files.map((f,n)=>n===i?'tests/unapproved.test.ts':f)],['duplicate',original.files.map((f,n)=>n===i?original.files[i-1]:f)],['reorder',original.files.map((f,n)=>n===i?original.files[i-1]:n===i-1?original.files[i]:f)]])await t.test(i+' '+label,async()=>{await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});});});

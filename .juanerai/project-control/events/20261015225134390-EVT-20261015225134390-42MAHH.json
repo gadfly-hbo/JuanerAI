@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015225134390-42MAHH",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-15T22:51:34.390Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a141c2-9eeb-7911-a7af-12d3be4d294d"
+  },
+  "summary": "User authorized Mini revised trial update and recheck only; Provider/deployment/Git remain stopped",
+  "status_after": "active",
+  "evidence_refs": []
+}

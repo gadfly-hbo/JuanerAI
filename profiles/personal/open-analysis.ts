@@ -20,7 +20,7 @@ import type {MemberSourceInspector} from '../../packages/ports/member-source.ts'
 export function createPersonalOpenAnalysisWorkspace(config:{onFailure?:(code:string)=>void;metricAssetDisclosureAllowed?:boolean;requireSemanticAssessment?:boolean;project_id?:string;toolchain?:{pythonExecutable:string;pythonVersion:string;duckdbExecutable?:string;duckdbVersion?:string};projectRoot:string;runtime?:OpenAnalysisRuntime;createRuntime?:(ledger:AnalysisRequestLedger,context:Readonly<{projectRoot:string}>)=>OpenAnalysisRuntime;inspect:MemberSourceInspector;authorizeConfiguration:()=>Promise<{config_sha256:string}>}){
  const ledger=createLocalAnalysisRequestLedger({projectRoot:config.projectRoot}),store=createLocalOpenAnalysisStore({projectRoot:config.projectRoot});
  const runtime=config.runtime??config.createRuntime?.(ledger,{projectRoot:config.projectRoot})??fail('RUNTIME_UNAVAILABLE');
- const project_id=config.project_id??randomUUID(),source=createOpenAnalysisCollaborationSource({project_id,store,allowQualifiedSteps:true});
+ const project_id=config.project_id??randomUUID(),source=createOpenAnalysisCollaborationSource({project_id,store,allowQualifiedSteps:true,modelEvidenceView:runtime.selectedMaterialRead==='v1'});
  const collaborationStore=createLocalCaseAssistantStore({projectRoot:config.projectRoot,openSource:source.read,collaborationPolicy:'open_analysis_v13'});
  const recovery=collaborationStore.interruptAll(new Date().toISOString());
  let delegation:ReturnType<typeof createOpenAnalysisDelegation>;

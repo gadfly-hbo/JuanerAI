@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016062350685-9EC0UT",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T06:23:50.685Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1435d-8065-7922-bedd-c2ad022a8d2e"
+  },
+  "summary": "用户批准016，保持固定候选与同账，先离线验证临时控制；Provider场景未开始",
+  "status_after": "active",
+  "evidence_refs": []
+}

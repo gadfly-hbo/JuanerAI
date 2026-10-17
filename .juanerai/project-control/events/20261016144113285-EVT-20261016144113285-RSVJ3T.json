@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016144113285-RSVJ3T",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-10-16T14:41:13.285Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14513-b2d6-75a1-81e1-0640688c959f"
+  },
+  "summary": "033独立受影响PASS，用户条件满足；全Change仅buffers许可/通知待闭合，034具体离线重封装待授权",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

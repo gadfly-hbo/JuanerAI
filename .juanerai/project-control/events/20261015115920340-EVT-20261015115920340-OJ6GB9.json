@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015115920340-OJ6GB9",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-15T11:59:20.340Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13f6c-08c3-75b2-8a22-12507ce617fa"
+  },
+  "summary": "本轮SSH恢复，MacBook main1375d599→497cb08f安全ref-only快进，Mini/main同值；双端同步补齐。历史超时/UNKNOWN/PARTIAL/原BLOCKED和旧豁免边界保留，仅操作记录回填，未启动新代码或Git发布。",
+  "status_after": "complete",
+  "evidence_refs": []
+}

@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-10-15T03:12:12.665571+00:00",
+  "role": "Mac mini Engineering Controller, sole main writer",
+  "hostBinding": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13d88-7aa5-7ce0-8baf-dd1697ca75af",
+  "result": "Engineering Acceptance with explicit named user risk waiver",
+  "scope": "Existing frozen pi-r1-r4-repair R1-R4 and D1-D8 A; offline synthetic opt-in implementation and fixed installed SDK joint validation only",
+  "candidateAggregate": "b9b796ee8c0cb624fc7640c37f32c2b08f2c2b692b69bb5cfb9d192b6cf1a16a",
+  "sourceBaseline": "8265a3920ee1205faec7dede8b0c84e648105d9d plus complete frozen WIP; HEAD alone is not implementation",
+  "namedWaiver": "F-ROLE-01-WAIVER-001.json",
+  "independentTechnicalAssessment": "PASS",
+  "formalValidatorVerdict": "BLOCKED F-ROLE-01, retained unchanged",
+  "independentGateDisposition": "Satisfied for this candidate by current explicit named user waiver and verified independent technical/read-only-conduct evidence; not Validator PASS",
+  "remainingCandidateDefectBlockers": [],
+  "canonical": {
+    "pass": 4610,
+    "fail": 0,
+    "skip": 1,
+    "skipReason": "real Provider authorization absent"
+  },
+  "independent": {
+    "pass": 131,
+    "fail": 0,
+    "skip": 0,
+    "additional": "effect/output-limit/projection-failure and owner-stop/reopen counterexamples, exact1366x768 and1440x900 UI; typecheck exit0"
+  },
+  "actualSDK": {
+    "version": "0.5.1-r1r4.3",
+    "bytes": 146131,
+    "sha256": "e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce",
+    "installedFilesMatched": 51,
+    "otherLockEntriesUnchanged": 764
+  },
+  "candidateModified": false,
+  "testsRerunThisCloseout": false,
+  "reasonForReusingChecks": "Exact same technical source/tests/contract/package/lock/install identities; no new change or unresolved defect justifies rerun",
+  "engineeringResultAccepted": true,
+  "unconditionalValidatorPASS": false,
+  "productAcceptance": false,
+  "productionReadiness": false,
+  "changeArchived": false,
+  "GitIntegratedOrPublished": false,
+  "projectBoardOrOpenSpecModified": false,
+  "metadataWriteDeferral": "Frozen candidate includes status.json/OpenSpec; current explicit no-candidate-modification wins over routine record synchronization. This detached decision/acceptance receipt is evidence, not a second project board or scheduler. Canonical incorporation/archive remains separate under actual permissions.",
+  "nextAuthorizedWorkRemainingInsideFrozenOfflineScope": "None; approved result closeout recorded. Do not automatically start a new candidate, trial, Provider verification, production activation or Git delivery."
+}

@@ -1,0 +1,42 @@
+{
+  "id": "F-ROLE-01",
+  "recordedAt": "2026-10-15T03:12:12.665571+00:00",
+  "decisionAuthority": "Current explicit human user",
+  "decisionExactText": "仅针对本冻结候选，接受 F-ROLE-01 的沙箱残余风险，以已核验的只读行为及前后哈希一致作为具名豁免，继续工程收口；不得改写为无条件 Validator PASS，不修改候选，保留历史失败和 UNKNOWN，Provider、生产及 Git 停止线不变。",
+  "hostBinding": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13d88-7aa5-7ce0-8baf-dd1697ca75af",
+  "candidate": {
+    "worktree": "/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI",
+    "branch": "work/mac-mini/pi-r1-r4-repair",
+    "headBaselineOnly": "8265a3920ee1205faec7dede8b0c84e648105d9d",
+    "original87Aggregate": "a5f0a8c11c3b4760b92953c7ce198d2ad2fff336d85b54b7651ad984804b8fd4",
+    "acceptedCurrent88Aggregate": "b9b796ee8c0cb624fc7640c37f32c2b08f2c2b692b69bb5cfb9d192b6cf1a16a",
+    "knownPriorMetadataDelta": "Only the previously recorded interruption status.json and event; no technical delta"
+  },
+  "acceptedResidualRisk": "Native Validator actual danger-full-access/never instead of enforced read-only sandbox; verified read-only candidate conduct and before/after hashes accepted only for this candidate",
+  "evidenceBasis": {
+    "report": "/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/validator-report-001.md",
+    "reportSha256": "f418f9b0dda05632ca09dd3856a1588e6e9032cbea4649eb74d2f2c523c9a5b7",
+    "candidateDriftDuringReview": [],
+    "focusedTests": {
+      "pass": 131,
+      "fail": 0,
+      "skip": 0
+    },
+    "candidateTechnicalAssessment": "PASS for authorized offline synthetic opt-in scope"
+  },
+  "formalValidatorVerdictUnchanged": "BLOCKED F-ROLE-01; never relabeled unconditional Validator PASS",
+  "appliesOnlyToThisCandidate": true,
+  "noPolicyOrRoleConfigChange": true,
+  "notWaived": [
+    "candidate correctness or other defects",
+    "future candidates or changed technical bytes",
+    "Provider/credentials/business-data authority",
+    "production admission policy UNKNOWN",
+    "production/services/deployment",
+    "Git/hosted CI/release",
+    "historical Task migration/recovery/replay",
+    "user Product Acceptance",
+    "initial reviewer TMPDIR footprint uncertainty"
+  ],
+  "invalidatedBy": "Any changed candidate technical bytes, SDK/lock/install identity, inputs or relevant validation environment requires affected applicability and independent recheck; no automatic extension of this waiver"
+}

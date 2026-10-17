@@ -530,3 +530,11 @@ html, body, #app { height: 100%; }
 /* PX006: conversation labels stay compact; the full question remains accessible. */
 .sb-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;line-height:1.5;overflow-wrap:anywhere}
 .sb-child>span:last-child{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere}
+
+/* Approved Report Studio seam; retain the existing workbench shell and button system. */
+.studio-plugin-row{padding:14px 0;border-top:1px solid var(--border,#dfe3ea);border-bottom:1px solid var(--border,#dfe3ea)}
+.studio-plugin-row h3,.studio-report-row h3{font-size:15px;margin:0 0 6px}
+.studio-material-choice{display:flex;align-items:center;gap:8px;margin:14px 0 6px}
+.dialog-inner details pre{max-height:220px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:13px;padding:10px;background:#f5f6f8}
+.studio-report-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--border,#dfe3ea)}
+.studio-report-row>div{min-width:0;overflow-wrap:anywhere}.studio-reports .fine{overflow-wrap:anywhere}

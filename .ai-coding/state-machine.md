@@ -23,11 +23,17 @@ TDD_READY and TEST_ASSET_RETIREMENT in old records remain historical, not
 requirements to recreate in adopted continuous work. Do not rewrite old records
 or migrate state data merely to change the workflow.
 
-Product preparation belongs to MacBook. Mini is the sole writer of current
+Product preparation normally belongs to MacBook; Mini-led plugin preparation
+uses the sole policy's Mini-led Plugin Integration section in the original task,
+retaining PRODUCT_INPUT_FREEZE and ENGINEERING_INTAKE without a device handoff.
+Mini is the sole writer of current
 engineering state. Record material results/transitions, not every inner test run.
 Daily checkpoints/pushes and Mini-local trials under the sole policy's
 Mac mini Trial and User Acceptance section remain within implementation; they
 create no new state or Gate and do not establish formal Change completion.
+MacBook trial/repair follows the sole policy's MacBook Trial and Bounded Bug
+Repair section; it neither transfers Mini's active Change nor creates a second
+engineering-state writer. The repair retains the applicable SDD/TDD lifecycle.
 Independent validation uses new fixed inputs after repair; it does not repeat
 unaffected product preparation or create fresh role/command allowances.
 

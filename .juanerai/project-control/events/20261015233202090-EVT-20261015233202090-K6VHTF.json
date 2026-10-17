@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015233202090-K6VHTF",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-15T23:32:02.090Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a141e7-09ee-7050-ac98-d3b33144bcb0"
+  },
+  "summary": "用户允许接线修复和额外一次图片补测，开始RS-IMAGE-02因果回归",
+  "status_after": "active",
+  "evidence_refs": []
+}

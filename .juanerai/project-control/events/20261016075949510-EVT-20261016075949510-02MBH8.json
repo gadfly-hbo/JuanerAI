@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016075949510-02MBH8",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T07:59:49.510Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a143ac-3a6e-7492-aa1e-091c3e2e4342"
+  },
+  "summary": "020离线评估完成及021新范围待审；新控制/真实核对未实施，Provider0，所有失败/UNKNOWN/预留保留",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

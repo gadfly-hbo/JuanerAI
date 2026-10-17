@@ -132,6 +132,8 @@ required Product Acceptance directly on Mini under the sole execution policy's
 **Mac mini Trial and User Acceptance** section. A local trial identifies the
 commit and relevant uncommitted differences; push, PR and mainline merge are not
 trial prerequisites. Trial feedback is not formal Change acceptance.
+MacBook trials and assigned repairs follow **MacBook Trial and Repair Branches**
+below and the sole policy; Mini-local trial is not the only supported surface.
 
 At the formal Change's complete-result closeout, concentrate one PR targeting
 `main`, its complete diff/evidence review, applicable independent verification,
@@ -145,6 +147,34 @@ verify actual workflows and required checks before merge.
 
 This Mini cadence does not change MacBook product/governance delivery or grant
 Git, installation, host, provider/data or release permissions.
+
+### MacBook Trial and Repair Branches
+
+Apply the sole execution policy's **MacBook Trial and Bounded Bug Repair**
+section for trial, repair scope, verification and runtime safety. This Git path
+adds no permission or automatic copy synchronization.
+
+- For an integrated product, fetch and pin the actual `origin/main` commit,
+  then create an independent MacBook worktree and `work/macbook/<slug>` branch.
+  Worktree creation from that ref need not switch or fast-forward a historical
+  checkout. Reuse the designated trial copy on later updates only after checking
+  for edits and running services; an active repair is not a disposable mirror.
+- For an unmerged Mini candidate, bind its exact published/accessibly frozen
+  source first. Branch from that candidate without writing Mini's branch; name
+  the intended receiving branch in the existing handoff. Review the repair-only
+  delta separately from the candidate's unmerged product delta. Do not open a
+  `main` PR that accidentally publishes the whole unfinished candidate. Deliver
+  the repair to its owning task for authorized integration, or publish a separate
+  compatible fix from `origin/main`; if that choice changes scope, ask the user.
+- Shared-branch device transfer still uses **Cross-device Handoff** below. A
+  separate repair branch does not require stopping unrelated Mini work. Resolve
+  overlapping repair ownership before dependent work, not through force updates.
+- For authorized standalone repair publication, use the existing PR/required-CI/
+  squash path. Recheck the full diff, target-base compatibility and affected
+  evidence if the target advances; a prior candidate PASS is not automatic
+  validation of a changed integration. Safe main synchronization below never
+  updates an active Mini work branch or restarts its service. Report mainline
+  publication and receiving-task adoption separately.
 
 No force-push is part of the normal workflow. If `main` advances, fetch and
 merge `origin/main` into the work branch. The eventual squash merge keeps

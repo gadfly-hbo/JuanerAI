@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016053915355-K4SZIC",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T05:39:15.355Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1432d-a316-7a20-8710-9630393999a4"
+  },
+  "summary": "013批准事实保留；入口403模型前阻断/未消耗场景，自有进程已收尾",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

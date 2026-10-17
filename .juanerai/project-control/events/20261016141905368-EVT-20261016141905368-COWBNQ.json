@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016141905368-COWBNQ",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-16T14:19:05.368Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14513-b2d6-75a1-81e1-0640688c959f"
+  },
+  "summary": "033全部范围获准；固定应用25591/数据153/原Task起点不变，连续工程开始一次修正",
+  "status_after": "active",
+  "evidence_refs": []
+}

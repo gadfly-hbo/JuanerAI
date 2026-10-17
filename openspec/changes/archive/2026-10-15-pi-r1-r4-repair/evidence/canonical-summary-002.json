@@ -1,0 +1,31 @@
+{
+  "scope": "complete current portable offline candidate, including PREP-J05",
+  "exit": 0,
+  "groups": [
+    "END validation-contracts exit=0 duration=28s",
+    "END syntax exit=0 duration=8s",
+    "END typecheck exit=0 duration=9s",
+    "END local-unit exit=0 duration=0s",
+    "END local-contract exit=0 duration=0s",
+    "END local-integration exit=0 duration=5s",
+    "END local-e2e exit=0 duration=0s",
+    "END model-contract exit=0 duration=1s",
+    "END model-integration exit=0 duration=0s",
+    "END project-board exit=0 duration=0s",
+    "END console-unit exit=0 duration=0s",
+    "END console-contract exit=0 duration=0s",
+    "END console-integration exit=0 duration=1s",
+    "END console-e2e exit=0 duration=0s",
+    "END desktop-unit exit=0 duration=4s",
+    "END desktop-contract exit=0 duration=10s",
+    "END desktop-integration exit=0 duration=264s"
+  ],
+  "totals": {
+    "tests": 4611,
+    "pass": 4610,
+    "fail": 0,
+    "skipped": 1
+  },
+  "qualityCodeDrift": [],
+  "skip": []
+}

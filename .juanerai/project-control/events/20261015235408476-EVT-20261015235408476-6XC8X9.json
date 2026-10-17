@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015235408476-6XC8X9",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-10-15T23:54:08.476Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a141e7-09ee-7050-ac98-d3b33144bcb0"
+  },
+  "summary": "图片配置修复/native005安装及追加一次补测已结束；离线完整通过，真实图片未读仍FAIL，保留旧未知并等待004决定",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

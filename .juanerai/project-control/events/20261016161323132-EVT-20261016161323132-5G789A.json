@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016161323132-5G789A",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T16:13:23.132Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1454b-7233-7c51-a64d-948d1e6b99d1"
+  },
+  "summary": "Actual primary effort high readback differs from stale medium board label; preserve variance/originUNKNOWN, no model change or authority expansion; Validator actual high/read-only verified",
+  "status_after": "validating",
+  "evidence_refs": []
+}

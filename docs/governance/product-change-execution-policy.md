@@ -23,6 +23,18 @@ The subsequent user-approved v0.9 correction removes optional engineering roles
 and strengthens documented SDD/TDD and continuous execution below. MacBook product
 support and the product's own Runtime/subagent capabilities remain unchanged.
 
+The user-approved 2026-10-15 collaboration revision keeps Mini as the main
+development device and adds MacBook trial and bounded bug repair in an isolated
+worktree under **MacBook Trial and Bounded Bug Repair** below. It supersedes the
+Mini-only trial default; Mini-local trial remains supported. It neither creates
+automatic runtime-copy delivery nor transfers an active Mini task. MacBook's
+Product Manager duties and existing model configuration remain unchanged.
+
+The user-approved 2026-10-15 plugin responsibility revision adds **Mini-led
+Plugin Integration** below: Mini prepares the task-specific product input and
+leads its authorized engineering delivery without a required MacBook handoff.
+General product planning and the existing approval/verification lifecycle remain.
+
 The preceding user-approved 2026-09-26 continuous-engineering revision (v0.8) retained the
 2026-09-24 Product Manager / Engineering Controller split. It replaces the
 default four-role serial pipeline, universal Spec Gate and TDD_READY dispatch
@@ -75,9 +87,16 @@ Use these names; an unqualified Controller does not identify a current
 authority. Mini asks the user directly in the original task when a decision is
 needed. MacBook participation is optional product support requested by the user.
 
+When the user assigns a bounded MacBook repair, its main Agent authors and
+verifies that repair under the section below; this is engineering work, not
+Product Manager technical sign-off or an additional mandatory role. Decisions
+outside its approved boundary go directly to the user in that repair task.
+
 ## Product Input and Engineering Intake
 
-MacBook freezes the existing Product Input Package: Change identity, approved
+By default, MacBook freezes the existing Product Input Package; user-initiated
+plugin integrations follow **Mini-led Plugin Integration** below. The package
+retains: Change identity, approved
 objective/scope/non-goals, business and failure semantics, exact UI Contract and
 user UI approval, acceptance criteria, prohibitions, reference versions and
 known safety/data/permission/resource boundaries. Reuse valid same-batch product,
@@ -115,6 +134,51 @@ ordinary corrections do not each restart product preparation or the full workflo
 A message, Git fetch, published commit or task existence is not receiver
 adoption. Manual forwarding by the user is sufficient; no message automation is
 required. Do not create or migrate tasks without the user's explicit request.
+
+### Mini-led Plugin Integration
+
+When the user starts a JuanerAI plugin-integration task on Mini, the same Mini
+primary owns plugin/host study, the task-specific integration proposal and
+product-input preparation, then authorized engineering and Git delivery.
+MacBook PM preparation, technical sign-off or cross-device handoff is not a
+prerequisite; MacBook product help is available when the user requests it.
+This is a scoped product-preparation exception, not transfer of general
+Whitepaper/Blueprint ownership or permission to change their approved direction.
+
+Use the existing proposal/product-input locations to describe the user path,
+scope/non-goals, applicable UI Contract, plugin/host responsibilities, version,
+data, permission and lifecycle boundaries, acceptance and known gaps. The user
+decides product/UI, architecture/safety expansion and missing permissions in
+that Mini task. Study/planning permission does not authorize installation,
+implementation, Provider/data access or external effects.
+
+The same existing Product Plan Development-Readiness Gate applies to new or
+materially revised plans: Mini as plan owner arranges its fresh read-only review,
+resolves NEEDS_CLARIFICATION directly with the user, and reuses valid reviews
+and product/UI decisions. This is the existing product-plan review, not another
+engineering role or a Spec/Test/Worker pipeline. Its PASS is not user approval;
+the plan author never substitutes self-review. No affected implementation starts
+with unresolved load-bearing product gaps or missing required user/UI approval.
+
+After applicable readiness and user approval, Mini freezes the approved product
+input and confirms Engineering Intake in the same task using existing records;
+no second task, duplicate package or MacBook approval is required. Record actual
+implementation and Git permissions alongside that scope, reuse still-valid
+explicit grants and ask only for missing authority in a consolidated decision.
+Approval does not extend ungranted installation, host, data/Provider, budget or
+deployment permissions. This policy itself grants none of those task permissions.
+
+Retain the existing formal Change, SDD/TDD loop, affected regression, independent final
+Validator, Engineering Acceptance, required user Product Acceptance and authorized
+PR/required-CI/squash integration, safe main synchronization and applicable
+archive. Ordinary in-boundary choices/corrections need no repeated approval.
+Publishing to main is not deployment, runtime loading or receiving-task adoption.
+
+An in-flight integration keeps its original task, branch/worktree, product
+decisions, contracts, WIP, evidence, failures/UNKNOWN, resources and stops.
+Read this rule at a natural safe boundary without switching its code baseline
+or restarting services. Resolve only affected gaps; retain valid work rather
+than recreating preparation or treating this rule as approval of a pending plan.
 
 ## Lean Context and Continuous Ownership
 
@@ -473,8 +537,9 @@ PR's selected required checks or the Change's applicable regression.
 
 ### Mac mini Trial and User Acceptance
 
-Mini's engineering primary prepares the local browser and same-machine service
-for the user to try and, when required, formally accept on Mac mini. Reuse the
+For Mini-local trial, Mini's engineering primary prepares the local browser and
+same-machine service for the user to try and, when required, formally accept on
+Mac mini. For MacBook trial or repair, use the next section. Reuse the
 existing approved runtime environment, data root and local credentials. Local
 trial requires an identifiable candidate and affected checks, not a push, PR,
 mainline merge, new clone or delivery of a runtime copy to MacBook. Identify the
@@ -509,6 +574,65 @@ An approved safe internal trial need not wait for full CI, final independent
 review or mainline merge. Assess known failures against the trial's exposed path;
 the safety/correctness blockers below still apply. Formal Change completion
 retains its independent verification, applicable user acceptance and required CI.
+
+### MacBook Trial and Bounded Bug Repair
+
+Mini remains the main development device. The user may try the product and
+assign a bounded bug repair directly to a MacBook engineering main Agent;
+ordinary repairs inside approved behavior need no Mini technical approval or
+new product-plan/UI Gate. New or materially changed behavior retains its
+applicable product/UI decision. This adds no Worker/Spec/Test dispatch or model
+routing change. Required final validation stays independent of every author.
+
+1. Identify the actual runtime source, service host, candidate commit and
+   relevant uncommitted differences before preparing or diagnosing a copy.
+   For the latest integrated product, fetch and pin the observed `origin/main`;
+   that is not proof of Mini's latest unmerged work. To try an unmerged candidate,
+   use its explicitly identified, accessible source and evidence; an unavailable
+   or dirty-only Mini candidate remains unavailable, not reconstructed by guess.
+2. Use an independent MacBook worktree and owned `work/macbook/<slug>` branch
+   from that baseline. Preserve historical branches and all other worktrees.
+   Prepare the environment once, then update this designated copy only after
+   checking its edits, runtime and update safety. Keep runtime data, credentials,
+   ports and task-owned processes isolated from Mini and other active copies;
+   preserve existing local projects and use synthetic inputs by default.
+   Browser and service normally run together on MacBook with existing loopback
+   and cross-site protections. A remote service needs separately approved
+   connectivity and an explicit host/version readback; editing local backend
+   files does not update that service. Installation, data transfer, real Provider,
+   external effects and destructive operations retain their own permissions.
+3. Before repairing, bind the bug to an existing requirement/acceptance point
+   and record its reproduction and narrow scope in existing spec/tasks/
+   verification or repair records. Preserve frozen contracts and issued evidence;
+   use a correction/addendum rather than rewriting historical results. Use causal
+   RED -> minimal GREEN -> affected regression; pure refactors use equivalence
+   checks. Reuse valid UI/spec inputs without another synonymous document suite.
+   Freeze the complete repair for applicable independent final review and required
+   CI before authorized integration. Daily edits do not each require a new PR,
+   full regression or Validator. No author may self-issue independent PASS.
+4. Keep one writing device per branch and one assigned author per overlapping
+   repair scope. Mini may continue independent work; disclose overlapping work
+   through the existing handoff or user relay before dependent implementation,
+   rather than editing its branch or duplicating its repair. If the relevant
+   Mini state is unavailable, disclose it and keep the repair isolated; do not
+   claim non-overlap or integrate an unresolved conflict. See the Git workflow's
+   **MacBook Trial and Repair Branches** for base selection and integration.
+5. The MacBook repair Agent owns its repair records/evidence, repair-scoped
+   Engineering Acceptance and authorized Git delivery, not the active Mini
+   Change's state, WIP or acceptance. Mini remains
+   the sole writer of its engineering board and cumulative coverage updates;
+   give it the repair delta/evidence using existing handoff fields. Do not create
+   a second board, global WIP slot or approval chain. A repair merge does not
+   update, restart or resume Mini's active worktree/services. Mini adopts at a
+   safe boundary after checking compatibility and preserving its WIP/stops.
+
+Use the same version/entry/steps/gaps handoff as Mini-local trial, naming the
+actual device, worktree and service host. Refresh/restart by affected behavior
+under the controlled-update rules above. Feedback is not Product Acceptance.
+An explicit user verdict may establish formal Product Acceptance on MacBook for
+the fixed candidate and applicable surface; it does not prove unrun Mini-host
+or Desktop-specific checks or acceptance of a different integrated candidate.
+Missing authority blocks only the affected action; safe preparation may continue.
 
 ## Independent Validation and Acceptance
 
@@ -562,7 +686,8 @@ Delivery/acceptance/merge/archive order follows the task's actual permissions.
 
 Mini alone writes `.juanerai/project-control/status.json` through the existing
 CLI at material result, phase, blocker, decision and acceptance transitions.
-MacBook maintains planning; its last synchronized copy is not live Mini status.
+MacBook maintains planning and assigned repair records; its last synchronized
+board copy is not live Mini status.
 Validator returns evidence, not competing board writes. Existing
 machine label `controller` means Mini Engineering Controller in this mode.
 Do not change the board schema or create a second state authority.

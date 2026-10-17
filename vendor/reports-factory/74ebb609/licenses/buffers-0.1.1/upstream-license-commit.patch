@@ -1,0 +1,35 @@
+From 1b745ee35d33eb166e15ef1866073a07c6d7de87 Mon Sep 17 00:00:00 2001
+From: James Halliday <mail@substack.net>
+Date: Tue, 3 Apr 2012 02:08:58 -0700
+Subject: [PATCH] license
+
+---
+ README.markdown | 5 +++++
+ package.json    | 3 ++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/README.markdown b/README.markdown
+index 73a18a4..c05da65 100644
+--- a/README.markdown
++++ b/README.markdown
+@@ -120,3 +120,8 @@ Convert the buffer collection to a single buffer, equivalent with `.slice(0, buf
+ 
+ Decodes and returns a string from the buffer collection.
+ Works just like `Buffer.prototype.toString`
++
++license
++=======
++
++MIT/X11
+diff --git a/package.json b/package.json
+index 0e5d23c..18ae4ed 100644
+--- a/package.json
++++ b/package.json
+@@ -10,5 +10,6 @@
+     },
+     "engines" : {
+         "node" : ">=0.2.0"
+-    }
++    },
++    "license" : "MIT/X11"
+ }

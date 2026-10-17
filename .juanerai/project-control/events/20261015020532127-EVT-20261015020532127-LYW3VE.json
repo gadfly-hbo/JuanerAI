@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015020532127-LYW3VE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T02:05:32.127Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13d2c-5493-7523-b1c4-96b7fcb337d1"
+  },
+  "summary": "D1-D8 approval removes historical decision blocker; preparation boundary GREEN and native failure checks continuing",
+  "status_after": "active",
+  "evidence_refs": []
+}

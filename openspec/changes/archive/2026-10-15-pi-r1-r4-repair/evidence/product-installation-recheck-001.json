@@ -1,0 +1,286 @@
+{
+  "device": "Mac mini",
+  "head": "8265a3920ee1205faec7dede8b0c84e648105d9d",
+  "branch": "work/mac-mini/pi-r1-r4-repair",
+  "package": {
+    "path": "/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI/vendor/pi-agent-runtime/0.5.1-r1r4.3/e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce.tgz",
+    "bytes": 146131,
+    "sha256": "e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce",
+    "sri": "sha512-EwiDQpDwtxob2Gu56P5DdTsIP2HbcvRYga3Q0r8BeaJNZbIEDYzQPqy8xMYYzC+nHHtObasfLzOD53BOwb5N4Q=="
+  },
+  "resolved": "file:///Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI/node_modules/pi-agent-runtime/dist/index.js",
+  "installedRealpath": "/Users/bendandebaba/.codex/worktrees/pi-r1-r4-repair/JuanerAI/node_modules/pi-agent-runtime",
+  "installedFiles": [
+    {
+      "path": "dist/ui.css",
+      "bytes": 4727,
+      "sha256": "59c7ea64b83bf7d2f44ccf25fcc42b4f425bfbe3f6d44e51c14126a6051a0fea"
+    },
+    {
+      "path": "dist/budget.js",
+      "bytes": 5506,
+      "sha256": "a96d0c60a4466f0f2c53ce75a3ee3ad8c6b06494d10686acc4f22ebcfbb92a70"
+    },
+    {
+      "path": "dist/errors.js",
+      "bytes": 5981,
+      "sha256": "817dd36d3335a6eec8196d9f8874369de9c8850eaaafb7de84bb9407e55890bb"
+    },
+    {
+      "path": "dist/execution.js",
+      "bytes": 7581,
+      "sha256": "19bcb297bbd6ed2dab3ced01b19524dade1cee68f32215589153315cc5f3cdab"
+    },
+    {
+      "path": "dist/index.js",
+      "bytes": 41490,
+      "sha256": "1c1e545d8804df60f8cde5f226295c856b52657e9f5a5ee7807433278259865f"
+    },
+    {
+      "path": "dist/pi-adapter.js",
+      "bytes": 91307,
+      "sha256": "edf30de293a20de901806dcbf81e43aed5a5661a730470d90ca9016ce606021c"
+    },
+    {
+      "path": "dist/policy.js",
+      "bytes": 1315,
+      "sha256": "426a7aff8a87fd1affd39d7711ec93e9962ab68e16c1e2f0372e2388ddcc0e3c"
+    },
+    {
+      "path": "dist/settings.js",
+      "bytes": 4378,
+      "sha256": "93376e69f5f87f1a6b450363a49b2c3ff3422148c052a51774df07868fb4ea13"
+    },
+    {
+      "path": "dist/testing.js",
+      "bytes": 1553,
+      "sha256": "e4f62e14bad5308ff61f1ed20be3d64f41e7114084fc32f88e9fc7f12a55b2e2"
+    },
+    {
+      "path": "dist/types.js",
+      "bytes": 11,
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    {
+      "path": "dist/ui.js",
+      "bytes": 17056,
+      "sha256": "6bd20e1745902b81f3d12b1982a6a2d4dcbcc9ab677fb792efa673899aeefcff"
+    },
+    {
+      "path": "dist/validation.js",
+      "bytes": 10763,
+      "sha256": "26454a882ef8b927e4f9a19e67dbe9cca8f2799e5542735248a2d2da298f901b"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1668,
+      "sha256": "5da596592e695fde2a6f985b0ae0322ddc62c45a03b3f65c6f38089859c4f364"
+    },
+    {
+      "path": "docs/AGENT-RUNTIME.md",
+      "bytes": 19539,
+      "sha256": "bd77063d542fa19bd66d71403ea9414ba4d4b2a1cea7092b1742825adda8dd1b"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 6002,
+      "sha256": "c8bc11b05e8421d984958cdbac2884bc8a91f39e11538ad39cbe61f17935760e"
+    },
+    {
+      "path": "docs/CACHED-CONTEXT-CONTRACT.md",
+      "bytes": 2065,
+      "sha256": "75873f7e3faae9334386da7e75d1a1b0bcbcf5cd19f2ad65b96e40774e2048b8"
+    },
+    {
+      "path": "docs/GIT-WORKFLOW.md",
+      "bytes": 1855,
+      "sha256": "ba840f6164f9321848f3464b7eecdab1b80263cfbf664724cb5ffc5e2133d45a"
+    },
+    {
+      "path": "docs/INTEGRATION.md",
+      "bytes": 16149,
+      "sha256": "ace70be3692d6f09a607909deb0a8dd74504ea94ceb149741569071407b6709d"
+    },
+    {
+      "path": "docs/MIMO-THINKING-CONTRACT.md",
+      "bytes": 3118,
+      "sha256": "af052a79860ccb462ff6c76c252d3129e8169989f673c8edf4e5c081ddd66dea"
+    },
+    {
+      "path": "docs/NATIVE-HARNESS-COVERAGE.md",
+      "bytes": 11713,
+      "sha256": "9c704d1696bdf683a02ad20b10a6f1970d583d571db71c34621e6afaa85dff5b"
+    },
+    {
+      "path": "docs/NATIVE-SESSION-CANDIDATE.md",
+      "bytes": 7684,
+      "sha256": "9143ec1bff5234fac7aba868bffbc3377811bb87d1418cb04d3e544318a7aeee"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "bytes": 3604,
+      "sha256": "58ac2437243885cb00f760008fda9ba00a8df77183a7c4a963c72057a99f19b6"
+    },
+    {
+      "path": "docs/configuration-ui/PROPOSAL-v0.1.md",
+      "bytes": 11680,
+      "sha256": "47462d0db4ed694258ff8775cf37dbd0faf71d5874bd1d0dc0b781761a8232c1"
+    },
+    {
+      "path": "docs/R1-R4-ENGINEERING-HANDOFF.md",
+      "bytes": 58774,
+      "sha256": "cf31db749388161aa20b8ee3fd916467fdd2c9adb6c50905df338be5395babc0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 14947,
+      "sha256": "870f93350d16970ab92589278b7c06bf14ed8ff4bcee3042820d6be513440e97"
+    },
+    {
+      "path": "docs/RELEASE-R1-R4-CANDIDATE.md",
+      "bytes": 2358,
+      "sha256": "f9b5244cc33bfeefda86c95f9890c2cf36cfcb71d703a62ee66bb6c6be0cf8b6"
+    },
+    {
+      "path": "docs/RELEASE-v0.2.md",
+      "bytes": 9258,
+      "sha256": "f73a96cec7c660f81f75ffc323319fc69ec26f3f77f63181163844a3286bee2f"
+    },
+    {
+      "path": "docs/RELEASE-v0.3.1.md",
+      "bytes": 1210,
+      "sha256": "72251dd2ecf3deae98b4c5489b737cbe5a767219287f5dc4f8f5c803a7633f7a"
+    },
+    {
+      "path": "docs/RELEASE-v0.3.2.md",
+      "bytes": 2964,
+      "sha256": "98bc94c0e5262a5a502cbc932b5c2b81437a4d2df6cb06a8d3c2c3f4e2401af4"
+    },
+    {
+      "path": "docs/RELEASE-v0.3.md",
+      "bytes": 3045,
+      "sha256": "9c31fccad5d9aee7ef8024491b46cf5814ee5dfbe98360c467a1d0d1a573fd5c"
+    },
+    {
+      "path": "docs/RELEASE-v0.4.1.md",
+      "bytes": 5318,
+      "sha256": "d06eff552b6f387a0c32c8840b33339f8ed3226b147c84dc774904431b2220a6"
+    },
+    {
+      "path": "docs/RELEASE-v0.4.2.md",
+      "bytes": 2102,
+      "sha256": "67b2be57b86a52412902d6d6f09a8fa1ff3dfaeda4dbb3106433b85f9aecf715"
+    },
+    {
+      "path": "docs/RELEASE-v0.4.3.md",
+      "bytes": 1003,
+      "sha256": "3fd55580f2a8bc9f894415cbf8b37f3c1725c4a5edb8c38a2aff458671212202"
+    },
+    {
+      "path": "docs/RELEASE-v0.4.md",
+      "bytes": 7986,
+      "sha256": "284dc547cbac1544eeb958a895d05b6fd6066d63ed2ddc828735a23c35babab5"
+    },
+    {
+      "path": "docs/SDK-EXTENSION-AUDIT.md",
+      "bytes": 10858,
+      "sha256": "eda1661c4209158c382dcdc6e050808f5c7b2ef64ac3b809b77fc7b393bdc4df"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 2346,
+      "sha256": "4553aa7a757599131539febaa6403f79f60eb1b6d8d4e71b01d93637edc8b4f7"
+    },
+    {
+      "path": "docs/configuration-ui/UI-CONTRACT-v0.1.md",
+      "bytes": 2373,
+      "sha256": "7452ca6403d073404096d2633e91b8bfa955efceb19be9fb36ad9f851a775e81"
+    },
+    {
+      "path": "docs/UNCAPPED-BUDGET-CONTRACT.md",
+      "bytes": 2599,
+      "sha256": "5a6e051102bda5ab51e262dcdce186dbf17aad81a46752688389c7dc459296b4"
+    },
+    {
+      "path": "docs/configuration-ui/VERIFICATION-v0.1.md",
+      "bytes": 2837,
+      "sha256": "7d0878f71b8251cbd58d09fba0c879b78a49442ebc0758968b7db0ece3078cbb"
+    },
+    {
+      "path": "docs/VERIFICATION.md",
+      "bytes": 5394,
+      "sha256": "4bb0be320027cc900e026448fce71f5f75c5d8f3961f4027f53988b6035f38f0"
+    },
+    {
+      "path": "dist/budget.d.ts",
+      "bytes": 202,
+      "sha256": "b296672c74ea6aa7b90e44cf97598119bfea43b65e59e2ff3f3ff8422c3a49ec"
+    },
+    {
+      "path": "dist/errors.d.ts",
+      "bytes": 1770,
+      "sha256": "2be2ddfe108df196c9e38be370c14f8ed9a3ab7928385c127a5b6ca58a9e055e"
+    },
+    {
+      "path": "dist/execution.d.ts",
+      "bytes": 286,
+      "sha256": "bd852903be0c4eee3c10f0ac019e7e426cfd03346494f3edf08fa240445d0cec"
+    },
+    {
+      "path": "dist/index.d.ts",
+      "bytes": 735,
+      "sha256": "86b03711411588f1a9b2cb40aa08fa6c6237f8639ce94318f0df04d048d59334"
+    },
+    {
+      "path": "dist/pi-adapter.d.ts",
+      "bytes": 2560,
+      "sha256": "7066aa4cf056f1a0dcd856610d6e3bb16b7c5fdef35c892054395a232bf5ed77"
+    },
+    {
+      "path": "dist/policy.d.ts",
+      "bytes": 449,
+      "sha256": "5ec35f6aaf1c31eacb3a00b7a6914bb62ecc67409a437c0b22b1a17377ee4df3"
+    },
+    {
+      "path": "dist/settings.d.ts",
+      "bytes": 999,
+      "sha256": "e602fd1cf7d5dd76a2aa60688c9f2f4f7a888cc6b7995ef587ee937b8100d020"
+    },
+    {
+      "path": "dist/testing.d.ts",
+      "bytes": 462,
+      "sha256": "8b84ce4304b78c8eb4be38232b62c761611e366986f80a9e05bdfbc31116b314"
+    },
+    {
+      "path": "dist/types.d.ts",
+      "bytes": 24542,
+      "sha256": "f7f5811681572adab0fcd7f636ba6c39d77d6590187d21311dc3731d2e580f9d"
+    },
+    {
+      "path": "dist/ui.d.ts",
+      "bytes": 741,
+      "sha256": "04ac57b41794a06b149ad6af65246127c7045fa34528c6e521fb6eedf1a45ce2"
+    },
+    {
+      "path": "dist/validation.d.ts",
+      "bytes": 686,
+      "sha256": "ea3349a2f8250d72da459b99fb64c004246ca50133303ad924d611456336966a"
+    }
+  ],
+  "packageAndLock": [
+    {
+      "path": "package.json",
+      "bytes": 1916,
+      "sha256": "baafe78f2c1fd2ba3ec2bb4fdc6331e54c41008b2b64479768c4161fe60629a9"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 375902,
+      "sha256": "2fb013723061655abad37b4c3509d8505be315c6327a3270ce46b85c7d37295b"
+    }
+  ],
+  "lockUnchangedFromReview001": true,
+  "nonSdkEntries": 764,
+  "nonSdkEntriesUnchanged": true,
+  "notProductAcceptance": true
+}

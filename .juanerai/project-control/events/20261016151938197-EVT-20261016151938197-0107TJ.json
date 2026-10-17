@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016151938197-0107TJ",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-16T15:19:38.197Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1454b-7233-7c51-a64d-948d1e6b99d1"
+  },
+  "summary": "035A directly approved; Mini-only notification bundle update, MacBook accepted without034 testing; no B writes/Provider/services/deploy/Git",
+  "status_after": "active",
+  "evidence_refs": []
+}

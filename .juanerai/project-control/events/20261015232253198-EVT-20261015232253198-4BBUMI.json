@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015232253198-4BBUMI",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-10-15T23:22:53.198Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a141ce-44da-7132-b884-2c064dea6382"
+  },
+  "summary": "A生成/三格式及C限定接受已记录；图片一次失败停止新调用，2048未知保留，等修复和额外一次图片补测决定",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

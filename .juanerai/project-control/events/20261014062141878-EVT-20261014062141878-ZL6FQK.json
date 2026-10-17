@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014062141878-ZL6FQK",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T06:21:41.878Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13904-67d9-7951-9967-b3c7abee19e3"
+  },
+  "summary": "User-authorized R1 incremental handoff 003 and forwarding Prompt fixed; 002/history unchanged; no new repair/provider/service/Git action.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

@@ -63,6 +63,11 @@ or Engineering Acceptance never substitutes for the user's required product/UI
 acceptance. The full boundary and handoff rules live only in
 `docs/governance/product-change-execution-policy.md`.
 
+For user-initiated JuanerAI plugin integration on Mini, apply that policy's
+**Mini-led Plugin Integration** exception: Mini owns task-specific proposal,
+product-input preparation and authorized engineering delivery. MacBook is not a
+mandatory planning or approval hop; user decisions and existing Gates remain.
+
 ## Startup Stop Line
 
 The approved Blueprint v4.2 and retained attachments are referenced from `docs/planning/README.md`. It preserves Change001–004 and the approved in-flight Change005 / N01–N02 package. Follow §5–6: browser plus same-machine service, early real trial then S1 closure, N05/N06 outcome follow-up, then N07/N08 improvement and explicit next-Case adoption; data/semantic dependencies and necessary professional subsets enter by actual need. Desktop-shell delivery is deferred, not deleted or accepted by browser evidence. This revision neither changes in-flight scope nor requires active sessions to adopt it. Close applicable new product decisions under §7 before Product Input Freeze. Every product Change must bind an applicable change-scoped high-fidelity clickable UI Contract and the user's UI Gate PASS before engineering execution. Reuse a still-valid approved Contract; obtain affected user approval for new or materially changed visible behavior. The Contract must make the workflow and acceptance surface directly evaluable by a non-technical user; a backend, Runtime, Adapter or infrastructure label does not bypass this obligation. A Blueprint or development-readiness PASS authorizes only its stated planning result, not OpenSpec, dependencies, implementation, external data, provider calls or schema creation.
@@ -73,7 +78,7 @@ Cold-start documents and empty module boundaries do not authorize product implem
 
 Every new or materially revised product plan intended to guide development must pass an independent development-readiness review before it is declared ready, frozen as product input, or handed to engineering. Reuse an applicable completed review; ordinary internal engineering changes do not repeat it.
 
-After drafting the plan, the Product Manager dispatches a fresh read-only support Agent with an implementation-worker perspective. This Reviewer is not the engineering agent, receives no implementation authority, and must not write OpenSpec, tests, or production code. Give it only the product plan and formal attachments, the JuanerAI authority documents explicitly referenced by the plan, and the review brief. Do not give it the Product Manager's unstated rationale or use external project repositories to rescue missing plan content; any required external lookup is itself a plan gap unless the user explicitly authorized that read-only study.
+After drafting the plan, its owner (normally Product Manager; Mini primary for Mini-led plugin integration) dispatches a fresh read-only support Agent with an implementation-worker perspective. This Reviewer is not the engineering agent, receives no implementation authority, and must not write OpenSpec, tests, or production code. Give it only the product plan and formal attachments, the JuanerAI authority documents explicitly referenced by the plan, and the review brief. Do not give it the plan author's unstated rationale or use external project repositories to rescue missing plan content; any required external lookup is itself a plan gap unless the user explicitly authorized that read-only study.
 
 The Reviewer returns:
 
@@ -85,7 +90,7 @@ The Reviewer returns:
 6. `Required Plan Additions`: the minimum text or attachment needed to remove each material gap;
 7. `Verdict`: `PASS` or `NEEDS_CLARIFICATION`.
 
-PASS requires an accurate restatement of the intended product and no load-bearing guess about behavior, boundaries, authority, or acceptance. Exact paths, TypeScript names, serialization schemas, and resource limits may remain deferred when the product semantics and stop line are complete. `NEEDS_CLARIFICATION` returns to the Product Manager; after a material correction, a fresh Reviewer repeats the Gate.
+PASS requires an accurate restatement of the intended product and no load-bearing guess about behavior, boundaries, authority, or acceptance. Exact paths, TypeScript names, serialization schemas, and resource limits may remain deferred when the product semantics and stop line are complete. `NEEDS_CLARIFICATION` returns to that plan owner; after a material correction, a fresh Reviewer repeats the Gate.
 
 Reviewer PASS does not approve product intent, replace explicit user decisions,
 or transfer Product Manager, Engineering Controller, or user authority.
@@ -149,6 +154,12 @@ one concentrated PR/integration closeout for the formal Change. Use the sole
 policy's **Mac mini Trial and User Acceptance** section for local trials and
 required formal user acceptance. MacBook product/governance delivery keeps its
 existing Git workflow.
+
+For MacBook product trial or user-assigned bounded bug repair, read the sole
+policy's **MacBook Trial and Bounded Bug Repair** and the Git workflow's
+**MacBook Trial and Repair Branches**. Mini remains the main development device;
+MacBook uses an isolated worktree without becoming a technical approval hop or
+taking ownership of Mini's active state. Product Manager duties are unchanged.
 
 ## Reuse and Complexity Control
 

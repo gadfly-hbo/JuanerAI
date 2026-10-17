@@ -15,6 +15,16 @@ decisions, single engineering state, acceptance and authorized delivery.
 The user decides product ambiguity, boundary changes, extra actual resources,
 permissions, residual risk and required Product Acceptance directly in Mini.
 
+For user-assigned MacBook trial and bounded engineering repair, follow the sole
+policy's MacBook Trial and Bounded Bug Repair section. Its repair main Agent
+asks the user directly in that task; Mini retains primary development and its
+single engineering state. This is not Product Manager engineering sign-off.
+
+For user-initiated plugin integration, apply the sole policy's Mini-led Plugin
+Integration section. Mini also prepares the task-specific proposal and approved
+product input in the original task; no MacBook planning/approval handoff is
+required. Existing user decisions, readiness review and engineering checks remain.
+
 ## Domains
 
 | Domain | Owns | Does not own |
@@ -75,5 +85,6 @@ independence, and MacBook technical sign-off is not required.
 Adopted v0.9 Mini engineering uses daily affected checks and authorized
 work-branch checkpoints/pushes, with one formal Change PR/integration closeout.
 Follow the sole policy's Mac mini Trial and User Acceptance section for the
-Mini-local candidate, runtime entry readback and required user acceptance;
+Mini-local candidate, runtime entry readback and required user acceptance, or
+its MacBook Trial and Bounded Bug Repair section for the MacBook path;
 trial feedback is not formal completion.

@@ -1,3 +1,109 @@
+## Report Studio 062 · 2026-10-17（当前）
+
+036融合源码独立验证PASS（实际Sol/high/read-only/never，711.75秒），最终工程接受PASS；canonical17组4837PASS/0FAIL/24历史SKIP、定向136/宿主浏览器3/资源构建4及所有历史保全经独立核实。PR[#91](https://github.com/gadfly-hbo/JuanerAI/pull/91)最终head托管CI、squash和仅Mini安全main同步仍待真实执行，不能提前称Git完成。归档/当前规格在PR实际合并后生效。Mini现装仍034，MacBook本轮未更新且用户免测；AC01用户风险接受/NOT_MEASURED及所有FAIL/UNKNOWN/未知预留保持。C5-09仍局部实现，40稳定ID类别变化0，不关闭S1/S4或整个能力族。
+
+[当前交付/返回点](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-036.md) · [全40ID图](latest.md)。
+
+## Report Studio 036融合候选 · 2026-10-17（当前）
+
+036融合候选最终canonical17组4861tests/4837PASS/0FAIL/24历史SKIP，exit0/341.84秒；非记录源码与本次开跑身份逐字一致。定向136、实际合成浏览器3和资源/实际Vite构建/VM4项通过，三项UI接线与资源形状因果RED均保留。Main/Preload及内置浏览器入口只作隔离构建，没有重新封装.app/安装/启动现装服务/Provider；Mini仍034，MacBook用户免测且未更新。63原Change材料准备归档，9外部相对链接调整，全部独立报告原字节保持；当前等036独立受影响复核及确切PR head托管CI/实际合并，不提前称主线完成。 C5-09仍为局部实现，最小接入已取得限定接受，完整能力/阶段不升级；40稳定ID整体类别变化0。当前Git/CI集成仍待执行，不能因准备归档宣布正式完成。
+
+[036交付记录](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-036.md) · [工程接受](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/engineering-acceptance.md) · [完整40ID登记](register.md)。
+
+以下历史按原时点保留。
+
+## Report Studio MiMo增量008 · 内部试用结果 · 2026-10-16
+
+C5-09/N11保持IN_PROGRESS，40项能力的正式接受状态增量为0；下方六加二全图及既有接受边界保持。Mini已更新native008，70项供应回归/安装资源/离线三格式/宿主主链通过；单独MiMo小图真实理解通过，但原B截图阶段失败，追加008框架阶段INVALID_TOOL失败，真实完整制作及新截图未通过。原A2048未知预留与所有失败/UNKNOWN/NOT_PROVEN、MacBook限定接受、许可/干净机/质量/正式验证CI等缺口保留。参见[验证030与下一动作](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/verification.md)。无部署/Git发布或其他能力晋级。
+
+## Report Studio 最小接入 · 实施中候选 · 2026-10-16
+
+关联正式 Change `report-studio-minimal-integration`，源基线1446276；产品/UI/就绪审查004已批准复用，**工程接受、实际产品接受、实现Git/CI尚未完成**。本次仅记录在研增量，不提升40稳定ID的累计接受状态，不关闭S1/S4或完整Studio目标。原六＋二及历史FAIL/UNKNOWN保持。
+
+| 六＋二家族 | 本次在研增量或复用 | 仍待验证/不扩展 |
+|---|---|---|
+| C1 业务双主线 | 复用原分析问题/任务精确版本 | 不写回正式决定、行动或Actual |
+| C2 分析模式 | 复用快速/专业，同一稳定交付显示与下载 | 不新增分析模式或核验等级 |
+| C3 产品矩阵 | C3-01产品能力入口接固定独立Studio，同批随包载体 | 原生启动/两机干净安装、持续使用待验 |
+| C4 方法扩展 | 保留供应PPT制作/框架/页面/品牌/质检和三格式导出 | 不接新Pack、方法事实或真实模型质量承诺 |
+| C5 决策与价值 | C5-09精确来源、自由制作、显式不可变交付/回执，离线真实双模式主链 | 许可核对、两机Keynote和用户真实接受待完成；非正式Decision |
+| C6 资产积累 | 复用原历史，旧版返回/取消新版仍开旧项目，项目删除后保留副本 | 不扩为通用资产升级、跨机同步或自动迁移 |
+| A 数据语义执行 | A-04受控主/图片同账、停止/UNKNOWN；A-05来源hash与不可变副本 | Provider及真实数据未授权；保留未知消费，不自动退款 |
+| B 治理与责任 | B-01限制/质检/不确定性；B-02独立配置、材料差异许可、自己所有的运行器 | trusted-local非OS强沙箱；最终独立验证/required CI未完成 |
+
+[本Change验证与停止点](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/verification.md) · [在研完整40ID快照](snapshots/report-studio-in-progress-2026-10-16.md) · [证据](evidence.md#e-report-studio-in-progress-20261016)。安装/Provider/部署及实现Git权限不由能力登记授予。以下既有“当前”标题按原时点阅读。
+
+## 正式SDK0.5.1 Git交付回读 · 2026-10-15（当前）
+
+受控采用 [PR84](https://github.com/gadfly-hbo/JuanerAI/pull/84) 已squash为 `1375d5992f57efdffc71ba329bc971444bfc93af`；精确head完整CI **4590PASS／0FAIL／21SKIP**，限定独立只读复审与工程接收分别成立。Mini main安全ref-only同步；MacBook连接超时，最终main **UNKNOWN／PARTIAL**，未强行更新或宣称双端完成。仅本任务；不增加用户产品接受、生产／Provider权限，不扩展旧豁免。历史BLOCKED／FAIL／UNKNOWN原件保留。以下原Git尚未完成段落为先前时点。
+
+本次无业务能力增量，40ID／定义／目标／累计状态保持；只把已接受的正式SDK采用从本机WIP保存到技术集成来源。C3-01、C6-01、A-03/04/05、B-01/02/03的受控采用证据及所有既有六＋二缺口继续见下图／原登记；不提升全能力或S1。生产准入参数UNKNOWN，真实Provider与生产／服务仍停止。
+
+[交付原生证据及peer返回点](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/sdk-0.5.1-git-delivery-001.md#正式sdk051实际git交付回读--2026-10-15) · [同提交register全40ID固定快照](snapshots/pi-r1-r4-sdk051-git-delivery-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-sdk051-delivery-20261015)
+
+## 正式 SDK 0.5.1 受控采用工程接收 · 2026-10-15（当前增量）
+
+本任务冻结候选2931文件 aggregate `e5e2b3ae7622810ea7b4c7f0c1470d9b9a33577719d2eca3f8dac223129890dc` 的正式0.5.1受控采用，现已 **Engineering Acceptance（仅离线合成／显式opt-in）**。本次一次性Sol/high/read-only CLI独立复审为限定正式PASS；55新检查及复用700／120分列。原生BLOCKED F-ROLE-01、旧具名豁免、历史FAIL与UNKNOWN原件保留，不扩展豁免。正式包53安装文件身份匹配，技术候选未改。
+
+本次仅为C3-01、C6-01、A-03/04/05、B-01/02/03既有消费者补正式SDK采用与工程接收证据，**40项ID、定义、完整目标、累计状态及原已接受范围不变**；无新功能或全目标／S1接受、无新的用户Product Acceptance。原段落按历史时点阅读。本次记录尚未Git保存／集成，Provider／生产／Git写操作停止线不变。
+
+[工程接收003](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md#正式-sdk-051-工程接收003--2026-10-15当前) · [完整六＋二／40ID快照](snapshots/pi-r1-r4-sdk051-engineering-accepted-2026-10-15.md) · [独立证据](evidence.md#e-pi-r1-r4-sdk051-20261015)
+
+| 六＋二家族 | 本次工程接收增量 | 保留缺口与停止点 |
+|---|---|---|
+| C1 业务双主线 | 原PIM／任务链复用；无新能力验收 | 完整OSM／行动／Actual闭环 |
+| C2 分析模式 | 既有消费者受影响验证；无新模式验收 | 完整Deep Research／真实模型质量 |
+| C3 产品矩阵 | C3-01原HTTP/client/UI链的固定SDK采用证据 | 新候选用户接受不代签；生产常态使用／Team／Enterprise／价值留存 |
+| C4 方法扩展 | 原IR／计算／核验链未改，无新方法 | 完整Domain／Model Pack、因果／预测 |
+| C5 决策与价值 | proposalOnly／保存／采纳／正式效果原边界保留 | 现实行动／Actual／完整Report Studio |
+| C6 资产与进化 | C6-01准备正文／重开／失效／旧历史兼容证据复用 | 通用恢复／学习／效果，历史Task操作未授权 |
+| A 数据语义执行 | A-03/04/05正式0.5.1准入、计量、主备、安全read与证据链工程接收 | 真实Provider未测、生产准入UNKNOWN、全格式／通用方法未验收 |
+| B 治理与责任 | B-01/02/03本候选合规只读独立PASS，授权／UNKNOWN／Owner边界保留 | 原生BLOCKED及旧风险历史不改写；企业治理／现实行动不授权 |
+
+## pi-r1-r4-repair正式Git交付/归档定位（2026-10-15）
+
+已接受离线子范围的源码、测试、固定依赖、原件与规格进入本任务正式Git/归档交付。当前 [归档记录](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/publication.md) 与 [完整六＋二/40ID快照](snapshots/pi-r1-r4-repair-git-delivery-2026-10-15.md) 绑定实际PR/最终head CI/merge/sync回执；未完成效果不预报PASS。原接受范围/40ID/完整目标/累计状态不变，F-ROLE-01及原正式BLOCKED、历史失败/UNKNOWN保留，生产/Provider/共享SDK发布不放行。旧快照按源提交读取，当前链接使用归档路径。
+
+## pi-r1-r4-repair 用户产品接受 · 2026-10-15
+
+用户原话“采纳，接受产品”。本冻结R1～R4＋D1～D8 A既有离线合成/显式opt-in交付范围已有Engineering Acceptance（附本候选F-ROLE-01具名豁免）与明确用户Product Acceptance。**原正式Validator BLOCKED保留，技术PASS不变，不称无条件Validator PASS。** 用户没有逐条16项操作回执，不补造本人复跑，也不把真实Provider/生产未测项标通过。
+
+增量为C3-01、C6-01、A-03/04/05、B-01/02/03的本候选限定离线接受子范围；40稳定ID/定义/完整目标/累计状态保持，不升级完整能力或S1。代码/SDK/测试未改，Git集成/归档/生产仍未执行，原FAIL/UNKNOWN全部保留。以下旧“未产品接受”段落是原时点历史。
+
+[产品接受原话与边界](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/product-acceptance.md) · [全40ID接受快照](snapshots/pi-r1-r4-repair-product-accepted-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-product-20261015)
+
+| 六＋二家族 | 本次接受范围/增量 | 仍保留的缺口 |
+|---|---|---|
+| C1 业务双主线 | 复用原PIM/任务链，未新增完整OSM验收 | 行动/Actual/完整OSM闭环 |
+| C2 分析模式 | 既有消费者离线修复获接受，未新增模式验收 | 完整Deep Research/所有场景模型质量 |
+| C3 产品矩阵 | C3-01当前冻结浏览器离线交付面获用户产品接受 | 正常生产采用、持续真实使用、Team/Enterprise/价值留存 |
+| C4 方法扩展 | 既有IR/计算/独立核验链保留，无新方法全目标验收 | 因果/预测/完整Domain或Model Pack |
+| C5 决策与价值 | 准备/采纳/保存/正式效果区分的既有链保留 | 现实行动/Actual/完整Report Studio |
+| C6 资产与进化 | C6-01准备正文/重开/失效/旧历史兼容的限定离线子范围接受 | 通用恢复/跨项目学习/长期效果；历史Task迁移未授权 |
+| A 数据语义执行 | A-03/04/05固定SDK .3实际IR/准入/计量/证据/主备离线子范围接受 | 真实Provider、生产参数UNKNOWN、通用方法和所有数据格式 |
+| B 治理与责任 | B-01/02/03安全诊断/UNKNOWN/Owner/授权/显式采纳限定离线子范围接受，保留具名F-ROLE-01 | 强制只读沙箱残余风险、企业治理/现实行动；生产/Git权限未授予 |
+
+
+## pi-r1-r4-repair 工程接收回填 · 2026-10-15
+
+本冻结 R1～R4＋D1～D8 A **离线合成 opt-in Engineering Acceptance，附 F-ROLE-01 用户具名豁免**。Validator 原正式 BLOCKED 保留，技术评估 PASS，非无条件 Validator PASS；4610 PASS/1 Provider SKIP，独立131 PASS。仅回填收口记录，原代码/SDK/测试不变，未执行 Git 集成或正式归档。
+
+本次支持 C6-01、A-03/04/05、B-01/02/03 的已有消费者；40稳定ID、全部目标/完成条件、累计状态、此前已接受子范围不变。不把离线工程结果提升为用户 Product Acceptance、S1 或新全目标交付。原失败、旧字段、UNKNOWN 和 Provider/生产/Git 停止线保留。下文旧“当前”按历史时点阅读。
+
+[工程接收与具名限制](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md) · [六＋二/40ID固定快照](snapshots/pi-r1-r4-repair-engineering-waiver-2026-10-15.md) · [证据](evidence.md#e-pi-r1-r4-20261015)
+
+| 六＋二家族 | 本次离线工程增量 | 保留的产品缺口 |
+|---|---|---|
+| C1 业务双主线 | 复用原 PIM/任务链，无新增全目标验收 | 完整 OSM/行动/Actual 闭环 |
+| C2 分析模式 | 既有模式消费者回归，无新增模式验收 | 完整 Deep Research/所有场景质量 |
+| C3 产品矩阵 | 现有 HTTP/client/UI 诊断与读回受影响验证 | 用户 Product Acceptance、Team/Enterprise/价值留存 |
+| C4 方法扩展 | 原 IR/计算/核验链受影响回归，无新方法 | 因果/预测/完整 Domain/Model Pack |
+| C5 决策与价值 | proposalOnly、保存/采纳与正式效果分列 | 现实行动/Actual/完整 Report Studio |
+| C6 资产与进化 | C6-01 准备正文所有权、失效、重开及旧历史兼容的离线工程证据 | 通用恢复/跨项目学习/效果；历史 Task 迁移未授权 |
+| A 数据语义执行 | A-03/04/05：固定 .3 实际链路、准入、物理用量、主备与完整证据/IR | 真实 Provider、生产准入参数 UNKNOWN、通用方法/全部数据格式 |
+| B 治理与责任 | B-01/02/03：安全失败、UNKNOWN/迟到、作用域、Owner 与显式采纳；工程接收附 F-ROLE-01 | 强制只读沙箱残余风险、产品接受、企业治理/现实行动授权 |
+
+
 ## Change006当前收口增量 · 2026-10-13
 
 用户直接“确认”具名角色风险例外、现有结果/二次partial和未测劳动项处置、正式Git集中交付；Engineering Acceptance及Product Acceptance附具名限制成立。candidate011独立代码/证据通过，正式Validator角色BLOCKED原文保留，风险豁免不称Validator PASS。47源码固定；完整portable 17组exit0，desktop integration1430 PASS/15既有SKIP。本段是具名接受/归档时点；实现已提交并创建PR80，Git集成由下列publication绑定的PR原生CI/merge及同机最终回执确认，不凭覆盖文档自称已集成。
@@ -149,6 +255,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 
 ### C3-01 Personal 可持续使用的工作台
 
+- 正式SDK0.5.1工程接收003（2026-10-15）：仅既有离线合成／显式opt-in消费者的固定包采用与受影响验证；本次CLI限定正式PASS，原生BLOCKED／旧豁免／FAIL／UNKNOWN保留，旧豁免不扩展。本条定义、目标、累计状态和原已接受范围不变，无新用户接受／Git集成／生产放行；[证据](evidence.md#e-pi-r1-r4-sdk051-20261015)。
+
 - 蓝图出处／用户价值：§1、§5、§6、§8、§10；非技术个人用户通过前端独立完成支持任务。
 - 目标／完成条件：实际 Desktop 支持获批工作流的开始、保存、重开、失败处理及适用导出；保留批准的可见能力清单，未激活项明确 Preview；无需命令行／开启遥测完成核心使用。
 - 当前状态：**局部实现**；更新时间：2026-10-01。
@@ -156,6 +264,7 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 未覆盖：蓝图完整 Personal 闭环、多场景重复使用证据、尚未激活的 Skill／Prompt 等能力、其他平台适用范围；留存价值另看 C3-04。
 - 关联 Change／在研预计：001、002、003；003已激活批准的Fork/Subagent，其他Preview保持；开发模式不算业务增量。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)、[E-DEV](evidence.md#e-dev)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：当前冻结产品浏览器离线交付面及6项交互入口，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### C3-02 Team 协作、复核与复用
 
@@ -360,11 +469,14 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 当前范围：001 的不可变 Markdown/HTML 报告和导出、002 决定／预期的追加报告，代码、真实路径及限定验收有。
 - 未覆盖：Report Studio 超出现有报告的用户任务／支持范围、结果回访报告；一个模板或导出不代表完整 Studio。
 - 关联 Change／在研预计：001、002；003 默认回父对话，不直接改正式报告。
+- 2026-10-17最小接入增量：Report Studio固定随包/独立自由制作、精确来源与稳定关联副本已完成限定工程/用户接受；PR90融合通过本地回归/真实合成浏览器/资源构建，待受影响独立及本PR/CI集成。未提升整个C5-09或S4；原风险/免测/UNKNOWN和历史FAIL见归档。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-BP](evidence.md#e-bp)。
 
 ## C6 — 资产积累与能力进化
 
 ### C6-01 历史找回、关系查询与适用性复用
+
+- 正式SDK0.5.1工程接收003（2026-10-15）：仅既有离线合成／显式opt-in消费者的固定包采用与受影响验证；本次CLI限定正式PASS，原生BLOCKED／旧豁免／FAIL／UNKNOWN保留，旧豁免不扩展。本条定义、目标、累计状态和原已接受范围不变，无新用户接受／Git集成／生产放行；[证据](evidence.md#e-pi-r1-r4-sdk051-20261015)。
 
 - 蓝图出处／用户价值：§1.2、§2、§4、§9–10；用户找回可用于本任务的历史而不混淆权威。
 - 目标／完成条件：按授权找回 Case、证据及 Hypothesis／Strategy 等资产的来源、版本和关系，复用检查适用性；Graph/Knowledge/Memory 不变成真源，双库保留各自准入与 Owner。
@@ -374,6 +486,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001、002、003；父子精确材料引用已交付，不等于知识库或学习。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-LEGACY](evidence.md#e-legacy)、[E-003](evidence.md#e-003)。
 - Change006已接受子范围（2026-10-13）：第二任务复用项目配置并重新绑定当前获准资料。跨项目/自动学习/广义资产提升仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：准备正文持久/重开/失效和旧历史兼容，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：具名准备正文保存/重开/失效及旧历史兼容，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### C6-02 改进候选与受治理版本
 
@@ -430,6 +544,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 
 ### A-03 Analysis Contract／IR 驱动执行与验证
 
+- 正式SDK0.5.1工程接收003（2026-10-15）：仅既有离线合成／显式opt-in消费者的固定包采用与受影响验证；本次CLI限定正式PASS，原生BLOCKED／旧豁免／FAIL／UNKNOWN保留，旧豁免不扩展。本条定义、目标、累计状态和原已接受范围不变，无新用户接受／Git集成／生产放行；[证据](evidence.md#e-pi-r1-r4-sdk051-20261015)。
+
 - 蓝图出处／用户价值：§4、§9.2、§10；分析者确认意图真正约束执行，而非只留下一份计划。
 - 目标／完成条件：确认后的 Contract／IR 被查询、代码、模型或研究计划实际消费，并约束执行、验证和交付；Case 不代替 IR，IR 不批准行动。
 - 当前状态：**局部实现**；更新时间：2026-10-13（005已有子范围保留，本次006补项目专业资产链）。
@@ -438,8 +554,12 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001 的已验收路径可作为后续核验入口；002/003 不自动补齐通用 IR。
 - 验证证据：[E-BP](evidence.md#e-bp)、[E-001](evidence.md#e-001)、[E-LEGACY](evidence.md#e-legacy)。
 - Change006已接受子范围（2026-10-13）：有限六指标IR驱动13周、总体/category、两期及独立原始快照核验。全指标/复杂DSL/通用方法平台仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：显式采纳后的实际 IR/计算/核验/Outcome 链，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：显式采纳后的IR/计算/独立核验/Outcome链，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### A-04 受控计算、模型调用与运行管理
+
+- 正式SDK0.5.1工程接收003（2026-10-15）：仅既有离线合成／显式opt-in消费者的固定包采用与受影响验证；本次CLI限定正式PASS，原生BLOCKED／旧豁免／FAIL／UNKNOWN保留，旧豁免不扩展。本条定义、目标、累计状态和原已接受范围不变，无新用户接受／Git集成／生产放行；[证据](evidence.md#e-pi-r1-r4-sdk051-20261015)。
 
 - 蓝图出处／用户价值：§4、§6.1–6.3、§9；用户在授权范围执行任务并理解失败。
 - 目标／完成条件：真实计算／调用遵循确认计划，保留运行证据；停止、失败、资源与恢复边界可验证；Agent Runtime 与确定性分析模型分责，可替换实现不改变业务权限。
@@ -448,8 +568,12 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 未覆盖：超出003单层顺序范围的运行／模型及任务边界；不含第二Runtime、fallback、任意代码／工具或自主平台。
 - 关联 Change／在研预计：001、002、003的限定范围已验收；实际Provider和更广运行范围另需证据及授权。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：固定 SDK 的最终准入、物理账本与主备链，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：固定SDK的准入、计量、主备和安全停止，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### A-05 精确来源、版本、不可变历史与重放条件
+
+- 正式SDK0.5.1工程接收003（2026-10-15）：仅既有离线合成／显式opt-in消费者的固定包采用与受影响验证；本次CLI限定正式PASS，原生BLOCKED／旧豁免／FAIL／UNKNOWN保留，旧豁免不扩展。本条定义、目标、累计状态和原已接受范围不变，无新用户接受／Git集成／生产放行；[证据](evidence.md#e-pi-r1-r4-sdk051-20261015)。
 
 - 蓝图出处／用户价值：§2、§6、§9.2、§10；用户知道某结论当时用了什么。
 - 目标／完成条件：数据／语义／方法／模型、Run、Case、决定、结果及父子材料可追溯；旧历史不随 latest 改写，输入／环境不足时明确不能精确重放，授权失效的摘要不可继续泄露来源。
@@ -459,10 +583,14 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001、002、003；003父子精确版本与失效处理已交付。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)。
 - Change006已接受子范围（2026-10-13）：两版来源/批准/精确任务选择、不可变采用回执及旧成果。跨环境模型逐字重放/长期Outcome链仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：唯一正文、精确身份、冻结 UNKNOWN 与独立迟到事实，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：原文/精确来源、不可变历史及UNKNOWN/迟到分列，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ## B — 可信治理与人的责任
 
 ### B-01 独立证据、反证、限制与不确定性
+
+- 正式SDK0.5.1工程接收003（2026-10-15）：仅既有离线合成／显式opt-in消费者的固定包采用与受影响验证；本次CLI限定正式PASS，原生BLOCKED／旧豁免／FAIL／UNKNOWN保留，旧豁免不扩展。本条定义、目标、累计状态和原已接受范围不变，无新用户接受／Git集成／生产放行；[证据](evidence.md#e-pi-r1-r4-sdk051-20261015)。
 
 - 蓝图出处／用户价值：§2、§4、§6、§10；用户判断哪些结论值得相信。
 - 目标／完成条件：支持／反证、适用裁判、验证独立性、证据等级及不确定性可见；不足时拒绝，同源意见不重复算独立佐证，相关不冒充因果。
@@ -472,8 +600,12 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001、002、003；反证／限制协作已交付，不自动升级意见的证据等级。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)。
 - Change006已接受子范围（2026-10-13）：原始快照独立核算、零分母/未绑定表述拒绝/UNKNOWN可见。模型解释及业务含义的独立语义判断仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：安全诊断与不确定性、独立技术证据及具名角色豁免，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：安全诊断/限制/不确定性和独立证据，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### B-02 精确授权、隐私与作用域控制
+
+- 正式SDK0.5.1工程接收003（2026-10-15）：仅既有离线合成／显式opt-in消费者的固定包采用与受影响验证；本次CLI限定正式PASS，原生BLOCKED／旧豁免／FAIL／UNKNOWN保留，旧豁免不扩展。本条定义、目标、累计状态和原已接受范围不变，无新用户接受／Git集成／生产放行；[证据](evidence.md#e-pi-r1-r4-sdk051-20261015)。
 
 - 蓝图出处／用户价值：§2、§4–6、§10；用户控制材料访问、外发和分享。
 - 目标／完成条件：数据、模型外发、分享、遥测、训练分别受授权约束；源变化／撤销可阻断、父授权不自动传子任务；Personal即有最低保护，核心使用不依赖遥测。
@@ -483,8 +615,12 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001、002、003；父子隔离已交付，不授予新外部权限。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)。
 - Change006已接受子范围（2026-10-13）：资产正文有效外发权限、仅所选六指标投影、停止/持久计量。企业/第二Runtime/真实业务权限仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：材料/候选精确授权、撤权和外发准入，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：精确资料/候选授权及撤权边界，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### B-03 人工审阅、Owner 责任与正式确认
+
+- 正式SDK0.5.1工程接收003（2026-10-15）：仅既有离线合成／显式opt-in消费者的固定包采用与受影响验证；本次CLI限定正式PASS，原生BLOCKED／旧豁免／FAIL／UNKNOWN保留，旧豁免不扩展。本条定义、目标、累计状态和原已接受范围不变，无新用户接受／Git集成／生产放行；[证据](evidence.md#e-pi-r1-r4-sdk051-20261015)。
 
 - 蓝图出处／用户价值：§2、§6.2–6.5、§7–9；用户与资产 Owner 保留业务决定权。
 - 目标／完成条件：草案、待审、采纳、正式决定、行动批准及版本发布各有明确效果；只有适当用户／Owner确认才产生正式效果，拒绝／取消／未确认不冒充批准。
@@ -494,6 +630,8 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 - 关联 Change／在研预计：001、002、003；003已交付回流审阅和采纳，无新的正式决定写权限。
 - 验证证据：[E-001](evidence.md#e-001)、[E-002](evidence.md#e-002)、[E-003](evidence.md#e-003)。
 - Change006已接受子范围（2026-10-13）：维护者一次批准、当前换版/以后默认分离、明确继续。供应登记/自动发布/现实行动仍未覆盖；工程附具名角色豁免，用户附partial/未测项豁免，不提升完整能力目标。证据见[E-006](evidence.md#e-006)；Git集成按publication实际记录。
+- pi-r1-r4-repair 工程子范围（2026-10-15）：proposalOnly、Owner、保存回执及显式正式采纳分离，仅离线合成 opt-in 工程接收，附 F-ROLE-01；正式 Validator BLOCKED 保留，未作本条完整目标或用户产品验收。原状态/目标不变；[证据](evidence.md#e-pi-r1-r4-20261015)。
+- pi-r1-r4-repair用户接受子范围（2026-10-15）：proposalOnly、Owner、保存回执与正式采纳分离，只限既有冻结离线合成/opt-in交付；用户原话“采纳，接受产品”。目标/累计状态不变，原BLOCKED和F-ROLE-01/UNKNOWN保留，真实Provider/生产/Git/归档不放行；[产品接受证据](evidence.md#e-pi-r1-r4-product-20261015)。
 
 ### B-04 有限域行动自动化
 
@@ -548,3 +686,66 @@ A01～05/B01～03及C1/C3/C4/C5原稳定ID的批准子范围已取得149独立PA
 ## Change005 v1.3当前工程增量（2026-10-12）
 
 [完整40ID快照与八家族增量](snapshots/change005-v13-progress-2026-10-12.md)记录当前在研真实消费者和缺口。原ID、各目标完成条件和已接受历史保留；嵌套调查实证不等于协作全部目标或整个005完成。
+
+2026-10-16 Report Studio增量040：017创建时工具观察接缝RED→GREEN、默认自由制作保持；新固定包a58986f2…/22714已更新Mini，实际安装115供应/2宿主及合成导出通过。103真实文件/五预算和旧2048/16384/UNKNOWN不变，历史失败/未验证保留。Provider0/部署0/Git0；016整套临时控制/真实制作及正式完整Gates未提升，C5-09仍IN_PROGRESS、正式接受增量0。见[017结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/tool-execution-observer-017.md)，[全40ID图](latest.md)无状态提升。
+
+2026-10-16 Report Studio增量041：018整套临时控制离线24/24通过，注入MiMo SSE双图与正常UI三格式实际下载读回；旧016失败保留、真实未开始。017安装/89源/103数据五预算不变，Provider0/部署0/Git0。019新候选授权待用户确认，所有旧失败/预留/UNKNOWN/未验证保留，C5-09仍IN_PROGRESS、正式接受增量0。见[018结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/trial-control-offline-018.md)和[019待批范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-production-authorization-019.md)，[全40ID图](latest.md)无状态提升。
+
+2026-10-16 Report Studio增量042：019已批准并用完唯一真实场景，7MiMo/10工具/两页草稿及两图输入取得；图检后edit按批准边界执行前拦截，UNKNOWN/新增16384保留，无模型/UI导出。完整场景未通过，旧A2048/01016384及全部失败/未验证保留。其他四预算及policy全部旧行不变，017安装/89源/018控制不变，服务正常关闭；不部署/Git。见[019结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-production-result-019.md)，[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量043：020只读复现两页headline声明/标题不一致的正常修正项，原019 edit意图仍UNKNOWN；纯控制反例证明仅删禁改守卫不足，拟两个版本周期并使旧检查失效。021新范围待审，新控制/真实状态核对未实施，Provider0/安装0/部署0/Git0。112真实数据/五预算、019历史、017安装/89源/018控制不变；A2048/01016384/019新增16384及全部失败/UNKNOWN/未验证保留。见[020评估](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/post-look-assessment-020.md)与[021待审范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-correction-authorization-021.md)，[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量044：用户批准021，已完成有界修正/新证据失效临时控制；原默认24、新模式拟议022诊断12、严格停止负例1适用检查通过，原核对全部计量不变正例因activeMs+15ms FAIL仍保留。022仅此活动时长修订待审，真实019未核对、原021场景未开始，Provider0/安装0/部署0/Git0。112真实数据/五预算、019历史、017资源/89源不变；全部旧失败/UNKNOWN/预留保留，完整正式Gates未提升。见[021结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-correction-offline-021.md)与[022待审修订](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-reconciliation-amendment-022.md)，[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量045：用户批准022，019正常UI核对activeMs+13ms、其余六项/16384不变，历史消费UNKNOWN保留；原021唯一真实续作4MiMo/6工具，一周期两处headline注释修正、新双图进入MiMo及正常逐页结论通过。PPTX UI保存下载一次后，临时整文件冻结将正常project.json.updated_at变化判为revision_artifact_changed，整套FAIL，HTML/PDF/三格式原生查看未执行，不追加场景。新预留0、旧A2048/01016384/01916384及全部失败/UNKNOWN/未验证保留；114真实文件/117项读回、其他四预算/旧policy事件/2117冻结证据、89源/22714安装资源不变，正常关闭PID/端口。见[023结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-correction-result-023.md)；C5-09仍IN_PROGRESS、正式接受增量0，[全40ID图](latest.md)无状态提升。不安装/部署/Git，不写MacBook。
+
+
+2026-10-16 Report Studio增量046：025以MacBook原版正常修正/保存流程为参照，完整真实锁集合正常UI保存先因果RED，再仅接纳成功结算导出的updated_at，其他字段/工件/权限/未知边界仍严格。原默认24/修正15/严格负例1共40项适用检查通过，补强导出Provider0及完整Task记录不变断言并定向复验；原023 FAIL不回填。114真实文件/五预算/policy/config不变，89源/22714资源及旧证据保全。026仅本地HTML/PDF保存下载与三格式原生查看待审，拟复用有效MiMo/PPTX且新增Provider0；本轮真实服务/凭据/Provider/安装/部署/Git/MacBook均0。见[025](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/normal-flow-control-025.md)及[026范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/local-export-authorization-026.md)；全部失败/UNKNOWN/预留及正式Gates保留，[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量047：用户批准026/Provider0，仅原项目本地续验。HTML正常UI保存下载一次、exp_002/3083字节/5af77b12…，成功policy配对与更新时间保护通过，旧023 FAIL不回填；Chrome实际显示丢失页面样式，视觉FAIL后首错停止，PDF/Keynote/Preview未继续。固定导出器extractBody丢head/style只读确认，未修代码/安装。新Provider/SDK模型工具控制/凭据/安装/部署/Git/MacBook均0；五预算/会话/审计/PPTX与旧21op/45event保持，正常退出PID/端口、自有标签关闭；全部失败/UNKNOWN/旧预留及正式Gates保留。见[026结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/local-export-result-026.md)；[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量048：027固定导出器以完整独立文档保留head/body CSS并隔离双页同名/全局规则，实际共用PDF2页/字体与颜色/版面回归通过，不改自由制作或PPTX/SDK/锁/guard。当前86项适用检查成立，新4在随包模块重验通过；026原两页HTML/PDF离线重放及file://独立打开成立，原61/62外层正文断言FAIL/夹具/辅助失败保留。PDF中文部首提取/精确搜索UNKNOWN新增保留。离线Forge候选8fe218b1…/22714、应用25591项/签名及冻结70a08cc6…完成，未安装/启动真实服务；旧安装a589…22714资源、真实116文件/3链接和五预算/所有旧UNKNOWN未变。Provider0/部署0/Git0/MacBook0。见[027](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/html-export-repair-027.md)及[028待审安装/本地续验范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/install-local-authorization-028.md)；全部历史失败/未知预留/未验证及正式Gates保留，[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量049：用户批准028 A+B，固定027/8fe218b1…已更新Mini；25591整应用/22714模块资源/签名、旧应用和完整数据独立备份读回PASS。唯一Provider0服务中HTML exp003/PDF exp004正常UI各一次保存下载、hash一致，Chrome实际两页CSS/内容通过；随后取得Preview接口超时，按首新错停止，PDF/Keynote原生查看未验证，B为PARTIAL，不判文件损坏。五预算/全部SDK计量/旧22op47event及全部UNKNOWN保留，仅新2本地export/4event，最终120文件3链接；服务/PID/端口和自有标签正常结束。只读解析辅助失败、PDF精确中文搜索UNKNOWN与全部历史项及正式Gates保留，不部署/Git/MacBook。见[028实际结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/install-local-result-028.md)；[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量050：用户要求继续完成，029仅补看已有PDF/PPTX合成副本；Preview/Keynote均实际两页可读，100原生文字对象可选中，未编辑保存，文稿正常关闭。PPTX第二页标题末字独行记录为排版质量局限，PDF精确中文搜索UNKNOWN保留。真实120文件/3链接及全部SDK计量/policy/旧UNKNOWN和两副本hash不变；服务启动/Provider/SDK模型工具控制/导出下载/安装/部署/Git/MacBook0。028原工具超时/PARTIAL不回填，全部历史/预留和正式Gates保留。见[029结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/native-view-result-029.md)；[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量052：用户批准031独立只读CLI通道，两个实际回合Sol/high/read-only/never核实；完整报告/补证均完成，未确认新增实现缺陷，完整Change仍BLOCKED G031-01–04。未变PPTX函数/compat/全PptxGenJS与JSZip/锁独立等价核实，旧Mini四类编辑证据可复用，不等于新包两机安装；4个LICENCE和3份README正文已随包，盘点漏识别纠正，私有SDK/buffers等真实权利仍未结论。canonical4804PASS/0FAIL/24原SKIP、供应119、宿主3、控制40及全部历史FAIL/UNKNOWN/预留按原范围保留；路由核实不替代工程/产品接受。C5-09/N11仍IN_PROGRESS，40稳定ID/六加二累计接受增量0。032待批实际验收、干净环境/权利待决，Provider/安装/MacBook写入/部署/Git本轮0。见[031独立报告](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-031.md)、[032范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/remaining-acceptance-authorization-032.md)及[完整六加二/40ID图](latest.md)。
+
+
+## Report Studio增量053 · 当前正常关联实测/原生质量FAIL
+
+2026-10-16 Report Studio增量053：032 A+B已批准执行。MacBook固定027同包更新/25591应用项/22714模块项/签名和备份读回通过，独立仓库28项WIP保持；用户确认MacBook通过，Mini完成为条件式接受。AC01用户明确接受未实测风险，自有Report Studio/私有SDK随包权利获准；第三方通知/许可适用性仍待闭合。Mini正常入口精确合成来源→仅MiMo框架/两页制作/一次标题修改→三格式各保存下载→PPTX明确关联/宿主稳定同字节下载及继续制作接通；20模型/25工具、新预留0。010仅正常核对一次activeMs+13，原消费UNKNOWN/16384保持。HTML/PDF两页可读，但Keynote第二页列表被说明框遮挡，完整B为FAIL_NATIVE_PPTX_PAGE2_OVERLAP，条件式Mini接受未满足。首实际质量失败后新Provider/导出/关联0，正常退出exit0、进程/端口结束；最终153项无旧123项丢失，所有历史失败/UNKNOWN/未知预留保持。固定源码/包不改，031有效机制审查不重跑；不部署/Git。C5-09/N11仍IN_PROGRESS、40稳定ID/六加二正式接受增量0。 见[032实际结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/acceptance-result-032.md)、[033待批范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/pptx-layout-correction-authorization-033.md)。
+
+
+## Report Studio增量054 · 033实际续验PASS／正式收尾中
+
+033按直接批准完成一次原项目MiMo排版修正（新增7模型/10工具，新预留0）。Keynote双页/四来源五边界无遮挡通过后，HTML/PDF各一次保存下载及Chrome/Preview双页通过；新PPTX exp004/102946bytes/eaaac588…明确关联交付2，宿主稳定副本同字节、原交付1保留，继续制作恢复同项目/历史且Provider0。正常Quit exit0，后续进程0/端口拒连；初次异步退出过早断言失败保留。最终159项/原153项无丢失，其他旧项目/预算/配置及全部旧UNKNOWN/预留不变。用户所约定Mini正常制作/修改/三格式/关联续作接受条件满足，MacBook接受/AC01未实测风险接受/自有权利确认保持；原032 FAIL不回填。固定源码/027包不改，第三方再分发条件/正式工程接受/required CI/Git仍未闭合，40ID累计正式接受增量0。 见[033实际结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/acceptance-result-033.md)。
+
+
+## Report Studio增量055 · 033独立补证完成／等待034许可通知范围
+
+独立031通道033受影响补证已完成：Sol/high/read-only/never实际核实，exit0/371.29秒；44冻结证据和3154原源码核对，032→033获准范围PASS，未发现新增实现缺陷。G031-01为用户接受AC01未实测风险；G031-02/03正常主路径/原生质量/条件式用户接受已在约定范围满足，原MacBook限定接受/延期保留。全Change仅G031-04具体buffers@0.1.1许可依据和通知待闭合，非20项缺权利。主工程后续只读找到原作者MIT/X11提交，6文件比较中4源/测试/示例相同、另2仅增加许可声明；该新材料不回填独立报告，实际未入包。当前等待034最小离线通知/回归/重新封装授权，因033明示不重封装；未授权安装/Provider/MacBook写入/部署/Git。原032FAIL、所有UNKNOWN/预留保持，C5-09/N11仍IN_PROGRESS，40稳定ID正式接受增量0。 见[独立033](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-033.md)、[034](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/third-party-notice-assessment-034.md)。
+
+
+## Report Studio增量056 · 034通知候选离线检查完成／独立复核中
+
+034直接批准的最小通知/来源绑定和离线重封装完成作者检查：45资源合同PASS，因果通知缺失及改名绕过RED均保留；canonical最终17组/4816PASS/0FAIL/24历史SKIP，原两次工具环境/证据父目录失败不回填。新模块d59d0554…/22716资源，新应用25593项/签名通过；只有通知/身份及签名5旧项变化、2新增，全部功能资源和主程序非签名payload相同，app.asar不变。ZIP793a67d1…逐项CRC/哈希/链接读回；首AppleDouble内联校验失败保留，正确sequester元数据不作应用代码。原027安装25591/真实159数据及全部旧预算/UNKNOWN/预留未变，033接受/032FAIL保持。独立受影响复核待完成；不安装/真实服务/Provider/MacBook/部署/Git，40ID接受增量0。 见[034结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/license-notice-result-034.md)。
+
+
+## Report Studio增量057 · 034独立PASS／等待035安装范围
+
+034独立Sol/high/read-only/never受影响验证PASS，exit0/453.02秒；3178项源码及28收据、22716资源/25593应用项/交付ZIP逐项核实，G031-04具体buffers通知缺口在固定新候选闭合，无新增实现缺陷。原031历史BLOCKED不回填；原PENDING不改成整体法律保证。新包功能字节等价，033接受/032失败及全部UNKNOWN/未知预留保持。两机实际安装仍027，034未启动应用/服务、Provider/安装/MacBook写入/部署/Git均0。035只申请两机用户目录通知包更新、备份回滚及只读保全核对，不启动服务/重复样张，不新增Provider；未批准不执行。required CI/Git集成/适用归档和正式工程接受仍独立待办，C5-09/N11保持IN_PROGRESS、40ID正式接受增量0。 见[独立034](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-034.md)、[035](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/notice-install-authorization-035.md)。
+
+
+## Report Studio增量058 · 035A Mini现装PASS／Git权限待批
+
+用户仅批准035A；Mini已实际采用固定034通知包，25593应用项/22716模块资源/签名/通知读回PASS，159项原Studio数据及所有旧计量/UNKNOWN/预留保持。原027原件和独立应用/数据备份已读回。1794项非记录源码与034已审快照逐字不变；无新实现/测试，不重跑有效检查。MacBook由用户直接接受且免做034新验证，本轮未访问/更新该机，不伪称同包实测。当前固定候选工程接受PASS；正式Change完成仍待required CI/授权Git集成/适用归档。原分支/HEAD/WIP不变，本轮应用/服务启动、Provider/SDK调用、Git写入、部署均0。036具体Git交付范围待批准，不新增安装/Provider/部署或MacBook写入，全部历史失败/UNKNOWN保留。 C5-09/N11仍IN_PROGRESS、40稳定ID正式累计接受增量0；不声明整个能力族或S1/S4完成。见[035](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/notice-install-result-035.md)、[工程接受](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/engineering-acceptance.md)、[036](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-authorization-036.md)。

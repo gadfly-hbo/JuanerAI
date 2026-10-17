@@ -26,7 +26,7 @@ test('DEV-03 renderer server is loopback-only with a fixed port and bounded file
  assert.equal(config.server?.fs?.strict,true);
  assert.equal(config.publicDir,false);
 });
-import {mkdtemp,mkdir,symlink,writeFile,realpath} from 'node:fs/promises';
+import {mkdtemp,mkdir,symlink,writeFile,realpath,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {developmentEndpoint,isDevelopmentFrame,prepareDevelopmentRoot,assertDevelopmentPath} from '../../../apps/desktop/development.ts';
@@ -91,4 +91,12 @@ test('BF-R11 DEV: real launcher preserves explicit browser flag through wrapper 
  for(const args of [['--unknown'],['--xanthil-browser','--unknown'],['--xanthil-browser','--xanthil-browser']])for(const internal of [false,true]){
   let effects=0;await assert.rejects(()=>runInNewContext('(async()=>{'+source+'})()',{process:{argv:['node','script',...(internal?['--forge']:[]),...args],env:{}},spawn:()=>{effects++;},loadModule:()=>{effects++;},fileURLToPath:()=>'',console:{log(){}}}));assert.equal(effects,0,'invalid args rejected before effects');
  }
+});
+
+
+test('RS-INSTALL-01 installed browser state cannot silently adopt development or unrelated data',async t=>{
+ const root=await realpath(await mkdtemp(join(tmpdir(),'installed-browser-root-')));t.after(()=>rm(root,{recursive:true,force:true}));
+ const dev=prepareDevelopmentRoot(join(root,'development'));assert.throws(()=>prepareDevelopmentRoot(dev.root,'installed-browser'));
+ const installed=prepareDevelopmentRoot(join(root,'installed'),'installed-browser');assert.deepEqual(prepareDevelopmentRoot(installed.root,'installed-browser'),installed);assert.throws(()=>prepareDevelopmentRoot(installed.root));
+ await writeFile(join(installed.projects,'retained'),'synthetic user content');assert.equal(await readFile(join(installed.root,'.juanerai-installed-browser-root'),'utf8'),'juanerai-installed-browser-v1\n');assert.equal(await readFile(join(installed.projects,'retained'),'utf8'),'synthetic user content');
 });

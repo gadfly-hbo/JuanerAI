@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016144515275-PJJA1Q",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-16T14:45:15.275Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1452a-2e15-7671-9688-6ff9fe1855fe"
+  },
+  "summary": "034全部离线范围获准；原任务连续实施，仅buffers通知/回归/重封装，无安装或Provider权限",
+  "status_after": "active",
+  "evidence_refs": []
+}

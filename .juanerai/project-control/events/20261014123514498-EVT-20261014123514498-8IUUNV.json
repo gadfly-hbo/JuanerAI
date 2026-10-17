@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014123514498-8IUUNV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T12:35:14.498Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a1394f-a008-7850-9d11-7111f6dc093b"
+  },
+  "summary": "Four actual codec fault cases and two structured truncation fixes passed; six current affected files 426 PASS, with historical failures retained.",
+  "status_after": "active",
+  "evidence_refs": []
+}

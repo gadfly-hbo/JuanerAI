@@ -5,3 +5,4 @@
 本次用户批准的增量为 [V13-BUSINESS-HANDOFF01](specs/autonomous-business-handoff/spec.md)。对应 [设计](design.md)、[任务](tasks.md)、[当前验证及完整历史索引](verification-v13.md)、[工程决定](engineering-decisions.md)。所有链接均为同一原Change真实材料，正式Validator仍须读取适用完整规范和增量。
 
 - [V13 MiMo显式关闭思考对照接线](specs/mimo-thinking-contrast/spec.md)：authorization024，保留旧任务及实际窗口，不替代AS04。
+- [`inspect_selected` 大资料结果上限修复](verification-inspect-selected-tool-result-repair.md)：真实两份 2,985 行 CSV 的工具结果超限诊断、因果 RED/GREEN、受影响回归和本机部署读回；不代表真实分析或产品验收。

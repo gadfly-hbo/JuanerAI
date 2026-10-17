@@ -1,3 +1,46 @@
+## Report Studio 062 · 2026-10-17（当前）
+
+036融合源码独立验证PASS（实际Sol/high/read-only/never，711.75秒），最终工程接受PASS；canonical17组4837PASS/0FAIL/24历史SKIP、定向136/宿主浏览器3/资源构建4及所有历史保全经独立核实。PR[#91](https://github.com/gadfly-hbo/JuanerAI/pull/91)最终head托管CI、squash和仅Mini安全main同步仍待真实执行，不能提前称Git完成。归档/当前规格在PR实际合并后生效。Mini现装仍034，MacBook本轮未更新且用户免测；AC01用户风险接受/NOT_MEASURED及所有FAIL/UNKNOWN/未知预留保持。C5-09仍局部实现，40稳定ID类别变化0，不关闭S1/S4或整个能力族。
+
+[当前交付/返回点](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-036.md) · [全40ID图](latest.md)。
+
+## Report Studio MiMo增量008 · 内部试用结果 · 2026-10-16
+
+C5-09/N11保持IN_PROGRESS，40项能力的正式接受状态增量为0；下方六加二全图及既有接受边界保持。Mini已更新native008，70项供应回归/安装资源/离线三格式/宿主主链通过；单独MiMo小图真实理解通过，但原B截图阶段失败，追加008框架阶段INVALID_TOOL失败，真实完整制作及新截图未通过。原A2048未知预留与所有失败/UNKNOWN/NOT_PROVEN、MacBook限定接受、许可/干净机/质量/正式验证CI等缺口保留。参见[验证030与下一动作](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/verification.md)。无部署/Git发布或其他能力晋级。
+
+<a id="e-report-studio-in-progress-20261016"></a>
+
+增量028：repair-image-005保留native006资源/签名/安装和旧包/数据、有效SSE实际序列化首包携图RED/GREEN、14图片/64供应/host011/smoke006/canonical014证据；实图描述正确，标题修改P1不变/P2仅替换主标题。原生退出真实三选项截图/时序证明收尾成立，物理中断未证实而非PASS；旧2048预留与所有限制保留。B待人类配置，原次数未消耗；不提升40ID接受状态。
+## Report Studio 最小接入在研证据 · 2026-10-16
+
+增量026证据：repair-image-004/的实际SDK接线RED/GREEN、供应021为61PASS、host-browser010、app-resource-smoke005、native005全22710资源/签名及安装读回；canonical013实际17组exit0/4804PASS/0FAIL/24SKIP。保留012计时夹具FAIL与受控时钟修正62PASS。image-retest-result-001及实际UI证明配置错误已消失，但0工具调用/图片理解仍409；同任务累计28模型/39工具，旧2048未知预留不变。禁止将离线PASS提升真实图片PASS；MacBook native004/C范围接受与原未验证项保持，详细见Change实际结果004/验证026。
+
+[Change验证原件](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/verification.md)与其增量019/020/021保留全部失败、未知和停止线。Mini证据根 `/Users/bendandebaba/JuanerAI-artifacts/reports-factory-assessment-20261015/engineering-intake-20261016/`；host-browser005/006是实际宿主/固定供应包/Chromium的合成分析主链与历史、删除语义，非真实Provider/干净安装。supplier-regression019的60项PASS包括真实固定SDK、合成transport、原生子进程物理收尾、HTTP断开阻断。整包、许可、完整canonical和独立最终验证状态以Change当前记录为准。
+
+本登记为实施中证据，不是Engineering/Product Acceptance或Git交付，不授予安装/Provider/部署。40ID和原累计状态不提升。[完整快照](snapshots/report-studio-in-progress-2026-10-16.md)。
+
+增量024：用户批准A/B/C和任务范围无产品金额硬上限；A真实两页生成和三格式保存，实际PPTX2页/1表/1图与100/120/135、有效嵌入范围独立回读。图片FAIL/CONFIGURATION_CHANGED、27已计模型准入/39工具和2048未知预留保留；核对与本地导出0新模型调用，余A/B未执行。C固定同包MacBook安装/资源/签名/包内三格式/退出及28WIP未变，原生编辑缺证据由用户知悉接受转后续体验。实际证据acceptance-003，完整结果与停止线见acceptance-result-003；未部署/未发布Git，全部历史缺口保留。
+
+增量023：Mini实际更新native-004并全资源/签名校验，旧native-003和数据保留；正常入口/原项目、安装代码离线合成导出、Keynote四类原生编辑/保存/关闭重开及空闲正常退出通过。证据native-mini-trial-002；Provider/MacBook仅形成待批请求003，未执行、不部署、不发布Git。原图表失败、ZIP字符串检查错误和iCloud历史UNKNOWN保留，不关闭其余NOT_RUN。
+
+增量022：用户单独批准Mini用户目录试用，native-003实际安装/入口/独立项目/未配置及默认权限/空闲正常退出和进程端口收尾通过。Keynote首轮图表丢失FAIL保留，因果定位固定PptxGenJS嵌入XLSX区域尾部错误，内置副本最小修正后实际四类原生编辑/导出/关闭重开通过；不修改工作源或独立版。新native-004包内资源/61项供应回归/host-browser009通过，未覆盖已安装副本；完整canonical状态见验证记录。默认iCloud自动另存偏差已移回本机，但历史同步UNKNOWN保留。MacBook、Provider、许可、在途原生选择、完整三格式质量与正式工程/用户接受仍未完成，不提升完整能力或阶段状态。
+
+<a id="e-pi-r1-r4-sdk051-delivery-20261015"></a>
+## 正式SDK0.5.1 Git交付原生回读（2026-10-15）
+
+[PR84](https://github.com/gadfly-hbo/JuanerAI/pull/84)／技术采用 `1375d5992f57efdffc71ba329bc971444bfc93af`／[精确head完整CI](https://github.com/gadfly-hbo/JuanerAI/actions/runs/38706548191)：4590PASS／0FAIL／21SKIP。原始21项及15组计数见 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/git-delivery-001/CI-PORTABLE-SUMMARY-001.json`，完整命令／原生job日志／失败材料同目录。Mini main已ref-only快进；MacBook实际SSH超时／最终mainUNKNOWN／整体PARTIAL，先前预检不冒充最终同步，exit1保留。
+
+[当前交付记录及peer准确返回点](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/sdk-0.5.1-git-delivery-001.md#正式sdk051实际git交付回读--2026-10-15) · [完整40ID固定快照](snapshots/pi-r1-r4-sdk051-git-delivery-2026-10-15.md)。技术未改，原独立BLOCKED／限定CLI PASS／用户精确旧豁免分列，旧豁免不扩展。无能力状态提升／新Product Acceptance／Provider／生产／其他项目操作。
+
+<a id="e-pi-r1-r4-sdk051-20261015"></a>
+## 正式 SDK 0.5.1 工程接收003 · 2026-10-15
+
+- [当前工程接收及准确停止点](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md#正式-sdk-051-工程接收003--2026-10-15当前)；仅现有受控离线合成／opt-in范围，无新用户Product Acceptance或Git交付。
+- 新独立CLI原件 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-cli-readonly-002/report.md`，6574bytes/SHA256 `54eca02a35efdd7de9b8bf26614bfabf3efe0f1a48c47251bea7ad0b69856064`；限定PASS、55项新检查，700／120按匹配证据复用。Sol/high/read-only/never及OS拒写实核。
+- 旧原生 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/independent-review-001/report.md`：BLOCKED F-ROLE-01／技术PASS，14521bytes/SHA256 `c318c7c831dbae32cd270d4f3966efd64d8c6fc729fec9832c34f6a252c83ab8`；旧具名豁免不扩展，原件不改。
+- 受审2931文件aggregate `e5e2b3ae7622810ea7b4c7f0c1470d9b9a33577719d2eca3f8dac223129890dc`、HEAD cadeca0e＋WIP；正式tgz148236bytes/SHA256 `3af3f895a2466b7947b9b9b0025231f856e3a5c4773782c9dabd460e924bfad9`及53安装文件一致；仅收口记录变化另列 `/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/sdk-0.5.1-adoption-001/engineering-acceptance-records-003`，不改技术候选。
+- 全六＋二／40ID [固定快照](snapshots/pi-r1-r4-sdk051-engineering-accepted-2026-10-15.md)；状态／目标不提升。真实Provider／生产／Git及历史Task停止线、UNKNOWN及旧失败保持。证据为Mini本地持久材料，不冒称跨设备已接收。
+
 ## Change005 v1.3 当前累计增量（2026-10-12）
 用户产品/UI验收已通过；v1.2为过渡版，用户已取消比较要求。当前源码完整独立PASS/4304离线PASS，requiredCI及Git集成按release-v13记录推进，不伪称已发布。原001～004、40稳定ID和未覆盖范围保留。
 
@@ -220,3 +263,120 @@ candidate149独立PASS，五方法及适用四类场景本地工程接受；当�
 [Engineering Acceptance](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/engineering-acceptance.md)、[直接用户决定](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/user-experience-decisions.md)、[完整六＋二/40ID快照](snapshots/change006-accepted-with-named-limits-2026-10-13.md)、[实际Git交付](../../../openspec/changes/archive/2026-10-13-xanthil-project-metric-assets/publication.md)。Mini唯一原始证据root `/Users/bendandebaba/JuanerAI-artifacts/change006/controller`，原独立报告和真实150/160成果/安全回执、101请求97success4cancel、重开零自动调用保持。同机源文件可读不等于跨设备备份。
 
 仅八项有限增量；C4-07全DomainPack、S1、Supplier条件NOT_RUN、nativeE2 OPEN/BLOCKED、模型语义/因果及真实业务效果不闭合。Git/CI/merge/main仅以publication实际记录成立；快照生成时尚未执行。
+
+<a id="e-pi-r1-r4-20261015"></a>
+
+## E-PI-R1-R4-20261015 — 冻结候选离线工程接收，附 F-ROLE-01
+
+2026-10-15 Mini 本机原任务记录回填；本节是本次读回，前面“未读 Mini 原件”等为各次历史采集限制。本次没有重跑产品测试或调用 Provider。结论为 Engineering Acceptance with named user waiver；独立正式 BLOCKED F-ROLE-01 和技术 PASS 分列，不是无条件 Validator PASS。
+
+来源 HEAD `8265a3920ee1205faec7dede8b0c84e648105d9d` 仅基线，接收绑定88文件 WIP aggregate `b9b796ee8c0cb624fc7640c37f32c2b08f2c2b692b69bb5cfb9d192b6cf1a16a`；本次新增记录层另列身份，未替换旧冻结清单。SDK .3 tgz 146131 bytes/SHA256 `e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce`，51安装文件与 package/lock 保持。原报告18151 bytes/SHA256 `f418f9b0dda05632ca09dd3856a1588e6e9032cbea4649eb74d2f2c523c9a5b7` 保持原件。
+
+canonical002：17组 exit0，4610 PASS/1真实 Provider SKIP/0FAIL；独立131 PASS/0FAIL/0SKIP及实际两尺寸 UI/类型 exit0。F-ROLE-01只接受本候选原生 danger-full-access/never 缺少强制只读沙箱的风险，以核验只读行为及前后哈希一致为依据；不延伸至未来候选或其他执行限制。
+
+实际 [工程接收与逐接点边界](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md)、[全40ID快照](snapshots/pi-r1-r4-repair-engineering-waiver-2026-10-15.md)、[原始报告](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/independent-full-002/validator-report-001.md)、[具名收据](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/engineering-closeout-001/F-ROLE-01-WAIVER-001.json)、[本次记录核验](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/engineering-record-backfill-001/RECORD-BACKFILL-VERIFICATION-001.json)。本地证据非跨设备备份，WIP尚非Git集成资产。
+
+只增加 C6-01、A-03/04/05、B-01/02/03 的离线工程支持证据，40ID目标/状态不变。产品验收/完整阶段、真实Provider/业务数据、生产准入参数和激活、服务、其他项目升级、历史迁移恢复重放、Git与正式归档均不由本记录放行；历史失败/UNKNOWN、旧字段和旧包继续保留。
+
+<a id="e-pi-r1-r4-product-20261015"></a>
+
+## E-PI-R1-R4-PRODUCT-20261015 — 用户明确产品接受
+
+2026-10-15本任务用户原话：“采纳，接受产品”。本冻结R1～R4＋D1～D8 A既有离线合成/opt-in产品交付范围接受；不是工程Agent代签。正式Validator BLOCKED F-ROLE-01、原本候选具名豁免、全部历史失败与UNKNOWN保留；不声称无条件Validator PASS，不补填16条本人操作或真实Provider项。
+
+HEAD8265a3920ee1205faec7dede8b0c84e648105d9d仅基线；接受绑定88文件aggregate b9b796ee8c0cb624fc7640c37f32c2b08f2c2b692b69bb5cfb9d192b6cf1a16a；SDK .3 tgz146131 bytes/SHA256 e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce。51安装文件与29质量输入不变，复用4610PASS/1ProviderSKIP、独立131PASS及完整原始证据，不制造新测试通过。
+
+[正式产品接受记录](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/product-acceptance.md)、[用户原话JSON](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/product-acceptance-001/USER-PRODUCT-ACCEPTANCE-001.json)、[记录层核验](/Users/bendandebaba/JuanerAI-artifacts/pi-r1-r4-repair/r3-preparation-implementation-001/product-acceptance-001/PRODUCT-ACCEPTANCE-VERIFICATION-001.json)、[全40ID快照](snapshots/pi-r1-r4-repair-product-accepted-2026-10-15.md)。C3-01、C6-01、A-03/04/05、B-01/02/03仅增加限定离线接受子范围，40目标状态不提升。真实Provider五项NOT RUN、生产参数UNKNOWN、Git及正式归档/其他停止线继续保留；本地WIP未Git集成，不称跨设备备份。
+
+## E-PI-R1-R4-GIT-20261015 — 正式交付授权与归档
+
+用户明确授权本冻结离线候选提交推送/PR/必需CI/审查/squash/安全main同步/OpenSpec归档。原路径源提交 `cd491fcb9da4bebf91937f2ccdc65a34b855061c`；当前 [归档publication](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/publication.md) 与 [当前规格](../../../openspec/specs/open-analysis-runtime-boundaries/spec.md)。[原BLOCKED](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/evidence/validator-report-original-001.md)、[F-ROLE-01原件](../../../openspec/changes/archive/2026-10-15-pi-r1-r4-repair/evidence/F-ROLE-01-WAIVER-original-001.json)保留。40ID/目标/状态和用户接受边界不变；PR/CI/merge/sync只按实际回执确认，不等于Provider/生产或共享SDK正式发布。
+
+
+2026-10-16 Report Studio增量031：仅Mini离线工具拒绝分类/诊断停止线，8供应套件92PASS；原真实制作FAIL/根因UNKNOWN保持，Provider0，正式已接受能力40项增量0，C5-09仍IN_PROGRESS。证据：openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-tool-diagnosis-009.md及verification031；原合成/真实失败、预留与所有正式缺口保留。未部署、未Git发布。
+
+2026-10-16增量032：010唯一真实诊断5MiMo/4read、83秒后范围停止AUTHORITY_REQUIRED，非INVALID_TOOL根因证明；新增16384未知预留保留。C5-09仍IN_PROGRESS、已接受能力增量0；原2048/旧失败/未验证和正式Gates保留。详见mimo-tool-diagnosis-009实际结果/verification032；不部署、不Git。
+
+2026-10-16 Report Studio增量033：C5-09仍IN_PROGRESS/正式接受增量0。RS-SKILL-01固定技能只读接缝与封闭停止诊断离线104供应+8受影响源测试通过；四个真实账本/2048和16384未知保留，原008/010根因UNKNOWN。011未入安装、无Provider/部署/Git。见[修复011](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/skill-read-repair-011.md)及[全40ID图](latest.md)；正式完整验收缺口不变。
+
+2026-10-16 Report Studio增量034：012修正版已封装/更新Mini；实际安装资源22712/签名、供应104及宿主2项、三格式+PNG合成smoke通过。C5-09仍IN_PROGRESS、正式接受增量0，[全40ID图](latest.md)不变。90数据/四真实预算/2048及16384未知保留；原008/010与全部未测不提升。见[012实际结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/package-update-012.md)；[013真实诊断申请](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-diagnosis-authorization-013.md)待批，本轮Provider0/部署0/Git0。
+
+2026-10-16 Report Studio增量035：用户批准013，但本地入口403模型前阻断，BLOCKED_BEFORE_SCENE；Provider0/无新项目/场景未消耗，正常关闭自有服务与标签。90原数据/四预算/2048及16384预留不变；C5-09仍IN_PROGRESS、正式接受增量0，[全40ID图](latest.md)不变。[013实际结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-diagnosis-authorization-013.md)保留预检/403及具体条件UNKNOWN；不把012离线PASS提升真实制作，不部署/Git。
+
+2026-10-16 Report Studio增量036：原guard/完整隔离服务复现cross-site→403、原生新标签地址栏none→200，bootstrap及普通刷新通过；仅修正诊断进入步骤，认证/87源/012安装不变，Provider0。013历史准入/暂停及正常200页DOM超时UNKNOWN保留，不宣称工具通道修复。90原数据/四预算/2048及16384不变，013批准及未开始保留，最新Provider禁止线优先。[014记录](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/local-entry-403-014.md)及verification036；C5-09仍IN_PROGRESS、正式接受增量0，[全40ID图](latest.md)不变。所有旧失败/未验证与完整正式Gates保留，不部署/Git。
+
+2026-10-16 Report Studio增量037：用户明确恢复013，同一唯一场景015限定框架PASS：4MiMo/read×3/propose_outline×1、固定技能全文9688字节读取成功、两页待确认；输入4375/输出587/新预留0，正常物理结束及服务收尾。旧86项目文件/四预算/策略库全部旧行和2048/16384不变，原失败/UNKNOWN/未验证不提升。013场景已用完，未制作/截图/导出或追加场景，完整Change正式Gates未完成。见[015结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-diagnosis-result-015.md)及verification037；C5-09仍IN_PROGRESS、正式接受增量0，[全40ID图](latest.md)不变。不部署/Git。
+
+2026-10-16 Report Studio增量038：仅准备[016授权申请](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-production-authorization-016.md)，拟在015同项目/同账执行一次两页制作、截图检查和三格式保存，尚未批准/执行；Provider0/启动0/产品改动0。87源/当前框架/五预算起点未变，旧失败及2048/16384/未验证保留。C5-09仍IN_PROGRESS、正式接受增量0，[全40ID图](latest.md)不变。未开发临时控制，不部署/Git。
+
+2026-10-16 Report Studio增量039：用户批准016，但实际固定SDK离线“软失败即停”控制未通过，BLOCKED_BEFORE_SCENE_OFFLINE_CONTROL；Provider0/服务0/场景未消耗，不改固定源码或安装绕过。103真实文件/五预算/87源码及旧2048/16384不变，全部原失败/UNKNOWN/未验证保留。[016缺口与最小后续建议](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-production-result-016.md)待用户决定；完整制作/看图/三格式未开始，C5-09仍IN_PROGRESS、正式接受增量0，[全40ID图](latest.md)不变。不部署/Git。
+
+2026-10-16 Report Studio增量040：017创建时工具观察接缝RED→GREEN、默认自由制作保持；新固定包a58986f2…/22714已更新Mini，实际安装115供应/2宿主及合成导出通过。103真实文件/五预算和旧2048/16384/UNKNOWN不变，历史失败/未验证保留。Provider0/部署0/Git0；016整套临时控制/真实制作及正式完整Gates未提升，C5-09仍IN_PROGRESS、正式接受增量0。见[017结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/tool-execution-observer-017.md)，[全40ID图](latest.md)无状态提升。
+
+2026-10-16 Report Studio增量041：018整套临时控制离线24/24通过，注入MiMo SSE双图与正常UI三格式实际下载读回；旧016失败保留、真实未开始。017安装/89源/103数据五预算不变，Provider0/部署0/Git0。019新候选授权待用户确认，所有旧失败/预留/UNKNOWN/未验证保留，C5-09仍IN_PROGRESS、正式接受增量0。见[018结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/trial-control-offline-018.md)和[019待批范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-production-authorization-019.md)，[全40ID图](latest.md)无状态提升。
+
+2026-10-16 Report Studio增量042：019已批准并用完唯一真实场景，7MiMo/10工具/两页草稿及两图输入取得；图检后edit按批准边界执行前拦截，UNKNOWN/新增16384保留，无模型/UI导出。完整场景未通过，旧A2048/01016384及全部失败/未验证保留。其他四预算及policy全部旧行不变，017安装/89源/018控制不变，服务正常关闭；不部署/Git。见[019结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-production-result-019.md)，[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量043：020只读复现两页headline声明/标题不一致的正常修正项，原019 edit意图仍UNKNOWN；纯控制反例证明仅删禁改守卫不足，拟两个版本周期并使旧检查失效。021新范围待审，新控制/真实状态核对未实施，Provider0/安装0/部署0/Git0。112真实数据/五预算、019历史、017安装/89源/018控制不变；A2048/01016384/019新增16384及全部失败/UNKNOWN/未验证保留。见[020评估](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/post-look-assessment-020.md)与[021待审范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-correction-authorization-021.md)，[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量044：用户批准021，已完成有界修正/新证据失效临时控制；原默认24、新模式拟议022诊断12、严格停止负例1适用检查通过，原核对全部计量不变正例因activeMs+15ms FAIL仍保留。022仅此活动时长修订待审，真实019未核对、原021场景未开始，Provider0/安装0/部署0/Git0。112真实数据/五预算、019历史、017资源/89源不变；全部旧失败/UNKNOWN/预留保留，完整正式Gates未提升。见[021结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-correction-offline-021.md)与[022待审修订](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-reconciliation-amendment-022.md)，[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量045：用户批准022，019正常UI核对activeMs+13ms、其余六项/16384不变，历史消费UNKNOWN保留；原021唯一真实续作4MiMo/6工具，一周期两处headline注释修正、新双图进入MiMo及正常逐页结论通过。PPTX UI保存下载一次后，临时整文件冻结将正常project.json.updated_at变化判为revision_artifact_changed，整套FAIL，HTML/PDF/三格式原生查看未执行，不追加场景。新预留0、旧A2048/01016384/01916384及全部失败/UNKNOWN/未验证保留；114真实文件/117项读回、其他四预算/旧policy事件/2117冻结证据、89源/22714安装资源不变，正常关闭PID/端口。见[023结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/mimo-correction-result-023.md)；C5-09仍IN_PROGRESS、正式接受增量0，[全40ID图](latest.md)无状态提升。不安装/部署/Git，不写MacBook。
+
+
+2026-10-16 Report Studio增量046：025以MacBook原版正常修正/保存流程为参照，完整真实锁集合正常UI保存先因果RED，再仅接纳成功结算导出的updated_at，其他字段/工件/权限/未知边界仍严格。原默认24/修正15/严格负例1共40项适用检查通过，补强导出Provider0及完整Task记录不变断言并定向复验；原023 FAIL不回填。114真实文件/五预算/policy/config不变，89源/22714资源及旧证据保全。026仅本地HTML/PDF保存下载与三格式原生查看待审，拟复用有效MiMo/PPTX且新增Provider0；本轮真实服务/凭据/Provider/安装/部署/Git/MacBook均0。见[025](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/normal-flow-control-025.md)及[026范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/local-export-authorization-026.md)；全部失败/UNKNOWN/预留及正式Gates保留，[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量047：用户批准026/Provider0，仅原项目本地续验。HTML正常UI保存下载一次、exp_002/3083字节/5af77b12…，成功policy配对与更新时间保护通过，旧023 FAIL不回填；Chrome实际显示丢失页面样式，视觉FAIL后首错停止，PDF/Keynote/Preview未继续。固定导出器extractBody丢head/style只读确认，未修代码/安装。新Provider/SDK模型工具控制/凭据/安装/部署/Git/MacBook均0；五预算/会话/审计/PPTX与旧21op/45event保持，正常退出PID/端口、自有标签关闭；全部失败/UNKNOWN/旧预留及正式Gates保留。见[026结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/local-export-result-026.md)；[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量048：027固定导出器以完整独立文档保留head/body CSS并隔离双页同名/全局规则，实际共用PDF2页/字体与颜色/版面回归通过，不改自由制作或PPTX/SDK/锁/guard。当前86项适用检查成立，新4在随包模块重验通过；026原两页HTML/PDF离线重放及file://独立打开成立，原61/62外层正文断言FAIL/夹具/辅助失败保留。PDF中文部首提取/精确搜索UNKNOWN新增保留。离线Forge候选8fe218b1…/22714、应用25591项/签名及冻结70a08cc6…完成，未安装/启动真实服务；旧安装a589…22714资源、真实116文件/3链接和五预算/所有旧UNKNOWN未变。Provider0/部署0/Git0/MacBook0。见[027](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/html-export-repair-027.md)及[028待审安装/本地续验范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/install-local-authorization-028.md)；全部历史失败/未知预留/未验证及正式Gates保留，[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量049：用户批准028 A+B，固定027/8fe218b1…已更新Mini；25591整应用/22714模块资源/签名、旧应用和完整数据独立备份读回PASS。唯一Provider0服务中HTML exp003/PDF exp004正常UI各一次保存下载、hash一致，Chrome实际两页CSS/内容通过；随后取得Preview接口超时，按首新错停止，PDF/Keynote原生查看未验证，B为PARTIAL，不判文件损坏。五预算/全部SDK计量/旧22op47event及全部UNKNOWN保留，仅新2本地export/4event，最终120文件3链接；服务/PID/端口和自有标签正常结束。只读解析辅助失败、PDF精确中文搜索UNKNOWN与全部历史项及正式Gates保留，不部署/Git/MacBook。见[028实际结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/install-local-result-028.md)；[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量050：用户要求继续完成，029仅补看已有PDF/PPTX合成副本；Preview/Keynote均实际两页可读，100原生文字对象可选中，未编辑保存，文稿正常关闭。PPTX第二页标题末字独行记录为排版质量局限，PDF精确中文搜索UNKNOWN保留。真实120文件/3链接及全部SDK计量/policy/旧UNKNOWN和两副本hash不变；服务启动/Provider/SDK模型工具控制/导出下载/安装/部署/Git/MacBook0。028原工具超时/PARTIAL不回填，全部历史/预留和正式Gates保留。见[029结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/native-view-result-029.md)；[全40ID图](latest.md)C5-09仍IN_PROGRESS、正式接受增量0。
+
+
+2026-10-16 Report Studio增量052：用户批准031独立只读CLI通道，两个实际回合Sol/high/read-only/never核实；完整报告/补证均完成，未确认新增实现缺陷，完整Change仍BLOCKED G031-01–04。未变PPTX函数/compat/全PptxGenJS与JSZip/锁独立等价核实，旧Mini四类编辑证据可复用，不等于新包两机安装；4个LICENCE和3份README正文已随包，盘点漏识别纠正，私有SDK/buffers等真实权利仍未结论。canonical4804PASS/0FAIL/24原SKIP、供应119、宿主3、控制40及全部历史FAIL/UNKNOWN/预留按原范围保留；路由核实不替代工程/产品接受。C5-09/N11仍IN_PROGRESS，40稳定ID/六加二累计接受增量0。032待批实际验收、干净环境/权利待决，Provider/安装/MacBook写入/部署/Git本轮0。见[031独立报告](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-031.md)、[032范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/remaining-acceptance-authorization-032.md)及[完整六加二/40ID图](latest.md)。
+
+
+## Report Studio增量053 · 当前正常关联实测/原生质量FAIL
+
+2026-10-16 Report Studio增量053：032 A+B已批准执行。MacBook固定027同包更新/25591应用项/22714模块项/签名和备份读回通过，独立仓库28项WIP保持；用户确认MacBook通过，Mini完成为条件式接受。AC01用户明确接受未实测风险，自有Report Studio/私有SDK随包权利获准；第三方通知/许可适用性仍待闭合。Mini正常入口精确合成来源→仅MiMo框架/两页制作/一次标题修改→三格式各保存下载→PPTX明确关联/宿主稳定同字节下载及继续制作接通；20模型/25工具、新预留0。010仅正常核对一次activeMs+13，原消费UNKNOWN/16384保持。HTML/PDF两页可读，但Keynote第二页列表被说明框遮挡，完整B为FAIL_NATIVE_PPTX_PAGE2_OVERLAP，条件式Mini接受未满足。首实际质量失败后新Provider/导出/关联0，正常退出exit0、进程/端口结束；最终153项无旧123项丢失，所有历史失败/UNKNOWN/未知预留保持。固定源码/包不改，031有效机制审查不重跑；不部署/Git。C5-09/N11仍IN_PROGRESS、40稳定ID/六加二正式接受增量0。 见[032实际结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/acceptance-result-032.md)、[033待批范围](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/pptx-layout-correction-authorization-033.md)。
+
+
+## Report Studio增量054 · 033实际续验PASS／正式收尾中
+
+033按直接批准完成一次原项目MiMo排版修正（新增7模型/10工具，新预留0）。Keynote双页/四来源五边界无遮挡通过后，HTML/PDF各一次保存下载及Chrome/Preview双页通过；新PPTX exp004/102946bytes/eaaac588…明确关联交付2，宿主稳定副本同字节、原交付1保留，继续制作恢复同项目/历史且Provider0。正常Quit exit0，后续进程0/端口拒连；初次异步退出过早断言失败保留。最终159项/原153项无丢失，其他旧项目/预算/配置及全部旧UNKNOWN/预留不变。用户所约定Mini正常制作/修改/三格式/关联续作接受条件满足，MacBook接受/AC01未实测风险接受/自有权利确认保持；原032 FAIL不回填。固定源码/027包不改，第三方再分发条件/正式工程接受/required CI/Git仍未闭合，40ID累计正式接受增量0。 见[033实际结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/acceptance-result-033.md)。
+
+
+## Report Studio增量055 · 033独立补证完成／等待034许可通知范围
+
+独立031通道033受影响补证已完成：Sol/high/read-only/never实际核实，exit0/371.29秒；44冻结证据和3154原源码核对，032→033获准范围PASS，未发现新增实现缺陷。G031-01为用户接受AC01未实测风险；G031-02/03正常主路径/原生质量/条件式用户接受已在约定范围满足，原MacBook限定接受/延期保留。全Change仅G031-04具体buffers@0.1.1许可依据和通知待闭合，非20项缺权利。主工程后续只读找到原作者MIT/X11提交，6文件比较中4源/测试/示例相同、另2仅增加许可声明；该新材料不回填独立报告，实际未入包。当前等待034最小离线通知/回归/重新封装授权，因033明示不重封装；未授权安装/Provider/MacBook写入/部署/Git。原032FAIL、所有UNKNOWN/预留保持，C5-09/N11仍IN_PROGRESS，40稳定ID正式接受增量0。 见[独立033](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-033.md)、[034](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/third-party-notice-assessment-034.md)。
+
+
+## Report Studio增量056 · 034通知候选离线检查完成／独立复核中
+
+034直接批准的最小通知/来源绑定和离线重封装完成作者检查：45资源合同PASS，因果通知缺失及改名绕过RED均保留；canonical最终17组/4816PASS/0FAIL/24历史SKIP，原两次工具环境/证据父目录失败不回填。新模块d59d0554…/22716资源，新应用25593项/签名通过；只有通知/身份及签名5旧项变化、2新增，全部功能资源和主程序非签名payload相同，app.asar不变。ZIP793a67d1…逐项CRC/哈希/链接读回；首AppleDouble内联校验失败保留，正确sequester元数据不作应用代码。原027安装25591/真实159数据及全部旧预算/UNKNOWN/预留未变，033接受/032FAIL保持。独立受影响复核待完成；不安装/真实服务/Provider/MacBook/部署/Git，40ID接受增量0。 见[034结果](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/license-notice-result-034.md)。
+
+
+## Report Studio增量057 · 034独立PASS／等待035安装范围
+
+034独立Sol/high/read-only/never受影响验证PASS，exit0/453.02秒；3178项源码及28收据、22716资源/25593应用项/交付ZIP逐项核实，G031-04具体buffers通知缺口在固定新候选闭合，无新增实现缺陷。原031历史BLOCKED不回填；原PENDING不改成整体法律保证。新包功能字节等价，033接受/032失败及全部UNKNOWN/未知预留保持。两机实际安装仍027，034未启动应用/服务、Provider/安装/MacBook写入/部署/Git均0。035只申请两机用户目录通知包更新、备份回滚及只读保全核对，不启动服务/重复样张，不新增Provider；未批准不执行。required CI/Git集成/适用归档和正式工程接受仍独立待办，C5-09/N11保持IN_PROGRESS、40ID正式接受增量0。 见[独立034](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/independent-validator-result-034.md)、[035](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/notice-install-authorization-035.md)。
+
+
+## Report Studio增量058 · 035A Mini现装PASS／Git权限待批
+
+用户仅批准035A；Mini已实际采用固定034通知包，25593应用项/22716模块资源/签名/通知读回PASS，159项原Studio数据及所有旧计量/UNKNOWN/预留保持。原027原件和独立应用/数据备份已读回。1794项非记录源码与034已审快照逐字不变；无新实现/测试，不重跑有效检查。MacBook由用户直接接受且免做034新验证，本轮未访问/更新该机，不伪称同包实测。当前固定候选工程接受PASS；正式Change完成仍待required CI/授权Git集成/适用归档。原分支/HEAD/WIP不变，本轮应用/服务启动、Provider/SDK调用、Git写入、部署均0。036具体Git交付范围待批准，不新增安装/Provider/部署或MacBook写入，全部历史失败/UNKNOWN保留。 C5-09/N11仍IN_PROGRESS、40稳定ID正式累计接受增量0；不声明整个能力族或S1/S4完成。见[035](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/notice-install-result-035.md)、[工程接受](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/engineering-acceptance.md)、[036](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-authorization-036.md)。
+
+
+## E-REPORT-STUDIO-036
+
+036融合候选最终canonical17组4861tests/4837PASS/0FAIL/24历史SKIP，exit0/341.84秒；非记录源码与本次开跑身份逐字一致。定向136、实际合成浏览器3和资源/实际Vite构建/VM4项通过，三项UI接线与资源形状因果RED均保留。Main/Preload及内置浏览器入口只作隔离构建，没有重新封装.app/安装/启动现装服务/Provider；Mini仍034，MacBook用户免测且未更新。63原Change材料准备归档，9外部相对链接调整，全部独立报告原字节保持；当前等036独立受影响复核及确切PR head托管CI/实际合并，不提前称主线完成。
+
+[归档/交付](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-036.md)、[用户接受/免测](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/product-acceptance.md)。本段是当前候选证据，不回填先前在研/失败段落，不授予Git以外真实效果。

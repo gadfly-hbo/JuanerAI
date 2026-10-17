@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015085406496-U4J103",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-15T08:54:06.496Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13eab-68cd-76d3-8c92-55a9a8895afe"
+  },
+  "summary": "正式051采用PR84已合并/完整CI4590PASS0FAIL21SKIP/Mini已安全同步；MacBook连接超时exit1，最终UNKNOWN/整体PARTIAL，按授权跳过；仅收口记录保存，原技术冻结/历史与豁免边界不变。",
+  "status_after": "complete",
+  "evidence_refs": []
+}

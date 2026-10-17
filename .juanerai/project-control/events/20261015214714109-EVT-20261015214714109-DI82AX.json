@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015214714109-DI82AX",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-15T21:47:14.109Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14052-87a4-7773-94ff-beabac69eba4"
+  },
+  "summary": "RS-EXIT-01 backend32, owner/native18; bundle helper33; task-local app assembled, all real acceptance remains NOT_RUN",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016051404573-DE9HWO",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T05:14:04.573Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14315-6d8d-7cf3-a8d0-06046b3a765a"
+  },
+  "summary": "011离线修复及受影响回归通过，保留2048/16384与旧失败；新真实复验另批准",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

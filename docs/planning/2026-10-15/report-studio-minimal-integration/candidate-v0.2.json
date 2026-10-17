@@ -1,0 +1,51 @@
+{
+  "candidate": "report-studio-minimal-integration-v0.2",
+  "status": "PROPOSED_USER_REVIEW_PENDING_NO_DEVELOPMENT",
+  "branch": "work/mac-mini/report-studio-minimal-integration-plan",
+  "head": "187c356625260d84ca58bc1f5741e081e89662cd",
+  "adoptedPolicyCommit": "b182d5d05e4c1e4a924855e29a4ebbe8f53bda8d",
+  "files": [
+    {
+      "path": "proposal-v0.1.md",
+      "bytes": 24230,
+      "sha256": "2d5cab2afb95b26d06d63371d9f80a4df5e0d8c12e4afb8c41d7c253005c99ec"
+    },
+    {
+      "path": "compatibility-v0.2.md",
+      "bytes": 6480,
+      "sha256": "6052de6729a67c79bec91cd1c6df5ad970dc766c5bee6b727285aabb24071f96"
+    },
+    {
+      "path": "ui-contract-v0.2.md",
+      "bytes": 10573,
+      "sha256": "da7f4f27a1bcbd2c22a74ca8756114b4fbbd8c02e793907c69812b41e36e042c"
+    },
+    {
+      "path": "verification-v0.2.md",
+      "bytes": 4535,
+      "sha256": "89510c45269c02edc5adf85ecbf9b80c811d36747a64837a913859ee8d79f913"
+    },
+    {
+      "path": "clickable/index.html",
+      "bytes": 1560,
+      "sha256": "cd9d745401fccb6080e7328c36653562472c9b024273f8419858690833ab415c"
+    },
+    {
+      "path": "clickable/integration.css",
+      "bytes": 5048,
+      "sha256": "d02d8674fceca6683a18ed45b2b8fdef4deff34b01905cd5905279daad865645"
+    },
+    {
+      "path": "clickable/integration.js",
+      "bytes": 35152,
+      "sha256": "be0c7a260a48adeaba171cbbedb1aa6adb0c0fbf7c2a4592c79b43aee8461e57"
+    },
+    {
+      "path": "clickable/reference/studio.css",
+      "bytes": 16242,
+      "sha256": "87ea9de574d4bdf416ce6d4cc2388e81d80348aa830c892353a56cdf07301adb"
+    }
+  ],
+  "revision": "review003-project-identity-correction",
+  "previousManifestSha256": "9a86b79a42ca2dcd60e6667f94dd845da77c06a1c2b7484255a94b83bcc78776"
+}

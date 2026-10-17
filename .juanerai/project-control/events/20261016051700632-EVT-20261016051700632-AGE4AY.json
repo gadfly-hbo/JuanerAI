@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016051700632-AGE4AY",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T05:17:00.632Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14323-5c36-78c3-bfca-a113680205a3"
+  },
+  "summary": "012用户授权封装/更新Mini及离线复验，新Provider仅列范围待批",
+  "status_after": "active",
+  "evidence_refs": []
+}

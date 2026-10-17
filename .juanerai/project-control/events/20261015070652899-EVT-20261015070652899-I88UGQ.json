@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015070652899-I88UGQ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-15T07:06:52.899Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13e5f-83f5-7753-aefb-e1f200cd58b4"
+  },
+  "summary": "Direct user authorization: task-only official SDK0.5.1 adoption, original waiver not extended",
+  "status_after": "active",
+  "evidence_refs": []
+}

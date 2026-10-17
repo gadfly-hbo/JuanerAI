@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261014223927772-FD0GPG",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-14T22:39:27.772Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13854-6215-73a0-82a7-ed1ac7022bf1:01a13c7e-67b9-7b60-ba34-d6b8e5500145"
+  },
+  "summary": "Current.3 offline regression and source identity fixed for narrow result review; no fullR1-R4 completion claim.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

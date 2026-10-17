@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016150635805-TMF62E",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-16T15:06:35.805Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1452a-2e15-7671-9688-6ff9fe1855fe"
+  },
+  "summary": "034最小通知/离线候选45/4816PASS、功能字节等价；准备固定完整候选受影响独立复核，安装等未授权",
+  "status_after": "validating",
+  "evidence_refs": []
+}

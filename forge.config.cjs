@@ -5,6 +5,8 @@ const path = require('node:path');
 const electronZipDir = process.env.JUANERAI_ELECTRON_ZIP_DIR;
 const internalResources = process.env.JUANERAI_INTERNAL_INSTALL_RESOURCES;
 const internalOutput = process.env.JUANERAI_INTERNAL_INSTALL_OUTPUT;
+const reportStudioPackage=process.env.JUANERAI_REPORT_STUDIO_PACKAGE==='1';
+if(reportStudioPackage&&!internalResources)throw new Error('Report Studio delivery requires explicit verified bundled resources');
 if (internalResources || internalOutput) {
   if (!internalResources || !internalOutput || !path.isAbsolute(internalResources) || !path.isAbsolute(internalOutput)) {
     throw new Error('Internal package requires absolute resource and output directories');
@@ -53,7 +55,7 @@ module.exports = {
     prune: true,
     ignore: file => file.includes('/node_modules/.') || Boolean(file) && !(/^\/(?:\.vite(?:\/|$)|node_modules(?:\/|$)|package\.json$)/.test(file)),
     extraResource: internalResources
-      ? [path.join(internalResources, 'toolchain-deployment.json'), path.join(internalResources, 'toolchain'), path.join(internalResources, 'THIRD_PARTY_NOTICES'), '.vite/build/xanthil-resources']
+      ? [path.join(internalResources, 'toolchain-deployment.json'), path.join(internalResources, 'toolchain'), path.join(internalResources, 'THIRD_PARTY_NOTICES'), ...(reportStudioPackage?[path.join(internalResources,'report-studio'),path.join(internalResources,'report-studio-deployment.json')]:[]), '.vite/build/xanthil-resources']
       : ['build/xanthil-toolchain-deployment.json', '.vite/build/xanthil-resources'],
     afterCopyExtraResources: internalResources ? [] : [renameToolchainDeploymentResource],
     ...(electronZipDir ? { electronZipDir } : {}),
@@ -64,9 +66,9 @@ module.exports = {
   makers: [],
   plugins: [
     new VitePlugin({
-      build: [
+      build: reportStudioPackage?[{entry:'apps/browser/installed-main.ts',config:'vite.main.config.mjs',target:'main'}]:[
         {
-          entry: 'apps/desktop/main.ts',
+          entry: reportStudioPackage?'apps/browser/installed-main.ts':'apps/desktop/main.ts',
           config: 'vite.main.config.mjs',
           target: 'main',
         },
@@ -76,7 +78,7 @@ module.exports = {
           target: 'preload',
         },
       ],
-      renderer: [
+      renderer: reportStudioPackage?[]:[
         {
           name: 'main_window',
           config: 'vite.renderer.config.mjs',

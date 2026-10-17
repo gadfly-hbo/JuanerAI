@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016094919247-ZBPCKK",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T09:49:19.247Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a143fd-92d7-7d12-98ee-b8e7d61b9d25"
+  },
+  "summary": "026批准后HTML保存下载成功但实际视觉FAIL，首错停止，正常收尾且Provider/SDK0/原账不变，保留全部历史项",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

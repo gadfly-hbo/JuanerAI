@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261015230412262-KBF788",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-15T23:04:12.262Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a141ce-44da-7132-b884-2c064dea6382"
+  },
+  "summary": "用户批准授权请求003 A/B/C及消费范围，真实验收开始，保留全部失败和未验证项",
+  "status_after": "active",
+  "evidence_refs": []
+}

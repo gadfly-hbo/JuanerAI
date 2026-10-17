@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016123034453-6PSFDP",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T12:30:34.453Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a144ad-1d3f-7a23-94bb-533f532cacd5"
+  },
+  "summary": "029已有副本原生只读续验完成：PDF/PPTX两页与100原生对象通过，正常关闭；排版局限与旧UNKNOWN保留，Provider0/数据计量不变。",
+  "status_after": "active",
+  "evidence_refs": []
+}

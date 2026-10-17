@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016114806162-TY5EDM",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-16T11:48:06.162Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14485-e837-7500-9013-b250e6b07011"
+  },
+  "summary": "028 A更新及独立备份核验通过，B仍未开始；不启动桌面宿主/Provider/部署/Git",
+  "status_after": "active",
+  "evidence_refs": []
+}
