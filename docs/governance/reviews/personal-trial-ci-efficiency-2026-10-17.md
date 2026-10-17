@@ -13,8 +13,11 @@ policy, task board or approval stage. Authority remains in
   data/effect-authorization reuse, development/data-permission separation,
   personal versus deferred enterprise investment, deterministic/model-quality
   evidence, and one bounded CI mapping. It makes no product-code change.
-- This follow-up aligns the existing Validator instruction with those policy
-  sections and records actual old/new CI selection. Other role/model/effort,
+- This follow-up aligns the existing Validator instruction and checklist with
+  those sections and records actual old/new CI selection. It replaces the
+  checklist's absolute content/generic-tool bans with explicit task-scoped
+  material, recipient and tool authority; credentials/unapproved effects remain
+  prohibited. Other role/model/effort,
   sandbox, concurrency, hooks and runtime permissions stay unchanged.
 
 ## CI baseline and limits
@@ -41,7 +44,18 @@ The required check reads its classifier/helper from the trusted PR base. The
 implementation PR itself runs full. This instruction-only follow-up is first
 measured against the old base, then integrates the approved new base to measure
 the new lane; no work-branch history is rewritten. Hosted old/new results are
-not yet recorded here and no speedup is claimed before that readback.
+recorded only after their readback; no speedup is claimed before the new result.
+
+The actual instruction candidate `a7fb3a516a81d620511acda38727f2e0abc6ff5f`
+ran against old trusted base `abb152c5539af2cfb5b4ca875543db55ef8526ec`:
+[run 39025717146](https://github.com/gadfly-hbo/JuanerAI/actions/runs/39025717146),
+job 117376181336, full portable, all 17 groups exit 0, portable 492s,
+Desktop integration 428s; workflow created-to-completed was 8m38s. Original job
+log: 924364 bytes, SHA256
+`eefb7b38b66faaff0f035c2a36881f5ba5581828beccdde23398bcfbf082a5b2`.
+Node 26.0.0/npm 11.12.1/Python 3.12.3/DuckDB 1.5.2, parallelism 4, AMD EPYC
+9V45, CPU quota UNKNOWN. New-lane measurement is pending; this baseline is not
+PR #97's different runner/timing, nor a same-host microbenchmark.
 
 ## Coverage and failure sensitivity
 
