@@ -1,0 +1,15 @@
+/* Documentation prototype only; the accepted Xanthil shell and tokens remain authoritative. */
+.authority-summary{font-size:.9rem;line-height:1.7}
+.formal-copy p{line-height:1.8}
+.formal-copy .source-note{color:var(--fine);font-size:.86rem}
+.source-preview{padding:16px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}
+.source-preview pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.8;margin:12px 0}
+.source-preview .source-heading{font-size:1rem;margin:0 0 8px}
+.delivery-gap{border-left:3px solid var(--fail,#9b2c2c);padding:12px;background:#fdf0ee}
+.delivery-gap p{margin:6px 0}
+.delivery-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.output-label{font-size:.86rem;color:var(--fine);margin-bottom:8px}
+.selection-note{border-left:3px solid var(--brand);background:#edf5ef;padding:12px}
+.preview-note{font-size:.86rem;color:var(--fine);line-height:1.7}
+#drawer-title{font-size:.95rem}
+@media(max-width:700px){.review-controls a{font-size:12px}.review-controls select{max-width:min(100%,300px)}.tb-tag{font-size:11px}.authority-summary{font-size:.86rem}}

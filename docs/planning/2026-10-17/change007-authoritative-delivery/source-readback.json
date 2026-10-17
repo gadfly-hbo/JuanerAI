@@ -1,0 +1,195 @@
+{
+  "kind": "planning_source_readback_not_engineering_acceptance",
+  "observed_on": "2026-10-17",
+  "device": "MacBook",
+  "local": {
+    "worktree": "/Users/huangbo/.codex/worktrees/e1d5/JuanerAI",
+    "branch": "work/macbook/change007-conclusion-strategy-review",
+    "head": "dfd313056a9c55c9cf1af7cea7d1f4c4d9d3ad1d",
+    "initial_status": "clean; upstream gone; no fetch/switch/sync"
+  },
+  "original_approved_package": [
+    {
+      "path": "docs/planning/2026-10-13/change007-conclusion-strategy-review/proposal-v0.1.md",
+      "bytes": 28847,
+      "sha256": "3e54b2d5b4253b119500160af3f8452af461f93fbb76097c0ec3b01b8777f259"
+    },
+    {
+      "path": "docs/planning/2026-10-13/change007-conclusion-strategy-review/ui-contract-v0.1.md",
+      "bytes": 8907,
+      "sha256": "70ff14a68c560510385600a42b88c38184e13c69192c1a64e52f48fdc54ae9f2"
+    },
+    {
+      "path": "docs/planning/2026-10-13/change007-conclusion-strategy-review/approval-and-freeze.md",
+      "bytes": 6672,
+      "sha256": "4a0fb4a9861a41a332e31a4d9d5bc94f8f176f09c613cce1b6fde45919540c21"
+    },
+    {
+      "path": "docs/planning/2026-10-13/change007-conclusion-strategy-review/frozen-inputs-2026-10-13.json",
+      "bytes": 6945,
+      "sha256": "262a3244779b711f0939449e3052f4e3e22093fb5a6facdecf51a854fe8325bc"
+    },
+    {
+      "path": "docs/planning/2026-10-13/change007-conclusion-strategy-review/reviews/development-readiness-003.md",
+      "bytes": 7212,
+      "sha256": "b909bd60ea50c87f770ce36bea72f15717ee20f7f1e0ad438bdd6a17f892444b"
+    },
+    {
+      "path": "docs/planning/2026-10-13/change007-conclusion-strategy-review/clickable/index.html",
+      "bytes": 7202,
+      "sha256": "eb5f1ca19220770f9b19c4b507e8f7bed0ff414f41bcef7d8c1c52fb26f67262"
+    },
+    {
+      "path": "docs/planning/2026-10-13/change007-conclusion-strategy-review/clickable/review.js",
+      "bytes": 29766,
+      "sha256": "466d498c86526f55a4bffb53185791dc56e763199a1aa343566e4aea39986570"
+    },
+    {
+      "path": "docs/planning/2026-10-13/change007-conclusion-strategy-review/clickable/review.css",
+      "bytes": 4460,
+      "sha256": "51b31cb25f2ffe2fefaf3a7abf57bc841c3a12f78fbc6307cd4b188de5cfbb63"
+    }
+  ],
+  "authorities": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 25485,
+      "sha256": "5eae9bada9f1de48c5c686086c21c954f0e7694715e2420a0e496799ceda3d01"
+    },
+    {
+      "path": "docs/planning/2026-10-04/juanerai-product-development-blueprint-v4.2.md",
+      "bytes": 61706,
+      "sha256": "3f9600fd44f0d869a2ae4632b92c3f6c182d40d3e2223c7cd75619fb7b438cf3"
+    },
+    {
+      "path": "docs/planning/2026-10-04/blueprint-v4.2-approval-and-rule-integration.md",
+      "bytes": 7419,
+      "sha256": "73f2c04d9169f9cb2582f85937679edc2988c57f1d7c741cfaec4216091828aa"
+    },
+    {
+      "path": "docs/governance/product-change-execution-policy.md",
+      "bytes": 54329,
+      "sha256": "645a9050bec4f3b96b1fd6b20040b28ad529b434135971b1e63ffe07c4541f10"
+    },
+    {
+      "path": "docs/governance/agent-model-routing.md",
+      "bytes": 3282,
+      "sha256": "af99744cd013b99884a14b22eea74b2586b696df0f3fc9ae4d76613725ac70cd"
+    }
+  ],
+  "technical_attachment": {
+    "local": {
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/attachments/fulltext-authority-delivery-assessment107-001.md",
+      "bytes": 31427,
+      "sha256": "c8f925265e0aa173494274513fd29b61b7ace08e8898a82cbf1f572d8271d7d7"
+    },
+    "origin_host": "Mac mini via SSH myhost, read only",
+    "origin_path": "/Users/bendandebaba/JuanerAI-artifacts/change007/controller/routing017/fulltext-authority-delivery-assessment107-001.md",
+    "evidence_level": "copied bytes and hash verified; no new tests or implementation verified"
+  },
+  "fixed107": {
+    "candidate_sha256": "98e7b682866ea080c768fc11688788f12db2107ea9c0bc42280795aca4d29bdc",
+    "sources34_sha256": "60d4acb54193d264a939904e8249ca38447551849c48da692cb38f3a9ad61555",
+    "closeout_sha256": "2df38a055c37bfe79c7213f54aec79b6b9381b8227b47f2d8b58368af52ac79c",
+    "preservation_sha256": "4bfaaaadc14a9bff1979f8788252fc9494f9f14fd9bd81afd60a75a3de7d1faa",
+    "result": "AUTHOR_OFFLINE_FULL_CHAIN_FAIL; no independent verdict",
+    "scope": "frozen record identity only; no current global-WIP or full-source audit claim"
+  },
+  "current_authority": {
+    "user_direction": "prepare product input and affected UI for review only",
+    "candidate_product_approval": "PENDING",
+    "candidate_user_ui_gate": "PENDING",
+    "freeze": false,
+    "git_publication": false,
+    "mini_dispatch": false,
+    "candidate108": false,
+    "application_provider_calls": false
+  },
+  "existing_acceptance_sources": {
+    "mirror": "attachments/formal-acceptance-originals.json",
+    "binding": "acceptance-basis.md",
+    "content_integrity": "13 original UTF-8 bodies verified byte-for-byte including EOF; no samples or thresholds changed",
+    "sources": [
+      {
+        "key": "formal001/protocol001.json",
+        "bytes": 6165,
+        "sha256": "bd04da6bfae168f5ba4aa781fb302960fdd7a4f83aba113141c7f26c887d1a65"
+      },
+      {
+        "key": "formal001/standards-adoption001.json",
+        "bytes": 778,
+        "sha256": "c7e27ccf9afb829819231a50f477c800090d7bbcdaf7c7c900bb15ee2f98a536"
+      },
+      {
+        "key": "routing013/resource-approval001.json",
+        "bytes": 867,
+        "sha256": "25c003d67553de4261e05ffc1d5b0eb7d3ad86db24bc2345ffc2e52f0725c08d"
+      },
+      {
+        "key": "formal001/inputs/A/question.txt",
+        "bytes": 1015,
+        "sha256": "cab67614233928275ae6f53cf5af33d4d7e4e11227a6810515eee64fb11f80f8"
+      },
+      {
+        "key": "formal001/inputs/A/订单.csv",
+        "bytes": 226,
+        "sha256": "c3edf68599ab7edb25f7bde538e02ceadcc216711e27930c0846c08c0b04c6b8"
+      },
+      {
+        "key": "formal001/inputs/A/退款.csv",
+        "bytes": 221,
+        "sha256": "33f226cc269513a41ef8d8f2bab494e556aa78b013694f894326889ca1b929c5"
+      },
+      {
+        "key": "formal001/inputs/B/conditional-unknown.txt",
+        "bytes": 613,
+        "sha256": "f6dc8f6f82b25ea5cad307ba48ace18b4e9a83801ad52e511ff3975e96fd6c57"
+      },
+      {
+        "key": "formal001/inputs/B/mixed-counterexamples.txt",
+        "bytes": 405,
+        "sha256": "5d74e1ad1b08229b3dcd26d94929ac0f048fa223a3c56fcd5c36023ad2ed142a"
+      },
+      {
+        "key": "formal001/inputs/B/new-period.txt",
+        "bytes": 294,
+        "sha256": "13ed212adad1ffe3335fff3f541592e5febeb7985fc16aa7cf41edee630125b1"
+      },
+      {
+        "key": "formal001/inputs/B/question.txt",
+        "bytes": 1212,
+        "sha256": "d0087efb17e4d91fae54a99590f98e9504e1cf428dbd6fe6bfe544fb56a746ee"
+      },
+      {
+        "key": "formal001/inputs/B/supported-option.txt",
+        "bytes": 578,
+        "sha256": "4e938867763ee31a01b61ecd46e2313e624ef5fd4159e9956790580b19f63522"
+      },
+      {
+        "key": "formal001/inputs/B/订单.csv",
+        "bytes": 223,
+        "sha256": "edc0cd54fa2e7ab5daee2bda5f79469d9438c17bc383fbf70f09435f847165d6"
+      },
+      {
+        "key": "formal001/inputs/B/退款.csv",
+        "bytes": 209,
+        "sha256": "6a358bbe1cf3940df8433851eb41a4cb7d1d8d582e9064cba9f5574a6dfe3507"
+      }
+    ],
+    "adoption_scope": "Original native user answer record and later60/120 timing; no restoration of old model routing or permissions."
+  },
+  "ui_alignment_20261017": {
+    "current_ui": "ui-addendum-v0.2.md",
+    "clickable": "clickable-v0.2/index.html",
+    "workbench_identity": "reference/accepted-workbench/identity.json",
+    "sources": "PR90 BUI-20261015-004 / accepted implementation003, then PR91 at 3deeaae7b352b49afb46d4811fbd17689d2c277a",
+    "before_alignment": "reviews/before-ui-alignment-003.json",
+    "product_requirements": "FD-01..06 unchanged; original cases and thresholds unchanged",
+    "browser": "NOT_RUN; no security-policy workaround",
+    "review": "fresh affected planning review required, not engineering validation",
+    "user_ui_gate": "PENDING",
+    "engineering_108": false,
+    "provider": false,
+    "git_publication": false
+  }
+}
