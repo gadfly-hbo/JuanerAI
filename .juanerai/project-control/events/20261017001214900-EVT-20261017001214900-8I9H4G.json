@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017001214900-8I9H4G",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T00:12:14.900Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1471f-c80a-7801-b9e5-1ffc7a98a219"
+  },
+  "summary": "原生报告完整保存；正式只读通道BLOCKED，等待本任务CLI例外决定；本地三资产可审且无发布",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

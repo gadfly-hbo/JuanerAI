@@ -1,3 +1,9 @@
+## 插件接入沉淀 · 2026-10-17（本地独立复核完成，未发布）
+
+本次R0只把已发布Report Studio方法整理为[标准／参考Adapter／清单](../../engineering/plugin-integration/README.md)，不新增产品业务能力。当前合成8文件92PASS/0FAIL，最小用法15PASS；首次95PASS/3依赖环境FAIL保持，Profile三例未在新树执行成功。034固定包只读完整校验通过，回流／未来物料UNKNOWN由原仓任务处理；本次不回流或升级。独立CLI复核PASS（实际Sol/high/read-only/never），仅覆盖003本地文档／参考；004仅记录性收录并重新绑定身份。不将文档视为现行全局规则／第二插件或新交付形态。C5-09仍局部实现，全40ID类别／业务接受增量0，原六加二／S1/S4及所有历史边界保持。
+
+[本次验证与身份](../../../openspec/changes/plugin-integration-consolidation/verification.md)；以下发布／历史记录保持原时点。
+
 ## Report Studio 062 · 2026-10-17（当前）
 
 036融合源码独立验证PASS（实际Sol/high/read-only/never，711.75秒），最终工程接受PASS；canonical17组4837PASS/0FAIL/24历史SKIP、定向136/宿主浏览器3/资源构建4及所有历史保全经独立核实。PR[#91](https://github.com/gadfly-hbo/JuanerAI/pull/91)最终head托管CI、squash和仅Mini安全main同步仍待真实执行，不能提前称Git完成。归档/当前规格在PR实际合并后生效。Mini现装仍034，MacBook本轮未更新且用户免测；AC01用户风险接受/NOT_MEASURED及所有FAIL/UNKNOWN/未知预留保持。C5-09仍局部实现，40稳定ID类别变化0，不关闭S1/S4或整个能力族。

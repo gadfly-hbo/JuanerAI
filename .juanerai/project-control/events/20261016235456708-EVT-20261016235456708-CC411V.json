@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261016235456708-CC411V",
+  "event_type": "change_started",
+  "occurred_at": "2026-10-16T23:54:56.708Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1471f-c80a-7801-b9e5-1ffc7a98a219"
+  },
+  "summary": "Authorized local-only R0 plugin integration consolidation starts from verified released3deeaae7; old task preserved",
+  "status_after": "active",
+  "evidence_refs": []
+}

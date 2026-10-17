@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017000604875-D4OGZF",
+  "event_type": "decision_requested",
+  "occurred_at": "2026-10-17T00:06:04.875Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1471f-c80a-7801-b9e5-1ffc7a98a219"
+  },
+  "summary": "Native Validator actual sandbox mismatch; local assets/checks intact; scoped new-task CLI exception awaits user, old031 not transferred",
+  "status_after": "validating",
+  "evidence_refs": []
+}
