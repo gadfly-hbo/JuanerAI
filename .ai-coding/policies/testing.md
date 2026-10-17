@@ -22,6 +22,9 @@ Authority and stop conditions come from
   required assertion.
 - Mocks may isolate unrelated external systems but cannot replace the core
   behavior being proved.
+- Use the sole policy's Deterministic Contracts and Model Quality section for
+  guarantee-specific evidence; structural/replay success is not semantic quality
+  or user acceptance, and known important quality failures remain failures.
 - Apply the sole policy's CI reliability rules to validation-tool changes:
   exercise the actual entry and selection/failure paths, retain deterministic
   false-positive regressions, and measure optimized fixtures before/after.

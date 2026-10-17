@@ -17,6 +17,9 @@ Name the current consumer, acceptance result, reused baseline and intended delta
 in the existing package. A call through an existing DB/runtime contract is not
 automatically a boundary change. Do not create an enterprise mechanism merely
 because future enterprise replacement must stay possible.
+Prioritize the approved personal/local usable path; enterprise identity,
+multitenancy and centralized governance/operations without a current consumer
+are deferred, while present protections and replaceable boundaries remain.
 
 ## Complexity Review Within Work
 
@@ -35,8 +38,11 @@ A real security/correctness requirement cannot be removed as simplification.
 
 Use the sole policy's progress evidence and stop-loss. Repeated corrections
 signal diagnosis, not automatic Spec/Test redispatch or user quota renewal.
-Distinguish missing product decisions from private design defects, invalid tests,
-production defects, toolchain drift, excessive slice size and evidence mistakes.
+Distinguish model capability/quality and API availability from missing product
+decisions or excessive promises, mechanism defects, invalid tests, toolchain
+drift, excessive slice size and evidence mistakes. Apply the sole policy's
+Deterministic Contracts and Model Quality boundary rather than growing internal
+rules to promise general language understanding or compensate for every outage.
 
 Correct ordinary defects in the same engineering package. Investigate uncertain
 effects read-only; stop affected unsafe work. Only a material contract or upper

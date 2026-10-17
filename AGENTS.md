@@ -239,6 +239,9 @@ Read docs/governance/agent-model-routing.md before spawning a project subagent o
 - Pi is treated as a trusted-local runtime in the personal profile, not as an enterprise security boundary.
 
 Read docs/architecture/data-authority.md and docs/architecture/security-boundaries.md before data, model, agent-tool, action, or enterprise work.
+Apply the sole execution policy's Personal Trial Data and Effect Boundaries and
+Deterministic Contracts and Model Quality sections for current risk investment,
+task-level authorization reuse and the evidence each guarantee actually needs.
 
 ## Development Material Preservation
 
@@ -256,7 +259,7 @@ Read docs/architecture/data-authority.md and docs/architecture/security-boundari
 
 ## Validation and Completion
 
-Use `tools/harness/validation/run` as the canonical default offline validation command. It establishes the approved command-local toolchain, runs the accepted deterministic suites, and always removes the real-model test gate; it has no real-model mode. Any actual provider/model invocation requires separate explicit user authorization and a Change-specific command. Every Change must still name its applicable focused validation commands and evidence level before implementation.
+Use `tools/harness/validation/run` as the canonical default offline validation command. It establishes the approved command-local toolchain, runs the accepted deterministic suites, and always removes the real-model test gate; it has no real-model mode. Actual provider/model invocations require valid explicit task-scoped authorization and a Change-specific command. Reuse that grant within its approved data, tools, model purposes/routes, recipients, resources and validity; decide only missing, expired, revoked or materially changed authority. Engineering development permission is not product data or external-effect permission. Every Change must still name its applicable focused validation commands and evidence level before implementation.
 For adopted Mini or assigned MacBook repair iteration, this is the full-check entry when applicable, not a
 prerequisite for each correction or early real-path trial; use the sole policy's cadence.
 

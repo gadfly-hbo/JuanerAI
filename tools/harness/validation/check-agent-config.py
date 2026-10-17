@@ -33,6 +33,12 @@ def validate(path, data):
 
 def without_routing(data, path):
     data = copy.deepcopy(data)
+    if path == ".codex/agents/juaner_validator.toml":
+        # Structural scope only; instruction meaning still requires independent review.
+        instructions = data["developer_instructions"]
+        if not isinstance(instructions, str) or not instructions.strip():
+            raise ValueError("existing Validator instructions must be nonempty text")
+        del data["developer_instructions"]
     for key in ("model", "model_reasoning_effort"):
         del data[key]
     if path == CONFIG:
@@ -62,7 +68,7 @@ try:
         after = tomllib.loads(packet["after"])
         validate(path, after)
         if not same_toml_value(without_routing(before, path), without_routing(after, path)):
-            raise ValueError("non-routing config changed")
+            raise ValueError("unmapped config semantics changed")
     elif sys.argv[1:] == ["--check"]:
         for path in (CONFIG, *ROLES):
             # Reject links in both files and parent paths, including .codex.
