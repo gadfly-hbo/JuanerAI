@@ -121,3 +121,37 @@ Reviewer：`/root/browser_delivery_plan_readiness_002`，全新只读上下文�
 按 PR #61 后当前发布技能，索引为可选导航而非提交前置，本轮不重跑 full-index，也未使用豁免。该发布含静态可执行 Demo，不伪称纯治理文档；当前 required CI 将按既有规则选择完整 portable 验证，以实际 PR 回执为准。本记录不预告 CI 通过或合并成功。
 
 实际提交／PR／合并身份及同步结果由本次交付回执提供。交接 prompt 在近期产品片 §7.1／§7.2，用户转发时附固定发布提交；未发送给其他 session，未取得 Mini／Change Agent 的采用回执，未启动产品工程或修改工程政策。
+
+## 追加 004：统一建设路线固化就绪审查
+
+2026-10-17。用户已确认“当前成果做稳、N05/N06仍为默认主线；最小N13仅为可前移候选；专业工作台与跨领域按任务穿插”，并要求写入现有规划，不改变在研Change、不启动自主探索。本节沿用原审查记录追加，不改变001～003及其固定身份。
+
+### 候选身份与审查范围
+
+读取基线：`081031af8c17242f93c94f8f5b4d035328bc9a36`。旧工作树保留在`work/macbook/analysis-requirement-sandbox`及原有三份未跟踪材料；本轮在MacBook持久隔离工作树、独立分支`work/macbook/unified-construction-routes`更新规划，不移动旧分支或在研工程。独立Reviewer为`/root/unified_routes_readiness_004`，新鲜只读上下文，请求路由`gpt-6-astra / medium`，属于MacBook产品支持，不是工程Validator。
+
+| 完整送审候选 | bytes | SHA-256 |
+| --- | ---: | --- |
+| [总拆解及新增§10](../juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md) | 50940 | `8e441b6963c2a9e1d4ce54e12ac9f24f61c8d2bd349e2d4db75ab024ddafaee3` |
+| [近期产品片及新增§8](../xanthil-task-experience-integration-proposal-v0.1.md) | 30365 | `8dcac1a9880ec4369e361caac79de300948680eb20c9692d7e1692cf054ef1dd` |
+| [规划入口新增导航](../../README.md) | 68190 | `35661a63647d477574be1129cd32ccc431e2a838638f2ba0e8a921b7bfee44bc` |
+
+范围是路线、依赖、接受边界与后续产品准备是否清晰，不要求未来候选现在具备完整工程规格。Reviewer完整读取三份候选和项目规则，对照明确引用的Blueprint v4.2及批准、正式规格、接受／交付记录和能力入口；未用外部项目或旧聊天补救。007和四表修复的当前停止点按候选声明的工程会话回执处理，未独立读取Mini WIP或全部原始证据。
+
+### Reviewer七项结论
+
+1. **What I Would Build**：固化导航和依赖；当前成果做稳，默认N05/N06；最小N13只作候选；专业资产／跨领域按需，合格评价后接N07/N08。不会据此实现功能、恢复115或四表修复。
+2. **Required Guessing**：无影响本轮固化的承重猜测。N13未指定Change、时间或执行权；旧修订002及prompt已明确历史用途，不重放旧授权。
+3. **External Study Required**：本轮无。v0.2的候选定位及最低价值要求自含，原文留待正式准备固定；当前工程会话快照不冒充Reviewer原始证据核验。
+4. **Untestable Requirements**：无阻断本轮路线固化的要求。N13的三个行为结果可观察，具体样本／价值判据留待评价前确定，不预填收益或宣称已实现。
+5. **Correctly Deferred**：具体Change选择、正式产品／UI、工程规格、资源与真实数据授权；不强制N13等全部N05/N06、学习、Packs或本体库。插件反馈／teach与正式Actual／受治理学习分开，005／006不升级为S1全完成。
+6. **Required Plan Additions**：无阻断项。非阻断提醒：实际选中N13时，在既有产品包绑定当时适用S1证据、精确输入和可比评价对象，不要求本轮补工程规格。
+7. **Verdict：PASS**，仅适用于统一建设路线固化及后续产品准备，不是候选工程开工就绪、UI Gate、工程／产品验收或执行授权。
+
+### 本轮检查与停止边界
+
+- 三份送审文件仅增加98行，无删除，原修订002正文保留；原40项映射与20项候选表和基线逐字一致。
+- 173处本地链接、8处Markdown锚点检查通过；Blueprint正文、HTML及累计register／latest与基线字节一致，未更新工程状态。
+- 独立Reviewer核对三份SHA匹配，`git diff --check`通过；本记录在PASS后追加，不改三份送审候选。
+- 未运行产品／业务测试、UI、构建、服务、Provider或真实业务数据验证；文档检查和规划PASS不替代这些证据。
+- 本轮仅本地文档更新，未暂存、提交、推送、PR、合并或同步Mini，未向其他session发送消息、派发工程角色或恢复任务。尚未Git保存，不宣称已正式发布或接收方采用。
