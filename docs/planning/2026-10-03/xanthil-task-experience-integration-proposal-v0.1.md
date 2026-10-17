@@ -1,5 +1,7 @@
 # Xanthil 下一轮产品范围与交接安排 v0.1
 
+**2026-10-17 当前阅读说明：**生效蓝图仍为v4.2；用户已确认的后续路线及本材料适用边界见[§8](#8-2026-10-17-后续产品衔接用户已确认)与[总拆解§10](juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md#10-2026-10-17-统一建设路线用户已确认)。以下修订002、首次试用及§7.1／§7.2 prompt保留2026-10-03历史，不是本轮重新派发N01/N02或工程规则修改的指令；后续已接受成果不按旧首批缺口重复建设。
+
 状态：**修订 002 已于 2026-10-03 获用户明确“确认”，随后获准 Git 发布与首批交接；不是 Product Input Freeze、UI Gate PASS 或工程授权。** 实际发布身份以 Git／PR 回执为准。确认覆盖首次真实内部试用、后续 S1 收口、浏览器关闭／停止行为、必要能力前移和工程减负同步方式。真实 AI 目标不再列为待选项；具体模型／材料／预算及操作权限仍需按下文关闭。
 
 2026-10-03 · MacBook 产品经理／蓝图 Agent。沿用 Blueprint v4.1，不升级蓝图，不改写 Change001～004 的历史。工程 Change 编号、分包及实施契约由接收方核对后确定。
@@ -159,3 +161,31 @@
 - 固定对象上的 [Change004 接受记录](https://github.com/gadfly-hbo/JuanerAI/blob/d0b6f2a933cbf21b913fdd2751761705e0fa5016/openspec/changes/archive/2026-10-02-xanthil-ai-led-member-analysis/engineering-acceptance.md)、[当前行为规范](https://github.com/gadfly-hbo/JuanerAI/blob/d0b6f2a933cbf21b913fdd2751761705e0fa5016/openspec/specs/member-analysis-task/spec.md)保留历史身份；本轮只修改规划，不宣称重新完成工程验证。
 - 修订采用 [PR #61 政策](https://github.com/gadfly-hbo/JuanerAI/blob/137d65a8754c448adc7fc2cc690d2bab8d848ade/docs/governance/product-change-execution-policy.md)及[提效验收](https://github.com/gadfly-hbo/JuanerAI/blob/137d65a8754c448adc7fc2cc690d2bab8d848ade/openspec/changes/archive/2026-10-03-ci-reliability-and-feedback/verification.md)，[当前 Main 装配](https://github.com/gadfly-hbo/JuanerAI/blob/137d65a8754c448adc7fc2cc690d2bab8d848ade/apps/desktop/main.ts)、[会员任务激活限制](https://github.com/gadfly-hbo/JuanerAI/blob/137d65a8754c448adc7fc2cc690d2bab8d848ade/packages/product-core/member-task.ts)与上述业务源码。正式接收仍核对当时实际实现，不用本静态快照猜测 Mini 状态。
 - [Demo v0.2](pc-task-experience-prototype-v0.2/README.md)：用户已要求结束继续视觉打磨；它仍是交互参考，不能替代正式生产合同。
+
+## 8. 2026-10-17 后续产品衔接：用户已确认
+
+本节固化已确认的统一建设顺序，不创建新的产品范围、UI Contract、工程Change或管理体系。[总拆解§10](juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md#10-2026-10-17-统一建设路线用户已确认)集中记录2026-10-17固定主线、已接受子范围、在研回执与剩余依赖；累计能力状态仍只在[原清单](../capability-coverage/register.md)及[全图](../capability-coverage/latest.md)更新。Blueprint v4.2、40ID、20候选、六＋二及S1～S6不变，不升级蓝图，不改受审原文。
+
+### 8.1 当前任务与后续路线
+
+- **当前成果做稳。** 005 v1.3、006和已集成报告／决策插件按各自接受范围复用，partial、FAIL、UNKNOWN、豁免与未测项保留；当前四表试用修复及007仍依原范围、停止点和有效输入。本节不回写它们的工程／产品验收，不重开已完成Change，也不要求在研session换基线。
+- **N05/N06仍是默认后续主线。** 复用现有Decision／Expected和插件交付，补正式行动记录、合格Actual及评价，不重造看板，不把插件反馈或前后变化称为学习／因果闭环。
+- **自主探索仅列可前移候选。** 相关分析、报告及适用审查链可用且任务需要时，可在N05/N06期间提出最小本地N13验证；不立即开发，不预定工程编号，不挤入007或当前修复。复用已有工具、核心、核验、报告、停止恢复与计量，不绑定Runtime整体大改。
+- **专业资产与跨领域按任务穿插。** 006真实采用是起点；维护困难才补工作台必要部分，任务过窄则选一个商品／库存任务验证N09，分清原样复用、配置和新增算法。无需等待所有学习能力齐备，也不先造完整平台。
+- **有合格评价后接N07/N08。** 假设／策略改进经Owner审阅形成版本，下一任务显式采用，效果另证；N10/N12/N14/N15/N16按实际消费者进入，Team／Enterprise／现实行动沿原条件处理。
+
+### 8.2 后续正式产品准备的最小输入
+
+以下是未来选中候选时在既有产品包处理的内容，不是本轮待执行清单或新的Gate：
+
+| 必要输入 | 需明确的产品结果与边界 |
+| --- | --- |
+| 一个有限完整任务 | 用户、问题、资料／方法范围、可交付结果、非目标；已接受成果如何复用，实际缺口为何影响当前用户 |
+| 真实能力消费 | 需求→语义／Binding→IR→实际执行与适用核验→报告／人的判断；回访或改进任务再接自身正式对象，不用页面／文件存在证明接通 |
+| 有效交互与授权 | 复用适用UI和已批准任务边界，只处理新增／失效／实质变化；必要输入和人的决定可见，内部步骤由AI／系统推进 |
+| 三类验收 | 场景验证完整任务及失败／修改／停止重开；能力验证实际链及关键边界；体验验证自然开始、劳动／等待、理解与用途。先记录真实基线再确定目标，不用步骤减少替代质量 |
+| 剩余归属 | 能力增量写入原稳定ID，范围外内容明确返回已有N索引；不把一个有限子范围接受扩大成整项能力完成 |
+
+若选中最小N13，沿用总拆解§10.3的三个行为结果：发现未直接提出的重要线索、反证改变实际调查路线、资料不足时保留有效发现并具体补证。首个可用版本就与当前产品做同任务、同资料的可比价值验证；不另建第二运行时、审查引擎或双库，不强制TOC／联网／唯一根因。该候选不等待完整N05/N06或全部Packs／本体库，但必须满足自身真实依赖及既有正式接收条件。
+
+用户已确认的是本节路线与候选定位，**不是新的产品输入冻结、UI接受、开发／恢复、Provider／真实数据／安装／主机操作或Git发布权限**。不自动联系Mini／Change session，不启动或恢复任何任务；后续启动仍由用户选择具体范围，并走既有产品准备和工程接收。
