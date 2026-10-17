@@ -10,8 +10,8 @@ view; it does not change any runtime schema, old State/pause/Ledger or board dat
 | UI_CONTRACT / USER_UI_GATE | applicable UI Contract and required user approval bound |
 | PRODUCT_INPUT_FREEZE | approved product semantics, acceptance, references and prohibitions fixed |
 | ENGINEERING_INTAKE | Mini confirms original task, inputs, live worktree, scope, permissions, resource limits and stop point |
-| IMPLEMENTATION | the Mini engineering main Agent continuously owns persisted behavior spec -> causal RED -> minimal GREEN -> necessary refactor; real runtime and affected checks run early |
-| REGRESSION | applicable quality/regression complete; coverage retirement reconciled in existing evidence |
+| IMPLEMENTATION | Mini continuously owns the thin spec, early normal-entry/representative-input trial, ordinary corrections and affected checks under the sole policy's main-flow-first loop; real model use requires valid authorization |
+| REGRESSION | concentrated complete-result quality/regression, not a prerequisite for early trial; coverage retirement reconciled in existing evidence |
 | VERIFY | independent read-only evaluation of complete fixed candidate; material findings return to the engineering loop |
 | ENGINEERING_ACCEPT | Mini checks blockers, candidate identity, authority and acceptance obligations |
 | PRODUCT_ACCEPT | user's required product verdict, or explicit non-applicability |
@@ -33,7 +33,8 @@ Mac mini Trial and User Acceptance section remain within implementation; they
 create no new state or Gate and do not establish formal Change completion.
 MacBook trial/repair follows the sole policy's MacBook Trial and Bounded Bug
 Repair section; it neither transfers Mini's active Change nor creates a second
-engineering-state writer. The repair retains the applicable SDD/TDD lifecycle.
+engineering-state writer. Repair uses the sole policy's thin records, affected
+entry-path verification and concentrated repair-batch closeout, without new states.
 Independent validation uses new fixed inputs after repair; it does not repeat
 unaffected product preparation or create fresh role/command allowances.
 

@@ -44,9 +44,21 @@ test('FLOW-03: manual check reports active progress and missing SDD materials wi
 });
 test('FLOW-04: bound active turn gets one continuation, never raw private content', async t => {
   const f = await fixture(t, state({ next_action: 'PRIVATE_SENTINEL $(touch forbidden)' }));
-  assert.equal(check(f, {}).decision, 'block');
+  const reminder = check(f, {});
+  assert.equal(reminder.decision, 'block');
+  assert.match(reminder.reason, /docs\/governance\/product-change-execution-policy\.md/);
+  assert.doesNotMatch(reminder.reason, /Preserve spec-before-code and causal RED\/GREEN/);
   assert.doesNotMatch(JSON.stringify(check(f, {})), /PRIVATE_SENTINEL|touch forbidden/);
   assert.equal(check(f, { stop_hook_active: true }).decision, undefined);
+});
+test('FLOW-04: legacy material warnings defer to policy without stopping safe continuation', async t => {
+  const f = await fixture(t), before = await readFile(path.join(f.root, f.snapshot));
+  await rm(path.join(f.root, 'openspec/changes/synthetic/tasks.md'));
+  const reminder = check(f, {});
+  assert.equal(reminder.decision, 'block');
+  assert.match(reminder.reason, /Legacy material categories not found: SDD_TASKS/);
+  assert.match(reminder.reason, /not a redundant document suite or new approval pipeline/);
+  assert.deepEqual(await readFile(path.join(f.root, f.snapshot)), before);
 });
 test('FLOW-04: real stops, blockers, unrelated turns, Interrupt and unknown phases do not resume', async t => {
   for (const s of [state({ health: 'waiting_user' }), state({ health: 'blocked' }), state({ health: 'complete' }),

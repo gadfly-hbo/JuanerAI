@@ -9,7 +9,7 @@ Gate, fixed role-return allowance or reasoning-triggered review.
 | Work | Minimum approach |
 |---|---|
 | R0 support: docs/inventory/reversible mechanics, no product behavior change | scope and consistency evidence; no fabricated product RED |
-| Ordinary capability: existing architecture/contracts, bounded behavior delta | necessary behavior spec, causal RED/GREEN, affected regression, independent verification |
+| Ordinary capability: existing architecture/contracts, bounded behavior delta | necessary behavior spec, applicable evidence under the sole policy's Continuous SDD and TDD section, affected regression and concentrated independent verification |
 | Boundary-sensitive change | explicit necessary contract decisions and checks before affected dangerous actions; same engineering/Validator flow |
 | Foundation / first slice | thin real-runtime feasibility early, explicit reuse and small demonstrable results; same flow |
 

@@ -154,6 +154,13 @@ Apply the sole execution policy's **MacBook Trial and Bounded Bug Repair**
 section for trial, repair scope, verification and runtime safety. This Git path
 adds no permission or automatic copy synchronization.
 
+Reuse the designated copy and owned branch for related repairs. Daily local
+checkpoints and safe local trial updates do not require a push, PR or full CI
+for every bug. Once the related repair batch is stable, concentrate its
+independent review, applicable regression, required CI and authorized PR/merge
+closeout. Actual PR updates keep configured CI; no check or branch protection
+is bypassed. MacBook product/governance delivery remains unchanged.
+
 - For an integrated product, fetch and pin the actual `origin/main` commit,
   then create an independent MacBook worktree and `work/macbook/<slug>` branch.
   Worktree creation from that ref need not switch or fast-forward a historical

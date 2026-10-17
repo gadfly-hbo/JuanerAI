@@ -15,8 +15,9 @@ work uses focused checks, authorized branch checkpoints/pushes and local Mac min
 trial/user acceptance; formal Change closeout retains a concentrated PR/required-CI
 integration checkpoint. MacBook product preparation and its model defaults are
 unchanged. Fixed engineering models live in `agent-model-routing.md`.
-The [v0.9 release definition and diagram](../planning/2026-10-05/mac-mini-lean-engineering-final-rules.md)
-explain this policy; they are not a second execution authority.
+The [original v0.9 release definition and diagram](../planning/2026-10-05/mac-mini-lean-engineering-final-rules.md)
+remain historical explanation, not a second execution authority or a new grant
+of their recorded Git permissions. The current engineering paths are defined below.
 The user's subsequent v0.9 revision moves trial and required user acceptance
 directly to Mac mini, removing the default MacBook runtime-copy delivery step.
 The subsequent user-approved v0.9 correction removes optional engineering roles
@@ -34,6 +35,14 @@ The user-approved 2026-10-15 plugin responsibility revision adds **Mini-led
 Plugin Integration** below: Mini prepares the task-specific product input and
 leads its authorized engineering delivery without a required MacBook handoff.
 General product planning and the existing approval/verification lifecycle remain.
+
+The user-approved 2026-10-17 revision simplifies adopted Mini engineering and
+assigned MacBook trial/repair: run the affected real user path early, iterate
+continuously, then concentrate formal verification and delivery. Mini plugin
+engineering retains its existing product preparation. MacBook product planning
+and governance, models, CI behavior and product acceptance meanings are unchanged.
+Active tasks may adopt at a safe boundary; publication does not interrupt work,
+change its baseline or release a stop.
 
 The preceding user-approved 2026-09-26 continuous-engineering revision (v0.8) retained the
 2026-09-24 Product Manager / Engineering Controller split. It replaces the
@@ -53,7 +62,7 @@ validation, while combining routine control and implementation in Mini's primary
 agent. It does not authorize dynamic effort routing or historical evidence reset.
 
 Publication and adoption are separate. New work must identify the published
-policy version and approved product input. An active Mini task adopts at a safe
+policy version and approved product input. An active engineering task adopts at a safe
 boundary only after reading back that version, its actual primary settings, the
 preserved task/branch/tree, replaced old restrictions, remaining real resource
 limits, unresolved decisions, and next permitted action. Until then adoption
@@ -279,9 +288,11 @@ authorized action. Use `node tools/harness/validation/engineering-turn-check.mjs
 CONTINUE means the recorded engineering loop has more work, not new authority;
 STOP means a recorded boundary or completion; UNKNOWN means the check cannot
 establish applicability. Inspect the actual task rather than inventing PASS or
-blocking all safe work merely because the diagnostic is unavailable. Missing
-spec/tasks/verification must be reconciled before dependent completion claims.
-This tool checks readable materials, not specification semantics or past RED.
+blocking all safe work merely because the diagnostic is unavailable. For adopted
+Mini main-flow-first work, its legacy material categories are advisory: check
+the necessary existing spec/result record, not a newly created document suite.
+Missing substantive evidence still limits completion claims. The tool checks
+readable materials, not specification semantics or past RED.
 
 The project `.codex/hooks.json` adds a bounded native Stop reminder, not a new
 state machine or scheduler. It only considers schema-valid existing status in
@@ -321,57 +332,65 @@ fixed retry-renewal gates or duplicate the existing Validator/CI verification.
 
 ## Continuous SDD and TDD
 
-After approved product/UI input and engineering intake:
+After approved product/UI input and intake, adopted Mini engineering and
+assigned MacBook repair use the loop below. MacBook repair's endpoint is the
+affected behavior under MacBook Trial and Bounded Bug Repair, not an unrelated
+full-product analysis or acceptance sequence.
 
 ```text
-result-sized work package
--> same Mini primary agent: behavior spec -> causal RED -> minimal GREEN
-   -> necessary refactor / next behavior -> regression and candidate freeze
--> independent Validator -> Engineering Acceptance
--> required Product Acceptance and authorized delivery / integration / archive
+reuse approved goal/UI -> same primary: develop -> run the real user path
+-> early user trial / ordinary feedback and affected checks in the same loop
+-> complete candidate: independent Validator + applicable regression / required CI
+-> required acceptance and authorized delivery / integration / archive
 ```
 
-For each behavior, first write the smallest sufficient engineering specification
-in the existing Change's spec file: input and observable output, important success/failure
-rules, forbidden effects, acceptance reference and any necessary contract
-decision. Resolve load-bearing product ambiguity before implementing it.
-Internal design may evolve; changing an approved commitment requires the
-appropriate decision before dependent implementation.
+1. Name one complete, observable result and its boundaries in the original
+   Change's thin spec. Reuse approved input/UI and stable acceptance references.
+   Update behavior, actual failure and verification in one existing result
+   record; link necessary design and evidence. Ordinary corrections do not
+   recreate or synchronize a proposal/design/tasks/verification suite. Resolve
+   load-bearing ambiguity or changed commitments before affected implementation.
+2. From the first runnable thin slice, exercise the normal entry, representative
+   inputs, real tools and persistence, and the target model within valid data/
+   Provider/resource permissions. Follow the promised path through its actual
+   result, save and reopen where applicable. Do not wait for a full offline
+   matrix before this feedback. Without real-call permission, prove only the
+   available mechanics and leave model quality unverified; mocks are not real
+   task success. One successful scenario is not general capability acceptance.
+3. Keep ordinary feedback, diagnosis and correction with the same primary.
+   Run affected tests and that user path, not full regression or independent
+   review for every edit. Deterministic behavior uses a failure-capable test or
+   captured causal reproduction before its minimum correction, then permanent
+   regression. Exploration and model quality use actual trials, failures and
+   explicit expectations; they need not manufacture deterministic RED. Keep
+   necessary regression once behavior stabilizes. Private technical corrections
+   and normal progress do not return to PM or request routine continuation.
+4. Before offering the path as usable, check its basic safety and actual result;
+   all unrelated features or boundary variants need not be complete. Give entry,
+   candidate, steps and gaps for early trial. Authorizations, key calculations/
+   evidence, truthful save status, preservation of results and stop/resource
+   controls remain binding from the start. Block affected unsafe paths, not
+   safely independent work; ordinary layout/copy gaps may be deferred honestly.
+5. At complete-result closeout, freeze the candidate and concentrate independent
+   review, applicable regression, required acceptance and CI, then authorized Git
+   delivery/archive. Findings return to the same primary; recheck invalidated
+   behavior and collateral risks, not unaffected preparation or the entire
+   workflow. Reuse trustworthy evidence; concentrated closeout is not a one-run
+   limit, and early trial is not formal completion.
 
-For every non-trivial behavior Change, retain the applicable proposal/product-input
-reference, OpenSpec requirement delta (`specs/<capability>/spec.md`), `tasks.md`
-and `verification.md` in `openspec/changes/<change-id>/`. Reuse existing equivalent
-spec/task/verification files and stable Requirement/Acceptance IDs rather than
-duplicating them. Maintain `design.md` or the existing engineering-design record
-when interfaces, data/state or important technical decisions need explanation.
-The spec file states the behavior before its dependent production change; a chat
-summary, implementation comment or passing test alone does not replace it.
-Document by the next vertical behavior, not the whole system upfront; routine
-private corrections do not require a new document suite or approval.
+Other work keeps its existing SDD/TDD:
+minimum behavior spec before implementation, causal RED -> minimal GREEN ->
+necessary refactor, with proposal/input reference, specs, tasks, verification
+and necessary design retained in the existing Change. These engineering material and
+exploration exceptions above do not change that path.
 
-Then write and run the test, observe failure caused by the missing behavior,
-implement the minimum change to make it GREEN, and refactor only while GREEN.
-Keep this a small vertical loop, not a system-wide test-writing phase. Environment,
-import, locator and fixture failures are not causal RED. A missing prerequisite
-may mask later assertions; disclose that and actually execute all required
-assertions in final verification. Pure refactors use pre/post GREEN and relevant
-equivalence evidence; documentation-only work does not fabricate RED.
-Keep the test source and actual RED/GREEN commands, inputs, exits and decisive
-assertion evidence at the existing persistent root, linked from verification.
-Connect Requirement/Acceptance -> spec -> test -> implementation -> actual result
-using existing records. Run applicable affected regression after GREEN. The
-primary authors these assets; independent Validator checks spec completeness,
-causal ordering, assertion sensitivity and coverage at formal closeout. Tests
-written only after implementation do not establish historical RED; disclose the
-gap instead of backfilling a success claim. Applicable archive updates the
-canonical behavior specs, preserving the Change and its historical evidence.
-
-The same engineering agent writes tests and code within the authorized roots,
-preserving unrelated edits, acceptance assertions and negative/failure cases.
-It may correct stale fixtures and private interfaces, update necessary design,
-and retire test assets with retained coverage proof. Build the thinnest real
-approved runtime path early. Run affected type/build, contract, integration,
-regression and security checks proportionate to the actual change.
+For all work, preserve acceptance and negative coverage; environment/import/
+fixture failures are not product RED, and later tests cannot invent past RED.
+Link material acceptance claims to code, tests and actual evidence at the
+existing persistent root; disclose masked assertions and run them before their
+completion claim. Refactors use pre/post GREEN/equivalence; documentation-only
+work uses proportionate consistency review. Archive preserves current behavior
+specs and historical evidence.
 
 For affected user-visible claims, verify the normal supported user entry and
 its actual configuration, not only a test launcher or helper. Check that the
@@ -397,7 +416,9 @@ keeps its own authority boundary. Missing approved inputs are setup failures,
 not product RED. Disclose unavailable platform checks; a local subset is not
 CI PASS and a CI definition is not permission to install or download resources.
 
-CI reliability is part of this engineering loop. Keep one required CI result;
+CI reliability is part of this engineering loop. The scope selection below
+governs actual CI/formal closeout, not a full-suite prerequisite for each adopted
+correction or early trial. Keep one required CI result;
 select checks by proven impact, not line count, an agent's label or a filename
 containing `desktop`. The trusted PR-base classifier owns this selection:
 
@@ -518,7 +539,7 @@ These are work/claim distinctions within the existing lifecycle, not new Gates.
 
 | Work / claim | Applicable verification and feedback |
 |---|---|
-| Daily iteration | Run affected tests and the relevant main path; retain valid RED/GREEN and key counterexamples. Reuse unaffected evidence, product/UI approvals and the engineering context rather than repeating full regression or dispatching a Validator for each edit. |
+| Daily iteration | Run affected tests and the relevant main path; retain applicable behavior evidence and key counterexamples under Continuous SDD and TDD. Reuse unaffected evidence, product/UI approvals and the engineering context rather than repeating full regression or dispatching a Validator for each edit. |
 | Early internal trial / preview | Within approved trial, data/model, budget and environment permissions, identify fixed code/runtime configuration, approved inputs, available paths, actual checks, unopened scope and known issues. Verify the exposed path's safety, authorization, calculation/evidence, saving and stopping/recovery before feedback. The first approved simple-mode path need not wait for all S1 variants; this is not formal Change/stage acceptance or external/commercial trial authority. |
 | Complete result / formal Change | Complete applicable regression, independent validation and required user Product Acceptance for that Change; retain required CI before authorized merge. A batch label cannot defer these obligations to stage end while claiming the Change complete. |
 | Integrated stage | Evaluate scenario, capability and experience on the same integrated product across Changes; reuse valid scoped evidence and disclose remaining gaps. Early trial feedback or individual Change PASS does not establish stage acceptance. |
@@ -593,7 +614,9 @@ routing change. Required final validation stays independent of every author.
 2. Use an independent MacBook worktree and owned `work/macbook/<slug>` branch
    from that baseline. Preserve historical branches and all other worktrees.
    Prepare the environment once, then update this designated copy only after
-   checking its edits, runtime and update safety. Keep runtime data, credentials,
+   checking its edits, runtime and update safety. Reuse that copy/repair branch
+   for related bugs; create another only for real isolation or ownership needs,
+   not for every feedback item. Keep runtime data, credentials,
    ports and task-owned processes isolated from Mini and other active copies;
    preserve existing local projects and use synthetic inputs by default.
    Browser and service normally run together on MacBook with existing loopback
@@ -601,15 +624,26 @@ routing change. Required final validation stays independent of every author.
    connectivity and an explicit host/version readback; editing local backend
    files does not update that service. Installation, data transfer, real Provider,
    external effects and destructive operations retain their own permissions.
-3. Before repairing, bind the bug to an existing requirement/acceptance point
-   and record its reproduction and narrow scope in existing spec/tasks/
-   verification or repair records. Preserve frozen contracts and issued evidence;
-   use a correction/addendum rather than rewriting historical results. Use causal
-   RED -> minimal GREEN -> affected regression; pure refactors use equivalence
-   checks. Reuse valid UI/spec inputs without another synonymous document suite.
-   Freeze the complete repair for applicable independent final review and required
-   CI before authorized integration. Daily edits do not each require a new PR,
-   full regression or Validator. No author may self-issue independent PASS.
+3. Bind the bug to approved behavior and reproduce it at the user's actual entry.
+   The same repair Agent continuously owns diagnosis, correction and affected
+   checks under Continuous SDD and TDD. Keep behavior, cause, actual verification
+   and gaps in the existing repair record, linking thin specs/design only where
+   needed; do not recreate a full document suite or return ordinary corrections
+   to PM. Preserve frozen contracts and historical evidence.
+   Verify the affected endpoint: startup needs cold-start/reopen; upload/parser
+   repair needs representative original-format input and relevant rejection
+   cases; UI needs its actual interaction; analysis/report repair needs actual
+   generation, save and reopen within valid model/data permissions. A backend
+   probe does not establish browser interaction when that is the required claim.
+   Do not run an unrelated full analysis/model task for every UI/parser fix.
+   Reuse valid task-scoped data/model/resource grants; new scope needs its own
+   decision. Explicit one-attempt or stop-on-failure limits remain binding, not
+   automatically extended by this policy. Stop blind same-cause retries and
+   diagnose existing evidence rather than requesting another count by default.
+   Let the user continue safe trial after affected checks; concentrate independent
+   review, applicable regression, required CI and authorized Git delivery when a
+   related repair batch stabilizes. Recheck changed/failed evidence as needed,
+   not the entire workflow for every edit. No author self-issues independent PASS.
 4. Keep one writing device per branch and one assigned author per overlapping
    repair scope. Mini may continue independent work; disclose overlapping work
    through the existing handoff or user relay before dependent implementation,
@@ -646,7 +680,8 @@ checks above to affected claims; mocks cannot replace the behavior being proved.
 
 Freeze the complete candidate (committed, staged, unstaged and added scope) and
 evidence; overlapping pre-existing changes need attribution, not blanket exclusion.
-Verify causal RED, test sensitivity, negative cases, relevant quality/regression,
+Verify applicable behavior evidence under Continuous SDD and TDD, test
+sensitivity, negative cases, relevant quality/regression,
 scope/architecture/safety and evidence identity. Test retirement is part of this
 review under `test-asset-retirement.md`, not a separate PASS prerequisite.
 Reuse complete, trustworthy CI/check evidence after verifying its candidate,

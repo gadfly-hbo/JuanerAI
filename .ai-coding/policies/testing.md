@@ -3,9 +3,11 @@
 Authority and stop conditions come from
 `docs/governance/product-change-execution-policy.md`.
 
-- Before each behavior's implementation, write its minimum sufficient OpenSpec and
-  acceptance reference, write the test, and run a causal expected RED. Then
-  implement minimal GREEN and refactor only while GREEN.
+- Adopted Mini engineering and assigned MacBook repair follow the sole policy's Continuous SDD and TDD section:
+  thin spec, early real-path feedback and affected checks; deterministic behavior
+  and exploration/model quality use their applicable evidence, not a universal
+  test-first phase. Other work retains minimum OpenSpec/acceptance before each
+  behavior, causal expected RED, minimal GREEN and refactor only while GREEN.
 - Pure refactors use pre/post GREEN and relevant equivalence evidence;
   documentation-only work does not fabricate RED.
 - Prefer domain unit tests for pure rules, real-boundary integration tests,
