@@ -44,6 +44,12 @@ and governance, models, CI behavior and product acceptance meanings are unchange
 Active tasks may adopt at a safe boundary; publication does not interrupt work,
 change its baseline or release a stop.
 
+The subsequent project-wide personal-trial efficiency revision clarifies data
+authorization and deterministic versus model-quality guarantees, and applies
+the evidence-backed CI selection below. It reuses this loop rather than adding
+a workflow. Blueprint/capability goals, in-flight acceptance and resources,
+engineering models and actual runtime permissions are unchanged.
+
 The preceding user-approved 2026-09-26 continuous-engineering revision (v0.8) retained the
 2026-09-24 Product Manager / Engineering Controller split. It replaces the
 default four-role serial pipeline, universal Spec Gate and TDD_READY dispatch
@@ -143,6 +149,30 @@ ordinary corrections do not each restart product preparation or the full workflo
 A message, Git fetch, published commit or task existence is not receiver
 adoption. Manual forwarding by the user is sufficient; no message automation is
 required. Do not create or migrate tasks without the user's explicit request.
+
+### Personal Trial Data and Effect Boundaries
+
+Prioritize the approved personal/local usable path. Preserve selected-material
+scope, original data, credentials, necessary local-service access/cross-site
+protection, truthful saving, stopping and unknown-effect handling. Existing
+effective protections remain; enterprise identity, multitenancy and centralized
+governance/operations without a current consumer are deferred, not prerequisites
+for personal trial. Retain the minimum replaceable architecture and provenance.
+
+Bind data, tools, model purposes/routes, outbound recipients, permitted effects,
+resources and validity in the existing task authorization. Reuse valid grants
+through continuous in-scope work; ordinary calls, edits and already permitted
+retries do not renew approval. Check effective authority before every effect.
+Missing, expired, revoked or materially changed data, purpose, recipient or
+permission stops the affected action for a decision, not unrelated safe work.
+Explicit one-attempt/stop limits and unknown effects keep their own conditions;
+this rule grants no new retry, Provider, data, service or publication authority.
+
+Engineering source-write/test permissions and product-runtime data/effect
+permissions are separate. Neither substitutes for the other. Personal/local
+use does not make private material public or permit raw secrets in prompts,
+logs or fixtures. Apply the shared Agent Runtime standard's task-authorization
+and effect-control rules through its existing unique entry, not a copied policy.
 
 ### Mini-led Plugin Integration
 
@@ -330,6 +360,32 @@ test seams and inputs, not a new seam/PRD/role approval for every inner loop.
 Do not invoke dev-flow as a parallel `.flow` authority, auto-approve scope, add
 fixed retry-renewal gates or duplicate the existing Validator/CI verification.
 
+## Deterministic Contracts and Model Quality
+
+Host mechanisms and applicable tests enforce authority, acquired structured
+facts, calculations, source/version identity, saving/stopping/invalidation and
+same-version delivery. Model understanding, explanations, recommendation
+completeness and usefulness are evaluated against the actual task, criteria
+set before observing results, real outputs, independent review and required
+user experience acceptance. Keep these evidence claims separate in the existing
+result record; this is not a new model-quality stage or scoring system.
+
+Mocks, valid JSON, hashes, fixed-case success and agreement between models prove
+only their limited properties, not general business understanding. Autonomous
+work may take different lawful paths and use equivalent wording; test the
+promised result and invariants rather than a fixed route unless contracted.
+Do not require a host to deterministically correct all arbitrary natural
+language after generation and review jointly miss it. Important known errors
+remain FAIL; disclaimers do not cure them, and discarding all correct useful
+content does not fulfill the task.
+
+Numeric-fragment, bare-number or Chinese certification-wording checks retain
+their approved scoped consumers; they are not universal semantic acceptance
+rules for every report. Preserve each Change's approved guarantees, examples,
+evaluation basis, failures and stops. This project distinction neither rewrites
+an in-flight contract nor adopts Change007's specific acceptance delta for other
+work. Actual business-code changes require their corresponding engineering scope.
+
 ## Continuous SDD and TDD
 
 After approved product/UI input and intake, adopted Mini engineering and
@@ -425,7 +481,7 @@ containing `desktop`. The trusted PR-base classifier owns this selection:
 | CI scope | Selection and evidence |
 |---|---|
 | Documentation | Explicit non-runtime Markdown paths: diff checks; no product dependency installation or unrelated harness selftests. Necessary content/reference checks remain in the applicable product/governance review. |
-| Affected | Only a small explicit mapping with known consumers and closed impact: execute the mapped checks and necessary boundary regression. Initially this covers model/effort-only edits to the existing project/role TOMLs, with parsed non-routing fields unchanged and the complete role configuration checked. It does not cover arbitrary role instructions, permissions or product modules. |
+| Affected | A small explicit mapping with known consumers and closed impact: approved model/effort-only configuration edits, and text-only instructions in the existing independent Validator file with execution/registration fields unchanged. Compare parsed values/types, require valid instructions before and after, and check the complete candidate configuration. Independent instruction/scope review remains required; this lane does not cover primary instructions, changed execution permissions or product modules. |
 | Full portable | Unmapped/unknown scope, runtime behavior, safety/permissions, persistence/migration/replay, public contracts, shared dependencies, build configuration, or CI selection/checking machinery itself. Run the canonical portable matrix and applicable configuration checks; native acceptance remains separate. |
 
 Combine mapped checks for a mixed change only when every changed object is
@@ -436,6 +492,14 @@ lighter validation. Keep `tools/harness/validation/run` as the complete default
 offline entry and reuse the checked-in CI/check entrypoints locally. Missing
 validation prerequisites fail closed; they do not grant a lighter scope or
 permission to install anything.
+
+Validator instruction text is consumed by the engineering review role, not the
+product runtime. Product regression cannot certify its meaning. The mapped
+check proves configuration structure, not safe or correct instructions;
+independent review must still reject unapproved authority, role, safety or
+acceptance changes. The classifier does not infer those meanings from prose.
+Registration, sandbox/permission fields, hooks and unknown consumers retain the
+full fallback. No text change grants runtime effects or bypasses a real stop.
 
 The TOML configuration check uses Python 3.11+ standard-library `tomllib`.
 Select an already available compatible interpreter through the command-local

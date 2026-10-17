@@ -35,7 +35,7 @@ test('CI-TIER-001: parsed model/effort-only edits take affected, other config se
     ['effort', configBefore.replace('"medium"', '"high"'), 'affected'],
     ['comments and equivalent spelling', configBefore.replace('"medium"', "'high' # approved"), 'affected'],
     ['equivalent multiline instructions', configBefore.replace('"medium"', '"high"').replace('"preserve authority"', '\'\'\'preserve authority\'\'\''), 'affected'],
-    ['hidden instructions', configBefore.replace('"medium"', '"high"').replace('preserve authority', 'new authority'), 'full'],
+    ['mapped instructions with routing', configBefore.replace('"medium"', '"high"').replace('preserve authority', 'Review independently and preserve authority'), 'affected'],
     ['sandbox', configBefore.replace('"medium"', '"high"').replace('read-only', 'danger-full-access'), 'full'],
     ['malformed', 'model = [', 'full'],
     ['duplicate key', configBefore + 'model = "gpt-6.1-sol"\n', 'full'],
@@ -55,6 +55,74 @@ function classify(f, base = f.base, flags = []) {
   delete env.NODE_TEST_CONTEXT;
   return spawnSync(process.execPath, [classifier, ...flags, base], { cwd: f.root, env, encoding: 'utf8' });
 }
+
+test('CI-TIER-008: existing Validator instructions-only change receives structural affected checks', async t => {
+  const f = await repository(t);
+  const fixed = configBefore.replace('"medium"', '"high"');
+  await f.put(configPath, fixed); f.commit();
+  const base = f.git('rev-parse', 'HEAD');
+  await f.put(configPath, fixed.replace('preserve authority', 'Review the fixed candidate independently; preserve authority.')); f.commit();
+  const selected = classify(f, base);
+  assert.equal(selected.status, 0, selected.stderr);
+  assert.equal(selected.stdout, 'affected\n');
+  const checked = classify(f, base, ['--check-affected']);
+  assert.equal(checked.status, 0, checked.stderr);
+});
+
+test('CI-TIER-008: instruction mapping preserves all other typed fields and requires existing text', async t => {
+  const fixed = configBefore.replace('"medium"', '"high"') + 'description = "fixed reviewer"\n';
+  for (const [name, before, after, expected] of [
+    ['multiline text', fixed, fixed.replace('"preserve authority"', "'''Review independently.\nPreserve authority.'''"), 'affected'],
+    ['missing before', fixed.replace('developer_instructions = "preserve authority"\n', ''), fixed, 'full'],
+    ['empty before', fixed.replace('"preserve authority"', '"  "'), fixed, 'full'],
+    ['typed before', fixed.replace('"preserve authority"', '42'), fixed, 'full'],
+    ['missing after', fixed, fixed.replace('developer_instructions = "preserve authority"\n', ''), 'full'],
+    ['empty after', fixed, fixed.replace('"preserve authority"', '"  "'), 'full'],
+    ['typed after', fixed, fixed.replace('"preserve authority"', '42'), 'full'],
+    ['description', fixed, fixed.replace('fixed reviewer', 'new reviewer'), 'full'],
+    ['identity', fixed, fixed.replace('juaner_validator', 'juaner_other'), 'full'],
+    ['sandbox', fixed, fixed.replace('read-only', 'workspace-write'), 'full'],
+    ['unknown field', fixed, fixed + 'unknown = true\n', 'full'],
+    ['nested permission', fixed + '[permissions]\nnetwork = false\n', fixed + '[permissions]\nnetwork = true\n', 'full'],
+    ['nested boolean type', fixed + '[extra]\nvalue = [{allow = true}]\n', fixed + '[extra]\nvalue = [{allow = 1}]\n', 'full'],
+    ['nested numeric type', fixed + '[extra]\nvalue = [3]\n', fixed + '[extra]\nvalue = [3.0]\n', 'full'],
+  ]) await t.test(name, async child => {
+    const f = await repository(child);
+    await f.put(configPath, before); f.commit(); const base = f.git('rev-parse', 'HEAD');
+    await f.put(configPath, after); f.commit();
+    const result = classify(f, base);
+    assert.equal(result.status, 0, result.stderr); assert.equal(result.stdout, `${expected}\n`);
+    assert.equal(classify(f, base, ['--check-affected']).status === 0, expected === 'affected');
+  });
+});
+
+test('CI-TIER-008: Validator text mixed with primary instructions, hooks, source or CI self-modification stays full', async t => {
+  for (const file of ['.codex/config.toml', '.codex/hooks.json', '.codex/agents/new-role.toml', 'packages/example.ts', 'tools/harness/validation/ci-scope.mjs', 'tools/harness/validation/check-agent-config.py', '.github/workflows/ci.yml']) await t.test(file, async child => {
+    const f = await repository(child);
+    await f.put(configPath, configBefore.replace('"medium"', '"high"').replace('preserve authority', 'Review independently'));
+    if (file === '.codex/config.toml') await f.put(file, 'developer_instructions = "changed primary text"\n' + (await readFile(path.join(f.root, file), 'utf8')));
+    else await f.put(file, 'changed\n');
+    f.commit();
+    assert.equal(classify(f).stdout, 'full\n');
+    assert.notEqual(classify(f, f.base, ['--check-affected']).status, 0);
+  });
+});
+
+test('CI-TIER-008: Validator addition, rename, deletion, copy, links and mode changes cannot grant affected', async t => {
+  for (const kind of ['addition', 'rename', 'deletion', 'copy', 'link', 'executable']) await t.test(kind, async child => {
+    const f = await repository(child), target = path.join(f.root, configPath);
+    let base = f.base;
+    if (kind === 'addition') { await rm(target); f.commit(); base = f.git('rev-parse', 'HEAD'); await f.put(configPath, configBefore.replace('"medium"', '"high"')); }
+    if (kind === 'rename') await rename(target, path.join(f.root, '.codex/agents/renamed.toml'));
+    if (kind === 'deletion') await rm(target);
+    if (kind === 'copy') await f.put('.codex/agents/copied.toml', configBefore);
+    if (kind === 'link') { await rm(target); await symlink('../../README.md', target); }
+    if (kind === 'executable') { await chmod(target, 0o755); f.git('update-index', '--chmod=+x', configPath); }
+    f.commit();
+    assert.equal(classify(f, base).stdout, 'full\n');
+    assert.notEqual(classify(f, base, ['--check-affected']).status, 0);
+  });
+});
 
 test('CI-TIER-006: two-role v0.9 pins Validator to Sol/high without changing MacBook defaults', async t => {
   for (const kind of ['valid', 'old-astra-role', 'sol-primary', 'sol-default-support']) await t.test(kind, async child => {
@@ -181,11 +249,12 @@ test('CI-SCOPE-002: actual workflow selects trusted base, ignores PR replacement
   const selection = shell.slice(shell.indexOf('test "${#PR_BASE_SHA}"'), shell.indexOf('run_logged agent-config'));
   assert.ok(selection.startsWith('test "${#PR_BASE_SHA}"'), 'actual workflow must check immutable base before selection');
   const actual = await readFile(classifier, 'utf8');
-  for (const kind of ['docs', 'config', 'hostile-pr', 'initial-introduction', 'missing-base', 'broken-classifier', 'unknown-result']) await t.test(kind, async child => {
+  for (const kind of ['docs', 'config', 'instructions', 'hostile-pr', 'initial-introduction', 'missing-base', 'broken-classifier', 'unknown-result']) await t.test(kind, async child => {
     const trusted = kind === 'initial-introduction' ? null : kind === 'broken-classifier' ? 'process.exit(19);\n' : kind === 'unknown-result' ? "console.log('skip');\n" : actual;
     const f = await repository(child, trusted);
     await f.put('README.md', 'new documentation\n');
     if (kind === 'config') await f.put(configPath, configBefore.replace('"medium"', '"high"'));
+    if (kind === 'instructions') await f.put(configPath, configBefore.replace('"medium"', '"high"').replace('preserve authority', 'Review independently and preserve authority'));
     if (kind === 'hostile-pr') await f.put('tools/harness/validation/ci-scope.mjs', "console.log('documentation');\n");
     f.commit();
     const temp = path.join(f.root, 'runner-temp'); await mkdir(temp);
@@ -196,8 +265,38 @@ test('CI-SCOPE-002: actual workflow selects trusted base, ignores PR replacement
       assert.notEqual(result.status, 0); assert.doesNotMatch(result.stdout, /CONTINUE_FULL|CHECK scope-contracts/);
     } else {
       assert.equal(result.status, 0, result.stderr);
-      if (kind === 'docs' || kind === 'config') { assert.match(result.stdout, new RegExp(`CHECK ${kind === 'docs' ? 'documentation' : 'affected'}`)); assert.doesNotMatch(result.stdout, /CONTINUE_FULL|CHECK scope-contracts/); }
+      if (['docs', 'config', 'instructions'].includes(kind)) { assert.match(result.stdout, new RegExp(`CHECK ${kind === 'docs' ? 'documentation' : 'affected'}`)); assert.doesNotMatch(result.stdout, /CONTINUE_FULL|CHECK scope-contracts/); }
       else { assert.match(result.stdout, /CONTINUE_FULL/); assert.doesNotMatch(result.stdout, /CHECK documentation/); }
+    }
+  });
+});
+
+test('CI-TIER-008: actual affected workflow preserves config failure and external timeout exits', async t => {
+  const source = await readFile(new URL('../../../.github/workflows/ci.yml', import.meta.url), 'utf8');
+  const shell = source.split('        run: |\n')[1].split('\n').map(line => line.replace(/^          /, '')).join('\n');
+  const logger = shell.slice(shell.indexOf('run_logged() {'), shell.indexOf('\ntest "$(node --version)"'));
+  const selection = shell.slice(shell.indexOf('test "${#PR_BASE_SHA}"'), shell.indexOf('run_logged agent-config'));
+  for (const kind of ['success', 'config-failure', 'timeout']) await t.test(kind, async child => {
+    const f = await repository(child, await readFile(classifier, 'utf8'));
+    await f.put(configPath, configBefore.replace('"medium"', '"high"').replace('preserve authority', 'Review independently')); f.commit();
+    assert.equal(classify(f).stdout, 'affected\n');
+    if (kind === 'config-failure') await f.put('.codex/config.toml', 'model = [');
+    const temp = path.join(f.root, 'runner-temp'); await mkdir(temp);
+    // Only replace the external timeout boundary; selection, checker and logger are real.
+    const timeout = kind === 'timeout' ? 'timeout() { printf "timeout-boundary\\n" >&2; return 124; }' : 'timeout() { shift 3; "$@"; }';
+    const result = spawnSync('/bin/bash', ['-ec', `${timeout}\n${logger}\n${selection}\nprintf 'UNEXPECTED_FULL\\n'`], {
+      cwd: f.root, env: { ...process.env, PR_BASE_SHA: f.base, RUNNER_TEMP: temp }, encoding: 'utf8', timeout: 10000,
+    });
+    assert.equal(result.signal, null);
+    assert.equal(result.status, kind === 'success' ? 0 : kind === 'timeout' ? 124 : 1, result.stderr);
+    assert.match(result.stdout, new RegExp(`EXIT affected ${result.status}`));
+    assert.doesNotMatch(result.stdout, /UNEXPECTED_FULL/);
+    if (kind === 'success') {
+      assert.match(result.stdout, /instruction semantics require independent review/);
+      assert.match(result.stdout, /product regression and native acceptance NOT RUN/);
+    } else {
+      assert.doesNotMatch(result.stdout, /AFFECTED ONLY/);
+      assert.match(result.stderr, kind === 'timeout' ? /timeout-boundary/ : /Agent config failed/);
     }
   });
 });
