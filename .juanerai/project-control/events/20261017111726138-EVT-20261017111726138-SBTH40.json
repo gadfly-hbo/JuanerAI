@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017111726138-SBTH40",
+  "event_type": "archived",
+  "occurred_at": "2026-10-17T11:17:26.138Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a14983-c531-7120-89f4-69c3a375efee"
+  },
+  "summary": "PR100已合并f803ddc，最终HEAD CI通过；正式归档与双机main引用同步完成，原BLOCKED/豁免保留，不安装/Provider/生产",
+  "status_after": "complete",
+  "evidence_refs": []
+}
