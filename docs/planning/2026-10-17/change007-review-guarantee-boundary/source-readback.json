@@ -1,0 +1,117 @@
+{
+  "package": "C007-GB-20261017-v0.1",
+  "kind": "unfrozen_product_review_candidate_not_engineering",
+  "observed_on": "2026-10-17",
+  "device": "huangbodeMacBook-Pro.local",
+  "repo": "/Users/huangbo/.codex/worktrees/e1d5/JuanerAI",
+  "branch": "work/macbook/change007-conclusion-strategy-review",
+  "HEAD": "73971d5e2f08c9f911897770acf770b78cfb0768",
+  "main_observed": "6756546a1423162b16a552b24b83bdaa1e834e50",
+  "origin_main_local_ref_observed": "6756546a1423162b16a552b24b83bdaa1e834e50",
+  "fixed_input": "abeb6e97e45fb499f2ca8e358e0481d0c29423d9",
+  "fixed_tree": "983728d8bbe799586445921665a2bbdf7f42a662",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 26242,
+      "sha256": "60d06ad1333b3430a7ca4b03e4ffd6bb24a33fdbabd4b242679bf90b1b19ab36"
+    },
+    {
+      "path": "docs/governance/agent-model-routing.md",
+      "bytes": 3282,
+      "sha256": "af99744cd013b99884a14b22eea74b2586b696df0f3fc9ae4d76613725ac70cd"
+    },
+    {
+      "path": "docs/governance/git-development-workflow.md",
+      "bytes": 14793,
+      "sha256": "5e82c646f669be6f9a12e4fe0e641074f216f87118d25ed47b705bdbed27eb91"
+    },
+    {
+      "path": "docs/governance/product-change-execution-policy.md",
+      "bytes": 62798,
+      "sha256": "26d7f4165670766e504249b71e43bacaa6cdf25980e7c682caecfb44b8e6b7ee"
+    },
+    {
+      "path": "docs/architecture/data-authority.md",
+      "bytes": 3499,
+      "sha256": "f0b7eb49b66c31dcf04f4833c45651a89af65c56ceed131c230211011639bcb3"
+    },
+    {
+      "path": "docs/architecture/security-boundaries.md",
+      "bytes": 1588,
+      "sha256": "607d4f2e2fd0d09baa0e92e826b0b958b5647911ffe2e83e1b41ec6d73f67d04"
+    },
+    {
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/frozen-inputs-2026-10-17.json",
+      "bytes": 8825,
+      "sha256": "84a01c062162f9f3f01b1cb099d091f85291c5d9a6fce3bbbd7cf47f6360d312"
+    },
+    {
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/acceptance-basis.md",
+      "bytes": 8451,
+      "sha256": "821f787a87908f162b94c48024353b43fb54f575bc6866acfca7316829a9b750"
+    },
+    {
+      "path": "docs/planning/2026-10-17/change007-authoritative-delivery/attachments/formal-acceptance-originals.json",
+      "bytes": 16821,
+      "sha256": "91bf1d6bf3f5ca39633cea67d37e4d7d11bdd88a3ba6681036bf487f602ae58c"
+    }
+  ],
+  "external_references": [
+    {
+      "path": "/Users/huangbo/.agents/ui-design/DESIGN.md",
+      "bytes": 8222,
+      "sha256": "3adee42c822f3fc2b098a703a466859e71d94c82c9705d0a32e25e2e17dcaf2a",
+      "usage": "read-only reference; no migration or implementation authority"
+    },
+    {
+      "path": "/Users/huangbo/Dev/Projects/pi-agent-runtime/docs/AGENT-RUNTIME.md",
+      "bytes": 17449,
+      "sha256": "b628e5e6ec08a586f00b88cfcd43e62e4f9ebd094e08a9897173d0b1e0519f0c",
+      "usage": "read-only reference; no migration or implementation authority"
+    }
+  ],
+  "authority_status": {
+    "user_direction": "guarantee-boundary adjustment approved; full candidate and affected UI pending user review",
+    "relation": "Prospective amendment of affected FD-01/hard_boundary semantics; not all thresholds unchanged",
+    "original_bytes": "Original 33/49 manifests and 13 acceptance originals retained",
+    "production_stop": "108 locked; no109/no implementation/no Provider/no model change",
+    "publication": "No freeze/commit/push/PR/merge/dispatch; local main refs were only observed, not synchronized or adopted"
+  },
+  "mini_evidence_scope": {
+    "method": "Read-only evidence file content and exact UTF-8 mirrors; no service/DB/controller/engineering mutation",
+    "engineering_worktree": "/Users/bendandebaba/.codex/worktrees/3c57/JuanerAI",
+    "branch": "work/mac-mini/change007-conclusion-strategy-review",
+    "engineering_HEAD_snapshot": "bb9b5f0d46c8b487725f1d7913d00f642eac8094",
+    "engineering_tree_snapshot": "e0c9eb043c7a3122576c170de664470027f8327e",
+    "locked_candidate": "108 is an incomplete author stop, not a Git commit, independent PASS or completed implementation",
+    "candidate108": {
+      "bytes": 18833,
+      "sha256": "a6adeeb2602d66c84e40bb03d323be8c480dd2b25f69c30daa08f53291a49d96"
+    },
+    "retained_history": "4 Tasks; 371 application requests; 4 budgets; 31 token UNKNOWN groups; cost UNKNOWN. Preserved historical snapshot, not a new live DB audit or current-token measurement.",
+    "state_changes": "None on Mini. No task message, automation/service operation, model/config/credential probe, code/spec/test write or candidate creation."
+  },
+  "mirrors": [
+    {
+      "source": "/Users/bendandebaba/JuanerAI-artifacts/change007/controller/routing017/mechanism-interface-assessment108-001.md",
+      "local": "attachments/mechanism-interface-assessment108-001.md",
+      "bytes": 35247,
+      "sha256": "9d7d7351ac94f99a095857cabf41935a7fc62e3a3dfc75b384e60ee301018920"
+    },
+    {
+      "source": "/Users/bendandebaba/JuanerAI-artifacts/change007/controller/routing017/PROTOTYPE_NOT_PRODUCTION_108_001/RESULT.md",
+      "local": "attachments/prototype108-result.md",
+      "bytes": 14982,
+      "sha256": "63e766eebee0b7cd11f13180c88edfb87cbdb86e000ca284c5f472c8e34e00d5"
+    }
+  ],
+  "ui": {
+    "accepted_PR90_commit": "5e14913e04c079f4a2f16b9c3308c8246e4b7ec4",
+    "accepted_identity": "BUI-20261015-004 / BUI-MACBOOK-IMPLEMENTATION-003",
+    "PR91_fixed_readpoint": "3deeaae7b352b49afb46d4811fbd17689d2c277a",
+    "reuse": "All CSS, model.js, samples.js, delivery.js and workbench.js loaded from the immutable previous package; one local documentation wording overlay. No visual redesign or production integration.",
+    "browser": "NOT_RUN; previous local file/browser refusal retained. No alternate protocol/tool/server workaround."
+  },
+  "resource_scope": "Original adopted models and constraints read back only; no new authority, credentials, dependency installation, SDK upgrade or external-data use."
+}
