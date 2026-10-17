@@ -1,3 +1,7 @@
+## 插件接入沉淀 · 正式Git交付005（候选时记录，实际结果见回执）
+
+同一任务已获Git交付授权；003 PASS/004仅原作用域复用，新状态及main整合另验并取得确切head full CI。[当前交付与身份](../../../openspec/changes/plugin-integration-consolidation/git-delivery-005.md)。40ID业务能力增量0，C5-09局部、S1/S4不关闭；以下旧记录保持原时点。
+
 ## 插件接入沉淀 · 2026-10-17（本地独立复核完成，未发布）
 
 本次R0只把已发布Report Studio方法整理为[标准／参考Adapter／清单](../../engineering/plugin-integration/README.md)，不新增产品业务能力。当前合成8文件92PASS/0FAIL，最小用法15PASS；首次95PASS/3依赖环境FAIL保持，Profile三例未在新树执行成功。034固定包只读完整校验通过，回流／未来物料UNKNOWN由原仓任务处理；本次不回流或升级。独立CLI复核PASS（实际Sol/high/read-only/never），仅覆盖003本地文档／参考；004仅记录性收录并重新绑定身份。不将文档视为现行全局规则／第二插件或新交付形态。C5-09仍局部实现，全40ID类别／业务接受增量0，原六加二／S1/S4及所有历史边界保持。

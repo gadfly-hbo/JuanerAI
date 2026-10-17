@@ -1,4 +1,4 @@
-# Report Studio参考Adapter（本地待审）
+# Report Studio参考Adapter（已发布实现导览）
 
 这是已发布实现的导览与合成用法，不是复制的新Adapter或第二插件。适用原则见[标准](standard.md)，核查选择见[清单](acceptance-checklist.md)，本次实际结果和本机证据根见[验证记录](../../../openspec/changes/plugin-integration-consolidation/verification.md)。下列身份为历史固定参考，不自动跟随main或重新构建。
 
@@ -6,7 +6,7 @@
 
 | 对象 | 已核对身份与限制 |
 |---|---|
-| JuanerAI源码发布 | PR91，squash `3deeaae7b352b49afb46d4811fbd17689d2c277a`；最终PR head `37648b56bb4e9f5c1674f0300b6a212860cfa82d` CI成功。当前新资产以该发布提交起树，未产生新提交 |
+| JuanerAI源码发布 | PR91，squash `3deeaae7b352b49afb46d4811fbd17689d2c277a`；最终PR head `37648b56bb4e9f5c1674f0300b6a212860cfa82d` CI成功。本资产的历史起树基线；正式候选和后续基线见[交付005](../../../openspec/changes/plugin-integration-consolidation/git-delivery-005.md) |
 | 业务源 | [source-identity.json](../../../vendor/reports-factory/74ebb609/source-identity.json)：`reports_factory`固定提交`74ebb609fd73cf263614ffc9301dafaafcec4230`；选定81普通源码／资源，非当前原仓维护线 |
 | 固定源tar | 同目录`source.tar`，1628160 bytes，SHA `a5cba2b9dc44011d6177068df504483b2550d6c77e958a8c76d0de80a119e62a`；不含业务data/work／认证 |
 | 已验034模块 | version `0.1.0-juanerai.1`，protocol `1`，manifest SHA `d59d0554314c7e3c832944dd9f6bc6c8a31df3b7c862b119bd7a540c5551da19`，22716资源；相同版本字符串不能替代manifest身份 |

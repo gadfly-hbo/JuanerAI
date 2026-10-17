@@ -1,6 +1,6 @@
 # 固定模块／插件接入资产
 
-2026-10-17 · 本地待审草案；尚未提交、发布或成为跨项目现行规则。现行权威仍为[工程执行政策](../../governance/product-change-execution-policy.md)、[架构](../../architecture/ports-and-adapters.md)和各任务已批准合同。
+2026-10-17 · 仓库内三项接入资产的单一维护入口。资产按仓库工作流正式交付；发布是否完成以实际Git结果为准，真实身份与结果见[交付005](../../../openspec/changes/plugin-integration-consolidation/git-delivery-005.md)。本入口不改变各任务批准合同或全局权限。现行权威仍为[工程执行政策](../../governance/product-change-execution-policy.md)、[架构](../../architecture/ports-and-adapters.md)和各任务已批准合同。
 
 同一业务实现在插件原仓维护，既可独立运行、发布，也可通过不同入口／装配随JuanerAI固定打包交付。集成用户安装JuanerAI即可取得获批插件形态及所需运行依赖，不要求另装独立版、外部源码仓库或全局开发环境。仓库、进程、版本可以独立；这不等于独立部署，也不要求同进程、同库或合仓。
 

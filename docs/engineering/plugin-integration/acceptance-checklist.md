@@ -1,4 +1,4 @@
-# 通用插件验收清单（选择模板，本地待审）
+# 通用插件验收清单（按适用性选择）
 
 用于[标准](standard.md)五步流程的“验证”，结合[参考Adapter](report-studio-reference-adapter.md)寻找实际接点。它不是全插件强制Gate，也不是本次任务的运行授权。
 

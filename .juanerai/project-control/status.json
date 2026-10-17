@@ -6,15 +6,15 @@
     "product": "JuanerAI reusable plugin integration assets — R0 local review only"
   },
   "phase": {
-    "id": "COMPLETE",
-    "label": "本地三资产／离线检查／独立只读复核完成；未发布",
+    "id": "VERIFY",
+    "label": "Git delivery005: current candidate review and full CI",
     "ordinal": 4,
-    "total": 4
+    "total": 5
   },
-  "health": "complete",
-  "summary": "本轮PIC-A–E限定本地整理完成：三资产保持冻结字节；92项／最小15项与固定034核验通过，CLI独立11组和完整审查PASS；实际Sol/high/read-only/never已读回。旧原生BLOCKED及全部FAIL/UNKNOWN保留，未Git或发布。",
+  "health": "validating",
+  "summary": "User authorized this task Git delivery. 004 saved unchanged, main abeb6e97 merged normally. Minimal status edits, not yet published. Current candidate review and exact-head full CI pending.",
   "current_objective": "plugin-integration-consolidation: PIC-A/B/C/D/E R0 documentation and offline reference use",
-  "next_action": "交用户审核本地三资产；新Git交付/安装/Provider/生产/上游回流/其他产品升级均需另行授权。本轮无剩余获准工程动作。",
+  "next_action": "Freeze current candidate, independent affected read-only review, work branch PR/full CI, squash and safe dual-device sync-main; no install/Provider/runtime changes.",
   "blockers": [],
   "milestones": [
     {
@@ -36,6 +36,11 @@
       "id": "independent",
       "label": "原生独立只读复核与本地可审交回",
       "status": "completed"
+    },
+    {
+      "id": "git_delivery005",
+      "label": "Exact PR/full CI/squash/safe main sync",
+      "status": "active"
     }
   ],
   "agents": [
@@ -43,14 +48,14 @@
       "id": "controller",
       "label": "当前Mini主工程，唯一作者",
       "model": "actual gpt-6.1-sol/high, user-authorized current session; danger-full-access/never",
-      "status": "complete",
+      "status": "active",
       "activation": "用户当前session明确启动本地R0沉淀范围"
     },
     {
       "id": "juaner_validator",
       "label": "独立只读最终复核",
       "model": "actual CLI gpt-6.1-sol/high/read-only/never; role instructions verified",
-      "status": "complete",
+      "status": "waiting",
       "activation": "本任务明确授权限定CLI；新独立上下文003复核PASS，原生BLOCKED历史保留"
     }
   ],
@@ -97,6 +102,12 @@
       "label": "限定CLI正式独立PASS及实际设置证明",
       "path": "openspec/changes/plugin-integration-consolidation/independent-review-cli-001.md",
       "status": "verified"
+    },
+    {
+      "id": "PIC_GIT005",
+      "label": "Git005 authorization, scope, evidence and real receipt",
+      "path": "openspec/changes/plugin-integration-consolidation/git-delivery-005.md",
+      "status": "present"
     }
   ],
   "risks": [
@@ -125,9 +136,9 @@
       "mitigation": "原95PASS/3FAIL保留，不安装；92PASS不替代三例。此R0无产品变更，独立报告限定接受适用范围。"
     }
   ],
-  "updated_at": "2026-10-17T00:26:47.231Z",
+  "updated_at": "2026-10-17T00:38:57.950Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1473a-8cbf-7b82-ad42-564bf1f15edd"
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14749-03e6-7340-acba-441fe49f0754"
   }
 }
