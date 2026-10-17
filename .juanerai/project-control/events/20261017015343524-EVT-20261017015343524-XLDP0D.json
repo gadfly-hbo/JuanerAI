@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017015343524-XLDP0D",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T01:53:43.524Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1478c-f3b0-7932-82ca-3435e71602e1"
+  },
+  "summary": "Align task labels with current Git authority; preserve original local-only history and scoped review",
+  "status_after": "validating",
+  "evidence_refs": []
+}

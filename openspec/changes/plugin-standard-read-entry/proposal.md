@@ -1,3 +1,5 @@
+> Historical local-intake scope below. Current explicit user Git-delivery authority and current CI requirements are recorded in [Git005](git-delivery-005.md); prior local-only Git prohibition and no-CI statement are not the current publication boundary. Product/runtime restrictions remain.
+
 # Conditional plugin-standard read entry (R0 local candidate)
 
 Input: user-transferred MINI-PLUGIN-STANDARD-READ-ENTRY-PROMPT-v0.1.md, 3623 bytes, SHA256 b86ce7023b81e02a03204b2eef3bab75cdc4cc3fa8a27e2188211405fcc143fb. Fully read and verified. Scope is one conditional pointer at the existing root AGENTS Mini-led Plugin Integration paragraph, plus this minimal R0 record and this tree's required board. No published rule or receiver adoption claimed.

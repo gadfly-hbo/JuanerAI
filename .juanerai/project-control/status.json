@@ -3,18 +3,18 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "R0 plugin-standard conditional read entry - local review only"
+    "product": "R0 plugin-standard conditional read entry - authorized Git delivery"
   },
   "phase": {
-    "id": "COMPLETE",
-    "label": "R0 local pointer checked and independent readonly review PASS; not published",
+    "id": "VERIFY",
+    "label": "Git005 record binding, exact-head required CI and integration",
     "ordinal": 3,
-    "total": 3
+    "total": 4
   },
-  "health": "complete",
-  "summary": "Conditional pointer local candidate complete. Exactly one AGENTS insertion71-78,52 links checked, formal four assets unchanged. Current-task authorized CLI independent PASS on003, actual Sol/high/read-only/never+role loaded. Native BLOCKED/errors preserved; no Git delivery or adoption.",
-  "current_objective": "plugin-standard-read-entry REQ-ENTRY01/02/03 and PRESERVE01; local review only",
-  "next_action": "Return final local diff/paths/identity/verification and unverified loading/publication/adoption for user review. Stop; no Git/runtime/other session or next plugin action.",
+  "health": "validating",
+  "summary": "Current user authorized this R0 rule task Git delivery. Original004/8 paths match and saved atfeaf9b7; fresh latest main6756546 has no delta, normal integration up to date. Rule bytes unchanged from reviewed003; record-only evidence binding and actual PR head CI pending.",
+  "current_objective": "plugin-standard-read-entry REQ-ENTRY01/02/03 and PRESERVE01; scoped rule Git delivery",
+  "next_action": "Finish document/scope/history checks and record-only binding; commit/push/PR, actual selected CI and rules, squash then safe dual-device main sync/readback. No app/package release, runtime loading or conformance claim.",
   "blockers": [],
   "milestones": [
     {
@@ -31,6 +31,11 @@
       "id": "review",
       "label": "Document evidence and independent read-only review",
       "status": "completed"
+    },
+    {
+      "id": "git005",
+      "label": "Scoped rule Git integration and safe main sync",
+      "status": "active"
     }
   ],
   "agents": [
@@ -38,15 +43,15 @@
       "id": "controller",
       "label": "Same Mini primary, sole author",
       "model": "Current session gpt-6.1-sol/high, existing explicit user consent; parent permissions unchanged",
-      "status": "complete",
-      "activation": "Current user explicitly starts new bounded R0 task"
+      "status": "active",
+      "activation": "Same task and session; current explicit user Git-delivery authority"
     },
     {
       "id": "juaner_validator",
-      "label": "Native independent read-only review",
+      "label": "Original scoped independent review; record-only identity binding",
       "model": "Actual CLI gpt-6.1-sol/high/read-only/never, exact role instructions verified",
       "status": "complete",
-      "activation": "New R0 user-specific permission, candidate003 scoped PASS; original native BLOCKED retained"
+      "activation": "Original003 scoped PASS only; no new review or other-session messaging. Current005 is record-only binding if content/base unchanged."
     }
   ],
   "metrics": [],
@@ -68,19 +73,25 @@
       "label": "Checks/evidence/limits",
       "path": "openspec/changes/plugin-standard-read-entry/verification.md",
       "status": "present"
+    },
+    {
+      "id": "GIT005",
+      "label": "Current user authority, evidence binding and actual Git receipt entry",
+      "path": "openspec/changes/plugin-standard-read-entry/git-delivery-005.md",
+      "status": "present"
     }
   ],
   "risks": [
     {
-      "id": "LOCAL_ONLY",
-      "label": "Unpublished local rule candidate, no receiver adoption proof",
+      "id": "ADOPTION_NOT_PROVED",
+      "label": "Rule integration does not prove session loading or implementation conformance",
       "level": "low",
-      "mitigation": "Return actual diff and evidence; separate future Git authority, no automatic injection claim."
+      "mitigation": "Report real Git and sync identities separately; no forced migration or runtime claim."
     }
   ],
-  "updated_at": "2026-10-17T01:40:04.941Z",
+  "updated_at": "2026-10-17T01:53:43.524Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a14778-e957-74c1-a5b4-9ebd0e259c00"
+    "session": "mini-engineering:01a13fd7-06aa-7363-b6f4-24ba8f825266:01a1478c-f3b0-7932-82ca-3435e71602e1"
   }
 }

@@ -1,3 +1,5 @@
+> Current phase: same-task Git delivery now explicitly authorized. Original local004 and independent003 conclusions below remain their historical scope; current publication checks/identity/actual results are recorded in [Git005](git-delivery-005.md). No application/package release or automatic adoption/conformance claim.
+
 > Current result: scoped independent CLI PASS for candidate003; local rule candidate ready for user review. Earlier pending/native BLOCKED records retain their historical identity. No Git publication or receiver adoption.
 
 # Verification and return point
