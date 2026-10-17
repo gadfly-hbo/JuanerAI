@@ -59,14 +59,17 @@ than copying it. Models and configuration are owned by `agent-model-routing.md`.
 
 ## Execution and Cross-domain Decisions
 
-Use a small behavior loop: persisted minimum sufficient spec -> causal RED -> minimal
-GREEN -> necessary refactor, then the next behavior. Correct private interfaces
+For adopted Mini engineering and assigned MacBook repair, use the sole policy's main-flow-first loop: thin behavior
+spec -> continuous implementation and early real-path trial -> ordinary feedback
+and affected checks -> concentrated formal closeout. Apply its deterministic
+versus exploration/model-quality evidence rules. Correct private interfaces
 and stale fixtures in that loop. Material public/persistent/authority contracts
 get targeted impact review; user-boundary changes go directly to the user.
 Only affected work stops. CONTRACT_CHANGE_REQUEST is for material decisions,
 not routine private adjustments.
 
-OpenSpec tasks.md remains the Change plan. AgentOps Task Bus stays inactive
+Reuse the original OpenSpec plan/result records; ordinary corrections update one
+existing result record rather than a full document suite. AgentOps Task Bus stays inactive
 unless separately authorized; no additional task ledger is introduced.
 The main Agent is the single engineering author and state writer; Validator is
 read-only. At ordinary milestones report progress and continue the approved

@@ -3,9 +3,11 @@
 Authority and stop conditions come from
 `docs/governance/product-change-execution-policy.md`.
 
-- Before each behavior's implementation, write its minimum sufficient OpenSpec and
-  acceptance reference, write the test, and run a causal expected RED. Then
-  implement minimal GREEN and refactor only while GREEN.
+- Adopted Mini engineering and assigned MacBook repair follow the sole policy's Continuous SDD and TDD section:
+  thin spec, early real-path feedback and affected checks; deterministic behavior
+  and exploration/model quality use their applicable evidence, not a universal
+  test-first phase. Other work retains minimum OpenSpec/acceptance before each
+  behavior, causal expected RED, minimal GREEN and refactor only while GREEN.
 - Pure refactors use pre/post GREEN and relevant equivalence evidence;
   documentation-only work does not fabricate RED.
 - Prefer domain unit tests for pure rules, real-boundary integration tests,
@@ -20,6 +22,9 @@ Authority and stop conditions come from
   required assertion.
 - Mocks may isolate unrelated external systems but cannot replace the core
   behavior being proved.
+- Use the sole policy's Deterministic Contracts and Model Quality section for
+  guarantee-specific evidence; structural/replay success is not semantic quality
+  or user acceptance, and known important quality failures remain failures.
 - Apply the sole policy's CI reliability rules to validation-tool changes:
   exercise the actual entry and selection/failure paths, retain deterministic
   false-positive regressions, and measure optimized fixtures before/after.

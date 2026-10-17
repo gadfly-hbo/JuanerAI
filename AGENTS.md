@@ -131,7 +131,11 @@ For every Change, consult relevant earlier research Demos as reference for effic
 Dual-device product Changes follow the continuous-engineering default,
 adoption conditions and authority boundaries in
 `docs/governance/product-change-execution-policy.md`.
-For same-batch approval/UI Contract reuse, early internal trial versus formal
+For adopted Mini engineering and assigned MacBook trial/repair, use that policy's
+Continuous SDD and TDD and MacBook Trial and Bounded Bug Repair sections for thin
+records, affected real-path checks and concentrated closeout. MacBook product
+planning and governance are unchanged. For same-batch
+approval/UI Contract reuse, early internal trial versus formal
 Change/stage completion, and browser versus Desktop verification applicability,
 apply that policy's Product Input, Verification Cadence and Fixed-Code sections.
 
@@ -177,7 +181,7 @@ Before sizing a Change or diagnosing repeated non-convergent work, read `docs/go
 ## Testing
 
 - Derive tests from Requirement and Acceptance Criteria IDs.
-- Establish an expected RED caused by missing behavior before production implementation.
+- Apply the sole policy's Continuous SDD and TDD evidence rules; work outside adopted Mini engineering and assigned MacBook repair retains causal RED before behavior implementation.
 - One engineering agent may maintain authorized tests, code and necessary engineering design; final evaluation remains independent from all candidate authors.
 - Preserve assertions and negative cases during implementation.
 - Require contract tests for every replaceable Adapter.
@@ -212,9 +216,9 @@ same engineering main context, focused Validator input, native-first execution w
 explicitly user-consented CLI exceptions, verified stopping and an explicit
 continuation path.
 
-The main Agent writes the actual OpenSpec proposal/reference, behavior specs,
-tasks and verification records; necessary design remains explicit. Preserve
-causal RED before implementation, GREEN, regression and acceptance traceability.
+Mini keeps the thin behavior spec and existing result record under the sole
+policy, linking necessary design, applicable behavior evidence and regression.
+An ordinary correction does not recreate a full document suite.
 Before ending an engineering turn, check the current result, real stop boundary
 and next action under the sole policy. A progress milestone is not a stop request.
 A missing Validator blocks final independent verification, not safe independent
@@ -235,6 +239,9 @@ Read docs/governance/agent-model-routing.md before spawning a project subagent o
 - Pi is treated as a trusted-local runtime in the personal profile, not as an enterprise security boundary.
 
 Read docs/architecture/data-authority.md and docs/architecture/security-boundaries.md before data, model, agent-tool, action, or enterprise work.
+Apply the sole execution policy's Personal Trial Data and Effect Boundaries and
+Deterministic Contracts and Model Quality sections for current risk investment,
+task-level authorization reuse and the evidence each guarantee actually needs.
 
 ## Development Material Preservation
 
@@ -252,10 +259,12 @@ Read docs/architecture/data-authority.md and docs/architecture/security-boundari
 
 ## Validation and Completion
 
-Use `tools/harness/validation/run` as the canonical default offline validation command. It establishes the approved command-local toolchain, runs the accepted deterministic suites, and always removes the real-model test gate; it has no real-model mode. Any actual provider/model invocation requires separate explicit user authorization and a Change-specific command. Every Change must still name its applicable focused validation commands and evidence level before implementation.
+Use `tools/harness/validation/run` as the canonical default offline validation command. It establishes the approved command-local toolchain, runs the accepted deterministic suites, and always removes the real-model test gate; it has no real-model mode. Actual provider/model invocations require valid explicit task-scoped authorization and a Change-specific command. Reuse that grant within its approved data, tools, model purposes/routes, recipients, resources and validity; decide only missing, expired, revoked or materially changed authority. Engineering development permission is not product data or external-effect permission. Every Change must still name its applicable focused validation commands and evidence level before implementation.
+For adopted Mini or assigned MacBook repair iteration, this is the full-check entry when applicable, not a
+prerequisite for each correction or early real-path trial; use the sole policy's cadence.
 
-No behavior-changing Change is engineering-complete without approved behavior and its current specification, causal RED,
-GREEN tests, required regression and quality checks, scope verification,
+No behavior-changing Change is engineering-complete without approved behavior and its current specification, applicable behavior evidence under the sole policy,
+passing target tests, required regression and quality checks, scope verification,
 traceability, independent verification or an explicit user-authorized risk
 waiver, Engineering Acceptance, and the applicable OpenSpec archive. Product
 completion additionally requires the user's product acceptance when the frozen

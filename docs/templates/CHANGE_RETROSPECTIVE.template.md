@@ -25,7 +25,7 @@ correction. Fill known material facts; do not invent historical timing/counts.
 | Evidence | Expected | Final Result | Source |
 |---|---|---|---|
 | Requirements and AC closure | | | |
-| expected RED | | | |
+| applicable behavior evidence under the sole policy (RED or authorized exploration/model-quality observations) | | | |
 | target GREEN | | | |
 | contract/regression | | | |
 | real runtime or external proof | | | |

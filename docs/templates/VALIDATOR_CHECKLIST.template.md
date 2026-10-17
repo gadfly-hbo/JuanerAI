@@ -37,11 +37,12 @@ Formatting preferences and optional template fields are not delivery blockers.
 
 ## Test Integrity
 
-- [ ] Current proposal/reference, persisted specs, tasks and verification support
-  the delivered scope; necessary design and REQ/AC traceability are accessible.
-  Check actual causal ordering, not only file existence or retrospective claims.
+- [ ] Current behavior, necessary design and acceptance evidence support the
+  delivered scope under the sole policy's Continuous SDD and TDD section.
+  Adopted Mini engineering and assigned MacBook repair use thin specs/existing result records; other work retains its
+  document requirements. Check substance, not a recreated document suite.
 
-- [ ] Expected RED was causal and captured before production implementation.
+- [ ] Behavior evidence and causal ordering match that section's applicable rules; exploration/model quality is not proved by a double, and no later test impersonates past RED.
 - [ ] Tests were not weakened during implementation.
 - [ ] Helper/environment health is independent of target behavior.
 - [ ] Material invariants use independent positive, negative, boundary, failure, and forbidden-side-effect leaves where applicable.
@@ -82,7 +83,7 @@ Formatting preferences and optional template fields are not delivery blockers.
 - [ ] Unit, contract, integration, E2E, syntax, static, and real-runtime counts reproduce as required.
 - [ ] Toolchain, dependency versions and applicable CI commands/inputs match current executable definitions and approved artifacts; distinguish local subsets from actual CI results.
 - [ ] Critical hashes match frozen inputs.
-- [ ] `verification.md` current verdict, traceability, test output, Engineering Controller state, and project board agree.
+- [ ] The applicable existing result/verification record's current verdict, traceability, test output, Engineering Controller state, and project board agree.
 - [ ] Residual risks and mixed external evidence are disclosed without being converted into PASS by omission.
 - [ ] Archive candidates have a current baseline, exact archive destination, and valid project-board references.
 - [ ] Material new Blueprint capability claims match the entry's target scope and completion conditions; plan/code/connected path/acceptance are distinct. Any newly accepted target has fixed cross-Change integration, real-path, scenario/boundary and required user acceptance evidence, not an inference from one example or several parts.
