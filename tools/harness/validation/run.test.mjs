@@ -177,6 +177,7 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/integration/xanthil-desktop/shared-runtime-state.integration.test.ts",
     "tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts",
     "tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts",
+    "tests/integration/xanthil-desktop/xlsx-package-root.integration.test.ts",
     "tests/integration/xanthil-desktop/browser-companion-process.test.mjs",
     "tests/integration/xanthil-desktop/browser-service-view.test.mjs",
     "tests/integration/xanthil-desktop/browser-workspace-view.test.mjs"

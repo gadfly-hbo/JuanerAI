@@ -56,8 +56,11 @@ def xlsx(raw):
         rels={}
         for rel in relationships:
             key=rel.get('Id'); target=rel.get('Target','')
-            if not key or key in rels or target.startswith('/') or '..' in target.split('/') or '\\' in target: fail('SOURCE_ARCHIVE_INVALID')
-            rels[key]=(rel.get('Type'),posixpath.join('xl',target))
+            if not key or key in rels or not target or target.startswith('//') or '..' in target.split('/') or any(c in target for c in ('\\',':','?','#','%')): fail('SOURCE_ARCHIVE_INVALID')
+            # A single leading slash names a package part, never a filesystem path.
+            part=target[1:] if target.startswith('/') else posixpath.join('xl',target)
+            if part!=posixpath.normpath(part) or part not in names: fail('SOURCE_ARCHIVE_INVALID')
+            rels[key]=(rel.get('Type'),part)
         sheets=workbook.find('{'+NS+'}sheets')
         if sheets is None or not 1<=len(sheets)<=64: fail('SOURCE_CAPACITY')
         result=[]; ids=set(); titles=set(); cells_seen=0; value_bytes=0
