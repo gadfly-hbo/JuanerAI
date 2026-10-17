@@ -1,0 +1,116 @@
+{
+  "baseline": "a0b6491ddc4700fef881317f44f2c51c699d8f9c",
+  "files": [
+    {
+      "path": "openspec/changes/decision-platform-integration/proposal.md",
+      "bytes": 14644,
+      "sha256": "1e0553f355537c8da4fb2ecba6db14ed14db314914f3f34b78b4d6663dbfbc2a"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/design.md",
+      "bytes": 6110,
+      "sha256": "d6bc56c4481090df79bc21d11c23367eed463825c24513104ad77c75e0f0f56f"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/tasks.md",
+      "bytes": 1269,
+      "sha256": "ed6a415350ee2e7432b31e1cc36d6f8d6a94461a322b8d2f0c189b67a8894009"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/ui-contract.md",
+      "bytes": 6694,
+      "sha256": "557cd930399564fa2f22aceaecb8f4383874d961764507766975182d3f0a48d3"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/index.html",
+      "bytes": 1470,
+      "sha256": "9664ca235857103f5c58f8b41fe9e722d6b7b184a5b115a82bff5ab12d250a98"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/integration.css",
+      "bytes": 2645,
+      "sha256": "b39d83402756b6d6723e71d7a42ab27fd7524410b49ed4c5d874ee1ad6bfe7ab"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/prototype.js",
+      "bytes": 292909,
+      "sha256": "986a61b100d354688e982164c316c079a21bb94aa8e8263265f3c71cabb23ff7"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/prototype.tsx",
+      "bytes": 26513,
+      "sha256": "a75b561417fee2d95773fbfa4319f52b846909b3d1add4902971653442293ca5"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/App.css",
+      "bytes": 32157,
+      "sha256": "14e00cdc620f20768b76e20f433a18f2231bf4d2d942da63ebb02c22ab572e37"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/ActionFilters.tsx",
+      "bytes": 9475,
+      "sha256": "880fb9aa48a5136127f5da782e47d18825015cb36a737e1e52a1d981f217394d"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/ActionItemCard.tsx",
+      "bytes": 9168,
+      "sha256": "4b8850fd5821e2698d1728504f30d40c363f863d8de6014153eb09825ba05a0e"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/DismissDialog.tsx",
+      "bytes": 3700,
+      "sha256": "8e2f8e0235ed3b899a2357cee902df39904902cf206e352133a31023d6ca2573"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/FeedbackForm.tsx",
+      "bytes": 6312,
+      "sha256": "467ac8186089a2263f9a39854c9fc045562cff59c4fbc745d23c90a1f5ad0267"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/PresentationMode.tsx",
+      "bytes": 19361,
+      "sha256": "19753c94d354a5a4cbf4bd8c85e4a003b6c75eb36d02959ece4ee8a7406e187d"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/TaskList.tsx",
+      "bytes": 8823,
+      "sha256": "b90d22f7c404b3508cc84ca241bb1ea1e23799e80c8c5ffa5ff54aa06c9ce1e0"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/WorkbenchShell.tsx",
+      "bytes": 729,
+      "sha256": "6c5e45987ce93756b490eaa419bf898a5361f610c4c981c107c43813cfa80001"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/data/format.ts",
+      "bytes": 2533,
+      "sha256": "24f890b047b9cedff8a4b4cc4154d345a6d1630faa6e37a20a3cf13da3cfbdd2"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/data/index.ts",
+      "bytes": 400,
+      "sha256": "b96c3eed49d940216591b533214156f7cfc14a34ebfdcd1a773e7da897ede8be"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/data/report-formats.ts",
+      "bytes": 2601,
+      "sha256": "d8c21e6c2863ee4b8be0e230300079360f5bbb27678247a500e8118776f3d9e3"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/data/types.ts",
+      "bytes": 4014,
+      "sha256": "73891263e92d542855198078215231c85d66003c17873ef4e9192dcc3177b28e"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/index.css",
+      "bytes": 338,
+      "sha256": "7aeea6975e44bbcffb6d4a385b27630fb6f4b08266cbc9debb31222bb53a660a"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/styles/tokens.css",
+      "bytes": 1854,
+      "sha256": "e3e98b4f98ce872f9dcc7ce4ca5c4559890ece559fef854242190e85828ee32e"
+    }
+  ],
+  "purpose": "Narrow correction: freeze accepted request target and scope synthetic permission by report; browser NOT_RUN"
+}

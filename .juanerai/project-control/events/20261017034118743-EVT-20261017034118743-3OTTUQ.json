@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017034118743-3OTTUQ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T03:41:18.743Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "006r1有限复核PASS，交付统一视觉的看板与汇报直接示例",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

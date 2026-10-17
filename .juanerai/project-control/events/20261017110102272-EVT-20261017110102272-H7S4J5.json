@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017110102272-H7S4J5",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-17T11:01:02.272Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a14983-c531-7120-89f4-69c3a375efee"
+  },
+  "summary": "接收用户Git交付授权，沿原任务分支进入最终交付，不扩大运行权限",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,49 @@
+import {decisionReturnSummary} from '../../apps/browser/decision-platform-client.mjs';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+import {createDecisionHistoryReader} from '../../adapters/decision-platform/history.ts';
+import assert from 'node:assert/strict';
+import {mkdirSync,readFileSync,writeFileSync,realpathSync,readdirSync,lstatSync} from 'node:fs';import {join,relative} from 'node:path';import {randomUUID,createHash} from 'node:crypto';
+import {buildSyntheticDecisionRuntime} from '../../tools/decision-platform/build-synthetic-runtime.mjs';
+import {createPersonalDecisionRuntime,createPersonalDecisionWorkspace} from '../../profiles/personal/decision-platform.ts';
+import {verifyDecisionMaterials,loadDecisionResourceBundle} from '../../adapters/decision-platform/materials.ts';
+import {modelRecipient} from '../../adapters/decision-platform/extraction-scope.ts';
+import {createLocalOpenAnalysisStore} from '../../adapters/storage-local/open-analysis.ts';
+import {createOpenAnalysisWorkspace} from '../../packages/application/open-analysis-workspace.ts';
+import {taskHash} from '../../packages/product-core/member-task.ts';
+import {startBrowserMembershipServer} from '../../apps/browser/local-server.ts';
+const [E,esbuildPath,runName,resourceRoot,resourceHash]=process.argv.slice(2);if(!E||!esbuildPath||!runName||!/^[a-z0-9-]+$/.test(runName))throw Error('usage: verify-host-profile.mjs evidence-root esbuild-path run-name');const host=fileURLToPath(new URL('../../',import.meta.url)).replace(/\/$/,''),run=join(E,runName);
+const resource=resourceRoot?await loadDecisionResourceBundle(resourceRoot,resourceHash):null;
+if(resource)mkdirSync(run);
+const built=resource?{...resource,program:resource.programRoot,entry:resource.entry.path,models:JSON.parse(readFileSync(join(resourceRoot,'provenance/models.json')))}:await buildSyntheticDecisionRuntime({source:join(E,'upstream-recovery-source-001'),receiptPath:join(E,'runtime-material-receipt-c11f8da.json'),run,host,dependencies:join(E,'runtime-synthetic-source-001/node_modules'),esbuildPath});
+const sha=x=>createHash('sha256').update(x).digest('hex');
+function manifest(root){const files=[];function walk(path){for(const name of readdirSync(path)){const full=join(path,name),stat=lstatSync(full);if(stat.isDirectory())walk(full);else files.push({path:relative(root,full),bytes:stat.size,mode:stat.mode&0o777,sha256:stat.isSymbolicLink()?'0'.repeat(64):sha(readFileSync(full)),...(stat.isSymbolicLink()?{link:realpathSync(full)}:{})});}}walk(root);return {root,files};}
+const materials=resource?[manifest(resourceRoot)]:[manifest(built.program),manifest(realpathSync(join(E,'runtime-synthetic-source-001/node_modules')))];writeFileSync(join(run,'materials.json'),JSON.stringify(materials,null,2));
+const node=resource?.node.path??realpathSync(process.execPath),runtimeConfig={node:resource?.node??{path:node,sha256:sha(readFileSync(node))},entry:{path:built.entry,sha256:sha(readFileSync(built.entry))},programRoot:built.program,dataRoot:join(run,'data'),sourceCommit:built.sourceCommit,recipients:built.models.map(modelRecipient),verifyMaterials:resource?.verifyMaterials??(()=>verifyDecisionMaterials(materials))};
+const history=await import(pathToFileURL(join(built.program,'history.mjs')).href);runtimeConfig.history=createDecisionHistoryReader({dataRoot:runtimeConfig.dataRoot,sourceCommit:built.sourceCommit,board:(db,id)=>({...history.buildBoardView(db,id,{notifyConfigured:false,imConfigured:false}),hostCalibration:history.loadCalibrationContext(db,id)??null}),projects:history.listProjects});
+const projectRoot=join(run,'host-project');mkdirSync(projectRoot);const projectId=randomUUID(),taskId=randomUUID(),source={version:'1.0',sources:[]};
+const identity={task_id:taskId,revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:taskHash(source),config_sha256:'a'.repeat(64)};
+const store=createLocalOpenAnalysisStore({projectRoot});store.create({preparation:'v1',identity,source,question:'CASE_normal 合成报告闭环'});const lease=store.begin(taskId);store.saveConversationOutcome(lease,{version:'1.0',outcome_id:randomUUID(),identity,kind:'MODEL_CONVERSATION',text:'CASE_normal 只有合成内容，未经真实资料核验。',verification:'not_performed',human_judgment:'not_recorded'});
+const open=createOpenAnalysisWorkspace({store,runtime:{},ledger:{read:()=>[]}});
+let runtime=createPersonalDecisionRuntime(runtimeConfig),workspace;
+const makeWorkspace=()=>createPersonalDecisionWorkspace({projectRoot,projectId,runtime,check:()=>{},readTask:id=>store.read(id),reportCopy:open.reportCopy});workspace=makeWorkspace();
+let server=await startBrowserMembershipServer({store:{},workspace:{},decisionPlatform:{project:id=>{assert.equal(id,projectId);return workspace;}}});
+let sessionPid;const checks=[];
+try{
+ const boot=await fetch(server.origin+'/v1/bootstrap',{method:'POST',headers:{origin:server.origin,'content-type':'application/json'},body:JSON.stringify({token:server.bootstrap})}),cookie=boot.headers.get('set-cookie').split(';')[0],control=(await boot.json()).control;
+ const base='/v1/decision-platform/projects/'+projectId+'/tasks/'+taskId;
+ async function request(tail,body){const r=await fetch(server.origin+base+'/'+tail,{headers:{cookie,...(body===undefined?{}:{origin:server.origin,'content-type':'application/json','x-xanthil-control':control})},...(body===undefined?{}:{method:'POST',body:JSON.stringify(body)})});return {status:r.status,value:await r.json()};}
+ const catalog=(await request('catalog')).value;assert.equal(catalog.length,1);const selectionId=catalog[0].id;assert.match(open.reportCopy(taskId,'1',store.read(taskId).conversation_outcome.outcome_id,true).bytes.toString(),/不构成|不是正式|不.*正式/);
+ assert.equal(runtime.state(),'idle');assert.equal((await request('send',{selectionId,operationId:randomUUID()})).status,409);assert.equal(runtime.state(),'idle');
+ const permission=(await request('permission',{selectionId})).value;assert.equal(permission.allowed,false);assert.equal((await request('grant',{selectionId,scope:permission.scope})).status,200);
+ const operationId=randomUUID(),sent=await request('send',{selectionId,operationId});assert.equal(sent.status,200,JSON.stringify(sent));const link=sent.value;sessionPid=(await runtime.start()).pid;writeFileSync(join(run,'owned-pid.json'),JSON.stringify({pid:sessionPid,node,entry:built.entry,resourceRoot:resourceRoot??null,resourceHash:resourceHash??null}));
+ let snapshot;for(let i=0;i<100;i++){snapshot=(await request('board')).value;if(snapshot.view?.reports[0]?.status==='done')break;await new Promise(r=>setTimeout(r,20));}
+ assert.equal(snapshot.view.reports[0].status,'done');assert.equal(snapshot.state.unknown,false);assert.equal(snapshot.reports[0].source.sha256,catalog[0].source.sha256);assert.equal(snapshot.view.project.purpose.includes('JuanerAI:'),false);assert.deepEqual((await request('send',{selectionId,operationId})).value,link);checks.push('actual host SQLite saved report and application reportCopy -> permission -> real SDK asynchronous extraction');
+ const action=snapshot.view.actionItems[0],write=async command=>{const result=await request('write',{operationId:randomUUID(),command});assert.equal(result.status,200,JSON.stringify(result));return result.value;};
+ await write({type:'action',id:action.id,status:'adopted'});const task=await write({type:'task-create',actionId:action.id,fields:{title:'跟进合成建议',owner:'合成角色',dueDate:'2026-10-20',status:'todo',priority:'medium',note:''}});
+ await write({type:'feedback',id:task.id,adopted:true,outcome:'仅人工合成记录',metricDelta:'',review:'尚未独立核验',score:4});
+ snapshot=(await request('board')).value;assert.equal(snapshot.view.actionItems[0].tasks[0].feedback.score,4);const returned=decisionReturnSummary(snapshot,taskId,'1');assert.equal(returned.reportCount,1);assert.equal(returned.feedbackCount,1);assert.equal(returned.reports[0].sourceId,catalog[0].source.sourceId);assert.equal(decisionReturnSummary(snapshot,taskId,'2').reportCount,0);assert.equal(decisionReturnSummary(snapshot,randomUUID(),'1').reportCount,0);checks.push('host authenticated HTTP adoption -> task -> feedback with durable readback and exact host return projection');
+ await runtime.close();await server.close();runtime=createPersonalDecisionRuntime(runtimeConfig);workspace=makeWorkspace();snapshot=await workspace.board(taskId);sessionPid=(await runtime.start()).pid;
+ assert.equal(snapshot.view.actionItems[0].tasks[0].feedback.score,4);const again=workspace.catalog(taskId)[0];assert.equal((await workspace.permission(taskId,again.id)).allowed,false);assert.equal(snapshot.view.reports.length,1);checks.push('same fixed data reopen retains report/action/task/feedback and does not restore external permission');
+ process.kill(sessionPid,'SIGTERM');for(let i=0;i<100&&runtime.state()!=='unknown';i++)await new Promise(r=>setTimeout(r,10));assert.equal(runtime.state(),'unknown');const historical=await workspace.board(taskId);assert.equal(historical.state.unknown,true);assert.equal(historical.view.actionItems[0].tasks[0].feedback.score,4);await assert.rejects(workspace.write(taskId,randomUUID(),{type:'action',id:action.id,status:'adopted'}),/DP_BUSY_OR_UNKNOWN/);checks.push('owned process interruption preserves lock/UNKNOWN and offers read-only fixed-plugin history without restart');
+ writeFileSync(join(run,'result.json'),JSON.stringify({status:'PASS',checks,commit:built.sourceCommit,hostHead:'a0b6491ddc4700fef881317f44f2c51c699d8f9c',actualProviderCalls:false,actualBrowser:'NOT_RUN',materialFiles:materials.map(r=>r.files.length)},null,2));console.log(JSON.stringify({status:'PASS',checks}));
+}finally{await server.close();try{await runtime.close();}catch(error){writeFileSync(join(run,'teardown-unknown.json'),JSON.stringify({message:error.message,pid:sessionPid}));if(sessionPid)try{process.kill(sessionPid,'SIGTERM')}catch{}}}

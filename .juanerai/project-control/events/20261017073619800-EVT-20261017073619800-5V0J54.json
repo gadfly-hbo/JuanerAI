@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017073619800-5V0J54",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T07:36:19.800Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "非浏览器回归完成；保留原失败与SKIP，进入测试增量独立复核",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,3 +1,20 @@
+## decision-platform 012 · 本地产品接受与本轮收口（2026-10-17）
+
+用户已明确“012产品验收通过”；工程接受为具名风险处置后的限定接受，原独立BLOCKED及danger-full-access、历史RED缺口和两项豁免不改。当前只完成固定012、006r1合同、浏览器/同机服务、合成模型与隔离数据的插件接入子范围。032规范4903项：4882PASS/0FAIL/21原条件SKIP，固定证据与完整独立限定复核可读回。未Git整合或发布，正式Change归档未执行。
+
+| 映射 | 本轮新增的限定接受 | 仍未覆盖 |
+|---|---|---|
+| C5-01/05/06/07/09 | 原报告进入完整看板/汇报，插件内人工采纳、任务、反馈、关联与重开，原名/版本保留 | 宿主正式Decision/Actual、现实动作/独立回执、合格观察及结果评价；不提升整个C5能力族 |
+| C1-03、A-05 | 任务/来源/版本隔离及回程的插件子接缝 | 完整OSM/PIM阶段及更广业务场景 |
+| A-04、B-01/02/03 | 固定SDK逐次授权、共享一次恢复机会、两次准入上限、UNKNOWN/原回执及人工记录边界 | 真实Provider质量/消费、企业权限、正式发行安装及生产 |
+| C6-02/03/04 | project teach仅作为本插件任务后续抽取上下文，边界已接受 | 不自动晋升共享资产，不关闭N07/N08及受治理改进/下一Case采用/学习有效性 |
+
+全40稳定ID的状态类别本轮变化 **0**；六条产品线及两项横切能力、S1/S2/S4仍保持原未覆盖项。本条增加插件子范围的本地产品接受证据，不把它替换成整体能力或阶段完成。
+
+[用户接受与边界](../../../openspec/changes/decision-platform-integration/product-acceptance.md) · [工程接受/具名风险](../../../openspec/changes/decision-platform-integration/engineering-acceptance.md) · [本地收口/返回点](../../../openspec/changes/decision-platform-integration/local-closeout.md) · [完整登记](register.md)
+
+以下历史按原时点保留。
+
 ## 插件接入沉淀 · 正式Git交付005（候选时记录，实际结果见回执）
 
 同一任务已获Git交付授权；003 PASS/004仅原作用域复用，新状态及main整合另验并取得确切head full CI。[当前交付与身份](../../../openspec/changes/plugin-integration-consolidation/git-delivery-005.md)。40ID业务能力增量0，C5-09局部、S1/S4不关闭；以下旧记录保持原时点。

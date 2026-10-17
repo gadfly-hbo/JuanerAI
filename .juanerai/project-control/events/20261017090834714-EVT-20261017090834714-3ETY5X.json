@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017090834714-3ETY5X",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T09:08:34.714Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a14911-548f-7fb3-9510-c1061c50229f"
+  },
+  "summary": "真实宿主正常准入及010限定浏览器闭环/UNKNOWN已执行；焦点FAIL与余下补验保留，未改固定代码",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

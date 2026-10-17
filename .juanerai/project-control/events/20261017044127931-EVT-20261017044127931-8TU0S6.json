@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017044127931-8TU0S6",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T04:41:27.931Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "c11f8da原仓修正固定、204检查及构建通过，派发独立Validator",
+  "status_after": "validating",
+  "evidence_refs": []
+}

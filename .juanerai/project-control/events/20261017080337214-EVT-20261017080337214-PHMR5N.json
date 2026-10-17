@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017080337214-PHMR5N",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T08:03:37.214Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "原地址同通道复核仍拒绝，保留010及实际UI待补验",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

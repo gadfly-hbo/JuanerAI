@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017071355377-BAJD2Q",
+  "event_type": "decision_resolved",
+  "occurred_at": "2026-10-17T07:13:55.377Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "用户接受候选007历史RED及本次只读sandbox例外；实际UI补验仍等待通道恢复",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

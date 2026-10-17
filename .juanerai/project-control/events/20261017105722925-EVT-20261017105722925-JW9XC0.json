@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017105722925-JW9XC0",
+  "event_type": "accepted",
+  "occurred_at": "2026-10-17T10:57:22.925Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a1497d-a925-71d2-abd6-b6b9e62f7820"
+  },
+  "summary": "012用户产品接受已记录；获准本地收口完成，034安全关闭；原BLOCKED/具名豁免保留，Git和正式归档未执行",
+  "status_after": "complete",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017045418421-N3ZY07",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T04:54:18.421Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "上游固定修正独立PASS；真实子进程闭环PASS，继续宿主业务接线",
+  "status_after": "validating",
+  "evidence_refs": []
+}

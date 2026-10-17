@@ -1,0 +1,171 @@
+{
+  "baseline": "a0b6491ddc4700fef881317f44f2c51c699d8f9c",
+  "purpose": "User requests board visual alignment and accessible presentation review; theme mapping plus explicit synthetic preview routes; no runtime",
+  "files": [
+    {
+      "path": "openspec/changes/decision-platform-integration/proposal.md",
+      "bytes": 16023,
+      "sha256": "4d3a59d01b7e11f27567d80aa16a0f875614b741599376c025f4ecbe83c137ab"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/design.md",
+      "bytes": 6182,
+      "sha256": "3768b529fada703e6c398e517d8a13fb244b78ac03c68fdcd5325489ca890b22"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/tasks.md",
+      "bytes": 1300,
+      "sha256": "32cc6e51d3acd7f3afb1db41b1955abe0f3c6744e16fca8dd9e0747484e38ab5"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/ui-contract.md",
+      "bytes": 9286,
+      "sha256": "9ec43f7b3a06ac606c6a1abf0d0be92abed4869a10a85d00649db837bafbc4bb"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/accepted-workbench/identity.json",
+      "bytes": 680,
+      "sha256": "ac719d0329a017db28324caedcbb17b9ff5fc1b3a537e25aa0fc0db912155da5"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/accepted-workbench/index.html",
+      "bytes": 1080,
+      "sha256": "8da914f6bdb48d48f6d2aa4c906759733e4b55f57e0e48de96b1e049f02caf97"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/accepted-workbench/model.js",
+      "bytes": 7550,
+      "sha256": "492183eca1c183837bb678921f68554ca03026084677c56d207030c0194a5398"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/accepted-workbench/prototype.js",
+      "bytes": 42890,
+      "sha256": "ecc3658cdbfe8d5aded09270d5059615a34aa59d0c943fb23b51f0fdaed0e0c7"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/accepted-workbench/style.css",
+      "bytes": 11404,
+      "sha256": "644d009b740e1358634728f3b14b26770d275a2b1fd00e0dde4e7ccaa21f8e37"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/host-theme.css",
+      "bytes": 8318,
+      "sha256": "7750c226aaf1f21f7fd4dcf22fd947ecbe7dd913990a25c8ff415033d6d97da5"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/host-workbench.js",
+      "bytes": 45134,
+      "sha256": "3af54137bb977396d548123b75cd8c6ffe81f2c89c100b8720a5b7a517dd80b1"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/index-005.html",
+      "bytes": 1544,
+      "sha256": "d5366270725eaf1891f189082d7fb863b9a123028250b81d58634dfc96f8a1c0"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/index-006-board.html",
+      "bytes": 1541,
+      "sha256": "7bba074bd265fcbafd5f3b7ea3ca6dd40ae6e412bbe18be158d4ed0d8e34f50a"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/index-006-presentation.html",
+      "bytes": 1548,
+      "sha256": "2f47b65f63cd4d1c74d6fbabfb3fe7d52aa806cc9de12d1b6c15afd42ea2d8de"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/index-006.html",
+      "bytes": 1544,
+      "sha256": "d5366270725eaf1891f189082d7fb863b9a123028250b81d58634dfc96f8a1c0"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/index.html",
+      "bytes": 1544,
+      "sha256": "d5366270725eaf1891f189082d7fb863b9a123028250b81d58634dfc96f8a1c0"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/integration.css",
+      "bytes": 3294,
+      "sha256": "3804765263580629b284a629a61f2c9d9629c448360748c960a4e7271eab7a48"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/prototype.js",
+      "bytes": 290710,
+      "sha256": "c4682b1564f5fcdba1941598f2389d2030f0a1c274064a4b0594a0d2c5bbb5a1"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/prototype.tsx",
+      "bytes": 25544,
+      "sha256": "7652761d60ac8d852f10fb3cc377549bd1663c73ac1e094b55c0ce23e1991675"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/App.css",
+      "bytes": 32157,
+      "sha256": "14e00cdc620f20768b76e20f433a18f2231bf4d2d942da63ebb02c22ab572e37"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/ActionFilters.tsx",
+      "bytes": 9475,
+      "sha256": "880fb9aa48a5136127f5da782e47d18825015cb36a737e1e52a1d981f217394d"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/ActionItemCard.tsx",
+      "bytes": 9168,
+      "sha256": "4b8850fd5821e2698d1728504f30d40c363f863d8de6014153eb09825ba05a0e"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/DismissDialog.tsx",
+      "bytes": 3700,
+      "sha256": "8e2f8e0235ed3b899a2357cee902df39904902cf206e352133a31023d6ca2573"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/FeedbackForm.tsx",
+      "bytes": 6312,
+      "sha256": "467ac8186089a2263f9a39854c9fc045562cff59c4fbc745d23c90a1f5ad0267"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/PresentationMode.tsx",
+      "bytes": 19361,
+      "sha256": "19753c94d354a5a4cbf4bd8c85e4a003b6c75eb36d02959ece4ee8a7406e187d"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/TaskList.tsx",
+      "bytes": 8823,
+      "sha256": "b90d22f7c404b3508cc84ca241bb1ea1e23799e80c8c5ffa5ff54aa06c9ce1e0"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/components/WorkbenchShell.tsx",
+      "bytes": 729,
+      "sha256": "6c5e45987ce93756b490eaa419bf898a5361f610c4c981c107c43813cfa80001"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/data/format.ts",
+      "bytes": 2533,
+      "sha256": "24f890b047b9cedff8a4b4cc4154d345a6d1630faa6e37a20a3cf13da3cfbdd2"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/data/index.ts",
+      "bytes": 400,
+      "sha256": "b96c3eed49d940216591b533214156f7cfc14a34ebfdcd1a773e7da897ede8be"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/data/report-formats.ts",
+      "bytes": 2601,
+      "sha256": "d8c21e6c2863ee4b8be0e230300079360f5bbb27678247a500e8118776f3d9e3"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/data/types.ts",
+      "bytes": 4014,
+      "sha256": "73891263e92d542855198078215231c85d66003c17873ef4e9192dcc3177b28e"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/index.css",
+      "bytes": 338,
+      "sha256": "7aeea6975e44bbcffb6d4a385b27630fb6f4b08266cbc9debb31222bb53a660a"
+    },
+    {
+      "path": "openspec/changes/decision-platform-integration/clickable/reference/styles/tokens.css",
+      "bytes": 1854,
+      "sha256": "e3e98b4f98ce872f9dcc7ce4ca5c4559890ece559fef854242190e85828ee32e"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017072839225-PQI275",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T07:28:39.225Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "登记反馈ID；恢复已授权非浏览器验收工作，浏览器依赖项单独阻塞",
+  "status_after": "active",
+  "evidence_refs": []
+}

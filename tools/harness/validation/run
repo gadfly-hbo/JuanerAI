@@ -161,3 +161,8 @@ if [ "$scope" = full ]; then
 run_group native-fixture node tests/fixtures/case-assistant/build-native-fixture.mjs
 run_group desktop-e2e node --test --test-concurrency=1 tests/e2e/xanthil-desktop/*.test.ts
 fi
+
+if [ -d tests/integration/decision-platform ]; then
+run_group decision-platform node --test tests/integration/decision-platform/*.test.ts tests/integration/decision-platform/*.test.mjs
+run_group decision-platform-ui node tools/decision-platform/build-ui.mjs --check
+fi

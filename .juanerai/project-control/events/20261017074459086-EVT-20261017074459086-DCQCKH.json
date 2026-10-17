@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017074459086-DCQCKH",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T07:44:59.086Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "008独立限定通过，继续C02本地随包资源",
+  "status_after": "active",
+  "evidence_refs": []
+}

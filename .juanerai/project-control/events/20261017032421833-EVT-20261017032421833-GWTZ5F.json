@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017032421833-GWTZ5F",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T03:24:21.833Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "005新版UI已重出，对应只读复核PASS，等待用户查看接缝",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

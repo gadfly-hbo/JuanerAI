@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017095712534-PZN2UL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T09:57:12.534Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a1491f-e64c-7781-86d0-0a899fdf7557"
+  },
+  "summary": "027 canonical portable全量通过；冻结011并继续独立评估",
+  "status_after": "validating",
+  "evidence_refs": []
+}

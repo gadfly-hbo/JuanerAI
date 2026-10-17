@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017033744824-0MYAEA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T03:37:44.824Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "006回应截图纠偏：看板与汇报视觉统一，直接审核入口已生成",
+  "status_after": "validating",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017053314703-LQAKXH",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T05:33:14.703Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-decision-platform-integration"
+  },
+  "summary": "运行授权和宿主合成闭环接线；继续完整候选验证，保留缺口",
+  "status_after": "validating",
+  "evidence_refs": []
+}

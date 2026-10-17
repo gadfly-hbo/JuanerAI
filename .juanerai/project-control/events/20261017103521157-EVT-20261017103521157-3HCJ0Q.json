@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017103521157-3HCJ0Q",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T10:35:21.157Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a1491f-e64c-7781-86d0-0a899fdf7557"
+  },
+  "summary": "012独立BLOCKED：技术反例关闭；集中等待两项具名风险决定",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

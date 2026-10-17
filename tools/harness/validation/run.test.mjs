@@ -26,6 +26,7 @@ test('TEST-XDESK-CF-RESTORATION requires full Console then Desktop phases withou
     "node --test tests/contract/xanthil-desktop/*.test.ts",
     "node --test tests/integration/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/browser-companion-process.test.mjs tests/integration/xanthil-desktop/browser-service-view.test.mjs tests/integration/xanthil-desktop/browser-workspace-view.test.mjs",
     "node --test --test-concurrency=1 tests/e2e/xanthil-desktop/*.test.ts",
+    "node --test tests/integration/decision-platform/*.test.ts tests/integration/decision-platform/*.test.mjs",
   ];
   assert.deepEqual(actual,expected);
   assert.doesNotMatch(source,/test-name-pattern|phase[_-]?selector|configuration[_-]?selector|desktop:package/);
@@ -339,6 +340,55 @@ const CHANGE006_TSCONFIG_APPENDIX = Object.freeze([
   'tests/integration/xanthil-desktop/metric-assets-browser.integration.test.ts',
 ]);
 // Report Studio adds independent exact roots; no earlier inventory is weakened.
+const DECISION_TSCONFIG_APPENDIX = Object.freeze([
+  "adapters/decision-platform/ingress.ts",
+  "tests/integration/decision-platform/ingress.integration.test.ts",
+  "adapters/decision-platform/process.ts",
+  "adapters/decision-platform/child.ts",
+  "adapters/decision-platform/material-policy.ts",
+  "packages/ports/decision-platform.ts",
+  "tests/integration/decision-platform/process.integration.test.ts",
+  "tests/integration/decision-platform/material-policy.integration.test.ts",
+  "adapters/decision-platform/store.ts",
+  "adapters/decision-platform/gateway.ts",
+  "packages/application/decision-platform.ts",
+  "tests/integration/decision-platform/store.integration.test.ts",
+  "tests/integration/decision-platform/gateway.integration.test.ts",
+  "tests/integration/decision-platform/workspace.integration.test.ts",
+  "adapters/decision-platform/history.ts",
+  "adapters/decision-platform/runtime-channel.ts",
+  "adapters/decision-platform/materials.ts",
+  "adapters/decision-platform/effects-gateway.ts",
+  "adapters/decision-platform/extraction-scope.ts",
+  "adapters/decision-platform/runtime-authorization.ts",
+  "packages/application/decision-sources.ts",
+  "packages/application/decision-effects.ts",
+  "tests/integration/decision-platform/sources.integration.test.ts",
+  "tests/integration/decision-platform/host-http.integration.test.ts",
+  "tests/integration/decision-platform/runtime-authorization.integration.test.ts",
+  "tests/integration/decision-platform/effects.integration.test.ts",
+  "tests/integration/decision-platform/extraction-scope.integration.test.ts",
+  "profiles/personal/decision-platform.ts",
+  "apps/browser/decision-platform-http.ts",
+  "tests/integration/decision-platform/materials.integration.test.ts",
+  "tests/integration/decision-platform/effects-gateway.integration.test.ts"
+]);
+const DECISION_TEST_PATHS = Object.freeze([
+  "tests/integration/decision-platform/effects-gateway.integration.test.ts",
+  "tests/integration/decision-platform/effects.integration.test.ts",
+  "tests/integration/decision-platform/extraction-scope.integration.test.ts",
+  "tests/integration/decision-platform/gateway.integration.test.ts",
+  "tests/integration/decision-platform/host-http.integration.test.ts",
+  "tests/integration/decision-platform/ingress.integration.test.ts",
+  "tests/integration/decision-platform/material-policy.integration.test.ts",
+  "tests/integration/decision-platform/materials.integration.test.ts",
+  "tests/integration/decision-platform/process.integration.test.ts",
+  "tests/integration/decision-platform/runtime-authorization.integration.test.ts",
+  "tests/integration/decision-platform/sources.integration.test.ts",
+  "tests/integration/decision-platform/store.integration.test.ts",
+  "tests/integration/decision-platform/workspace.integration.test.ts",
+  "tests/integration/decision-platform/ui-contract.integration.test.mjs"
+]);
 const REPORT_STUDIO_TSCONFIG_APPENDIX = Object.freeze([
   'packages/contracts/report-studio.ts',
   'adapters/report-studio/bundle.ts',
@@ -371,8 +421,8 @@ test('CI-REPORT-STUDIO-001: new roots reject omission, substitution, duplication
   for (const name of C1A_TUPLE_CONFIGURATION_FILES) await cp(path.join(REPO_ROOT,name),path.join(root,name));
   assert.equal(await currentRunnerTuple(root),'CF');
   const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8'));
-  const start=original.files.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length;
-  for(let i=start;i<original.files.length;i++) {
+  const start=original.files.length-DECISION_TSCONFIG_APPENDIX.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length;
+  for(let i=start;i<original.files.length-DECISION_TSCONFIG_APPENDIX.length;i++) {
     for(const [label,files] of [
       ['omit',original.files.filter((_,n)=>n!==i)],
       ['replace',original.files.map((f,n)=>n===i?'tests/unapproved.test.ts':f)],
@@ -490,19 +540,21 @@ async function currentRunnerTuple(root = REPO_ROOT) {
   assert.deepEqual(files.slice(browserStart,metricStart),CHANGE005_TSCONFIG_APPENDIX,'Change005 roots remain fixed independent literals');
   const studioStart=metricStart+CHANGE006_TSCONFIG_APPENDIX.length;
   assert.deepEqual(files.slice(metricStart,studioStart),CHANGE006_TSCONFIG_APPENDIX,'Change006 roots remain fixed independent literals');
-  assert.deepEqual(files.slice(studioStart),REPORT_STUDIO_TSCONFIG_APPENDIX,'Report Studio roots and total length are fixed independent literals');
+  const decisionStart=studioStart+REPORT_STUDIO_TSCONFIG_APPENDIX.length;
+  assert.deepEqual(files.slice(studioStart,decisionStart),REPORT_STUDIO_TSCONFIG_APPENDIX,'Report Studio roots remain fixed independent literals');
+  assert.deepEqual(files.slice(decisionStart),DECISION_TSCONFIG_APPENDIX,'Decision platform roots and total length are fixed independent literals');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }
 function expectedRunnerChildren(tuple) {
   if(tuple==='C0')return C0_RUNNER_CHILDREN;
   const child=path=>path.split('/')[1]+':'+path.split('/').at(-1)+':unset';
-  return [...C0_RUNNER_CHILDREN,...CF_CONSOLE_PATHS.map(child),...CF_DESKTOP_GROUPS.slice(0,3).flat().map(child),FIXTURE_BUILD_OBSERVATION,...CF_DESKTOP_GROUPS[3].map(child)];
+  return [...C0_RUNNER_CHILDREN,...CF_CONSOLE_PATHS.map(child),...CF_DESKTOP_GROUPS.slice(0,3).flat().map(child),FIXTURE_BUILD_OBSERVATION,...CF_DESKTOP_GROUPS[3].map(child),...DECISION_TEST_PATHS.map(child),'decision-ui:unset'];
 }
 function expectedRunnerTestTargets(tuple) {
   return tuple==='C0'?C0_RUNNER_TEST_TARGETS:[...C0_RUNNER_TEST_TARGETS,...CF_CONSOLE_PATHS,
     'tests/unit/xanthil-desktop/*.test.ts','tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs','tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs','tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs','tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs','tests/contract/xanthil-desktop/*.test.ts',
-    'tests/integration/xanthil-desktop/*.test.ts','tests/integration/xanthil-desktop/browser-companion-process.test.mjs','tests/integration/xanthil-desktop/browser-service-view.test.mjs','tests/integration/xanthil-desktop/browser-workspace-view.test.mjs','tests/e2e/xanthil-desktop/*.test.ts'];
+    'tests/integration/xanthil-desktop/*.test.ts','tests/integration/xanthil-desktop/browser-companion-process.test.mjs','tests/integration/xanthil-desktop/browser-service-view.test.mjs','tests/integration/xanthil-desktop/browser-workspace-view.test.mjs','tests/e2e/xanthil-desktop/*.test.ts','tests/integration/decision-platform/*.test.ts','tests/integration/decision-platform/*.test.mjs'];
 }
 
 function testTargetsFromRunnerSource(source) {
@@ -534,7 +586,7 @@ async function fixture(t, {
     'tests/fixtures/case-assistant',
     'tests/unit/xanthil-local-analysis',
     ...CF_CONSOLE_PATHS.map(file=>path.dirname(file)),
-    ...(runnerTuple==='CF'?['tests/e2e/xanthil-desktop']:[]),
+    ...(runnerTuple==='CF'?['tests/e2e/xanthil-desktop','tests/integration/decision-platform','tools/decision-platform']:[]),
     ...(runnerTuple !== 'C0' ? ['tests/unit/xanthil-desktop', 'tests/integration/xanthil-desktop'] : []),
     'tests/contract/xanthil-local-analysis',
     ...(runnerTuple !== 'C0' ? ['tests/contract/xanthil-desktop'] : []),
@@ -570,7 +622,7 @@ async function fixture(t, {
     'tests/integration/model-pack-contract-enabler/model-pack-contract-enabler.integration.test.ts',
     'tools/harness/project-board/project-control.test.mjs',
     'tools/harness/project-board/status-cli.test.mjs',
-    ...(runnerTuple==='CF'?[...CF_CONSOLE_PATHS,...CF_DESKTOP_GROUPS.flat(),'tests/fixtures/case-assistant/build-native-fixture.mjs']:[]),
+    ...(runnerTuple==='CF'?[...CF_CONSOLE_PATHS,...CF_DESKTOP_GROUPS.flat(),...DECISION_TEST_PATHS,'tools/decision-platform/build-ui.mjs','tests/fixtures/case-assistant/build-native-fixture.mjs']:[]),
   ]) await writeFile(path.join(root, file), '// fixture placeholder\n', 'utf8');
 
   await writeExecutable(path.join(bin, 'node'), `#!/bin/sh
@@ -586,6 +638,10 @@ case "$1" in
     [ "$#" = 1 ] || exit 64
     printf 'fixture-build:case-assistant:%s\\n' "\${XANTHIL_REAL_PI_ACCEPTANCE-unset}" >> "$CVR_OBSERVATION"
     [ "\${CVR_FIXTURE_FAIL:-}" != fixture-build ] || { printf 'native fixture-build stderr\\n' >&2; exit 37; }
+    ;;
+  tools/decision-platform/build-ui.mjs)
+    printf 'decision-ui:%s\\n' "\${XANTHIL_REAL_PI_ACCEPTANCE-unset}" >> "$CVR_OBSERVATION"
+    [ "\${CVR_FIXTURE_FAIL:-}" != decision-ui ] || exit 37
     ;;
   --test|--experimental-strip-types)
     test_mode=false
@@ -1026,4 +1082,15 @@ test('BF-R13 CI-CHANGE005: browser roots reject omission, substitution, duplicat
   assert.equal(await currentRunnerTuple(root),'CF');
 });
 
-test('CI-CHANGE006: every new root remains exact without weakening Change005 coverage',async t=>{const root=await mkdtemp(path.join(os.tmpdir(),'juanerai-cvr-change006-'));t.after(()=>rm(root,{recursive:true,force:true}));for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length-CHANGE006_TSCONFIG_APPENDIX.length;for(let i=start;i<original.files.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length;i++)for(const [label,files] of [['omit',original.files.filter((_,n)=>n!==i)],['replace',original.files.map((f,n)=>n===i?'tests/unapproved.test.ts':f)],['duplicate',original.files.map((f,n)=>n===i?original.files[i-1]:f)],['reorder',original.files.map((f,n)=>n===i?original.files[i-1]:n===i-1?original.files[i]:f)]])await t.test(i+' '+label,async()=>{await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});});});
+test('CI-CHANGE006: every new root remains exact without weakening Change005 coverage',async t=>{const root=await mkdtemp(path.join(os.tmpdir(),'juanerai-cvr-change006-'));t.after(()=>rm(root,{recursive:true,force:true}));for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-DECISION_TSCONFIG_APPENDIX.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length-CHANGE006_TSCONFIG_APPENDIX.length;for(let i=start;i<original.files.length-DECISION_TSCONFIG_APPENDIX.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length;i++)for(const [label,files] of [['omit',original.files.filter((_,n)=>n!==i)],['replace',original.files.map((f,n)=>n===i?'tests/unapproved.test.ts':f)],['duplicate',original.files.map((f,n)=>n===i?original.files[i-1]:f)],['reorder',original.files.map((f,n)=>n===i?original.files[i-1]:n===i-1?original.files[i]:f)]])await t.test(i+' '+label,async()=>{await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});});});
+
+ test('CI-DECISION-001: exact roots and tests reject missing, duplicate and extra coverage',async t=>{
+  const root=await mkdtemp(path.join(os.tmpdir(),'juanerai-cvr-decision-'));t.after(()=>rm(root,{recursive:true,force:true}));
+  for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));
+  assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-DECISION_TSCONFIG_APPENDIX.length;
+  for(let i=start;i<original.files.length;i++)for(const files of [original.files.filter((_,n)=>n!==i),original.files.map((v,n)=>n===i?'unapproved.ts':v),original.files.map((v,n)=>n===i?original.files[i-1]:v),[...original.files,'unapproved.ts']]){await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});}
+  const names=await readdir(path.join(REPO_ROOT,'tests/integration/decision-platform'));assert.deepEqual([...names.filter(n=>n.endsWith('.test.ts')).sort(),...names.filter(n=>n.endsWith('.test.mjs')).sort()].map(n=>'tests/integration/decision-platform/'+n),DECISION_TEST_PATHS);
+ });
+ test('CI-DECISION-002: actual runner selects new tests and UI build and propagates their failure',async t=>{
+  for(const failure of [{failTarget:'effects.integration.test.ts',code:31},{failGroup:'decision-ui',code:37}]){const f=await fixture(t,{runnerTuple:'CF',...failure});const runner=await installPublicRunner(f);await mkdir(path.join(f.root,'elsewhere'));const result=await invoke(f,runner,{},['--portable']);assert.equal(result.code,failure.code,result.stderr);const seen=await observedLines(f);assert.ok(seen.some(s=>s.includes(failure.failTarget??'decision-ui:')));}
+ });

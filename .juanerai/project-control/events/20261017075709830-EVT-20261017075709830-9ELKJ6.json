@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017075709830-9ELKJ6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T07:57:09.830Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "010修正009资源反例，进入对应独立复核",
+  "status_after": "active",
+  "evidence_refs": []
+}

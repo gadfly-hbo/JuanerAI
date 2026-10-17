@@ -1,0 +1,65 @@
+/* Xanthil 橘accent 工作台 token（源：~/.zcode/design/DESIGN.md 2026-09-28 契约版，勿在组件中硬编码色值） */
+:root {
+  /* 暖灰纸感底 + 白表面；surface-2 为次级区域，soft 为卡内分区底 */
+  --bg: #eceae5;
+  --surface: #ffffff;
+  --surface-2: #f4f3ef;
+  --soft: #f7f6f2;
+  --border: #e5e2dc;
+  --border-strong: #d8d3cb;
+  --text: #1d2027;
+  --text-2: #6f7480;
+  --text-3: #8a8076;
+
+  /* 橘 accent 只标记主操作、选中态与焦点；navy 为次级强调（多源佐证级色标） */
+  --accent: #e8643a;
+  --accent-strong: #bf4927;
+  --accent-soft: #fff1e8;
+  --accent-line: #e8c1b4;
+  --navy: #263442;
+  --navy-soft: #e8edf2;
+  --navy-line: #c9d4de;
+  /* 驳回弹窗遮罩（G10 唯一弹层） */
+  --scrim: rgba(29, 32, 39, 0.32);
+
+  /* 语义色成对出现：深字 + soft 底 + line 描边 */
+  --ok: #176247;
+  --ok-soft: #def3e9;
+  --ok-line: #bfddcf;
+  --warn: #855211;
+  --warn-soft: #fff1d6;
+  --warn-line: #f0dfc2;
+  --fail: #952f2f;
+  --fail-soft: #ffe5e5;
+  --fail-line: #f3caca;
+  --queue: #6d5bd0;
+  --queue-ink: #5b48c0;
+  --queue-soft: #efecfb;
+  --queue-line: #d9d2f5;
+
+  --font-sans: Inter, ui-sans-serif, -apple-system, "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --fs-page-title: 22px;
+  --fs-view-title: 17px;
+  --fs-card-title: 13.5px;
+  --fs-body: 13px;
+  --fs-small: 11.5px;
+  --fs-meta: 10.5px;
+
+  --r-base: 14px;
+  --r-sm: 8px;
+  --r-pill: 999px;
+
+  --sp-xs: 4px;
+  --sp-sm: 6px;
+  --sp-md: 10px;
+  --sp-lg: 14px;
+  --sp-xl: 22px;
+
+  /* 平面卡片轻阴影（浮层重阴影暂无使用场景，用到再加） */
+  --shadow-card: 0 3px 12px rgba(40, 36, 30, 0.04);
+
+  /* 焦点环统一 3px 半透明橘 + 2px offset */
+  --focus-ring: 3px solid rgba(232, 100, 58, 0.28);
+}

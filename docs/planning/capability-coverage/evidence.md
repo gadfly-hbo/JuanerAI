@@ -1,3 +1,8 @@
+<a id="e-decision-platform-012"></a>
+## E-DECISION-PLATFORM-012 · 限定本地产品接受
+
+固定012 manifest28ce87cb…50e387a；用户明确产品接受，工程接受具名风险处置，原Validator BLOCKED保持。合成浏览器/同机宿主和真实固定SDK证据，不是现实业务结果或发布/生产接受。见[产品接受](../../../openspec/changes/decision-platform-integration/product-acceptance.md)、[工程接受](../../../openspec/changes/decision-platform-integration/engineering-acceptance.md)、[完整验证与历史](../../../openspec/changes/decision-platform-integration/verification.md)、[当前收口](../../../openspec/changes/decision-platform-integration/local-closeout.md)。40ID类别变化0，不关闭完整能力/阶段。
+
 ## 插件接入沉淀 · 正式Git交付005（候选时记录，实际结果见回执）
 
 同一任务已获Git交付授权；003 PASS/004仅原作用域复用，新状态及main整合另验并取得确切head full CI。[当前交付与身份](../../../openspec/changes/plugin-integration-consolidation/git-delivery-005.md)。40ID业务能力增量0，C5-09局部、S1/S4不关闭；以下旧记录保持原时点。

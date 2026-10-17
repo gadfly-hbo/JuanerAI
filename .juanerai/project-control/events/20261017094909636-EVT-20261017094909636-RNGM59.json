@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017094909636-RNGM59",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T09:49:09.636Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a1491f-e64c-7781-86d0-0a899fdf7557"
+  },
+  "summary": "四项获准修正RED/GREEN已记录；继续027规范全量与固定候选独立收口",
+  "status_after": "validating",
+  "evidence_refs": []
+}
