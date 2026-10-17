@@ -24,7 +24,7 @@
 
 ## 能力覆盖、保全与停止边界
 
-[完整40ID能力图](../../../docs/planning/capability-coverage/latest.md)及[登记](../../../docs/planning/capability-coverage/register.md)已增加插件子范围的本地接受说明，40ID状态类别变化0。六条产品线及两项横切能力、S1/S2/S4、正式Decision/Actual、现实动作/结果证明及受治理学习仍按原缺口保留，不由插件内记录替代。
+[完整40ID能力图](../../../../docs/planning/capability-coverage/latest.md)及[登记](../../../../docs/planning/capability-coverage/register.md)已增加插件子范围的本地接受说明，40ID状态类别变化0。六条产品线及两项横切能力、S1/S2/S4、正式Decision/Actual、现实动作/结果证明及受治理学习仍按原缺口保留，不由插件内记录替代。
 
 完整证据根在Mini：`/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017`；本轮收口目录 `local-closeout-035-20261017T105335Z` 保存用户原话、停止读回、覆盖前后快照、最终一致性与记录摘要。原独立报告及两项豁免位于 `validator-host-012/`，原反馈ID `01a147bc-92a7-7ff1-a8a3-d978dfb198f5` 不变。本地持久证据不是跨机备份；当前代码和正式记录仍为未Git整合WIP。
 

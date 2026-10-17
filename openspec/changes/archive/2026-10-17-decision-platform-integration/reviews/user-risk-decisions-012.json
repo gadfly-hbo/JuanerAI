@@ -1,0 +1,21 @@
+{
+  "candidateManifestSha256": "28ce87cbae9f8aa47db8ff85025b9a375d752aac21b4fa9cc6b22302750e387a",
+  "recordedAt": "2026-10-17T10:36:07.570052+00:00",
+  "source": "direct human structured reply in this same task",
+  "historicalRed": {
+    "id": "R-012-HISTORICAL-RED",
+    "state": "accepted_named_waiver",
+    "exactAnswer": "接受012历史RED具名豁免",
+    "scope": "only fixed012; initial source/Profile/HTTP/UI missing preimplementation RED remains historical fact"
+  },
+  "readonlySandbox": {
+    "id": "F-ROLE-012",
+    "state": "accepted_named_exception",
+    "exactAnswer": "接受012本次只读沙箱具名例外，保留原BLOCKED及权限事实，不改称角色合规PASS。沿原任务继续完成其余已授权收口，不扩大权限、不调用真实Provider、不发布；需要我实际产品验收时，给出明确入口和步骤。",
+    "scope": "this fixed012 review only; original BLOCKED and actual permissions unchanged",
+    "recordedAt": "2026-10-17T10:41:48.970919+00:00"
+  },
+  "productAcceptance": "not_granted",
+  "newPermissions": "none",
+  "gitReleaseRealProvider": "not_authorized"
+}

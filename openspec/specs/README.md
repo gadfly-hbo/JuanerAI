@@ -1,5 +1,7 @@
 # Current Specifications
 
+- [Decision platform宿主接入](decision-platform/spec.md)：固定012完整看板/汇报、精确来源、逐次授权、插件记录闭环与UNKNOWN；用户接受及具名风险按归档保留，随获准PR实际合并生效，不含安装/Provider/生产。
+
 This directory becomes the source of truth for current observable system behavior after approved Changes are archived.
 
 No baseline product specification is written before the detailed Xanthil plan is received and reviewed. Architecture principles belong in AGENTS.md and docs/architecture/, not here.

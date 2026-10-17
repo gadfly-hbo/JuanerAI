@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017110240102-EWXOE5",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-17T11:02:40.102Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a14983-c531-7120-89f4-69c3a375efee"
+  },
+  "summary": "012已保全提交并正常融合主线；63项Change归档与当前规格准备，进入最终交付验证",
+  "status_after": "validating",
+  "evidence_refs": []
+}

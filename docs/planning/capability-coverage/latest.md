@@ -1,3 +1,9 @@
+## decision-platform 012 · 获准Git交付与归档036（2026-10-17）
+
+用户已授权本任务Git交付、PR、最终HEAD CI、合并、安全主线同步及正式归档；沿原分支保全012，再正常融合已发布主线。归档与当前规格随本PR实际合并生效，最终Git/CI/逐设备同步身份见[交付036](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/git-delivery-036.md)及其本机完成回执，未有实际结果不提前称完成。012用户产品接受及工程具名风险不变，原独立BLOCKED不改。全40稳定ID类别增量0；六加二/完整阶段、正式Decision/Actual、现实业务结果、真实Provider质量、安装及生产缺口保持。
+
+以下本地接受及历史保持原时点。
+
 ## decision-platform 012 · 本地产品接受与本轮收口（2026-10-17）
 
 用户已明确“012产品验收通过”；工程接受为具名风险处置后的限定接受，原独立BLOCKED及danger-full-access、历史RED缺口和两项豁免不改。当前只完成固定012、006r1合同、浏览器/同机服务、合成模型与隔离数据的插件接入子范围。032规范4903项：4882PASS/0FAIL/21原条件SKIP，固定证据与完整独立限定复核可读回。未Git整合或发布，正式Change归档未执行。
@@ -11,7 +17,7 @@
 
 全40稳定ID的状态类别本轮变化 **0**；六条产品线及两项横切能力、S1/S2/S4仍保持原未覆盖项。本条增加插件子范围的本地产品接受证据，不把它替换成整体能力或阶段完成。
 
-[用户接受与边界](../../../openspec/changes/decision-platform-integration/product-acceptance.md) · [工程接受/具名风险](../../../openspec/changes/decision-platform-integration/engineering-acceptance.md) · [本地收口/返回点](../../../openspec/changes/decision-platform-integration/local-closeout.md) · [完整登记](register.md)
+[用户接受与边界](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/product-acceptance.md) · [工程接受/具名风险](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/engineering-acceptance.md) · [本地收口/返回点](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/local-closeout.md) · [完整登记](register.md)
 
 以下历史按原时点保留。
 

@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "INTEGRATION",
-    "label": "012 Git交付与正式归档进行中",
+    "label": "012源码保全及主线融合完成；归档/最终CI待核对",
     "ordinal": 9,
     "total": 9
   },
-  "health": "active",
-  "summary": "用户已授权固定012 Git交付/PR/最终HEAD CI/合并/安全同步及正式归档；原BLOCKED及具名风险保留，未安装/Provider/生产。当前原任务WIP先保全再融合3项主线提交。",
+  "health": "validating",
+  "summary": "012接受及具名风险保留；原WIP已提交67441ed、主线融合0cda29b。归档63项，产品代码/SDK不变；尚未PR合并，最终HEAD验证进行中。",
   "current_objective": "完成012经授权Git交付与正式归档，不改变已批准产品范围。",
-  "next_action": "提交原012 WIP；正常merge origin/main，核对融合差异及归档，验证最终交付HEAD，CI通过后squash并安全同步。",
+  "next_action": "融合对象验证、归档/规范链接与固定字节检查；最终提交推送PR，确认精确HEAD CI后squash及安全主线同步。无安装/真实Provider/生产权限。",
   "blockers": [],
   "milestones": [
     {
@@ -48,7 +48,7 @@
       "id": "controller",
       "label": "Mini同一主Agent",
       "model": "Native session; exact model/effort not exposed by readback",
-      "status": "complete",
+      "status": "active",
       "activation": "006r1 UI通过；用户授权固定源码取材并开始推进"
     },
     {
@@ -78,13 +78,13 @@
     {
       "id": "proposal",
       "label": "产品方案及006用户UI纠偏",
-      "path": "openspec/changes/decision-platform-integration/proposal.md",
+      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/proposal.md",
       "status": "present"
     },
     {
       "id": "ui",
       "label": "006新版看板与汇报合同",
-      "path": "openspec/changes/decision-platform-integration/ui-contract.md",
+      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/ui-contract.md",
       "status": "present"
     },
     {
@@ -96,13 +96,13 @@
     {
       "id": "readiness006r1",
       "label": "006r1对应有限复核PASS",
-      "path": "openspec/changes/decision-platform-integration/reviews/readiness-006r1.md",
+      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/reviews/readiness-006r1.md",
       "status": "verified"
     },
     {
       "id": "approval006r1",
       "label": "用户UI批准及固定输入",
-      "path": "openspec/changes/decision-platform-integration/approval-and-freeze.md",
+      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/approval-and-freeze.md",
       "status": "verified"
     },
     {
@@ -120,7 +120,7 @@
     {
       "id": "runtime-plan",
       "label": "待授权隔离运行方案",
-      "path": "openspec/changes/decision-platform-integration/synthetic-runtime-plan.md",
+      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/synthetic-runtime-plan.md",
       "status": "present"
     },
     {
@@ -258,7 +258,7 @@
     {
       "id": "engineering-acceptance012",
       "label": "012限定工程接受，具名风险处置",
-      "path": "openspec/changes/decision-platform-integration/engineering-acceptance.md",
+      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/engineering-acceptance.md",
       "status": "verified"
     },
     {
@@ -270,13 +270,13 @@
     {
       "id": "product-acceptance012",
       "label": "012用户明确产品接受，限定作用域",
-      "path": "openspec/changes/decision-platform-integration/product-acceptance.md",
+      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/product-acceptance.md",
       "status": "verified"
     },
     {
       "id": "local-closeout035",
       "label": "获准本地收口完成，Git/归档边界保留",
-      "path": "openspec/changes/decision-platform-integration/local-closeout.md",
+      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/local-closeout.md",
       "status": "verified"
     },
     {
@@ -284,6 +284,12 @@
       "label": "034无在途/UNKNOWN正常关闭及进程端口读回",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/local-closeout-035-20261017T105335Z/034-stop-readback.json",
       "status": "verified"
+    },
+    {
+      "id": "git-delivery036",
+      "label": "012获准Git交付/归档与最终结果回执入口",
+      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/git-delivery-036.md",
+      "status": "present"
     }
   ],
   "risks": [
@@ -306,7 +312,7 @@
       "mitigation": "保留原BLOCKED/danger-full-access及运行时读回限制，不改称角色合规PASS，不扩权限或其他候选。"
     }
   ],
-  "updated_at": "2026-10-17T11:01:02.272Z",
+  "updated_at": "2026-10-17T11:02:40.102Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a14983-c531-7120-89f4-69c3a375efee"
