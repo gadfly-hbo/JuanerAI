@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018071557343-98LYE3",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T07:15:57.343Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "按用户授权打开固定005完整工作台，合成模式停在原计划确认门；本机服务有意保留，等待用户产品验收，所有禁止项保持。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

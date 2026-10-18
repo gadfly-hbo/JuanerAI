@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018055138372-JPLCZQ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T05:51:38.372Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "修复候选004专项通过；native独立复验被服务端中断且只读角色未加载，记录真实停止边界，测试服务已停。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

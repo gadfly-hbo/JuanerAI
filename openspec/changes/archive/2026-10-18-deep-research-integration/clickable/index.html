@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>JuanerAI · 深度研究完整工作台 · UI 审核 DR-002</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:,">
+  <script src="model.js" defer></script>
+  <script src="prototype.js" defer></script>
+<link rel="stylesheet" href="host-bridge.css"><script src="host-bridge.js" defer></script></head>
+<body>
+  <a class="skip" href="#main">跳到工作区</a>
+  <div id="app"></div>
+  <div id="announcement" class="sr" role="status" aria-live="polite"></div>
+  <dialog id="modal" aria-labelledby="modal-title"><div id="modal-body"></div><form method="dialog"><button class="primary" autofocus>关闭并返回</button></form></dialog>
+  <noscript>本审核稿需要浏览器启用本地 JavaScript；无网络／模型请求。方案与 UI Contract 文档可独立阅读。</noscript>
+</body>
+</html>

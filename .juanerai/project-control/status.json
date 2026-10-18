@@ -3,336 +3,71 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "decision-platform fixed integration"
+    "product": "deep-research 完整工作台接入"
   },
   "phase": {
-    "id": "ARCHIVE",
-    "label": "012 Git交付、正式归档及双机main引用同步完成",
-    "ordinal": 9,
-    "total": 9
+    "id": "DELIVERY",
+    "label": "005合成范围Git正式交付中",
+    "ordinal": 6,
+    "total": 6
   },
-  "health": "complete",
-  "summary": "PR100已squash合并f803ddc；最终HEAD b617ff1托管CI与本机融合验证均4936PASS/0FAIL/21SKIP。归档与当前规格已在主线，Mini/MacBook main引用同步完成；原012 BLOCKED/具名风险与历史保留。未安装/真实Provider/生产切换。",
-  "current_objective": "012本次获准Git交付及正式归档已完成；保持原工作分支/固定候选/历史证据，接受及能力范围不扩大。",
-  "next_action": "无当前获准待执行项。原分支HEAD b617ff1保留，主线f803ddc；本次不安装、启动采用或切生产。未来运行/真实Provider/生产另依对应明确授权；归档README和036外部completion回执为返回点。",
+  "health": "validating",
+  "summary": "005独立离线复核及用户合成验收通过；Git交付已获授权，原实现保持，归档与CI／PR／安全同步处理中。",
+  "current_objective": "复用固定插件完整工作台，闭合原确认、宿主隔离与稳定成果副本。",
+  "next_action": "完成归档路径验证、只读复核、最终HEAD CI、PR squash及安全main同步；不安装／真实Provider／提权／旧指针／Host Loop，WIP UNKNOWN保持。",
   "blockers": [],
   "milestones": [
     {
-      "id": "intake",
-      "label": "固定Prompt与宿主接点盘点",
-      "status": "completed"
-    },
-    {
-      "id": "direction",
-      "label": "用户确认首期产品方向与只读UI取材",
-      "status": "completed"
-    },
-    {
       "id": "ui",
-      "label": "006r1用户UI Gate PASS与输入冻结",
+      "label": "DR-002 用户 UI Gate PASS",
       "status": "completed"
     },
     {
       "id": "engineering",
-      "label": "固定70项核验及宿主入站保护RED/GREEN",
+      "label": "固定005接线与离线工程接受PASS（不等于完整Change完成）",
       "status": "completed"
     },
     {
-      "id": "synthetic-runtime",
-      "label": "真实固定插件隔离合成闭环",
+      "id": "product005",
+      "label": "005合成范围用户产品验收通过，服务已停",
       "status": "completed"
     }
   ],
   "agents": [
     {
       "id": "controller",
-      "label": "Mini同一主Agent",
-      "model": "Native session; exact model/effort not exposed by readback",
-      "status": "complete",
-      "activation": "006r1 UI通过；用户授权固定源码取材并开始推进"
-    },
-    {
-      "id": "product-readiness",
-      "label": "独立产品就绪Reviewer002（非工程Validator）",
-      "model": "Native fresh read-only support; no implementation authority",
-      "status": "complete",
-      "activation": "AGENTS Product Plan Development-Readiness Gate"
-    },
-    {
-      "id": "recovery-validator",
-      "label": "独立上游修正Validator",
-      "model": "native juaner_validator gpt-6.1-sol/high",
-      "status": "complete",
-      "activation": "用户授权原仓固定修正，候选完整后按Standing Delegation派发"
-    },
-    {
-      "id": "host-validator",
-      "label": "宿主完整候选独立Validator",
-      "model": "native juaner_validator; Sol/high dispatch; effective danger-full-access, voluntary read-only; runtime introspection unavailable",
-      "status": "complete",
-      "activation": "批准完整候选独立只读评估及对应修正复验"
+      "label": "Mini 同一工程主 Agent",
+      "model": "Native session; exact model/effort not independently verified",
+      "status": "active",
+      "activation": "DR-002 UI PASS及本任务WIP具名例外"
     }
   ],
   "metrics": [],
   "evidence": [
     {
-      "id": "proposal",
-      "label": "产品方案及006用户UI纠偏",
-      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/proposal.md",
+      "id": "intake",
+      "label": "003 用户批准和具名例外",
+      "path": "openspec/changes/archive/2026-10-18-deep-research-integration/engineering-intake.md",
       "status": "present"
     },
     {
-      "id": "ui",
-      "label": "006新版看板与汇报合同",
-      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/ui-contract.md",
+      "id": "validator005",
+      "label": "005同一Astra/high只读CLI独立PASS及接受边界",
+      "path": "openspec/changes/archive/2026-10-18-deep-research-integration/verification.md",
       "status": "present"
-    },
-    {
-      "id": "checks",
-      "label": "006静态SSR检查58项",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/prototype-checks-006.json",
-      "status": "verified"
-    },
-    {
-      "id": "readiness006r1",
-      "label": "006r1对应有限复核PASS",
-      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/reviews/readiness-006r1.md",
-      "status": "verified"
-    },
-    {
-      "id": "approval006r1",
-      "label": "用户UI批准及固定输入",
-      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/approval-and-freeze.md",
-      "status": "verified"
-    },
-    {
-      "id": "runtime-materials",
-      "label": "70项固定源码回执",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/runtime-material-receipt.json",
-      "status": "verified"
-    },
-    {
-      "id": "ingress-green",
-      "label": "入站保护和Studio回归9项PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/ingress-green.log",
-      "status": "verified"
-    },
-    {
-      "id": "runtime-plan",
-      "label": "待授权隔离运行方案",
-      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/synthetic-runtime-plan.md",
-      "status": "present"
-    },
-    {
-      "id": "upstream-candidate",
-      "label": "c11f8da固定72项原仓修正候选",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/runtime-material-receipt-c11f8da.json",
-      "status": "verified"
-    },
-    {
-      "id": "upstream-recovery-pass",
-      "label": "c11f8da独立修正PASS（限定范围）",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/validator-recovery-001/review.txt",
-      "status": "verified"
-    },
-    {
-      "id": "real-child-runtime",
-      "label": "新固定插件自有子进程闭环PASS（合成）",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/runtime-child-c11f8da-002/result.json",
-      "status": "verified"
-    },
-    {
-      "id": "host-source-runtime",
-      "label": "宿主来源/意图/真实插件联合闭环PASS（合成）",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/runtime-child-c11f8da-003/result.json",
-      "status": "verified"
-    },
-    {
-      "id": "host-candidate-007",
-      "label": "完整候选007 / 独立BLOCKED实现缺陷已关闭",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/validator-host-007/review.md",
-      "status": "verified"
-    },
-    {
-      "id": "user-exceptions-007",
-      "label": "用户对007的两项具名例外及补验要求",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/user-exceptions-candidate-007.json",
-      "status": "verified"
-    },
-    {
-      "id": "feedback-receipt-007",
-      "label": "用户提供反馈提交回执及局部待补验项",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/feedback-receipt-007.json",
-      "status": "present"
-    },
-    {
-      "id": "nonbrowser-regression-008",
-      "label": "4271通过/21跳过及原失败、测试修正",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/nonbrowser-regression-008-002/summary.json",
-      "status": "verified"
-    },
-    {
-      "id": "resources-010",
-      "label": "固定010及资源两项反例对应独立限定PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/validator-resources-010/review.md",
-      "status": "verified"
-    },
-    {
-      "id": "resources-010-manifest",
-      "label": "完整固定010 / 150文件",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/host-candidate-010/manifest.json",
-      "status": "verified"
-    },
-    {
-      "id": "browser-recheck-011",
-      "label": "原地址同通道当前拒绝回执",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/browser-channel-recheck-011/result.json",
-      "status": "verified"
-    },
-    {
-      "id": "browser-host-019",
-      "label": "真实宿主准入与限定闭环/UNKNOWN；焦点FAIL",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/host-browser-trace-019-20261017T085751Z/report.md",
-      "status": "verified"
-    },
-    {
-      "id": "ui-focus-020",
-      "label": "因果RED/焦点GREEN",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/ui-focus-repair-020-20261017T091141Z",
-      "status": "verified"
-    },
-    {
-      "id": "browser-faults-021",
-      "label": "真实宿主故障及最多两次模型准入",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/browser-faults-021-20261017T091604Z/summary.json",
-      "status": "verified"
-    },
-    {
-      "id": "host-drawer-026",
-      "label": "宿主瞬态1px因果RED/首修FAIL/14项GREEN",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/browser-drawer-diagnostic-026-20261017T094008Z/result.json",
-      "status": "verified"
-    },
-    {
-      "id": "responsive-028",
-      "label": "真实390及背景隔离/键盘读回",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/browser-responsive-028-20261017T094528Z/result.json",
-      "status": "verified"
-    },
-    {
-      "id": "canonical-027",
-      "label": "规范portable全量4902项/0FAIL（含真实Chrome）",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/browser-regression-027-20261017T094528Z/summary.json",
-      "status": "verified"
-    },
-    {
-      "id": "validator011",
-      "label": "011独立FAIL；来源显示/固定夹具/角色限制原件",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/validator-host-011/review.md",
-      "status": "present"
-    },
-    {
-      "id": "source029",
-      "label": "来源原名版本RED/GREEN及预冻结故障复取证",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/browser-source-029-20261017T100725Z/report.md",
-      "status": "verified"
-    },
-    {
-      "id": "canonical032",
-      "label": "规范portable4903项/0FAIL（真实Chrome）",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/browser-regression-032-20261017T101804Z/summary.json",
-      "status": "verified"
-    },
-    {
-      "id": "validator012",
-      "label": "完整012独立BLOCKED；技术反例已关闭",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/validator-host-012/review.md",
-      "status": "verified"
-    },
-    {
-      "id": "decision012",
-      "label": "012两项具名风险决定已接收；原简报保留",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/validator-host-012/decision-brief.md",
-      "status": "present"
-    },
-    {
-      "id": "engineering-acceptance012",
-      "label": "012限定工程接受，具名风险处置",
-      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/engineering-acceptance.md",
-      "status": "verified"
-    },
-    {
-      "id": "user-trial034",
-      "label": "034历史产品验收入口；实例已安全关闭",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/product-trial-034-20261017T104532Z/acceptance-entry.md",
-      "status": "present"
-    },
-    {
-      "id": "product-acceptance012",
-      "label": "012用户明确产品接受，限定作用域",
-      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/product-acceptance.md",
-      "status": "verified"
-    },
-    {
-      "id": "local-closeout035",
-      "label": "获准本地收口完成，Git/归档边界保留",
-      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/local-closeout.md",
-      "status": "verified"
-    },
-    {
-      "id": "stop034",
-      "label": "034无在途/UNKNOWN正常关闭及进程端口读回",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/local-closeout-035-20261017T105335Z/034-stop-readback.json",
-      "status": "verified"
-    },
-    {
-      "id": "git-delivery036",
-      "label": "012获准Git交付/归档与最终结果回执入口",
-      "path": "openspec/changes/archive/2026-10-17-decision-platform-integration/git-delivery-036.md",
-      "status": "present"
-    },
-    {
-      "id": "pr100merged",
-      "label": "PR100实际squash合并f803ddc",
-      "path": "https://github.com/gadfly-hbo/JuanerAI/pull/100",
-      "status": "verified"
-    },
-    {
-      "id": "finalci036",
-      "label": "最终b617ff1托管CI全19组成功、数值退出0",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/git-delivery-036-20261017T110102Z/final-ci-summary.json",
-      "status": "verified"
-    },
-    {
-      "id": "mainsync036",
-      "label": "Mini和MacBook main均ref-only同步到f803ddc",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/decision-platform-integration/intake-20261017/git-delivery-036-20261017T110102Z/sync-main.txt",
-      "status": "verified"
     }
   ],
   "risks": [
     {
-      "id": "product-acceptance",
-      "label": "012用户明确产品接受，限固定合成浏览器范围",
+      "id": "wip",
+      "label": "旧全局WIP UNKNOWN",
       "level": "medium",
-      "mitigation": "本次用户决定已记录；不扩展为完整能力/阶段、Desktop、真实Provider或Git/发布接受。"
-    },
-    {
-      "id": "historical-red",
-      "label": "012历史RED具名豁免已获直接用户接受",
-      "level": "medium",
-      "mitigation": "仅固定012；保留最初实现后回归事实，不改为历史RED齐全，不覆盖未来新行为。"
-    },
-    {
-      "id": "validator-sandbox",
-      "label": "F-ROLE-012本次具名例外已获用户接受",
-      "level": "medium",
-      "mitigation": "保留原BLOCKED/danger-full-access及运行时读回限制，不改称角色合规PASS，不扩权限或其他候选。"
+      "mitigation": "仅本任务用户具名例外；不提权、不改指针、不启动Host Loop。"
     }
   ],
-  "updated_at": "2026-10-17T11:17:26.137Z",
+  "updated_at": "2026-10-18T07:53:52.030Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a147bc-92a7-7ff1-a8a3-d978dfb198f5:01a14983-c531-7120-89f4-69c3a375efee"
+    "session": "status-cli"
   }
 }

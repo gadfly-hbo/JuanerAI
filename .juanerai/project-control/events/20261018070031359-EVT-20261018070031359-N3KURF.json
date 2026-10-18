@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018070031359-N3KURF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T07:00:31.359Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "用户明确授权候选005同一CLI复验；实际Astra/high只读never已核实，候选产品文件保持冻结。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

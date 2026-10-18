@@ -1,0 +1,37 @@
+[
+  {
+    "file": "reference/ui/state/projectDetail.tsx",
+    "from": "toast.show(\"已取消,已完成阶段保留\");",
+    "to": "toast.show(\"取消请求已受理；以运行终态为准，状态未知时不会声称已停止\");"
+  },
+  {
+    "file": "reference/ui/views/PlanView.tsx",
+    "from": "const fu = params.get(\"followup\");",
+    "to": "const fu = null; // Phase one: followup unavailable."
+  },
+  {
+    "file": "reference/ui/views/PlanView.tsx",
+    "from": "value={baseRun?.runId ?? \"\"}",
+    "to": "disabled title=\"首期未启用会话研究记忆与追问\" value={baseRun?.runId ?? \"\"}"
+  },
+  {
+    "file": "reference/ui/views/PlanView.tsx",
+    "from": "基于已完成研究追问(可选;延续其证据与主张,只为新问题采证)",
+    "to": "会话研究记忆与追问（首期未启用）"
+  },
+  {
+    "file": "reference/ui/views/PlanView.tsx",
+    "from": "附件(本机文件路径,文本 / PDF,每行一个,可空)",
+    "to": "附件（审核稿仅接收合成路径；正式接入须在已授权范围内）"
+  },
+  {
+    "file": "reference/ui/shell/StatusBar.tsx",
+    "from": "仅在本机运行(127.0.0.1),不连接 JuanerAI · 关键结论逐条绑定原文快照,可核查",
+    "to": "合成审核 · 不连接研究服务 · 关键结论保留引用与限制"
+  },
+  {
+    "file": "reference/ui/shell/StatusBar.tsx",
+    "from": "● 本机服务",
+    "to": "● 合成演示"
+  }
+]

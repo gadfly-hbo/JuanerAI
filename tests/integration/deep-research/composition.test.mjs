@@ -1,0 +1,47 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtempSync,readFileSync,realpathSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {randomBytes} from 'node:crypto';
+import {createResearchServer} from '../../../adapters/deep-research/server.mjs';
+import {syntheticAdapters} from '../../fixtures/deep-research/adapters.mjs';
+
+const programRoot=process.env.DR_PROGRAM_ROOT;
+test('DR R02/R04/R05/R07/C04: original gates and published export behind owned ingress', {skip:!programRoot}, async t=>{
+  const dataRoot=realpathSync(mkdtempSync(join(tmpdir(),'dr-host-')));
+  const ownerToken=randomBytes(32).toString('hex');let allowed=true;
+  const server=await createResearchServer({programRoot,dataRoot,ownerToken,authorize:async()=>allowed,makeAdapters:()=>syntheticAdapters(programRoot)});
+  t.after(()=>server.close());
+  const api=async(path,body,extra={})=>{
+    const response=await fetch(server.origin+path,{method:body===undefined?'GET':'POST',headers:{'x-research-owner':ownerToken,...(body===undefined?{}:{'content-type':'application/json'}),...extra},...(body===undefined?{}:{body:JSON.stringify(body)})});
+    return {status:response.status,value:response.headers.get('content-type')?.includes('json')?await response.json():Buffer.from(await response.arrayBuffer())};
+  };
+  assert.equal((await fetch(server.origin+'/api/projects')).status,403);
+  assert.equal((await api('/api/projects',undefined,{origin:'https://invalid.example'})).status,403);
+  assert.equal((await api('/api/settings',{model:{apiKey:'synthetic-secret'}})).status,400);
+  const create=await api('/api/projects',{module:'industry',goal:'合成研究',scope:{summary:'合成验证',queries:[]}});
+  assert.equal(create.status,200); const id=create.value.id; const path='/api/projects/'+id;
+  assert.equal((await api(path+'/runs/followup',{prompt:'禁止'})).status,403);
+  const request={id:'req-host-original',module:'industry',goal:'合成研究',scope:{summary:'合成验证',queries:[]}};
+  assert.equal((await api(path+'/runs',{request,plan:{questions:[]}})).status,400);
+  assert.equal((await api(path+'/runs',{request:{...request,attachments:['/etc/passwd']}})).status,403);
+  assert.equal((await api(path+'/runs',{request})).status,200);
+  const wait=async predicate=>{for(let i=0;i<200;i++){const detail=(await api(path)).value;const run=detail.runs.find(r=>r.requestId===request.id);if(predicate(run))return run;await new Promise(r=>setTimeout(r,20));}assert.fail('original pipeline did not reach expected state');};
+  const plan=await wait(r=>r?.gate?.kind==='plan'&&r.status==='awaiting-confirmation');
+  assert.equal((await api('/api/settings',{model:{provider:'fixture'}})).status,409);
+  assert.equal((await api(path+`/runs/${plan.id}/gate/confirm`,{payload:{questions:[]}})).status,400);
+  assert.equal((await api(path+`/runs/${plan.id}/gate`)).value.kind,'plan');
+  await api(path+`/runs/${plan.id}/gate/confirm`,{payload:{questions:[{id:'q1',question:'合成规模',status:'open'}]}});
+  const outline=await wait(r=>r?.gate?.kind==='outline'&&r.status==='awaiting-confirmation');
+  await api(path+`/runs/${outline.id}/gate/confirm`,{payload:{title:'合成报告',sections:[{id:'s1',title:'合成结果',bullets:[]}]}});
+  const finished=await wait(r=>['published','limited'].includes(r?.status));
+  const published=await api(path+'/publish',{runId:finished.id});assert.equal(published.status,200);assert.equal(published.value.version,1);
+  const again=await api(path+'/publish',{runId:finished.id});assert.equal(again.status,200);assert.equal(again.value.version,1);
+  assert.equal((await api(path)).value.meta.versions.length,1);
+  const exported=await api(path+'/versions/1/export');assert.equal(exported.status,200);assert.equal(exported.value.subarray(0,2).toString(),'PK');
+  const bundle=JSON.parse(readFileSync(join(dataRoot,'projects',id,'reports/v1/bundle.json'),'utf8'));
+  assert.equal(bundle.runId,finished.id);assert.ok(bundle.reportMd.includes('合成'));
+  allowed=false;
+  assert.equal((await api('/api/projects',{module:'industry',goal:'不能创建',scope:{summary:'s',queries:[]}})).status,403);
+});

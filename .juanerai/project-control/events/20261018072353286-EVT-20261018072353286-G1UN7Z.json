@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018072353286-G1UN7Z",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T07:23:53.286Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "用户确认005合成范围产品验收通过；服务正常停止且进程／端口退出，保留数据及证据、WIP UNKNOWN，暂不安装／Git／真实Provider。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

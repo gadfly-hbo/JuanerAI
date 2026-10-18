@@ -1,3 +1,4 @@
+import {deepResearchHttp,type ResearchHttpServices} from './deep-research-http.ts';
 import {decisionPlatformHttp,type DecisionHttpServices} from './decision-platform-http.ts';
 import {reportStudioHttp,type ReportStudioHttpServices} from './report-studio-http.ts';
 import {reportUserHistory} from '../../packages/product-core/open-analysis-report-review.ts';
@@ -53,7 +54,7 @@ function browserOpenTask(task: Omit<OpenStoredTask,'history'> & {history?:OpenSt
 export type BrowserServiceCommands={credential:string;check?():void;stop():Promise<void>;projects():Promise<unknown>;receipt?(id:string):Promise<unknown>;select(input:unknown):Promise<unknown>;settings(input:unknown):Promise<unknown>};
 
 /** Task-owned loopback composition. No provider, credentials, file selection or service activation. */
-export async function startBrowserMembershipServer(deps: {store: BrowserMembershipReadback;reportStudio?:ReportStudioHttpServices;decisionPlatform?:DecisionHttpServices;workspace?:BrowserWorkspaceCommands;service?:BrowserServiceCommands;formalMember?:ReturnType<typeof import('../../packages/application/browser-membership.ts').createOpenMemberCaseAdmission>;open?:ReturnType<typeof import('../../profiles/personal/open-analysis.ts').createPersonalOpenAnalysisWorkspace>}) {
+export async function startBrowserMembershipServer(deps: {store: BrowserMembershipReadback;deepResearch?:ResearchHttpServices;reportStudio?:ReportStudioHttpServices;decisionPlatform?:DecisionHttpServices;workspace?:BrowserWorkspaceCommands;service?:BrowserServiceCommands;formalMember?:ReturnType<typeof import('../../packages/application/browser-membership.ts').createOpenMemberCaseAdmission>;open?:ReturnType<typeof import('../../profiles/personal/open-analysis.ts').createPersonalOpenAnalysisWorkspace>}) {
   const app = createBrowserMembershipReadbackApplication(deps.store);
   const workbenchVersion={contract:'BUI-20261015-004',started_at:new Date().toISOString(),pid:process.pid,node:process.version,source_sha256:Object.fromEntries(['apps/browser/local-server.ts','apps/browser/quick-analysis-client.mjs','apps/browser/quick-analysis-workbench.mjs','apps/browser/browser-workbench.css','packages/application/open-analysis-workspace.ts','packages/product-core/browser-report-content.ts','adapters/storage-local/open-analysis.ts'].map(path=>[path,createHash('sha256').update(readFileSync(new URL('../../'+path,import.meta.url))).digest('hex')]))};
   const bootstrap = secret(), session = secret();
@@ -97,13 +98,15 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       throw new HttpFailure(404);
     }
     const assets:Record<string,[string,string]>={'/browser-workbench.css':['browser-workbench.css','text/css'],'/':['index.html','text/html'],'/bootstrap.mjs':['bootstrap.mjs','text/javascript'],'/workspace.mjs':['workspace.mjs','text/javascript'],'/client.mjs':['client.mjs','text/javascript'],'/read-json.mjs':['read-json.mjs','text/javascript'],'/styles.css':['styles.css','text/css'],'/report-studio-client.mjs':['report-studio-client.mjs','text/javascript'],'/quick-analysis-workbench.mjs':['quick-analysis-workbench.mjs','text/javascript'],'/quick-analysis-client.mjs':['quick-analysis-client.mjs','text/javascript'],'/packages/contracts/open-analysis-findings.mjs':['../../packages/contracts/open-analysis-findings.mjs','text/javascript'],'/packages/contracts/open-analysis-recovery.mjs':['../../packages/contracts/open-analysis-recovery.mjs','text/javascript'],'/quick-analysis-workbench.css':['quick-analysis-workbench.css','text/css'],'/assets/logo.png':['../desktop/assets/juanerai-logo-slogan.png','image/png']};
+    assets['/deep-research-client.mjs']=['deep-research-client.mjs','text/javascript'];
+    assets['/deep-research.css']=['deep-research.css','text/css'];
     assets['/decision-platform-client.mjs']=['decision-platform-client.mjs','text/javascript'];
     for(const name of ['board.js','reference/styles/tokens.css','reference/index.css','reference/App.css','integration.css','host-theme.css'])assets['/decision-platform/'+name]=['decision-platform/'+name,name.endsWith('.js')?'text/javascript':'text/css'];
     const asset=deps.workspace?assets[path]:undefined;
     if (!asset&&!/^\/v1\/[a-z0-9/-]+$/.test(path)&&!/^\/v1\/report-studio\/[A-Za-z0-9_/-]+$/.test(path)) throw new HttpFailure(404);
     if (req.method !== 'GET' && req.method !== 'POST') throw new HttpFailure(405);
     if (req.method === 'POST' && req.headers.origin !== origin) throw new HttpFailure(403);
-    const serve=()=>{res.writeHead(200,{'content-type':asset![1],'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"});res.end(readFileSync(new URL(asset![0],import.meta.url)));};
+    const serve=()=>{res.writeHead(200,{'content-type':asset![1],'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-src http://127.0.0.1:*; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"});res.end(readFileSync(new URL(asset![0],import.meta.url)));};
     if(asset&&(path==='/'||path==='/bootstrap.mjs')){if(req.method!=='GET')throw new HttpFailure(405);serve();return;}
     if (path === '/v1/bootstrap' && req.method === 'POST') {
       const body = await json(req);
@@ -125,6 +128,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       if(Reflect.get(body,'generation')!==generation)throw new HttpFailure(409);
       control=secret();owned=true;generation++;reply(res,200,{control,generation});return;
     }
+    if(path.startsWith('/v1/deep-research/')){const grant=req.headers['x-xanthil-control'];await deepResearchHttp(req,res,{services:deps.deepResearch,checkControl(){if(!owned||!equal(grant,control))throw new HttpFailure(403);},canWrite:owned&&equal(req.headers['x-xanthil-control'],control),json,reply,reject(status):never{throw new HttpFailure(status);}});return;}
     if(path.startsWith('/v1/decision-platform/')){await decisionPlatformHttp(req,res,{services:deps.decisionPlatform,canWrite:owned&&equal(req.headers['x-xanthil-control'],control),json,reply,reject(status):never{throw new HttpFailure(status);}});return;}
     if(path.startsWith('/v1/report-studio/')){await reportStudioHttp(req,res,{services:deps.reportStudio,canWrite:owned&&equal(req.headers['x-xanthil-control'],control),json,reply,reject(status):never{throw new HttpFailure(status);}});return;}
     if(deps.service){
