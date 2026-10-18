@@ -1,3 +1,7 @@
+## Latest Git baseline8dcf — documentation-only integration
+
+Main8dcf/PR105 adds the other task’s publication records only. Pi technical bytes remain exactly reviewed d5207685; scoped Engineering Acceptance is unchanged. Final record review/current-head hosted CI/actual Git conditions remain distinct. Pi capability-class delta0 relative this latest base; PR104/105 records stay attributed to that task.
+
 ## Pi Harness007-r2 · 新基线限定工程接收（2026-10-18）
 
 当前d5207685/base070候选已完成独立受影响技术复核PASS及本机规范验证
@@ -32,6 +36,8 @@ independent review and exact-head CI/Git outcomes are tracked in the
 [delivery record](../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/engineering-delivery.md).
 [Complete40-ID snapshot](snapshots/pi-harness-first-loop007-r2-git-2026-10-18.md);
 [register](register.md). Earlier records below retain their original time/scopes.
+
+交付更新（2026-10-18）：deep-research候选005合成接线范围已通过[PR #104](https://github.com/gadfly-hbo/JuanerAI/pull/104)合并并安全同步两机main；[实际回执](../../../openspec/changes/archive/2026-10-18-deep-research-integration/publication-receipt.md)。C2-02局部实现和其他能力状态保持，不增加完整能力／阶段接受。
 
 ## deep-research 005 · 本机合成范围产品接受（2026-10-18）
 

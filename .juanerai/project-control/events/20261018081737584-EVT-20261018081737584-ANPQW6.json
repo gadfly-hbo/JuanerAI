@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018081737584-ANPQW6",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T08:17:37.584Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "005合成范围PR #104已合并、归档及两机ref-only同步；禁止效果与WIP UNKNOWN保持",
+  "status_after": "complete",
+  "evidence_refs": []
+}

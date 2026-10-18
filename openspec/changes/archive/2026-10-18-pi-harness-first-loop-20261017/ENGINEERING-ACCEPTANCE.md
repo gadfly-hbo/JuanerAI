@@ -1,3 +1,7 @@
+# Latest Git baseline8dcf — technical inputs unchanged
+
+Main8dcf590c6739c60e42c97a744d76d9c73c6ce60c adds PR105 publication/status/coverage records only. Runtime/test/package/lock/configuration inputs remain identical to independently reviewed d5207685 and its local full verification. This bounded metadata integration receives the final affected-record check and actual final-head hosted CI; no old CI is relabeled. All prior checkpoints and native BLOCKED remain below.
+
 # Current Engineering Acceptance — integrated main070 / 2026-10-18
 
 **ENGINEERING_ACCEPTED_OFFLINE_WITH_LIMITS**, issued by the Mini Engineering

@@ -12,7 +12,7 @@
     "total": 5
   },
   "health": "complete",
-  "summary": "Integrated d5207685/base070 independent technical PASS; current local4966PASS/0FAIL/26SKIP and SSR151modules. Scoped offline Engineering Acceptance recorded. Native BLOCKED/history retained. Final records review/current-head hosted CI and Git merge/sync are not predicted by this engineering checkpoint.",
+  "summary": "Integrated d5207685/base070 independent technical PASS; current local4966PASS/0FAIL/26SKIP and SSR151modules. Scoped offline Engineering Acceptance recorded. Native BLOCKED/history retained. Final records review/current-head hosted CI and Git merge/sync are not predicted by this engineering checkpoint. Latest main8dcf is documentation-only; identical technical bytes retain d520 review and current local verification. Final record review/head CI/Git facts are still pending, not predicted.",
   "current_objective": "Accept/archive the integrated fixed opt-in offline engineering mechanism only; final publication results are separately bound to PR103/receipt.",
   "next_action": "Complete current authorized final record review/current-head CI/squash/safe main synchronization, bind actual outcomes to PR103 and the final receipt, then stop. This completed engineering checkpoint grants no Provider, default adoption, old-task or UNKNOWN resumption, release or production.",
   "blockers": [],
@@ -443,6 +443,12 @@
       "label": "Current integrated local full portable4966/0/26, not hosted final CI",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z/INTEGRATED-CANONICAL-RESULT.json",
       "status": "verified"
+    },
+    {
+      "id": "main8dcf-proof",
+      "label": "Latest main documentation-only stages preserved; no technical or capability-class delta",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z/baseline8dcf-conflicts/IDENTITY.json",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -477,7 +483,7 @@
       "mitigation": "Behavioral readonly is not OS readonly; final record review and current required CI/merge conditions still apply. This changes no defaults or future permissions."
     }
   ],
-  "updated_at": "2026-10-18T08:48:35.399Z",
+  "updated_at": "2026-10-18T08:51:57.685Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dfc-3ac3-77d1-9665-b179e47fb21e"

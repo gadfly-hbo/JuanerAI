@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018085157685-MCFH77",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T08:51:57.685Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dfc-3ac3-77d1-9665-b179e47fb21e"
+  },
+  "summary": "Latest main8dcf docs-only records integrated; both task histories preserved. Same reviewed technical bytes; final record review/current-head CI and actual Git results remain distinct.",
+  "status_after": "complete",
+  "evidence_refs": []
+}

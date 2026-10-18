@@ -1,0 +1,14 @@
+{
+  "source": "/Users/bendandebaba/.codex/sessions/2026/10/18/rollout-2026-10-18T14-22-25-01a14dac-fcb6-74a1-8c45-06920d4a0355.jsonl",
+  "latest": {
+    "turn_id": "01a14e01-b010-7a92-8a1e-aee6b9b7627c",
+    "cwd": "/Users/bendandebaba/.codex/worktrees/7a90/JuanerAI",
+    "model": "gpt-6-astra",
+    "effort": "high",
+    "sandbox_policy": {
+      "type": "read-only"
+    },
+    "approval_policy": "never"
+  },
+  "matchesRequiredSettings": true
+}
