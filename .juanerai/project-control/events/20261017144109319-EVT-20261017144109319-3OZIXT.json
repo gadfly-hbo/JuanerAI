@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017144109319-3OZIXT",
+  "event_type": "change_started",
+  "occurred_at": "2026-10-17T14:41:09.319Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14a48-e0b6-7372-8b81-eb6fbf342924"
+  },
+  "summary": "Authorized v0.2 independent engineering intake and P1 preparation",
+  "status_after": "active",
+  "evidence_refs": []
+}

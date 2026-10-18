@@ -498,18 +498,19 @@ function assertApprovedRootManifest(manifest: unknown) {
   }
 }
 
-function assertApprovedLock(lock: TestRecord, sdk041=false, metricAssets=false, piR1R4=false, readCarrier=false, sdk051=false) {
+function assertApprovedLock(lock: TestRecord, sdk041=false, metricAssets=false, piR1R4=false, readCarrier=false, sdk051=false, harness053=false) {
   assert.equal(typeof lock, 'object');
   const packages = requiredRecord(lock.packages, 'npm lock packages');
   const root = requiredRecord(packages[''], 'npm lock root');
   assert.deepEqual(root, {
     name: 'xanthil-desktop',
     version: '0.1.0',
-    dependencies: sdk051?approvedSdk051Manifest.dependencies:readCarrier?approvedReadCarrierManifest.dependencies:piR1R4?approvedPiR1R4Manifest.dependencies:metricAssets?approvedMetricAssetsManifest.dependencies:sdk041?approvedSdk043Manifest.dependencies:approvedP4RootManifest.dependencies,
+    dependencies: harness053?approvedHarnessFirstLoopManifest.dependencies:sdk051?approvedSdk051Manifest.dependencies:readCarrier?approvedReadCarrierManifest.dependencies:piR1R4?approvedPiR1R4Manifest.dependencies:metricAssets?approvedMetricAssetsManifest.dependencies:sdk041?approvedSdk043Manifest.dependencies:approvedP4RootManifest.dependencies,
     devDependencies: approvedP4RootManifest.devDependencies,
     engines: approvedP4RootManifest.engines,
   }, 'lock root must be the exact approved closed object');
-  if(sdk051){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'Formal SDK051 fixed lock entry');assert.equal(sdk.version,'0.5.1');assert.equal(sdk.resolved,approvedSdk051Manifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-8mfN4/Aw5wr0/ur8WK9wphP+7l6BLL3IX5MwokjSvj8GGzvU5+laAVwomt/HdHXvIJJhsAdiW8Zj7BJtaS7BhQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
+  if(harness053){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'Harness first loop fixed .3 lock entry');assert.equal(sdk.version,'0.5.3-harness.3');assert.equal(sdk.resolved,approvedHarnessFirstLoopManifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-UVmfB/qW8/8m44KttennveKBk3Jza77T2K3lhJkNfRk+KwrugszeD6nDybZutVbU/IKea0hs7zsNKWZDRxFvcQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
+  else if(sdk051){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'Formal SDK051 fixed lock entry');assert.equal(sdk.version,'0.5.1');assert.equal(sdk.resolved,approvedSdk051Manifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-8mfN4/Aw5wr0/ur8WK9wphP+7l6BLL3IX5MwokjSvj8GGzvU5+laAVwomt/HdHXvIJJhsAdiW8Zj7BJtaS7BhQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
   else if(readCarrier){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'ReadCarrier fixed lock entry');assert.equal(sdk.version,'0.5.1-r1r4.3');assert.equal(sdk.resolved,approvedReadCarrierManifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-EwiDQpDwtxob2Gu56P5DdTsIP2HbcvRYga3Q0r8BeaJNZbIEDYzQPqy8xMYYzC+nHHtObasfLzOD53BOwb5N4Q==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
   else if(piR1R4){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'PiR1R4 fixed lock entry');assert.equal(sdk.version,'0.5.1-r1r4.2');assert.equal(sdk.resolved,approvedPiR1R4Manifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-AeCQ38s/kjfecaHQMAI8V2iOJZRhrV23aSaN5C8fi+xkC2EWzJv1q0PmYbZEMg7wWiDBxF571EZO83xWcvHFxQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
   else if(sdk041){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'SDK041 lock entry');assert.equal(sdk.version,'0.4.3');assert.equal(sdk.resolved,approvedSdk043Manifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-V01yA4t9M8BZn+O6pAdEGUBWa7di02sCTUYFMrmiLe8qker7sG9/X5ZzqXiL0j/5AZ57MI2OMjgoxSunG3pMaQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1'});}
@@ -660,6 +661,8 @@ const approvedMetricAssetsTsconfig={...approvedSdk041Tsconfig,files:[...approved
 const approvedPiR1R4Manifest={...approvedMetricAssetsManifest,dependencies:{...approvedMetricAssetsManifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.5.1-r1r4.2/d2ba42634e98e356f1d82f5a4fe39fe451d8284e44a64e74c42102bf52922998.tgz'}};
 const approvedReadCarrierManifest={...approvedPiR1R4Manifest,dependencies:{...approvedPiR1R4Manifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.5.1-r1r4.3/e02175ff42eaa83b994e6f49a1e041b4b3f0b9c807b0b8c192a7dfd836f70cce.tgz'}};
 const approvedSdk051Manifest={...approvedReadCarrierManifest,dependencies:{...approvedReadCarrierManifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.5.1/3af3f895a2466b7947b9b9b0025231f856e3a5c4773782c9dabd460e924bfad9.tgz'}};
+const historicalHarness2Manifest={...approvedSdk051Manifest,dependencies:{...approvedSdk051Manifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.5.3-harness.2/f5982dc70348606c337ca67c0930ca3f292c782399b5fb818d00d431a0a37825.tgz'}};
+const approvedHarnessFirstLoopManifest={...historicalHarness2Manifest,dependencies:{...historicalHarness2Manifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.5.3-harness.3/e6cf0c99cfbcb43ae0b197e9d45d82bae20c0c3257ba0e7bad131f6b1778e12a.tgz'}};
 // Independently literal Report Studio increment; retain every earlier tuple below.
 const reportStudioFiles = [
   'packages/contracts/report-studio.ts',
@@ -723,7 +726,11 @@ const decisionPlatformFiles = [
   "tests/integration/decision-platform/effects-gateway.integration.test.ts"
 ];
 const approvedDecisionPlatformTsconfig={...approvedReportStudioTsconfig,files:[...approvedReportStudioTsconfig.files,...decisionPlatformFiles]};
+const approvedHarnessFirstLoopTsconfig={...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,'tests/integration/xanthil-desktop/pi-harness-first-loop.integration.test.ts']};
+
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,historicalHarness2Manifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles))return 'HarnessFirstLoopPrevious' as const;
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedHarnessFirstLoopManifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles))return 'HarnessFirstLoopIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedDecisionPlatformTsconfig,approvedP5RepositoryConfigurationFiles))return 'DecisionPlatformIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedReportStudioTsconfig,approvedP5RepositoryConfigurationFiles))return 'ReportStudioIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedMetricAssetsTsconfig,approvedP5RepositoryConfigurationFiles))return 'Sdk051FormalAdoption' as const;
@@ -2366,6 +2373,17 @@ test('TASK-003 TEST-XCLI-015 enforces the 300-second post-confirmation budget wi
   assert.equal(events.some(({ event }) => ['analysis.profileApprovedFixture', 'analysis.calculateMemberRepurchaseMetrics', 'analysis.validateMemberRepurchaseMetrics'].includes(event)), false);
 });
 
+test('FL-A10: the existing 300-second business deadline rejects stages totaling 310 seconds without a second test-side timer', async () => {
+  const events: EventLog[] = [];
+  const clock = controlledClock();
+  const agentRuntime = createAgentRuntimeDouble({ events, onExecute: () => clock.advance(200_000) });
+  const localAnalysisExecution = createLocalAnalysisExecutionDouble({ events, onCalculate: () => clock.advance(110_000) });
+  const application = await createApplication({ events, agentRuntime, localAnalysisExecution, clock });
+  const handle = await application.start({ question: expectedAnalysisInput().question, source: expectedAnalysisInput().fixture });
+  await expectMappedFailure(handle.confirm(await handle.discover()), events, 'execution', 'TIMEOUT');
+  assert.equal(events.some(({event})=>event==='analysis.validateMemberRepurchaseMetrics'||event==='artifact.commitSuccess'),false);
+});
+
 const mappedFailures: readonly MappedFailureCase[] = [
   ['runtime_model_failure', 'runtime', 'MODEL_EXECUTION_FAILED', (events) => ({ agentRuntime: createAgentRuntimeDouble({ events, onExecute: () => { throw new Error('MODEL_EXECUTION_FAILED'); } }) }), 'runtime.execute.begin'],
   ['source_invalid', 'source_read', 'SOURCE_INVALID', (events) => ({ localAnalysisExecution: createLocalAnalysisExecutionDouble({ events, onProfile: () => { throw new Error('SOURCE_INVALID'); } }) }), 'analysis.profileApprovedFixture'],
@@ -3564,7 +3582,7 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
   assert.equal(assertApprovedConfigurationTuple(approvedDevelopmentManifest,approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles),'Change004');
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'DecisionPlatformIntegration');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'HarnessFirstLoopIntegration');
 });
 
 
@@ -3817,7 +3835,7 @@ test('TEST-XCLI-021 [AC-XCLI-001-01, AC-XCLI-007-01, AC-XCLI-008-01, AC-XCLI-016
 
   const manifest = JSON.parse(await readFile(join(repositoryRoot, 'package.json'), 'utf8'));
   const lock = JSON.parse(await readFile(join(repositoryRoot, 'package-lock.json'), 'utf8'));
-  assertApprovedLock(lock,true,true,true,true,true);
+  assertApprovedLock(lock,true,true,true,true,true,true);
 
   for (const [packageName, expected] of Object.entries(approvedDirectPackageHealth)) {
     await assertInstalledDirectPackage(packageName, expected);
@@ -3953,10 +3971,17 @@ test('SDK041 pinned installation rejects floating SDK paths and missing or reord
 
 test('PiR1R4 exact fixed adoption retains historical tuples and rejects replacement archives or source inventory drift',async()=>{
  const check=(manifest:unknown,config:unknown)=>assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles);
+ assert.equal(check(historicalHarness2Manifest,approvedHarnessFirstLoopTsconfig),'HarnessFirstLoopPrevious');
  assert.equal(check(approvedSdk051Manifest,approvedMetricAssetsTsconfig),'Sdk051FormalAdoption');assert.equal(check(approvedReadCarrierManifest,approvedMetricAssetsTsconfig),'PiReadCarrierRepair');assert.equal(check(approvedPiR1R4Manifest,approvedMetricAssetsTsconfig),'PiR1R4Repair');assert.equal(check(approvedMetricAssetsManifest,approvedMetricAssetsTsconfig),'Change006MetricAssets');assert.equal(check(approvedSdk043Manifest,approvedSdk041Tsconfig),'Change005Sdk041');
  for(const path of ['^0.5.1','file:vendor/pi-agent-runtime/0.5.1-r1r4.2/'+ '0'.repeat(64)+'.tgz','file:/tmp/alternate.tgz'])assert.throws(()=>check({...approvedPiR1R4Manifest,dependencies:{...approvedPiR1R4Manifest.dependencies,'pi-agent-runtime':path}},approvedMetricAssetsTsconfig));
  assert.throws(()=>check(approvedPiR1R4Manifest,{...approvedMetricAssetsTsconfig,files:approvedMetricAssetsTsconfig.files.slice(1)}));assert.throws(()=>check(approvedPiR1R4Manifest,{...approvedMetricAssetsTsconfig,files:[...approvedMetricAssetsTsconfig.files,'unapproved.ts']}));
- const original=JSON.parse(await readFile(join(repositoryRoot,'package-lock.json'),'utf8'));assertApprovedLock(original,true,true,true,true,true);for(const [field,value]of [['version','0.5.2'],['version','0.5.1-r1r4.3'],['integrity','unapproved'],['resolved','file:/tmp/alternate.tgz']]){const lock=structuredClone(original);lock.packages['node_modules/pi-agent-runtime'][field!]=value;assert.throws(()=>assertApprovedLock(lock,true,true,true,true,true));}
+ const original=JSON.parse(await readFile(join(repositoryRoot,'package-lock.json'),'utf8'));
+ const checkLock=(lock:TestRecord)=>assertApprovedLock(lock,true,true,true,true,true,true);
+ checkLock(original);
+ for(const [field,value]of [['version','0.5.2'],['version','0.5.1-r1r4.3'],['version','0.5.3-harness.2'],['integrity','unapproved'],['resolved','file:/tmp/alternate.tgz']]){
+  const lock=structuredClone(original);lock.packages['node_modules/pi-agent-runtime'][field!]=value;
+  assert.throws(()=>checkLock(lock),{code:'ERR_ASSERTION',actual:value,expected:original.packages['node_modules/pi-agent-runtime'][field!]});
+ }
 });
 
 
@@ -3978,7 +4003,10 @@ test('DP-CI-02 exact decision-platform appendix preserves prior tuples and rejec
  const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedSdk051Manifest,config,approvedP5RepositoryConfigurationFiles);
  assert.equal(check(approvedReportStudioTsconfig),'ReportStudioIntegration');
  assert.equal(check(approvedDecisionPlatformTsconfig),'DecisionPlatformIntegration');
- assert.deepEqual(JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8')),approvedDecisionPlatformTsconfig);
+ assert.deepEqual(JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8')),approvedHarnessFirstLoopTsconfig);
+ assert.equal(assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles),'HarnessFirstLoopIntegration');
+ assert.throws(()=>assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,approvedDecisionPlatformTsconfig,approvedP5RepositoryConfigurationFiles));
+ assert.throws(()=>assertApprovedConfigurationTuple(approvedSdk051Manifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles));
  for(const file of decisionPlatformFiles){
   assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:approvedDecisionPlatformTsconfig.files.filter(p=>p!==file)}));
   assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,file]}));

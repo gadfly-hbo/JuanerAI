@@ -242,6 +242,7 @@
     "profiles/personal/decision-platform.ts",
     "apps/browser/decision-platform-http.ts",
     "tests/integration/decision-platform/materials.integration.test.ts",
-    "tests/integration/decision-platform/effects-gateway.integration.test.ts"
+    "tests/integration/decision-platform/effects-gateway.integration.test.ts",
+    "tests/integration/xanthil-desktop/pi-harness-first-loop.integration.test.ts"
   ]
 }

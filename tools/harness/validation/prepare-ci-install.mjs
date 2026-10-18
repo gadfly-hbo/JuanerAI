@@ -6,8 +6,8 @@ import { execFileSync } from 'node:child_process';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const sdkPath = 'vendor/pi-agent-runtime/0.5.1/3af3f895a2466b7947b9b9b0025231f856e3a5c4773782c9dabd460e924bfad9.tgz';
-const sdkHash = '3af3f895a2466b7947b9b9b0025231f856e3a5c4773782c9dabd460e924bfad9';
+const sdkPath = 'vendor/pi-agent-runtime/0.5.3-harness.3/e6cf0c99cfbcb43ae0b197e9d45d82bae20c0c3257ba0e7bad131f6b1778e12a.tgz';
+const sdkHash = 'e6cf0c99cfbcb43ae0b197e9d45d82bae20c0c3257ba0e7bad131f6b1778e12a';
 const key = 'node_modules/@electron/node-gyp';
 const parentKey = 'node_modules/@electron/rebuild';
 const commit = '06b29aafb7708acef8b3669835c8a7857ebc92d2';
@@ -31,9 +31,9 @@ export function installView(lock, archive) {
   assert.equal(lock.packages[parentKey]?.dependencies?.['@electron/node-gyp'], `git+https://github.com/electron/node-gyp.git#${commit}`, 'node-gyp exact original parent edge');
   for (const [name, entry] of Object.entries(lock.packages)) {
     if (name === 'node_modules/pi-agent-runtime') {
-      assert.equal(entry.version, '0.5.1');
+      assert.equal(entry.version, '0.5.3-harness.3');
       assert.equal(entry.resolved, `file:${sdkPath}`);
-      assert.equal(entry.integrity, 'sha512-8mfN4/Aw5wr0/ur8WK9wphP+7l6BLL3IX5MwokjSvj8GGzvU5+laAVwomt/HdHXvIJJhsAdiW8Zj7BJtaS7BhQ==');
+      assert.equal(entry.integrity, 'sha512-UVmfB/qW8/8m44KttennveKBk3Jza77T2K3lhJkNfRk+KwrugszeD6nDybZutVbU/IKea0hs7zsNKWZDRxFvcQ==');
       assert.deepEqual(entry.dependencies, {'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});
       continue;
     }
@@ -69,8 +69,8 @@ export async function prepare(repo, view, archivePath) {
   await absent(view);
   const manifest = await file(join(repo, 'package.json'));
   const lock = await file(join(repo, 'package-lock.json'));
-  assert.deepEqual(digest(manifest), { bytes: 1909, sha256: 'bf2dd9d60d963b7bb704685cdec862d0a780ec29eafff3eba92d48eb3b793775' }, 'approved repository manifest identity');
-  assert.deepEqual(digest(lock), { bytes: 375881, sha256: '487b964ea8638697062a7a822921e897c26ce83113cdd84d5681d62e4baf5a45' }, 'approved repository lock identity');
+  assert.deepEqual(digest(manifest), { bytes: 1919, sha256: '260270263bbf4ef9da43bfceecc96dc811f3ef1e0051860e71f40f85726bcb9b' }, 'approved repository manifest identity');
+  assert.deepEqual(digest(lock), { bytes: 375911, sha256: '7c2e50cc5e3abaac8702a5a4a12680153ae35014ffe95e1189410873a12a6f86' }, 'approved repository lock identity');
   const archive = await file(archivePath);
   const mapped = installView(JSON.parse(lock), archive);
   const sdk = await file(join(repo, sdkPath));

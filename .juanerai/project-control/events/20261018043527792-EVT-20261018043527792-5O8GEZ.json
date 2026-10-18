@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018043527792-5O8GEZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T04:35:27.792Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14d38-0ca0-7bd2-816b-cacf7d46b67a"
+  },
+  "summary": "candidate006 author checks complete; native independent role environment BLOCKED; fixed receipt and stop",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

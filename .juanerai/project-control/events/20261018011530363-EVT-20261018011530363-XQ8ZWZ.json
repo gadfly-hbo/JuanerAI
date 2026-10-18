@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018011530363-XQ8ZWZ",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-10-18T01:15:30.363Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14c8e-80a2-76c2-bdf4-e81891a57f2a"
+  },
+  "summary": "Authorized CLI actual settings verified; fixed model backend rejection blocks independent tests; no fallback",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

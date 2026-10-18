@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018042549035-RSR867",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-18T04:25:49.035Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14d38-0ca0-7bd2-816b-cacf7d46b67a"
+  },
+  "summary": "User-approved six-pin restoration complete; harness.3 real key paths pass; finalize scoped evidence and native read-only review.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

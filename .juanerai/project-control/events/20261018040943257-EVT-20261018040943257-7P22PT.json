@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018040943257-7P22PT",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-10-18T04:09:43.257Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14d29-c8b4-76c2-aba1-c0c07a33b170"
+  },
+  "summary": "harness.3 adoption failed post-install lock identity: six integrity pins removed; preserve state and stop, no automatic repair or rollback.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

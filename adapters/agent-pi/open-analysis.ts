@@ -312,3 +312,5 @@ export function createNativeBusinessTools(current:()=>OpenAnalysisRun,modelTurn?
   return dispatch(text);
  }}));
 }
+export {captureAnalysisToolContracts} from './analysis-tool-contracts.ts';
+export {createAnalysisCodeDraft} from './analysis-code-draft.ts';

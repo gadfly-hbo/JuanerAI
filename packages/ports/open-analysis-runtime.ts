@@ -1,4 +1,9 @@
 import type {AnalysisRequestIdentity} from './analysis-request-ledger.ts';
+/** Trusted new-task composition input, never a model/user preference or migration. */
+export type AnalysisHarnessFirstLoop=Readonly<{
+ version:'v0.2';
+ request_admission:Readonly<{policy_version:string;protocol_overhead_tokens:number;safety_margin_tokens:number;image_tokens?:number}>;
+}>;
 export type AnalysisTool=Readonly<{
  name:string;description:string;parameters:Readonly<Record<string,unknown>>;
  /** Optional live producer choices; execution still validates shape and current business authority. */
@@ -27,6 +32,8 @@ export type OpenAnalysisRun=Readonly<{
  preferences?:Readonly<{skill:'general'|'group-summary';prompt:'professional'|'brief'}>;
  identity:Omit<AnalysisRequestIdentity,'input_sha256'|'provider'|'model'>;
  prompt:string;system:string;tools:readonly AnalysisTool[];signal:AbortSignal;
+ /** Trusted full Task capability definitions; tools is the current stage view. */
+ capabilityTools?:readonly AnalysisTool[];
  /** Derived text for current selected sources and their verified calculations only; never an arbitrary filesystem reader. */
  readSelectedMaterial?:(location:string,signal:AbortSignal)=>Promise<string>;
  /** Application checks the current grant and immutable selected-material scope. */
@@ -44,6 +51,17 @@ export type AnalysisCollaborationTrace=Readonly<{
 }>;
 export type AnalysisDiagnosticCode='COMPLETE'|'WAITING'|'QUOTA_EXCEEDED'|'RATE_LIMITED'|'MODEL_UNAVAILABLE'|'NETWORK_UNCONFIRMED'|'CREDENTIAL_INVALID'|'CONTEXT_LIMIT'|'OUTPUT_INCOMPLETE'|'REQUEST_REJECTED'|'INVALID_RESULT'|'SAFETY_BLOCKED'|'AUTHORITY_REQUIRED'|'CONFIGURATION_CHANGED'|'CANCELLED'|'SAVE_UNCONFIRMED'|'EFFECT_UNCONFIRMED'|'TOOL_DELIVERY_FAILED'|'CAPABILITY_UNAVAILABLE'|'UNKNOWN';
 export type AnalysisFileFailureCategory='not_found'|'not_directory'|'is_directory'|'permission_denied'|'invalid'|'not_supported'|'cancelled'|'timeout'|'limit_exceeded'|'unknown';
+/** Passive runtime evidence; ready is structural and never means saved. */
+export type AnalysisAdmissionFact=Readonly<{
+ call_id:string;name:string;status:'ready'|'rejected'|'deferred';code?:string;
+ corrections_used:number;terminal:boolean;stage_version:string;
+}>;
+export type AnalysisSessionFacts=Readonly<{availability:'busy'|'unavailable'|'corrupt';reason?:string}>|Readonly<{
+ availability:'available';session_id:string;branch:string;tip_id:string|null;
+ terminal?:Readonly<{operation_id:string;status:'completed'|'declined'|'aborted'|'failed'}>;
+ queue:Readonly<{availability:'unknown'}>|Readonly<{availability:'known';entries:readonly Readonly<{entry_id:string;kind:string}>[]}>;
+ admission:Readonly<{availability:'unknown'}>|Readonly<{availability:'known';terminal:boolean;corrections:readonly Readonly<{name:string;used:number}>[];facts:readonly AnalysisAdmissionFact[]}>;
+}>;
 export type AnalysisRuntimeDiagnostics=Readonly<{
  version:'1.0';task_id:string;revision:string;recording:'observed'|'legacy'|'unavailable';unconfirmed_effects:boolean;
  configuration_sha256?:string;
@@ -52,6 +70,7 @@ export type AnalysisRuntimeDiagnostics=Readonly<{
  observations:readonly (
   Readonly<{kind:'model';observation_id:string;at:string;model:Readonly<{provider:string;name:string}>;reported_model?:string;code:AnalysisDiagnosticCode;physical_state:'not_sent'|'response_received'|'unknown';http_status?:number;usage_final:boolean;input_tokens:import('../product-core/member-operation.ts').Meter;output_tokens:import('../product-core/member-operation.ts').Meter;request_id?:string;after_stop:boolean}>
   |Readonly<{kind:'tool';observation_id:string;at:string;name:string;completion:'completed'|'unknown';delivery:'pending'|'ready'|'rejected'|'failed';resource_units:number;receipt_id?:string;invocation_id?:string;file_failure_category?:AnalysisFileFailureCategory;after_stop?:boolean}>
+  |(AnalysisAdmissionFact&Readonly<{kind:'admission';observation_id:string;at:string}>)
  )[];
 }>;
 export interface OpenAnalysisRuntime {
@@ -65,12 +84,15 @@ export interface OpenAnalysisRuntime {
  collaborationTrace?:(input:Readonly<{identity:OpenAnalysisRun['identity'];conversation_id?:string;signal:AbortSignal;authorize:()=>boolean}>)=>Promise<AnalysisCollaborationTrace>;
 
  /** Runtime owns protocol recovery; Application checkpoints remain historical business evidence. */
- sessionControl?:(input:Readonly<{identity:OpenAnalysisRun['identity'];purpose?:'analysis'|'proposal_prepare';command:AnalysisSessionCommand;signal:AbortSignal;authorize:()=>boolean}>)=>Promise<Readonly<{entryId?:string;cancelled?:boolean;view?:AnalysisSessionView;sessionId?:string}>>;
+ sessionControl?:(input:Readonly<{identity:OpenAnalysisRun['identity'];purpose?:'analysis'|'proposal_prepare';command:AnalysisSessionCommand;signal:AbortSignal;authorize:()=>boolean}>)=>Promise<Readonly<{entryId?:string;cancelled?:boolean;view?:AnalysisSessionView;sessionId?:string;facts?:AnalysisSessionFacts}>>;
  readonly historyOwnership?:'runtime';
  /** Explicit new-Task capability; existing fixed Task configurations are not rebound. */
  readonly selectedMaterialRead?:'v1';
  /** Explicit new business Task preparation carrier; fixed product material/output policy identity. */
  readonly preparationSnapshots?:'v1';
+ /** Complete run-local program only; no draft recovery or execution authority. */
+ readonly codeDraft?:'v1';
+ readCodeDraft?:(input:Readonly<{task_id:string;path:string;signal:AbortSignal}>)=>Promise<Readonly<{code:string;code_sha256:string}>>;
  /** Collect owned physical requests only; never dispatch or grant authority. */
  collect?:(task_id:string)=>Promise<void>;
  run(input:OpenAnalysisRun):Promise<Readonly<{text:string;provider?:string;model?:string;history?:readonly AnalysisHistoryMessage[];tools:readonly {name:string;result:unknown}[]}>>;

@@ -1,3 +1,15 @@
+## Pi Harness first-loop007-r2 · formal engineering/Git closeout started (2026-10-18)
+
+The user authorized formal engineering receipt and Git delivery of the frozen
+opt-in offline consumer only. C3-01, C6-01, A-03/04/05 and B-01/02/03 gain
+scoped mechanism/identity evidence; all40 IDs, target definitions, status classes
+and previously accepted product scope remain unchanged. No new business,
+product/visual, real Provider or stage acceptance is declared. Current canonical,
+independent review and exact-head CI/Git outcomes are tracked in the
+[delivery record](../../../openspec/changes/pi-harness-first-loop-20261017/engineering-delivery.md).
+[Complete40-ID snapshot](snapshots/pi-harness-first-loop007-r2-git-2026-10-18.md);
+[register](register.md). Earlier records below retain their original time/scopes.
+
 ## decision-platform 012 · 获准Git交付与归档036（2026-10-17）
 
 用户已授权本任务Git交付、PR、最终HEAD CI、合并、安全主线同步及正式归档；沿原分支保全012，再正常融合已发布主线。归档与当前规格随[PR100](https://github.com/gadfly-hbo/JuanerAI/pull/100)实际合并生效，最终Git/CI/逐设备同步身份见[交付036](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/git-delivery-036.md)及其本机完成回执，未有实际结果不提前称完成。012用户产品接受及工程具名风险不变，原独立BLOCKED不改。全40稳定ID类别增量0；六加二/完整阶段、正式Decision/Actual、现实业务结果、真实Provider质量、安装及生产缺口保持。

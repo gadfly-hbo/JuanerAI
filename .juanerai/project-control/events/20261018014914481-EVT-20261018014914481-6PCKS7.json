@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018014914481-6PCKS7",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T01:49:14.481Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14caf-8f9b-7f51-9248-0e324407b9ce"
+  },
+  "summary": "Causal A11/A16 RED recorded before focused disclosure-order repair.",
+  "status_after": "active",
+  "evidence_refs": []
+}
