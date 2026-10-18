@@ -164,3 +164,13 @@ stopping/recovery and assertions remain unchanged. This is engineering record/
 archive work only. Native BLOCKED and all historical failures remain; no old
 task, Provider, default deployment or release is enabled. Actual final Git/CI/
 synchronization evidence is recorded separately without predicting a merge SHA.
+
+
+## Integrated engineering acceptance checkpoint
+
+Current integrated d5207685/base070 technical behavior was independently PASS
+under the current user-consented CLI exception, with local full portable
+4966PASS/0FAIL/26SKIP and SSR151modules/exit0. This record-only closure changes
+no runtime/test/package/lock or accepted contract. See ENGINEERING-ACCEPTANCE.md
+for scope, history and outstanding final record review/current-head CI/Git
+conditions. No default enablement or product/Provider/release acceptance follows.

@@ -6,15 +6,15 @@
     "product": "Pi Harness first-loop v0.2"
   },
   "phase": {
-    "id": "VERIFY",
-    "label": "Main070 baseline integrated; previous accepted ed2a technical result preserved; affected validation pending",
-    "ordinal": 4,
+    "id": "ENGINEERING_ACCEPTED",
+    "label": "Limited integrated offline Engineering Acceptance archived; actual Git conditions tracked separately",
+    "ordinal": 5,
     "total": 5
   },
-  "health": "validating",
-  "summary": "Main advanced through independent PR104 during closeout. Both fixed appendices and service options preserved; fixed SDK unchanged. Earlier58-file CLI PASS is historical evidence, not acceptance of the new integrated candidate.",
-  "current_objective": "Accept and archive the fixed approved opt-in offline engineering mechanism only; actual Git outcomes are separately bound to PR103 and its final receipt.",
-  "next_action": "Complete current integrated affected/full checks and author-independent CLI Astra/xhigh review; update scoped acceptance and final current-head CI before squash/safe sync. No Provider, default enablement, SDK changes or old-task/UNKNOWN resumption.",
+  "health": "complete",
+  "summary": "Integrated d5207685/base070 independent technical PASS; current local4966PASS/0FAIL/26SKIP and SSR151modules. Scoped offline Engineering Acceptance recorded. Native BLOCKED/history retained. Final records review/current-head hosted CI and Git merge/sync are not predicted by this engineering checkpoint.",
+  "current_objective": "Accept/archive the integrated fixed opt-in offline engineering mechanism only; final publication results are separately bound to PR103/receipt.",
+  "next_action": "Complete current authorized final record review/current-head CI/squash/safe main synchronization, bind actual outcomes to PR103 and the final receipt, then stop. This completed engineering checkpoint grants no Provider, default adoption, old-task or UNKNOWN resumption, release or production.",
   "blockers": [],
   "milestones": [
     {
@@ -81,10 +81,17 @@
     },
     {
       "id": "cli-pr103-final",
-      "label": "Current full fixed-candidate CLI technical PASS; record-only closeout review still required",
+      "label": "HISTORICAL complete ed2a58-file CLI PASS; original report retained",
       "model": "Actual gpt-6-astra/xhigh/danger-full-access/never; current explicit user behavioral-readonly host exception",
       "status": "waiting",
       "activation": "Current user exception;100 independent commands, no candidate source changes"
+    },
+    {
+      "id": "cli-pr103-main070",
+      "label": "Current integrated d5207685 affected technical PASS; final records-only check remains a Git condition",
+      "model": "Actual gpt-6-astra/xhigh/danger-full-access/never; current user exception, behavioral readonly only",
+      "status": "waiting",
+      "activation": "Current original-task CLI consent;40 affected independent commands with source/package unchanged during review"
     }
   ],
   "metrics": [],
@@ -415,14 +422,26 @@
     },
     {
       "id": "formal-pr103-engineering-acceptance",
-      "label": "Historical scoped acceptance at ed2a; integrated main070 still awaits revalidation",
+      "label": "Current integrated limited offline Engineering Acceptance; Git outcomes remain conditions",
       "path": "openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/ENGINEERING-ACCEPTANCE.md",
       "status": "present"
     },
     {
       "id": "formal-pr103-current-ci",
-      "label": "Actual reviewed-tree Ubuntu4964PASS/0FAIL/23SKIP; changed-record head CI must be current",
+      "label": "HISTORICAL ed2a Ubuntu4964/0/23; new final-head CI required",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/HOSTED-CI-RESULT.json",
+      "status": "verified"
+    },
+    {
+      "id": "main070-independent",
+      "label": "Current integrated62-file technical PASS; raw failures and SKIPs explicit",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z/INTEGRATED-REVIEW-RESULT.json",
+      "status": "verified"
+    },
+    {
+      "id": "main070-canonical",
+      "label": "Current integrated local full portable4966/0/26, not hosted final CI",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z/INTEGRATED-CANONICAL-RESULT.json",
       "status": "verified"
     }
   ],
@@ -458,7 +477,7 @@
       "mitigation": "Behavioral readonly is not OS readonly; final record review and current required CI/merge conditions still apply. This changes no defaults or future permissions."
     }
   ],
-  "updated_at": "2026-10-18T08:24:06.415Z",
+  "updated_at": "2026-10-18T08:48:35.399Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dfc-3ac3-77d1-9665-b179e47fb21e"

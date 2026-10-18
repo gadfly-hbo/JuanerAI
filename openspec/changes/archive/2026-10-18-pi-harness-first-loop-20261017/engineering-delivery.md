@@ -1,3 +1,81 @@
+# Current Engineering Acceptance — integrated main070 / 2026-10-18
+
+**ENGINEERING_ACCEPTED_OFFLINE_WITH_LIMITS**, issued by the Mini Engineering
+Controller after the complete ed2a independent technical PASS and the affected
+integrated-candidate PASS. Current technical identity:
+d5207685de0600d452949693697841e59bb5f5e9 /
+tree ed1bf5bb6bb5075c47fb0736e1956f9071d49a56 /
+base0705e8603769c3a453be7a123bfe886d6d88c671.
+Its62-file aggregate is4b7de06bd7324c58831192a8af7b6de722f10e3b5d8b5ff1fa783ec56e4abffe.
+This last delta changes records only; runtime/tests/package/lock remain exactly
+those reviewed inputs. Final changed-record independent check and actual final
+PR-head hosted CI are still required before squash and safe synchronization.
+No actual merge/sync SHA is predicted here. See PR103 and the final receipt
+locator below for actual Git outcomes.
+
+The user explicitly authorized the current CLI Astra/xhigh host exception,
+behavioral readonly with only fresh synthetic fixtures/new Tasks and loopback.
+Actual model/effort/permissions/instructions were verified, with no fallback:
+gpt-6-astra/xhigh/danger-full-access/approval-never, exact role SHA256
+6eb827c7167686a8af362a6027995cb89d914d5da8b2b6bc984f40b20a7e4099.
+This is not OS readonly or native role conformity. Native BLOCKED F-ROLE-01
+and the old .2 two-rerun-plus22-reuse tally remain unchanged.
+
+Current integrated independent report:
+cli/BASELINE070-RESPONSE.md,11508 bytes /
+SHA256 a672ba4950e5c633eec82cee41d7dbd84363f4def25019087f0a06dd68e0fc9d.
+Complete ed2a review remains cli/REVIEW-RESPONSE.md,11669 bytes /
+SHA256 a0395793635527dde7df00bbc24bc5646c359a679ad777520e8d31d7a39a52c1.
+The two reviews have100 and40 recorded independent commands respectively;
+they are not one undifferentiated execution tally.
+
+Current fresh independent checks: focused25PASS/0FAIL/0SKIP (16 H3 internal
+scenarios included in their parent); consumers103PASS/0FAIL/2SKIP;
+root-negative subset152PASS (3 unchanged synthetic-platform gate children
+excluded from that subset, covered by canonical); service-boundary2PASS with
+mocked infrastructure; fresh actual-Adapter failure probes7PASS. Initial tuple
+probe5PASS/1setupFAIL from missing portable scope/Electron remained; the one
+affected test reran portable1PASS. No install or assertion relaxation followed.
+Configured Research launch/control/export acceptance remains NOT_RUN; its2
+gated cases remain SKIP. Service-boundary mocks are not packaged Research proof.
+
+Current supplied local full portable:19 groups4966PASS/0FAIL/26SKIP,360.237s,
+finished08:36:11Z; root types included. Current SSR151modules/exit0, no packaging/
+deployment. Old Ubuntu39107632471 belongs to ed2a/35177f9 only; it does not
+authorize this new candidate's merge. Final current-head CI must be actual.
+
+Main070/PR104 was integrated normally after the baseline guard stopped.
+All7 conflict inputs/stages and both parents are preserved. Service options
+were combined; literal root/configuration oracles retain both ordered appendices,
+all negative coverage and historical tuples. No fixed SDK/lock, Harness behavior,
+effect permission, recovery contract, native test body or V006-01 assertion changed.
+C2-02 partial belongs to main070/PR104; Pi changes no capability status class
+relative to that base. The full40-ID current map/snapshot preserve both tasks.
+
+Engineering Acceptance covers only the approved opt-in offline A01–A16/H3
+mechanisms: original semantics, authorization, actual native preparation/
+admission/accounting, supervision and independent qualification, truthful save/
+readback/reopen, compatibility and retained UNKNOWN. It does not accept real
+Provider/model/business quality, visual/user acceptance, Desktop delivery,
+arbitrary languages, default runtime adoption, old-task migration, release or
+production. Trial repair-2 and Change-007 stay paused. No UNKNOWN is cleared,
+recovered or replayed;003–007,006FAIL,all FAIL/BLOCKED/UNKNOWN and causal RED stay.
+
+Canonical archive is this directory. Raw evidence is device-local Mini:
+/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z
+Current raw data: INTEGRATED-REVIEW-RESULT.json,
+INTEGRATED-CANONICAL-RESULT.json,cli/BASELINE070-COMMAND-INDEX.json,
+baseline070-conflicts/ and the preserved earlier reports.
+Final Git/CI/sync receipt locator:
+/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z/FINAL-ENGINEERING-GIT-RECEIPT.md
+That final file is produced at Git closeout; it is not an invented current PASS.
+It and PR103 bind actual final head/CI/merge/sync identities outside this
+self-referential commit record. Git publication does not install/enable runtime.
+SDK PR5 Git facts are user-forwarded provenance for the same fixed .3 package;
+no SDK repository operation or hosted SDK CI claim is made by this task.
+
+## Historical checkpoints preserved below
+
 # Integrated main070 checkpoint — affected validation pending
 
 During closeout origin/main advanced to0705e8603769c3a453be7a123bfe886d6d88c671 (PR104). The earlier accepted ed2a candidate and its complete CLI PASS below remain valid historical evidence only. This integrated candidate needs affected verification, independent review and current-head CI before Engineering Acceptance/merge. Fixed SDK and effect/stopping contracts are unchanged; baseline service options and literal configuration roots are combined without relaxing negatives.

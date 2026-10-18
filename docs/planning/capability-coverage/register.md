@@ -1,3 +1,15 @@
+## Pi Harness007-r2 · 新基线限定工程接收（2026-10-18）
+
+当前d5207685/base070候选已完成独立受影响技术复核PASS及本机规范验证
+4966PASS/0FAIL/26SKIP，限定离线工程接收见[正式记录](../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/ENGINEERING-ACCEPTANCE.md)。
+最终记录复核、当前PR head托管CI、squash与安全同步仍是Git条件；实际结果由
+PR103及固定回执核对。原生BLOCKED与全部FAIL/BLOCKED/UNKNOWN保留，旧.2仍是
+“两项重跑＋22项复用”，两个旧任务继续暂停。
+相对main070，本方40稳定ID状态类／目标／业务验收增量0；C2-02局部实现归PR104。
+本次不代签Provider、业务质量、视觉／用户验收、默认运行采用或发布。
+[当前完整快照](snapshots/pi-harness-first-loop007-r2-engineering-2026-10-18.md)。
+以下早期Pi检查点及其他任务记录按原时点保留。
+
 ## Pi Harness007-r2 · 限定离线工程接收与归档（2026-10-18）
 
 本轮完整独立CLI Astra/xhigh复核PASS；Mini工程接收限定为既有显式opt-in

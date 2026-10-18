@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018084835400-JIG6PB",
+  "event_type": "archived",
+  "occurred_at": "2026-10-18T08:48:35.400Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dfc-3ac3-77d1-9665-b179e47fb21e"
+  },
+  "summary": "Scoped integrated offline Engineering Acceptance and archive after current CLI technical PASS/local full verification; native BLOCKED preserved. Actual final record review, hosted CI and Git merge/sync remain separately verified delivery conditions.",
+  "status_after": "complete",
+  "evidence_refs": []
+}
