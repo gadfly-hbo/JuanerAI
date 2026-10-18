@@ -7,7 +7,7 @@
 与PR103固定回执核对；未执行结果不提前称完成。原生BLOCKED、全部历史
 FAIL/BLOCKED/UNKNOWN和旧.2“两项重跑＋22项复用”保留；两个旧任务继续暂停。
 C3-01、C6-01、A-03/04/05和B-01/02/03增加限定消费者工程证据，
-40个稳定ID的目标、状态类及业务验收增量均0。见[完整快照](snapshots/pi-harness-first-loop007-r2-engineering-2026-10-18.md)。
+相对新基线070的40个稳定ID目标、状态类及业务验收增量均0；PR104带来的C2-02局部实现保持归属原任务。见[完整快照](snapshots/pi-harness-first-loop007-r2-engineering-2026-10-18.md)。
 
 ## Pi Harness first-loop007-r2 · formal engineering/Git closeout started (2026-10-18)
 
@@ -20,6 +20,16 @@ independent review and exact-head CI/Git outcomes are tracked in the
 [delivery record](../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/engineering-delivery.md).
 [Complete40-ID snapshot](snapshots/pi-harness-first-loop007-r2-git-2026-10-18.md);
 [register](register.md). Earlier records below retain their original time/scopes.
+
+## deep-research 005 · 本机合成范围产品接受（2026-10-18）
+
+用户已明确“候选005合成范围产品验收通过”。固定005在具名Astra/high、read-only、never的独立复验下PASS，限定离线工程接受与本机合成产品接受均已记录；本次服务正常exit0，父／子进程与端口均已退出，验收数据和证据保留。未补造用户逐项操作回执，真实Provider／来源质量、完整安装／发行、Git集成与归档仍未完成。WIP UNKNOWN、原失败和环境门SKIP保持。
+
+C2-02从待核验更新为局部实现，新增“固定完整工作台＋两确认门＋任务隔离／回程＋稳定副本”的合成接受子范围；完整Deep Research／N12／S4不因此完成。C1-01、C3-01、A-05、B-01/02/03仅增加相关接缝证据；其他状态不变。40稳定ID不变，本次完整能力完成数增量0。
+
+[接受及停止证明](../../../openspec/changes/archive/2026-10-18-deep-research-integration/verification.md) · [固定快照](snapshots/deep-research-005-synthetic-accepted-2026-10-18.md) · [完整登记](register.md)
+
+以下历史记录按原时点保留。
 
 ## decision-platform 012 · 获准Git交付与归档036（2026-10-17）
 
@@ -291,11 +301,11 @@ C2-03、C4-05、A-02、A-03由待核验提升为当前验证子范围的局部�
 
 - 蓝图出处／用户价值：§1.2、§4、§9.2、§11；分析者补充外部证据、回答需要研究的问题。
 - 目标／完成条件：获批任务及来源边界内完成研究、来源核对、证据判断与不足披露；外部研究不取代业务事实或用户决定。
-- 当前状态：**待核验**；更新时间：2026-10-01。
-- 当前范围：蓝图与研究参考存在；生产代码、真实研究链路及目标验收未由001～003证据建立。Case Assistant 的只读业务工具不包含通用 Web 研究。
-- 未覆盖：先核对可复用生产资产；另需定义支持任务、来源权限及独立验证。Demo 通过不能填作生产验收。
-- 关联 Change／在研预计：001～003 无该模式激活；暂无已批准实施增量。
-- 验证证据：[E-BP](evidence.md#e-bp)、[E-002 边界](evidence.md#e-002)、[E-LEGACY](evidence.md#e-legacy)。
+- 当前状态：**局部实现**；更新时间：2026-10-18。
+- 当前范围：deep-research-integration固定005完整工作台、原计划／框架确认、任务隔离／回程、稳定成果副本通过限定离线工程及本机合成范围产品接受；首期记忆／追问关闭。Case Assistant既有只读业务工具边界不变。
+- 未覆盖：真实Provider／来源质量、完整研究任务和N12/S4目标、完整安装／发行、正式Git集成／归档；严格MCP物理收尾未量测，历史失败／UNKNOWN保留。合成接受不等于真实研究充分。
+- 关联 Change／在研预计：deep-research-integration候选005已获合成范围接受，服务已停；更广任务及真实效果仍按明确授权进入。
+- 验证证据：[005接受与停止](../../../openspec/changes/archive/2026-10-18-deep-research-integration/verification.md)、[本次快照](snapshots/deep-research-005-synthetic-accepted-2026-10-18.md)、[E-BP](evidence.md#e-bp)、[E-002 边界](evidence.md#e-002)、[E-LEGACY](evidence.md#e-legacy)。
 
 ### C2-03 自主探索模式
 

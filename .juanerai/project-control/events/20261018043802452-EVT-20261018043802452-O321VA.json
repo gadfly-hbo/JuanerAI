@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018043802452-O321VA",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T04:38:02.452Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "DR-002 UI PASS；本任务WIP UNKNOWN具名例外，开始离线工程接线",
+  "status_after": "active",
+  "evidence_refs": []
+}

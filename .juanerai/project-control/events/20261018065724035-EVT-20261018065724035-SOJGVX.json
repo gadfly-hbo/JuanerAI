@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018065724035-SOJGVX",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T06:57:24.035Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "候选004同一Astra/high只读复核完成FAIL；修复005完成24专项和4938回归，24既有SKIP，CLI例外原绑定004，新候选复验待范围确认。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

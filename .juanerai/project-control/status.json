@@ -6,15 +6,15 @@
     "product": "Pi Harness first-loop v0.2"
   },
   "phase": {
-    "id": "ENGINEERING_ACCEPTED",
-    "label": "Limited offline engineering accepted; archive prepared, final Git conditions remain",
-    "ordinal": 5,
+    "id": "VERIFY",
+    "label": "Main070 baseline integrated; previous accepted ed2a technical result preserved; affected validation pending",
+    "ordinal": 4,
     "total": 5
   },
-  "health": "complete",
-  "summary": "Scoped Engineering Acceptance after current user-consented CLI Astra/xhigh host PASS;25 focused PASS plus independent failure probes. Native BLOCKED preserved. Documentation-only archive; final record-review/current-head CI/merge/safe-sync are not predicted here.",
+  "health": "validating",
+  "summary": "Main advanced through independent PR104 during closeout. Both fixed appendices and service options preserved; fixed SDK unchanged. Earlier58-file CLI PASS is historical evidence, not acceptance of the new integrated candidate.",
   "current_objective": "Accept and archive the fixed approved opt-in offline engineering mechanism only; actual Git outcomes are separately bound to PR103 and its final receipt.",
-  "next_action": "Finish current authorized PR103 record review, required exact-head CI, squash and safe ref-only main synchronization; actual outcomes belong to the final receipt. Then stop. No default runtime adoption, Provider, old-task resumption, UNKNOWN replay or release.",
+  "next_action": "Complete current integrated affected/full checks and author-independent CLI Astra/xhigh review; update scoped acceptance and final current-head CI before squash/safe sync. No Provider, default enablement, SDK changes or old-task/UNKNOWN resumption.",
   "blockers": [],
   "milestones": [
     {
@@ -415,7 +415,7 @@
     },
     {
       "id": "formal-pr103-engineering-acceptance",
-      "label": "Limited offline Engineering Acceptance; Git conditions remain distinct",
+      "label": "Historical scoped acceptance at ed2a; integrated main070 still awaits revalidation",
       "path": "openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/ENGINEERING-ACCEPTANCE.md",
       "status": "present"
     },
@@ -458,7 +458,7 @@
       "mitigation": "Behavioral readonly is not OS readonly; final record review and current required CI/merge conditions still apply. This changes no defaults or future permissions."
     }
   ],
-  "updated_at": "2026-10-18T08:15:57.718Z",
+  "updated_at": "2026-10-18T08:24:06.415Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dfc-3ac3-77d1-9665-b179e47fb21e"

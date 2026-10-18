@@ -727,10 +727,16 @@ const decisionPlatformFiles = [
 ];
 const approvedDecisionPlatformTsconfig={...approvedReportStudioTsconfig,files:[...approvedReportStudioTsconfig.files,...decisionPlatformFiles]};
 const approvedHarnessFirstLoopTsconfig={...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,'tests/integration/xanthil-desktop/pi-harness-first-loop.integration.test.ts']};
-
+const deepResearchFiles=['packages/ports/deep-research.ts','packages/application/deep-research.ts','profiles/personal/deep-research.ts','apps/browser/deep-research-http.ts'];
+const approvedDeepResearchConfigurationFiles=[...approvedP5RepositoryConfigurationFiles,'openspec/changes/archive/2026-10-18-deep-research-integration/clickable/reference/ui/tsconfig.json'].sort();
+const approvedDeepResearchTsconfig={...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,...deepResearchFiles]};
+const approvedHarnessDeepResearchTsconfig={...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,'tests/integration/xanthil-desktop/pi-harness-first-loop.integration.test.ts',...deepResearchFiles]};
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedHarnessFirstLoopManifest,approvedHarnessDeepResearchTsconfig,approvedDeepResearchConfigurationFiles))return 'HarnessDeepResearchIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,historicalHarness2Manifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles))return 'HarnessFirstLoopPrevious' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedHarnessFirstLoopManifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles))return 'HarnessFirstLoopIntegration' as const;
+
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedDeepResearchTsconfig,approvedDeepResearchConfigurationFiles))return 'DeepResearchIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedDecisionPlatformTsconfig,approvedP5RepositoryConfigurationFiles))return 'DecisionPlatformIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedReportStudioTsconfig,approvedP5RepositoryConfigurationFiles))return 'ReportStudioIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedSdk051Manifest,approvedMetricAssetsTsconfig,approvedP5RepositoryConfigurationFiles))return 'Sdk051FormalAdoption' as const;
@@ -3582,7 +3588,7 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
   assert.equal(assertApprovedConfigurationTuple(approvedDevelopmentManifest,approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles),'Change004');
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedP5RepositoryConfigurationFiles),'HarnessFirstLoopIntegration');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedDeepResearchConfigurationFiles),'HarnessDeepResearchIntegration');
 });
 
 
@@ -4003,10 +4009,11 @@ test('DP-CI-02 exact decision-platform appendix preserves prior tuples and rejec
  const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedSdk051Manifest,config,approvedP5RepositoryConfigurationFiles);
  assert.equal(check(approvedReportStudioTsconfig),'ReportStudioIntegration');
  assert.equal(check(approvedDecisionPlatformTsconfig),'DecisionPlatformIntegration');
- assert.deepEqual(JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8')),approvedHarnessFirstLoopTsconfig);
+ assert.deepEqual(JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8')),approvedHarnessDeepResearchTsconfig);
  assert.equal(assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles),'HarnessFirstLoopIntegration');
  assert.throws(()=>assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,approvedDecisionPlatformTsconfig,approvedP5RepositoryConfigurationFiles));
  assert.throws(()=>assertApprovedConfigurationTuple(approvedSdk051Manifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles));
+  const current=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));assert.deepEqual({...current,files:current.files.slice(0,-deepResearchFiles.length)},approvedHarnessFirstLoopTsconfig);
  for(const file of decisionPlatformFiles){
   assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:approvedDecisionPlatformTsconfig.files.filter(p=>p!==file)}));
   assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,file]}));
@@ -4018,4 +4025,11 @@ test('DP-CI-02 exact decision-platform appendix preserves prior tuples and rejec
  assert.throws(()=>check({...approvedDecisionPlatformTsconfig,configuration_selector:'DecisionPlatformIntegration'}));
  assert.throws(()=>assertApprovedConfigurationTuple({...approvedSdk051Manifest,dependencies:{...approvedSdk051Manifest.dependencies,unapproved:'1.0.0'}},approvedDecisionPlatformTsconfig,approvedP5RepositoryConfigurationFiles));
  assert.throws(()=>assertApprovedConfigurationTuple(approvedSdk051Manifest,approvedDecisionPlatformTsconfig,[...approvedP5RepositoryConfigurationFiles,'unapproved.config.cjs']));
+});
+
+test('DR-CI-01 exact research appendix retains prior contract and rejects partial or expanded roots',async()=>{
+ const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedSdk051Manifest,config,approvedDeepResearchConfigurationFiles);
+ assert.equal(check(approvedDeepResearchTsconfig),'DeepResearchIntegration');assert.deepEqual(JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8')),approvedHarnessDeepResearchTsconfig);
+ for(const file of deepResearchFiles){assert.throws(()=>check({...approvedDeepResearchTsconfig,files:approvedDeepResearchTsconfig.files.filter(p=>p!==file)}));assert.throws(()=>check({...approvedDeepResearchTsconfig,files:[...approvedDeepResearchTsconfig.files,file]}));assert.throws(()=>check({...approvedDeepResearchTsconfig,files:approvedDeepResearchTsconfig.files.map(p=>p===file?'unapproved.ts':p)}));}
+ assert.throws(()=>check({...approvedDeepResearchTsconfig,files:[...approvedDecisionPlatformTsconfig.files,...deepResearchFiles.toReversed()]}));
 });

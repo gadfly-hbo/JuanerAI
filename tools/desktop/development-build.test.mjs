@@ -66,7 +66,7 @@ test('BF-R11 Q4: normal development and production Main builds resolve byte-iden
    if(id==='node:child_process')return {spawn(){assert.fail('no child processes');},execFile(){assert.fail('no helper or Provider');}};if(id.startsWith('.')){assert.ok(resolve(dirname(entry),id).startsWith(outDir+'/'));return createRequire(entry)(id);}return require(id);
   },setTimeout(){assert.fail('no runtime scheduling');},clearTimeout(){},console});
   const base=join(production?resources:outDir,'xanthil-resources'),supervisor=join(base,'adapters/analytics-duckdb/member-preparation-supervisor.py'),browserModule=join(base,'apps/browser/local-server.ts');assert.ok(seen.includes(supervisor),'actual compiled helper consumer resolves file path');assert.ok(seen.includes(browserModule),'actual compiled server binds bundle resource base');
-  const manifest=JSON.parse(readFileSync(join(base,'manifest.json'),'utf8'));assert.equal(manifest.files.length,20);
+  const manifest=JSON.parse(readFileSync(join(base,'manifest.json'),'utf8'));assert.equal(manifest.files.length,22);
   for(const f of manifest.files){const bytes=readFileSync(join(base,f.path));assert.equal(bytes.length,f.bytes);assert.equal(createHash('sha256').update(bytes).digest('hex'),f.sha256);assert.deepEqual(bytes,readFileSync(f.path));}
   for(const relative of ['index.html','bootstrap.mjs','workspace.mjs','client.mjs','styles.css','../desktop/assets/juanerai-logo-slogan.png'])assert.deepEqual(readFileSync(new URL(relative,nodeUrl.pathToFileURL(browserModule))),readFileSync(join('apps/browser',relative)));
  }

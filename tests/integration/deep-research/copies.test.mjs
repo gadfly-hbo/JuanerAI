@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtempSync,realpathSync,renameSync,readFileSync,writeFileSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {randomUUID} from 'node:crypto';
+import {createResearchCopies} from '../../../adapters/deep-research/copies.mjs';
+import {sha256} from '../../../adapters/deep-research/bundle.mjs';
+test('DR R05: same operation survives restart and rename/reply interruption without replacing bytes',()=>{
+ const root=realpathSync(mkdtempSync(join(tmpdir(),'dr-copy-'))),taskId=randomUUID(),command=randomUUID(),version={projectId:'p-test',runId:'run-test',version:1};
+ const output=text=>({bytes:Buffer.from(text),contentSha256:sha256(text),limitations:['合成限制'],unresolved:['合成未决']});
+ let copies=createResearchCopies({root,taskId});assert.equal(copies.reserve(command,version),null);
+ copies=createResearchCopies({root,taskId});assert.throws(()=>copies.reserve(command,{...version,version:2}),/CONFLICT/);
+ const first=copies.save(command,version,output('first'));const stage='.pending-'+randomUUID();renameSync(join(root,first.id),join(root,stage));
+ writeFileSync(join(root,'command-'+command+'.json'),JSON.stringify({version,id:first.id,stage}));
+ copies=createResearchCopies({root,taskId});assert.equal(copies.receipt(command).id,first.id);assert.equal(copies.read(first.id).bytes.toString(),'first');
+ assert.equal(copies.save(command,version,output('later')).id,first.id);
+ const revised=copies.save(randomUUID(),version,output('later'));assert.notEqual(revised.id,first.id);assert.equal(copies.list().length,2);
+ assert.equal(copies.save(randomUUID(),version,output('first')).id,first.id);
+ assert.deepEqual(copies.read(first.id).receipt.limitations,['合成限制']);
+ const record=JSON.parse(readFileSync(join(root,first.id,'receipt.json')));record.sha256='0'.repeat(64);writeFileSync(join(root,first.id,'receipt.json'),JSON.stringify(record));assert.throws(()=>copies.read(first.id),/CORRUPTED/);
+});

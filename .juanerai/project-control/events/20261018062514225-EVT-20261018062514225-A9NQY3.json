@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018062514225-A9NQY3",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T06:25:14.225Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "具名Astra/high只读CLI加载已核；heredoc临时写入被拒绝后按用户要求停止，未完成独立验收。",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

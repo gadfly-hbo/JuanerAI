@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018053327681-IWPDS0",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-18T05:33:27.681Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "完整原两门、有限交付、稳定副本及隔离已通过实际合成浏览器检查，进入固定候选验证。",
+  "status_after": "active",
+  "evidence_refs": []
+}

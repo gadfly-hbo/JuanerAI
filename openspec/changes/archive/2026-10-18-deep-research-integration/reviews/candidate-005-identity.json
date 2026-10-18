@@ -1,0 +1,660 @@
+{
+  "at": "2026-10-18T06:57:39.794124+00:00",
+  "workspace": "/Users/bendandebaba/.codex/worktrees/7a90/JuanerAI",
+  "branch": "work/mac-mini/deep-research-integration",
+  "head": "35177f9a9741cd7385b78bbf8143819a7df2ba33",
+  "pluginBundleSha256": "fabb1adaad46b96d48ad88782ad5ca7388fc4b1f2f178ba17c19b274cf10e1f9",
+  "files": [
+    {
+      "path": ".juanerai/project-control/events/20261018043802452-EVT-20261018043802452-O321VA.json",
+      "bytes": 371,
+      "sha256": "d89c7c92026ac264f74d79fbfe70e11881d77477ad4e690fe550bc84f1f3e82b"
+    },
+    {
+      "path": ".juanerai/project-control/events/20261018053327681-EVT-20261018053327681-IWPDS0.json",
+      "bytes": 414,
+      "sha256": "3acac015f1b6dd62afb4e3ca5cf5b27a124a9ef53542625fecdc1e2052408fbc"
+    },
+    {
+      "path": ".juanerai/project-control/events/20261018054923633-EVT-20261018054923633-XGIMAM.json",
+      "bytes": 401,
+      "sha256": "b0ceea4ffd81a0a1cc8f19c0139028ca9af25bb6dd710e61fa9f7bc0084f2ee5"
+    },
+    {
+      "path": ".juanerai/project-control/events/20261018055138372-EVT-20261018055138372-JPLCZQ.json",
+      "bytes": 437,
+      "sha256": "4da15caa2bbb9c0c6e3d395d5f5e82e3dcf11cbc4bb04c094a0ae6cbbb5d018c"
+    },
+    {
+      "path": ".juanerai/project-control/events/20261018062514225-EVT-20261018062514225-A9NQY3.json",
+      "bytes": 415,
+      "sha256": "d17befcd51b4eefd6079e1f613671b08a690f3d68a47cad4be5283a8250bdfcf"
+    },
+    {
+      "path": ".juanerai/project-control/events/20261018065430338-EVT-20261018065430338-0R81FU.json",
+      "bytes": 426,
+      "sha256": "23c38cc89f0b8b37700bd553c2d389f25d006709c29016d3dc8cd945ed945c8e"
+    },
+    {
+      "path": ".juanerai/project-control/events/20261018065724035-EVT-20261018065724035-SOJGVX.json",
+      "bytes": 462,
+      "sha256": "89729e44aeb48526101e96353d4dbc9dc135eb56c32c2fea72f2744141c1921d"
+    },
+    {
+      "path": ".juanerai/project-control/status.json",
+      "bytes": 2222,
+      "sha256": "5a1e4198ba19ce864e8003e6c59e9fc0e043918ac6fc03d2d6ca4d381b785bca"
+    },
+    {
+      "path": "adapters/deep-research/bundle.mjs",
+      "bytes": 2039,
+      "sha256": "f95cdea2ce175948fb8a9925907d57c920d1e958fc5a63aea8f849db2669f1b4"
+    },
+    {
+      "path": "adapters/deep-research/child.mjs",
+      "bytes": 1802,
+      "sha256": "dd9ef7bb18052b20afa76f526c86b015c155566644919ca57cd0795c691cc679"
+    },
+    {
+      "path": "adapters/deep-research/copies.d.mts",
+      "bytes": 165,
+      "sha256": "e7199458eba7363f9dcee857f4df4cfe1d9d501b5518ae3d972bb070d0e3c54a"
+    },
+    {
+      "path": "adapters/deep-research/copies.mjs",
+      "bytes": 4677,
+      "sha256": "707b2a95f5a46a542bbb6a8640a95ebed6d8bae9d887348a310ac732c1c76465"
+    },
+    {
+      "path": "adapters/deep-research/gateway.d.mts",
+      "bytes": 237,
+      "sha256": "2e88aa979f1d5f5cd90f96132e03fe6e5dcb7a39f4d7481603e6f236fded713a"
+    },
+    {
+      "path": "adapters/deep-research/gateway.mjs",
+      "bytes": 2772,
+      "sha256": "89f0877a06771e1a89fcdac6af51ba563810bb3a6224026f567657bb644307b6"
+    },
+    {
+      "path": "adapters/deep-research/mcp-entry.py",
+      "bytes": 423,
+      "sha256": "f304fd55b559ebb6e4afd0ccd813b4ffa92831753d3babba68a93364aea1d5b1"
+    },
+    {
+      "path": "adapters/deep-research/process.d.mts",
+      "bytes": 643,
+      "sha256": "69ccad0efe6bc4e9b733891b045931049c69d7f22aa7398050479cfc046052b3"
+    },
+    {
+      "path": "adapters/deep-research/process.mjs",
+      "bytes": 5734,
+      "sha256": "69d9888dea0e4ea099f1b5318884373abdea165b015134ee7fe191dce5c9b725"
+    },
+    {
+      "path": "adapters/deep-research/runtime.mjs",
+      "bytes": 2908,
+      "sha256": "9a91464da825d9a32002016fe2d5a5a29ec49be852f178a98e6f9e42393e71a0"
+    },
+    {
+      "path": "adapters/deep-research/server.mjs",
+      "bytes": 18736,
+      "sha256": "ba204ecad83796f432f2a763593398ac68ebbc75728f397ac1dedfe3db26857e"
+    },
+    {
+      "path": "apps/browser/deep-research-client.mjs",
+      "bytes": 8094,
+      "sha256": "7fb3b82a4e1ea545cdf4b2e07287762162970728cb5775036757fa903e0b4cdd"
+    },
+    {
+      "path": "apps/browser/deep-research-http.ts",
+      "bytes": 3218,
+      "sha256": "78d78906a3ec78a4ef257479334c5bc4b501a15499937c34211a611f63136fcd"
+    },
+    {
+      "path": "apps/browser/deep-research.css",
+      "bytes": 1079,
+      "sha256": "787f8f3bdca231716fda5faf8a49ee99b60215889f9dce7d5ac3b96f2cb4a58d"
+    },
+    {
+      "path": "apps/browser/local-server.ts",
+      "bytes": 38631,
+      "sha256": "a6e83858be1ceafd2c815c4150f8c07b673fc43ed0e0b30e2d440992bcc42077"
+    },
+    {
+      "path": "apps/browser/quick-analysis-client.mjs",
+      "bytes": 165738,
+      "sha256": "03862c2e998e016c0a07a466960379af0d12be59a2fa09869c996227fd133663"
+    },
+    {
+      "path": "apps/browser/service-main.ts",
+      "bytes": 12993,
+      "sha256": "83e55884531f9a351439789ffe3853f4f23c41f5863d4e7ec26352d81154d12b"
+    },
+    {
+      "path": "forge.config.cjs",
+      "bytes": 4648,
+      "sha256": "79bfe8a574e750e25076f88ef51cb2e77f1e7b8ca16ae4337a35450959cfb4df"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/README.md",
+      "bytes": 1765,
+      "sha256": "e91d68d73aed7368cd37557c0e7a54afcf11994e807155462880e0bc54473abc"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/assets/juanerai-logo-slogan-CNPJOWNY.png",
+      "bytes": 891196,
+      "sha256": "56bdb1196e9f1bbaef64c973c4108d12294246de6e941fa00821a2769e3e0e21"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/build-preview.cjs",
+      "bytes": 2405,
+      "sha256": "9777a403fe8f30665722f7c11bcb6c8b3ea7167167db867c5dad7f3664404960"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/contract.html",
+      "bytes": 12158,
+      "sha256": "00015e0a73de1d549afef976441dba186b38b55af49c4566d931131a1a6178e3"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/host-bridge.css",
+      "bytes": 1243,
+      "sha256": "8c853d1d5b1c316799d968eb550daeb4417ac972a112e64f23134a47624e6e6c"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/host-bridge.js",
+      "bytes": 4491,
+      "sha256": "2b6d7363592539e3495dede9014b566ef51b1736de16f22bd054b34b591eec06"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/index.html",
+      "bytes": 1202,
+      "sha256": "6e308d216c4069bd810fa10e0c2678b2004a73a097967b6b0d2ad5b27217677b"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/integration.css",
+      "bytes": 2258,
+      "sha256": "0a47869b338a9b6ac8345757d5bb8bb61cd1c05e7935679ef204f6f181476146"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/mock-api.js",
+      "bytes": 11045,
+      "sha256": "cbe98bd9c8550073d5637bc1cb544c6c180223e2f3db914cca85742b14915e26"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/model.js",
+      "bytes": 7550,
+      "sha256": "492183eca1c183837bb678921f68554ca03026084677c56d207030c0194a5398"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/plugin.css",
+      "bytes": 30781,
+      "sha256": "f5f0e62de62abea72c2fa1e921945651ffa0813bca9fe343152afaff942594e7"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/plugin.html",
+      "bytes": 903,
+      "sha256": "c2005202a76e2138fef23af08d985458d625388b6fbfa37bbde726fbd5aa332d"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/plugin.js",
+      "bytes": 1045929,
+      "sha256": "2e338cc3481dfec59b9c504532ea890cd4e7f828c7cd6c1950da46d629baef23"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/preview-transforms.json",
+      "bytes": 1438,
+      "sha256": "ee556b76874f05613559de048653dfa4f434bffe3ac05f6c68ff7cdd2f5b5650"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/prototype.js",
+      "bytes": 42890,
+      "sha256": "ecc3658cdbfe8d5aded09270d5059615a34aa59d0c943fb23b51f0fdaed0e0c7"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference-identity.json",
+      "bytes": 7327,
+      "sha256": "67678b7a5f9488eca133baaf43a68bc8869b0210c7f9aae557ea7783ca55c397"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/host/index.html",
+      "bytes": 1080,
+      "sha256": "8da914f6bdb48d48f6d2aa4c906759733e4b55f57e0e48de96b1e049f02caf97"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/host/model.js",
+      "bytes": 7550,
+      "sha256": "492183eca1c183837bb678921f68554ca03026084677c56d207030c0194a5398"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/host/prototype.js",
+      "bytes": 42890,
+      "sha256": "ecc3658cdbfe8d5aded09270d5059615a34aa59d0c943fb23b51f0fdaed0e0c7"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/host/style.css",
+      "bytes": 11404,
+      "sha256": "644d009b740e1358634728f3b14b26770d275a2b1fd00e0dde4e7ccaa21f8e37"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/src/app/markdown.ts",
+      "bytes": 5225,
+      "sha256": "6d1f4c48bf59c095fea4d61d49ba2388c90a48349c18594f4f0832a58b59a2a8"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/src/app/projectGroups.ts",
+      "bytes": 2134,
+      "sha256": "9a9db831694833510a81eb1338ecc298146f29763f29edb13d31b87b3d837080"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/App.tsx",
+      "bytes": 1444,
+      "sha256": "66030cb88f212e9dd181bb53bc4c1c850fcd94a2a32e3dbf5b2ef0da0798ba95"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/assets/juanerai-logo-slogan.png",
+      "bytes": 891196,
+      "sha256": "56bdb1196e9f1bbaef64c973c4108d12294246de6e941fa00821a2769e3e0e21"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/components/Chip.tsx",
+      "bytes": 690,
+      "sha256": "ee4480ce62f0f4c6fdf353cfcb06ad33812075367d8021b243def4d4d6483f4b"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/components/Empty.tsx",
+      "bytes": 538,
+      "sha256": "b429d5b8feacde6acde09a5b2ddef1c8c6a061f3643a069c169b04b6b6e09faf"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/components/LimitsCard.tsx",
+      "bytes": 658,
+      "sha256": "3f01c90d28ad31730e9b04f7b09d05ad4899ce153b27f41ec28292ef6035b6ac"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/components/ReportBody.tsx",
+      "bytes": 397,
+      "sha256": "b295bd47554b37810620bd81011a648068b900cc841951938d9039028d091d8a"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/index.html",
+      "bytes": 289,
+      "sha256": "5c2de8e674ce2804c035859eaddc1055e5c62d00cec2c59ee51443407c6feb1a"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/inspector/Inspector.tsx",
+      "bytes": 13428,
+      "sha256": "c5c27a50befd08649bc12f8feb701b5f9f7170b2a0dc327a985274decbcccf4a"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/main.tsx",
+      "bytes": 329,
+      "sha256": "6b8f7a42b3144d6769c8340b809bc9d1ec86367223df30bddeef58982e9bcfdb"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/shell/AppShell.tsx",
+      "bytes": 2229,
+      "sha256": "486788d6f961629d0a902a55bcdc42f43c3af1834e75aeddb9a0984c62db9ef1"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/shell/Palette.tsx",
+      "bytes": 4591,
+      "sha256": "9c1658ae1f8d4ba3997cf18e74161e99201be5170e9fcbb014692a66f893b90e"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/shell/ProjectShell.tsx",
+      "bytes": 1298,
+      "sha256": "2b7442bc4a6151ff1a46eba956b568203e7b3948d2a82a9db7a1d042fb7afcf7"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/shell/Sidebar.tsx",
+      "bytes": 7184,
+      "sha256": "55ebfba2fb190b84090511ed290857317781d8307808a906f03c778195deff21"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/shell/StageBar.tsx",
+      "bytes": 1958,
+      "sha256": "b66412e6496c9c8e986980dfe9e85fd7b5bc2deebcc273a9c6d73745a02b6b28"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/shell/StatusBar.tsx",
+      "bytes": 1795,
+      "sha256": "afef7ba2646b6308ad68ea0a3e3dcf993f1ae68c8a12c528a350206b28e9b83c"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/shell/TopBar.tsx",
+      "bytes": 1190,
+      "sha256": "ad292b1322848300d97f25d494d2e7a1918eae467d39111d666eb17ffc33726d"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/state/api.ts",
+      "bytes": 651,
+      "sha256": "ec6084479c9e421f092c72d2b4ec1d4184b5ce728f358c389b346c726f2aaf76"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/state/derive.ts",
+      "bytes": 2658,
+      "sha256": "667cb12a2a6575b8406408460e40585d4cab0e4f94c2a2c98b89e792bc7853fe"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/state/library.ts",
+      "bytes": 4776,
+      "sha256": "ccad59bc747b06d72f4059e624dd30ab2938a9f9f6f4dfa01e144a923bd6a9ad"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/state/projectDetail.tsx",
+      "bytes": 15696,
+      "sha256": "07ce344ba523e2e86a5798c369aaffba0fe6b1a1ad6ad5a0d3f5442ede64451f"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/state/projects.tsx",
+      "bytes": 2457,
+      "sha256": "3d1a28552304518be54dd1e98641e4d61294dfb7a6f0c7b77f51de89e8d6ebf6"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/state/toast.tsx",
+      "bytes": 1016,
+      "sha256": "99f914f4d236089c83c83f459d0662f2aa499321f0e6ad97ac4a644d4601849e"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/state/types.ts",
+      "bytes": 6719,
+      "sha256": "35c24f46e801b3ce84e0559c232644ff25479d1b2b183a1f61daa48616fadf4f"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/state/ui.tsx",
+      "bytes": 1921,
+      "sha256": "d0ac85f2e0c433b0941c088d87930eafc56c7eed0ae45e55ffcbbcc7c2c66678"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/styles.css",
+      "bytes": 31027,
+      "sha256": "46d5058bef5a0540a7ee847666322d9f7495b314a6448b5c1a838a16d1b151fd"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/tsconfig.json",
+      "bytes": 356,
+      "sha256": "a8b58e7efe82c80a4964ab51ac13595118926996e00509eefbbd23d6dab3063c"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/AnalyzeView.tsx",
+      "bytes": 4074,
+      "sha256": "d71e6e92da0ed75e6be0b21223703f6aeb394ead5ace8b93d6e34eb3e346db2a"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/AssetDetailView.tsx",
+      "bytes": 12901,
+      "sha256": "e1f9afe88ed012ca027f88a988f1857394d27ec4d7e12cd35376d48226f2109d"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/DraftView.tsx",
+      "bytes": 3867,
+      "sha256": "5a6f35ffcafb1fdff64a4a9feb7e37d00f7017cf6fb66f6f47c1427dc813f139"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/GatherView.tsx",
+      "bytes": 23910,
+      "sha256": "a7d4870c5086d6023ac579608582888d3efa1bdf46b53935d03179110da70052"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/LibraryView.tsx",
+      "bytes": 11760,
+      "sha256": "f3ff2528276ed7e445de78eef4ffae77ef2cfdf8ab362700388b71152d58be8e"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/PlanView.tsx",
+      "bytes": 29685,
+      "sha256": "7710eb44d84387e3dbcab2cbff33ad09bd875d54971b1f477e81e758fcc081ff"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/ProjectsView.tsx",
+      "bytes": 7191,
+      "sha256": "49fbe13fff83ac726e73056d6519519771b5b93ff4c6942df79b6b31ba19285f"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/PublishView.tsx",
+      "bytes": 8565,
+      "sha256": "0e366f2681c484f634e1be6534534ffbe44d40bd2e4e71b8163c7b6ff55d63c2"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/ReviewView.tsx",
+      "bytes": 5273,
+      "sha256": "0df44f557e0a558889343e51aca16e48ae35b73ac6c19323d1cba48af761905b"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/SettingsView.tsx",
+      "bytes": 3882,
+      "sha256": "94c1e0ee1014c48ee44410823b130d1bf70258c0c7378687842ed56558153c74"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/reference/ui/views/StageRoute.tsx",
+      "bytes": 1407,
+      "sha256": "9d80f7e3e438f7b2d239c049c7c316d066897f10b068a34867ab70d428b5cc90"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/review-controls.js",
+      "bytes": 4156,
+      "sha256": "26c0c6864af27c6038a0399ff0ac3c39cb34fa658e1573fc329e378fff9e18cb"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/clickable/style.css",
+      "bytes": 11404,
+      "sha256": "644d009b740e1358634728f3b14b26770d275a2b1fd00e0dde4e7ccaa21f8e37"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/design.md",
+      "bytes": 14591,
+      "sha256": "e3a848614eba2577761c09308876461f433083703c1196db97d5137b3ebc4fd7"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/engineering-intake.md",
+      "bytes": 3167,
+      "sha256": "e3303080ba3bc573383c0a3b3ada2760f71aadd54e30a09198c516df42f5ccf4"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/readiness-review.md",
+      "bytes": 3433,
+      "sha256": "150ba3abc1d9c5756f6bdcf4ec312ec96191b298261d122189f9a71974d2b570"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/spec.md",
+      "bytes": 7625,
+      "sha256": "ecc46723961945f06dc13d8bee2195845d648acf55974391f20ebb6592bdaeba"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/ui-contract.md",
+      "bytes": 11953,
+      "sha256": "7fe591f0440f5db2f1dbf9232f742c569f74e972dce043dc2ff475d9be51d18b"
+    },
+    {
+      "path": "openspec/changes/deep-research-integration/verification.md",
+      "bytes": 29312,
+      "sha256": "b0522cc4159cc4243556a0d0536c51d53626da259d6a56784a5b1519d1422fbf"
+    },
+    {
+      "path": "packages/application/deep-research.ts",
+      "bytes": 1284,
+      "sha256": "084cc7531bbf11d5a7e102d6949e6b805510b6bdc03864396ac32d16b8c091d2"
+    },
+    {
+      "path": "packages/ports/deep-research.ts",
+      "bytes": 1168,
+      "sha256": "fcc321cca4c4f42b33fdb4564018e9617b273236c48b0fc69d5b7709c0ca73b7"
+    },
+    {
+      "path": "profiles/personal/browser-membership.ts",
+      "bytes": 16300,
+      "sha256": "b078d7115a583166dbe012f36eb035029cbb72caecef88edce4b187ada9ba799"
+    },
+    {
+      "path": "profiles/personal/deep-research.ts",
+      "bytes": 3497,
+      "sha256": "9026fc9fd1158dd52bc4187d8edc096e2336aee2d4d035fc55561da1486535b5"
+    },
+    {
+      "path": "tests/fixtures/deep-research/adapters.mjs",
+      "bytes": 1354,
+      "sha256": "8d5b477ae59843534b5d314d533550e5dfba34294722d5bbd0b84ef8d8a8b94e"
+    },
+    {
+      "path": "tests/fixtures/deep-research/browser-trial.mjs",
+      "bytes": 2945,
+      "sha256": "2c5b8798dead45f05aa2d3b06b93755ea1a66a305e97d6d9f5e5b89dd4267d1c"
+    },
+    {
+      "path": "tests/fixtures/deep-research/configured-browser-trial.mjs",
+      "bytes": 1153,
+      "sha256": "5abf2d121b118bd146c10602af977cf2f9b52eaa1467de69954052bd4f7584dd"
+    },
+    {
+      "path": "tests/fixtures/deep-research/configured-service.mjs",
+      "bytes": 4758,
+      "sha256": "63376c19f3da886969d973e1000e84b1e1f318b21b2b04a0937852f4dd19ba2b"
+    },
+    {
+      "path": "tests/fixtures/deep-research/mcp-entry-probe.py",
+      "bytes": 253,
+      "sha256": "cdb0860c4de83d6eaf3a8e5d74ec68b955b642d8fb824fd619b106641c24efb6"
+    },
+    {
+      "path": "tests/fixtures/deep-research/mcp-synthetic.py",
+      "bytes": 774,
+      "sha256": "078051900623fb9c57c99a8e83f735ce8991817ed3d1ec5c8654220ef7317aec"
+    },
+    {
+      "path": "tests/fixtures/deep-research/no-network.mjs",
+      "bytes": 424,
+      "sha256": "9d588d0d5077e08ae87a4b9f586d12a4232363fd5fb6fbedca8c3ab482c50dcf"
+    },
+    {
+      "path": "tests/integration/deep-research/bundle.test.mjs",
+      "bytes": 1579,
+      "sha256": "2c91db2ea1eca3f373cb1998002325f22b8c4c99350ebac828d12e8d07b7eeea"
+    },
+    {
+      "path": "tests/integration/deep-research/client.test.mjs",
+      "bytes": 3334,
+      "sha256": "3bc4cf53d9905474818b23e827b8685d7bdb7df436177a649a11afdb74759a8a"
+    },
+    {
+      "path": "tests/integration/deep-research/composition.test.mjs",
+      "bytes": 4185,
+      "sha256": "f71227b207a83990e48a2eb8e43c39115fcaa4efbccc855619dcc6f4e558a4b7"
+    },
+    {
+      "path": "tests/integration/deep-research/configured-service.test.mjs",
+      "bytes": 3055,
+      "sha256": "41c4b6fde1b117d54725e1d0fca4a5b17fcb6de20d42caa6058cd951838a1ed2"
+    },
+    {
+      "path": "tests/integration/deep-research/copies.test.mjs",
+      "bytes": 2041,
+      "sha256": "81b19bf82918c74720af4b61cec533ba78c90efd4e1179f2a5665472fe0cbe12"
+    },
+    {
+      "path": "tests/integration/deep-research/http.test.mjs",
+      "bytes": 7365,
+      "sha256": "58c4162cefba2b32dab2b51969660677144a2f724add15ecaf1d9565d5813d61"
+    },
+    {
+      "path": "tests/integration/deep-research/mcp.test.mjs",
+      "bytes": 2804,
+      "sha256": "07c40d3497913b27a9a4452e0fdd4431dc2a473d35382405228c401d23eaeaf1"
+    },
+    {
+      "path": "tests/integration/deep-research/process-copies.test.mjs",
+      "bytes": 4077,
+      "sha256": "c708a781adddf5c9bce67422f67232f65cb101d3adc09845abf8307106c0eb18"
+    },
+    {
+      "path": "tests/integration/deep-research/profile.test.mjs",
+      "bytes": 3294,
+      "sha256": "8d3eb84527eaff2ca4640aa2f6bb6a8bee1d8d86c5f57e140ee6624f17abcee7"
+    },
+    {
+      "path": "tests/integration/deep-research/review-regressions.test.mjs",
+      "bytes": 4189,
+      "sha256": "67690cc073459b96a79317fed3893519f92b4d642186e524fdf187aadfc5437a"
+    },
+    {
+      "path": "tests/integration/deep-research/runtime.test.mjs",
+      "bytes": 1628,
+      "sha256": "d217cbaa72dc64abd5c7b0570c74376d9bdf54a17f4f4629cc6e382aefde592b"
+    },
+    {
+      "path": "tests/integration/deep-research/security.test.mjs",
+      "bytes": 11185,
+      "sha256": "efefc765b92b61a24a25c2ee5a900dc03abb6d76a8d450ddd4f636305e8a5f65"
+    },
+    {
+      "path": "tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts",
+      "bytes": 271429,
+      "sha256": "0ad8e7526c46f774b9de6ed02227324f1b0ec186debecdd1a22e2da3901b5717"
+    },
+    {
+      "path": "tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs",
+      "bytes": 107987,
+      "sha256": "1b70514edd1dbc9ac4a9e9da5aaf693a53ddd0f9ba9d0ae1e4c5fd87d111e815"
+    },
+    {
+      "path": "tools/deep-research/README.md",
+      "bytes": 2332,
+      "sha256": "0947b227393eea521f0bfa2f2a1511f36873d9f4409a0e61be14b371e6e35dc4"
+    },
+    {
+      "path": "tools/deep-research/build-bundle.mjs",
+      "bytes": 6082,
+      "sha256": "bd3b5857e8ddc7de90d6dfc67d5bd2692879d482cd3d67b1d4d16a35f9d7b3a8"
+    },
+    {
+      "path": "tools/deep-research/mcp-identity.json",
+      "bytes": 283481,
+      "sha256": "034d0f0ad467f33f8db060ce3eb5f1dbe7d0cc5bb8579522f90831c061e786c6"
+    },
+    {
+      "path": "tools/deep-research/source-identity.json",
+      "bytes": 48687,
+      "sha256": "bf1495a3a92799b3aaa1a1da22e1701040dbfac9218e0dd779ff6de936d12529"
+    },
+    {
+      "path": "tools/deep-research/stage-bundle.mjs",
+      "bytes": 1175,
+      "sha256": "68caaa5f97ba0d32f9f7ea7b6af68e726cc5e412bb9eebbd4b3386eb6ab47e08"
+    },
+    {
+      "path": "tools/desktop/development-build.test.mjs",
+      "bytes": 9132,
+      "sha256": "8ae59d4fef8e91b9713b30fc2d19aa4f8c941890ca3d0ff00c13fb06b6fe88c5"
+    },
+    {
+      "path": "tools/desktop/runtime-resources.mjs",
+      "bytes": 3873,
+      "sha256": "0dcdcaf92a45f30d1c18b662f7661110cf4bc1d08903feb42c43d1f4e92157f8"
+    },
+    {
+      "path": "tools/harness/validation/run",
+      "bytes": 7207,
+      "sha256": "2fc53253fd3c15663a05c1dc2b916efda5f02af94341d9baaf71ee3c47c0be8c"
+    },
+    {
+      "path": "tools/harness/validation/run.test.mjs",
+      "bytes": 72870,
+      "sha256": "c633d3b58e35cb5328e0535172b0873df32e72eefadcd89002a79d70147d9876"
+    },
+    {
+      "path": "tools/report-studio/host-resource-build.test.mjs",
+      "bytes": 3671,
+      "sha256": "e8fdaa713f4c05a78c95e82552e4f2c8f92e536c1eb8ba67447faea9ef20a91c"
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 14785,
+      "sha256": "b8645b757cb549161e22b794bb99a09e8eaca8216a1a5492fb4f3a51b1be038f"
+    },
+    {
+      "path": "vite.main.config.mjs",
+      "bytes": 1032,
+      "sha256": "63ed2694591a37e74cba8b0cb9a9bf9661c0a7c04f10ff0a8d6798c0c99b46b4"
+    }
+  ],
+  "deleted": []
+}

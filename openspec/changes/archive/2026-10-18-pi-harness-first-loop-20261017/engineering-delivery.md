@@ -1,3 +1,9 @@
+# Integrated main070 checkpoint — affected validation pending
+
+During closeout origin/main advanced to0705e8603769c3a453be7a123bfe886d6d88c671 (PR104). The earlier accepted ed2a candidate and its complete CLI PASS below remain valid historical evidence only. This integrated candidate needs affected verification, independent review and current-head CI before Engineering Acceptance/merge. Fixed SDK and effect/stopping contracts are unchanged; baseline service options and literal configuration roots are combined without relaxing negatives.
+
+## Preserved earlier checkpoint
+
 # Current engineering acceptance and Git conditions — 2026-10-18
 
 The fixed opt-in offline mechanism is ENGINEERING_ACCEPTED_OFFLINE_WITH_LIMITS
