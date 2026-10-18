@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018081557719-P5SNZI",
+  "event_type": "accepted",
+  "occurred_at": "2026-10-18T08:15:57.719Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dfc-3ac3-77d1-9665-b179e47fb21e"
+  },
+  "summary": "Limited offline Engineering Acceptance after current explicit CLI Astra/xhigh full review PASS; archive prepared. Native BLOCKED retained; final record review/current-head CI/merge/safe sync remain Git conditions.",
+  "status_after": "complete",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018010648019-SPQBR2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T01:06:48.019Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14c43-a177-7531-80ae-92fd9c6dc611"
+  },
+  "summary": "Local BLOCKED feedback ready; repaired negative coverage statically confirmed, formal native environment still unmet",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

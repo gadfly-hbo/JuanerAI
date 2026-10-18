@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017150947534-XGM4TE",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-10-17T15:09:47.534Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14a48-e0b6-7372-8b81-eb6fbf342924"
+  },
+  "summary": "P1 independent preparation verified; actual new fixed SDK delivery is the remaining continuation dependency",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018052049309-WOVWC7",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T05:20:49.309Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14d62-3fae-7fe3-8b92-589b34a1dfbc"
+  },
+  "summary": "candidate006 current authorized CLI review complete: FAIL V006-01; source unchanged; new complete receipt and stop",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

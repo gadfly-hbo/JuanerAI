@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018070405109-FF2K87",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T07:04:05.109Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dcc-52c2-7bf3-acaf-4e7032ceebc6"
+  },
+  "summary": "User-authorized formal007-r2 delivery intake; fixed behavior retained, latest main integrated, validation and final review pending.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

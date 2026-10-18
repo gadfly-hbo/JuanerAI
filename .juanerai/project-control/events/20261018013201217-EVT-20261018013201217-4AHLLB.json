@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018013201217-4AHLLB",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-10-18T01:32:01.217Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14c96-5d0c-7d82-99ac-9e41a0e4a266"
+  },
+  "summary": "Authorized Astra CLI review concludes FAIL: focus defect confirmed; full business fixtures denied under read-only; source unchanged",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018020625100-M9V447",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-10-18T02:06:25.100Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14caf-8f9b-7f51-9248-0e324407b9ce"
+  },
+  "summary": "Fixed004 independently closes B-FL-FOCUS-01; whole result BLOCKED at supervisor isolation,22PASS/2FAIL retained.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

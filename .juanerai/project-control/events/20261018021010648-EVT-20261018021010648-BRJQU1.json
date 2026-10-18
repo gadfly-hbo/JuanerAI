@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018021010648-BRJQU1",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T02:10:10.648Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14cc5-19f9-70f3-999b-35c60239fb1a"
+  },
+  "summary": "User authorized outer OS sandbox removal for two blocked candidate004 checks only; all other stops remain.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

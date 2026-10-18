@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018072401059-048MBC",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T07:24:01.059Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dcc-52c2-7bf3-acaf-4e7032ceebc6"
+  },
+  "summary": "Formal native F-ROLE-01 prevents engineering acceptance and merge; preserve historical evidence and continue only authorized draft Git/CI preparation.",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

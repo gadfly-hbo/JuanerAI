@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261017235043902-M8HX4O",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-17T23:50:43.902Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14c43-a177-7531-80ae-92fd9c6dc611"
+  },
+  "summary": "Fixed SDK .2 archive verified; authorized local integration continues",
+  "status_after": "active",
+  "evidence_refs": []
+}

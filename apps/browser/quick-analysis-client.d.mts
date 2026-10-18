@@ -9,6 +9,7 @@ export function collaborationCards(groups:readonly Readonly<{parent_session_id:s
 export function createQuickAnalysisClient(options?:{request?:typeof globalThis.fetch;storage?:Pick<Storage,'getItem'|'setItem'|'removeItem'>|null;control?:string|null}): {
  read:(id:string)=>Promise<OpenStoredTask>;
  diagnostics:(id:string)=>Promise<import('../../packages/ports/open-analysis-runtime.ts').AnalysisRuntimeDiagnostics>;
+ sessionControl:(id:string,revision:string,command:import('../../packages/ports/open-analysis-runtime.ts').AnalysisSessionCommand)=>ReturnType<NonNullable<import('../../packages/ports/open-analysis-runtime.ts').OpenAnalysisRuntime['sessionControl']>>;
  reportContent:(id:string)=>Promise<ReturnType<typeof import('../../packages/product-core/browser-report-content.ts').projectReportContent>>;
  contentCommand:(id:string,sha256:string,action:import('../../packages/product-core/browser-report-content.ts').ReportContentCommand['action'],fields?:Readonly<Record<string,unknown>>)=>Promise<import('../../packages/product-core/browser-report-content.ts').ReportContentEvent>;
  resolveReferences:(id:string,references:readonly unknown[])=>Promise<readonly {id:string;quote:string;scope:string;revision:string}[]>;

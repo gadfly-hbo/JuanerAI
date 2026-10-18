@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018082406415-958Q6E",
+  "event_type": "validation_changed",
+  "occurred_at": "2026-10-18T08:24:06.415Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dfc-3ac3-77d1-9665-b179e47fb21e"
+  },
+  "summary": "Shared main070 integrated with both literal appendices and service options. Earlier ed2a acceptance preserved; integrated-candidate verification and current CI pending.",
+  "status_after": "validating",
+  "evidence_refs": []
+}

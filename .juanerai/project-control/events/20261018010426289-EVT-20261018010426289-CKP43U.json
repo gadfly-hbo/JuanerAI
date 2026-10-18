@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018010426289-CKP43U",
+  "event_type": "blocker_found",
+  "occurred_at": "2026-10-18T01:04:26.289Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14c43-a177-7531-80ae-92fd9c6dc611"
+  },
+  "summary": "Current native B-ENV blocks formal verification; B-TEST-01 repaired and affected checks pass; static recheck next",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

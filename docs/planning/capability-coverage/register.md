@@ -1,3 +1,42 @@
+## Latest Git baseline8dcf — documentation-only integration
+
+Main8dcf/PR105 adds the other task’s publication records only. Pi technical bytes remain exactly reviewed d5207685; scoped Engineering Acceptance is unchanged. Final record review/current-head hosted CI/actual Git conditions remain distinct. Pi capability-class delta0 relative this latest base; PR104/105 records stay attributed to that task.
+
+## Pi Harness007-r2 · 新基线限定工程接收（2026-10-18）
+
+当前d5207685/base070候选已完成独立受影响技术复核PASS及本机规范验证
+4966PASS/0FAIL/26SKIP，限定离线工程接收见[正式记录](../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/ENGINEERING-ACCEPTANCE.md)。
+最终记录复核、当前PR head托管CI、squash与安全同步仍是Git条件；实际结果由
+PR103及固定回执核对。原生BLOCKED与全部FAIL/BLOCKED/UNKNOWN保留，旧.2仍是
+“两项重跑＋22项复用”，两个旧任务继续暂停。
+相对main070，本方40稳定ID状态类／目标／业务验收增量0；C2-02局部实现归PR104。
+本次不代签Provider、业务质量、视觉／用户验收、默认运行采用或发布。
+[当前完整快照](snapshots/pi-harness-first-loop007-r2-engineering-2026-10-18.md)。
+以下早期Pi检查点及其他任务记录按原时点保留。
+
+## Pi Harness007-r2 · 限定离线工程接收与归档（2026-10-18）
+
+本轮完整独立CLI Astra/xhigh复核PASS；Mini工程接收限定为既有显式opt-in
+离线机制，见[工程接收](../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/ENGINEERING-ACCEPTANCE.md)。
+该结论不代签产品/视觉、真实Provider/业务质量、默认运行采用或发布。
+最终记录复核、当前head CI及Git/同步的实际结果由[交付记录](../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/engineering-delivery.md)
+与PR103固定回执核对；未执行结果不提前称完成。原生BLOCKED、全部历史
+FAIL/BLOCKED/UNKNOWN和旧.2“两项重跑＋22项复用”保留；两个旧任务继续暂停。
+C3-01、C6-01、A-03/04/05和B-01/02/03增加限定消费者工程证据，
+相对新基线070的40个稳定ID目标、状态类及业务验收增量均0；PR104带来的C2-02局部实现保持归属原任务。见[完整快照](snapshots/pi-harness-first-loop007-r2-engineering-2026-10-18.md)。
+
+## Pi Harness first-loop007-r2 · formal engineering/Git closeout started (2026-10-18)
+
+The user authorized formal engineering receipt and Git delivery of the frozen
+opt-in offline consumer only. C3-01, C6-01, A-03/04/05 and B-01/02/03 gain
+scoped mechanism/identity evidence; all40 IDs, target definitions, status classes
+and previously accepted product scope remain unchanged. No new business,
+product/visual, real Provider or stage acceptance is declared. Current canonical,
+independent review and exact-head CI/Git outcomes are tracked in the
+[delivery record](../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/engineering-delivery.md).
+[Complete40-ID snapshot](snapshots/pi-harness-first-loop007-r2-git-2026-10-18.md);
+[register](register.md). Earlier records below retain their original time/scopes.
+
 交付更新（2026-10-18）：deep-research候选005合成接线范围已通过[PR #104](https://github.com/gadfly-hbo/JuanerAI/pull/104)合并并安全同步两机main；[实际回执](../../../openspec/changes/archive/2026-10-18-deep-research-integration/publication-receipt.md)。C2-02局部实现和其他能力状态保持，不增加完整能力／阶段接受。
 
 ## deep-research 005 · 本机合成范围产品接受（2026-10-18）

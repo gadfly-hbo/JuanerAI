@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018053017580-WRGDGO",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T05:30:17.580Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14d79-283f-7992-ba59-28fe1d559c4d"
+  },
+  "summary": "V006-01 minimal test eligibility repair authorized; causal RED retained; product SDK unchanged",
+  "status_after": "validating",
+  "evidence_refs": []
+}
