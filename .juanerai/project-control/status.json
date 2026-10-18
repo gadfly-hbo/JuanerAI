@@ -6,15 +6,15 @@
     "product": "deep-research 完整工作台接入"
   },
   "phase": {
-    "id": "DELIVERY",
-    "label": "005合成范围Git正式交付中",
+    "id": "DELIVERED",
+    "label": "005合成范围已接受、归档并Git交付",
     "ordinal": 6,
     "total": 6
   },
-  "health": "validating",
-  "summary": "005独立离线复核及用户合成验收通过；Git交付已获授权，原实现保持，归档与CI／PR／安全同步处理中。",
+  "health": "complete",
+  "summary": "005合成范围经PR #104合并，实际CI通过，Mini和MacBook main已ref-only同步；服务已停，数据证据保留，WIP UNKNOWN。",
   "current_objective": "复用固定插件完整工作台，闭合原确认、宿主隔离与稳定成果副本。",
-  "next_action": "完成归档路径验证、只读复核、最终HEAD CI、PR squash及安全main同步；不安装／真实Provider／提权／旧指针／Host Loop，WIP UNKNOWN保持。",
+  "next_action": "产品工作保持停止；收尾回执随本轮Git交付保存。后续安装／真实Provider另按明确用户任务，不改旧指针或Host Loop。",
   "blockers": [],
   "milestones": [
     {
@@ -31,6 +31,11 @@
       "id": "product005",
       "label": "005合成范围用户产品验收通过，服务已停",
       "status": "completed"
+    },
+    {
+      "id": "delivery005",
+      "label": "PR #104合并、归档及双设备main安全同步",
+      "status": "completed"
     }
   ],
   "agents": [
@@ -38,7 +43,7 @@
       "id": "controller",
       "label": "Mini 同一工程主 Agent",
       "model": "Native session; exact model/effort not independently verified",
-      "status": "active",
+      "status": "complete",
       "activation": "DR-002 UI PASS及本任务WIP具名例外"
     }
   ],
@@ -55,6 +60,12 @@
       "label": "005同一Astra/high只读CLI独立PASS及接受边界",
       "path": "openspec/changes/archive/2026-10-18-deep-research-integration/verification.md",
       "status": "present"
+    },
+    {
+      "id": "delivery005",
+      "label": "实际Git交付回执与CI／逐设备同步",
+      "path": "openspec/changes/archive/2026-10-18-deep-research-integration/publication-receipt.md",
+      "status": "present"
     }
   ],
   "risks": [
@@ -65,7 +76,7 @@
       "mitigation": "仅本任务用户具名例外；不提权、不改指针、不启动Host Loop。"
     }
   ],
-  "updated_at": "2026-10-18T07:53:52.030Z",
+  "updated_at": "2026-10-18T08:17:37.584Z",
   "updated_by": {
     "role": "controller",
     "session": "status-cli"
