@@ -1,3 +1,5 @@
+当前状态：005合成范围源码已由[PR #104](https://github.com/gadfly-hbo/JuanerAI/pull/104)合并，双设备main已安全同步；见[实际交付回执](publication-receipt.md)。以下准备阶段说明及原始证据保留。
+
 # deep-research 005 · 合成范围正式交付归档
 
 本目录承接用户已批准的候选005工程接线与合成产品接受；随获准PR合并成为正式归档。准备归档不等于Git合并已经完成。当前交付状态见[Git交付011](git-delivery-011.md)，最终SHA、CI、合并与逐设备同步读回见该记录所指本机completion回执及GitHub原生状态。

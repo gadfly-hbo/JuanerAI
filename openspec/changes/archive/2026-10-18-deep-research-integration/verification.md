@@ -1,3 +1,9 @@
+# deep-research 当前交回012：005合成范围Git交付已合并与同步
+
+[实际交付回执](publication-receipt.md)记录PR #104、最终HEAD CI、合并树、归档和双设备ref-only同步。005合成范围已接受；WIP UNKNOWN及历史失败／SKIP不变，安装与真实Provider仍未授权。以下011及更早执行中／未授权状态均为历史。
+
+---
+
 # deep-research 当前交回011：已授权Git正式交付，执行中
 
 当前交付入口为[Git交付011](git-delivery-011.md)。用户已允许005合成范围的Git／CI／PR／合并／适用归档与安全同步；下方010及更早未授权语句保留历史。WIP UNKNOWN、禁止提权／旧指针／Host Loop／安装／真实Provider继续有效。

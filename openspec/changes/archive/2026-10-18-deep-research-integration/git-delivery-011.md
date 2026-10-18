@@ -1,3 +1,5 @@
+当前完成情况见[实际交付回执](publication-receipt.md)；下文保留交付准备时点。
+
 # 候选005 Git交付011
 
 2026-10-18，Mini同一工程主Agent。用户明确授权候选005按已验收合成范围完成核对、必要验证、CI、PR、合并、适用归档及安全同步。WIP UNKNOWN和历史失败／SKIP保留；禁止提权、修改旧指针、Host Loop、安装及真实Provider。

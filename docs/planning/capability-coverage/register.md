@@ -1,3 +1,5 @@
+交付更新（2026-10-18）：deep-research候选005合成接线范围已通过[PR #104](https://github.com/gadfly-hbo/JuanerAI/pull/104)合并并安全同步两机main；[实际回执](../../../openspec/changes/archive/2026-10-18-deep-research-integration/publication-receipt.md)。C2-02局部实现和其他能力状态保持，不增加完整能力／阶段接受。
+
 ## deep-research 005 · 本机合成范围产品接受（2026-10-18）
 
 用户已明确“候选005合成范围产品验收通过”。固定005在具名Astra/high、read-only、never的独立复验下PASS，限定离线工程接受与本机合成产品接受均已记录；本次服务正常exit0，父／子进程与端口均已退出，验收数据和证据保留。未补造用户逐项操作回执，真实Provider／来源质量、完整安装／发行、Git集成与归档仍未完成。WIP UNKNOWN、原失败和环境门SKIP保持。
