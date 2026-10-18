@@ -151,3 +151,16 @@ parameter/safety/recovery and acceptance assertions remain fixed; no prior CLI
 host exception, Provider, product acceptance, default enablement, release,
 production or paused-task resumption is granted. Stop affected work before any
 required behavior/contract/permission change.
+
+
+## Formal receipt and archive scope — 2026-10-18
+
+The user authorized complete CLI Astra/xhigh independent review with a current
+host behavioral-readonly exception, then Engineering Acceptance and full Git
+closeout if conditions pass. [Engineering Acceptance](ENGINEERING-ACCEPTANCE.md)
+accepts only the existing opt-in offline mechanism. The behavior contract,
+fixed SDK/manifest/lock, stage/parameter policies, tools, deadlines, permissions,
+stopping/recovery and assertions remain unchanged. This is engineering record/
+archive work only. Native BLOCKED and all historical failures remain; no old
+task, Provider, default deployment or release is enabled. Actual final Git/CI/
+synchronization evidence is recorded separately without predicting a merge SHA.

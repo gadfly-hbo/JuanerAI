@@ -1,3 +1,14 @@
+## Pi Harness007-r2 · 限定离线工程接收与归档（2026-10-18）
+
+本轮完整独立CLI Astra/xhigh复核PASS；Mini工程接收限定为既有显式opt-in
+离线机制，见[工程接收](../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/ENGINEERING-ACCEPTANCE.md)。
+该结论不代签产品/视觉、真实Provider/业务质量、默认运行采用或发布。
+最终记录复核、当前head CI及Git/同步的实际结果由[交付记录](../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/engineering-delivery.md)
+与PR103固定回执核对；未执行结果不提前称完成。原生BLOCKED、全部历史
+FAIL/BLOCKED/UNKNOWN和旧.2“两项重跑＋22项复用”保留；两个旧任务继续暂停。
+C3-01、C6-01、A-03/04/05和B-01/02/03增加限定消费者工程证据，
+40个稳定ID的目标、状态类及业务验收增量均0。见[完整快照](snapshots/pi-harness-first-loop007-r2-engineering-2026-10-18.md)。
+
 ## Pi Harness first-loop007-r2 · formal engineering/Git closeout started (2026-10-18)
 
 The user authorized formal engineering receipt and Git delivery of the frozen
@@ -6,7 +17,7 @@ scoped mechanism/identity evidence; all40 IDs, target definitions, status classe
 and previously accepted product scope remain unchanged. No new business,
 product/visual, real Provider or stage acceptance is declared. Current canonical,
 independent review and exact-head CI/Git outcomes are tracked in the
-[delivery record](../../../openspec/changes/pi-harness-first-loop-20261017/engineering-delivery.md).
+[delivery record](../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/engineering-delivery.md).
 [Complete40-ID snapshot](snapshots/pi-harness-first-loop007-r2-git-2026-10-18.md);
 [register](register.md). Earlier records below retain their original time/scopes.
 

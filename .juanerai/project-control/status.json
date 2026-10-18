@@ -6,23 +6,16 @@
     "product": "Pi Harness first-loop v0.2"
   },
   "phase": {
-    "id": "VERIFY",
-    "label": "Formal007 review blocked by actual native sandbox; draft Git/CI only",
-    "ordinal": 4,
+    "id": "ENGINEERING_ACCEPTED",
+    "label": "Limited offline engineering accepted; archive prepared, final Git conditions remain",
+    "ordinal": 5,
     "total": 5
   },
-  "health": "blocked",
-  "summary": "Local canonical4961PASS/0FAIL/26SKIP, types/build pass. Native Sol/high/instructions loaded but actual danger-full-access violates required read-only. EngineeringAcceptance and merge BLOCKED; draft branch/PR/Ubuntu CI remain expressly authorized.",
-  "current_objective": "Deliver only the fixed opt-in first-loop offline mechanisms through formal engineering acceptance, reviewed PR, required CI, squash and safe dual-main synchronization.",
-  "next_action": "Preserve reviewed scoped branch and draft PR with real Ubuntu CI; no merge. Final acceptance awaits a verifiable read-only native Sol/high full review or a NEW explicit user exception. Do not restart old tasks, Provider, default deployment or UNKNOWN.",
-  "blockers": [
-    {
-      "id": "B-FORMAL007-ROLE-01",
-      "label": "Native Validator actual sandbox is danger-full-access; required read-only, no current exception",
-      "owner": "user",
-      "detail": "Required complete independent review / Engineering Acceptance / merge blocked. Provide an actually verifiable read-only native Sol/high review environment or decide a new bounded exception; no automatic CLI fallback."
-    }
-  ],
+  "health": "complete",
+  "summary": "Scoped Engineering Acceptance after current user-consented CLI Astra/xhigh host PASS;25 focused PASS plus independent failure probes. Native BLOCKED preserved. Documentation-only archive; final record-review/current-head CI/merge/safe-sync are not predicted here.",
+  "current_objective": "Accept and archive the fixed approved opt-in offline engineering mechanism only; actual Git outcomes are separately bound to PR103 and its final receipt.",
+  "next_action": "Finish current authorized PR103 record review, required exact-head CI, squash and safe ref-only main synchronization; actual outcomes belong to the final receipt. Then stop. No default runtime adoption, Provider, old-task resumption, UNKNOWN replay or release.",
+  "blockers": [],
   "milestones": [
     {
       "id": "intake",
@@ -81,10 +74,17 @@
     },
     {
       "id": "native-final-review",
-      "label": "Current formal native review BLOCKED F-ROLE-01; original report preserved",
+      "label": "HISTORICAL formal native BLOCKED F-ROLE-01; original report unchanged",
       "model": "Actual gpt-6.1-sol/high/danger-full-access/never; exact role loaded",
       "status": "blocked",
       "activation": "Current explicit formal engineering/Git authorization; no CLI host exception"
+    },
+    {
+      "id": "cli-pr103-final",
+      "label": "Current full fixed-candidate CLI technical PASS; record-only closeout review still required",
+      "model": "Actual gpt-6-astra/xhigh/danger-full-access/never; current explicit user behavioral-readonly host exception",
+      "status": "waiting",
+      "activation": "Current user exception;100 independent commands, no candidate source changes"
     }
   ],
   "metrics": [],
@@ -98,19 +98,19 @@
     {
       "id": "spec",
       "label": "Bounded behavior specification",
-      "path": "openspec/changes/pi-harness-first-loop-20261017/spec.md",
+      "path": "openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/spec.md",
       "status": "present"
     },
     {
       "id": "current",
       "label": "Current result and continuation",
-      "path": "openspec/changes/pi-harness-first-loop-20261017/verification.md",
+      "path": "openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/verification.md",
       "status": "present"
     },
     {
       "id": "d0",
       "label": "D0 and exact next integration steps",
-      "path": "openspec/changes/pi-harness-first-loop-20261017/d0-and-integration.md",
+      "path": "openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/d0-and-integration.md",
       "status": "verified"
     },
     {
@@ -406,6 +406,24 @@
       "label": "50live/55installed/4453prior/465author files unchanged through review",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/PRE-CLOSEOUT-READBACK.json",
       "status": "verified"
+    },
+    {
+      "id": "formal-pr103-cli-pass",
+      "label": "Complete58-file independent technical PASS; native BLOCKED unchanged",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z/TECHNICAL-REVIEW-RESULT.json",
+      "status": "verified"
+    },
+    {
+      "id": "formal-pr103-engineering-acceptance",
+      "label": "Limited offline Engineering Acceptance; Git conditions remain distinct",
+      "path": "openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/ENGINEERING-ACCEPTANCE.md",
+      "status": "present"
+    },
+    {
+      "id": "formal-pr103-current-ci",
+      "label": "Actual reviewed-tree Ubuntu4964PASS/0FAIL/23SKIP; changed-record head CI must be current",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/HOSTED-CI-RESULT.json",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -432,11 +450,17 @@
       "label": "Formal delivery is limited to existing offline opt-in mechanisms",
       "level": "high",
       "mitigation": "Required current review and exact-head CI remain conditions; no inherited CLI host exception, Provider, production or old UNKNOWN replay."
+    },
+    {
+      "id": "pr103-current-exception",
+      "label": "Current user-consented CLI host exception; historical native BLOCKED remains",
+      "level": "high",
+      "mitigation": "Behavioral readonly is not OS readonly; final record review and current required CI/merge conditions still apply. This changes no defaults or future permissions."
     }
   ],
-  "updated_at": "2026-10-18T07:24:01.058Z",
+  "updated_at": "2026-10-18T08:15:57.718Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dcc-52c2-7bf3-acaf-4e7032ceebc6"
+    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dfc-3ac3-77d1-9665-b179e47fb21e"
   }
 }

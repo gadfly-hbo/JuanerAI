@@ -5,7 +5,7 @@ class or business acceptance. Fixed00750-file aggregate:
 7b5a0afd58cf1903e0bfe1e92cf605d9a78b37250286f2b9dc41742bed3c8e2e.
 This preserves the full register at intake, with no status/definition change.
 Current same-commit [register](../register.md), [full map](../latest.md);
-[delivery outcome](../../../../openspec/changes/pi-harness-first-loop-20261017/engineering-delivery.md).
+[delivery outcome](../../../../openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/engineering-delivery.md).
 The historical register content follows with relative link targets prefixed by
 ../ for this snapshot location; target/status text is unchanged.
 

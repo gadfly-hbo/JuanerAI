@@ -1,3 +1,16 @@
+# Current engineering acceptance and Git conditions — 2026-10-18
+
+The fixed opt-in offline mechanism is ENGINEERING_ACCEPTED_OFFLINE_WITH_LIMITS
+after the current explicit CLI Astra/xhigh host exception and complete
+independent PASS. See [Engineering Acceptance](ENGINEERING-ACCEPTANCE.md).
+The native F-ROLE-01 BLOCKED remains historical; it is not changed into PASS.
+This archive preserves the old checkpoint below. Final record review/current
+head CI/squash/safe synchronization remain delivery conditions; actual outcomes
+are bound by PR103 and the identified final device-local receipt. No product,
+Provider, default-enable or release acceptance follows.
+
+## Preserved checkpoint from the earlier Git-delivery attempt
+
 # candidate007-r2 — formal engineering and Git delivery
 
 Status: ENGINEERING_ACCEPTANCE_BLOCKED — B-FORMAL007-ROLE-01 / F-ROLE-01.
