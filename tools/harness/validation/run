@@ -125,7 +125,13 @@ run_group validation-contracts node --test tools/harness/validation/*.test.mjs
 check_syntax() {
 find . -path ./node_modules -prune -o -type f \( -name '*.mjs' -o -name '*.ts' \) -print |
 while IFS= read -r file; do
-  node --check "$file" || return $?
+  case "$file" in
+    ./openspec/changes/archive/2026-10-18-deep-research-integration/clickable/reference/*.ts)
+      # Frozen upstream TypeScript is compiled by its own build. Node's native
+      # checker rejects some valid upstream syntax; still parse every such file.
+      node -e 'const ts=require("typescript"),fs=require("node:fs"),f=process.argv[1];const parsed=ts.createSourceFile(f,fs.readFileSync(f,"utf8"),ts.ScriptTarget.Latest,true);if(parsed.parseDiagnostics.length){for(const d of parsed.parseDiagnostics)console.error(ts.flattenDiagnosticMessageText(d.messageText,"\n"));process.exitCode=1;}' "$file" || return $? ;;
+    *) node --check "$file" || return $? ;;
+  esac
 done
 }
 run_group syntax check_syntax

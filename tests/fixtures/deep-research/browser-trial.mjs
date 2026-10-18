@@ -1,0 +1,24 @@
+// Real host + fixed original plugin, with only synthetic external capabilities.
+import {mkdirSync,readFileSync,writeFileSync,realpathSync} from 'node:fs';
+import {join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {randomUUID} from 'node:crypto';
+import {Socket} from 'node:net';
+import {reportFixture} from '../xanthil-desktop/browser-ui-report.ts';
+import {createPersonalOpenAnalysisWorkspace} from '../../../profiles/personal/open-analysis.ts';
+import {createPersonalResearchRuntime} from '../../../profiles/personal/deep-research.ts';
+import {startBrowserMembershipServer} from '../../../apps/browser/local-server.ts';
+import {sha256} from '../../../adapters/deep-research/bundle.mjs';
+const artifact=process.env.JUANERAI_TEST_EVIDENCE_DIR,programRoot=process.env.DR_BUNDLE_ROOT;
+if(!artifact||!programRoot)throw Error('Explicit synthetic artifact and bundle required');
+mkdirSync(artifact,{recursive:true,mode:0o700});
+const connect=Socket.prototype.connect;Socket.prototype.connect=function(...args){const value=Array.isArray(args[0])?args[0][0]:args[0],host=typeof value==='object'?value.host:args[1];if(!['127.0.0.1','localhost','::1'].includes(host))throw Error('SYNTHETIC_EXTERNAL_NETWORK_DENIED');return connect.apply(this,args);};
+const f=reportFixture(true,true),projectId=randomUUID();
+const other={...f.identity,task_id:randomUUID(),run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID()};f.store.create({identity:other,question:'另一个合成任务',source:f.source});f.store.finish(f.store.begin(other.task_id),'failed');
+const open=createPersonalOpenAnalysisWorkspace({project_id:projectId,projectRoot:f.root,inspect:async()=>{throw Error('NO_SOURCE_READ');},runtime:{run:async()=>{throw Error('HOST_PROVIDER_FORBIDDEN');}},authorizeConfiguration:async()=>{throw Error('HOST_PROVIDER_FORBIDDEN');}});
+let server;
+const research=createPersonalResearchRuntime({programRoot,manifestSha256:sha256(readFileSync(join(programRoot,'manifest.json'))),hostOrigin:()=>server.origin,fixtureModule:fileURLToPath(new URL('./adapters.mjs',import.meta.url)),authorize:async()=>true});
+server=await startBrowserMembershipServer({store:{},workspace:{},open,deepResearch:{task:(project,taskId,checkControl)=>{if(project!==projectId)throw Error('WRONG_PROJECT');const check=()=>{if(!f.store.read(taskId))throw Error('WRONG_TASK');};check();return research.task({root:realpathSync(f.root),projectId,taskId,check,checkControl});}}});
+writeFileSync(join(artifact,'runtime.json'),JSON.stringify({pid:process.pid,origin:server.origin,projectId,taskId:f.id,otherTaskId:other.task_id,root:f.root,programRoot,synthetic:true},null,2)+'\n');
+console.log(JSON.stringify({url:server.origin+'/#'+server.bootstrap,origin:server.origin}));
+process.on('SIGTERM',()=>{void research.close().then(()=>server.close()).then(()=>open.close()).then(()=>process.exit(0),error=>{console.error(error.message);process.exitCode=1;});});

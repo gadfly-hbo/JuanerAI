@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018070927093-YG4ZIB",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T07:09:27.093Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "候选005独立PASS，004四项发现关闭；固定离线接线工程接受PASS，产品接受／交付授权／归档待后续，WIP UNKNOWN保持。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

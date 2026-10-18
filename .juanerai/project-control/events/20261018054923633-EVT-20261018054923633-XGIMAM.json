@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261018054923633-XGIMAM",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-18T05:49:23.633Z",
+  "actor": {
+    "role": "controller",
+    "session": "status-cli"
+  },
+  "summary": "独立复核发现保存撤权竞态；永久RED后修复并19项GREEN，正式角色沙箱差异单列。",
+  "status_after": "active",
+  "evidence_refs": []
+}

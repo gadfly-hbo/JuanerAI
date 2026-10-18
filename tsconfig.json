@@ -242,6 +242,10 @@
     "profiles/personal/decision-platform.ts",
     "apps/browser/decision-platform-http.ts",
     "tests/integration/decision-platform/materials.integration.test.ts",
-    "tests/integration/decision-platform/effects-gateway.integration.test.ts"
+    "tests/integration/decision-platform/effects-gateway.integration.test.ts",
+    "packages/ports/deep-research.ts",
+    "packages/application/deep-research.ts",
+    "profiles/personal/deep-research.ts",
+    "apps/browser/deep-research-http.ts"
   ]
 }

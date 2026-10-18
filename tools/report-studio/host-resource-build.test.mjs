@@ -12,14 +12,15 @@ import {build} from 'vite';
 const require=createRequire(import.meta.url);
 const Generator=require('@electron-forge/plugin-vite/dist/ViteConfig.js').default;
 test('RS-MAIN-COMPAT-036/M06: actual installed-entry build binds closed resources without source checkout or launching services',async()=>{
- assert.equal(process.env.JUANERAI_REPORT_STUDIO_PACKAGE,'1');
+ assert.ok(process.env.JUANERAI_REPORT_STUDIO_PACKAGE==='1'||process.env.JUANERAI_DEEP_RESEARCH_PACKAGE==='1');
  const root=mkdtempSync(join(process.env.JUANERAI_TEST_EVIDENCE_DIR,'installed-resource-build-')),out=join(root,'out');
  const generator=new Generator({build:[{entry:'apps/browser/installed-main.ts',config:'vite.main.config.mjs',target:'main'}],renderer:[]},process.cwd(),true);
  const [config]=await generator.getBuildConfigs();
  const output=await build({...config,configFile:false,build:{...config.build,outDir:out,emptyOutDir:false}});
  assert.equal(typeof output.close,'undefined','no build watcher');
  const base=join(out,'xanthil-resources'),manifest=JSON.parse(readFileSync(join(base,'manifest.json'),'utf8'));
- assert.equal(manifest.files.length,24);assert.equal(new Set(manifest.files.map(x=>x.path)).size,24);
+ assert.equal(manifest.files.length,26);assert.equal(new Set(manifest.files.map(x=>x.path)).size,26);
+ for(const required of ['apps/browser/deep-research-client.mjs','apps/browser/deep-research.css'])assert.ok(manifest.files.some(row=>row.path===required));
  for(const row of manifest.files){const bytes=readFileSync(join(base,row.path));assert.equal(bytes.length,row.bytes);assert.equal(createHash('sha256').update(bytes).digest('hex'),row.sha256);assert.deepEqual(bytes,readFileSync(row.path));}
  const server='apps/browser/local-server.ts',statement=readFileSync(server,'utf8').split('\n').find(line=>line.includes('const workbenchVersion='));
  const version=runInNewContext(statement.replaceAll('import.meta.url','resourceURL')+';workbenchVersion',{resourceURL:nodeURL.pathToFileURL(join(base,server)).href,readFileSync,createHash,process:{pid:1,version:process.version},Date,URL});

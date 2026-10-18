@@ -203,7 +203,7 @@ for(const action of ['read','task','search'])test('Q11-02/11: late saved read ca
  const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
  const click=dataset=>listeners.click({target:{closest:()=>({type:'button',dataset})}});
  try{
-  globalThis.document={getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_name,fn)=>{dispose=fn;}};
+  globalThis.document={querySelector:()=>null,getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_name,fn)=>{dispose=fn;}};
   globalThis.setInterval=fn=>{poll=fn;return 1;};globalThis.clearInterval=()=>{};
   globalThis.fetch=async(path,options)=>{if(options?.method==='POST')writes++;let value;
    if(path==='/v1/open-analysis/methods')value={skills:[],prompts:[]};
@@ -232,7 +232,7 @@ for(const action of ['read','resume','stop','revise','initial'])for(const destin
  let hold=false,release,dispose,writes=0;const values=new Map(action==='read'?[['juanerai.open.pending.v1',JSON.stringify({task_id:a})]]:[]);
  const settle=async()=>{for(let i=0;i<16;i++)await new Promise(setImmediate);};const click=dataset=>listeners.click({target:{closest:()=>({type:'button',dataset})}});
  try{
-  globalThis.document={getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.window={addEventListener:(_n,fn)=>{dispose=fn;}};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
+  globalThis.document={querySelector:()=>null,getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.window={addEventListener:(_n,fn)=>{dispose=fn;}};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
   globalThis.sessionStorage={getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)};
   globalThis.fetch=async(path,o)=>{if(o?.method==='POST')writes++;let result;
    if(path.endsWith('/methods'))result={skills:[],prompts:[]};else if(path.endsWith('/collaboration')||path.endsWith('/requests'))result=[];
@@ -326,7 +326,7 @@ test('Q11-UX-R02: slow passive read survives subsequent timer ticks and publishe
  const task=state=>({identity:{task_id:'slow-task',revision:'1'},question:'慢速回复',state,source:{sources:[]},framework:null,outcome:null,conversation_outcome:state==='saved'?{text:'自动收回的回复',kind:'MODEL_CONVERSATION'}:null});let current=task('running');
  const settle=async()=>{for(let i=0;i<16;i++)await new Promise(setImmediate);};
  try{
-  globalThis.document={getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.window={addEventListener:(_n,fn)=>{dispose=fn;}};globalThis.sessionStorage={getItem:()=>null};globalThis.setInterval=fn=>{poll=fn;return 1;};globalThis.clearInterval=()=>{};
+  globalThis.document={querySelector:()=>null,getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.window={addEventListener:(_n,fn)=>{dispose=fn;}};globalThis.sessionStorage={getItem:()=>null};globalThis.setInterval=fn=>{poll=fn;return 1;};globalThis.clearInterval=()=>{};
   globalThis.fetch=async(path,o)=>{if(o?.method==='POST')writes++;let value;if(path.endsWith('/methods'))value={skills:[],prompts:[]};else if(path==='/v1/open-analysis'){reads++;value=[current];if(hold)await new Promise(resolve=>releases.push(resolve));}else if(path.endsWith('/collaboration')||path.endsWith('/requests'))value=[];else value=current;return new Response(JSON.stringify(value));};
   await startQuickWorkspace({control:'owned'});listeners.click({target:{closest:()=>({type:'button',dataset:{task:'slow-task'}})}});await settle();
   hold=true;current=task('saved');const before=reads;poll();await settle();poll();await settle();poll();await settle();
@@ -349,7 +349,7 @@ test('Q11-UX-C03: composer answers explicit waiting clarification despite a prop
  try{for(const [state,clarification,expected] of [['waiting',{text:'金额单位和币种？'},'revise'],['saved',null,'preview'],['waiting',null,'preview']]){
   const listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,fn)=>{listeners[n]=fn;}},id=crypto.randomUUID(),writes=[];
   const task={identity:{task_id:id,revision:'1'},question:'销售额扣除退款后是多少',state,source:{sources:[]},revision_preview_supported:true,clarification,framework:{plan:{version:'1.1',goal:'销售净额',operation:'sum',source_id:'source',sheet_id:'CSV',column:'C',unit:'待确认',filters:[],group_by:null}}};
-  globalThis.document={getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.window={addEventListener(){}};globalThis.sessionStorage={getItem:()=>null};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
+  globalThis.document={querySelector:()=>null,getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.window={addEventListener(){}};globalThis.sessionStorage={getItem:()=>null};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
   globalThis.fetch=async(path,o)=>{let value;if(o?.method==='POST'){const body=JSON.parse(o.body);writes.push({path,body});value={...task,state:'running',revision_previews:[{command_id:body.command_id,baseline_identity:{revision:'1'},question:body.question,state:'preparing'}]};}else if(path.endsWith('/methods'))value={skills:[],prompts:[]};else if(path==='/v1/open-analysis')value=[task];else if(path.endsWith('/collaboration')||path.endsWith('/requests'))value=[];else value=task;return new Response(JSON.stringify(value));};
   await startQuickWorkspace({control:'owned'});listeners.click({target:{closest:()=>({type:'button',dataset:{task:id}})}});await settle();
   listeners.input({target:{id:'analysis-message',value:'万，人民币'}});listeners.submit({target:{matches:selector=>selector==='[data-form="message"]'},preventDefault(){}});await settle();
@@ -368,7 +368,7 @@ test('R1-UX02: existing unselected projects open normally, project methods load 
  const keys=['document','window','sessionStorage','fetch','setInterval','clearInterval'],prior=Object.fromEntries(keys.map(k=>[k,globalThis[k]]));
  const elements=[],listeners={},app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,fn)=>listeners[n]=fn};
  const element=()=>{const e={children:[],append(...x){this.children.push(...x);},replaceChildren(...x){this.children=x;},setAttribute(){},addEventListener(){},showModal(){},close(){}};elements.push(e);return e;};let selected=false,methods=0,writes=0;
- try{globalThis.document={getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.window={addEventListener(){}};globalThis.sessionStorage={getItem:()=>null};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
+ try{globalThis.document={querySelector:()=>null,getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.window={addEventListener(){}};globalThis.sessionStorage={getItem:()=>null};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
  globalThis.fetch=async(path,o)=>{let value;if(path==='/v1/projects')value={projects:[{project_id:'existing',display_name:'现有项目'}],current:null};else if(path==='/v1/projects/select'){assert.equal(JSON.parse(o.body).project_id,'existing');selected=true;writes++;value={control:'project-owned',project:{project_id:'existing',display_name:'现有项目'}};}else if(path.endsWith('/methods')){methods++;if(!selected)return new Response('{}',{status:400});value={skills:[],prompts:[]};}else if(path==='/v1/open-analysis')value=[];else throw Error(path);return new Response(JSON.stringify(value));};
  await assert.doesNotReject(()=>startQuickWorkspace({service:true,control:'service-owned'}));assert.equal(methods,0);assert.equal(writes,0);assert.ok(elements.some(e=>e.textContent==='现有项目'));
  await elements.find(e=>e.textContent==='现有项目').onclick();assert.equal(writes,1);assert.equal(methods,1);assert.match(app.innerHTML,/现有项目/);
@@ -403,7 +403,7 @@ test('R1-UX05: inline detail controls open the real existing drawer without issu
  const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
  const click=dataset=>listeners.click({target:{closest:()=>({type:'button',dataset})}});
  try{
-  globalThis.document={getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_n,f)=>{dispose=f;}};
+  globalThis.document={querySelector:()=>null,getElementById:()=>app,createElement:element,head:{append(){}},body:{append(){}}};globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_n,f)=>{dispose=f;}};
   globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
   globalThis.fetch=async(path,options)=>{if(options?.method==='POST')writes++;const value=path.endsWith('/methods')?{skills:[],prompts:[]}:path==='/v1/open-analysis'?[task]:path.endsWith('/collaboration')||path.endsWith('/requests')?[]:task;return new Response(JSON.stringify(value));};
   await startQuickWorkspace({control:'owned'});click({task:'detail-task'});await settle();
@@ -440,7 +440,7 @@ test('NU01: new analysis clears the old selected-file notice when it clears its 
  const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
  const click=dataset=>listeners.click({target:{closest:()=>({type:'button',dataset})}});
  try{
-  globalThis.document={getElementById:()=>app,createElement:n=>{const x=element();if(n==='input')input=x;return x;},head:{append(){}},body:{append(){}}};
+  globalThis.document={querySelector:()=>null,getElementById:()=>app,createElement:n=>{const x=element();if(n==='input')input=x;return x;},head:{append(){}},body:{append(){}}};
   globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_n,f)=>{dispose=f;}};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
   globalThis.fetch=async(path,o)=>{if(o?.method==='POST')writes++;return new Response(JSON.stringify(path.endsWith('/methods')?{skills:[],prompts:[]}:[]));};
   await startQuickWorkspace({control:'owned'});click({action:'files'});await settle();
@@ -549,7 +549,7 @@ test('MFUI-01: selecting SAP and registry immediately shows selected names witho
  const listeners={},elements=[],app={dataset:{},querySelectorAll:()=>[],querySelector:()=>null,innerHTML:'',addEventListener:(n,f)=>{listeners[n]=f;},querySelector:()=>({focus(){}})};let dispose,writes=0;
  const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
  try{
- globalThis.document={getElementById:()=>app,createElement:()=>{const e={value:'',append(){},replaceChildren(){},setAttribute(){},addEventListener(){},showModal(){},close(){}};elements.push(e);return e;},head:{append(){}},body:{append(){}}};
+ globalThis.document={querySelector:()=>null,getElementById:()=>app,createElement:()=>{const e={value:'',append(){},replaceChildren(){},setAttribute(){},addEventListener(){},showModal(){},close(){}};elements.push(e);return e;},head:{append(){}},body:{append(){}}};
  globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_n,f)=>{dispose=f;}};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
  globalThis.fetch=async(path,o)=>{if(o?.method==='POST')writes++;return new Response(JSON.stringify(path==='/v1/projects'?{projects:[]}:path.endsWith('/metric-assets')?{project_id:'synthetic',candidates:[],current:null}:path.endsWith('/methods')?{skills:[],prompts:[]}:[]));};
  await startQuickWorkspace({control:'owned'});listeners.click({target:{closest:()=>({type:'button',dataset:{action:'project'}})}});await settle();await elements.find(e=>e.textContent==='分析口径').onclick();await settle();
@@ -566,7 +566,7 @@ test('MFUI-03: successful project switch clears private import files and unsent 
  const settle=async()=>{for(let i=0;i<12;i++)await new Promise(setImmediate);};
  const action=async(name)=>{listeners.click({target:{closest:()=>({type:'button',dataset:{action:name}})}});await settle();};
  try{
- globalThis.document={getElementById:()=>app,createElement:()=>{const e={value:'',append(){},replaceChildren(){},setAttribute(){},addEventListener(){},showModal(){},close(){}};elements.push(e);return e;},head:{append(){}},body:{append(){}}};
+ globalThis.document={querySelector:()=>null,getElementById:()=>app,createElement:()=>{const e={value:'',append(){},replaceChildren(){},setAttribute(){},addEventListener(){},showModal(){},close(){}};elements.push(e);return e;},head:{append(){}},body:{append(){}}};
  globalThis.sessionStorage={getItem:()=>null};globalThis.window={addEventListener:(_n,f)=>{dispose=f;}};globalThis.setInterval=()=>1;globalThis.clearInterval=()=>{};
  globalThis.fetch=async(path,o)=>{if(o?.method==='POST')writes++;if(path==='/v1/projects/select'){if(failSwitch)return new Response('{}',{status:409});current='second';return new Response(JSON.stringify({control:'owned-second',project:{project_id:'second',display_name:'项目二'}}));}return new Response(JSON.stringify(path==='/v1/projects'?{current,projects:[{project_id:'first',display_name:'项目一'},{project_id:'second',display_name:'项目二'}]}:path.endsWith('/metric-assets')?{project_id:current,candidates:[],current:null}:path.endsWith('/methods')?{skills:[],prompts:[]}:[]));};
  await startQuickWorkspace({control:'owned',service:true});await action('project');await elements.find(e=>e.textContent==='分析口径').onclick();await settle();
