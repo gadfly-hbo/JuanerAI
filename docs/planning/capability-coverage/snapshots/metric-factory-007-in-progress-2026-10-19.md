@@ -2,7 +2,7 @@
 
 本任务仍在验证，未Engineering/Product Acceptance、未Git/安装。基线HEAD41e6c1f；下表保持既有40ID状态与缺口。固定完整工作台接入增加 A-02/A-05/B-02/B-03/C3-01 的合成机制证据；C4-07/C6-02仅设计资产生产关联，不代表消费、晋升或正式接受。全部能力状态类及接受增量0，S1/S4与六加二全局缺口不关闭。
 
-[当前结果](../../../../openspec/changes/metric-factory-integration/verification.md) · [完整登记](../register.md) · [全图](../latest.md)
+[当前结果](../../../../openspec/changes/archive/2026-10-19-metric-factory-integration/verification.md) · [完整登记](../register.md) · [全图](../latest.md)
 
 | ID | 能力 | 原状态（不变） | 既有未覆盖（不变） |
 |---|---|---|---|

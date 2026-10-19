@@ -11,10 +11,10 @@
     "ordinal": 5,
     "total": 5
   },
-  "health": "active",
-  "summary": "用户接受host014/source017/bundle018本机浏览器结果；两仓Git交付获准，主线兼容检查与CI继续。",
+  "health": "validating",
+  "summary": "用户已接受本机浏览器集成；供应PR #2 CI修正重跑，宿主已合入PR106/107，当前集成检查中。",
   "current_objective": "Bundle the complete metric-factory workbench with owned host lifecycle, authorization and stable SAP delivery, preserving production UI and supplier business implementation.",
-  "next_action": "供应回流、合入主线、原生复核、PR/CI/合并与安全同步；不安装、不新增模型调用。",
+  "next_action": "完成集成head全检查和原生独立复核，再完成两仓CI、合并、安全同步；不安装、不新增Provider。",
   "blockers": [],
   "milestones": [
     {
@@ -57,13 +57,13 @@
     {
       "id": "spec",
       "label": "Current behavior spec and scope",
-      "path": "openspec/changes/metric-factory-integration/spec.md",
+      "path": "openspec/changes/archive/2026-10-19-metric-factory-integration/spec.md",
       "status": "present"
     },
     {
       "id": "result",
       "label": "Current engineering result",
-      "path": "openspec/changes/metric-factory-integration/verification.md",
+      "path": "openspec/changes/archive/2026-10-19-metric-factory-integration/verification.md",
       "status": "present"
     }
   ],
@@ -78,10 +78,10 @@
       "id": "remaining-acceptance",
       "label": "Real model quality limits, unknown cancellation and installed-package evidence remain",
       "level": "medium",
-      "mitigation": "No more Provider tasks; preserve UNKNOWN and prior failures; fresh independent review, user acceptance and authorized Git/install remain separate."
+      "mitigation": "本机浏览器产品接受已完成；原失败及UNKNOWN保持，安装暂不执行，Git条件继续核对。"
     }
   ],
-  "updated_at": "2026-10-19T13:00:07.165Z",
+  "updated_at": "2026-10-19T13:06:38.470Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-metric-factory-integration"

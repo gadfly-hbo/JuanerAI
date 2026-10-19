@@ -18,3 +18,5 @@ No baseline product specification is written before the detailed Xanthil plan is
 - [Report Studio最小接入](report-studio/spec.md)：独立维护随包交付、精确来源/材料、自由制作、显式配置、稳定副本及生命周期；用户风险/免测和全部UNKNOWN按[归档](../changes/archive/2026-10-16-report-studio-minimal-integration/README.md)保留，随本PR实际合并生效。
 
 - [Agent／宿主精简](agent-host-simplification/spec.md)：固定003八类接缝／C1～C6的限定离线工程接受；保留旧两线停止、真实Q／产品接受及全部历史FAIL／UNKNOWN，不授权Provider／业务数据／发布／生产。
+
+- [Metric Factory完整工作台固定接入](metric-factory/spec.md)：显式宿主授权、固定物料、实例生命周期、审核发布及稳定SAP副本；本机浏览器接受，不含安装与SAP消费。

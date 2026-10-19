@@ -1,8 +1,14 @@
+## Metric Factory · 本机浏览器产品接受与正式Git交付
+
+用户已接受 host014/source017/bundle018；原生独立007 PASS，经营实际稿经人工修正后审核、发布、宿主保存及重开通过。A-02/A-05/B-02/B-03/C3-01新增已接受的本机插件设计生产闭环证据；C4-07/C6-02仅生产关联。全部40ID完整状态类与S1/S4接受增量0，六加二全局缺口保持；安装、SAP消费及自动模型质量未由本次接受替代。6任务/6请求、UNKNOWN/16384预留、原FAIL和已接受历史RED偏差保留。
+
+[当前全图快照](snapshots/metric-factory-git-2026-10-19.md) · [正式接受与交付](../../../openspec/changes/archive/2026-10-19-metric-factory-integration/git-delivery.md) · [完整登记](register.md)。以下旧记录保持其时点与归属。
+
 ## Metric Factory011 · 本地在研纠错验证（2026-10-19）
 
 当前生产工作台原样接入，两处反馈按用户明确授权修正。Validator001–004发现身份、保存状态、不完整发布历史与原有回执兼容缺陷，当前011已完成独立005及用户指定Astra/high CLI002限定离线技术PASS，本次角色证据闭合；真实模型/许可/独立版标准边界仍未闭合；不宣称工程或产品接受。A-02/A-05/B-02/B-03/C3-01增加本机合成接缝证据，C4-07/C6-02仅设计生产关联；SAP消费另案。全部40ID状态类/接受增量0，六加二及S1/S4缺口保持。
 
-[全40ID固定快照](snapshots/metric-factory-007-in-progress-2026-10-19.md) · [当前结果](../../../openspec/changes/metric-factory-integration/verification.md) · [完整登记](register.md)。历史记录按原时点保留。
+[全40ID固定快照](snapshots/metric-factory-007-in-progress-2026-10-19.md) · [当前结果](../../../openspec/changes/archive/2026-10-19-metric-factory-integration/verification.md) · [完整登记](register.md)。历史记录按原时点保留。
 
 ## Agent／宿主精简 · 当前基线离线接受与Git交付记录（2026-10-19）
 

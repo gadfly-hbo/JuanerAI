@@ -1,3 +1,5 @@
+当前浏览器行为规范，用户接受host014/source017/bundle018，工程接受和原生独立007 PASS。正式Git与主线兼容检查见[归档](../../changes/archive/2026-10-19-metric-factory-integration/git-delivery.md)；仅随授权PR合并生效。下文历史权限起点由归档中后续明确授权补充；不新增安装、模型调用或SAP消费。
+
 # Metric Factory 固定插件接入 · 当前行为规格
 
 2026-10-19；Mini-led，同一主 Agent；Engineering Intake 确认。用户原始任务授权整个产品固定接入，最新决定采用当前生产 UI，仅允许修正集成配置说明与真实停止反馈。当前产品输入：../../../docs/planning/2026-10-19/metric-factory-integration/proposal-v0.2.md、ui-contract-v0.2.md、supplier-business-baseline.md；fresh readiness004 PASS，原 FAIL／旧 UI 撤回保留。正式接受仍需独立工程 Validator 与用户。
