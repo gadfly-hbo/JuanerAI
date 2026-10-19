@@ -1,3 +1,19 @@
+## Agent／宿主精简 · 当前基线离线接受与Git交付记录（2026-10-19）
+
+当前base8b391f18；原完整003生产／SDK／依赖字节保留，LA09仅增加真实macOS监督器
+的测试适用登记，原函数／断言不变。上游CI／治理输入逐项等于其Git blob。
+新组合Canonical为5148 PASS／0 FAIL／8保留SKIP，19组exit0；当前固定2355文件
+已独立CLI Astra/max、技术read-only／never复核PASS。此前001／002 FAIL、原生BLOCKED、
+首次CI FAIL、基线推进中断、旧停止和全部UNKNOWN／累计消耗不改写。
+
+本次40ID目标／状态／完整能力与阶段接受增量0；只补限定工程接缝证据，不代签
+真实Q／业务、用户产品接受、安装发行或生产。当前精确HEAD托管CI／合并／逐端同步
+在本提交时待实际收集，见既有工程记录所定位的最终Git收据和PR106，未提前写PASS。
+[工程记录](../../../openspec/changes/archive/2026-10-19-agent-host-simplification-20261019/verification.md) ·
+[当前全40ID快照](snapshots/agent-host-simplification-git-2026-10-19.md) ·
+[证据](evidence.md#e-agent-host-git-20261019)。
+以下原记录保留其各自时点、范围与归属。
+
 ## Agent／宿主精简 · Mini完整离线候选003收口（2026-10-19）
 
 基线41e6c1f；本轮复用R1～R4和固定`.5`，覆盖八类接缝，LA09仅为首片。

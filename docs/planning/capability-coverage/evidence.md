@@ -401,3 +401,23 @@ HEAD8265a3920ee1205faec7dede8b0c84e648105d9d仅基线；接受绑定88文件aggr
 036融合候选最终canonical17组4861tests/4837PASS/0FAIL/24历史SKIP，exit0/341.84秒；非记录源码与本次开跑身份逐字一致。定向136、实际合成浏览器3和资源/实际Vite构建/VM4项通过，三项UI接线与资源形状因果RED均保留。Main/Preload及内置浏览器入口只作隔离构建，没有重新封装.app/安装/启动现装服务/Provider；Mini仍034，MacBook用户免测且未更新。63原Change材料准备归档，9外部相对链接调整，全部独立报告原字节保持；当前等036独立受影响复核及确切PR head托管CI/实际合并，不提前称主线完成。
 
 [归档/交付](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/git-delivery-036.md)、[用户接受/免测](../../../openspec/changes/archive/2026-10-16-report-studio-minimal-integration/product-acceptance.md)。本段是当前候选证据，不回填先前在研/失败段落，不授予Git以外真实效果。
+
+
+<a id="e-agent-host-git-20261019"></a>
+
+## E-AGENT-HOST-GIT-20261019 — 当前基线限定离线工程证据
+
+复用完整003生产行为、八类接缝及C1～C6独立证据；本次currentbase8b391f18纳入的
+CI／治理输入与上游逐字节相等，LA09原函数／全部断言不变，Mac实测三例保持，
+非Mac平台条件只标示不适用，不能代作沙箱通过。
+
+完整Canonical-git003为5156 tests／5148 PASS／0 FAIL／8保留SKIP，19组exit0，374.89秒；
+固定完整2355源文件／mode已独立复核PASS。
+[原始独立报告](../../../openspec/changes/archive/2026-10-19-agent-host-simplification-20261019/independent-validation-git-ci-002.md) ·
+[工程记录及原始证据定位](../../../openspec/changes/archive/2026-10-19-agent-host-simplification-20261019/verification.md) ·
+[完整40ID补充快照](snapshots/agent-host-simplification-git-2026-10-19.md)。
+
+40目标、状态类、完整能力及阶段接受增量0，真实权限／产品接受未签；旧停止、FAIL、
+UNKNOWN及费用UNKNOWN不由技术PASS清除。原001／002独立FAIL、原生BLOCKED、
+首次托管CI FAIL以及中断前无最终结论的审查原件均保留。当前Git head检查／squash／
+安全main同步以PR106与既有外置最终收据为准；本提交不提前声称它们成功。

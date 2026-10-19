@@ -65,3 +65,33 @@ FINAL-GIT-DELIVERY-RECEIPT.json。设备绝对定位保留在本机旧OFFLINE-DE
 最终head／tree／PR／CI／merge／双端main以外置收据和GitHub实际结果为准；当前工程接受
 不是对这些未来动作的PASS。若CI需要行为修正或基线推进，受影响证据重新验证；不强推、
 不绕过检查，不改旧WIP／Task，不发布或切生产。
+
+
+PR107已在同一分支无冲突纳入（本地merge a3dcefd02），当前base8b391f18。只有上游CI／
+治理输入发生新增变化；本工程运行代码／SDK／依赖仍是原003，LA09测试适用修正不变。
+当前新基线组合Canonical-git003已收集：19组exit0，5156 tests／5148 PASS／0 FAIL／8保留SKIP，374.89秒，前后行为源码摘要一致，real-model gate关闭。
+新组合独立必要复核仍待收集，不扩称旧接受／PASS覆盖未验证的新输入。
+
+
+## 当前组合独立复核与限定接受
+
+当前固定Git修正002的完整2355文件在审查前后字节／mode均一致。独立CLI
+Astra/max、技术read-only／never及当前完整4693字节角色实际核验符合；
+[完整原始报告](independent-validation-git-ci-002.md)为7345 bytes，SHA256
+`8d78ab039b873b2a4b3f4429ec55351bab492ad7514d5482d3fff32cd5ed4e9a`，结论PASS、无材料性阻断。
+该结论覆盖平台适用、原6588字节函数／全部断言、实际Mac正负证据、Store读回、
+上游CI／配置输入和未变生产行为的适用复用；新的完整Canonical为5148 PASS／0 FAIL／
+8保留SKIP、19组exit0、374.89秒。独立审查收集exit0，相关进程已结束，
+本次CLI例外于最终结论收集处结束；无后台审查和后续角色权限推断。
+
+工程主Agent据此维持当前组合的ENGINEERING_ACCEPTED_OFFLINE_WITH_LIMITS。
+真实Provider、业务数据、真实Q、用户产品／阶段接受、发布和生产不代签；旧两线停止，
+R仍Q_FAIL，40ID增量0。原001／002 FAIL、原生BLOCKED、基线推进时未完成审查exit1、
+首次CI FAIL及全部UNKNOWN／累计消耗保留，不由此PASS改写。
+
+独立建议仅为逐字保留三份旧报告末尾空行，以及旧内部摘要损坏永久夹具强化建议；
+前者不做字节规范化，后者未伪称新增覆盖。当前Git提交仅补充报告、接受／任务和
+能力投影记录；行为输入1175项摘要仍`09ab5ff28ba58c128cfafe173247bb7c3e30d57d25209f714cc5be7da930629d`。
+当前推送后的精确HEAD托管CI、squash、逐端安全main同步尚待实际收集，不能提前记PASS。
+这些事实只补入现有PR／回复或本机持久证据根git-delivery-001/FINAL-GIT-DELIVERY-RECEIPT.json，
+不为未来事实递归新增记录PR；本提交时的待执行标签保留其时点。

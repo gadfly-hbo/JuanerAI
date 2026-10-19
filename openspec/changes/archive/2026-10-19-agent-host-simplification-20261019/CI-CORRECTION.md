@@ -18,7 +18,7 @@ LA09与已有LA22同样需要真实macOS监督器和本机部署描述。向Ubun
 时的显式SKIP，理由为“real macOS supervisor is required; no inherited sandbox exception”。
 不按描述文件缺失、CI环境变量或断言失败自动跳过；Mac失败仍是FAIL。
 
-唯一非Markdown／board改动为open-analysis-long-artifact.integration.test.ts中的测试登记
+相对当前上游，本工程作者唯一非Markdown／board修正为open-analysis-long-artifact.integration.test.ts中的测试登记
 及两行说明。所有用例正文、原程序、长内容约束、原生工具路径、真实执行／独立核验／
 保存读回断言、syntax／sandbox负例和canary不变。生产代码、执行器、SDK、package和lock不变。
 未增加超时、输出窗口、恢复次数或重试，也未删除任何断言或用例。
@@ -54,3 +54,52 @@ Astra/max、read-only／never。审查尚未收口时远端main新增PR107（8b3
 完整固定组合完成仍在原授权终点内的必要复核。历史原生BLOCKED及强只读CLI条件保留。合并前仍须
 当前HEAD托管CI成功及base／规则复核。最终Git／CI／同步身份以外置FINAL-GIT-DELIVERY-RECEIPT.json
 和GitHub实际结果为准；失败原件永久保留，不把后续PASS改写成首次通过。
+
+
+## 当前基线组合（PR107纳入后）
+
+本地检查点29bedd3保存原修正；随后在同一分支以无冲突merge a3dcefd02纳入
+origin/main 8b391f18f5e560916e3ab87e64217a6c643e68e8（PR107）。上游10项CI／治理改动
+与本PR既有提交路径零重叠；原29bedd3、完整fixed003、全部旧失败与中断证据均保留，
+没有rebase／amend／reset／stash／force-push或其他工作树切换。
+
+新组合的1175个行为输入摘要为
+09ab5ff28ba58c128cfafe173247bb7c3e30d57d25209f714cc5be7da930629d。
+相对修正001，仅5个上游非Markdown路径改变：独立角色TOML、CI工作流、配置检查器、
+CI分类器及其测试；逐项字节精确等于8b391f18的Git blob。运行源码、SDK、package／lock、
+LA09测试和6588字节原函数均不变。BASE-107-BEHAVIOR-DELTA.json保存归因。
+Canonical-git002的原5091 PASS不冒充这些新CI输入的整体验证；新完整Canonical-git003另列。
+
+在安全中断和角色源文件更新后，使用新鲜独立CLI上下文加载当前完整4693字节角色指令
+（SHA ad0636e84f8a1a19d5a5aa3ea316dfd7f8b067f4d3c77d902fa4f585b875b9fc），
+仍在同一明确的本次Git修正必要只读复核授权内，最终结论尚未收集。预检实际Astra/max、
+read-only／never与原生developer全文匹配已核验。旧上下文和中断前消耗不清除；新上下文
+按唯一session另计。PR107的原生行为只读说明不被冒充OS隔离，也不撤销本任务CLI强只读条件。
+
+当前新基线组合Canonical-git003已收集：19组exit0，5156 tests／5148 PASS／0 FAIL／8保留SKIP，374.89秒，前后行为源码摘要一致，real-model gate关闭。
+据此固定完整候选再交独立评估。当前HEAD托管CI／合并／
+同步仍未执行或接受；最终实际结果仍在同一外置Git收据与PR记录，不能预填未来PASS。
+
+
+## 当前组合独立复核与限定接受
+
+当前固定Git修正002的完整2355文件在审查前后字节／mode均一致。独立CLI
+Astra/max、技术read-only／never及当前完整4693字节角色实际核验符合；
+[完整原始报告](independent-validation-git-ci-002.md)为7345 bytes，SHA256
+`8d78ab039b873b2a4b3f4429ec55351bab492ad7514d5482d3fff32cd5ed4e9a`，结论PASS、无材料性阻断。
+该结论覆盖平台适用、原6588字节函数／全部断言、实际Mac正负证据、Store读回、
+上游CI／配置输入和未变生产行为的适用复用；新的完整Canonical为5148 PASS／0 FAIL／
+8保留SKIP、19组exit0、374.89秒。独立审查收集exit0，相关进程已结束，
+本次CLI例外于最终结论收集处结束；无后台审查和后续角色权限推断。
+
+工程主Agent据此维持当前组合的ENGINEERING_ACCEPTED_OFFLINE_WITH_LIMITS。
+真实Provider、业务数据、真实Q、用户产品／阶段接受、发布和生产不代签；旧两线停止，
+R仍Q_FAIL，40ID增量0。原001／002 FAIL、原生BLOCKED、基线推进时未完成审查exit1、
+首次CI FAIL及全部UNKNOWN／累计消耗保留，不由此PASS改写。
+
+独立建议仅为逐字保留三份旧报告末尾空行，以及旧内部摘要损坏永久夹具强化建议；
+前者不做字节规范化，后者未伪称新增覆盖。当前Git提交仅补充报告、接受／任务和
+能力投影记录；行为输入1175项摘要仍`09ab5ff28ba58c128cfafe173247bb7c3e30d57d25209f714cc5be7da930629d`。
+当前推送后的精确HEAD托管CI、squash、逐端安全main同步尚待实际收集，不能提前记PASS。
+这些事实只补入现有PR／回复或本机持久证据根git-delivery-001/FINAL-GIT-DELIVERY-RECEIPT.json，
+不为未来事实递归新增记录PR；本提交时的待执行标签保留其时点。

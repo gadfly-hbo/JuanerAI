@@ -1,3 +1,17 @@
+# 当前Git交付组合：独立PASS与待托管检查
+
+当前base8b391f18组合已由新鲜独立CLI完成必要只读复核PASS。完整2355源码／mode
+前后一致，生产源码／SDK／依赖仍等于原003；本次仅LA09平台登记及上游原字节CI输入。
+[原始独立报告](independent-validation-git-ci-002.md)、[限定工程接受](ENGINEERING-ACCEPTANCE.md)与
+[全40ID补充快照](../../../../docs/planning/capability-coverage/snapshots/agent-host-simplification-git-2026-10-19.md)
+保存当前已知结果。完整Canonical-git003为5148 PASS／0 FAIL／8保留SKIP，19组exit0，
+374.89秒；行为源码前后09ab一致。原报告及历史包不改写。
+
+当前精确HEAD托管CI／squash／安全同步仍待实际执行；本提交不预填未来PASS。
+最终Git实际身份、原始CI完整日志和逐端结果，以既有证据根git-delivery-001/
+FINAL-GIT-DELIVERY-RECEIPT.json与PR106实际状态为准。下面各阶段保留原时点和权限，
+原001／002 FAIL、原生BLOCKED、首次CI FAIL和全部UNKNOWN／消耗不被覆盖。
+
 # Git交付：当前限定接受与返回点
 
 2026-10-19用户另行明确授权候选003按规范完成Git交付。工程主Agent据此记录
@@ -12,7 +26,7 @@
 desktop-integration 1805 tests／1775 PASS／3 FAIL／27 SKIP，exit1、803秒；portable exit1。
 
 后续[CI平台修正](CI-CORRECTION.md)只为LA09登记真实macOS适用条件；Mac全部用例正文与
-断言未改，生产源码／SDK／依赖字节不变。当前1175文件中1174项完全相同，新摘要
+断言未改，生产源码／SDK／依赖字节不变。修正001的1175文件中1174项完全相同，摘要
 `7ced6bb3405b7a6da2768c3d7882106cbcff6f0ae071332d4af044dbf0158863`。
 新完整Canonical本地回归为19组／5091 PASS／0 FAIL／8 SKIP，384.416秒，前后源码一致；
 该修正的独立复核在现有证据根单列，用户已授权；首次审查因远端PR107推进基线而
@@ -24,6 +38,11 @@ UNKNOWN保持原样。实际原件和代码身份在`git-delivery-001/`分别读
 本提交时Git交付检查待执行；最终实际PR head、CI、squash、双端main身份及任何同步限制，
 以设备证据根`git-delivery-001/FINAL-GIT-DELIVERY-RECEIPT.json`与GitHub PR实际记录为准。
 这些外置结果避免把本提交内尚未发生的检查和合并写成成功，也不需要自引用提交。
+
+随后无冲突纳入PR107上游基线8b391f18；当前1175行为输入摘要为
+`09ab5ff28ba58c128cfafe173247bb7c3e30d57d25209f714cc5be7da930629d`。
+生产源码与SDK不变，新增5个CI／角色输入均精确等于上游blob。当前新基线组合Canonical-git003已收集：19组exit0，5156 tests／5148 PASS／0 FAIL／8保留SKIP，374.89秒，前后行为源码摘要一致，real-model gate关闭。
+新鲜完整角色CLI独立复核单列，不用此前PASS代签。中断前审查无最终判定，原件保留。
 
 以下为已完成离线接收时的历史原文，所有未授权措辞按当时生效，不覆盖本次明确Git授权。
 
