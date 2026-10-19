@@ -117,3 +117,20 @@ exploration lifecycle/readback seam gains scoped synthetic engineering evidence.
 retain all prior target/status/gap definitions.
 
 After authorized publication readback, stop; old two lines remain stopped.
+
+## Collected independent main363c integration result
+
+Complete fixed3879-file candidate f3d4fcd79dadedcb7f4888ddb9118fd4cfddf242,
+tree ef16cd66ea814c68587d3058ad74c7a32bc604b0, has independent native PASS,
+no material blockers/new advisory defects. Fresh key paths:29 PASS/0 FAIL/0 SKIP,
+exit0,9.370s. The [raw report](independent-validation-git-base363c-003.md)
+is11,390 bytes/SHA256
+7f16c76e66cb4ca4357f52869f5b25f1cead52ca94609cd15fdb2f3d7759578d.
+Current-base bounded Engineering Acceptance is recorded above and in its
+acceptance file. No new source/test/config/dependency or authority change follows
+this review; only the exact raw report, observed acceptance and sole-writer board
+facts are published. A complete post-review delta proof binds that bookkeeping
+to the independently fixed candidate. Final pushed head/current-base portable CI,
+merge and synchronization outcomes remain to be collected in the external final
+Git receipt; none is predeclared by this record. Historical reports and archives
+retain their original scopes and identities.

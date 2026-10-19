@@ -44,3 +44,24 @@ The fixed repair behavior acceptance remains offline-limited; final new-base
 Git integration additionally requires the independently collected integration
 supplement and fresh current-head CI in the final external Git receipt. It does
 not inherit PR108 model budgets/Provider or installed-resource permissions.
+
+## Current-base independent acceptance supplement
+
+The complete fixed3879-path combination at f3d4fcd79dadedcb7f4888ddb9118fd4cfddf242
+on base363c756f63466c1b9625f5d206a348439e7759b4 independently PASSED.
+[Raw new-base report](independent-validation-git-base363c-003.md) is preserved
+byte-exact:11,390 bytes/SHA256
+7f16c76e66cb4ca4357f52869f5b25f1cead52ca94609cd15fdb2f3d7759578d.
+Fresh independent29 PASS/0 FAIL/0 SKIP,exit0,9.370s exercises actual Workspace,
+full native original-path read and the changed shared HTTP/read composition.
+No material blocker or new advisory defect; all94 nonconflicting upstream blobs
+and all3879 reviewed file bytes/modes match. Native read-only conduct and actual
+inherited permissions remain disclosed. Author current-base500 PASS/2 retained
+SKIP and typecheck exit0 remain applicable; causal RED/GREEN is source-bound.
+
+The Mini Engineering Controller accepts this combination WITH_OFFLINE_LIMITS.
+Publishing this raw report and observed acceptance/board facts changes records
+only; exact post-review scope and final commit/blob identities are collected in
+the external Git receipt. Required final-head full portable CI, actual merge and
+safe synchronization must still succeed before Git delivery is complete.
+All other acceptance, permission and preservation limits above remain.

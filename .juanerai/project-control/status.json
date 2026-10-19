@@ -6,15 +6,15 @@
     "product": "Agent / host simplification - offline"
   },
   "phase": {
-    "id": "REGRESSION",
-    "label": "main363c正常整合：记录冲突已定界，重验受影响离线路径",
-    "ordinal": 4,
+    "id": "DELIVERY",
+    "label": "main363c独立复核PASS，待最终HEAD CI与Git收口",
+    "ordinal": 5,
     "total": 5
   },
   "health": "validating",
-  "summary": "远端main因PR108推进363c756；修复生产/测试/SDK未变，普通合并仅三处看板/覆盖图记录冲突。两侧完整原件已保存，覆盖图保留PR108完整登记，本方能力增量0。首轮旧基线CI已请求取消，结果按中断保存；新组合待受影响验证、独立复核和当前HEAD CI。",
+  "summary": "新基线固定3879项独立复核PASS；29项实际路径全部通过，无FAIL/SKIP或实质问题。作者500 PASS/2保留SKIP，typecheck通过。94项上游字节保持，原CI取消记录已保存；补录报告后提交推送并取得PR109最终HEAD完整CI。",
   "current_objective": "Restore the existing saved-exploration input on real Workspace relaunch, without weakening identity, authorization or unknown-effect fences.",
-  "next_action": "完成三处记录冲突合并及受影响Workspace/read/recovery和typecheck验证；冻结新基线候选做独立受影响复核，更新PR109并重取当前HEAD完整portable CI，满足条件后squash、安全同步并停止。旧两线/真实权限界限不变。",
+  "next_action": "发布仅包含已收集复核/工程接受/看板事实的记录提交；校验PR109实际HEAD与完整diff，取得新HEAD完整portable CI后按授权squash、安全同步main并停止。真实Provider/业务数据/发布/生产未授权，旧两线继续停止。",
   "blockers": [],
   "milestones": [
     {
@@ -73,7 +73,7 @@
       "label": "Independent native juaner_validator, completed PASS",
       "model": "Actual gpt-6.1-sol/high; inherited danger-full-access/never with mandatory read-only conduct, not OS read-only isolation",
       "status": "complete",
-      "activation": "Current sole policy and fixed complete candidate; 29 PASS/0 FAIL/0 SKIP. Prior native BLOCKED and ended CLI exceptions remain history."
+      "activation": "完整main363c组合独立PASS已收集；3879项一致，实际29 PASS/0 FAIL/0 SKIP，exit0；无后台续跑。只读行为不等于OS只读隔离。"
     }
   ],
   "metrics": [],
@@ -443,6 +443,12 @@
       "label": "Complete incoming Metric Factory board snapshot retained as historical baseline, not current authority",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/git-delivery-001/pre-base363c/upstream/.juanerai/project-control/status.json",
       "status": "present"
+    },
+    {
+      "id": "repair001-base363c-independent-pass",
+      "label": "New-base complete3879-path native PASS; fresh29 PASS/0 FAIL/0 SKIP, no material findings",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/git-delivery-001/validator-native-git003/report.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -459,7 +465,7 @@
       "mitigation": "Current user authorizes repair001 standard Git/CI/squash/safe-main delivery only. No real Provider/business data, SDK/dependency/model/policy changes, release/production or old-line restart."
     }
   ],
-  "updated_at": "2026-10-19T13:53:39.945Z",
+  "updated_at": "2026-10-19T14:09:26.209Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a1544f-6d30-7092-bb16-536a04c99d60"
