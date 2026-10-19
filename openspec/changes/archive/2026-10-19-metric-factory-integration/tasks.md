@@ -12,7 +12,8 @@
 - [x] host014/source017/bundle018 原生独立 juaner_validator 007 PASS；实际后端model/effort UNKNOWN如实保留，普通只读行为按PR107成立。
 - [x] Engineering Controller接受该本机浏览器固定包工程候选；不替代正式产品接受。
 - [x] 用户正式接受 host014/source017/bundle018 本机浏览器集成结果并授权两仓 Git 交付。
-- [ ] 供应回流、JuanerAI主线合入兼容检查与原生独立复核、两仓PR/current-head CI/合并/安全同步。
+- [x] 供应PR #2/CI、JuanerAI主线合入兼容检查与原生独立008 PASS；host PR #108已打开。
+- [ ] 最终记录head的required CI、两仓实际合并与安全同步；实际完成事实由git-delivery-001/receipt.json和两仓PR补齐，不另开收尾PR。
 - [ ] .app安装暂未授权；SAP消费另一个Change，不计作本次浏览器接受。
 
 NEXT_ACTION：推进已授权正式Git交付；不新增模型调用或安装，历史失败与UNKNOWN保留。

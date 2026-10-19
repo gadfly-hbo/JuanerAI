@@ -258,3 +258,16 @@ Engineering Controller据批准输入、当前实现/受影响与完整回归、
 Git前检：宿主branch work/mac-mini/metric-factory-integration，原HEAD41e6c1f；供应branch work/mac-mini/juanerai-integration，原HEAD169faa8；均为同一Mini单写者任务改动。供应GitHub main仍169faa8。宿主origin/main已到cc46fa25（PR106/107）；先提交接受候选，再在当前分支合并主线，受影响回归和原生独立复核通过后完成Git交付。不得将旧候选PASS冒充新集成head检查。唯一交付回执目录为既有证据根 git-delivery-001。
 
 NEXT_ACTION：两仓当前head验证、PR/CI/合并、安全同步；不恢复live006或调用Provider，不安装。合并后实际SHA/CI/同步进入既有回执，不递归另开收尾PR。
+
+
+## 主线集成后的工程接受与最终 Git 条件
+
+固定集成候选2ceff403/tree1121d49f、供应ca010a14及原bundle018经原生独立008复核PASS；完整报告independent-validator-008.md，SHA74fb1656a9f49698e4b46967183fd9bac7f59914c5726571efbbb1b21e84a598。实际后台model/effort UNKNOWN如实披露，角色仍原生Sol/high，按PR107只读行为成立，不声称OS隔离。独立真实入口/副本失败恢复/身份隔离/撤权/重开通过，配置敏感性156PASS与闭合tuple5PASS；全部3859宿主文件、382供应源和18926包/staging逐项一致。旧探针DTO字段预期错误原件保留。
+
+本机canonical014 exit0：5157 tests/5131PASS/0FAIL/26保留SKIP，19阶段全0；实际bundle018专项21PASS、当前installed-entry Vite/VM资源构建1PASS，26项资源与当前HEAD逐字一致。canonical012目录未建和013工具链描述缺失失败保留；既有脚本生成忽略的本机描述后，LA09三项实测与完整014均通过，没有修改断言。供应当前head CI39256954220为504PASS/1SKIP与合同1PASS，首轮11项缺Chromium失败保留。
+
+Engineering Controller接受合入cc46fa25主线后的完整本机浏览器工程候选。用户对host014/source017/bundle018的产品接受继续适用于未变UI/供应业务/固定包；主线装配的兼容性由008与当前完整回归补足。当前追加只含本报告/验收/任务和board记录，不改产品、测试、合同、依赖或物料。
+
+正式交付仍要求**最终记录提交**的托管CI成功、两仓实际squash合并和逐端安全同步。当前CI39257568164在报告收回时PENDING，不提前记PASS；最终记录更新可能由既有并发规则取消旧head run，其真实状态另存回执。合并后SHA/CI/同步事实写既有PR和git-delivery-001/receipt.json，不递归开收尾PR。MacBook供应main有未跟踪工作，不能满足干净工作树同步条件，须精确报告跳过而不强制覆盖。
+
+NEXT_ACTION：最终head required CI→授权合并→安全同步→既有回执。不得安装、新增Provider、恢复live006、清理历史FAIL/UNKNOWN/16384预留或扩大SAP消费范围。
