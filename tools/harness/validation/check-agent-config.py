@@ -17,18 +17,22 @@ def validate(path, data):
     effort = "high" if path == CONFIG or ROLES[path] == "validator" else "medium"
     if data.get("model_reasoning_effort") != effort:
         raise ValueError(f"{path}: expected {effort} effort")
-    sandbox = "read-only" if ROLES.get(path) == "validator" else "workspace-write"
-    if data.get("sandbox_mode") != sandbox:
-        raise ValueError(f"{path}: unexpected sandbox")
     if path == CONFIG:
+        if data.get("sandbox_mode") != "workspace-write":
+            raise ValueError(f"{path}: unexpected sandbox")
         agents = data["agents"]
         if agents.get("default_subagent_model") != "gpt-6-astra" or agents.get("default_subagent_reasoning_effort") != "medium":
             raise ValueError("default support routing mismatch")
         concurrency = agents.get("max_concurrent_threads_per_session")
         if type(concurrency) is not int or concurrency != 3 or agents.get("enabled") is not True:
             raise ValueError("agent concurrency/enabled mismatch")
-    elif data.get("name") != f"juaner_{ROLES[path]}" or not isinstance(data.get("developer_instructions"), str) or not data["developer_instructions"].strip():
-        raise ValueError(f"{path}: missing role identity/instructions")
+    else:
+        # Native subagents inherit parent permissions; this key cannot create
+        # an independent read-only sandbox and must not imply one is enforced.
+        if "sandbox_mode" in data:
+            raise ValueError(f"{path}: role sandbox override is unsupported")
+        if data.get("name") != f"juaner_{ROLES[path]}" or not isinstance(data.get("developer_instructions"), str) or not data["developer_instructions"].strip():
+            raise ValueError(f"{path}: missing role identity/instructions")
 
 
 def without_routing(data, path):

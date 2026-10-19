@@ -7,6 +7,12 @@ description: 在 Mac mini 开始、继续或交付一次 JuanerAI 工作。
 
 Activated dual-device product Changes use the sole authority in
 `docs/governance/product-change-execution-policy.md`.
+Use its current-task ownership rules for intake and continuation: preserve the
+authorized Change, branch/worktree, single writer and stop line. Reuse established
+ownership for ordinary corrections; resolve unknown/conflicting ownership before
+affected writes or a new/switching Change. An unavailable inactive Host Loop
+pointer is not a universal stop and never proves an empty global WIP slot.
+Historical local/memory intake skills do not override this current project entry.
 
 Read `docs/governance/git-development-workflow.md`, then verify the repository
 root, worktree, branch, upstream, remote, and `juanerai.device`. Continue only

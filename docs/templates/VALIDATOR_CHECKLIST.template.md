@@ -16,14 +16,16 @@ Formatting preferences and optional template fields are not delivery blockers.
 - implementation reference or complete write-set baseline:
 - frozen test and critical artifact hashes:
 - approved validation environment/entrypoint:
+- isolated scratch/report directory and allowed checks:
 - required real-runtime evidence:
 - forbidden calls and writes:
 
 ## Independence
 
-- [ ] Validator context is fresh and read-only.
+- [ ] Validator context is fresh; read-only conduct and actual inherited permissions follow the sole policy's Native Review Permissions. Do not claim a separate OS read-only sandbox from role TOML.
 - [ ] Validator did not author the candidate's engineering spec/design, tests or implementation.
 - [ ] No production, test, spec, project-control, dependency, credential, or global state was modified.
+- [ ] Permitted temporary fixtures/caches/reports stayed inside the brief's isolated directory; the fixed candidate stayed stable and its pre/post identity matches. Fingerprints are not proof of OS isolation or absence of all side effects.
 - [ ] Network/provider/model calls were made only when the validation brief explicitly authorized them.
 
 ## Scope and Contracts
