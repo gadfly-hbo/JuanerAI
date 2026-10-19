@@ -122,6 +122,17 @@ When a handoff is separately authorized, carry the actual publication identity;
 previous fixed inputs and receiver adoption remain valid historical identities.
 This rule starts no scheduler, service, stopped task or inactive Host Loop.
 
+Prepare already knowable verification, capability and archive records in the
+same authorized PR. Facts available only after merge (actual merge SHA, hosted
+CI and safe sync readback) belong in the existing PR, delivery reply or
+persistent evidence record; they do not by themselves require another
+documentation-only PR and another recursive closeout. Required versioned
+authority records still receive their normal tracked update. Report those facts
+truthfully rather than filling them in before they exist. Pure project-control
+record updates use only the sole execution policy's proven CI mapping;
+mixed/unknown changes keep their applicable full fallback. Changed code and
+actual failed checks still need affected revalidation and current required CI.
+
 ### Adopted v0.9 Mini Product Engineering
 
 During daily iteration, run affected checks and the relevant main path, explicitly

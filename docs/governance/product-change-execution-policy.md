@@ -50,6 +50,13 @@ the evidence-backed CI selection below. It reuses this loop rather than adding
 a workflow. Blueprint/capability goals, in-flight acceptance and resources,
 engineering models and actual runtime permissions are unchanged.
 
+The user-approved 2026-10-19 correction clarifies current-task ownership,
+native independent review and concentrated publication below. Ordinary native
+review uses read-only conduct under inherited parent permissions, not a claim
+of a separately enforced OS read-only sandbox. It changes no parent permissions,
+frozen task-specific isolation requirement, historical verdict or stop. Active
+tasks adopt only at a natural safe boundary; publication is not automatic adoption.
+
 The preceding user-approved 2026-09-26 continuous-engineering revision (v0.8) retained the
 2026-09-24 Product Manager / Engineering Controller split. It replaces the
 default four-role serial pipeline, universal Spec Gate and TDD_READY dispatch
@@ -145,6 +152,18 @@ when already selected by the Change; it is not an additional required artifact.
 Keep formal Changes result-sized: the global roadmap is neither one giant
 Change nor permission to start all candidates. Commits, internal subtasks and
 ordinary corrections do not each restart product preparation or the full workflow.
+
+For an already authorized current Change, verify its actual task, scope,
+branch/worktree, single writer, existing ownership record and stop line. Reuse
+that established ownership through ordinary corrections. The inactive signed
+Host Loop's pointer is not a universal prerequisite for current semi-automatic
+work. A historical local/memory skill cannot extend that legacy prerequisite
+over this policy; use the tracked `juanerai-mini` skill for current intake and
+delivery. When starting/switching a Change, or when ownership is unknown,
+occupied by another task or contradictory, resolve that specific conflict before
+affected writes. An unreadable record is not proof of an empty WIP slot. Global
+product WIP remains one; this correction neither edits legacy state nor creates
+a second ownership ledger or startup approval.
 
 A message, Git fetch, published commit or task existence is not receiver
 adoption. Manual forwarding by the user is sufficient; no message automation is
@@ -280,6 +299,14 @@ consent. Reuse still-valid explicit exception consent inside its stated bounds;
 ordinary commands and corrections do not each renew it. A changed exception
 boundary requires the user's decision.
 
+If an exception is needed, request it once with the reason, task/role, model,
+data/effects, permissions, resource bounds and endpoint. The user may explicitly
+include ordinary repair candidates within that same task; do not ask again only
+because a candidate number or SHA changes inside those bounds. Rebind each
+review to its actual fixed candidate and recheck authority before effects. A
+single-candidate grant stays single-candidate; this policy supplies no CLI
+consent, broader sandbox, automatic model fallback or additional resources.
+
 An approved exception retains the role's instructions, fixed model/effort,
 sandbox, permissions, single writer, result collection and author-independent
 final validation. Disclose actual loaded settings; an exception cannot bypass
@@ -287,6 +314,36 @@ a role, safety or permission boundary. Ordinary terminal tests, builds and
 already authorized host verification are not CLI role substitution and retain
 their existing permissions. This adds no launcher, scheduler or approval stage
 to the normal native workflow.
+
+#### Native Review Permissions
+
+Independence means a non-author reviewer, a fresh focused context, fixed approved
+inputs and its own judgment. Read-only review means leaving source, tests,
+specs/contracts, frozen evidence, handoffs and project-control unchanged. The
+brief names allowed checks and an isolated scratch/report directory under the
+existing task evidence root; test fixtures, caches and reports may write only
+there within existing permissions. Use synthetic data unless separately
+authorized. Checks that cannot respect those boundaries remain unrun/BLOCKED
+for the affected claim; do not silently redirect them into the product worktree.
+
+Native subagents inherit parent sandbox/approval settings. Custom agent TOML
+cannot override them with `sandbox_mode` or `approval_policy`; see the
+[official subagent reference](https://learn.chatgpt.com/docs/agent-configuration/subagents).
+Ordinary engineering review does not require a separate OS-enforced read-only
+child sandbox and is not BLOCKED merely because the parent permits writes.
+Behavioral read-only conduct is not OS isolation. Preserve actual parent
+restrictions; do not expand them, disable sandboxing or relabel inherited full
+access as read-only. Untrusted execution or a frozen task-specific strong
+isolation requirement still needs its real technical protection.
+
+Use supported runtime/interface evidence to verify role instructions and fixed
+model/effort when due. Reuse an applicable environment readback while host,
+session, configuration and permissions remain unchanged; a changed candidate
+alone does not require another environment probe. Disclose unavailable metadata
+instead of claiming it was observed. Missing metadata is not evidence of a
+model failure or automatic reason for CLI substitution. A genuine unresolved
+role/model or execution limitation blocks the required claim, not unrelated
+safe authorized work; no missing independent review becomes PASS.
 
 On a user stop, Mini interrupts the affected agents and verified task-owned
 processes through authorized controls, checks that work has stopped and records
@@ -481,7 +538,7 @@ containing `desktop`. The trusted PR-base classifier owns this selection:
 | CI scope | Selection and evidence |
 |---|---|
 | Documentation | Explicit non-runtime Markdown paths: diff checks; no product dependency installation or unrelated harness selftests. Necessary content/reference checks remain in the applicable product/governance review. |
-| Affected | A small explicit mapping with known consumers and closed impact: approved model/effort-only configuration edits, and text-only instructions in the existing independent Validator file with execution/registration fields unchanged. Compare parsed values/types, require valid instructions before and after, and check the complete candidate configuration. Independent instruction/scope review remains required; this lane does not cover primary instructions, changed execution permissions or product modules. |
+| Affected | A small explicit mapping with known consumers and closed impact: approved model/effort-only configuration edits, text-only instructions in the existing independent Validator file with execution/registration fields unchanged, and ordinary JSON record additions/updates at `.juanerai/project-control/status.json` or directly under its `events/` directory. Configuration uses parsed values/types and complete-candidate checks; record checks reuse the trusted PR-base board validator. Independent meaning/scope review remains required; this lane covers neither primary instructions nor changed permissions, schemas, validators or product modules. |
 | Full portable | Unmapped/unknown scope, runtime behavior, safety/permissions, persistence/migration/replay, public contracts, shared dependencies, build configuration, or CI selection/checking machinery itself. Run the canonical portable matrix and applicable configuration checks; native acceptance remains separate. |
 
 Combine mapped checks for a mixed change only when every changed object is
@@ -744,6 +801,13 @@ checks above to affected claims; mocks cannot replace the behavior being proved.
 
 Freeze the complete candidate (committed, staged, unstaged and added scope) and
 evidence; overlapping pre-existing changes need attribution, not blanket exclusion.
+Keep that review input stable until the review ends, using the existing fixed
+snapshot when the author needs to continue unrelated work. Review-time writes
+to the frozen candidate are not permitted. Compare its identity/content before
+and after review; a changed candidate needs affected independent revalidation
+before a new PASS. A final matching fingerprint detects covered final changes,
+not all transient writes or external effects, and is not sandbox proof. Apply
+Native Review Permissions above rather than inventing a separate OS sandbox Gate.
 Verify applicable behavior evidence under Continuous SDD and TDD, test
 sensitivity, negative cases, relevant quality/regression,
 scope/architecture/safety and evidence identity. Test retirement is part of this
