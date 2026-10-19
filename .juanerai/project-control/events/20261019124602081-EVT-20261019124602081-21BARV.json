@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019124602081-21BARV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T12:46:02.081Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a15421-969b-7503-a725-c23d187550db"
+  },
+  "summary": "真实Workspace因果RED→GREEN已取得，单参数修复进入受影响验证；继续限定本地候选。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

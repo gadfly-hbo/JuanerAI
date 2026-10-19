@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019123231211-2WB7ZV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T12:32:31.211Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a15421-969b-7503-a725-c23d187550db"
+  },
+  "summary": "用户明确授权本地最小修复；固定身份与WIP已保全，开始真实Workspace因果回归。",
+  "status_after": "active",
+  "evidence_refs": []
+}

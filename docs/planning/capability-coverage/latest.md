@@ -1,3 +1,19 @@
+## Workspace保存探索续接修复001 · 获准Git交付（2026-10-19）
+
+原路径完整读回接线已在真实Workspace合成链路验证：RED→GREEN，400图表点，
+Python不重跑，MODEL_EXPLORATION/not_performed保持。受影响500 PASS/0 FAIL/2 SKIP，
+独立原生29项PASS。全40稳定ID目标／状态类／完整能力／阶段接受增量0；
+只补C3-01、A-03/A-05与B-01/02/03的生命周期／读取机制证据。
+原003、PR106、历史FAIL/BLOCKED/UNKNOWN和累计消耗保持；旧两线仍停止。
+本次Git已获用户明确授权，当前head CI／合并／同步等待实际证据，
+不代签真实Provider／业务、产品接受、安装发布或生产。
+[当前工程交付](../../../openspec/changes/archive/2026-10-19-agent-host-exploration-resume-repair-20261019/engineering-delivery.md) ·
+[本次全40ID快照](snapshots/agent-host-exploration-resume-repair001-base363c-2026-10-19.md) ·
+[证据](evidence.md#e-workspace-exploration-resume-repair001-20261019)。
+以下既有记录按原时点完整保留。
+
+基线推进补充：当前整合main363c756（PR108）。本修复相对该新基线的目标／状态／阶段增量仍0；上游Metric Factory的已有映射与验收归PR108，完整保留于下方。原500/2SKIP及独立29证据保留其输入；新组合受影响回归已500 PASS/0 FAIL/2 SKIP、typecheck exit0；独立组合复核、当前HEAD CI及同步由修复交付收据收集。
+
 ## Metric Factory · 本机浏览器产品接受与正式Git交付
 
 用户已接受 host014/source017/bundle018；原生独立007 PASS，经营实际稿经人工修正后审核、发布、宿主保存及重开通过。A-02/A-05/B-02/B-03/C3-01新增已接受的本机插件设计生产闭环证据；C4-07/C6-02仅生产关联。全部40ID完整状态类与S1/S4接受增量0，六加二全局缺口保持；安装、SAP消费及自动模型质量未由本次接受替代。6任务/6请求、UNKNOWN/16384预留、原FAIL和已接受历史RED偏差保留。

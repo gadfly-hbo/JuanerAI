@@ -17,6 +17,158 @@ import {ProviderFailure,ModelFailure,ContextAdmissionFailure,admitModelRequest,t
 function jsonArray(value:unknown):unknown[]{assert.ok(Array.isArray(value));return value;}
 function jsonObject(value:unknown):JsonObject{assert.ok(value&&typeof value==='object'&&!Array.isArray(value));return value as JsonObject;}
 
+for(const resumeBoundary of ['current','wrong-hash','other-task','stale-revision','changed-scope','stale-config','revoked','pending-request','unknown-request'] as const)
+test(resumeBoundary==='current'?'WR-01/02/03: real Workspace stop close reopen explicit resume reads the complete saved exploration without Python replay'
+ :`WR-04/05 (${resumeBoundary}): real Workspace keeps saved exploration identity and recovery fences`,
+ {skip:process.env.JUANERAI_OPEN_CODE_HOST_TEST!=='1'},async()=>{
+ const {createOpenAnalysisWorkspace}=await import('../../../packages/application/open-analysis-workspace.ts');
+ const {createLocalOpenAnalysisStore}=await import('../../../adapters/storage-local/open-analysis.ts');
+ const {createMemberSourcePreparation}=await import('../../../adapters/analytics-duckdb/member-source-inspection.ts');
+ const {createLocalOpenAnalysisCodeExecution}=await import('../../../adapters/analytics-duckdb/open-analysis-code.ts');
+ const {execFileSync}=await import('node:child_process');
+ const bin=process.env.JUANERAI_TOOLCHAIN_BIN;assert.ok(bin);
+ const python=join(bin,'python3'),pythonVersion=execFileSync(python,['--version'],{encoding:'utf8'}).trim().replace('Python ','');
+ const root=mkdtempSync(join(browserEvidenceRoot,'workspace-exploration-resume-')),id=randomUUID(),sid=randomUUID();
+ const bytes=Buffer.from(['数量,分组',...Array.from({length:400},(_,i)=>`${i+1},${'界'.repeat(100)}-${i}`)].join('\n'));
+ const code=['import json,os','x=json.load(open(SOURCES[0]))',
+  `src=next(s for s in x["inspection"]["sources"] if s["source_id"]==${JSON.stringify(sid)})`,
+  'sheet=next(s for s in src["sheets"] if s["sheet_id"]=="csv")',
+  'rows=[{c["column"]:c["value"] for c in r["cells"]} for r in sheet["rows"][1:]]',
+  'charts=[{"title":"合成分布"+str(i),"type":"bar","unit":"件","points":[{"label":r["B"],"value":int(r["A"])} for r in rows[i*200:(i+1)*200]]} for i in range(2)]',
+  'json.dump({"summary":"合成模型探索，未独立核验。","observations":["原400行全部图表保留；不证明原因。"],"charts":charts},open(os.path.join(OUTPUT,"result.json"),"w"),ensure_ascii=False)'];
+ let phase:'create'|'read'='create',calls=0,initialCalls=0,pythonRuns=0,calculations=0,fullPath='',offset=1,expectedPoints=0,readTaskId=id,configurationBoundary=false;
+ let ready!:()=>void,release!:()=>void;const persisted=new Promise<void>(r=>ready=r),gate=new Promise<void>(r=>release=r);
+ let record:import('../../../packages/ports/open-analysis-store.ts').OpenExplorationRecord|undefined;
+ let complete:unknown;const chunks:{start:number;text:string}[]=[],pages:string[]=[],failures:string[]=[],captured:unknown[]=[];
+ let store=createLocalOpenAnalysisStore({projectRoot:root}),ledger=createLocalAnalysisRequestLedger({projectRoot:root});
+ const build=()=>{
+  const runtime=createPiSessionOpenAnalysisRuntime({projectRoot:root,ledger,nativeObjectArguments:true,analysisModel:'mimo-v2.6-flash',
+   credentials:createApprovedProviderCredentials({environment:{},readText:async()=>assert.fail('offline transport must not read credential files')}),
+   r1r4:{contextAdmission:{policyVersion:'synthetic-exploration-view-v1',protocolOverheadTokens:512,safetyMarginTokens:8192}},
+   modelTransport:async(request):Promise<ModelReply>=>{
+    calls++;captured.push({phase,messages:request.messages,model:request.model});
+    const last=request.messages.filter(m=>m.role==='tool').at(-1)?.text??'';
+    let content:ModelReply['content'];
+    if(phase==='create'){
+     initialCalls++;
+     if(initialCalls===1)content=[{kind:'tool',id:'resume-bind',name:'set_framework',arguments:{goal:'数量合计',source_id:sid,sheet_id:'csv',operation:'sum',column:'A',unit:'件',group_mode:'none'}}];
+     else if(initialCalls===2)content=[{kind:'tool',id:'resume-explore',name:'explore_with_python',arguments:{goal:'观察完整合成分布',bindings:[{source_id:sid,sheet_id:'csv',columns:['A','B'],filters:[]}],code_lines:code}}];
+     else{
+      assert.equal(initialCalls,3);const result=JSON.parse(last);fullPath=result.full_exploration.path;
+      assert.equal(result.classification,'MODEL_EXPLORATION');assert.equal(result.verification,'not_performed');
+      record=store.read(id)!.explorations![0]!;assert.ok(record);assert.equal(pythonRuns,1);
+      assert.equal(fullPath,`exploration/${record.exploration_id}/${taskHash(record.value)}/result.txt`);
+      ready();await gate;content=[{kind:'text',text:'Stopped synthetic response must not publish.'}];
+     }
+    }else{
+     if(pages.length||calls>initialCalls+1){
+      pages.push(last);const rows=last.split('\n').filter(line=>line.startsWith('{')).map(line=>JSON.parse(line));
+      for(const row of rows){
+       if(row.kind==='exploration_value_json'){
+        assert.equal(row.classification,'MODEL_EXPLORATION');assert.equal(row.verification,'not_performed');
+        assert.equal(row.exploration_id,record!.exploration_id);assert.equal(row.value_sha256,taskHash(record!.value));
+        expectedPoints=row.unicode_code_points;
+       }else if(typeof row.start==='number'&&typeof row.text==='string'){
+        assert.equal(row.start,chunks.reduce((n,c)=>n+[...c.text].length,0),'all Unicode chunks must be contiguous');chunks.push(row);
+       }
+      }
+      assert.ok(expectedPoints>0,'native read must return the saved exploration header');
+      const text=chunks.map(c=>c.text).join('');
+      if([...text].length===expectedPoints)complete=JSON.parse(text);
+      else{assert.ok([...text].length<expectedPoints);offset+=8;}
+     }
+     content=complete?[{kind:'tool',id:'resume-wait',name:'ask_user',arguments:{text:'完整探索已读回；是否另行继续正式计算？'}}]
+      :[{kind:'tool',id:`resume-read-${offset}`,name:'read',arguments:{path:resumeBoundary==='wrong-hash'?fullPath.replace(/\/[a-f0-9]{64}\//,'/'+('0'.repeat(64))+'/'):fullPath,offset,limit:8}}];
+    }
+    const stop=content[0]!.kind==='text'?'complete' as const:'tools' as const;
+    return {content,stop,usage:{inputTokens:7,outputTokens:3},outcome:{model:{provider:request.model.provider,id:request.model.id,protocol:request.model.protocol},stop,physicalStatus:'response-received',usageFinal:true,usage:{inputTokens:{kind:'known',value:7},outputTokens:{kind:'known',value:3}},diagnostic:'COMPLETE'}};
+   }});
+  const real=createLocalOpenAnalysisCodeExecution({projectRoot:root,pythonExecutable:python,pythonVersion});
+  const executeCode:import('../../../packages/ports/open-analysis-code.ts').OpenAnalysisCodeExecution=Object.assign(
+   async(input:Parameters<typeof real>[0])=>{calculations++;return real(input);},
+   {explore:async(input:Parameters<NonNullable<typeof real.explore>>[0])=>{pythonRuns++;return real.explore!(input);},qualify:real.qualify});
+  const open=createOpenAnalysisWorkspace({store,ledger,runtime,executeCode,
+   inspect:createMemberSourcePreparation({pythonExecutable:python,pythonVersion}).inspectSources,
+   verify:async()=>{calculations++;assert.fail('reading a MODEL exploration must not perform independent verification');},
+   authorizeConfiguration:async()=>{
+    if(configurationBoundary&&resumeBoundary==='revoked')throw Object.assign(Error('AUTHORITY_REQUIRED'),{code:'AUTHORITY_REQUIRED'});
+    return {config_sha256:(configurationBoundary&&resumeBoundary==='stale-config'?'c':'b').repeat(64)};
+   },onFailure:code=>{
+    failures.push(code);
+    // Stop the business lease only after native abort has closed its operation;
+    // cancelling an outstanding effect is deliberately not a legal read resume.
+    if(phase==='create'&&code==='CANCELLED')open.stop(id);
+   }});
+  return {open,runtime};
+ };
+ let current=build();const stopped:unknown[]=[],sessionViews:unknown[]=[];
+ try{
+  await current.open.submit({version:'1.0',command_id:id,question:'观察合成分布，先保留探索等待继续',confirmed:true,sources:[{source_id:sid,display_name:'synthetic-resume.csv',format:'csv',bytes}]});
+  await Promise.race([persisted,current.open.collect().then(()=>assert.fail('Workspace must persist exploration before stop'))]);
+  sessionViews.push(await current.open.sessionControl(id,{version:'1.0',expected_revision:'1',command:{kind:'snapshot'}}));
+  assert.ok(ledger.pending!().some(r=>r.task_id===id),'the gated physical request is still outstanding');
+  await assert.rejects(()=>current.open.resume(id),{code:'TASK_BUSY'},'active cleanup must fence resume before the physical-pending check');
+  await current.open.sessionControl(id,{version:'1.0',expected_revision:'1',command:{kind:'abort'}});
+  release();await current.open.collect();await current.runtime.collect!(id);
+  assert.equal(current.open.read(id).state,'stopped');assert.equal(ledger.pending!().length,0);
+  assert.equal(current.runtime.hasUnconfirmedEffects!(id),false);assert.equal(calculations,0);
+  const settledView=await current.open.sessionControl(id,{version:'1.0',expected_revision:'1',command:{kind:'snapshot'}});
+  sessionViews.push(settledView);assert.equal(settledView.view!.operationId,null,'the native operation must be closed before the legal resume');
+  assert.ok(ledger.read(id).every(r=>!['reserved','issued','unknown'].includes(r.status)));
+  stopped.push(current.open.read(id));await current.open.close();
+  const beforeCalls=calls;store=createLocalOpenAnalysisStore({projectRoot:root});ledger=createLocalAnalysisRequestLedger({projectRoot:root});
+  phase='read';current=build();
+  assert.equal(calls,beforeCalls,'passive rebuild must not run');assert.deepEqual(current.open.read(id).explorations,[record]);
+  configurationBoundary=true;
+  if(['stale-config','revoked','pending-request','unknown-request'].includes(resumeBoundary)){
+   if(resumeBoundary==='pending-request'||resumeBoundary==='unknown-request'){
+    // Arrange a synthetic unclosed physical observation through the real ledger;
+    // resume changes its stop flag only and preserves every prior request row.
+    ledger.resume(id);
+    const request=ledger.reserve({...current.open.read(id).identity,input_sha256:'c'.repeat(64),provider:'xiaomi-token-plan-cn',model:'mimo-v2.6-flash'});
+    ledger.issue(request.request_id);
+    if(resumeBoundary==='unknown-request')ledger.settle(request.request_id,{status:'unknown',usage:{input_tokens:{kind:'unknown',reason:'provider_not_reported'},output_tokens:{kind:'unknown',reason:'provider_not_reported'},active_ms:{kind:'known',value:'1'},wait_ms:{kind:'known',value:'0'}}});
+   }
+   const beforeTask=taskHash(current.open.read(id)),beforeLedger=taskHash(ledger.read(id));
+   await assert.rejects(()=>current.open.resume(id),{code:resumeBoundary==='stale-config'?'CONFIG_CHANGED':resumeBoundary==='revoked'?'AUTHORITY_REQUIRED':'PHYSICAL_PENDING'});
+   assert.equal(calls,beforeCalls,'a fenced resume must not dispatch');assert.equal(taskHash(current.open.read(id)),beforeTask);
+   assert.equal(taskHash(ledger.read(id)),beforeLedger,'readback repair cannot clear pending or UNKNOWN history');
+   assert.equal(pythonRuns,1);assert.equal(calculations,0);return;
+  }
+  if(resumeBoundary==='other-task'){
+   readTaskId=randomUUID();await current.open.submit({version:'1.0',command_id:readTaskId,question:'其他任务不得读取原探索',confirmed:true,sources:[{source_id:sid,display_name:'synthetic-resume.csv',format:'csv',bytes}]});
+   assert.equal(current.open.read(readTaskId).identity.scope_sha256,record!.identity.scope_sha256,'even the identical source scope cannot grant another Task access');
+  }else if(resumeBoundary==='stale-revision'||resumeBoundary==='changed-scope'){
+   await current.open.revise(id,{version:'1.0',command_id:randomUUID(),expected_revision:'1',question:'新修订只尝试读取原探索',...(resumeBoundary==='changed-scope'?{confirmed:true,sources:[{source_id:sid,display_name:'synthetic-resume.csv',format:'csv',bytes:Buffer.from('数量,分组\n2,变更范围\n')}]}:{})});
+  }else await current.open.resume(id);
+  await current.open.collect();await current.runtime.collect!(readTaskId);
+  const task=current.open.read(readTaskId);
+  if(resumeBoundary!=='current'){
+   assert.equal(complete,undefined);assert.equal(task.state,'failed');assert.equal(task.outcome,null);
+   assert.equal(pythonRuns,1);assert.equal(calculations,0);assert.equal(ledger.pending!().length,0);
+   assert.ok(createPersistentRuntimeState({projectRoot:root}).readAudit(readTaskId).some(e=>e.toolName==='read'&&e.toolOutcome?.failureCategory==='not_found'),'the original native read must reject the unqualified path');
+   if(resumeBoundary==='stale-revision'||resumeBoundary==='changed-scope'){
+    assert.equal(task.identity.revision,'2');assert.deepEqual(task.history!.at(-1)!.explorations,[record]);
+    assert.equal(task.identity.scope_sha256===record!.identity.scope_sha256,resumeBoundary==='stale-revision');
+   }else assert.deepEqual(store.read(id)!.explorations,[record]);
+   return;
+  }
+  assert.ok(complete,`original full_exploration.path must survive Workspace resume; failures=${failures.join(',')}`);
+  assert.deepEqual((complete as {value:unknown}).value,record!.value,'all persisted chart points and text must round-trip');
+  assert.equal((complete as {classification:string}).classification,'MODEL_EXPLORATION');
+  assert.equal((complete as {verification:string}).verification,'not_performed');
+  assert.deepEqual(record!.value.charts.map(c=>c.points.length),[200,200]);
+  assert.equal(record!.value.charts[1]!.points.at(-1)!.label,'界'.repeat(100)+'-399');
+  assert.ok(pages.length>1,'the native read must paginate the full original chart, not just its preview');
+  assert.equal(task.state,'waiting');assert.equal(task.outcome,null);assert.deepEqual(task.explorations,[record]);
+  assert.equal(pythonRuns,1,'readback must not rerun Python');assert.equal(calculations,0);
+  assert.equal(ledger.pending!().length,0);assert.equal(current.runtime.hasUnconfirmedEffects!(id),false);
+ }finally{
+  release();await current.open.close();await current.runtime.collect!(readTaskId);
+  writeFileSync(join(root,'workspace-resume-readback.json'),JSON.stringify({resumeBoundary,id,readTaskId,sid,fullPath,record,stopped,sessionViews,task:store.read(id),readTask:store.read(readTaskId),complete,pages,pythonRuns,calculations,failures,captured,requests:ledger.read(id),readRequests:ledger.read(readTaskId),audit:createPersistentRuntimeState({projectRoot:root}).readAudit(readTaskId)}));
+ }
+});
+
 test('PREP-J01: actual fixed SDK persists a pre-framework draft, reads its safe view and keeps HTTP/UI waiting without adoption',async()=>{
  const {createPersonalOpenAnalysisWorkspace}=await import('../../../profiles/personal/open-analysis.ts'),{createMemberSourceInspector}=await import('../../../adapters/analytics-duckdb/member-source-inspection.ts'),{createLocalOpenAnalysisStore}=await import('../../../adapters/storage-local/open-analysis.ts'),{startBrowserMembershipServer}=await import('../../../apps/browser/local-server.ts'),{createQuickAnalysisClient,openTaskView}=await import('../../../apps/browser/quick-analysis-client.mjs'),{renderQuickAnalysisWorkbench}=await import('../../../apps/browser/quick-analysis-workbench.mjs');const root=mkdtempSync(join(browserEvidenceRoot,'preparation-native-')),id=randomUUID(),sid=randomUUID(),bytes=Buffer.from('数量\n7\n'),items=Array.from({length:16},(_,n)=>String(n)+'界'.repeat(600)),captured:unknown[]=[];let calls=0;
  const open=createPersonalOpenAnalysisWorkspace({projectRoot:root,inspect:createMemberSourceInspector(process.env.JUANERAI_TOOLCHAIN_BIN+'/python3'),authorizeConfiguration:async()=>({config_sha256:'b'.repeat(64)}),createRuntime:ledger=>createPiSessionOpenAnalysisRuntime({...{preparationSnapshots:'v1' as const},projectRoot:root,ledger,analysisModel:'mimo-v2.6-flash',nativeObjectArguments:true,credentials:createApprovedProviderCredentials({environment:{}}),r1r4:{contextAdmission:{policyVersion:'synthetic-preparation-v1',protocolOverheadTokens:512,safetyMarginTokens:8192}},modelTransport:async(request):Promise<ModelReply>=>{

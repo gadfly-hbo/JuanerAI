@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019115458358-YXVWIL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T11:54:58.358Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a153c5-8253-75b0-af14-f236b868215a"
+  },
+  "summary": "PR106 mergedcc46fa25; exact-head hosted CI and both-device ref-only main sync verified; offline boundaries retained",
+  "status_after": "complete",
+  "evidence_refs": []
+}
