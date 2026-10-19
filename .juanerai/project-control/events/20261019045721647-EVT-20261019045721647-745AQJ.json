@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019045721647-745AQJ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T04:57:21.647Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a151ee-3903-7eb1-980c-8611948c5800"
+  },
+  "summary": "Candidate001 independent FAIL; same primary correcting both findings; fixed archive retained",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019052453244-8M5HIB",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T05:24:53.244Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a151ee-3903-7eb1-980c-8611948c5800"
+  },
+  "summary": "候选002完整回归通过并固定；已授权独立只读复核进行中，实际Astra/max/read-only已核验",
+  "status_after": "validating",
+  "evidence_refs": []
+}

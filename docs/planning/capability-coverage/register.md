@@ -1,3 +1,15 @@
+## Agent／宿主精简 · Mini完整离线候选003收口（2026-10-19）
+
+基线41e6c1f；本轮复用R1～R4和固定`.5`，覆盖八类接缝，LA09仅为首片。
+新增合成接缝证据不提升40稳定ID状态或S1/后续阶段接受；累计完成数增量0。
+完整Canonical083为5091 PASS／8保留SKIP；003独立离线PASS，三项发现关闭。
+001／002历史FAIL保留；本次限定离线工程已接受并归档，产品完成未签。
+[当前结果及权限边界](../../../openspec/changes/archive/2026-10-19-agent-host-simplification-20261019/verification.md) ·
+[六加二／全40ID快照](snapshots/agent-host-simplification-offline-2026-10-19.md)。
+用户后续已授权003规范Git交付；实际CI／合并／同步由归档定位。真实Provider／业务、
+产品接受、发布和生产切换仍未授权；旧任务不恢复。
+以下历史记录均保留原归属与原结论。
+
 ## Latest Git baseline8dcf — documentation-only integration
 
 Main8dcf/PR105 adds the other task’s publication records only. Pi technical bytes remain exactly reviewed d5207685; scoped Engineering Acceptance is unchanged. Final record review/current-head hosted CI/actual Git conditions remain distinct. Pi capability-class delta0 relative this latest base; PR104/105 records stay attributed to that task.

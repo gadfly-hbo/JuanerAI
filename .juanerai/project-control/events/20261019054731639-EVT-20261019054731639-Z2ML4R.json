@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019054731639-Z2ML4R",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T05:47:31.639Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a151ee-3903-7eb1-980c-8611948c5800"
+  },
+  "summary": "F-RECOVERY-02实际入口因果修正十项通过，完整Canonical083进行中；两份失败候选保留",
+  "status_after": "validating",
+  "evidence_refs": []
+}
