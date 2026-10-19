@@ -145,7 +145,7 @@ function parameterTypeIssues(schema:unknown,value:unknown){
    const matching=(key:string)=>v&&typeof v==='object'?branches.filter((b:any)=>Array.isArray(b.properties?.[key]?.enum)&&b.properties[key].enum.includes(v[key])):[];
    const exact=matching('version'),method=matching('operation');
    const selected=exact.length===1?exact[0]:method.length===1?method[0]:null;
-   if(selected){walk(selected,v,path,depth+1);return;}
+   if(selected){/* Shared root constraints still apply beside a selected version. Diagnostic only. */walk({...raw,anyOf:undefined},v,path,depth+1);walk(selected,v,path,depth+1);return;}
    const compatible=branches.filter((b:any)=>b.type===type(v)||b.type==='integer'&&type(v)==='number');
    if(compatible.length===1)walk(compatible[0],v,path,depth+1);
    return;
@@ -297,10 +297,11 @@ export function createPiOpenAnalysisRuntime(config:{ledger:AnalysisRequestLedger
 
 
 /** Fixed names for the autonomous native protocol. Phase authority remains the current Application subset. */
-export function createNativeBusinessTools(current:()=>OpenAnalysisRun,modelTurn?:()=>number,beforeArguments?:(name:string,args:Readonly<Record<string,unknown>>,signal:AbortSignal)=>JsonValue|undefined,preserveEffects=false):readonly Tool[]{
+export function createNativeBusinessTools(current:()=>OpenAnalysisRun,modelTurn?:()=>number,beforeArguments?:(name:string,args:Readonly<Record<string,unknown>>,signal:AbortSignal)=>JsonValue|undefined,extraOrEffects:readonly string[]|boolean=false,preserveArgument=false):readonly Tool[]{
+ const preserveEffects=typeof extraOrEffects==='boolean'?extraOrEffects:preserveArgument,extraNames=Array.isArray(extraOrEffects)?extraOrEffects:[];
  const dispatcher=createSharedAnalysisTool(current,modelTurn,preserveEffects);
  const names=['ask_user','assess_meaning','bind_measurement','calculate_and_verify','correct_exploration_code','delegate_analysis','describe_business','describe_meaning','execute_step','explore_with_python','finish_result','inspect_selected','interpret_meaning','read_analysis_evidence','read_authorized_context','read_delegation_materials','read_delegation_results','read_project_metric_asset','read_tool_contract','rewrite_saved_report','set_analysis_steps','set_document_framework','set_framework','set_joined_framework','set_membership_framework','set_metric_asset_framework','set_multisource_framework'];
- return names.map(name=>({name,description:name==='read_tool_contract'?'Read the exact parameters for one currently authorized business tool. Arguments: {name: tool_name}. No execution or new permission.':'JuanerAI business operation '+name+'. Use the current phase catalog and read_tool_contract for exact parameters. Unavailable operations are rejected.',parameters:{type:'object',additionalProperties:true},effect:'write' as const,resourceUnits:1,executionMode:'sequential' as const,execute:async(args,signal,invocation)=>{
+ return [...names,...extraNames].map(name=>({name,description:name==='read_tool_contract'?'Read the exact parameters for one currently authorized business tool. Arguments: {name: tool_name}. No execution or new permission.':'JuanerAI business operation '+name+'. Use the current phase catalog and read_tool_contract for exact parameters. Unavailable operations are rejected.',parameters:{type:'object',additionalProperties:true},effect:'write' as const,resourceUnits:1,executionMode:'sequential' as const,execute:async(args,signal,invocation)=>{
   const dispatch=async(text:string)=>{try{return await dispatcher.execute({name,arguments_json:text},signal,invocation);}catch(error){if(preserveEffects&&error instanceof ToolOutputFailure&&error.outcome.name==='analysis_tool')throw new ToolOutputFailure({...error.outcome,name},error.reason);throw error;}};
   // Reuse the existing exact JSON wire codec; never repair, coerce or replay business parameters.
   let original:Readonly<Record<string,unknown>>=args;let text=JSON.stringify(args);

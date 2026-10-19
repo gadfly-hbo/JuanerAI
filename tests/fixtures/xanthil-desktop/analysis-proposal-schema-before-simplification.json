@@ -1,0 +1,2675 @@
+{
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.0"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sheet_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "column": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "sum"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "goal",
+        "source_id",
+        "sheet_id",
+        "column",
+        "unit",
+        "operation"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.1"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sheet_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "column": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "sum",
+            "count",
+            "min",
+            "max",
+            "mean"
+          ]
+        },
+        "group_by": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "operator": {
+                "type": "string",
+                "enum": [
+                  "eq",
+                  "ne",
+                  "ge",
+                  "le"
+                ]
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "column",
+              "operator",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 16
+        }
+      },
+      "required": [
+        "version",
+        "goal",
+        "source_id",
+        "sheet_id",
+        "column",
+        "unit",
+        "operation",
+        "group_by",
+        "filters"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.2"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sheet_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "column": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "sum",
+            "count",
+            "min",
+            "max",
+            "mean"
+          ]
+        },
+        "group_by": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "operator": {
+                "type": "string",
+                "enum": [
+                  "eq",
+                  "ne",
+                  "ge",
+                  "le"
+                ]
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "column",
+              "operator",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "numeric_mode": {
+          "type": "string",
+          "enum": [
+            "decimal"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "goal",
+        "source_id",
+        "sheet_id",
+        "column",
+        "unit",
+        "operation",
+        "group_by",
+        "filters",
+        "numeric_mode"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.3"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "combination": {
+          "type": "string",
+          "enum": [
+            "union_all"
+          ]
+        },
+        "numeric_mode": {
+          "type": "string",
+          "enum": [
+            "integer",
+            "decimal"
+          ]
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "sum",
+            "count",
+            "min",
+            "max",
+            "mean"
+          ]
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sheet_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "group_by": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                ]
+              },
+              "filters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "column": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "operator": {
+                      "type": "string",
+                      "enum": [
+                        "eq",
+                        "ne",
+                        "ge",
+                        "le"
+                      ]
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "column",
+                    "operator",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "maxItems": 16
+              }
+            },
+            "required": [
+              "source_id",
+              "sheet_id",
+              "column",
+              "group_by",
+              "filters"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "version",
+        "goal",
+        "unit",
+        "combination",
+        "numeric_mode",
+        "operation",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.4"
+          ]
+        },
+        "membership": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "enum": [
+                "1.0"
+              ]
+            },
+            "goal": {
+              "type": "string",
+              "minLength": 1
+            },
+            "methods": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "M1",
+                  "M2"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 2
+            },
+            "bindings": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "source_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sheet_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "role": {
+                        "type": "string",
+                        "enum": [
+                          "members"
+                        ]
+                      },
+                      "columns": {
+                        "type": "object",
+                        "properties": {
+                          "member_id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "member_group": {
+                            "anyOf": [
+                              {
+                                "type": "null"
+                              },
+                              {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "member_id",
+                          "member_group"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "source_id",
+                      "sheet_id",
+                      "role",
+                      "columns"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "source_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sheet_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "role": {
+                        "type": "string",
+                        "enum": [
+                          "orders"
+                        ]
+                      },
+                      "columns": {
+                        "type": "object",
+                        "properties": {
+                          "order_id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "order_member_id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "paid_at": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "amount": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "status": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "currency": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "order_id",
+                          "order_member_id",
+                          "paid_at",
+                          "amount",
+                          "status",
+                          "currency"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "source_id",
+                      "sheet_id",
+                      "role",
+                      "columns"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 32
+            },
+            "semantics": {
+              "type": "object",
+              "properties": {
+                "comparison_period": {
+                  "type": "object",
+                  "properties": {
+                    "start_date": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "end_date": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "start_date",
+                    "end_date"
+                  ],
+                  "additionalProperties": false
+                },
+                "current_period": {
+                  "type": "object",
+                  "properties": {
+                    "start_date": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "end_date": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "start_date",
+                    "end_date"
+                  ],
+                  "additionalProperties": false
+                },
+                "currency": {
+                  "type": "string",
+                  "enum": [
+                    "CNY"
+                  ]
+                },
+                "time_zone": {
+                  "type": "string",
+                  "enum": [
+                    "Asia/Shanghai"
+                  ]
+                },
+                "valid_statuses": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 1,
+                  "maxItems": 32
+                }
+              },
+              "required": [
+                "comparison_period",
+                "current_period",
+                "currency",
+                "time_zone",
+                "valid_statuses"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "version",
+            "goal",
+            "methods",
+            "bindings",
+            "semantics"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "version",
+        "membership"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.5"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sheet_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "column": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "sum",
+            "count",
+            "min",
+            "max",
+            "mean"
+          ]
+        },
+        "group_by": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "operator": {
+                "type": "string",
+                "enum": [
+                  "eq",
+                  "ne",
+                  "ge",
+                  "le"
+                ]
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "column",
+              "operator",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "numeric_mode": {
+          "type": "string",
+          "enum": [
+            "integer",
+            "decimal"
+          ]
+        },
+        "value_mappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "pairs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "string"
+                    },
+                    "to": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "from",
+                    "to"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1,
+                "maxItems": 256
+              }
+            },
+            "required": [
+              "column",
+              "pairs"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 16
+        }
+      },
+      "required": [
+        "version",
+        "goal",
+        "source_id",
+        "sheet_id",
+        "column",
+        "unit",
+        "operation",
+        "group_by",
+        "filters",
+        "numeric_mode",
+        "value_mappings"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.6"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "source_quotes"
+          ]
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sheet_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "row": {
+                "type": "integer",
+                "minimum": 2
+              },
+              "column": {
+                "type": "string",
+                "enum": [
+                  "B"
+                ]
+              }
+            },
+            "required": [
+              "source_id",
+              "sheet_id",
+              "row",
+              "column"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "version",
+        "goal",
+        "operation",
+        "references"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.7"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "numeric_mode": {
+          "type": "string",
+          "enum": [
+            "integer",
+            "decimal"
+          ]
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sheet_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "group_by": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                ]
+              },
+              "filters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "column": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "operator": {
+                      "type": "string",
+                      "enum": [
+                        "eq",
+                        "ne",
+                        "ge",
+                        "le"
+                      ]
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "column",
+                    "operator",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "maxItems": 16
+              }
+            },
+            "required": [
+              "source_id",
+              "sheet_id",
+              "column",
+              "group_by",
+              "filters"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "join": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "refund_net"
+              ]
+            },
+            "order_key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "refund_order_key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "refund_id": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "kind",
+            "order_key",
+            "refund_order_key",
+            "refund_id"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "version",
+        "goal",
+        "unit",
+        "numeric_mode",
+        "inputs",
+        "join"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.9"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sheet_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "column": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "weighted_mean"
+          ]
+        },
+        "weight_column": {
+          "type": "string",
+          "minLength": 1,
+          "description": "实际同一行权重字段；计算sum(value*weight)/sum(weight)，不能用sum(value)/sum(weight)代替。权重不使用金额度量。"
+        },
+        "group_by": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "operator": {
+                "type": "string",
+                "enum": [
+                  "eq",
+                  "ne",
+                  "ge",
+                  "le"
+                ]
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "column",
+              "operator",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 16
+        }
+      },
+      "required": [
+        "version",
+        "goal",
+        "source_id",
+        "sheet_id",
+        "column",
+        "unit",
+        "operation",
+        "weight_column",
+        "group_by",
+        "filters"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "2.0"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sheet_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "column": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "%"
+          ]
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "group_share"
+          ]
+        },
+        "input_unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "operator": {
+                "type": "string",
+                "enum": [
+                  "eq",
+                  "ne",
+                  "ge",
+                  "le"
+                ]
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "column",
+              "operator",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 16
+        }
+      },
+      "required": [
+        "version",
+        "goal",
+        "source_id",
+        "sheet_id",
+        "column",
+        "unit",
+        "operation",
+        "input_unit",
+        "group_by",
+        "filters"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "2.1"
+          ]
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "group_change"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comparison_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "current_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sheet_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "group_by": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                ]
+              },
+              "filters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "column": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "operator": {
+                      "type": "string",
+                      "enum": [
+                        "eq",
+                        "ne",
+                        "ge",
+                        "le"
+                      ]
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "column",
+                    "operator",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "maxItems": 16
+              }
+            },
+            "required": [
+              "source_id",
+              "sheet_id",
+              "column",
+              "group_by",
+              "filters"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "inputs[0]比较期，inputs[1]当期；分别绑定真实期间筛选和相同分组。"
+        }
+      },
+      "required": [
+        "version",
+        "operation",
+        "goal",
+        "unit",
+        "comparison_label",
+        "current_label",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "2.2"
+          ]
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "proportional_allocation"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sheet_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "group_by": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                ]
+              },
+              "filters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "column": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "operator": {
+                      "type": "string",
+                      "enum": [
+                        "eq",
+                        "ne",
+                        "ge",
+                        "le"
+                      ]
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "column",
+                    "operator",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "maxItems": 16
+              }
+            },
+            "required": [
+              "source_id",
+              "sheet_id",
+              "column",
+              "group_by",
+              "filters"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "inputs[0]成本池金额，group_by:null；inputs[1]权重数值，group_by实际对象键。不是相反顺序。权重无货币换算。"
+        },
+        "rounding": {
+          "type": "object",
+          "properties": {
+            "decimals": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6
+            },
+            "method": {
+              "type": "string",
+              "enum": [
+                "largest_remainder"
+              ]
+            },
+            "tie_break": {
+              "type": "string",
+              "enum": [
+                "object_key"
+              ]
+            }
+          },
+          "required": [
+            "decimals",
+            "method",
+            "tie_break"
+          ],
+          "additionalProperties": false
+        },
+        "measure": {
+          "type": "object",
+          "properties": {
+            "currency": {
+              "type": "string",
+              "minLength": 1
+            },
+            "inputs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sheet_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "column": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "scale": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "source_id",
+                  "sheet_id",
+                  "column",
+                  "scale"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "maxItems": 16
+            },
+            "output_scale": {
+              "type": "string",
+              "minLength": 1
+            },
+            "output_label": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "currency",
+            "inputs",
+            "output_scale",
+            "output_label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "version",
+        "operation",
+        "goal",
+        "unit",
+        "inputs",
+        "rounding"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "2.3"
+          ]
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "reconcile"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "left_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "right_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grain": {
+          "type": "string",
+          "enum": [
+            "one_row_per_key"
+          ]
+        },
+        "cardinality": {
+          "type": "string",
+          "enum": [
+            "one_to_one"
+          ]
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sheet_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "column": {
+                "type": "string",
+                "minLength": 1
+              },
+              "group_by": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                ]
+              },
+              "filters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "column": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "operator": {
+                      "type": "string",
+                      "enum": [
+                        "eq",
+                        "ne",
+                        "ge",
+                        "le"
+                      ]
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "column",
+                    "operator",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "maxItems": 16
+              }
+            },
+            "required": [
+              "source_id",
+              "sheet_id",
+              "column",
+              "group_by",
+              "filters"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "左右表实际金额和关联键，每个键一行；差值=左-右。金额度量先bind_measurement，不能在2.3额外添加measure。存在漏配/差异如实呈现，核验通过不是账目一致。"
+        }
+      },
+      "required": [
+        "version",
+        "operation",
+        "goal",
+        "unit",
+        "left_label",
+        "right_label",
+        "grain",
+        "cardinality",
+        "inputs"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "1.8"
+          ]
+        },
+        "base": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "enum": [
+                    "1.0"
+                  ]
+                },
+                "goal": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sheet_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "column": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "operation": {
+                  "type": "string",
+                  "enum": [
+                    "sum"
+                  ]
+                }
+              },
+              "required": [
+                "version",
+                "goal",
+                "source_id",
+                "sheet_id",
+                "column",
+                "unit",
+                "operation"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "enum": [
+                    "1.1"
+                  ]
+                },
+                "goal": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sheet_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "column": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "operation": {
+                  "type": "string",
+                  "enum": [
+                    "sum",
+                    "count",
+                    "min",
+                    "max",
+                    "mean"
+                  ]
+                },
+                "group_by": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  ]
+                },
+                "filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "column": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "operator": {
+                        "type": "string",
+                        "enum": [
+                          "eq",
+                          "ne",
+                          "ge",
+                          "le"
+                        ]
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "column",
+                      "operator",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "version",
+                "goal",
+                "source_id",
+                "sheet_id",
+                "column",
+                "unit",
+                "operation",
+                "group_by",
+                "filters"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "enum": [
+                    "1.2"
+                  ]
+                },
+                "goal": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sheet_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "column": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "operation": {
+                  "type": "string",
+                  "enum": [
+                    "sum",
+                    "count",
+                    "min",
+                    "max",
+                    "mean"
+                  ]
+                },
+                "group_by": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  ]
+                },
+                "filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "column": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "operator": {
+                        "type": "string",
+                        "enum": [
+                          "eq",
+                          "ne",
+                          "ge",
+                          "le"
+                        ]
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "column",
+                      "operator",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 16
+                },
+                "numeric_mode": {
+                  "type": "string",
+                  "enum": [
+                    "decimal"
+                  ]
+                }
+              },
+              "required": [
+                "version",
+                "goal",
+                "source_id",
+                "sheet_id",
+                "column",
+                "unit",
+                "operation",
+                "group_by",
+                "filters",
+                "numeric_mode"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "enum": [
+                    "1.3"
+                  ]
+                },
+                "goal": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "combination": {
+                  "type": "string",
+                  "enum": [
+                    "union_all"
+                  ]
+                },
+                "numeric_mode": {
+                  "type": "string",
+                  "enum": [
+                    "integer",
+                    "decimal"
+                  ]
+                },
+                "operation": {
+                  "type": "string",
+                  "enum": [
+                    "sum",
+                    "count",
+                    "min",
+                    "max",
+                    "mean"
+                  ]
+                },
+                "inputs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sheet_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "column": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "group_by": {
+                        "anyOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        ]
+                      },
+                      "filters": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "column": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "operator": {
+                              "type": "string",
+                              "enum": [
+                                "eq",
+                                "ne",
+                                "ge",
+                                "le"
+                              ]
+                            },
+                            "value": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "column",
+                            "operator",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 0,
+                        "maxItems": 16
+                      }
+                    },
+                    "required": [
+                      "source_id",
+                      "sheet_id",
+                      "column",
+                      "group_by",
+                      "filters"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 2,
+                  "maxItems": 32
+                }
+              },
+              "required": [
+                "version",
+                "goal",
+                "unit",
+                "combination",
+                "numeric_mode",
+                "operation",
+                "inputs"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "enum": [
+                    "1.5"
+                  ]
+                },
+                "goal": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sheet_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "column": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "operation": {
+                  "type": "string",
+                  "enum": [
+                    "sum",
+                    "count",
+                    "min",
+                    "max",
+                    "mean"
+                  ]
+                },
+                "group_by": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  ]
+                },
+                "filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "column": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "operator": {
+                        "type": "string",
+                        "enum": [
+                          "eq",
+                          "ne",
+                          "ge",
+                          "le"
+                        ]
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "column",
+                      "operator",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 16
+                },
+                "numeric_mode": {
+                  "type": "string",
+                  "enum": [
+                    "integer",
+                    "decimal"
+                  ]
+                },
+                "value_mappings": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "column": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "pairs": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "from": {
+                              "type": "string"
+                            },
+                            "to": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "from",
+                            "to"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 1,
+                        "maxItems": 256
+                      }
+                    },
+                    "required": [
+                      "column",
+                      "pairs"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "version",
+                "goal",
+                "source_id",
+                "sheet_id",
+                "column",
+                "unit",
+                "operation",
+                "group_by",
+                "filters",
+                "numeric_mode",
+                "value_mappings"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "enum": [
+                    "1.7"
+                  ]
+                },
+                "goal": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "numeric_mode": {
+                  "type": "string",
+                  "enum": [
+                    "integer",
+                    "decimal"
+                  ]
+                },
+                "inputs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sheet_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "column": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "group_by": {
+                        "anyOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        ]
+                      },
+                      "filters": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "column": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "operator": {
+                              "type": "string",
+                              "enum": [
+                                "eq",
+                                "ne",
+                                "ge",
+                                "le"
+                              ]
+                            },
+                            "value": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "column",
+                            "operator",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 0,
+                        "maxItems": 16
+                      }
+                    },
+                    "required": [
+                      "source_id",
+                      "sheet_id",
+                      "column",
+                      "group_by",
+                      "filters"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "join": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "refund_net"
+                      ]
+                    },
+                    "order_key": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "refund_order_key": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "refund_id": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "order_key",
+                    "refund_order_key",
+                    "refund_id"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "version",
+                "goal",
+                "unit",
+                "numeric_mode",
+                "inputs",
+                "join"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "enum": [
+                    "1.9"
+                  ]
+                },
+                "goal": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sheet_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "column": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "operation": {
+                  "type": "string",
+                  "enum": [
+                    "weighted_mean"
+                  ]
+                },
+                "weight_column": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "实际同一行权重字段；计算sum(value*weight)/sum(weight)，不能用sum(value)/sum(weight)代替。权重不使用金额度量。"
+                },
+                "group_by": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  ]
+                },
+                "filters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "column": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "operator": {
+                        "type": "string",
+                        "enum": [
+                          "eq",
+                          "ne",
+                          "ge",
+                          "le"
+                        ]
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "column",
+                      "operator",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 0,
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "version",
+                "goal",
+                "source_id",
+                "sheet_id",
+                "column",
+                "unit",
+                "operation",
+                "weight_column",
+                "group_by",
+                "filters"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "enum": [
+                    "2.1"
+                  ]
+                },
+                "operation": {
+                  "type": "string",
+                  "enum": [
+                    "group_change"
+                  ]
+                },
+                "goal": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "comparison_label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "current_label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "inputs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sheet_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "column": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "group_by": {
+                        "anyOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        ]
+                      },
+                      "filters": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "column": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "operator": {
+                              "type": "string",
+                              "enum": [
+                                "eq",
+                                "ne",
+                                "ge",
+                                "le"
+                              ]
+                            },
+                            "value": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "column",
+                            "operator",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 0,
+                        "maxItems": 16
+                      }
+                    },
+                    "required": [
+                      "source_id",
+                      "sheet_id",
+                      "column",
+                      "group_by",
+                      "filters"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "description": "inputs[0]比较期，inputs[1]当期；分别绑定真实期间筛选和相同分组。"
+                }
+              },
+              "required": [
+                "version",
+                "operation",
+                "goal",
+                "unit",
+                "comparison_label",
+                "current_label",
+                "inputs"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "enum": [
+                    "2.3"
+                  ]
+                },
+                "operation": {
+                  "type": "string",
+                  "enum": [
+                    "reconcile"
+                  ]
+                },
+                "goal": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "left_label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "right_label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "grain": {
+                  "type": "string",
+                  "enum": [
+                    "one_row_per_key"
+                  ]
+                },
+                "cardinality": {
+                  "type": "string",
+                  "enum": [
+                    "one_to_one"
+                  ]
+                },
+                "inputs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sheet_id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "column": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "group_by": {
+                        "anyOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        ]
+                      },
+                      "filters": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "column": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "operator": {
+                              "type": "string",
+                              "enum": [
+                                "eq",
+                                "ne",
+                                "ge",
+                                "le"
+                              ]
+                            },
+                            "value": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "column",
+                            "operator",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 0,
+                        "maxItems": 16
+                      }
+                    },
+                    "required": [
+                      "source_id",
+                      "sheet_id",
+                      "column",
+                      "group_by",
+                      "filters"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "description": "左右表实际金额和关联键，每个键一行；差值=左-右。金额度量先bind_measurement，不能在2.3额外添加measure。存在漏配/差异如实呈现，核验通过不是账目一致。"
+                }
+              },
+              "required": [
+                "version",
+                "operation",
+                "goal",
+                "unit",
+                "left_label",
+                "right_label",
+                "grain",
+                "cardinality",
+                "inputs"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "measure": {
+          "type": "object",
+          "properties": {
+            "currency": {
+              "type": "string",
+              "minLength": 1
+            },
+            "inputs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sheet_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "column": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "scale": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "source_id",
+                  "sheet_id",
+                  "column",
+                  "scale"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "maxItems": 16
+            },
+            "output_scale": {
+              "type": "string",
+              "minLength": 1
+            },
+            "output_label": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "currency",
+            "inputs",
+            "output_scale",
+            "output_label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "version",
+        "base",
+        "measure"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

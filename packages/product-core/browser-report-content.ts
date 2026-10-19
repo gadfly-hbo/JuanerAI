@@ -1,10 +1,11 @@
+import {currentJudgmentReview,deliveredJudgmentReview} from './open-analysis-judgment-review.ts';
 import {taskHash} from './member-task.ts';
 import {membershipRecord as closed,membershipUuid} from './member-analysis.ts';
 import {openAnalysisFindings} from '../contracts/open-analysis-findings.mjs';
 import type {OpenStoredTask} from '../ports/open-analysis-store.ts';
 
 export type ReportContentCommand=Readonly<{version:'1.0';command_id:string;expected_content_sha256:string;action:'save'|'confirm'|'suggest'|'complete'|'fail'|'discard'|'apply';text?:string;finding_ids?:readonly string[];instruction?:string;paragraph_id?:string;suggestion_id?:string}>;
-type ContentSnapshot=Readonly<{basis_sha256:string;version:number;text:string;origin:string;finding_ids:readonly string[];paragraph_origins:readonly string[];partial:boolean}>;
+type ContentSnapshot=Readonly<{basis_sha256:string;review_sha256?:string;version:number;text:string;origin:string;finding_ids:readonly string[];paragraph_origins:readonly string[];partial:boolean}>;
 export type ReportContentEvent=Readonly<{command:ReportContentCommand;saved:true;command_id:string;content_version:number;content_sha256:string;before:ContentSnapshot;snapshot:ContentSnapshot;at:string}>;
 type Suggestion={id:string;sha256:string;paragraph_id:string;original:string;instruction:string;text:string|null;status:'generating'|'ready'|'failed'|'discarded'|'applied';at:string};
 function fail(code:string):never{throw Object.assign(new Error(code),{code});}
@@ -28,15 +29,16 @@ export function reportBase(t:OpenStoredTask){
  // The new draft starts at the immutable generated Outcome. Legacy appended
  // expressions and discussion rewrites stay inspectable history, not auto-adopted content.
  const numeric=t.outcome?.numeric_report,doc=numeric?.document as {interpretations?:{interpretation:string}[]}|undefined;
- const text=(doc?.interpretations?.map(p=>p.interpretation).join('\n\n')||t.outcome?.explanation.text||t.conversation_outcome?.text||'已保存部分核验结果；完整分析与解释尚未完成。').replace(/\{\{([^{}]+)\}\}/g,(_raw,id:string)=>{const n=numeric?.values.find(n=>n.id===id);return n?n.display+(n.unit==='%'?(n.display.endsWith('%')||n.status==='not_applicable'?'':'%'):' '+n.unit):'未取得适用数字，需查看依据';});
+ const review=t.review_policy?deliveredJudgmentReview(t):null,rawReview=t.review_policy?currentJudgmentReview(t):null;
+ const text=(review?.delivery??(doc?.interpretations?.map(p=>p.interpretation).join('\n\n')||t.outcome?.explanation.text||t.conversation_outcome?.text||'已保存部分核验结果；完整分析与解释尚未完成。')).replace(/\{\{([^{}]+)\}\}/g,(_raw,id:string)=>{const n=numeric?.values.find(n=>n.id===id);return n?n.display+(n.unit==='%'?(n.display.endsWith('%')||n.status==='not_applicable'?'':'%'):' '+n.unit):'未取得适用数字，需查看依据';});
  const findings=t.outcome?openAnalysisFindings(t):o?[]:(t.verified_steps??[]).filter(s=>s.saved&&hash(s.identity)===hash(t.identity)).flatMap(s=>openAnalysisFindings({...t,outcome:{version:'1.0',outcome_id:s.step_id,identity:s.identity,framework:s.framework.plan,calculation:s.calculation,verification:s.verification,explanation:{kind:'MODEL_EXPLANATION',text:''},human_judgment:'not_recorded'}}));
- return {identity:t.identity,basis_sha256:hash({identity:t.identity,outcome:o??t.verified_steps}),text,partial:!o||numeric?.status==='partial'||t.outcome?.asset_adoption?.local.completion==='partial_refund_risk',findings};
+ return {identity:t.identity,basis_sha256:hash({identity:t.identity,outcome:o??t.verified_steps,...(rawReview?{judgment_review_sha256:rawReview.review_sha256}:{})}),...(rawReview?{review_sha256:rawReview.review_sha256}:{}),text,partial:!o||numeric?.status==='partial'||t.outcome?.asset_adoption?.local.completion==='partial_refund_risk',findings};
 }
 function currentSnapshot(t:OpenStoredTask):ContentSnapshot|null{
  const base=reportBase(t);if(!base)return null;
  const events=t.report_content_events??[],sameBasis=events.filter(e=>e.snapshot.basis_sha256===base.basis_sha256);
  const saved=sameBasis.at(-1)?.snapshot;if(saved)return saved;
- return {basis_sha256:base.basis_sha256,version:events.length?Math.max(...events.map(e=>e.content_version))+1:0,text:base.text,origin:'MODEL',finding_ids:[],paragraph_origins:split(base.text).map(()=>'MODEL'),partial:base.partial};
+ return {basis_sha256:base.basis_sha256,...(base.review_sha256?{review_sha256:base.review_sha256}:{}),version:events.length?Math.max(...events.map(e=>e.content_version))+1:0,text:base.text,origin:'MODEL',finding_ids:[],paragraph_origins:split(base.text).map(()=>'MODEL'),partial:base.partial};
 }
 export function projectReportContent(t:OpenStoredTask){
  const base=reportBase(t),snapshot=currentSnapshot(t);if(!base||!snapshot)return null;
@@ -77,13 +79,14 @@ export function nextReportContentEvent(t:OpenStoredTask,raw:unknown):ReportConte
  if(command.action==='apply'&&(suggestion!.stale||suggestion!.status!=='ready'))fail('REVISION_CONFLICT');
  let snapshot=before;
  if(command.action==='save'||command.action==='apply'){
-  const paragraphs=current.paragraphs,nextText=command.action==='save'?command.text!:paragraphs.map(p=>p.id===suggestion!.paragraph_id?suggestion!.text!:p.text).join('\n\n'),finding_ids=command.action==='save'?command.finding_ids!:before.finding_ids;
+  const paragraphs=current.paragraphs,nextText=command.action==='save'?command.text!:suggestion!.text===paragraphs.find(p=>p.id===suggestion!.paragraph_id)!.text?before.text:paragraphs.map(p=>p.id===suggestion!.paragraph_id?suggestion!.text!:p.text).join('\n\n'),finding_ids=command.action==='save'?command.finding_ids!:before.finding_ids;
   if(nextText!==before.text||hash(finding_ids)!==hash(before.finding_ids)){const origin=nextText===before.text?before.origin:command.action==='save'?'USER':'MODEL_SUGGESTION · 用户采用';snapshot={...before,version:before.version+1,text:nextText,finding_ids,origin,paragraph_origins:split(nextText).map((p,i)=>p===paragraphs[i]?.text?paragraphs[i]!.origin:origin)};}
  }
  return {command,saved:true,command_id:command.command_id,content_version:snapshot.version,content_sha256:hash(snapshot),before,snapshot,at:new Date().toISOString()};
 }
 function validateSnapshot(raw:ContentSnapshot){
- const s=closed(raw,['basis_sha256','version','text','origin','finding_ids','paragraph_origins','partial']);
+ const s=closed(raw,['basis_sha256',...(raw.review_sha256?['review_sha256']:[]),'version','text','origin','finding_ids','paragraph_origins','partial']);
+ if(s.review_sha256!==undefined&&(typeof s.review_sha256!=='string'||! /^[a-f0-9]{64}$/.test(s.review_sha256)))fail('INTEGRITY_BLOCKED');
  if(typeof s.basis_sha256!=='string'||! /^[a-f0-9]{64}$/.test(s.basis_sha256)||!Number.isSafeInteger(s.version)||Number(s.version)<0||typeof s.text!=='string'||!s.text.trim()||s.text.length>100000||!['MODEL','USER','MODEL_SUGGESTION · 用户采用'].includes(String(s.origin))||typeof s.partial!=='boolean'||!Array.isArray(s.finding_ids)||s.finding_ids.length>1000||s.finding_ids.some(v=>typeof v!=='string')||!Array.isArray(s.paragraph_origins)||s.paragraph_origins.length!==split(s.text).length||s.paragraph_origins.some(o=>!['MODEL','USER','MODEL_SUGGESTION · 用户采用'].includes(o)))fail('INTEGRITY_BLOCKED');
 }
 export function validateReportContentEvents(t:OpenStoredTask){

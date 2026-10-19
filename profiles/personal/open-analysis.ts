@@ -1,3 +1,6 @@
+import {withLongAnalysisArtifacts} from '../../packages/application/open-analysis-long-artifact.ts';
+import {createLocalAnalysisDraftStore} from '../../adapters/storage-local/open-analysis-draft.ts';
+import {join} from 'node:path';
 import {createProjectMetricAssetStore} from '../../adapters/storage-local/metric-assets.ts';
 import {setImmediate as yieldIO} from 'node:timers/promises';
 import {createOpenAnalysisDelegation} from '../../packages/application/open-analysis-delegation.ts';
@@ -17,9 +20,10 @@ import {verifyOpenAnalysisIntegerSum} from '../../adapters/analytics-duckdb/open
 import type {OpenAnalysisRuntime} from '../../packages/ports/open-analysis-runtime.ts';
 import type {AnalysisRequestLedger} from '../../packages/ports/analysis-request-ledger.ts';
 import type {MemberSourceInspector} from '../../packages/ports/member-source.ts';
-export function createPersonalOpenAnalysisWorkspace(config:{onFailure?:(code:string)=>void;metricAssetDisclosureAllowed?:boolean;requireSemanticAssessment?:boolean;project_id?:string;toolchain?:{pythonExecutable:string;pythonVersion:string;duckdbExecutable?:string;duckdbVersion?:string};projectRoot:string;runtime?:OpenAnalysisRuntime;createRuntime?:(ledger:AnalysisRequestLedger,context:Readonly<{projectRoot:string}>)=>OpenAnalysisRuntime;inspect:MemberSourceInspector;authorizeConfiguration:()=>Promise<{config_sha256:string}>}){
+export function createPersonalOpenAnalysisWorkspace(config:{longArtifacts?:Readonly<{enabled:(task:string)=>boolean;reportMs:(task:string)=>60000|120000}>;onFailure?:(code:string)=>void;judgmentReview?:boolean;metricAssetDisclosureAllowed?:boolean;requireSemanticAssessment?:boolean;project_id?:string;toolchain?:{pythonExecutable:string;pythonVersion:string;duckdbExecutable?:string;duckdbVersion?:string};projectRoot:string;runtime?:OpenAnalysisRuntime;createRuntime?:(ledger:AnalysisRequestLedger,context:Readonly<{projectRoot:string;reviewPolicyForTask:(task_id:string)=>boolean}>)=>OpenAnalysisRuntime;inspect:MemberSourceInspector;authorizeConfiguration:()=>Promise<{config_sha256:string}>}){
  const ledger=createLocalAnalysisRequestLedger({projectRoot:config.projectRoot}),store=createLocalOpenAnalysisStore({projectRoot:config.projectRoot});
- const runtime=config.runtime??config.createRuntime?.(ledger,{projectRoot:config.projectRoot})??fail('RUNTIME_UNAVAILABLE');
+ const baseRuntime=config.runtime??config.createRuntime?.(ledger,{projectRoot:config.projectRoot,reviewPolicyForTask:id=>store.read(id)?.review_policy==='conclusion_strategy_v1'})??fail('RUNTIME_UNAVAILABLE');
+ const runtime=config.longArtifacts?withLongAnalysisArtifacts({runtime:baseRuntime,store:createLocalAnalysisDraftStore({root:join(config.projectRoot,'.juanerai','analysis-drafts-v1')}),...config.longArtifacts}):baseRuntime;
  const project_id=config.project_id??randomUUID(),source=createOpenAnalysisCollaborationSource({project_id,store,allowQualifiedSteps:true,modelEvidenceView:runtime.selectedMaterialRead==='v1'});
  const collaborationStore=createLocalCaseAssistantStore({projectRoot:config.projectRoot,openSource:source.read,collaborationPolicy:'open_analysis_v13'});
  const recovery=collaborationStore.interruptAll(new Date().toISOString());

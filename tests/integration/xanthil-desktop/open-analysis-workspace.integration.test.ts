@@ -378,9 +378,9 @@ test('V13-SAME-QUESTION-ADOPT082: explicitly adopt a ready replacement of failed
 
 test('V13-RECOVERY087: explicit resume accepts a known terminal native refusal without inventing a calculation checkpoint',async()=>{
  const root=mkdtempSync(join(browserEvidenceRoot,'known-unissued-recovery-'));let runs=0,reconciles=0;
- const runtime:any={historyOwnership:'runtime',reconcileStopped:async()=>{reconciles++;return true;},run:async(i:OpenAnalysisRun)=>{runs++;if(runs===1)throw Object.assign(Error('EXECUTION_UNKNOWN'),{code:'EXECUTION_UNKNOWN'});if(i.prompt.includes('GOAL_COMPLETION_REVIEW'))return {text:'Known recovered calculation satisfies this goal.',tools:[]};return calculate(i);}};
+ const runtime:any={historyOwnership:'runtime',reconcileStopped:async()=>{reconciles++;return true;},run:async(i:OpenAnalysisRun)=>{runs++;if(runs===1)throw Object.assign(Error('EXECUTION_UNKNOWN'),{code:'EXECUTION_UNKNOWN'});assert.ok(!i.prompt.includes('GOAL_COMPLETION_REVIEW'));return calculate(i);}};
  const app=factory()(options(root,runtime)),command=input();
- try{await app.submit(command);await app.collect();const before=app.read(command.command_id);assert.equal(before.state,'unknown');assert.equal(!!before.checkpoint?.calculation,false);assert.equal(runs,1);assert.equal(reconciles,0);await app.resume(command.command_id);await app.collect();const after=app.read(command.command_id);assert.equal(after.state,'saved');assert.deepEqual(after.identity,before.identity);assert.equal(reconciles,1);assert.equal(runs,3);assert.equal(after.verified_steps?.length,1);assert.equal(after.outcome?.calculation.value,'10');}finally{await app.close();}
+ try{await app.submit(command);await app.collect();const before=app.read(command.command_id);assert.equal(before.state,'unknown');assert.equal(!!before.checkpoint?.calculation,false);assert.equal(runs,1);assert.equal(reconciles,0);await app.resume(command.command_id);await app.collect();const after=app.read(command.command_id);assert.equal(after.state,'saved');assert.deepEqual(after.identity,before.identity);assert.equal(reconciles,1);assert.equal(runs,2);assert.equal(after.verified_steps?.length,1);assert.equal(after.outcome?.calculation.value,'10');}finally{await app.close();}
 });
 
 

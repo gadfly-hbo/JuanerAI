@@ -4,6 +4,34 @@
 
 [全40ID固定快照](snapshots/metric-factory-007-in-progress-2026-10-19.md) · [当前结果](../../../openspec/changes/metric-factory-integration/verification.md) · [完整登记](register.md)。历史记录按原时点保留。
 
+## Agent／宿主精简 · 当前基线离线接受与Git交付记录（2026-10-19）
+
+当前base8b391f18；原完整003生产／SDK／依赖字节保留，LA09仅增加真实macOS监督器
+的测试适用登记，原函数／断言不变。上游CI／治理输入逐项等于其Git blob。
+新组合Canonical为5148 PASS／0 FAIL／8保留SKIP，19组exit0；当前固定2355文件
+已独立CLI Astra/max、技术read-only／never复核PASS。此前001／002 FAIL、原生BLOCKED、
+首次CI FAIL、基线推进中断、旧停止和全部UNKNOWN／累计消耗不改写。
+
+本次40ID目标／状态／完整能力与阶段接受增量0；只补限定工程接缝证据，不代签
+真实Q／业务、用户产品接受、安装发行或生产。当前精确HEAD托管CI／合并／逐端同步
+在本提交时待实际收集，见既有工程记录所定位的最终Git收据和PR106，未提前写PASS。
+[工程记录](../../../openspec/changes/archive/2026-10-19-agent-host-simplification-20261019/verification.md) ·
+[当前全40ID快照](snapshots/agent-host-simplification-git-2026-10-19.md) ·
+[证据](evidence.md#e-agent-host-git-20261019)。
+以下原记录保留其各自时点、范围与归属。
+
+## Agent／宿主精简 · Mini完整离线候选003收口（2026-10-19）
+
+基线41e6c1f；本轮复用R1～R4和固定`.5`，覆盖八类接缝，LA09仅为首片。
+新增合成接缝证据不提升40稳定ID状态或S1/后续阶段接受；累计完成数增量0。
+完整Canonical083为5091 PASS／8保留SKIP；003独立离线PASS，三项发现关闭。
+001／002历史FAIL保留；本次限定离线工程已接受并归档，产品完成未签。
+[当前结果及权限边界](../../../openspec/changes/archive/2026-10-19-agent-host-simplification-20261019/verification.md) ·
+[六加二／全40ID快照](snapshots/agent-host-simplification-offline-2026-10-19.md)。
+用户后续已授权003规范Git交付；实际CI／合并／同步由归档定位。真实Provider／业务、
+产品接受、发布和生产切换仍未授权；旧任务不恢复。
+以下历史记录均保留原归属与原结论。
+
 ## Latest Git baseline8dcf — documentation-only integration
 
 Main8dcf/PR105 adds the other task’s publication records only. Pi technical bytes remain exactly reviewed d5207685; scoped Engineering Acceptance is unchanged. Final record review/current-head hosted CI/actual Git conditions remain distinct. Pi capability-class delta0 relative this latest base; PR104/105 records stay attributed to that task.

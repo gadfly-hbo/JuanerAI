@@ -5,7 +5,7 @@ import {createExecutionTools,RuntimeFault} from 'pi-agent-runtime';
 /** One authorized run-local virtual file. Pi owns write/edit/read algorithms;
  * this host owns only path, authorization, encoding and complete-program size.
  * Nothing here executes Python or writes a business artifact. */
-export function createAnalysisCodeDraft(config:{cwd:string;signal:AbortSignal|(()=>AbortSignal);authorize:()=>boolean;authorizeWrite?:()=>boolean;resolveReadPath?:(path:string)=>void;readMaterial?:(path:string,signal:AbortSignal)=>Promise<Uint8Array>}) {
+export function createAnalysisCodeDraft(config:{cwd:string;signal:AbortSignal|(()=>AbortSignal);authorize:()=>boolean;authorizeWrite?:()=>boolean;storage?:{read:()=>Uint8Array|undefined;write:(bytes:Uint8Array)=>void};resolveReadPath?:(path:string)=>void;readMaterial?:(path:string,signal:AbortSignal)=>Promise<Uint8Array>}) {
   const path=resolve(config.cwd,'draft/analysis.py');
   let bytes:Buffer|undefined;
   function check(signal?:AbortSignal){
@@ -15,8 +15,9 @@ export function createAnalysisCodeDraft(config:{cwd:string;signal:AbortSignal|((
   function read(target:string,signal?:AbortSignal){
     check(signal);
     if(target!==path)throw new RuntimeFault('AUTHORITY_REQUIRED');
-    if(!bytes)throw Object.assign(new Error('Draft unavailable'),{code:'ENOENT'});
-    return Buffer.from(bytes);
+    const value=config.storage?config.storage.read():bytes;
+    if(!value)throw Object.assign(new Error('Draft unavailable'),{code:'ENOENT'});
+    return Buffer.from(value);
   }
   const tools=createExecutionTools({cwd:config.cwd,policyVersion:'juanerai-run-code-draft-v1',
     resolvePath:async location=>{
@@ -33,7 +34,7 @@ export function createAnalysisCodeDraft(config:{cwd:string;signal:AbortSignal|((
       if(value.byteLength>65536)throw new RuntimeFault('BUDGET_EXHAUSTED');
       try{new TextDecoder('utf-8',{fatal:true}).decode(value);}catch{throw new RuntimeFault('INVALID_REQUEST');}
       // Native preparation can await host IO; recheck at the actual mutation.
-      check(signal);if(config.authorizeWrite&&!config.authorizeWrite())throw new RuntimeFault('AUTHORITY_REQUIRED');bytes=Buffer.from(value);
+      check(signal);if(config.authorizeWrite&&!config.authorizeWrite())throw new RuntimeFault('AUTHORITY_REQUIRED');if(config.storage)config.storage.write(value);else bytes=Buffer.from(value);
     },
     exec:async()=>{throw new RuntimeFault('CAPABILITY_UNAVAILABLE');},
   },['read','write','edit']);

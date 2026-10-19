@@ -404,11 +404,12 @@ interpretation只写不带具体数字、不带占位符的中文解释、待证
 仅输出完整JSON，无草稿、思考、围栏或前后说明：{"version":"1.5","status":"ready","interpretations":[{"fact_refs":["F1","D1"],"interpretation":"原因尚不能确定，需要补充业务记录。"}]}。只用上述字段。每段fact_refs可空，interpretation可空，但不能同时空。实际引用须逐字复制当前fact_fragments中的reference_id，不套用示例ID、截断或拼接。通常三到五段，答案优先，解释简洁，先保证完整JSON。不得添加自由label、value、grade、derivations、references字段，不填金额、比例或数量字面值，不在interpretation使用{{引用}}。`;
 
 /** Portable copy keeps same checked identities; local interactive URLs become readable values. */
+export function numericReportCheckName(grade:OpenNumericValue['grade']){return {independent_arithmetic:'独立算术',derived_formula:'派生公式',source_attribution:'来源对应',not_performed:'未核验',assumption:'业务假设'}[grade];}
 export function numericReportCopy(report:OpenNumericReport){
  const text=report.text.replace(/\[([^\]\n]+)\]\(juanerai-number:[^)]+\)/g,'$1');
  return text+'\n\n## 数字依据与检查范围\n\n'+report.values.map(v=>[
   '### '+v.label,v.display+(v.unit==='%'||v.status==='not_applicable'?'':' '+v.unit),'精确值：'+(v.value??'不适用'),
-  '检查：'+({independent_arithmetic:'独立算术',derived_formula:'派生公式',source_attribution:'来源对应',not_performed:'未核验',assumption:'业务假设'}[v.grade]),
+  '检查：'+numericReportCheckName(v.grade),
   '范围：'+v.scope,'版本：'+report.identity.revision,...(v.calculation_trace?['计算：'+v.calculation_trace.expression,v.calculation_trace.limitation]:[]),
   ...(v.expression?['公式：'+JSON.stringify(v.expression),'输入：'+v.references.map(id=>{const x=report.values.find(x=>x.id===id);return x?x.label+' = '+x.value+' '+x.unit:id;}).join('；')]:[]),
   '材料身份：'+v.source_sha256,'计划身份：'+(v.plan_sha256??'派生于输入'),'结果身份：'+(v.result_sha256??'派生于输入'),'核验身份：'+v.proof_sha256,...v.limitations,''

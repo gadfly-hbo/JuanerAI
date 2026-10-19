@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@earendil-works/pi-coding-agent": "0.84.2",
-    "pi-agent-runtime": "file:vendor/pi-agent-runtime/0.5.3-harness.3/e6cf0c99cfbcb43ae0b197e9d45d82bae20c0c3257ba0e7bad131f6b1778e12a.tgz",
+    "pi-agent-runtime": "file:vendor/pi-agent-runtime/0.5.3-harness.5/5b98a720a6bc1981662ef5254328bf15d6a79984ed7b0dcb0b673c65c31088fd.tgz",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "typebox": "1.3.7",

@@ -7,10 +7,17 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const classifier = fileURLToPath(new URL('./ci-scope.mjs', import.meta.url));
+const projectControlPath = 'tools/harness/project-board/project-control.mjs';
+const projectControlSource = await readFile(new URL('../project-board/project-control.mjs', import.meta.url), 'utf8');
+const statusPath = '.juanerai/project-control/status.json';
+const eventPath = '.juanerai/project-control/events/EVT-base.json';
+const statusBefore = JSON.parse(await readFile(new URL('../../../.juanerai/project-control/status.json', import.meta.url), 'utf8'));
+const eventBefore = { schema_version: '1.0', event_id: 'EVT-base', event_type: 'status_updated', occurred_at: '2026-10-19T00:00:00Z', actor: { role: 'controller', session: 'scope-fixture' }, summary: 'base record', status_after: 'active', evidence_refs: [] };
 const configPath = '.codex/agents/juaner_validator.toml';
-const configBefore = 'name = "juaner_validator"\nmodel = "gpt-6.1-sol"\nmodel_reasoning_effort = "medium"\nsandbox_mode = "read-only"\ndeveloper_instructions = "preserve authority"\n';
+const configBefore = 'name = "juaner_validator"\nmodel = "gpt-6.1-sol"\nmodel_reasoning_effort = "medium"\ndeveloper_instructions = "preserve authority"\n';
+const legacySandbox = 'sandbox_mode = "read-only"\n';
 const gitEnv = { ...process.env, GIT_AUTHOR_NAME: 'Scope Test', GIT_AUTHOR_EMAIL: 'scope@example.invalid', GIT_COMMITTER_NAME: 'Scope Test', GIT_COMMITTER_EMAIL: 'scope@example.invalid' };
-async function repository(t, trustedClassifier = null) {
+async function repository(t, trustedClassifier = null, { recordHelper = projectControlSource } = {}) {
   const root = await mkdtemp(path.join(tmpdir(), 'juanerai-ci-scope-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const git = (...args) => execFileSync('git', ['-c', 'core.hooksPath=/dev/null', '-c', 'commit.gpgsign=false', ...args], { cwd: root, env: gitEnv, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
@@ -19,11 +26,14 @@ async function repository(t, trustedClassifier = null) {
   await put('README.md');
   await put('docs/governance/example.md');
   await put('packages/example.ts', 'export const value = 1;\n');
+  await put(statusPath, JSON.stringify(statusBefore) + '\n');
+  await put(eventPath, JSON.stringify(eventBefore) + '\n');
   await put(configPath, configBefore);
   await put('.codex/config.toml', 'model = "gpt-6-astra"\nmodel_reasoning_effort = "high"\nsandbox_mode = "workspace-write"\n[agents]\nenabled = true\nmax_concurrent_threads_per_session = 3\ndefault_subagent_model = "gpt-6-astra"\ndefault_subagent_reasoning_effort = "medium"\n');
   if (trustedClassifier !== null) {
     await put('tools/harness/validation/ci-scope.mjs', trustedClassifier);
     await put('tools/harness/validation/check-agent-config.py', await readFile(new URL('./check-agent-config.py', import.meta.url), 'utf8'));
+    if (recordHelper !== null) await put(projectControlPath, recordHelper);
   }
   git('add', '.'); git('commit', '-m', 'base');
   const base = git('rev-parse', 'HEAD');
@@ -36,7 +46,7 @@ test('CI-TIER-001: parsed model/effort-only edits take affected, other config se
     ['comments and equivalent spelling', configBefore.replace('"medium"', "'high' # approved"), 'affected'],
     ['equivalent multiline instructions', configBefore.replace('"medium"', '"high"').replace('"preserve authority"', '\'\'\'preserve authority\'\'\''), 'affected'],
     ['mapped instructions with routing', configBefore.replace('"medium"', '"high"').replace('preserve authority', 'Review independently and preserve authority'), 'affected'],
-    ['sandbox', configBefore.replace('"medium"', '"high"').replace('read-only', 'danger-full-access'), 'full'],
+    ['sandbox', configBefore.replace('"medium"', '"high"') + 'sandbox_mode = "danger-full-access"\n', 'full'],
     ['malformed', 'model = [', 'full'],
     ['duplicate key', configBefore + 'model = "gpt-6.1-sol"\n', 'full'],
     ['wrong model', configBefore.replace('gpt-6.1-sol', 'other'), 'full'],
@@ -81,7 +91,7 @@ test('CI-TIER-008: instruction mapping preserves all other typed fields and requ
     ['typed after', fixed, fixed.replace('"preserve authority"', '42'), 'full'],
     ['description', fixed, fixed.replace('fixed reviewer', 'new reviewer'), 'full'],
     ['identity', fixed, fixed.replace('juaner_validator', 'juaner_other'), 'full'],
-    ['sandbox', fixed, fixed.replace('read-only', 'workspace-write'), 'full'],
+    ['sandbox', fixed, fixed + 'sandbox_mode = "workspace-write"\n', 'full'],
     ['unknown field', fixed, fixed + 'unknown = true\n', 'full'],
     ['nested permission', fixed + '[permissions]\nnetwork = false\n', fixed + '[permissions]\nnetwork = true\n', 'full'],
     ['nested boolean type', fixed + '[extra]\nvalue = [{allow = true}]\n', fixed + '[extra]\nvalue = [{allow = 1}]\n', 'full'],
@@ -383,5 +393,135 @@ test('CI-TIER-003 correction: parsed non-routing comparison preserves TOML scala
     const direct = classify(f);
     const full = spawnSync('/bin/bash', ['-ec', fullCommand], { cwd: f.root, env: process.env, encoding: 'utf8' });
     assert.deepEqual([direct.stdout, full.status === 0], ['full\n', false], full.stderr);
+  });
+});
+
+test('CI-ROLE-009: native Validator omits unsupported sandbox override; legacy fields cannot bypass full scope', async t => {
+  const fixed = configBefore.replace('"medium"', '"high"');
+  for (const [name, before, after, valid, scope] of [
+    ['native role without override', configBefore, fixed, true, 'affected'],
+    ['unchanged legacy field', configBefore + legacySandbox, fixed + legacySandbox, false, 'full'],
+    ['removed legacy field', fixed + legacySandbox, fixed, true, 'full'],
+    ['changed legacy field', fixed + legacySandbox, fixed + 'sandbox_mode = "workspace-write"\n', false, 'full'],
+    ['new legacy field', fixed, fixed + legacySandbox, false, 'full'],
+    ['removed approval field', fixed + 'approval_policy = "never"\n', fixed, true, 'full'],
+  ]) await t.test(name, async child => {
+    const f = await repository(child, await readFile(classifier, 'utf8'));
+    await f.put(configPath, before); if (before !== configBefore) f.commit(); const base = f.git('rev-parse', 'HEAD');
+    await f.put(configPath, after); f.commit();
+    const checked = spawnSync('python3', ['tools/harness/validation/check-agent-config.py', '--check'], { cwd: f.root, encoding: 'utf8' });
+    assert.equal(checked.status === 0, valid, checked.stderr);
+    assert.equal(classify(f, base).stdout, `${scope}\n`);
+  });
+});
+
+test('CI-RECORD-010: exact status and flat event records share affected validation with safe documentation/config', async t => {
+  for (const kind of ['status', 'status-add', 'event-modify', 'event-add', 'mixed-safe']) await t.test(kind, async child => {
+    const f = await repository(child);
+    let base = f.base;
+    if (kind === 'status-add') { await rm(path.join(f.root, statusPath)); f.commit(); base = f.git('rev-parse', 'HEAD'); }
+    if (kind === 'status' || kind === 'status-add' || kind === 'mixed-safe') await f.put(statusPath, JSON.stringify({ ...statusBefore, summary: 'updated published status' }) + '\n');
+    if (kind === 'event-modify') await f.put(eventPath, JSON.stringify({ ...eventBefore, summary: 'corrected record' }) + '\n');
+    if (kind === 'event-add' || kind === 'mixed-safe') await f.put('.juanerai/project-control/events/20261019T000001+0800-EVT-new.json', JSON.stringify({ ...eventBefore, event_id: 'EVT-new', summary: 'new event' }) + '\n');
+    if (kind === 'mixed-safe') {
+      await f.put('docs/planning/receipt.md', 'publication facts\n');
+      await f.put(configPath, configBefore.replace('"medium"', '"high"'));
+    }
+    f.commit();
+    assert.equal(classify(f, base).stdout, 'affected\n');
+    const result = classify(f, base, ['--check-affected']);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /affected/);
+  });
+});
+
+test('CI-RECORD-010: records mixed with unknown, security, contracts, code or checking machinery stay full', async t => {
+  for (const file of ['packages/example.ts', 'packages/ports/public-contract.ts', 'packages/infrastructure/storage.ts', '.codex/hooks.json', '.juanerai/project-control/schemas/status.schema.json', '.juanerai/project-control/decision-briefs/new.json', '.juanerai/project-control/unknown.json', '.juanerai/project-control/events/nested/new.json', 'openspec/changes/example/receipt.md', projectControlPath, 'tools/harness/validation/ci-scope.mjs', 'tools/harness/validation/ci-scope.test.mjs', '.github/workflows/ci.yml']) await t.test(file, async child => {
+    const f = await repository(child);
+    await f.put(statusPath, JSON.stringify({ ...statusBefore, summary: 'updated status' }) + '\n');
+    await f.put(file, 'unmapped change\n'); f.commit();
+    assert.equal(classify(f).stdout, 'full\n');
+    assert.notEqual(classify(f, f.base, ['--check-affected']).status, 0);
+  });
+});
+
+test('CI-RECORD-010: invalid JSON/status/event cannot become a successful lighter or full selection', async t => {
+  for (const [name, file, value] of [
+    ['malformed JSON', statusPath, '{'],
+    ['unknown status field', statusPath, JSON.stringify({ ...statusBefore, unapproved: true })],
+    ['wrong status schema', statusPath, JSON.stringify({ ...statusBefore, schema_version: '2.0' })],
+    ['unknown event field', eventPath, JSON.stringify({ ...eventBefore, unapproved: true })],
+    ['invalid event type', eventPath, JSON.stringify({ ...eventBefore, event_type: 'unchecked' })],
+    ['invalid event timestamp', eventPath, JSON.stringify({ ...eventBefore, occurred_at: 'not-a-date' })],
+  ]) await t.test(name, async child => {
+    const f = await repository(child);
+    await f.put(file, value + '\n'); f.commit();
+    const result = classify(f);
+    assert.notEqual(result.status, 0, `${name} must fail rather than emit a passing scope`);
+    assert.equal(result.stdout, '');
+    assert.notEqual(classify(f, f.base, ['--check-affected']).status, 0);
+  });
+});
+
+test('CI-RECORD-010: record contract evolution goes full without imposing the obsolete base schema', async t => {
+  for (const file of [projectControlPath, '.juanerai/project-control/schemas/status.schema.json', '.juanerai/project-control/schemas/event.schema.json']) await t.test(file, async child => {
+    const f = await repository(child);
+    await f.put(statusPath, JSON.stringify({ ...statusBefore, schema_version: '2.0' }) + '\n');
+    await f.put(file, file === projectControlPath ? 'export const validateStatus = value => value; export const validateEvent = value => value;\n' : '{"schema_version":"2.0"}\n');
+    f.commit();
+    const selected = classify(f);
+    assert.equal(selected.status, 0, selected.stderr); assert.equal(selected.stdout, 'full\n');
+    assert.notEqual(classify(f, f.base, ['--check-affected']).status, 0);
+  });
+});
+
+test('CI-RECORD-010: record deletion, rename, copy, symlink and executable mode cannot grant affected', async t => {
+  for (const kind of ['delete', 'rename', 'copy', 'link', 'executable', 'parent-link']) await t.test(kind, async child => {
+    const f = await repository(child), target = path.join(f.root, eventPath);
+    if (kind === 'delete') await rm(target);
+    if (kind === 'rename') await rename(target, path.join(f.root, '.juanerai/project-control/events/EVT-renamed.json'));
+    if (kind === 'copy') await f.put('.juanerai/project-control/events/EVT-copied.json', JSON.stringify(eventBefore) + '\n');
+    if (kind === 'link') { await rm(target); await symlink('../../../README.md', target); }
+    if (kind === 'executable') { await chmod(target, 0o755); f.git('update-index', '--chmod=+x', eventPath); }
+    if (kind === 'parent-link') { await rename(path.join(f.root, '.juanerai/project-control/events'), path.join(f.root, '.juanerai/project-control/moved')); await symlink('moved', path.join(f.root, '.juanerai/project-control/events')); }
+    f.commit();
+    assert.equal(classify(f).stdout, 'full\n');
+    assert.notEqual(classify(f, f.base, ['--check-affected']).status, 0);
+  });
+});
+
+test('CI-RECORD-010: actual workflow uses trusted base record validator, never PR replacement or silent fallback', async t => {
+  const workflow = await readFile(new URL('../../../.github/workflows/ci.yml', import.meta.url), 'utf8');
+  const shell = workflow.split('        run: |\n')[1].split('\n').map(line => line.replace(/^          /, '')).join('\n');
+  const logger = shell.slice(shell.indexOf('run_logged() {'), shell.indexOf('\ntest "$(node --version)"'));
+  const selection = shell.slice(shell.indexOf('test "${#PR_BASE_SHA}"'), shell.indexOf('run_logged agent-config'));
+  for (const kind of ['valid', 'invalid', 'invalid-mixed', 'hostile-pr-helper', 'uncommitted-hostile-helper', 'missing-base-helper', 'helper-error', 'helper-exit', 'helper-link', 'helper-executable', 'timeout']) await t.test(kind, async child => {
+    const recordHelper = kind === 'missing-base-helper' ? null : kind === 'helper-error' ? 'throw new Error("trusted-helper-failure");\n' : kind === 'helper-exit' ? 'process.exit(17);\n' : projectControlSource;
+    const f = await repository(child, await readFile(classifier, 'utf8'), { recordHelper });
+    let base = f.base;
+    if (kind === 'helper-link') { await rm(path.join(f.root, projectControlPath)); await symlink('../../../README.md', path.join(f.root, projectControlPath)); }
+    if (kind === 'helper-executable') { await chmod(path.join(f.root, projectControlPath), 0o755); f.git('update-index', '--chmod=+x', projectControlPath); }
+    if (kind === 'helper-link' || kind === 'helper-executable') { f.commit(); base = f.git('rev-parse', 'HEAD'); }
+    await f.put(statusPath, JSON.stringify({ ...statusBefore, summary: 'valid update', ...(['invalid', 'invalid-mixed', 'hostile-pr-helper', 'uncommitted-hostile-helper'].includes(kind) ? { unapproved: true } : {}) }) + '\n');
+    if (kind === 'invalid-mixed') await f.put('packages/example.ts', 'export const value = 2;\n');
+    if (kind === 'hostile-pr-helper') await f.put(projectControlPath, 'export const validateStatus = value => value; export const validateEvent = value => value;\n');
+    f.commit();
+    if (kind === 'uncommitted-hostile-helper') await f.put(projectControlPath, 'export const validateStatus = value => value; export const validateEvent = value => value;\n');
+    const temp = path.join(f.root, 'runner-temp'); await mkdir(temp);
+    // Classification is real; the timeout shim changes only the external wait.
+    const timeout = kind === 'timeout' ? 'timeout() { return 124; }' : 'timeout() { shift 3; "$@"; }';
+    const result = spawnSync('/bin/bash', ['-ec', `${timeout}\n${logger}\n${selection}\nprintf 'CONTINUE_FULL\\n'`], { cwd: f.root, env: { ...process.env, PR_BASE_SHA: base, RUNNER_TEMP: temp }, encoding: 'utf8', timeout: 10000 });
+    assert.equal(result.signal, null);
+    if (kind === 'valid') {
+      assert.equal(result.status, 0, result.stderr); assert.match(result.stdout, /EXIT affected 0/);
+      assert.match(result.stdout, /project-control record structure/); assert.doesNotMatch(result.stdout, /CONTINUE_FULL/);
+    } else if (kind === 'missing-base-helper' || kind === 'hostile-pr-helper') {
+      assert.equal(result.status, 0, result.stderr); assert.match(result.stdout, /CONTINUE_FULL/);
+    } else {
+      assert.equal(result.status, kind === 'timeout' ? 124 : kind === 'helper-exit' ? 17 : kind.startsWith('helper-') && ['helper-link', 'helper-executable'].includes(kind) ? 65 : 1, result.stderr);
+      assert.doesNotMatch(result.stdout, /AFFECTED ONLY|CONTINUE_FULL/);
+      if (kind === 'timeout') assert.match(result.stdout, /EXIT affected 124/);
+      else if (!['helper-exit', 'helper-link', 'helper-executable'].includes(kind)) assert.match(result.stderr, /Project control validation failed|trusted-helper-failure/);
+    }
   });
 });

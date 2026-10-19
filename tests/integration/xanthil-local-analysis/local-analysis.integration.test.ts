@@ -498,18 +498,19 @@ function assertApprovedRootManifest(manifest: unknown) {
   }
 }
 
-function assertApprovedLock(lock: TestRecord, sdk041=false, metricAssets=false, piR1R4=false, readCarrier=false, sdk051=false, harness053=false) {
+function assertApprovedLock(lock: TestRecord, sdk041=false, metricAssets=false, piR1R4=false, readCarrier=false, sdk051=false, harness053=false, harness5=false) {
   assert.equal(typeof lock, 'object');
   const packages = requiredRecord(lock.packages, 'npm lock packages');
   const root = requiredRecord(packages[''], 'npm lock root');
   assert.deepEqual(root, {
     name: 'xanthil-desktop',
     version: '0.1.0',
-    dependencies: harness053?approvedHarnessFirstLoopManifest.dependencies:sdk051?approvedSdk051Manifest.dependencies:readCarrier?approvedReadCarrierManifest.dependencies:piR1R4?approvedPiR1R4Manifest.dependencies:metricAssets?approvedMetricAssetsManifest.dependencies:sdk041?approvedSdk043Manifest.dependencies:approvedP4RootManifest.dependencies,
+    dependencies: harness5?approvedAgentHostManifest.dependencies:harness053?approvedHarnessFirstLoopManifest.dependencies:sdk051?approvedSdk051Manifest.dependencies:readCarrier?approvedReadCarrierManifest.dependencies:piR1R4?approvedPiR1R4Manifest.dependencies:metricAssets?approvedMetricAssetsManifest.dependencies:sdk041?approvedSdk043Manifest.dependencies:approvedP4RootManifest.dependencies,
     devDependencies: approvedP4RootManifest.devDependencies,
     engines: approvedP4RootManifest.engines,
   }, 'lock root must be the exact approved closed object');
-  if(harness053){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'Harness first loop fixed .3 lock entry');assert.equal(sdk.version,'0.5.3-harness.3');assert.equal(sdk.resolved,approvedHarnessFirstLoopManifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-UVmfB/qW8/8m44KttennveKBk3Jza77T2K3lhJkNfRk+KwrugszeD6nDybZutVbU/IKea0hs7zsNKWZDRxFvcQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
+  if(harness5){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'Fixed simplification .5 entry');assert.equal(sdk.version,'0.5.3-harness.5');assert.equal(sdk.resolved,approvedAgentHostManifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-wTtvXaT0FRKLnnXNsBQ9iFKaIJMiDReacx/iwJ/B38Y+7ekhM+81+9LUEHBuMV7THkuD8v/ZZDQIwfsIDByfnQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
+  else if(harness053){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'Harness first loop fixed .3 lock entry');assert.equal(sdk.version,'0.5.3-harness.3');assert.equal(sdk.resolved,approvedHarnessFirstLoopManifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-UVmfB/qW8/8m44KttennveKBk3Jza77T2K3lhJkNfRk+KwrugszeD6nDybZutVbU/IKea0hs7zsNKWZDRxFvcQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
   else if(sdk051){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'Formal SDK051 fixed lock entry');assert.equal(sdk.version,'0.5.1');assert.equal(sdk.resolved,approvedSdk051Manifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-8mfN4/Aw5wr0/ur8WK9wphP+7l6BLL3IX5MwokjSvj8GGzvU5+laAVwomt/HdHXvIJJhsAdiW8Zj7BJtaS7BhQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
   else if(readCarrier){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'ReadCarrier fixed lock entry');assert.equal(sdk.version,'0.5.1-r1r4.3');assert.equal(sdk.resolved,approvedReadCarrierManifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-EwiDQpDwtxob2Gu56P5DdTsIP2HbcvRYga3Q0r8BeaJNZbIEDYzQPqy8xMYYzC+nHHtObasfLzOD53BOwb5N4Q==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
   else if(piR1R4){const sdk=requiredRecord(packages['node_modules/pi-agent-runtime'],'PiR1R4 fixed lock entry');assert.equal(sdk.version,'0.5.1-r1r4.2');assert.equal(sdk.resolved,approvedPiR1R4Manifest.dependencies['pi-agent-runtime']);assert.equal(sdk.integrity,'sha512-AeCQ38s/kjfecaHQMAI8V2iOJZRhrV23aSaN5C8fi+xkC2EWzJv1q0PmYbZEMg7wWiDBxF571EZO83xWcvHFxQ==');assert.deepEqual(sdk.dependencies,{'@earendil-works/pi-agent-core':'0.86.1','@earendil-works/pi-ai':'0.86.1','openai':'6.40.0'});}
@@ -731,10 +732,35 @@ const deepResearchFiles=['packages/ports/deep-research.ts','packages/application
 const approvedDeepResearchConfigurationFiles=[...approvedP5RepositoryConfigurationFiles,'openspec/changes/archive/2026-10-18-deep-research-integration/clickable/reference/ui/tsconfig.json'].sort();
 const approvedDeepResearchTsconfig={...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,...deepResearchFiles]};
 const approvedHarnessDeepResearchTsconfig={...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,'tests/integration/xanthil-desktop/pi-harness-first-loop.integration.test.ts',...deepResearchFiles]};
+const agentHostSimplificationFiles=[
+  "adapters/agent-pi/business-work-state.ts",
+  "adapters/storage-local/open-analysis-draft.ts",
+  "packages/application/open-analysis-long-artifact.ts",
+  "packages/ports/open-analysis-draft.ts",
+  "packages/ports/open-analysis-judgment-review.ts",
+  "packages/product-core/open-analysis-authoritative-content.ts",
+  "packages/product-core/open-analysis-judgment-conditions.ts",
+  "packages/product-core/open-analysis-judgment-review.ts",
+  "packages/product-core/open-analysis-natural-review.ts",
+  "packages/product-core/open-analysis-option-unit.ts",
+  "packages/product-core/open-analysis-reviewable-document.ts",
+  "packages/product-core/open-analysis-reviewed-content.ts",
+  "packages/product-core/open-reviewed-analysis-source.ts",
+  "tests/fixtures/xanthil-desktop/change007-b06-actual102.ts",
+  "tests/fixtures/xanthil-desktop/change007-content-model.ts",
+  "tests/fixtures/xanthil-desktop/change007-long-artifact.ts",
+  "tests/integration/xanthil-desktop/agent-host-proposal-contract.integration.test.ts",
+  "tests/integration/xanthil-desktop/agent-host-browser-entry.integration.test.ts",
+  "tests/integration/xanthil-desktop/open-analysis-long-artifact.integration.test.ts",
+  "tests/integration/xanthil-desktop/open-analysis-natural-review.integration.test.ts"
+];
+const approvedAgentHostManifest={...approvedHarnessFirstLoopManifest,dependencies:{...approvedHarnessFirstLoopManifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.5.3-harness.5/5b98a720a6bc1981662ef5254328bf15d6a79984ed7b0dcb0b673c65c31088fd.tgz'}};
+const approvedAgentHostTsconfig={...approvedHarnessDeepResearchTsconfig,files:[...approvedHarnessDeepResearchTsconfig.files,...agentHostSimplificationFiles]};
 const metricFactoryFiles=['packages/ports/metric-factory.ts','packages/application/metric-factory.ts','adapters/metric-factory/bundle.ts','adapters/metric-factory/copies.ts','adapters/metric-factory/process.ts','profiles/personal/metric-factory.ts','apps/browser/metric-factory-http.ts','tests/integration/metric-factory/copies.test.ts','tests/integration/metric-factory/process.test.ts'];
-const approvedMetricFactoryTsconfig={...approvedHarnessDeepResearchTsconfig,files:[...approvedHarnessDeepResearchTsconfig.files,...metricFactoryFiles]};
+const approvedMetricFactoryTsconfig={...approvedAgentHostTsconfig,files:[...approvedAgentHostTsconfig.files,...metricFactoryFiles]};
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
-  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedHarnessFirstLoopManifest,approvedMetricFactoryTsconfig,approvedDeepResearchConfigurationFiles))return 'MetricFactoryIntegration' as const;
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedAgentHostManifest,approvedMetricFactoryTsconfig,approvedDeepResearchConfigurationFiles))return 'MetricFactoryIntegration' as const;
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedAgentHostManifest,approvedAgentHostTsconfig,approvedDeepResearchConfigurationFiles))return 'AgentHostSimplification' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedHarnessFirstLoopManifest,approvedHarnessDeepResearchTsconfig,approvedDeepResearchConfigurationFiles))return 'HarnessDeepResearchIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,historicalHarness2Manifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles))return 'HarnessFirstLoopPrevious' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedHarnessFirstLoopManifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles))return 'HarnessFirstLoopIntegration' as const;
@@ -3844,7 +3870,7 @@ test('TEST-XCLI-021 [AC-XCLI-001-01, AC-XCLI-007-01, AC-XCLI-008-01, AC-XCLI-016
 
   const manifest = JSON.parse(await readFile(join(repositoryRoot, 'package.json'), 'utf8'));
   const lock = JSON.parse(await readFile(join(repositoryRoot, 'package-lock.json'), 'utf8'));
-  assertApprovedLock(lock,true,true,true,true,true,true);
+  assertApprovedLock(lock,true,true,true,true,true,true,true);
 
   for (const [packageName, expected] of Object.entries(approvedDirectPackageHealth)) {
     await assertInstalledDirectPackage(packageName, expected);
@@ -3985,7 +4011,7 @@ test('PiR1R4 exact fixed adoption retains historical tuples and rejects replacem
  for(const path of ['^0.5.1','file:vendor/pi-agent-runtime/0.5.1-r1r4.2/'+ '0'.repeat(64)+'.tgz','file:/tmp/alternate.tgz'])assert.throws(()=>check({...approvedPiR1R4Manifest,dependencies:{...approvedPiR1R4Manifest.dependencies,'pi-agent-runtime':path}},approvedMetricAssetsTsconfig));
  assert.throws(()=>check(approvedPiR1R4Manifest,{...approvedMetricAssetsTsconfig,files:approvedMetricAssetsTsconfig.files.slice(1)}));assert.throws(()=>check(approvedPiR1R4Manifest,{...approvedMetricAssetsTsconfig,files:[...approvedMetricAssetsTsconfig.files,'unapproved.ts']}));
  const original=JSON.parse(await readFile(join(repositoryRoot,'package-lock.json'),'utf8'));
- const checkLock=(lock:TestRecord)=>assertApprovedLock(lock,true,true,true,true,true,true);
+ const checkLock=(lock:TestRecord)=>assertApprovedLock(lock,true,true,true,true,true,true,true);
  checkLock(original);
  for(const [field,value]of [['version','0.5.2'],['version','0.5.1-r1r4.3'],['version','0.5.3-harness.2'],['integrity','unapproved'],['resolved','file:/tmp/alternate.tgz']]){
   const lock=structuredClone(original);lock.packages['node_modules/pi-agent-runtime'][field!]=value;
@@ -4016,7 +4042,7 @@ test('DP-CI-02 exact decision-platform appendix preserves prior tuples and rejec
  assert.equal(assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles),'HarnessFirstLoopIntegration');
  assert.throws(()=>assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,approvedDecisionPlatformTsconfig,approvedP5RepositoryConfigurationFiles));
  assert.throws(()=>assertApprovedConfigurationTuple(approvedSdk051Manifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles));
-  const current=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));assert.deepEqual({...current,files:current.files.slice(0,-deepResearchFiles.length-metricFactoryFiles.length)},approvedHarnessFirstLoopTsconfig);
+  const current=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));assert.deepEqual({...current,files:current.files.slice(0,-deepResearchFiles.length-agentHostSimplificationFiles.length-metricFactoryFiles.length)},approvedHarnessFirstLoopTsconfig);
  for(const file of decisionPlatformFiles){
   assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:approvedDecisionPlatformTsconfig.files.filter(p=>p!==file)}));
   assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,file]}));
@@ -4037,14 +4063,24 @@ test('DR-CI-01 exact research appendix retains prior contract and rejects partia
  assert.throws(()=>check({...approvedDeepResearchTsconfig,files:[...approvedDecisionPlatformTsconfig.files,...deepResearchFiles.toReversed()]}));
 });
 
+
+test('AH-CI fixed .5 extends the full retained configuration with a literal closed increment',()=>{
+ const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedAgentHostManifest,config,approvedDeepResearchConfigurationFiles);
+ assert.equal(check(approvedAgentHostTsconfig),'AgentHostSimplification');
+ for(const file of agentHostSimplificationFiles){assert.throws(()=>check({...approvedAgentHostTsconfig,files:approvedAgentHostTsconfig.files.filter(f=>f!==file)}));assert.throws(()=>check({...approvedAgentHostTsconfig,files:[...approvedAgentHostTsconfig.files,file]}));}
+ assert.throws(()=>check({...approvedAgentHostTsconfig,files:[...approvedHarnessDeepResearchTsconfig.files,...agentHostSimplificationFiles.toReversed()]}));
+ assert.throws(()=>check({...approvedAgentHostTsconfig,files:[...approvedAgentHostTsconfig.files,'unapproved.ts']}));
+ assert.throws(()=>assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,approvedAgentHostTsconfig,approvedDeepResearchConfigurationFiles));
+});
+
 test('MF-CI-01 exact plugin roots preserve previous tuple and reject partial, expanded or reordered roots',()=>{
- const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,config,approvedDeepResearchConfigurationFiles);
- assert.equal(check(approvedHarnessDeepResearchTsconfig),'HarnessDeepResearchIntegration');
+ const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedAgentHostManifest,config,approvedDeepResearchConfigurationFiles);
+ assert.equal(check(approvedAgentHostTsconfig),'AgentHostSimplification');
  assert.equal(check(approvedMetricFactoryTsconfig),'MetricFactoryIntegration');
  for(const file of metricFactoryFiles){
   assert.throws(()=>check({...approvedMetricFactoryTsconfig,files:approvedMetricFactoryTsconfig.files.filter(p=>p!==file)}));
   assert.throws(()=>check({...approvedMetricFactoryTsconfig,files:[...approvedMetricFactoryTsconfig.files,file]}));
   assert.throws(()=>check({...approvedMetricFactoryTsconfig,files:approvedMetricFactoryTsconfig.files.map(p=>p===file?'unapproved.ts':p)}));
  }
- assert.throws(()=>check({...approvedMetricFactoryTsconfig,files:[...approvedHarnessDeepResearchTsconfig.files,...metricFactoryFiles.toReversed()]}));
+ assert.throws(()=>check({...approvedMetricFactoryTsconfig,files:[...approvedAgentHostTsconfig.files,...metricFactoryFiles.toReversed()]}));
 });

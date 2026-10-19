@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019100122096-LQG0QE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T10:01:22.096Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a15398-b9ad-76e2-8a82-103da71d3c29"
+  },
+  "summary": "用户授权候选003规范Git交付；行为源码及远端基线未变，保持离线范围和旧两线停止",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019103153304-CP55E8",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T10:31:53.304Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a15398-b9ad-76e2-8a82-103da71d3c29"
+  },
+  "summary": "LA09 macOS prerequisite diagnosed; bounded test registration corrected and full regression running",
+  "status_after": "active",
+  "evidence_refs": []
+}

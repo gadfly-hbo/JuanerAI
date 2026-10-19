@@ -263,7 +263,7 @@ test('FL-A11/A16: actual Browser workspace consumes full schemas, native prepara
   const {createQuickAnalysisClient,openTaskView}=await import('../../../apps/browser/quick-analysis-client.mjs');
   const {renderQuickAnalysisWorkbench}=await import('../../../apps/browser/quick-analysis-workbench.mjs');
   const root=mkdtempSync(join(browserEvidenceRoot,'first-loop-product-')),id=randomUUID(),sid=randomUUID();
-  const captured:unknown[]=[],contractCycle:{call:number;name:string;schema:unknown}[]=[];let calls=0;
+  const failures:string[]=[];const captured:unknown[]=[],contractCycle:{call:number;name:string;schema:unknown}[]=[];let calls=0;
   const program='# complete synthetic program\n'.repeat(350)+
     'x=json.load(open(SOURCES[0]))\nrows=x["inspection"]["sources"][0]["sheets"][0]["rows"][1:]\n'+
     'values=[int(next(c["value"] for c in row["cells"] if c["column"]=="A")) for row in rows]\n'+
@@ -308,7 +308,7 @@ test('FL-A11/A16: actual Browser workspace consumes full schemas, native prepara
       return run(input);
     }};
   };
-  const options={projectRoot:root,project_id:randomUUID(),requireSemanticAssessment:true,
+  const options={onFailure:(code:string)=>failures.push(code),projectRoot:root,project_id:randomUUID(),requireSemanticAssessment:true,
     toolchain:{pythonExecutable:'/opt/homebrew/bin/python3',pythonVersion:'3.14.4'},
     inspect:createMemberSourceInspector('/opt/homebrew/bin/python3'),authorizeConfiguration:async()=>({config_sha256:'b'.repeat(64)}),createRuntime};
   let open=createPersonalOpenAnalysisWorkspace(options),server:Awaited<ReturnType<typeof startBrowserMembershipServer>>|undefined;
@@ -322,7 +322,7 @@ test('FL-A11/A16: actual Browser workspace consumes full schemas, native prepara
     assert.equal((await submit({})).status,403);assert.equal((await submit({'x-xanthil-control':control,'sec-fetch-site':'cross-site'})).status,403);assert.equal(calls,0);
     assert.equal((await submit({'x-xanthil-control':control})).status,200);
     await open.collect();const task=open.read(id),state=createPersistentRuntimeState({projectRoot:root});
-    writeFileSync(join(root,'joint-product-before-assertions.json'),JSON.stringify({task,calls,captured,contractCycle,audit:state.readAudit(id),accounting:state.readAccounting(id)}));
+    writeFileSync(join(root,'joint-product-before-assertions.json'),JSON.stringify({task,failures,calls,captured,contractCycle,audit:state.readAudit(id),accounting:state.readAccounting(id)}));
     const evidenceFirst=contractCycle.find(c=>c.call===6&&c.name==='read_analysis_evidence');
     const calculationFirst=contractCycle.find(c=>c.call===12&&c.name==='calculate_and_verify');
     const evidenceReturned=contractCycle.find(c=>c.call===13&&c.name==='read_analysis_evidence');
@@ -334,7 +334,7 @@ test('FL-A11/A16: actual Browser workspace consumes full schemas, native prepara
     assert.deepEqual(calculationReturned?.schema,calculationFirst.schema);
     assert.equal(contractCycle.some(c=>c.call===13&&c.name==='calculate_and_verify'),false,'focus does not expose all large schemas');
     assert.equal(state.readAudit(id).filter(e=>e.toolName==='read_analysis_evidence'&&e.toolOutcome?.status==='completed').length,2,'both legal evidence calls execute exactly once');
-    assert.equal(task.state,'saved');assert.equal(task.outcome!.calculation.value,'10');
+    assert.equal(task.state,'saved',JSON.stringify(failures));assert.equal(task.outcome!.calculation.value,'10');
     assert.equal(task.outcome!.verification.grade,'independent_arithmetic');
     const codeRoot=join(root,'.juanerai','open-code'),admissions=readdirSync(codeRoot).filter(f=>/^[a-f0-9-]{36}\.json$/.test(f));
     assert.equal(admissions.length,1);const admission=JSON.parse(readFileSync(join(codeRoot,admissions[0]!),'utf8'));
@@ -344,7 +344,7 @@ test('FL-A11/A16: actual Browser workspace consumes full schemas, native prepara
     assert.deepEqual(createLocalOpenAnalysisStore({projectRoot:root}).read(id),task);
     assert.ok(state.readAudit(id).some(e=>e.toolAdmission?.name==='read_analysis_evidence'&&e.toolAdmission.disposition==='rejected'));
     assert.ok(state.readAudit(id).some(e=>e.toolName==='edit'&&e.toolOutcome?.status==='completed'));
-    assert.ok(captured.some(messages=>JSON.stringify(messages).includes('GOAL_COMPLETION_REVIEW')));
+    assert.equal(captured.some(messages=>JSON.stringify(messages).includes('GOAL_COMPLETION_REVIEW')),false,'AH-01: the native normal loop completes without a second host model-completion pass');assert.equal(calls,17,'the fixed native sequence and one report call have no hidden completion dispatch');
     const http=await client.read(id),diagnostics=await client.diagnostics(id),view=openTaskView(http,[],diagnostics);
     const html=renderQuickAnalysisWorkbench({project:'Synthetic first loop',tasks:[{id,title:view.title}],current:view,detail:'execution',drawer:true,mode:'quick',stage:'analysis',readonly:true});
     assert.ok(http.outcome);assert.equal(http.outcome.calculation.value,'10');assert.ok(html.includes('10'));

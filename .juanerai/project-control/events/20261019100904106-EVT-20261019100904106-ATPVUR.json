@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019100904106-ATPVUR",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T10:09:04.106Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a15398-b9ad-76e2-8a82-103da71d3c29"
+  },
+  "summary": "PR106当前head完整CI运行中，虚拟merge树及87项范围核验一致；保持全部离线停止线",
+  "status_after": "validating",
+  "evidence_refs": []
+}

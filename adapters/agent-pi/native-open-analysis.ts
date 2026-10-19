@@ -1,7 +1,11 @@
-import {nativeDelegationWire} from './native-delegation-wire.ts';
 import {captureAnalysisToolContracts} from './analysis-tool-contracts.ts';
-import {firstLoopBusinessTools,firstLoopToolView} from './first-loop-tools.ts';
+import {relative,isAbsolute} from 'node:path';
+import {createExecutionTools,type Tool,type JsonValue} from 'pi-agent-runtime';
+import type {AnalysisRuntimeDiagnostics,AnalysisDiagnosticCode} from '../../packages/ports/open-analysis-runtime.ts';
 import {createAnalysisCodeDraft} from './analysis-code-draft.ts';
+import {resolve} from 'node:path';
+import {firstLoopBusinessTools,firstLoopToolView} from './first-loop-tools.ts';
+import {nativeDelegationWire} from './native-delegation-wire.ts';
 import {Check} from 'typebox/value';
 import type {TSchema} from 'typebox';
 import {closedTerminalJson,desktopAssistanceSystemPrompt} from './desktop-assistance-codec.ts';
@@ -9,15 +13,15 @@ import {canonicalDesktopJson,validateDesktopAssistancePayload,validateDesktopAss
 import {randomUUID,createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {readdirSync,readFileSync,lstatSync} from 'node:fs';
-import {join,resolve,relative,isAbsolute} from 'node:path';
-import {createSessionRuntime,createPiTransport,createExecutionTools,loadHarnessResources,admitModelRequest,RuntimeFault,ProviderFailure,ModelFailure,type Tool,type JsonValue,type ContextAdmissionPolicy,type ModelOutcome,type ModelTransport,type ModelConfig,type SessionRuntime} from 'pi-agent-runtime';
+import {join} from 'node:path';
+import {createSessionRuntime,createPiTransport,loadHarnessResources,admitModelRequest,RuntimeFault,ProviderFailure,ModelFailure,type ContextAdmissionPolicy,type ModelOutcome,type ModelTransport,type ModelConfig,type SessionRuntime} from 'pi-agent-runtime';
 import {createApprovedProviderCredentials} from './provider-credentials.ts';
 import {assistantPrompt,validateAssistantOutput} from './case-assistant.ts';
 import {membershipUuid} from '../../packages/product-core/member-analysis.ts';
 import {membershipModelTurn,membershipModelPrompt,membershipModelOutput,membershipModelResultHash} from '../../packages/product-core/member-model.ts';
 import {createPersistentRuntimeState,approvedUncappedAnalysisLimits,approvedFirstLoopAnalysisLimits} from './persistent-runtime-state.ts';
 import {createSharedAnalysisTool,createNativeBusinessTools} from './open-analysis.ts';
-import type {OpenAnalysisRuntime,OpenAnalysisRun,AnalysisHistoryMessage,AnalysisSessionView,AnalysisRuntimeDiagnostics,AnalysisDiagnosticCode} from '../../packages/ports/open-analysis-runtime.ts';
+import type {OpenAnalysisRuntime,OpenAnalysisRun,AnalysisHistoryMessage,AnalysisSessionView} from '../../packages/ports/open-analysis-runtime.ts';
 import type {AnalysisRequestLedger} from '../../packages/ports/analysis-request-ledger.ts';
 
 const hash=(value:unknown)=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
@@ -25,6 +29,7 @@ const primary:ModelConfig={provider:'minimax-cn',id:'MiniMax-M3',protocol:'anthr
 const retained:ModelConfig={provider:'xiaomi-token-plan-cn',id:'mimo-v2.6-pro',protocol:'openai-completions',endpoint:'https://token-plan-cn.xiaomimimo.com/v1',contextWindow:1048576,maxOutputTokens:2048};
 const backup:ModelConfig={provider:'xiaomi-token-plan-cn',id:'mimo-v2.6-flash',protocol:'openai-completions',endpoint:'https://token-plan-cn.xiaomimimo.com/v1',contextWindow:1048576,maxOutputTokens:4096};
 function fail(code:string):never{throw Object.assign(new Error(code),{code,stack:code});}
+
 function observedTokens(value:ModelOutcome['usage']['inputTokens'],final:boolean):import('../../packages/product-core/member-operation.ts').Meter{
  if(final&&value.kind==='known')return {kind:'known',value:String(value.value)};
  const lower=value.kind==='known'?value.value:value.reported;
@@ -38,31 +43,41 @@ function unconfirmedReply(model:ModelConfig):ModelOutcome{
 type ReportThinkingMigrationInput=Readonly<{identity:OpenAnalysisRun['identity'];signal:AbortSignal;authorize:()=>boolean;approval:string;expectedAccounting:string;expectedLedger:string}>;
 type CancelledReportInput=ReportThinkingMigrationInput&Readonly<{target:Readonly<{session:string;branch:string;operation:string}>;provePhysicalStop:()=>Readonly<{identity:OpenAnalysisRun['identity'];request_id:string;process_closed:boolean;physical_closed:boolean;stop_receipt_sha256:string;process_exit_sha256:string}>|null}>;
 type InterruptedStopInput=ReportThinkingMigrationInput&Readonly<{expectedLock:string;arguments:Readonly<{step_id:string}>;provePreExecution:()=>Readonly<{task_sha256:string;step_id:string;identity:OpenAnalysisRun['identity']}>|null}>;
-export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';preparationSnapshots?:'v1';projectRoot:string;ledger:AnalysisRequestLedger;credentials:ReturnType<typeof createApprovedProviderCredentials>;modelTransport?:ModelTransport;fetch?:typeof globalThis.fetch;legacyCredential?:()=>string;modelTimeoutMs?:number;analysisModel?:'MiniMax-M3'|'mimo-v2.6-flash';mimoThinking?:'off';reportThinking?:'off';nativeObjectArguments?:boolean;r1r4?:Readonly<{contextAdmission:ContextAdmissionPolicy|null}>}):OpenAnalysisRuntime&{recoverCancelledReport:(input:CancelledReportInput)=>Promise<Readonly<{status:'aborted';operation:string;reconciliation:string}>>;recoverInterruptedStop:(input:InterruptedStopInput)=>Promise<Readonly<{status:'aborted';operation:string;reconciliation:string}>>;migrateReportThinking:(input:ReportThinkingMigrationInput)=>Promise<Readonly<{from:string;to:string;approval:string;reconciliation:string;accounting:string}>>}{
+export function createPiSessionOpenAnalysisRuntime(config:{sharedWorkRecovery?:'v1';r1r4?:Readonly<{contextAdmission:ContextAdmissionPolicy}>;firstLoop?:'v0.2';projectRoot:string;longArtifactsForTask?:(task_id:string)=>boolean;ledger:AnalysisRequestLedger;credentials:ReturnType<typeof createApprovedProviderCredentials>;reviewPolicy?:(task_id:string)=>boolean;reportPro60ForTask?:(task_id:string)=>boolean;reportTimeoutForTask?:(task_id:string)=>60000|120000|undefined;judgmentReviewModelForTask?:(task_id:string)=>'MiniMax-M3'|'mimo-v2.6-pro'|undefined;judgmentReviewThinkingForTask?:(task_id:string)=>boolean;judgmentReviewTimeoutForTask?:(task_id:string)=>30000|60000;modelTransport?:ModelTransport;fetch?:typeof globalThis.fetch;legacyCredential?:()=>string;modelTimeoutMs?:number;preparationSnapshots?:'v1';analysisModel?:'MiniMax-M3'|'mimo-v2.6-flash';mimoThinking?:'off';reportThinking?:'off';nativeObjectArguments?:boolean}):OpenAnalysisRuntime&{migrateLongArtifacts:(input:ReportThinkingMigrationInput)=>Promise<Readonly<{from:string;to:string;approval:string;reconciliation:string;accounting:string}>>;recoverCancelledReport:(input:CancelledReportInput)=>Promise<Readonly<{status:'aborted';operation:string;reconciliation:string}>>;recoverInterruptedStop:(input:InterruptedStopInput)=>Promise<Readonly<{status:'aborted';operation:string;reconciliation:string}>>;migrateReportTimeout:(input:ReportThinkingMigrationInput)=>Promise<Readonly<{from:string;to:string;approval:string;reconciliation:string;accounting:string}>>;migrateReportPro60:(input:ReportThinkingMigrationInput)=>Promise<Readonly<{from:string;to:string;approval:string;reconciliation:string;accounting:string}>>;migrateReportThinking:(input:ReportThinkingMigrationInput)=>Promise<Readonly<{from:string;to:string;approval:string;reconciliation:string;accounting:string}>>;migrateJudgmentReviewModel:(input:ReportThinkingMigrationInput)=>Promise<Readonly<{from:string;to:string;approval:string;reconciliation:string;accounting:string}>>;migrateJudgmentReviewTimeout:(input:ReportThinkingMigrationInput)=>Promise<Readonly<{from:string;to:string;approval:string;reconciliation:string;accounting:string}>>;migrateJudgmentReviewProOff:(input:ReportThinkingMigrationInput)=>Promise<Readonly<{from:string;to:string;approval:string;reconciliation:string;accounting:string}>>;migrateJudgmentReviewPro:(input:ReportThinkingMigrationInput)=>Promise<Readonly<{from:string;to:string;approval:string;reconciliation:string;accounting:string}>>;migrateJudgmentReviewThinking:(input:ReportThinkingMigrationInput)=>Promise<Readonly<{from:string;to:string;approval:string;reconciliation:string;accounting:string}>>}{
  if(config.firstLoop!==undefined&&config.firstLoop!=='v0.2')fail('INVALID_REQUEST');
  const firstLoop=config.firstLoop==='v0.2';
+ const preparation=config.preparationSnapshots==='v1';
+ if(config.preparationSnapshots!==undefined&&(config.preparationSnapshots!=='v1'||!config.r1r4))fail('INVALID_REQUEST');
+ const observesModels=config.r1r4!==undefined,admissionPolicy=config.r1r4?Object.freeze(structuredClone(config.r1r4.contextAdmission)):undefined;
+ const modelObservations=observesModels?{modelObservations:'v1' as const}:{};
+ const sharedWork=config.sharedWorkRecovery==='v1';
+ // Fixed harness.5 uses public ModelAttempt for the selected shared work; it does not implement the unpublished115 workPolicy.
+ // Reject the affected selection, never silently lose its durable recovery guard.
+ if(config.longArtifactsForTask&&config.sharedWorkRecovery!=='v1')fail('CAPABILITY_UNAVAILABLE');
+ if(config.sharedWorkRecovery!==undefined&&(config.sharedWorkRecovery!=='v1'||!firstLoop||!observesModels))fail('INVALID_REQUEST');
  if(config.nativeObjectArguments!==undefined&&typeof config.nativeObjectArguments!=='boolean')fail('INVALID_REQUEST');
  const nativeObjects=config.nativeObjectArguments===true;
- const admissionPolicy=config.r1r4?Object.freeze(structuredClone(config.r1r4.contextAdmission)):undefined;
- const observesModels=config.r1r4!==undefined;
- if(config.preparationSnapshots!==undefined&&(config.preparationSnapshots!=='v1'||!observesModels))fail('INVALID_REQUEST');
- const preparation=config.preparationSnapshots==='v1';
- const modelObservations=observesModels?{modelObservations:'v1' as const}:{};
- if(config.modelTimeoutMs!==undefined&&(!Number.isSafeInteger(config.modelTimeoutMs)||(firstLoop?config.modelTimeoutMs!==600000:config.modelTimeoutMs!==30000&&config.modelTimeoutMs!==60000)))fail('INVALID_REQUEST');
+ const reviewEnabled=(input:Pick<OpenAnalysisRun,'identity'|'judgmentReview'>)=>config.reviewPolicy?config.reviewPolicy(input.identity.task_id):input.judgmentReview===true;
+ if(config.modelTimeoutMs!==undefined&&(!Number.isSafeInteger(config.modelTimeoutMs)||(firstLoop&&!sharedWork?config.modelTimeoutMs!==600000:config.modelTimeoutMs!==30000&&config.modelTimeoutMs!==60000)))fail('INVALID_REQUEST');
  if(config.analysisModel!==undefined&&config.analysisModel!=='MiniMax-M3'&&config.analysisModel!=='mimo-v2.6-flash')fail('INVALID_REQUEST');
  if(config.mimoThinking!==undefined&&(config.mimoThinking!=='off'||config.analysisModel!=='mimo-v2.6-flash'))fail('INVALID_REQUEST');
  if(config.reportThinking!==undefined&&config.reportThinking!=='off')fail('INVALID_REQUEST');
  // Trusted composition choice, captured once and included in SDK's immutable Task purpose configuration.
- const primaryModel:ModelConfig=firstLoop?{...primary,maxOutputTokens:32768}:primary;
- const backupModel:ModelConfig=firstLoop?{...backup,maxOutputTokens:16384}:backup;
+ const primaryModel:ModelConfig=firstLoop&&!sharedWork?{...primary,maxOutputTokens:32768}:primary;
+ const backupModel:ModelConfig=firstLoop&&!sharedWork?{...backup,maxOutputTokens:16384}:backup;
  const analysisModel:ModelConfig=config.analysisModel==='mimo-v2.6-flash'?(config.mimoThinking==='off'?{...backupModel,reasoning:true,thinkingProtocol:'mimo-chat'}:backupModel):primaryModel;
- const reportModel:ModelConfig=config.reportThinking==='off'?{...backupModel,reasoning:true,thinkingProtocol:'mimo-chat'}:backupModel;
- const analysisCandidates=observesModels?[analysisModel,analysisModel.id===primary.id?backupModel:primaryModel]:[analysisModel];
- const reportCandidates=observesModels?[reportModel,primaryModel]:[reportModel];
- const candidateIdentity=(model:ModelConfig)=>hash([model.provider,model.id,model.protocol,model.endpoint,model.contextWindow,model.maxOutputTokens,model.reasoning??false,model.thinkingProtocol??null,model.input??['text'],model.deferred??false,model.proxyEndpoint??null]);
- const candidateAllowed=(model:ModelConfig)=>((current?.purpose==='retained_case')?[retained]:current?.purpose==='report_edit'?reportCandidates:analysisCandidates).some(candidate=>candidateIdentity(candidate)===candidateIdentity(model));
- const baseLimits=firstLoop?approvedFirstLoopAnalysisLimits:approvedUncappedAnalysisLimits;
+ const legacyReportModel:ModelConfig=config.reportThinking==='off'?{...backupModel,reasoning:true,thinkingProtocol:'mimo-chat'}:backupModel;
+ const reportPro60=(task:string)=>{const value=config.reportPro60ForTask?.(task);if(value!==undefined&&typeof value!=='boolean')fail('INVALID_REQUEST');if(value===true&&(config.reportThinking!=='off'||config.modelTimeoutMs!==undefined||config.reviewPolicy?.(task)!==true||config.judgmentReviewTimeoutForTask?.(task)!==60000||config.judgmentReviewModelForTask?.(task)!==undefined||config.judgmentReviewThinkingForTask?.(task)===true))fail('AUTHORITY_REQUIRED');return value===true;};
+ const reportTimeout=(task:string)=>{const value=config.reportTimeoutForTask?.(task);if(value!==undefined&&value!==60000&&value!==120000)fail('INVALID_REQUEST');if(value!==undefined&&!reportPro60(task))fail('AUTHORITY_REQUIRED');return value??(reportPro60(task)?60000:reviewTimeout(task)===60000?30000:limits.modelTimeoutMs);};
+ const analysisCandidates=config.analysisModel==='mimo-v2.6-flash'?[analysisModel,primaryModel]:[analysisModel,backupModel];
+ const reportModel=(task:string):ModelConfig=>reportPro60(task)?{...legacyReportModel,id:'mimo-v2.6-pro'}:legacyReportModel;
+ const reportCandidates=(task:string)=>reportPro60(task)?[reportModel(task)]:[reportModel(task),primaryModel];
+ const judgmentThinking=(task:string)=>{const value=config.judgmentReviewThinkingForTask?.(task);if(value!==undefined&&typeof value!=='boolean')fail('INVALID_REQUEST');return value===true;};
+ const judgmentModel=(task:string):ModelConfig=>{const selected=config.judgmentReviewModelForTask?.(task),thinking=judgmentThinking(task);if(selected!==undefined&&!['MiniMax-M3','mimo-v2.6-pro'].includes(selected)||thinking&&selected==='MiniMax-M3')fail('INVALID_REQUEST');return selected==='MiniMax-M3'?primary:selected==='mimo-v2.6-pro'?{...backup,id:'mimo-v2.6-pro',reasoning:true,thinkingProtocol:'mimo-chat'}:thinking?{...backup,reasoning:true,thinkingProtocol:'mimo-chat'}:legacyReportModel;};
+ const baseLimits=firstLoop&&!sharedWork?approvedFirstLoopAnalysisLimits:approvedUncappedAnalysisLimits;
  const limits=Object.freeze({...baseLimits,modelTimeoutMs:config.modelTimeoutMs??baseLimits.modelTimeoutMs});
+ const reviewTimeout=(task:string)=>{const value=config.judgmentReviewTimeoutForTask?.(task);if(value!==undefined&&value!==30000&&value!==60000)fail('INVALID_REQUEST');if(value===60000&&(config.modelTimeoutMs!==undefined||config.reviewPolicy?.(task)!==true||(judgmentModel(task).id!=='mimo-v2.6-pro'&&(judgmentModel(task).id!==backup.id||judgmentThinking(task)))))fail('AUTHORITY_REQUIRED');return value??30000;};
+ const taskLimits=(task:string)=>{const scoped=firstLoop&&!sharedWork&&config.reviewPolicy?.(task)===true?Object.freeze({...limits,maxOutputTokens:4096}):limits;return reportTimeout(task)===120000?Object.freeze({...scoped,modelTimeoutMs:120000}):reviewTimeout(task)===60000?Object.freeze({...scoped,modelTimeoutMs:60000}):scoped;};
  const state=createPersistentRuntimeState({projectRoot:config.projectRoot,historicalUsage:task=>{
   const rows=config.ledger.read(task);
   // Existing physical history needs explicit reconciliation; never synthesize a zero ledger.
@@ -71,18 +86,10 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
  let cancelledReportCheck:((task:string,session:string,branch:string,operation:string)=>boolean)|undefined;
  let interruptedProof:{owner:string;operation:string;invocation:string;digest:string}|undefined;
  let current:OpenAnalysisRun|undefined,delegationCorrectionPending=false,modelTurn=0,knownIdleAbort=false,migrationRetiring=false;const runtimes=new Map<string,SessionRuntime>();
- let modelAdmission:{task:string;run:string;sequence:number}|undefined;
- const modelReceipts=new Map<string,{request_id:string;input_sha256:string;provider:string;model:string}>();
- const requestReceiptDigest=(receipt:{request_id:string;input_sha256:string;provider:string;model:string})=>hash([receipt.request_id,receipt.input_sha256,receipt.provider,receipt.model]);
- const audit:typeof state.audit={async append(event,signal){
-  const key=modelAdmission?.task===event.taskId&&modelAdmission.run===event.runId?modelAdmission.run+':'+modelAdmission.sequence:undefined,receipt=key?modelReceipts.get(key):undefined;
-  const linked=observesModels&&event.kind==='model.finished'&&event.digest===undefined&&receipt&&receipt.provider===event.provider&&receipt.model===event.model;
-  await state.audit.append(linked?{...event,digest:requestReceiptDigest(receipt)}:event,signal);
-  if(event.kind==='model.admitted')modelAdmission={task:event.taskId,run:event.runId,sequence:event.sequence};
-  if(linked&&key&&!signal.aborted)modelReceipts.delete(key);
- }};
  const observations:{name:string;result:unknown}[]=[],discoveredContracts=new Map<string,string>();let contractDisclosureTurn:number|undefined;
  const live=()=>{if(!current)fail('AUTHORITY_REQUIRED');return current;};
+ const currentWork=()=>state.businessWork.begin(live());
+ const workAudit={append:async(event:Parameters<typeof state.audit.append>[0],signal:AbortSignal)=>{const id=state.businessWork.findRun(event.taskId,event.runId)??currentWork().id;await state.appendWorkAudit(id,event,signal);}};
  // Idle readbacks borrow authorization context, not the writer slot. Finish that
  // context before admitting a new writer; real writers still reject overlap.
  let readCompletion:Promise<void>|undefined;
@@ -95,6 +102,17 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
   }
  }
 
+const candidateIdentity=(model:ModelConfig)=>hash([model.provider,model.id,model.protocol,model.endpoint,model.contextWindow,model.maxOutputTokens,model.reasoning??false,model.thinkingProtocol??null,model.input??['text'],model.deferred??false,model.proxyEndpoint??null]);
+const candidateAllowed=(model:ModelConfig)=>((current?.purpose==='retained_case')?[retained]:current?.purpose==='conclusion_strategy_review'?[judgmentModel(current.identity.task_id)]:current?.purpose==='report_edit'?(reviewEnabled(current)?[reportModel(current.identity.task_id)]:reportCandidates(current.identity.task_id)):current&&reviewEnabled(current)?[analysisModel]:analysisCandidates).some(candidate=>candidateIdentity(candidate)===candidateIdentity(model));
+let modelAdmission:{task:string;run:string;sequence:number}|undefined;
+const modelReceipts=new Map<string,{request_id:string;input_sha256:string;provider:string;model:string}>();
+const audit:typeof state.audit={async append(event,signal){
+  const key=modelAdmission?.task===event.taskId&&modelAdmission.run===event.runId?modelAdmission.run+':'+modelAdmission.sequence:undefined,receipt=key?modelReceipts.get(key):undefined;
+  const linked=observesModels&&event.kind==='model.finished'&&event.digest===undefined&&receipt&&receipt.provider===event.provider&&receipt.model===event.model;
+  await (sharedWork?workAudit:state.audit).append(linked?{...event,digest:requestReceiptDigest(receipt)}:event,signal);
+  if(event.kind==='model.admitted')modelAdmission={task:event.taskId,run:event.runId,sequence:event.sequence};
+  if(linked&&key&&!signal.aborted)modelReceipts.delete(key);
+ }};
  const transport:ModelTransport=async request=>{
   delegationCorrectionPending=false;modelTurn++;
   const input=live();if(migrationRetiring)throw new RuntimeFault('AUTHORITY_REQUIRED');if(request.signal.aborted||input.signal.aborted||!input.authorize())throw new RuntimeFault('AUTHORITY_REQUIRED');
@@ -109,18 +127,28 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
    const structured=Object.values((parameters as {properties?:Record<string,{type?:string;anyOf?:{type?:string}[]}>}).properties??{}).some(p=>p.type==='array'||p.type==='object'||p.anyOf?.some(x=>x.type==='object'||x.type==='array')),jsonText=large||structured;
    return {...t,description:business.description+(jsonText?' 本原生命名工具仅用arguments_json传输完整业务JSON对象的序列化字符串，不用XML/item包装；字符串内参数遵循工具描述或read_tool_contract返回的原始schema，后台不修复。':'')+(jsonText&&!large?' 原始业务参数合同：'+JSON.stringify(parameters):'')+(deferred?' 先使用read_tool_contract读取当前完整业务合同；此传输声明不代替业务校验或执行授权。':''),parameters:(jsonText?{type:'object',properties:{arguments_json:{type:'string',maxLength:262144,description:'Exact serialized original business JSON object. Use the supplied original contract or read_tool_contract; preserve all required fields and actual arrays/nulls.'}},required:['arguments_json'],additionalProperties:false}:structuredClone(parameters)) as import('pi-agent-runtime').JsonObject};
   })}:m)}:request;
+  const reviewJson=input.purpose==='conclusion_strategy_review'&&reviewEnabled(input)&&request.model.provider===backup.provider&&[backup.id,'mimo-v2.6-pro'].includes(request.model.id);
   const provider=request.model.provider;if(provider!=='minimax-cn'&&provider!=='xiaomi-token-plan-cn')fail('OUTBOUND_FORBIDDEN');
   if(observesModels&&!candidateAllowed(request.model))throw new ModelFailure({model:{provider:request.model.provider,id:request.model.id,protocol:request.model.protocol},stop:'error',category:'invalid-request',physicalStatus:'not-sent',usageFinal:true,usage:{inputTokens:{kind:'known',value:0},outputTokens:{kind:'known',value:0}},diagnostic:'REQUEST_FAILED'},'AUTHORITY_REQUIRED');
-  const boundedRequest={...modelRequest,maxOutputTokens:request.model.id===retained.id?Math.min(modelRequest.maxOutputTokens,2048):modelRequest.maxOutputTokens,signal:AbortSignal.any([request.signal,input.signal])};
+  const purposeProtection=input.purpose==='report_edit'?reportTimeout(input.identity.task_id):input.purpose==='conclusion_strategy_review'?(reviewTimeout(input.identity.task_id)===60000?60000:limits.modelTimeoutMs):limits.modelTimeoutMs,purposeDeadline=purposeProtection<taskLimits(input.identity.task_id).modelTimeoutMs?new AbortController():undefined;let expired=false;const deadline=purposeDeadline?setTimeout(()=>{expired=true;purposeDeadline.abort();},purposeProtection):undefined;
+  const boundedRequest={...modelRequest,maxOutputTokens:input.purpose==='retained_case'?Math.min(modelRequest.maxOutputTokens,2048):modelRequest.maxOutputTokens,signal:AbortSignal.any([request.signal,input.signal,...(purposeDeadline?[purposeDeadline.signal]:[])])};
   if(observesModels&&!admissionPolicy)throw new ModelFailure({model:{provider:request.model.provider,id:request.model.id,protocol:request.model.protocol},stop:'error',category:'invalid-request',physicalStatus:'not-sent',usageFinal:true,usage:{inputTokens:{kind:'known',value:0},outputTokens:{kind:'known',value:0}},diagnostic:'REQUEST_FAILED'},'CAPABILITY_UNAVAILABLE');
   if(admissionPolicy)admitModelRequest(boundedRequest,admissionPolicy);
   const receipt=config.ledger.reserve({...input.identity,operation_id:randomUUID(),input_sha256:hash(boundedRequest.messages),provider,model:request.model.id as 'MiniMax-M3'|'mimo-v2.6-flash'|'mimo-v2.6-pro'});
   if(observesModels&&modelAdmission?.task===input.identity.task_id)modelReceipts.set(modelAdmission.run+':'+modelAdmission.sequence,{request_id:receipt.request_id,input_sha256:receipt.input_sha256,provider:receipt.provider,model:receipt.model});
   const began=performance.now();config.ledger.issue(receipt.request_id);
   try{
-   const result=config.modelTransport?await config.modelTransport(boundedRequest):request.model.id===retained.id?await (async()=>{if(input.purpose!=='retained_case'||!config.legacyCredential)fail('AUTHORITY_REQUIRED');const key=config.legacyCredential();if(!key||request.messages.some(m=>m.text.includes(key)))fail('OUTBOUND_FORBIDDEN');return createPiTransport({model:retained,apiKey:key,fetch:config.fetch,...modelObservations})(boundedRequest);})():await config.credentials.withCredential(provider,async credential=>{
-    if(credential.endpoint!==request.model.endpoint||credential.model!==request.model.id)fail('OUTBOUND_FORBIDDEN');
-    const call=createPiTransport({model:request.model,apiKey:credential.key,fetch:config.fetch,...modelObservations});return call(boundedRequest);
+   const result=config.modelTransport?await config.modelTransport(boundedRequest):input.purpose==='retained_case'?await (async()=>{if(input.purpose!=='retained_case'||!config.legacyCredential)fail('AUTHORITY_REQUIRED');const key=config.legacyCredential();if(!key||request.messages.some(m=>m.text.includes(key)))fail('OUTBOUND_FORBIDDEN');return createPiTransport({model:retained,apiKey:key,fetch:config.fetch,...modelObservations})(boundedRequest);})():await config.credentials.withCredential(provider,async credential=>{
+    if(credential.endpoint!==request.model.endpoint||credential.model!==request.model.id&&!((reviewJson||input.purpose==='report_edit'&&reportPro60(input.identity.task_id))&&request.model.id==='mimo-v2.6-pro'&&credential.model===backup.id))fail('OUTBOUND_FORBIDDEN');
+    // Use the SDK's existing host-controlled fetch leaf. No new transport,
+    // provider, retry or reply repair: JSON mode only constrains wire syntax.
+    const fetchReview:typeof globalThis.fetch=async(url,init)=>{
+     const target=url instanceof Request?url.url:String(url);if(target!==backup.endpoint+'/chat/completions'||init?.method?.toUpperCase()!=='POST'||typeof init.body!=='string')fail('OUTBOUND_FORBIDDEN');
+     let body:Record<string,unknown>;try{body=JSON.parse(init.body);}catch{fail('OUTBOUND_FORBIDDEN');}
+     if(body!.model!==request.model.id||Array.isArray(body!.tools)&&body!.tools.length||body!.response_format!==undefined)fail('OUTBOUND_FORBIDDEN');
+     return (config.fetch??globalThis.fetch)(url,{...init,body:JSON.stringify({...body!,response_format:{type:'json_object'}})});
+    };
+    const call=createPiTransport({model:request.model,apiKey:credential.key,fetch:reviewJson?fetchReview:config.fetch,...modelObservations});return call(boundedRequest);
    });
    if(observesModels&&!result.outcome)throw new ModelFailure(unconfirmedReply(request.model),'INVALID_OUTPUT');
    const outcome=observesModels&&result.outcome?new ModelFailure(result.outcome).outcome:undefined;
@@ -128,7 +156,8 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
    if(outcome?.physicalStatus==='unknown')throw new ModelFailure({...outcome,usageFinal:false});
    // The retained business contract requires one complete JSON value. A native
    // Agent summary cannot turn a truncated structured response into that value.
-   if(outcome&&result.stop==='length'&&(input.purpose==='retained_case'||input.purpose==='report_edit'&&input.prompt.startsWith('JuanerAI.report-edit.v1\n')))throw new ModelFailure(outcome,'INVALID_OUTPUT');
+   if(outcome&&result.stop==='length'&&(sharedWork||reviewEnabled(input)||input.purpose==='retained_case'||input.purpose==='report_edit'&&input.prompt.startsWith('JuanerAI.report-edit.v1\n')))throw new ModelFailure(outcome,'INVALID_OUTPUT');
+   if(expired){if(outcome)throw new ModelFailure(outcome,'DEADLINE_EXCEEDED');throw new RuntimeFault('DEADLINE_EXCEEDED');}
    const cancelled=request.signal.aborted||input.signal.aborted||!input.authorize();
    const settled=config.ledger.settle(receipt.request_id,{status:cancelled?'cancelled':'succeeded',reason:cancelled?'REQUEST_CANCELLED':'REQUEST_SUCCEEDED',usage:{input_tokens:outcome?observedTokens(outcome.usage.inputTokens,outcome.usageFinal):{kind:'known',value:String(result.usage.inputTokens)},output_tokens:outcome?observedTokens(outcome.usage.outputTokens,outcome.usageFinal):{kind:'known',value:String(result.usage.outputTokens)},active_ms:{kind:'known',value:String(Math.floor(performance.now()-began))},wait_ms:{kind:'known',value:'0'}}});
    if(!settled.publishable||request.signal.aborted||input.signal.aborted||!input.authorize()){if(outcome)throw new ModelFailure(outcome,'CANCELLED');throw new RuntimeFault('CANCELLED');}return result;
@@ -137,15 +166,22 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
    const carrier=observesModels&&(error instanceof ModelFailure||error instanceof ProviderFailure)?error.outcome:undefined;
    const outcome=carrier&&carrier.model.provider===request.model.provider&&carrier.model.id===request.model.id&&carrier.model.protocol===request.model.protocol?carrier:undefined;
    const unconfirmed=observesModels&&(!outcome||outcome.physicalStatus==='unknown');
-   if(row&&['issued','reserved'].includes(row.status))config.ledger.settle(receipt.request_id,{status:unconfirmed?'unknown':error instanceof ProviderFailure?'temporary_failure':request.signal.aborted?'cancelled':outcome?'failed':'unknown',reason:unconfirmed?'REQUEST_UNCONFIRMED':error instanceof ProviderFailure?'REQUEST_FAILED':request.signal.aborted?'REQUEST_CANCELLED':outcome?'REQUEST_FAILED':'REQUEST_UNCONFIRMED',usage:{input_tokens:outcome?observedTokens(outcome.usage.inputTokens,outcome.usageFinal):{kind:'unknown',reason:'provider_not_reported'},output_tokens:outcome?observedTokens(outcome.usage.outputTokens,outcome.usageFinal):{kind:'unknown',reason:'provider_not_reported'},active_ms:{kind:'known',value:String(Math.floor(performance.now()-began))},wait_ms:{kind:'known',value:'0'}}});throw error;
-  }
+   if(row&&['issued','reserved'].includes(row.status))config.ledger.settle(receipt.request_id,{status:unconfirmed?'unknown':expired?'cancelled':error instanceof ProviderFailure?'temporary_failure':request.signal.aborted?'cancelled':outcome?'failed':'unknown',reason:unconfirmed?'REQUEST_UNCONFIRMED':expired?'REQUEST_CANCELLED':error instanceof ProviderFailure?'REQUEST_FAILED':request.signal.aborted?'REQUEST_CANCELLED':outcome?'REQUEST_FAILED':'REQUEST_UNCONFIRMED',usage:{input_tokens:outcome?observedTokens(outcome.usage.inputTokens,outcome.usageFinal):{kind:'unknown',reason:'provider_not_reported'},output_tokens:outcome?observedTokens(outcome.usage.outputTokens,outcome.usageFinal):{kind:'unknown',reason:'provider_not_reported'},active_ms:{kind:'known',value:String(Math.floor(performance.now()-began))},wait_ms:{kind:'known',value:'0'}}});throw error;
+  }finally{if(deadline)clearTimeout(deadline);}
  };
  // A durable owner selects the immutable registry. Opt-in never migrates an existing Task.
  const objectMode=(input:OpenAnalysisRun)=>firstLoop||['analysis_objects','proposal_objects'].some(p=>!!state.readSession(input.identity.task_id,p))||nativeObjects&&!state.hasNativeSession(input.identity.task_id);
  const nativeMode=(input:OpenAnalysisRun)=>objectMode(input)||!!state.readSession(input.identity.task_id,'analysis_native')||!!input.nativeBusinessTools&&!state.hasNativeSession(input.identity.task_id);
- const nativeBusinessPhase=(input:OpenAnalysisRun)=>((input.purpose??'analysis')==='analysis'&&nativeMode(input))||(input.purpose==='proposal_prepare'&&objectMode(input));
+ let longIdentityOverride:boolean|undefined;
+ const longMode=(input:OpenAnalysisRun)=>longIdentityOverride??config.longArtifactsForTask?.(input.identity.task_id)===true;
+ const nativeBusinessPhase=(input:OpenAnalysisRun)=>longMode(input)&&input.purpose==='report_edit'||((input.purpose??'analysis')==='analysis'&&nativeMode(input))||(input.purpose==='proposal_prepare'&&objectMode(input));
  const sessionOwner=(input:OpenAnalysisRun)=>{const purpose=input.purpose??'analysis',owner=purpose==='analysis'?(objectMode(input)?'analysis_objects':nativeMode(input)?'analysis_native':purpose):purpose==='proposal_prepare'&&objectMode(input)?'proposal_objects':purpose;return input.conversation_id&&input.conversation_id!==input.identity.task_id?owner+':'+input.conversation_id:owner;};
- const owns=(task:string,session:string)=>!!current&&(current.purpose==='retained_case'||current.conversation_id?state.ownsSession(task,sessionOwner(current),session):['analysis','analysis_native','analysis_objects','proposal_objects','proposal_prepare','report_edit'].some(p=>state.ownsSession(task,p,session)));
+ const owns=(task:string,session:string)=>!!current&&(current.purpose==='retained_case'||current.conversation_id?state.ownsSession(task,sessionOwner(current),session):['analysis','analysis_native','analysis_objects','proposal_objects','proposal_prepare','report_edit',...(reviewEnabled(current)?['conclusion_strategy_review']:[])].some(p=>state.ownsSession(task,p,session)));
+ const requestReceiptDigest=(receipt:{request_id:string;input_sha256:string;provider:string;model:string})=>hash([receipt.request_id,receipt.input_sha256,receipt.provider,receipt.model]);
+ const modelDiagnostic=(outcome:ModelOutcome):AnalysisDiagnosticCode=>outcome.diagnostic==='OUTPUT_LIMIT'?'OUTPUT_INCOMPLETE':outcome.diagnostic==='CONTEXT_LIMIT'?'CONTEXT_LIMIT':outcome.diagnostic==='CANCELLED'?'CANCELLED':outcome.category?({'quota':'QUOTA_EXCEEDED','rate-limit':'RATE_LIMITED','unavailable':'MODEL_UNAVAILABLE','network':'NETWORK_UNCONFIRMED','authentication':'CREDENTIAL_INVALID','invalid-request':'REQUEST_REJECTED','invalid-output':'INVALID_RESULT','safety':'SAFETY_BLOCKED','context':'CONTEXT_LIMIT','unknown':'UNKNOWN'} as const)[outcome.category]:outcome.diagnostic==='COMPLETE'?'COMPLETE':'UNKNOWN';
+ const readFailureCategory=(value:unknown):import('../../packages/ports/open-analysis-runtime.ts').AnalysisFileFailureCategory=>{switch(value){case 'not_found':case 'not_directory':case 'is_directory':case 'permission_denied':case 'invalid':case 'not_supported':case 'cancelled':case 'timeout':case 'limit_exceeded':return value;default:return 'unknown';}};
+ const invocationKey=(invocation:NonNullable<Parameters<Tool['execute']>[2]>)=>JSON.stringify([invocation.sessionId,invocation.branch,invocation.operationId,invocation.invocationId,invocation.toolCallId]);
+ const sharedToolProducers=new Map<string,string|undefined>();
  const tool=createSharedAnalysisTool(live,()=>modelTurn,observesModels),nativeTools=createNativeBusinessTools(live,()=>modelTurn,(name,args,signal)=>{
   const input=live();if(signal.aborted||input.signal.aborted)fail('CANCELLED');if(!input.authorize())fail('AUTHORITY_REQUIRED');
   // Availability and business yields remain the dispatcher's authority; never expose an unavailable contract.
@@ -156,17 +192,42 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
   try{if(Check(business.parameters as TSchema,args))return undefined;}catch{fail('TOOL_ARGUMENT_INVALID');}
   discoveredContracts.set(name,hash(parameters));contractDisclosureTurn=modelTurn;
   const result={status:'tool_contract',name,description:business.description,parameters:parameters as import('pi-agent-runtime').JsonObject,executed:false,instruction:'Exact current contract returned; original arguments were not validated or executed. In the next model turn explicitly submit parameters matching this contract. No business result or verification has occurred.'};observations.push({name,result});return result;
- },observesModels);
- const materialDirectory=resolve(config.projectRoot,'selected-analysis-materials');
- function materialLocation(path:string){const location=relative(materialDirectory,path);if(isAbsolute(location)||location==='..'||location.startsWith('../')||!location.startsWith('source/')&&! /^evidence\/[a-f0-9]{64}\/facts\.txt$/.test(location)&&! /^meaning\/[a-f0-9]{64}\/assessment\.txt$/.test(location)&&! /^exploration\/[a-f0-9-]{36}\/[a-f0-9]{64}\/result\.txt$/.test(location)&&! /^collaboration\/[a-f0-9]{64}\/context\.txt$/.test(location)&&! /^collaboration-result\/[a-f0-9-]{36}\/[1-9][0-9]*\/[a-f0-9]{64}\/value\.txt$/.test(location)&&! /^delegation-materials\/[a-f0-9]{64}\/catalog\.txt$/.test(location)&&! /^analysis-plan\/[a-f0-9]{64}\/plan\.txt$/.test(location)&&! /^analysis-steps\/[a-f0-9]{64}\/steps\.txt$/.test(location)&&!(preparation&&/^preparation\/[a-f0-9-]{36}\/[a-f0-9]{64}\/(semantics|business|framework|candidates)\.txt$/.test(location)))throw new RuntimeFault('AUTHORITY_REQUIRED');return location;}
- async function readMaterial(path:string,signal:AbortSignal){
+ },config.longArtifactsForTask?['build_artifact']:[],observesModels);
+ const legacyNativeTools=nativeTools.filter(t=>t.name!=='build_artifact');
+ const artifactDirectory=resolve(config.projectRoot,'selected-analysis-materials'),artifactPath=resolve(artifactDirectory,'draft/report.json');
+  function artifactFile(){const input=live();if(!sharedWork||input.purpose!=='report_edit'||!input.artifactFile||input.signal.aborted||!input.authorize())throw new RuntimeFault('AUTHORITY_REQUIRED');return input.artifactFile;}
+  const artifactFileTools=sharedWork?createExecutionTools({cwd:artifactDirectory,policyVersion:'juanerai-report-file-v1',resolvePath:async location=>{artifactFile();const path=resolve(artifactDirectory,location);if(path!==artifactPath)throw new RuntimeFault('AUTHORITY_REQUIRED');return path;},read:async(path,signal)=>{if(path!==artifactPath)throw new RuntimeFault('AUTHORITY_REQUIRED');return artifactFile().read(signal);},stat:async(path,signal)=>{if(path!==artifactPath)throw new RuntimeFault('AUTHORITY_REQUIRED');return {path,name:'report.json',kind:'file',size:(await artifactFile().read(signal)).byteLength,modifiedAt:0};},write:async(path,bytes,signal)=>{if(path!==artifactPath)throw new RuntimeFault('AUTHORITY_REQUIRED');await artifactFile().write(bytes,signal);},exec:async()=>{throw new RuntimeFault('CAPABILITY_UNAVAILABLE');}},['read','write','edit']):[];
+  const completeArtifact:Tool={name:'complete_artifact',description:'Submit the complete current report file for business sealing. The host binds its identity and version; this does not qualify its numbers, review or delivery.',parameters:{type:'object',properties:{},required:[],additionalProperties:false},effect:'write',resourceUnits:1,executionMode:'sequential',policyVersion:'juanerai-report-completion-v1',execute:async(args,signal)=>{artifactFile();const tool=live().tools.find(t=>t.name==='complete_artifact');if(!tool)throw new RuntimeFault('AUTHORITY_REQUIRED');return await tool.execute(args,signal) as JsonValue;}};
+  const reportTools=()=>longMode(live())?[...nativeTools.filter(t=>t.name==='build_artifact'),...(sharedWork?[...artifactFileTools,completeArtifact]:[])]:[];
+ const currentNativeTools=()=>[...(longMode(live())?nativeTools:legacyNativeTools),...readTools];
+
+const materialDirectory=resolve(config.projectRoot,'selected-analysis-materials');
+function materialLocation(path:string){const location=relative(materialDirectory,path);if(isAbsolute(location)||location==='..'||location.startsWith('../')||!location.startsWith('source/')&&! /^evidence\/[a-f0-9]{64}\/facts\.txt$/.test(location)&&! /^meaning\/[a-f0-9]{64}\/assessment\.txt$/.test(location)&&! /^exploration\/[a-f0-9-]{36}\/[a-f0-9]{64}\/result\.txt$/.test(location)&&! /^collaboration\/[a-f0-9]{64}\/context\.txt$/.test(location)&&! /^collaboration-result\/[a-f0-9-]{36}\/[1-9][0-9]*\/[a-f0-9]{64}\/value\.txt$/.test(location)&&! /^delegation-materials\/[a-f0-9]{64}\/catalog\.txt$/.test(location)&&! /^analysis-plan\/[a-f0-9]{64}\/plan\.txt$/.test(location)&&! /^analysis-steps\/[a-f0-9]{64}\/steps\.txt$/.test(location)&&!(preparation&&/^preparation\/[a-f0-9-]{36}\/[a-f0-9]{64}\/(semantics|business|framework|candidates)\.txt$/.test(location)))throw new RuntimeFault('AUTHORITY_REQUIRED');return location;}
+async function readMaterial(path:string,signal:AbortSignal){
   const input=live(),check=()=>{if(current!==input||signal.aborted||input.signal.aborted)throw new RuntimeFault('CANCELLED');if(!input.authorize())throw new RuntimeFault('AUTHORITY_REQUIRED');};check();if(!input.readSelectedMaterial)throw new RuntimeFault('CAPABILITY_UNAVAILABLE');
   let text:string;try{text=await input.readSelectedMaterial(materialLocation(path),signal);}catch(error){const code=(error as {code?:string}).code;if(code==='AUTHORITY_REQUIRED'||code==='SOURCE_CHANGED')throw new RuntimeFault('AUTHORITY_REQUIRED');if(code==='CANCELLED')throw new RuntimeFault('CANCELLED');throw error;}check();return Buffer.from(text);
  }
- const readTools=observesModels?createExecutionTools({cwd:materialDirectory,policyVersion:preparation?'juanerai-analysis-material-v16-preparation':'juanerai-analysis-material-v15',resolvePath:async path=>{const input=live();if(input.signal.aborted||!input.authorize())throw new RuntimeFault('AUTHORITY_REQUIRED');const resolved=resolve(materialDirectory,path);materialLocation(resolved);return resolved;},read:readMaterial,stat:async(path,signal)=>({path,name:path.split('/').at(-1)!,kind:'file',size:(await readMaterial(path,signal)).byteLength,modifiedAt:0}),write:async()=>{throw new RuntimeFault('CAPABILITY_UNAVAILABLE');},exec:async()=>{throw new RuntimeFault('CAPABILITY_UNAVAILABLE');}},['read']):[];
- const sharedToolProducers=new Map<string,string|undefined>();
- const invocationKey=(invocation:NonNullable<Parameters<Tool['execute']>[2]>)=>JSON.stringify([invocation.sessionId,invocation.branch,invocation.operationId,invocation.invocationId,invocation.toolCallId]);
- function modelOutputTool(original:Tool):Tool{
+function readDiagnostics(identity:OpenAnalysisRun['identity']):AnalysisRuntimeDiagnostics{
+  const events=state.readAudit(identity.task_id).filter(e=>e.contextVersions.scope===identity.scope_sha256&&e.contextVersions.configuration===identity.config_sha256&&e.contextVersions.revision===identity.revision),accounting=state.readAccounting(identity.task_id),requests=config.ledger.read(identity.task_id),observations:AnalysisRuntimeDiagnostics['observations'][number][]=[];
+  for(const event of events){
+   const observation_id=event.runId+':'+event.sequence;
+   if(event.kind==='tool.prepared'&&event.toolAdmission){const f=event.toolAdmission;observations.push({kind:'admission',observation_id,at:event.at,call_id:f.callId,name:f.name,status:f.disposition,...f.code?{code:f.code}:{},corrections_used:f.correctionsUsed,terminal:f.terminal,stage_version:f.viewVersion});}
+   if(event.kind==='model.finished'&&event.modelOutcome){const out=event.modelOutcome,matched=event.digest?requests.filter(r=>requestReceiptDigest(r)===event.digest):[];observations.push({kind:'model',observation_id,at:event.at,model:{provider:out.model.provider,name:out.model.id},...out.responseModel?{reported_model:out.responseModel}:{},code:modelDiagnostic(out),physical_state:out.physicalStatus==='not-sent'?'not_sent':out.physicalStatus==='response-received'?'response_received':'unknown',...out.httpStatus!==undefined?{http_status:out.httpStatus}:{},usage_final:out.usageFinal,input_tokens:observedTokens(out.usage.inputTokens,out.usageFinal&&out.physicalStatus!=='unknown'),output_tokens:observedTokens(out.usage.outputTokens,out.usageFinal&&out.physicalStatus!=='unknown'),...matched.length===1?{request_id:matched[0]!.request_id}:{},after_stop:['CANCELLED','DEADLINE_EXCEEDED'].includes(event.reason??'')});}
+   if(event.kind==='tool.finished'&&event.toolOutcome){const out=event.toolOutcome;observations.push({kind:'tool',observation_id,at:event.at,name:out.name,completion:out.status,delivery:out.modelOutput,resource_units:out.resourceUnits,...out.name==='read'&&(out.failureCategory!==undefined||out.modelOutput==='failed')?{file_failure_category:readFailureCategory(out.failureCategory)}:{},...['CANCELLED','DEADLINE_EXCEEDED'].includes(event.reason??out.reason??'')?{after_stop:true}:{},...out.receiptId?{receipt_id:out.receiptId}:{},...out.invocation?{invocation_id:out.invocation.invocationId}:{}});}
+  }
+  // Opt-in SDK INVALID_TOOL is a safe structural/view rejection, including
+  // an empty-call batch with no tool.prepared event. Physical/effect facts stay separate.
+  const last=events.findLast(e=>e.kind==='run.finished');let code:AnalysisDiagnosticCode='UNKNOWN';
+  if(last){const model=events.findLast(e=>e.runId===last.runId&&e.kind==='model.finished'),tool=events.findLast(e=>e.runId===last.runId&&e.kind==='tool.finished');
+   if(!last.reason)code='COMPLETE';else if(last.reason==='MODEL_FAILED'&&model?.modelOutcome)code=modelDiagnostic(model.modelOutcome);else if(last.reason==='INVALID_REQUEST'&&model?.reason==='INVALID_REQUEST'&&model.modelOutcome)code=modelDiagnostic(model.modelOutcome);else if(firstLoop&&last.reason==='INVALID_TOOL'&&hasUnconfirmedEffects(identity.task_id))code='EFFECT_UNCONFIRMED';else if(last.reason==='INVALID_TOOL'&&(firstLoop||events.some(e=>e.runId===last.runId&&e.toolAdmission?.terminal)))code='REQUEST_REJECTED';else if(last.reason==='TOOL_FAILED')code=events.some(e=>e.runId===last.runId&&e.toolAdmission?.terminal)?'REQUEST_REJECTED':tool?.toolOutcome?.status==='unknown'?'EFFECT_UNCONFIRMED':'TOOL_DELIVERY_FAILED';else code=({'BUSINESS_WAIT':'WAITING','DEFERRED':'WAITING','AUTHORITY_REQUIRED':'AUTHORITY_REQUIRED','CONFIGURATION_CHANGED':'CONFIGURATION_CHANGED','CANCELLED':'CANCELLED','DEADLINE_EXCEEDED':'CANCELLED','AUDIT_FAILED':'SAVE_UNCONFIRMED','STATE_FAILED':'SAVE_UNCONFIRMED','INVALID_REQUEST':'REQUEST_REJECTED','INVALID_OUTPUT':'INVALID_RESULT','CAPABILITY_UNAVAILABLE':'CAPABILITY_UNAVAILABLE'} as Partial<Record<string,AnalysisDiagnosticCode>>)[last.reason]??'UNKNOWN';}
+  return {version:'1.0',task_id:identity.task_id,revision:identity.revision,recording:observations.length?'observed':events.length?'legacy':'unavailable',unconfirmed_effects:hasUnconfirmedEffects(identity.task_id),...accounting?{configuration_sha256:accounting.configuration,meter:{model_attempts:accounting.usage.modelCalls,tool_calls:accounting.usage.toolCalls,recorded_input_tokens:accounting.usage.inputTokens??0,charged_output_tokens:accounting.usage.outputTokens,unconfirmed_output_tokens:accounting.usage.reservedOutputTokens??accounting.reservations.reduce((sum,r)=>sum+r.tokens,0),resource_units:accounting.usage.resourceUnits}}:{},...last?{last_run:{code,at:last.at,model:{provider:last.provider,name:last.model}}}:{},observations};
+ }
+const readTools=observesModels?createExecutionTools({cwd:materialDirectory,policyVersion:preparation?'juanerai-analysis-material-v16-preparation':'juanerai-analysis-material-v15',resolvePath:async path=>{const input=live();if(input.signal.aborted||!input.authorize())throw new RuntimeFault('AUTHORITY_REQUIRED');const resolved=resolve(materialDirectory,path);materialLocation(resolved);return resolved;},read:readMaterial,stat:async(path,signal)=>({path,name:path.split('/').at(-1)!,kind:'file',size:(await readMaterial(path,signal)).byteLength,modifiedAt:0}),write:async()=>{throw new RuntimeFault('CAPABILITY_UNAVAILABLE');},exec:async()=>{throw new RuntimeFault('CAPABILITY_UNAVAILABLE');}},['read']):[];
+ const codeDraft=firstLoop?createAnalysisCodeDraft({cwd:resolve(config.projectRoot,'selected-analysis-materials'),signal:()=>live().signal,authorize:()=>live().authorize(),authorizeWrite:()=>live().tools.some(t=>t.name==='calculate_and_verify')&&!live().shouldYield?.()&&(!sharedWork||state.businessWork.allowed(currentWork().id)),resolveReadPath:path=>{if(!live().readSelectedMaterial)throw new RuntimeFault('AUTHORITY_REQUIRED');materialLocation(path);},readMaterial,...(sharedWork?{storage:{read:()=>state.businessWork.codeDraft(currentWork().id),write:(bytes:Uint8Array)=>state.businessWork.writeCodeDraft(currentWork().id,bytes)}}:{})}):undefined;
+ const firstLoopNativeTools=()=>((live().capabilityTools??live().tools).some(t=>t.name==='calculate_and_verify')?codeDraft!.tools:readTools);
+ const firstLoopRegistries=new Map<string,ReturnType<typeof firstLoopBusinessTools>>();
+ const firstLoopRegistered=()=>{const id=live().identity.task_id;let tools=firstLoopRegistries.get(id);if(!tools){if(!live().tools.length&&!live().capabilityTools?.length&&live().prompt==='')return [];tools=[...firstLoopBusinessTools(live,longMode(live())?live().tools.filter(t=>t.name==='build_artifact'&&!(live().capabilityTools??live().tools).some(c=>c.name===t.name)):[]),...firstLoopNativeTools()].map(modelOutputTool);firstLoopRegistries.set(id,tools);}return tools;};
+function modelOutputTool(original:Tool):Tool{
   if(!observesModels)return original;
   return {...original,...original.name==='analysis_tool'?{execute:async(args,signal,invocation)=>{const key=invocation?invocationKey(invocation):undefined,producer=live().tools.find(t=>t.name===args.name);if(key)sharedToolProducers.set(key,producer?.name);try{return await original.execute(args,signal,invocation);}catch(error){if(key)sharedToolProducers.delete(key);throw error;}}}:{},modelOutput:{policyVersion:preparation?'juanerai-business-model-output-v16-preparation':'juanerai-business-model-output-v15',maxBytes:1048576,project:async({value,signal,invocation})=>{
    const key=invocation?invocationKey(invocation):undefined;try{const input=live(),check=()=>{if(current!==input||signal.aborted||input.signal.aborted)throw new RuntimeFault('CANCELLED');if(!input.authorize())throw new RuntimeFault('AUTHORITY_REQUIRED');};check();if(firstLoop&&original.name==='read_tool_contract'){
@@ -176,17 +237,7 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
    }if(original.name==='analysis_tool'&&(!key||!sharedToolProducers.has(key)))throw new RuntimeFault('INVALID_OUTPUT');const name=original.name==='analysis_tool'?sharedToolProducers.get(key!):original.name,producer=input.tools.find(t=>t.name===name),projected=producer?.modelResult?await producer.modelResult(value,signal):value;check();return {value:projected as JsonValue};}finally{if(key)sharedToolProducers.delete(key);}
   }}};
  }
- const registeredNativeTools=[...nativeTools,...readTools].map(modelOutputTool),registeredSharedTools=[tool,...readTools].map(modelOutputTool);
- const codeDraft=firstLoop?createAnalysisCodeDraft({cwd:materialDirectory,signal:()=>live().signal,authorize:()=>live().authorize(),authorizeWrite:()=>live().tools.some(t=>t.name==='calculate_and_verify')&&!live().shouldYield?.(),resolveReadPath:path=>{if(!live().readSelectedMaterial)throw new RuntimeFault('AUTHORITY_REQUIRED');materialLocation(path);},readMaterial}):undefined;
- const codeAvailable=(input:OpenAnalysisRun)=>(input.capabilityTools??input.tools).some(t=>t.name==='calculate_and_verify');
- const nativeFirstLoopTools=()=>codeAvailable(live())?codeDraft!.tools:readTools;
- const firstLoopRegistries=new Map<string,readonly Tool[]>();
- const firstLoopRegistered=()=>{
-  const input=live(),task=input.identity.task_id,existing=firstLoopRegistries.get(task);if(existing)return existing;
-  if(!input.tools.length&&!input.capabilityTools?.length&&input.prompt==='')return [];
-  const tools=[...firstLoopBusinessTools(live),...nativeFirstLoopTools()].map(modelOutputTool);firstLoopRegistries.set(task,tools);return tools;
- };
- const selectedTools=()=>firstLoop?firstLoopRegistered():nativeBusinessPhase(live())?registeredNativeTools:registeredSharedTools;
+ const selectedTools=()=>firstLoop?firstLoopRegistered():(nativeBusinessPhase(live())?currentNativeTools():[tool,...readTools]).map(modelOutputTool);
  function cancelledModelProof(input:OpenAnalysisRun,session:string,operation:string){
   const id=input.identity,binding=state.readBinding(operation),accounting=state.readAccounting(id.task_id),rows=config.ledger.read(id.task_id),audit=state.readAudit(id.task_id);
   if(!binding||binding.taskId!==id.task_id||binding.sessionId!==session||binding.branch!=='main'||binding.purpose!==sessionOwner(input)||!accounting||accounting.owner!==null||state.readWriterLock()||config.ledger.pending?.().length)return null;
@@ -236,13 +287,13 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
   if(interruptedProof?.operation===operationId){const unresolved=events.filter(e=>e.kind==='tool.admitted'&&tools.has(e.invocation?.invocationId??''));if(unresolved.length!==1||unresolved[0]!.runId!==interruptedProof.owner||unresolved[0]!.toolName!=='execute_step'||unresolved[0]!.digest!==interruptedProof.digest||unresolved[0]!.invocation?.invocationId!==interruptedProof.invocation)return false;tools.delete(interruptedProof.invocation);}
   return modelCompletions===rows.length&&modelCompletions>0&&models.size===0&&tools.size===0;
  }
- async function sdk(fingerprint?:{report:ModelConfig;capture:(configuration:string)=>void},reportOverride?:ModelConfig,recovery?:ReturnType<typeof state.interruptedAbortLease>){
+ async function sdk(fingerprint?:{report:ModelConfig;review?:ModelConfig;reviewThinking?:boolean;capture:(configuration:string)=>void},reportOverride?:ModelConfig,recovery?:ReturnType<typeof state.interruptedAbortLease>){
   const inspecting=firstLoop&&live().prompt===''&&!live().tools.length&&!live().capabilityTools?.length;
-  const objects=objectMode(live()),direct=nativeMode(live()),key=firstLoop?'harness:'+live().identity.task_id:objects?'objects':direct?'native':'legacy',existing=runtimes.get(key);if(existing&&!fingerprint&&!reportOverride&&!recovery)return existing;
+  const objects=objectMode(live()),direct=nativeMode(live()),key=firstLoop?'harness5:'+live().identity.task_id:(longMode(live())?'long-artifact-v1:':'')+(objects?'objects':direct?'native':'legacy')+(reviewEnabled(live())?':review:'+reviewTimeout(live().identity.task_id)+':'+judgmentModel(live().identity.task_id).id+(judgmentThinking(live().identity.task_id)?':thinking':''):'')+(reportPro60(live().identity.task_id)?':report-pro60':'')+(reportTimeout(live().identity.task_id)===120000?':report-timeout120':''),existing=runtimes.get(key);if(existing&&!fingerprint&&!reportOverride&&!recovery)return existing;
   const resources=await loadHarnessResources({cwd:config.projectRoot,sources:[{kind:'skills',path:fileURLToPath(new URL('./resources/skills',import.meta.url)),version:'juanerai-methods-1.0'},{kind:'templates',path:fileURLToPath(new URL('./resources/templates',import.meta.url)),version:'juanerai-prompts-1.0'}],authorize:async(source,signal)=>!signal.aborted&&['skills','templates'].includes(source.kind)&&source.path===fileURLToPath(new URL('./resources/'+source.kind,import.meta.url))});
   if(resources.diagnostics.length)fail('PROFESSIONAL_RESOURCE_INVALID');
-  const created=createSessionRuntime({model:analysisModel,transport,...modelObservations,...admissionPolicy?{contextAdmission:admissionPolicy}:{},...firstLoop?{toolAdmission:{policyVersion:'juanerai-harness-first-loop-v02',correctionLimit:1 as const,view:async({signal})=>{const input=live();if(signal.aborted||input.signal.aborted||!input.authorize())throw new RuntimeFault('AUTHORITY_REQUIRED');return firstLoopToolView(input,['report_edit','retained_case'].includes(input.purpose??'')?[]:input.tools.some(t=>t.name==='calculate_and_verify')?nativeFirstLoopTools():input.readSelectedMaterial?readTools:[],[...discoveredContracts.keys()].at(-1));}}}:{},budgets:fingerprint?{...state.budgets,async claimUncapped(_task,_owner,configuration){fingerprint.capture(configuration);throw new RuntimeFault('CONFIGURATION_CHANGED');}}:recovery?.budgets??state.budgets,audit,
-   purposes:[{id:'analysis',mode:'agent',model:analysisModel,transport,...observesModels?{fallbacks:analysisCandidates.slice(1).map(model=>({model,transport}))}:{},tools:firstLoop?firstLoopRegistered():direct?registeredNativeTools:registeredSharedTools},{id:'proposal_prepare',mode:'agent',model:analysisModel,transport,...observesModels?{fallbacks:analysisCandidates.slice(1).map(model=>({model,transport}))}:{},tools:firstLoop?firstLoopRegistered():objects?registeredNativeTools:registeredSharedTools},{id:'report_edit',mode:'agent',model:fingerprint?.report??reportOverride??reportModel,transport,...observesModels?{fallbacks:reportCandidates.slice(1).map(model=>({model,transport}))}:{},tools:[]},{id:'retained_case',mode:'agent',model:retained,transport,tools:[]}],
+  const created=createSessionRuntime({model:analysisModel,transport,...modelObservations,...(sharedWork?{modelAttempts:'v1' as const}:{}),...(admissionPolicy?{contextAdmission:admissionPolicy}:{}),...(firstLoop?{toolAdmission:{policyVersion:'juanerai-harness-first-loop-v02',correctionLimit:1 as const,view:async({signal})=>{const input=live();if(signal.aborted||input.signal.aborted||!input.authorize())throw new RuntimeFault('AUTHORITY_REQUIRED');return firstLoopToolView(input,input.artifactFile?artifactFileTools:['report_edit','retained_case','conclusion_strategy_review'].includes(input.purpose??'')?[]:input.tools.some(t=>t.name==='calculate_and_verify')?firstLoopNativeTools():input.readSelectedMaterial?readTools:[],[...discoveredContracts.keys()].at(-1));}}}:{}),budgets:fingerprint?{...state.budgets,async claimUncapped(_task,_owner,configuration){fingerprint.capture(configuration);throw new RuntimeFault('CONFIGURATION_CHANGED');}}:recovery?.budgets??state.budgets,audit,
+   purposes:[{id:'analysis',mode:'agent',model:analysisModel,transport,...(observesModels&&!reviewEnabled(live())?{fallbacks:analysisCandidates.slice(1).map(model=>({model,transport}))}:{}),tools:firstLoop?firstLoopRegistered():(direct?currentNativeTools():[tool,...readTools]).map(modelOutputTool)},{id:'proposal_prepare',mode:'agent',model:analysisModel,transport,...(observesModels&&!reviewEnabled(live())?{fallbacks:analysisCandidates.slice(1).map(model=>({model,transport}))}:{}),tools:firstLoop?firstLoopRegistered():(objects?currentNativeTools():[tool,...readTools]).map(modelOutputTool)},{id:'report_edit',mode:'agent',model:fingerprint?.report??reportOverride??reportModel(live().identity.task_id),transport,...(observesModels&&!reviewEnabled(live())?{fallbacks:reportCandidates(live().identity.task_id).slice(1).map(model=>({model,transport}))}:{}),tools:reportTools()},{id:'retained_case',mode:'agent',model:retained,transport,tools:[]},...(reviewEnabled(live())?[{id:'conclusion_strategy_review',mode:'agent' as const,model:fingerprint?.review??judgmentModel(live().identity.task_id),...((fingerprint?fingerprint.reviewThinking:judgmentThinking(live().identity.task_id))?{thinkingLevel:'low' as const}:{}),transport,tools:[]}]:[])],
       harness:{skills:resources.skills,templates:resources.templates,retry:{enabled:false,maxRetries:0,baseDelayMs:0},compaction:{enabled:true,reserveTokens:16384,keepRecentTokens:8192},steeringMode:'one-at-a-time',followUpMode:'one-at-a-time'},
    storage:recovery?.storage??state.sessionStorage(async(action,signal)=>!signal.aborted&&!!current&&!current.signal.aborted&&current.authorize()&&(!action.sessionId||owns(current!.identity.task_id,action.sessionId))),
    bindOperation:async(binding,signal)=>{const input=live();if(binding.taskId!==input.identity.task_id||(binding.purpose??'analysis')!==(input.purpose??'analysis'))fail('AUTHORITY_REQUIRED');await state.bindOperation({...binding,purpose:sessionOwner(input)},signal);},
@@ -255,110 +306,36 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
     for(const open of input.open){const binding=state.readBinding(open.operationId);if(!binding||binding.taskId!==input.taskId||binding.sessionId!==input.sessionId||binding.branch!==open.branch)return 'unknown';}
     return 'ready';
    },
-   authorize:async(action,signal)=>!!current&&!signal.aborted&&!current.signal.aborted&&action.taskId===current.identity.task_id&&current.authorize()&&(!(action.kind==='model'||action.kind==='publish')||!current.shouldYield?.())&&(!observesModels||action.kind!=='model'||candidateAllowed(action.request.model)),
-  });if(!fingerprint&&!reportOverride&&!recovery&&!inspecting)runtimes.set(key,created);return created;
+   authorize:async(action,signal)=>{
+    if(!current||signal.aborted||current.signal.aborted||action.taskId!==current.identity.task_id||!current.authorize()||(action.kind==='model'||action.kind==='publish')&&current.shouldYield?.())return false;
+    if(observesModels&&action.kind==='model'&&!candidateAllowed(action.request.model))return false;
+    if(!sharedWork)return true;
+    const work=currentWork();
+    if(action.kind!=='model')return state.businessWork.allowed(work.id);
+    const attempt=action.modelAttempt;
+    if(!attempt||!state.businessWork.authorize(work.id,action.taskId,action.runId,attempt))return false;
+    // Recovery summaries have their own ID; the draft binds recovery to the failed request.
+    return current.artifactWork?.admit({logicalId:attempt.kind==='recovery'?attempt.recovery.logicalRequestId:attempt.logicalRequestId,recovery:attempt.kind==='recovery'})??true;
+   },
+  });const engine:SessionRuntime=created;if(!inspecting&&!fingerprint&&!reportOverride&&!recovery)runtimes.set(key,engine);return engine;
  }
- function hasUnconfirmedEffects(task:string){
-  const events=state.readAudit(task),observedRuns=new Set(events.filter(e=>e.modelOutcome||e.toolOutcome).map(e=>e.runId)),pending=new Set<string>(),latest=new Map<string,NonNullable<ReturnType<typeof state.readAudit>[number]['toolOutcome']>>();
-  for(const event of events){const key=event.invocation?.invocationId??event.runId+':'+event.toolName;if(event.kind==='tool.admitted'&&event.toolName!=='read'&&observedRuns.has(event.runId))pending.add(key);if(event.kind==='tool.finished'){pending.delete(key);if(event.toolOutcome)latest.set(key,event.toolOutcome);}}
-  return pending.size>0||[...latest.values()].some(outcome=>outcome.effect!=='read'&&outcome.status==='unknown');
- }
- const modelDiagnostic=(outcome:ModelOutcome):AnalysisDiagnosticCode=>outcome.diagnostic==='OUTPUT_LIMIT'?'OUTPUT_INCOMPLETE':outcome.diagnostic==='CONTEXT_LIMIT'?'CONTEXT_LIMIT':outcome.diagnostic==='CANCELLED'?'CANCELLED':outcome.category?({'quota':'QUOTA_EXCEEDED','rate-limit':'RATE_LIMITED','unavailable':'MODEL_UNAVAILABLE','network':'NETWORK_UNCONFIRMED','authentication':'CREDENTIAL_INVALID','invalid-request':'REQUEST_REJECTED','invalid-output':'INVALID_RESULT','safety':'SAFETY_BLOCKED','context':'CONTEXT_LIMIT','unknown':'UNKNOWN'} as const)[outcome.category]:outcome.diagnostic==='COMPLETE'?'COMPLETE':'UNKNOWN';
- const readFailureCategory=(value:unknown):import('../../packages/ports/open-analysis-runtime.ts').AnalysisFileFailureCategory=>{switch(value){case 'not_found':case 'not_directory':case 'is_directory':case 'permission_denied':case 'invalid':case 'not_supported':case 'cancelled':case 'timeout':case 'limit_exceeded':return value;default:return 'unknown';}};
- function readDiagnostics(identity:OpenAnalysisRun['identity']):AnalysisRuntimeDiagnostics{
-  const events=state.readAudit(identity.task_id).filter(e=>e.contextVersions.scope===identity.scope_sha256&&e.contextVersions.configuration===identity.config_sha256&&e.contextVersions.revision===identity.revision),accounting=state.readAccounting(identity.task_id),requests=config.ledger.read(identity.task_id),observations:AnalysisRuntimeDiagnostics['observations'][number][]=[];
-  for(const event of events){
-   const observation_id=event.runId+':'+event.sequence;
-   if(event.kind==='tool.prepared'&&event.toolAdmission){const f=event.toolAdmission;observations.push({kind:'admission',observation_id,at:event.at,call_id:f.callId,name:f.name,status:f.disposition,...f.code?{code:f.code}:{},corrections_used:f.correctionsUsed,terminal:f.terminal,stage_version:f.viewVersion});}
-   if(event.kind==='model.finished'&&event.modelOutcome){const out=event.modelOutcome,matched=event.digest?requests.filter(r=>requestReceiptDigest(r)===event.digest):[];observations.push({kind:'model',observation_id,at:event.at,model:{provider:out.model.provider,name:out.model.id},...out.responseModel?{reported_model:out.responseModel}:{},code:modelDiagnostic(out),physical_state:out.physicalStatus==='not-sent'?'not_sent':out.physicalStatus==='response-received'?'response_received':'unknown',...out.httpStatus!==undefined?{http_status:out.httpStatus}:{},usage_final:out.usageFinal,input_tokens:observedTokens(out.usage.inputTokens,out.usageFinal&&out.physicalStatus!=='unknown'),output_tokens:observedTokens(out.usage.outputTokens,out.usageFinal&&out.physicalStatus!=='unknown'),...matched.length===1?{request_id:matched[0]!.request_id}:{},after_stop:['CANCELLED','DEADLINE_EXCEEDED'].includes(event.reason??'')});}
-   if(event.kind==='tool.finished'&&event.toolOutcome){const out=event.toolOutcome;observations.push({kind:'tool',observation_id,at:event.at,name:out.name,completion:out.status,delivery:out.modelOutput,resource_units:out.resourceUnits,...out.name==='read'&&(out.failureCategory!==undefined||out.modelOutput==='failed')?{file_failure_category:readFailureCategory(out.failureCategory)}:{},...['CANCELLED','DEADLINE_EXCEEDED'].includes(event.reason??out.reason??'')?{after_stop:true}:{},...out.receiptId?{receipt_id:out.receiptId}:{},...out.invocation?{invocation_id:out.invocation.invocationId}:{}});}
-  }
-  // Opt-in SDK INVALID_TOOL is a safe structural/view rejection, including
-  // an empty-call batch with no tool.prepared event. Physical/effect facts stay separate.
-  const last=events.findLast(e=>e.kind==='run.finished');let code:AnalysisDiagnosticCode='UNKNOWN';
-  if(last){const model=events.findLast(e=>e.runId===last.runId&&e.kind==='model.finished'),tool=events.findLast(e=>e.runId===last.runId&&e.kind==='tool.finished');
-   if(!last.reason)code='COMPLETE';else if(last.reason==='MODEL_FAILED'&&model?.modelOutcome)code=modelDiagnostic(model.modelOutcome);else if(last.reason==='INVALID_REQUEST'&&model?.reason==='INVALID_REQUEST'&&model.modelOutcome)code=modelDiagnostic(model.modelOutcome);else if(firstLoop&&last.reason==='INVALID_TOOL'&&hasUnconfirmedEffects(identity.task_id))code='EFFECT_UNCONFIRMED';else if(last.reason==='INVALID_TOOL'&&(firstLoop||events.some(e=>e.runId===last.runId&&e.toolAdmission?.terminal)))code='REQUEST_REJECTED';else if(last.reason==='TOOL_FAILED')code=events.some(e=>e.runId===last.runId&&e.toolAdmission?.terminal)?'REQUEST_REJECTED':tool?.toolOutcome?.status==='unknown'?'EFFECT_UNCONFIRMED':'TOOL_DELIVERY_FAILED';else code=({'BUSINESS_WAIT':'WAITING','DEFERRED':'WAITING','AUTHORITY_REQUIRED':'AUTHORITY_REQUIRED','CONFIGURATION_CHANGED':'CONFIGURATION_CHANGED','CANCELLED':'CANCELLED','DEADLINE_EXCEEDED':'CANCELLED','AUDIT_FAILED':'SAVE_UNCONFIRMED','STATE_FAILED':'SAVE_UNCONFIRMED','INVALID_REQUEST':'REQUEST_REJECTED','INVALID_OUTPUT':'INVALID_RESULT','CAPABILITY_UNAVAILABLE':'CAPABILITY_UNAVAILABLE'} as Partial<Record<string,AnalysisDiagnosticCode>>)[last.reason]??'UNKNOWN';}
-  return {version:'1.0',task_id:identity.task_id,revision:identity.revision,recording:observations.length?'observed':events.length?'legacy':'unavailable',unconfirmed_effects:hasUnconfirmedEffects(identity.task_id),...accounting?{configuration_sha256:accounting.configuration,meter:{model_attempts:accounting.usage.modelCalls,tool_calls:accounting.usage.toolCalls,recorded_input_tokens:accounting.usage.inputTokens??0,charged_output_tokens:accounting.usage.outputTokens,unconfirmed_output_tokens:accounting.usage.reservedOutputTokens??accounting.reservations.reduce((sum,r)=>sum+r.tokens,0),resource_units:accounting.usage.resourceUnits}}:{},...last?{last_run:{code,at:last.at,model:{provider:last.provider,name:last.model}}}:{},observations};
- }
- return {historyOwnership:'runtime',...firstLoop?{codeDraft:'v1' as const,readCodeDraft:async(input:Readonly<{task_id:string;path:string;signal:AbortSignal}>)=>{if(!current||current.identity.task_id!==input.task_id||input.signal.aborted||!current.authorize()||!current.tools.some(t=>t.name==='calculate_and_verify')||current.shouldYield?.()||input.path!=='draft/analysis.py')throw new RuntimeFault('AUTHORITY_REQUIRED');return codeDraft!.readProgram();}}:{},...(preparation?{preparationSnapshots:'v1' as const}:{}),...observesModels?{selectedMaterialRead:'v1' as const}:{},hasUnconfirmedEffects,readDiagnostics,async recoverCancelledReport(input){
-  if(firstLoop)fail('CAPABILITY_UNAVAILABLE');
-  while(readCompletion)await awaitReads(input.signal);
-  if(current||input.signal.aborted||!input.authorize()||config.ledger.pending?.().length)fail('AUTHORITY_REQUIRED');
-  if([input.approval,input.expectedAccounting,input.expectedLedger].some(v=>!/^[a-f0-9]{64}$/.test(v)))fail('INVALID_REQUEST');
-  const id=input.identity,target=input.target,task=id.task_id,accounting=state.readAccounting(task),rows=config.ledger.read(task),audit=state.readAudit(task),proof=input.provePhysicalStop();
-  if(!accounting||accounting.owner!==null||state.readWriterLock()||hash(accounting)!==input.expectedAccounting||hash(rows)!==input.expectedLedger||!proof||!proof.process_closed||!proof.physical_closed||hash(proof.identity)!==hash(id)||[proof.stop_receipt_sha256,proof.process_exit_sha256].some(v=>!/^[a-f0-9]{64}$/.test(v)))fail('TASK_UNCONFIRMED');
-  const binding=state.readBinding(target.operation),events=audit.filter(e=>e.session?.operationId===target.operation),admissions=events.filter(e=>e.kind==='model.admitted'),row=rows.find(r=>r.request_id===proof.request_id),admission=admissions[0];
-  if(!binding||binding.taskId!==task||binding.purpose!=='report_edit'||binding.sessionId!==target.session||binding.branch!==target.branch||state.readSelectedSession(task,'report_edit')!==target.session||admissions.length!==1||!admission||events.some(e=>e.kind==='model.finished'||e.kind==='run.finished'||e.kind.startsWith('tool.'))||events.some(e=>e.session?.sessionId!==target.session||e.session.branch!==target.branch||e.contextVersions.revision!==id.revision||e.contextVersions.scope!==id.scope_sha256||e.contextVersions.configuration!==id.config_sha256))fail('TASK_UNCONFIRMED');
-  if(!row||row.status!=='cancelled'||!['REQUEST_CANCELLED','STOPPED'].includes(row.reason??'')||row.publishable||row.usage.input_tokens.kind!=='unknown'||row.usage.output_tokens.kind!=='unknown'||row.input_sha256!==admission.digest||row.provider!==admission.provider||row.model!==admission.model||(['task_id','revision','run_id','attempt_id','grant_id','scope_sha256','config_sha256'] as const).some(k=>row[k]!==id[k])||!row.started_at||!row.ended_at||!Number.isFinite(Date.parse(row.started_at))||!Number.isFinite(Date.parse(row.ended_at))||Date.parse(row.started_at)<Date.parse(admission.at)||Date.parse(row.ended_at)<Date.parse(row.started_at)||accounting.reservations.filter(r=>r.owner===admission.runId&&r.tokens===limits.maxOutputTokens).length!==1)fail('TASK_UNCONFIRMED');
-  const allowedControls=[{kind:'snapshot'},{kind:'snapshot',includeContent:false},{kind:'snapshot',includeContent:true},{kind:'abort'}].map(hash);
-  if(audit.some(e=>e.kind==='session.control'&&e.session?.sessionId===target.session&&(!e.digest||!allowedControls.includes(e.digest))))fail('TASK_UNCONFIRMED');
-  const storage=state.sessionStorage(async()=>true),paths=readdirSync(storage.directory,{recursive:true}).filter((f):f is string=>typeof f==='string'&&f.endsWith('.jsonl'));
-  const prefix=new Map(paths.map(f=>{for(let i=1;i<=f.split('/').length;i++)if(lstatSync(join(storage.directory,...f.split('/').slice(0,i))).isSymbolicLink())fail('STATE_FAILED');const path=join(storage.directory,f);if(!lstatSync(path).isFile())fail('STATE_FAILED');return [f,readFileSync(path)] as const;}));
-  const selected=paths.filter(f=>f.endsWith('_'+target.session+'.jsonl'));if(selected.length!==1)fail('TASK_UNCONFIRMED');
-  // The SDK inspect API does not expose an idle lane's inbox. This read-only
-  // compatibility check inspects persisted native metadata; it never writes or drives it.
-  const nativeSafe=()=>{try{const values=new Map<string,unknown>();for(const line of readFileSync(join(storage.directory,selected[0]!),'utf8').trim().split('\n'))for(const entry of [JSON.parse(line)].flat(Infinity)){if(entry?.kind==='value'&&entry.op==='set')values.set(entry.namespace+':'+entry.key,entry.value);}const lane=values.get('pi.lane.state:'+target.branch) as {currentOperationId?:string;inbox?:unknown[]}|undefined,settings=values.get('pi.lane.config:'+target.branch) as {activeToolNames?:unknown[]}|undefined;return lane?.currentOperationId===target.operation&&Array.isArray(lane.inbox)&&lane.inbox.length===0&&Array.isArray(settings?.activeToolNames)&&settings.activeToolNames.length===0;}catch{return false;}};
-  const unchanged=()=>!input.signal.aborted&&input.authorize()&&!config.ledger.pending?.().length&&hash(config.ledger.read(task))===input.expectedLedger&&hash(input.provePhysicalStop())===hash(proof)&&hash(state.readAudit(task).slice(0,audit.length))===hash(audit)&&[...prefix].every(([f,bytes])=>readFileSync(join(storage.directory,f)).subarray(0,bytes.length).equals(bytes));
-  if(!nativeSafe()||!unchanged())fail('TASK_UNCONFIRMED');
-  current={identity:id,purpose:'report_edit',prompt:'',system:'',tools:[],signal:input.signal,authorize:input.authorize};
-  cancelledReportCheck=(t,s,b,o)=>t===task&&s===target.session&&b===target.branch&&o===target.operation&&unchanged()&&nativeSafe()&&hash(state.readAccounting(task)?.reservations)===hash(accounting.reservations);
-  try{
-   const engine=await sdk(),view=await engine.inspect(target.session,target.branch,input.signal);
-   if(view.pending?.operationId!==target.operation||view.pending.kind!=='run'||!unchanged()||state.readAccounting(task)?.owner!==null||state.readWriterLock())fail('TASK_UNCONFIRMED');
-   const reconciliation=hash({approval:input.approval,proof,target,identity:id,accounting:input.expectedAccounting,ledger:input.expectedLedger,audit:hash(audit),native:[...prefix].map(([f,bytes])=>[f,createHash('sha256').update(bytes).digest('hex')])});
-   // Save the authorized reconciliation intent before ending the native lane.
-   // Its real aborted result is the completion receipt; never fabricate a model finish.
-   await state.audit.append({version:'1.0',taskId:task,runId:randomUUID(),sequence:1,kind:'session.control',at:new Date().toISOString(),provider:row.provider,model:row.model,contextVersions:{revision:id.revision,scope:id.scope_sha256,configuration:id.config_sha256},digest:hash({approval:input.approval,reconciliation,phase:'requested'}),reason:'CANCELLED',session:{sessionId:target.session,branch:target.branch,operationId:target.operation}},input.signal);
-   if(!unchanged())fail('TASK_UNCONFIRMED');
-   migrationRetiring=true;knownIdleAbort=true;
-   const result=await engine.run({taskId:task,purpose:'report_edit',sessionId:target.session,branch:target.branch,tools:[],prompt:'',system:'仅结束已物理取消的无工具报告，不重放模型、工具或业务。',contextVersions:{revision:id.revision,scope:id.scope_sha256,configuration:id.config_sha256},limits,modelRecovery:{extraAttempts:1},signal:input.signal,operation:'abort'});
-   const terminal=await engine.result(target.session,target.operation,input.signal),after=state.readAccounting(task);
-   if(!unchanged()||result.status!=='cancelled'||result.reason!=='CANCELLED'||terminal?.status!=='aborted'||(await engine.inspect(target.session,target.branch,input.signal)).pending||after?.owner!==null||state.readWriterLock()||hash(after.reservations)!==hash(accounting.reservations)||Object.entries(accounting.usage).some(([k,v])=>k==='activeMs'?after.usage.activeMs<Number(v):after.usage[k as keyof typeof after.usage]!==v))fail('TASK_UNCONFIRMED');
-   return {status:'aborted',operation:target.operation,reconciliation};
-  }finally{cancelledReportCheck=undefined;migrationRetiring=false;knownIdleAbort=false;current=undefined;}
- },async recoverInterruptedStop(input){
-  if(firstLoop)fail('CAPABILITY_UNAVAILABLE');
-  while(readCompletion)await awaitReads(input.signal);
-  if(current||input.signal.aborted||!input.authorize()||config.ledger.pending?.().length)fail('AUTHORITY_REQUIRED');
-  if([input.approval,input.expectedAccounting,input.expectedLedger,input.expectedLock].some(v=>!/^[a-f0-9]{64}$/.test(v))||Object.keys(input.arguments).length!==1||typeof input.arguments.step_id!=='string')fail('INVALID_REQUEST');
-  const task=input.identity.task_id,accounting=state.readAccounting(task),rows=config.ledger.read(task),proof=input.provePreExecution();
-  if(!accounting?.owner||hash(accounting)!==input.expectedAccounting||hash(rows)!==input.expectedLedger||!proof||!/^[a-f0-9]{64}$/.test(proof.task_sha256)||proof.step_id!==input.arguments.step_id||hash(proof.identity)!==hash(input.identity))fail('TASK_UNCONFIRMED');
-  const audit=state.readAudit(task),events=audit.filter(e=>e.runId===accounting.owner),admitted=events.filter(e=>e.kind==='tool.admitted'&&!events.some(f=>f.kind==='tool.finished'&&f.invocation?.invocationId===e.invocation?.invocationId));
-  const lock=state.readWriterLock(),starts=events.filter(e=>e.kind==='run.started'),firstModel=events.find(e=>e.kind==='model.admitted');
-  if(!lock||hash(lock)!==input.expectedLock||starts.length!==1||!firstModel||Date.parse(lock.created_at)<Date.parse(starts[0]!.at)||Date.parse(lock.created_at)>Date.parse(firstModel.at)||starts[0]!.contextVersions?.revision!==input.identity.revision||starts[0]!.contextVersions?.scope!==input.identity.scope_sha256||starts[0]!.contextVersions?.configuration!==input.identity.config_sha256)fail('TASK_UNCONFIRMED');
-  if(events.some(e=>e.kind==='run.finished')||admitted.length!==1||!admitted[0]!.invocation||admitted[0]!.toolName!=='execute_step'||admitted[0]!.digest!==hash(input.arguments))fail('TASK_UNCONFIRMED');
-  const event=admitted[0]!,native=event.invocation!,binding=state.readBinding(native.operationId);
-  current={identity:input.identity,nativeBusinessTools:true,prompt:'',system:'',tools:[],signal:input.signal,authorize:input.authorize};
-  interruptedProof={owner:accounting.owner,operation:native.operationId,invocation:native.invocationId,digest:event.digest!};
-  try{
-   if(!binding||binding.taskId!==task||binding.purpose!==sessionOwner(current)||!knownClosedEffects(task,native.sessionId,native.branch,native.operationId))fail('TASK_UNCONFIRMED');
-   const storage=state.sessionStorage(async()=>true),prefix=new Map(readdirSync(storage.directory,{recursive:true}).filter((f):f is string=>typeof f==='string'&&f.endsWith('.jsonl')).map(f=>{for(let i=1;i<=f.split('/').length;i++)if(lstatSync(join(storage.directory,...f.split('/').slice(0,i))).isSymbolicLink())fail('STATE_FAILED');const path=join(storage.directory,f);if(!lstatSync(path).isFile())fail('STATE_FAILED');return [f,readFileSync(path)] as const;}));if(!prefix.size)fail('TASK_UNCONFIRMED');
-   const nativeDigest=()=>hash(readdirSync(storage.directory,{recursive:true}).filter((f):f is string=>typeof f==='string'&&f.endsWith('.jsonl')).sort().map(f=>[f,createHash('sha256').update(readFileSync(join(storage.directory,f))).digest('hex')])),beforeNative=nativeDigest(),bindings=hash(state.readNativeBindings(task));
-   const recheck=()=>!input.signal.aborted&&input.authorize()&&hash(input.provePreExecution())===hash(proof)&&hash(config.ledger.read(task))===input.expectedLedger&&!config.ledger.pending?.().length;
-   if(!recheck()||hash(state.readAudit(task))!==hash(audit)||hash(state.readNativeBindings(task))!==bindings||nativeDigest()!==beforeNative)fail('TASK_UNCONFIRMED');
-   const reconciliation=hash({proof,identity:input.identity,invocation:native,audit:hash(audit),native:beforeNative,ledger:input.expectedLedger,bindings}),recovery=state.interruptedAbortLease({businessIdentity:hash(input.identity),task,expectedOwner:accounting.owner,expectedAccounting:input.expectedAccounting,expectedLock:input.expectedLock,approval:input.approval,reconciliation,signal:input.signal,authorize:recheck});
-   const engine=await sdk(undefined,undefined,recovery),view=await engine.inspect(native.sessionId,native.branch,input.signal);
-   if(view.pending?.kind!=='run'||view.pending.operationId!==native.operationId)fail('TASK_UNCONFIRMED');
-   const history=await engine.history(native.sessionId,native.branch,input.signal),calls=history.flatMap(e=>e.message?.calls??[]).filter(c=>c.id===native.toolCallId);
-   if(calls.length!==1||calls[0]!.name!=='execute_step'||hash(calls[0]!.arguments)!==event.digest)fail('TASK_UNCONFIRMED');
-   const allowedControls=[{kind:'snapshot'},{kind:'snapshot',includeContent:false},{kind:'snapshot',includeContent:true},{kind:'abort'}].map(hash);
-   if(audit.some(e=>e.kind==='session.control'&&e.session?.sessionId===native.sessionId&&e.session.branch===native.branch&&(!e.digest||!allowedControls.includes(e.digest))))fail('TASK_UNCONFIRMED');
-   if(!recheck()||hash(state.readAudit(task))!==hash(audit)||hash(state.readNativeBindings(task))!==bindings||nativeDigest()!==beforeNative)fail('TASK_UNCONFIRMED');
-   migrationRetiring=true;knownIdleAbort=true;
-   const stopped=await engine.run({taskId:task,purpose:'analysis',sessionId:native.sessionId,branch:native.branch,tools:selectedTools(),prompt:'',system:'仅停止已证明尚未计算的中断操作，不重放。',contextVersions:{revision:input.identity.revision,scope:input.identity.scope_sha256,configuration:input.identity.config_sha256},limits,modelRecovery:{extraAttempts:1},signal:input.signal,operation:'abort'});
-   const terminal=await engine.result(native.sessionId,native.operationId,input.signal);
-   if(!recheck()||stopped.status!=='cancelled'||stopped.reason!=='CANCELLED'||terminal?.status!=='aborted'||(await engine.inspect(native.sessionId,native.branch,input.signal)).pending)fail('TASK_UNCONFIRMED');
-   for(const [f,bytes]of prefix)if(!readFileSync(join(storage.directory,f)).subarray(0,bytes.length).equals(bytes))fail('STATE_FAILED');
-   recovery.finish(hash(terminal));return {status:'aborted',operation:native.operationId,reconciliation};
-  }finally{interruptedProof=undefined;migrationRetiring=false;knownIdleAbort=false;current=undefined;}
- },async migrateReportThinking(input){
-  if(firstLoop)fail('CAPABILITY_UNAVAILABLE');
+ async function migratePurposeConfiguration(input:ReportThinkingMigrationInput,kind:'report-thinking'|'judgment-model'|'judgment-thinking'|'judgment-pro'|'judgment-timeout'|'judgment-pro-off'|'judgment-flash'|'report-pro60'|'report-timeout'|'long-artifacts'){if(firstLoop)fail('CAPABILITY_UNAVAILABLE');
   while(readCompletion)await awaitReads(input.signal);
   if(current||config.ledger.pending?.().length)fail('TASK_BUSY');
   if(config.reportThinking!=='off'||config.analysisModel&&config.analysisModel!=='MiniMax-M3'||input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');
+  if(kind==='judgment-thinking'&&(!reviewEnabled(input)||judgmentModel(input.identity.task_id).id!==backup.id))fail('AUTHORITY_REQUIRED');
+  if(kind!=='judgment-thinking'&&kind!=='judgment-pro'&&kind!=='judgment-timeout'&&judgmentThinking(input.identity.task_id))fail('AUTHORITY_REQUIRED');
+  if(kind==='judgment-model'&&(!reviewEnabled(input)||judgmentModel(input.identity.task_id).id!==primary.id))fail('AUTHORITY_REQUIRED');
+  if(kind==='judgment-pro'&&(!reviewEnabled(input)||judgmentModel(input.identity.task_id).id!=='mimo-v2.6-pro'||!judgmentThinking(input.identity.task_id)))fail('AUTHORITY_REQUIRED');
+  if(kind==='judgment-flash'&&(!reviewEnabled(input)||judgmentModel(input.identity.task_id).id!==backup.id||reviewTimeout(input.identity.task_id)!==60000))fail('AUTHORITY_REQUIRED');
+  if(kind==='judgment-pro-off'&&(!reviewEnabled(input)||judgmentModel(input.identity.task_id).id!=='mimo-v2.6-pro'||judgmentThinking(input.identity.task_id)||reviewTimeout(input.identity.task_id)!==60000))fail('AUTHORITY_REQUIRED');
+  if(kind==='report-pro60'&&(!reportPro60(input.identity.task_id)||judgmentModel(input.identity.task_id).id!==backup.id||judgmentThinking(input.identity.task_id)||reviewTimeout(input.identity.task_id)!==60000))fail('AUTHORITY_REQUIRED');
+  if(kind==='long-artifacts'&&config.longArtifactsForTask?.(input.identity.task_id)!==true)fail('AUTHORITY_REQUIRED');
+  if(kind==='report-timeout'&&reportTimeout(input.identity.task_id)!==120000)fail('AUTHORITY_REQUIRED');
+  if(kind==='judgment-timeout'&&reviewTimeout(input.identity.task_id)!==60000)fail('AUTHORITY_REQUIRED');
   if([input.approval,input.expectedAccounting,input.expectedLedger].some(v=>!/^[a-f0-9]{64}$/.test(v)))fail('INVALID_REQUEST');
-  const task=input.identity.task_id,accounting=state.readAccounting(task),rows=config.ledger.read(task);
-  if(!accounting||accounting.owner!==null||hash(accounting)!==input.expectedAccounting||hash(rows)!==input.expectedLedger||JSON.stringify(accounting.limits)!==JSON.stringify(limits))fail('CONFIGURATION_CHANGED');
+  const task=input.identity.task_id,report=reportModel(task),targetLimits=taskLimits(task),sourceLimits=kind==='report-timeout'?Object.freeze({...targetLimits,modelTimeoutMs:60000}):kind==='judgment-timeout'?limits:targetLimits,accounting=state.readAccounting(task),rows=config.ledger.read(task);
+  if(!accounting||accounting.owner!==null||hash(accounting)!==input.expectedAccounting||hash(rows)!==input.expectedLedger||JSON.stringify(accounting.limits)!==JSON.stringify(sourceLimits))fail('CONFIGURATION_CHANGED');
   if(rows.some(r=>r.ended_at===null||['reserved','issued'].includes(r.status)))fail('TASK_UNCONFIRMED');
   if(!rows.length||(['task_id','revision','run_id','attempt_id','grant_id','scope_sha256','config_sha256'] as const).some(k=>rows.at(-1)![k]!==input.identity[k]))fail('AUTHORITY_REQUIRED');
   const storage=state.sessionStorage(async()=>true);
@@ -369,13 +346,16 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
   try{
    // Let the installed SDK produce both identities; no copied hash algorithm,
    // admission, audit, session operation, or Provider call occurs in this dry claim.
-   const identity=async(report:ModelConfig)=>{let captured:string|undefined;const engine=await sdk({report,capture:v=>captured=v});const result=await engine.run({taskId:task,purpose:'report_edit',sessionId:bindings[0]!.sessionId,prompt:'',tools:[],limits,modelRecovery:{extraAttempts:1},signal:input.signal});if(result.status==='succeeded'||result.reason!=='CONFIGURATION_CHANGED'||!captured)fail('STATE_FAILED');return captured;};
-   const from=await identity(backup),to=await identity(reportModel);
+   const identity=async(report:ModelConfig,review?:ModelConfig,reviewThinking=false,identityLimits=targetLimits,long?:boolean)=>{let captured:string|undefined;longIdentityOverride=long;try{const engine=await sdk({report,review,reviewThinking,capture:v=>captured=v});const result=await engine.run({taskId:task,purpose:'report_edit',sessionId:bindings[0]!.sessionId,prompt:'',tools:reportTools(),...(longMode(live())?{workId:task+':migration'}:{}),limits:identityLimits,modelRecovery:{extraAttempts:1},signal:input.signal});if(result.status==='succeeded'||result.reason!=='CONFIGURATION_CHANGED'||!captured)fail('STATE_FAILED');return captured;}finally{longIdentityOverride=undefined;}};
+   // Only explicitly approved review-route edges, including Flash-off → Pro-on;
+   // the immutable current fingerprint must match the exact installed SDK source.
+   const enabled=(kind==='judgment-thinking'||kind==='judgment-pro'||kind==='judgment-timeout')&&judgmentThinking(task);
+   const from=kind==='long-artifacts'?await identity(report,judgmentModel(task),judgmentThinking(task),sourceLimits,false):kind==='report-timeout'?await identity(report,judgmentModel(task),false,sourceLimits):kind==='report-pro60'?await identity(legacyReportModel,judgmentModel(task)):kind==='judgment-flash'?await identity(report,{...backup,id:'mimo-v2.6-pro',reasoning:true,thinkingProtocol:'mimo-chat'}):kind==='judgment-pro-off'?await identity(report,judgmentModel(task),true):kind==='judgment-timeout'?await identity(report,judgmentModel(task),true,sourceLimits):kind==='report-thinking'?await identity(backup):kind==='judgment-thinking'?await identity(report,enabled?primary:report,!enabled):await identity(report,report),to=kind==='long-artifacts'?await identity(report,judgmentModel(task),judgmentThinking(task),targetLimits,true):kind==='report-thinking'?await identity(report):await identity(report,judgmentModel(task),enabled);
    if(accounting.configuration!==from||from===to)fail('CONFIGURATION_CHANGED');
    for(const reservation of accounting.reservations){
     migrationCheck='model-reservation:'+reservation.owner;
     const end=audit.findLast(e=>e.runId===reservation.owner&&e.kind==='run.finished');
-    if(!end?.session||!['MODEL_FAILED','STATE_FAILED'].includes(end.reason??''))fail('TASK_UNCONFIRMED');
+    if(!end?.session||kind==='report-thinking'&&!['MODEL_FAILED','STATE_FAILED'].includes(end.reason??''))fail('TASK_UNCONFIRMED');
     const events=audit.filter(e=>e.runId===reservation.owner),admissions=events.filter(e=>e.kind==='model.admitted'),openTools=new Set<string>();
     if(!admissions.length)fail('TASK_UNCONFIRMED');
     for(const event of events){if(event.kind==='tool.admitted'){if(!event.invocation||openTools.has(event.invocation.invocationId))fail('TASK_UNCONFIRMED');openTools.add(event.invocation.invocationId);}else if(event.kind==='tool.finished'){if(!event.invocation||event.toolFailed||!openTools.delete(event.invocation.invocationId))fail('TASK_UNCONFIRMED');}}
@@ -384,7 +364,17 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
     // native failure. Known active_ms retains the actual request interval;
     // unknown model usage stays reserved, while unknown tool effects deny.
     const physical=rows.filter(r=>['cancelled','failed'].includes(r.status)&&r.usage.output_tokens.kind==='unknown'&&r.started_at!==null&&r.ended_at!==null&&r.provider===end.provider&&r.model===end.model&&r.revision===end.contextVersions.revision&&r.scope_sha256===end.contextVersions.scope&&r.config_sha256===end.contextVersions.configuration&&r.usage.active_ms.kind==='known'&&admissions.some((admission,i)=>{const began=Date.parse(r.started_at!),closed=began+Number(r.usage.active_ms.kind==='known'?r.usage.active_ms.value:NaN),boundary=Date.parse(admissions[i+1]?.at??end.at);return began>=Date.parse(admission.at)&&began<boundary&&Number.isFinite(closed)&&closed>=began&&closed<=boundary&&closed<=Date.parse(r.ended_at!);}));
-    if(physical.length!==1)fail('TASK_UNCONFIRMED');
+    if(kind==='report-thinking'){if(physical.length!==1)fail('TASK_UNCONFIRMED');}
+    else{
+     // A succeeded logical run can retain usage from its failed first physical
+     // request. Prove terminal failure and physical closure per admission;
+     // preserve the exact reservation instead of treating unknown tokens as zero.
+     const closed=rows.filter(r=>['cancelled','failed','temporary_failure'].includes(r.status)&&r.usage.output_tokens.kind==='unknown'&&r.started_at!==null&&r.ended_at!==null&&r.usage.active_ms.kind==='known'&&admissions.some(admission=>{
+      const finished=events.find(e=>e.kind==='model.finished'&&e.at>=admission.at&&e.attempt===admission.attempt&&e.session?.operationId===admission.session?.operationId),began=Date.parse(r.started_at!),closed=began+Number(r.usage.active_ms.kind==='known'?r.usage.active_ms.value:NaN);
+      return !!finished?.reason&&r.provider===admission.provider&&r.model===admission.model&&r.revision===admission.contextVersions.revision&&r.scope_sha256===admission.contextVersions.scope&&r.config_sha256===admission.contextVersions.configuration&&began>=Date.parse(admission.at)&&Number.isFinite(closed)&&closed>=began&&closed<=Date.parse(finished.at)&&closed<=Date.parse(r.ended_at!);
+     }));
+     if(reservation.tokens!==limits.maxOutputTokens||closed.length!==accounting.reservations.filter(r=>r.owner===reservation.owner).length)fail('TASK_UNCONFIRMED');
+    }
    }
    const retiring:{binding:(typeof bindings)[number];identity:OpenAnalysisRun['identity'];purpose:'analysis';operationId:string}[]= [];
    const unique=new Map(bindings.map(b=>[b.sessionId+':'+b.branch,b]));
@@ -392,9 +382,9 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
    for(const binding of unique.values()){
     migrationCheck='native-terminal:'+binding.sessionId+':'+binding.branch;
     const owner=binding.purpose??'analysis',base=owner.split(':')[0]!,purpose=base==='analysis_objects'||base==='analysis_native'?'analysis':base==='proposal_objects'?'proposal_prepare':base;
-    if(!['analysis','proposal_prepare','report_edit','retained_case'].includes(purpose))fail('STATE_FAILED');
-    current={...current!,identity:input.identity,nativeBusinessTools:true,purpose:purpose==='analysis'?undefined:purpose as 'proposal_prepare'|'report_edit'|'retained_case',conversation_id:owner.includes(':')?owner.slice(owner.indexOf(':')+1):undefined};
-    const engine=await sdk(),view=await engine.inspect(binding.sessionId,binding.branch,input.signal);
+    if(!['analysis','proposal_prepare','report_edit','retained_case','conclusion_strategy_review'].includes(purpose))fail('STATE_FAILED');
+    current={...current!,identity:input.identity,nativeBusinessTools:true,purpose:purpose==='analysis'?undefined:purpose as 'proposal_prepare'|'report_edit'|'retained_case'|'conclusion_strategy_review',conversation_id:owner.includes(':')?owner.slice(owner.indexOf(':')+1):undefined};
+    const engine=await sdk(),view=await engine.inspect(binding.sessionId,binding.branch,input.signal);if(kind==='long-artifacts'&&view.pending)fail('TASK_UNCONFIRMED');
     let result:unknown;
     if(view.pending){
      // Explicit safe migration can terminate only an older child with exact,
@@ -444,7 +434,7 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
     if(view.pending?.operationId!==retire.operationId||!knownClosedEffects(task,retire.binding.sessionId,retire.binding.branch,retire.operationId))fail('TASK_UNCONFIRMED');
     migrationRetiring=true;knownIdleAbort=true;
     try{
-     const stopped=await engine.run({taskId:task,purpose:'analysis',sessionId:retire.binding.sessionId,tools:selectedTools(),prompt:'',system:'显式停止已核账的旧子操作，不恢复或重放业务。',contextVersions:{revision:retire.identity.revision,scope:retire.identity.scope_sha256,configuration:retire.identity.config_sha256},limits,modelRecovery:{extraAttempts:1},signal:input.signal,operation:'abort'});
+     const stopped=await engine.run({taskId:task,purpose:'analysis',sessionId:retire.binding.sessionId,tools:selectedTools(),prompt:'',system:'显式停止已核账的旧子操作，不恢复或重放业务。',contextVersions:{revision:retire.identity.revision,scope:retire.identity.scope_sha256,configuration:retire.identity.config_sha256},limits:sourceLimits,modelRecovery:{extraAttempts:1},signal:input.signal,operation:'abort'});
      const terminal=await engine.result(retire.binding.sessionId,retire.operationId,input.signal);
      if(stopped.status!=='cancelled'||stopped.reason!=='CANCELLED'||terminal?.status!=='aborted'||(await engine.inspect(retire.binding.sessionId,retire.binding.branch,input.signal)).pending)fail('TASK_UNCONFIRMED');
      stops.push({session:retire.binding.sessionId,operation:retire.operationId,identity:retire.identity,terminal});
@@ -453,15 +443,102 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
    const afterStops=state.readAccounting(task)!;
    if(!afterStops||afterStops.owner!==null||afterStops.configuration!==from||hash(afterStops.reservations)!==hash(accounting.reservations)||Object.entries(accounting.usage).some(([key,value])=>key==='activeMs'?afterStops.usage.activeMs<Number(value):afterStops.usage[key as keyof typeof accounting.usage]!==value))fail('TASK_UNCONFIRMED');
    migrationCheck='exclusive-writer-recheck';
-   const checkedNative=nativeDigest(),checkedBindings=hash(state.readNativeBindings(task)),checkedAudit=hash(state.readAudit(task)),reconciliation=hash({ledger:input.expectedLedger,nativeBefore:originalNative,nativeAfter:checkedNative,checks,stops,audit:checkedAudit,controlActiveMs:afterStops.usage.activeMs-accounting.usage.activeMs});
+   const checkedNative=nativeDigest(),checkedBindings=hash(state.readNativeBindings(task)),checkedAudit=hash(state.readAudit(task)),reconciliation=hash({ledger:input.expectedLedger,nativeBefore:originalNative,nativeAfter:checkedNative,checks,stops,audit:checkedAudit,...(['report-pro60','report-timeout'].includes(kind)?{purposeProtection:{reportModel:'mimo-v2.6-pro',reportThinking:'off',reportTimeoutMs:reportTimeout(task),generationTimeoutMs:30000,reviewModel:'mimo-v2.6-flash',reviewThinking:'off',reviewTimeoutMs:60000}}:{}),controlActiveMs:afterStops.usage.activeMs-accounting.usage.activeMs,...(['judgment-timeout','report-timeout'].includes(kind)?{resourcePolicy:{before:sourceLimits,after:targetLimits,reportTimeoutMs:reportTimeout(task),reviewTimeoutMs:60000,otherPurposeTimeoutMs:30000}}:{})});
    const writer=await storage.acquireWriter(input.signal);
    try{
     if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');
     if(config.ledger.pending?.().length||hash(config.ledger.read(task))!==input.expectedLedger||hash(state.readAudit(task))!==checkedAudit||nativeDigest()!==checkedNative||hash(state.readNativeBindings(task))!==checkedBindings)fail('TASK_UNCONFIRMED');
-    return state.migrateConfiguration({task,from,to,expectedAccounting:hash(afterStops),approval:input.approval,reconciliation});
+    return state.migrateConfiguration({task,from,to,expectedAccounting:hash(afterStops),approval:input.approval,reconciliation,...(kind==='judgment-timeout'?{reviewTimeoutMs:60000 as const}:kind==='report-timeout'?{reportTimeoutMs:120000 as const}:{})});
    }finally{await writer.release();}
   }catch(error){if(error instanceof Error)Object.assign(error,{migrationCheck});throw error;}finally{current=undefined;}
- },async reconcileStopped(input){
+ }
+ function hasUnconfirmedEffects(task:string){
+  const events=state.readAudit(task),observedRuns=new Set(events.filter(e=>e.modelOutcome||e.toolOutcome).map(e=>e.runId)),pending=new Set<string>(),latest=new Map<string,NonNullable<ReturnType<typeof state.readAudit>[number]['toolOutcome']>>();
+  for(const event of events){const key=event.invocation?.invocationId??event.runId+':'+event.toolName;if(event.kind==='tool.admitted'&&event.toolName!=='read'&&observedRuns.has(event.runId))pending.add(key);if(event.kind==='tool.finished'){pending.delete(key);if(event.toolOutcome)latest.set(key,event.toolOutcome);}}
+  return sharedWork&&state.businessWork.hasUnconfirmed(task)||pending.size>0||[...latest.values()].some(outcome=>outcome.effect!=='read'&&outcome.status==='unknown');
+ }
+ return {historyOwnership:'runtime',...(sharedWork?{artifactFiles:'v1' as const}:{}),readDiagnostics,...(preparation?{preparationSnapshots:'v1' as const}:{}),...(observesModels?{selectedMaterialRead:'v1' as const}:{}),...(config.sharedWorkRecovery?{openBusinessWork:async(input:Parameters<NonNullable<OpenAnalysisRuntime['openBusinessWork']>>[0])=>{if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');if(config.ledger.read(input.identity.task_id).length&&!state.hasNativeSession(input.identity.task_id))fail('LEGACY_TASK_RECONCILIATION_REQUIRED');return state.businessWork.begin(input);}}:{}),...(observesModels?{hasUnconfirmedEffects}:{}),...(firstLoop?{codeDraft:'v1' as const,readCodeDraft:async(input:Readonly<{task_id:string;path:string;signal:AbortSignal}>)=>{if(!current||current.identity.task_id!==input.task_id||input.signal.aborted||!current.authorize()||!current.tools.some(t=>t.name==='calculate_and_verify')||current.shouldYield?.()||input.path!=='draft/analysis.py')throw new RuntimeFault('AUTHORITY_REQUIRED');return codeDraft!.readProgram();}}:{}),reviewAdmissionRetrySafe(id){try{
+  if(current||!membershipUuid(id.task_id)||config.reviewPolicy?.(id.task_id)!==true||config.ledger.pending?.().length||state.readWriterLock())return false;
+  const accounting=state.readAccounting(id.task_id),audit=state.readAudit(id.task_id),last=audit.at(-1),model=judgmentModel(id.task_id);
+  if(!accounting||accounting.owner!==null||hash(accounting.limits)!==hash(taskLimits(id.task_id))||!last||last.kind!=='run.started'||last.attempt!==0||last.session||last.provider!==model.provider||last.model!==model.id||last.contextVersions.scope!==id.scope_sha256||last.contextVersions.configuration!==id.config_sha256||last.contextVersions.revision!==id.revision||audit.filter(e=>e.runId===last.runId).length!==1)return false;
+  const began=Date.parse(last.at),rows=config.ledger.read(id.task_id);if(!Number.isFinite(began)||!rows.length||rows.some(r=>!['succeeded','failed','cancelled','temporary_failure'].includes(r.status)||!r.started_at||!r.ended_at||!Number.isFinite(Date.parse(r.started_at))||!Number.isFinite(Date.parse(r.ended_at))||Date.parse(r.started_at)>began||Date.parse(r.ended_at)>began))return false;
+  const session=state.readSelectedSession(id.task_id,'conclusion_strategy_review');if(!session)return false;
+  const storage=state.sessionStorage(async()=>false),paths=readdirSync(storage.directory,{recursive:true}).filter((f):f is string=>typeof f==='string'&&f.endsWith('_'+session+'.jsonl'));if(paths.length!==1)return false;
+  const relative=paths[0]!;for(let i=1;i<=relative.split('/').length;i++)if(lstatSync(join(storage.directory,...relative.split('/').slice(0,i))).isSymbolicLink())return false;
+  const path=join(storage.directory,relative),stat=lstatSync(path);if(!stat.isFile()||stat.mtimeMs>began)return false;
+  const values=new Map<string,unknown>();for(const line of readFileSync(path,'utf8').trim().split('\n'))for(const e of [JSON.parse(line)].flat(Infinity))if(e?.kind==='value'){const key=e.namespace+':'+e.key;if(e.op==='set')values.set(key,e.value);else if(e.op==='delete')values.delete(key);}
+  const lane=values.get('pi.lane.state:main') as {currentOperationId?:string|null;inbox?:unknown[]}|undefined;
+  return lane?.currentOperationId===null&&Array.isArray(lane.inbox)&&lane.inbox.length===0&&![...values.keys()].some(k=>k.startsWith('pi.op.meta:'));
+ }catch{return false;}},async recoverCancelledReport(input){if(firstLoop)fail('CAPABILITY_UNAVAILABLE');
+  while(readCompletion)await awaitReads(input.signal);
+  if(current||input.signal.aborted||!input.authorize()||config.ledger.pending?.().length)fail('AUTHORITY_REQUIRED');
+  if([input.approval,input.expectedAccounting,input.expectedLedger].some(v=>!/^[a-f0-9]{64}$/.test(v)))fail('INVALID_REQUEST');
+  const id=input.identity,target=input.target,task=id.task_id,accounting=state.readAccounting(task),rows=config.ledger.read(task),audit=state.readAudit(task),proof=input.provePhysicalStop();
+  if(!accounting||accounting.owner!==null||state.readWriterLock()||hash(accounting)!==input.expectedAccounting||hash(rows)!==input.expectedLedger||!proof||!proof.process_closed||!proof.physical_closed||hash(proof.identity)!==hash(id)||[proof.stop_receipt_sha256,proof.process_exit_sha256].some(v=>!/^[a-f0-9]{64}$/.test(v)))fail('TASK_UNCONFIRMED');
+  const binding=state.readBinding(target.operation),events=audit.filter(e=>e.session?.operationId===target.operation),admissions=events.filter(e=>e.kind==='model.admitted'),row=rows.find(r=>r.request_id===proof.request_id),admission=admissions[0];
+  if(!binding||binding.taskId!==task||binding.purpose!=='report_edit'||binding.sessionId!==target.session||binding.branch!==target.branch||state.readSelectedSession(task,'report_edit')!==target.session||admissions.length!==1||!admission||events.some(e=>e.kind==='model.finished'||e.kind==='run.finished'||e.kind.startsWith('tool.'))||events.some(e=>e.session?.sessionId!==target.session||e.session.branch!==target.branch||e.contextVersions.revision!==id.revision||e.contextVersions.scope!==id.scope_sha256||e.contextVersions.configuration!==id.config_sha256))fail('TASK_UNCONFIRMED');
+  if(!row||row.status!=='cancelled'||!['REQUEST_CANCELLED','STOPPED'].includes(row.reason??'')||row.publishable||row.usage.input_tokens.kind!=='unknown'||row.usage.output_tokens.kind!=='unknown'||row.input_sha256!==admission.digest||row.provider!==admission.provider||row.model!==admission.model||(['task_id','revision','run_id','attempt_id','grant_id','scope_sha256','config_sha256'] as const).some(k=>row[k]!==id[k])||!row.started_at||!row.ended_at||!Number.isFinite(Date.parse(row.started_at))||!Number.isFinite(Date.parse(row.ended_at))||Date.parse(row.started_at)<Date.parse(admission.at)||Date.parse(row.ended_at)<Date.parse(row.started_at)||accounting.reservations.filter(r=>r.owner===admission.runId&&r.tokens===limits.maxOutputTokens).length!==1)fail('TASK_UNCONFIRMED');
+  const allowedControls=[{kind:'snapshot'},{kind:'snapshot',includeContent:false},{kind:'snapshot',includeContent:true},{kind:'abort'}].map(hash);
+  if(audit.some(e=>e.kind==='session.control'&&e.session?.sessionId===target.session&&(!e.digest||!allowedControls.includes(e.digest))))fail('TASK_UNCONFIRMED');
+  const storage=state.sessionStorage(async()=>true),paths=readdirSync(storage.directory,{recursive:true}).filter((f):f is string=>typeof f==='string'&&f.endsWith('.jsonl'));
+  const prefix=new Map(paths.map(f=>{for(let i=1;i<=f.split('/').length;i++)if(lstatSync(join(storage.directory,...f.split('/').slice(0,i))).isSymbolicLink())fail('STATE_FAILED');const path=join(storage.directory,f);if(!lstatSync(path).isFile())fail('STATE_FAILED');return [f,readFileSync(path)] as const;}));
+  const selected=paths.filter(f=>f.endsWith('_'+target.session+'.jsonl'));if(selected.length!==1)fail('TASK_UNCONFIRMED');
+  // The SDK inspect API does not expose an idle lane's inbox. This read-only
+  // compatibility check inspects persisted native metadata; it never writes or drives it.
+  const nativeSafe=()=>{try{const values=new Map<string,unknown>();for(const line of readFileSync(join(storage.directory,selected[0]!),'utf8').trim().split('\n'))for(const entry of [JSON.parse(line)].flat(Infinity)){if(entry?.kind==='value'&&entry.op==='set')values.set(entry.namespace+':'+entry.key,entry.value);}const lane=values.get('pi.lane.state:'+target.branch) as {currentOperationId?:string;inbox?:unknown[]}|undefined,settings=values.get('pi.lane.config:'+target.branch) as {activeToolNames?:unknown[]}|undefined;return lane?.currentOperationId===target.operation&&Array.isArray(lane.inbox)&&lane.inbox.length===0&&Array.isArray(settings?.activeToolNames)&&settings.activeToolNames.length===0;}catch{return false;}};
+  const unchanged=()=>!input.signal.aborted&&input.authorize()&&!config.ledger.pending?.().length&&hash(config.ledger.read(task))===input.expectedLedger&&hash(input.provePhysicalStop())===hash(proof)&&hash(state.readAudit(task).slice(0,audit.length))===hash(audit)&&[...prefix].every(([f,bytes])=>readFileSync(join(storage.directory,f)).subarray(0,bytes.length).equals(bytes));
+  if(!nativeSafe()||!unchanged())fail('TASK_UNCONFIRMED');
+  current={identity:id,purpose:'report_edit',prompt:'',system:'',tools:[],signal:input.signal,authorize:input.authorize};
+  cancelledReportCheck=(t,s,b,o)=>t===task&&s===target.session&&b===target.branch&&o===target.operation&&unchanged()&&nativeSafe()&&hash(state.readAccounting(task)?.reservations)===hash(accounting.reservations);
+  try{
+   const engine=await sdk(),view=await engine.inspect(target.session,target.branch,input.signal);
+   if(view.pending?.operationId!==target.operation||view.pending.kind!=='run'||!unchanged()||state.readAccounting(task)?.owner!==null||state.readWriterLock())fail('TASK_UNCONFIRMED');
+   const reconciliation=hash({approval:input.approval,proof,target,identity:id,accounting:input.expectedAccounting,ledger:input.expectedLedger,audit:hash(audit),native:[...prefix].map(([f,bytes])=>[f,createHash('sha256').update(bytes).digest('hex')])});
+   // Save the authorized reconciliation intent before ending the native lane.
+   // Its real aborted result is the completion receipt; never fabricate a model finish.
+   await state.audit.append({version:'1.0',taskId:task,runId:randomUUID(),sequence:1,kind:'session.control',at:new Date().toISOString(),provider:row.provider,model:row.model,contextVersions:{revision:id.revision,scope:id.scope_sha256,configuration:id.config_sha256},digest:hash({approval:input.approval,reconciliation,phase:'requested'}),reason:'CANCELLED',session:{sessionId:target.session,branch:target.branch,operationId:target.operation}},input.signal);
+   if(!unchanged())fail('TASK_UNCONFIRMED');
+   migrationRetiring=true;knownIdleAbort=true;
+   const result=await engine.run({taskId:task,purpose:'report_edit',sessionId:target.session,branch:target.branch,tools:[],prompt:'',system:'仅结束已物理取消的无工具报告，不重放模型、工具或业务。',contextVersions:{revision:id.revision,scope:id.scope_sha256,configuration:id.config_sha256},limits:taskLimits(input.identity.task_id),modelRecovery:{extraAttempts:1},signal:input.signal,operation:'abort'});
+   const terminal=await engine.result(target.session,target.operation,input.signal),after=state.readAccounting(task);
+   if(!unchanged()||result.status!=='cancelled'||result.reason!=='CANCELLED'||terminal?.status!=='aborted'||(await engine.inspect(target.session,target.branch,input.signal)).pending||after?.owner!==null||state.readWriterLock()||hash(after.reservations)!==hash(accounting.reservations)||Object.entries(accounting.usage).some(([k,v])=>k==='activeMs'?after.usage.activeMs<Number(v):after.usage[k as keyof typeof after.usage]!==v))fail('TASK_UNCONFIRMED');
+   return {status:'aborted',operation:target.operation,reconciliation};
+  }finally{cancelledReportCheck=undefined;migrationRetiring=false;knownIdleAbort=false;current=undefined;}
+ },async recoverInterruptedStop(input){if(firstLoop)fail('CAPABILITY_UNAVAILABLE');
+  while(readCompletion)await awaitReads(input.signal);
+  if(current||input.signal.aborted||!input.authorize()||config.ledger.pending?.().length)fail('AUTHORITY_REQUIRED');
+  if([input.approval,input.expectedAccounting,input.expectedLedger,input.expectedLock].some(v=>!/^[a-f0-9]{64}$/.test(v))||Object.keys(input.arguments).length!==1||typeof input.arguments.step_id!=='string')fail('INVALID_REQUEST');
+  const task=input.identity.task_id,accounting=state.readAccounting(task),rows=config.ledger.read(task),proof=input.provePreExecution();
+  if(!accounting?.owner||hash(accounting)!==input.expectedAccounting||hash(rows)!==input.expectedLedger||!proof||!/^[a-f0-9]{64}$/.test(proof.task_sha256)||proof.step_id!==input.arguments.step_id||hash(proof.identity)!==hash(input.identity))fail('TASK_UNCONFIRMED');
+  const audit=state.readAudit(task),events=audit.filter(e=>e.runId===accounting.owner),admitted=events.filter(e=>e.kind==='tool.admitted'&&!events.some(f=>f.kind==='tool.finished'&&f.invocation?.invocationId===e.invocation?.invocationId));
+  const lock=state.readWriterLock(),starts=events.filter(e=>e.kind==='run.started'),firstModel=events.find(e=>e.kind==='model.admitted');
+  if(!lock||hash(lock)!==input.expectedLock||starts.length!==1||!firstModel||Date.parse(lock.created_at)<Date.parse(starts[0]!.at)||Date.parse(lock.created_at)>Date.parse(firstModel.at)||starts[0]!.contextVersions?.revision!==input.identity.revision||starts[0]!.contextVersions?.scope!==input.identity.scope_sha256||starts[0]!.contextVersions?.configuration!==input.identity.config_sha256)fail('TASK_UNCONFIRMED');
+  if(events.some(e=>e.kind==='run.finished')||admitted.length!==1||!admitted[0]!.invocation||admitted[0]!.toolName!=='execute_step'||admitted[0]!.digest!==hash(input.arguments))fail('TASK_UNCONFIRMED');
+  const event=admitted[0]!,native=event.invocation!,binding=state.readBinding(native.operationId);
+  current={identity:input.identity,nativeBusinessTools:true,prompt:'',system:'',tools:[],signal:input.signal,authorize:input.authorize};
+  interruptedProof={owner:accounting.owner,operation:native.operationId,invocation:native.invocationId,digest:event.digest!};
+  try{
+   if(!binding||binding.taskId!==task||binding.purpose!==sessionOwner(current)||!knownClosedEffects(task,native.sessionId,native.branch,native.operationId))fail('TASK_UNCONFIRMED');
+   const storage=state.sessionStorage(async()=>true),prefix=new Map(readdirSync(storage.directory,{recursive:true}).filter((f):f is string=>typeof f==='string'&&f.endsWith('.jsonl')).map(f=>{for(let i=1;i<=f.split('/').length;i++)if(lstatSync(join(storage.directory,...f.split('/').slice(0,i))).isSymbolicLink())fail('STATE_FAILED');const path=join(storage.directory,f);if(!lstatSync(path).isFile())fail('STATE_FAILED');return [f,readFileSync(path)] as const;}));if(!prefix.size)fail('TASK_UNCONFIRMED');
+   const nativeDigest=()=>hash(readdirSync(storage.directory,{recursive:true}).filter((f):f is string=>typeof f==='string'&&f.endsWith('.jsonl')).sort().map(f=>[f,createHash('sha256').update(readFileSync(join(storage.directory,f))).digest('hex')])),beforeNative=nativeDigest(),bindings=hash(state.readNativeBindings(task));
+   const recheck=()=>!input.signal.aborted&&input.authorize()&&hash(input.provePreExecution())===hash(proof)&&hash(config.ledger.read(task))===input.expectedLedger&&!config.ledger.pending?.().length;
+   if(!recheck()||hash(state.readAudit(task))!==hash(audit)||hash(state.readNativeBindings(task))!==bindings||nativeDigest()!==beforeNative)fail('TASK_UNCONFIRMED');
+   const reconciliation=hash({proof,identity:input.identity,invocation:native,audit:hash(audit),native:beforeNative,ledger:input.expectedLedger,bindings}),recovery=state.interruptedAbortLease({businessIdentity:hash(input.identity),task,expectedOwner:accounting.owner,expectedAccounting:input.expectedAccounting,expectedLock:input.expectedLock,approval:input.approval,reconciliation,signal:input.signal,authorize:recheck});
+   const engine=await sdk(undefined,undefined,recovery),view=await engine.inspect(native.sessionId,native.branch,input.signal);
+   if(view.pending?.kind!=='run'||view.pending.operationId!==native.operationId)fail('TASK_UNCONFIRMED');
+   const history=await engine.history(native.sessionId,native.branch,input.signal),calls=history.flatMap(e=>e.message?.calls??[]).filter(c=>c.id===native.toolCallId);
+   if(calls.length!==1||calls[0]!.name!=='execute_step'||hash(calls[0]!.arguments)!==event.digest)fail('TASK_UNCONFIRMED');
+   const allowedControls=[{kind:'snapshot'},{kind:'snapshot',includeContent:false},{kind:'snapshot',includeContent:true},{kind:'abort'}].map(hash);
+   if(audit.some(e=>e.kind==='session.control'&&e.session?.sessionId===native.sessionId&&e.session.branch===native.branch&&(!e.digest||!allowedControls.includes(e.digest))))fail('TASK_UNCONFIRMED');
+   if(!recheck()||hash(state.readAudit(task))!==hash(audit)||hash(state.readNativeBindings(task))!==bindings||nativeDigest()!==beforeNative)fail('TASK_UNCONFIRMED');
+   migrationRetiring=true;knownIdleAbort=true;
+   const stopped=await engine.run({taskId:task,purpose:'analysis',sessionId:native.sessionId,branch:native.branch,tools:selectedTools(),prompt:'',system:'仅停止已证明尚未计算的中断操作，不重放。',contextVersions:{revision:input.identity.revision,scope:input.identity.scope_sha256,configuration:input.identity.config_sha256},limits:taskLimits(input.identity.task_id),modelRecovery:{extraAttempts:1},signal:input.signal,operation:'abort'});
+   const terminal=await engine.result(native.sessionId,native.operationId,input.signal);
+   if(!recheck()||stopped.status!=='cancelled'||stopped.reason!=='CANCELLED'||terminal?.status!=='aborted'||(await engine.inspect(native.sessionId,native.branch,input.signal)).pending)fail('TASK_UNCONFIRMED');
+   for(const [f,bytes]of prefix)if(!readFileSync(join(storage.directory,f)).subarray(0,bytes.length).equals(bytes))fail('STATE_FAILED');
+   recovery.finish(hash(terminal));return {status:'aborted',operation:native.operationId,reconciliation};
+  }finally{interruptedProof=undefined;migrationRetiring=false;knownIdleAbort=false;current=undefined;}
+ },migrateLongArtifacts:input=>migratePurposeConfiguration(input,'long-artifacts'),migrateReportTimeout:input=>migratePurposeConfiguration(input,'report-timeout'),migrateReportPro60:input=>migratePurposeConfiguration(input,'report-pro60'),migrateReportThinking:input=>migratePurposeConfiguration(input,'report-thinking'),migrateJudgmentReviewModel:input=>migratePurposeConfiguration(input,judgmentModel(input.identity.task_id).id===backup.id?'judgment-flash':'judgment-model'),migrateJudgmentReviewTimeout:input=>migratePurposeConfiguration(input,'judgment-timeout'),migrateJudgmentReviewProOff:input=>migratePurposeConfiguration(input,'judgment-pro-off'),migrateJudgmentReviewPro:input=>migratePurposeConfiguration(input,'judgment-pro'),migrateJudgmentReviewThinking:input=>migratePurposeConfiguration(input,'judgment-thinking'),async reconcileStopped(input){
   if(firstLoop)return false;
   while(readCompletion)await awaitReads(input.signal);
   if(current||input.signal.aborted||!input.authorize())return false;
@@ -484,7 +561,7 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
   const audit=state.readAudit(id.task_id),last=audit.filter(e=>e.kind==='run.finished'&&e.contextVersions.revision===id.revision&&e.contextVersions.scope===id.scope_sha256&&e.contextVersions.configuration===id.config_sha256).at(-1);
   if(!last?.session||!['STATE_FAILED','MODEL_FAILED'].includes(last.reason??''))return false;
   const binding=state.readBinding(last.session.operationId);
-  if(!binding||binding.taskId!==id.task_id||binding.sessionId!==last.session.sessionId||binding.branch!==last.session.branch||!['analysis','analysis_native','analysis_objects','report_edit'].includes(binding.purpose??'analysis'))return false;
+  if(!binding||binding.taskId!==id.task_id||binding.sessionId!==last.session.sessionId||binding.branch!==last.session.branch||!['analysis','analysis_native','analysis_objects','report_edit','conclusion_strategy_review'].includes(binding.purpose??'analysis'))return false;
   const events=audit.filter(e=>e.runId===last.runId),pending=new Set<string>();
   for(const e of events){if(e.kind==='tool.admitted'){if(!e.invocation)return false;pending.add(e.invocation.invocationId);}else if(e.kind==='tool.finished'){if(!e.invocation||e.toolFailed||!pending.delete(e.invocation.invocationId))return false;}}
   if(pending.size)return false;
@@ -580,19 +657,26 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
   if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');
   if(current&&sessionOwner(current).includes(':'))fail('TASK_BUSY');
   const purpose=input.purpose??(current?(current.purpose??'analysis'):state.readLatestPurpose(input.identity.task_id)??'analysis'),owner=purpose==='analysis'?(state.readSession(input.identity.task_id,'analysis_objects')?'analysis_objects':state.readSession(input.identity.task_id,'analysis_native')?'analysis_native':purpose):purpose==='proposal_prepare'&&state.readSession(input.identity.task_id,'proposal_objects')?'proposal_objects':purpose,sessionId=state.readSelectedSession(input.identity.task_id,owner);
+  if(purpose==='conclusion_strategy_review'&&!reviewEnabled(input))fail('AUTHORITY_REQUIRED');
   if(!sessionId)fail('NATIVE_SESSION_NOT_FOUND');
   if(current&&(purpose!==(current.purpose??'analysis')||(['task_id','revision','grant_id','scope_sha256','config_sha256'] as const).some(key=>current!.identity[key]!==input.identity[key])))fail('TASK_BUSY');
   const prior=current;
-  if(!prior)current={identity:input.identity,purpose:purpose==='analysis'?undefined:purpose as 'proposal_prepare'|'report_edit'|'retained_case',prompt:'',system:'',tools:[],signal:input.signal,authorize:input.authorize};
+  if(!prior)current={identity:input.identity,artifactWork:input.artifactWork,purpose:purpose==='analysis'?undefined:purpose as 'proposal_prepare'|'report_edit'|'retained_case'|'conclusion_strategy_review',prompt:'',system:'',tools:[],signal:input.signal,authorize:input.authorize};
   const releaseRead=!prior&&input.command.kind==='snapshot'?beginRead():()=>undefined;
   try{
    const engine=await sdk();
    if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');
-   if(firstLoop&&!prior&&input.command.kind!=='snapshot'){
-    const facts=await engine.inspectFacts({taskId:input.identity.task_id,purpose,sessionId,signal:input.signal});
+   if(firstLoop){
+    const raw=await engine.inspectFacts({taskId:input.identity.task_id,purpose,sessionId,signal:input.signal});
     if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');
-    if(facts.availability!=='available')fail('TASK_UNCONFIRMED');
-    if(facts.admission.availability!=='known'||facts.admission.policyVersion!=='juanerai-harness-first-loop-v02')fail('CONFIGURATION_CHANGED');
+    if(input.command.kind==='snapshot'){
+     if(raw.availability!=='available')return {facts:{availability:raw.availability,...raw.reason?{reason:raw.reason}:{}}};
+     const facts:import('../../packages/ports/open-analysis-runtime.ts').AnalysisSessionFacts={availability:'available',session_id:raw.sessionId,branch:raw.branch,tip_id:raw.tipId,...raw.terminal?{terminal:{operation_id:raw.terminal.operationId,status:raw.terminal.status}}:{},queue:raw.queue.availability==='known'?{availability:'known',entries:raw.queue.entries.map(e=>({entry_id:e.entryId,kind:e.kind}))}:{availability:'unknown'},admission:raw.admission.availability==='unknown'?{availability:'unknown'}:{availability:'known',terminal:raw.admission.terminal,corrections:raw.admission.corrections.map(c=>({...c})),facts:raw.admission.facts.map(f=>({call_id:f.callId,name:f.name,status:f.disposition,...f.code?{code:f.code}:{},corrections_used:f.correctionsUsed,terminal:f.terminal,stage_version:f.viewVersion}))}};
+     return {facts};
+    }
+    if(raw.availability!=='available')fail('TASK_UNCONFIRMED');
+    if(raw.admission.availability!=='known'||raw.admission.policyVersion!=='juanerai-harness-first-loop-v02')fail('CONFIGURATION_CHANGED');
+    if(input.command.kind==='abort'&&!prior)return {};
    }
    if(input.command.kind==='fork'){
     const created=await engine.fork(sessionId,undefined,input.signal);
@@ -600,13 +684,7 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
     state.registerFork(input.identity.task_id,owner,sessionId,created.id);return {sessionId:created.id};
    }
    if(input.command.kind==='navigate'){
-    const result=await engine.run({taskId:input.identity.task_id,purpose,sessionId,tools:['report_edit','retained_case'].includes(purpose)?[]:selectedTools(),prompt:'',system:'仅整理本任务已有对话，不新增计算、授权或业务结论。',contextVersions:{scope:input.identity.scope_sha256,configuration:input.identity.config_sha256,revision:input.identity.revision},limits,modelRecovery:{extraAttempts:1 as const},signal:input.signal,operation:'navigate',targetEntryId:input.command.entryId,summarize:input.command.summarize});if(result.status!=='succeeded')fail(result.reason);return {};
-   }
-   if(firstLoop&&input.command.kind==='abort'&&!prior){
-    const facts=await engine.inspectFacts({taskId:input.identity.task_id,purpose,sessionId,signal:input.signal});
-    if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');
-    if(facts.availability!=='available')fail('TASK_UNCONFIRMED');
-    return {}; // settled facts only; no private proof, repair, abort drive or replay
+    const result=await engine.run({taskId:input.identity.task_id,purpose,sessionId,tools:purpose==='report_edit'?reportTools():['retained_case','conclusion_strategy_review'].includes(purpose)?[]:selectedTools(),prompt:'',system:'仅整理本任务已有对话，不新增计算、授权或业务结论。',contextVersions:{scope:input.identity.scope_sha256,configuration:input.identity.config_sha256,revision:input.identity.revision},limits:taskLimits(input.identity.task_id),modelRecovery:{extraAttempts:1 as const},signal:input.signal,operation:'navigate',targetEntryId:input.command.entryId,summarize:input.command.summarize});if(result.status!=='succeeded')throw Object.assign(new Error(result.reason),{code:observesModels&&(sharedWork||reviewEnabled(input))&&result.modelOutcome?.diagnostic==='OUTPUT_LIMIT'?'OUTPUT_INCOMPLETE':observesModels&&(sharedWork||reviewEnabled(input))&&result.modelOutcome?.diagnostic==='CONTEXT_LIMIT'?'CONTEXT_LIMIT':result.reason,...(observesModels&&result.modelOutcome?{diagnostic:result.modelOutcome.diagnostic}:('diagnostic' in result?{diagnostic:result.diagnostic}:{}))});return {};
    }
    if(input.command.kind==='abort'&&!prior){
     const pending=(await engine.inspect(sessionId,undefined,input.signal)).pending;
@@ -615,18 +693,11 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
     if(!proof&&!knownClosedEffects(input.identity.task_id,sessionId,'main',pending.operationId))fail('TASK_UNCONFIRMED');
     cancelledReportCheck=proof?.check;knownIdleAbort=true;migrationRetiring=!!proof;
     try{
-     const result=await engine.run({taskId:input.identity.task_id,purpose,sessionId,tools:selectedTools(),prompt:'',system:'显式停止已核账的中断操作，不执行或重放任何工具。',contextVersions:{scope:input.identity.scope_sha256,configuration:input.identity.config_sha256,revision:input.identity.revision},limits,modelRecovery:{extraAttempts:1 as const},signal:input.signal,operation:'abort'});
+     const result=await engine.run({taskId:input.identity.task_id,purpose,sessionId,tools:selectedTools(),prompt:'',system:'显式停止已核账的中断操作，不执行或重放任何工具。',contextVersions:{scope:input.identity.scope_sha256,configuration:input.identity.config_sha256,revision:input.identity.revision},limits:taskLimits(input.identity.task_id),modelRecovery:{extraAttempts:1 as const},signal:input.signal,operation:'abort'});
      if(result.status!=='cancelled'||result.reason!=='CANCELLED'||(await engine.inspect(sessionId,undefined,input.signal)).pending)fail('TASK_UNCONFIRMED');
      if(proof&&(!proof.unchanged()||(await engine.result(sessionId,pending.operationId,input.signal))?.status!=='aborted'))fail('TASK_UNCONFIRMED');
      return {};
     }finally{cancelledReportCheck=undefined;knownIdleAbort=false;migrationRetiring=false;}
-   }
-   if(firstLoop&&input.command.kind==='snapshot'){
-    const raw=await engine.inspectFacts({taskId:input.identity.task_id,purpose,sessionId,signal:input.signal});
-    if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');
-    if(raw.availability!=='available')return {facts:{availability:raw.availability,...raw.reason?{reason:raw.reason}:{}}};
-    const facts:import('../../packages/ports/open-analysis-runtime.ts').AnalysisSessionFacts={availability:'available',session_id:raw.sessionId,branch:raw.branch,tip_id:raw.tipId,...raw.terminal?{terminal:{operation_id:raw.terminal.operationId,status:raw.terminal.status}}:{},queue:raw.queue.availability==='known'?{availability:'known',entries:raw.queue.entries.map(e=>({entry_id:e.entryId,kind:e.kind}))}:{availability:'unknown'},admission:raw.admission.availability==='unknown'?{availability:'unknown'}:{availability:'known',terminal:raw.admission.terminal,corrections:raw.admission.corrections.map(c=>({...c})),facts:raw.admission.facts.map(f=>({call_id:f.callId,name:f.name,status:f.disposition,...f.code?{code:f.code}:{},corrections_used:f.correctionsUsed,terminal:f.terminal,stage_version:f.viewVersion}))}};
-    return {facts,view:{branch:raw.branch,tipId:raw.tipId,operationId:null,queued:raw.queue.availability==='known'?raw.queue.entries:[],activeTools:[],faulted:raw.admission.availability==='known'&&raw.admission.terminal,queueAvailable:raw.queue.availability==='known'}};
    }
    let reply:{entryId?:string;cancelled?:boolean;snapshot?:Pick<import('pi-agent-runtime').HarnessSnapshot,'branch'|'tipId'|'operationId'|'queued'|'activeTools'|'faulted'>},queueAvailable=true;
    try{reply=await engine.control({taskId:input.identity.task_id,purpose,sessionId,signal:input.signal,command:input.command});}
@@ -648,9 +719,9 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
   }finally{if(!prior)current=undefined;releaseRead();}
  },async collect(task){if(!runtimes.size)return;let timer:ReturnType<typeof setTimeout>|undefined;try{await Promise.race([Promise.all([...runtimes.values()].map(engine=>engine.waitForIdle(task))),new Promise<void>(resolve=>timer=setTimeout(resolve,5000))]);}finally{if(timer)clearTimeout(timer);}},async run(input){
   while(readCompletion)await awaitReads(input.signal);
-  if(current||config.ledger.pending?.().length)fail('TASK_BUSY');if(hasUnconfirmedEffects(input.identity.task_id))fail('TASK_UNCONFIRMED');if(input.conversation_id!==undefined&&(!membershipUuid(input.conversation_id)||input.purpose!==undefined&&input.purpose!=='retained_case'))fail('AUTHORITY_REQUIRED');if(input.continuation)fail('LEGACY_TASK_RECONCILIATION_REQUIRED');
-  if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');if(['report_edit','retained_case'].includes(input.purpose??'')&&(input.tools.length||input.sessionAdvance))fail('TOOL_POLICY_VIOLATION');
-  codeDraft?.clear();observations.length=0;sharedToolProducers.clear();discoveredContracts.clear();contractDisclosureTurn=undefined;delegationCorrectionPending=false;
+  if(current||config.ledger.pending?.().length)fail('TASK_BUSY');if(observesModels&&hasUnconfirmedEffects(input.identity.task_id))fail('TASK_UNCONFIRMED');if(input.conversation_id!==undefined&&(!membershipUuid(input.conversation_id)||input.purpose!==undefined&&input.purpose!=='retained_case'))fail('AUTHORITY_REQUIRED');if(input.continuation)fail('LEGACY_TASK_RECONCILIATION_REQUIRED');
+  if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');if(input.purpose==='conclusion_strategy_review'&&!reviewEnabled(input))fail('AUTHORITY_REQUIRED');if(['report_edit','retained_case','conclusion_strategy_review'].includes(input.purpose??'')&&((input.tools.length&&!(input.purpose==='report_edit'&&longMode(input)&&input.artifactWork&&input.tools.length===1&&['build_artifact','complete_artifact'].includes(input.tools[0]?.name??'')))||input.sessionAdvance))fail('TOOL_POLICY_VIOLATION');
+  if(!sharedWork)codeDraft?.clear();observations.length=0;discoveredContracts.clear();contractDisclosureTurn=undefined;delegationCorrectionPending=false;
   const wireTools=!firstLoop&&objectMode(input)?input.tools.map(nativeDelegationWire):input.tools;
   const delegated={...input,tools:wireTools.map(t=>({...t,execute:async(args:Readonly<Record<string,unknown>>,signal:AbortSignal)=>{if(t.name==='delegate_analysis'&&delegationCorrectionPending){const result={status:'deferred',created:false,executed:false,reason:'awaiting_model_correction',instruction:'同批后续委派尚未执行；先读取前一条指令的纠正反馈，在下一次模型回复中明确纠正，不自动重放。'};observations.push({name:t.name,result});return result;}let result=await t.execute(args,signal);
    if(t.name==='read_tool_contract'&&result&&typeof result==='object'&&!Array.isArray(result)&&Reflect.get(result,'executed')===false){const declared=wireTools.find(tool=>tool.name===args.name),original=input.tools.find(tool=>tool.name===args.name);if(declared&&original&&Reflect.get(result,'name')===args.name&&hash(Reflect.get(result,'parameters'))===hash(original.modelParameters??original.parameters))result={...result,description:declared.description,parameters:declared.modelParameters??declared.parameters};}
@@ -674,42 +745,21 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
    }
    if(t.name==='read_tool_contract'&&result&&typeof result==='object'&&!Array.isArray(result)&&Reflect.get(result,'executed')===false&&Reflect.get(result,'name')===args.name){
     const business=wireTools.find(tool=>tool.name===args.name),parameters=Reflect.get(result,'parameters');
-    if(business&&parameters&&typeof parameters==='object'&&hash(parameters)===hash(business.modelParameters??business.parameters)){
-     // Map.set preserves insertion order for an existing key. The next native
-     // view must focus the latest successful disclosure, including a repeat.
-     if(firstLoop)discoveredContracts.delete(business.name);
-     discoveredContracts.set(business.name,hash(business.modelParameters??business.parameters));
-    }
+    if(business&&parameters&&typeof parameters==='object'&&hash(parameters)===hash(business.modelParameters??business.parameters)){if(firstLoop)discoveredContracts.delete(business.name);discoveredContracts.set(business.name,hash(business.modelParameters??business.parameters));}
    }
-   if(t.name==='delegate_analysis'&&result&&typeof result==='object'&&Reflect.get(result,'status')==='needs_instruction_correction')delegationCorrectionPending=true;observations.push({name:t.name,result});return result;}}))};current=delegated;let physicalContext:Promise<void>|undefined;
+   if(t.name==='delegate_analysis'&&result&&typeof result==='object'&&Reflect.get(result,'status')==='needs_instruction_correction')delegationCorrectionPending=true;observations.push({name:t.name,result});return result;}}))};current=delegated;let physicalContext:Promise<void>|undefined,workTimer:ReturnType<typeof setTimeout>|undefined,deadlineControl:AbortController|undefined;
   try{
-   const purpose=input.purpose??'analysis',engine=await sdk();
+   if(sharedWork){const scope=currentWork();if(Date.now()>=scope.deadline_at)fail('ARTIFACT_STAGE_DEADLINE');deadlineControl=new AbortController();workTimer=setTimeout(()=>deadlineControl!.abort(),Math.max(1,scope.deadline_at-Date.now()));input={...input,signal:AbortSignal.any([input.signal,deadlineControl.signal])};current={...delegated,signal:input.signal};}
+    const purpose=input.purpose??'analysis',engine=await sdk();
    const request={taskId:input.identity.task_id,purpose,prompt:input.prompt,
-    system:input.system+(purpose==='retained_case'?'\nReturn exactly one raw JSON object matching the supplied business contract. No Markdown, code fences, prefix, or suffix.':'')+(['report_edit','retained_case'].includes(purpose)?'\nThis purpose has no tools. All required business content is supplied in this request. Do not request or simulate file reads, Skill loading, tool calls, or analysis execution. Treat the Skill catalog as background reference only. Return the requested business response directly.':(objectMode(input)?'\nUse the currently declared native business tools with their original JSON object parameters, actual arrays and explicit nulls. Do not encode business objects into arguments_json or use analysis_tool/XML wrappers. Full schema, business evidence and effect authorization still apply.':nativeBusinessPhase(input)?'\nUse the native named business tools with their declared wire parameters. For any tool declared with arguments_json, submit one exact serialized business JSON object string matching its supplied original contract or read_tool_contract. Pure scalar and empty tools use their declared direct business object. Do not use analysis_tool, XML/item wrappers, or invented defaults.':'\nUse analysis_tool with the business tool name and arguments_json containing its exact JSON arguments.')+(input.toolDiscovery?' Specific parameter schemas are available through read_tool_contract({name:business_tool_name}); read the current contract before using unfamiliar parameters. The catalog is not execution permission.':'')+(objectMode(input)?' Native declarations expose the complete current authorized business parameter contracts. No parameter repair or automatic replay.':nativeBusinessPhase(input)?input.toolDiscovery?' Native declarations contain full small original contracts in their descriptions, direct scalar/empty parameters and an exact JSON-string transport for nested object/array or large business contracts. Read large original contracts with read_tool_contract; valid original arguments proceed through full checks without a discovery gate. First unfamiliar invalid parameters return only the exact contract, executed:false. Observe that contract and explicitly submit corrected parameters in the next turn. Preserve required fields; no operation is automatically replayed.':' The current native tool declarations provide complete original business contracts. For structured tools the contract is in the description and the wire field is arguments_json.': ' Current authorized business tools:\n'+JSON.stringify(input.tools.map(t=>({name:t.name,description:t.description,...(input.toolDiscovery&&t.name!=='read_tool_contract'?{}:{parameters:t.parameters})}))))),
-    contextVersions:{scope:input.identity.scope_sha256,configuration:input.identity.config_sha256,revision:input.identity.revision},limits,modelRecovery:{extraAttempts:1 as const},signal:input.signal};
+    system:input.system+(purpose==='conclusion_strategy_review'&&judgmentModel(input.identity.task_id).provider===backup.provider?'\nProvider wire uses response_format=json_object. Return one complete JSON object; business schema and judgments remain independently checked.':'')+(purpose==='retained_case'?'\nReturn exactly one raw JSON object matching the supplied business contract. No Markdown, code fences, prefix, or suffix.':'')+(['retained_case','conclusion_strategy_review'].includes(purpose)||purpose==='report_edit'&&!longMode(input)?'\nThis purpose has no tools. All required business content is supplied in this request. Do not request or simulate file reads, Skill loading, tool calls, or analysis execution. Treat the Skill catalog as background reference only. Return the requested business response directly.':(objectMode(input)?'\nUse the currently declared native business tools with their original JSON object parameters, actual arrays and explicit nulls. Do not encode business objects into arguments_json or use analysis_tool/XML wrappers. Full schema, business evidence and effect authorization still apply.':nativeBusinessPhase(input)?'\nUse the native named business tools with their declared wire parameters. For any tool declared with arguments_json, submit one exact serialized business JSON object string matching its supplied original contract or read_tool_contract. Pure scalar and empty tools use their declared direct business object. Do not use analysis_tool, XML/item wrappers, or invented defaults.':'\nUse analysis_tool with the business tool name and arguments_json containing its exact JSON arguments.')+(input.toolDiscovery?' Specific parameter schemas are available through read_tool_contract({name:business_tool_name}); read the current contract before using unfamiliar parameters. The catalog is not execution permission.':'')+(objectMode(input)?' Native declarations expose the complete current authorized business parameter contracts. No parameter repair or automatic replay.':nativeBusinessPhase(input)?input.toolDiscovery?' Native declarations contain full small original contracts in their descriptions, direct scalar/empty parameters and an exact JSON-string transport for nested object/array or large business contracts. Read large original contracts with read_tool_contract; valid original arguments proceed through full checks without a discovery gate. First unfamiliar invalid parameters return only the exact contract, executed:false. Observe that contract and explicitly submit corrected parameters in the next turn. Preserve required fields; no operation is automatically replayed.':' The current native tool declarations provide complete original business contracts. For structured tools the contract is in the description and the wire field is arguments_json.': ' Current authorized business tools:\n'+JSON.stringify(input.tools.map(t=>({name:t.name,description:t.description,...(input.toolDiscovery&&t.name!=='read_tool_contract'?{}:{parameters:t.parameters})}))))),
+    contextVersions:{scope:input.identity.scope_sha256,configuration:input.identity.config_sha256,revision:input.identity.revision},limits:taskLimits(input.identity.task_id),modelRecovery:{extraAttempts:1 as const},signal:input.signal};
    let result,ownedSession:string|undefined;
-   if(purpose==='report_edit'&&!['analysis','analysis_native','analysis_objects','proposal_objects','proposal_prepare'].some(p=>state.readSession(input.identity.task_id,p)))fail('LEGACY_TASK_RECONCILIATION_REQUIRED');
+   if(['report_edit','conclusion_strategy_review'].includes(purpose)&&!['analysis','analysis_native','analysis_objects','proposal_objects','proposal_prepare'].some(p=>state.readSession(input.identity.task_id,p)))fail('LEGACY_TASK_RECONCILIATION_REQUIRED');
    const owner=sessionOwner(input);let session=state.readSelectedSession(input.identity.task_id,owner);
-   if(firstLoop&&state.hasNativeSession(input.identity.task_id)){
-    // Verify the existing native contract without opening/repairing a lane,
-    // selecting a new owner, or attempting the legacy recovery path.
-    const parent=purpose==='report_edit'?(state.readSelectedSession(input.identity.task_id,'analysis_objects')??state.readSelectedSession(input.identity.task_id,'proposal_objects')):undefined;
-    const proofSession=session??parent;if(!proofSession)fail('CONFIGURATION_CHANGED');
-    const proofPurpose=session?purpose:state.readSelectedSession(input.identity.task_id,'analysis_objects')===parent?'analysis':'proposal_prepare';
-    const facts=await engine.inspectFacts({taskId:input.identity.task_id,purpose:proofPurpose,sessionId:proofSession,signal:input.signal});
-    if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');
-    if(facts.availability!=='available')fail('TASK_UNCONFIRMED');
-    if(facts.admission.availability!=='known'||facts.admission.policyVersion!=='juanerai-harness-first-loop-v02')fail('CONFIGURATION_CHANGED');
-   }
-   if(!session){
-    if(config.ledger.read(input.identity.task_id).length&&!state.hasNativeSession(input.identity.task_id))fail('LEGACY_TASK_RECONCILIATION_REQUIRED');
-    const parent=firstLoop&&purpose==='report_edit'?(state.readSelectedSession(input.identity.task_id,'analysis_objects')??state.readSelectedSession(input.identity.task_id,'proposal_objects')):undefined;
-    if(firstLoop&&purpose==='report_edit'&&!parent)fail('LEGACY_TASK_RECONCILIATION_REQUIRED');
-    // A separately isolated report still belongs to the same native lineage and
-    // Task consumption authority. Never create a new independent counter root.
-    const created=parent?await engine.fork(parent,undefined,input.signal):await engine.create(input.signal);
-    state.selectSession(input.identity.task_id,owner,created.id);session=created.id;
-   }
+   const parent=firstLoop&&['report_edit','conclusion_strategy_review'].includes(purpose)?(state.readSelectedSession(input.identity.task_id,'analysis_objects')??state.readSelectedSession(input.identity.task_id,'proposal_objects')):undefined;
+   if(firstLoop&&state.hasNativeSession(input.identity.task_id)){const proofSession=session??parent;if(!proofSession)fail('CONFIGURATION_CHANGED');const facts=await engine.inspectFacts({taskId:input.identity.task_id,purpose:session?purpose:state.readSelectedSession(input.identity.task_id,'analysis_objects')===parent?'analysis':'proposal_prepare',sessionId:proofSession,signal:input.signal});if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');if(facts.availability!=='available')fail('TASK_UNCONFIRMED');if(facts.admission.availability!=='known'||facts.admission.policyVersion!=='juanerai-harness-first-loop-v02')fail('CONFIGURATION_CHANGED');}
+   if(!session){if(config.ledger.read(input.identity.task_id).length&&!state.hasNativeSession(input.identity.task_id))fail('LEGACY_TASK_RECONCILIATION_REQUIRED');if(firstLoop&&['report_edit','conclusion_strategy_review'].includes(purpose)&&!parent)fail('LEGACY_TASK_RECONCILIATION_REQUIRED');const created=parent?await engine.fork(parent,undefined,input.signal):await engine.create(input.signal);state.selectSession(input.identity.task_id,owner,created.id);session=created.id;}
    if(!firstLoop&&purpose==='analysis'&&!input.sessionAdvance&&!input.conversation_id){
     const previous=await engine.inspect(session,undefined,input.signal);
     if(previous.pending){
@@ -722,25 +772,27 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
      }
     }
    }
-   if(purpose==='report_edit'){
+   if(['report_edit','conclusion_strategy_review'].includes(purpose)||purpose==='proposal_prepare'&&reviewEnabled(input)){
     // Short fact IDs belong to this report's evidence, never an earlier report.
+    // A reviewed task's preparation also carries its current explicit business
+    // context; earlier tool receipts cannot choose this operation's effect.
     // Native navigation preserves old entries and the fixed session/Task ledger.
     const previous=await engine.inspect(session,undefined,input.signal);
     if(previous.pending)fail('TASK_UNCONFIRMED');
     if(previous.tipId!==null){
      if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');
-     const isolated=await engine.run({...request,sessionId:session,tools:[],prompt:'',operation:'navigate',targetEntryId:null,summarize:false});
+     const isolated=await engine.run({...request,sessionId:session,tools:purpose==='proposal_prepare'?selectedTools():purpose==='report_edit'?reportTools():[],prompt:'',operation:'navigate',targetEntryId:null,summarize:false});
      if(isolated.status!=='succeeded')fail(isolated.reason);
     }
    }
-   ownedSession=session;result=await engine.run({...request,sessionId:session,tools:['report_edit','retained_case'].includes(purpose)?[]:selectedTools(),...(input.sessionAdvance?{operation:input.sessionAdvance.kind,...(input.sessionAdvance.kind==='navigate'?{targetEntryId:input.sessionAdvance.entryId,summarize:input.sessionAdvance.summarize}:{})}:['report_edit','retained_case'].includes(purpose)?{operation:'prompt' as const}:purpose==='proposal_prepare'?{operation:'template' as const,resourceName:input.preferences?.prompt??'professional',templateArguments:[input.prompt]}:{operation:'skill' as const,resourceName:input.preferences?.skill??'general'})});
+   ownedSession=session;result=await engine.run({...request,sessionId:session,tools:purpose==='report_edit'?reportTools():['retained_case','conclusion_strategy_review'].includes(purpose)?[]:selectedTools(),...(input.sessionAdvance?{operation:input.sessionAdvance.kind,...(input.sessionAdvance.kind==='navigate'?{targetEntryId:input.sessionAdvance.entryId,summarize:input.sessionAdvance.summarize}:{})}:['report_edit','retained_case','conclusion_strategy_review'].includes(purpose)?{operation:'prompt' as const}:purpose==='proposal_prepare'?{operation:'template' as const,resourceName:input.preferences?.prompt??'professional',templateArguments:[input.prompt]}:{operation:'skill' as const,resourceName:input.preferences?.skill??'general'})});
    // Terminal cancellation/timeout may be observed before physical cleanup.
    // Keep this authorization context and writer ownership until the SDK settles.
    const idle=engine.waitForIdle(input.identity.task_id);
    if(result.status!=='succeeded'&&config.ledger.pending?.().length){
     // Surface the terminal result without claiming an unresolved physical model
     // has stopped. The same context keeps new writes fenced until actual idle.
-    physicalContext=idle;fail(result.reason);
+    physicalContext=idle;throw Object.assign(new Error(result.reason),{code:observesModels&&(sharedWork||reviewEnabled(input))&&result.modelOutcome?.diagnostic==='OUTPUT_LIMIT'?'OUTPUT_INCOMPLETE':observesModels&&(sharedWork||reviewEnabled(input))&&result.modelOutcome?.diagnostic==='CONTEXT_LIMIT'?'CONTEXT_LIMIT':result.reason,...(observesModels&&result.modelOutcome?{diagnostic:result.modelOutcome.diagnostic}:('diagnostic' in result?{diagnostic:result.diagnostic}:{}))});
    }
    await idle;
    const history:AnalysisHistoryMessage[]=[];
@@ -760,10 +812,11 @@ export function createPiSessionOpenAnalysisRuntime(config:{firstLoop?:'v0.2';pre
    }
    if(result.status!=='succeeded'){
     if(input.shouldYield?.()&&input.authorize()&&!input.signal.aborted)return {text:'',history,tools:[...observations]};
-    fail(result.reason);
+    throw Object.assign(new Error(result.reason),{code:observesModels&&(sharedWork||reviewEnabled(input))&&result.modelOutcome?.diagnostic==='OUTPUT_LIMIT'?'OUTPUT_INCOMPLETE':observesModels&&(sharedWork||reviewEnabled(input))&&result.modelOutcome?.diagnostic==='CONTEXT_LIMIT'?'CONTEXT_LIMIT':result.reason,...(observesModels&&result.modelOutcome?{diagnostic:result.modelOutcome.diagnostic}:('diagnostic' in result?{diagnostic:result.diagnostic}:{}))});
    }
-   return {text:result.value,history,provider:result.modelOutcome?.model.provider??(purpose==='report_edit'||purpose==='retained_case'?backup.provider:analysisModel.provider),model:result.modelOutcome?.model.id??(purpose==='report_edit'?backup.id:purpose==='retained_case'?retained.id:analysisModel.id),tools:[...observations]};
-  }catch(error){if(observesModels&&error instanceof RuntimeFault)fail(error.reason);throw error;}finally{if(physicalContext){const owner=current;void physicalContext.then(()=>{if(current===owner)current=undefined;},()=>{/* Unknown cleanup retains the writer fence. */});}else current=undefined;}
+   return {text:result.value,history,provider:result.modelOutcome?.model.provider??(purpose==='conclusion_strategy_review'?judgmentModel(input.identity.task_id).provider:purpose==='report_edit'||purpose==='retained_case'?backup.provider:analysisModel.provider),model:result.modelOutcome?.model.id??(purpose==='conclusion_strategy_review'?judgmentModel(input.identity.task_id).id:purpose==='report_edit'?reportModel(input.identity.task_id).id:purpose==='retained_case'?retained.id:analysisModel.id),tools:[...observations]};
+  }catch(error){if(deadlineControl?.signal.aborted)throw Object.assign(new Error('ARTIFACT_STAGE_DEADLINE'),{code:'ARTIFACT_STAGE_DEADLINE',provider_reason:(error as {code?:string}).code??null});if(observesModels&&error instanceof RuntimeFault)fail(error.reason);throw error;}finally{if(physicalContext){const owner=current;void physicalContext.then(()=>{if(workTimer)clearTimeout(workTimer);if(current===owner)current=undefined;},()=>{if(workTimer)clearTimeout(workTimer);/* Unknown cleanup retains the writer fence. */});}else{if(workTimer)clearTimeout(workTimer);current=undefined;}}
+
  }};
 }
 
