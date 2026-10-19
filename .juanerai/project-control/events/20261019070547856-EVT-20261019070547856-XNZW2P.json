@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019070547856-XNZW2P",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T07:05:47.856Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "独立004集中报告收到，原UI与所有证据保持。",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -267,6 +267,15 @@
     "tests/integration/xanthil-desktop/agent-host-proposal-contract.integration.test.ts",
     "tests/integration/xanthil-desktop/agent-host-browser-entry.integration.test.ts",
     "tests/integration/xanthil-desktop/open-analysis-long-artifact.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-natural-review.integration.test.ts"
+    "tests/integration/xanthil-desktop/open-analysis-natural-review.integration.test.ts",
+    "packages/ports/metric-factory.ts",
+    "packages/application/metric-factory.ts",
+    "adapters/metric-factory/bundle.ts",
+    "adapters/metric-factory/copies.ts",
+    "adapters/metric-factory/process.ts",
+    "profiles/personal/metric-factory.ts",
+    "apps/browser/metric-factory-http.ts",
+    "tests/integration/metric-factory/copies.test.ts",
+    "tests/integration/metric-factory/process.test.ts"
   ]
 }

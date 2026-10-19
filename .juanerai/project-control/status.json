@@ -6,15 +6,15 @@
     "product": "Agent / host simplification - offline"
   },
   "phase": {
-    "id": "DELIVERY",
-    "label": "PR109当前03893da完整portable CI进行中",
-    "ordinal": 5,
+    "id": "REGRESSION",
+    "label": "main363c正常整合：记录冲突已定界，重验受影响离线路径",
+    "ordinal": 4,
     "total": 5
   },
   "health": "validating",
-  "summary": "repair001已提交03893da并推送，PR109为22个确认路径，3793项提交blob/模式等于完整独立候选002。独立本地29 PASS及两轮Git记录PASS；当前Canonical CI39261755881进行中，尚未合并。",
+  "summary": "远端main因PR108推进363c756；修复生产/测试/SDK未变，普通合并仅三处看板/覆盖图记录冲突。两侧完整原件已保存，覆盖图保留PR108完整登记，本方能力增量0。首轮旧基线CI已请求取消，结果按中断保存；新组合待受影响验证、独立复核和当前HEAD CI。",
   "current_objective": "Restore the existing saved-exploration input on real Workspace relaunch, without weakening identity, authorization or unknown-effect fences.",
-  "next_action": "等待PR109确切HEAD的完整portable CI并收集原生日志；再次核对远端main、PR头/范围/保护规则后squash及安全main同步，再交付和停止。禁止真实Provider/业务数据/发布/生产及旧两线恢复。",
+  "next_action": "完成三处记录冲突合并及受影响Workspace/read/recovery和typecheck验证；冻结新基线候选做独立受影响复核，更新PR109并重取当前HEAD完整portable CI，满足条件后squash、安全同步并停止。旧两线/真实权限界限不变。",
   "blockers": [],
   "milestones": [
     {
@@ -422,7 +422,7 @@
     },
     {
       "id": "repair001-CI109",
-      "label": "Current-head full portable Canonical CI running, not yet PASS",
+      "label": "Historical first-head CI39261755881 interrupted on upstream base advance; not new integration PASS",
       "path": "https://github.com/gadfly-hbo/JuanerAI/actions/runs/39261755881",
       "status": "present"
     },
@@ -431,6 +431,18 @@
       "label": "Final3793-file affected independent PASS; A1/A2 closed, no new findings",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/git-delivery-001/validator-native-git002/report.md",
       "status": "verified"
+    },
+    {
+      "id": "repair001-base108",
+      "label": "Upstream PR108/main363c; source and prior acceptance remain attributed to that task",
+      "path": "https://github.com/gadfly-hbo/JuanerAI/pull/108",
+      "status": "verified"
+    },
+    {
+      "id": "repair001-upstream-board108",
+      "label": "Complete incoming Metric Factory board snapshot retained as historical baseline, not current authority",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/git-delivery-001/pre-base363c/upstream/.juanerai/project-control/status.json",
+      "status": "present"
     }
   ],
   "risks": [
@@ -447,7 +459,7 @@
       "mitigation": "Current user authorizes repair001 standard Git/CI/squash/safe-main delivery only. No real Provider/business data, SDK/dependency/model/policy changes, release/production or old-line restart."
     }
   ],
-  "updated_at": "2026-10-19T13:40:04.460Z",
+  "updated_at": "2026-10-19T13:53:39.945Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a1544f-6d30-7092-bb16-536a04c99d60"

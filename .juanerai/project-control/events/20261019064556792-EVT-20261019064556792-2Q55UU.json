@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019064556792-2Q55UU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T06:45:56.792Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "Validator002 FAIL F-MF-03; original snapshots and probe retained, correction stays within immutable publication contract.",
+  "status_after": "active",
+  "evidence_refs": []
+}

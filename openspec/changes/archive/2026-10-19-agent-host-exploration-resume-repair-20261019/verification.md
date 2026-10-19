@@ -1,3 +1,16 @@
+# main363c combination: affected checks complete
+
+Current post-merge input:500 PASS/0 FAIL/2 retained SKIP,108.019s,exit0;
+typecheck exit0,9.903s. Same repair code/tests and fixedSDK; fresh isolated
+synthetic Task evidence in git-delivery-001/runs/affected-base363c003 and
+typecheck-base363c004. Independent integration result/current-head CI/actual
+merge and sync are collected by [engineering-delivery.md](engineering-delivery.md)
+and its persistent final receipt. Old first-head CI is cancelled-on-base-advance,
+not a current PASS; original source-bound RED007/GREEN008 still identify the
+unchanged repair cause. Historical records below keep their original as-of scope.
+
+---
+
 # Current result — repair001 Git continuation
 
 The frozen local repair001 completed causal RED→GREEN, affected regression

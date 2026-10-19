@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019130638471-WRNCPP",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T13:06:38.471Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "主线兼容集成完成；归档及能力快照随本PR准备，current-head检查与Git条件尚待。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

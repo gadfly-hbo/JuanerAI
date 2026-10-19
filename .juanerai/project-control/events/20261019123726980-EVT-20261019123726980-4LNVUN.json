@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019123726980-4LNVUN",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T12:37:26.980Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "实际经营闭环完成，全部试验服务正常关闭；准备原生独立完整复核。",
+  "status_after": "active",
+  "evidence_refs": []
+}

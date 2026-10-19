@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019095752906-DK180B",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T09:57:52.906Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "用户继续接入及有界模型授权已收到，恢复必要工程工作",
+  "status_after": "active",
+  "evidence_refs": []
+}

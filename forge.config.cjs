@@ -8,7 +8,9 @@ const internalOutput = process.env.JUANERAI_INTERNAL_INSTALL_OUTPUT;
 const deepResearchPackage=process.env.JUANERAI_DEEP_RESEARCH_PACKAGE==='1';
 if(deepResearchPackage&&!internalResources)throw new Error('Deep Research delivery requires explicit verified bundled resources');
 const reportStudioPackage=process.env.JUANERAI_REPORT_STUDIO_PACKAGE==='1';
-const browserPackage=reportStudioPackage||deepResearchPackage;
+const metricFactoryPackage=process.env.JUANERAI_METRIC_FACTORY_PACKAGE==='1';
+if(metricFactoryPackage&&!internalResources)throw new Error('Metric Factory delivery requires verified bundled resources');
+const browserPackage=reportStudioPackage||deepResearchPackage||metricFactoryPackage;
 if(reportStudioPackage&&!internalResources)throw new Error('Report Studio delivery requires explicit verified bundled resources');
 if (internalResources || internalOutput) {
   if (!internalResources || !internalOutput || !path.isAbsolute(internalResources) || !path.isAbsolute(internalOutput)) {
@@ -58,7 +60,7 @@ module.exports = {
     prune: true,
     ignore: file => file.includes('/node_modules/.') || Boolean(file) && !(/^\/(?:\.vite(?:\/|$)|node_modules(?:\/|$)|package\.json$)/.test(file)),
     extraResource: internalResources
-      ? [path.join(internalResources, 'toolchain-deployment.json'), path.join(internalResources, 'toolchain'), path.join(internalResources, 'THIRD_PARTY_NOTICES'), ...(reportStudioPackage?[path.join(internalResources,'report-studio'),path.join(internalResources,'report-studio-deployment.json')]:[]), ...(deepResearchPackage?[path.join(internalResources,'deep-research'),path.join(internalResources,'deep-research-deployment.json')]:[]), '.vite/build/xanthil-resources']
+      ? [path.join(internalResources, 'toolchain-deployment.json'), path.join(internalResources, 'toolchain'), path.join(internalResources, 'THIRD_PARTY_NOTICES'), ...(reportStudioPackage?[path.join(internalResources,'report-studio'),path.join(internalResources,'report-studio-deployment.json')]:[]), ...(deepResearchPackage?[path.join(internalResources,'deep-research'),path.join(internalResources,'deep-research-deployment.json')]:[]), ...(metricFactoryPackage?[path.join(internalResources,'metric-factory'),path.join(internalResources,'metric-factory-deployment.json')]:[]), '.vite/build/xanthil-resources']
       : ['build/xanthil-toolchain-deployment.json', '.vite/build/xanthil-resources'],
     afterCopyExtraResources: internalResources ? [] : [renameToolchainDeploymentResource],
     ...(electronZipDir ? { electronZipDir } : {}),

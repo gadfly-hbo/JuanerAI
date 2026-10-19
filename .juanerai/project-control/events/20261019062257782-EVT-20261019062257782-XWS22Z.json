@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019062257782-XWS22Z",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T06:22:57.782Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "Independent Validator001 returned two blocking defects; candidate not accepted.",
+  "status_after": "active",
+  "evidence_refs": []
+}

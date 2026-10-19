@@ -1,3 +1,4 @@
+import {metricFactoryHttp} from "./metric-factory-http.ts";
 import {deepResearchHttp,type ResearchHttpServices} from './deep-research-http.ts';
 import {decisionPlatformHttp,type DecisionHttpServices} from './decision-platform-http.ts';
 import {reportStudioHttp,type ReportStudioHttpServices} from './report-studio-http.ts';
@@ -54,7 +55,7 @@ function browserOpenTask(task: Omit<OpenStoredTask,'history'> & {history?:OpenSt
 export type BrowserServiceCommands={credential:string;check?():void;stop():Promise<void>;projects():Promise<unknown>;receipt?(id:string):Promise<unknown>;select(input:unknown):Promise<unknown>;settings(input:unknown):Promise<unknown>};
 
 /** Task-owned loopback composition. No provider, credentials, file selection or service activation. */
-export async function startBrowserMembershipServer(deps: {store: BrowserMembershipReadback;deepResearch?:ResearchHttpServices;reportStudio?:ReportStudioHttpServices;decisionPlatform?:DecisionHttpServices;workspace?:BrowserWorkspaceCommands;service?:BrowserServiceCommands;formalMember?:ReturnType<typeof import('../../packages/application/browser-membership.ts').createOpenMemberCaseAdmission>;open?:ReturnType<typeof import('../../profiles/personal/open-analysis.ts').createPersonalOpenAnalysisWorkspace>}) {
+export async function startBrowserMembershipServer(deps: {store: BrowserMembershipReadback;metricFactory?:import("../../packages/ports/metric-factory.ts").MetricWorkspace;deepResearch?:ResearchHttpServices;reportStudio?:ReportStudioHttpServices;decisionPlatform?:DecisionHttpServices;workspace?:BrowserWorkspaceCommands;service?:BrowserServiceCommands;formalMember?:ReturnType<typeof import('../../packages/application/browser-membership.ts').createOpenMemberCaseAdmission>;open?:ReturnType<typeof import('../../profiles/personal/open-analysis.ts').createPersonalOpenAnalysisWorkspace>}) {
   const app = createBrowserMembershipReadbackApplication(deps.store);
   const workbenchVersion={contract:'BUI-20261015-004',started_at:new Date().toISOString(),pid:process.pid,node:process.version,source_sha256:Object.fromEntries(['apps/browser/local-server.ts','apps/browser/quick-analysis-client.mjs','apps/browser/quick-analysis-workbench.mjs','apps/browser/browser-workbench.css','packages/application/open-analysis-workspace.ts','packages/product-core/browser-report-content.ts','adapters/storage-local/open-analysis.ts'].map(path=>[path,createHash('sha256').update(readFileSync(new URL('../../'+path,import.meta.url))).digest('hex')]))};
   const bootstrap = secret(), session = secret();
@@ -128,6 +129,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       if(Reflect.get(body,'generation')!==generation)throw new HttpFailure(409);
       control=secret();owned=true;generation++;reply(res,200,{control,generation});return;
     }
+    if(path.startsWith('/v1/metric-factory/')){const grant=req.headers['x-xanthil-control'];await metricFactoryHttp(req,res,{workspace:deps.metricFactory,check(){if(!owned||!equal(grant,control))throw new HttpFailure(403);},json,reply,reject(status):never{throw new HttpFailure(status);}});return;}
     if(path.startsWith('/v1/deep-research/')){const grant=req.headers['x-xanthil-control'];await deepResearchHttp(req,res,{services:deps.deepResearch,checkControl(){if(!owned||!equal(grant,control))throw new HttpFailure(403);},canWrite:owned&&equal(req.headers['x-xanthil-control'],control),json,reply,reject(status):never{throw new HttpFailure(status);}});return;}
     if(path.startsWith('/v1/decision-platform/')){await decisionPlatformHttp(req,res,{services:deps.decisionPlatform,canWrite:owned&&equal(req.headers['x-xanthil-control'],control),json,reply,reject(status):never{throw new HttpFailure(status);}});return;}
     if(path.startsWith('/v1/report-studio/')){await reportStudioHttp(req,res,{services:deps.reportStudio,canWrite:owned&&equal(req.headers['x-xanthil-control'],control),json,reply,reject(status):never{throw new HttpFailure(status);}});return;}

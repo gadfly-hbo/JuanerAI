@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019122457795-HA0WT3",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T12:24:57.795Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "用户恢复现有Change并接受E-MF-01历史偏差；既有权属复用，零新增Provider",
+  "status_after": "active",
+  "evidence_refs": []
+}

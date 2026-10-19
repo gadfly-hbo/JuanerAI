@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019105917336-2VMIU8",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T10:59:17.336Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "本轮完整离线回归19阶段全部通过，保留真实取消UNKNOWN及质量局限。",
+  "status_after": "active",
+  "evidence_refs": []
+}

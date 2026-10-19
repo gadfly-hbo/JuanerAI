@@ -1,3 +1,4 @@
+import {readPersonalMetricDeployment,type MetricModelAccess} from "../../profiles/personal/metric-factory.ts";
 export {};
 
 
@@ -52,6 +53,7 @@ import {createPersonalBrowserServiceWorkspace} from '../../profiles/personal/bro
 import {startBrowserMembershipServer} from './local-server.ts';
 import {readPersonalDesktopToolchain} from '../../profiles/personal/xanthil-desktop.ts';
 import {createProviderSettings} from '../../packages/application/provider-settings.ts';
+import {createPersonalMetricModel,readPersonalMetricTrialGrant} from '../../profiles/personal/metric-factory-model.ts';
 import {createMacOsCredentialStore} from '../../adapters/credentials-macos/index.ts';
 import {createPiConnectionProbe} from '../../adapters/agent-pi/native-connection-probe.ts';
 import {createLocalMembershipPolicyStore} from '../../adapters/storage-local/member-model-policy.ts';
@@ -100,7 +102,7 @@ export async function runReportStudioExit(parts:{lifecycle():Promise<import('../
 }
 
 /** Node composition only. Passive startup never reads credentials or dispatches models. */
-export async function startIndependentBrowserService(root:string,options:Readonly<{researchBundle?:{programRoot:string;manifestSha256:string;fixtureModule?:string;credentialEnvironment?:Readonly<Record<string,string>>;authorize?:Parameters<typeof createPersonalResearchRuntime>[0]['authorize']};harnessFirstLoop?:import('../../packages/ports/open-analysis-runtime.ts').AnalysisHarnessFirstLoop;decisionPlatform?:ReturnType<typeof createPersonalDecisionRuntime>;metricAssetDisclosureAllowed?:boolean;deployment?:Readonly<{resourcesRoot:string;credentialHelper:string}>}> & IndependentBrowserAnalysisOptions={}){
+export async function startIndependentBrowserService(root:string,options:Readonly<{metricFactoryModel?:MetricModelAccess;researchBundle?:{programRoot:string;manifestSha256:string;fixtureModule?:string;credentialEnvironment?:Readonly<Record<string,string>>;authorize?:Parameters<typeof createPersonalResearchRuntime>[0]['authorize']};harnessFirstLoop?:import('../../packages/ports/open-analysis-runtime.ts').AnalysisHarnessFirstLoop;decisionPlatform?:ReturnType<typeof createPersonalDecisionRuntime>;metricAssetDisclosureAllowed?:boolean;deployment?:Readonly<{resourcesRoot:string;credentialHelper:string}>}> & IndependentBrowserAnalysisOptions={}){
  validateIndependentBrowserAnalysisOptions(options);
  if(options.harnessFirstLoop!==undefined&&options.harnessFirstLoop.version!=='v0.2')throw new Error('INVALID_REQUEST');
  const harness=options.harnessFirstLoop?structuredClone(options.harnessFirstLoop):undefined;
@@ -117,9 +119,10 @@ export async function startIndependentBrowserService(root:string,options:Readonl
  const research=createPersonalResearchRuntime({...researchBundle,pythonExecutable:()=>researchPython,hostOrigin:()=>{if(!server)throw Error('DR_HOST_NOT_READY');return server.origin;}});
  const credentialStore=createMacOsCredentialStore(deployment?.credentialHelper??join(resources,'development-keychain/xanthil-keychain'));
  const settings=createProviderSettings({store:credentialStore,probe:createPiConnectionProbe({root:join(paths.userData,'connection-tests')})});
+ const metricFactory=readPersonalMetricDeployment(resources,paths.userData,options.metricFactoryModel??createPersonalMetricModel({settings,directory:join(paths.userData,'metric-factory/workspace-owner'),authorized:()=>readPersonalMetricTrialGrant(join(paths.userData,'metric-factory/model-grant.json'))}));
  const reportStudio=await readPersonalReportStudioDeployment({resourcesRoot:resources,userData:paths.userData});
  const closeResources=createReportStudioAwareShutdown({...(reportStudio.state==='configured'?{studio:async()=>{await options.decisionPlatform?.close();await reportStudio.runtime.close();}}:options.decisionPlatform?{studio:()=>options.decisionPlatform!.close()}:{}),server:async()=>{await research?.close();await server?.close();},workspace:async()=>{await manager?.close();},release:()=>{settings.close();identity.close();}});
- const close=async()=>{await research?.assertIdle();await closeResources();};
+ const close=async()=>{await research?.assertIdle();await metricFactory?.close();await closeResources();};
  try{
   const toolchain=await readIndependentWebToolchain(join(resources,deployment?'toolchain-deployment.json':'xanthil-toolchain-deployment.json'));
   researchPython=toolchain.pythonExecutable;
@@ -127,7 +130,7 @@ export async function startIndependentBrowserService(root:string,options:Readonl
   const credentials=createApprovedProviderCredentials({backupStore:credentialStore});
   const openModel=createIndependentBrowserOpenModel({options,credentials,documentReader:await readIndependentWebDocumentReaders(join(resources,'xanthil-document-readers.json'),toolchain.pythonExecutable,deployment?{}:process.env)});
   manager=await createPersonalBrowserServiceWorkspace({...(options.decisionPlatform?{decisionPlatform:options.decisionPlatform}:{}),...(reportStudio.state==='configured'?{reportStudio:reportStudio.runtime}:{}),originDirectory:paths.userData,projectsRoot:paths.projects,toolchain,openModel,model:{createRuntime:({projectRoot})=>createPiSessionCaseRuntime({projectRoot,ledger:createLocalAnalysisRequestLedger({projectRoot}),credential:()=>settings.taskCredential()}),access:settings.access,policy}});
-  server=await startBrowserMembershipServer({...(research?{deepResearch:{task:(projectId:string,taskId:string,checkControl:()=>void)=>research.task({...manager!.researchContext(projectId,taskId),checkControl})}}:{}),...(options.decisionPlatform?{decisionPlatform:{project:manager.decisionProject}}:{}),reportStudio:reportStudio.state==='configured'?{runtime:reportStudio.runtime,project:manager.reportStudioProject}:{unavailable:reportStudio.state},store:manager.store,workspace:manager.workspace,open:manager.open,formalMember:manager.formalMember,service:{credential:identity.credential,check:identity.check,stop:close,projects:manager.projects,receipt:manager.receipt,select:async(...args:Parameters<NonNullable<typeof manager>['select']>)=>{await research?.assertIdle();return manager!.select(...args);},settings:settings.request}});
+  server=await startBrowserMembershipServer({metricFactory,...(research?{deepResearch:{task:(projectId:string,taskId:string,checkControl:()=>void)=>research.task({...manager!.researchContext(projectId,taskId),checkControl})}}:{}),...(options.decisionPlatform?{decisionPlatform:{project:manager.decisionProject}}:{}),reportStudio:reportStudio.state==='configured'?{runtime:reportStudio.runtime,project:manager.reportStudioProject}:{unavailable:reportStudio.state},store:manager.store,workspace:manager.workspace,open:manager.open,formalMember:manager.formalMember,service:{credential:identity.credential,check:identity.check,stop:close,projects:manager.projects,receipt:manager.receipt,select:async(...args:Parameters<NonNullable<typeof manager>['select']>)=>{await research?.assertIdle();return manager!.select(...args);},settings:settings.request}});
   if(reportStudio.state==='configured')reportStudio.runtime.connectOwner(createPersonalReportStudioOwner({origin:()=>{if(!server)throw Object.assign(Error('RS_OWNER_UNAVAILABLE'),{code:'RS_OWNER_UNAVAILABLE'});return server.origin;},project:manager.reportStudioOriginal}));
   identity.publish(server.origin);return {origin:server.origin,close,lifecycle:async()=>reportStudio.state==='configured'?reportStudio.runtime.lifecycle():{intent:'none' as const,pending:false,request_count:0,configuration_unknown:false,operations:[]},exitIntent:async(intent:'wait'|'stop'|'cancel')=>reportStudio.state==='configured'?reportStudio.runtime.exitIntent(intent):undefined,async open(){const response=await fetch(server!.origin+'/v1/service/open',{method:'POST',headers:{'x-xanthil-service':identity.credential,'content-type':'application/json'},body:'{}',signal:AbortSignal.timeout(5000),redirect:'error'});if(!response.ok)throw Error('WEB_OPEN_UNAVAILABLE');const value=closed(await response.json(),['token']);if(typeof value.token!=='string'||! /^[a-f0-9]{64}$/.test(value.token))throw Error('WEB_OPEN_UNAVAILABLE');return server!.origin+'/#'+value.token;}};
  }catch(error){await close();throw error;}

@@ -34,3 +34,13 @@ The exact source/candidate/input/report identities and authorized Git actions
 are bound in [engineering-delivery.md](engineering-delivery.md). Full portable
 CI/native acceptance/product acceptance are distinct evidence levels. No complete
 capability or stage status advances; [full map](../../../../docs/planning/capability-coverage/latest.md).
+
+## Integration condition after PR108
+
+Main363c introduces the upstream Metric Factory workbench; its nonrecord blobs
+are retained unchanged and its acceptance/authority stays attributed upstream.
+Current repair regression again500 PASS/0 FAIL/2 SKIP and typecheck exit0.
+The fixed repair behavior acceptance remains offline-limited; final new-base
+Git integration additionally requires the independently collected integration
+supplement and fresh current-head CI in the final external Git receipt. It does
+not inherit PR108 model budgets/Provider or installed-resource permissions.

@@ -1,5 +1,40 @@
 # repair001 engineering and Git delivery
 
+## Current integration base363c — PR108 advancement
+
+Main advanced through the separately approved Metric Factory PR108 to
+363c756f63466c1b9625f5d206a348439e7759b4 while PR109's first CI was running.
+That first CI39261755881 was explicitly cancelled for base integration; complete
+native ZIP/logs and cancelled status remain in the Git evidence root. It is not
+a current CI PASS and its incomplete counts are not upgraded to full regression.
+
+Normal merge preserves all94 non-conflicting incoming files exactly equal to
+the upstream Git blobs. Only status/register/latest had record conflicts: full
+three-way copies and conflict text are retained; current sole-writer repair
+status is restored through the supported CLI, incoming status preserved as
+history and every upstream event retained; coverage keeps the complete incoming
+canonical body and repair attribution. Metric Factory authority/real-use history
+belongs to PR108 and grants this repair no Provider/data/install/release effects.
+
+Workspace/Application/native-session test/package/lock remain byte-exact to
+reviewed03893da; fixed SDK.5 remains unchanged. Shared browser optional-route
+composition and current CI/type roots are upstream changes, not repair edits.
+New-combination affected regression rerun:502 tests,500 PASS/0 FAIL/2 retained
+Chrome-gated SKIP,108.019s,exit0; typecheck exit0,9.903s. All9 real Workspace
+WR cases execute and all pre-existing native/read/recovery cases remain.
+Two evidence-logger attempts failed before validation because the new runs/
+parent was absent; raw setup failures remain under their original labels. Parent
+was created without source/dependency changes and actual checks use new labels.
+
+This new complete integration receives affected independent native key-path
+review and fresh exact-head full portable CI before authorized merge. Their
+collected report/head/tree/actual publication outcomes belong in the external
+FINAL-GIT-DELIVERY-RECEIPT.md/json. Earlier cc46/3793-path statements below retain
+their historical candidate scope rather than being rewritten as new evidence.
+[Current main363c full40 snapshot](../../../../docs/planning/capability-coverage/snapshots/agent-host-exploration-resume-repair001-base363c-2026-10-19.md);
+repair capability/status/target/stage increment0 relative this new base. Original
+repair001 and003 archives, PR106, FAIL/BLOCKED/UNKNOWN and consumption stay fixed.
+
 ## Current scope and result
 
 User2026-10-19 explicitly authorizes the local repair001 standard Git delivery.
