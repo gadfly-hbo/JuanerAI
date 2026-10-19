@@ -1,5 +1,10 @@
 import type {NativeMemberReview,NativeMemberReviewSubmitReceipt} from '../../packages/product-core/open-member-review.ts';
 export type QuickAnalysisTaskView=Readonly<{
+ focusedJudgment?:import('../../packages/ports/open-analysis-judgment-review.ts').JudgmentClaimReview|null;
+ reviewHistory?:readonly import('../../packages/ports/open-analysis-judgment-review.ts').OpenJudgmentReview[];
+ reviewRetryAvailable?:boolean;
+ judgmentReview?:import('../../packages/ports/open-analysis-judgment-review.ts').OpenJudgmentReview|null;
+ reviewWritePending?:boolean;
  content?:ReturnType<typeof import('../../packages/product-core/browser-report-content.ts').projectReportContent>;
  metricAsset?:Readonly<{id:string;version:string;attribution?:'payment'|'completion';owner?:string;fingerprint?:string}>|null;assetRevisionReady?:boolean;
  requirementDraft?:Readonly<Pick<import('../../packages/product-core/open-requirement-framework.ts').RequirementDraft,'revision'|'sequence'|'content'|'history'|'conversation'>&{reviewed?:boolean;executed?:boolean;staleResult?:boolean}>|null;

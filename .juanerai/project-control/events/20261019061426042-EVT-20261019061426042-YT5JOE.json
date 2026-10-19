@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019061426042-YT5JOE",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T06:14:26.042Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a151ee-3903-7eb1-980c-8611948c5800"
+  },
+  "summary": "完整候选003独立离线PASS并交付；三项发现关闭，历史FAIL/UNKNOWN保留，正式及外部权限未开启",
+  "status_after": "complete",
+  "evidence_refs": []
+}

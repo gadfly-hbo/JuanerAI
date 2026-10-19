@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019025200120-IJHJVX",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T02:52:00.120Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a151ee-3903-7eb1-980c-8611948c5800"
+  },
+  "summary": "Native Python LA09 focused PASS; complete offline candidate still in progress",
+  "status_after": "active",
+  "evidence_refs": []
+}

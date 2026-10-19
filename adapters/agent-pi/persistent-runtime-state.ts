@@ -1,3 +1,4 @@
+import {createBusinessWorkState} from './business-work-state.ts';
 import {DatabaseSync} from 'node:sqlite';
 import {existsSync,lstatSync,mkdirSync,realpathSync,openSync,closeSync,writeSync,fstatSync,unlinkSync,readFileSync,constants} from 'node:fs';
 import {dirname,join} from 'node:path';
@@ -5,7 +6,6 @@ import {createHash} from 'node:crypto';
 import {RuntimeFault,ModelFailure,ToolOutputFailure,type AuditEvent,type AuditSink,type BudgetStore,type Limits,type Usage,type ConversationCheckpoint,type SessionBinding,type SessionStorage,type UncappedLimits,type UncappedBudgetLease,type UncappedUsage} from 'pi-agent-runtime';
 
 export const approvedUncappedAnalysisLimits:Readonly<UncappedLimits>=Object.freeze({cumulative:'unlimited',maxOutputTokens:4096,modelTimeoutMs:30000,toolTimeoutMs:60000,controlTimeoutMs:10000});
-/** Approved first-loop v0.2 new-task limits. Legacy task identities keep their original limits. */
 export const approvedFirstLoopAnalysisLimits:Readonly<UncappedLimits>=Object.freeze({cumulative:'unlimited',maxOutputTokens:32768,modelTimeoutMs:600000,toolTimeoutMs:300000,controlTimeoutMs:30000});
 export const approvedAnalysisLimits:Readonly<Limits>=Object.freeze({modelCalls:1000,toolCalls:5000,outputTokens:4000000,wallTimeMs:18000000});
 type ConfigurationMigration={from:string;to:string;approval:string;reconciliation:string;accounting:string};
@@ -20,6 +20,7 @@ function limitsValid(v:Limits){return v&&integer(v.modelCalls,1)&&integer(v.tool
 function isUncapped(v:Limits|UncappedLimits):v is UncappedLimits{return 'cumulative' in v&&v.cumulative==='unlimited';}
 function uncappedValid(v:UncappedLimits){return v&&Object.keys(v).length===5&&v.cumulative==='unlimited'&&['maxOutputTokens','modelTimeoutMs','toolTimeoutMs','controlTimeoutMs'].every(k=>integer(Reflect.get(v,k),1)&&Reflect.get(v,k)<=2147483647);}
 function fault(reason:ConstructorParameters<typeof RuntimeFault>[0]):never{throw new RuntimeFault(reason);}
+
 /** One SDK observation per physical attempt; the existing reservation is the
  * atomic precondition. Partial observations retain its full unknown reserve. */
 type ReportedUsage=Parameters<NonNullable<UncappedBudgetLease['recordModelUsage']>>[1];
@@ -39,7 +40,7 @@ export function createPersistentRuntimeState(config:{projectRoot:string;historic
  function access<T>(write:boolean,action:(db:DatabaseSync)=>T):T{
   safe();mkdirSync(dirname(file),{recursive:true});safe();const db=new DatabaseSync(file);
   try{
-   db.exec('PRAGMA synchronous=FULL; PRAGMA busy_timeout=1000;');
+   db.exec('PRAGMA busy_timeout=1000; PRAGMA synchronous=FULL;');
    db.exec('BEGIN IMMEDIATE');
    try{
     const version=Number(db.prepare('PRAGMA user_version').get()?.user_version);
@@ -65,15 +66,18 @@ export function createPersistentRuntimeState(config:{projectRoot:string;historic
  }
  const save=(db:DatabaseSync,task:string,v:State)=>{if(Object.values(v.usage).some(n=>!integer(n)))fault('STATE_FAILED');const body=JSON.stringify(v);db.prepare('INSERT INTO budgets VALUES(?,?,?) ON CONFLICT(task_id) DO UPDATE SET body=excluded.body,digest=excluded.digest').run(task,body,digest(body));};
  const safeLabel=(v:unknown)=>typeof v==='string'&&/^[A-Za-z0-9_.:/-]{1,256}$/.test(v);
- const audit:AuditSink={async append(event,signal){
+ const businessWork=createBusinessWorkState(access);
+ async function appendAudit(event:Readonly<AuditEvent & {work?:Readonly<{id:string;logicalId:string;recovery:boolean}>;diagnostic?:string;modelStop?:string}>,signal:AbortSignal,workId?:string){
   // This records an existing effect; it grants no cancelled model/tool action.
   // New v1 terminal facts are independently acknowledged after the frozen
   // cancellation result. All other cancelled writes retain their old fence.
   const terminalReason=event.reason??event.toolOutcome?.reason;
-  const late=signal.aborted&&['CANCELLED','DEADLINE_EXCEEDED'].includes(terminalReason??'')&&(event.kind==='model.finished'&&event.modelOutcome!==undefined||event.kind==='tool.finished'&&event.toolOutcome!==undefined);
+  const late=signal.aborted&&(workId!==undefined&&event.kind==='model.finished'&&event.modelAttemptFact?.terminal===true||['CANCELLED','DEADLINE_EXCEEDED'].includes(terminalReason??'')&&(event.kind==='model.finished'&&event.modelOutcome!==undefined||event.kind==='tool.finished'&&event.toolOutcome!==undefined));
   if(signal.aborted&&!late)fault('CANCELLED');
-  const keys=['version','taskId','runId','sequence','kind','at','provider','model','contextVersions','digest','toolName','reason','attempt','failureCategory','session','invocation','toolFailed','modelOutcome','toolOutcome','toolAdmission'];
+  const keys=['version','taskId','runId','sequence','kind','at','provider','model','contextVersions','digest','toolName','reason','attempt','failureCategory','session','invocation','toolFailed','modelOutcome','toolOutcome','toolAdmission','work','diagnostic','modelStop',...(workId?['modelAttempt','modelAttemptFact']:[])];
   if(Object.keys(event).some(k=>!keys.includes(k))||event.version!=='1.0'||![event.taskId,event.runId,event.provider,event.model].every(safeLabel)||!integer(event.sequence,1)||!['run.started','model.admitted','model.finished','tool.admitted','tool.finished','tool.prepared','run.finished','session.control'].includes(event.kind)||!Number.isFinite(Date.parse(event.at))||!event.contextVersions||Object.entries(event.contextVersions).some(([k,v])=>!safeLabel(k)||!(/^[a-f0-9]{64}$/.test(v)||/^\d+(?:\.\d+)*$/.test(v)||/^[a-f0-9-]{36}$/.test(v)))||event.digest!==undefined&&!/^[a-f0-9]{64}$/.test(event.digest)||event.toolName!==undefined&&!safeLabel(event.toolName)||event.reason!==undefined&&!/^[A-Z_]+$/.test(event.reason)||event.attempt!==undefined&&!integer(event.attempt)||event.failureCategory!==undefined&&!['quota','rate-limit','unavailable','network'].includes(event.failureCategory))fault('AUDIT_FAILED');
+  if(event.work!==undefined&&(Object.keys(event.work).sort().join(',')!=='id,logicalId,recovery'||!safeLabel(event.work.id)||!safeLabel(event.work.logicalId)||typeof event.work.recovery!=='boolean'||!['model.admitted','model.finished'].includes(event.kind)))fault('AUDIT_FAILED');
+  if(event.diagnostic!==undefined&&!['output_length','model_protocol','work_policy'].includes(event.diagnostic)||event.modelStop!==undefined&&(!['complete','tools','length','deferred'].includes(event.modelStop)||event.kind!=='model.finished'))fault('AUDIT_FAILED');
   const identityValid=(v:unknown,invocation=false)=>{if(!v||typeof v!=='object'||Array.isArray(v))return false;const keys=invocation?['sessionId','branch','operationId','invocationId','toolCallId']:['sessionId','branch','operationId'];return Object.keys(v).length===keys.length&&keys.every(k=>safeLabel(Reflect.get(v,k)));};
   if(event.session!==undefined&&!identityValid(event.session)||event.invocation!==undefined&&(!identityValid(event.invocation,true)||!event.session||['sessionId','branch','operationId'].some(k=>Reflect.get(event.invocation!,k)!==Reflect.get(event.session!,k)))||event.toolFailed!==undefined&&typeof event.toolFailed!=='boolean')fault('AUDIT_FAILED');
   const fields=(v:unknown,required:readonly string[],optional:readonly string[]=[])=>!!v&&typeof v==='object'&&!Array.isArray(v)&&required.every(k=>Object.hasOwn(v,k))&&Object.keys(v).every(k=>required.includes(k)||optional.includes(k));
@@ -93,8 +97,9 @@ export function createPersistentRuntimeState(config:{projectRoot:string;historic
     new ToolOutputFailure(out);
    }
   }catch{fault('AUDIT_FAILED');}
-  const body=JSON.stringify(event);access(true,db=>{if(signal.aborted&&!late)fault('CANCELLED');db.prepare('INSERT INTO audit VALUES(?,?,?,?,?)').run(event.taskId,event.runId,event.sequence,body,digest(body));});
- }};
+  const body=JSON.stringify(event);access(true,db=>{if(signal.aborted&&!late)fault('CANCELLED');if(workId){const prior=db.prepare('SELECT body FROM audit WHERE run_id=? AND sequence=?').get(event.runId,event.sequence);if(prior){if(prior.body!==body)fault('AUDIT_FAILED');return;}businessWork.record(db,workId,event);}db.prepare('INSERT INTO audit VALUES(?,?,?,?,?)').run(event.taskId,event.runId,event.sequence,body,digest(body));});
+ }
+ const audit:AuditSink={append:(event,signal)=>appendAudit(event,signal)};
  const checkpointBody=(checkpoint:Readonly<ConversationCheckpoint>):string=>{
   if(!checkpoint||checkpoint.version!=='1.0'||!safeLabel(checkpoint.taskId)||!['ready','waiting','completed','tool-admitted'].includes(checkpoint.state)||!Array.isArray(checkpoint.messages))fault('STATE_FAILED');
   let body:string;try{body=JSON.stringify(checkpoint,(_key,value)=>{if(typeof value==='number'&&!Number.isFinite(value)||typeof value==='function'||typeof value==='symbol'||typeof value==='bigint')fault('STATE_FAILED');return value;});}catch{fault('STATE_FAILED');}
@@ -111,7 +116,7 @@ export function createPersistentRuntimeState(config:{projectRoot:string;historic
  function dead(lock:WriterReceipt){try{process.kill(lock.pid,0);}catch(e){if((e as NodeJS.ErrnoException).code==='ESRCH')return;fault('TASK_BUSY');}fault('TASK_BUSY');}
  type InterruptedInput={businessIdentity:string;task:string;expectedOwner:string;expectedAccounting:string;expectedLock:string;approval:string;reconciliation:string;signal:AbortSignal;authorize:()=>boolean};
  let interruptedPermit:InterruptedInput|undefined;
- const api={audit,readWriterLock,
+ const api={businessWork,appendWorkAudit:(id:string,event:Readonly<AuditEvent>,signal:AbortSignal)=>appendAudit(event,signal,id),audit,readWriterLock,
  /** Trusted abort-only Adapter seam; no expiry, automatic release or tool replay. */
  interruptedAbortLease(input:InterruptedInput){
   if(!safeLabel(input.task)||!safeLabel(input.expectedOwner)||[input.businessIdentity,input.expectedAccounting,input.expectedLock,input.approval,input.reconciliation].some(v=>!/^[a-f0-9]{64}$/.test(v)))fault('INVALID_REQUEST');
@@ -135,11 +140,13 @@ export function createPersistentRuntimeState(config:{projectRoot:string;historic
  },
  readAccounting(task:string){if(!safeLabel(task))fault('STATE_FAILED');return access(false,db=>structuredClone(read(db,task)));},
  /** Trusted Adapter only: external effects/native queues must be reconciled under the project writer lock first. */
- migrateConfiguration(input:{task:string;from:string;to:string;expectedAccounting:string;approval:string;reconciliation:string}){
-  if(!safeLabel(input.task)||Object.keys(input).length!==6||[input.from,input.to,input.expectedAccounting,input.approval,input.reconciliation].some(v=>!/^[a-f0-9]{64}$/.test(v))||input.from===input.to)fault('INVALID_REQUEST');
+ migrateConfiguration(input:{task:string;from:string;to:string;expectedAccounting:string;approval:string;reconciliation:string;reviewTimeoutMs?:60000;reportTimeoutMs?:120000}){
+  if(!safeLabel(input.task)||Object.keys(input).length!==6+Number(input.reviewTimeoutMs!==undefined)+Number(input.reportTimeoutMs!==undefined)||input.reviewTimeoutMs!==undefined&&(input.reviewTimeoutMs!==60000||input.reportTimeoutMs!==undefined)||input.reportTimeoutMs!==undefined&&input.reportTimeoutMs!==120000||[input.from,input.to,input.expectedAccounting,input.approval,input.reconciliation].some(v=>!/^[a-f0-9]{64}$/.test(v))||input.from===input.to)fault('INVALID_REQUEST');
   return access(true,db=>{const v=read(db,input.task);if(!v||!isUncapped(v.limits)||v.configuration!==input.from||digest(JSON.stringify(v))!==input.expectedAccounting)fault('CONFIGURATION_CHANGED');if(v.owner!==null||v.interruptedStops?.at(-1)?.outcome==='pending')fault('TASK_BUSY');
+   if(input.reviewTimeoutMs!==undefined&&JSON.stringify(v.limits)!==JSON.stringify(approvedUncappedAnalysisLimits))fault('CONFIGURATION_CHANGED');
+   if(input.reportTimeoutMs!==undefined&&JSON.stringify(v.limits)!==JSON.stringify({...approvedUncappedAnalysisLimits,modelTimeoutMs:60000}))fault('CONFIGURATION_CHANGED');
    const receipt={from:input.from,to:input.to,approval:input.approval,reconciliation:input.reconciliation,accounting:input.expectedAccounting};
-   v.configurationHistory=[...(v.configurationHistory??[]),receipt];v.configuration=input.to;save(db,input.task,v);return structuredClone(receipt);
+   v.configurationHistory=[...(v.configurationHistory??[]),receipt];v.configuration=input.to;if(input.reviewTimeoutMs!==undefined)v.limits={...v.limits,modelTimeoutMs:input.reviewTimeoutMs};if(input.reportTimeoutMs!==undefined)v.limits={...v.limits,modelTimeoutMs:input.reportTimeoutMs};save(db,input.task,v);return structuredClone(receipt);
   });
  },
  readNativeBindings(task:string){if(!safeLabel(task))fault('STATE_FAILED');return access(false,db=>db.prepare('SELECT body,digest FROM native_operations WHERE task_id=? ORDER BY rowid').all(task).map(row=>{if(typeof row.body!=='string'||digest(row.body)!==row.digest)fault('STATE_FAILED');return JSON.parse(row.body) as SessionBinding&{taskId:string;purpose?:string};}));},
@@ -169,7 +176,7 @@ export function createPersistentRuntimeState(config:{projectRoot:string;historic
   if(signal.aborted)fault('CANCELLED');if(Object.keys(input).some(k=>!['sessionId','branch','operationId','taskId','purpose'].includes(k))||![input.sessionId,input.branch,input.operationId,input.taskId].every(safeLabel)||input.purpose!==undefined&&!safeLabel(input.purpose))fault('STATE_FAILED');
   const body=JSON.stringify(input);access(true,db=>{if(signal.aborted)fault('CANCELLED');const owner=db.prepare('SELECT task_id,purpose FROM native_sessions WHERE session_id=? UNION ALL SELECT task_id,purpose FROM native_forks WHERE session_id=?').get(input.sessionId,input.sessionId);if(!owner||owner.task_id!==input.taskId||owner.purpose!==(input.purpose??'analysis'))fault('STATE_FAILED');const old=db.prepare('SELECT body,digest FROM native_operations WHERE operation_id=?').get(input.operationId);if(old&&(old.body!==body||old.digest!==digest(body)))fault('STATE_FAILED');db.prepare('INSERT OR IGNORE INTO native_operations VALUES(?,?,?,?)').run(input.operationId,input.taskId,body,digest(body));});
  },
- readLatestPurpose(task:string){if(!safeLabel(task))fault('STATE_FAILED');return access(false,db=>{const rows=db.prepare('SELECT body,digest FROM native_operations WHERE task_id=? ORDER BY rowid DESC').all(task);for(const row of rows){if(typeof row.body!=='string'||digest(row.body)!==row.digest)fault('STATE_FAILED');const binding=JSON.parse(row.body) as SessionBinding&{taskId:string;purpose?:string};const purpose=binding.purpose??'analysis';if(binding.taskId!==task||!['analysis','analysis_native','analysis_objects','proposal_objects','proposal_prepare','report_edit','retained_case'].includes(purpose)&&!/^(retained_case|analysis|analysis_native|analysis_objects):[a-f0-9-]{36}$/.test(purpose))fault('STATE_FAILED');if(!purpose.includes(':'))return purpose==='analysis_native'||purpose==='analysis_objects'?'analysis':purpose==='proposal_objects'?'proposal_prepare':purpose;}return undefined;});},
+ readLatestPurpose(task:string){if(!safeLabel(task))fault('STATE_FAILED');return access(false,db=>{const rows=db.prepare('SELECT body,digest FROM native_operations WHERE task_id=? ORDER BY rowid DESC').all(task);for(const row of rows){if(typeof row.body!=='string'||digest(row.body)!==row.digest)fault('STATE_FAILED');const binding=JSON.parse(row.body) as SessionBinding&{taskId:string;purpose?:string};const purpose=binding.purpose??'analysis';if(binding.taskId!==task||!['analysis','analysis_native','analysis_objects','proposal_objects','proposal_prepare','report_edit','retained_case','conclusion_strategy_review'].includes(purpose)&&!/^(retained_case|analysis|analysis_native|analysis_objects):[a-f0-9-]{36}$/.test(purpose))fault('STATE_FAILED');if(!purpose.includes(':'))return purpose==='analysis_native'||purpose==='analysis_objects'?'analysis':purpose==='proposal_objects'?'proposal_prepare':purpose;}return undefined;});},
  readBinding(operation:string){if(!safeLabel(operation))fault('STATE_FAILED');return access(false,db=>{const row=db.prepare('SELECT body,digest FROM native_operations WHERE operation_id=?').get(operation);if(!row)return undefined;if(typeof row.body!=='string'||digest(row.body)!==row.digest)fault('STATE_FAILED');return JSON.parse(row.body) as SessionBinding&{taskId:string;purpose?:string};});},
  async saveCheckpoint(operation:string,checkpoint:Readonly<ConversationCheckpoint>,signal:AbortSignal){
   if(signal.aborted)fault('CANCELLED');if(!safeLabel(operation))fault('STATE_FAILED');const body=checkpointBody(checkpoint);

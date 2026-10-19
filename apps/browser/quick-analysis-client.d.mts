@@ -7,6 +7,8 @@ export function openTaskView(task:OpenStoredTask,requests?:readonly import('../.
 export function collaborationCards(groups:readonly Readonly<{parent_session_id:string;parent:import("../../packages/contracts/case-collaboration.ts").ParentCollaborationProjection;children:readonly import("../../packages/contracts/case-collaboration.ts").CollaborationProjection[];requests:readonly import("../../packages/ports/analysis-request-ledger.ts").AnalysisRequest[]}>[]):NonNullable<QuickAnalysisTaskView["collaboration"]>;
 
 export function createQuickAnalysisClient(options?:{request?:typeof globalThis.fetch;storage?:Pick<Storage,'getItem'|'setItem'|'removeItem'>|null;control?:string|null}): {
+ answerReviewCondition:(id:string,fields:Readonly<Record<string,unknown>>)=>Promise<OpenStoredTask>;
+ retryJudgmentReview:(id:string,fields:Readonly<Record<string,unknown>>)=>Promise<OpenStoredTask>;
  read:(id:string)=>Promise<OpenStoredTask>;
  diagnostics:(id:string)=>Promise<import('../../packages/ports/open-analysis-runtime.ts').AnalysisRuntimeDiagnostics>;
  sessionControl:(id:string,revision:string,command:import('../../packages/ports/open-analysis-runtime.ts').AnalysisSessionCommand)=>ReturnType<NonNullable<import('../../packages/ports/open-analysis-runtime.ts').OpenAnalysisRuntime['sessionControl']>>;
@@ -15,3 +17,5 @@ export function createQuickAnalysisClient(options?:{request?:typeof globalThis.f
  resolveReferences:(id:string,references:readonly unknown[])=>Promise<readonly {id:string;quote:string;scope:string;revision:string}[]>;
  canWrite:()=>boolean;pending:()=>Readonly<{task_id:string;command_id?:string;kind:string}>|null;recover:()=>Promise<OpenStoredTask|null>;
 };
+
+export function pendingJudgmentView(view:QuickAnalysisTaskView):QuickAnalysisTaskView;

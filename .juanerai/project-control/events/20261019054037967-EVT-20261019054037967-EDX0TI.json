@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019054037967-EDX0TI",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T05:40:37.967Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a151ee-3903-7eb1-980c-8611948c5800"
+  },
+  "summary": "候选002发现恢复摘要父请求关联阻断；保持冻结，收齐报告后最小修正与复核",
+  "status_after": "validating",
+  "evidence_refs": []
+}
