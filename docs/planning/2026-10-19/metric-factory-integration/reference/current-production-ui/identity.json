@@ -1,0 +1,33 @@
+{
+  "source": "macbook:/Users/huangbo/Dev/Projects/metric-factory/src/ui/public",
+  "commit": "169faa8d45e1c5616c004f8fb844a7ca68add156",
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 2400,
+      "sha256": "28dd2a704e5fd2b4c222e5f0515d7527379a2fe33a40db01eb15a8f41b679c52",
+      "matches_current_macbook_source": true
+    },
+    {
+      "path": "app.js",
+      "bytes": 82930,
+      "sha256": "0a185009049da433471de3d6e24776f24e790a9f44e90e0c256d8ea6d7be7739",
+      "matches_current_macbook_source": true
+    },
+    {
+      "path": "api.js",
+      "bytes": 8484,
+      "sha256": "81804695871c7bc0f897301b4cea492d82bacd535d5376b8f203ce1caab73067",
+      "matches_current_macbook_source": true
+    },
+    {
+      "path": "style.css",
+      "bytes": 32617,
+      "sha256": "a071e9c6d099a6fb50db54a5b69ee37b5d252eaf87eda9e4786857ffa4a13133",
+      "matches_current_macbook_source": true
+    }
+  ],
+  "user_decision": "2026-10-19: 直接看 metric-factory 现在的 UI，已经最新，可以直接照搬，不用改",
+  "live_browser": "NOT_RUN; no listener observed on default 4173; source inspection only",
+  "withdrawn_ui": "/Users/bendandebaba/JuanerAI-artifacts/metric-factory-integration/intake-20261019-001/planning-candidate-002/clickable"
+}

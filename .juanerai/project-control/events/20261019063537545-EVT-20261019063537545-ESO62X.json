@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019063537545-ESO62X",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T06:35:37.545Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "Current canonical008 all19 stages exit0; freeze repaired candidate for independent review.",
+  "status_after": "active",
+  "evidence_refs": []
+}

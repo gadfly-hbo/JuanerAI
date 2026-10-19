@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019062831586-84VUG7",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T06:28:31.586Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "F-MF-01/02 focused GREEN and actual UI recovery confirmed; no acceptance claim.",
+  "status_after": "active",
+  "evidence_refs": []
+}

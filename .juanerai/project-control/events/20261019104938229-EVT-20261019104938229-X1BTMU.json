@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019104938229-X1BTMU",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T10:49:38.229Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "收到6任务8请求明确续授，恢复原Change",
+  "status_after": "active",
+  "evidence_refs": []
+}

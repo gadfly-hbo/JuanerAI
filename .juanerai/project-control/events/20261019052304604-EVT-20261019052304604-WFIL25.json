@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019052304604-WFIL25",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T05:23:04.604Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "Metric Factory engineering intake confirmed after current production UI reuse and two approved feedback exceptions; old board snapshot preserved.",
+  "status_after": "active",
+  "evidence_refs": []
+}

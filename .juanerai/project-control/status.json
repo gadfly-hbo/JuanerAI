@@ -3,489 +3,87 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "Pi Harness first-loop v0.2"
+    "product": "Metric Factory fixed plugin integration"
   },
   "phase": {
-    "id": "ENGINEERING_ACCEPTED",
-    "label": "Limited integrated offline Engineering Acceptance archived; actual Git conditions tracked separately",
+    "id": "delivering",
+    "label": "产品接受完成／正式Git交付中",
     "ordinal": 5,
     "total": 5
   },
-  "health": "complete",
-  "summary": "Integrated d5207685/base070 independent technical PASS; current local4966PASS/0FAIL/26SKIP and SSR151modules. Scoped offline Engineering Acceptance recorded. Native BLOCKED/history retained. Final records review/current-head hosted CI and Git merge/sync are not predicted by this engineering checkpoint. Latest main8dcf is documentation-only; identical technical bytes retain d520 review and current local verification. Final record review/head CI/Git facts are still pending, not predicted.",
-  "current_objective": "Accept/archive the integrated fixed opt-in offline engineering mechanism only; final publication results are separately bound to PR103/receipt.",
-  "next_action": "Complete current authorized final record review/current-head CI/squash/safe main synchronization, bind actual outcomes to PR103 and the final receipt, then stop. This completed engineering checkpoint grants no Provider, default adoption, old-task or UNKNOWN resumption, release or production.",
+  "health": "active",
+  "summary": "用户接受host014/source017/bundle018本机浏览器结果；两仓Git交付获准，主线兼容检查与CI继续。",
+  "current_objective": "Bundle the complete metric-factory workbench with owned host lifecycle, authorization and stable SAP delivery, preserving production UI and supplier business implementation.",
+  "next_action": "供应回流、合入主线、原生复核、PR/CI/合并与安全同步；不安装、不新增模型调用。",
   "blockers": [],
   "milestones": [
     {
       "id": "intake",
-      "label": "Input and independent baseline",
+      "label": "Fixed product/UI and engineering intake",
       "status": "completed"
     },
     {
-      "id": "preparation",
-      "label": "D0 and P1 preparation",
+      "id": "supplier",
+      "label": "Supplier neutral hooks and regression",
       "status": "completed"
     },
     {
-      "id": "fixed-sdk",
-      "label": "New fixed SDK intake and installation",
+      "id": "host",
+      "label": "Host wiring and fixed bundle",
       "status": "completed"
     },
     {
-      "id": "joint",
-      "label": "Bounded007 test eligibility and actual macOS joint paths verified",
+      "id": "verify",
+      "label": "Affected/full checks and independent Validator",
       "status": "completed"
     },
     {
-      "id": "independent",
-      "label": "Current-authorized CLI Astra/xhigh independent007 PASS",
-      "status": "completed"
+      "id": "accept",
+      "label": "Engineering and product acceptance / authorized delivery",
+      "status": "pending"
     }
   ],
   "agents": [
     {
-      "id": "controller",
-      "label": "Same dedicated Mini engineering primary",
-      "model": "Actual native primary gpt-6.1-sol/xhigh/danger-full-access/never read back; routing default medium differs; no settings changed.",
+      "id": "engineering-primary",
+      "label": "Same Mini primary; sole engineering author",
+      "model": "Actual model/effort readback UNKNOWN; native primary, no CLI substitution",
       "status": "active",
-      "activation": "Explicit user engineering start on 2026-10-17"
-    },
-    {
-      "id": "native-validator006",
-      "label": "HISTORICAL native006 identity/static review; original environment BLOCKED retained",
-      "model": "Requested role Sol/high; actual model/effort readback unavailable; inherited danger-full-access/never",
-      "status": "blocked",
-      "activation": "Fresh native read-only review; actual sandbox mismatch disclosed"
-    },
-    {
-      "id": "cli-astra006",
-      "label": "HISTORICAL independent006 FAIL V006-01 preserved",
-      "model": "Actual gpt-6-astra/xhigh/danger-full-access/never; current explicit user host exception; behavior readonly",
-      "status": "waiting",
-      "activation": "User-authorized CLI review of006 only; settings verified before execution"
-    },
-    {
-      "id": "cli-astra007",
-      "label": "Independent fixed007 bounded repair PASS; no blockers/advice",
-      "model": "Actual gpt-6-astra/xhigh/danger-full-access/never under current user host exception; behavior readonly",
-      "status": "waiting",
-      "activation": "Current user-authorized V006-01 repair candidate review; completed"
-    },
-    {
-      "id": "native-final-review",
-      "label": "HISTORICAL formal native BLOCKED F-ROLE-01; original report unchanged",
-      "model": "Actual gpt-6.1-sol/high/danger-full-access/never; exact role loaded",
-      "status": "blocked",
-      "activation": "Current explicit formal engineering/Git authorization; no CLI host exception"
-    },
-    {
-      "id": "cli-pr103-final",
-      "label": "HISTORICAL complete ed2a58-file CLI PASS; original report retained",
-      "model": "Actual gpt-6-astra/xhigh/danger-full-access/never; current explicit user behavioral-readonly host exception",
-      "status": "waiting",
-      "activation": "Current user exception;100 independent commands, no candidate source changes"
-    },
-    {
-      "id": "cli-pr103-main070",
-      "label": "Current integrated d5207685 affected technical PASS; final records-only check remains a Git condition",
-      "model": "Actual gpt-6-astra/xhigh/danger-full-access/never; current user exception, behavioral readonly only",
-      "status": "waiting",
-      "activation": "Current original-task CLI consent;40 affected independent commands with source/package unchanged during review"
+      "activation": "User whole-product integration request and production UI/two-feedback decision, 2026-10-19"
     }
   ],
   "metrics": [],
   "evidence": [
     {
-      "id": "intake",
-      "label": "Verified complete start archive",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/start-v0.2-da17f96837db/receiver-intake.json",
-      "status": "verified"
-    },
-    {
       "id": "spec",
-      "label": "Bounded behavior specification",
-      "path": "openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/spec.md",
+      "label": "Current behavior spec and scope",
+      "path": "openspec/changes/metric-factory-integration/spec.md",
       "status": "present"
     },
     {
-      "id": "current",
-      "label": "Current result and continuation",
-      "path": "openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/verification.md",
+      "id": "result",
+      "label": "Current engineering result",
+      "path": "openspec/changes/metric-factory-integration/verification.md",
       "status": "present"
-    },
-    {
-      "id": "d0",
-      "label": "D0 and exact next integration steps",
-      "path": "openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/d0-and-integration.md",
-      "status": "verified"
-    },
-    {
-      "id": "preparation-tests",
-      "label": "Nine preparatory cases",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/preparation-affected-005.log",
-      "status": "verified"
-    },
-    {
-      "id": "affected",
-      "label": "641 PASS / five retained SKIP",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/affected-regression-002.log",
-      "status": "verified"
-    },
-    {
-      "id": "sdk-baseline",
-      "label": "53 baseline installed SDK files match",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/baseline-sdk-install-readback.json",
-      "status": "verified"
-    },
-    {
-      "id": "sdk053-intake",
-      "label": "Fixed .2 archive and contents independently read back",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/sdk-0.5.3-harness.2-27628debdef8/CONTENTS-READBACK.json",
-      "status": "verified"
-    },
-    {
-      "id": "joint-focused",
-      "label": "24 real-boundary focused cases",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/sdk053-focused-008.log",
-      "status": "verified"
-    },
-    {
-      "id": "types",
-      "label": "Root typecheck includes new permanent test",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/sdk053-types-root-006.json",
-      "status": "verified"
-    },
-    {
-      "id": "canonical006",
-      "label": "Final source-bound canonical offline check",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/sdk053-canonical-portable-006.json",
-      "status": "verified"
-    },
-    {
-      "id": "browser004",
-      "label": "Current actual Browser passive check",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/browser-smoke-004/RESULT.json",
-      "status": "verified"
-    },
-    {
-      "id": "native-review001",
-      "label": "Native review BLOCKED with B-TEST-01 finding",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/review/NATIVE-VALIDATOR-001.md",
-      "status": "verified"
-    },
-    {
-      "id": "lock-sensitivity",
-      "label": "Four member checks are now mutation-sensitive",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/lock-sensitivity-green-001/RESULT.json",
-      "status": "verified"
-    },
-    {
-      "id": "repair-local",
-      "label": "309 affected cases pass under portable scope",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/sdk053-repair-local-002.json",
-      "status": "verified"
-    },
-    {
-      "id": "native-review002",
-      "label": "B-TEST-01 statically resolved; B-ENV remains",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/review/NATIVE-VALIDATOR-002.md",
-      "status": "verified"
-    },
-    {
-      "id": "joint-feedback",
-      "label": "Final local BLOCKED feedback",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/MINI-JOINT-FEEDBACK-0.5.3-harness.2.md",
-      "status": "present"
-    },
-    {
-      "id": "cli-exception-authorization",
-      "label": "HISTORICAL .2 CLI authorization only; does not apply to .3",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/cli-review-candidate-final-003-20261018/AUTHORIZATION.md",
-      "status": "verified"
-    },
-    {
-      "id": "cli-turn-settings",
-      "label": "Actual CLI turn metadata and role load inspected",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/cli-review-candidate-final-003-20261018/CLI-TURN-SETTINGS.json",
-      "status": "verified"
-    },
-    {
-      "id": "cli-model-rejected",
-      "label": "Backend400 before candidate review or tests",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/cli-review-candidate-final-003-20261018/RESULT.json",
-      "status": "failed"
-    },
-    {
-      "id": "astra-cli-settings",
-      "label": "Actual authorized Astra/xhigh/read-only loaded",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/cli-review-astra-xhigh-candidate003-20261018/EFFECTIVE-SETTINGS-VERIFIED.json",
-      "status": "verified"
-    },
-    {
-      "id": "astra-independent-review",
-      "label": "Independent FAIL and B-EXEC-01 scope",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/cli-review-astra-xhigh-candidate003-20261018/VALIDATOR-RESPONSE.md",
-      "status": "verified"
-    },
-    {
-      "id": "astra-review-commands",
-      "label": "46 independently executed commands with exits",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/cli-review-astra-xhigh-candidate003-20261018/INDEPENDENT-COMMAND-INDEX.json",
-      "status": "verified"
-    },
-    {
-      "id": "focus-repair004",
-      "label": "Causal focus repair and complete author regression",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/focus-repair-20261018/REPAIR.md",
-      "status": "verified"
-    },
-    {
-      "id": "candidate004",
-      "label": "New immutable38-file candidate;003 preserved",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/candidate-final-004/CANDIDATE.json",
-      "status": "verified"
-    },
-    {
-      "id": "independent004",
-      "label": "Astra/xhigh BLOCKED;focus defect closed;22PASS/2FAIL retained",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/focus-repair-20261018/cli-review/VALIDATOR-RESPONSE.md",
-      "status": "verified"
-    },
-    {
-      "id": "host004-authorization",
-      "label": "Explicit two-case host/behavior-read-only exception",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/host-validator-candidate004-20261018/AUTHORIZATION.md",
-      "status": "verified"
-    },
-    {
-      "id": "host004-settings",
-      "label": "Exact new role and actual Astra/xhigh/host settings verified",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/host-validator-candidate004-20261018/cli-fresh/REVIEW-ACTUAL-SETTINGS.json",
-      "status": "verified"
-    },
-    {
-      "id": "host004-independent",
-      "label": "Independent two-case2PASS; prior22 and complete review reused",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/host-validator-candidate004-20261018/cli-fresh/VALIDATOR-RESPONSE.md",
-      "status": "verified"
-    },
-    {
-      "id": "host004-preservation",
-      "label": "40live files/83old fixtures/four archives unchanged before closeout",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/host-validator-candidate004-20261018/PRE-CLOSEOUT-READBACK.json",
-      "status": "verified"
-    },
-    {
-      "id": "h3-input",
-      "label": "Fixed harness.3 archive/source/package verified",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/PACKAGE-VERIFICATION.json",
-      "status": "verified"
-    },
-    {
-      "id": "h3-install-failure",
-      "label": "Exact55-file installation; six integrity pins removed",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/POST-INSTALL-IDENTITY.json",
-      "status": "failed"
-    },
-    {
-      "id": "h3-return",
-      "label": "Bounded adoption BLOCKED; subsequent checks NOT_RUN",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/MINI-HARNESS3-RETURN.md",
-      "status": "present"
-    },
-    {
-      "id": "h3-lock-restored",
-      "label": "Six original integrity values restored only; no reinstall",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/LOCK-INTEGRITY-RESTORED.json",
-      "status": "verified"
-    },
-    {
-      "id": "h3-key-final",
-      "label": "25 parent PASS including16 physical boundary cases",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/logs/joint-complete-final-007.json",
-      "status": "verified"
-    },
-    {
-      "id": "h3-ssr-build",
-      "label": "SSR Main compatibility build; not execution/packaging",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/logs/ssr-build-final-003.json",
-      "status": "verified"
-    },
-    {
-      "id": "h3-affected-final",
-      "label": "Author996PASS/13existingSKIP; not independent",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/VALIDATION-FINAL.json",
-      "status": "verified"
-    },
-    {
-      "id": "h3-fixed006",
-      "label": "Immutable46-file candidate006",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/candidate-final-006/CANDIDATE.json",
-      "status": "verified"
-    },
-    {
-      "id": "h3-native006",
-      "label": "Native independent BLOCKED; static identities verified",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/review-candidate006/NATIVE-VALIDATOR-006.md",
-      "status": "verified"
-    },
-    {
-      "id": "h3-return006",
-      "label": "Current bounded BLOCKED receipt; old005 report preserved",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/MINI-HARNESS3-JOINT-RETURN-CANDIDATE006.md",
-      "status": "present"
-    },
-    {
-      "id": "cli006-actual",
-      "label": "Current CLI actual Astra/xhigh/host settings verified",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/cli-astra-xhigh-candidate006-20261018T050213Z/cli/FINAL-SETTINGS-READBACK.json",
-      "status": "verified"
-    },
-    {
-      "id": "cli006-review",
-      "label": "Independent FAIL V006-01; no confirmed new SDK defect",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/cli-astra-xhigh-candidate006-20261018T050213Z/cli/VALIDATOR-RESPONSE.md",
-      "status": "verified"
-    },
-    {
-      "id": "cli006-raw",
-      "label": "52 independent commands; failures retained",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/cli-astra-xhigh-candidate006-20261018T050213Z/cli/INDEPENDENT-COMMAND-INDEX.json",
-      "status": "verified"
-    },
-    {
-      "id": "cli006-receipt",
-      "label": "Current complete CLI joint receipt and stop",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/cli-astra-xhigh-candidate006-20261018T050213Z/MINI-CLI-JOINT-RECEIPT.md",
-      "status": "present"
-    },
-    {
-      "id": "cli006-unchanged",
-      "label": "47live/55installed/4055old files unchanged before closeout",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/cli-astra-xhigh-candidate006-20261018T050213Z/PRE-CLOSEOUT-READBACK.json",
-      "status": "verified"
-    },
-    {
-      "id": "v00601-causal-red",
-      "label": "Actual gate regression RED, old006 V006-01 failure preserved",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/logs/gate-causal-red-001.json",
-      "status": "verified"
-    },
-    {
-      "id": "v00601-author",
-      "label": "Current affected author checks with expected counts",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/AUTHOR-VALIDATION.json",
-      "status": "verified"
-    },
-    {
-      "id": "v00601-assertions",
-      "label": "Original supervised bodies/assertions byte-identical",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/control/ASSERTIONS-AND-SCOPE.json",
-      "status": "verified"
-    },
-    {
-      "id": "v007-cli-settings",
-      "label": "Fresh actual CLI Astra/xhigh/host and exact role verified",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/cli/SETTINGS-ACTUAL-VERIFIED.json",
-      "status": "verified"
-    },
-    {
-      "id": "fixed007",
-      "label": "New immutable50-file candidate",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/candidate-final-007/CANDIDATE.json",
-      "status": "verified"
-    },
-    {
-      "id": "review007",
-      "label": "Independent scoped PASS without findings",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/cli/VALIDATOR-RESPONSE.md",
-      "status": "verified"
-    },
-    {
-      "id": "receipt007",
-      "label": "Current complete bounded joint receipt",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/MINI-CANDIDATE007-JOINT-RECEIPT.md",
-      "status": "present"
-    },
-    {
-      "id": "identity007",
-      "label": "50live/55installed/4453prior/465author files unchanged through review",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/PRE-CLOSEOUT-READBACK.json",
-      "status": "verified"
-    },
-    {
-      "id": "formal-pr103-cli-pass",
-      "label": "Complete58-file independent technical PASS; native BLOCKED unchanged",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z/TECHNICAL-REVIEW-RESULT.json",
-      "status": "verified"
-    },
-    {
-      "id": "formal-pr103-engineering-acceptance",
-      "label": "Current integrated limited offline Engineering Acceptance; Git outcomes remain conditions",
-      "path": "openspec/changes/archive/2026-10-18-pi-harness-first-loop-20261017/ENGINEERING-ACCEPTANCE.md",
-      "status": "present"
-    },
-    {
-      "id": "formal-pr103-current-ci",
-      "label": "HISTORICAL ed2a Ubuntu4964/0/23; new final-head CI required",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/HOSTED-CI-RESULT.json",
-      "status": "verified"
-    },
-    {
-      "id": "main070-independent",
-      "label": "Current integrated62-file technical PASS; raw failures and SKIPs explicit",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z/INTEGRATED-REVIEW-RESULT.json",
-      "status": "verified"
-    },
-    {
-      "id": "main070-canonical",
-      "label": "Current integrated local full portable4966/0/26, not hosted final CI",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z/INTEGRATED-CANONICAL-RESULT.json",
-      "status": "verified"
-    },
-    {
-      "id": "main8dcf-proof",
-      "label": "Latest main documentation-only stages preserved; no technical or capability-class delta",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/pi-harness-first-loop/2026-10-17/mini-engineering-v0.2/harness3-incremental-20261018T040052Z/v006-01-repair-20261018T052815Z/formal-git-delivery-20261018T065828Z/cli-astra-closeout-20261018T075124Z/baseline8dcf-conflicts/IDENTITY.json",
-      "status": "verified"
     }
   ],
   "risks": [
     {
-      "id": "history",
-      "label": "Historical failures, BLOCKED and UNKNOWN retained",
-      "level": "high",
-      "mitigation": "Trial repair-2 and Change-007 stay paused; no replay, refund or inherited waiver."
+      "id": "baseline-dmf01",
+      "label": "Existing caliber display/engine discrepancy retained",
+      "level": "medium",
+      "mitigation": "No unapproved business repair or claimed PASS; report separately from integration evidence."
     },
     {
-      "id": "role-readback",
-      "label": "Current CLI host exception verified; historical native006 BLOCKED retained",
-      "level": "high",
-      "mitigation": "Actual Astra/xhigh/host metadata and exact role verified. No native OSreadonly conformance or authority for new candidate/engineering inferred."
-    },
-    {
-      "id": "portable-ci006",
-      "label": "HISTORICAL V006-01 closed for007;006 failure retained",
-      "level": "high",
-      "mitigation": "New fixed007 has real-entry eligibility regressions and actual macOS opt-in success, independently PASS. Actual Ubuntu/hostedCI remains NOT_RUN; no delivery authority."
-    },
-    {
-      "id": "formal-delivery-boundary",
-      "label": "Formal delivery is limited to existing offline opt-in mechanisms",
-      "level": "high",
-      "mitigation": "Required current review and exact-head CI remain conditions; no inherited CLI host exception, Provider, production or old UNKNOWN replay."
-    },
-    {
-      "id": "pr103-current-exception",
-      "label": "Current user-consented CLI host exception; historical native BLOCKED remains",
-      "level": "high",
-      "mitigation": "Behavioral readonly is not OS readonly; final record review and current required CI/merge conditions still apply. This changes no defaults or future permissions."
+      "id": "remaining-acceptance",
+      "label": "Real model quality limits, unknown cancellation and installed-package evidence remain",
+      "level": "medium",
+      "mitigation": "No more Provider tasks; preserve UNKNOWN and prior failures; fresh independent review, user acceptance and authorized Git/install remain separate."
     }
   ],
-  "updated_at": "2026-10-18T08:51:57.685Z",
+  "updated_at": "2026-10-19T13:00:07.165Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a149f7-29ba-77d0-9db1-802c3bd681c3:01a14dfc-3ac3-77d1-9665-b179e47fb21e"
+    "session": "mini-metric-factory-integration"
   }
 }

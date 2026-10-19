@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019112454875-DXOEP0",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T11:24:54.875Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "两项例外已执行或进入限定复核；保留原生006 FAIL、UNKNOWN与经营未通过。",
+  "status_after": "active",
+  "evidence_refs": []
+}

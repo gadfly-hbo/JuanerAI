@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019065718067-7UG3VF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T06:57:18.067Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "保留Validator003 FAIL及原始反例，进入授权边界内修复。",
+  "status_after": "active",
+  "evidence_refs": []
+}

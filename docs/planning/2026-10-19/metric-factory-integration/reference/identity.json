@@ -1,0 +1,85 @@
+{
+  "commit": "169faa8d45e1c5616c004f8fb844a7ca68add156",
+  "files": [
+    {
+      "source": "docs/工作台使用指南.md",
+      "attachment": "docs__工作台使用指南.md.txt",
+      "bytes": 7111,
+      "sha256": "a4ac689ed6678e7cd3953b38d61aa8303b09fb3e3cf21ccff543e3074272601a"
+    },
+    {
+      "source": "src/engine/blueprint.ts",
+      "attachment": "src__engine__blueprint.ts.txt",
+      "bytes": 15315,
+      "sha256": "d1df5e2172391dc82a2fc78491c2146765dfeb3e0d01b2d2b7b3c76d0ec6f78a"
+    },
+    {
+      "source": "src/engine/validate.ts",
+      "attachment": "src__engine__validate.ts.txt",
+      "bytes": 7783,
+      "sha256": "b0bdbca488adf12098d104bfbcbd0e827112ba45fe0d288515bdea641c87d9ba"
+    },
+    {
+      "source": "src/engine/review.ts",
+      "attachment": "src__engine__review.ts.txt",
+      "bytes": 883,
+      "sha256": "0399dd8fe516f9e7d697713f4cd1639daef4bedd723ab6342f11c46c030855a1"
+    },
+    {
+      "source": "src/ui/api-write.ts",
+      "attachment": "src__ui__api-write.ts.txt",
+      "bytes": 15446,
+      "sha256": "62199491e5c16c5db6ffa33f12c1f6153e84513cb5805b0b61545e499e7b1257"
+    },
+    {
+      "source": "src/sap/release.ts",
+      "attachment": "src__sap__release.ts.txt",
+      "bytes": 13331,
+      "sha256": "2ade84b8f89b8269a0b6078a6b386f27f4e5f7f79cf5eb06fa72b4a10cccea1a"
+    },
+    {
+      "source": "src/sap/validate.ts",
+      "attachment": "src__sap__validate.ts.txt",
+      "bytes": 7112,
+      "sha256": "1ede70c3c4b51872d048241cfefc2c9f041a237aed3f1350cda9a17e4ccda2c8"
+    },
+    {
+      "source": "src/schema/blueprint.ts",
+      "attachment": "src__schema__blueprint.ts.txt",
+      "bytes": 5021,
+      "sha256": "e0eea2077e2480f44519eedf08cc98eb456f29a40b14a76c90e3bac48bb77976"
+    },
+    {
+      "source": "src/ui/server.ts",
+      "source_sha256": "f0f4fbad7e9667e290518fadd398067c5f213e3c221fa79485d458661e83789e",
+      "ranges": [
+        [
+          197,
+          218
+        ],
+        [
+          798,
+          875
+        ]
+      ],
+      "attachment": "src__ui__server.ts.excerpt.txt",
+      "sha256": "2a4292357673f0368f3647a613a7c44c4b36ec977253bf3a72d7b304b8f2cd31"
+    },
+    {
+      "source": "src/ui/public/app.js",
+      "source_sha256": "0a185009049da433471de3d6e24776f24e790a9f44e90e0c256d8ea6d7be7739",
+      "ranges": [
+        [
+          1,
+          14
+        ],
+        [
+          125,
+          140
+        ]
+      ],
+      "attachment": "src__ui__public__app.js.excerpt.txt",
+      "sha256": "f7055356a2bc84fd1f90a26fb97fff00c85b37b874e5af11f02d9ed126f205b7"
+    }
+  ]
+}

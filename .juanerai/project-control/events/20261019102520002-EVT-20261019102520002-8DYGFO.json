@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019102520002-8DYGFO",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T10:25:20.002Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "记录固定014与真实质量FAIL，继续有界诊断",
+  "status_after": "active",
+  "evidence_refs": []
+}

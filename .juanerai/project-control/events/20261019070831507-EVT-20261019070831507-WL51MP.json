@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019070831507-WL51MP",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T07:08:31.507Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "F-MF-04因果RED/GREEN及固定物料完成，保留全部旧FAIL。",
+  "status_after": "active",
+  "evidence_refs": []
+}

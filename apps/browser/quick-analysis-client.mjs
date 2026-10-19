@@ -268,11 +268,11 @@ export async function startQuickWorkspace({control,service,onProfessional,report
 
  function studioButton(label,run,disabled=false,primary=false){const b=document.createElement('button');b.type='button';b.className='btn btn-sm'+(primary?' btn-primary':'');b.textContent=label;b.disabled=disabled;b.onclick=()=>safe(run);return b;}
  function studioMessage(section,text){const p=document.createElement('p');p.className='fine';p.textContent=text;section.append(p);return p;}
- async function studioLaunch(read,name){
-   const tab=window.open('about:blank',name);let blank=false;try{blank=tab?.location.href==='about:blank';if(blank)tab.document.body.textContent='正在打开 Report Studio，请稍候；尚未开始模型制作。';}catch{}
-   showDialog('正在打开 Report Studio',section=>{const p=studioMessage(section,'正在核对内置版本并等待本机服务就绪；不会自动开始制作。');p.setAttribute('role','status');});
-   try{const result=await read();if(tab){tab.location.href=result.url;modal.close();}else showDialog('打开报告工作台',section=>{studioMessage(section,'浏览器未打开新标签。项目已准备，使用下面的链接继续；不会重复生成。');const link=document.createElement('a');link.href=result.url;link.target='_blank';link.rel='noopener';link.textContent='打开 Report Studio';section.append(link);});}
-   catch(error){if(blank)tab?.close();showDialog('Report Studio 尚未打开',section=>{const p=studioMessage(section,error.message+' 已有分析、报告和输入保留；从原入口重试会核对同一项目。');p.setAttribute('role','alert');section.append(studioButton('重试打开',()=>studioLaunch(read,name),!control));});}
+ async function studioLaunch(read,name,label="Report Studio"){
+   const tab=window.open('about:blank',name);let blank=false;try{blank=tab?.location.href==='about:blank';if(blank)tab.document.body.textContent='正在打开 '+label+'，请稍候；尚未开始模型制作。';}catch{}
+   showDialog('正在打开 '+label,section=>{const p=studioMessage(section,'正在核对内置版本并等待本机服务就绪；不会自动开始制作。');p.setAttribute('role','status');});
+   try{const result=await read();if(tab){tab.location.href=result.url;modal.close();}else showDialog('打开 '+label,section=>{studioMessage(section,'浏览器未打开新标签。项目已准备，使用下面的链接继续；不会重复生成。');const link=document.createElement('a');link.href=result.url;link.target='_blank';link.rel='noopener';link.textContent='打开 '+label;section.append(link);});}
+   catch(error){if(blank)tab?.close();showDialog(label+' 尚未打开',section=>{const p=studioMessage(section,error.message+' 已有分析、报告和输入保留；从原入口重试会核对同一项目。');p.setAttribute('role','alert');section.append(studioButton('重试打开',()=>studioLaunch(read,name,label),!control));});}
  }
  async function reportStudioMaterials(target){
    if(!target)throw Error('当前没有已保存的分析成果，仍可打开报告工作台独立制作。');
@@ -304,6 +304,7 @@ export async function startQuickWorkspace({control,service,onProfessional,report
  }
  async function reportStudioPlugins(){
    const target=displayedTask(selected);showDialog('产品能力与插件',section=>{const p=studioMessage(section,'正在读取内置报告模块状态……');p.setAttribute('role','status');});
+   let metricAvailable=false;try{const r=await fetch('/v1/metric-factory/status',{credentials:'same-origin'});metricAvailable=r.ok&&(await r.json()).available===true;}catch{}
    let decisionAvailable=false;try{const r=await fetch('/v1/decision-platform/status',{credentials:'same-origin'});decisionAvailable=r.ok&&(await r.json()).available===true;}catch{}
    let state,binding=null;try{state=await studioClient.status();if(state.state==='ready'&&target&&(target.outcome??target.conversation_outcome)){const identity=await client.metricAssets();binding=(await studioClient.catalog(identity.project_id,target.identity.task_id,target.identity.revision)).association;}}catch{state??={state:'unavailable',reason:'unreachable'};}
    showDialog('产品能力与插件',section=>{
@@ -315,7 +316,7 @@ export async function startQuickWorkspace({control,service,onProfessional,report
      if(!control)studioMessage(row,'本页只读。请先选择“在此页继续”后打开报告工作台。');
      if(!ready){studioMessage(row,({not_bundled:'本次 JuanerAI 尚未附带可运行的 Report Studio 资源；原分析仍可使用。',missing:'内置模块资源缺失，请修复 JuanerAI 安装。',invalid:'内置模块资源无效，请修复 JuanerAI 安装。',corrupt:'内置模块校验未通过，请修复 JuanerAI 安装。',incompatible:'内置模块与本版本不兼容，请修复 JuanerAI 安装。',unreachable:'暂时无法核对模块，请重试。'})[state.reason]??'内置模块暂不可用，请重试或修复安装。');row.append(studioButton('重新核对',reportStudioPlugins));}section.append(row);
      const decision=document.createElement('section');decision.className='studio-plugin-row';const heading=document.createElement('h3');heading.textContent='执行反馈 · 决策看板';decision.append(heading);studioMessage(decision,'从已保存报告进入完整看板，讨论建议、记录任务与反馈。');decision.append(studioButton('打开决策看板',()=>openDecisionBoard(),!decisionAvailable||!saved,true));if(!decisionAvailable)studioMessage(decision,'内置看板尚未配置；原报告及已有记录保留。');section.append(decision);
-     for(const [name,id]of [['数据指标','metric-factory']]){const p=studioMessage(section,name+' · '+id+' · 尚未接入');p.className='plugin-placeholder';}
+     const metric=document.createElement('section');metric.className='studio-plugin-row';const metricTitle=document.createElement('h3');metricTitle.textContent='分析体系 · Metric Factory';metric.append(metricTitle);studioMessage(metric,'设计、复核与发布分析体系；固定版本随 JuanerAI 交付。');metric.append(studioButton('打开分析体系工作台',()=>studioLaunch(async()=>{const response=await fetch('/v1/metric-factory/open',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json','x-xanthil-control':control},body:'{}'});if(!response.ok)throw Error('分析体系工作台暂不可用，请重试。');return response.json();},'juanerai-metric-factory','Metric Factory'),!metricAvailable||!control));if(!metricAvailable)studioMessage(metric,'内置分析体系资源尚未就绪；已有分析和设计保留。');section.append(metric);
    });
  }
  async function reportStudioReportAction(button){

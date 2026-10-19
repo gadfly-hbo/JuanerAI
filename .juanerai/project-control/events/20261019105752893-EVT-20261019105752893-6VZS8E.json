@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019105752893-6VZS8E",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T10:57:52.893Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "战略零指标成功，真实取消UNKNOWN保持；6任务6请求，授权禁用，限定收尾例外待决。",
+  "status_after": "active",
+  "evidence_refs": []
+}

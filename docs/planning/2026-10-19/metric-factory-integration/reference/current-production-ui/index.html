@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Metric Factory · 分析体系工作台</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">跳到工作区</a>
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar" aria-label="主导航">
+      <div class="brand">Metric<span>Factory</span><p>分析体系工作台</p></div>
+      <button class="btn new-system" data-action="home"><span aria-hidden="true">＋</span> 创建分析体系</button>
+      <nav class="nav-primary">
+        <button class="nav-item" data-action="systems"><span class="nav-icon" aria-hidden="true">▤</span> 我的体系 <span class="count" id="system-count">0</span></button>
+        <button class="nav-item" data-action="library"><span class="nav-icon" aria-hidden="true">▦</span> 模板库 <span class="nav-meta">指标 · 方法</span></button>
+      </nav>
+      <div class="recent-label">最近编辑</div>
+      <nav id="recent" class="recent" aria-label="最近编辑的体系"><p class="fine nav-empty">从一句业务需求开始。</p></nav>
+      <div class="sidebar-bottom">
+        <div class="workspace-person"><span class="avatar">我</span><div>个人工作空间<span class="fine">独立使用 · 设计资产</span></div></div>
+        <button class="nav-item" data-action="about"><span class="nav-icon" aria-hidden="true">?</span> 方案与评审说明</button>
+      </div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" data-action="menu" aria-label="展开导航">☰</button>
+        <div class="breadcrumb" id="breadcrumb">工作空间 <span>/</span> 开始创建</div>
+        <div class="topbar-right"><span class="prototype-label">本地工作台 · 真实引擎</span><button class="btn small quiet" data-action="about">查看方案 <span aria-hidden="true">↗</span></button></div>
+      </header>
+      <main id="main" tabindex="-1"></main>
+    </div>
+  </div>
+  <dialog id="modal" aria-labelledby="modal-title"><div id="modal-content"></div></dialog>
+  <div class="toast" role="status" aria-live="polite" id="toast" hidden></div>
+  <script src="api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

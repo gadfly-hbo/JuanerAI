@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019070050706-4H57IN",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T07:00:50.706Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "跨体系空/部分索引永久RED/GREEN完成，固定新候选进入独立复验。",
+  "status_after": "active",
+  "evidence_refs": []
+}

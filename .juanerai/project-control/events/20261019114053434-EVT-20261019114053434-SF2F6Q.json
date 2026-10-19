@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019114053434-SF2F6Q",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T11:40:53.434Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "保存CLI003完整FAIL及模型/沙箱/源码不变读回，三阻断项进入同一主Agent纠错。",
+  "status_after": "active",
+  "evidence_refs": []
+}

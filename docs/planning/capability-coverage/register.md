@@ -1,3 +1,9 @@
+## Metric Factory011 · 本地在研纠错验证（2026-10-19）
+
+当前生产工作台原样接入，两处反馈按用户明确授权修正。Validator001–004发现身份、保存状态、不完整发布历史与原有回执兼容缺陷，当前011已完成独立005及用户指定Astra/high CLI002限定离线技术PASS，本次角色证据闭合；真实模型/许可/独立版标准边界仍未闭合；不宣称工程或产品接受。A-02/A-05/B-02/B-03/C3-01增加本机合成接缝证据，C4-07/C6-02仅设计生产关联；SAP消费另案。全部40ID状态类/接受增量0，六加二及S1/S4缺口保持。
+
+[全40ID固定快照](snapshots/metric-factory-007-in-progress-2026-10-19.md) · [当前结果](../../../openspec/changes/metric-factory-integration/verification.md) · [完整登记](register.md)。历史记录按原时点保留。
+
 ## Latest Git baseline8dcf — documentation-only integration
 
 Main8dcf/PR105 adds the other task’s publication records only. Pi technical bytes remain exactly reviewed d5207685; scoped Engineering Acceptance is unchanged. Final record review/current-head hosted CI/actual Git conditions remain distinct. Pi capability-class delta0 relative this latest base; PR104/105 records stay attributed to that task.

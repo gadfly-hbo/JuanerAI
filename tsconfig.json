@@ -247,6 +247,15 @@
     "packages/ports/deep-research.ts",
     "packages/application/deep-research.ts",
     "profiles/personal/deep-research.ts",
-    "apps/browser/deep-research-http.ts"
+    "apps/browser/deep-research-http.ts",
+    "packages/ports/metric-factory.ts",
+    "packages/application/metric-factory.ts",
+    "adapters/metric-factory/bundle.ts",
+    "adapters/metric-factory/copies.ts",
+    "adapters/metric-factory/process.ts",
+    "profiles/personal/metric-factory.ts",
+    "apps/browser/metric-factory-http.ts",
+    "tests/integration/metric-factory/copies.test.ts",
+    "tests/integration/metric-factory/process.test.ts"
   ]
 }

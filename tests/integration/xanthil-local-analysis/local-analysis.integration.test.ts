@@ -731,7 +731,10 @@ const deepResearchFiles=['packages/ports/deep-research.ts','packages/application
 const approvedDeepResearchConfigurationFiles=[...approvedP5RepositoryConfigurationFiles,'openspec/changes/archive/2026-10-18-deep-research-integration/clickable/reference/ui/tsconfig.json'].sort();
 const approvedDeepResearchTsconfig={...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,...deepResearchFiles]};
 const approvedHarnessDeepResearchTsconfig={...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,'tests/integration/xanthil-desktop/pi-harness-first-loop.integration.test.ts',...deepResearchFiles]};
+const metricFactoryFiles=['packages/ports/metric-factory.ts','packages/application/metric-factory.ts','adapters/metric-factory/bundle.ts','adapters/metric-factory/copies.ts','adapters/metric-factory/process.ts','profiles/personal/metric-factory.ts','apps/browser/metric-factory-http.ts','tests/integration/metric-factory/copies.test.ts','tests/integration/metric-factory/process.test.ts'];
+const approvedMetricFactoryTsconfig={...approvedHarnessDeepResearchTsconfig,files:[...approvedHarnessDeepResearchTsconfig.files,...metricFactoryFiles]};
 function assertApprovedConfigurationTuple(manifest: unknown, tsconfig: unknown, configurationFiles: readonly string[]) {
+  if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedHarnessFirstLoopManifest,approvedMetricFactoryTsconfig,approvedDeepResearchConfigurationFiles))return 'MetricFactoryIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedHarnessFirstLoopManifest,approvedHarnessDeepResearchTsconfig,approvedDeepResearchConfigurationFiles))return 'HarnessDeepResearchIntegration' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,historicalHarness2Manifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles))return 'HarnessFirstLoopPrevious' as const;
   if(matchesApprovedConfigurationTuple(manifest,tsconfig,configurationFiles,approvedHarnessFirstLoopManifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles))return 'HarnessFirstLoopIntegration' as const;
@@ -3588,7 +3591,7 @@ test('TEST-XCLI-021-CF-RESTORATION rejects intermediate tuples and admits only e
   assert.throws(()=>assertApprovedConfigurationTuple({...approvedP5RootManifest,configuration_selector:'Change002'},approvedChange002Tsconfig,approvedP5RepositoryConfigurationFiles));
   const manifest=JSON.parse(await readFile(join(repositoryRoot,'package.json'),'utf8')),config=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));
   assert.equal(assertApprovedConfigurationTuple(approvedDevelopmentManifest,approvedChange004Tsconfig,approvedP5RepositoryConfigurationFiles),'Change004');
-  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedDeepResearchConfigurationFiles),'HarnessDeepResearchIntegration');
+  assert.equal(assertApprovedConfigurationTuple(manifest,config,approvedDeepResearchConfigurationFiles),'MetricFactoryIntegration');
 });
 
 
@@ -4009,11 +4012,11 @@ test('DP-CI-02 exact decision-platform appendix preserves prior tuples and rejec
  const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedSdk051Manifest,config,approvedP5RepositoryConfigurationFiles);
  assert.equal(check(approvedReportStudioTsconfig),'ReportStudioIntegration');
  assert.equal(check(approvedDecisionPlatformTsconfig),'DecisionPlatformIntegration');
- assert.deepEqual(JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8')),approvedHarnessDeepResearchTsconfig);
+ assert.deepEqual(JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8')),approvedMetricFactoryTsconfig);
  assert.equal(assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles),'HarnessFirstLoopIntegration');
  assert.throws(()=>assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,approvedDecisionPlatformTsconfig,approvedP5RepositoryConfigurationFiles));
  assert.throws(()=>assertApprovedConfigurationTuple(approvedSdk051Manifest,approvedHarnessFirstLoopTsconfig,approvedP5RepositoryConfigurationFiles));
-  const current=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));assert.deepEqual({...current,files:current.files.slice(0,-deepResearchFiles.length)},approvedHarnessFirstLoopTsconfig);
+  const current=JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8'));assert.deepEqual({...current,files:current.files.slice(0,-deepResearchFiles.length-metricFactoryFiles.length)},approvedHarnessFirstLoopTsconfig);
  for(const file of decisionPlatformFiles){
   assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:approvedDecisionPlatformTsconfig.files.filter(p=>p!==file)}));
   assert.throws(()=>check({...approvedDecisionPlatformTsconfig,files:[...approvedDecisionPlatformTsconfig.files,file]}));
@@ -4029,7 +4032,19 @@ test('DP-CI-02 exact decision-platform appendix preserves prior tuples and rejec
 
 test('DR-CI-01 exact research appendix retains prior contract and rejects partial or expanded roots',async()=>{
  const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedSdk051Manifest,config,approvedDeepResearchConfigurationFiles);
- assert.equal(check(approvedDeepResearchTsconfig),'DeepResearchIntegration');assert.deepEqual(JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8')),approvedHarnessDeepResearchTsconfig);
+ assert.equal(check(approvedDeepResearchTsconfig),'DeepResearchIntegration');assert.deepEqual(JSON.parse(await readFile(join(repositoryRoot,'tsconfig.json'),'utf8')),approvedMetricFactoryTsconfig);
  for(const file of deepResearchFiles){assert.throws(()=>check({...approvedDeepResearchTsconfig,files:approvedDeepResearchTsconfig.files.filter(p=>p!==file)}));assert.throws(()=>check({...approvedDeepResearchTsconfig,files:[...approvedDeepResearchTsconfig.files,file]}));assert.throws(()=>check({...approvedDeepResearchTsconfig,files:approvedDeepResearchTsconfig.files.map(p=>p===file?'unapproved.ts':p)}));}
  assert.throws(()=>check({...approvedDeepResearchTsconfig,files:[...approvedDecisionPlatformTsconfig.files,...deepResearchFiles.toReversed()]}));
+});
+
+test('MF-CI-01 exact plugin roots preserve previous tuple and reject partial, expanded or reordered roots',()=>{
+ const check=(config:unknown)=>assertApprovedConfigurationTuple(approvedHarnessFirstLoopManifest,config,approvedDeepResearchConfigurationFiles);
+ assert.equal(check(approvedHarnessDeepResearchTsconfig),'HarnessDeepResearchIntegration');
+ assert.equal(check(approvedMetricFactoryTsconfig),'MetricFactoryIntegration');
+ for(const file of metricFactoryFiles){
+  assert.throws(()=>check({...approvedMetricFactoryTsconfig,files:approvedMetricFactoryTsconfig.files.filter(p=>p!==file)}));
+  assert.throws(()=>check({...approvedMetricFactoryTsconfig,files:[...approvedMetricFactoryTsconfig.files,file]}));
+  assert.throws(()=>check({...approvedMetricFactoryTsconfig,files:approvedMetricFactoryTsconfig.files.map(p=>p===file?'unapproved.ts':p)}));
+ }
+ assert.throws(()=>check({...approvedMetricFactoryTsconfig,files:[...approvedHarnessDeepResearchTsconfig.files,...metricFactoryFiles.toReversed()]}));
 });

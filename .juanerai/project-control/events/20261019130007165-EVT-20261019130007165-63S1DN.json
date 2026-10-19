@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019130007165-63S1DN",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T13:00:07.165Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "用户正式Product Acceptance及两仓Git交付授权已接收；历史FAIL/UNKNOWN保持。",
+  "status_after": "active",
+  "evidence_refs": []
+}

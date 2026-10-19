@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019063537592-KWU5LP",
+  "event_type": "phase_changed",
+  "occurred_at": "2026-10-19T06:35:37.592Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "Supplier neutral hooks, original UI preservation and scoped regression complete locally.",
+  "status_after": "active",
+  "evidence_refs": []
+}
