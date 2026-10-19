@@ -68,15 +68,22 @@ jobs:
           test "${#PR_BASE_SHA}" -eq 40
           case "$PR_BASE_SHA" in *[!0-9a-f]*) exit 64 ;; esac
           git cat-file -e "$PR_BASE_SHA^{commit}"
-          SCOPE_CHECK="$RUNNER_TEMP/base-ci-scope.mjs"
+          SCOPE_ROOT="$RUNNER_TEMP/base-ci"
+          SCOPE_CHECK="$SCOPE_ROOT/validation/ci-scope.mjs"
           scope_entry=$(git ls-tree "$PR_BASE_SHA" -- tools/harness/validation/ci-scope.mjs)
           if [ -n "$scope_entry" ]; then
             case "$scope_entry" in '100644 blob '*) ;; *) exit 65 ;; esac
+            mkdir "$SCOPE_ROOT" "$SCOPE_ROOT/validation" "$SCOPE_ROOT/project-board"
             (set -C; git show "$PR_BASE_SHA:tools/harness/validation/ci-scope.mjs" > "$SCOPE_CHECK")
             config_entry=$(git ls-tree "$PR_BASE_SHA" -- tools/harness/validation/check-agent-config.py)
             if [ -n "$config_entry" ]; then
               case "$config_entry" in '100644 blob '*) ;; *) exit 65 ;; esac
-              (set -C; git show "$PR_BASE_SHA:tools/harness/validation/check-agent-config.py" > "$RUNNER_TEMP/check-agent-config.py")
+              (set -C; git show "$PR_BASE_SHA:tools/harness/validation/check-agent-config.py" > "$SCOPE_ROOT/validation/check-agent-config.py")
+            fi
+            record_entry=$(git ls-tree "$PR_BASE_SHA" -- tools/harness/project-board/project-control.mjs)
+            if [ -n "$record_entry" ]; then
+              case "$record_entry" in '100644 blob '*) ;; *) exit 65 ;; esac
+              (set -C; git show "$PR_BASE_SHA:tools/harness/project-board/project-control.mjs" > "$SCOPE_ROOT/project-board/project-control.mjs")
             fi
             validation_scope=$(node "$SCOPE_CHECK" "$PR_BASE_SHA")
           else
@@ -90,7 +97,7 @@ jobs:
               ;;
             affected)
               run_logged affected node "$SCOPE_CHECK" --check-affected "$PR_BASE_SHA"
-              printf 'AFFECTED ONLY: agent configuration structure checked; instruction semantics require independent review; product regression and native acceptance NOT RUN\n'
+              printf 'AFFECTED ONLY: mapped agent configuration and/or project-control record structure checked; instruction semantics require independent review; product regression and native acceptance NOT RUN\n'
               exit 0
               ;;
             full) ;;
