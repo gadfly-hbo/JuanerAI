@@ -428,8 +428,8 @@ test('CI-REPORT-STUDIO-001: new roots reject omission, substitution, duplication
   for (const name of C1A_TUPLE_CONFIGURATION_FILES) await cp(path.join(REPO_ROOT,name),path.join(root,name));
   assert.equal(await currentRunnerTuple(root),'CF');
   const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8'));
-  const start=original.files.length-AGENT_TSCONFIG_APPENDIX.length-HARNESS_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-DECISION_TSCONFIG_APPENDIX.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length;
-  for(let i=start;i<original.files.length-AGENT_TSCONFIG_APPENDIX.length-HARNESS_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-DECISION_TSCONFIG_APPENDIX.length;i++) {
+  const start=original.files.length-METRIC_FACTORY_TSCONFIG_APPENDIX.length-AGENT_TSCONFIG_APPENDIX.length-HARNESS_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-DECISION_TSCONFIG_APPENDIX.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length;
+  for(let i=start;i<original.files.length-METRIC_FACTORY_TSCONFIG_APPENDIX.length-AGENT_TSCONFIG_APPENDIX.length-HARNESS_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-DECISION_TSCONFIG_APPENDIX.length;i++) {
     for(const [label,files] of [
       ['omit',original.files.filter((_,n)=>n!==i)],
       ['replace',original.files.map((f,n)=>n===i?'tests/unapproved.test.ts':f)],
@@ -526,6 +526,7 @@ const AGENT_TSCONFIG_APPENDIX=Object.freeze([
   "tests/integration/xanthil-desktop/open-analysis-long-artifact.integration.test.ts",
   "tests/integration/xanthil-desktop/open-analysis-natural-review.integration.test.ts"
 ]);
+const METRIC_FACTORY_TSCONFIG_APPENDIX = Object.freeze(['packages/ports/metric-factory.ts','packages/application/metric-factory.ts','adapters/metric-factory/bundle.ts','adapters/metric-factory/copies.ts','adapters/metric-factory/process.ts','profiles/personal/metric-factory.ts','apps/browser/metric-factory-http.ts','tests/integration/metric-factory/copies.test.ts','tests/integration/metric-factory/process.test.ts']);
 async function currentRunnerTuple(root = REPO_ROOT) {
   const [manifestSource, tsconfigSource, rootEntries] = await Promise.all([
     readFile(path.join(root, 'package.json'), 'utf8'),
@@ -578,7 +579,9 @@ async function currentRunnerTuple(root = REPO_ROOT) {
   assert.deepEqual(files.slice(harnessStart,researchStart),HARNESS_TSCONFIG_APPENDIX,'Harness roots remain fixed independent literals');
   const agentStart=researchStart+DEEP_RESEARCH_TSCONFIG_APPENDIX.length;
   assert.deepEqual(files.slice(researchStart,agentStart),DEEP_RESEARCH_TSCONFIG_APPENDIX,'Deep research roots remain the fixed independent literals');
-  assert.deepEqual(files.slice(agentStart),AGENT_TSCONFIG_APPENDIX,'Agent/host increment and total length are fixed independent literals');
+  const metricFactoryStart=agentStart+AGENT_TSCONFIG_APPENDIX.length;
+  assert.deepEqual(files.slice(agentStart,metricFactoryStart),AGENT_TSCONFIG_APPENDIX,'Agent/host increment and total length are fixed independent literals');
+  assert.deepEqual(files.slice(metricFactoryStart),METRIC_FACTORY_TSCONFIG_APPENDIX,'Metric factory roots and total length are fixed independent literals');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }
@@ -1118,12 +1121,12 @@ test('BF-R13 CI-CHANGE005: browser roots reject omission, substitution, duplicat
   assert.equal(await currentRunnerTuple(root),'CF');
 });
 
-test('CI-CHANGE006: every new root remains exact without weakening Change005 coverage',async t=>{const root=await mkdtemp(path.join(os.tmpdir(),'juanerai-cvr-change006-'));t.after(()=>rm(root,{recursive:true,force:true}));for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-AGENT_TSCONFIG_APPENDIX.length-HARNESS_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-DECISION_TSCONFIG_APPENDIX.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length-CHANGE006_TSCONFIG_APPENDIX.length;for(let i=start;i<original.files.length-AGENT_TSCONFIG_APPENDIX.length-HARNESS_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-DECISION_TSCONFIG_APPENDIX.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length;i++)for(const [label,files] of [['omit',original.files.filter((_,n)=>n!==i)],['replace',original.files.map((f,n)=>n===i?'tests/unapproved.test.ts':f)],['duplicate',original.files.map((f,n)=>n===i?original.files[i-1]:f)],['reorder',original.files.map((f,n)=>n===i?original.files[i-1]:n===i-1?original.files[i]:f)]])await t.test(i+' '+label,async()=>{await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});});});
+test('CI-CHANGE006: every new root remains exact without weakening Change005 coverage',async t=>{const root=await mkdtemp(path.join(os.tmpdir(),'juanerai-cvr-change006-'));t.after(()=>rm(root,{recursive:true,force:true}));for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-METRIC_FACTORY_TSCONFIG_APPENDIX.length-AGENT_TSCONFIG_APPENDIX.length-HARNESS_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-DECISION_TSCONFIG_APPENDIX.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length-CHANGE006_TSCONFIG_APPENDIX.length;for(let i=start;i<original.files.length-METRIC_FACTORY_TSCONFIG_APPENDIX.length-AGENT_TSCONFIG_APPENDIX.length-HARNESS_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-DECISION_TSCONFIG_APPENDIX.length-REPORT_STUDIO_TSCONFIG_APPENDIX.length;i++)for(const [label,files] of [['omit',original.files.filter((_,n)=>n!==i)],['replace',original.files.map((f,n)=>n===i?'tests/unapproved.test.ts':f)],['duplicate',original.files.map((f,n)=>n===i?original.files[i-1]:f)],['reorder',original.files.map((f,n)=>n===i?original.files[i-1]:n===i-1?original.files[i]:f)]])await t.test(i+' '+label,async()=>{await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});});});
 
  test('CI-DECISION-001: exact roots and tests reject missing, duplicate and extra coverage',async t=>{
   const root=await mkdtemp(path.join(os.tmpdir(),'juanerai-cvr-decision-'));t.after(()=>rm(root,{recursive:true,force:true}));
   for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));
-  assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-AGENT_TSCONFIG_APPENDIX.length-HARNESS_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-DECISION_TSCONFIG_APPENDIX.length;
+  assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-METRIC_FACTORY_TSCONFIG_APPENDIX.length-AGENT_TSCONFIG_APPENDIX.length-HARNESS_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-DECISION_TSCONFIG_APPENDIX.length;
   for(let i=start;i<original.files.length;i++)for(const files of [original.files.filter((_,n)=>n!==i),original.files.map((v,n)=>n===i?'unapproved.ts':v),original.files.map((v,n)=>n===i?original.files[i-1]:v),[...original.files,'unapproved.ts']]){await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});}
   const names=await readdir(path.join(REPO_ROOT,'tests/integration/decision-platform'));assert.deepEqual([...names.filter(n=>n.endsWith('.test.ts')).sort(),...names.filter(n=>n.endsWith('.test.mjs')).sort()].map(n=>'tests/integration/decision-platform/'+n),DECISION_TEST_PATHS);
  });
@@ -1134,7 +1137,7 @@ test('CI-CHANGE006: every new root remains exact without weakening Change005 cov
  test('CI-HARNESS-001: the new permanent test root remains exact without weakening earlier roots',async t=>{
   const root=await mkdtemp(path.join(os.tmpdir(),'juanerai-cvr-harness-'));t.after(()=>rm(root,{recursive:true,force:true}));
   for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));
-  assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),last=original.files.length-AGENT_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-1;
+  assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),last=original.files.length-METRIC_FACTORY_TSCONFIG_APPENDIX.length-AGENT_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length-1;
   for(const files of [original.files.filter((_,n)=>n!==last),original.files.map((f,n)=>n===last?'unapproved.ts':f),[...original.files,original.files[last]],[...original.files,'unapproved.ts'],original.files.map((f,n)=>n===last-1?original.files[last]:n===last?original.files[last-1]:f)]){
    await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});
   }
@@ -1164,7 +1167,7 @@ test('CI-CHANGE006: every new root remains exact without weakening Change005 cov
  test('CI-DR-001: fixed research roots reject omission, substitution, duplication and extras',async()=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'dr-roots-'));
  try{for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');
- const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-AGENT_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length;
+ const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-METRIC_FACTORY_TSCONFIG_APPENDIX.length-AGENT_TSCONFIG_APPENDIX.length-DEEP_RESEARCH_TSCONFIG_APPENDIX.length;
  for(let i=start;i<original.files.length;i++)for(const files of [original.files.filter((_,n)=>n!==i),original.files.map((f,n)=>n===i?'unapproved.ts':f),[...original.files,original.files[i]]]){await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});}
  }finally{await rm(root,{recursive:true,force:true});}
  });
@@ -1177,4 +1180,4 @@ test('CI-DR-002: real canonical syntax branch parses fixed upstream TypeScript a
  });
 });
 
-test('CI-AH-001: the complete fixed agent-host increment refuses omissions substitutions duplicates and reordering',async t=>{const root=await mkdtemp(path.join(os.tmpdir(),'ah-roots-'));t.after(()=>rm(root,{recursive:true,force:true}));for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-AGENT_TSCONFIG_APPENDIX.length;for(let i=start;i<original.files.length;i++)for(const files of [original.files.filter((_,n)=>n!==i),original.files.map((f,n)=>n===i?'unapproved.ts':f),[...original.files,original.files[i]]]){await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});}await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files:[...original.files.slice(0,start),...AGENT_TSCONFIG_APPENDIX.toReversed()]}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});});
+test('CI-AH-001: the complete fixed agent-host increment refuses omissions substitutions duplicates and reordering',async t=>{const root=await mkdtemp(path.join(os.tmpdir(),'ah-roots-'));t.after(()=>rm(root,{recursive:true,force:true}));for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-METRIC_FACTORY_TSCONFIG_APPENDIX.length-AGENT_TSCONFIG_APPENDIX.length;for(let i=start;i<original.files.length;i++)for(const files of [original.files.filter((_,n)=>n!==i),original.files.map((f,n)=>n===i?'unapproved.ts':f),[...original.files,original.files[i]]]){await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});}await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files:[...original.files.slice(0,start),...AGENT_TSCONFIG_APPENDIX.toReversed(),...METRIC_FACTORY_TSCONFIG_APPENDIX]}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});});

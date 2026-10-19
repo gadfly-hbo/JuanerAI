@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019132434930-T6VK8A",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T13:24:34.930Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "原生008 PASS及主线兼容工程接受；最终记录只追加验收证据，Git实际完成事实由既有回执补齐。",
+  "status_after": "active",
+  "evidence_refs": []
+}

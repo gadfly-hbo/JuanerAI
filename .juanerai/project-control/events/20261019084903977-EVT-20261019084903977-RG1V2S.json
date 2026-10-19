@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019084903977-RG1V2S",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T08:49:03.977Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "保存CLI001 MODEL_UNAVAILABLE原始错误、配置读回、身份未变与退出证据。",
+  "status_after": "active",
+  "evidence_refs": []
+}

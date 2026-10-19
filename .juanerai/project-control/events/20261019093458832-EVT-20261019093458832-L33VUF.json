@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019093458832-L33VUF",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T09:34:58.832Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "收回Astra/high只读报告exit0，候选未变，历史Sol失败及原生角色缺口保留；未工程/产品接受。",
+  "status_after": "active",
+  "evidence_refs": []
+}

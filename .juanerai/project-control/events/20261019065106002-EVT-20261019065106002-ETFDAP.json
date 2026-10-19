@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019065106002-ETFDAP",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T06:51:06.002Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "F-MF-03 focused GREEN, new fixed bundle and persistent supplier regression ready for independent recheck.",
+  "status_after": "active",
+  "evidence_refs": []
+}

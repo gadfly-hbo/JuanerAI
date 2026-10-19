@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019125004341-C0D0VZ",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T12:50:04.341Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "工程接受已记录；保留历史RED偏差、FAIL与UNKNOWN，进入正式产品接受边界。",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

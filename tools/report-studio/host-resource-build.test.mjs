@@ -12,7 +12,7 @@ import {build} from 'vite';
 const require=createRequire(import.meta.url);
 const Generator=require('@electron-forge/plugin-vite/dist/ViteConfig.js').default;
 test('RS-MAIN-COMPAT-036/M06: actual installed-entry build binds closed resources without source checkout or launching services',async()=>{
- assert.ok(process.env.JUANERAI_REPORT_STUDIO_PACKAGE==='1'||process.env.JUANERAI_DEEP_RESEARCH_PACKAGE==='1');
+ assert.ok(process.env.JUANERAI_REPORT_STUDIO_PACKAGE==='1'||process.env.JUANERAI_DEEP_RESEARCH_PACKAGE==='1'||process.env.JUANERAI_METRIC_FACTORY_PACKAGE==='1');
  const root=mkdtempSync(join(process.env.JUANERAI_TEST_EVIDENCE_DIR,'installed-resource-build-')),out=join(root,'out');
  const generator=new Generator({build:[{entry:'apps/browser/installed-main.ts',config:'vite.main.config.mjs',target:'main'}],renderer:[]},process.cwd(),true);
  const [config]=await generator.getBuildConfigs();

@@ -1,0 +1,100 @@
+src/ui/server.ts:197: 
+src/ui/server.ts:198: // G2 判据实现：退款/复购类指标存在 → 口径问题面；已确认 = 物化 caliber_switches 带约定键
+src/ui/server.ts:199: // 键名约定（U1-b/G2）：refund_to_payment_period: boolean；repeat_window_<30|90|180>d: true（选中的窗口）
+src/ui/server.ts:200: const PENDING_RULES: Array<{ key: "refund" | "repeat"; caliberKeys: string[]; match: RegExp }> = [
+src/ui/server.ts:201:   { key: "refund", caliberKeys: ["refund_to_payment_period"], match: /refund|退款/ },
+src/ui/server.ts:202:   { key: "repeat", caliberKeys: ["repeat_window_30d", "repeat_window_90d", "repeat_window_180d"], match: /repeat|复购/ }
+src/ui/server.ts:203: ];
+src/ui/server.ts:204: function derivePending(mat: MaterializedInstance): Record<string, boolean | string | null> {
+src/ui/server.ts:205:   const pending: Record<string, boolean | string | null> = {};
+src/ui/server.ts:206:   for (const rule of PENDING_RULES) {
+src/ui/server.ts:207:     const related = mat.metrics.filter(m => rule.match.test(m.name) || rule.match.test(m.display_name));
+src/ui/server.ts:208:     if (related.length === 0) continue;
+src/ui/server.ts:209:     if (rule.key === "refund") {
+src/ui/server.ts:210:       const hit = related.find(m => typeof m.caliber_switches.refund_to_payment_period === "boolean");
+src/ui/server.ts:211:       pending.refund = hit ? (hit.caliber_switches.refund_to_payment_period as boolean) : null;
+src/ui/server.ts:212:     } else {
+src/ui/server.ts:213:       const confirmed = rule.caliberKeys.flatMap(k => related.filter(m => m.caliber_switches[k] === true).map(() => k.slice("repeat_window_".length, -1)))[0];
+src/ui/server.ts:214:       pending.repeat = confirmed ?? null;
+src/ui/server.ts:215:     }
+src/ui/server.ts:216:   }
+src/ui/server.ts:217:   return pending;
+src/ui/server.ts:218: }
+src/ui/server.ts:798:       const t6Match = path.match(/^\/api\/instances\/([^/]+)\/(approve-metric|reject-metric|confirm-review|deliver|export)$/);
+src/ui/server.ts:799:       if (t6Match && req.method !== "GET") {
+src/ui/server.ts:800:         const id = decodeURIComponent(t6Match[1] ?? "");
+src/ui/server.ts:801:         const ctx = await loadInstanceContext(resolve(workspaceDir, id), templates);
+src/ui/server.ts:802:         if (!ctx) { sendJson(404, { error: `实例不可读：${id}` }); return; }
+src/ui/server.ts:803:         const methods = await discoverMethods(opts.templatesDir);
+src/ui/server.ts:804:         const action = t6Match[2]!;
+src/ui/server.ts:805:         if (action === "approve-metric" || action === "reject-metric") {
+src/ui/server.ts:806:           const body = await readJsonBody() as { name?: string; reviewer?: string };
+src/ui/server.ts:807:           const name = String(body.name ?? "");
+src/ui/server.ts:808:           const mat = materialize(ctx.base, ctx.instance);
+src/ui/server.ts:809:           if (!mat.metrics.some(m => m.name === name)) { sendJson(404, { errors: [`指标 ${name} 不存在。`] }); return; }
+src/ui/server.ts:810:           const next = action === "approve-metric"
+src/ui/server.ts:811:             ? applyApproval(ctx.instance, name, String(body.reviewer ?? process.env.MF_REVIEWER ?? process.env.USER ?? "unknown"))
+src/ui/server.ts:812:             : applyRejection(ctx.instance, name);
+src/ui/server.ts:813:           const result = await writeWithGate(ctx, methods, () => ({ instance: next }));
+src/ui/server.ts:814:           if (!result.ok) { sendJson(result.status, { errors: result.errors }); return; }
+src/ui/server.ts:815:           const fresh = await loadInstanceContext(ctx.instancePath, templates);
+src/ui/server.ts:816:           sendJson(200, buildSystemDto(fresh ?? ctx, templates, workspaceDir, methods));
+src/ui/server.ts:817:           return;
+src/ui/server.ts:818:         }
+src/ui/server.ts:819:         if (action === "confirm-review") {
+src/ui/server.ts:820:           const body = await readJsonBody() as { confirmed_by?: string };
+src/ui/server.ts:821:           const confirmedBy = String(body.confirmed_by ?? process.env.MF_REVIEWER ?? process.env.USER ?? "").trim();
+src/ui/server.ts:822:           const mat = materialize(ctx.base, ctx.instance);
+src/ui/server.ts:823:           if (!ctx.instance.blueprint) { sendJson(422, { errors: ["当前实例无分析体系（仅指标体系模式无需业务复核）。"] }); return; }
+src/ui/server.ts:824:           if (!confirmedBy) { sendJson(422, { errors: ["复核人不能为空（复核动作必须归属到具体责任人）。"] }); return; }
+src/ui/server.ts:825:           const review = designReview(mat, ctx.base, ctx.instance, methods);
+src/ui/server.ts:826:           if (review.designIssues.length > 0) { sendJson(422, { errors: [`存在 ${review.designIssues.length} 项设计缺口，处理完成后才能复核：`, ...review.designIssues.map(i => `[${i.rule}] ${i.path}: ${i.message}`)] }); return; }
+src/ui/server.ts:827:           const confirmed: Instance = {
+src/ui/server.ts:828:             ...ctx.instance,
+src/ui/server.ts:829:             blueprint: {
+src/ui/server.ts:830:               ...ctx.instance.blueprint,
+src/ui/server.ts:831:               review: { confirmed_by: confirmedBy, confirmed_at: new Date().toISOString(), design_fingerprint: designFingerprint(mat) }
+src/ui/server.ts:832:             }
+src/ui/server.ts:833:           };
+src/ui/server.ts:834:           const result = await writeWithGate(ctx, methods, () => ({ instance: confirmed }));
+src/ui/server.ts:835:           if (!result.ok) { sendJson(result.status, { errors: result.errors }); return; }
+src/ui/server.ts:836:           const fresh = await loadInstanceContext(ctx.instancePath, templates);
+src/ui/server.ts:837:           sendJson(200, buildSystemDto(fresh ?? ctx, templates, workspaceDir, methods));
+src/ui/server.ts:838:           return;
+src/ui/server.ts:839:         }
+src/ui/server.ts:840:         if (action === "deliver") {
+src/ui/server.ts:841:           // G3：自动建议 next patch（无既有发布 → 1.0.0）；same-content 阻断由引擎透出
+src/ui/server.ts:842:           const packageId = packageIdFromInstancePath(ctx.instancePath);
+src/ui/server.ts:843:           const latest = latestRelease(workspaceDir, packageId);
+src/ui/server.ts:844:           const [maj, min, pat] = (latest?.version ?? "1.0.0").split(".").map(Number) as [number, number, number];
+src/ui/server.ts:845:           const nextVersion = latest ? `${maj}.${min}.${pat + 1}` : "1.0.0";
+src/ui/server.ts:846:           try {
+src/ui/server.ts:847:             const result = await releaseInstance({
+src/ui/server.ts:848:               instancePath: ctx.instancePath,
+src/ui/server.ts:849:               version: nextVersion,
+src/ui/server.ts:850:               templatesDir: opts.templatesDir,
+src/ui/server.ts:851:               releasesDir: join(workspaceDir, "releases"),
+src/ui/server.ts:852:               releasedBy: process.env.MF_REVIEWER ?? process.env.USER ?? "unknown",
+src/ui/server.ts:853:               note: "工作台交付（A2 SPA）",
+src/ui/server.ts:854:               now: new Date().toISOString()
+src/ui/server.ts:855:             });
+src/ui/server.ts:856:             const fresh = await loadInstanceContext(ctx.instancePath, templates);
+src/ui/server.ts:857:             const dto = buildSystemDto(fresh ?? ctx, templates, workspaceDir, methods);
+src/ui/server.ts:858:             sendJson(201, { version: result.version, packageId: result.packageId, contentFingerprint: result.contentFingerprint, system: dto });
+src/ui/server.ts:859:           } catch (e) {
+src/ui/server.ts:860:             if (e instanceof ReleaseError) {
+src/ui/server.ts:861:               sendJson(422, { errors: [e.rule === "same-content" ? "当前草稿与已交付版本相同，无需重复生成。" : `[${e.rule}] ${e.message}`] });
+src/ui/server.ts:862:               return;
+src/ui/server.ts:863:             }
+src/ui/server.ts:864:             if (e instanceof ExportBlockedError) { sendJson(422, { errors: [`以下 LLM 生成指标未经人工审核：${e.blockedMetrics.join("、")}`] }); return; }
+src/ui/server.ts:865:             throw e;
+src/ui/server.ts:866:           }
+src/ui/server.ts:867:           return;
+src/ui/server.ts:868:         }
+src/ui/server.ts:869:       }
+src/ui/server.ts:870:       const t6ExportMatch = path.match(/^\/api\/instances\/([^/]+)\/export\/([a-z]+)$/);
+src/ui/server.ts:871:       if (t6ExportMatch && (req.method === "GET" || req.method === "HEAD")) {
+src/ui/server.ts:872:         const id = decodeURIComponent(t6ExportMatch[1] ?? "");
+src/ui/server.ts:873:         const format = t6ExportMatch[2]!;
+src/ui/server.ts:874:         const ctx = await loadInstanceContext(resolve(workspaceDir, id), templates);
+src/ui/server.ts:875:         if (!ctx) { sendJson(404, { error: `实例不可读：${id}` }); return; }

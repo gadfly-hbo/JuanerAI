@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019071321520-4JHBH2",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T07:13:21.520Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-metric-factory-integration"
+  },
+  "summary": "收回独立005报告并确认所有子进程关闭，保存本机候选；未工程/产品接受或发布。",
+  "status_after": "active",
+  "evidence_refs": []
+}

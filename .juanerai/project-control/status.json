@@ -3,304 +3,87 @@
   "project": {
     "id": "juanerai",
     "name": "JuanerAI",
-    "product": "Agent / host simplification - offline"
+    "product": "Metric Factory fixed plugin integration"
   },
   "phase": {
-    "id": "GIT_DELIVERY",
-    "label": "候选003获准Git交付，保持离线限定",
-    "ordinal": 4,
-    "total": 4
+    "id": "delivering",
+    "label": "工程与产品接受完成／最终Git条件核对",
+    "ordinal": 5,
+    "total": 5
   },
-  "health": "validating",
-  "summary": "新基线组合完整Canonical5148 PASS／0 FAIL／8 SKIP及独立CLI PASS已收集；2355源文件审查前后未变。只补9项Markdown复核／接受／完整40ID投影记录，1175行为文件与mode不变，原离线快照未改写。准备显式提交并更新PR106，当前head托管CI仍待执行。",
-  "current_objective": "Reuse R1-R4 and fixed .5 with one native agent control chain; preserve business authorities.",
-  "next_action": "显式范围／暂存／源码身份检查后提交、正常推送当前工作分支并更新现有PR106；收集新head完整CI和原生日志，满足实际条件后精确squash及安全main引用同步。",
+  "health": "active",
+  "summary": "主线集成原生008 PASS；完整回归5131PASS/26SKIP、实际包21PASS、当前资源构建PASS。用户浏览器接受保持，最终head CI/合并同步由交付回执核对。",
+  "current_objective": "Bundle the complete metric-factory workbench with owned host lifecycle, authorization and stable SAP delivery, preserving production UI and supplier business implementation.",
+  "next_action": "最终head CI成功后完成两仓squash与安全同步，实际结果写既有PR和git-delivery-001/receipt.json；不安装、不新增Provider。",
   "blockers": [],
   "milestones": [
     {
       "id": "intake",
-      "label": "Material identity and isolated tree",
+      "label": "Fixed product/UI and engineering intake",
       "status": "completed"
     },
     {
-      "id": "first-path",
-      "label": "LA09 first complete path",
+      "id": "supplier",
+      "label": "Supplier neutral hooks and regression",
       "status": "completed"
     },
     {
-      "id": "overall",
-      "label": "Eight seams, long output, entries and lifecycle",
+      "id": "host",
+      "label": "Host wiring and fixed bundle",
       "status": "completed"
     },
     {
       "id": "verify",
-      "label": "Fixed complete candidate and independent validation",
+      "label": "Affected/full checks and independent Validator",
       "status": "completed"
     },
     {
-      "id": "git-delivery",
-      "label": "Authorized scoped Git/CI/merge/safe-main synchronization",
-      "status": "active"
+      "id": "accept",
+      "label": "Engineering and product acceptance / authorized delivery",
+      "status": "pending"
     }
   ],
   "agents": [
     {
-      "id": "controller",
-      "label": "Same Mini engineering primary",
-      "model": "Actual current native gpt-6.1-sol/max, danger-full-access/never; previous Git Sol/xhigh retained separately",
+      "id": "engineering-primary",
+      "label": "Same Mini primary; sole engineering author",
+      "model": "Actual model/effort readback UNKNOWN; native primary, no CLI substitution",
       "status": "active",
-      "activation": "Explicit user engineering start and continue on 2026-10-19"
-    },
-    {
-      "id": "validator",
-      "label": "Independent CLI juaner_validator exception",
-      "model": "Actual gpt-6-astra/max; current explicit user override; read-only/never",
-      "status": "complete",
-      "activation": "当前Git修正002独立PASS及exit0已收集，相关进程结束；本次明确CLI例外终点已到达，不推断后续角色权限"
+      "activation": "User whole-product integration request and production UI/two-feedback decision, 2026-10-19"
     }
   ],
   "metrics": [],
   "evidence": [
     {
-      "id": "intake",
-      "label": "Archive and fixed inputs identity PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/INTAKE.json",
-      "status": "verified"
-    },
-    {
-      "id": "role",
-      "label": "Actual Sol/max adopted",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/ROLE-ADOPTION-002.json",
-      "status": "verified"
-    },
-    {
-      "id": "canonical-final",
-      "label": "Canonical083:5091 PASS/0 FAIL/8 retained SKIP; same behavioral source",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/canonical083-summary.json",
-      "status": "verified"
-    },
-    {
-      "id": "fixed-candidate",
-      "label": "Immutable complete candidate003 archive/readback",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/CANDIDATE-003-RECEIPT.json",
-      "status": "verified"
-    },
-    {
-      "id": "validator-runtime",
-      "label": "Candidate003 actual Astra/max/read-only/full role verified",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/validator-cli-003/ACTUAL-SETTINGS-READBACK.json",
-      "status": "verified"
-    },
-    {
-      "id": "validator-result",
-      "label": "Historical Independent candidate001 FAIL: two material findings",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/VALIDATOR-001-RESULT.json",
-      "status": "failed"
-    },
-    {
-      "id": "correction-focused",
-      "label": "Author actual Store/Browser/Profile checks:9 PASS;14 additional row negatives",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/correction071-green-result.json",
-      "status": "verified"
-    },
-    {
-      "id": "candidate002-readback",
-      "label": "Candidate002 archive safety and all file bytes readback PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/candidate-readback076.json",
-      "status": "verified"
-    },
-    {
-      "id": "validator002-result",
-      "label": "Historical Independent candidate002 FAIL: F-RECOVERY-02; prior findings closed",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/VALIDATOR-002-RESULT.json",
-      "status": "failed"
-    },
-    {
-      "id": "correction082",
-      "label": "Actual Browser/Profile causal RED081→GREEN082:10 PASS; first summary admitted/second extra refused",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/correction082-green-result.json",
-      "status": "verified"
-    },
-    {
-      "id": "candidate003-readback",
-      "label": "Candidate003 all2567 safe members and2351 live source bytes/modes match",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/candidate-readback086.json",
-      "status": "verified"
-    },
-    {
-      "id": "validator003-result",
-      "label": "Independent candidate003 PASS, offline only; all three findings closed",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/VALIDATOR-003-RESULT.json",
-      "status": "verified"
-    },
-    {
-      "id": "offline-delivery003",
-      "label": "Complete offline delivery receipt; formal/product/Git/release not signed",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/OFFLINE-DELIVERY-003.json",
-      "status": "verified"
-    },
-    {
-      "id": "post-review-records",
-      "label": "Only six Markdown bookkeeping changes; all1175 behavior files unchanged",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/post-review-bookkeeping091.json",
-      "status": "verified"
-    },
-    {
-      "id": "git-authority",
-      "label": "Current human candidate003 Git authorization and unchanged-source preflight",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/AUTHORIZATION-AND-PREFLIGHT.json",
-      "status": "verified"
-    },
-    {
-      "id": "engineering-acceptance003",
-      "label": "Offline engineering accepted with limits; current behavior baseline archived",
-      "path": "openspec/changes/archive/2026-10-19-agent-host-simplification-20261019/ENGINEERING-ACCEPTANCE.md",
-      "status": "verified"
-    },
-    {
-      "id": "PR106",
-      "label": "Authorized PR106, exact head and87 intended paths verified",
-      "path": "https://github.com/gadfly-hbo/JuanerAI/pull/106",
-      "status": "verified"
-    },
-    {
-      "id": "CI106",
-      "label": "Current-head CI39235077405 FAIL preserved; diagnosis ongoing",
-      "path": "https://github.com/gadfly-hbo/JuanerAI/actions/runs/39235077405",
-      "status": "failed"
-    },
-    {
-      "id": "git-main-route",
-      "label": "Actual current native turn Sol/xhigh; earlier Max not relabeled",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/ACTUAL-MAIN-ROUTE.json",
-      "status": "verified"
-    },
-    {
-      "id": "ci-platform-scope",
-      "label": "Single test registration correction; all1174 other behavior files unchanged",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/CI-CORRECTION-SCOPE.json",
-      "status": "verified"
-    },
-    {
-      "id": "canonical-git002",
-      "label": "Current corrected input full Canonical:5091 PASS/0 FAIL/8 retained SKIP",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/canonical-git002-summary.json",
-      "status": "verified"
-    },
-    {
-      "id": "git-ci-correction001",
-      "label": "Complete fixed source and independent readback; review permission pending",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/GIT-CI-CORRECTION001-RECEIPT.json",
+      "id": "spec",
+      "label": "Current behavior spec and scope",
+      "path": "openspec/changes/archive/2026-10-19-metric-factory-integration/spec.md",
       "status": "present"
     },
     {
-      "id": "git-cli-current-authority",
-      "label": "Current human authorization for bounded PR106 CI correction CLI review",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/validator-cli-git001/AUTHORIZATION.json",
-      "status": "verified"
-    },
-    {
-      "id": "git-current-main-route",
-      "label": "Current native primary actual Sol/max read back",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/ACTUAL-MAIN-ROUTE-RESUME.json",
-      "status": "verified"
-    },
-    {
-      "id": "git-validator-runtime",
-      "label": "Preflight and actual Git correction review Astra/max/read-only/never verified",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/validator-cli-git001/REVIEW-ACTUAL-SETTINGS-READBACK.json",
-      "status": "verified"
-    },
-    {
-      "id": "base-107",
-      "label": "Upstream PR107 base advancement; zero overlap with delivery paths",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/BASE-ADVANCE-107.json",
-      "status": "verified"
-    },
-    {
-      "id": "review-base-interruption",
-      "label": "Unfinished review interrupted; no verdict, all owned processes stopped, source unchanged",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/validator-cli-git001/INTERRUPT-BASE-ADVANCE-AFTER.json",
-      "status": "verified"
-    },
-    {
-      "id": "base-107-integrated",
-      "label": "Upstream107 safely merged, board and other trees preserved",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/BASE-107-INTEGRATION-RESULT.json",
-      "status": "verified"
-    },
-    {
-      "id": "base-107-attribution",
-      "label": "Exactly five upstream non-Markdown inputs; runtime and LA09 unchanged",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/BASE-107-BEHAVIOR-DELTA.json",
-      "status": "verified"
-    },
-    {
-      "id": "fresh-cli-preflight",
-      "label": "Fresh independent current role4693bytes and Astra/max/read-only/never actual preflight PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/validator-cli-git002/PREFLIGHT-ACTUAL-SETTINGS-READBACK.json",
-      "status": "verified"
-    },
-    {
-      "id": "canonical-git003",
-      "label": "Current integrated full Canonical5148 PASS/0 FAIL/8 retained SKIP;19groups",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/canonical-git003-summary.json",
-      "status": "verified"
-    },
-    {
-      "id": "current-integrated-candidate",
-      "label": "Complete current fixed correction002 all2355 bytes/hash/mode readback PASS",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/GIT-CI-CORRECTION002-RECEIPT.json",
-      "status": "verified"
-    },
-    {
-      "id": "current-integrated-validator",
-      "label": "Current review actual Astra/max/read-only/never verified",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/validator-cli-git002/REVIEW-ACTUAL-SETTINGS-READBACK.json",
-      "status": "verified"
-    },
-    {
-      "id": "current-git-independent-pass",
-      "label": "Current complete fixed correction002 independent offline PASS, no material blockers; raw report exact copy",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/VALIDATOR-GIT002-RESULT.json",
-      "status": "verified"
-    },
-    {
-      "id": "post-review-md",
-      "label": "Only nine receipt/projection Markdown paths after review; full behavior identity and modes retained",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/POST-REVIEW-BOOKKEEPING-GIT003.json",
-      "status": "verified"
-    },
-    {
-      "id": "full-map-git",
-      "label": "Full40-ID current snapshot, target/status/stage delta0, old snapshot retained",
-      "path": "docs/planning/capability-coverage/snapshots/agent-host-simplification-git-2026-10-19.md",
-      "status": "verified"
-    },
-    {
-      "id": "consumption-current",
-      "label": "Four unique engineering sessions once each, original failures/UNKNOWN retained, costUNKNOWN",
-      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/consumption-git-precommit.json",
+      "id": "result",
+      "label": "Current engineering result",
+      "path": "openspec/changes/archive/2026-10-19-metric-factory-integration/verification.md",
       "status": "present"
     }
   ],
   "risks": [
     {
-      "id": "history",
-      "label": "Historical FAIL and UNKNOWN",
-      "level": "high",
-      "mitigation": "Retain old trees, inputs, consumption and unknowns; no old database access or retries."
+      "id": "baseline-dmf01",
+      "label": "Existing caliber display/engine discrepancy retained",
+      "level": "medium",
+      "mitigation": "No unapproved business repair or claimed PASS; report separately from integration evidence."
     },
     {
-      "id": "permission",
-      "label": "Unopened real and external effects",
-      "level": "high",
-      "mitigation": "Only candidate003 Git delivery and applicable offline engineering archive now authorized. No real Provider/business data, release/production, or old-line restart."
+      "id": "remaining-acceptance",
+      "label": "Real model quality limits, unknown cancellation and installed-package evidence remain",
+      "level": "medium",
+      "mitigation": "本机浏览器产品接受已完成；原失败及UNKNOWN保持，安装暂不执行，Git条件继续核对。"
     }
   ],
-  "updated_at": "2026-10-19T11:25:23.540Z",
+  "updated_at": "2026-10-19T13:24:34.930Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a153c5-8253-75b0-af14-f236b868215a"
+    "session": "mini-metric-factory-integration"
   }
 }
