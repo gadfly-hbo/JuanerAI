@@ -6,15 +6,15 @@
     "product": "Agent / host simplification - offline"
   },
   "phase": {
-    "id": "GIT_DELIVERY",
-    "label": "候选003获准Git交付，保持离线限定",
-    "ordinal": 4,
-    "total": 4
+    "id": "DELIVERY",
+    "label": "repair001获准Git交付：固定记录复核与当前HEAD CI",
+    "ordinal": 5,
+    "total": 5
   },
   "health": "validating",
-  "summary": "新基线组合完整Canonical5148 PASS／0 FAIL／8 SKIP及独立CLI PASS已收集；2355源文件审查前后未变。只补9项Markdown复核／接受／完整40ID投影记录，1175行为文件与mode不变，原离线快照未改写。准备显式提交并更新PR106，当前head托管CI仍待执行。",
-  "current_objective": "Reuse R1-R4 and fixed .5 with one native agent control chain; preserve business authorities.",
-  "next_action": "显式范围／暂存／源码身份检查后提交、正常推送当前工作分支并更新现有PR106；收集新head完整CI和原生日志，满足实际条件后精确squash及安全main引用同步。",
+  "summary": "repair001完整Git候选独立原生复核PASS，无阻断；既有500/2SKIP与独立29行为证据仍有效。看板旧权限句和快照链接两项建议已补正，183个重定位链接保持相同目标；本轮继续获准的受影响核对及规范Git/CI交付。",
+  "current_objective": "Restore the existing saved-exploration input on real Workspace relaunch, without weakening identity, authorization or unknown-effect fences.",
+  "next_action": "在本轮授权内完成受影响只读核对、提交/推送/PR、当前HEAD完整portable CI、squash及安全main同步；实际结果由外置最终收据收集后停止。旧两线保持停止，真实Provider/业务/发布/生产仍不授权。",
   "blockers": [],
   "milestones": [
     {
@@ -40,6 +40,16 @@
     {
       "id": "git-delivery",
       "label": "Authorized scoped Git/CI/merge/safe-main synchronization",
+      "status": "completed"
+    },
+    {
+      "id": "workspace-exploration-resume-repair",
+      "label": "Authorized local-only saved exploration readback repair",
+      "status": "completed"
+    },
+    {
+      "id": "repair001-git-delivery",
+      "label": "Authorized repair001 scoped Git/CI/squash/safe-main closeout",
       "status": "active"
     }
   ],
@@ -49,7 +59,7 @@
       "label": "Same Mini engineering primary",
       "model": "Actual current native gpt-6.1-sol/max, danger-full-access/never; previous Git Sol/xhigh retained separately",
       "status": "active",
-      "activation": "Explicit user engineering start and continue on 2026-10-19"
+      "activation": "Current user explicitly authorizes standard repair001 Git delivery; prior local-only stop completed."
     },
     {
       "id": "validator",
@@ -57,6 +67,13 @@
       "model": "Actual gpt-6-astra/max; current explicit user override; read-only/never",
       "status": "complete",
       "activation": "当前Git修正002独立PASS及exit0已收集，相关进程结束；本次明确CLI例外终点已到达，不推断后续角色权限"
+    },
+    {
+      "id": "workspace-resume-validator-001",
+      "label": "Independent native juaner_validator, completed PASS",
+      "model": "Actual gpt-6.1-sol/high; inherited danger-full-access/never with mandatory read-only conduct, not OS read-only isolation",
+      "status": "complete",
+      "activation": "Current sole policy and fixed complete candidate; 29 PASS/0 FAIL/0 SKIP. Prior native BLOCKED and ended CLI exceptions remain history."
     }
   ],
   "metrics": [],
@@ -75,7 +92,7 @@
     },
     {
       "id": "canonical-final",
-      "label": "Canonical083:5091 PASS/0 FAIL/8 retained SKIP; same behavioral source",
+      "label": "Historical offline003 Canonical083:5091 PASS/0 FAIL/8 SKIP, own fixed inputs",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/canonical083-summary.json",
       "status": "verified"
     },
@@ -135,13 +152,13 @@
     },
     {
       "id": "offline-delivery003",
-      "label": "Complete offline delivery receipt; formal/product/Git/release not signed",
+      "label": "Original offline003 issued receipt before later Git authority; immutable history",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/OFFLINE-DELIVERY-003.json",
       "status": "verified"
     },
     {
       "id": "post-review-records",
-      "label": "Only six Markdown bookkeeping changes; all1175 behavior files unchanged",
+      "label": "Historical offline003 bookkeeping091 only six Markdown paths, own behavior unchanged",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/post-review-bookkeeping091.json",
       "status": "verified"
     },
@@ -165,7 +182,7 @@
     },
     {
       "id": "CI106",
-      "label": "Current-head CI39235077405 FAIL preserved; diagnosis ongoing",
+      "label": "Historical first-head Canonical CI39235077405 FAIL retained, corrected head separate",
       "path": "https://github.com/gadfly-hbo/JuanerAI/actions/runs/39235077405",
       "status": "failed"
     },
@@ -249,7 +266,7 @@
     },
     {
       "id": "current-integrated-candidate",
-      "label": "Complete current fixed correction002 all2355 bytes/hash/mode readback PASS",
+      "label": "Review-time fixed2355 source; subsequent receipt-only Markdown attributed separately",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/GIT-CI-CORRECTION002-RECEIPT.json",
       "status": "verified"
     },
@@ -282,6 +299,120 @@
       "label": "Four unique engineering sessions once each, original failures/UNKNOWN retained, costUNKNOWN",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/consumption-git-precommit.json",
       "status": "present"
+    },
+    {
+      "id": "final-git-head",
+      "label": "Final4d441cf/treea42 committed and normal push;103 PR paths match scope",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/FINAL-PR-CI-BINDING.json",
+      "status": "verified"
+    },
+    {
+      "id": "current-head-ci",
+      "label": "Final4d441cf hosted full portable CI5125 PASS/0 FAIL/31 SKIP; actualcheckout treea42",
+      "path": "https://github.com/gadfly-hbo/JuanerAI/actions/runs/39244990353",
+      "status": "verified"
+    },
+    {
+      "id": "actual-merge",
+      "label": "PR106 actualsquashcc46fa25/treea42 and origin/main verified",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/FINAL-MERGE-RESULT.json",
+      "status": "verified"
+    },
+    {
+      "id": "actual-sync",
+      "label": "Both Mini and MacBook maincc46fa25; ref-only sync0 and independentcheck0",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/SYNC-MAIN-FINAL-CHECK.json",
+      "status": "verified"
+    },
+    {
+      "id": "source-retention-final",
+      "label": "Final2357 source files/modes and three protected tree Git metadata retained; not WIP byte proof",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/FINAL-RETENTION-SOURCE.json",
+      "status": "verified"
+    },
+    {
+      "id": "native-ci-logs",
+      "label": "Current complete native CI logsZIP/step/checkout bytes+SHA+CRC readback",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/FINAL-CI-NATIVE-LOG-READBACK.json",
+      "status": "verified"
+    },
+    {
+      "id": "wr-intake",
+      "label": "Local repair identity, fixed57 SDK files, archives and prior board WIP retained",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/INTAKE.json",
+      "status": "verified"
+    },
+    {
+      "id": "wr-red",
+      "label": "Target real Workspace causal RED, native original path not_found",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/runs/causal-red007/result.json",
+      "status": "failed"
+    },
+    {
+      "id": "wr-green",
+      "label": "Same Workspace test GREEN after one existing input restored",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/runs/causal-green008/result.json",
+      "status": "verified"
+    },
+    {
+      "id": "wr-local-candidate",
+      "label": "Frozen local repair001:3785 source paths; archive3f6066ca2b6d, immutable and local only",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/LOCAL-CANDIDATE-001-RECEIPT.json",
+      "status": "verified"
+    },
+    {
+      "id": "wr-affected",
+      "label": "Current affected502 tests:500 PASS/0 FAIL/2 retained Browser SKIP; all9 WR cases executed",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/runs/affected-regression014/result.json",
+      "status": "verified"
+    },
+    {
+      "id": "wr-typecheck",
+      "label": "Current final input typecheck exit0",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/runs/typecheck015/result.json",
+      "status": "verified"
+    },
+    {
+      "id": "wr-independent",
+      "label": "Native independent fixed-candidate PASS;29 actual checks; full400-point read and fences preserved",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/validator-native-001/report.md",
+      "status": "verified"
+    },
+    {
+      "id": "wr-permissions",
+      "label": "Actual native role/model/permissions disclosed, compatibility difference explicitly resolved",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/NATIVE-VALIDATOR-ACTUAL-SETTINGS.json",
+      "status": "verified"
+    },
+    {
+      "id": "wr-final-receipt",
+      "label": "Local repair final receipt; unchanged Git/SDK/history, cumulative consumption and stop boundary",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/LOCAL-REPAIR-RECEIPT.json",
+      "status": "present"
+    },
+    {
+      "id": "repair001-git-authority",
+      "label": "Current direct Git authority and candidate/source/WIP identity",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/git-delivery-001/AUTHORIZATION-AND-PREFLIGHT.json",
+      "status": "verified"
+    },
+    {
+      "id": "repair001-base-ancestry",
+      "label": "Normal PR106 base merge, identical tree and all3786 pre-existing source files preserved",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/git-delivery-001/BASE-INTEGRATION-READBACK.json",
+      "status": "verified"
+    },
+    {
+      "id": "repair001-current-route",
+      "label": "Actual current primary Sol/max, inherited permissions, same-task authority",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/git-delivery-001/ACTUAL-MAIN-ROUTE.json",
+      "status": "verified"
+    },
+    {
+      "id": "repair001-git-native-pass",
+      "label": "Complete fixed3791-file Git candidate independent PASS, no blockers; two non-blocking record advisories corrected",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/workspace-exploration-resume-repair-001/git-delivery-001/validator-native-git001/report.md",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -295,12 +426,12 @@
       "id": "permission",
       "label": "Unopened real and external effects",
       "level": "high",
-      "mitigation": "Only candidate003 Git delivery and applicable offline engineering archive now authorized. No real Provider/business data, release/production, or old-line restart."
+      "mitigation": "Current user authorizes repair001 standard Git/CI/squash/safe-main delivery only. No real Provider/business data, SDK/dependency/model/policy changes, release/production or old-line restart."
     }
   ],
-  "updated_at": "2026-10-19T11:25:23.540Z",
+  "updated_at": "2026-10-19T13:32:39.461Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a153c5-8253-75b0-af14-f236b868215a"
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a1544f-6d30-7092-bb16-536a04c99d60"
   }
 }

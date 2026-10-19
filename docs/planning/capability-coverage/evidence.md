@@ -1,3 +1,14 @@
+## E-WORKSPACE-EXPLORATION-RESUME-REPAIR001-20261019
+
+限定离线保存探索读取修复，非真实模型或完整产品接受。WR-01–08实际Workspace
+因果RED007→同入口GREEN008；受影响500 PASS/0 FAIL/2保留SKIP，typecheck exit0；
+独立原生29 PASS/0 FAIL/0 SKIP及PASS，完整400点读回且Python1/核验0。
+[归档／完整身份和原始证据定位](../../../openspec/changes/archive/2026-10-19-agent-host-exploration-resume-repair-20261019/engineering-delivery.md) ·
+[原始独立报告](../../../openspec/changes/archive/2026-10-19-agent-host-exploration-resume-repair-20261019/independent-validation-local-001.md)。
+用户另行授权本候选Git交付；当前head CI／实际合并／同步由外置最终收据绑定，
+不提前填写。全40ID目标／类别增量0；原003／PR106及所有旧FAIL/BLOCKED/UNKNOWN／
+消耗保留。旧119和repair2停止，真实Provider／业务数据／发布／生产不授权。
+
 ## decision-platform 012 · 获准Git交付与归档036（2026-10-17）
 
 用户已授权本任务Git交付、PR、最终HEAD CI、合并、安全主线同步及正式归档；沿原分支保全012，再正常融合已发布主线。归档与当前规格随[PR100](https://github.com/gadfly-hbo/JuanerAI/pull/100)实际合并生效，最终Git/CI/逐设备同步身份见[交付036](../../../openspec/changes/archive/2026-10-17-decision-platform-integration/git-delivery-036.md)及其本机完成回执，未有实际结果不提前称完成。012用户产品接受及工程具名风险不变，原独立BLOCKED不改。全40稳定ID类别增量0；六加二/完整阶段、正式Decision/Actual、现实业务结果、真实Provider质量、安装及生产缺口保持。

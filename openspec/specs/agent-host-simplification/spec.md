@@ -40,3 +40,21 @@
 作者完整Canonical083：5091 PASS／0 FAIL／8保留SKIP；独立CLI Astra/max、read-only审查PASS。
 这是现有完整候选证据的适用复用，不声称Git最终记录另有新独立审查或真实Provider验证。
 当前提交CI和实际Git整合由归档的外置收据定位；未运行／未授权事项及非阻断建议仍保留。
+
+## WR-01–08 — saved exploration through Workspace resume
+
+On legally stopped, physically settled Task resume, existing Workspace launch
+passes its persisted explorations to Application's existing qualified-reading
+index. Native read of the original exploration/id/value-hash/result.txt returns
+the complete original value including full charts; it performs no new Python,
+independent verification or Outcome promotion. MODEL_EXPLORATION/not_performed
+remains. Passive close/reopen never dispatches work. Stale revision/config/scope,
+other Task, wrong hash, source change, revoked authorization, pending and UNKNOWN
+work retain their existing rejection/recovery contract. This input-wiring repair
+does not reconcile/replay an unclosed native operation or introduce a new reader,
+Session/cache/recovery framework, storage format, SDK or runtime policy.
+
+[Repair archive and acceptance](../../changes/archive/2026-10-19-agent-host-exploration-resume-repair-20261019/ENGINEERING-ACCEPTANCE.md)
+bind the real Workspace synthetic RED→GREEN and independent checks. This is not
+real-model quality, general product acceptance, release/production or authority
+to resume either stopped historical task. Original003/PR106 evidence remains.

@@ -1,3 +1,17 @@
+## Workspace保存探索续接修复001 · 获准Git交付（2026-10-19）
+
+原路径完整读回接线已在真实Workspace合成链路验证：RED→GREEN，400图表点，
+Python不重跑，MODEL_EXPLORATION/not_performed保持。受影响500 PASS/0 FAIL/2 SKIP，
+独立原生29项PASS。全40稳定ID目标／状态类／完整能力／阶段接受增量0；
+只补C3-01、A-03/A-05与B-01/02/03的生命周期／读取机制证据。
+原003、PR106、历史FAIL/BLOCKED/UNKNOWN和累计消耗保持；旧两线仍停止。
+本次Git已获用户明确授权，当前head CI／合并／同步等待实际证据，
+不代签真实Provider／业务、产品接受、安装发布或生产。
+[当前工程交付](../../../openspec/changes/archive/2026-10-19-agent-host-exploration-resume-repair-20261019/engineering-delivery.md) ·
+[本次全40ID快照](snapshots/agent-host-exploration-resume-repair001-2026-10-19.md) ·
+[证据](evidence.md#e-workspace-exploration-resume-repair001-20261019)。
+以下既有记录按原时点完整保留。
+
 ## Agent／宿主精简 · 当前基线离线接受与Git交付记录（2026-10-19）
 
 当前base8b391f18；原完整003生产／SDK／依赖字节保留，LA09仅增加真实macOS监督器

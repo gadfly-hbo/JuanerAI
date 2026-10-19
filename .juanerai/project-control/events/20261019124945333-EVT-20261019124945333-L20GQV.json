@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019124945333-L20GQV",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T12:49:45.333Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a15421-969b-7503-a725-c23d187550db"
+  },
+  "summary": "受影响回归与类型检查通过，进入本地固定候选的独立只读复核。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

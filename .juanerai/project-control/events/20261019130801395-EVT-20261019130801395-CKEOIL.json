@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019130801395-CKEOIL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T13:08:01.395Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a15421-969b-7503-a725-c23d187550db"
+  },
+  "summary": "Local Workspace exploration repair001 fixed and independently PASS; local candidate completed and STOP; no current Git delivery or real product effects.",
+  "status_after": "complete",
+  "evidence_refs": []
+}
