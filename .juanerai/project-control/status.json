@@ -12,9 +12,9 @@
     "total": 4
   },
   "health": "validating",
-  "summary": "候选003限定离线工程接受及规范归档完成；全部1175行为文件/原独立报告身份不变，复用003完整离线PASS。现进入86项明确范围提交/PR当前head CI；产品/真实质量/发布未接受，历史FAIL/UNKNOWN保留。",
+  "summary": "当前Git平台修正独立CLI审查进行中；配置-only预检和实际审查turn均已读回Astra/max/read-only/never，完整原角色指令未变。2355源文件固定，生产／SDK／依赖不变；当前完整Canonical5091 PASS／8保留SKIP，原CI FAIL保留。",
   "current_objective": "Reuse R1-R4 and fixed .5 with one native agent control chain; preserve business authorities.",
-  "next_action": "提交并推送当前固定树，创建PR，等当前head完整Canonical CI通过后squash合并及双端安全main引用同步。最终真实Git身份只写外置收据，不伪造未来结果。",
+  "next_action": "收集独立审查和退出结果，复核源码未变；按结论处理必要修正或完成限定接受记录、当前HEAD托管CI、squash及安全main引用同步。",
   "blockers": [],
   "milestones": [
     {
@@ -47,7 +47,7 @@
     {
       "id": "controller",
       "label": "Same Mini engineering primary",
-      "model": "Actual gpt-6.1-sol/max, user-authorized max; danger-full-access/never",
+      "model": "Actual current native gpt-6.1-sol/max, danger-full-access/never; previous Git Sol/xhigh retained separately",
       "status": "active",
       "activation": "Explicit user engineering start and continue on 2026-10-19"
     },
@@ -55,8 +55,8 @@
       "id": "validator",
       "label": "Independent CLI juaner_validator exception",
       "model": "Actual gpt-6-astra/max; current explicit user override; read-only/never",
-      "status": "complete",
-      "activation": "用户授权本轮必要只读复核；候选002实际turn_context与完整角色指令已读回"
+      "status": "active",
+      "activation": "用户明确授权本次Git修正必要CLI只读复核；当前先做配置预检，符合后才审查"
     }
   ],
   "metrics": [],
@@ -156,6 +156,60 @@
       "label": "Offline engineering accepted with limits; current behavior baseline archived",
       "path": "openspec/changes/archive/2026-10-19-agent-host-simplification-20261019/ENGINEERING-ACCEPTANCE.md",
       "status": "verified"
+    },
+    {
+      "id": "PR106",
+      "label": "Authorized PR106, exact head and87 intended paths verified",
+      "path": "https://github.com/gadfly-hbo/JuanerAI/pull/106",
+      "status": "verified"
+    },
+    {
+      "id": "CI106",
+      "label": "Current-head CI39235077405 FAIL preserved; diagnosis ongoing",
+      "path": "https://github.com/gadfly-hbo/JuanerAI/actions/runs/39235077405",
+      "status": "failed"
+    },
+    {
+      "id": "git-main-route",
+      "label": "Actual current native turn Sol/xhigh; earlier Max not relabeled",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/ACTUAL-MAIN-ROUTE.json",
+      "status": "verified"
+    },
+    {
+      "id": "ci-platform-scope",
+      "label": "Single test registration correction; all1174 other behavior files unchanged",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/CI-CORRECTION-SCOPE.json",
+      "status": "verified"
+    },
+    {
+      "id": "canonical-git002",
+      "label": "Current corrected input full Canonical:5091 PASS/0 FAIL/8 retained SKIP",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/canonical-git002-summary.json",
+      "status": "verified"
+    },
+    {
+      "id": "git-ci-correction001",
+      "label": "Complete fixed source and independent readback; review permission pending",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/GIT-CI-CORRECTION001-RECEIPT.json",
+      "status": "present"
+    },
+    {
+      "id": "git-cli-current-authority",
+      "label": "Current human authorization for bounded PR106 CI correction CLI review",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/validator-cli-git001/AUTHORIZATION.json",
+      "status": "verified"
+    },
+    {
+      "id": "git-current-main-route",
+      "label": "Current native primary actual Sol/max read back",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/ACTUAL-MAIN-ROUTE-RESUME.json",
+      "status": "verified"
+    },
+    {
+      "id": "git-validator-runtime",
+      "label": "Preflight and actual Git correction review Astra/max/read-only/never verified",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/git-delivery-001/validator-cli-git001/REVIEW-ACTUAL-SETTINGS-READBACK.json",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -172,9 +226,9 @@
       "mitigation": "Only candidate003 Git delivery and applicable offline engineering archive now authorized. No real Provider/business data, release/production, or old-line restart."
     }
   ],
-  "updated_at": "2026-10-19T10:05:11.890Z",
+  "updated_at": "2026-10-19T10:52:18.133Z",
   "updated_by": {
     "role": "controller",
-    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a15398-b9ad-76e2-8a82-103da71d3c29"
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a153c5-8253-75b0-af14-f236b868215a"
   }
 }

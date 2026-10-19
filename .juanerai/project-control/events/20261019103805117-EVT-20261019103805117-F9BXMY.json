@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019103805117-F9BXMY",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T10:38:05.117Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a15398-b9ad-76e2-8a82-103da71d3c29"
+  },
+  "summary": "Corrected complete Canonical PASS collected; fixed CI repair awaiting explicit new CLI review exception",
+  "status_after": "waiting_user",
+  "evidence_refs": []
+}

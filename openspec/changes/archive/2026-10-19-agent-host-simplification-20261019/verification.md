@@ -5,11 +5,21 @@
 [当前行为基线](../../../specs/agent-host-simplification/spec.md)。旧两线保持停止。
 真实Provider、真实业务数据、发布／生产切换仍未授权；用户产品接受与真实Q均不代签。
 
-交付行为／测试／SDK／依赖字节仍为独立PASS的固定003；1175个行为文件摘要
+首个Git提交ffc7cacc的1175行为文件与独立PASS的固定003一致，摘要
 `56ff310856a3c3cb10d312f07664f566522bb8180c7cc70001dd9e26dc0f2c89`。
-本轮仅增加授权／接受／归档／能力记录和project-control；不将这些作者记录称作新增独立复核。
-完整003的原始独立结论、5091 PASS／8 SKIP及历史001／002 FAIL、累计消耗、UNKNOWN不变。
-实际原件和代码身份在设备持久证据根下`git-delivery-001/`单独读回。
+其托管CI39235077405实际FAIL：LA09三个依赖真实macOS监督器的用例在Ubuntu读取缺失的
+部署描述文件，全部ENOENT。不是超时，不能用旧PASS覆盖。原生完整日志另存，终点为
+desktop-integration 1805 tests／1775 PASS／3 FAIL／27 SKIP，exit1、803秒；portable exit1。
+
+后续[CI平台修正](CI-CORRECTION.md)只为LA09登记真实macOS适用条件；Mac全部用例正文与
+断言未改，生产源码／SDK／依赖字节不变。当前1175文件中1174项完全相同，新摘要
+`7ced6bb3405b7a6da2768c3d7882106cbcff6f0ae071332d4af044dbf0158863`。
+新完整Canonical本地回归为19组／5091 PASS／0 FAIL／8 SKIP，384.416秒，前后源码一致；
+该修正的独立复核在现有证据根单列，用户已授权；首次审查因远端PR107推进基线而
+在结论前中断，完整输出与停止读回保留。纳入上游后重新固定并作必要复核；未完成前
+不把原003独立PASS扩称为
+新测试输入的PASS。原始003结论、5091 PASS／8 SKIP及001／002历史FAIL、累计消耗和
+UNKNOWN保持原样。实际原件和代码身份在`git-delivery-001/`分别读回。
 
 本提交时Git交付检查待执行；最终实际PR head、CI、squash、双端main身份及任何同步限制，
 以设备证据根`git-delivery-001/FINAL-GIT-DELIVERY-RECEIPT.json`与GitHub PR实际记录为准。

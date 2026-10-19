@@ -4,15 +4,22 @@
 PASS后的限定工程决定；当前用户明确授权规范Git交付。仅本次Agent／宿主精简离线工程
 接收和归档，不接受原Change007完整产品、S1／其它阶段、真实Q或用户产品体验。
 
+Git交付首个HEAD ffc7cacc的CI39235077405失败，完整原生日志保留。后续
+[CI平台修正](CI-CORRECTION.md)仅给真实macOS监督器的LA09测试增加非macOS适用限制；
+生产行为和原离线接受不变。受影响测试输入的当前回归／独立复核与当前HEAD托管CI仍须
+分别满足后才能合并，不将原003的PASS覆盖这些新检查，也不把SKIP称作实际沙箱验证。
+
 ## 固定身份与证据适用
 
-- 原基线／本轮fetch后的origin/main均为41e6c1f167cea578960a2d0c75e86e5f31a9190e，
-  tree adfee55bfd25b24f4cff06b5589aab0db9e470ed。没有基线混入或行为修正。
+- 原基线／首轮Git fetch的origin/main为41e6c1f167cea578960a2d0c75e86e5f31a9190e，
+  tree adfee55bfd25b24f4cff06b5589aab0db9e470ed。当时没有基线混入或行为修正。后续PR107推进origin/main至8b391f18，
+  CI／治理输入的无重叠集成与当前组合验证另列，不用旧结论覆盖新输入。
 - 原完整候选003：59684852 bytes；SHA256
   `3310e3d306e3a82c581b0188c9a34c396d76a42a8c284a8b7ffccead9623d854`。
   2351源码／2567安全文件逐项bytes／SHA／mode已独立读回。
 - 1175行为文件摘要：`56ff310856a3c3cb10d312f07664f566522bb8180c7cc70001dd9e26dc0f2c89`。
-  当前交付逐字节保留这些运行／测试／SDK／package／lock输入；仅作者文档、归档和board变化。
+  首个Git提交逐字节保留这些运行／测试／SDK／package／lock输入；后续仅一项测试登记
+  修改见CI-CORRECTION.md，1174项仍相同，生产源码／SDK／package／lock不变。
 - 完整Canonical083：19组exit0，5099 tests／5091 PASS／0 FAIL／8 SKIP，373.043秒；
   前后行为源码相同，real-model gate关闭。Mac Python／Chrome合成路径和原生监督器均有证据。
 - [独立报告003](independent-validation-003.md)：10856 bytes，SHA256

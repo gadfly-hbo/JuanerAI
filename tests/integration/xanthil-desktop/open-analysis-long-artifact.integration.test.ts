@@ -108,7 +108,9 @@ for(const mode of ['duplicate','wrong-version','missing-page','unheeded-global-c
  });await f.runtime.run(f.base);await assert.rejects(()=>f.runtime.run({...f.base,purpose:'conclusion_strategy_review',prompt:judgmentReviewPrompt(snapshot),system:naturalReviewSystem}));assert.equal(pages,2);assert.equal(f.ledger.read(f.identity.task_id).length,3);
 });
 
-for(const shared of [true])for(const failure of ['none','syntax','sandbox'] as const)test('LA09 actual Application→native multi-turn→full Python→compile/sandbox→persistent exploration/independent verification '+failure+'; shared='+shared,async()=>{
+// This path exercises the real macOS supervisor, just as LA22 does. Portable CI
+// cannot substitute a deployment descriptor or an unsandboxed Python process.
+for(const shared of [true])for(const failure of ['none','syntax','sandbox'] as const)test('LA09 actual Application→native multi-turn→full Python→compile/sandbox→persistent exploration/independent verification '+failure+'; shared='+shared,{skip:process.platform!=='darwin'?'real macOS supervisor is required; no inherited sandbox exception':false},async()=>{
  const {createOpenAnalysisApplication}=await import('../../../packages/application/open-analysis.ts'),{createLocalOpenAnalysisStore}=await import('../../../adapters/storage-local/open-analysis.ts'),{createLocalOpenAnalysisCodeExecution}=await import('../../../adapters/analytics-duckdb/open-analysis-code.ts'),{verifyOpenAnalysisIntegerSum}=await import('../../../adapters/analytics-duckdb/open-analysis-verification.ts');
  const source_id=randomUUID(),inspection:any={version:'1.0',sources:[{source_id,display_name:'synthetic.csv',format:'csv',sha256:'a'.repeat(64),byte_length:'50',sheets:[{sheet_id:'csv',name:'CSV',state:'visible',rows:[{row:1,cells:[{column:'A',type:'string',value:'数量'},{column:'B',type:'string',value:'商品'}]},{row:2,cells:[{column:'A',type:'number',value:'7'},{column:'B',type:'string',value:'Coffee'}]},{row:3,cells:[{column:'A',type:'number',value:'100'},{column:'B',type:'string',value:'Tea'}]}]}]}]};
  let execution=0,step=0,canary='',code='',cursor=0,stage='framework';const emitted:ModelRequest[]=[];

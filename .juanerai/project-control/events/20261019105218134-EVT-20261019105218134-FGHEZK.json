@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019105218134-FGHEZK",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T10:52:18.134Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a153c5-8253-75b0-af14-f236b868215a"
+  },
+  "summary": "Actual preflight and review settings verified; independent Git correction review running",
+  "status_after": "validating",
+  "evidence_refs": []
+}

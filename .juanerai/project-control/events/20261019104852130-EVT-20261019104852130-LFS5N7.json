@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019104852130-LFS5N7",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T10:48:52.130Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a153c5-8253-75b0-af14-f236b868215a"
+  },
+  "summary": "Human authorized bounded Git correction CLI review; actual settings preflight before review",
+  "status_after": "validating",
+  "evidence_refs": []
+}
