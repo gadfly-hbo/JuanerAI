@@ -433,7 +433,7 @@ for(const mode of ['legacy','r1','r1-length','shared'] as const)test('LA32 Brows
  }finally{await workspace.close();}
 });
 
-test('AH-RECOVERY overflow-summary enters the actual Browser/Profile draft once; the following extra request stays refused',async()=>{
+for(const unified of [false,true])test('AH-RECOVERY overflow-summary enters the actual Browser/Profile draft once; the following extra request stays refused, unified='+unified,async()=>{
  const {ModelFailure}=await import('pi-agent-runtime'),{createIndependentBrowserOpenModel}=await import('../../../apps/browser/service-main.ts');
  const {createLocalOpenAnalysisStore}=await import('../../../adapters/storage-local/open-analysis.ts'),{createPersonalOpenAnalysisWorkspace}=await import('../../../profiles/personal/open-analysis.ts');
  const original=await optionScenario(),f=fixture(),id=original.f.identity.task_id;
@@ -442,11 +442,11 @@ test('AH-RECOVERY overflow-summary enters the actual Browser/Profile draft once;
  store.saveFramework(lease,{version:'1.0',identity:original.f.identity,origin:'MODEL_PROPOSAL',plan:original.f.plan});
  const outcome={version:'1.0',outcome_id:randomUUID(),identity:original.f.identity,framework:original.f.plan,calculation:original.f.calculation,verification:original.f.evidence.verified_calculations[0]!.verification,numeric_report:original.snapshot.report,judgment_review:initial,explanation:{kind:'MODEL_EXPLANATION',text:initial.delivery},human_judgment:'not_recorded'};
  store.saveOutcome(lease,outcome as never);let calls=0,reportCalls=0;
- const model=createIndependentBrowserOpenModel({options:{harnessFirstLoop:{version:'v0.2',work_recovery:'v1',request_admission:{policy_version:'offline-ah-overflow',protocol_overhead_tokens:128,safety_margin_tokens:512}},judgmentReviewAllowed:true,mimoNoThinkingReviewTasks:[id],review60Tasks:[id],mimoProNoThinkingReport60Tasks:[id],report120Tasks:[id]},credentials:createApprovedProviderCredentials({environment:{},readText:async()=>assert.fail('No credential file')}),documentReader:{pythonExecutable:'/offline/not-executed'},modelTransport:async request=>{
+ const model=createIndependentBrowserOpenModel({options:{...(unified?{newTaskPolicy:'unified-v1' as const}:{}),harnessFirstLoop:{version:'v0.2',work_recovery:'v1',request_admission:{policy_version:'offline-ah-overflow',protocol_overhead_tokens:128,safety_margin_tokens:512}},judgmentReviewAllowed:true,mimoNoThinkingReviewTasks:[id],review60Tasks:[id],mimoProNoThinkingReport60Tasks:[id],report120Tasks:[id]},credentials:createApprovedProviderCredentials({environment:{},readText:async()=>assert.fail('No credential file')}),documentReader:{pythonExecutable:'/offline/not-executed'},modelTransport:async request=>{
   calls++;const identity={provider:request.model.provider,id:request.model.id,protocol:request.model.protocol};
   const observe=(reply:ModelReply):ModelReply=>({...reply,outcome:{model:identity,stop:reply.stop,physicalStatus:'response-received',usageFinal:true,usage:{inputTokens:{kind:'known',value:reply.usage.inputTokens},outputTokens:{kind:'known',value:reply.usage.outputTokens}},diagnostic:'COMPLETE'}});
   if(request.model.id==='MiniMax-M3')return observe(textReply(original.snapshot.document!.draft));
-  assert.equal(request.model.id,'mimo-v2.6-pro');assert.equal(request.maxOutputTokens,4096);
+  assert.equal(request.model.id,'mimo-v2.6-pro');if(unified&&reportCalls>0)assert.ok(request.maxOutputTokens>0&&request.maxOutputTokens<=32768,'native compaction may request less output');else assert.equal(request.maxOutputTokens,unified?32768:4096);
   if(++reportCalls===1)throw new ModelFailure({model:identity,stop:'error',category:'context',physicalStatus:'response-received',usageFinal:true,usage:{inputTokens:{kind:'known',value:0},outputTokens:{kind:'known',value:0}},diagnostic:'CONTEXT_LIMIT'},'MODEL_FAILED');
   assert.equal(reportCalls,2,'The summary consumes the only extra physical request');
   return observe(textReply('Synthetic authorized overflow summary; no report or business success claim.'));
@@ -465,7 +465,7 @@ test('AH-RECOVERY overflow-summary enters the actual Browser/Profile draft once;
   const resend=finished.find(e=>e.modelAttempt?.kind==='recovery'&&e.modelAttempt.recovery.reason==='overflow');assert.ok(resend);
   assert.equal(resend.modelOutcome?.physicalStatus,'not-sent');assert.ok(!events.some(e=>e.kind==='model.admitted'&&e.modelAttempt?.physicalAttemptId===resend.modelAttempt?.physicalAttemptId));
   const drafts=readdirSync(join(f.root,'.juanerai','analysis-drafts-v1')).filter(n=>n.endsWith('.json')).map(n=>JSON.parse(readFileSync(join(f.root,'.juanerai','analysis-drafts-v1',n),'utf8'))),draft=drafts.find(r=>r.binding.kind==='report');assert.ok(draft);
-  assert.equal(draft.recovery,attempt.recovery.logicalRequestId);assert.ok(draft.normal.includes(draft.recovery));assert.equal(draft.state,'failed');
+  assert.equal(draft.recovery,attempt.recovery.logicalRequestId);assert.ok(draft.normal.includes(draft.recovery));assert.equal(draft.state,'failed');if(unified)assert.equal(draft.plan.timing,'unlimited');
   assert.deepEqual(task.outcome,outcome);assert.ok(!task.review_updates?.length);
   const before=calls;await workspace.close();workspace=createPersonalOpenAnalysisWorkspace(options);assert.deepEqual(workspace.read(id).outcome,outcome);assert.equal(calls,before,'Passive reopen must not retry the stopped overflow chain');
  }finally{await workspace.close();}
@@ -512,17 +512,17 @@ test('LA37 approved shared-work selection reaches the actual Browser runtime wit
  assert.equal(typeof runtime.openBusinessWork,'function');
  const identity={...f.binding,grant_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID()};
  const input={identity,signal:new AbortController().signal,authorize:()=>true};
- const began=Date.now(),scope=await runtime.openBusinessWork!(input);assert.ok(scope.deadline_at>=began+299000&&scope.deadline_at<=began+301000);
+ const began=Date.now(),scope=await runtime.openBusinessWork!(input);assert.ok(scope.version==='1');assert.ok(scope.deadline_at>=began+299000&&scope.deadline_at<=began+301000);
  const reopened=selected.createRuntime(createLocalAnalysisRequestLedger({projectRoot:f.root}),{projectRoot:f.root,reviewPolicyForTask:()=>false});
  assert.deepEqual(await reopened.openBusinessWork!(input),scope);
  await assert.rejects(reopened.openBusinessWork!({...input,identity:{...identity,scope_sha256:'c'.repeat(64)}}));
 });
 
-test('LA38 one product work shares recovery across M3/Pro/Flash and reopening without blocking normal later steps',async()=>{
+for(const unified of [false,true])test('LA38 one product work shares recovery across M3/Pro/Flash and reopening without blocking normal later steps'+(unified?' unified':' legacy'),async()=>{
  const {ProviderFailure}=await import('pi-agent-runtime'),{createIndependentBrowserOpenModel}=await import('../../../apps/browser/service-main.ts');
  const f=fixture(),id=f.binding.task_id,{kind,...bound}=f.binding;void kind;
  const identity={...bound,grant_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID()},command=randomUUID(),calls:Record<string,number>={};
- const options={harnessFirstLoop:{version:'v0.2' as const,work_recovery:'v1' as const,request_admission:{policy_version:'offline119',protocol_overhead_tokens:128,safety_margin_tokens:512}},judgmentReviewAllowed:true,mimoNoThinkingReviewTasks:[id],review60Tasks:[id],mimoProNoThinkingReport60Tasks:[id],report120Tasks:[id]};
+ const options={...(unified?{newTaskPolicy:'unified-v1' as const}:{}),harnessFirstLoop:{version:'v0.2' as const,work_recovery:'v1' as const,request_admission:{policy_version:'offline119',protocol_overhead_tokens:128,safety_margin_tokens:512}},judgmentReviewAllowed:true,mimoNoThinkingReviewTasks:[id],review60Tasks:[id],mimoProNoThinkingReport60Tasks:[id],report120Tasks:[id]};
  const selected=createIndependentBrowserOpenModel({options,credentials:createApprovedProviderCredentials({environment:{}}),documentReader:{pythonExecutable:'/offline/not-executed'},modelTransport:async request=>{
   const model=request.model,key=model.id;calls[key]=(calls[key]??0)+1;const known=(value:number)=>({kind:'known' as const,value});
   if(key!=='MiniMax-M3'&&calls[key]===1)throw new ProviderFailure('network',{model:{provider:model.provider,id:key,protocol:model.protocol},stop:'error',category:'network',physicalStatus:'response-received',usageFinal:true,usage:{inputTokens:known(0),outputTokens:known(0)},diagnostic:'REQUEST_FAILED'});
@@ -664,7 +664,7 @@ for(const state of ['ready','saved'] as const)for(const corrupted of ['policy','
  assert.deepEqual(readFileSync(path),fileBefore,'Rejecting a rehashed row must not repair or rewrite it');
 });
 
-for(const fault of ['formation','revision','review'] as const)test('AH-RECOVERY Browser→Profile complete report and paged review retain the legal recovery window: '+fault,async t=>{
+for(const unified of [false,true])for(const fault of ['formation','revision','review'] as const)test('AH-RECOVERY Browser→Profile complete report and paged review retain the legal recovery window: '+fault+(unified?' unified':' legacy'),async t=>{
  const {ProviderFailure}=await import('pi-agent-runtime'),{createIndependentBrowserOpenModel}=await import('../../../apps/browser/service-main.ts'),{createPersonalOpenAnalysisWorkspace}=await import('../../../profiles/personal/open-analysis.ts'),{createLocalOpenAnalysisStore}=await import('../../../adapters/storage-local/open-analysis.ts');
  const original=await optionScenario(),f=fixture(),id=original.f.identity.task_id,start=Date.now();let clock=start,injected=false,recovered=false,calls=0;
  t.mock.timers.enable({apis:['Date'],now:start});const advance=(ms:number)=>{clock+=ms;t.mock.timers.setTime(clock);};
@@ -674,16 +674,16 @@ for(const fault of ['formation','revision','review'] as const)test('AH-RECOVERY 
  const outcome={version:'1.0',outcome_id:randomUUID(),identity:original.f.identity,framework:original.f.plan,calculation:original.f.calculation,verification:original.f.evidence.verified_calculations[0]!.verification,numeric_report:original.snapshot.report,judgment_review:initial,explanation:{kind:'MODEL_EXPLANATION',text:initial.delivery},human_judgment:'not_recorded'};
  store.saveOutcome(lease,outcome as never);
  const jobs=new Map<string,{text:string;offset:number;trimmed:boolean;sealed:boolean}>(),requests:unknown[]=[];
- const model=createIndependentBrowserOpenModel({options:{harnessFirstLoop:{version:'v0.2',work_recovery:'v1',request_admission:{policy_version:'offline-ah-recovery',protocol_overhead_tokens:128,safety_margin_tokens:512}},judgmentReviewAllowed:true,mimoNoThinkingReviewTasks:[id],review60Tasks:[id],mimoProNoThinkingReport60Tasks:[id],report120Tasks:[id]},credentials:createApprovedProviderCredentials({environment:{},readText:async()=>assert.fail('No credential file')}),documentReader:{pythonExecutable:'/offline/not-executed'},modelTransport:async request=>{
-  assert.ok(++calls<100);assert.equal(request.maxOutputTokens,4096);
+ const model=createIndependentBrowserOpenModel({options:{...(unified?{newTaskPolicy:'unified-v1' as const}:{}),harnessFirstLoop:{version:'v0.2',work_recovery:'v1',request_admission:{policy_version:'offline-ah-recovery',protocol_overhead_tokens:128,safety_margin_tokens:512}},judgmentReviewAllowed:true,mimoNoThinkingReviewTasks:[id],review60Tasks:[id],mimoProNoThinkingReport60Tasks:[id],report120Tasks:[id]},credentials:createApprovedProviderCredentials({environment:{},readText:async()=>assert.fail('No credential file')}),documentReader:{pythonExecutable:'/offline/not-executed'},modelTransport:async request=>{
+  assert.ok(++calls<100);assert.equal(request.maxOutputTokens,unified?32768:4096);
   const observe=(reply:ModelReply):ModelReply=>({...reply,outcome:{model:{provider:request.model.provider,id:request.model.id,protocol:request.model.protocol},stop:reply.stop,physicalStatus:'response-received',usageFinal:true,usage:{inputTokens:{kind:'known',value:reply.usage.inputTokens},outputTokens:{kind:'known',value:reply.usage.outputTokens}},diagnostic:'COMPLETE'}});
   if(request.model.id==='MiniMax-M3')return observe(textReply(original.snapshot.document!.draft));
   const reportMarker='JuanerAI.report-edit.v1\n',revisionMarker='JuanerAI.review-revision.v1\n';
   const jobMessage=request.messages.findLast(m=>m.role==='user'&&(m.text.includes(reportMarker)||m.text.includes(revisionMarker))),revision=request.model.id==='mimo-v2.6-pro'&&!!jobMessage?.text.includes(revisionMarker);
   const stage=request.model.id==='mimo-v2.6-flash'?'review':revision?'revision':'formation';
   requests.push({model:request.model.id,stage,elapsed:clock-start});
-  if(stage===fault&&!injected){injected=true;advance(stage==='review'?59000:119000);const known={kind:'known' as const,value:0};throw new ProviderFailure('network',{model:{provider:request.model.provider,id:request.model.id,protocol:request.model.protocol},stop:'error',category:'network',physicalStatus:'response-received',usageFinal:true,usage:{inputTokens:known,outputTokens:known},diagnostic:'REQUEST_FAILED'});}
-  if(stage===fault&&injected&&!recovered){advance(11000);recovered=true;}
+  if(stage===fault&&!injected){injected=true;advance(unified?319000:stage==='review'?59000:119000);const known={kind:'known' as const,value:0};throw new ProviderFailure('network',{model:{provider:request.model.provider,id:request.model.id,protocol:request.model.protocol},stop:'error',category:'network',physicalStatus:'response-received',usageFinal:true,usage:{inputTokens:known,outputTokens:known},diagnostic:'REQUEST_FAILED'});}
+  if(stage===fault&&injected&&!recovered){advance(unified?31000:11000);recovered=true;}
   if(request.model.id==='mimo-v2.6-pro'){
    assert.ok(jobMessage);const marker=revision?revisionMarker:reportMarker,p=JSON.parse(jobMessage.text.slice(jobMessage.text.indexOf(marker)+marker.length));
    const key=marker+(revision?p.snapshot_sha256:p.source_sha256);let job=jobs.get(key);
@@ -703,7 +703,7 @@ for(const fault of ['formation','revision','review'] as const)test('AH-RECOVERY 
  try{
   await workspace.previewRevision(id,{version:'1.0',command_id:randomUUID(),expected_revision:'1',question:original.snapshot.question});await workspace.collect();const task=workspace.read(id),review=task.review_updates?.at(-1)?.review;
   writeFileSync(join(f.root,'recovery-result.json'),JSON.stringify({fault,injected,recovered,elapsed:clock-start,requests,preview:task.revision_previews,review}));
-  assert.ok(injected&&recovered);assert.equal(clock-start,fault==='review'?70000:130000);
+  assert.ok(injected&&recovered);assert.equal(clock-start,unified?350000:fault==='review'?70000:130000);
   assert.ok(review,JSON.stringify(task.revision_previews));assert.equal(review.state,'completed');assert.deepEqual(task.outcome,outcome);
   assert.equal(review.rounds.length,fault==='revision'?2:1);if(fault==='revision')assert.match(review.delivery,/仅限原问题范围/);
   const before=calls;await workspace.close();workspace=createPersonalOpenAnalysisWorkspace(options);assert.deepEqual(workspace.read(id).review_updates,task.review_updates);assert.equal(calls,before,'Passive reopen must not retry');await workspace.close();

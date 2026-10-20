@@ -12,13 +12,15 @@ import {createPersistentRuntimeState} from '../../../adapters/agent-pi/persisten
 import {createOpenAnalysisApplication} from '../../../packages/application/open-analysis.ts';
 import {taskHash} from '../../../packages/product-core/member-task.ts';
 import type {MemberSourceInspection} from '../../../packages/ports/member-source.ts';
+import * as awaitImportLongArtifacts from '../../../packages/application/open-analysis-long-artifact.ts';
+import {createLocalAnalysisDraftStore} from '../../../adapters/storage-local/open-analysis-draft.ts';
 import {ProviderFailure,ModelFailure,ContextAdmissionFailure,admitModelRequest,type ModelTransport,type ModelReply,type JsonObject} from 'pi-agent-runtime';
 
 function jsonArray(value:unknown):unknown[]{assert.ok(Array.isArray(value));return value;}
 function jsonObject(value:unknown):JsonObject{assert.ok(value&&typeof value==='object'&&!Array.isArray(value));return value as JsonObject;}
 
-for(const resumeBoundary of ['current','wrong-hash','other-task','stale-revision','changed-scope','stale-config','revoked','pending-request','unknown-request'] as const)
-test(resumeBoundary==='current'?'WR-01/02/03: real Workspace stop close reopen explicit resume reads the complete saved exploration without Python replay'
+for(const [resumeBoundary,unified] of [...(['current','wrong-hash','other-task','stale-revision','changed-scope','stale-config','revoked','pending-request','unknown-request'] as const).map(boundary=>[boundary,false] as const),['current',true] as const])
+test(resumeBoundary==='current'?'WR-01/02/03: real Workspace stop close reopen explicit resume reads the complete saved exploration without Python replay'+(unified?' unified':'')
  :`WR-04/05 (${resumeBoundary}): real Workspace keeps saved exploration identity and recovery fences`,
  {skip:process.env.JUANERAI_OPEN_CODE_HOST_TEST!=='1'},async()=>{
  const {createOpenAnalysisWorkspace}=await import('../../../packages/application/open-analysis-workspace.ts');
@@ -42,7 +44,7 @@ test(resumeBoundary==='current'?'WR-01/02/03: real Workspace stop close reopen e
  let complete:unknown;const chunks:{start:number;text:string}[]=[],pages:string[]=[],failures:string[]=[],captured:unknown[]=[];
  let store=createLocalOpenAnalysisStore({projectRoot:root}),ledger=createLocalAnalysisRequestLedger({projectRoot:root});
  const build=()=>{
-  const runtime=createPiSessionOpenAnalysisRuntime({projectRoot:root,ledger,nativeObjectArguments:true,analysisModel:'mimo-v2.6-flash',
+  const native=createPiSessionOpenAnalysisRuntime({projectRoot:root,ledger,nativeObjectArguments:true,analysisModel:'mimo-v2.6-flash',...(unified?{firstLoop:'v0.2' as const,sharedWorkRecovery:'v1' as const,runPolicy:'unified-v1' as const}:{}),
    credentials:createApprovedProviderCredentials({environment:{},readText:async()=>assert.fail('offline transport must not read credential files')}),
    r1r4:{contextAdmission:{policyVersion:'synthetic-exploration-view-v1',protocolOverheadTokens:512,safetyMarginTokens:8192}},
    modelTransport:async(request):Promise<ModelReply>=>{
@@ -52,13 +54,15 @@ test(resumeBoundary==='current'?'WR-01/02/03: real Workspace stop close reopen e
     if(phase==='create'){
      initialCalls++;
      if(initialCalls===1)content=[{kind:'tool',id:'resume-bind',name:'set_framework',arguments:{goal:'数量合计',source_id:sid,sheet_id:'csv',operation:'sum',column:'A',unit:'件',group_mode:'none'}}];
-     else if(initialCalls===2)content=[{kind:'tool',id:'resume-explore',name:'explore_with_python',arguments:{goal:'观察完整合成分布',bindings:[{source_id:sid,sheet_id:'csv',columns:['A','B'],filters:[]}],code_lines:code}}];
+     else if(unified&&initialCalls===2)content=[{kind:'tool',id:'resume-write',name:'write',arguments:{path:'draft/analysis.py',content:code.join('\n')}}];
+     else if(unified&&initialCalls===3)content=[{kind:'tool',id:'resume-explore-contract',name:'read_tool_contract',arguments:{name:'explore_with_python'}}];
+     else if(initialCalls===(unified?4:2))content=[{kind:'tool',id:'resume-explore',name:'explore_with_python',arguments:{goal:'观察完整合成分布',bindings:[{source_id:sid,sheet_id:'csv',columns:['A','B'],filters:[]}],...(unified?{code_path:'draft/analysis.py'}:{code_lines:code})}}];
      else{
-      assert.equal(initialCalls,3);const result=JSON.parse(last);fullPath=result.full_exploration.path;
+      assert.equal(initialCalls,unified?5:3);const result=JSON.parse(last);fullPath=result.full_exploration.path;
       assert.equal(result.classification,'MODEL_EXPLORATION');assert.equal(result.verification,'not_performed');
       record=store.read(id)!.explorations![0]!;assert.ok(record);assert.equal(pythonRuns,1);
       assert.equal(fullPath,`exploration/${record.exploration_id}/${taskHash(record.value)}/result.txt`);
-      ready();await gate;content=[{kind:'text',text:'Stopped synthetic response must not publish.'}];
+      if(!unified){ready();await gate;}content=[{kind:'text',text:'Stopped synthetic response must not publish.'}];
      }
     }else{
      if(pages.length||calls>initialCalls+1){
@@ -83,6 +87,9 @@ test(resumeBoundary==='current'?'WR-01/02/03: real Workspace stop close reopen e
     const stop=content[0]!.kind==='text'?'complete' as const:'tools' as const;
     return {content,stop,usage:{inputTokens:7,outputTokens:3},outcome:{model:{provider:request.model.provider,id:request.model.id,protocol:request.model.protocol},stop,physicalStatus:'response-received',usageFinal:true,usage:{inputTokens:{kind:'known',value:7},outputTokens:{kind:'known',value:3}},diagnostic:'COMPLETE'}};
    }});
+  const {withLongAnalysisArtifacts}=awaitImportLongArtifacts;
+  const underlying=unified?withLongAnalysisArtifacts({runtime:native,store:createLocalAnalysisDraftStore({root:join(root,'drafts')}),enabled:()=>true,reportMs:()=>60000}):native;
+  const runtime=unified?{...underlying,async run(input:Parameters<typeof underlying.run>[0]){const value=await underlying.run(input);if(phase==='create'&&record){ready();await gate;}return value;}}:native;
   const real=createLocalOpenAnalysisCodeExecution({projectRoot:root,pythonExecutable:python,pythonVersion});
   const executeCode:import('../../../packages/ports/open-analysis-code.ts').OpenAnalysisCodeExecution=Object.assign(
    async(input:Parameters<typeof real>[0])=>{calculations++;return real(input);},
@@ -106,14 +113,14 @@ test(resumeBoundary==='current'?'WR-01/02/03: real Workspace stop close reopen e
   await current.open.submit({version:'1.0',command_id:id,question:'观察合成分布，先保留探索等待继续',confirmed:true,sources:[{source_id:sid,display_name:'synthetic-resume.csv',format:'csv',bytes}]});
   await Promise.race([persisted,current.open.collect().then(()=>assert.fail('Workspace must persist exploration before stop'))]);
   sessionViews.push(await current.open.sessionControl(id,{version:'1.0',expected_revision:'1',command:{kind:'snapshot'}}));
-  assert.ok(ledger.pending!().some(r=>r.task_id===id),'the gated physical request is still outstanding');
+  assert.equal(ledger.pending!().some(r=>r.task_id===id),!unified,'unified checkpoint is after actual physical settlement; legacy keeps its original abort case');
   await assert.rejects(()=>current.open.resume(id),{code:'TASK_BUSY'},'active cleanup must fence resume before the physical-pending check');
-  await current.open.sessionControl(id,{version:'1.0',expected_revision:'1',command:{kind:'abort'}});
+  if(unified)current.open.stop(id);else await current.open.sessionControl(id,{version:'1.0',expected_revision:'1',command:{kind:'abort'}});
   release();await current.open.collect();await current.runtime.collect!(id);
   assert.equal(current.open.read(id).state,'stopped');assert.equal(ledger.pending!().length,0);
   assert.equal(current.runtime.hasUnconfirmedEffects!(id),false);assert.equal(calculations,0);
   const settledView=await current.open.sessionControl(id,{version:'1.0',expected_revision:'1',command:{kind:'snapshot'}});
-  sessionViews.push(settledView);assert.equal(settledView.view!.operationId,null,'the native operation must be closed before the legal resume');
+  sessionViews.push(settledView);if(unified){const facts=settledView.facts;assert.ok(facts?.availability==='available');assert.equal(facts.terminal?.status,'completed','the shared native operation completed before stopping the business lease');}else assert.equal(settledView.view!.operationId,null,'the native operation must be closed before the legal resume');
   assert.ok(ledger.read(id).every(r=>!['reserved','issued','unknown'].includes(r.status)));
   stopped.push(current.open.read(id));await current.open.close();
   const beforeCalls=calls;store=createLocalOpenAnalysisStore({projectRoot:root});ledger=createLocalAnalysisRequestLedger({projectRoot:root});

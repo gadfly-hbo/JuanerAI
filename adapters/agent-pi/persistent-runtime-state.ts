@@ -34,7 +34,7 @@ function recordUsage(v:State,owner:string,reserved:number,usage:ReportedUsage){
 }
 
 /** Atomic project-local SDK accounting. Active leases never expire or auto-resume. */
-export function createPersistentRuntimeState(config:{projectRoot:string;historicalUsage?:(task:string)=>HistoricalUsage}){
+export function createPersistentRuntimeState(config:{projectRoot:string;runPolicy?:'unified-v1';historicalUsage?:(task:string)=>HistoricalUsage}){
  const root=realpathSync(config.projectRoot),file=join(root,'.xanthil','desktop','pi-runtime.sqlite');
  function safe(){for(const suffix of ['','-journal','-wal','-shm']){let p=file+suffix;while(p!==root){if(!p.startsWith(root+'/')||existsSync(p)&&lstatSync(p).isSymbolicLink())fault('STATE_FAILED');p=dirname(p);}}}
  function access<T>(write:boolean,action:(db:DatabaseSync)=>T):T{
@@ -66,7 +66,7 @@ export function createPersistentRuntimeState(config:{projectRoot:string;historic
  }
  const save=(db:DatabaseSync,task:string,v:State)=>{if(Object.values(v.usage).some(n=>!integer(n)))fault('STATE_FAILED');const body=JSON.stringify(v);db.prepare('INSERT INTO budgets VALUES(?,?,?) ON CONFLICT(task_id) DO UPDATE SET body=excluded.body,digest=excluded.digest').run(task,body,digest(body));};
  const safeLabel=(v:unknown)=>typeof v==='string'&&/^[A-Za-z0-9_.:/-]{1,256}$/.test(v);
- const businessWork=createBusinessWorkState(access);
+ const businessWork=createBusinessWorkState(access,config.runPolicy);
  async function appendAudit(event:Readonly<AuditEvent & {work?:Readonly<{id:string;logicalId:string;recovery:boolean}>;diagnostic?:string;modelStop?:string}>,signal:AbortSignal,workId?:string){
   // This records an existing effect; it grants no cancelled model/tool action.
   // New v1 terminal facts are independently acknowledged after the frozen

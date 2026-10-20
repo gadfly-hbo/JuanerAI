@@ -51,3 +51,14 @@ R4-ROUTE / R4-PURPOSE-01～03：新opt-in analysis/proposal_prepare各自MiniMax
 实际固定.3包及51安装文件、原子账本/持久Session→Store/HTTP/client/UI和合成codec联合验证成立；参见 [矩阵007](../../changes/archive/2026-10-15-pi-r1-r4-repair/joint-verification-matrix-007.md)、[工程接收](../../changes/archive/2026-10-15-pi-r1-r4-repair/engineering-acceptance.md)、[用户接受](../../changes/archive/2026-10-15-pi-r1-r4-repair/product-acceptance.md)、[正式交付](../../changes/archive/2026-10-15-pi-r1-r4-repair/publication.md)。
 
 生产protocol overhead/margin/image仍UNKNOWN，合成参数/字节数不能放行生产；真实Provider五项NOT RUN与原1-token归因UNKNOWN保持。工程接受以本候选具名F-ROLE-01豁免满足独立角色条件，原报告BLOCKED不改写。Git归档/依赖采用不授予真实Provider、业务数据、生产激活/安装发布、历史Task迁移恢复重放、其他产品升级或共享SDK正式发布权限。
+
+
+## Forward policy qualification — normal-entry unified-v1
+
+The explicit new-task policy approved2026-10-20 has the limits/lifetime specified
+by [NE01–NE07](../agent-host-simplification/spec.md).
+Only this opt-in supersedes earlier GB4096, retained-case2048 and short/cumulative
+runtime walls; retained-case still uses its original MiMo Pro recipient and no
+new fallback/authority. R1/R2/R3/R4 safety, independent qualification and all old
+config/task behaviors remain. Buffers4096/8192 are engineering policy, not actual
+Provider/tokenizer guarantees. Historical frozen specs/evidence are unchanged.

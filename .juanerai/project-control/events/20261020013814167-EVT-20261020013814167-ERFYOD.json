@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261020013814167-ERFYOD",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-20T01:38:14.167Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a156ef-665e-72c3-a938-6ce20f808a72"
+  },
+  "summary": "用户已授权local002标准Git交付；原WIP/固定.5和旧停止保留，进入正式离线验证及Git收口。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

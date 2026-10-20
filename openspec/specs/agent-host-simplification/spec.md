@@ -58,3 +58,26 @@ Session/cache/recovery framework, storage format, SDK or runtime policy.
 bind the real Workspace synthetic RED→GREEN and independent checks. This is not
 real-model quality, general product acceptance, release/production or authority
 to resume either stopped historical task. Original003/PR106 evidence remains.
+
+
+## NE01–NE07 — forward normal-entry policy, unified-v1
+
+The user's2026-10-20 approval supersedes only the old GB output/model/stage/work
+limits for explicitly selected new unified-v1 Tasks. Closed normal launcher config
+binds product-generated UUID purposes/limits/R1/lifetime before first SDK claim.
+Purpose-primary32768/existing fallback16384, model600000ms, tool hard300000ms,
+applicable command soft120000ms and control30000ms; cumulative remains unlimited
+with durable accounting. New work v2/null and draft1.2/unlimited carry no aggregate
+runtime deadline or60/120 stage wall. Old v1/drafts/configs keep original limits;
+unknown/mismatched policies fail closed, no migration/renewal/history rewrite.
+This forward exception qualifies AH-09's old absolute-work deadline only for that
+new explicit policy. Preserve authority/expiry/revoke/cancel, physical settlement,
+UNKNOWN, one shared recovery, native retry-off, full exploration readback and
+formal evidence/Outcome qualification. R1 per-candidate final admission keeps
+original windows and an explicit4096 protocol/8192 safety margin with real-use
+calibration still unverified. No SDK, recipient, model role or tool authority change.
+
+[Approved behavior and scope](../../changes/archive/2026-10-20-agent-host-normal-entry-parameters-20261020/spec.md),
+[offline Engineering Acceptance](../../changes/archive/2026-10-20-agent-host-normal-entry-parameters-20261020/ENGINEERING-ACCEPTANCE.md)
+and current Git receipt preserve exact candidates/RED/GREEN/review. This is not
+Provider/F-B01, product/GUI/QS04/stage acceptance, installation or production authority.

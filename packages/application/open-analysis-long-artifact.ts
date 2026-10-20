@@ -13,9 +13,9 @@ export function withLongAnalysisArtifacts(config:{runtime:OpenAnalysisRuntime;st
  return {...config.runtime,...(config.runtime.sessionControl?{async sessionControl(input:Parameters<NonNullable<OpenAnalysisRuntime['sessionControl']>>[0]){
   if(!config.enabled(input.identity.task_id)||input.command.kind!=='navigate'||!input.command.summarize)return config.runtime.sessionControl!(input);
   if(input.signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');
-  const persisted=await config.runtime.openBusinessWork?.(input),start=Date.now(),deadline=persisted?.deadline_at??start+300000;if(start>=deadline)fail('ARTIFACT_STAGE_DEADLINE');
-  const b:DraftBinding={task_id:input.identity.task_id,operation_id:randomUUID(),scope_sha256:input.identity.scope_sha256,config_sha256:input.identity.config_sha256,kind:'review'},ref=config.store.begin(b,{max_bytes:262144,usual_ms:300000,recovery_ms:300000,full_deadline:deadline});
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),Math.max(1,deadline-start)),signal=AbortSignal.any([input.signal,controller.signal]);
+  const persisted=await config.runtime.openBusinessWork?.(input),start=Date.now(),deadline=persisted?.version==='2'?null:persisted?.deadline_at??start+300000;if(deadline!==null&&start>=deadline)fail('ARTIFACT_STAGE_DEADLINE');
+  const b:DraftBinding={task_id:input.identity.task_id,operation_id:randomUUID(),scope_sha256:input.identity.scope_sha256,config_sha256:input.identity.config_sha256,kind:'review'},ref=config.store.begin(b,deadline===null?{max_bytes:262144,timing:'unlimited'}:{max_bytes:262144,usual_ms:300000,recovery_ms:300000,full_deadline:deadline});
+  const controller=new AbortController(),timer=deadline===null?undefined:setTimeout(()=>controller.abort(),Math.max(1,deadline-start)),signal=AbortSignal.any([input.signal,controller.signal]);
   try{const value=await config.runtime.sessionControl!({...input,signal,artifactWork:{id:ref.id,admit:x=>{if(signal.aborted||!input.authorize())return false;config.store.check(b,ref.id,x.recovery);return config.store.admit(b,ref.id,x);}}});config.store.check(b,ref.id);if(signal.aborted||!input.authorize())fail('AUTHORITY_REQUIRED');config.store.close(b,ref.id,'completed');return value;}
   catch(error){config.store.close(b,ref.id,input.signal.aborted?'stopped':'failed');throw error;}finally{clearTimeout(timer);}
  }}:{}),async run(input){
@@ -24,12 +24,12 @@ export function withLongAnalysisArtifacts(config:{runtime:OpenAnalysisRuntime;st
   if(!input.authorize())fail('AUTHORITY_REQUIRED');
   if(input.artifactWork)fail('ARTIFACT_NESTED_SCOPE');
   if(input.business_operation_id!==undefined&&!/^[a-f0-9-]{36}$/.test(input.business_operation_id))fail('ARTIFACT_OPERATION_INVALID');
-  const persisted=await config.runtime.openBusinessWork?.(input),start=Date.now(),machineKey=taskHash({task_id:input.identity.task_id,operation:input.business_operation_id??input.identity.operation_id}),fullDeadline=persisted?.deadline_at??machineDeadlines.get(machineKey)??start+300000;if(!persisted)machineDeadlines.set(machineKey,fullDeadline);if(start>=fullDeadline)fail('ARTIFACT_STAGE_DEADLINE');
+  const persisted=await config.runtime.openBusinessWork?.(input),start=Date.now(),machineKey=taskHash({task_id:input.identity.task_id,operation:input.business_operation_id??input.identity.operation_id}),fullDeadline=persisted?.version==='2'?null:persisted?.deadline_at??machineDeadlines.get(machineKey)??start+300000;if(!persisted&&fullDeadline!==null)machineDeadlines.set(machineKey,fullDeadline);if(fullDeadline!==null&&start>=fullDeadline)fail('ARTIFACT_STAGE_DEADLINE');
   const purpose=input.purpose??'analysis',review=purpose==='conclusion_strategy_review',report=purpose==='report_edit';
   const usual=report?config.reportMs(input.identity.task_id):review?60000:300000;
   const binding:DraftBinding={task_id:input.identity.task_id,operation_id:hash(JSON.stringify({identity:input.identity,operation:input.business_operation_id??input.identity.operation_id,purpose,prompt:input.prompt,system:input.system})),scope_sha256:input.identity.scope_sha256,config_sha256:input.identity.config_sha256,kind:report?(input.prompt.startsWith('JuanerAI.review-revision.v1')?'revision':'report'):'review'};
-  const plan={max_bytes:262144,usual_ms:usual,recovery_ms:review||report?usual*2:300000,full_deadline:fullDeadline};
-  const parent=config.store.begin(binding,plan),controller=new AbortController(),timer=setTimeout(()=>controller.abort(),Math.max(1,Math.min(plan.recovery_ms,fullDeadline-start))),signal=AbortSignal.any([input.signal,controller.signal]);
+  const plan:import('../ports/open-analysis-draft.ts').DraftPlan=fullDeadline===null?{max_bytes:262144,timing:'unlimited'}:{max_bytes:262144,usual_ms:usual,recovery_ms:review||report?usual*2:300000,full_deadline:fullDeadline};
+  const parent=config.store.begin(binding,plan),controller=new AbortController(),timer='timing' in plan?undefined:setTimeout(()=>controller.abort(),Math.max(1,Math.min(plan.recovery_ms,plan.full_deadline-start))),signal=AbortSignal.any([input.signal,controller.signal]);
   const check=()=>{if(input.signal.aborted)fail('CANCELLED');if(controller.signal.aborted)fail('ARTIFACT_STAGE_DEADLINE');if(!input.authorize())fail('AUTHORITY_REQUIRED');config.store.check(binding,parent.id);};
   const work={id:parent.id,admit:(x:Readonly<{logicalId:string;recovery:boolean}>)=>{if(signal.aborted||!input.authorize())return false;config.store.check(binding,parent.id,x.recovery);return config.store.admit(binding,parent.id,x);}};
   const run=(next:OpenAnalysisRun)=>config.runtime.run({...next,artifactWork:work,signal});

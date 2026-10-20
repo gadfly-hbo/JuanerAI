@@ -432,3 +432,31 @@ CI／治理输入与上游逐字节相等，LA09原函数／全部断言不变�
 UNKNOWN及费用UNKNOWN不由技术PASS清除。原001／002独立FAIL、原生BLOCKED、
 首次托管CI FAIL以及中断前无最终结论的审查原件均保留。当前Git head检查／squash／
 安全main同步以PR106与既有外置最终收据为准；本提交不提前声称它们成功。
+
+
+## E-NORMAL-ENTRY-PARAMETERS-20261020
+
+Mac mini，来源e83ba62／整合参考4dafbe2／tree7cf6e7，固定SDK0.5.3-harness.5
+175327 bytes、SHA2565b98a720a6bc1981662ef5254328bf15d6a79984ed7b0dcb0b673c65c31088fd。
+本次前向统一参数和无累计运行截止，只作用显式新Task策略；正常入口与受影响安全、
+长成果、恢复和原路径400点读回采用合成响应/隔离存储，不是实际Provider质量。
+见[当前结果](../../../openspec/changes/archive/2026-10-20-agent-host-normal-entry-parameters-20261020/verification.md)
+与[完整快照](snapshots/agent-host-normal-entry-parameters-local001-2026-10-20.md)。
+持久证据根：/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/normal-entry-parameters-001。
+各次因果RED、诊断FAIL、GREEN及SKIP保留；完整固定候选、逐文件差异和原生独立复核
+从该根最终回执核对，冻结时不预写复核结论。全40ID状态类/目标/完整能力/阶段增量0；
+旧Task/业务库未读取、恢复或清账，32次只是未批准建议，无新增产品限流。
+
+
+## E-NORMAL-ENTRY-GIT-20261020
+
+用户授权normal-entry-parameters-local002按标准Git交付；来源e83ba62/tree7cf6e7，
+已fetch的main4dafbe2同tree。原固定local002归档SHA256
+f6b150e9678512b4df682abbe5bbb9c44db3d9470c4b9038cd31b0289c1d6d0a；
+SDK.5的175327bytes/SHA2565b98a720a6bc1981662ef5254328bf15d6a79984ed7b0dcb0b673c65c31088fd不变。
+仅追加当前archive/规格/接受/覆盖/Git记录；实际生产/测试字节保留。
+[当前结果](../../../openspec/changes/archive/2026-10-20-agent-host-normal-entry-parameters-20261020/verification.md) ·
+[完整快照](snapshots/agent-host-normal-entry-parameters-git-2026-10-20.md)。
+Git证据根为原normal-entry-parameters-001/git-delivery-001；当前规范/独立/HEAD CI/
+提交/PR/合并/逐端同步由其FINAL-GIT-DELIVERY-RECEIPT.md实际绑定，不在此提前填PASS。
+40ID目标/状态/阶段增量0；所有历史失败、UNKNOWN及消耗保留，真实权限和旧停止不扩展。

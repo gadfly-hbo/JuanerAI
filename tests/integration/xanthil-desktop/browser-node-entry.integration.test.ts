@@ -50,7 +50,9 @@ test('BF-R08/11: normal Node startup exits while independent service serves late
  const helperInvoked=join(deployment,'helper-invoked');
  writeFileSync(join(deployment,'build/development-keychain/xanthil-keychain'),`#!/bin/sh\nprintf invoked > '${helperInvoked}'\nexit 97\n`,{mode:0o700});
  writeFileSync(join(deployment,'build/xanthil-toolchain-deployment.json'),JSON.stringify({schema_version:'1.0',duckdb:{executable_path:join(bin,'duckdb'),version:'1.5.2'},python:{executable_path:join(bin,'python3'),version:pythonVersion.stdout.trim().replace(/^Python /,'')}}));
- const root=mkdtempSync(join(browserEvidenceRoot,'node-entry-')),env={...process.env,JUANERAI_DESKTOP_DEV_ROOT:root},command=join(deployment,'tools/browser/entry.mjs'),directory=join(root,'user-data','web-service');
+ const root=mkdtempSync(join(browserEvidenceRoot,'node-entry-')),configuration=join(deployment,'launch.json');
+ writeFileSync(configuration,JSON.stringify({version:'1.0',profile_root:realpathSync(root),analysis:{newTaskPolicy:'unified-v1'}}));
+ const env={...process.env,JUANERAI_DESKTOP_DEV_ROOT:root,JUANERAI_BROWSER_CONFIG:configuration},command=join(deployment,'tools/browser/entry.mjs'),directory=join(root,'user-data','web-service');
  const run=(action:string)=>spawnSync(process.execPath,[command,action,'--no-open'],{env,encoding:'utf8',timeout:20000});
  try{
   const started=run('start');assert.equal(started.status,0,started.stderr);assert.doesNotMatch(started.stdout,/#[a-f0-9]{64}|credential/);

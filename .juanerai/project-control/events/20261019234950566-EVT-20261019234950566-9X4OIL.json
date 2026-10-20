@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019234950566-9X4OIL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T23:49:50.566Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a1568e-51d5-7082-a83e-8e6f993b5a2b"
+  },
+  "summary": "本轮用户授权本地正常入口装配与统一新Task参数，保全旧WIP和停止线",
+  "status_after": "active",
+  "evidence_refs": []
+}

@@ -752,7 +752,8 @@ const agentHostSimplificationFiles=[
   "tests/integration/xanthil-desktop/agent-host-proposal-contract.integration.test.ts",
   "tests/integration/xanthil-desktop/agent-host-browser-entry.integration.test.ts",
   "tests/integration/xanthil-desktop/open-analysis-long-artifact.integration.test.ts",
-  "tests/integration/xanthil-desktop/open-analysis-natural-review.integration.test.ts"
+  "tests/integration/xanthil-desktop/open-analysis-natural-review.integration.test.ts",
+  "tests/integration/xanthil-desktop/normal-entry-parameters.integration.test.ts"
 ];
 const approvedAgentHostManifest={...approvedHarnessFirstLoopManifest,dependencies:{...approvedHarnessFirstLoopManifest.dependencies,'pi-agent-runtime':'file:vendor/pi-agent-runtime/0.5.3-harness.5/5b98a720a6bc1981662ef5254328bf15d6a79984ed7b0dcb0b673c65c31088fd.tgz'}};
 const approvedAgentHostTsconfig={...approvedHarnessDeepResearchTsconfig,files:[...approvedHarnessDeepResearchTsconfig.files,...agentHostSimplificationFiles]};
