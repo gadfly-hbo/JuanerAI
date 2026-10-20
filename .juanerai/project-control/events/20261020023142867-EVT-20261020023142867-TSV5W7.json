@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261020023142867-TSV5W7",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-20T02:31:42.867Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a156ef-665e-72c3-a938-6ce20f808a72"
+  },
+  "summary": "当前CI两项FAIL和350ms实际I/O因果RED已保留；仅修测试就绪/收尾，真实验收仍关闭。",
+  "status_after": "validating",
+  "evidence_refs": []
+}

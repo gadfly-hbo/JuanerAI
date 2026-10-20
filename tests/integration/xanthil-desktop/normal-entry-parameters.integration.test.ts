@@ -38,7 +38,16 @@ test('NE02 unified shared-work primary cap reaches installed SDK and actual Prov
 
 const identityFor=()=>({task_id:randomUUID(),operation_id:randomUUID(),scope_sha256:'a'.repeat(64),config_sha256:'b'.repeat(64),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),grant_id:randomUUID()});
 const observedReply=(request:ModelRequest,text='synthetic completed'):ModelReply=>({stop:'complete',content:[{kind:'text',text}],usage:{inputTokens:7,outputTokens:3},outcome:{model:{provider:request.model.provider,id:request.model.id,protocol:request.model.protocol},stop:'complete',physicalStatus:'response-received',usageFinal:true,usage:{inputTokens:{kind:'known',value:7},outputTokens:{kind:'known',value:3}},diagnostic:'COMPLETE'}});
-async function until(ready:()=>boolean){for(let i=0;i<3000;i++){if(ready())return;await new Promise<void>(resolve=>setImmediate(resolve));}throw Error('synthetic transport never entered');}
+// Fixture I/O readiness uses real time; advancing the mocked product clock here
+// would change the model/tool/control boundary being measured.
+const realTimer=globalThis.setTimeout;
+async function until(ready:()=>boolean){
+ const deadline=performance.now()+10000;
+ while(!ready()){
+  if(performance.now()>=deadline)throw Error('synthetic transport never entered within fixture I/O readiness bound');
+  await new Promise<void>(resolve=>realTimer(resolve,1));
+ }
+}
 test('NE03 same shared work exceeds old300 seconds across settled requests without reset',async t=>{
  t.mock.timers.enable({apis:['Date','setTimeout'],now:Date.now()});
  const projectRoot=mkdtempSync(join(browserEvidenceRoot,'ne-cumulative-')),ledger=createLocalAnalysisRequestLedger({projectRoot}),identity=identityFor();
@@ -160,13 +169,14 @@ test('NE07 legacy work deadline and new work policy coexist without reinterpreti
 });
 for(const elapsed of [299999,300001])test('NE04 tool hard wall remains300 seconds: '+elapsed,async t=>{
  t.mock.timers.enable({apis:['Date','setTimeout'],now:Date.now()});
- const projectRoot=mkdtempSync(join(browserEvidenceRoot,'ne-tool-wall-')),ledger=createLocalAnalysisRequestLedger({projectRoot}),identity=identityFor();let entered=false,release:()=>void=()=>{},calls=0;
+ const projectRoot=mkdtempSync(join(browserEvidenceRoot,'ne-tool-wall-')),ledger=createLocalAnalysisRequestLedger({projectRoot}),identity=identityFor(),controller=new AbortController();let entered=false,release:()=>void=()=>{},calls=0;
  const selection={projectRoot,ledger,firstLoop:'v0.2' as const,sharedWorkRecovery:'v1' as const,runPolicy:'unified-v1' as const,r1r4:{contextAdmission:{policyVersion:'ne-offline-fixture',protocolOverheadTokens:128,safetyMarginTokens:512}},credentials:createApprovedProviderCredentials({environment:{}}),modelTransport:async(r:ModelRequest)=>{calls++;const reply=observedReply(r);return calls===1?{...reply,stop:'tools' as const,content:[{kind:'tool' as const,id:randomUUID(),name:'read_analysis_evidence',arguments:{}}],outcome:{...reply.outcome!,stop:'tools' as const}}:reply;}};
  const runtime=createPiSessionOpenAnalysisRuntime(selection),tools=[{name:'read_analysis_evidence',description:'Synthetic read only; no external effect.',parameters:{type:'object',properties:{},required:[],additionalProperties:false},execute:()=>new Promise(resolve=>{entered=true;release=()=>resolve({synthetic:true});})}];
- const outcome=runtime.run({identity,prompt:'Exercise the one synthetic read tool.',system:'No business task.',tools,signal:new AbortController().signal,authorize:()=>true}).then(value=>({value,error:null}),error=>({value:null,error}));
- await until(()=>entered);t.mock.timers.tick(elapsed);release();const result=await outcome;
- if(elapsed<300000){assert.equal(result.error,null);assert.equal(result.value?.text,'synthetic completed');assert.equal(calls,2);}else{assert.ok(result.error);assert.equal(calls,1);}
- await runtime.collect?.(identity.task_id);
+ const outcome=runtime.run({identity,prompt:'Exercise the one synthetic read tool.',system:'No business task.',tools,signal:controller.signal,authorize:()=>true}).then(value=>({value,error:null}),error=>({value:null,error}));
+ try{
+  await until(()=>entered);t.mock.timers.tick(elapsed);release();const result=await outcome;
+  if(elapsed<300000){assert.equal(result.error,null);assert.equal(result.value?.text,'synthetic completed');assert.equal(calls,2);}else{assert.ok(result.error);assert.equal(calls,1);}
+ }finally{controller.abort();release();await outcome;await runtime.collect?.(identity.task_id);}
 });
 test('NE04 actual Adapter/SDK control operation uses30 seconds and cannot dispatch after expiry',async t=>{
  t.mock.timers.enable({apis:['Date','setTimeout'],now:Date.now()});

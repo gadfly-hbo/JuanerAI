@@ -1,5 +1,32 @@
 # Current Git delivery result — fixed local002
 
+## Forward CI fixture correction — first head79cc61d
+
+PR110 first full CI39357229187 is FAIL: desktop-integration1800PASS/2FAIL/41SKIP,
+17 groups reached; final decision-platform/UI groups NOT_RUN after failure.
+Complete native ZIP8 safe members/CRC, logs, exact head and numeric exits remain
+under git-delivery-001/ci-native-39357229187 and CI-FAILED-39357229187.json.
+The two NE04 failures are retained; no earlier PASS/FAIL/UNKNOWN is rewritten.
+
+Actual I/O causal probe ci-delay-red012 adds only350ms at synthetic mkdir:
+original3000 setImmediate turns expire before real startup, assertion FAIL and
+an unclosed synthetic request. The10s supervisor ends only this process group124.
+Same command, delay, Runtime/SDK and assertions: ci-delay-green014 is3PASS/0FAIL,
+exit0, normal process completion. Only test readiness uses captured real timer/
+monotonic10s bound; product fake clocks remain untouched. Tool test finally
+cancels/releases/settles/collects its own request on success or assertion failure.
+All original299999/300001/30001 and send-count assertions remain; no SKIP added.
+The control assertion's first-CI failure is preserved as observed; the leaked
+predecessor is a demonstrated contamination risk, not a claim of a new SDK bug.
+
+Current affected ci-focused015:23PASS/0FAIL/0SKIP,exit0; ci-typecheck016 and
+ci-agent-config017 exit0. Product/runtime/SDK/dependency/model/recipient/resource
+policy bytes remain unchanged from fixed local002. The next fixed Git candidate
+and affected independent report bind this test-only correction and current board
+projection; new exact-head full hosted CI is still required, not predeclared PASS.
+Fixed .5 long-path limitation and all unopened product/Provider/F-B01 permissions
+remain. Original local002/git001 archives and every diagnostic remain immutable.
+
 2026-10-20: current direct user Git grant received and current tree/WIP retained.
 The original local002 archive is45992954 bytes/SHA256
 f6b150e9678512b4df682abbe5bbb9c44db3d9470c4b9038cd31b0289c1d6d0a;

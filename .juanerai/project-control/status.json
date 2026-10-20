@@ -7,14 +7,14 @@
   },
   "phase": {
     "id": "VERIFY",
-    "label": "完整离线矩阵通过，固定Git候选独立复核",
+    "label": "CI测试就绪因果GREEN，新固定Git候选复核",
     "ordinal": 4,
     "total": 5
   },
   "health": "validating",
-  "summary": "当前完整portable canonical006：19组exit0，5184PASS/0FAIL/11保留SKIP。清单RED四FAIL及环境setup FAIL完整保留；仅补一条测试根，无生产/SDK变更。固定Git组合进行独立复核，尚未提交。",
+  "summary": "相同350ms实际I/O探针RED124→GREEN0，原三项NE04断言保留；完整参数23PASS，typecheck/config0。仅测试真实I/O就绪等待和finally收尾；产品/.5/策略不变。首轮CI两FAIL完整保留，准备新固定Git候选独立复核。",
   "current_objective": "Deliver a forward-only normal browser new-task composition with unified per-request protections and no cumulative work deadline, preserving legacy records and safety.",
-  "next_action": "固定完整Git候选→独立只读复核及鲜全图身份→显式提交/正常main祖先整合→PR当前完整CI→squash及安全main同步；真实Provider/F-B01关闭。",
+  "next_action": "固定Git002全部源项/增量和证据→必要独立只读复核与鲜图→前向提交/推送→本次完整CI；不提前合并或开展真实验收。",
   "blockers": [],
   "milestones": [
     {
@@ -91,6 +91,13 @@
       "model": "Actual gpt-6.1-sol/high; inherited danger-full-access/never; candidate read-only conduct, not OS isolation",
       "status": "complete",
       "activation": "Local00147 PASS/typecheck0；local002全3891项身份与1记录修正独立PASS，旧报告/诊断保留；复核已结束。"
+    },
+    {
+      "id": "normal-entry-git-validator001",
+      "label": "Independent current fixed Git candidate native PASS; complete",
+      "model": "Actual gpt-6.1-sol/high; inherited danger-full-access/never, candidate read-only conduct not OS isolation",
+      "status": "complete",
+      "activation": "46 final target checksPASS;3899源项和154证据项不变；长路径SDK诊断FAIL/最小复现保留，报告已结束。"
     }
   ],
   "metrics": [],
@@ -580,6 +587,48 @@
       "label": "Current full portable canonical006:19 groups exit0;5184 PASS/0 FAIL/11 retained SKIP",
       "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/normal-entry-parameters-001/git-delivery-001/CANONICAL006-SUMMARY.json",
       "status": "verified"
+    },
+    {
+      "id": "ne-git-independent",
+      "label": "Current fixed Git native PASS,46 fresh checks; no material blockers",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/normal-entry-parameters-001/git-delivery-001/validator-native-git001/report.md",
+      "status": "verified"
+    },
+    {
+      "id": "ne-git-pr110",
+      "label": "PR110 actual head79cc61d/tree30b61e, exactly40 approved net paths",
+      "path": "https://github.com/gadfly-hbo/JuanerAI/pull/110",
+      "status": "verified"
+    },
+    {
+      "id": "ne-git-ci-current",
+      "label": "Historical first current head79cc61d CI39357229187 FAIL, two NE04 failures; full logs retained",
+      "path": "https://github.com/gadfly-hbo/JuanerAI/actions/runs/39357229187",
+      "status": "failed"
+    },
+    {
+      "id": "ne-sdk-path",
+      "label": "Existing fixed .5 derived directory258-byte ENAMETOOLONG, isolated diagnostic FAIL preserved",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/normal-entry-parameters-001/git-delivery-001/validator-native-git001/SDK-PATH-REPRO.md",
+      "status": "present"
+    },
+    {
+      "id": "ne-ci-delay-red",
+      "label": "Actual original tool fixture fails on350ms synthetic filesystem delay, leaves owned work unsettled; supervised process group ends124 at10s",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/normal-entry-parameters-001/git-delivery-001/runs/ci-delay-red012/result.json",
+      "status": "failed"
+    },
+    {
+      "id": "ne-ci-delay-green",
+      "label": "Same actual350ms filesystem delay, same3 assertions:3 PASS/0 FAIL,exit0; process completes normally",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/normal-entry-parameters-001/git-delivery-001/runs/ci-delay-green014/result.json",
+      "status": "verified"
+    },
+    {
+      "id": "ne-ci-focused",
+      "label": "Current full normal-entry parameter file23 PASS/0 FAIL/0 SKIP; typecheck/config0",
+      "path": "/Users/bendandebaba/JuanerAI-artifacts/agent-host-simplification/2026-10-19/engineering-intake-001/normal-entry-parameters-001/git-delivery-001/runs/ci-focused015/result.json",
+      "status": "verified"
     }
   ],
   "risks": [
@@ -602,7 +651,7 @@
       "mitigation": "Authorized scoped local002 Git/CI/squash/safe-main delivery only. No real Provider/Keychain/business data/F-B01, existing service changes, SDK upgrade or old tasks. New-task policy never reinterprets historical records."
     }
   ],
-  "updated_at": "2026-10-20T01:51:15.844Z",
+  "updated_at": "2026-10-20T02:34:01.329Z",
   "updated_by": {
     "role": "controller",
     "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a156ef-665e-72c3-a938-6ce20f808a72"
