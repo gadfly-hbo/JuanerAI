@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261019142425236-PZR4NL",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-19T14:24:25.236Z",
+  "actor": {
+    "role": "controller",
+    "session": "mini-engineering:01a151e9-fc5a-7f60-bd4c-23b99a0a4ada:01a1544f-6d30-7092-bb16-536a04c99d60"
+  },
+  "summary": "repair001 PR109 merged4dafbe2; CI5126 PASS40SKIP; both main refs safe sync PASS; offline STOP",
+  "status_after": "complete",
+  "evidence_refs": []
+}

@@ -1,3 +1,35 @@
+## 正常入口／参数统一local002 · 获准Git交付（2026-10-20）
+
+用户本轮明确授权命名local002按规范Git交付；固定.5、原003、repair001及全部旧失败/
+UNKNOWN/预留和累计保留。原生独立47项机制PASS及local002记录修正PASS保持原输入；
+本次归档、现行规格、覆盖与Git记录须完成完整候选复核、full portable及当前HEAD CI，
+未实际取得的结果不提前称PASS。实际提交/合并/逐端安全同步见外置最终Git回执。
+全40稳定ID目标/状态类/完整能力/阶段接受增量0，仅补C3-01/C6-01、
+A-02/03/04/05、B-01/02/03机制/入口/恢复子范围。真实F-B01/Provider/业务、GUI/QS04/
+产品和阶段接受、发布/生产仍未授权，旧两线停止。历史local001快照按原冻结时点保留；
+其原活动路径定位在本次archive后由下面当前记录承接，不把历史快照改成当前权威。
+[当前交付](../../../openspec/changes/archive/2026-10-20-agent-host-normal-entry-parameters-20261020/engineering-delivery.md) ·
+[本次全40ID快照](snapshots/agent-host-normal-entry-parameters-git-2026-10-20.md) ·
+[本轮证据](evidence.md#e-normal-entry-git-20261020)。
+以下既有记录保留其原时点、作用域及归属。
+
+## 正常入口／新Task参数统一 · 本地候选准备（2026-10-20）
+
+本轮在e83ba62／tree7cf6e7上前向增加显式unified-v1正常入口配置，
+主32768／备16384、模型600秒、工具300秒、control30秒、累计不限并持续计量；
+新work不带旧300秒累计截止，旧work/draft不迁移或重解释。
+正常子进程、真实Workspace停止／被动重开／显式续接与长成果合成证据已取得；
+固定本地候选的独立结果从外置回执读取，冻结时不预写PASS。
+全40稳定ID目标／状态类／完整能力／阶段接受增量0；只补
+C3-01、C6-01、A-02/03/04/05、B-01/02/03受影响机制证据。
+F-B01真实质量、完整浏览器体验、QS04、原A/B、完整realQ和阶段接受仍开放。
+原003、repair001、历史FAIL/BLOCKED/CANCELLED/SKIP/UNKNOWN及累计保留；
+旧两线停止，无Provider或Git交付权限。
+[本轮结果](../../../openspec/changes/archive/2026-10-20-agent-host-normal-entry-parameters-20261020/verification.md) ·
+[全40ID固定快照](snapshots/agent-host-normal-entry-parameters-local001-2026-10-20.md) ·
+[本轮证据](evidence.md#e-normal-entry-parameters-20261020)。
+以下原记录原样保留其时点及作用域。
+
 ## Workspace保存探索续接修复001 · 获准Git交付（2026-10-19）
 
 原路径完整读回接线已在真实Workspace合成链路验证：RED→GREEN，400图表点，

@@ -146,6 +146,7 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/integration/xanthil-desktop/metric-assets-import.integration.test.ts",
     "tests/integration/xanthil-desktop/metric-assets-store.integration.test.ts",
     "tests/integration/xanthil-desktop/metric-assets-workspace.integration.test.ts",
+    "tests/integration/xanthil-desktop/normal-entry-parameters.integration.test.ts",
     "tests/integration/xanthil-desktop/open-agent-ledger.integration.test.ts",
     "tests/integration/xanthil-desktop/open-agent-runtime.integration.test.ts",
     "tests/integration/xanthil-desktop/open-analysis-application.integration.test.ts",
@@ -524,7 +525,8 @@ const AGENT_TSCONFIG_APPENDIX=Object.freeze([
   "tests/integration/xanthil-desktop/agent-host-proposal-contract.integration.test.ts",
   "tests/integration/xanthil-desktop/agent-host-browser-entry.integration.test.ts",
   "tests/integration/xanthil-desktop/open-analysis-long-artifact.integration.test.ts",
-  "tests/integration/xanthil-desktop/open-analysis-natural-review.integration.test.ts"
+  "tests/integration/xanthil-desktop/open-analysis-natural-review.integration.test.ts",
+  "tests/integration/xanthil-desktop/normal-entry-parameters.integration.test.ts"
 ]);
 const METRIC_FACTORY_TSCONFIG_APPENDIX = Object.freeze(['packages/ports/metric-factory.ts','packages/application/metric-factory.ts','adapters/metric-factory/bundle.ts','adapters/metric-factory/copies.ts','adapters/metric-factory/process.ts','profiles/personal/metric-factory.ts','apps/browser/metric-factory-http.ts','tests/integration/metric-factory/copies.test.ts','tests/integration/metric-factory/process.test.ts']);
 async function currentRunnerTuple(root = REPO_ROOT) {

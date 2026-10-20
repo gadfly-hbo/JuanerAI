@@ -5,7 +5,7 @@ export type AnalysisHarnessFirstLoop=Readonly<{
   work_recovery?:'v1';
  request_admission:Readonly<{policy_version:string;protocol_overhead_tokens:number;safety_margin_tokens:number;image_tokens?:number}>;
 }>;
-export type AnalysisBusinessWork=Readonly<{version:'1';id:string;deadline_at:number}>;
+export type AnalysisBusinessWork=Readonly<{version:'1';id:string;deadline_at:number}>|Readonly<{version:'2';id:string;deadline_at:null}>;
 export type AnalysisTool=Readonly<{
  name:string;description:string;parameters:Readonly<Record<string,unknown>>;
  /** Optional live producer choices; execution still validates shape and current business authority. */
