@@ -1,5 +1,13 @@
 # JuanerAI Product Planning Index
 
+## 2026-10-22 · 统一路线补充：Metric Factory＋Semantica库存候选
+
+用户已确认将该方案列为**后续N09库存领域扩展候选，配套N04必要增量**，固化在[总拆解§10.9](2026-10-03/juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md#109-2026-10-22-metric-factorysemantica库存候选用户已确认)与[近期产品片§8.4](2026-10-03/xanthil-task-experience-integration-proposal-v0.1.md#84-2026-10-22-metric-factorysemantica库存候选用户已确认)。先用既有订单／退款任务及首轮有限安全复用，N05/N06默认主线不变；库存可在条件满足后与回访协同，不等完整学习闭环。
+
+先证明库存资产被真实任务采用，再按实际检索／建模缺口和可比净价值引入Semantica；不将其、SAP 0.2或包内UI自动批准。实际宿主接线前核验届时适用的新架构证据及工程权限，不把方案W5留作工程完成后的补票。
+
+Blueprint仍为v4.2，40ID／N01～N20／阶段及在研Change不变；本次不是新开工包、UI Gate或Git发布授权，不启动工程／自主探索，不恢复或通知其他session。工程快照按各自日期解释，不由本导航追认当前通过。
+
 ## 2026-10-21 · 统一路线补充：业务记忆与决策资产
 
 用户已确认并要求补入[原统一建设路线§10.4～10.8](2026-10-03/juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md#104-2026-10-21-业务记忆与决策资产用户已确认)及[原近期产品片§8.3](2026-10-03/xanthil-task-experience-integration-proposal-v0.1.md#83-2026-10-21-业务记忆与决策资产补充用户已确认)：首期使用已有订单／退款任务，缺码调拨留后续领域验证；先完整证明一类经验资产的安全复用，策略效果及另一类完整治理留明确返回点；N05/N06默认主线不变，受控复用先准备，是否穿插另定。

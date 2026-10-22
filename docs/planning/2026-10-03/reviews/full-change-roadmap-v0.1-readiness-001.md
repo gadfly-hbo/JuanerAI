@@ -192,3 +192,40 @@ Reviewer：`/root/browser_delivery_plan_readiness_002`，全新只读上下文�
 ### 后续Git发布授权
 
 用户随后明确授权本次四份规划文档提交、推送、PR合并及安全同步双端本地main，继续要求不改变在研Change、不启动工程或自主探索。上述本地完成状态保留为审查时点，不改送审正文／哈希或历史结论。实际提交、CI、合并及逐端同步结果记录在本次PR、交付回执与持久发布证据中，未发生前不预填成功；主线同步不要求在研session采用或恢复执行，不另开仅补写合并事实的递归发布。
+
+## 追加 006：Metric Factory＋Semantica库存候选路线审查
+
+2026-10-22。用户确认将该方案列为后续N09库存领域扩展候选、配套N04必要增量，Semantica按实际缺口再引入；要求补入原统一路线，不升级蓝图、不改在研Change、不启动工程。原001～005及旧Git授权的作用域保持，本次不重放旧发布或执行权限。
+
+### 固定候选与范围
+
+在原干净MacBook工作树以`start-work metric-factory-semantica-route`从`67bea13af93a8adf6d4de3006faf64f9679afacc`建立独立文档分支`work/macbook/metric-factory-semantica-route`，原分支保留；未同步其他设备。
+
+| 完整送审候选 | bytes | SHA-256 |
+| --- | ---: | --- |
+| [总拆解及§10.9](../juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md) | 71911 | `eff5e0b2b8a1b31a4448403ce5f5c2fb87ba90039fcc20b44121322ecad5734c` |
+| [近期产品片及§8.4](../xanthil-task-experience-integration-proposal-v0.1.md) | 33634 | `8accce0e76232b7285376ead2458a7a2c24f33349846b33e0798ce8454aff203` |
+| [规划入口](../../README.md) | 70760 | `1547b949954196c6f1a44ddc76e2b4d8696be5aaff81bfc8b56bc0cfa95ea44a` |
+
+Reviewer：`/root/mf_semantica_routes_readiness_006`，全新只读上下文，请求路由`gpt-6-astra / medium`，属MacBook产品支持，不是工程Validator或独立OS只读沙箱保证。完整读取三份候选及AGENTS／路由，独立核对字节与SHA，对照明确引用的Blueprint v4.2正文／批准、资产架构及适用政策；未以外部ZIP、其他项目、session或作者未写明理由补救正文。
+
+### Reviewer七项结论
+
+1. **What I Would Build**：固化N09库存候选与N04必要增量，以有限资产发布→项目批准→当前Binding／IR→计算核验→业务结果／采用回执为目标。订单退款及首轮安全复用优先、N05/N06默认不变；库存指标不冒充缺码调拨。
+2. **Required Guessing**：本轮路线无承重猜测。指标、Owner、资料／样例、价值判据和必要UI明确在正式候选中关闭，不据此让工程补猜。
+3. **External Study Required**：本轮无；正文自含实际采纳边界。后续固定采用原文／附件和届时接线证据是明确返回点，不依赖本机路径或旧聊天。
+4. **Untestable Requirements**：无路线级阻断。实际IR／结果变化及适用计算反例可观察；尚未冻结的业务判断和净价值不能现在验收，文稿未声称已完成。
+5. **Correctly Deferred**：SAP版本策略、Semantica版本／服务／Port、工程合同、必要UI及真实调用权限留后。W5是实际接线前置；资产Owner权威不被SAP／图取代；旧工程快照不冒称当前现场。
+6. **Required Plan Additions**：无必需修改。落实正文已有的正式候选关闭项，不新增材料体系或Gate。
+7. **Verdict：PASS**，仅用于路线固化与后续产品准备，不是库存产品输入冻结、UI接受、工程／产品验收或启动权限。
+
+### 检查与停止边界
+
+- 送审三文件45行增加、1行当前阅读说明替换；除该说明外总拆解旧正文保持完整前缀，近期产品片仅追加；原N01～N20和40项映射与基线逐字一致。
+- 三份候选193处本地链接、16处Markdown锚点、行末空白及`git diff --check`通过；本记录在PASS后追加，不改送审候选身份。
+- Blueprint正文／HTML、累计能力、工程政策、OpenSpec、业务／SDK及在研输入未改；未执行产品、业务测试、UI、构建、安装、Provider或真实数据验证。
+- 仅本地四份规划文档修改，未暂存、提交、推送、PR、合并或同步Mini，未通知其他session、派发工程角色、恢复任务或启动工程／自主探索；不宣称Git已保存或Mini已采用。
+
+### 后续Git发布授权
+
+用户随后明确授权这批四份规划文档提交、推送、PR合并及安全同步双端本地main，并继续要求不改变在研Change、不启动工程或Semantica接入开发。上节保留审查时点状态，三份送审正文及哈希不变。实际提交、当前HEAD CI、合并与逐端同步由本次PR及持久交付回执记录，不提前填成功；同步主线不等于在研session采用或恢复，不为合并后的事实另开递归文档发布。
