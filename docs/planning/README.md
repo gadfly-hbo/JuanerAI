@@ -1,5 +1,11 @@
 # JuanerAI Product Planning Index
 
+## 2026-10-22 · 统一建设路线总览：主线与可穿插项
+
+用户已确认排序，完整总览见[总拆解§10.10](2026-10-03/juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md#1010-2026-10-22-统一建设路线总览主线与可穿插项用户已确认)，近期产品片在[§8.5](2026-10-03/xanthil-task-experience-integration-proposal-v0.1.md#85-2026-10-22-主线与可穿插项总览用户已确认)引用同一来源。主线为现有分析成果做稳／适用验收→N05/N06回访评价→N07/N08改进与下一Case采用；专业能力、OSM／Team、企业及专项行动按真实依赖进入，不把阅读顺序当全量串行队列。
+
+有限业务记忆安全复用、库存跨领域验证及最小自主探索是三项可穿插候选，各自条件及先后见总览；N03/N04／N11只补消费者实际缺口。Blueprint v4.2、40ID／20索引／S1～S6、在研Change及历史状态不变，不新增开工令、Gate或Git授权，不启动工程、自主探索或Semantica，不自动要求在研采用。
+
 ## 2026-10-22 · 统一路线补充：Metric Factory＋Semantica库存候选
 
 用户已确认将该方案列为**后续N09库存领域扩展候选，配套N04必要增量**，固化在[总拆解§10.9](2026-10-03/juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md#109-2026-10-22-metric-factorysemantica库存候选用户已确认)与[近期产品片§8.4](2026-10-03/xanthil-task-experience-integration-proposal-v0.1.md#84-2026-10-22-metric-factorysemantica库存候选用户已确认)。先用既有订单／退款任务及首轮有限安全复用，N05/N06默认主线不变；库存可在条件满足后与回访协同，不等完整学习闭环。
