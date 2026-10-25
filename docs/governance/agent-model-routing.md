@@ -10,15 +10,18 @@ Loop. Publication, actual loading and receiver adoption remain separate.
 
 | Role | Agent | Model / reasoning | Permission boundary | Use |
 |---|---|---|---|---|
-| MacBook Product Manager | primary session | gpt-6-astra / high (unchanged) | parent session policy | existing product workflow |
+| MacBook Blueprint Agent / Product Manager | primary session | gpt-6-astra / high (unchanged) | parent session policy | Blueprint direction, capability targets, priorities and next-Change recommendations |
 | MacBook product support | support subagents | gpt-6-astra / medium (unchanged) | approved task permissions | existing bounded product review/investigation |
-| Mini engineering primary | primary session | gpt-6.1-sol / medium | parent session policy | intake, persisted spec/design, tests, implementation, corrections, engineering state/acceptance and authorized delivery |
+| Mini engineering primary | primary session | gpt-6.1-sol / medium | parent session policy | Change proposal, clickable UI/Contract and acceptance preparation; user-confirmed input, intake, persisted spec/design, tests, implementation, corrections, engineering state/acceptance and authorized delivery |
 | Independent engineering Validator | juaner_validator | gpt-6.1-sol / high | inherited parent permissions; read-only conduct | complete fixed candidate and evidence; author-independent formal review |
 
 Mini has exactly these two engineering roles. Do not dispatch Worker/Spec/Test
 or generic engineering helpers. The primary is the single author/state writer;
 it never becomes its own final Validator. MacBook product support and product
 runtime agents are outside this engineering-role restriction.
+Existing product-plan readiness review follows `AGENTS.md` during preparation;
+it is not an implementation helper or another post-confirmation startup Gate.
+This responsibility change does not alter model, effort or permission settings.
 
 ## Configuration and Dispatch
 
