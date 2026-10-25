@@ -6,6 +6,20 @@ planning drafts explain the design but are not a second authority.
 
 ## Applicability and Adoption
 
+The user-approved 2026-10-25 responsibility revision supersedes earlier
+MacBook-owned Change preparation and the plugin-only exception below. MacBook's
+Blueprint Agent maintains global product direction and recommends the next
+Change; the user forwards that recommendation to Mini. The same Mini primary
+prepares the Change proposal, applicable clickable UI/UI Contract and acceptance
+requirements, obtains user confirmation, then continues authorized engineering.
+There is no mandatory MacBook Change Agent, preparation handoff or additional
+routine startup approval. Existing readiness review is completed/reused during
+preparation; final independent engineering validation remains. Blueprint targets,
+models, permissions, CI and active-task boundaries are unchanged. Reuse approved
+in-flight inputs rather than recreating them; no session is deleted, migrated or
+resumed by removing the mandatory intermediary. Earlier dated responsibilities
+below are history where superseded by this revision.
+
 The user-approved 2026-10-05 v0.9 revision makes Mini's primary engineering
 agent the continuous author and Engineering Controller, with independent final
 validation. Mini engineering has exactly two roles: the primary and independent
@@ -100,8 +114,8 @@ host/destructive operation, Git delivery or release is authorized by this policy
 
 | Authority | Owns | Does not own |
 |---|---|---|
-| MacBook Product Manager | Whitepaper/Demo interpretation; Blueprint; product scope, UI, business meaning, acceptance criteria, prohibitions and planning | routine engineering contracts, paths, commands, environments, repairs, state or technical sign-off |
-| Mac mini engineering primary agent (Engineering Controller) | intake, feasibility, work-package boundaries, necessary spec/design, tests, implementation, diagnosis, integration, affected verification, single engineering state, engineering acceptance and authorized Git delivery | changing product or safety boundaries, granting new permissions/resources, accepting residual risk for the user, claiming Product Acceptance or independently validating its own candidate |
+| MacBook Blueprint Agent (Product Manager) | Whitepaper/Demo interpretation; Blueprint direction, capability targets, business meaning, priorities, next-Change recommendations and global product planning | mandatory Change preparation/approval, routine engineering contracts, paths, commands, environments, repairs, state or technical sign-off |
+| Mac mini engineering primary agent (Engineering Controller) | Change product proposal, clickable UI/UI Contract and acceptance preparation; user-confirmed input freeze; intake, feasibility, work-package boundaries, necessary spec/design, tests, implementation, diagnosis, integration, affected verification, single engineering state, engineering acceptance and authorized Git delivery | changing approved Blueprint/product or safety boundaries, granting new permissions/resources, accepting residual risk for the user, claiming Product Acceptance or independently validating its own candidate |
 | Independent Validator | acceptance-first evaluation of a fixed complete candidate and its evidence | authoring/repairing that candidate, granting acceptance, Git or execution permission |
 | User | final product, scope, boundary, permission, resource, risk and required Product Acceptance decisions | routine in-boundary corrections already delegated |
 
@@ -116,23 +130,45 @@ outside its approved boundary go directly to the user in that repair task.
 
 ## Product Input and Engineering Intake
 
-By default, MacBook freezes the existing Product Input Package; user-initiated
-plugin integrations follow **Mini-led Plugin Integration** below. The package
-retains: Change identity, approved
-objective/scope/non-goals, business and failure semantics, exact UI Contract and
-user UI approval, acceptance criteria, prohibitions, reference versions and
-known safety/data/permission/resource boundaries. Reuse valid same-batch product,
+MacBook's Blueprint Agent supplies a next-Change recommendation grounded in the
+approved Blueprint: user result/value, suggested scope, capability references,
+dependencies and known product gaps. The user forwards it to Mini; this is input
+for preparation, not implementation permission or another required document suite.
+
+In that Mini task, the same engineering primary clarifies the smallest complete
+result and prepares the product proposal, applicable high-fidelity clickable
+UI/UI Contract and verifiable acceptance requirements. Preserve Blueprint
+capability targets; a Change-specific subset does not redefine their completion
+conditions. Use existing proposal/product-input records to bind Change identity,
+objective/scope/non-goals, user path, business and failure semantics, UI version,
+acceptance criteria, prohibitions, reference versions and known
+safety/data/permission/resource boundaries. Reuse valid same-batch product,
 UI, authorization and environment decisions; resolve only missing, expired or
 changed items without extending permissions or resetting consumption. One approved
 UI Contract may cover several Changes when applicable to each; new or materially
 changed visible behavior requires the user's affected UI approval. Research Demos
 are behavior references, not production authority.
-New or materially revised product plans retain the existing independent
-development-readiness review; it checks product gaps, not implementation names.
 
-MacBook does not pre-freeze private types, file names, commands, environments,
-fixtures or evidence mechanics. Mini reads the real repository, branch, WIP,
-code, evidence and stopping point before defining a result-sized work package:
+Complete or reuse the existing independent development-readiness review for a
+new/materially revised product plan during Mini preparation, before consolidated
+user product/UI confirmation. Mini resolves load-bearing product gaps directly
+with the user; ordinary implementation details remain engineering decisions.
+This existing product-plan review is not a third engineering role or another
+Spec/Test/Worker pipeline. The author cannot self-review, and review PASS does
+not substitute for user approval.
+
+Present the proposal, clickable UI/Contract, acceptance and any genuinely missing
+execution authority together for user confirmation. With that confirmation and
+applicable permissions, the same Mini primary freezes the approved input and
+records Engineering Intake in the same task, then proceeds directly to authorized
+engineering. No MacBook Change Agent review, cross-device preparation handoff or
+routine second startup approval is required. Product/UI confirmation does not
+grant unstated installation, host, data/Provider, resource, Git or deployment
+permissions; reuse valid grants and ask only about the missing or changed part.
+
+Product confirmation does not pre-freeze private types, file names, commands,
+environments, fixtures or evidence mechanics. Mini reads the real repository,
+branch, WIP, code, evidence and stopping point before defining a result-sized work package:
 
 - one demonstrable or independently verifiable result, approved behavior and
   acceptance references, non-goals and prohibitions;
@@ -195,48 +231,19 @@ and effect-control rules through its existing unique entry, not a copied policy.
 
 ### Mini-led Plugin Integration
 
-When the user starts a JuanerAI plugin-integration task on Mini, the same Mini
-primary owns plugin/host study, the task-specific integration proposal and
-product-input preparation, then authorized engineering and Git delivery.
-MacBook PM preparation, technical sign-off or cross-device handoff is not a
-prerequisite; MacBook product help is available when the user requests it.
-This is a scoped product-preparation exception, not transfer of general
-Whitepaper/Blueprint ownership or permission to change their approved direction.
+User-initiated JuanerAI plugin integration follows the general Mini-owned
+preparation/intake rule above, no longer a product-preparation exception. The
+same Mini primary owns plugin/host study through authorized engineering and Git
+delivery. Use the existing plugin integration entry and proposal/input records
+to state plugin/host responsibilities, fixed version, data/permission/lifecycle
+boundaries and acceptance. MacBook product help is optional when requested.
+General Whitepaper/Blueprint ownership remains with the Blueprint Agent.
 
-Use the existing proposal/product-input locations to describe the user path,
-scope/non-goals, applicable UI Contract, plugin/host responsibilities, version,
-data, permission and lifecycle boundaries, acceptance and known gaps. The user
-decides product/UI, architecture/safety expansion and missing permissions in
-that Mini task. Study/planning permission does not authorize installation,
-implementation, Provider/data access or external effects.
-
-The same existing Product Plan Development-Readiness Gate applies to new or
-materially revised plans: Mini as plan owner arranges its fresh read-only review,
-resolves NEEDS_CLARIFICATION directly with the user, and reuses valid reviews
-and product/UI decisions. This is the existing product-plan review, not another
-engineering role or a Spec/Test/Worker pipeline. Its PASS is not user approval;
-the plan author never substitutes self-review. No affected implementation starts
-with unresolved load-bearing product gaps or missing required user/UI approval.
-
-After applicable readiness and user approval, Mini freezes the approved product
-input and confirms Engineering Intake in the same task using existing records;
-no second task, duplicate package or MacBook approval is required. Record actual
-implementation and Git permissions alongside that scope, reuse still-valid
-explicit grants and ask only for missing authority in a consolidated decision.
-Approval does not extend ungranted installation, host, data/Provider, budget or
-deployment permissions. This policy itself grants none of those task permissions.
-
-Retain the existing formal Change, SDD/TDD loop, affected regression, independent final
-Validator, Engineering Acceptance, required user Product Acceptance and authorized
-PR/required-CI/squash integration, safe main synchronization and applicable
-archive. Ordinary in-boundary choices/corrections need no repeated approval.
-Publishing to main is not deployment, runtime loading or receiving-task adoption.
-
-An in-flight integration keeps its original task, branch/worktree, product
-decisions, contracts, WIP, evidence, failures/UNKNOWN, resources and stops.
-Read this rule at a natural safe boundary without switching its code baseline
-or restarting services. Resolve only affected gaps; retain valid work rather
-than recreating preparation or treating this rule as approval of a pending plan.
+Apply the same readiness review, user confirmation, formal Change, continuous
+SDD/TDD, final independent verification and authorized delivery rules; do not
+duplicate them for plugins. Study permission is not installation or external-
+effect authority. Existing in-flight integration decisions, work, evidence,
+resources and stops remain protected by the adoption rules above.
 
 ## Lean Context and Continuous Ownership
 

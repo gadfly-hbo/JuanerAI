@@ -7,9 +7,13 @@ a product task or the inactive signed Host Loop.
 
 ## Responsibilities
 
-MacBook is Product Manager: product intent, terminology, Blueprint, vertical
-scope, UI, acceptance criteria and product-input freeze. Mini's engineering main
-Agent is Engineering Controller and directly owns intake, engineering work
+MacBook's Blueprint Agent (Product Manager) owns global product direction,
+terminology, Blueprint capability targets, priorities and next-Change recommendations.
+The user forwards a recommendation to Mini. Mini's engineering main Agent
+prepares the Change product proposal, applicable clickable UI/UI Contract and
+acceptance requirements, completes or reuses applicable readiness review and
+obtains user confirmation. The same Agent then freezes approved input and
+directly owns intake, engineering work
 packages, spec/design, tests, implementation, corrections, important technical
 decisions, single engineering state, acceptance and authorized delivery.
 The user decides product ambiguity, boundary changes, extra actual resources,
@@ -20,10 +24,10 @@ policy's MacBook Trial and Bounded Bug Repair section. Its repair main Agent
 asks the user directly in that task; Mini retains primary development and its
 single engineering state. This is not Product Manager engineering sign-off.
 
-For user-initiated plugin integration, apply the sole policy's Mini-led Plugin
-Integration section. Mini also prepares the task-specific proposal and approved
-product input in the original task; no MacBook planning/approval handoff is
-required. Existing user decisions, readiness review and engineering checks remain.
+Apply the sole policy's Product Input and Engineering Intake section; plugin
+integration also uses its Mini-led Plugin Integration section. There is no
+mandatory MacBook Change Agent handoff or routine second startup approval after
+user confirmation. Blueprint targets, user decisions and engineering checks remain.
 
 ## Domains
 
@@ -47,7 +51,8 @@ still needs an approved architecture decision.
 - `juaner_validator` is fresh, independent and read-only; candidate authors
   cannot perform final validation.
 - These are the only two Mini engineering roles. Do not dispatch Worker/Spec/Test
-  or generic implementation helpers. MacBook product review remains unchanged.
+  or generic implementation helpers. Existing product-plan readiness review is
+  completed/reused during preparation, not another engineering implementation role.
 - Mini decides important in-boundary contracts and organizes delivery; it does
   not approve each ordinary correction or duplicate the full Validator review.
 

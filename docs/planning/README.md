@@ -1,5 +1,9 @@
 # JuanerAI Product Planning Index
 
+## 2026-10-25 · Change 准备职责调整
+
+按[唯一执行政策的 Product Input and Engineering Intake](../governance/product-change-execution-policy.md#product-input-and-engineering-intake)：MacBook 蓝图 Agent 提出下一 Change 建议，用户转给 Mini；同一 Mini 工程主 Agent 准备产品方案、可点击 UI／UI Contract 和验收要求，经用户确认后直接开展获准研发。取消 MacBook Change Agent 必经交接；蓝图目标、适用独立审查与用户 UI 决定保留。新分工不重做已批准输入、不迁移或恢复在研任务；下列具名批准、冻结与回执按其历史身份解释。
+
 ## 2026-10-22 · 统一建设路线总览：主线与可穿插项
 
 用户已确认排序，完整总览见[总拆解§10.10](2026-10-03/juanerai-blueprint-v4.1-full-change-roadmap-v0.1.md#1010-2026-10-22-统一建设路线总览主线与可穿插项用户已确认)，近期产品片在[§8.5](2026-10-03/xanthil-task-experience-integration-proposal-v0.1.md#85-2026-10-22-主线与可穿插项总览用户已确认)引用同一来源。主线为现有分析成果做稳／适用验收→N05/N06回访评价→N07/N08改进与下一Case采用；专业能力、OSM／Team、企业及专项行动按真实依赖进入，不把阅读顺序当全量串行队列。
@@ -433,7 +437,7 @@ intake rather than prompting guessed requirements or replayed authorization.
 The first production batch's status and amendments remain with its owning
 engineering task. This Blueprint integration does not update their status.
 
-## Current responsibility takeover — no execution resume
+## Historical responsibility takeover — 2026-09-24; no execution resume
 
 [Engineering Controller Takeover 001](2026-09-24/xanthil-desktop-engineering-controller-takeover-001.md)
 records the read-only observed WIP identity, latest confirmed Mini receipt,

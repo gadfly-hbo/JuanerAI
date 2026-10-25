@@ -41,14 +41,16 @@ Product terminology is owned by CONTEXT.md. Product route and Change-selection r
 Use the role names below; the unqualified word `Controller` does not name a
 current authority in the semi-automatic dual-device path.
 
-- The **MacBook Product Manager** owns Whitepaper and Research Demo
-  interpretation, the Blueprint, product proposals and vertical slices, UI
-  Contracts, user-visible behavior, business meaning, product acceptance
-  criteria, product prohibitions, and product-planning records. It freezes
-  product inputs but does not pre-freeze ordinary implementation contracts,
-  paths, commands, environments, or validation mechanics.
-- The **Mac mini engineering main Agent (Engineering Controller)** receives
-  approved product inputs and directly owns feasibility, result-sized packages,
+- The **MacBook Blueprint Agent (Product Manager)** owns Whitepaper and Research
+  Demo interpretation, the Blueprint's product direction, capability targets,
+  business meaning, priorities and next-Change recommendations. It maintains
+  product-planning records; a MacBook Change Agent is not a required preparation,
+  approval or handoff step.
+- The **Mac mini engineering main Agent (Engineering Controller)** receives the
+  next-Change recommendation forwarded by the user, prepares the Change product
+  proposal, applicable clickable UI/UI Contract and acceptance requirements,
+  and obtains user confirmation. The same Agent then freezes approved input,
+  confirms intake and directly owns feasibility, result-sized packages,
   engineering spec/design, SDD/TDD, implementation, diagnosis, corrections and
   regression, plus independent Validator dispatch, single engineering state,
   engineering acceptance and authorized Git delivery/integration/archive.
@@ -63,10 +65,10 @@ or Engineering Acceptance never substitutes for the user's required product/UI
 acceptance. The full boundary and handoff rules live only in
 `docs/governance/product-change-execution-policy.md`.
 
-For user-initiated JuanerAI plugin integration on Mini, apply that policy's
-**Mini-led Plugin Integration** exception: Mini owns task-specific proposal,
-product-input preparation and authorized engineering delivery. MacBook is not a
-mandatory planning or approval hop; user decisions and existing Gates remain.
+Apply that policy's **Product Input and Engineering Intake** section for Mini
+preparation through authorized development in the same task. Plugin integration
+uses this same ownership rule and its **Mini-led Plugin Integration** section.
+Blueprint/capability targets and required user/UI decisions remain binding.
 
 For first-time plugin integration, an assessment of integration compatibility,
 or an upgrade to a fixed plugin version, read the [plugin integration entry](docs/engineering/plugin-integration/README.md)
@@ -87,7 +89,12 @@ Cold-start documents and empty module boundaries do not authorize product implem
 
 Every new or materially revised product plan intended to guide development must pass an independent development-readiness review before it is declared ready, frozen as product input, or handed to engineering. Reuse an applicable completed review; ordinary internal engineering changes do not repeat it.
 
-After drafting the plan, its owner (normally Product Manager; Mini primary for Mini-led plugin integration) dispatches a fresh read-only support Agent with an implementation-worker perspective. This Reviewer is not the engineering agent, receives no implementation authority, and must not write OpenSpec, tests, or production code. Give it only the product plan and formal attachments, the JuanerAI authority documents explicitly referenced by the plan, and the review brief. Do not give it the plan author's unstated rationale or use external project repositories to rescue missing plan content; any required external lookup is itself a plan gap unless the user explicitly authorized that read-only study.
+After drafting the plan, its owner (MacBook Blueprint Agent for Blueprint-level plans; Mini primary for Change-specific plans) dispatches a fresh read-only support Agent with an implementation-worker perspective. This Reviewer is not the engineering author, receives no implementation authority, and must not write OpenSpec, tests, or production code. Give it only the product plan and formal attachments, the JuanerAI authority documents explicitly referenced by the plan, and the review brief. Do not give it the plan author's unstated rationale or use external project repositories to rescue missing plan content; any required external lookup is itself a plan gap unless the user explicitly authorized that read-only study.
+
+For Mini Change preparation, complete or reuse this existing review before
+consolidated user product/UI confirmation. It is product-preparation review,
+not a third engineering role, a MacBook handoff or another startup approval
+after confirmation.
 
 The Reviewer returns:
 
@@ -133,8 +140,8 @@ adoption conditions and authority boundaries in
 `docs/governance/product-change-execution-policy.md`.
 For adopted Mini engineering and assigned MacBook trial/repair, use that policy's
 Continuous SDD and TDD and MacBook Trial and Bounded Bug Repair sections for thin
-records, affected real-path checks and concentrated closeout. MacBook product
-planning and governance are unchanged. For same-batch
+records, affected real-path checks and concentrated closeout. MacBook retains
+Blueprint planning and governance; Mini owns Change-specific preparation. For same-batch
 approval/UI Contract reuse, early internal trial versus formal
 Change/stage completion, and browser versus Desktop verification applicability,
 apply that policy's Product Input, Verification Cadence and Fixed-Code sections.
@@ -147,9 +154,10 @@ show the full six-plus-two map under the sole execution policy's Blueprint
 Capability Coverage section. This is cumulative product visibility, not a new
 Gate, engineering board or permission to expand scope.
 
-Observable behavior changes follow the split state machine in
-`.ai-coding/state-machine.md`: Product Manager work ends at Product Input
-Freeze; Engineering Controller work begins at confirmed Engineering Intake and
+Observable behavior changes follow the state machine in
+`.ai-coding/state-machine.md`: MacBook provides Blueprint-based Change
+recommendations; the same Mini main Agent owns Change preparation, approved
+Product Input Freeze and confirmed Engineering Intake, then
 continues through behavior-scoped SDD/TDD and independent verification, Engineering
 Acceptance, required user Product Acceptance, and authorized archive.
 
@@ -172,7 +180,7 @@ For MacBook product trial or user-assigned bounded bug repair, read the sole
 policy's **MacBook Trial and Bounded Bug Repair** and the Git workflow's
 **MacBook Trial and Repair Branches**. Mini remains the main development device;
 MacBook uses an isolated worktree without becoming a technical approval hop or
-taking ownership of Mini's active state. Product Manager duties are unchanged.
+taking ownership of Mini's active state. MacBook Blueprint duties remain separate.
 
 ## Reuse and Complexity Control
 
@@ -193,8 +201,9 @@ When changing test assets, read `docs/governance/test-asset-retirement.md`. Pres
 
 ## Roles
 
-- Product Manager owns the frozen product input and product-planning communication.
-- Mini engineering main Agent (Engineering Controller) directly owns spec/design,
+- MacBook Blueprint Agent owns global product planning and next-Change recommendations.
+- Mini engineering main Agent (Engineering Controller) owns Change product/UI
+  preparation, user-confirmed input and then directly owns spec/design,
   tests, implementation, corrections, engineering architecture and contracts within the
   approved product, architecture, security, data, permission, and external-effect
   boundaries, plus engineering Gates, integration, and engineering communication.

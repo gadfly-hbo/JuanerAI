@@ -23,9 +23,13 @@ TDD_READY and TEST_ASSET_RETIREMENT in old records remain historical, not
 requirements to recreate in adopted continuous work. Do not rewrite old records
 or migrate state data merely to change the workflow.
 
-Product preparation normally belongs to MacBook; Mini-led plugin preparation
-uses the sole policy's Mini-led Plugin Integration section in the original task,
-retaining PRODUCT_INPUT_FREEZE and ENGINEERING_INTAKE without a device handoff.
+MacBook's Blueprint Agent recommends the next Change; the user forwards it to
+Mini. The same Mini main Agent owns the existing product-preparation states,
+including applicable clickable UI/acceptance and readiness review, obtains user
+confirmation, then records PRODUCT_INPUT_FREEZE and ENGINEERING_INTAKE and
+continues authorized development. Follow the sole policy's Product Input and
+Engineering Intake section; no mandatory MacBook Change Agent, device handoff
+or second startup approval is added. Existing approved inputs are reused.
 Mini is the sole writer of current
 engineering state. Record material results/transitions, not every inner test run.
 Daily checkpoints/pushes and Mini-local trials under the sole policy's

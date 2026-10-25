@@ -3,9 +3,10 @@
 The sole execution policy controls adoption and every boundary below. Scoped
 write means only the approved roots and task effects, never arbitrary authority.
 
-| Artifact / decision | Product Manager | Mini engineering main Agent | Validator | User |
+| Artifact / decision | MacBook Blueprint Agent / Product Manager | Mini engineering main Agent | Validator | User |
 |---|---|---|---|---|
-| product intent, UI, scope, acceptance | prepare/freeze | preserve; detect gaps; record decisions | verify | approve changes |
+| Blueprint direction, capability targets and priorities | maintain; recommend next Change | preserve; detect gaps | verify applicability | approve changes |
+| Change product proposal, clickable UI/UI Contract, scope and acceptance | optional user-requested support | prepare; obtain user confirmation; freeze approved input | verify | approve product/UI and changes |
 | product terminology / CONTEXT.md | maintain | preserve meaning; detect conflict | verify | decide conflict |
 | engineering spec/design and private contracts | read | scoped write; decide important impact | read | decide upper-boundary changes |
 | tests, fixtures and helpers | read | scoped write; preserve acceptance | inspect/run authorized checks | decide risk waiver |

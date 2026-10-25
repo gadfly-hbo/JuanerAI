@@ -4,16 +4,18 @@ This pre-existing template is optional/reference-only when already selected by
 the Change. Normally record the same applicable information once in existing
 OpenSpec/handoff records; do not add a mandatory package or approval stage.
 
-For the current semi-automatic path, the product-input owner freezes the Product
-Input section: normally MacBook Product Manager, or Mini primary under the sole
-policy's Mini-led Plugin Integration section. Mini fills Engineering Intake;
-the plugin path needs no cross-device handoff. The signed sections apply only to
-the separately authorized inactive Host Loop. Never place a secret, private key, credential,
+For the current semi-automatic path, Mini prepares and freezes the user-confirmed
+Change Product Input, then records Engineering Intake in the same task under
+the sole policy's Product Input and Engineering Intake section. The MacBook
+Blueprint recommendation is a source reference, not a required Change Agent
+handoff or implementation approval. Reuse valid approved input. The signed
+sections apply only to the separately authorized inactive Host Loop. Never place a secret, private key, credential,
 signature bytes, raw prompt, or raw model output here.
 
-## Product Input — applicable product-input owner
+## Product Input — Mini primary prepares; user confirms
 
 - Change ID / product objective:
+- Blueprint / next-Change recommendation reference and applicable capability IDs:
 - Product scope / non-goals / prohibited outcomes / deferred returns:
 - UI Contract version / path / SHA-256:
 - User UI Gate verdict / reference:

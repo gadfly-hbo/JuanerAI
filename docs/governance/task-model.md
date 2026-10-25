@@ -1,5 +1,8 @@
 # Task Model
 
+Execution ownership and adoption follow the sole authority in
+`product-change-execution-policy.md`; this model summarizes its task relationships.
+
 ## Sources of Truth
 
 | Concern | Source |
@@ -22,13 +25,19 @@ evidence into PASS; a risk waiver requires the user's explicit decision.
 
 ## Engineering Main Agent and Validator
 
-- Product Manager freezes product intent, UI, business boundaries, and product acceptance criteria.
-- The Mini engineering main Agent (Engineering Controller) determines the
-  result-sized package and directly owns necessary spec/design, tests,
+- MacBook's Blueprint Agent maintains global product direction, capability
+  targets and next-Change recommendations; the user forwards them to Mini.
+- The Mini engineering main Agent (Engineering Controller) prepares the
+  Change proposal, applicable clickable UI/UI Contract and acceptance
+  requirements, obtains user confirmation and freezes approved input, then
+  confirms intake in the same task without a mandatory MacBook Change Agent
+  handoff or second startup approval. It determines the result-sized package
+  and directly owns necessary spec/design, tests,
   implementation, corrections, validation and single engineering state inside
   approved boundaries. Ordinary private mechanics evolve in that same loop.
 - Mini has only main Agent and independent Validator; there is no engineering
-  helper dispatch. MacBook product review remains separate and unchanged.
+  helper dispatch. Existing product-plan readiness review is completed/reused
+  during preparation under the sole policy, not another engineering role.
 - Validator independently checks the frozen artifact and returns a verdict.
 - Engineering Controller records Engineering Acceptance, requests changes, or blocks; the user separately owns Product Acceptance and boundary/risk decisions.
 

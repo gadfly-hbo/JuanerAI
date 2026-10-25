@@ -6,16 +6,19 @@ second policy or an instruction to resume an existing stopped task.
 
 ## Product Preparation
 
-For user-initiated plugin integration on Mini, the Mini primary owns the product
-preparation below under the sole policy's Mini-led Plugin Integration section;
-no MacBook handoff or duplicate preparation is required. Otherwise the Product
-Manager remains the owner.
+MacBook's Blueprint Agent recommends the next Change; the user forwards that
+recommendation to Mini. Under the sole policy's Product Input and Engineering
+Intake section, the Mini primary owns Change-specific preparation and subsequent
+authorized development in the same task, including plugin integration. A
+MacBook Change Agent is not a required intermediary.
 
-That owner clarifies intent and the smallest useful result, prepares the
+Mini clarifies intent and the smallest useful result, prepares the
 product proposal and applicable clickable UI Contract, completes the existing
 development-readiness review for new/material product plans, and obtains user
-product/UI approval. Reuse valid existing inputs; do not repeat these steps for
-internal engineering changes. Freeze product semantics, acceptance and prohibitions,
+product/UI confirmation, then freezes approved input and confirms intake to
+continue engineering without another routine startup approval. Reuse valid
+existing inputs; do not repeat these steps for internal engineering changes.
+Freeze product semantics, acceptance and prohibitions,
 not ordinary implementation mechanics. Link affected Blueprint capability IDs
 from `docs/planning/capability-coverage/register.md` in the existing Change input;
 forecast coverage separately from delivered coverage.
