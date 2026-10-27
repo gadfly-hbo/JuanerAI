@@ -13,7 +13,7 @@ The product-definition and commercialization charter and the core reference for 
 _Avoid_: executable roadmap, implementation authorization, proof of completion
 
 **Product Development Blueprint**:
-JuanerAI's highest product-development execution guideline. Blueprint v4.2 is approved under the record linked from `docs/planning/README.md`; its reviewed draft labels are historical, while v1.0–v4.1 remain prior versions. The four core views connect capabilities, stage outcomes, architecture and value; capability-led construction is constrained by complete user journeys through a bidirectional task/capability/stage/Change mapping. It retains Whitepaper v4.0, 40 stable capabilities, N01–N20, S1–S6 and Change001–004; approved in-flight Change005 scope and adoption remain unchanged. Near-term delivery uses a PC browser and same-machine service, first a real trial then S1 closure, followed by outcome evaluation and explicit next-Case adoption. Data/semantic and professional expansion follows actual consumers; OSM, Team and Enterprise remain demand-led. Scenario, capability and experience acceptance are different evidence, not three new approval processes. Local rule integration, Git publication and receiver adoption remain separate.
+JuanerAI's highest product-development execution guideline. Blueprint v4.3 is approved under the record linked from `docs/planning/README.md`; v1.0–v4.2 and reviewed draft labels retain their historical identities. It organizes construction by host-owned common authority and optional business plugins, with a capability center for analysis assets, connectors and plugins. The four core views, complete task/capability/stage/Change mapping, Whitepaper v4.0, 40 stable capability targets, N01–N20 and S1–S6 remain. Existing accepted work and in-flight contracts/adoption are unchanged. PC browser/local-service delivery continues: stabilize current analysis/report use, then the default N05/N06 follow-up and N07/N08 governed improvement/next-Case adoption; professional subsets and the bounded capability center enter by actual need without becoming a platform prerequisite. OSM, Team and Enterprise remain demand-led. Scenario, capability and experience acceptance are distinct evidence, not new approval processes. Rule integration, Git publication, main synchronization and session adoption remain separate.
 _Avoid_: Whitepaper copy, OpenSpec, automatic Change authorization
 
 **Xanthil**:
@@ -27,6 +27,10 @@ _Avoid_: three execution cores, automatic infrastructure or migration authorizat
 **Product Module**:
 A reusable JuanerAI capability that may begin as a monorepo module and later become an independently versioned subproject.
 _Avoid_: microservice, separate repository
+
+**Capability Center**:
+The shared discovery, configuration and task-adoption surface for analysis assets, connectors and optional business plugins. It reuses host configuration, data qualification and asset governance; users can start a task without assembling capabilities first. Expert/team configurations are versioned task resources using native Agent mechanisms, distinct from multi-human Team collaboration. MCP is one connector implementation. Discovery, installation, connection, authorization, adoption, execution and effectiveness are different facts.
+_Avoid_: new runtime, parallel asset authority, mandatory analysis entry, public marketplace commitment
 
 ## Users
 
@@ -66,7 +70,7 @@ _Avoid_: CPU machine language, prompt, generated SQL alone, cosmetic JSON, autom
 
 ## Decision Loop
 
-These decision-lifecycle meanings were adopted in v2.0 and retained through v4.2. The v4 series changes task-progression responsibility, not the distinction between analysis, a human decision and a completed Loop. Existing accepted states, contracts and evidence are not retroactively rewritten.
+These decision-lifecycle meanings were adopted in v2.0 and retained through v4.3. The v4 series changes task-progression responsibility, not the distinction between analysis, a human decision and a completed Loop. Existing accepted states, contracts and evidence are not retroactively rewritten.
 
 **Evidence-based Analysis (循证分析)**:
 An investigation in which the system advances authorized analysis while people supply business judgment. Hypotheses, supporting and refuting Evidence, alternatives, uncertainty, Forks and bounded Subagent contributions remain traceable before a Finding is accepted; system verification does not fabricate human acceptance.
