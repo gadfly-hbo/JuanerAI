@@ -1,5 +1,15 @@
 # JuanerAI Product Planning Index
 
+## Current approved product-development authority — Blueprint v4.3（2026-10-27）
+
+用户已确认[Blueprint v4.3正式正文](2026-10-25/juanerai-product-development-blueprint-v4.3.md)，并授权本次规则整合、正常Git发布／合并及双端main安全同步；见[批准与规则整合记录](2026-10-25/blueprint-v4.3-approval-and-rule-integration.md)。正式正文沿用[受审draft.2](2026-10-25/juanerai-product-development-blueprint-v4.3-draft.md)的产品语义，[独立就绪审查002](2026-10-25/reviews/blueprint-v4.3-development-readiness-review-002.md)为固定候选规划PASS。草案和受审附件中的待确认／v4.2状态保留其当时时点；当前采用状态由批准记录确定，实际发布与同步由最终回执证明。
+
+日常按**宿主统一能力＋可选业务插件**阅读：正式正文§3–4明确八类宿主责任和专业插件，§4.2增加**分析资产＋连接器＋业务插件**能力中心，§5保留建设顺序，§6保留场景／能力／体验验收。[静态映射附件§3–4](2026-10-25/blueprint-v4.3-mapping-and-evidence.md#3-n01n20原索引全部保留)逐项保留40能力目标、N01～N20及关键依赖；四核心视图、六＋二和S1～S6不变。能力中心属于明确的管理／使用体验增量，不新增N21，不因目录、安装或连接判为能力完成。
+
+当前成果做稳→**下一默认N05＋N06回访评价**→N07／N08改进与下一Case采用；必要专业子集和能力中心按真实消费者与另行授权穿插，不作为主线前置或自动重排。能力中心首期复用现有目录、有限合格资产和一个有用的只读来源，验证真实任务采用；开放市场、任意第三方安装、通用团队编排及云／企业分发后置。
+
+既有成果、在研Change、UI／工程合同、历史失败／UNKNOWN和资源记录不变；不强制在研采用，不启动工程或恢复任务。Git同步不等于session采用。v4.2及更早蓝图、旧HTML阅读件和具名路线保留历史；旧版本的细分任务／决定／Demo条款仅按v4.3显式保留的适用范围读取。以下日期段落均按原时点解释，不覆盖本节当前权威。
+
 ## 2026-10-25 · Change 准备职责调整
 
 按[唯一执行政策的 Product Input and Engineering Intake](../governance/product-change-execution-policy.md#product-input-and-engineering-intake)：MacBook 蓝图 Agent 提出下一 Change 建议，用户转给 Mini；同一 Mini 工程主 Agent 准备产品方案、可点击 UI／UI Contract 和验收要求，经用户确认后直接开展获准研发。取消 MacBook Change Agent 必经交接；蓝图目标、适用独立审查与用户 UI 决定保留。新分工不重做已批准输入、不迁移或恢复在研任务；下列具名批准、冻结与回执按其历史身份解释。
@@ -59,7 +69,7 @@ Git发布、实际采用和工程继续分别以固定回执／另行授权确�
 
 The [Whitepaper entry](../product/whitepaper/README.md) is now maintained inside this repository. Use [the exact adopted v4.0 source](../product/whitepaper/revisions/v4.0/JUANERAI_WHITEPAPER.md) for the historical SHA `86591ec8be91e8357839726930a0c398a7fc54e454b04843fa5f554c2542b7eb`; use the [current editorial master](../product/whitepaper/JUANERAI_WHITEPAPER.md) for navigation maintenance. [The migration map](../product/whitepaper/MIGRATION_2026-10-03.md) resolves prior research absolute/relative paths without rewriting frozen Blueprint bytes. [The research index](../research/README.md) locates original Demo evidence; required fixed attachments still travel with each product input. This document-location change does not revise Blueprint v4.1 or receiving-task authority.
 
-## Current approved product-development authority — Blueprint v4.2（2026-10-04）
+## Historical approved product-development authority — Blueprint v4.2（2026-10-04）
 
 The user confirmed **Blueprint v4.2** on 2026-10-04. Read the
 [HTML system blueprint](2026-10-04/juanerai-system-blueprint-v4.2.html),
