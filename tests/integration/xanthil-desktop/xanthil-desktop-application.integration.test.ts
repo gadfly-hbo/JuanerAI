@@ -1,3 +1,4 @@
+import {createProfessionalDesktopApplication} from '../../fixtures/xanthil-desktop/desktop-professional.ts';
 import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
 import { spawn } from 'node:child_process';
@@ -11,7 +12,7 @@ import { canonicalDesktopJson } from '../../../packages/product-core/xanthil-des
 
 import { join } from 'node:path';
 
-import { createControlledDeadlineScheduler, createOfflineAssistanceRuntimeDouble, createU12ProjectAdmissionApplication, loadDesktopModule, requiredExport, requiredRecord, withCommitResponseLostAfterRealCommit, withIsolatedProject } from '../../fixtures/xanthil-desktop/desktop-contract-drivers.ts';
+import { createControlledDeadlineScheduler, createU12ProjectAdmissionApplication, loadDesktopModule, requiredExport, requiredRecord, withCommitResponseLostAfterRealCommit, withIsolatedProject } from '../../fixtures/xanthil-desktop/desktop-contract-drivers.ts';
 import { readDesktopPythonTool, assertDesktopFixtureHealth, createSessionCommand, createSucceededDesktopRunManifest, desktopTestIds, fixedClock, readSyntheticCsvPair, runBytes } from '../../fixtures/xanthil-desktop/desktop-fixtures.ts';
 
 type Method = (value: Record<string, unknown>) => Promise<Record<string, unknown>>;
@@ -181,27 +182,7 @@ test('U3 new Draft copies real Review explanation without granting old result au
   assert.deepEqual(await requiredExport<Method>(reopened.application,'readProjection')({...setup.owner,revision_id:revision.revision_id}),draft);assert.deepEqual(await readFile(join(projectRoot,'.xanthil','desktop','state.sqlite')),before);
 }));
 
-test('U3 explanation admission distinguishes initial copied and latest legitimate saved values [AC-XDESK-003-04, AC-XDESK-007-06, AC-XDESK-011-02]',async t=>{
-  const profileModule=await loadDesktopModule('profiles/personal/xanthil-desktop.ts');
-  const open=async(root:string)=>requiredExport<Method>(requiredExport<(v:unknown)=>Record<string,unknown>>(profileModule,'createPersonalXanthilDesktopProfile')({toolchainDeployment:{descriptor_path:join(root,'unused-tool-description.json')},assistanceConfig:null,clock:fixedClock,deadlineScheduler:createControlledDeadlineScheduler().scheduler}),'openProject')({contract_version:'1.0',command_id:'7e000000-0000-4000-8000-000000000001',projectDirectoryCapability:{projectRoot:root,display_name:'Synthetic Project'},display_name:'Synthetic Project'});
-  const rejectUnchanged=async(root:string,revisionId:string)=>{const path=join(root,'.xanthil','desktop','state.sqlite'),db=new DatabaseSync(path);try{db.prepare('UPDATE case_revisions SET evidence_explanation_text=? WHERE revision_id=?').run('Forged unrecorded explanation',revisionId);}finally{db.close();}const before=await readFile(path),entries=await readdir(root,{recursive:true});await assert.rejects(()=>open(root),/INTEGRITY_BLOCKED/);assert.deepEqual(await readFile(path),before);assert.deepEqual(await readdir(root,{recursive:true}),entries);};
-  await t.test('initial no-save has no explanation authority',()=>withIsolatedProject(async root=>{
-    const opened=await open(root),application=requiredRecord(opened.application,'application'),created=await requiredExport<Method>(application,'createSession')({...createSessionCommand(),project_id:requiredRecord(requiredRecord(opened.value,'value').project,'project').project_id});
-    await rejectUnchanged(root,String(requiredRecord(created.revision,'revision').revision_id));
-  }));
-  await t.test('a legitimate initial case-field save still cannot authorize forged explanation',()=>withIsolatedProject(async root=>{
-    const opened=await open(root),application=requiredRecord(opened.application,'application'),project_id=requiredRecord(requiredRecord(opened.value,'value').project,'project').project_id,created=await requiredExport<Method>(application,'createSession')({...createSessionCommand(),project_id});
-    const revision=requiredRecord(created.revision,'revision'),session=requiredRecord(created.session,'session');await requiredExport<Method>(application,'saveForm')({contract_version:'1.0',command_id:'7e000000-0000-4000-8000-000000000008',project_id,session_id:session.session_id,case_id:session.case_id,revision_id:revision.revision_id,expected_row_version:revision.row_version,form:{kind:'case_fields',fields:{question_text:'Saved initial question',hypothesis_display_title:'H1',business_context:'',alternative_explanations:[]}}});
-    await open(root);await rejectUnchanged(root,String(revision.revision_id));
-  }));
-  await t.test('real Review save nested copy and case edit preserve explanation; tampering is rejected',()=>withIsolatedProject(async root=>{
-    const setup=await completedU2Analysis(root),text='Actual saved Review explanation';let p=await requiredExport<Method>(setup.application,'saveForm')({contract_version:'1.0',command_id:'7e000000-0000-4000-8000-000000000002',...setup.owner,expected_row_version:requiredRecord(setup.projection.revision,'revision').row_version,form:{kind:'evidence_explanation',evidence_explanation_text:text}});
-    await open(root);let owner={...setup.owner};
-    for(const id of ['3','4']){p=await requiredExport<Method>(setup.application,'createDraftRevision')({contract_version:'1.0',command_id:`7e000000-0000-4000-8000-${id.padStart(12,'0')}`,...owner,expected_row_version:requiredRecord(p.revision,'revision').row_version});owner={...owner,revision_id:requiredRecord(p.revision,'revision').revision_id};assert.equal(requiredRecord(p.revision,'revision').evidence_explanation_text,text);await open(root);await withIsolatedProject(async copy=>{await cp(root,copy,{recursive:true,force:false,errorOnExist:false,verbatimSymlinks:true});await rejectUnchanged(copy,String(owner.revision_id));});}
-    p=await requiredExport<Method>(setup.application,'saveForm')({contract_version:'1.0',command_id:'7e000000-0000-4000-8000-000000000005',...owner,expected_row_version:requiredRecord(p.revision,'revision').row_version,form:{kind:'case_fields',fields:{question_text:'New question',hypothesis_display_title:'H1',business_context:'Changed copied Draft',alternative_explanations:[]}}});
-    const before=await readFile(join(root,'.xanthil','desktop','state.sqlite'));await open(root);assert.deepEqual(await readFile(join(root,'.xanthil','desktop','state.sqlite')),before);await rejectUnchanged(root,String(owner.revision_id));
-  }));
-});
+
 
 test('U3 admission rejects malformed closure forms receipts and current references without repair or byte changes [AC-XDESK-011-02, AC-XDESK-007-06]',async t=>withIsolatedProject(async baseline=>{
   const setup=await acceptedU3Route(baseline),done=await requiredExport<Method>(setup.application,'completeCase')(setup.command);
@@ -287,73 +268,17 @@ async function completedThenFailedRerun(projectRoot:string){
   return {before,after};
 }
 
-test('U3 Main export uses selected-format physical bytes, exact receipt replay and effect-free refusal boundaries [AC-XDESK-007-07, AC-XDESK-009-04, AC-XDESK-011-05]',async()=>withIsolatedProject(async projectRoot=>{
-  const setup=await acceptedU3Route(projectRoot),done=await requiredExport<Method>(setup.application,'completeCase')(setup.command),report=(done.reports as Record<string,unknown>[]).at(-1)!;
-  const main=await loadDesktopModule('apps/desktop/main.ts'),realWriter=requiredExport<()=>{writeAndReadBack(c:unknown,b:Uint8Array):Promise<unknown>}>(main,'createNativeReportExportWriter')();
-  let choices=0,writes=0,mode='markdown',writeMode='normal',target=join(projectRoot,'selected.md');const sender={};
-  const make=async(application:Record<string,unknown>)=>{
-    const handlers=requiredExport<(v:unknown)=>Record<string,(s:unknown,r:unknown)=>Promise<Record<string,unknown>>>>(main,'createXanthilDesktopIpcHandlers')({senderPolicy:(s:unknown)=>s===sender,
-      productionProfile:{openProject:async()=>({application,value:{project:{project_id:desktopTestIds.project,display_name:'Synthetic Project',schema_version:'1.0',write_state:'ready'},sessions:await requiredExport<Method>(application,'listSessions')({project_id:desktopTestIds.project})}})},
-      nativeDialogs:{selectProject:async()=>({}),selectImportFiles:async()=>{assert.fail('export cannot choose sources');},selectExportFile:async()=>{choices++;return mode==='cancel'?null:{capability:{path:target},display_name:target.split('/').at(-1),format:mode};}},
-      sourceReader:{readSelectedFiles:async()=>{assert.fail('export cannot read raw sources');}},exportWriter:{writeAndReadBack:async(c:unknown,b:Uint8Array)=>{writes++;const result=await realWriter.writeAndReadBack(c,b);if(writeMode==='throw')throw new Error('synthetic native response lost after write');return writeMode==='mismatch'?{sha256:'0'.repeat(64),byte_length:String(b.length)}:result;}}});
-    assert.equal((await handlers.selectProject(sender,{contract_version:'1.0',command_id:desktopTestIds.openProjectCommand})).ok,true);return handlers;
-  };
-  const handlers=await make(setup.application);const command={contract_version:'1.0',command_id:'75000000-0000-4000-8000-000000000001',...setup.owner,report_id:report.report_id};
-  assert.equal(requiredRecord((await handlers.exportReport({},command)).error,'error').code,'FORBIDDEN');assert.equal(choices,0);assert.equal(writes,0);
-  assert.equal(requiredRecord((await handlers.exportReport(sender,{...command,path:target})).error,'error').code,'INVALID_REQUEST');assert.equal(choices,0);
-  mode='cancel';assert.equal(requiredRecord((await handlers.exportReport(sender,command)).error,'error').code,'CANCELLED');assert.equal(writes,0);assert.equal(await requiredExport<Method>(setup.application,'checkReportExport')(command),null);
-  for(const [format,extension,id]of [['markdown','md','1'],['html','html','2']]){
-    mode=format;target=join(projectRoot,`selected.${extension}`);const request={...command,command_id:`75000000-0000-4000-8000-${id.padStart(12,'0')}`},result=await handlers.exportReport(sender,request);assert.equal(result.ok,true,JSON.stringify(result));const value=requiredRecord(result.value,'written'),bytes=await readFile(target);
-    assert.equal(value.status,'written');assert.equal(value.sha256,createHash('sha256').update(bytes).digest('hex'));assert.equal(value.byte_length,String(bytes.length));assert.equal(value.media_type,format==='markdown'?'text/markdown;charset=utf-8':'text/html;charset=utf-8');
-    const counts:readonly number[]=[choices,writes];const reopened=await createU12ProjectAdmissionApplication(projectRoot);await requiredExport<Method>(reopened.application,'openProject')(setup.open);const next=await make(reopened.application);
-    assert.deepEqual(await next.exportReport(sender,request),{ok:true,value:{status:'already_recorded',report_id:report.report_id}});assert.deepEqual([choices,writes],counts);assert.deepEqual(await readFile(target),bytes);
-    assert.equal(requiredRecord((await next.exportReport(sender,{...request,report_id:(done.reports as Record<string,unknown>[])[0].report_id})).error,'error').code,'COMMAND_CONFLICT');assert.deepEqual([choices,writes],counts);
-  }
-  mode='html';const existing=await readFile(target),failed={...command,command_id:'75000000-0000-4000-8000-000000000003'};assert.equal((await handlers.exportReport(sender,failed)).ok,false);assert.deepEqual(await readFile(target),existing);const counts=[choices,writes];assert.equal(requiredRecord((await handlers.exportReport(sender,failed)).error,'error').code,'RESULT_PENDING');assert.deepEqual([choices,writes],counts);
-  for(const [failure,id]of [['mismatch','4'],['throw','5']]){writeMode=failure;target=join(projectRoot,`unacknowledged-${failure}.html`);const request={...command,command_id:`75000000-0000-4000-8000-${id.padStart(12,'0')}`},dbBefore=await readFile(join(projectRoot,'.xanthil','desktop','state.sqlite'));assert.equal((await handlers.exportReport(sender,request)).ok,false);const actualBytes=await readFile(target),countBefore:readonly number[]=[choices,writes];assert.ok(actualBytes.length>0);assert.equal(requiredRecord((await handlers.exportReport(sender,request)).error,'error').code,'RESULT_PENDING');assert.deepEqual([choices,writes],countBefore);assert.deepEqual(await readFile(target),actualBytes);assert.deepEqual(await readFile(join(projectRoot,'.xanthil','desktop','state.sqlite')),dbBefore);assert.equal(await requiredExport<Method>(setup.application,'checkReportExport')(request),null);}
-  assert.deepEqual(await requiredExport<Method>(setup.application,'readProjection')(setup.owner),done);
-}));
-
-test('U3 export concurrency admits one native attempt before every asynchronous boundary [AC-XDESK-007-07, AC-XDESK-009-04, AC-XDESK-011-05]',async t=>{
-  for(const boundary of ['preflight','chooser','prepare','write'])await t.test(boundary,()=>withIsolatedProject(async projectRoot=>{
-    const setup=await completedU2Analysis(projectRoot),report=(setup.projection.reports as Record<string,unknown>[])[0],main=await loadDesktopModule('apps/desktop/main.ts');
-    const writer=requiredExport<()=>{writeAndReadBack(c:unknown,b:Uint8Array):Promise<unknown>}>(main,'createNativeReportExportWriter')();
-    let release!:()=>void,entered!:()=>void;const held=new Promise<void>(r=>release=r),arrived=new Promise<void>(r=>entered=r);let choices=0,writes=0;
-    const pause=async(point:string)=>{if(point===boundary){entered();await held;}};
-    const app={...setup.application,checkReportExport:async(v:Record<string,unknown>)=>{await pause('preflight');return requiredExport<Method>(setup.application,'checkReportExport')(v);},prepareReportExport:async(v:Record<string,unknown>)=>{await pause('prepare');return requiredExport<Method>(setup.application,'prepareReportExport')(v);}};
-    const sender={},handlers=requiredExport<(v:unknown)=>Record<string,(s:unknown,r:unknown)=>Promise<Record<string,unknown>>>>(main,'createXanthilDesktopIpcHandlers')({senderPolicy:(s:unknown)=>s===sender,productionProfile:{openProject:async()=>({application:app,value:{project:{project_id:desktopTestIds.project,display_name:'Synthetic Project',schema_version:'1.0',write_state:'ready'},sessions:[]}})},nativeDialogs:{selectProject:async()=>({}),selectImportFiles:async()=>null,selectExportFile:async()=>{choices++;await pause('chooser');return {capability:{path:join(projectRoot,`attempt-${choices}.md`)},display_name:`attempt-${choices}.md`,format:'markdown'};}},sourceReader:{readSelectedFiles:async()=>assert.fail('no sources')},exportWriter:{writeAndReadBack:async(c:unknown,b:Uint8Array)=>{writes++;await pause('write');return writer.writeAndReadBack(c,b);}}});
-    await handlers.selectProject(sender,{contract_version:'1.0',command_id:desktopTestIds.openProjectCommand});
-    const command={contract_version:'1.0',command_id:'7b000000-0000-4000-8000-000000000001',...setup.owner,report_id:report.report_id};
-    const first=handlers.exportReport(sender,command);await arrived;
-    // Release only after the second invocation had a chance to enter the old race;
-    // no timer races or stranded asynchronous work after an assertion failure.
-    const duplicate=handlers.exportReport(sender,command),conflict=handlers.exportReport(sender,{...command,report_id:'7b000000-0000-4000-8000-000000000002'});
-    await new Promise<void>(r=>setImmediate(r));release();const [one,two,three]=await Promise.all([first,duplicate,conflict]);
-    assert.equal(one.ok,true,JSON.stringify(one));assert.equal(requiredRecord(two.error,'duplicate').code,'RESULT_PENDING');assert.equal(requiredRecord(three.error,'conflict').code,'COMMAND_CONFLICT');
-    assert.equal(choices,1);assert.equal(writes,1);assert.deepEqual((await readdir(projectRoot)).filter(x=>x.startsWith('attempt-')),['attempt-1.md']);
-    assert.deepEqual(await handlers.exportReport(sender,command),{ok:true,value:{status:'already_recorded',report_id:report.report_id}});assert.equal(choices,1);assert.equal(writes,1);
-  }));
-});
-
-test('U3 native export records its prepared bytes despite a legal intervening Review save [AC-XDESK-007-07, AC-XDESK-011-05]',async()=>withIsolatedProject(async projectRoot=>{
-  const setup=await completedU2Analysis(projectRoot),report=(setup.projection.reports as Record<string,unknown>[])[0],main=await loadDesktopModule('apps/desktop/main.ts');
-  const writer=requiredExport<()=>{writeAndReadBack(c:unknown,b:Uint8Array):Promise<unknown>}>(main,'createNativeReportExportWriter')();let actualBytes:Uint8Array|undefined;const sender={};
-  const handlers=requiredExport<(v:unknown)=>Record<string,(s:unknown,r:unknown)=>Promise<Record<string,unknown>>>>(main,'createXanthilDesktopIpcHandlers')({senderPolicy:(s:unknown)=>s===sender,productionProfile:{openProject:async()=>({application:setup.application,value:{project:{project_id:desktopTestIds.project,display_name:'Synthetic Project',schema_version:'1.0',write_state:'ready'},sessions:[]}})},nativeDialogs:{selectProject:async()=>({}),selectImportFiles:async()=>null,selectExportFile:async()=>({capability:{path:join(projectRoot,'frozen.md')},display_name:'frozen.md',format:'markdown'})},sourceReader:{readSelectedFiles:async()=>assert.fail('no sources')},exportWriter:{writeAndReadBack:async(c:unknown,b:Uint8Array)=>{actualBytes=new Uint8Array(b);const result=await writer.writeAndReadBack(c,b);await requiredExport<Method>(setup.application,'saveForm')({contract_version:'1.0',command_id:'7c000000-0000-4000-8000-000000000002',...setup.owner,expected_row_version:requiredRecord(setup.projection.revision,'revision').row_version,form:{kind:'evidence_explanation',evidence_explanation_text:'A new legal interpretation after this export was prepared.'}});return result;}}});
-  await handlers.selectProject(sender,{contract_version:'1.0',command_id:desktopTestIds.openProjectCommand});const command={contract_version:'1.0',command_id:'7c000000-0000-4000-8000-000000000001',...setup.owner,report_id:report.report_id};
-  const result=await handlers.exportReport(sender,command);assert.equal(result.ok,true,JSON.stringify(result));assert.ok(actualBytes);assert.equal(requiredRecord(result.value,'export').sha256,createHash('sha256').update(actualBytes).digest('hex'));assert.deepEqual(new Uint8Array(await readFile(join(projectRoot,'frozen.md'))),actualBytes);
-  const later=await requiredExport<Method>(setup.application,'prepareReportExport')({command_id:'7c000000-0000-4000-8000-000000000003',...setup.owner,report_id:report.report_id,format:'markdown'});assert.notEqual(later.sha256,requiredRecord(result.value,'export').sha256,'fixture really changes the later projection');
-  assert.deepEqual(await requiredExport<Method>(setup.application,'checkReportExport')(command),{status:'already_recorded',report_id:report.report_id});
-}));
-
-test('U3 export rejects absent foreign and historical owners before native selection [AC-XDESK-007-07, AC-XDESK-009-04]',async()=>withIsolatedProject(async projectRoot=>{
-  const setup=await completedU2Analysis(projectRoot),report=(setup.projection.reports as Record<string,unknown>[])[0],main=await loadDesktopModule('apps/desktop/main.ts'),sender={};let choices=0,writes=0;
-  const handlers=requiredExport<(v:unknown)=>Record<string,(s:unknown,r:unknown)=>Promise<Record<string,unknown>>>>(main,'createXanthilDesktopIpcHandlers')({senderPolicy:(s:unknown)=>s===sender,productionProfile:{openProject:async()=>({application:setup.application,value:{project:{project_id:desktopTestIds.project,display_name:'Synthetic Project',schema_version:'1.0',write_state:'ready'},sessions:[]}})},nativeDialogs:{selectProject:async()=>({}),selectImportFiles:async()=>null,selectExportFile:async()=>{choices++;return null;}},sourceReader:{readSelectedFiles:async()=>assert.fail('no sources')},exportWriter:{writeAndReadBack:async()=>{writes++;assert.fail('no write');}}});
-  await handlers.selectProject(sender,{contract_version:'1.0',command_id:desktopTestIds.openProjectCommand});const command={contract_version:'1.0',command_id:'7d000000-0000-4000-8000-000000000001',...setup.owner,report_id:report.report_id};
-  const before=await readFile(join(projectRoot,'.xanthil','desktop','state.sqlite'));
-  for(const request of [{...command,report_id:'7d000000-0000-4000-8000-000000000009'},{...command,session_id:'7d000000-0000-4000-8000-000000000009'}]){const result=await handlers.exportReport(sender,request);assert.equal(requiredRecord(result.error,'error').code,'NOT_FOUND');assert.equal(choices,0);assert.equal(writes,0);}
-  assert.deepEqual(await readFile(join(projectRoot,'.xanthil','desktop','state.sqlite')),before);
-  await requiredExport<Method>(setup.application,'createDraftRevision')({contract_version:'1.0',command_id:'7d000000-0000-4000-8000-000000000002',...setup.owner,expected_row_version:requiredRecord(setup.projection.revision,'revision').row_version});
-  assert.equal(requiredRecord((await handlers.exportReport(sender,command)).error,'error').code,'STALE_REVISION');assert.equal(choices,0);assert.equal(writes,0);
+test('U3 current Application export binds format/physical bytes, exact receipt, owner and immutable prepared version [AC-XDESK-007-07,009-04,011-05]',async()=>withIsolatedProject(async projectRoot=>{
+ const setup=await completedU2Analysis(projectRoot),report=(setup.projection.reports as Record<string,unknown>[])[0]!,prepare=requiredExport<Method>(setup.application,'prepareReportExport'),record=requiredExport<Method>(setup.application,'recordReportExport'),check=requiredExport<Method>(setup.application,'checkReportExport');
+ for(const format of ['markdown','html']){const command={contract_version:'1.0',command_id:randomUUID(),...setup.owner,report_id:report.report_id};assert.equal(await check(command),null);const prepared=await prepare({command_id:command.command_id,...setup.owner,report_id:report.report_id,format}),bytes=prepared.bytes as Uint8Array,path=join(projectRoot,'owned-'+format);assert.ok(bytes instanceof Uint8Array);assert.equal(prepared.media_type,format==='markdown'?'text/markdown;charset=utf-8':'text/html;charset=utf-8');assert.equal(prepared.sha256,createHash('sha256').update(bytes).digest('hex'));assert.equal(prepared.byte_length,String(bytes.length));
+ // This owned test client copies the public prepared bytes. No retired native
+ // chooser/IPC implementation or actual shell export is claimed by this test.
+ await writeFile(path,bytes,{flag:'wx'});assert.deepEqual(new Uint8Array(await readFile(path)),bytes);const descriptor={display_name:format==='markdown'?'owned.md':'owned.html',media_type:prepared.media_type,sha256:prepared.sha256,byte_length:prepared.byte_length};
+ await assert.rejects(()=>record({command,prepared,descriptor:{...descriptor,sha256:'f'.repeat(64)}}));assert.equal(await check(command),null);
+ const receipt=await record({command,prepared,descriptor});assert.equal(receipt.status,'written');assert.deepEqual(await record({command,prepared,descriptor}),receipt);assert.deepEqual(await check(command),{status:'already_recorded',report_id:report.report_id});await assert.rejects(()=>check({...command,report_id:randomUUID()}),{code:'COMMAND_CONFLICT'});
+ const reopened=await createU12ProjectAdmissionApplication(projectRoot);await requiredExport<Method>(reopened.application,'openProject')(setup.open);assert.deepEqual(await requiredExport<Method>(reopened.application,'checkReportExport')(command),{status:'already_recorded',report_id:report.report_id});assert.deepEqual(new Uint8Array(await readFile(path)),bytes);
+ }
+ const before=await readFile(join(projectRoot,'.xanthil/desktop/state.sqlite'));for(const wrong of [{...setup.owner,report_id:randomUUID()},{...setup.owner,session_id:randomUUID(),report_id:report.report_id}])await assert.rejects(()=>prepare({command_id:randomUUID(),...wrong,format:'html'}),{code:'NOT_FOUND'});assert.deepEqual(await readFile(join(projectRoot,'.xanthil/desktop/state.sqlite')),before);
 }));
 
 test('U3 export read projections distinguish Review and damaged immutable bytes without rewriting authority [AC-XDESK-007-07, AC-XDESK-011-07]',async()=>withIsolatedProject(async projectRoot=>{
@@ -571,7 +496,7 @@ test('U2 Finding publication: one real dual calculation commits a terminal Run b
   const runEvidenceStore = requiredExport<(input:unknown)=>Record<string,unknown>>(storage,'createLocalDesktopRunEvidenceStore')({projectRoot});
   const module = await loadDesktopModule('packages/application/xanthil-desktop-decision-case.ts');
   const deadlines = createControlledDeadlineScheduler();
-  const app = requiredExport<(input:unknown)=>Record<string,unknown>>(module,'createXanthilDesktopDecisionCaseApplication')({assistanceRuntime:null,store:setup.prepared.store,analysisExecution:setup.execution,runEvidenceStore,clock:fixedClock,deadlineScheduler:deadlines.scheduler});
+  const app = requiredExport<(input:unknown)=>Record<string,unknown>>(module,'createXanthilDesktopDecisionCaseApplication')({store:setup.prepared.store,analysisExecution:setup.execution,runEvidenceStore,clock:fixedClock,deadlineScheduler:deadlines.scheduler});
   await requiredExport<Method>(app,'openProject')(setup.prepared.open);
   const started = await requiredExport<Method>(app,'startAnalysis')({contract_version:'1.0',command_id:desktopTestIds.retryCommand,...setup.prepared.owner,expected_row_version:'2',confirmation_id:requiredRecord(setup.projection.confirmation,'confirmation').confirmation_id});
   const run = (started.runs as Record<string,unknown>[])[0];
@@ -623,7 +548,7 @@ test('U2 cancellation and deadline: durable cancellation wins once; expired work
     let reached!:()=>void;const entered=new Promise<void>(resolve=>{reached=resolve;});let calls=0,verifications=0;
     const execution={...setup.execution,calculate:async(input:Record<string,unknown>)=>{calls++;const signal=input.cancellation_signal as AbortSignal;reached();await new Promise<void>((_,reject)=>{const abort=()=>reject(Object.assign(new Error('CANCELLED'),{code:'CANCELLED'}));if(signal.aborted)abort();else signal.addEventListener('abort',abort,{once:true});});},verify:async()=>{verifications++;assert.fail('no verifier after the controlled boundary was aborted');}};
     const deadlines=createControlledDeadlineScheduler();let current=fixedClock();
-    const app=requiredExport<(input:unknown)=>Record<string,unknown>>(module,'createXanthilDesktopDecisionCaseApplication')({assistanceRuntime:null,store:setup.prepared.store,analysisExecution:execution,runEvidenceStore:requiredExport<(input:unknown)=>Record<string,unknown>>(storage,'createLocalDesktopRunEvidenceStore')({projectRoot}),clock:()=>current,deadlineScheduler:deadlines.scheduler});
+    const app=requiredExport<(input:unknown)=>Record<string,unknown>>(module,'createXanthilDesktopDecisionCaseApplication')({store:setup.prepared.store,analysisExecution:execution,runEvidenceStore:requiredExport<(input:unknown)=>Record<string,unknown>>(storage,'createLocalDesktopRunEvidenceStore')({projectRoot}),clock:()=>current,deadlineScheduler:deadlines.scheduler});
     await requiredExport<Method>(app,'openProject')(setup.prepared.open);
     const command={contract_version:'1.0',command_id:desktopTestIds.retryCommand,...setup.prepared.owner,expected_row_version:'2',confirmation_id:requiredRecord(setup.projection.confirmation,'confirmation').confirmation_id};
     const started=await requiredExport<Method>(app,'startAnalysis')(command);await entered;
@@ -681,7 +606,7 @@ test('U2 terminal publication: native rollback/lost COMMIT preserves terminal su
       }catch(error){caught=true;throw error;}finally{completed();}
     }};
     const runStore=requiredExport<(input:unknown)=>Record<string,unknown>>(storage,'createLocalDesktopRunEvidenceStore')({projectRoot}),deadlines=createControlledDeadlineScheduler();
-    const app=requiredExport<(input:unknown)=>Record<string,unknown>>(module,'createXanthilDesktopDecisionCaseApplication')({assistanceRuntime:null,store:controlled,analysisExecution:setup.execution,runEvidenceStore:runStore,clock:fixedClock,deadlineScheduler:deadlines.scheduler});
+    const app=requiredExport<(input:unknown)=>Record<string,unknown>>(module,'createXanthilDesktopDecisionCaseApplication')({store:controlled,analysisExecution:setup.execution,runEvidenceStore:runStore,clock:fixedClock,deadlineScheduler:deadlines.scheduler});
     await requiredExport<Method>(app,'openProject')(setup.prepared.open);
     const command={contract_version:'1.0',command_id:desktopTestIds.retryCommand,...setup.prepared.owner,expected_row_version:'2',confirmation_id:requiredRecord(setup.projection.confirmation,'confirmation').confirmation_id};
     const started=await requiredExport<Method>(app,'startAnalysis')(command),run=(started.runs as Record<string,unknown>[])[0];await completion;await new Promise(r=>setTimeout(r,10));
@@ -702,7 +627,7 @@ test('U2 terminal publication: native rollback/lost COMMIT preserves terminal su
 test('U2 explicit retry: failed authority remains historical; a new command runs once and duplicate transport never recalculates [AC-XDESK-008-01, AC-XDESK-008-06]',async()=>withIsolatedProject(async projectRoot=>{
   const setup=await initialRealU2Run(projectRoot),storage=await loadDesktopModule('adapters/storage-local/xanthil-desktop-decision-case.ts'),module=await loadDesktopModule('packages/application/xanthil-desktop-decision-case.ts');let calls=0;
   const calculate=requiredExport<Method>(setup.execution,'calculate'),execution={...setup.execution,calculate:async(input:Record<string,unknown>)=>{calls++;if(calls===1)throw Object.assign(new Error('CALCULATION_FAILED'),{code:'CALCULATION_FAILED'});return calculate(input);}};
-  const deadlines=createControlledDeadlineScheduler(),app=requiredExport<(input:unknown)=>Record<string,unknown>>(module,'createXanthilDesktopDecisionCaseApplication')({assistanceRuntime:null,store:setup.prepared.store,analysisExecution:execution,runEvidenceStore:requiredExport<(input:unknown)=>Record<string,unknown>>(storage,'createLocalDesktopRunEvidenceStore')({projectRoot}),clock:fixedClock,deadlineScheduler:deadlines.scheduler});
+  const deadlines=createControlledDeadlineScheduler(),app=requiredExport<(input:unknown)=>Record<string,unknown>>(module,'createXanthilDesktopDecisionCaseApplication')({store:setup.prepared.store,analysisExecution:execution,runEvidenceStore:requiredExport<(input:unknown)=>Record<string,unknown>>(storage,'createLocalDesktopRunEvidenceStore')({projectRoot}),clock:fixedClock,deadlineScheduler:deadlines.scheduler});
   await requiredExport<Method>(app,'openProject')(setup.prepared.open);
   const first={contract_version:'1.0',command_id:desktopTestIds.retryCommand,...setup.prepared.owner,expected_row_version:'2',confirmation_id:requiredRecord(setup.projection.confirmation,'confirmation').confirmation_id};
   const wait=async()=>{let p=await requiredExport<Method>(app,'readProjection')(setup.prepared.owner);for(let i=0;i<300&&(p.runs as Record<string,unknown>[]).some(r=>r.status==='Running');i++){await new Promise(r=>setTimeout(r,10));p=await requiredExport<Method>(app,'readProjection')(setup.prepared.owner);}return p;};
@@ -733,29 +658,7 @@ test('U2 new Draft: confirmed computation authority and prior revision bytes rem
   assert.deepEqual(historical.revision,setup.projection.revision);assert.ok(Object.values(requiredRecord(historical.capabilities,'history capabilities')).every(x=>x===false));assert.deepEqual(rows(),before);
 }));
 
-test('U2 normal Profile: packaged descriptor is the sole tool source; unavailable tools preserve manual Session and refuse calculation before admission [AC-XDESK-012-03, AC-XDESK-005-06]',async t=>{
-  for(const mode of ['valid','missing','drift','python-drift'])await t.test(mode,()=>withIsolatedProject(async projectRoot=>{
-    const setup=await initialRealU2Run(projectRoot),profileModule=await loadDesktopModule('profiles/personal/xanthil-desktop.ts'),toolchain=process.env.JUANERAI_TOOLCHAIN_BIN!;
-    const selectedPython=readDesktopPythonTool(toolchain);
-    const [pythonMajor,pythonMinor,pythonPatch]=selectedPython.pythonVersion.split('.');
-    const mismatchedPythonVersion=`${pythonMajor}.${pythonMinor}.${Number(pythonPatch)+1}`;
-    const descriptor=join(projectRoot,'synthetic-toolchain-deployment.json');if(mode!=='missing')await writeFile(descriptor,JSON.stringify({schema_version:'1.0',duckdb:{executable_path:join(toolchain,'duckdb'),version:mode==='drift'?'1.5.1':'1.5.2'},python:{executable_path:selectedPython.pythonExecutable,version:mode==='python-drift'?mismatchedPythonVersion:selectedPython.pythonVersion}}),{flag:'wx'});
-    const deadlines=createControlledDeadlineScheduler(),profile=requiredExport<(input:unknown)=>Record<string,unknown>>(profileModule,'createPersonalXanthilDesktopProfile')({toolchainDeployment:{descriptor_path:descriptor},assistanceConfig:null,clock:fixedClock,deadlineScheduler:deadlines.scheduler});
-    const opened=await requiredExport<Method>(profile,'openProject')({contract_version:'1.0',command_id:desktopTestIds.openProjectCommand,projectDirectoryCapability:{projectRoot,display_name:'Synthetic Project'},display_name:'Synthetic Project'}),app=requiredRecord(opened.application,'normal Application');
-    assert.equal((await requiredExport<Method>(app,'readProjection')(setup.prepared.owner)).projection_token,setup.projection.projection_token);
-    const request={contract_version:'1.0',command_id:desktopTestIds.retryCommand,...setup.prepared.owner,expected_row_version:'2',confirmation_id:requiredRecord(setup.projection.confirmation,'confirmation').confirmation_id};
-    if(mode!=='valid'){
-      const before=await readFile(join(projectRoot,'.xanthil','desktop','state.sqlite'));
-      await assert.rejects(()=>requiredExport<Method>(app,'startAnalysis')(request),/TOOLCHAIN_UNAVAILABLE/);
-      assert.deepEqual(await readFile(join(projectRoot,'.xanthil','desktop','state.sqlite')),before);
-      assert.equal((await requiredExport<Method>(app,'readProjection')(setup.prepared.owner)).projection_token,setup.projection.projection_token);
-    }else{
-      const started=await requiredExport<Method>(app,'startAnalysis')(request);assert.equal((started.runs as Record<string,unknown>[])[0].status,'Running');let current=started;
-      for(let i=0;i<300&&(current.runs as Record<string,unknown>[])[0].status==='Running';i++){await new Promise(r=>setTimeout(r,10));current=await requiredExport<Method>(app,'readProjection')(setup.prepared.owner);}
-      assert.equal((current.runs as Record<string,unknown>[])[0].status,'Succeeded');
-    }
-  }));
-});
+
 
 test('U2 Run outputs: real independent results precede terminal success; stale writers and terminal mutation are refused [AC-XDESK-005-07, AC-XDESK-010-02]', async () => withIsolatedProject(async projectRoot => {
   const setup = await initialRealU2Run(projectRoot), storage = await loadDesktopModule('adapters/storage-local/xanthil-desktop-decision-case.ts');
@@ -995,25 +898,7 @@ function stringValue(value: Record<string, unknown>, key: string) {
   return item;
 }
 
-async function createApplication(projectRoot: string, runtime = createOfflineAssistanceRuntimeDouble()) {
-  await assertDesktopFixtureHealth();
-  const storageModule = await loadDesktopModule('adapters/storage-local/xanthil-desktop-decision-case.ts');
-  const analysisModule = await loadDesktopModule('adapters/analytics-duckdb/xanthil-desktop-decision-case.ts');
-  const applicationModule = await loadDesktopModule('packages/application/xanthil-desktop-decision-case.ts');
-  const createStore = requiredExport<(config: { projectRoot: string }) => unknown>(storageModule, 'createLocalDesktopDecisionCaseStore');
-  const createRunStore = requiredExport<(config: { projectRoot: string }) => unknown>(storageModule, 'createLocalDesktopRunEvidenceStore');
-  const createAnalysis = requiredExport<(config: Record<string, string>) => unknown>(analysisModule, 'createDuckDbPythonDesktopLocalAnalysisExecution');
-  const factory = requiredExport<(dependencies: Record<string, unknown>) => Record<string, unknown>>(applicationModule, 'createXanthilDesktopDecisionCaseApplication');
-  const toolchain = process.env.JUANERAI_TOOLCHAIN_BIN;
-  assert.ok(toolchain, 'the approved command-local toolchain must be healthy before a product RED is meaningful');
-  const deadlines = createControlledDeadlineScheduler();
-  const application = factory({
-    store: createStore({ projectRoot }),
-    analysisExecution: createAnalysis({ duckdbExecutable: join(toolchain, 'duckdb'), duckdbVersion: '1.5.2', ...readDesktopPythonTool(toolchain) }),
-    runEvidenceStore: createRunStore({ projectRoot }), assistanceRuntime:runtime.runtime, clock: fixedClock, deadlineScheduler: deadlines.scheduler,
-  });
-  return { application, deadlines, runtime };
-}
+async function createApplication(projectRoot:string){return createProfessionalDesktopApplication(projectRoot);}
 
 async function openedDraft(projectRoot: string) {
   const fixture = await createApplication(projectRoot);
@@ -1192,7 +1077,7 @@ test('U1.2 F5: real Application supplies canonical initialization provenance and
 test('U1.2 AC-XDESK-002-02: opens fresh and existing Projects without invoking Analysis Run evidence Runtime provider or network effects', async () => {
   await withIsolatedProject(async (projectRoot) => {
     const first = await createU12ProjectAdmissionApplication(projectRoot);
-    assert.deepEqual(Object.keys(first.application).sort(), ['acceptFinding','cancelAnalysis','cancelAssistance','checkImportAdmission','checkReportExport','closeModelWork','completeCase', 'confirmPreparedRevision', 'confirmRevision', 'createDraftRevision', 'createSession','decideAssistanceDisclosure','disposeAssistanceDraft', 'hasModelWork', 'inspectImportFiles', 'listSessions', 'openProject', 'openSession','prepareAssistanceDisclosure','prepareReportExport', 'readProjection', 'reconcileInterrupted','recordReportExport', 'saveForm', 'startAnalysis','startAssistance', 'waitForProjection'], 'U4 Assistance, private model lifecycle and native-import admission are exact; construction never starts effects');
+    assert.deepEqual(Object.keys(first.application).sort(), ['acceptFinding','cancelAnalysis','cancelAssistance','checkImportAdmission','checkReportExport','close','completeCase', 'confirmPreparedRevision', 'confirmRevision', 'createDraftRevision', 'createSession','decideAssistanceDisclosure','disposeAssistanceDraft', 'inspectImportFiles', 'listSessions', 'openProject', 'openSession','prepareAssistanceDisclosure','prepareReportExport', 'readProjection', 'reconcileInterrupted','recordReportExport', 'saveForm', 'startAnalysis','startAssistance','waitForIdle', 'waitForProjection'], 'U4 Assistance, private model lifecycle and native-import admission are exact; construction never starts effects');
     const firstOpen = await requiredExport<Method>(first.application, 'openProject')({
       contract_version: '1.0', command_id: desktopTestIds.openProjectCommand,
       proposed_project_id: desktopTestIds.project, display_name: 'Synthetic Project',
@@ -1201,7 +1086,7 @@ test('U1.2 AC-XDESK-002-02: opens fresh and existing Projects without invoking A
     try {
       assert.equal((db.prepare('SELECT COUNT(*) AS count FROM product_sessions').get() as { count: number }).count, 0);
       assert.equal((db.prepare('SELECT COUNT(*) AS count FROM analysis_runs').get() as { count: number }).count, 0);
-      assert.equal((db.prepare('SELECT COUNT(*) AS count FROM assistance_attempts').get() as { count: number }).count, 0);
+      assert.equal(db.prepare("SELECT name FROM sqlite_master WHERE name='assistance_attempts'").get(),undefined,'retired execution authority is absent');assert.equal(db.prepare('SELECT COUNT(*) AS count FROM professional_draft_authorizations').get()?.count,0);
     } finally { db.close(); }
     const second = await createU12ProjectAdmissionApplication(projectRoot);
     const existingOpen = await requiredExport<Method>(second.application, 'openProject')({
@@ -1229,23 +1114,23 @@ test('TEST-XDESK-007 integration: composes the real SQLite, Run-store, and DuckD
     const toolchain = process.env.JUANERAI_TOOLCHAIN_BIN;
     assert.ok(toolchain, 'the approved command-local toolchain is required');
     const deadlines = createControlledDeadlineScheduler();
-    const assistance = createOfflineAssistanceRuntimeDouble();
+
     const application = createApplication({
       store: createStore({ projectRoot }),
       analysisExecution: createAnalysis({ duckdbExecutable: join(toolchain, 'duckdb'), duckdbVersion: '1.5.2', ...readDesktopPythonTool(toolchain) }),
       runEvidenceStore: createRunStore({ projectRoot }),
-      assistanceRuntime: assistance.runtime,
+
       clock: fixedClock,
       deadlineScheduler: deadlines.scheduler,
     });
-    assert.deepEqual(Object.keys(application).sort(), ['acceptFinding', 'cancelAnalysis', 'cancelAssistance', 'checkImportAdmission', 'checkReportExport', 'closeModelWork', 'completeCase', 'confirmPreparedRevision', 'confirmRevision', 'createDraftRevision', 'createSession', 'decideAssistanceDisclosure', 'disposeAssistanceDraft', 'hasModelWork', 'inspectImportFiles', 'listSessions', 'openProject', 'openSession', 'prepareAssistanceDisclosure', 'prepareReportExport', 'readProjection', 'reconcileInterrupted', 'recordReportExport', 'saveForm', 'startAnalysis', 'startAssistance', 'waitForProjection'].sort());
-    assert.equal(assistance.calls.length, 0, 'composition itself cannot call a provider');
+    assert.deepEqual(Object.keys(application).sort(), ['acceptFinding', 'cancelAnalysis', 'cancelAssistance', 'checkImportAdmission', 'checkReportExport', 'completeCase', 'confirmPreparedRevision', 'confirmRevision', 'createDraftRevision', 'createSession', 'decideAssistanceDisclosure', 'disposeAssistanceDraft', 'inspectImportFiles', 'listSessions', 'openProject', 'openSession', 'prepareAssistanceDisclosure', 'prepareReportExport', 'readProjection', 'reconcileInterrupted', 'recordReportExport', 'saveForm', 'startAnalysis', 'startAssistance', 'waitForProjection','waitForIdle','close'].sort());
+    assert.equal(Object.hasOwn(application,'runtime'),false,'CPU-only composition has no model execution adapter');
     const open = requiredExport<(value: Record<string, unknown>) => Promise<unknown>>(application, 'openProject');
     await open({ contract_version: '1.0', command_id: desktopTestIds.openProjectCommand, proposed_project_id: desktopTestIds.project, display_name: 'Synthetic Project' });
     const createSession = requiredExport<(value: Record<string, unknown>) => Promise<unknown>>(application, 'createSession');
     const [first, duplicate] = await Promise.all([createSession(createSessionCommand()), createSession(createSessionCommand())]);
     assert.deepEqual(duplicate, first, 'concurrent duplicate delivery must converge on one durable receipt');
-    assert.equal(assistance.calls.length, 0, 'Session creation is effect-free with respect to Runtime/provider traffic');
+    assert.equal(Object.hasOwn(application,'runtime'),false,'Session creation does not acquire a model adapter');
   });
 });
 
@@ -1346,7 +1231,7 @@ test('AC-XDESK-004-07: copies both confirmed source byte streams exactly with co
     const preview=await legacyEvaluatedPreview(draft,sources);
     const confirmed = await requiredExport<Method>(draft.application, 'confirmRevision')({ ...revisionCommand(draft.owner), inspection_token: preview.inspection.inspection_token, confirmation: preview.confirmation, source_files: preview.source_files });
     assert.equal((confirmed.revision as Record<string, unknown>).state, 'Ready');
-    assert.equal(draft.runtime.calls.length, 0, 'confirmation cannot disclose source bytes or invoke Runtime');
+    assert.equal(draft.dtos.length, 0, 'confirmation cannot disclose source bytes or invoke Runtime');
   });
 });
 
@@ -1432,7 +1317,7 @@ test('AC-XDESK-008-01: admits only one mutually-exclusive Running Run or Attempt
     const ready = await confirmedReady(projectRoot);
     const start = requiredExport<Method>(ready.application, 'startAnalysis');
     const first = start({ ...revisionCommand(ready.owner), expected_row_version: ready.row_version, confirmation_id: ready.confirmation_id });
-    await assert.rejects(() => requiredExport<Method>(ready.application, 'startAssistance')({ ...revisionCommand(ready.owner, desktopTestIds.retryCommand), expected_row_version: ready.row_version, disclosure_id: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee' }), /(?:BUSY|NOT_FOUND|VALIDATION_FAILED)/);
+    await assert.rejects(() => requiredExport<Method>(ready.application, 'startAssistance')({ ...revisionCommand(ready.owner, desktopTestIds.retryCommand), expected_row_version: ready.row_version, disclosure_id: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee' }), {code:'AUTHORITY_REQUIRED'});
     await first.catch(() => undefined);
   });
 });
@@ -1474,7 +1359,7 @@ test('AC-XDESK-008-05: reopens Running work once as interrupted without resume r
   await withIsolatedProject(async (projectRoot) => {
     const draft = await openedDraft(projectRoot);
     await assert.rejects(() => requiredExport<Method>(draft.application, 'reconcileInterrupted')({ command_id: desktopTestIds.retryCommand, ...draft.owner, target_kind: 'analysis_run', target_id: '01991a00-0000-7000-8000-000000000001' }), /NOT_FOUND/);
-    assert.equal(draft.runtime.calls.length, 0, 'reconciliation may not resend a provider or scan a Run directory');
+    assert.equal(draft.dtos.length, 0, 'reconciliation may not resend a provider or scan a Run directory');
   });
 });
 
@@ -1495,21 +1380,9 @@ test('AC-XDESK-008-07: projects every accepted failure with safe retained state 
 });
 
 
-test('SDK041-FIX02 professional Application publishes a disclosed draft only after shared native accounting',async()=>{
- await withIsolatedProject(async(projectRoot)=>{
-  const draft=await openedDraft(projectRoot),fixture=await createU12ProjectAdmissionApplication(projectRoot);
-  const native=await import('../../../adapters/agent-pi/native-open-analysis.ts'),storage=await import('../../../adapters/storage-local/analysis-request-ledger.ts');
-  const ledger=storage.createLocalAnalysisRequestLedger({projectRoot});let calls=0;
-  const runtime=native.createPiSessionDecisionAssistanceRuntime({projectRoot,ledger,credential:()=>assert.fail('offline must not read credentials'),modelTransport:async request=>{calls++;assert.equal(request.model.id,'mimo-v2.6-pro');return {content:[{kind:'text',text:JSON.stringify({draft_kind:'question_fields',draft_content:{question_text:'Synthetic question',hypothesis_display_title:'',business_context:'Synthetic only',alternative_explanations:[]}})}],stop:'complete',usage:{inputTokens:9,outputTokens:4}};}});
-  const module=await loadDesktopModule('packages/application/xanthil-desktop-decision-case.ts');
-  const application=requiredExport<(v:unknown)=>Record<string,unknown>>(module,'createXanthilDesktopDecisionCaseApplication')({...fixture.dependencies,assistanceRuntime:runtime,clock:fixedClock,deadlineScheduler:draft.deadlines.scheduler});
-  await requiredExport<Method>(application,'openProject')({contract_version:'1.0',command_id:desktopTestIds.openProjectCommand,proposed_project_id:desktopTestIds.project,display_name:'Synthetic Project'});
-  let projection=await requiredExport<Method>(application,'readProjection')(draft.owner);
-  const preview=await requiredExport<Method>(application,'prepareAssistanceDisclosure')({contract_version:'1.0',...draft.owner,expected_row_version:stringValue(projection.revision as Record<string,unknown>,'row_version'),action_kind:'organize_question',requested_provider:'xiaomi-token-plan-cn',requested_model:'mimo-v2.6-pro'});
-  projection=await requiredExport<Method>(application,'decideAssistanceDisclosure')({...revisionCommand(draft.owner),expected_row_version:stringValue(projection.revision as Record<string,unknown>,'row_version'),preview_token:preview.preview_token,payload_sha256:preview.payload_sha256,decision:'accepted',free_text_confirmed:true});
-  const disclosure=(projection.disclosures as Record<string,unknown>[]).at(-1)!;
-  projection=await requiredExport<Method>(application,'startAssistance')({...revisionCommand(draft.owner,randomUUID()),expected_row_version:stringValue(projection.revision as Record<string,unknown>,'row_version'),disclosure_id:disclosure.disclosure_id});
-  for(let n=0;n<100&&(projection.attempts as Record<string,unknown>[]).at(-1)?.status==='Running';n++){await new Promise(r=>setTimeout(r,10));projection=await requiredExport<Method>(application,'readProjection')(draft.owner);}
-  assert.equal((projection.attempts as Record<string,unknown>[]).at(-1)?.status,'Succeeded');assert.equal(calls,1);assert.equal(ledger.read(String(draft.owner.session_id)).length,1);assert.equal(ledger.read(String(draft.owner.session_id))[0].status,'succeeded');
- });
-});
+test('SDK041-FIX02 professional Application publishes a disclosed draft only after shared native accounting',async()=>withIsolatedProject(async projectRoot=>{
+ const f=await createProfessionalDesktopApplication(projectRoot),app=f.application;try{await app.openProject({contract_version:'1.0',command_id:desktopTestIds.openProjectCommand,proposed_project_id:desktopTestIds.project,display_name:'Synthetic Project'});let p=await app.createSession(createSessionCommand());const owner={project_id:p.session!.project_id,session_id:p.session!.session_id,case_id:p.session!.case_id,revision_id:p.revision!.revision_id},command=()=>({contract_version:'1.0',command_id:randomUUID(),...owner,expected_row_version:p.revision!.row_version});
+ const {command_id:unused,...guard}=command();void unused;const preview=await app.prepareAssistanceDisclosure({...guard,action_kind:'organize_question',requested_provider:'xiaomi-token-plan-cn',requested_model:'mimo-v2.6-flash'});
+ p=await app.decideAssistanceDisclosure({...command(),preview_token:preview.preview_token,payload_sha256:preview.payload_sha256,decision:'accepted',free_text_confirmed:true});await app.startAssistance({...command(),disclosure_id:p.disclosures.at(-1)!.disclosure_id});await app.waitForIdle();p=await app.readProjection(owner);assert.equal(p.assistance_drafts.length,1);assert.equal(f.dtos.length,2);assert.ok(p.professional_requests);assert.equal(p.professional_requests[0]!.execution.meter!.model_attempts,2);assert.equal(p.professional_requests[0]!.execution.unconfirmed_effects,false);
+ }finally{await app.close();await f.agent.waitForIdle();}
+}));

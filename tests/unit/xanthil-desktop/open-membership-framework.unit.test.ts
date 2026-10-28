@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {taskHash} from '../../../packages/product-core/member-task.ts';
-import * as domain from '../../../packages/product-core/member-analysis.ts';
+import * as domain from '../../../packages/product-core/open-membership.ts';
 import type {MemberSourceInspection} from '../../../packages/ports/member-source.ts';
 const memberId='11111111-1111-4111-a111-111111111111',orderId='22222222-2222-4222-a222-222222222222';
 function table(headers:string[],data:string[][]){return [headers,...data].map((r,i)=>({row:i+1,cells:r.map((value,j)=>({column:String.fromCharCode(65+j),type:'string' as const,value}))}));}
@@ -18,6 +18,7 @@ test('OA-S04/C01: unequal, overlapping and invalid member periods reject with a 
  const changed=compile({...proposal,semantics:{...proposal.semantics,comparison_period:{start_date:'2026-01-02',end_date:'2026-01-03'},current_period:{start_date:'2026-01-03',end_date:'2026-01-04'}}},source);assert.equal(materialize(changed,source).qualification.counts.included_order_count,'2');
 });
 
-import {reusableOpenPlan} from '../../../packages/product-core/open-analysis-plan-reuse.ts';
-import {compileOpenAnalysisIR} from '../../../packages/product-core/open-analysis-ir.ts';
-test('FM-A05: member recipe preserves named method/roles but excludes old periods, member values, materialization and proof',()=>{const plan=compileOpenAnalysisIR({version:'1.4',membership:proposal},source),task:any={identity:{task_id:memberId,revision:'2'},source,state:'saved',framework:{plan},confirmed_plan:{revision:'2'},outcome:{calculation:{value:'old facts'}}},recipe=reusableOpenPlan(task,'2').recipe;assert.deepEqual(recipe.membership?.methods,['M1','M2']);assert.equal(recipe.membership?.roles[1]?.columns.amount,'金额');const text=JSON.stringify(recipe);for(const denied of [memberId,orderId,'2026-01-01','2026-01-02','old facts','m1','materialization'])assert.ok(!text.includes(denied));});
+
+test('FM-A05: current professional method choice binds fresh source fields without transferring old rows, Task or proof',()=>{
+ const {compile,materialize}=api(),first=compile(proposal,source);const next=structuredClone(source);Reflect.set(next.sources[0]!,'source_id','33333333-3333-4333-a333-333333333333');Reflect.set(next.sources[1]!,'source_id','44444444-4444-4444-a444-444444444444');Reflect.set(next.sources[0]!.sheets[0]!.rows[1]!.cells[0]!,'value','new-member');for(const row of next.sources[1]!.sheets[0]!.rows.slice(1))if(row.cells[1]!.value==='m1')Reflect.set(row.cells[1]!,'value','new-member');const selected={...proposal,bindings:proposal.bindings.map((b,i)=>({...b,source_id:next.sources[i]!.source_id}))},fresh=compile(selected,next),actual=materialize(fresh,next);assert.deepEqual(fresh.methods,['M1','M2']);assert.equal(fresh.bindings[1].columns.amount,'D');assert.notEqual(fresh.inspection_sha256,first.inspection_sha256);assert.match(Buffer.from(actual.snapshot.members_bytes).toString(),/new-member/);assert.ok(!Object.hasOwn(fresh,'outcome'));assert.ok(!Object.hasOwn(fresh,'verification'));assert.ok(!Object.hasOwn(fresh,'case_id'));assert.throws(()=>materialize(first,next),{code:'SOURCE_CHANGED'});
+});

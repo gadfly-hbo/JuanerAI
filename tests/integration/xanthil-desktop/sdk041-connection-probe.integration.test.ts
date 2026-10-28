@@ -1,41 +1,18 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import {mkdtempSync,readFileSync,writeFileSync} from 'node:fs';
-import {join} from 'node:path';
-import {browserEvidenceRoot} from '../../fixtures/xanthil-desktop/browser-evidence.ts';
-import {createPersistentRuntimeState} from '../../../adapters/agent-pi/persistent-runtime-state.ts';
-test('SDK041-FIX06 settings probe uses persistent SDK metering across instances, fixed text and no retries',async()=>{
- const {createPiConnectionProbe}=await import('../../../adapters/agent-pi/native-connection-probe.ts');
- const root=mkdtempSync(join(browserEvidenceRoot,'sdk041-probe-'));let calls=0;
- const make=()=>createPiConnectionProbe({root,modelTransport:async request=>{calls++;assert.equal(request.maxOutputTokens,128);assert.equal(request.model.id,'mimo-v2.6-pro');assert.equal(request.tools?.length??0,0);assert.ok(request.messages.some(m=>m.text==='Reply with OK.'));return {content:[{kind:'text',text:'OK'}],stop:'complete',usage:{inputTokens:2,outputTokens:1}};}});
- await make()('synthetic-key',new AbortController().signal);await make()('synthetic-key',new AbortController().signal);
- const state=createPersistentRuntimeState({projectRoot:root});assert.equal(state.readAudit('connection-test-xiaomi-pro-v1').filter(e=>e.kind==='model.admitted').length,2);assert.equal(calls,2);
- const c=new AbortController();c.abort();await assert.rejects(make()('synthetic-key',c.signal));assert.equal(calls,2);
- for(const file of ['apps/browser/service-main.ts','apps/desktop/browser-native.ts','apps/desktop/main.ts']){const source=readFileSync(new URL('../../../'+file,import.meta.url),'utf8');assert.ok(source.includes('createPiConnectionProbe'));assert.equal(source.includes('probe:probeLocalXiaomi'),false);}
+import test from 'node:test';import assert from 'node:assert/strict';import {mkdtempSync,writeFileSync,readFileSync,mkdirSync} from 'node:fs';import {join} from 'node:path';
+import {createPiCredentialProbe} from '../../../adapters/agent-pi/credential-probe.ts';
+import {createPiBusinessPersistence} from '../../../adapters/agent-pi/persistent-runtime-state.ts';
+import {offlineResponse} from '../../fixtures/xanthil-desktop/offline-professional-provider.ts';
+const root=()=>mkdtempSync(join(process.env.JUANERAI_NEWARCH_SHORT_ROOT!,'probe-'));
+test('SDK041 current explicit settings probe uses the same public executor, fixed instruction and persistent physical accounting',async()=>{
+ const path=root();let calls=0;const probe=()=>createPiCredentialProbe({projectRoot:path,fetch:async(_url,init)=>{calls++;const dto=JSON.parse(String(init!.body));assert.equal(dto.model,'mimo-v2.6-flash');assert.equal(dto.max_tokens??dto.max_completion_tokens,32768);assert.match(JSON.stringify(dto.messages),/explicitly requested connection test/);assert.doesNotMatch(JSON.stringify(dto.messages),/synthetic-only-key/);return offlineResponse(calls);}});await probe()('synthetic-only-key',new AbortController().signal);await probe()('synthetic-only-key',new AbortController().signal);assert.equal(calls,2);await assert.rejects(()=>probe()('synthetic-only-key',AbortSignal.abort()));assert.equal(calls,2);
+ for(const file of ['apps/browser/service-main.ts','apps/desktop/browser-native.ts','apps/desktop/main.ts'])assert.equal(readFileSync(file,'utf8').includes('probe:probeLocalXiaomi'),false);
 });
-
-test('SDK041-FIX06 provider failure cannot auto retry or clear UNKNOWN across host reconstruction',async()=>{
- const {createPiConnectionProbe}=await import('../../../adapters/agent-pi/native-connection-probe.ts');const {ProviderFailure}=await import('pi-agent-runtime');
- const root=mkdtempSync(join(browserEvidenceRoot,'sdk041-probe-failure-'));let calls=0;
- const make=()=>createPiConnectionProbe({root,modelTransport:async()=>{calls++;throw new ProviderFailure('quota');}});
- await assert.rejects(make()('synthetic-key',new AbortController().signal),{code:'QUOTA_EXCEEDED'});assert.equal(calls,1);
- assert.equal(createPersistentRuntimeState({projectRoot:root}).hasUnsettledModel('connection-test-xiaomi-pro-v1'),true);
- await assert.rejects(make()('synthetic-key',new AbortController().signal),{code:'REQUEST_UNCONFIRMED'});assert.equal(calls,1);
+for(const status of [401,429,503])test('SDK041 current explicit probe HTTP '+status+' sends once, never adds a fault extra',async()=>{
+ let calls=0;const path=root(),probe=createPiCredentialProbe({projectRoot:path,fetch:async()=>{calls++;return new Response('{"error":{"message":"synthetic failure"}}',{status,headers:{'content-type':'application/json'}});}});await assert.rejects(()=>probe('synthetic-only-key',new AbortController().signal),{code:status===401?'CREDENTIAL_INVALID':'CONNECTION_FAILED'});assert.equal(calls,1);
 });
-test('SDK041-FIX06 actual SDK HTTP builder has fixed 128token probe and retains safe audit without key',async()=>{
- const {createPiConnectionProbe}=await import('../../../adapters/agent-pi/native-connection-probe.ts');const root=mkdtempSync(join(browserEvidenceRoot,'sdk041-probe-wire-'));let calls=0;
- const probe=createPiConnectionProbe({root,fetch:async(url,options)=>{calls++;assert.equal(String(url),'https://token-plan-cn.xiaomimimo.com/v1/chat/completions');const wire=JSON.parse(String(options?.body));assert.equal(wire.max_completion_tokens,128);assert.equal(wire.model,'mimo-v2.6-pro');assert.deepEqual(wire.messages,[{role:'user',content:'Reply with OK.'}]);assert.equal(wire.tools,undefined);assert.equal(JSON.stringify(wire).includes('synthetic-only-key'),false);
- const chunk={id:'synthetic',object:'chat.completion.chunk',created:0,model:'mimo-v2.6-pro',choices:[{index:0,delta:{role:'assistant',content:'OK.'},finish_reason:'stop'}],usage:{prompt_tokens:10,completion_tokens:2,total_tokens:12}};return new Response('data: '+JSON.stringify(chunk)+'\n\ndata: [DONE]\n\n',{headers:{'content-type':'text/event-stream'}});}});
- await probe('synthetic-only-key',new AbortController().signal);assert.equal(calls,1);assert.equal(JSON.stringify(createPersistentRuntimeState({projectRoot:root}).readAudit('connection-test-xiaomi-pro-v1')).includes('synthetic-only-key'),false);
+test('SDK041 current probe corrupt persistent state fails before any physical send',async()=>{
+ const path=root();createPiBusinessPersistence({projectRoot:path,isAuthorized:()=>false}).readAudit('not-created');mkdirSync(join(path,'.juanerai/pi-v060'),{recursive:true});writeFileSync(join(path,'.juanerai/pi-v060/state.sqlite'),'broken');let calls=0;const probe=createPiCredentialProbe({projectRoot:path,fetch:async()=>{calls++;return offlineResponse(calls);}});await assert.rejects(()=>probe('synthetic-only-key',new AbortController().signal));assert.equal(calls,0);
 });
-test('SDK041-FIX06 corrupt persistent state rejects before model admission',async()=>{
- const {createPiConnectionProbe}=await import('../../../adapters/agent-pi/native-connection-probe.ts');const root=mkdtempSync(join(browserEvidenceRoot,'sdk041-probe-corrupt-'));const state=createPersistentRuntimeState({projectRoot:root});state.readAudit('connection-test-xiaomi-pro-v1');writeFileSync(join(root,'.xanthil','desktop','pi-runtime.sqlite'),'broken');let calls=0;
- await assert.rejects(createPiConnectionProbe({root,modelTransport:async()=>{calls++;throw Error('not allowed');}})('synthetic-key',new AbortController().signal));assert.equal(calls,0);
-});
-
-test('SDK041-FIX06 cancelling an admitted probe refuses a late success and blocks overlapping writers',async()=>{
- const {createPiConnectionProbe}=await import('../../../adapters/agent-pi/native-connection-probe.ts');const root=mkdtempSync(join(browserEvidenceRoot,'sdk041-probe-cancel-'));let release!:()=>void,entered!:()=>void,calls=0;const hold=new Promise<void>(r=>release=r),ready=new Promise<void>(r=>entered=r);
- const make=()=>createPiConnectionProbe({root,modelTransport:async()=>{calls++;entered();await hold;return {content:[{kind:'text',text:'OK'}],stop:'complete',usage:{inputTokens:2,outputTokens:1}};}});
- const c=new AbortController(),run=make()('synthetic-key',c.signal);const rejected=assert.rejects(run);await ready;
- await assert.rejects(make()('synthetic-key',new AbortController().signal));assert.equal(calls,1);c.abort();release();await rejected;
+test('SDK041 current admitted probe cancellation rejects late success and keeps its accounting evidence',async()=>{
+ const path=root();let entered!:()=>void,release!:()=>void,calls=0;const ready=new Promise<void>(r=>entered=r),gate=new Promise<void>(r=>release=r),controller=new AbortController(),probe=createPiCredentialProbe({projectRoot:path,fetch:async()=>{calls++;entered();await gate;return offlineResponse(calls);}});const running=probe('synthetic-only-key',controller.signal),rejected=assert.rejects(running);await ready;controller.abort();release();await rejected;assert.equal(calls,1);
 });

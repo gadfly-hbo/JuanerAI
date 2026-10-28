@@ -1,16 +1,6 @@
 import {mkdirSync, readFileSync, readdirSync, realpathSync, writeFileSync} from 'node:fs';
 import {dirname, isAbsolute, join, relative, resolve, sep} from 'node:path';
 
-export const developmentOrigin = 'http://127.0.0.1:5173';
-/** Forge's compiled localhost spelling is normalized; environment URLs are never inputs. */
-export function developmentEndpoint(packaged: boolean, compiled: unknown): string | null {
-  if (packaged || compiled === undefined) return null;
-  if (compiled !== 'http://localhost:5173' && compiled !== developmentOrigin) throw new Error('Invalid development endpoint');
-  return developmentOrigin + '/';
-}
-export function isDevelopmentFrame(url: string, endpoint: string): boolean {
-  return url.split('#',1)[0] === endpoint;
-}
 export function prepareDevelopmentRoot(path: string,kind:'development'|'installed-browser'='development') {
   if (!isAbsolute(path) || resolve(path) !== path) throw new Error('Development root must be an absolute normalized path');
   mkdirSync(path, {recursive:true, mode:0o700});

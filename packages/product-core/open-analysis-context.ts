@@ -1,66 +1,83 @@
-import {compileOpenAnalysisIR,openAnalysisProposal} from './open-analysis-ir.ts';
 import {validateOpenSemanticAssessment,type OpenSemanticAssessment} from './open-analysis-semantics.ts';
 import {membershipRecord} from './member-analysis.ts';
-import {taskHash} from './member-task.ts';
+import {hashFiniteJson} from './member-task.ts';
 import type {MemberSourceInspection,MemberSourceCell,SourceDocumentObservation} from '../ports/member-source.ts';
-export type OpenBusinessScope=readonly Readonly<{source_id:string;sheet_id:string;filters:readonly import('./open-analysis-ir.ts').OpenAnalysisFilter[]}>[];
+export type OpenBusinessScope=readonly Readonly<{source_id:string;sheet_id:string}>[];
 export type OpenBusinessProposal=Readonly<{execution_scope?:OpenBusinessScope;classification:'MODEL_PROPOSAL';purpose:string;object:string;scope:string;deliverables:readonly string[];hypotheses:readonly Readonly<{classification:'MODEL_HYPOTHESIS';text:string}>[];unknowns:readonly string[]}>;
-export type OpenAnalysisContext=Readonly<{version:'1.0'|'1.1'|'1.2';semantics?:OpenSemanticAssessment;question:Readonly<{classification:'USER_SAID';text:string}>;inspection_sha256:string;source_facts:readonly Readonly<{classification:'SOURCE_FACT';source_id:string;sheet_id:string;display_name:string;source_sha256:string;headers:readonly MemberSourceCell[];data_rows:number;document?:SourceDocumentObservation}>[];proposal:Readonly<{classification:'MODEL_PROPOSAL';plan:Readonly<Record<string,unknown>>}>;business?:OpenBusinessProposal;unknowns:readonly string[]}>;
+export type OpenAnalysisContext=Readonly<{version:'1.0'|'1.1'|'1.2';semantics?:OpenSemanticAssessment;question:Readonly<{classification:'USER_SAID';text:string}>;inspection_sha256:string;source_facts:readonly Readonly<{classification:'SOURCE_FACT';source_id:string;sheet_id:string;display_name:string;source_sha256:string;headers:readonly MemberSourceCell[];data_rows:number;document?:SourceDocumentObservation}>[];business?:OpenBusinessProposal;unknowns:readonly string[]}>;
 function fail(code:string):never{throw Object.assign(new Error(code),{code,stack:code});}
 export function compileOpenBusinessProposal(raw:unknown):OpenBusinessProposal{
  const x=membershipRecord(raw,['purpose','object','scope','deliverables','hypotheses','unknowns',...(raw&&typeof raw==='object'&&Object.hasOwn(raw,'execution_scope')?['execution_scope']:[])]);
  const text=(value:unknown)=>{if(typeof value!=='string'||!value.trim()||value.length>2000)fail('PLAN_INVALID');return value;},list=(value:unknown)=>{if(!Array.isArray(value)||value.length>16)fail('PLAN_INVALID');return value.map(text);};
  if(x.execution_scope!==undefined&&(!Array.isArray(x.execution_scope)||!x.execution_scope.length||x.execution_scope.length>32))fail('PLAN_INVALID');
- if(Array.isArray(x.execution_scope)){const seen=new Map<string,number>();for(const [index,raw] of x.execution_scope.entries()){const scope=membershipRecord(raw,['source_id','sheet_id','filters']),key=JSON.stringify([scope.source_id,scope.sheet_id]);if(seen.has(key))throw Object.assign(new Error('PLAN_INVALID'),{code:'PLAN_INVALID',stack:'PLAN_INVALID',safe_details:{kind:'duplicate_business_scope',path:`execution_scope[${index}]`,prior_path:`execution_scope[${seen.get(key)}]`}});seen.set(key,index);
-   // IR filters are conjunctive. Detect only proven incompatible equalities;
-   // empty matches, ranges and unknown values remain governed by the IR compiler.
-   if(Array.isArray(scope.filters)){const equalities=new Map<string,{value:string;index:number}>();for(const [filterIndex,rawFilter] of scope.filters.entries()){
-    if(!rawFilter||typeof rawFilter!=='object')continue;const filter=rawFilter as Record<string,unknown>;
-    if(filter.operator!=='eq'||typeof filter.column!=='string'||typeof filter.value!=='string')continue;
-    const prior=equalities.get(filter.column);if(prior&&prior.value!==filter.value)throw Object.assign(new Error('PLAN_INVALID'),{code:'PLAN_INVALID',stack:'PLAN_INVALID',safe_details:{kind:'contradictory_business_scope',path:`execution_scope[${index}].filters[${filterIndex}]`,prior_path:`execution_scope[${index}].filters[${prior.index}]`}});
-    equalities.set(filter.column,{value:filter.value,index:filterIndex});
-   }}
-  }}
+ if(Array.isArray(x.execution_scope)){
+  const seen=new Set<string>();
+  for(const raw of x.execution_scope){
+   const scope=membershipRecord(raw,['source_id','sheet_id']);
+   if(typeof scope.source_id!=='string'||typeof scope.sheet_id!=='string'||!scope.source_id||!scope.sheet_id||scope.sheet_id.length>200)fail('PLAN_INVALID');
+   const key=JSON.stringify([scope.source_id,scope.sheet_id]);if(seen.has(key))fail('PLAN_INVALID');seen.add(key);
+  }
+ }
+
  return {...(x.execution_scope?{execution_scope:structuredClone(x.execution_scope) as OpenBusinessScope}:{}),classification:'MODEL_PROPOSAL',purpose:text(x.purpose),object:text(x.object),scope:text(x.scope),deliverables:list(x.deliverables),hypotheses:list(x.hypotheses).map(text=>({classification:'MODEL_HYPOTHESIS',text})),unknowns:list(x.unknowns)};
-}
-export function validateOpenBusinessProposal(raw:unknown):OpenBusinessProposal{
- const x=membershipRecord(raw,['classification','purpose','object','scope','deliverables','hypotheses','unknowns',...(raw&&typeof raw==='object'&&Object.hasOwn(raw,'execution_scope')?['execution_scope']:[])]);
- if(x.classification!=='MODEL_PROPOSAL'||!Array.isArray(x.hypotheses))fail('CONTEXT_CHANGED');
- const hypotheses=x.hypotheses.map(raw=>{const h=membershipRecord(raw,['classification','text']);if(h.classification!=='MODEL_HYPOTHESIS')fail('CONTEXT_CHANGED');return h.text;});
- const checked=compileOpenBusinessProposal({purpose:x.purpose,object:x.object,scope:x.scope,deliverables:x.deliverables,hypotheses,unknowns:x.unknowns,...(x.execution_scope?{execution_scope:x.execution_scope}:{})});
- if(taskHash(raw)!==taskHash(checked))fail('CONTEXT_CHANGED');return checked;
 }
 function businessInput(value:OpenBusinessProposal){return {purpose:value.purpose,object:value.object,scope:value.scope,deliverables:value.deliverables,hypotheses:value.hypotheses.map(x=>x.text),unknowns:value.unknowns,...(value.execution_scope?{execution_scope:value.execution_scope}:{})};}
 
-/** Bind a proposed business scope before retaining it; no calculation or persistence. */
-export function bindOpenBusinessScope(business:OpenBusinessProposal,inspection:MemberSourceInspection):OpenBusinessProposal{
- if(!business.execution_scope)return business;
-const seen=new Set<string>();const scope=business.execution_scope.map(raw=>{const b=membershipRecord(raw,['source_id','sheet_id','filters']),key=String(b.source_id)+'/'+String(b.sheet_id);if(seen.has(key))fail('PLAN_INVALID');seen.add(key);const header=inspection.sources.find(s=>s.source_id===b.source_id)?.sheets.find(s=>s.sheet_id===b.sheet_id)?.rows[0]?.cells[0];if(!header)fail('BINDING_NOT_FOUND');const plan=compileOpenAnalysisIR({version:'1.1',goal:'共同对焦任务范围',source_id:b.source_id,sheet_id:b.sheet_id,column:header.column,operation:'count',unit:'记录',group_by:null,filters:b.filters},inspection);return {source_id:plan.source_id,sheet_id:plan.sheet_id,filters:plan.filters??[]};});return {...business,execution_scope:scope};
-}
-/** Construct business context before IR compilation. Observed headers are facts
+/** Construct business context. Observed headers are facts
  * about the selected file, not an assertion of currency, meaning or causation. */
-export function compileOpenAnalysisContext(proposal:Readonly<Record<string,unknown>>,question:string,inspection:MemberSourceInspection,business?:OpenBusinessProposal,semantics?:OpenSemanticAssessment):OpenAnalysisContext{
- if(typeof question!=='string'||!question.trim()||question.length>12000||!proposal||typeof proposal!=='object')fail('PLAN_INVALID');
- const unitInterpretation=semantics?.definitions.find(d=>d.dimension==='unit')?.interpretation,measurement=unitInterpretation?.unit;
- if(semantics&&['1.1','1.2'].includes(semantics.version)&&unitInterpretation?.status==='clear'&&!measurement&&!unitInterpretation.unscaled_unit&&!['1.4','1.6','2.0','2.4'].includes(String(proposal.version))&&proposal.operation!=='count')fail('MEASURE_REQUIRED');
- if(measurement&&proposal.version==='2.0'){const actual=compileOpenAnalysisIR(proposal,inspection);const matches=(i:{source_id:string;sheet_id:string;column:string})=>{if(i.source_id!==actual.source_id||i.sheet_id!==actual.sheet_id)return false;const h=inspection.sources.find(s=>s.source_id===i.source_id)?.sheets.find(s=>s.sheet_id===i.sheet_id)?.rows[0]?.cells.filter(h=>h.column===i.column||h.value===i.column);return h?.length===1&&h[0]!.column===actual.column;};const money=measurement.inputs.find(matches),plain=measurement.unscaled_inputs?.find(matches);if(money&&plain)fail('MEASURE_INCOMPATIBLE');if(money){if(![measurement.currency,measurement.output_label].includes(actual.input_unit!))throw Object.assign(new Error('MEASURE_INCOMPATIBLE'),{code:'MEASURE_INCOMPATIBLE',stack:'MEASURE_INCOMPATIBLE',safe_details:{field:'input_unit',actual:actual.input_unit,allowed:[measurement.currency,measurement.output_label],reason:'BOUND_UNIT_LABEL_MISMATCH'}});proposal={...proposal,input_unit:measurement.output_label};}else if(!plain||actual.input_unit!==plain.label)fail('MEASURE_BINDING_INVALID');}
- if(measurement&&!['1.4','1.6','2.0','2.4'].includes(String(proposal.version))&&proposal.operation!=='count'){const base=compileOpenAnalysisIR(proposal.version==='1.8'?proposal.base:proposal,inspection),fields=base.version==='2.2'?[base.inputs![0]!]:base.inputs??[base],inputs=measurement.inputs.filter(i=>fields.some(f=>{if(f.source_id!==i.source_id||f.sheet_id!==i.sheet_id)return false;const headers=inspection.sources.find(s=>s.source_id===i.source_id)?.sheets.find(s=>s.sheet_id===i.sheet_id)?.rows[0]?.cells;return headers?.some(h=>h.column===f.column&&(h.column===i.column||h.value===i.column));}));const unscaled=fields.map(f=>measurement.unscaled_inputs?.find(i=>{if(i.source_id!==f.source_id||i.sheet_id!==f.sheet_id)return false;const h=inspection.sources.find(s=>s.source_id===i.source_id)?.sheets.find(s=>s.sheet_id===i.sheet_id)?.rows[0]?.cells.filter(h=>h.column===i.column||h.value===i.column);return h?.length===1&&h[0]!.column===f.column;}));if(!inputs.length&&!unscaled.some(Boolean))throw Object.assign(new Error('MEASURE_INCOMPATIBLE'),{code:'MEASURE_INCOMPATIBLE',stack:'MEASURE_INCOMPATIBLE',safe_details:{reason:'FIELD_UNIT_BINDING_MISSING',fields:fields.map(f=>({source_id:f.source_id,sheet_id:f.sheet_id,column:f.column}))}});if(unscaled.some(Boolean)){if(inputs.length||unscaled.some(i=>!i)||new Set(unscaled.map(i=>i!.label)).size!==1||base.unit!==unscaled[0]!.label||base.measure)fail('MEASURE_INCOMPATIBLE');proposal=openAnalysisProposal(base);}else proposal=base.version==='2.2'?{...openAnalysisProposal(base),unit:measurement.output_label,measure:{...measurement,inputs}}:{version:'1.8',base:openAnalysisProposal(base),measure:{...measurement,inputs}};}
- if(unitInterpretation?.status==='clear'&&unitInterpretation.unscaled_unit&&!['1.4','1.6','2.0','2.4'].includes(String(proposal.version))&&proposal.operation!=='count'){const base=proposal.version==='1.8'?proposal.base as Record<string,unknown>:proposal;proposal={...base,unit:unitInterpretation.unscaled_unit.output_label};}
- const referenceProposal=proposal.version==='1.8'?proposal.base as Record<string,unknown>:proposal;
- const membership=referenceProposal.membership as {bindings?:unknown}|undefined,refs=referenceProposal.version==='2.4'?compileOpenAnalysisIR(referenceProposal,inspection).inputs:referenceProposal.version==='1.6'?referenceProposal.references:referenceProposal.version==='1.4'?membership?.bindings:['1.3','1.7','2.1','2.2','2.3'].includes(String(referenceProposal.version))?referenceProposal.inputs:[referenceProposal];
- if(!Array.isArray(refs)||!refs.length||refs.length>32)fail('PLAN_INVALID');const seen=new Set<string>();
+export function compileOpenAnalysisContext(question:string,inspection:MemberSourceInspection,business?:OpenBusinessProposal,semantics?:OpenSemanticAssessment):OpenAnalysisContext{
+ if(typeof question!=='string'||!question.trim()||question.length>12000)fail('PLAN_INVALID');
+ const seen=new Set<string>();
  const source_facts:OpenAnalysisContext['source_facts'][number][]=[];
- for(const raw of refs){if(!raw||typeof raw!=='object')fail('PLAN_INVALID');const {source_id,sheet_id}=raw as Record<string,unknown>,key=String(source_id)+'/'+String(sheet_id);if(seen.has(key))continue;seen.add(key);const sources=inspection.sources.filter(s=>s.source_id===source_id),source=sources[0],sheets=source?.sheets.filter(s=>s.sheet_id===sheet_id),sheet=sheets?.[0];if(sources.length!==1||sheets?.length!==1||!source||!sheet||sheet.state!=='visible'||!sheet.rows.length)fail('BINDING_NOT_FOUND');source_facts.push({classification:'SOURCE_FACT',source_id:source.source_id,sheet_id:sheet.sheet_id,display_name:source.display_name,source_sha256:source.sha256,headers:structuredClone(sheet.rows[0]!.cells),data_rows:sheet.rows.length-1,...(source.document?{document:structuredClone(source.document)}:{})});}
- let normalized=business?compileOpenBusinessProposal(businessInput(business)):undefined;
- if(normalized)normalized=bindOpenBusinessScope(normalized,inspection);
+ const refs=business?.execution_scope??inspection.sources.flatMap(source=>source.sheets.filter(sheet=>sheet.state==='visible').map(sheet=>({source_id:source.source_id,sheet_id:sheet.sheet_id})));
+ if(inspection.version!=='1.0'||inspection.sources.length>32)fail('SOURCE_UNQUALIFIED');
+ for(const raw of refs){if(!raw||typeof raw!=='object')fail('PLAN_INVALID');const {source_id,sheet_id}=raw as Record<string,unknown>,key=String(source_id)+'/'+String(sheet_id);if(seen.has(key))fail('BINDING_NOT_FOUND');seen.add(key);const sources=inspection.sources.filter(s=>s.source_id===source_id),source=sources[0],sheets=source?.sheets.filter(s=>s.sheet_id===sheet_id),sheet=sheets?.[0];if(sources.length!==1||sheets?.length!==1||!source||!sheet||sheet.state!=='visible'||!sheet.rows.length)fail('BINDING_NOT_FOUND');source_facts.push({classification:'SOURCE_FACT',source_id:source.source_id,sheet_id:sheet.sheet_id,display_name:source.display_name,source_sha256:source.sha256,headers:structuredClone(sheet.rows[0]!.cells),data_rows:sheet.rows.length-1,...(source.document?{document:structuredClone(source.document)}:{})});}
+ const normalized=business?compileOpenBusinessProposal(businessInput(business)):undefined;
 
- if(normalized?.execution_scope&&!['1.4','1.6'].includes(String(referenceProposal.version))){for(const raw of refs){const ref=raw as Record<string,unknown>,header=inspection.sources.find(s=>s.source_id===ref.source_id)?.sheets.find(s=>s.sheet_id===ref.sheet_id)?.rows[0]?.cells[0];if(!header)fail('BINDING_NOT_FOUND');const bound=compileOpenAnalysisIR({version:'1.1',goal:'执行范围检查',source_id:ref.source_id,sheet_id:ref.sheet_id,column:header.column,operation:'count',unit:'记录',group_by:null,filters:ref.filters??[]},inspection);const fixed=normalized.execution_scope.find(a=>a.source_id===bound.source_id&&a.sheet_id===bound.sheet_id);const missing=fixed?.filters.filter(f=>!(bound.filters??[]).some(g=>taskHash(f)===taskHash(g)))??[];if(!fixed||missing.length)throw Object.assign(new Error('FRAMEWORK_REVISION_REQUIRED'),{code:'FRAMEWORK_REVISION_REQUIRED',stack:'FRAMEWORK_REVISION_REQUIRED',safe_details:{kind:'fixed_execution_scope',source_id:bound.source_id,sheet_id:bound.sheet_id,source_in_scope:!!fixed,actual_filters:bound.filters??[],required_filters:fixed?.filters??[],missing_filters:missing}});}}
- return {version:semantics&&['1.1','1.2'].includes(semantics.version)?'1.2':semantics?'1.1':'1.0',...(semantics?{semantics:structuredClone(semantics)}:{}),...(normalized?{business:normalized}:{}),question:{classification:'USER_SAID',text:question},inspection_sha256:taskHash(inspection),source_facts,proposal:{classification:'MODEL_PROPOSAL',plan:structuredClone(proposal)},unknowns:['模型提出的单位、方法和业务解释不因字段同名而成为权威业务事实；未明确的语义或原因仍需资料与必要澄清。',...source_facts.flatMap(f=>f.document?.limitations??[]),...(normalized?.unknowns??[])]};
+ return {version:semantics&&['1.1','1.2'].includes(semantics.version)?'1.2':semantics?'1.1':'1.0',...(semantics?{semantics:structuredClone(semantics)}:{}),...(normalized?{business:normalized}:{}),question:{classification:'USER_SAID',text:question},inspection_sha256:hashFiniteJson(inspection),source_facts,unknowns:['模型提出的单位、方法和业务解释不因字段同名而成为权威业务事实；未明确的语义或原因仍需资料与必要澄清。',...source_facts.flatMap(f=>f.document?.limitations??[]),...(normalized?.unknowns??[])]};
 }
 export function validateOpenAnalysisContext(context:OpenAnalysisContext,inspection:MemberSourceInspection,questions:readonly string[],task_id?:string){
- if(!context||!questions.includes(context.question?.text))fail('CONTEXT_CHANGED');const expected=compileOpenAnalysisContext(context.proposal?.plan,context.question.text,inspection,context.business,context.semantics?validateOpenSemanticAssessment(context.semantics,questions,task_id,inspection):undefined);if(taskHash(expected)!==taskHash(context))fail('CONTEXT_CHANGED');return expected;
+ if(!context||!questions.includes(context.question?.text))fail('CONTEXT_CHANGED');const expected=compileOpenAnalysisContext(context.question.text,inspection,context.business,context.semantics?validateOpenSemanticAssessment(context.semantics,questions,task_id,inspection):undefined);if(hashFiniteJson(context)!==hashFiniteJson(expected))fail('CONTEXT_CHANGED');return expected;
 }
 export {openAnalysisFindings} from '../contracts/open-analysis-findings.mjs';
 export {openAnalysisRevisionImpact} from './open-analysis-impact.ts';
 
 export {compileOpenSemanticAssessment,validateOpenSemanticAssessment} from './open-analysis-semantics.ts';
+
+/** Exact visible original-source projection for this immutable business context.
+ * It selects actual source/sheet identities only, never methods or row-filter operators. */
+export function materializeOpenAnalysisSource(context:OpenAnalysisContext,inspection:MemberSourceInspection,task_id?:string):MemberSourceInspection{
+ // Projection proves exact source geometry only; semantic authority is checked with actual Task questions by Application/Store.
+ if(hashFiniteJson(context)!==hashFiniteJson(compileOpenAnalysisContext(context.question.text,inspection,context.business,context.semantics)))fail('CONTEXT_CHANGED');
+ void task_id;
+ const refs=context.source_facts.map(f=>({source_id:f.source_id,sheet_id:f.sheet_id})),sources:MemberSourceInspection['sources'][number][]=[];
+ for(const ref of refs){const original=inspection.sources.find(s=>s.source_id===ref.source_id)!,sheet=original.sheets.find(s=>s.sheet_id===ref.sheet_id&&s.state==='visible');if(!sheet)fail('BINDING_NOT_FOUND');
+  const existing=sources.find(s=>s.source_id===ref.source_id);if(existing)(existing.sheets as typeof sheet[]).push(structuredClone(sheet));else sources.push({...structuredClone(original),sheets:[structuredClone(sheet)]});
+ }
+ return {version:'1.0',sources};
+}
+
+/** Thin analysis/report IR: bind actual SCR sources and qualification, never an
+ * algorithm catalogue, a second model plan or a claim of completed calculation. */
+export type OpenModelReportContract=Readonly<{
+ version:'1.1';mode:'model_unverified';context:OpenAnalysisContext;
+ requirements?:Readonly<{revision:number;text:string;confirmed:true}>;
+ inputs:readonly Readonly<{source_id:string;source_sha256:string;sheet_id:string;table_path:string}>[];
+ resources:Readonly<{source_catalog:string;metric_asset_catalog:string}>;
+ execution:Readonly<{owner:'Pi';independent_verification:'not_performed'}>;
+ output:Readonly<{kind:'MODEL_ANALYSIS_REPORT';verification:'not_performed';human_judgment:'not_recorded'}>;
+}>;
+/** Filesystem-safe identity component; display names and business IDs stay in
+ * the file metadata. In particular, dot IDs and long Unicode sheet IDs must
+ * not become traversal or exceed the local filename limit. */
+export function sourcePathComponent(value:string){const encoded=encodeURIComponent(value);return encoded==='.'||encoded==='..'||encoded.length>200?hashFiniteJson(value):encoded;}
+export function compileOpenModelReportContract(context:OpenAnalysisContext,directory:string,requirements?:OpenModelReportContract['requirements']):OpenModelReportContract{
+ return {version:'1.1',mode:'model_unverified',context:structuredClone(context),...(requirements?{requirements:structuredClone(requirements)}:{}),resources:{source_catalog:directory+'/020_clean/source/catalog.txt',metric_asset_catalog:directory+'/020_clean/metric-asset/catalog.txt'},inputs:context.source_facts.map(f=>({source_id:f.source_id,source_sha256:f.source_sha256,sheet_id:f.sheet_id,table_path:`${directory}/020_clean/source/${f.source_id}/${f.source_sha256}/sheet/${sourcePathComponent(f.sheet_id)}/table.txt`})),execution:{owner:'Pi',independent_verification:'not_performed'},output:{kind:'MODEL_ANALYSIS_REPORT',verification:'not_performed',human_judgment:'not_recorded'}};
+}
+
+/** Readable business context only. Opaque resource paths are copied from the
+ * actual authorized catalog; no tool plan, state envelope or identity fields. */
+export function readableOpenModelContext(contract:OpenModelReportContract,userStatements:readonly string[]=[]){
+ const rows=contract.context.source_facts.map((source,index)=>{const input=contract.inputs[index]!;return source.display_name+' / '+source.sheet_id+'（'+source.data_rows+'行）\n字段：'+source.headers.map(h=>h.value).join('、')+'\n原生read路径：'+input.table_path;});
+ return ['用户需求：',contract.context.question.text,'',...(userStatements.length?['用户在本次讨论中明确提供的原话（模型理解不能覆盖这些条件）：',...[...new Set(userStatements)],'']:[]),...(contract.requirements?['用户确认的本次分析需求三核心（正文是分析依据，不是固定执行步骤）：',contract.requirements.text,'']:[]),'获准资料目录（原生read，实际绝对路径）：',contract.resources.source_catalog,'企业指标与方法目录（按需read）：',contract.resources.metric_asset_catalog,'当前获准资料目录（完整内容按需read；资料不足只限制受影响判断）：',...rows,'','项目企业指标/方法通过已声明的只读能力按需读取；缺批准资产时明确缺口，不编造企业定义。'].join('\n');
+}

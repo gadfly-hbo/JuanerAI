@@ -12,7 +12,7 @@ test('BF-R01/08: project catalog resolves only registered identities, never dire
  const list=Reflect.get(origins,'listBrowserProjects');assert.equal(typeof list,'function');
  const parent=mkdtempSync(join(browserEvidenceRoot,'web-catalog-')),originDirectory=join(parent,'origins');mkdirSync(originDirectory);
  const bin=process.env.JUANERAI_TOOLCHAIN_BIN!,projectRoot=join(parent,'project');
- const project=await createPersonalBrowserMembershipWorkspace({projectRoot,originDirectory,display_name:'Synthetic saved project',toolchain:{pythonExecutable:join(bin,'python3'),pythonVersion:'3.14.4',duckdbExecutable:join(bin,'duckdb'),duckdbVersion:'1.5.2'},model:{runtime:{async turn(){assert.fail('no dispatch');}},access:createLocalModelAccess(false),policy:{async read(){return approvedMembershipPolicy;}}}});
+ const project=await createPersonalBrowserMembershipWorkspace({projectRoot,originDirectory,display_name:'Synthetic saved project',toolchain:{pythonExecutable:join(bin,'python3'),pythonVersion:'3.14.4',duckdbExecutable:join(bin,'duckdb'),duckdbVersion:'1.5.2'},model:{access:createLocalModelAccess(false),policy:{async read(){return approvedMembershipPolicy;}}}});
  const id=project.project_id;await project.close();
  cpSync(projectRoot,join(parent,'unregistered-copy'),{recursive:true});
  const before=readFileSync(join(projectRoot,'.xanthil/desktop/state.sqlite'));
@@ -23,7 +23,7 @@ test('BF-R01/08: project catalog resolves only registered identities, never dire
 test('BF-R01/08: web project name/opaque selection creates once and rejects paths, with passive settings',async()=>{
  const module=await import('../../../profiles/personal/browser-membership.ts'),create=Reflect.get(module,'createPersonalBrowserServiceWorkspace');assert.equal(typeof create,'function');
  const parent=mkdtempSync(join(browserEvidenceRoot,'web-manager-')),originDirectory=join(parent,'profile'),projectsRoot=join(parent,'Projects');mkdirSync(originDirectory);mkdirSync(projectsRoot);
- const bin=process.env.JUANERAI_TOOLCHAIN_BIN!,config={originDirectory,projectsRoot,toolchain:{pythonExecutable:join(bin,'python3'),pythonVersion:'3.14.4',duckdbExecutable:join(bin,'duckdb'),duckdbVersion:'1.5.2'},model:{runtime:{async turn(){assert.fail('no dispatch');}},access:createLocalModelAccess(false),policy:{async read(){return approvedMembershipPolicy;}}}};
+ const bin=process.env.JUANERAI_TOOLCHAIN_BIN!,config={originDirectory,projectsRoot,toolchain:{pythonExecutable:join(bin,'python3'),pythonVersion:'3.14.4',duckdbExecutable:join(bin,'duckdb'),duckdbVersion:'1.5.2'},model:{access:createLocalModelAccess(false),policy:{async read(){return approvedMembershipPolicy;}}}};
  const manager=await create(config);const {randomUUID}=await import('node:crypto'),command={version:'1.0',command_id:randomUUID(),name:'网页合成项目'};
  try{
   for(const bad of [{...command,path:parent},{...command,name:'../outside'},{...command,name:'/tmp/project'}])await assert.rejects(()=>manager.select(bad));

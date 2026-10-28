@@ -1,4 +1,15 @@
-import type {OpenAnalysisIR,OpenAnalysisValue} from '../product-core/open-analysis-ir.ts';
-import type {MemberSourceInspection} from './member-source.ts';
-export type OpenAnalysisVerification=Readonly<{version:'1.0';grade:'independent_arithmetic'|'source_attribution';method:'bigint_source_recheck'|'python_member_source_recheck'|'source_quote_recheck';plan_sha256:string;inspection_sha256:string;result_sha256:string;value:string;rows:number;native_evidence?:Readonly<{physical_run_id:string;task_run_id:string;attempt_id:string;code_identity:string;materialization_sha256:string;primary_sha256:string;independent_sha256:string;group_labels:Readonly<Record<string,string>>;primary:Readonly<Record<string,unknown>>;independent:Readonly<Record<string,unknown>>}>}>;
-export type OpenAnalysisVerifier=(plan:OpenAnalysisIR,result:OpenAnalysisValue,independentlyReadInspection:MemberSourceInspection)=>OpenAnalysisVerification|Promise<OpenAnalysisVerification>;
+import type {OpenComputationArtifact,OpenSourceCoverage} from './open-analysis-code.ts';
+/** Actual source-only independent execution and its bounded claim coverage.
+ * It does not certify company meaning, causality or arbitrary algorithm validity. */
+export type OpenAnalysisVerification=Readonly<{
+ version:'1.0';grade:'independent_arithmetic'|'source_attribution';inspection_sha256:string;result_sha256:string;
+ asset_context:import('./metric-assets.ts').OpenMetricEvidenceContext|null;semantic_context:import('../product-core/open-analysis-semantics.ts').OpenSemanticAssessment|null;unit_bindings:readonly import('./open-analysis-code.ts').OpenComputationUnitBinding[];unit_questions:readonly string[];independent:OpenComputationArtifact;coverage:readonly OpenSourceCoverage[];
+ method:Readonly<{primary:string;independent:string;rationale:string;assessment:'NON_AUTHOR_METHOD_REVIEW';review:OpenComputationMethodReview}>;
+ discrepancies:readonly Readonly<{path:string;primary:string;independent:string}>[];
+ limits:readonly string[];
+}>;
+
+export type OpenComputationMethodReview=Readonly<{
+ version:'1.0';subject_sha256:string;reads:readonly import('./analysis-agent.ts').AnalysisResourceRead[];reviewer:Readonly<{completion_id:string;computation_id:string;role:'method_review';provider:string;model:string}>;
+ claims:readonly Readonly<{path:string;asset_conformance?:Readonly<{verdict:'supported'|'insufficient'|'conflict';reason:string}>;applicability:Readonly<{verdict:'supported'|'insufficient'|'conflict';reason:string}>;independence:Readonly<{verdict:'supported'|'insufficient'|'conflict';reason:string}>;coverage:Readonly<{verdict:'supported'|'insufficient'|'conflict';reason:string}>;primary_code_lines:readonly number[];independent_code_lines:readonly number[];limitations:readonly string[]}>[];
+}>;

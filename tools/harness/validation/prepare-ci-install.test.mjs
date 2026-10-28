@@ -153,16 +153,16 @@ test('CI-SOURCE-002: isolated prepare refuses existing paths; finalize rejects e
   const repo = join(root, 'repo'), view = join(root, 'view');
   await mkdir(repo);
   for (const name of ['package.json', 'package-lock.json']) await cp(new URL(`../../../${name}`, import.meta.url), join(repo, name));
-  const sdkPath='vendor/pi-agent-runtime/0.5.3-harness.5/5b98a720a6bc1981662ef5254328bf15d6a79984ed7b0dcb0b673c65c31088fd.tgz';
-  await mkdir(join(repo,'vendor/pi-agent-runtime/0.5.3-harness.5'),{recursive:true});
+  const sdkPath='vendor/pi-agent-runtime/0.6.0-newarch.1-corrections.2/8b8fa686b9e978ba28ef3ce4eec9a49085cc32ef4f28cd067bcb2307ce09e6bd.tgz';
+  await mkdir(join(repo,'vendor/pi-agent-runtime/0.6.0-newarch.1-corrections.2'),{recursive:true});
   await cp(new URL('../../../'+sdkPath,import.meta.url),join(repo,sdkPath));
   const archive = process.env.JUANERAI_CI_NODE_GYP_ARCHIVE;
   assert.ok(archive);
   await mkdir(join(repo, 'node_modules'));
   await assert.rejects(() => prepare(repo, view, archive), /existing path/);
   await rmdir(join(repo, 'node_modules')); // empty, owned synthetic precondition fixture
-  const manifestIdentity = { bytes: 1919, sha256: '3f711435c4288d6aec59455053e26a238e808be1fd7467bf5959f6f9fb88a87b' };
-  const lockIdentity = { bytes: 375911, sha256: '781cbc926e018f2ee20491d7402256626e0feafcf7dabc65f4b66c9a6df849a8' };
+  const manifestIdentity = { bytes: 1159, sha256: '49884a35168eb7fc1c6f03ccdfb485c48c95bf5203116ff90dfd9e70f11792f1' };
+  const lockIdentity = { bytes: 300824, sha256: '748fe4eb314ddd9d9eff2121510b1948ccfd1843a969a4536cb7cbdbea972955' };
   const digest = bytes => ({ bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
   const originals = new Map();
   for (const [name, expected] of [['package.json', manifestIdentity], ['package-lock.json', lockIdentity]]) {
@@ -238,42 +238,4 @@ test('CI-SOURCE-002: isolated prepare refuses existing paths; finalize rejects e
   assert.deepEqual(JSON.parse(await readFile(join(secondView, 'installed-identity.json'))), result);
   assert.deepEqual(await readFile(join(repo, 'package-lock.json')), await readFile(new URL('../../../package-lock.json', import.meta.url)));
   await assert.rejects(() => finalize(repo, secondView, archive), /existing path/);
-});
-
-
-test('CI-SOURCE-142: retained Pi compatibility packages have verified publisher integrity and missing integrity stays rejected', async t => {
- const lock=JSON.parse(await readFile(new URL('../../../package-lock.json',import.meta.url)));
- const expected={
-  "@earendil-works/pi-agent-core": {
-    "version": "0.84.2",
-    "integrity": "sha512-8Pn3wSCxj0cfo5I6jxQYVB/3uuQRmHhAlEclyjqpOuMEdQMIODHizRogv56FLdbU+dTiGnybeHQ2N+sV1/L2YA=="
-  },
-  "@earendil-works/pi-ai": {
-    "version": "0.84.2",
-    "integrity": "sha512-6MzsrYIYNVlE7SfpbL2yYb67Qo58p/7Q+xWG1RZvoX1P80aRCHSod2/13aFpxkow1lPO2LEh3c495J0Gwmyjig=="
-  },
-  "@earendil-works/pi-client": {
-    "version": "0.84.2",
-    "integrity": "sha512-/RFSPhD/bZbpOp1oJj+UneSUFSgZhWxzcSENUY+8+8xhoBrWXMYI2t77XNx4Yf+c8YK2qTHquForhNcelYpXvg=="
-  },
-  "@earendil-works/pi-protocol": {
-    "version": "0.84.2",
-    "integrity": "sha512-jbBh03fkeckWEroHpcZBr4w5/Ibat8WwdXFlXHivYQImrQNFtLpDeL0t1cku4hmK0q3pceIRQHkw4fwbM4YILQ=="
-  },
-  "@earendil-works/pi-telemetry": {
-    "version": "0.84.2",
-    "integrity": "sha512-wg5caea7uIv1BHRBm2Y116RvFG4oSAiP5qk9tA2463PDGIr4K8M1Ceyyg5DOpF/shUUl0gk826yQJAeAcHYB9g=="
-  },
-  "@earendil-works/pi-tui": {
-    "version": "0.84.2",
-    "integrity": "sha512-ds2TLihOnM5sLJB3VpXV6y0uR5efVuHf4MN7yDpsty6hA2DUO/EDVzjp/0od0G2JslzVLMjT8T8zavtxVb+qbg=="
-  }
-};
- for(const [name,value] of Object.entries(expected)){
-  const entry=lock.packages['node_modules/@earendil-works/pi-coding-agent/node_modules/'+name];
-  assert.equal(entry.version,value.version);assert.equal(entry.integrity,value.integrity);
- }
- if(cloudArchiveUnavailable(t))return;
- const archive=await readFile(process.env.JUANERAI_CI_NODE_GYP_ARCHIVE);
- for(const name of Object.keys(expected)){const changed=structuredClone(lock);delete changed.packages['node_modules/@earendil-works/pi-coding-agent/node_modules/'+name].integrity;assert.throws(()=>installView(changed,archive),/missing registry integrity/);}
 });

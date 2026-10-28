@@ -8,6 +8,12 @@ Xanthil is the first JuanerAI product. Existing JuanerAI features and foundation
 
 ## Current State
 
+**2026-10-28: development paused by the user. This repository preserves the latest
+unfinished product snapshot, not an accepted or production-ready release.** The
+latest real end-to-end trial stopped with `UNKNOWN` during R1 numeric review;
+the R1 full-text re-review did not run. See [the pause record](PAUSED.md) for the
+fixed SDK, known gaps, validation scope and resumption boundary.
+
 The repository retains its approved Xanthil CLI local-analysis slice, TypeScript migration, Model Pack contract-enabler and reusable Product Core/Application/Port/Adapter/Profile boundaries.
 
 On 2026-09-18 the user made all pending Xanthil Desktop and Model Pack development plans **VOID**. See [the current planning decision](docs/planning/README.md). Use the current approved Blueprint and applicable execution input; withdrawn plans and historical reviews do not restore execution authority.

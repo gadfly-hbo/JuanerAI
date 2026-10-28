@@ -20,20 +20,20 @@ test('Q11-UX-C03: citing both mutually exclusive options is not an unambiguous n
 
 test('Q11-UX-C03: a more specific literal answer survives persisted readback and later updates',()=>{
  const f=compile(),validate=Reflect.get(context,'validateOpenSemanticAssessment');
- for(const [dimension,alternatives,value] of [['unit',['元','其他货币'],'万元人民币'],['metric',['订单金额','净销售额'],'净销售额（含税）']]){
+ for(const [dimension,alternatives,value] of [['unit',['元','其他货币'],'万元人民币'],['metric',['订单金额','净销售额'],'净销售额（含税）']] as const){
   const prior=f({definitions:[],conflicts:[{dimension,question:'请选择口径',alternatives,resolution_quote:null}]},'分析销售额');
   const current=f({definitions:[{dimension,value,user_quote:value}],conflicts:[]},value,prior);
   assert.deepEqual(validate(current,['分析销售额',value]),current);
   const later=f({definitions:[],conflicts:[]},'继续',current);
   assert.deepEqual(validate(later,['分析销售额',value,'继续']),later);
-  const tampered=structuredClone(current);tampered.conflicts[0].resolution_quote=alternatives.join('和');tampered.conflicts[0].user_question=alternatives.join('和');
+  const tampered=structuredClone(current);Reflect.set(tampered.conflicts[0]!,'resolution_quote',alternatives.join('和'));Reflect.set(tampered.conflicts[0]!,'user_question',alternatives.join('和'));
   assert.throws(()=>validate(tampered,[...alternatives,alternatives.join('和')]),{code:'CONTEXT_CHANGED'});
  }
 });
 
 test('Q11-UX-C03: independently mentioned overlapping alternatives are still ambiguous',()=>{
  const f=compile();
- for(const [dimension,alternatives,value] of [['unit',['元','美元'],'元和美元'],['metric',['订单金额','含税订单金额'],'订单金额和含税订单金额']]){
+ for(const [dimension,alternatives,value] of [['unit',['元','美元'],'元和美元'],['metric',['订单金额','含税订单金额'],'订单金额和含税订单金额']] as const){
   const pending={dimension,question:'选哪个？',alternatives,resolution_quote:null},prior=f({definitions:[],conflicts:[pending]},'分析');
   assert.throws(()=>f({definitions:[{dimension,value,user_quote:value}],conflicts:[]},value,prior),{code:'SEMANTIC_CONFIRMATION_INVALID'});
   assert.throws(()=>f({definitions:[],conflicts:[{...pending,resolution_quote:value}]},value,prior),{code:'SEMANTIC_CONFIRMATION_INVALID'});

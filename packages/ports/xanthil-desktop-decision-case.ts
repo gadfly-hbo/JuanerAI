@@ -78,12 +78,17 @@ export type DesktopProjectOpen = Readonly<{
 }>;
 
 /** Current local decision-case storage; no model capability is supplied. */
+export type ProfessionalDraftAuthorization=Readonly<{version:'1.0';id:string;owner:OwnerRef;command:import('../contracts/xanthil-desktop-ipc.ts').StartAssistanceRequest;action_kind:'organize_question'|'explain_evidence'|'draft_candidates';payload_sha256:string;identity:import('./open-analysis-store.ts').OpenTaskIdentity;work_id:string;recipient:Readonly<{provider:string;model:string}>;created_at:string;revoked_at:string|null;publication:Readonly<{draft_id:string;result:Awaited<ReturnType<import('./analysis-agent.ts').AnalysisAgent['advance']>>;content:unknown;at:string}>|null}>;
 export type DesktopDecisionCaseStore = Readonly<{
-  requestAssistanceCancellation(input:Readonly<{command:import('../contracts/xanthil-desktop-ipc.ts').CancelAssistanceRequest;completed_at:string;input_fingerprint:string}>):Promise<DesktopProjection>;
+  authorizeProfessionalDraft(input:Readonly<{command:import('../contracts/xanthil-desktop-ipc.ts').StartAssistanceRequest;configuration_sha256:string;recipient:ProfessionalDraftAuthorization['recipient'];at:string}>):Promise<ProfessionalDraftAuthorization>;
+  readProfessionalAuthorization(id:string):Promise<ProfessionalDraftAuthorization|null>;
+  listProfessionalAuthorizations(owner:OwnerRef):Promise<readonly ProfessionalDraftAuthorization[]>;
+  isProfessionalAuthorized(id:string):boolean;
+  authorizesProfessionalWork(id:string,phase:'bind'|'advance'|'record'|'read'):boolean;
+  revokeProfessionalAuthorization(input:Readonly<{command:import('../contracts/xanthil-desktop-ipc.ts').CancelAssistanceRequest;at:string}>):Promise<DesktopProjection>;
+  publishProfessionalDraft(input:Readonly<{authorization_id:string;result:Awaited<ReturnType<import('./analysis-agent.ts').AnalysisAgent['advance']>>;content:unknown;at:string}>):Promise<DesktopProjection>;
   disposeAssistanceDraft(input:Readonly<{command:import('../contracts/xanthil-desktop-ipc.ts').DisposeAssistanceDraftRequest;form_id:string;completed_at:string;input_fingerprint:string}>):Promise<DesktopProjection>;
   checkAssistanceAdmission(input:import('../contracts/xanthil-desktop-ipc.ts').StartAssistanceRequest):Promise<DesktopProjection|null>;
-  admitAssistance(input:Readonly<{command:import('../contracts/xanthil-desktop-ipc.ts').StartAssistanceRequest;attempt_id:string;runtimeSelection:import('./local-analysis.ts').AssistanceSelection;started_at:string;deadline_at:string;input_fingerprint:string}>):Promise<DesktopProjection>;
-  settleAssistance(input:Readonly<{command:RevisionCommand;attempt_id:string;completed_at:string;input_fingerprint:string;terminal:Readonly<{status:'succeeded';draft_id:string;actual_provider:string;actual_model:string;draft_kind:'question_fields'|'evidence_explanation'|'candidates';generated_content:import('../contracts/xanthil-desktop-ipc.ts').AssistanceDraftContent}>|Readonly<{status:'failed';reason:'provider_failed'|'validation_failed'|'deadline_exceeded'|'interrupted'}>|Readonly<{status:'cancelled';reason:'user_cancelled'}>}>):Promise<DesktopProjection>;
   recordDisclosure(input: Readonly<{command: import('../contracts/xanthil-desktop-ipc.ts').DecideAssistanceDisclosureRequest;disclosure_id:string;preview:import('../contracts/xanthil-desktop-ipc.ts').DisclosurePreview;decided_at:string;input_fingerprint:string}>):Promise<DesktopProjection>;
   checkReportExport(input:ExportReportRequest):Promise<Extract<ExportValue,{status:'already_recorded'}>|null>;
   readReportExport(input:OwnerRef&Readonly<{command_id:string;report_id:string;format:'markdown'|'html'}>):Promise<DesktopPreparedExport>;
@@ -93,7 +98,7 @@ export type DesktopDecisionCaseStore = Readonly<{
   acceptFinding(input:Readonly<{command:AcceptFindingRequest;acceptance_id:string;accepted_at:string;input_fingerprint:string}>):Promise<DesktopProjection>;
   createDraftRevision(input:Readonly<{command:CreateDraftRevisionRequest;ids:Readonly<{revision_id:string}>;created_at:string;input_fingerprint:string}>):Promise<DesktopProjection>;
   requestAnalysisCancellation(input:Readonly<{command:CancelAnalysisRequest;completed_at:string;input_fingerprint:string}>):Promise<DesktopProjection>;
-  reconcileInterrupted(input:OwnerRef&Readonly<{command_id:string;target_kind:'analysis_run'|'assistance_attempt';target_id:string;completed_at:string;input_fingerprint:string}>):Promise<DesktopProjection>;
+  reconcileInterrupted(input:OwnerRef&Readonly<{command_id:string;target_kind:'analysis_run';target_id:string;completed_at:string;input_fingerprint:string}>):Promise<DesktopProjection>;
   admitAnalysis(input: DesktopAnalysisAdmission): Promise<DesktopProjection>;
   publishAnalysisSuccessCandidates(input: DesktopAnalysisCandidates): Promise<Readonly<{published:true;aggregatePublication:DesktopAggregatePublication;reportPublication:DesktopReportPublication}>>;
   settleAnalysis(input: DesktopAnalysisSettlement): Promise<DesktopProjection>;
@@ -139,16 +144,14 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 export function defineDesktopDecisionCaseStore(implementation: unknown): DesktopDecisionCaseStore {
-  const methods = ['openProject', 'listSessions', 'readProjection', 'markIntegrityBlocked', 'createSession', 'saveForm', 'waitForProjection', 'publishConfirmation', 'readConfirmedSnapshot', 'admitAnalysis', 'publishAnalysisSuccessCandidates', 'settleAnalysis','requestAnalysisCancellation','reconcileInterrupted','createDraftRevision','acceptFinding','readReportContext','completeCase','checkReportExport','readReportExport','recordReportExport','recordDisclosure','checkAssistanceAdmission','admitAssistance','settleAssistance','requestAssistanceCancellation','disposeAssistanceDraft'] as const;
+  const methods = ['authorizeProfessionalDraft','readProfessionalAuthorization','listProfessionalAuthorizations','isProfessionalAuthorized','authorizesProfessionalWork','revokeProfessionalAuthorization','publishProfessionalDraft','openProject', 'listSessions', 'readProjection', 'markIntegrityBlocked', 'createSession', 'saveForm', 'waitForProjection', 'publishConfirmation', 'readConfirmedSnapshot', 'admitAnalysis', 'publishAnalysisSuccessCandidates', 'settleAnalysis','requestAnalysisCancellation','reconcileInterrupted','createDraftRevision','acceptFinding','readReportContext','completeCase','checkReportExport','readReportExport','recordReportExport','recordDisclosure','checkAssistanceAdmission','disposeAssistanceDraft'] as const;
   if (!isRecord(implementation)) fail();
   const keys = Object.keys(implementation);
   if (keys.length !== methods.length || keys.some((key) => !methods.includes(key as (typeof methods)[number])) || methods.some((method) => typeof implementation[method] !== 'function')) fail();
   return Object.freeze({
-    requestAssistanceCancellation:implementation.requestAssistanceCancellation as DesktopDecisionCaseStore['requestAssistanceCancellation'],
+    authorizeProfessionalDraft:implementation.authorizeProfessionalDraft as DesktopDecisionCaseStore['authorizeProfessionalDraft'],readProfessionalAuthorization:implementation.readProfessionalAuthorization as DesktopDecisionCaseStore['readProfessionalAuthorization'],listProfessionalAuthorizations:implementation.listProfessionalAuthorizations as DesktopDecisionCaseStore['listProfessionalAuthorizations'],isProfessionalAuthorized:implementation.isProfessionalAuthorized as DesktopDecisionCaseStore['isProfessionalAuthorized'],authorizesProfessionalWork:implementation.authorizesProfessionalWork as DesktopDecisionCaseStore['authorizesProfessionalWork'],revokeProfessionalAuthorization:implementation.revokeProfessionalAuthorization as DesktopDecisionCaseStore['revokeProfessionalAuthorization'],publishProfessionalDraft:implementation.publishProfessionalDraft as DesktopDecisionCaseStore['publishProfessionalDraft'],
     disposeAssistanceDraft:implementation.disposeAssistanceDraft as DesktopDecisionCaseStore['disposeAssistanceDraft'],
     checkAssistanceAdmission:implementation.checkAssistanceAdmission as DesktopDecisionCaseStore['checkAssistanceAdmission'],
-    admitAssistance:implementation.admitAssistance as DesktopDecisionCaseStore['admitAssistance'],
-    settleAssistance:implementation.settleAssistance as DesktopDecisionCaseStore['settleAssistance'],
     recordDisclosure:implementation.recordDisclosure as DesktopDecisionCaseStore['recordDisclosure'],
     checkReportExport:implementation.checkReportExport as DesktopDecisionCaseStore['checkReportExport'],
     readReportExport:implementation.readReportExport as DesktopDecisionCaseStore['readReportExport'],

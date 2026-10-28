@@ -1,15 +1,15 @@
-import {currentJudgmentReview,deliveredJudgmentReview} from './open-analysis-judgment-review.ts';
-import {taskHash} from './member-task.ts';
+import {hashFiniteJson} from './member-task.ts';
 import {membershipRecord as closed,membershipUuid} from './member-analysis.ts';
-import {openAnalysisFindings} from '../contracts/open-analysis-findings.mjs';
+import type {OpenFinding} from '../contracts/open-analysis-findings.mjs';
 import type {OpenStoredTask} from '../ports/open-analysis-store.ts';
+import {reportPostView} from './report-postprocessing.ts';
 
 export type ReportContentCommand=Readonly<{version:'1.0';command_id:string;expected_content_sha256:string;action:'save'|'confirm'|'suggest'|'complete'|'fail'|'discard'|'apply';text?:string;finding_ids?:readonly string[];instruction?:string;paragraph_id?:string;suggestion_id?:string}>;
 type ContentSnapshot=Readonly<{basis_sha256:string;review_sha256?:string;version:number;text:string;origin:string;finding_ids:readonly string[];paragraph_origins:readonly string[];partial:boolean}>;
 export type ReportContentEvent=Readonly<{command:ReportContentCommand;saved:true;command_id:string;content_version:number;content_sha256:string;before:ContentSnapshot;snapshot:ContentSnapshot;at:string}>;
 type Suggestion={id:string;sha256:string;paragraph_id:string;original:string;instruction:string;text:string|null;status:'generating'|'ready'|'failed'|'discarded'|'applied';at:string};
 function fail(code:string):never{throw Object.assign(new Error(code),{code});}
-const hash=(v:unknown)=>taskHash(v);
+const hash=(v:unknown)=>hashFiniteJson(v);
 const split=(text:string)=>text.split(/\n\s*\n/);
 export function reportContentCommand(raw:unknown):ReportContentCommand{
  const action=Reflect.get((raw??{}) as object,'action'),extras=action==='save'?['text','finding_ids']:action==='suggest'?['instruction',...(Object.hasOwn((raw??{}) as object,'paragraph_id')?['paragraph_id']:[])]:action==='complete'?['text','suggestion_id']:['apply','discard','fail'].includes(action)?['suggestion_id']:[];
@@ -23,17 +23,11 @@ export function reportContentCommand(raw:unknown):ReportContentCommand{
  if(action==='save'&&(!Array.isArray(x.finding_ids)||x.finding_ids.length>1000||x.finding_ids.some(id=>typeof id!=='string')||new Set(x.finding_ids).size!==x.finding_ids.length))fail('VALIDATION_FAILED');
  return structuredClone(raw) as ReportContentCommand;
 }
-export function reportBase(t:OpenStoredTask){
- const o=t.outcome??t.conversation_outcome;
- if(!o&&!(t.verified_steps?.length))return null;
- // The new draft starts at the immutable generated Outcome. Legacy appended
- // expressions and discussion rewrites stay inspectable history, not auto-adopted content.
- const numeric=t.outcome?.numeric_report,doc=numeric?.document as {interpretations?:{interpretation:string}[]}|undefined;
- const review=t.review_policy?deliveredJudgmentReview(t):null,rawReview=t.review_policy?currentJudgmentReview(t):null;
- const text=(review?.delivery??(doc?.interpretations?.map(p=>p.interpretation).join('\n\n')||t.outcome?.explanation.text||t.conversation_outcome?.text||'已保存部分核验结果；完整分析与解释尚未完成。')).replace(/\{\{([^{}]+)\}\}/g,(_raw,id:string)=>{const n=numeric?.values.find(n=>n.id===id);return n?n.display+(n.unit==='%'?(n.display.endsWith('%')||n.status==='not_applicable'?'':'%'):' '+n.unit):'未取得适用数字，需查看依据';});
- const findings=t.outcome?openAnalysisFindings(t):o?[]:(t.verified_steps??[]).filter(s=>s.saved&&hash(s.identity)===hash(t.identity)).flatMap(s=>openAnalysisFindings({...t,outcome:{version:'1.0',outcome_id:s.step_id,identity:s.identity,framework:s.framework.plan,calculation:s.calculation,verification:s.verification,explanation:{kind:'MODEL_EXPLANATION',text:''},human_judgment:'not_recorded'}}));
- return {identity:t.identity,basis_sha256:hash({identity:t.identity,outcome:o??t.verified_steps,...(rawReview?{judgment_review_sha256:rawReview.review_sha256}:{})}),...(rawReview?{review_sha256:rawReview.review_sha256}:{}),text,partial:!o||numeric?.status==='partial'||t.outcome?.asset_adoption?.local.completion==='partial_refund_risk',findings};
+export function reportBase(t:OpenStoredTask):{identity:OpenStoredTask['identity'];basis_sha256:string;review_sha256?:string;text:string;partial:boolean;findings:readonly OpenFinding[]}|null{
+ const report=t.model_report;if(!report)return null;const edition=t.report_postprocessing?.editions.at(-1);
+ return {identity:t.identity,basis_sha256:hash({identity:t.identity,outcome:report,...(edition?{report_edition:{version:edition.version,sha256:edition.sha256}}:{})}),text:edition?.text??report.text,partial:false,findings:[]};
 }
+
 function currentSnapshot(t:OpenStoredTask):ContentSnapshot|null{
  const base=reportBase(t);if(!base)return null;
  const events=t.report_content_events??[],sameBasis=events.filter(e=>e.snapshot.basis_sha256===base.basis_sha256);
@@ -52,7 +46,7 @@ export function projectReportContent(t:OpenStoredTask){
  }
  const confirmations=events.filter(e=>e.command.action==='confirm').map(e=>({sha256:e.content_sha256,version:e.content_version,at:e.at,partial:e.snapshot.partial}));
  const confirmed=confirmations.some(c=>c.sha256===sha256);
- return {...snapshot,sha256,identity:base.identity,findings:base.findings,numeric_values:t.outcome?.numeric_report?.values??[],at:events.at(-1)?.at??null,confirmed,confirmations,history,paragraphs:split(snapshot.text).map((text,i)=>({id:'interpretation/'+i,text,origin:snapshot.paragraph_origins[i]??snapshot.origin})),suggestion:suggestion?{...suggestion,stale:suggestion.sha256!==sha256}:null,legacy_expressions:t.report_edits??[],model_proposals:(t.revision_previews??[]).filter(p=>p.state==='answered'&&p.report).map(p=>({text:p.text,command_id:p.command_id})),invalidation:!confirmed&&confirmations.length?'报告内容或来源已变化，前版内容确认不再适用。':null};
+ return {...snapshot,sha256,identity:base.identity,postprocessing:reportPostView(t,snapshot.text),findings:base.findings,numeric_values:[] as readonly import('../ports/open-analysis-numeric-report.ts').OpenNumericValue[],at:events.at(-1)?.at??null,confirmed,confirmations,history,paragraphs:split(snapshot.text).map((text,i)=>({id:'interpretation/'+i,text,origin:snapshot.paragraph_origins[i]??snapshot.origin})),suggestion:suggestion?{...suggestion,stale:suggestion.sha256!==sha256}:null,invalidation:!confirmed&&confirmations.length?'报告内容或来源已变化，前版内容确认不再适用。':null};
 }
 export function resolveReportReferences(t:OpenStoredTask,raw:unknown){
  const c=projectReportContent(t);if(!c||!Array.isArray(raw)||!raw.length||raw.length>8)fail('RESULT_OUTSIDE_AUTHORIZATION');
@@ -67,9 +61,8 @@ export function nextReportContentEvent(t:OpenStoredTask,raw:unknown):ReportConte
  const command=reportContentCommand(raw),current=projectReportContent(t),before=currentSnapshot(t);if(!current||!before)fail('NOT_FOUND');
  const prior=t.report_content_events?.find(e=>e.command_id===command.command_id);if(prior){if(hash(prior.command)!==hash(command))fail('COMMAND_CONFLICT');return prior;}
  const internal=['complete','fail'].includes(command.action),suggestion=current.suggestion;
- const unsettledSteps=[...new Map((t.step_events??[]).filter(e=>hash(e.identity)===hash(t.identity)).map(e=>[e.step_id,e])).values()].some(e=>['running','checking','unknown'].includes(e.phase));
- const settledPartial=t.state==='waiting'&&current.partial&&current.findings.length>0&&!unsettledSteps;
- if(!internal&&(t.pending_stop_epoch!==null||['running','unknown','ready'].includes(t.state)||t.state==='waiting'&&!settledPartial||t.revision_previews?.some(p=>['preparing','unknown'].includes(p.state))))fail('TASK_UNCONFIRMED');
+ const settledPartial=t.state==='waiting'&&current.partial&&current.findings.length>0;
+ if(!internal&&(t.pending_stop_epoch!==null||['running','unknown','ready'].includes(t.state)||t.state==='waiting'&&!settledPartial))fail('TASK_UNCONFIRMED');
  if(!internal&&command.expected_content_sha256!==current.sha256)fail('REVISION_CONFLICT');
  if(command.action==='save'&&command.finding_ids!.some(id=>!current.findings.some(f=>f.id===id)))fail('RESULT_OUTSIDE_AUTHORIZATION');
  if(command.action==='suggest'&&!current.paragraphs.some(p=>p.id===(command.paragraph_id??'interpretation/0')))fail('RESULT_OUTSIDE_AUTHORIZATION');

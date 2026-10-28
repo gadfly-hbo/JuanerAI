@@ -1,10 +1,10 @@
 import {bindQualifiedPreparation,preparedConfirmationContext,validateMemberConfirmation,memberConfirmationDocuments,type PreparedConfirmationRequest,type PreparedConfirmationContext} from '../product-core/member-preparation.ts';
 import {analysisPlanIdentity,analysisArtifactVersion,analysisManifestVersion,validatePlanStart,validateMembershipPlan,validateAnalysisManifest,analysisResult,analysisRatio,analysisJudgment,analysisRefutation,membershipFindingFacts,membershipJudgment,membershipHash,type MembershipPlan,type AnalysisRunManifest} from '../product-core/member-analysis.ts';
 import type { LocalModelAccess } from '../ports/provider-settings.ts';
+import type {AnalysisAgent} from '../ports/analysis-agent.ts';
 import { createHash, randomUUID } from 'node:crypto';
-import { desktopAssistancePayload, validateDesktopAssistanceDraft } from '../product-core/xanthil-desktop-decision-case.ts';
+import { desktopAssistancePayload, validateDesktopAssistanceDraft,professionalDraftKinds,professionalDraftParameters } from '../product-core/xanthil-desktop-decision-case.ts';
 import type { DisclosurePreview } from '../contracts/xanthil-desktop-ipc.ts';
-import { defineDecisionAssistanceRuntime } from '../ports/local-analysis.ts';
 import { validateXanthilDesktopRequest, type ConfirmRevisionRequest, type DesktopProjection, type ImportInspection, type OwnerRef, type SessionSummary } from '../contracts/xanthil-desktop-ipc.ts';
 import { canonicalDesktopJson, desktopConfirmationDocuments, desktopFinalReport, desktopJudgment, parseDesktopCsv, prepareDesktopData, validateDesktopCalculationResult, validateDesktopDecisionForm, validateDesktopRunManifest, type DesktopRunManifest } from '../product-core/xanthil-desktop-decision-case.ts';
 import { defineDesktopDecisionCaseStore, defineDesktopLocalAnalysisExecution, defineDesktopRunEvidenceStore, type DesktopAnalysisSettlement, type DesktopDecisionCaseStore, type DesktopProjectOpen, type DesktopRunBytes, type DesktopSourcePair, type DesktopTerminalRunBundle } from '../ports/xanthil-desktop-decision-case.ts';
@@ -69,10 +69,10 @@ function sessionSummary(value: unknown): SessionSummary {
 
 /** I2 composes Session, import and deterministic analysis; model and closure capabilities stay absent. */
 export function createXanthilDesktopDecisionCaseApplication(dependencies: unknown) {
-  const dependency = exactRecord(dependencies, ['store','analysisExecution','runEvidenceStore','assistanceRuntime','clock','deadlineScheduler',...(record(dependencies)&&Object.hasOwn(dependencies,'modelAccess')?['modelAccess']:[])]);
+  const dependency = exactRecord(dependencies, ['store','analysisExecution','runEvidenceStore','clock','deadlineScheduler',...(record(dependencies)&&Object.hasOwn(dependencies,'modelAccess')?['modelAccess']:[]),...(record(dependencies)&&Object.hasOwn(dependencies,'agent')?['agent']:[])]);
+  const agent=dependency.agent as AnalysisAgent|undefined;
   const modelAccess=dependency.modelAccess as LocalModelAccess|undefined;
   const disclosureGenerations=new Map<string,number>();
-  const assistance=dependency.assistanceRuntime===null?null:defineDecisionAssistanceRuntime(dependency.assistanceRuntime);
   if (typeof dependency.clock !== 'function') failure('VALIDATION_FAILED');
   const store = defineDesktopDecisionCaseStore(dependency.store);
   const clock = dependency.clock as Clock;
@@ -85,19 +85,7 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
   const scheduler=exactRecord(dependency.deadlineScheduler,['schedule']);
   if(typeof scheduler.schedule!=='function')failure('VALIDATION_FAILED');
   const activeRuns=new Map<string,{abort:AbortController;reason:string|null}>();
-  type ModelWork={abort:AbortController;reason:string|null;release?:()=>void;physicalPending?:boolean;finished?:boolean};
-  const activeAttempts=new Map<string,ModelWork>();
-  const modelWork=new Set<ModelWork>();
-  let modelClosed=false;
-  function modelGuard(){if(modelClosed)failure('INTERRUPTED');}
-  function releaseModelWork(work:ModelWork){
-    if(!work.physicalPending){work.release?.();work.release=undefined;}
-  }
-  function closeModelWork(){
-    modelClosed=true;disclosures.clear();disclosureGenerations.clear();
-    for(const work of modelWork){work.reason='interrupted';work.abort.abort();releaseModelWork(work);}
-    if(activeAttempts.size)void assistance?.cancel().catch(()=>undefined);
-  }
+  const professional=new Map<string,{owner:OwnerRef;abort:AbortController;done:Promise<void>}>(),professionalDone=new Set<Promise<void>>();let closed=false;
   const timestamp=()=>{const now=clock();if(!(now instanceof Date)||!Number.isFinite(now.getTime()))failure('VALIDATION_FAILED');return now.toISOString();};
   const hash=(input:Uint8Array|string)=>createHash('sha256').update(input).digest('hex');
   const encode=(value:unknown)=>new TextEncoder().encode(canonicalDesktopJson(value));
@@ -105,102 +93,65 @@ export function createXanthilDesktopDecisionCaseApplication(dependencies: unknow
   const fingerprint=(operation_kind:string,command:Record<string,unknown>,detail:Record<string,unknown>={})=>{const {command_id,...request}=command;void command_id;return hash(canonicalDesktopJson({operation_kind,request,...detail}));};
 
   async function prepareAssistanceDisclosure(input:unknown):Promise<DisclosurePreview>{
-    modelGuard();
-    if(resultPending)failure('RESULT_PENDING');
+    if(closed)failure('SERVICE_CLOSED');if(resultPending)failure('RESULT_PENDING');
     const command=validateXanthilDesktopRequest('prepareAssistanceDisclosure',input),owner={project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id};
-    const projection=await readProjection(owner);if(projection.revision?.row_version!==command.expected_row_version)failure('STALE_REVISION');
+    const projection=await readProjection(owner);requireProfessionalSettlement(projection);if(closed)failure('SERVICE_CLOSED');if(projection.revision?.row_version!==command.expected_row_version)failure('STALE_REVISION');
     const allowed=desktopAssistancePayload(projection,command.action_kind),preview:DisclosurePreview=Object.freeze({preview_token:randomUUID(),action_kind:command.action_kind,...allowed,payload_sha256:hash(allowed.payload_text),requested_provider:command.requested_provider,requested_model:command.requested_model,irretractability_notice:'发送后的模型载荷无法撤回；取消仅阻止后续结果采用。',cost_notice:null});
-    modelGuard();disclosures.set(preview.preview_token,{owner,version:command.expected_row_version,preview,generation:modelAccess?.snapshot().generation});return preview;
+    disclosures.set(preview.preview_token,{owner,version:command.expected_row_version,preview,generation:modelAccess?.snapshot().generation});return preview;
   }
+
 
   async function startAssistance(input:unknown):Promise<DesktopProjection>{
-    if(resultPending)failure('RESULT_PENDING');const command=validateXanthilDesktopRequest('startAssistance',input),owner={project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id};
-    modelGuard();const control:ModelWork={abort:new AbortController(),reason:null};modelWork.add(control);
-    let lease:{release():void}|undefined,transferred=false;
-    try{
-    if(modelAccess&&assistance)lease=await modelAccess.acquire(disclosureGenerations.get(command.disclosure_id)??-1,{session_id:owner.session_id,label:'专业模式辅助'});
-    control.release=()=>lease?.release();modelGuard();
-    const prior=await store.checkAssistanceAdmission(command);modelGuard();if(prior)return prior;
-    const projection=await readProjection(owner),disclosure=projection.disclosures.find(d=>d.disclosure_id===command.disclosure_id);
-    modelGuard();if(!disclosure)failure('NOT_FOUND');if(disclosure.decision!=='accepted')failure('AUTHORITY_REQUIRED');
-    if(projection.revision?.row_version!==command.expected_row_version)failure('STALE_REVISION');
-    const payload=desktopAssistancePayload(projection,disclosure.action_kind);
-    if(hash(payload.payload_text)!==disclosure.payload_sha256||canonicalDesktopJson(payload.categories)!==canonicalDesktopJson(disclosure.categories)||canonicalDesktopJson(payload.aggregate_refs)!==canonicalDesktopJson(disclosure.aggregate_refs))failure('PAYLOAD_STALE');
-    if(!assistance)failure('PROVIDER_UNAVAILABLE');
-    const selection=await assistance.preflightSelection({requested_provider:disclosure.requested_provider,requested_model:disclosure.requested_model});
-    modelGuard();exactRecord(selection,['runtime_id','runtime_version','adapter_id','adapter_version','requested_provider','requested_model','ready']);
-    if(selection.ready!==true||selection.requested_provider!==disclosure.requested_provider||selection.requested_model!==disclosure.requested_model||Object.entries(selection).some(([k,v])=>k!=='ready'&&(typeof v!=='string'||!v.trim())))failure('PROVIDER_UNAVAILABLE');
-    const attempt_id=randomUUID(),started_at=timestamp(),deadline_at=new Date(Date.parse(started_at)+300000).toISOString();
-    let admitted:DesktopProjection;try{admitted=await store.admitAssistance({command,attempt_id,runtimeSelection:selection,started_at,deadline_at,input_fingerprint:fingerprint('start_assistance',command)});}catch(error){if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;throw error;}
-    if(admitted.attempts.some(a=>a.attempt_id===attempt_id&&a.status==='Running')){
-      activeAttempts.set(attempt_id,control);
-      transferred=true;
-      void executeAssistance(owner,attempt_id,payload.payload_text,control).catch(error=>{if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;}).finally(()=>{activeAttempts.delete(attempt_id);modelWork.delete(control);control.finished=true;releaseModelWork(control);});
-    }
-    return admitted;
-    } finally {if(!transferred){modelWork.delete(control);lease?.release();}}
+    if(closed)failure('SERVICE_CLOSED');if(resultPending)failure('RESULT_PENDING');if(!agent)failure('MODEL_UNAVAILABLE');
+    const command=validateXanthilDesktopRequest('startAssistance',input),owner={project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id};
+    const prior=await store.checkAssistanceAdmission(command);if(closed)failure('SERVICE_CLOSED');if(prior)return readProjection(owner);
+    const before=await readProjection(owner);requireProfessionalSettlement(before);if(closed)failure('SERVICE_CLOSED');const disclosure=before.disclosures.find(d=>d.disclosure_id===command.disclosure_id),recipient=agent.recipient('desktop_draft');
+    if(!disclosure||disclosure.decision!=='accepted'||disclosure.requested_provider!==recipient.provider||disclosure.requested_model!==recipient.model)failure('AUTHORITY_REQUIRED');
+    if(modelAccess&&(!modelAccess.snapshot().available||disclosureGenerations.get(disclosure.disclosure_id)!==modelAccess.snapshot().generation))failure('CONFIGURATION_CHANGED');
+    const payload=desktopAssistancePayload(before,disclosure.action_kind);if(hash(payload.payload_text)!==disclosure.payload_sha256)failure('PAYLOAD_STALE');
+    const generation=modelAccess?.snapshot().generation,credential=modelAccess?await modelAccess.acquire(generation!,{session_id:String(owner.session_id),label:'Desktop 专业用途'}):undefined;let handedOff=false;
+    try{if(closed)failure('SERVICE_CLOSED');const configuration_sha256=await agent.configuration();if(closed)failure('SERVICE_CLOSED');
+    const permission=await store.authorizeProfessionalDraft({command,configuration_sha256,recipient,at:timestamp()}),abort=new AbortController();
+    if(closed){const current=await store.readProjection(permission.owner);await store.revokeProfessionalAuthorization({command:{contract_version:'1.0',command_id:randomUUID(),...permission.owner,expected_row_version:current.revision!.row_version,attempt_id:permission.id},at:timestamp()});failure('SERVICE_CLOSED');}
+    const authorized=()=>!closed&&!abort.signal.aborted&&store.isProfessionalAuthorized(permission.id)&&(!modelAccess||modelAccess.snapshot().available&&modelAccess.snapshot().generation===generation),kind=professionalDraftKinds[permission.action_kind];
+    const done=Promise.resolve().then(async()=>{let content:unknown;
+      const result=await agent.advance({identity:permission.identity,work_id:permission.work_id,command_id:permission.id,purpose:'desktop_draft',prompt:payload.payload_text,system:'自主阅读获准 Skill 和业务载荷，提出本次指定专业草稿。不认证计算、独立核验、决定或行动，不扩大范围；草稿随后经真实结算核对并等待人工采纳。',
+       capabilities:async()=>[{name:'propose_professional_draft',effect:'write',description:'Propose the disclosed professional content. It is not saved or adopted yet; publication requires qualified completion and current source authority.',parameters:professionalDraftParameters(kind),execute:async(raw,signal)=>{if(!authorized()||signal.aborted)failure('AUTHORITY_REQUIRED');validateDesktopAssistanceDraft(kind,raw,true);content=structuredClone(raw);return {accepted:true,saved:false,classification:'MODEL_PROPOSAL'};}}],authorize:authorized,signal:abort.signal});
+      if(!authorized())failure('AUTHORITY_REQUIRED');if(content===undefined)failure('DRAFT_REQUIRED');await store.publishProfessionalDraft({authorization_id:permission.id,result,content,at:timestamp()});
+    }).finally(async()=>{await agent.waitForIdle();credential?.release();professional.delete(permission.id);});
+    professional.set(permission.id,{owner,abort,done});professionalDone.add(done);handedOff=true;void done.catch(()=>undefined);return await readProjection(owner);
+    }catch(error){if(!handedOff)credential?.release();throw error;}
   }
-
+  async function waitForIdle(){const pending=[...professionalDone],results=await Promise.allSettled(pending);await agent?.waitForIdle();for(const p of pending)professionalDone.delete(p);const failed=results.find(r=>r.status==='rejected');if(failed?.status==='rejected')throw failed.reason;}
   async function cancelAssistance(input:unknown):Promise<DesktopProjection>{
     if(resultPending)failure('RESULT_PENDING');const command=validateXanthilDesktopRequest('cancelAssistance',input);
-    try{const projection=await store.requestAssistanceCancellation({command,completed_at:timestamp(),input_fingerprint:fingerprint('cancel_assistance',command)});
-      const live=activeAttempts.get(command.attempt_id);if(live&&projection.attempts.find(a=>a.attempt_id===command.attempt_id)?.status==='Cancelled'){live.reason='user_cancelled';live.abort.abort();void assistance?.cancel().catch(()=>undefined);}return projection;
-    }catch(error){if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;throw error;}
+    try{await store.revokeProfessionalAuthorization({command,at:timestamp()});professional.get(command.attempt_id)?.abort.abort();return readProjection({project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id});}
+    catch(error){if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;throw error;}
   }
+  async function close(){closed=true;disclosures.clear();const failures:unknown[]=[];for(const [id,p] of professional){try{const current=await store.readProjection(p.owner);await store.revokeProfessionalAuthorization({command:{contract_version:'1.0',command_id:randomUUID(),...p.owner,expected_row_version:current.revision!.row_version,attempt_id:id},at:timestamp()});}catch(error){failures.push(error);}finally{p.abort.abort();}}await Promise.allSettled([...professionalDone]);await agent?.waitForIdle();if(failures.length)throw failures[0];}
 
   async function disposeAssistanceDraft(input:unknown):Promise<DesktopProjection>{
     if(resultPending)failure('RESULT_PENDING');const command=validateXanthilDesktopRequest('disposeAssistanceDraft',input);
+    requireProfessionalSettlement(await readProjection({project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id}));
     try{return await store.disposeAssistanceDraft({command,form_id:randomUUID(),completed_at:timestamp(),input_fingerprint:fingerprint('dispose_assistance_draft',command)});}catch(error){if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;throw error;}
   }
 
-  async function executeAssistance(owner:OwnerRef,attemptId:string,payloadText:string,control:ModelWork):Promise<void>{
-    const before=await store.readProjection(owner),attempt=before.attempts.find(a=>a.attempt_id===attemptId)!;
-    const deadline=Date.parse(attempt.deadline_at),scheduled=(scheduler.schedule as (v:{at_epoch_ms:number;callback:()=>void})=>{cancel():void})({at_epoch_ms:deadline,callback:()=>{control.reason='deadline_exceeded';control.abort.abort();void assistance!.cancel().catch(()=>undefined);}});
-    const settle=async(terminal:Parameters<DesktopDecisionCaseStore['settleAssistance']>[0]['terminal'])=>{
-      const current=await store.readProjection(owner),command={contract_version:'1.0' as const,command_id:randomUUID(),...owner,expected_row_version:current.revision!.row_version},completed_at=timestamp();
-      if(terminal.status==='succeeded'&&control.abort.signal.aborted)terminal=control.reason==='user_cancelled'?{status:'cancelled',reason:'user_cancelled'}:{status:'failed',reason:control.reason==='interrupted'?'interrupted':'deadline_exceeded'};
-      await store.settleAssistance({command,attempt_id:attemptId,terminal,completed_at,input_fingerprint:fingerprint('settle_assistance',command,{attempt_id:attemptId,terminal})});
-    };
-    const abortCode=()=>control.reason==='interrupted'?'INTERRUPTED':control.reason==='user_cancelled'?'CANCELLED':'DEADLINE_EXCEEDED';
-    try{
-      if(control.abort.signal.aborted)failure(abortCode());
-      if(Date.parse(timestamp())>=deadline)failure('DEADLINE_EXCEEDED');
-      const aborted=new Promise<never>((_,reject)=>{const check=()=>reject(new DesktopApplicationError(abortCode()));if(control.abort.signal.aborted)check();else control.abort.signal.addEventListener('abort',check,{once:true});});
-      control.physicalPending=true;
-      const runtime_authority=assistance!.taskAuthority==='shared_session'?{identity:{task_id:owner.session_id,revision:owner.revision_id,run_id:attemptId,attempt_id:attemptId,operation_id:attemptId,grant_id:attempt.disclosure_id,scope_sha256:hash(payloadText),config_sha256:hash(JSON.stringify({requested_provider:attempt.requested_provider,requested_model:attempt.requested_model}))},authorize:()=>!control.abort.signal.aborted&&!control.finished&&!resultPending,previous_calls:before.attempts.filter(a=>a.attempt_id!==attemptId).length}:undefined;
-      const issued=(async()=>assistance!.executeAssistance({...runtime_authority?{runtime_authority}:{},action_kind:attempt.action_kind as 'organize_question',payload_bytes:new TextEncoder().encode(payloadText),payload_sha256:hash(payloadText),requested_provider:attempt.requested_provider,requested_model:attempt.requested_model,cancellation_signal:control.abort.signal,deadline_seconds:Math.max(0,Math.min(300,Math.floor((deadline-Date.parse(timestamp()))/1000)))}) )().finally(()=>{control.physicalPending=false;if(control.finished||control.abort.signal.aborted)releaseModelWork(control);});
-      const output=await Promise.race([issued,aborted]);
-      if(control.abort.signal.aborted)failure(abortCode());if(Date.parse(timestamp())>=deadline)failure('DEADLINE_EXCEEDED');
-      exactRecord(output,['actual_provider','actual_model','draft_kind','draft_content']);if(!output.actual_provider.trim()||!output.actual_model.trim())failure('VALIDATION_FAILED');
-      const expected={organize_question:'question_fields',explain_evidence:'evidence_explanation',draft_candidates:'candidates'}[attempt.action_kind];if(output.draft_kind!==expected)failure('VALIDATION_FAILED');
-      validateDesktopAssistanceDraft(String(output.draft_kind),output.draft_content,true);
-      let generated_content:import('../contracts/xanthil-desktop-ipc.ts').AssistanceDraftContent=output.draft_content as import('../contracts/xanthil-desktop-ipc.ts').AssistanceDraftContent;
-      if(output.draft_kind==='candidates'){
-        const content=exactRecord(output.draft_content,['candidates']);if(!Array.isArray(content.candidates))failure('VALIDATION_FAILED');
-        generated_content={candidates:content.candidates.map(c=>{const x=exactRecord(c,['title','evidence_basis','risk_or_refutation','applicability_conditions','future_validation_metric']);return {candidate_id:randomUUID(),title:text(x.title),evidence_basis:text(x.evidence_basis),risk_or_refutation:text(x.risk_or_refutation),applicability_conditions:text(x.applicability_conditions),future_validation_metric:text(x.future_validation_metric)};})};
-      }
-      const draft_id=randomUUID();validateXanthilDesktopRequest('disposeAssistanceDraft',{contract_version:'1.0',command_id:randomUUID(),...owner,expected_row_version:'1',draft_id,disposition:'rejected',edited_content:generated_content});
-      await settle({status:'succeeded',draft_id,actual_provider:output.actual_provider,actual_model:output.actual_model,draft_kind:output.draft_kind,generated_content});
-    }catch(error){const code=String((error as{code?:string}).code??(error as Error).message);if(code==='RESULT_PENDING'){resultPending=true;throw error;}
-      await settle(code==='CANCELLED'?{status:'cancelled',reason:'user_cancelled'}:{status:'failed',reason:code==='DEADLINE_EXCEEDED'?'deadline_exceeded':code==='INTERRUPTED'?'interrupted':['VALIDATION_FAILED','INVALID_REQUEST'].includes(code)?'validation_failed':'provider_failed'});
-    }finally{scheduled.cancel();}
-  }
 
   async function decideAssistanceDisclosure(input:unknown):Promise<DesktopProjection>{
-    modelGuard();
-    if(resultPending)failure('RESULT_PENDING');const command=validateXanthilDesktopRequest('decideAssistanceDisclosure',input),entry=disclosures.get(command.preview_token);
+    if(closed)failure('SERVICE_CLOSED');if(resultPending)failure('RESULT_PENDING');const command=validateXanthilDesktopRequest('decideAssistanceDisclosure',input),entry=disclosures.get(command.preview_token);
     if(!entry||Object.entries(entry.owner).some(([key,value])=>command[key as keyof typeof command]!==value)||entry.version!==command.expected_row_version||entry.preview.payload_sha256!==command.payload_sha256)failure('PAYLOAD_STALE');
     if(modelAccess&&entry.generation!==modelAccess.snapshot().generation)failure('CONFIGURATION_CHANGED');
     if(command.decision==='accepted'&&entry.preview.free_text_present&&!command.free_text_confirmed)failure('AUTHORITY_REQUIRED');
     const {preview_token,...semantic}=command;void preview_token;
+    requireProfessionalSettlement(await readProjection(entry.owner));
     const preview=entry.preview,identity={action_kind:preview.action_kind,categories:preview.categories,aggregate_refs:preview.aggregate_refs,requested_provider:preview.requested_provider,requested_model:preview.requested_model};
-    try{const disclosure_id=randomUUID();const result=await store.recordDisclosure({command,disclosure_id,preview,decided_at:timestamp(),input_fingerprint:fingerprint('record_model_disclosure',semantic,identity)});modelGuard();if(modelAccess&&command.decision==='accepted'){const actual=result.disclosures.find(d=>d.disclosure_id===disclosure_id);if(actual)disclosureGenerations.set(actual.disclosure_id,entry.generation!);}return result;}catch(error){if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;throw error;}
+    try{const disclosure_id=randomUUID();const result=await store.recordDisclosure({command,disclosure_id,preview,decided_at:timestamp(),input_fingerprint:fingerprint('record_model_disclosure',semantic,identity)});if(closed)failure('SERVICE_CLOSED');if(modelAccess&&command.decision==='accepted'){const actual=result.disclosures.find(d=>d.disclosure_id===disclosure_id);if(actual)disclosureGenerations.set(actual.disclosure_id,entry.generation!);}return result;}catch(error){if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;throw error;}
   }
 
   async function startAnalysis(input:unknown):Promise<DesktopProjection>{
     if(resultPending)failure('RESULT_PENDING');if(!analysis||!runStore||!scheduler)failure('TOOLCHAIN_UNAVAILABLE');
     const command=validatePlanStart(input),owner={project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id};
-    const current=await readProjection(owner);if(current.session?.current_revision_id!==owner.revision_id)failure('STALE_REVISION');if(current.revision?.integrity_state!=='ok')failure('INTEGRITY_BLOCKED');
+    const current=await readProjection(owner);requireProfessionalSettlement(current);if(current.session?.current_revision_id!==owner.revision_id)failure('STALE_REVISION');if(current.revision?.integrity_state!=='ok')failure('INTEGRITY_BLOCKED');
     const plan=command.contract_version!=='1.0'?command.execution_plan:undefined;if(plan?.version==='2.0'&&!analysis.describeMembershipOutcome)failure('TOOLCHAIN_UNAVAILABLE');
     if(plan){const confirmed=await store.readConfirmedSnapshot({...owner,confirmation_id:command.confirmation_id});if(plan.version==='2.0'&&(!confirmed.preparation||membershipHash(bindQualifiedPreparation(confirmed.preparation))!==membershipHash(plan.preparation)))failure('SOURCE_CHANGED');const c=JSON.parse(new TextDecoder().decode(confirmed.confirmation.contract_bytes)),binding=JSON.parse(new TextDecoder().decode(confirmed.confirmation.binding_bytes));const parameters={column_mapping:binding,comparison_period:c.comparison_period,current_period:c.current_period,currency:c.currency,time_zone:c.time_zone,valid_statuses:c.valid_statuses,selected_group_mode:c.selected_group_mode};validateMembershipPlan(plan,{members_bytes:confirmed.snapshot.members.bytes,orders_bytes:confirmed.snapshot.orders.bytes},parameters);if(plan.snapshot_id!==confirmed.snapshot.snapshot_id)failure('SOURCE_CHANGED');}
     const description=exactRecord(await analysis.describeImplementation(plan?{execution_plan:plan}:{}),['method_id','method_version','code_identity','duckdb_version','python_version','primary_sql','python_verifier']);
@@ -306,7 +257,8 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
   async function reconcileInterrupted(input:unknown):Promise<DesktopProjection>{
     if(resultPending)failure('RESULT_PENDING');const request=exactRecord(input,['command_id','project_id','session_id','case_id','revision_id','target_kind','target_id']);
     if(request.target_kind!=='analysis_run'&&request.target_kind!=='assistance_attempt')failure('FORBIDDEN');
-    if((request.target_kind==='analysis_run'?activeRuns:activeAttempts).has(text(request.target_id)))failure('BUSY');
+    if(request.target_kind!=='analysis_run')failure('FORBIDDEN');
+    if(activeRuns.has(text(request.target_id)))failure('BUSY');
     const owner={project_id:text(request.project_id),session_id:text(request.session_id),case_id:text(request.case_id),revision_id:text(request.revision_id)};
     if(openedProjectId!==owner.project_id)failure('NOT_FOUND');
     const current=await store.readProjection(owner);if(current.session?.current_revision_id!==owner.revision_id)failure('STALE_REVISION');
@@ -314,7 +266,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
   }
 
   async function openProject(input: unknown): Promise<DesktopProjectOpen> {
-    if(activeRuns.size||activeAttempts.size)failure('BUSY');
+    if(activeRuns.size)failure('BUSY');
     const command = exactRecord(input, ['contract_version', 'command_id', 'proposed_project_id', 'display_name']) as OpenProjectRequest;
     const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
     if (command.contract_version !== '1.0' || typeof command.command_id !== 'string' || !uuid.test(command.command_id) || typeof command.proposed_project_id !== 'string' || !uuid.test(command.proposed_project_id) || typeof command.display_name !== 'string' || !command.display_name.trim()) failure('VALIDATION_FAILED');
@@ -331,7 +283,6 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
     for(const session of sessions){
       const owner={project_id:opened.project_id,session_id:session.session_id,case_id:session.case_id,revision_id:session.current_revision_id},projection=await store.readProjection(owner);
       for(const run of projection.runs.filter(r=>r.status==='Running'))await reconcileInterrupted({command_id:randomUUID(),...owner,target_kind:'analysis_run',target_id:run.run_id});
-      for(const attempt of projection.attempts.filter(a=>a.status==='Running'))await reconcileInterrupted({command_id:randomUUID(),...owner,target_kind:'assistance_attempt',target_id:attempt.attempt_id});
     }
     return opened;
   }
@@ -366,7 +317,17 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
     const current = sessions.find((session) => session.session_id === owner.session_id);
     if (current === undefined) failure('NOT_FOUND');
     if (current.case_id !== owner.case_id) failure('STALE_REVISION');
-    try { return await checkedProjection(owner); } catch (error) { if ((error as { code?: string }).code === 'NOT_FOUND') failure('STALE_REVISION'); throw error; }
+    try { const projection=await checkedProjection(owner);if(!agent)return projection;
+      const professional_requests=await Promise.all((await store.listProfessionalAuthorizations(owner)).map(async g=>({authorization_id:g.id,revoked_at:g.revoked_at,draft_id:g.publication?.draft_id??null,execution:await agent.diagnostics(g.identity,'desktop_draft')})));
+      const unsettled=professional_requests.some(request=>request.execution.unconfirmed_effects),capabilities={...projection.capabilities};
+      if(unsettled)for(const name of ['can_create_draft_revision','can_select_import','can_confirm_revision','can_start_analysis','can_prepare_assistance','can_start_assistance','can_dispose_assistance_draft','can_accept_finding','can_save_case_fields','can_save_evidence_explanation','can_save_decision_closure','can_complete_case'] as const)capabilities[name]=false;
+      capabilities.can_cancel_assistance=projection.session?.current_revision_id===owner.revision_id&&projection.revision?.integrity_state==='ok'&&professional_requests.some(request=>!request.revoked_at&&request.execution.unconfirmed_effects);
+      return {...projection,professional_requests,capabilities}; } catch (error) { if ((error as { code?: string }).code === 'NOT_FOUND') failure('STALE_REVISION'); throw error; }
+  }
+
+  function requireProfessionalSettlement(projection:DesktopProjection){
+    if(closed)failure('SERVICE_CLOSED');
+    if(projection.professional_requests?.some(request=>request.execution.unconfirmed_effects))failure('MODEL_BUSY');
   }
 
   async function createSession(input: unknown) {
@@ -394,6 +355,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
   async function createDraftRevision(input:unknown):Promise<DesktopProjection>{
     if(resultPending)failure('RESULT_PENDING');const command=validateXanthilDesktopRequest('createDraftRevision',input);
     if(openedProjectId!==command.project_id)failure('NOT_FOUND');
+    requireProfessionalSettlement(await readProjection({project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id}));
     try{const next=await store.createDraftRevision({command,ids:{revision_id:randomUUID()},created_at:timestamp(),input_fingerprint:fingerprint('create_draft_revision',command)});inspections.delete(JSON.stringify({project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id}));return next;}catch(error){if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;throw error;}
   }
 
@@ -423,7 +385,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
 
   async function completeCase(input:unknown){
     if(resultPending)failure('RESULT_PENDING');const command=validateXanthilDesktopRequest('completeCase',input),owner={project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id};
-    const projection=await readProjection(owner);if(projection.session?.current_revision_id!==owner.revision_id)failure('STALE_REVISION');if(projection.revision?.integrity_state!=='ok')failure('INTEGRITY_BLOCKED');
+    const projection=await readProjection(owner);requireProfessionalSettlement(projection);if(projection.session?.current_revision_id!==owner.revision_id)failure('STALE_REVISION');if(projection.revision?.integrity_state!=='ok')failure('INTEGRITY_BLOCKED');
     const acceptance=projection.acceptances.find(a=>a.acceptance_id===command.acceptance_id),form=projection.forms.find(f=>f.form_id===command.form_id);if(!acceptance||!form)failure('NOT_FOUND');
     if(form.disposition!=='saved')failure('FORBIDDEN');
     const material=await store.readReportContext({...owner,finding_id:acceptance.finding_id}),ids={closure_id:randomUUID(),report_id:randomUUID(),operation_id:randomUUID()},completed_at=timestamp();
@@ -434,7 +396,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
   async function acceptFinding(input:unknown) {
     if(resultPending)failure('RESULT_PENDING');
     const command=validateXanthilDesktopRequest('acceptFinding',input),owner={project_id:command.project_id,session_id:command.session_id,case_id:command.case_id,revision_id:command.revision_id};
-    const projection=await readProjection(owner);
+    const projection=await readProjection(owner);requireProfessionalSettlement(projection);
     if(projection.session?.current_revision_id!==owner.revision_id)failure('STALE_REVISION');
     if(projection.revision?.integrity_state!=='ok')failure('INTEGRITY_BLOCKED');
     try{return await store.acceptFinding({command,acceptance_id:randomUUID(),accepted_at:timestamp(),input_fingerprint:fingerprint('accept_finding',command)});}
@@ -449,6 +411,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
     const current = await readProjection(owner);
     if (current.session?.current_revision_id !== owner.revision_id) failure('STALE_REVISION');
     if (current.revision?.integrity_state !== 'ok') failure('INTEGRITY_BLOCKED');
+    requireProfessionalSettlement(current);
     if(valid.form.kind!=='case_fields'){
       try{return await store.saveForm({command:valid,completed_at:timestamp(),input_fingerprint:fingerprint('save_form',valid),...(valid.form.kind==='decision_closure'?{form_id:randomUUID()}:{})});}
       catch(error){if((error as{code?:string}).code==='RESULT_PENDING')resultPending=true;throw error;}
@@ -489,6 +452,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
         orders: { display_name: snapshot.snapshot.orders.display_name, bytes: snapshot.snapshot.orders.bytes },
       });
     }
+    requireProfessionalSettlement(current);
     if (current.revision.row_version !== valid.expected_row_version) failure('STALE_REVISION');
     if (current.revision.state !== 'Draft') failure('FORBIDDEN');
     if ('inspection_token' in valid) {
@@ -514,7 +478,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
     const { source_files, ...publicInput } = input;
     const valid = validateXanthilDesktopRequest('selectImportFiles', publicInput);
     const owner = { project_id: valid.project_id, session_id: valid.session_id, case_id: valid.case_id, revision_id: valid.revision_id };
-    const projection = await readProjection(owner);
+    const projection = await readProjection(owner);requireProfessionalSettlement(projection);
     if (projection.session?.current_revision_id !== owner.revision_id) failure('STALE_REVISION');
     if (projection.revision?.integrity_state !== 'ok') failure('INTEGRITY_BLOCKED');
     if (projection.revision.state !== 'Draft') failure('FORBIDDEN');
@@ -571,6 +535,7 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
       const file = (input: unknown) => { const value = exactRecord(input, ['display_name','bytes']); if (typeof value.display_name !== 'string' || !(value.bytes instanceof Uint8Array)) failure('VALIDATION_FAILED'); return { display_name: value.display_name, bytes: new Uint8Array(value.bytes) }; };
       return publishConfirmed(valid, { members: file(pair.members), orders: file(pair.orders) },preparation_context);
     }
+    requireProfessionalSettlement(current);
     if (current.revision.row_version !== valid.expected_row_version) failure('STALE_REVISION');
     if (current.revision.state !== 'Draft') failure('FORBIDDEN');
     if (!(preparation_context?[current.revision.question_text]:[current.revision.question_text, current.revision.hypothesis_display_title]).every(value => /[^\p{White_Space}]/u.test(value))) failure('VALIDATION_FAILED');
@@ -612,5 +577,5 @@ const begun=await runStore!.beginRun({run_id,initial_manifest:manifest,confirmat
     const x=exactRecord(input,['command','preparation_context']);
     return confirmRevision(x.command,preparedConfirmationContext(x.preparation_context));
   }
-  return Object.freeze({ hasModelWork:()=>modelWork.size>0, closeModelWork, openProject, listSessions, readProjection, createSession, createDraftRevision, openSession, acceptFinding, completeCase, checkReportExport, prepareReportExport, recordReportExport, saveForm, waitForProjection, checkImportAdmission, inspectImportFiles, confirmRevision:(input:unknown)=>confirmRevision(input), confirmPreparedRevision, startAnalysis, cancelAnalysis, reconcileInterrupted, prepareAssistanceDisclosure, decideAssistanceDisclosure, startAssistance, cancelAssistance, disposeAssistanceDraft });
+  return Object.freeze({ startAssistance,waitForIdle,close,openProject, listSessions, readProjection, createSession, createDraftRevision, openSession, acceptFinding, completeCase, checkReportExport, prepareReportExport, recordReportExport, saveForm, waitForProjection, checkImportAdmission, inspectImportFiles, confirmRevision:(input:unknown)=>confirmRevision(input), confirmPreparedRevision, startAnalysis, cancelAnalysis, reconcileInterrupted, prepareAssistanceDisclosure, decideAssistanceDisclosure, cancelAssistance, disposeAssistanceDraft });
 }

@@ -9,7 +9,7 @@ import {membershipRecord,membershipUuid} from '../../packages/product-core/membe
 
 const hash=(bytes:Uint8Array|string)=>createHash('sha256').update(bytes).digest('hex');
 function fail(code:string):never{throw Object.assign(new Error(code),{code});}
-const failureEvidence=new WeakMap<Error,{physical_status:'not_started'|'settled'|'unknown';operation_context:Readonly<{task_id:string;operation_id:string;execution_id:string;epoch:number}>|null}>();
+const failureEvidence=new WeakMap<Error,{physical_status:'not_started'|'settled'|'unknown';syntax_rejected?:true;operation_context:Readonly<{task_id:string;operation_id:string;execution_id:string;epoch:number}>|null}>();
 /** Only locally issued Adapter errors carry trusted settlement; plain caller/model objects do not. */
 export function describePreparationFailure(error:unknown){return error instanceof Error&&failureEvidence.has(error)?structuredClone(failureEvidence.get(error)!):null;}
 const successEvidence=new WeakMap<object,{operation_context:PreparationContext|null;receipt_sha256:string}>();
@@ -39,7 +39,7 @@ export function readAnalysisCodeOutput(directory:string,identity:{dev:number;ino
 type OutputContract<T>={read:(directory:string,identity:{dev:number;ino:number})=>T;describe:(candidate:T)=>Record<string,{sha256:string;byte_length:number}>;diagnostics?:boolean};
 /** One isolation/settlement mechanism; output contracts are selected only by the Profile. */
 function createControlledExecutor<T>(pythonExecutable:string,pythonVersion:string,output:OutputContract<T>,formats:readonly string[]=['csv','xlsx']){return async(input:unknown)=>{
- const physical:{status:'not_started'|'settled'|'unknown'}={status:'not_started'};
+ const physical:{status:'not_started'|'settled'|'unknown';syntax_rejected?:true}={status:'not_started'};
  let operation_context:Readonly<{task_id:string;operation_id:string;execution_id:string;epoch:number}>|null=null;
  try {
  const hasContext=!!input&&typeof input==='object'&&Object.hasOwn(input,'operation_context');
@@ -75,7 +75,7 @@ function createControlledExecutor<T>(pythonExecutable:string,pythonVersion:strin
   child.stdout.on('data',(data:Buffer)=>{
    protocol+=data.toString();if(protocol.length>16384){failure='PREPARATION_PROTOCOL_INVALID';killPayload();child.kill('SIGKILL');return;}
    let end:number;while((end=protocol.indexOf('\n'))>=0){const line=protocol.slice(0,end);protocol=protocol.slice(end+1);try{
-    const e=JSON.parse(line);if(e.event==='compile_rejected'&&Object.keys(e).length===1&&!compileRejected&&payloadPid===undefined){compileRejected=true;continue;}if(compileRejected)throw Error();if(e.event!=='child_created'||payloadPid!==undefined||!Number.isSafeInteger(e.pid)||e.pid<2)throw Error();payloadPid=e.pid;
+    const e=JSON.parse(line);if(e.event==='compile_rejected'&&Object.keys(e).length===1&&!compileRejected&&payloadPid===undefined){compileRejected=true;physical.syntax_rejected=true;continue;}if(compileRejected)throw Error();if(e.event!=='child_created'||payloadPid!==undefined||!Number.isSafeInteger(e.pid)||e.pid<2)throw Error();payloadPid=e.pid;
     if(failure||signal.aborted)child.stdin.end();else child.stdin.write('go\n');
    }catch{failure='PREPARATION_PROTOCOL_INVALID';killPayload();child.kill('SIGKILL');}}
   });
@@ -103,7 +103,7 @@ function createControlledExecutor<T>(pythonExecutable:string,pythonVersion:strin
   const code=typeof (error as {code?:unknown})?.code==='string'?String((error as {code:string}).code):'PREPARATION_EXECUTION_FAILED';
   let safe_details:unknown;if(output.diagnostics&&physical.status==='settled'){try{const directory=(input as {run_directory:string}).run_directory;const details=JSON.parse(readFileSync(join(directory,'payload.stderr'),'utf8'));if(['NameError','KeyError','TypeError','ValueError','IndexError','PermissionError','SyntaxError','ZeroDivisionError','OtherError'].includes(details.category)&&(!Object.hasOwn(details,'identifier')||/^[A-Za-z_][A-Za-z0-9_]{0,79}$/.test(details.identifier)))safe_details={category:details.category,...(Object.hasOwn(details,'identifier')?{identifier:details.identifier}:{}),...(Number.isInteger(details.payload_line)&&details.payload_line>=1&&details.payload_line<=65536?{payload_line:details.payload_line}:{})};}catch{}}
   const failure=Object.assign(new Error(code),{code,physical_status:physical.status,operation_context,...(safe_details?{safe_details}:{})});
-  failureEvidence.set(failure,{physical_status:physical.status,operation_context});throw failure;
+  failureEvidence.set(failure,{physical_status:physical.status,...(physical.status==='not_started'&&physical.syntax_rejected?{syntax_rejected:true as const}:{}),operation_context});throw failure;
  }
 };}
 

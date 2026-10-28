@@ -12,10 +12,10 @@ const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const source = path => execFileSync('tar', ['-xOf', archive.pathname, path]);
 
 test('RS-RETURN-01 exact original revision is selected without fallback, mutation or any model/write callback',async()=>{
- const {reportStudioReturnTarget,selectReportStudioReturnTask}=await import('../../../apps/browser/report-studio-client.mjs'),project='00000001-1111-4111-a111-111111111111',taskId='00000002-1111-4111-a111-111111111111',target={project_id:project,task_id:taskId,revision:'1'},old={identity:{task_id:taskId,revision:'1'},conversation_outcome:{text:'原版合成回复'}},task={identity:{task_id:taskId,revision:'2'},conversation_outcome:{text:'新版合成回复'},history:[old]},original=structuredClone(task);let reads=0;
+ const {reportStudioReturnTarget,selectReportStudioReturnTask}=await import('../../../apps/browser/report-studio-client.mjs'),project='00000001-1111-4111-a111-111111111111',taskId='00000002-1111-4111-a111-111111111111',target={project_id:project,task_id:taskId,revision:'1'},old={identity:{task_id:taskId,revision:'1'},model_report:{text:'原版合成回复'}},task={identity:{task_id:taskId,revision:'2'},model_report:{text:'新版合成回复'},history:[old]},original=structuredClone(task);let reads=0;
  assert.deepEqual(reportStudioReturnTarget(target),target);const selected=await selectReportStudioReturnTask(target,project,async id=>{reads++;assert.equal(id,taskId);return task;});assert.equal(selected.display_revision,'1');assert.deepEqual(task,original);assert.equal(reads,1);
  await assert.rejects(()=>selectReportStudioReturnTask(target,'00000003-1111-4111-a111-111111111111',async()=>{assert.fail('wrong project must not read a task');}),/原分析/);
- for(const bad of [{...task,history:[]},{...task,identity:{...task.identity,task_id:'other'}},{...task,history:[{...old,conversation_outcome:null}]}])await assert.rejects(()=>selectReportStudioReturnTask(target,project,async()=>bad),/原分析/);
+ for(const bad of [{...task,history:[]},{...task,identity:{...task.identity,task_id:'other'}},{...task,history:[{...old,model_report:null}]}])await assert.rejects(()=>selectReportStudioReturnTask(target,project,async()=>bad),/原分析/);
  for(const bad of [{...target,revision:'0'},{...target,task_id:'../../other'},{...target,control:'forbidden'}])assert.throws(()=>reportStudioReturnTarget(bad),/原分析/);
 });
 
@@ -103,11 +103,11 @@ test('RS-MAIN-COMPAT-036/RUI01: accepted main shell retains the working Studio m
  assert.doesNotMatch(html,/产品能力 · 未接入/);
 });
 
-for(const projected of [false,true])for(const mode of ['quick','pro'])test(`RS-MAIN-COMPAT-036/RUI07: ${mode} ${projected?'current content':'legacy report'} keeps one exact linked delivery beside original content`,async()=>{
+for(const projected of [false,true])for(const mode of ['quick','pro'])test(`RS-MAIN-COMPAT-036/RUI07: ${mode} ${projected?'current content':'native report projection'} keeps one exact linked delivery beside original content`,async()=>{
  const {renderQuickAnalysisWorkbench}=await import('../../../apps/browser/quick-analysis-workbench.mjs');
  const {openTaskView}=await import('../../../apps/browser/quick-analysis-client.mjs');
  const {reportFixture}=await import('../../fixtures/xanthil-desktop/browser-ui-report.ts');
- const fixture=reportFixture(),task=fixture.store.read(fixture.id),view=openTaskView({...task,...(projected?{browser_report:fixture.content()}: {})});
+ const fixture=await reportFixture(),task=fixture.store.read(fixture.id),view=openTaskView({...task,...(projected?{browser_report:fixture.content()}: {})});
  view.studioReports=[{delivery_id:'saved-delivery',association_id:'original-association',sequence:1,format:'html',source:{task_id:fixture.id,revision:'1'},created_at:'2026-10-16T00:00:00Z',warnings:['合成质检提示'],studio_project_state:'missing'}];
  const html=renderQuickAnalysisWorkbench({project:'合成项目',tasks:[],current:view,mode,stage:'report',viewMode:mode==='quick'?'results':'conversation',resultMode:'report',detail:'context',drawer:false});
  assert.equal((html.match(/<h2>关联报告<\/h2>/g)??[]).length,1);
@@ -116,5 +116,13 @@ for(const projected of [false,true])for(const mode of ['quick','pro'])test(`RS-M
  assert.doesNotMatch(html,/data-studio-action="download"[^>]*disabled/);
  assert.match(html,/合成质检提示/);
  assert.match(html,/原因尚需调查/);
- if(projected)assert.match(html,/计算事实 · 只读/);
+ if(projected)assert.match(html,/保存的报告与资格/);
+});
+
+
+test('PRC02-05: optional module absence differs from a delivery read failure and cannot masquerade as no saved reports',async()=>{
+ const {renderReportStudioDeliveries}=await import('../../../apps/browser/report-studio-client.mjs');
+ const absent=renderReportStudioDeliveries([],'1',false,false,true);assert.match(absent,/关联报告模块当前不可用/);assert.doesNotMatch(absent,/暂时无法读取|尚无关联报告/);
+ const failed=renderReportStudioDeliveries([],'1',true);assert.match(failed,/暂时无法读取/);assert.doesNotMatch(failed,/尚无关联报告/);
+ const empty=renderReportStudioDeliveries([],'1',false);assert.match(empty,/尚无关联报告/);assert.doesNotMatch(empty,/不可用|暂时无法读取/);
 });

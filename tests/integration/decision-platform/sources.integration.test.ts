@@ -1,11 +1,15 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';
 import {createDecisionSources} from '../../../packages/application/decision-sources.ts';import type {OpenStoredTask} from '../../../packages/ports/open-analysis-store.ts';
-test('DP-HOST-01: exact selected content remains fixed through edits; no other task, raw source or HTML',()=>{
- const projectId=randomUUID(),taskId=randomUUID(),outcomeId=randomUUID();let text='MODEL 未核验，不是正式决定';
- const task={state:'saved',identity:{task_id:taskId,revision:'1'},question:'synthetic',outcome:null,conversation_outcome:{outcome_id:outcomeId},history:[]} as unknown as OpenStoredTask;
- const sources=createDecisionSources({projectId,readTask:id=>id===taskId?task:null,reportCopy:()=>({bytes:Buffer.from(text),suggested_file_name:'report.md'})});
- const first=sources.catalog(taskId)[0];text='changed';const second=sources.catalog(taskId)[0];assert.notEqual(first.source.sha256,second.source.sha256);assert.notEqual(first.id,second.id);
- assert.equal(Buffer.from(sources.selected(first.id,taskId).content).toString(),'MODEL 未核验，不是正式决定');assert.throws(()=>sources.selected(first.id,randomUUID()),/DP_SOURCE_MISSING/);assert.throws(()=>sources.catalog(randomUUID()),/DP_SOURCE_MISSING/);
+import {nativeReport} from '../../fixtures/xanthil-desktop/native-report.ts';
+import {createPersonalOpenAnalysisWorkspace} from '../../../profiles/personal/open-analysis.ts';
+test('DP-HOST-01: exact selected content remains fixed through edits; no other task, raw source or HTML',async()=>{
+ const f=await nativeReport({text:'MODEL 未核验，不是正式决定'}),app=createPersonalOpenAnalysisWorkspace(f.configuration),taskId=f.identity.task_id;
+ try{
+ const sources=createDecisionSources({projectId:f.configuration.project_id,readTask:id=>id===taskId?app.read(id):null,reportCopy:app.reportCopy});
+ const first=sources.catalog(taskId)[0]!,original=Buffer.from(sources.selected(first.id,taskId).content).toString();assert.match(original,/MODEL 未核验，不是正式决定/);assert.doesNotMatch(original,/数量\n7\n|<html>/);
+ const content=app.reportContent(taskId)!;await app.reportContentCommand(taskId,{version:'1.0',command_id:randomUUID(),expected_content_sha256:content.sha256,action:'save',text:'changed',finding_ids:[]});const second=sources.catalog(taskId)[0]!;assert.notEqual(first.source.sha256,second.source.sha256);assert.notEqual(first.id,second.id);
+ assert.equal(Buffer.from(sources.selected(first.id,taskId).content).toString(),original);assert.throws(()=>sources.selected(first.id,randomUUID()),/DP_SOURCE_MISSING/);assert.throws(()=>sources.catalog(randomUUID()),/DP_SOURCE_MISSING/);assert.equal(f.provider.requests(),2,'selection/edit/readback adds no model requests');
+ }finally{await app.close();}
 });
 
 import {projectReportSources} from '../../../apps/browser/decision-platform/report-sources.ts';

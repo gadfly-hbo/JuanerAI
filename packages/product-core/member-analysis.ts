@@ -2,7 +2,7 @@ import {validatePreparationPlanBinding,preparationAuthority,type PreparationPlan
 import {createHash} from 'node:crypto';
 import {canonicalDesktopJson, desktopMetricChanges, desktopRuleFailure, prepareDesktopData, validateDesktopCalculationResult, type DesktopCalculationResult, type DesktopMetricPeriod, type DesktopSelection} from './xanthil-desktop-decision-case.ts';
 import type {OwnerRef} from '../contracts/xanthil-desktop-ipc.ts';
-export {compileOpenAnalysisIR,executeOpenAnalysisIR} from './open-analysis-ir.ts';
+
 export {compileOpenMembershipFramework,materializeOpenMembershipFramework} from './open-membership.ts';
 
 export const membershipHash=(value:unknown)=>createHash('sha256').update(canonicalDesktopJson(value)).digest('hex');
@@ -143,4 +143,4 @@ export function validateAnalysisOutput(input:unknown,manifest:AnalysisRunManifes
  return analysisResult(o.result,plan);
 }
 
-export {openAnalysisPreferences,checkOpenAnalysisMethod,openAnalysisMethodCatalog} from './open-analysis-methods.ts';
+export {openAnalysisPreferences,openAnalysisMethodCatalog} from './open-analysis-methods.ts';

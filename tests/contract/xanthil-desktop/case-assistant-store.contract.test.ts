@@ -5,26 +5,18 @@ import {join} from 'node:path';
 import test from 'node:test';
 import {DatabaseSync} from 'node:sqlite';
 import {createLocalCaseAssistantStore} from '../../../adapters/storage-local/case-assistant.ts';
-import type {AssistantAttempt,AssistantDraft,AssistantSession,Authorization} from '../../../packages/contracts/case-assistant.ts';
-import {withIsolatedProject} from '../../fixtures/xanthil-desktop/desktop-contract-drivers.ts';
+import type {AssistantDraft,AssistantSession,Authorization} from '../../../packages/contracts/case-assistant.ts';
+import {mkdtempSync} from 'node:fs';
+async function withIsolatedProject<T>(work:(root:string)=>Promise<T>){return work(mkdtempSync(join(process.env.JUANERAI_NEWARCH_SHORT_ROOT!,'cs-')));}
 import {completedCase} from '../../fixtures/case-assistant/completed-case.ts';
 import {decision,config} from '../../fixtures/case-assistant/fixtures.ts';
+import {professionalCase} from '../../fixtures/case-assistant/professional.ts';
 
 test('AC-01/08/09/13 real Completed source, atomic adoption, exact replay, stale sibling, history and unchanged source bytes',async()=>withIsolatedProject(async root=>{
- const baseline=await completedCase(root),store=createLocalCaseAssistantStore({projectRoot:root});
+ const f=await professionalCase(root),{baseline,store,source,session,draft,fields}=f,at=new Date().toISOString();
  const original=await readFile(join(root,'.xanthil/desktop/state.sqlite'));
- const source=await store.readSource(baseline.owner);
- assert.ok(source?.eligible,'verified Completed Case must be eligible');
- assert.equal(source.report.report_id,baseline.projection.revision?.current_report_id);
- const at='2026-09-29T00:00:00.000Z';
- const session:AssistantSession={id:randomUUID(),title:'合成 Case Assistant',source:source.owner,created_at:at,archived:false};
- assert.deepEqual(await store.createSession(randomUUID(),session,source),session);
- const authorization:Authorization={id:randomUUID(),source,baseline_decision_id:null,config,initial_text:'合成任务',selected_history:[],selected_reports:[],tools:['read_case'],categories:['case'],skill_version:'1.0',prompt_version:'1.0',created_at:at,payload:'合成载荷',blockers:[]};
- const attempt:AssistantAttempt={id:randomUUID(),session_id:session.id,authorization,status:'Succeeded',started_at:at,ended_at:at,waiting_deadline:null,turns:1,execution_ms:1,cost_microunits:0,reason:null};
- await store.saveAttempt(attempt);
- const fields={...decision,choice:'no_action' as const,candidate_id:null,evidence_refs:source.evidence_refs,finding_refs:[source.finding_id],outcome:{...decision.outcome,applicable:false,not_applicable_reason:'无因果证据',reassess_trigger:'新证据',reassess_owner:'合成人'}};
- const draft:AssistantDraft={id:randomUUID(),version:1,session_id:session.id,attempt_id:attempt.id,source_revision:source.owner.revision_id,baseline_decision_id:null,fields,status:'pending',edited:false,created_at:at,decided_at:null,reason:null};
- await store.saveDraft(draft);const sibling={...draft,id:randomUUID()};await store.saveDraft(sibling);
+ assert.ok(source.eligible);assert.equal(source.report.report_id,baseline.projection.revision?.current_report_id);
+ const sibling=await f.generate();assert.notEqual(sibling.id,draft.id);
  const cmd={command_id:randomUUID(),draft_id:draft.id,draft_version:1,session_id:session.id,actor:'合成采纳人',at,source};
  const originalPrepare=DatabaseSync.prototype.prepare;
  DatabaseSync.prototype.prepare=function(sql:string){const statement=originalPrepare.call(this,sql);if(sql.startsWith('INSERT INTO reports'))return new Proxy(statement,{get(target,key){if(key==='run')return()=>{throw new Error('synthetic disk failure between Decision and report');};return Reflect.get(target,key,target);}});return statement;};
@@ -40,43 +32,31 @@ test('AC-01/08/09/13 real Completed source, atomic adoption, exact replay, stale
  assert.equal(history.reports[0].sequence,source.report.version+1);
  assert.equal((await reopened.readSession(session.id)).drafts.find(d=>d.id===draft.id)?.status,'adopted');
  assert.deepEqual(await readFile(join(root,'.xanthil/desktop/state.sqlite')),original);
- assert.deepEqual(await baseline.app.readProjection(baseline.owner),baseline.projection);
+ assert.deepEqual(await baseline.app.readProjection(baseline.owner),baseline.projection);await f.close();
 }));
 
 test('AC-13 editing appends immutable draft versions rather than discarding the previous draft',async()=>withIsolatedProject(async root=>{
- const baseline=await completedCase(root),store=createLocalCaseAssistantStore({projectRoot:root}),source=await store.readSource(baseline.owner),at='2026-09-29T00:00:00.000Z';
- const session={id:randomUUID(),title:'合成',source:source.owner,created_at:at,archived:false};await store.createSession(randomUUID(),session,source);
- const authorization:Authorization={id:randomUUID(),source,baseline_decision_id:null,config,initial_text:'合成',selected_history:[],selected_reports:[],tools:['read_case'],categories:['case'],skill_version:'1.0',prompt_version:'1.0',created_at:at,payload:'合成',blockers:[]};
- const attempt:AssistantAttempt={id:randomUUID(),session_id:session.id,authorization,status:'Succeeded',started_at:at,ended_at:at,waiting_deadline:null,turns:1,execution_ms:1,cost_microunits:0,reason:null};await store.saveAttempt(attempt);
- const fields={...decision,choice:'no_action' as const,candidate_id:null,evidence_refs:source.evidence_refs,finding_refs:[source.finding_id]};
- const draft:AssistantDraft={id:randomUUID(),version:1,session_id:session.id,attempt_id:attempt.id,source_revision:source.owner.revision_id,baseline_decision_id:null,fields,status:'pending',edited:false,created_at:at,decided_at:null,reason:null};await store.saveDraft(draft);
+ const f=await professionalCase(root),{store,source,session,draft,fields}=f,at=new Date().toISOString();
  await store.saveDraft({...draft,version:2,edited:true,fields:{...fields,owner:'已编辑Owner'}});
  const saved=(await store.readSession(session.id)).drafts;
  assert.equal(saved.length,2);assert.equal(saved[0].fields.owner,fields.owner);assert.equal(saved[1].fields.owner,'已编辑Owner');
- await assert.rejects(()=>store.adopt({command_id:randomUUID(),session_id:session.id,draft_id:draft.id,draft_version:1,actor:'合成',at,source}),/STALE_DRAFT/);
+ await assert.rejects(()=>store.adopt({command_id:randomUUID(),session_id:session.id,draft_id:draft.id,draft_version:1,actor:'合成',at,source}),/STALE_DRAFT/);await f.close();
 }));
 
 test('AC-08/09 command retry uses unchanged user intent across time and a corrupt sidecar fails closed without repairs',async()=>withIsolatedProject(async root=>{
- const {DatabaseSync}=await import('node:sqlite');const baseline=await completedCase(root),store=createLocalCaseAssistantStore({projectRoot:root}),source=await store.readSource(baseline.owner),at='2026-09-29T00:00:00.000Z';
- const command=randomUUID(),session={id:randomUUID(),title:'重试合成',source:source.owner,created_at:at,archived:false};await store.createSession(command,session,source);
- assert.deepEqual(await store.createSession(command,{...session,id:randomUUID(),created_at:'2026-09-29T01:00:00.000Z'},source),session,'same creation command returns committed identity');
- const authorization:Authorization={id:randomUUID(),source,baseline_decision_id:null,config,initial_text:'合成',selected_history:[],selected_reports:[],tools:['read_case'],categories:['case'],skill_version:'1.0',prompt_version:'1.0',created_at:at,payload:'合成',blockers:[]};
- const attempt:AssistantAttempt={id:randomUUID(),session_id:session.id,authorization,status:'Succeeded',started_at:at,ended_at:at,waiting_deadline:null,turns:1,execution_ms:1,cost_microunits:0,reason:null};await store.saveAttempt(attempt);
- const draft:AssistantDraft={id:randomUUID(),version:1,session_id:session.id,attempt_id:attempt.id,source_revision:source.owner.revision_id,baseline_decision_id:null,fields:{...decision,choice:'no_action',candidate_id:null,evidence_refs:source.evidence_refs,finding_refs:[source.finding_id]},status:'pending',edited:false,created_at:at,decided_at:null,reason:null};await store.saveDraft(draft);
+ const f=await professionalCase(root),{baseline,store,source,session,draft}=f,at=new Date().toISOString();
+ const command=randomUUID(),created=await store.createSession(command,{id:randomUUID(),title:'重试合成',source:source.owner,created_at:at,archived:false},source);
+ assert.deepEqual(await store.createSession(command,{...created,id:randomUUID(),created_at:'2026-09-29T01:00:00.000Z'},source),created,'same creation command returns committed identity');
  const request={command_id:randomUUID(),draft_id:draft.id,draft_version:1,session_id:session.id,actor:'合成人',at,source};const adopted=await store.adopt(request);
  assert.deepEqual(await store.adopt({...request,at:'2026-09-29T01:00:00.000Z'}),adopted,'retry does not create another time/version');
  const path=join(root,'.xanthil/desktop/case-assistant.sqlite'),db=new DatabaseSync(path);db.exec('CREATE TRIGGER unauthorized_effect AFTER INSERT ON events BEGIN DELETE FROM drafts; END;');db.close();const before=await readFile(path);
- await assert.rejects(()=>store.readSession(session.id),/SCHEMA_UNSUPPORTED/);assert.deepEqual(await readFile(path),before,'corrupt bytes remain untouched');
+ await assert.rejects(()=>store.readSession(session.id),/SCHEMA_UNSUPPORTED/);assert.deepEqual(await readFile(path),before,'corrupt bytes remain untouched');await assert.rejects(()=>f.close(),{code:'SCHEMA_UNSUPPORTED'});await f.agent.waitForIdle();
 }));
 
 
 for(const committed of [false,true])test(`AC-08/09 uncertain COMMIT ${committed?'persisted':'rolled back'} blocks unsafe mutation until verified reopen or receipt`,async()=>withIsolatedProject(async root=>{
- const baseline=await completedCase(root),store=createLocalCaseAssistantStore({projectRoot:root}),source=await store.readSource(baseline.owner),at='2026-09-29T00:00:00.000Z';
+ const f=await professionalCase(root),{baseline,store,source,session,draft}=f,at=new Date().toISOString();
  const original=await readFile(join(root,'.xanthil/desktop/state.sqlite'));
- const session:AssistantSession={id:randomUUID(),title:'不确定提交合成',source:source.owner,created_at:at,archived:false};await store.createSession(randomUUID(),session,source);
- const authorization:Authorization={id:randomUUID(),source,baseline_decision_id:null,config,initial_text:'合成',selected_history:[],selected_reports:[],tools:['read_case'],categories:['case'],skill_version:'1.0',prompt_version:'1.0',created_at:at,payload:'合成',blockers:[]};
- const attempt:AssistantAttempt={id:randomUUID(),session_id:session.id,authorization,status:'Succeeded',started_at:at,ended_at:at,waiting_deadline:null,turns:1,execution_ms:1,cost_microunits:0,reason:null};await store.saveAttempt(attempt);
- const draft:AssistantDraft={id:randomUUID(),version:1,session_id:session.id,attempt_id:attempt.id,source_revision:source.owner.revision_id,baseline_decision_id:null,fields:{...decision,choice:'no_action',candidate_id:null,evidence_refs:source.evidence_refs,finding_refs:[source.finding_id]},status:'pending',edited:false,created_at:at,decided_at:null,reason:null};await store.saveDraft(draft);
  const command={command_id:randomUUID(),draft_id:draft.id,draft_version:1,session_id:session.id,actor:'合成人',at,source};
  const exec=DatabaseSync.prototype.exec,prepare=DatabaseSync.prototype.prepare,targets=new WeakSet<DatabaseSync>();let injected=0,unreadable=0,uncertain=false;
  DatabaseSync.prototype.prepare=function(sql:string){if(sql.startsWith('INSERT INTO decisions'))targets.add(this);return prepare.call(this,sql);};
@@ -90,19 +70,16 @@ for(const committed of [false,true])test(`AC-08/09 uncertain COMMIT ${committed?
  const history=await store.formalHistory(source.owner);assert.equal(history.decisions.length,committed?1:0);assert.equal(history.reports.length,committed?1:0);
  await assert.rejects(()=>store.saveDraft({...draft,version:2}),/RESULT_PENDING/,'mutations stay blocked after connectivity alone recovers');
  await assert.rejects(()=>store.adopt({...command,command_id:randomUUID()}),/RESULT_PENDING/,'new command cannot bypass unresolved outcome');
- const reopened=createLocalCaseAssistantStore({projectRoot:root});await reopened.interruptAll(at);const verified=await reopened.formalHistory(source.owner);assert.equal(verified.decisions.length,committed?1:0);
+ const reopened=createLocalCaseAssistantStore({projectRoot:root});const verified=await reopened.formalHistory(source.owner);assert.equal(verified.decisions.length,committed?1:0);
  if(committed)assert.deepEqual(await store.adopt(command),verified.decisions[0],'verified matching receipt safely resolves the original command');
  const result=await reopened.adopt(command);assert.deepEqual(await reopened.adopt({...command,at:'2026-09-30T00:00:00.000Z'}),result);
  const final=await reopened.formalHistory(source.owner);assert.equal(final.decisions.length,1);assert.equal(final.reports.length,1);assert.equal(final.decisions[0].id,result.id);assert.equal((await reopened.readSession(session.id)).drafts.at(-1)?.status,'adopted');
- assert.deepEqual(await readFile(join(root,'.xanthil/desktop/state.sqlite')),original);
+ assert.deepEqual(await readFile(join(root,'.xanthil/desktop/state.sqlite')),original);await assert.rejects(()=>f.close(),{code:'RESULT_PENDING'});await f.agent.waitForIdle();
 }));
 
 test('VUI03 AC-12/13 mixed legacy/new reports keep exact historical bytes and generate escaped labeled exports',async()=>withIsolatedProject(async root=>{
- const {createHash}=await import('node:crypto'),{createCaseAssistantApplication}=await import('../../../packages/application/case-assistant.ts');
- const baseline=await completedCase(root),store=createLocalCaseAssistantStore({projectRoot:root}),source=await store.readSource(baseline.owner),hash=(s:string)=>createHash('sha256').update(s).digest('hex');
- const fields={...decision,choice:'no_action' as const,candidate_id:null,evidence_refs:source.evidence_refs,finding_refs:[source.finding_id]};
- const app=createCaseAssistantApplication({store,runtime:{async turn(){return{provider:config.provider,model:config.model,cost_microunits:0,output:{kind:'draft',fields}};}},config,clock:()=>new Date()});
- try{const linked=await app.link(baseline.owner,'混合报告历史',randomUUID()),id=linked.session.id,auth=await app.prepare(id,'合成');await app.start(id,auth.id,true);let p=await app.read(id);for(let i=0;i<200&&!p.drafts.length;i++){await new Promise(r=>setTimeout(r,5));p=await app.read(id);}p=await app.adopt(id,p.drafts[0].id,1,'合成采纳人',randomUUID());
+ const {createHash}=await import('node:crypto');const f=await professionalCase(root),{baseline,store,source,fields,app}=f,hash=(s:string)=>createHash('sha256').update(s).digest('hex');
+ try{const id=f.session.id;let p=await app.adopt(id,f.draft.id,f.draft.version,'合成采纳人',randomUUID());
  // Seed a valid pre-correction report in the real Store, using its historical formatter.
  const formal=p.decisions[0],markdown=`# 正式 Decision Record / Expected Outcome\n\n来源 final report: ${source.report.report_id}\n来源 Case/revision: ${source.owner.case_id} / ${source.owner.revision_id}\n采纳人: ${formal.actor}\n采纳时间: ${formal.adopted_at}\n\n${JSON.stringify(formal,null,2)}\n`;
  const html=`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>正式决策报告</title><body><pre>${markdown.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;')}</pre></body></html>`;

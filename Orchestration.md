@@ -34,7 +34,7 @@ user confirmation. Blueprint targets, user decisions and engineering checks rema
 | Domain | Owns | Does not own |
 |---|---|---|
 | product-governance | product docs, terminology, UI and product decisions | ordinary engineering decisions |
-| experience | Desktop, compatibility-preserved CLI and user surfaces | infrastructure SDK behavior |
+| experience | user surfaces | infrastructure SDK behavior |
 | core | Product Core, Application, Ports and contracts | concrete infrastructure |
 | capability-packs | Domain/Model Pack SDKs and private logic | unapproved product-wide contracts |
 | runtime-data | Adapters and deployment Profiles | product intent |

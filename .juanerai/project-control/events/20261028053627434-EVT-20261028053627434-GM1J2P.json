@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "event_id": "EVT-20261028053627434-GM1J2P",
+  "event_type": "status_updated",
+  "occurred_at": "2026-10-28T05:36:27.434Z",
+  "actor": {
+    "role": "controller",
+    "session": "agent-host-simplification"
+  },
+  "summary": "用户决定暂停；授权GitHub main保存最新未完成产品并清除双设备本地资料",
+  "status_after": "blocked",
+  "evidence_refs": []
+}

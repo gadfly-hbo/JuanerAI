@@ -1,4 +1,4 @@
-import {taskHash} from './member-task.ts';
+import {hashFiniteJson} from './member-task.ts';
 import {judgmentPremises,judgmentActionMethods,judgmentDataStatement,judgmentMaterialSubjectKey,judgmentClauseView,recordAttributionAction,passiveJudgmentGoal} from './open-analysis-judgment-conditions.ts';
 import type {JudgmentSnapshot,JudgmentClaimReview,JudgmentCondition,ReviewedContent} from '../ports/open-analysis-judgment-review.ts';
 
@@ -28,7 +28,7 @@ export function qualifyReviewedContent(snapshot:JudgmentSnapshot,claim:JudgmentC
  if(claim.kind==='conclusion'&&content.proposal!==null||claim.kind==='strategy'&&content.proposal===null)issues.push('CONTENT_ACTION_UNPROVEN');
  const p=content.proposal;
  if(p){
-  const source_ids=reviewedContentSources(snapshot);
+  const source_ids=snapshot.context.source_catalog.map(s=>s.source_id);
   if(!text.includes(p.statement)||claim.strategy?.goal!==p.statement||p.objects.some(id=>!source_ids.includes(id))||!p.objects.length||p.operation==='attribution'&&(p.result!=='matching_evidence'||p.objects.length!==2)||p.operation==='analysis'&&p.result!=='analysis'||p.operation==='passive'&&p.result!=='retained_analysis')issues.push('CONTENT_ACTION_UNPROVEN');
   const actualOperation=recordAttributionAction(p.statement)?'attribution':passiveJudgmentGoal.test(p.statement)?'passive':judgmentActionMethods(p.statement,true,true).includes('analysis')?'analysis':null;
   if(actualOperation!==p.operation)issues.push('CONTENT_ACTION_UNPROVEN');
@@ -45,23 +45,11 @@ export function qualifyReviewedContent(snapshot:JudgmentSnapshot,claim:JudgmentC
   else{const a=fraction(q.value),b=fraction(premise.cost_limit);if(a.value*b.scale>b.value*a.scale)issues.push('CONTENT_QUANTITY_UNPROVEN');capacity_refs.push(q.source_id);}
  }
  if(claim.strategy&&/[0-9]/.test(claim.strategy.cost)&&!content.quantities.length)issues.push('CONTENT_QUANTITY_UNPROVEN');
- for(const c of claim.conditions){const actual=premises.find(p=>p.id===c.id);if(!actual||taskHash({text:actual.text,source_quote:actual.source_quote,state:actual.state})!==taskHash({text:c.text,source_quote:c.source_quote,state:c.state}))issues.push('CONTENT_PREMISE_UNPROVEN');}
+ for(const c of claim.conditions){const actual=premises.find(p=>p.id===c.id);if(!actual||hashFiniteJson({text:actual.text,source_quote:actual.source_quote,state:actual.state})!==hashFiniteJson({text:c.text,source_quote:c.source_quote,state:c.state}))issues.push('CONTENT_PREMISE_UNPROVEN');}
  const eligible=issues.length===0&&['supported','conditional'].includes(claim.verdict),selectable=claim.kind==='strategy'&&eligible&&(p?.operation==='passive'||conditions.length>0&&conditions.every(c=>c.state==='met'));
  return {conditions,qualification:{version:'1.0' as const,selectable,issues:[...new Set(issues)],explanation:issues.length?'当前内容与同版来源、行动或资源关系不一致，未取得资格。':null,alternative:claim.strategy?.alternatives??'仅保留已有分析并暂缓；不执行行动。',capacity_refs:[...new Set(capacity_refs)],premise_ids:conditions.map(c=>c.id),submitted_conditions:claim.conditions}};
 }
 
-/** Source identity comes from actual bound computations, including earlier
- * independently checked steps, never only the last step's Context metadata. */
-export function reviewedContentSources(snapshot:JudgmentSnapshot){
- const ids=new Set<string>();
- const visit=(plan:unknown)=>{if(!plan||typeof plan!=='object')return;const inputs=Reflect.get(plan,'inputs'),base=Reflect.get(plan,'base');
-  if(Array.isArray(inputs)&&inputs.length){for(const input of inputs)visit(input);return;}
-  if(base&&typeof base==='object'){visit(base);return;}
-  const id=Reflect.get(plan,'source_id');if(typeof id==='string')ids.add(id);
- };
- for(const raw of snapshot.evidence.verified_calculations)if(raw&&typeof raw==='object')visit(Reflect.get(raw,'execution_plan'));
- return [...ids];
-}
 /** Existing bounded USER ceiling syntax and existing symbolic annotation.
  * No body equality, default amount or currency conversion. Other numerical
  * uses remain unproven; a declared ceiling label cannot turn spending into one. */

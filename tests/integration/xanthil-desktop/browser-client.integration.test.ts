@@ -1,10 +1,8 @@
-import {withReportEdit} from '../../fixtures/xanthil-desktop/report-edit-runtime.ts';
+
+
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {createWorkspaceClient} from '../../../apps/browser/client.mjs';
-type ReportProfileFactory=typeof import('../../../profiles/personal/open-analysis.ts').createPersonalOpenAnalysisWorkspace;
-const profileWithReportEdit=(factory:ReportProfileFactory,config:Parameters<ReportProfileFactory>[0])=>factory({...config,runtime:config.runtime?withReportEdit(config.runtime):undefined,createRuntime:config.createRuntime?(ledger,context)=>withReportEdit(config.createRuntime!(ledger,context)):undefined});
-
+import { createWorkspaceClient } from '../../../apps/browser/client.mjs';
 test('BF-R07/08 E01-d: uncertain mutation survives refresh without persisting control or resending',async()=>{
  const values=new Map<string,string>(),storage={getItem:(k:string)=>values.get(k)??null,setItem:(k:string,v:string)=>values.set(k,v),removeItem:(k:string)=>values.delete(k)};let writes=0,settled=false;
  const request=async(_path:string,options?:RequestInit)=>{if(options?.method==='POST'){writes++;throw new Error('connection lost after dispatch');}return new Response(JSON.stringify(settled?{kind:'task_created',task_id:'saved-task'}:null),{status:200});};
@@ -13,7 +11,7 @@ test('BF-R07/08 E01-d: uncertain mutation survives refresh without persisting co
  settled=true;assert.equal((await refreshed.recover()).status,'recorded');assert.equal(refreshed.pending(),null);assert.equal(writes,1);
 });
 
-import {bootstrapWorkspace} from '../../../apps/browser/bootstrap.mjs';
+import { bootstrapWorkspace } from '../../../apps/browser/bootstrap.mjs';
 test('BF-R01 E01-d: fragment is cleared before exchange; invalid and rejected links load no workspace',async()=>{
  const events:string[]=[],token='a'.repeat(64);let loaded=0;
  const common={history:{replaceState(_data:unknown,_unused:string,url?:string|URL|null){events.push('clear:'+url);}},status(_text:string){},load:async()=>({async startWorkspace(input:{control:string|null}){loaded++;assert.equal(input.control,'memory-only');}})};
@@ -92,17 +90,4 @@ test('Q11-07: selected document format and bytes reach open task unchanged rathe
 
 // Host browser evidence uses an explicitly selected existing executable. Offline
 // CI skips this host-specific case; it never downloads a browser or calls a model.
-test('OA-RT04/Q11-01: actual first browser submit dispatches once, can Stop during source read, and saves a later explicit task', {skip:!process.env.JUANERAI_BROWSER_ACCEPTANCE_EXECUTABLE,timeout:45000},async()=>{
- const {mkdtempSync,writeFileSync}=await import('node:fs'),{join}=await import('node:path'),{browserEvidenceRoot}=await import('../../fixtures/xanthil-desktop/browser-evidence.ts');
- const {createPersonalOpenAnalysisWorkspace}=await import('../../../profiles/personal/open-analysis.ts'),{startBrowserMembershipServer}=await import('../../../apps/browser/local-server.ts'),{createMemberSourceInspector}=await import('../../../adapters/analytics-duckdb/member-source-inspection.ts');
- const library=join(process.cwd(),'node_modules','playwright-core','index.mjs'),{chromium}=await import(library);
- const root=mkdtempSync(join(browserEvidenceRoot,'first-browser-')),file=join(root,'synthetic.csv');writeFileSync(file,'数量\n7\n3\n');let ready!:()=>void,release!:()=>void,signal:AbortSignal|undefined,inspections=0,runs=0,configs=0;
- const entered=new Promise<void>(r=>ready=r),wait=new Promise<void>(r=>release=r),inspect=createMemberSourceInspector(process.env.JUANERAI_TOOLCHAIN_BIN+'/python3');
- const open=profileWithReportEdit(createPersonalOpenAnalysisWorkspace,{projectRoot:root,inspect:async i=>{inspections++;if(inspections===1){signal=i.cancellation_signal;ready();await wait;}return inspect(i);},authorizeConfiguration:async()=>{configs++;return {config_sha256:'b'.repeat(64)};},runtime:{run:async i=>{runs++;const data=await i.tools.find(t=>t.name==='inspect_selected')!.execute({},i.signal) as import('../../../packages/ports/member-source.ts').MemberSourceInspection;await i.tools.find(t=>t.name==='set_framework')!.execute({goal:'核实数量',source_id:data.sources[0]!.source_id,sheet_id:data.sources[0]!.sheets[0]!.sheet_id,column:'数量',operation:'sum',unit:'件',group_mode:'none'},i.signal);await i.tools.find(t=>t.name==='calculate_and_verify')!.execute({},i.signal);return {text:'合计10件，原因尚未验证。',tools:[]};}}});
- let server:Awaited<ReturnType<typeof startBrowserMembershipServer>>|undefined,browser:any;
- try{server=await startBrowserMembershipServer({store:{} as any,workspace:{} as any,open});browser=await chromium.launch({executablePath:process.env.JUANERAI_BROWSER_ACCEPTANCE_EXECUTABLE,headless:true});const page=await browser.newPage({viewport:{width:1440,height:900}}),errors:string[]=[];page.on('pageerror',(e:Error)=>errors.push(e.message));await page.goto(server.origin+'/#'+server.bootstrap);await page.getByRole('textbox',{name:'分析需求或追问'}).waitFor();const chooser=page.waitForEvent('filechooser');void chooser.catch(()=>{});await page.getByRole('button',{name:'＋ 资料',exact:true}).click();await (await chooser).setFiles(file);await page.getByText('已选定 synthetic.csv',{exact:true}).waitFor();await page.getByRole('textbox',{name:'分析需求或追问'}).fill('核对合成数量');await page.getByRole('button',{name:'发送',exact:true}).click();await page.getByRole('button',{name:'同意并开始分析',exact:true}).click();await Promise.race([entered,new Promise((_,reject)=>setTimeout(()=>reject(Error('inspector not reached')),5000))]);
- const pending=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('juanerai.open.pending.v1')!));assert.equal(open.submission(pending.task_id)!.state,'reading');assert.equal(await page.getByRole('button',{name:'停止',exact:true}).isEnabled(),true);await page.getByRole('button',{name:'停止',exact:true}).click();await page.getByText('正在停止资料读取，请查看保存结果确认。',{exact:false}).waitFor();assert.equal(signal?.aborted,true);assert.equal(open.submission(pending.task_id)!.state,'unknown');release();await page.waitForFunction(()=>sessionStorage.getItem('juanerai.open.pending.v1')===null);assert.equal(open.submission(pending.task_id)!.state,'stopped');assert.equal(configs,0);assert.equal(runs,0);
- // A later user submission is explicit, not an automatic retry of the stopped command.
- await page.getByRole('textbox',{name:'分析需求或追问'}).fill('重新核对合成数量');await page.getByRole('button',{name:'发送',exact:true}).click();await page.getByRole('button',{name:'同意并开始分析',exact:true}).click();await page.getByRole('button',{name:'展开报告',exact:true}).waitFor();await open.collect();const saved=open.list()[0]!;assert.equal(saved.state,'saved');assert.equal(saved.outcome!.calculation.value,'10');assert.notEqual(saved.identity.task_id,pending.task_id);assert.equal(runs,1);assert.equal(configs,1);assert.equal(inspections,2);assert.deepEqual(errors,[]);await page.screenshot({path:join(root,'actual-first-submit.png'),fullPage:true});
- }finally{release();await browser?.close();await server?.close();await open.close();}
-});
+

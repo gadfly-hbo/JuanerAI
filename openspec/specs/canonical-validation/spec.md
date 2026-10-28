@@ -33,7 +33,7 @@ argument returns nonzero and starts no validation command.
 ## CVR-REQ-002 — Fail-fast preflight
 
 Before validation, the entrypoint SHALL fail fast unless these installed
-values match: Node `26.0.0`, npm `11.12.1`, DuckDB `1.5.2`, Pi SDK `0.84.2`,
+values match: Node `26.0.0`, npm `11.12.1`, DuckDB `1.5.2`,
 and TypeBox `1.3.7`; Python SHALL satisfy `>=3.9`. Node, npm, Python, and
 dependency handling use only trim and their known leading-version-prefix
 handling. DuckDB alone SHALL take the first non-empty whitespace-delimited

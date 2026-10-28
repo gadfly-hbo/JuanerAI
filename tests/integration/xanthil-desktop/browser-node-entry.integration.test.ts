@@ -51,19 +51,20 @@ test('BF-R08/11: normal Node startup exits while independent service serves late
  writeFileSync(join(deployment,'build/development-keychain/xanthil-keychain'),`#!/bin/sh\nprintf invoked > '${helperInvoked}'\nexit 97\n`,{mode:0o700});
  writeFileSync(join(deployment,'build/xanthil-toolchain-deployment.json'),JSON.stringify({schema_version:'1.0',duckdb:{executable_path:join(bin,'duckdb'),version:'1.5.2'},python:{executable_path:join(bin,'python3'),version:pythonVersion.stdout.trim().replace(/^Python /,'')}}));
  const root=mkdtempSync(join(browserEvidenceRoot,'node-entry-')),configuration=join(deployment,'launch.json');
- writeFileSync(configuration,JSON.stringify({version:'1.0',profile_root:realpathSync(root),analysis:{newTaskPolicy:'unified-v1'}}));
- const env={...process.env,JUANERAI_DESKTOP_DEV_ROOT:root,JUANERAI_BROWSER_CONFIG:configuration},command=join(deployment,'tools/browser/entry.mjs'),directory=join(root,'user-data','web-service');
- const run=(action:string)=>spawnSync(process.execPath,[command,action,'--no-open'],{env,encoding:'utf8',timeout:20000});
+ writeFileSync(configuration,JSON.stringify({version:'2.0',profile_root:realpathSync(root),analysis:{analysisModel:'mimo-v2.6-flash',judgmentReviewAllowed:true}}));
+ const env:NodeJS.ProcessEnv={...process.env,JUANERAI_DESKTOP_DEV_ROOT:root,JUANERAI_BROWSER_CONFIG:configuration};delete env.NODE_OPTIONS;const offline=resolve('tests/fixtures/xanthil-desktop/normal-entry-offline.mjs'),command=join(deployment,'tools/browser/entry.mjs'),directory=join(root,'user-data','web-service');
+ const run=(action:string)=>spawnSync(process.execPath,['--import',offline,command,action,'--no-open'],{env,encoding:'utf8',timeout:20000});
+ let release:(()=>void)|undefined;
  try{
   const started=run('start');assert.equal(started.status,0,started.stderr);assert.doesNotMatch(started.stdout,/#[a-f0-9]{64}|credential/);
-  const first=readBrowserServiceIdentity(directory);
+  const first=readBrowserServiceIdentity(directory),allow=Reflect.get(globalThis,Symbol.for('Mini.D006.ownedLoopback'));release=allow?.(first.origin);
   const call=async(path:string,body:unknown,headers:Record<string,string>)=>{const r=await fetch(first.origin+path,{method:'POST',headers:{'content-type':'application/json',...headers},body:JSON.stringify(body)});return {status:r.status,body:await r.json(),cookie:r.headers.get('set-cookie')};};
   const again=run('start');assert.equal(again.status,0,again.stderr);assert.deepEqual(readBrowserServiceIdentity(directory),first);
   const opened=await call('/v1/service/open',{}, {'x-xanthil-service':first.credential});assert.equal(opened.status,200);
   const boot=await call('/v1/bootstrap',{token:opened.body.token},{origin:first.origin});assert.equal(boot.status,200);
   const projects=await fetch(first.origin+'/v1/projects',{headers:{cookie:boot.cookie!.split(';')[0]}});assert.equal(projects.status,200);assert.deepEqual(await projects.json(),{projects:[],current:null});
   assert.equal((await fetch(first.origin+'/')).status,200,'service remains after startup commands have exited');
- }finally{const stopped=run('stop');assert.equal(stopped.status,0,stopped.stderr);assert.equal(existsSync(helperInvoked),false,'passive startup/readback/stop must never invoke credentials');}
+ }finally{const stopped=run('stop');assert.equal(stopped.status,0,stopped.stderr);assert.equal(existsSync(helperInvoked),false,'passive startup/readback/stop must never invoke credentials');release?.();}
 });
 
 test('BF-R08: an unreachable service with held ownership is not reported as stopped',async()=>{

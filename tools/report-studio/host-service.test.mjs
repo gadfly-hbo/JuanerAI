@@ -7,14 +7,15 @@ import {tmpdir} from 'node:os';
 import {createHash} from 'node:crypto';
 import {createPersonalReportStudioRuntime,createPersonalReportStudioWorkspace} from '../../profiles/personal/report-studio.ts';
 import {startBrowserMembershipServer} from '../../apps/browser/local-server.ts';
+import {nativeReport} from '../../tests/fixtures/xanthil-desktop/native-report.ts';
 const bundle=process.env.JUANERAI_REPORT_STUDIO_BUNDLE,identityFile=process.env.JUANERAI_REPORT_STUDIO_IDENTITY;
 assert(bundle&&identityFile,'explicit fixed bundled candidate required');
 const id=n=>`${String(n).padStart(8,'0')}-1111-4111-a111-111111111111`;
 test('RS-HOST-HTTP-01 real host HTTP → Personal → fixed child → exact source and delivered copy',async t=>{
  const root=await realpath(await mkdtemp(join(tmpdir(),'studio-host-real-'))),data=join(root,'studio-data'),hostRoot=join(root,'host');await mkdir(hostRoot);
  const runtime=createPersonalReportStudioRuntime({bundleRoot:bundle,identity:JSON.parse(await readFile(identityFile,'utf8')),dataRoot:data});
- const task={version:'1.4',identity:{task_id:id(2),revision:'1',scope_sha256:'a'.repeat(64)},question:'合成问题',state:'saved',outcome:null,conversation_outcome:{outcome_id:id(3),text:'只用合成结论'},history:[]};
- const workspace=createPersonalReportStudioWorkspace({projectRoot:hostRoot,projectId:id(1),readTask:taskId=>taskId===id(2)?task:null,runtime});
+ const actual=await nativeReport({root:hostRoot,projectId:id(1),text:'只用合成结论'}),task=actual.task,taskId=actual.identity.task_id;
+ const workspace=createPersonalReportStudioWorkspace({projectRoot:hostRoot,projectId:id(1),readTask:taskId=>taskId===taskId?task:null,runtime});
  const services={runtime,project:projectId=>{if(projectId!==id(1))throw Error('wrong project');return workspace;}};
  const host=await startBrowserMembershipServer({store:{},reportStudio:services});
  t.after(async()=>{await host.close();await runtime.close();await rm(root,{recursive:true,force:true});});
@@ -22,8 +23,8 @@ test('RS-HOST-HTTP-01 real host HTTP → Personal → fixed child → exact sour
  const bootstrap=await post('/v1/bootstrap',{token:host.bootstrap}),cookie=bootstrap.headers.get('set-cookie').split(';')[0],control=(await bootstrap.json()).control;
  const headers={cookie,'x-xanthil-control':control},base='/v1/report-studio/projects/'+id(1);
  let response=await fetch(host.origin+'/v1/report-studio/status',{headers:{cookie}});assert.equal((await response.json()).state,'ready');
- response=await fetch(host.origin+base+'/tasks/'+id(2)+'/revisions/1/catalog',{headers:{cookie}});assert.equal(response.status,200);const catalog=await response.json();assert.equal(catalog.association,null);assert.equal(catalog.catalog.source.revision,'1');
- response=await post(base+'/open',{task_id:id(2),revision:'1',materials:['conclusion']},headers);assert.equal(response.status,200,await response.clone().text());const opened=await response.json();assert.equal(opened.association.state,'ready');
+ response=await fetch(host.origin+base+'/tasks/'+taskId+'/revisions/1/catalog',{headers:{cookie}});assert.equal(response.status,200);const catalog=await response.json();assert.equal(catalog.association,null);assert.equal(catalog.catalog.source.revision,'1');
+ response=await post(base+'/open',{task_id:taskId,revision:'1',materials:['conclusion']},headers);assert.equal(response.status,200,await response.clone().text());const opened=await response.json();assert.equal(opened.association.state,'ready');
  const url=new URL(opened.url);assert.equal(url.searchParams.get('project'),opened.association.studio_project_id);assert.match(url.hash,/^#bootstrap=[a-f0-9]{64}$/);assert(!JSON.stringify(opened).includes('ownerToken'));
  const directory=join(data,opened.association.studio_project_id,'exports');await mkdir(directory,{recursive:true});const exportId='exp_synthetic',content=Buffer.from('<!doctype html><html><body>合成稳定副本</body></html>');
  await writeFile(join(directory,exportId+'.html'),content);await writeFile(join(directory,exportId+'.json'),JSON.stringify({export_id:exportId,format:'html',artifact_path:`exports/${exportId}.html`,artifact_hash:createHash('sha256').update(content).digest('hex'),created_at:'2026-10-16T00:00:00Z',checks:{ok:false,message:'合成排版提示',items:[]}}));

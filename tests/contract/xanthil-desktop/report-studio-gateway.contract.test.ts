@@ -14,6 +14,7 @@ async function fixture(t:TestContext,reply:(url:string)=>{status?:number;body?:u
   });
   await new Promise<void>(r=>server.listen(0,'127.0.0.1',r));t.after(()=>new Promise<void>(r=>server.close(()=>r())));
   const address=server.address();assert(address&&typeof address==='object');
+  const origin=`http://127.0.0.1:${address.port}`;const register=Reflect.get(globalThis,Symbol.for('Mini.D006.ownedLoopback'));const revoke=register?.(origin);t.after(()=>revoke?.());
   return {seen,gateway:createReportStudioGateway({origin:`http://127.0.0.1:${address.port}`,ownerToken:owner,pluginVersion:'fixed',sourceCommit:source})};
 }
 test('RS-GATEWAY-01 reads exact project after real fixed-instance handshake',async t=>{

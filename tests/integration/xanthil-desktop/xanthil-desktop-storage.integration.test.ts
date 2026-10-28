@@ -82,7 +82,7 @@ test('U1.5 owner crash: killed real Session writer before/after native COMMIT re
 test('U2 native cancellation [AC-XDESK-008-04]: real Application Store and analytics Adapter reap the owned process before reopened terminal history', async () => {
   await withIsolatedProject(async (projectRoot) => {
     const child = await createBlockingDuckDbChild(projectRoot);
-    const ready = await openConfirmedDesktopRevision(projectRoot, undefined, { duckdbExecutable: child.executable });
+    const ready = await openConfirmedDesktopRevision(projectRoot, { duckdbExecutable: child.executable });
     const readyRevision = requiredRecord(ready.projection.revision, 'ready revision');
     const started = requiredExport<Method>(ready.application, 'startAnalysis')({ ...revisionCommand(ready.owner, desktopTestIds.retryCommand, requiredString(readyRevision, 'row_version')), confirmation_id: ready.confirmationId });
     await child.assertStarted();
@@ -110,7 +110,7 @@ test('U2 native cancellation [AC-XDESK-008-04]: real Application Store and analy
 test('U2 native interruption [TEST-XDESK-014]: real Adapter-owned child failure preserves one failed Run and no Finding on reopen', async () => {
   await withIsolatedProject(async (projectRoot) => {
     const child = await createBlockingDuckDbChild(projectRoot);
-    const ready = await openConfirmedDesktopRevision(projectRoot, undefined, { duckdbExecutable: child.executable });
+    const ready = await openConfirmedDesktopRevision(projectRoot, { duckdbExecutable: child.executable });
     const admission = await requiredExport<Method>(ready.application, 'startAnalysis')({ ...revisionCommand(ready.owner, desktopTestIds.retryCommand, requiredString(requiredRecord(ready.projection.revision, 'ready revision'), 'row_version')), confirmation_id: ready.confirmationId });
     await child.assertStarted();
     const runningProjection = await requiredExport<Method>(ready.application, 'readProjection')(ready.owner);
@@ -141,7 +141,7 @@ test('U2 reconcile unknown [AC-XDESK-008-05]: unknown target is effect-free and 
     await assert.rejects(()=>requiredExport<Method>(ready.application, 'reconcileInterrupted')({ command_id: desktopTestIds.retryCommand, ...ready.owner, target_kind: 'analysis_run', target_id: '01991a00-0000-7000-8000-000000000001' }),/NOT_FOUND/);
     const projection=await requiredExport<Method>(ready.application,'readProjection')(ready.owner);
     assert.equal((projection.runs as unknown[]).length, 0, 'an unknown/non-running target is effect-free and cannot manufacture a Run');
-    assert.equal(ready.runtime.calls.length, 0, 'reconciliation must not contact the optional Runtime/provider');
+    assert.equal(Object.hasOwn(ready,'runtime'),false,'local process reconciliation does not construct a model adapter');
     assert.deepEqual(await readFile(join(projectRoot,'.xanthil','desktop','state.sqlite')),before);
   });
 });
@@ -182,7 +182,7 @@ test('U2 owner crash windows [TEST-XDESK-014, AC-XDESK-008-05]: native publicati
       };
       syncBuiltinESMExports();
       const runEvidenceStore={...native.runEvidenceStore,beginRun:async input=>{const result=await native.runEvidenceStore.beginRun(input);if(point==='running')stop({run_id:input.run_id});return result;}};
-      const application=createXanthilDesktopDecisionCaseApplication({store:native.store,analysisExecution:native.analysisExecution,runEvidenceStore,assistanceRuntime:null,clock:fixedClock,deadlineScheduler:createControlledDeadlineScheduler().scheduler});
+      const application=createXanthilDesktopDecisionCaseApplication({store:native.store,analysisExecution:native.analysisExecution,runEvidenceStore,clock:fixedClock,deadlineScheduler:createControlledDeadlineScheduler().scheduler});
       await application.openProject(${JSON.stringify(projectOpen)});
       await application.startAnalysis(${JSON.stringify(command)});
     `;

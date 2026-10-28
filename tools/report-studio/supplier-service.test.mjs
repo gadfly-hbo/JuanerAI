@@ -1,3 +1,4 @@
+import {nativeReport} from '../../tests/fixtures/xanthil-desktop/native-report.ts';
 // Focused actual supplier integration; invoke with explicit isolated compiled source.
 // No credentials, model request, installed-app activation, or external user data.
 import {test} from 'node:test';
@@ -61,10 +62,10 @@ test('RS-GATEWAY-01 actual Studio → HTTP Adapter → Application → SQLite pr
   const {realpath}=await import('node:fs/promises');
   const hostRoot=join(f.data,'host');await mkdir(hostRoot);
   const store=createReportStudioStore({projectRoot:await realpath(hostRoot),projectId:id(1)});
-  const task={version:'1.4',identity:{task_id:id(2),revision:'1',scope_sha256:'a'.repeat(64)},question:'合成问题',state:'saved',outcome:null,conversation_outcome:{outcome_id:id(3),text:'合成结论'},history:[]};
+  const actual=await nativeReport({root:hostRoot,projectId:id(1),text:'合成结论'}),task=actual.task,taskId=actual.identity.task_id;
   let n=10;
   const workspace=createReportStudioWorkspace({projectId:id(1),readTask:()=>task,store,studio:createReportStudioGateway({origin:f.service.origin,ownerToken:owner,pluginVersion:'0.1.0-synthetic-builtin',sourceCommit:'74ebb609fd73cf263614ffc9301dafaafcec4230'}),newId:()=>id(n++),now:()=> '2026-10-16T00:00:00Z'});
-  const association=await workspace.open(id(2),'1',['conclusion']);assert.equal(association.state,'ready');
+  const association=await workspace.open(taskId,'1',['conclusion']);assert.equal(association.state,'ready');
   assert.deepEqual(await workspace.continueProject(association.association_id),association);
   const exportId='exp_synthetic',directory=join(f.data,'projects',association.studio_project_id,'exports');await mkdir(directory,{recursive:true});
   const content=Buffer.from('<!doctype html><html><body>合成导出，非模型制作</body></html>');
@@ -262,8 +263,8 @@ test('RS-OWNER-01 actual owned child IPC returns exact source, rejects independe
  const data=await realpath(await mkdtemp(join(tmpdir(),'studio-owner-actual-')));await mkdir(join(data,'host'));let handleOwner,lose=true,requests=0;
  const instance=createReportStudioProcess({node:process.execPath,entry:join(root,'dist/juanerai/entry.js'),programRoot:root,dataRoot:join(data,'studio'),webDist:join(root,'web-dist'),pluginVersion:'0.1.0-synthetic-builtin',sourceCommit:'74ebb609fd73cf263614ffc9301dafaafcec4230',startupMs:5000,stopMs:1000,ownerRequest:async request=>{requests++;const value=await handleOwner(request);if(request.operation==='deliver'&&lose){lose=false;throw Object.assign(Error('RS_OWNER_REPLY_UNKNOWN'),{code:'RS_OWNER_REPLY_UNKNOWN'});}return value;}});
  t.after(async()=>{await instance.close();await preserveClosedService(data,t.name);await rm(data,{recursive:true,force:true});});const session=await instance.start();
- let current={version:'1.4',identity:{task_id:id(2),revision:'1',scope_sha256:'a'.repeat(64)},question:'仅合成真实IPC来源',state:'saved',outcome:null,conversation_outcome:{outcome_id:id(3),text:'真实IPC合成结论'},history:[]};
- const runtime={start:async()=>session,launch:async()=>'',status:async()=>({state:'ready'})},workspace=createPersonalReportStudioWorkspace({projectRoot:join(data,'host'),projectId:id(1),readTask:()=>current,runtime}),association=(await workspace.open(id(2),'1',['conclusion'])).association;
+ const actual=await nativeReport({root:join(data,'host'),projectId:id(1),text:'真实IPC合成结论'}),taskId=actual.identity.task_id;let current=actual.task;
+ const runtime={start:async()=>session,launch:async()=>'',status:async()=>({state:'ready'})},workspace=createPersonalReportStudioWorkspace({projectRoot:join(data,'host'),projectId:id(1),readTask:()=>current,runtime}),association=(await workspace.open(taskId,'1',['conclusion'])).association;
  handleOwner=createPersonalReportStudioOwner({origin:()=> 'http://127.0.0.1:12345',project:projectId=>{assert.equal(projectId,id(1));return workspace;}});
  const bootstrap=await session.gateway.bootstrap(),admitted=await fetch(session.origin+'/api/builtin/session',{method:'POST',headers:{origin:session.origin,'content-type':'application/json'},body:JSON.stringify({token:bootstrap})}),cookie=admitted.headers.get('set-cookie').split(';')[0];
  const call=(path,body)=>fetch(session.origin+path,{method:body===undefined?'GET':'POST',headers:{cookie,origin:session.origin,...(body===undefined?{}:{'content-type':'application/json'})},...(body===undefined?{}:{body:JSON.stringify(body)})}),contextPath='/api/builtin/browser/projects/'+association.studio_project_id+'/context';
@@ -271,7 +272,7 @@ test('RS-OWNER-01 actual owned child IPC returns exact source, rejects independe
  const independent=(await(await call('/api/projects',{title:'仅合成独立项目'})).json()).project;const before=requests;assert.deepEqual(await(await call('/api/builtin/browser/projects/'+independent.project_id+'/context')).json(),{kind:'independent',source:null,context:null});assert.notEqual((await call('/api/builtin/browser/projects/'+independent.project_id+'/deliveries/exp_other',{})).status,200);assert.equal(requests,before,'independent project never reaches host association capability');
  const content=Buffer.from('<html><body>真实IPC合成已保存产物</body></html>'),{WorkspaceStore}=await import(pathToFileURL(join(root,'dist/storage/workspace.js')).href),studioStore=new WorkspaceStore(join(data,'studio')),savedExport=await studioStore.saveExport(association.studio_project_id,{revision_id:'deck',format:'html',artifact:content,checks:{qa:{ok:false,message:'合成警告',items:[]}},is_draft:false}),exportId=savedExport.export_id;
  const deliveryPath='/api/builtin/browser/projects/'+association.studio_project_id+'/deliveries/'+exportId;assert.notEqual((await call(deliveryPath,{project_id:id(77)})).status,200);assert.notEqual((await call(deliveryPath,{})).status,200,'lost acknowledgement must not be shown as success');
- const receipt=await(await call(deliveryPath)).json();assert.equal(receipt.state,'saved');assert.deepEqual(Buffer.from(workspace.copy(receipt.delivery.delivery_id).content),content);const repeated=await(await call(deliveryPath,{})).json();assert.equal(repeated.delivery.delivery_id,receipt.delivery.delivery_id);assert.equal(workspace.deliveries(id(2)).length,1);
+ const receipt=await(await call(deliveryPath)).json();assert.equal(receipt.state,'saved');assert.deepEqual(Buffer.from(workspace.copy(receipt.delivery.delivery_id).content),content);const repeated=await(await call(deliveryPath,{})).json();assert.equal(repeated.delivery.delivery_id,receipt.delivery.delivery_id);assert.equal(workspace.deliveries(taskId).length,1);
  current=null;const unavailable=await(await call(contextPath)).json();assert.equal(unavailable.context.state,'unavailable');assert.equal(unavailable.context.return_url,null);assert.equal((await(await call(deliveryPath)).json()).delivery.delivery_id,receipt.delivery.delivery_id);assert.equal((await call('/api/projects/'+association.studio_project_id+'/exports')).status,200);
 });
 

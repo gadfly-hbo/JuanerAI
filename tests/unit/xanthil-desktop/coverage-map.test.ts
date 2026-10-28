@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-import { b1CoverageMap, b2CoverageMap, coverageMap, guiCoverageMap } from '../../fixtures/xanthil-desktop/coverage-map.ts';
+import { b1CoverageMap, b2CoverageMap, coverageMap, guiCoverageMap, retiredDesktopAcceptanceCriteria, currentCoverageDisposition } from '../../fixtures/xanthil-desktop/coverage-map.ts';
 import { allDesktopAcceptanceCriteria, assertDesktopFixtureHealth, b1TestCoverage, b2TestCoverage, desktopAcceptanceCases, guiTestCoverage } from '../../fixtures/xanthil-desktop/desktop-fixtures.ts';
 
 const escapeRegexLiteral = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -43,7 +43,8 @@ test('Desktop test fixture and 91-AC coverage map health are independent of miss
     ...(compatibilitySpecification.match(/AC-XDESK-LA-\d{3}-\d{2}/g) ?? []),
   ])].sort();
   const expected = allDesktopAcceptanceCriteria.slice().sort();
-  assert.deepEqual(specified, expected);
+  assert.deepEqual(specified, expected.filter(id=>!retiredDesktopAcceptanceCriteria.includes(id)));
+  for(const id of retiredDesktopAcceptanceCriteria)assert.equal(specified.includes(id),false);
   assert.deepEqual(Object.keys(coverageMap).sort(), expected);
   assert.equal(desktopAcceptanceCases.length, 91);
   assert.deepEqual(Object.keys(b1CoverageMap), b1TestCoverage.map((entry) => entry.title), 'B1 keeps its four frozen predecessor titles in execution order');
@@ -92,6 +93,7 @@ test('Desktop test fixture and 91-AC coverage map health are independent of miss
     assert.match(owner.case, new RegExp(`^(?:U1\\.(?:1|2) )?${acceptanceCriterion}: `));
     assert.ok(owner.assertion.length > 20, `${acceptanceCriterion} needs an observable assertion purpose`);
     assert.ok(['automated', 'manual-post-green'].includes(owner.execution));
+    const disposition=currentCoverageDisposition[acceptanceCriterion];if(disposition){assert.ok(disposition.status==='RETIRED_A_B'||disposition.status==='NOT_RUN');assert.ok(disposition.reason.length>20);continue;}
     const source = await readFile(new URL(owner.file.startsWith('tools/') ? `../../../${owner.file}` : `../../../tests/${owner.file}`, import.meta.url), 'utf8');
     if (owner.execution === 'automated') {
       assert.match(source, new RegExp(`test\\('${escapeRegexLiteral(owner.case)}'`), `${acceptanceCriterion} must name a concrete executable leaf, not only a map row`);

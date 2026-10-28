@@ -12,9 +12,7 @@ test('TEST-XDESK-CF-RESTORATION requires full Console then Desktop phases withou
   const expected=[
     'node --test tools/harness/validation/*.test.mjs',
     'node --test tests/unit/xanthil-local-analysis/*.test.ts',
-    'node --test tests/contract/xanthil-local-analysis/*.test.ts',
     'node --test tests/integration/xanthil-local-analysis/*.test.ts',
-    'node --test tests/e2e/xanthil-local-analysis/*.test.ts',
     'node --test tests/contract/model-pack-contract-enabler/*.test.ts',
     'node --test tests/integration/model-pack-contract-enabler/*.test.ts',
     'node --test tools/harness/project-board/project-control.test.mjs tools/harness/project-board/status-cli.test.mjs',
@@ -22,10 +20,9 @@ test('TEST-XDESK-CF-RESTORATION requires full Console then Desktop phases withou
     "node --test tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts",
     "node --test tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts",
     "node --test tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts",
-    "node --test tests/unit/xanthil-desktop/*.test.ts tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs",
+    "node --test tests/unit/xanthil-desktop/*.test.ts tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs",
     "node --test tests/contract/xanthil-desktop/*.test.ts",
     "node --test tests/integration/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/browser-companion-process.test.mjs tests/integration/xanthil-desktop/browser-service-view.test.mjs tests/integration/xanthil-desktop/browser-workspace-view.test.mjs",
-    "node --test --test-concurrency=1 tests/e2e/xanthil-desktop/*.test.ts",
     "node --test tests/integration/decision-platform/*.test.ts tests/integration/decision-platform/*.test.mjs",
   ];
   assert.deepEqual(actual,expected);
@@ -40,9 +37,7 @@ const CANONICAL_NODE = process.execPath;
 const VALIDATION_CHILD = 'validation:runner-fixture.test.mjs:unset';
 const C0_RUNNER_CHILDREN = Object.freeze([
   'unit:local-analysis.unit.test.ts:unset',
-  'contract:local-analysis-ports.contract.test.ts:unset',
   'integration:local-analysis.integration.test.ts:unset',
-  'e2e:local-analysis.e2e.test.ts:unset',
   'contract:model-pack-contract-enabler.contract.test.ts:unset',
   'integration:model-pack-contract-enabler.integration.test.ts:unset',
   'project-board:project-control.test.mjs:unset',
@@ -54,71 +49,43 @@ const CF_CONSOLE_PATHS = Object.freeze([
   "tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts",
   "tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts"
 ]);
-const CF_DESKTOP_GROUPS = Object.freeze([
+// D006 exact current suites; approved retired runtime-only paths have no aliases.
+const CF_DESKTOP_GROUPS = [
   [
     "tests/unit/xanthil-desktop/case-assistant.unit.test.ts",
-    "tests/unit/xanthil-desktop/collaboration-window-close.unit.test.ts",
     "tests/unit/xanthil-desktop/coverage-map.test.ts",
-    "tests/unit/xanthil-desktop/development-main.test.ts",
     "tests/unit/xanthil-desktop/development-mode.test.ts",
     "tests/unit/xanthil-desktop/member-task-canonical.unit.test.ts",
-    "tests/unit/xanthil-desktop/metric-assets-analysis.unit.test.ts",
-    "tests/unit/xanthil-desktop/metric-assets-report.unit.test.ts",
-    "tests/unit/xanthil-desktop/metric-assets-workbench.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-allocation-r3.unit.test.ts",
     "tests/unit/xanthil-desktop/open-analysis-autonomous-arguments.unit.test.ts",
     "tests/unit/xanthil-desktop/open-analysis-code-output.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-contribution-r3.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-exploration.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-input-references.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-interpretation.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-ir.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-join.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-limited-check-r3.unit.test.ts",
     "tests/unit/xanthil-desktop/open-analysis-methods.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-mixed-measure-r3.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-moments.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-reconciliation-r3.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-report-references-r3.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-semantic-feedback-r3.unit.test.ts",
     "tests/unit/xanthil-desktop/open-analysis-semantics.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-share-r3.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-steps.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-verifier.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-weighted-r3.unit.test.ts",
     "tests/unit/xanthil-desktop/open-analysis-workbench.unit.test.ts",
+    "tests/unit/xanthil-desktop/open-computation-context.unit.test.ts",
     "tests/unit/xanthil-desktop/open-membership-framework.unit.test.ts",
     "tests/unit/xanthil-desktop/provider-credentials.unit.test.ts",
     "tests/unit/xanthil-desktop/provider-settings.unit.test.ts",
+    "tests/unit/xanthil-desktop/report-postprocessing.unit.test.ts",
     "tests/unit/xanthil-desktop/report-studio-source.unit.test.ts",
     "tests/unit/xanthil-desktop/xanthil-desktop.unit.test.ts",
-    "tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs",
     "tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs",
-    "tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs",
     "tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs"
   ],
   [
-    "tests/contract/xanthil-desktop/case-assistant-ipc.contract.test.ts",
-    "tests/contract/xanthil-desktop/case-assistant-pi-build.contract.test.ts",
-    "tests/contract/xanthil-desktop/case-assistant-runtime.contract.test.ts",
     "tests/contract/xanthil-desktop/case-assistant-store.contract.test.ts",
     "tests/contract/xanthil-desktop/member-analysis-plan.contract.test.ts",
-    "tests/contract/xanthil-desktop/member-task-runtime.contract.test.ts",
     "tests/contract/xanthil-desktop/member-task-ui.contract.test.ts",
-    "tests/contract/xanthil-desktop/provider-settings-runtime.contract.test.ts",
+    "tests/contract/xanthil-desktop/new-architecture-build.contract.test.ts",
     "tests/contract/xanthil-desktop/report-studio-bundle.contract.test.ts",
     "tests/contract/xanthil-desktop/report-studio-gateway.contract.test.ts",
     "tests/contract/xanthil-desktop/report-studio-policy.contract.test.ts",
     "tests/contract/xanthil-desktop/report-studio-store.contract.test.ts",
     "tests/contract/xanthil-desktop/xanthil-desktop-analysis.contract.test.ts",
     "tests/contract/xanthil-desktop/xanthil-desktop-assistance.contract.test.ts",
-    "tests/contract/xanthil-desktop/xanthil-desktop-ipc.contract.test.ts",
     "tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts",
     "tests/contract/xanthil-desktop/xanthil-desktop-store.contract.test.ts"
   ],
   [
-    "tests/integration/xanthil-desktop/agent-host-browser-entry.integration.test.ts",
-    "tests/integration/xanthil-desktop/agent-host-proposal-contract.integration.test.ts",
     "tests/integration/xanthil-desktop/browser-client.integration.test.ts",
     "tests/integration/xanthil-desktop/browser-companion.integration.test.ts",
     "tests/integration/xanthil-desktop/browser-independent-profile.integration.test.ts",
@@ -138,66 +105,56 @@ const CF_DESKTOP_GROUPS = Object.freeze([
     "tests/integration/xanthil-desktop/case-assistant.integration.test.ts",
     "tests/integration/xanthil-desktop/case-collaboration-lifecycle.integration.test.ts",
     "tests/integration/xanthil-desktop/case-collaboration.integration.test.ts",
+    "tests/integration/xanthil-desktop/conversational-three-core.integration.test.ts",
     "tests/integration/xanthil-desktop/member-analysis-chain.integration.test.ts",
     "tests/integration/xanthil-desktop/member-task-retained.integration.test.ts",
     "tests/integration/xanthil-desktop/member-task.integration.test.ts",
-    "tests/integration/xanthil-desktop/metric-assets-application.integration.test.ts",
     "tests/integration/xanthil-desktop/metric-assets-browser.integration.test.ts",
     "tests/integration/xanthil-desktop/metric-assets-import.integration.test.ts",
     "tests/integration/xanthil-desktop/metric-assets-store.integration.test.ts",
-    "tests/integration/xanthil-desktop/metric-assets-workspace.integration.test.ts",
+    "tests/integration/xanthil-desktop/multiturn-requirement-updates.integration.test.ts",
+    "tests/integration/xanthil-desktop/native-computation-capability.integration.test.ts",
+    "tests/integration/xanthil-desktop/native-only-flow.integration.test.ts",
+    "tests/integration/xanthil-desktop/native-read-feedback.integration.test.ts",
+    "tests/integration/xanthil-desktop/new-architecture-agent.integration.test.ts",
+    "tests/integration/xanthil-desktop/new-architecture-case.integration.test.ts",
+    "tests/integration/xanthil-desktop/new-architecture-desktop.integration.test.ts",
+    "tests/integration/xanthil-desktop/new-architecture-membership.integration.test.ts",
+    "tests/integration/xanthil-desktop/new-architecture-normal-entry.integration.test.ts",
+    "tests/integration/xanthil-desktop/new-architecture-persistence.integration.test.ts",
     "tests/integration/xanthil-desktop/normal-entry-parameters.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-agent-ledger.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-agent-runtime.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-application.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-autonomous-collaboration.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-autonomous-drive.integration.test.ts",
     "tests/integration/xanthil-desktop/open-analysis-autonomous-native-session.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-child-runtime.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-code.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-collaboration.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-exploration-history-r3.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-http.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-limited-check-r3.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-long-artifact.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-natural-review.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-numeric-report.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-operating-r3.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-report-grounding.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-storage-read-cache.integration.test.ts",
     "tests/integration/xanthil-desktop/open-analysis-storage.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-analysis-workspace.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-computation-asset.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-computation-fresh-diagnostics.integration.test.ts",
+    "tests/integration/xanthil-desktop/open-computation-independent-context.integration.test.ts",
     "tests/integration/xanthil-desktop/open-document-source.integration.test.ts",
-    "tests/integration/xanthil-desktop/open-membership-method.integration.test.ts",
     "tests/integration/xanthil-desktop/pi-harness-first-loop.integration.test.ts",
     "tests/integration/xanthil-desktop/provider-settings.integration.test.ts",
+    "tests/integration/xanthil-desktop/report-postprocessing.integration.test.ts",
     "tests/integration/xanthil-desktop/report-studio-http.integration.test.ts",
     "tests/integration/xanthil-desktop/report-studio-local-access.integration.test.ts",
     "tests/integration/xanthil-desktop/report-studio-process.integration.test.ts",
     "tests/integration/xanthil-desktop/report-studio-profile.integration.test.ts",
     "tests/integration/xanthil-desktop/report-studio-workspace.integration.test.ts",
     "tests/integration/xanthil-desktop/requirement-draft.integration.test.ts",
+    "tests/integration/xanthil-desktop/retry-policy-configuration.integration.test.ts",
     "tests/integration/xanthil-desktop/sdk041-case-session.integration.test.ts",
     "tests/integration/xanthil-desktop/sdk041-connection-probe.integration.test.ts",
     "tests/integration/xanthil-desktop/sdk041-session-purposes.integration.test.ts",
     "tests/integration/xanthil-desktop/shared-analysis-tools.integration.test.ts",
     "tests/integration/xanthil-desktop/shared-runtime-state.integration.test.ts",
+    "tests/integration/xanthil-desktop/three-core-browser-ui.integration.test.ts",
+    "tests/integration/xanthil-desktop/three-core-model-report.integration.test.ts",
     "tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts",
     "tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts",
     "tests/integration/xanthil-desktop/xlsx-package-root.integration.test.ts",
     "tests/integration/xanthil-desktop/browser-companion-process.test.mjs",
     "tests/integration/xanthil-desktop/browser-service-view.test.mjs",
     "tests/integration/xanthil-desktop/browser-workspace-view.test.mjs"
-],
-  [
-    "tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts",
-    "tests/e2e/xanthil-desktop/case-assistant.e2e.test.ts",
-    "tests/e2e/xanthil-desktop/case-collaboration-native.e2e.test.ts",
-    "tests/e2e/xanthil-desktop/member-task-native.e2e.test.ts",
-    "tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts",
-    "tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts"
-  ]
-]);
+  ],
+  []
+];
 const CF_TSCONFIG_APPENDIX = Object.freeze([
   "packages/product-core/xanthil-desktop-decision-case.ts",
   "packages/application/xanthil-desktop-decision-case.ts",
@@ -208,8 +165,8 @@ const CF_TSCONFIG_APPENDIX = Object.freeze([
   "adapters/analytics-duckdb/xanthil-desktop-decision-case.ts",
   "profiles/personal/xanthil-desktop.ts",
   "apps/desktop/main.ts",
-  "apps/desktop/preload.ts",
-  "apps/desktop/renderer.tsx",
+  
+  
   "tests/fixtures/xanthil-desktop/coverage-map.ts",
   "tests/fixtures/xanthil-desktop/desktop-contract-drivers.ts",
   "tests/fixtures/xanthil-desktop/desktop-e2e-harness.ts",
@@ -219,10 +176,10 @@ const CF_TSCONFIG_APPENDIX = Object.freeze([
   "tests/contract/xanthil-desktop/xanthil-desktop-store.contract.test.ts",
   "tests/contract/xanthil-desktop/xanthil-desktop-analysis.contract.test.ts",
   "tests/contract/xanthil-desktop/xanthil-desktop-assistance.contract.test.ts",
-  "tests/contract/xanthil-desktop/xanthil-desktop-ipc.contract.test.ts",
+  
   "tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts",
   "tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts",
-  "tests/e2e/xanthil-desktop/xanthil-desktop.e2e.test.ts",
+  
   "tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts"
 ]);
 // Accepted Change002 AC-01–13 / PS-01–08 additions to the preserved43+25 roots.
@@ -232,38 +189,38 @@ const CHANGE002_TSCONFIG_APPENDIX = Object.freeze([
   'packages/product-core/case-assistant.ts',
   'packages/application/case-assistant.ts',
   'packages/ports/case-assistant.ts',
-  'adapters/agent-pi/case-assistant.ts',
+  
   'adapters/storage-local/case-assistant.ts',
-  'apps/desktop/case-assistant-main.ts',
-  'apps/desktop/case-assistant-workspace.tsx',
-  'tests/e2e/xanthil-desktop/case-assistant.e2e.test.ts',
+  
+  
+  
   'tests/integration/xanthil-desktop/case-assistant.integration.test.ts',
-  'tests/contract/xanthil-desktop/case-assistant-ipc.contract.test.ts',
-  'tests/contract/xanthil-desktop/case-assistant-runtime.contract.test.ts',
+  
+  
   'tests/contract/xanthil-desktop/case-assistant-store.contract.test.ts',
   'tests/unit/xanthil-desktop/case-assistant.unit.test.ts',
   'tests/fixtures/case-assistant/fixtures.ts',
   'tests/fixtures/case-assistant/completed-case.ts',
-  'tests/e2e/xanthil-desktop/case-assistant-native.e2e.test.ts',
-  'tests/fixtures/case-assistant/native-synthetic-main.ts',
+  
+  
   'packages/ports/provider-settings.ts',
   'packages/contracts/provider-settings.ts',
   'packages/application/provider-settings.ts',
-  'adapters/agent-pi/xiaomi-local.ts',
   'adapters/credentials-macos/index.ts',
-  'apps/desktop/provider-settings.tsx',
+  
   'tests/unit/xanthil-desktop/provider-settings.unit.test.ts',
   'tests/integration/xanthil-desktop/provider-settings.integration.test.ts',
-  'tests/contract/xanthil-desktop/provider-settings-runtime.contract.test.ts',
-  'tests/e2e/xanthil-desktop/provider-settings-native.e2e.test.ts',
+  
+  
 ]);
 // Accepted Change003 prepends these four roots to the retained100, in this order.
 // Keep independent literals so config omissions/substitutions cannot define the oracle.
 const CHANGE003_TSCONFIG_PREFIX = Object.freeze([
-  'tests/unit/xanthil-desktop/collaboration-window-close.unit.test.ts',
+  
   'tests/integration/xanthil-desktop/case-collaboration.integration.test.ts',
+  'tests/integration/xanthil-desktop/conversational-three-core.integration.test.ts',
   'tests/integration/xanthil-desktop/case-collaboration-lifecycle.integration.test.ts',
-  'tests/e2e/xanthil-desktop/case-collaboration-native.e2e.test.ts',
+  
 ]);
 // Approved Change004 P1 plan/chain/task/runtime/native coverage appends seven
 // roots after the retained104. Keep this oracle independent of actual config.
@@ -271,10 +228,10 @@ const CHANGE004_TSCONFIG_APPENDIX = Object.freeze([
   'tests/contract/xanthil-desktop/member-analysis-plan.contract.test.ts',
   'tests/integration/xanthil-desktop/member-analysis-chain.integration.test.ts',
   'tests/integration/xanthil-desktop/member-task.integration.test.ts',
-  'tests/contract/xanthil-desktop/member-task-runtime.contract.test.ts',
-  'tests/e2e/xanthil-desktop/member-task-native.e2e.test.ts',
-  'tests/fixtures/member-task/native-main.ts',
-  'tests/fixtures/member-task/native-renderer.tsx',
+  
+  
+  
+  
 ]);
 // Approved CI-only mechanical partition; original Change004 roots stay intact.
 const CI_MAINTENANCE_TSCONFIG_APPENDIX = Object.freeze([
@@ -300,33 +257,28 @@ const CHANGE005_TSCONFIG_APPENDIX = Object.freeze([
   'tests/integration/xanthil-desktop/browser-node-entry.integration.test.ts',
   'adapters/agent-pi/provider-credentials.ts',
   'tests/unit/xanthil-desktop/provider-credentials.unit.test.ts',
-  'packages/ports/analysis-request-ledger.ts',
-  'adapters/storage-local/analysis-request-ledger.ts',
   'tests/integration/xanthil-desktop/open-agent-ledger.integration.test.ts',
   'adapters/storage-local/open-analysis-collaboration.ts',
-  'tests/integration/xanthil-desktop/open-analysis-collaboration.integration.test.ts',
+  
   'packages/ports/open-analysis-code.ts',
   'adapters/analytics-duckdb/open-analysis-code.ts',
-  'tests/integration/xanthil-desktop/open-analysis-code.integration.test.ts',
+  
   'tests/unit/xanthil-desktop/open-analysis-code-output.unit.test.ts',
   'packages/ports/open-analysis-runtime.ts',
-  'adapters/agent-pi/open-analysis.ts',
   'tests/integration/xanthil-desktop/open-agent-runtime.integration.test.ts',
-  'packages/product-core/open-analysis-ir.ts',
-  'tests/unit/xanthil-desktop/open-analysis-ir.unit.test.ts',
+  
   'tests/unit/xanthil-desktop/open-analysis-workbench.unit.test.ts',
   'packages/ports/open-analysis-verifier.ts',
-  'adapters/analytics-duckdb/open-analysis-verification.ts',
-  'tests/unit/xanthil-desktop/open-analysis-verifier.unit.test.ts',
+  
   'packages/application/open-analysis.ts',
-  'tests/integration/xanthil-desktop/open-analysis-application.integration.test.ts',
+  
   'packages/ports/open-analysis-store.ts',
   'adapters/storage-local/open-analysis.ts',
   'tests/integration/xanthil-desktop/open-analysis-storage.integration.test.ts',
   'packages/application/open-analysis-workspace.ts',
   'profiles/personal/open-analysis.ts',
-  'tests/integration/xanthil-desktop/open-analysis-workspace.integration.test.ts',
-  'tests/integration/xanthil-desktop/open-analysis-http.integration.test.ts',
+  
+  
   'packages/product-core/open-analysis-methods.ts',
   'tests/unit/xanthil-desktop/open-analysis-methods.unit.test.ts',
   'tests/integration/xanthil-desktop/open-document-source.integration.test.ts',
@@ -339,11 +291,11 @@ const CHANGE005_TSCONFIG_APPENDIX = Object.freeze([
 const CHANGE006_TSCONFIG_APPENDIX = Object.freeze([
   'tests/integration/xanthil-desktop/metric-assets-import.integration.test.ts',
   'tests/integration/xanthil-desktop/metric-assets-store.integration.test.ts',
-  'tests/unit/xanthil-desktop/metric-assets-analysis.unit.test.ts',
-  'tests/integration/xanthil-desktop/metric-assets-application.integration.test.ts',
-  'tests/integration/xanthil-desktop/metric-assets-workspace.integration.test.ts',
-  'tests/unit/xanthil-desktop/metric-assets-report.unit.test.ts',
-  'tests/unit/xanthil-desktop/metric-assets-workbench.unit.test.ts',
+  
+  
+  
+  
+  
   'tests/integration/xanthil-desktop/metric-assets-browser.integration.test.ts',
 ]);
 // Report Studio adds independent exact roots; no earlier inventory is weakened.
@@ -445,9 +397,9 @@ test('CI-REPORT-STUDIO-001: new roots reject omission, substitution, duplication
 });
 const C0_ROOT_COUNT = 43;
 const DEVELOPMENT_TSCONFIG_APPENDIX = Object.freeze([
-  'apps/desktop/development.ts', 'apps/desktop/desktop-work.ts',
+  'apps/desktop/development.ts', 
   'tests/unit/xanthil-desktop/development-mode.test.ts',
-  'tests/unit/xanthil-desktop/development-main.test.ts',
+  
 ]);
 const DESKTOP_ROOT_START = CHANGE003_TSCONFIG_PREFIX.length + C0_ROOT_COUNT;
 const CHANGE004_ROOT_START = DESKTOP_ROOT_START + CF_TSCONFIG_APPENDIX.length +
@@ -455,14 +407,14 @@ const CHANGE004_ROOT_START = DESKTOP_ROOT_START + CF_TSCONFIG_APPENDIX.length +
 const FIXTURE_BUILD_OBSERVATION = 'fixture-build:case-assistant:unset';
 const C0_RUNNER_TEST_TARGETS = Object.freeze([
   'tools/harness/validation/*.test.mjs',
-  'tests/unit/xanthil-local-analysis/*.test.ts', 'tests/contract/xanthil-local-analysis/*.test.ts',
-  'tests/integration/xanthil-local-analysis/*.test.ts', 'tests/e2e/xanthil-local-analysis/*.test.ts',
+  'tests/unit/xanthil-local-analysis/*.test.ts',
+  'tests/integration/xanthil-local-analysis/*.test.ts',
   'tests/contract/model-pack-contract-enabler/*.test.ts', 'tests/integration/model-pack-contract-enabler/*.test.ts',
   'tools/harness/project-board/project-control.test.mjs', 'tools/harness/project-board/status-cli.test.mjs',
 ]);
 const C0_TUPLE_CONFIGURATION_FILES = Object.freeze(['package-lock.json', 'package.json', 'tsconfig.json']);
-const C1A_TUPLE_CONFIGURATION_FILES = Object.freeze(['forge.config.cjs', 'package-lock.json', 'package.json', 'tsconfig.json', 'vite.main.config.mjs', 'vite.preload.config.mjs', 'vite.renderer.config.mjs']);
-const focusedChildren = tuple => tuple === 'CF' ? CF_DESKTOP_GROUPS.map((paths,index)=>index===3?['--test','--test-concurrency=1',...paths]:['--test',...paths]) : [];
+const C1A_TUPLE_CONFIGURATION_FILES = Object.freeze(['forge.config.cjs', 'package-lock.json', 'package.json', 'tsconfig.json', 'vite.main.config.mjs']);
+const focusedChildren = tuple => tuple === 'CF' ? CF_DESKTOP_GROUPS.filter(paths=>paths.length>0).map(paths=>['--test',...paths]) : [];
 
 function run(command, args, options) {
   return new Promise((resolve, reject) => {
@@ -506,12 +458,7 @@ async function entries(root) {
  */
 const DEEP_RESEARCH_TSCONFIG_APPENDIX = Object.freeze(['packages/ports/deep-research.ts','packages/application/deep-research.ts','profiles/personal/deep-research.ts','apps/browser/deep-research-http.ts']);
 const AGENT_TSCONFIG_APPENDIX=Object.freeze([
-  "adapters/agent-pi/business-work-state.ts",
-  "adapters/storage-local/open-analysis-draft.ts",
-  "packages/application/open-analysis-long-artifact.ts",
-  "packages/ports/open-analysis-draft.ts",
   "packages/ports/open-analysis-judgment-review.ts",
-  "packages/product-core/open-analysis-authoritative-content.ts",
   "packages/product-core/open-analysis-judgment-conditions.ts",
   "packages/product-core/open-analysis-judgment-review.ts",
   "packages/product-core/open-analysis-natural-review.ts",
@@ -529,6 +476,244 @@ const AGENT_TSCONFIG_APPENDIX=Object.freeze([
   "tests/integration/xanthil-desktop/normal-entry-parameters.integration.test.ts"
 ]);
 const METRIC_FACTORY_TSCONFIG_APPENDIX = Object.freeze(['packages/ports/metric-factory.ts','packages/application/metric-factory.ts','adapters/metric-factory/bundle.ts','adapters/metric-factory/copies.ts','adapters/metric-factory/process.ts','profiles/personal/metric-factory.ts','apps/browser/metric-factory-http.ts','tests/integration/metric-factory/copies.test.ts','tests/integration/metric-factory/process.test.ts']);
+// Frozen literal; never loaded from actual configuration to form expectations.
+const D006_TSCONFIG_ROOTS=[
+  "tests/integration/xanthil-desktop/case-collaboration.integration.test.ts",
+  "tests/integration/xanthil-desktop/case-collaboration-lifecycle.integration.test.ts",
+  "packages/product-core/local-analysis.ts",
+  "packages/ports/local-analysis.ts",
+  "tests/unit/xanthil-local-analysis/local-analysis.unit.test.ts",
+  "tests/unit/xanthil-local-analysis/coverage-map.test.ts",
+  "tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts",
+  "tests/fixtures/xanthil-local-analysis/coverage-map.ts",
+  "tests/fixtures/xanthil-local-analysis/fixture-oracle.ts",
+  "tests/fixtures/xanthil-local-analysis/port-contracts.ts",
+  "tests/fixtures/xanthil-local-analysis/public-seams.ts",
+  "apps/console/xanthil-console.ts",
+  "packages/application/run-evidence-query.ts",
+  "packages/product-core/run-evidence.ts",
+  "packages/ports/run-evidence-reader.ts",
+  "adapters/storage-local/run-evidence-reader.ts",
+  "profiles/personal/console.ts",
+  "tests/unit/run-evidence-console/run-evidence.unit.test.ts",
+  "tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts",
+  "tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts",
+  "tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts",
+  "tests/fixtures/run-evidence-console/run-evidence-fixtures.ts",
+  "tests/fixtures/run-evidence-console/run-evidence-reader-contract.ts",
+  "tests/fixtures/run-evidence-console/console-harness.ts",
+  "tests/fixtures/run-evidence-console/coverage-map.ts",
+  "packages/contracts/model-pack.ts",
+  "packages/ports/analytical-model-runtime.ts",
+  "tests/contract/model-pack-contract-enabler/model-pack-package.contract.test.ts",
+  "tests/contract/model-pack-contract-enabler/analytical-model-runtime.contract.test.ts",
+  "tests/integration/model-pack-contract-enabler/contracts-inactive.integration.test.ts",
+  "tests/fixtures/model-pack-contract-enabler/model-pack-fixtures.ts",
+  "tests/fixtures/model-pack-contract-enabler/model-pack-package-driver.ts",
+  "tests/fixtures/model-pack-contract-enabler/analytical-model-runtime-driver.ts",
+  "packages/product-core/xanthil-desktop-decision-case.ts",
+  "packages/application/xanthil-desktop-decision-case.ts",
+  "packages/contracts/xanthil-desktop-ipc.ts",
+  "packages/ports/xanthil-desktop-decision-case.ts",
+  "adapters/storage-local/xanthil-desktop-decision-case.ts",
+  "adapters/analytics-duckdb/process.ts",
+  "adapters/analytics-duckdb/xanthil-desktop-decision-case.ts",
+  "profiles/personal/xanthil-desktop.ts",
+  "apps/desktop/main.ts",
+  "tests/fixtures/xanthil-desktop/coverage-map.ts",
+  "tests/fixtures/xanthil-desktop/desktop-contract-drivers.ts",
+  "tests/fixtures/xanthil-desktop/desktop-e2e-harness.ts",
+  "tests/fixtures/xanthil-desktop/desktop-fixtures.ts",
+  "tests/unit/xanthil-desktop/xanthil-desktop.unit.test.ts",
+  "tests/unit/xanthil-desktop/coverage-map.test.ts",
+  "tests/contract/xanthil-desktop/xanthil-desktop-store.contract.test.ts",
+  "tests/contract/xanthil-desktop/xanthil-desktop-analysis.contract.test.ts",
+  "tests/contract/xanthil-desktop/xanthil-desktop-assistance.contract.test.ts",
+  "tests/integration/xanthil-desktop/xanthil-desktop-application.integration.test.ts",
+  "tests/integration/xanthil-desktop/xanthil-desktop-storage.integration.test.ts",
+  "tests/contract/xanthil-desktop/xanthil-desktop-main-module-format.contract.test.ts",
+  "packages/contracts/case-assistant.ts",
+  "packages/product-core/case-assistant.ts",
+  "packages/application/case-assistant.ts",
+  "packages/ports/case-assistant.ts",
+  "adapters/storage-local/case-assistant.ts",
+  "tests/integration/xanthil-desktop/case-assistant.integration.test.ts",
+  "tests/contract/xanthil-desktop/case-assistant-store.contract.test.ts",
+  "tests/unit/xanthil-desktop/case-assistant.unit.test.ts",
+  "tests/fixtures/case-assistant/fixtures.ts",
+  "tests/fixtures/case-assistant/completed-case.ts",
+  "packages/ports/provider-settings.ts",
+  "packages/contracts/provider-settings.ts",
+  "packages/application/provider-settings.ts",
+  "adapters/credentials-macos/index.ts",
+  "tests/unit/xanthil-desktop/provider-settings.unit.test.ts",
+  "tests/integration/xanthil-desktop/provider-settings.integration.test.ts",
+  "apps/desktop/development.ts",
+  "tests/unit/xanthil-desktop/development-mode.test.ts",
+  "tests/contract/xanthil-desktop/member-analysis-plan.contract.test.ts",
+  "tests/integration/xanthil-desktop/member-analysis-chain.integration.test.ts",
+  "tests/integration/xanthil-desktop/member-task.integration.test.ts",
+  "tests/integration/xanthil-desktop/member-task-retained.integration.test.ts",
+  "tests/fixtures/xanthil-desktop/member-task-test-support.ts",
+  "tests/integration/xanthil-desktop/browser-preparation.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-membership-recovery.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-local-transport.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-membership-plan.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-workspace.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-client.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-model-runtime.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-model-policy.integration.test.ts",
+  "profiles/personal/browser-membership.ts",
+  "tests/integration/xanthil-desktop/browser-companion.integration.test.ts",
+  "apps/browser/service-main.ts",
+  "tests/integration/xanthil-desktop/browser-independent-profile.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-project-catalog.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-service-auth.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-node-entry.integration.test.ts",
+  "adapters/agent-pi/provider-credentials.ts",
+  "tests/unit/xanthil-desktop/provider-credentials.unit.test.ts",
+  "packages/ports/analysis-agent.ts",
+  "adapters/agent-pi/professional-agent.ts",
+  "adapters/agent-pi/persistent-runtime-state.ts",
+  "tests/integration/xanthil-desktop/new-architecture-agent.integration.test.ts",
+  "tests/integration/xanthil-desktop/new-architecture-persistence.integration.test.ts",
+  "packages/ports/open-analysis-code.ts",
+  "tests/unit/xanthil-desktop/open-analysis-code-output.unit.test.ts",
+  "packages/ports/open-analysis-runtime.ts",
+  "tests/unit/xanthil-desktop/open-analysis-workbench.unit.test.ts",
+  "packages/ports/open-analysis-verifier.ts",
+  "packages/application/open-analysis.ts",
+  "packages/ports/open-analysis-store.ts",
+  "adapters/storage-local/open-analysis.ts",
+  "tests/integration/xanthil-desktop/open-analysis-storage.integration.test.ts",
+  "packages/application/open-analysis-workspace.ts",
+  "profiles/personal/open-analysis.ts",
+  "packages/product-core/open-analysis-methods.ts",
+  "tests/unit/xanthil-desktop/open-analysis-methods.unit.test.ts",
+  "tests/integration/xanthil-desktop/open-document-source.integration.test.ts",
+  "tests/unit/xanthil-desktop/open-membership-framework.unit.test.ts",
+  "tests/integration/xanthil-desktop/shared-runtime-state.integration.test.ts",
+  "tests/integration/xanthil-desktop/requirement-draft.integration.test.ts",
+  "tests/integration/xanthil-desktop/shared-analysis-tools.integration.test.ts",
+  "tests/integration/xanthil-desktop/metric-assets-import.integration.test.ts",
+  "tests/integration/xanthil-desktop/metric-assets-store.integration.test.ts",
+  "tests/integration/xanthil-desktop/metric-assets-browser.integration.test.ts",
+  "packages/contracts/report-studio.ts",
+  "adapters/report-studio/bundle.ts",
+  "tests/contract/xanthil-desktop/report-studio-bundle.contract.test.ts",
+  "packages/application/report-studio-source.ts",
+  "tests/unit/xanthil-desktop/report-studio-source.unit.test.ts",
+  "packages/ports/report-studio.ts",
+  "adapters/report-studio/store.ts",
+  "tests/contract/xanthil-desktop/report-studio-store.contract.test.ts",
+  "packages/application/report-studio.ts",
+  "tests/integration/xanthil-desktop/report-studio-workspace.integration.test.ts",
+  "adapters/report-studio/local-access.ts",
+  "tests/integration/xanthil-desktop/report-studio-local-access.integration.test.ts",
+  "adapters/report-studio/gateway.ts",
+  "tests/contract/xanthil-desktop/report-studio-gateway.contract.test.ts",
+  "adapters/report-studio/process.ts",
+  "tests/integration/xanthil-desktop/report-studio-process.integration.test.ts",
+  "profiles/personal/report-studio.ts",
+  "tests/integration/xanthil-desktop/report-studio-profile.integration.test.ts",
+  "apps/browser/report-studio-http.ts",
+  "tests/integration/xanthil-desktop/report-studio-http.integration.test.ts",
+  "adapters/report-studio/policy.ts",
+  "tests/contract/xanthil-desktop/report-studio-policy.contract.test.ts",
+  "apps/browser/installed-main.ts",
+  "adapters/decision-platform/ingress.ts",
+  "tests/integration/decision-platform/ingress.integration.test.ts",
+  "adapters/decision-platform/process.ts",
+  "adapters/decision-platform/child.ts",
+  "adapters/decision-platform/material-policy.ts",
+  "packages/ports/decision-platform.ts",
+  "tests/integration/decision-platform/process.integration.test.ts",
+  "tests/integration/decision-platform/material-policy.integration.test.ts",
+  "adapters/decision-platform/store.ts",
+  "adapters/decision-platform/gateway.ts",
+  "packages/application/decision-platform.ts",
+  "tests/integration/decision-platform/store.integration.test.ts",
+  "tests/integration/decision-platform/gateway.integration.test.ts",
+  "tests/integration/decision-platform/workspace.integration.test.ts",
+  "adapters/decision-platform/history.ts",
+  "adapters/decision-platform/runtime-channel.ts",
+  "adapters/decision-platform/materials.ts",
+  "adapters/decision-platform/effects-gateway.ts",
+  "adapters/decision-platform/extraction-scope.ts",
+  "adapters/decision-platform/runtime-authorization.ts",
+  "packages/application/decision-sources.ts",
+  "packages/application/decision-effects.ts",
+  "tests/integration/decision-platform/sources.integration.test.ts",
+  "tests/integration/decision-platform/host-http.integration.test.ts",
+  "tests/integration/decision-platform/runtime-authorization.integration.test.ts",
+  "tests/integration/decision-platform/effects.integration.test.ts",
+  "tests/integration/decision-platform/extraction-scope.integration.test.ts",
+  "profiles/personal/decision-platform.ts",
+  "apps/browser/decision-platform-http.ts",
+  "tests/integration/decision-platform/materials.integration.test.ts",
+  "tests/integration/decision-platform/effects-gateway.integration.test.ts",
+  "tests/integration/xanthil-desktop/pi-harness-first-loop.integration.test.ts",
+  "packages/ports/deep-research.ts",
+  "packages/application/deep-research.ts",
+  "profiles/personal/deep-research.ts",
+  "apps/browser/deep-research-http.ts",
+  "packages/ports/open-analysis-judgment-review.ts",
+  "packages/product-core/open-analysis-judgment-conditions.ts",
+  "packages/product-core/open-analysis-judgment-review.ts",
+  "packages/product-core/open-analysis-natural-review.ts",
+  "packages/product-core/open-analysis-option-unit.ts",
+  "packages/product-core/open-analysis-reviewable-document.ts",
+  "packages/product-core/open-analysis-reviewed-content.ts",
+  "packages/product-core/open-reviewed-analysis-source.ts",
+  "tests/fixtures/xanthil-desktop/change007-b06-actual102.ts",
+  "tests/fixtures/xanthil-desktop/change007-content-model.ts",
+  "tests/integration/xanthil-desktop/normal-entry-parameters.integration.test.ts",
+  "packages/ports/metric-factory.ts",
+  "packages/application/metric-factory.ts",
+  "adapters/metric-factory/bundle.ts",
+  "adapters/metric-factory/copies.ts",
+  "adapters/metric-factory/process.ts",
+  "profiles/personal/metric-factory.ts",
+  "apps/browser/metric-factory-http.ts",
+  "tests/integration/metric-factory/copies.test.ts",
+  "tests/integration/metric-factory/process.test.ts",
+  "tests/contract/xanthil-desktop/new-architecture-build.contract.test.ts",
+  "tests/integration/xanthil-desktop/new-architecture-case.integration.test.ts",
+  "tests/integration/xanthil-desktop/new-architecture-desktop.integration.test.ts",
+  "tests/integration/xanthil-desktop/new-architecture-membership.integration.test.ts",
+  "tests/integration/xanthil-desktop/new-architecture-normal-entry.integration.test.ts",
+  "tests/contract/xanthil-desktop/member-task-ui.contract.test.ts",
+  "tests/integration/xanthil-desktop/browser-ui-http.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-ui-live.integration.test.ts",
+  "tests/integration/xanthil-desktop/browser-ui-report-content.integration.test.ts",
+  "tests/integration/xanthil-desktop/open-analysis-autonomous-native-session.integration.test.ts",
+  "tests/integration/xanthil-desktop/sdk041-case-session.integration.test.ts",
+  "tests/integration/xanthil-desktop/sdk041-connection-probe.integration.test.ts",
+  "tests/integration/xanthil-desktop/sdk041-session-purposes.integration.test.ts",
+  "tests/integration/xanthil-desktop/xlsx-package-root.integration.test.ts",
+  "tests/unit/xanthil-desktop/member-task-canonical.unit.test.ts",
+  "tests/unit/xanthil-desktop/open-analysis-autonomous-arguments.unit.test.ts",
+  "tests/unit/xanthil-desktop/open-analysis-semantics.unit.test.ts",
+  "tests/integration/xanthil-desktop/open-computation-asset.integration.test.ts",
+  "tests/integration/xanthil-desktop/open-computation-fresh-diagnostics.integration.test.ts",
+  "tests/integration/xanthil-desktop/open-computation-independent-context.integration.test.ts",
+  "tests/unit/xanthil-desktop/open-computation-context.unit.test.ts",
+  "packages/ports/report-postprocessing.ts",
+  "packages/product-core/report-postprocessing.ts",
+  "packages/application/report-postprocessing.ts",
+  "tests/fixtures/xanthil-desktop/report-postprocessing-provider.ts",
+  "tests/unit/xanthil-desktop/report-postprocessing.unit.test.ts",
+  "tests/integration/xanthil-desktop/report-postprocessing.integration.test.ts",
+  "tests/integration/xanthil-desktop/three-core-model-report.integration.test.ts",
+  "tests/integration/xanthil-desktop/native-computation-capability.integration.test.ts",
+  "tests/integration/xanthil-desktop/three-core-browser-ui.integration.test.ts",
+  "tests/integration/xanthil-desktop/conversational-three-core.integration.test.ts",
+  "tests/integration/xanthil-desktop/multiturn-requirement-updates.integration.test.ts",
+  "tests/integration/xanthil-desktop/native-only-flow.integration.test.ts",
+  "tests/integration/xanthil-desktop/native-read-feedback.integration.test.ts",
+  "tests/fixtures/xanthil-desktop/native-report.ts",
+  "tests/integration/xanthil-desktop/retry-policy-configuration.integration.test.ts"
+];
 async function currentRunnerTuple(root = REPO_ROOT) {
   const [manifestSource, tsconfigSource, rootEntries] = await Promise.all([
     readFile(path.join(root, 'package.json'), 'utf8'),
@@ -546,44 +731,10 @@ async function currentRunnerTuple(root = REPO_ROOT) {
     .map((entry) => entry.name)
     .sort();
 
-  if (manifest.main === undefined && manifest.config === undefined) {
-    assert.equal(scripts['desktop:start'], undefined, 'C0 cannot contain a partial Desktop start script');
-    assert.equal(scripts['desktop:package'], undefined, 'C0 cannot contain a partial Desktop package script');
-    assert.equal(scripts['desktop:test'], undefined, 'C0 cannot contain a partial Desktop test script');
-    assert.equal(tsconfig.compilerOptions?.jsx, undefined, 'C0 cannot contain a partial Desktop JSX mode');
-    assert.equal(files.length, C0_ROOT_COUNT, 'C0 retains exactly the H-TUPLE-verified P4 file count');
-    assert.equal(files.some((file) => typeof file === 'string' && file.includes('xanthil-desktop')), false, 'C0 has no Desktop appendage');
-    assert.deepEqual(knownConfigurationFiles, C0_TUPLE_CONFIGURATION_FILES, 'C0 retains the exact H-TUPLE configuration inventory');
-    return 'C0';
-  }
-
   assert.equal(manifest.main, '.vite/build/main.cjs', 'the already-approved CommonJS package entry remains exact');
   assert.deepEqual(manifest.config, { forge: './forge.config.cjs' }, 'C1a requires the exact P5 Forge config');
-  assert.equal(scripts['desktop:start'], 'node tools/desktop/development-start.mjs');
-  assert.equal(scripts['desktop:package'], 'node tools/desktop/prepare-toolchain-deployment.mjs && electron-forge package --platform=darwin --arch=arm64');
-  assert.equal(scripts['desktop:test'], 'node tools/desktop/test-daily.mjs');
   assert.equal(tsconfig.compilerOptions?.jsx, 'react-jsx', 'C1a requires its exact JSX mode');
-  assert.deepEqual(files.slice(0,CHANGE003_TSCONFIG_PREFIX.length),CHANGE003_TSCONFIG_PREFIX,'Change003 roots are exact ordered independent literals');
-  assert.deepEqual(files.slice(DESKTOP_ROOT_START,CHANGE004_ROOT_START),[...CF_TSCONFIG_APPENDIX,...CHANGE002_TSCONFIG_APPENDIX,...DEVELOPMENT_TSCONFIG_APPENDIX],'retained Desktop roots are independent literals, never derived from actual files');
-  const maintenanceStart = CHANGE004_ROOT_START + CHANGE004_TSCONFIG_APPENDIX.length;
-  assert.deepEqual(files.slice(CHANGE004_ROOT_START,maintenanceStart),CHANGE004_TSCONFIG_APPENDIX,'original Change004 roots remain exact');
-  const browserStart = maintenanceStart + CI_MAINTENANCE_TSCONFIG_APPENDIX.length;
-  assert.deepEqual(files.slice(maintenanceStart,browserStart),CI_MAINTENANCE_TSCONFIG_APPENDIX,'CI maintenance roots remain the exact independent ordered inventory');
-  const metricStart=browserStart+CHANGE005_TSCONFIG_APPENDIX.length;
-  assert.deepEqual(files.slice(browserStart,metricStart),CHANGE005_TSCONFIG_APPENDIX,'Change005 roots remain fixed independent literals');
-  const studioStart=metricStart+CHANGE006_TSCONFIG_APPENDIX.length;
-  assert.deepEqual(files.slice(metricStart,studioStart),CHANGE006_TSCONFIG_APPENDIX,'Change006 roots remain fixed independent literals');
-  const decisionStart=studioStart+REPORT_STUDIO_TSCONFIG_APPENDIX.length;
-  assert.deepEqual(files.slice(studioStart,decisionStart),REPORT_STUDIO_TSCONFIG_APPENDIX,'Report Studio roots remain fixed independent literals');
-  const harnessStart=decisionStart+DECISION_TSCONFIG_APPENDIX.length;
-  assert.deepEqual(files.slice(decisionStart,harnessStart),DECISION_TSCONFIG_APPENDIX,'Decision platform roots remain fixed independent literals');
-  const researchStart=harnessStart+HARNESS_TSCONFIG_APPENDIX.length;
-  assert.deepEqual(files.slice(harnessStart,researchStart),HARNESS_TSCONFIG_APPENDIX,'Harness roots remain fixed independent literals');
-  const agentStart=researchStart+DEEP_RESEARCH_TSCONFIG_APPENDIX.length;
-  assert.deepEqual(files.slice(researchStart,agentStart),DEEP_RESEARCH_TSCONFIG_APPENDIX,'Deep research roots remain the fixed independent literals');
-  const metricFactoryStart=agentStart+AGENT_TSCONFIG_APPENDIX.length;
-  assert.deepEqual(files.slice(agentStart,metricFactoryStart),AGENT_TSCONFIG_APPENDIX,'Agent/host increment and total length are fixed independent literals');
-  assert.deepEqual(files.slice(metricFactoryStart),METRIC_FACTORY_TSCONFIG_APPENDIX,'Metric factory roots and total length are fixed independent literals');
+  assert.deepEqual(files,D006_TSCONFIG_ROOTS,'D006 complete fixed root inventory: no missing, replaced, duplicate, reordered or extra roots');
   assert.deepEqual(knownConfigurationFiles,C1A_TUPLE_CONFIGURATION_FILES);
   return 'CF';
 }
@@ -594,8 +745,8 @@ function expectedRunnerChildren(tuple) {
 }
 function expectedRunnerTestTargets(tuple) {
   return tuple==='C0'?C0_RUNNER_TEST_TARGETS:[...C0_RUNNER_TEST_TARGETS,...CF_CONSOLE_PATHS,
-    'tests/unit/xanthil-desktop/*.test.ts','tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs','tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs','tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs','tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs','tests/contract/xanthil-desktop/*.test.ts',
-    'tests/integration/xanthil-desktop/*.test.ts','tests/integration/xanthil-desktop/browser-companion-process.test.mjs','tests/integration/xanthil-desktop/browser-service-view.test.mjs','tests/integration/xanthil-desktop/browser-workspace-view.test.mjs','tests/e2e/xanthil-desktop/*.test.ts','tests/integration/decision-platform/*.test.ts','tests/integration/decision-platform/*.test.mjs'];
+    'tests/unit/xanthil-desktop/*.test.ts','tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs','tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs','tests/contract/xanthil-desktop/*.test.ts',
+    'tests/integration/xanthil-desktop/*.test.ts','tests/integration/xanthil-desktop/browser-companion-process.test.mjs','tests/integration/xanthil-desktop/browser-service-view.test.mjs','tests/integration/xanthil-desktop/browser-workspace-view.test.mjs','tests/integration/decision-platform/*.test.ts','tests/integration/decision-platform/*.test.mjs'];
 }
 
 function testTargetsFromRunnerSource(source) {
@@ -619,7 +770,6 @@ async function fixture(t, {
   const nodeVersion = wrongNode ? 'v25.0.0' : 'v26.0.0';
   await mkdir(bin, { recursive: true });
   await mkdir(path.join(root, 'tools', 'harness', 'validation'), { recursive: true });
-  await mkdir(path.join(root, 'node_modules', '@earendil-works', 'pi-coding-agent'), { recursive: true });
   await mkdir(path.join(root, 'node_modules', '@types', 'node'), { recursive: true });
   await mkdir(path.join(root, 'node_modules', 'typescript'), { recursive: true });
   await mkdir(path.join(root, 'node_modules', 'typebox'), { recursive: true });
@@ -639,7 +789,6 @@ async function fixture(t, {
   ]) await mkdir(path.join(root, directory), { recursive: true });
   await writeFile(path.join(root, 'package.json'), JSON.stringify({
     dependencies: {
-      '@earendil-works/pi-coding-agent': '0.84.2',
       typebox: '1.3.7'
     },
     devDependencies: {
@@ -648,7 +797,6 @@ async function fixture(t, {
     },
     scripts: { typecheck: 'tsc -p tsconfig.json --noEmit' }
   }), 'utf8');
-  await writeFile(path.join(root, 'node_modules', '@earendil-works', 'pi-coding-agent', 'package.json'), '{"version":"0.84.2"}\n', 'utf8');
   await writeFile(path.join(root, 'node_modules', '@types', 'node', 'package.json'), '{"version":"22.19.19"}\n', 'utf8');
   await writeFile(path.join(root, 'node_modules', 'typescript', 'package.json'), '{"version":"5.9.3"}\n', 'utf8');
   await writeFile(path.join(root, 'node_modules', 'typebox', 'package.json'), '{"version":"1.3.7"}\n', 'utf8');
@@ -656,9 +804,9 @@ async function fixture(t, {
   for (const file of [
     'tools/harness/validation/runner-fixture.test.mjs',
     'tests/unit/xanthil-local-analysis/local-analysis.unit.test.ts',
-    'tests/contract/xanthil-local-analysis/local-analysis-ports.contract.test.ts',
+    
     'tests/integration/xanthil-local-analysis/local-analysis.integration.test.ts',
-    'tests/e2e/xanthil-local-analysis/local-analysis.e2e.test.ts',
+    
     'tests/contract/model-pack-contract-enabler/model-pack-contract-enabler.contract.test.ts',
     'tests/integration/model-pack-contract-enabler/model-pack-contract-enabler.integration.test.ts',
     'tools/harness/project-board/project-control.test.mjs',
@@ -847,7 +995,10 @@ test('Final CF checkpoint preserves mapped roots and complete offline behavior c
 test('CI-CHECK-001: fixed Desktop fixture inventory matches actual suite files', async () => {
   for (const [index, group] of ['unit', 'contract', 'integration', 'e2e'].entries()) {
     const directory = `tests/${group}/xanthil-desktop`;
-    const names=await readdir(path.join(REPO_ROOT,directory));
+    const names=await readdir(path.join(REPO_ROOT,directory)).catch(error=>{
+      if(error.code==='ENOENT'&&CF_DESKTOP_GROUPS[index].length===0)return[];
+      throw error;
+    });
     const actual=[...names.filter(name=>name.endsWith('.test.ts')).sort(),...(['tests/integration/xanthil-desktop','tests/unit/xanthil-desktop'].includes(directory)?names.filter(name=>name.endsWith('.test.mjs')).sort():[])].map(name=>`${directory}/${name}`);
     assert.deepEqual(actual, CF_DESKTOP_GROUPS[index], 'new source tests require explicit fixture coverage, not automatic acceptance');
   }
@@ -910,7 +1061,8 @@ test('CVR-TEST-004: validation failure streams natively, stops later checks, and
   assert.match(result.stderr, /native contract stderr/);
   assertCanonicalOrder(await observedLines(f), f, [
     'unit:local-analysis.unit.test.ts:unset',
-    'contract:local-analysis-ports.contract.test.ts:unset'
+    'integration:local-analysis.integration.test.ts:unset',
+    'contract:model-pack-contract-enabler.contract.test.ts:unset'
   ]);
   assert.deepEqual(await entries(f.root), before, 'runner must not create a result or other persistent output');
 });
@@ -930,7 +1082,7 @@ test('TEST-XDESK-013: each approved C0 or C1a tuple runs only its independently 
     `${tuple} invokes only its independently fixed Desktop child argv; C0/C1a runner mismatch is rejected rather than inferred`,
   );
 
-  const failureTarget = tuple !== 'C0' ? 'xanthil-desktop.unit.test.ts' : 'local-analysis-ports.contract.test.ts';
+  const failureTarget = tuple !== 'C0' ? 'xanthil-desktop.unit.test.ts' : 'model-pack-contract-enabler.contract.test.ts';
   const failing = await fixture(t, { runnerTuple: tuple, failTarget: failureTarget });
   const failingRunner = await installPublicRunner(failing);
   await mkdir(path.join(failing.root, 'elsewhere'));
@@ -945,8 +1097,7 @@ test('TEST-XDESK-013: each approved C0 or C1a tuple runs only its independently 
     VALIDATION_CHILD,
     'typecheck',
     'unit:local-analysis.unit.test.ts:unset',
-    'contract:local-analysis-ports.contract.test.ts:unset',
-  ];
+    ];
   assert.deepEqual(stopped, expectedStopped, `${tuple} streams its first failing retained/focused phase and stops every later phase`);
 });
 
@@ -1061,9 +1212,9 @@ test('CI-CHANGE002-002: full fixture build failure stops GUI and fixed argv dete
   const expected = expectedRunnerChildren('CF');
   assertCanonicalOrder(await observedLines(failed),failed,expected.slice(0,expected.indexOf(FIXTURE_BUILD_OBSERVATION)+1));
   for (const mutate of [
-    source => source.replace('run_group native-fixture node tests/fixtures/case-assistant/build-native-fixture.mjs\n',''),
-    source => source.replace('--test-concurrency=1','--test-concurrency=2'),
-    source => source.replace('--test-concurrency=1','--test-concurrency=1 --test-name-pattern=smoke'),
+    source => source.replace('run_group native-fixture node tests/fixtures/case-assistant/build-native-fixture.mjs\n',':\n'),
+    source => source.replace('tests/integration/xanthil-desktop/browser-service-view.test.mjs tests/integration/xanthil-desktop/browser-workspace-view.test.mjs','tests/integration/xanthil-desktop/browser-workspace-view.test.mjs tests/integration/xanthil-desktop/browser-service-view.test.mjs'),
+    source => source.replace('tests/integration/xanthil-desktop/browser-companion-process.test.mjs ',''),
   ]) {
     const f = await fixture(t,{runnerTuple:'CF'});
     const copied = await installPublicRunner(f);
@@ -1143,27 +1294,17 @@ test('CI-CHANGE006: every new root remains exact without weakening Change005 cov
   for(const files of [original.files.filter((_,n)=>n!==last),original.files.map((f,n)=>n===last?'unapproved.ts':f),[...original.files,original.files[last]],[...original.files,'unapproved.ts'],original.files.map((f,n)=>n===last-1?original.files[last]:n===last?original.files[last-1]:f)]){
    await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});
   }
-  for(const [platform,hostOptIn] of [['linux','0'],['linux','1'],['darwin','0']])await t.test(`supervised host admission: ${platform}, opt-in ${hostOptIn}`,async()=>{
-   const evidence=await mkdtemp(path.join(process.env.JUANERAI_TEST_EVIDENCE_DIR??os.tmpdir(),'harness-host-admission-'));
-   const preload=path.join(evidence,'platform.mjs');
-   // Probe only the existing opt-out/refusal branches; this never simulates a
-   // supported host in order to execute a payload.
-   await writeFile(preload,`Object.defineProperty(process,'platform',{value:${JSON.stringify(platform)}});\n`);
-   const env={...process.env,JUANERAI_TEST_EVIDENCE_DIR:evidence,TMPDIR:evidence,
-    JUANERAI_OPEN_CODE_HOST_TEST:hostOptIn,JUANERAI_VALIDATION_SCOPE:'portable',
-    NODE_DISABLE_COMPILE_CACHE:'1',PYTHONDONTWRITEBYTECODE:'1'};
-   delete env.XANTHIL_REAL_PI_ACCEPTANCE;delete env.NODE_TEST_CONTEXT;
-   const result=await run(CANONICAL_NODE,['--import',preload,'--test',
-    '--test-name-pattern=^FL-A11/A16:|^FL-A09/A10 preparation: real native',
-    'tests/integration/xanthil-desktop/pi-harness-first-loop.integration.test.ts'],
-    {cwd:REPO_ROOT,env,timeout:20000});
-   const output=result.stdout+'\n'+result.stderr;
-   await writeFile(path.join(evidence,'test.log'),output);
-   assert.equal(result.code,0,output);assert.match(output,/tests 2\b/);
-   assert.match(output,/pass 0\b/);assert.match(output,/fail 0\b/);
-   assert.match(output,/skipped 2\b/);
-   assert.match(output,/requires macOS and JUANERAI_OPEN_CODE_HOST_TEST=1/);
-   assert.deepEqual((await readdir(evidence)).sort(),['platform.mjs','test.log'],'ineligible tests must not create a Task, Session, draft or effect');
+  // The old SDK opt-in branch is retired. Keep the negative capability
+  // guarantee on the fixed public execution environment actually used now.
+  for(const [platform,processes] of [['linux',true],['darwin',false]])await t.test(`native process admission: ${platform}, processes ${processes}`,async()=>{
+   const evidence=await mkdtemp(path.join(process.env.JUANERAI_TEST_EVIDENCE_DIR??os.tmpdir(),'harness-native-admission-'));
+   const probe=path.join(evidence,'native-admission.mjs'),sdk=import.meta.resolve('pi-agent-runtime');
+   await writeFile(probe,`import assert from 'node:assert/strict';\nimport {createLocalExecutionEnvironment} from ${JSON.stringify(sdk)};\nObject.defineProperty(process,'platform',{value:${JSON.stringify(platform)}});\nconst environment=await createLocalExecutionEnvironment({root:${JSON.stringify(evidence)},policyVersion:'current-native-refusal-v1',exclusiveWorkspace:true,maxFileBytes:1048576,maxOutputBytes:1048576,timeoutMs:300000,processes:${JSON.stringify(processes)}});\nawait assert.rejects(()=>environment.exec('printf must-not-execute',new AbortController().signal),e=>e.reason==='CAPABILITY_UNAVAILABLE');\nconsole.log('CAPABILITY_UNAVAILABLE; no Task, Session, Provider or process payload');\n`);
+   const env={...process.env,NODE_DISABLE_COMPILE_CACHE:'1'};delete env.XANTHIL_REAL_PI_ACCEPTANCE;delete env.NODE_TEST_CONTEXT;delete env.NODE_OPTIONS;
+   const result=await run(CANONICAL_NODE,[probe],{cwd:REPO_ROOT,env,timeout:20000});
+   const output=result.stdout+'\n'+result.stderr;await writeFile(path.join(evidence,'test.log'),output);
+   assert.equal(result.code,0,output);assert.match(output,/CAPABILITY_UNAVAILABLE; no Task, Session, Provider or process payload/);
+   assert.deepEqual((await readdir(evidence)).sort(),['native-admission.mjs','test.log']);
   });
  });
  test('CI-DR-001: fixed research roots reject omission, substitution, duplication and extras',async()=>{
@@ -1183,3 +1324,15 @@ test('CI-DR-002: real canonical syntax branch parses fixed upstream TypeScript a
 });
 
 test('CI-AH-001: the complete fixed agent-host increment refuses omissions substitutions duplicates and reordering',async t=>{const root=await mkdtemp(path.join(os.tmpdir(),'ah-roots-'));t.after(()=>rm(root,{recursive:true,force:true}));for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8')),start=original.files.length-METRIC_FACTORY_TSCONFIG_APPENDIX.length-AGENT_TSCONFIG_APPENDIX.length;for(let i=start;i<original.files.length;i++)for(const files of [original.files.filter((_,n)=>n!==i),original.files.map((f,n)=>n===i?'unapproved.ts':f),[...original.files,original.files[i]]]){await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});}await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files:[...original.files.slice(0,start),...AGENT_TSCONFIG_APPENDIX.toReversed(),...METRIC_FACTORY_TSCONFIG_APPENDIX]}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});});
+
+test('D006 fixed type roots reject every omission, substitution, duplicate, reorder and extra',async t=>{
+ const root=await mkdtemp(path.join(os.tmpdir(),'d006-roots-'));t.after(()=>rm(root,{recursive:true,force:true}));
+ for(const name of C1A_TUPLE_CONFIGURATION_FILES)await cp(path.join(REPO_ROOT,name),path.join(root,name));
+ assert.equal(await currentRunnerTuple(root),'CF');const original=JSON.parse(await readFile(path.join(root,'tsconfig.json'),'utf8'));
+ for(let i=0;i<original.files.length;i++){
+  const next=(i+1)%original.files.length;
+  for(const files of [original.files.filter((_,n)=>n!==i),original.files.map((v,n)=>n===i?'unapproved.ts':v),[...original.files,original.files[i]],original.files.map((v,n)=>n===i?original.files[next]:n===next?original.files[i]:v)]){
+   await writeFile(path.join(root,'tsconfig.json'),JSON.stringify({...original,files}));await assert.rejects(()=>currentRunnerTuple(root),{code:'ERR_ASSERTION'});
+  }
+ }
+});

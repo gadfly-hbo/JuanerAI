@@ -28,8 +28,8 @@
 - AH-08：长报告完整同版封存、全文逐页独立审查、报告／quick/pro/cards/export／整体人审
   同版消费；GB-H、Q、R分层，受控共同误判仍Q_FAIL，离线夹具不认证真实模型质量。
 - AH-09：新任务／续接／队列／停止取消／迟到／重开／显式恢复／purpose／Fork／并发
-  的既有支持边界保留；原绝对工作期限不续期、同work一次共享恢复、native retry关闭，
-  UNKNOWN及未结算预留准确。旧任务只读兼容，不迁移／重试／清账。
+  的既有支持边界保留；同work一次共享恢复、native retry关闭，
+  UNKNOWN及未结算预留准确。不迁移／重试／清账。
 - AH-10：八类均在 design.md 有实际入口、去向、改动或保留依据及证据；必要未解决项
   不计完成。固定完整源码／依赖／实际解析入口后独立验证，不能拼不同候选局部PASS。
 
@@ -68,10 +68,8 @@ binds product-generated UUID purposes/limits/R1/lifetime before first SDK claim.
 Purpose-primary32768/existing fallback16384, model600000ms, tool hard300000ms,
 applicable command soft120000ms and control30000ms; cumulative remains unlimited
 with durable accounting. New work v2/null and draft1.2/unlimited carry no aggregate
-runtime deadline or60/120 stage wall. Old v1/drafts/configs keep original limits;
-unknown/mismatched policies fail closed, no migration/renewal/history rewrite.
-This forward exception qualifies AH-09's old absolute-work deadline only for that
-new explicit policy. Preserve authority/expiry/revoke/cancel, physical settlement,
+runtime deadline or60/120 stage wall.
+Preserve authority/expiry/revoke/cancel, physical settlement,
 UNKNOWN, one shared recovery, native retry-off, full exploration readback and
 formal evidence/Outcome qualification. R1 per-candidate final admission keeps
 original windows and an explicit4096 protocol/8192 safety margin with real-use
