@@ -1,41 +1,26 @@
-import assert from 'node:assert/strict';
-import {mkdtempSync} from 'node:fs';
-import {join} from 'node:path';
-import {randomUUID} from 'node:crypto';
+import {offlineCredentials,offlineResponse} from './offline-professional-provider.ts';
+import {nativeReport} from './native-report.ts';
+import assert from 'node:assert/strict';import {writeFileSync} from 'node:fs';import {join} from 'node:path';import {randomUUID} from 'node:crypto';
 import {createLocalOpenAnalysisStore} from '../../../adapters/storage-local/open-analysis.ts';
-import {taskHash} from '../../../packages/product-core/member-task.ts';
-import {compileOpenAnalysisIR,executeOpenAnalysisIR} from '../../../packages/product-core/open-analysis-ir.ts';
-import {verifyOpenAnalysisIntegerSum} from '../../../adapters/analytics-duckdb/open-analysis-verification.ts';
 import {createPersonalOpenAnalysisWorkspace} from '../../../profiles/personal/open-analysis.ts';
 import {startBrowserMembershipServer} from '../../../apps/browser/local-server.ts';
-import type {MemberSourceInspection} from '../../../packages/ports/member-source.ts';
-import {compileNumericReport} from '../../../packages/product-core/open-analysis-numeric-report.ts';
-export function reportFixture(grouped=false,numeric=false){
- const root=mkdtempSync(join(process.env.JUANERAI_TEST_EVIDENCE_DIR??'/private/tmp','bui-report-'));
- const source:MemberSourceInspection={version:'1.0',sources:[{source_id:randomUUID(),display_name:'synthetic.csv',format:'csv',sha256:'a'.repeat(64),byte_length:'10',sheets:[{sheet_id:'sheet',name:'CSV',state:'visible',rows:grouped?[{row:1,cells:[{column:'A',type:'string',value:'数量'},{column:'B',type:'string',value:'地区'}]},{row:2,cells:[{column:'A',type:'number',value:'3'},{column:'B',type:'string',value:'北区'}]},{row:3,cells:[{column:'A',type:'number',value:'4'},{column:'B',type:'string',value:'南区'}]}]:[{row:1,cells:[{column:'A',type:'string',value:'数量'}]},{row:2,cells:[{column:'A',type:'number',value:'7'}]}]}]}]};
- const identity={task_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:taskHash(source),config_sha256:'b'.repeat(64)};
- const store=createLocalOpenAnalysisStore({projectRoot:root}),id=identity.task_id;
- store.create({identity,question:'合成数量分析',source});const lease=store.begin(id),plan=compileOpenAnalysisIR({... (grouped?{version:'1.1',group_by:'B',filters:[]}:{version:'1.0'}),goal:'合成数量',source_id:source.sources[0]!.source_id,sheet_id:'sheet',operation:'sum',column:'A',unit:'件'},source),calculation=executeOpenAnalysisIR(plan,source),rawOutcome={version:'1.0' as const,outcome_id:randomUUID(),identity,framework:plan,calculation,verification:verifyOpenAnalysisIntegerSum(plan,calculation,source),explanation:{kind:'MODEL_EXPLANATION' as const,text:'这是合成资料的描述，原因尚需调查。'},human_judgment:'not_recorded' as const};
- const numericReport=numeric?compileNumericReport(JSON.stringify({version:'1.3',status:'ready',derivations:[],interpretations:[{references:['F1','F2'],interpretation:'北区{{F1}}，南区{{F2}}，原因尚需调查。'}]}),{verified_calculations:[{execution_plan:plan,calculation,verification:rawOutcome.verification}]},{identity,sources:source}):null;const outcome=numericReport?{...rawOutcome,numeric_report:numericReport,explanation:{kind:'MODEL_EXPLANATION' as const,text:numericReport.text}}:rawOutcome;
- store.saveFramework(lease,{version:'1.0',identity,origin:'MODEL_PROPOSAL',plan});store.saveOutcome(lease,outcome);
- const content=()=>{const read=store.reportContent;assert.ok(read,'BUI-R06 requires a real current saved content projection');const value=read(id);assert.ok(value);return value;};
- const write=(action:string,fields:Record<string,unknown>={})=>{const current=content();assert.ok(store.reportContentCommand);return store.reportContentCommand(id,{version:'1.0',command_id:randomUUID(),expected_content_sha256:current.sha256,action,...fields});};
- return {root,store,id,source,identity,outcome,content,write};
+/** Current saved model report, never a fabricated qualified Outcome. */
+export async function reportFixture(grouped=false,setup?:{root:string;project_id:string}){
+ const actual=await nativeReport({root:setup?.root,projectId:setup?.project_id,csv:grouped?'数量,地区\n3,北区\n4,南区\n':'数量\n7\n'});
+ const root=actual.root,store=createLocalOpenAnalysisStore({projectRoot:root}),id=actual.identity.task_id,content=()=>{const value=store.reportContent!(id);assert.ok(value);return value;},write=(action:string,fields:Record<string,unknown>={})=>store.reportContentCommand!(id,{version:'1.0',command_id:randomUUID(),expected_content_sha256:content().sha256,action,...fields});
+ return {...actual,store,id,content,write};
 }
-export async function browserUIFixture(hasUnconfirmedEffects=()=>false){
- const f=reportFixture(true,true);let calls=0;
+export async function browserUIFixture(){
+ const f=await reportFixture(true);let extra=0,additional=0,baseline=f.provider.requests();
+ const open=createPersonalOpenAnalysisWorkspace({...f.configuration,fetch:async(_url,init)=>{extra++;const dto=JSON.parse(String(init!.body)),n=f.provider.requests()+additional+extra;if(JSON.stringify(dto.messages).includes('OWNED_UNCONFIRMED_FIXTURE')){writeFileSync(join(f.root,'OWNED-UNKNOWN-RESPONSE-BOUNDARY.json'),JSON.stringify({task:'owned isolated partial report Task',entered_synthetic_transport:true,response_lost:true,real_provider_requests:0}));throw Error('owned synthetic response lost after dispatch boundary');}return offlineResponse(n,[],'合成测试建议：更简洁地描述结果，原因仍需调查。');}});
  const otherIdentity={...f.identity,task_id:randomUUID(),run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID()};f.store.create({identity:otherIdentity,question:'另一个合成任务',source:f.source});f.store.finish(f.store.begin(otherIdentity.task_id),'failed');
- const open=createPersonalOpenAnalysisWorkspace({projectRoot:f.root,inspect:async()=>assert.fail('no parsing on read/save'),runtime:{hasUnconfirmedEffects,run:async input=>{calls++;assert.equal(input.purpose,'report_edit');assert.deepEqual(input.tools,[]);assert.equal(input.authorize(),true);return {text:'合成测试建议：更简洁地描述结果，原因仍需调查。',tools:[]};}},authorizeConfiguration:async()=>({config_sha256:f.identity.config_sha256})});
- // Legacy membership APIs are not exercised; production OpenAnalysis Profile/Store and HTTP boundaries are real.
- const server=await startBrowserMembershipServer({store:{} as never,workspace:{} as never,open});
+ async function settleTask(id:string){const facts=await open.diagnostics(id);assert.equal(facts.unconfirmed_effects,false);assert.ok((facts.meter?.model_attempts??0)>0,'the current fixture already obtained real settled public SDK observations');}
+ const server=await startBrowserMembershipServer({store:{} as never,workspace:{} as never,open}),register=Reflect.get(globalThis,Symbol.for('Mini.D006.ownedLoopback')) as ((origin:string)=>()=>void)|undefined,revoke=register?.(server.origin);
  const boot=await fetch(server.origin+'/v1/bootstrap',{method:'POST',headers:{origin:server.origin,'content-type':'application/json'},body:JSON.stringify({token:server.bootstrap})}),cookie=boot.headers.get('set-cookie')!.split(';')[0]!,control=(await boot.json()).control;
  const call=(path:string,body?:unknown,headers:Record<string,string>={})=>fetch(server.origin+path,{method:body===undefined?'GET':'POST',headers:{cookie,...(body===undefined?{}:{origin:server.origin,'content-type':'application/json','x-xanthil-control':control}),...headers},...(body===undefined?{}:{body:JSON.stringify(body)})});
- return {...f,open,server,cookie,control,call,calls:()=>calls,close:async()=>{await open.close();await server.close();}};
+ async function markUnconfirmed(id:string){const task=open.read(id);let raised:unknown;try{await open.professionalAgent.advance({identity:task.identity,command_id:randomUUID(),purpose:'report_edit',prompt:'OWNED_UNCONFIRMED_FIXTURE',system:'仅验证本隔离Task实际请求结算未知时的报告编辑安全门；不计算或执行现实行动。',capabilities:async()=>[],authorize:()=>true,signal:new AbortController().signal});}catch(error){raised=error;}await open.professionalAgent.waitForIdle();const facts=await open.diagnostics(id);writeFileSync(join(f.root,'OWNED-UNKNOWN-PROBE-'+id+'.json'),JSON.stringify({task_id:id,code:raised&&Reflect.get(raised as object,'code'),message:String(raised),facts,real_provider_requests:0},null,2));assert.ok(raised);assert.equal(facts.unconfirmed_effects,true,JSON.stringify({code:raised&&Reflect.get(raised as object,'code'),message:String(raised),last_run:facts.last_run,meter:facts.meter}));}
+ return {...f,open,server,cookie,control,call,markUnconfirmed,settleTask,get baseline_calls(){return baseline;},calls:()=>f.provider.requests()+additional+extra,recordFixtureCalls(n:number){additional+=n;baseline+=n;},close:async()=>{await open.close();await server.close();revoke?.();}};
 }
-export function partialReportTask(f:ReturnType<typeof reportFixture>){
- const identity={...f.identity,task_id:randomUUID(),run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID()},id=identity.task_id;
- f.store.create({identity,question:'合成部分分析，等待范围澄清',source:f.source});const lease=f.store.begin(id),framework={...f.store.read(f.id)!.framework!,identity};
- const step={version:'1.0' as const,step_id:randomUUID(),identity,framework,calculation:f.outcome.calculation,verification:f.outcome.verification};
- f.store.saveFramework(lease,framework);f.store.saveVerifiedStep(lease,step);f.store.saveClarification(lease,{version:'1.0',question_id:randomUUID(),text:'还需要确认另一个分析范围',identity});
- return {id,identity,step,content:()=>f.store.reportContent!(id)!};
+export async function partialReportTask(f:Awaited<ReturnType<typeof reportFixture>>&{recordFixtureCalls?:(n:number)=>void}){
+ const partial=await nativeReport({root:f.root,projectId:f.configuration.project_id,question:'先说明当前数量，后续比较期间尚未明确。',text:'# 部分信息报告\n\n后续期间与条件未明确，相关判断尚未核验。'});f.recordFixtureCalls?.(partial.provider.requests());return {id:partial.identity.task_id,identity:partial.identity,content:()=>f.store.reportContent!(partial.identity.task_id)!};
 }

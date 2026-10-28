@@ -1,6 +1,6 @@
 import {createHash} from 'node:crypto';
 import {parseDocument,visit,isAlias,isScalar} from 'yaml';
-import {assessNetSalesAsset,type MetricAsset,type AssetMetric} from '../../packages/product-core/metric-assets.ts';
+import {type MetricAsset,type AssetMetric} from '../../packages/product-core/metric-assets.ts';
 function fail(code:string,path=''):never {throw Object.assign(new Error(code),{code,path,stack:code});}
 const object=(v:unknown,path:string):Record<string,any>=>{if(!v||typeof v!=='object'||Array.isArray(v))fail('SAP_STRUCTURE',path);return v as Record<string,any>;};
 const text=(v:unknown,path:string)=>{if(typeof v!=='string'||!v.trim()||v.length>100000||v.includes('\0'))fail('SAP_STRUCTURE',path);return v;};
@@ -75,5 +75,6 @@ export function inspectSemanticAsset(bytes:Uint8Array,registry?:Uint8Array) {
  release_verified=true;
  }
  const asset:MetricAsset={id:p.id,version:p.version,namespace:p.namespace,...fp,bytes_sha256:hash(bytes),metrics:structuredClone(d.metrics) as AssetMetric[],scenarios:structuredClone(d.scenarios),document:structuredClone(d)};
- const computability=assessNetSalesAsset(asset);return {status:'candidate' as const,release_verified,asset,metric_count:asset.metrics.length,unselected_count:asset.metrics.length-computability.metrics.length,computability,approved:false as const};
+ const computability={usable:asset.metrics.length>0,calculation_supported:false as const,metrics:asset.metrics.map(m=>m.name),issues:asset.metrics.length?[]:[{code:'ASSET_NO_DEFINITIONS',path:'metrics'}],definition_sha256:hash(canonicalSap({metrics:asset.metrics,scenarios:asset.scenarios,bindings:d.bindings}))};
+ return {status:'candidate' as const,release_verified,asset,metric_count:asset.metrics.length,unselected_count:asset.metrics.length-computability.metrics.length,computability,approved:false as const};
 }

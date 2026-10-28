@@ -11,6 +11,7 @@ test('TEST-REC-009 [AC-REC-001-01..04, AC-REC-005-04, AC-REC-007-01..02] serves 
   await writeHostileMarkdown(fixture.run);
   const before = await workspaceSnapshot(fixture.root);
   const console = await startConsole(fixture.run);
+  const register=Reflect.get(globalThis,Symbol.for('Mini.D006.ownedLoopback')),revoke=typeof register==='function'?register(console.url):()=>{};
   try {
     assert.match(console.url, /^http:\/\/127\.0\.0\.1:\d+\/$/);
     const page = await fetch(console.url);
@@ -28,7 +29,7 @@ test('TEST-REC-009 [AC-REC-001-01..04, AC-REC-005-04, AC-REC-007-01..02] serves 
     const post = await fetch(console.url, { method: 'POST' });
     assert.equal(post.status, 404);
   } finally {
-    await stopConsole(console.child);
+    try{await stopConsole(console.child);}finally{revoke();}
   }
   assert.deepEqual(await workspaceSnapshot(fixture.root), before, 'Ctrl+C closes only the listener');
 });
@@ -52,6 +53,7 @@ test('TEST-REC-009 [AC-REC-003-02, AC-REC-007-02] renders retained non-success a
   await writeFile(join(fixture.run, descriptor.path), bytes);
   await writeFile(join(fixture.run, 'run.json'), JSON.stringify(manifest));
   const console = await startConsole(fixture.run);
+  const register=Reflect.get(globalThis,Symbol.for('Mini.D006.ownedLoopback')),revoke=typeof register==='function'?register(console.url):()=>{};
   try {
     const html = await (await fetch(console.url)).text();
     assert.match(html, /verified_non_success/);
@@ -61,6 +63,6 @@ test('TEST-REC-009 [AC-REC-003-02, AC-REC-007-02] renders retained non-success a
     assert.doesNotMatch(html, /<script|<form|<a\s|onerror=/i);
     assert.doesNotMatch(html, new RegExp(Buffer.from(bytes).toString('utf8').replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), 'non-success shows descriptor metadata, not retained asset content');
   } finally {
-    await stopConsole(console.child);
+    try{await stopConsole(console.child);}finally{revoke();}
   }
 });

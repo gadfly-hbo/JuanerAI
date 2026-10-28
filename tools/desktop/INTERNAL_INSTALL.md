@@ -21,7 +21,7 @@
 
 该入口不下载、不解压、不执行 runtime，先验证完整固定内容摘要，再排他创建资源目录。许可目录应包含上游原文、来源清单、Electron/Chromium notices、实际 Python build metadata 和已批准 npm/第三方许可。来源、版本及实际内容变更须重新评估，不静默更新固定摘要。
 
-在已有批准命令局部环境中设置 JUANERAI_INTERNAL_INSTALL_RESOURCES、新的 JUANERAI_INTERNAL_INSTALL_OUTPUT、JUANERAI_ELECTRON_ZIP_DIR 和 ELECTRON_SKIP_BINARY_DOWNLOAD=1，再执行现有 Forge CLI 的 `package --platform=darwin --arch=arm64`。输出目录必须不存在；不使用默认 `desktop:package` 或 `desktop:test` 覆盖旧 out。保存源码/旧 .vite/旧 out 身份及完整命令结果。
+在已有批准命令局部环境中设置 JUANERAI_INTERNAL_INSTALL_RESOURCES、新的 JUANERAI_INTERNAL_INSTALL_OUTPUT、JUANERAI_ELECTRON_ZIP_DIR 和 ELECTRON_SKIP_BINARY_DOWNLOAD=1，再执行现有 Forge CLI 的 `package --platform=darwin --arch=arm64`。输出目录必须不存在；保存源码/旧 .vite/旧 out 身份及完整命令结果。
 
 内部构建的 postPackage 调用 `tools/desktop/seal-internal-app.cjs`，按已批准 Electron 嵌套 bundle 到顶层的顺序补齐 ad-hoc 资源封装，然后强制 strict deep 校验；任何失败阻止交付。它不使用证书或钥匙串，不新增 entitlements、不切换 hardened runtime，也不修改 Resources 中的 Python/DuckDB/app.asar。仅修复已有未封装包时，先排他复制到新任务输出，核对原件/副本一致，再执行 `node tools/desktop/seal-internal-app.cjs ABS_NEW_XANTHIL_APP`；绝不就地改历史包。
 

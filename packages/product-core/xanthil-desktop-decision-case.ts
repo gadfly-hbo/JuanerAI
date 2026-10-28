@@ -1,5 +1,11 @@
 /** Pure Desktop business rules. No persistence, process, Runtime or UI capability. */
 import type { DesktopProjection, SaveFormInput } from '../contracts/xanthil-desktop-ipc.ts';
+export const professionalDraftKinds={organize_question:'question_fields',explain_evidence:'evidence_explanation',draft_candidates:'candidates'} as const;
+export function professionalDraftParameters(kind:typeof professionalDraftKinds[keyof typeof professionalDraftKinds]){
+ const words={type:'string',maxLength:12000};
+ const properties=kind==='question_fields'?{question_text:words,hypothesis_display_title:words,business_context:words,alternative_explanations:{type:'array',maxItems:32,items:{...words,minLength:1}}}:kind==='evidence_explanation'?{evidence_explanation_text:words}:{candidates:{type:'array',maxItems:16,items:{type:'object',properties:Object.fromEntries(['title','evidence_basis','risk_or_refutation','applicability_conditions','future_validation_metric'].map(k=>[k,words])),required:['title','evidence_basis','risk_or_refutation','applicability_conditions','future_validation_metric'],additionalProperties:false}}};
+ return {type:'object',properties,required:Object.keys(properties),additionalProperties:false};
+}
 
 /** The three fixed Draft targets, shared by business admission and the Pi boundary. */
 export function validateDesktopAssistanceDraft(kind:string,value:unknown,runtime=false):void{
@@ -40,7 +46,7 @@ export function desktopAssistancePayload(projection: DesktopProjection, action: 
   const revision=projection.revision;
   if(!revision||projection.session?.current_revision_id!==revision.revision_id)desktopRuleFailure('STALE_REVISION');
   if(revision.integrity_state!=='ok')desktopRuleFailure('INTEGRITY_BLOCKED');
-  if(projection.runs.some(r=>r.status==='Running')||projection.attempts.some(a=>a.status==='Running'))desktopRuleFailure('BUSY');
+  if(projection.runs.some(r=>r.status==='Running'))desktopRuleFailure('BUSY');
   const context={question_text:revision.question_text,hypothesis_display_title:revision.hypothesis_display_title,business_context:revision.business_context,alternative_explanations:revision.alternative_explanations};
   if(action==='organize_question'){
     if(!['Draft','Ready'].includes(revision.state))desktopRuleFailure('AUTHORITY_REQUIRED');

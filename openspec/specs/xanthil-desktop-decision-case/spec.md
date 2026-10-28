@@ -349,37 +349,9 @@ authority behind versioned Main/Application commands.
 
 ## REQ-XDESK-010 — Reuse current local-analysis seams without contract drift
 
-Desktop SHALL add only the narrow business capabilities required for this Case
-and SHALL keep current CLI, Run Artifact, provider/model, and public Port
-contracts compatible.
-
-- **AC-XDESK-010-01:** Existing AgentAnalysisRuntime,
-  LocalAnalysisExecution, RunArtifactStore, createLocalAnalysisApplication,
-  createPersonalLocalAnalysisProfile, and apps/cli/xanthil.ts behavior and
-  signatures remain unchanged and all 22 TEST-XCLI cases pass.
 - **AC-XDESK-010-02:** Desktop SHALL publish only the closed 3.0 manifest and
   files in [structure-decision.md](../../changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/structure-decision.md) through `DesktopRunEvidenceStore` in the
-  approved Desktop Core/Port/storage paths. Existing local-analysis writes 2.0
-  and reads terminal 1.0/2.0; existing Console selected-directory reads 1.0
-  only and returns RUN_CONTRACT_UNSUPPORTED for 3.0. Their schemas, factories,
-  APIs, behavior, and artifacts remain unchanged; no registry, scan, migration,
-  fake model/fixture provenance, or omitted evidence boundary is allowed.
-- **AC-XDESK-010-03:** The existing analytics Adapter is changed only to extract
-  one private bounded subprocess/deadline/cancellation helper. The old factory
-  and fixture-specific calculation remain behaviorally identical; the new
-  Desktop adapter owns the double-CSV algorithm.
-- **AC-XDESK-010-04:** packages/ports/local-analysis.ts adds a separate
-  DecisionAssistanceRuntime and definition function without changing the
-  existing AgentAnalysisRuntime shape. The Pi Adapter adds one corresponding
-  factory; Pi types remain confined to adapters/agent-pi.
-- **AC-XDESK-010-05:** The Personal Desktop Profile selects Desktop storage,
-  deterministic analysis, Desktop Run evidence, and optional Pi assistance.
-  Its lower-level public composition factory accepts the business Ports for
-  contract/test injection; the normal factory supplies Pi itself. No production
-  Main/preload/IPC/environment/Renderer switch selects an offline double, and
-  no second package/entry is built for injection.
-  Product contracts carry requested and observed neutral provenance, not a
-  hardcoded provider/model.
+  approved Desktop Core/Port/storage paths.
 - **AC-XDESK-010-06:** No configured model, refusal, unavailability, failure,
   cancellation, or timeout leaves every question, evidence explanation,
   candidate, insufficient-evidence, acceptance, completion, and report step
@@ -454,20 +426,8 @@ activate only after executable evidence through the actual packaged entry.
   stale root-configuration test oracle, the one-file correction follows the
   refreshed-Gate sequence in [path-contract.md](../../changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/path-contract.md) and cannot count as product RED,
   TDD_READY, or P4 PASS.
-- **AC-XDESK-012-02:** After each loop-scoped TDD_READY, the repository may move
-  only through exact C1a, C1b, C1, C2, and C3 tuples in
-  [dependency-decision.md](../../changes/archive/2026-09-27-xanthil-desktop-membership-repurchase-decision-case/dependency-decision.md). Each uses the frozen final P5 Main/config/scripts,
-  `jsx:"react-jsx"`, and an exact ordered subset of the final appended 25
-  TypeScript paths while retaining all 43 prior paths. Final CF is exactly the
-  retained-43-plus-appended-25 graph and full validation phases. Dependency
-  versions and lock never drift; every partial, mixed, extra, or unlisted tuple
-  fails. Retirement removes intermediate oracle cases and replaces the focused
-  runner list with the full list so released compatibility recognizes only
-  exact P4 or final P5 and has no runtime phase selector.
-- **AC-XDESK-012-03:** desktop:package produces only
-  out/Xanthil-darwin-arm64/Xanthil.app with bundled local resources and the
-  validated local toolchain descriptor; no Maker, archive, signing,
-  notarization, updater, publisher, postinstall, or release artifact exists.
+
+
 - **AC-XDESK-012-04:** Automated E2E launches the production packaged
   executable with playwright-core/node:test, Chromium sandbox enabled and CSP
   not bypassed, to prove production Main/Profile/Renderer/SQLite/filesystem/

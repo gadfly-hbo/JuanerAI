@@ -2,7 +2,8 @@ import type {MemberSourceInspection} from '../ports/member-source.ts';
 import {membershipRecord as closed,membershipUuid} from './member-analysis.ts';
 import {taskHash} from './member-task.ts';
 export const semanticDimensions=['metric','formula','unit','population','grain','period','time_zone','filter','join','precondition'] as const;
-type Dimension=typeof semanticDimensions[number];
+export type OpenSemanticDimension=typeof semanticDimensions[number];
+type Dimension=OpenSemanticDimension;
 export type OpenMeasure=Readonly<{unscaled_inputs?:readonly Readonly<{source_id:string;sheet_id:string;column:string;label:string}>[];currency:string;inputs:readonly Readonly<{source_id:string;sheet_id:string;column:string;scale:string}>[];output_scale:string;output_label:string}>;
 type SemanticSource=Readonly<{source_id:string;source_sha256:string;sheet_id:string;row:number;column:string}>;
 type Evidence=Readonly<{source?:SemanticSource;message_id:string;quote:string;question:string;start:number;end:number}>;
@@ -47,6 +48,11 @@ export function validateOpenSemanticAssessment(raw:OpenSemanticAssessment,questi
 }
 
 export function semanticMessageId(task_id:string,text:string){return taskHash({task_id,text});}
+/** One current user-message identity, used by both the resolver and model declaration. */
+export function semanticTaskMessageCatalog(task_id:string,question:string,additional:readonly string[]=[]){
+ return [...new Set(additional)].filter(text=>text!==question).concat(question).map((text,index)=>({reference:'message:'+(index+1),message_id:semanticMessageId(task_id,text),text}));
+}
+
 function scale(raw:unknown){const value=text(raw);if(!/^10{0,12}$/.test(value))fail('MEASURE_INVALID');return value;}
 export function validateOpenMeasure(raw:unknown):OpenMeasure{
  const x=closed(raw,['currency','inputs','output_scale','output_label',...(raw&&typeof raw==='object'&&Object.hasOwn(raw,'unscaled_inputs')?['unscaled_inputs']:[])]);if(typeof x.currency!=='string'||!/^[A-Z]{3}$/.test(x.currency)||!Array.isArray(x.inputs)||!x.inputs.length||x.inputs.length>16)fail('MEASURE_INVALID');
@@ -87,3 +93,6 @@ function validateInterpretation(raw:OpenSemanticAssessment,questions:readonly st
 export function bindOpenSemanticMeasure(raw:unknown,prior:OpenSemanticAssessment|undefined,questions:readonly string[],task_id:string,inspection?:MemberSourceInspection):OpenSemanticAssessment{
  if(!prior||!['1.1','1.2'].includes(prior.version))fail('MEASURE_BINDING_INVALID');validateOpenSemanticAssessment(prior,questions,task_id,inspection);let measure=validateOpenMeasure(raw);if(measure.unscaled_inputs){if(!inspection)fail('MEASURE_BINDING_INVALID');const resolve=(i:{source_id:string;sheet_id:string;column:string})=>{const headers=inspection.sources.find(s=>s.source_id===i.source_id)?.sheets.find(s=>s.sheet_id===i.sheet_id)?.rows[0]?.cells.filter(h=>h.column===i.column||h.value===i.column);if(headers?.length!==1)fail('MEASURE_BINDING_INVALID');return {...i,column:headers[0]!.column};};const unscaled_inputs=measure.unscaled_inputs.map(i=>({...i,column:resolve(i).column}));const keys=[...measure.inputs.map(resolve),...unscaled_inputs].map(i=>`${i.source_id}/${i.sheet_id}/${i.column}`);if(new Set(keys).size!==keys.length)fail('MEASURE_INCOMPATIBLE');measure={...measure,unscaled_inputs};}const definition=prior.definitions.find(d=>d.dimension==='unit');if(!definition?.interpretation||definition.interpretation.status!=='clear')fail('MEASURE_BINDING_INVALID');if(definition.interpretation.unscaled_unit)fail('MEASURE_INCOMPATIBLE');const priorMeasure=definition.interpretation.unit;const unordered=(m:OpenMeasure)=>({...m,inputs:[...m.inputs].sort((a,b)=>taskHash(a).localeCompare(taskHash(b))),...(m.unscaled_inputs?{unscaled_inputs:[...m.unscaled_inputs].sort((a,b)=>taskHash(a).localeCompare(taskHash(b)))}:{})});if(priorMeasure&&taskHash(unordered(priorMeasure))===taskHash(unordered(measure)))return prior;const next={...definition,interpretation:{...definition.interpretation,unit:measure}};return validateOpenSemanticAssessment({...prior,definitions:prior.definitions.map(d=>d===definition?next:d),conflicts:prior.conflicts.map(c=>c.dimension==='unit'&&c.interpretation_key?{...c,interpretation_key:taskHash(next)}:c)},questions,task_id,inspection);
 }
+
+/** One standard business citation schema, reused before native parameter preparation. */
+export const semanticEvidenceParameters={type:'array',maxItems:16,items:{anyOf:[{type:'object',properties:{message_id:{type:'string'}},required:['message_id'],additionalProperties:false},{type:'object',properties:{source:{type:'object',properties:{source_id:{type:'string'},source_sha256:{type:'string'},sheet_id:{type:'string'},row:{type:'integer',minimum:1},column:{type:'string'}},required:['source_id','sheet_id','row','column'],additionalProperties:false}},required:['source'],additionalProperties:false}]}};

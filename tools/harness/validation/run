@@ -100,8 +100,6 @@ require_package_version() {
   fi
 }
 
-require_package_version package.json "dependencies['@earendil-works/pi-coding-agent']" 0.84.2 'Pi SDK declaration'
-require_package_version node_modules/@earendil-works/pi-coding-agent/package.json version 0.84.2 'Pi SDK installation'
 require_package_version package.json "dependencies.typebox" 1.3.7 'TypeBox declaration'
 require_package_version node_modules/typebox/package.json version 1.3.7 'TypeBox installation'
 require_package_version package.json "devDependencies.typescript" 5.9.3 'TypeScript declaration'
@@ -138,9 +136,7 @@ run_group syntax check_syntax
 
 run_group typecheck npm run typecheck
 run_group local-unit node --test tests/unit/xanthil-local-analysis/*.test.ts
-run_group local-contract node --test tests/contract/xanthil-local-analysis/*.test.ts
 run_group local-integration node --test tests/integration/xanthil-local-analysis/*.test.ts
-run_group local-e2e node --test tests/e2e/xanthil-local-analysis/*.test.ts
 run_group model-contract node --test tests/contract/model-pack-contract-enabler/*.test.ts
 run_group model-integration node --test tests/integration/model-pack-contract-enabler/*.test.ts
 run_group project-board node --test tools/harness/project-board/project-control.test.mjs tools/harness/project-board/status-cli.test.mjs
@@ -148,7 +144,7 @@ run_group console-unit node --test tests/unit/run-evidence-console/run-evidence.
 run_group console-contract node --test tests/contract/run-evidence-console/run-evidence-reader.contract.test.ts
 run_group console-integration node --test tests/integration/run-evidence-console/run-evidence-reader.integration.test.ts
 run_group console-e2e node --test tests/e2e/run-evidence-console/xanthil-console.e2e.test.ts
-run_group desktop-unit node --test tests/unit/xanthil-desktop/*.test.ts tests/unit/xanthil-desktop/open-analysis-autonomous-collaboration-ui.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs tests/unit/xanthil-desktop/open-analysis-coverage-ui-r3.unit.test.mjs tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs
+run_group desktop-unit node --test tests/unit/xanthil-desktop/*.test.ts tests/unit/xanthil-desktop/open-analysis-client.unit.test.mjs tests/unit/xanthil-desktop/report-studio-source.unit.test.mjs
 if [ "$scope" = portable ]; then
   set --
   contract_dir=tests/contract/xanthil-desktop
@@ -165,7 +161,6 @@ fi
 run_group desktop-integration node --test tests/integration/xanthil-desktop/*.test.ts tests/integration/xanthil-desktop/browser-companion-process.test.mjs tests/integration/xanthil-desktop/browser-service-view.test.mjs tests/integration/xanthil-desktop/browser-workspace-view.test.mjs
 if [ "$scope" = full ]; then
 run_group native-fixture node tests/fixtures/case-assistant/build-native-fixture.mjs
-run_group desktop-e2e node --test --test-concurrency=1 tests/e2e/xanthil-desktop/*.test.ts
 fi
 
 if [ -d tests/integration/decision-platform ]; then

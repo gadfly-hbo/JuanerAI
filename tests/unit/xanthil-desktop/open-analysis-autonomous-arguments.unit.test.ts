@@ -1,21 +1,28 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import {randomUUID} from 'node:crypto';
-import {createSharedAnalysisTool} from '../../../adapters/agent-pi/open-analysis.ts';
-import type {OpenAnalysisRun} from '../../../packages/ports/open-analysis-runtime.ts';
-function fixture(recover=false){let effects=0,authorized=true;
- const input=Object.assign({identity:{task_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:'a'.repeat(64),config_sha256:'b'.repeat(64)},prompt:'核对数值',system:'授权工具',signal:new AbortController().signal,authorize:()=>authorized,tools:[{name:'calculate',description:'已支持方法',parameters:{type:'object',properties:{quantity:{type:'integer',minimum:0}},required:['quantity'],additionalProperties:false},execute:async()=>{effects++;return {value:7};}}]} satisfies OpenAnalysisRun,{recoverInvalidArguments:recover});
- const tool=createSharedAnalysisTool(()=>input);return {run:(name:string,args:unknown)=>tool.execute({name,arguments_json:JSON.stringify(args)},input.signal),effects:()=>effects,revoke:()=>authorized=false};
+import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {mkdtempSync,writeFileSync,readFileSync,existsSync} from 'node:fs';import {join} from 'node:path';
+import {createPiProfessionalAgent} from '../../../adapters/agent-pi/professional-agent.ts';
+import {offlineCredentials,offlineResponse} from '../../fixtures/xanthil-desktop/offline-professional-provider.ts';
+/** The old host invoke/argument repair wrapper is retired. These are actual
+ * public native validation/feedback/effect tests, with synthetic Provider bytes. */
+async function scenario(mode:'correct'|'repeat'|'withdraw'|'missing'){
+ const root=mkdtempSync(join(process.env.JUANERAI_NEWARCH_SHORT_ROOT!,'args-')),feedback:string[]=[],schemas:unknown[]=[];let physical=0,effects=0,authorized=true;
+ const parameters={type:'object',properties:{quantity:{type:'integer',minimum:0}},required:['quantity'],additionalProperties:false};
+ const agent=createPiProfessionalAgent({projectRoot:root,analysisModel:'mimo-v2.6-flash',authorizeWork:()=>authorized,credentials:offlineCredentials,fetch:async(_url,init)=>{
+  physical++;const dto=JSON.parse(String(init!.body));schemas.push(dto.tools.find((t:any)=>t.function.name==='calculate').function.parameters);
+  if(physical===2){feedback.push(dto.messages.findLast((m:any)=>m.role==='tool').content);if(mode==='withdraw')authorized=false;}
+  const call=mode==='repeat'?{name:'calculate',args:{}}:physical===1?{name:'calculate',args:mode==='correct'?{wrong:'RAW_SENTINEL'}:{}}:physical===2&&mode!=='missing'?{name:'calculate',args:{quantity:7}}:undefined;
+  return offlineResponse(physical,call?[call]:[],'本合成用例只观察真实工具反馈。');
+ }});
+ const identity={task_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:'a'.repeat(64),config_sha256:await agent.configuration()};
+ const running=agent.advance({identity,command_id:randomUUID(),purpose:'analysis',prompt:'按真实参数合同在配置额度内显式纠正，不添加授权或扩大范围。',system:'原生参数验证用例',capabilities:async()=>[{name:'calculate',description:'Owned validation side effect only, not business analysis.',effect:'write',parameters,execute:async args=>{effects++;writeFileSync(join(root,'effect.json'),JSON.stringify(args),{flag:'wx'});return {value:args.quantity};}}],authorize:()=>authorized,signal:new AbortController().signal});
+ return {root,agent,identity,running,physical:()=>physical,effects:()=>effects,feedback,schemas,parameters};
 }
-test('V13-ARG01 strict legacy defaults and unauthorized names never get a repair exception',async()=>{const f=fixture();await assert.rejects(()=>f.run('calculate',{}),{code:'TOOL_ARGUMENT_INVALID'});assert.equal(f.effects(),0);const g=fixture(true);await assert.rejects(()=>g.run('secret-reader',{}),{code:'TOOL_POLICY_VIOLATION'});assert.equal(g.effects(),0);});
-test('V13-ARG01 rejected parameters produce safe actual diagnostic before effects; model correction uses unchanged schema',async()=>{const f=fixture(true);const reply=await f.run('calculate',{wrong:'RAW_SENTINEL'}) as any;assert.equal(reply.status,'invalid_arguments');assert.equal(reply.executed,false);assert.ok(reply.issues.length);assert.equal(JSON.stringify(reply).includes('RAW_SENTINEL'),false);assert.equal(f.effects(),0);assert.deepEqual(await f.run('calculate',{quantity:7}),{value:7});assert.equal(f.effects(),1);});
-test('V13-ARG01 repeated invalid arguments terminate; withdrawal still rejects valid correction without effects',async()=>{const f=fixture(true);await f.run('calculate',{});await assert.rejects(()=>f.run('calculate',{}),{code:'TOOL_ARGUMENT_INVALID'});assert.equal(f.effects(),0);const g=fixture(true);await g.run('calculate',{});g.revoke();await assert.rejects(()=>g.run('calculate',{quantity:7}),{code:'AUTHORITY_REQUIRED'});assert.equal(g.effects(),0);});
-test('V13-ARG02 missing-field feedback identifies the actual schema field without echoing rejected data',async()=>{const f=fixture(true);const reply=await f.run('calculate',{}) as any;assert.deepEqual(reply.issues[0].required_properties,['quantity']);assert.equal(reply.issues[0].schema_path,'#');assert.equal(f.effects(),0);});
-
-// A missing delimiter must be observable without echoing the rejected payload.
-test('V13-ARG03 malformed JSON feedback exposes only parser position before any effect',async()=>{
- let effects=0; const input={identity:{task_id:randomUUID(),revision:'1',run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID(),grant_id:randomUUID(),scope_sha256:'a'.repeat(64),config_sha256:'b'.repeat(64)},prompt:'核对',system:'授权',signal:new AbortController().signal,authorize:()=>true,recoverInvalidArguments:true,tools:[{name:'calculate',description:'计算',parameters:{type:'object',properties:{items:{type:'array',items:{type:'string'}}},required:['items'],additionalProperties:false},execute:async()=>{effects++;return {value:7};}}]} satisfies OpenAnalysisRun;
- const tool=createSharedAnalysisTool(()=>input),reply=await tool.execute({name:'calculate',arguments_json:'{"items":["PRIVATE_SENTINEL"},"unexpected":true}'},input.signal) as any;
- assert.equal(reply.executed,false);assert.equal(reply.issues[0].keyword,'valid_json');assert.equal(typeof reply.issues[0].position,'number');assert.ok(reply.issues[0].position>=0);assert.equal(JSON.stringify(reply).includes('PRIVATE_SENTINEL'),false);assert.equal(effects,0);
- assert.deepEqual(await tool.execute({name:'calculate',arguments_json:'{"items":["valid"]}'},input.signal),{value:7});assert.equal(effects,1);
+test('V13-ARG01 actual native rejected parameters have no effect; Agent explicitly corrects against the unchanged schema',async()=>{
+ const f=await scenario('correct'),result=await f.running;await f.agent.assertCompleted(f.identity,result.completion);assert.equal(f.physical(),3);assert.equal(f.effects(),1);assert.deepEqual(JSON.parse(readFileSync(join(f.root,'effect.json'),'utf8')),{quantity:7});assert.equal(f.feedback.length,1);assert.deepEqual(JSON.parse(f.feedback[0]!),{status:'rejected',code:'STRUCTURE_MISMATCH',executed:false,terminal:false});assert.doesNotMatch(f.feedback[0]!,/RAW_SENTINEL/);for(const schema of f.schemas)assert.deepEqual(schema,f.parameters);
+ const facts=await f.agent.diagnostics(f.identity);assert.equal(facts.unconfirmed_effects,false);assert.equal(facts.observations.filter(o=>o.kind==='tool'&&o.completion==='completed').length,1);assert.equal(facts.observations.filter(o=>o.kind==='tool'&&o.completion==='unknown').length,0);
+});
+test('V13-ARG01 repeated native argument error stops; withdrawal also refuses a valid correction before effect',async()=>{
+ for(const mode of ['repeat','withdraw'] as const){const f=await scenario(mode);await assert.rejects(()=>f.running);await f.agent.waitForIdle();assert.equal(f.physical(),mode==='repeat'?6:2);assert.equal(f.effects(),0);assert.equal(existsSync(join(f.root,'effect.json')),false);}
+});
+test('V13-ARG02 actual native missing-field refusal and unchanged declaration keep the required field visible without host diagnostic wrappers',async()=>{
+ const f=await scenario('missing');await f.running;assert.equal(f.effects(),0);assert.equal(f.physical(),2);assert.equal(f.feedback.length,1);assert.deepEqual(JSON.parse(f.feedback[0]!),{status:'rejected',code:'STRUCTURE_MISMATCH',executed:false,terminal:false});for(const schema of f.schemas)assert.deepEqual(schema,f.parameters);assert.deepEqual(f.parameters.required,['quantity']);assert.doesNotMatch(f.feedback[0]!,/RAW_SENTINEL/);assert.equal(existsSync(join(f.root,'effect.json')),false);
 });

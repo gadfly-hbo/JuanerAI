@@ -203,6 +203,7 @@ export type ProjectOpenValue = Readonly<{
 }>;
 
 export type DesktopProjection = Readonly<{
+  professional_requests?:readonly Readonly<{authorization_id:string;revoked_at:string|null;draft_id:string|null;execution:import('../ports/open-analysis-runtime.ts').AnalysisRuntimeDiagnostics}>[];
   contract_version: ContractVersion;
   projection_token: string;
   project: Readonly<{ project_id: UUIDv4; display_name: string; schema_version: '1.0'; write_state: 'ready' }> | null;
@@ -212,7 +213,6 @@ export type DesktopProjection = Readonly<{
   snapshot: Readonly<{ snapshot_id: UUIDv4; members: Readonly<{ display_name: string; sha256: string; byte_length: string }>; orders: Readonly<{ display_name: string; sha256: string; byte_length: string }>; included_member_count: string; excluded_member_count: string; included_order_count: string; excluded_order_count: string; treatment_basis: string; confirmed_at: string }> | null;
   runs: readonly Readonly<{ run_id: UUIDv7; profile_id: string; method_id: string; method_version: string; code_identity: string; run_contract_version: string; status: string; started_at: string; deadline_at: string; ended_at: null | string; terminal_reason: null | string; aggregate_id: null | UUIDv4; evidence_available: boolean }>[];
   disclosures: readonly Readonly<{ disclosure_id: UUIDv4; action_kind: string; categories: readonly string[]; aggregate_refs: readonly string[]; payload_sha256: string; requested_provider: string; requested_model: string; decision: string; free_text_confirmed_at: null | string; decided_at: null | string; created_at: string }>[];
-  attempts: readonly Readonly<{ attempt_id: UUIDv4; disclosure_id: UUIDv4; action_kind: string; profile_id: string; runtime_id: string; runtime_version: string; adapter_id: string; adapter_version: string; requested_provider: string; requested_model: string; actual_provider: null | string; actual_model: null | string; status: string; started_at: string; deadline_at: string; ended_at: null | string; terminal_reason: null | string; draft_id: null | UUIDv4 }>[];
   assistance_drafts: readonly Readonly<{ draft_id: UUIDv4; attempt_id: UUIDv4; draft_kind: string; generated_content: AssistanceDraftContent; edited_content: null | AssistanceDraftContent; disposition: string; target_form: null | string; decided_at: null | string; created_at: string }>[];
   findings: readonly Readonly<{ finding_id: UUIDv4; run_id: UUIDv7|null; aggregate_id: UUIDv4|null; native_origin?:Readonly<{kind:'open_member_source'|'open_analysis_source';origin_id:string}>; facts?:import('../product-core/member-analysis.ts').MembershipFindingFacts|import('../product-core/open-membership.ts').OpenMemberFindingFacts|import('../product-core/open-reviewed-analysis-source.ts').ReviewedAnalysisFindingFacts; judgment: string; metrics: string; supporting_evidence: readonly string[]; refutation: string; limitations: readonly string[]; evidence_refs: readonly string[]; method_id: string; method_version: string; created_at: string }>[];
   acceptances: readonly Readonly<{ acceptance_id: UUIDv4; finding_id: UUIDv4; action: string; accepted_at: string }>[];

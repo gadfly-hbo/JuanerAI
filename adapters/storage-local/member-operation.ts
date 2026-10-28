@@ -1,5 +1,4 @@
 import {randomUUID} from 'node:crypto';
-export {createLocalAnalysisRequestLedger} from './analysis-request-ledger.ts';
 import type {DatabaseSync} from 'node:sqlite';
 import {membershipRecord as closed,membershipUuid} from '../../packages/product-core/member-analysis.ts';
 import {encodeTask,taskHash} from '../../packages/product-core/member-task.ts';
@@ -49,14 +48,14 @@ export function assertMemberOperations(db:DatabaseSync){
 }
 
 export function reserveMemberOperation(db:DatabaseSync,input:unknown){const x=closed(input,['task_id','grant_id','kind','stage','input_sha256']);
-  if(!['model','preparation','analysis'].includes(String(x.kind))||typeof x.stage!=='string'||!(x.kind==='model'?['clarify','generate_preparation','correct_preparation','explain']:x.kind==='preparation'?['prepare']:['calculate']).includes(x.stage)||!operationDigest(x.input_sha256))fail();
+  if(!['preparation','analysis'].includes(String(x.kind))||typeof x.stage!=='string'||!(x.kind==='preparation'?['prepare']:['calculate']).includes(x.stage)||!operationDigest(x.input_sha256))fail();
   const t=task(db,x.task_id),g=grant(db,String(t.task_id),x.grant_id);active(db,t,g);
    const key={kind:x.kind,stage:x.stage,input_sha256:x.input_sha256,scope_sha256:g.scope_sha256},logical=taskHash(key);
    const old=db.prepare('SELECT * FROM membership_operations WHERE task_id=? AND logical_key=?').get(String(t.task_id),logical);
    const latest=old&&db.prepare('SELECT * FROM membership_operation_usage WHERE operation_id=? ORDER BY execution_index DESC LIMIT 1').get(String(old.operation_id));
    if(latest?.phase==='settled'&&latest.outcome==='succeeded')return projection(latest);
    if(db.prepare("SELECT execution_id FROM membership_operation_usage WHERE phase IN ('reserved','issued','unresolved')").get())fail('PHYSICAL_PENDING');
-   if(latest&&(x.kind==='analysis'||latest.execution_index===1||latest.outcome!==(x.kind==='model'?'temporary_failure':'conversion_failure')))fail('RETRY_EXHAUSTED');
+   if(latest&&(x.kind==='analysis'||latest.execution_index===1||latest.outcome!=='conversion_failure'))fail('RETRY_EXHAUSTED');
    const operation_id=old?String(old.operation_id):randomUUID(),execution_id=randomUUID(),index=latest?1:0;
    if(!old)db.prepare('INSERT INTO membership_operations VALUES(?,?,?,?,?,?,?)').run(operation_id,String(t.task_id),logical,String(x.kind),String(x.stage),String(x.input_sha256),String(g.scope_sha256));
    db.prepare("INSERT INTO membership_operation_usage VALUES(?,?,?,?,?,?,'reserved',NULL,0,0,?,?)").run(execution_id,String(t.task_id),operation_id,index,String(g.grant_id),Number(t.epoch),encodeTask(blank),taskHash(blank));

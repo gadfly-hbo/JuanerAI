@@ -13,7 +13,7 @@ const artifact=process.env.JUANERAI_TEST_EVIDENCE_DIR,programRoot=process.env.DR
 if(!artifact||!programRoot)throw Error('Explicit synthetic artifact and bundle required');
 mkdirSync(artifact,{recursive:true,mode:0o700});
 const connect=Socket.prototype.connect;Socket.prototype.connect=function(...args){const value=Array.isArray(args[0])?args[0][0]:args[0],host=typeof value==='object'?value.host:args[1];if(!['127.0.0.1','localhost','::1'].includes(host))throw Error('SYNTHETIC_EXTERNAL_NETWORK_DENIED');return connect.apply(this,args);};
-const f=reportFixture(true,true),projectId=randomUUID();
+const f=await reportFixture(true),projectId=randomUUID();
 const other={...f.identity,task_id:randomUUID(),run_id:randomUUID(),attempt_id:randomUUID(),operation_id:randomUUID()};f.store.create({identity:other,question:'另一个合成任务',source:f.source});f.store.finish(f.store.begin(other.task_id),'failed');
 const open=createPersonalOpenAnalysisWorkspace({project_id:projectId,projectRoot:f.root,inspect:async()=>{throw Error('NO_SOURCE_READ');},runtime:{run:async()=>{throw Error('HOST_PROVIDER_FORBIDDEN');}},authorizeConfiguration:async()=>{throw Error('HOST_PROVIDER_FORBIDDEN');}});
 let server;

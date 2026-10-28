@@ -1,6 +1,6 @@
-import type {AssistantSource,AssistantEvent,AssistantSession,AssistantAttempt,AssistantEvent as Event} from './case-assistant.ts';
+import type {AssistantSource,AssistantEvent,AssistantSession,AssistantEvent as Event} from './case-assistant.ts';
 export type ChildKind='fork'|'subagent';
-export type AutomaticDelegationInstruction=Readonly<{version:'1.0'|'1.1';action:'inspect_sources'|'check_consistency'|'check_limitations'|'challenge'|'explain'|'compare';reference_paths:readonly string[];completion_reference_paths:readonly string[];private_purpose:string;business_question?:string}>;
+export type AutomaticDelegationInstruction=Readonly<{version:'1.0';action:'inspect_sources'|'check_consistency'|'check_limitations'|'challenge'|'explain'|'compare';reference_paths:readonly string[];completion_reference_paths:readonly string[];private_purpose:string;business_question?:string}>;
 export type ChildPreview=Readonly<{creation_command_id?:string;
  automatic_instruction?:AutomaticDelegationInstruction;
  id:string;parent_session_id:string;kind:ChildKind;task:string;cutoff_id:string|null;
@@ -12,7 +12,8 @@ export type ChildPreview=Readonly<{creation_command_id?:string;
 }>;
 export type ChildRelation=ChildPreview & Readonly<{child_session_id:string}>;
 export type CollaborationProjection=Readonly<{
- version:'1.1';lifecycle:CollaborationLifecycle;parent_lifecycle:CollaborationLifecycle;valid:boolean;current_source:AssistantSource;current_decision_id:string|null;occupant:Readonly<{session_id:string|null;label:string}>|null;deliveries:readonly ChildDelivery[];session:AssistantSession;relation:ChildRelation;attempts:readonly AssistantAttempt[];events:readonly Event[];results:readonly ChildResult[];
+ last_request?:import('./case-assistant.ts').AssistantProjection['last_request'];execution?:import('./case-assistant.ts').AssistantProjection['execution'];
+ version:'1.1';lifecycle:CollaborationLifecycle;parent_lifecycle:CollaborationLifecycle;valid:boolean;current_source:AssistantSource;current_decision_id:string|null;occupant:Readonly<{session_id:string|null;label:string}>|null;deliveries:readonly ChildDelivery[];session:AssistantSession;relation:ChildRelation;events:readonly Event[];results:readonly ChildResult[];
 }>;
 export type CollaborationRequest=Readonly<{version:'1.1'}>&(
  Readonly<{operation:'prepare_child';session_id:string;kind:ChildKind;task:string;cutoff_id:string|null;history_ids:readonly string[];report_ids:readonly string[];include_aggregate:boolean}>|
@@ -60,4 +61,4 @@ export type ParentCollaboration=Readonly<{children:readonly ChildRelation[];resu
 
 export type CollaborationLifecycle=Readonly<{open:boolean;epoch:number}>;
 
-export type ParentCollaborationProjection=ParentCollaboration & Readonly<{lifecycle:CollaborationLifecycle;source:AssistantSource;current_decision_id:string|null;occupant:CollaborationProjection['occupant'];activity:readonly Readonly<{session_id:string;status:AssistantAttempt['status']|null;open:boolean}>[]}>;
+export type ParentCollaborationProjection=ParentCollaboration & Readonly<{lifecycle:CollaborationLifecycle;source:AssistantSource;current_decision_id:string|null;occupant:CollaborationProjection['occupant'];activity:readonly Readonly<{session_id:string;open:boolean}>[]}>;

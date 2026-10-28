@@ -29,21 +29,14 @@ CREATE TABLE membership_grants (
  grant_id TEXT NOT NULL PRIMARY KEY, task_id TEXT NOT NULL, predecessor_id TEXT, epoch INTEGER NOT NULL CHECK(epoch>=0), body_json TEXT NOT NULL, body_sha256 TEXT NOT NULL,
  revoked_at TEXT, UNIQUE(task_id,grant_id), FOREIGN KEY(task_id) REFERENCES membership_tasks(task_id), FOREIGN KEY(task_id,predecessor_id) REFERENCES membership_grants(task_id,grant_id)
 );
-CREATE TABLE membership_attempts (
- attempt_id TEXT NOT NULL PRIMARY KEY, task_id TEXT NOT NULL, grant_id TEXT NOT NULL, epoch INTEGER NOT NULL CHECK(epoch>=0),
- status TEXT NOT NULL CHECK(status IN ('reserved','issued','waiting','settled','unresolved')), body_json TEXT NOT NULL, body_sha256 TEXT NOT NULL,
- UNIQUE(task_id,attempt_id), FOREIGN KEY(task_id,grant_id) REFERENCES membership_grants(task_id,grant_id)
-);
-CREATE UNIQUE INDEX membership_one_live_attempt ON membership_attempts(task_id) WHERE status IN ('reserved','issued','waiting','unresolved');
 CREATE TABLE membership_usage (
  reservation_id TEXT NOT NULL PRIMARY KEY, task_id TEXT NOT NULL, grant_id TEXT NOT NULL, attempt_id TEXT, run_id TEXT,
  status TEXT NOT NULL CHECK(status IN ('reserved','issued','settled','unresolved')), body_json TEXT NOT NULL, body_sha256 TEXT NOT NULL,
  CHECK((attempt_id IS NULL)<>(run_id IS NULL)), FOREIGN KEY(task_id,grant_id) REFERENCES membership_grants(task_id,grant_id),
- FOREIGN KEY(task_id,attempt_id) REFERENCES membership_attempts(task_id,attempt_id), FOREIGN KEY(run_id) REFERENCES analysis_runs(run_id)
+ FOREIGN KEY(run_id) REFERENCES analysis_runs(run_id)
 );
 CREATE TABLE membership_events (
- event_id TEXT NOT NULL PRIMARY KEY, task_id TEXT NOT NULL, attempt_id TEXT NOT NULL, body_json TEXT NOT NULL, body_sha256 TEXT NOT NULL,
- FOREIGN KEY(task_id,attempt_id) REFERENCES membership_attempts(task_id,attempt_id)
+ event_id TEXT NOT NULL PRIMARY KEY, task_id TEXT NOT NULL, attempt_id TEXT NOT NULL, body_json TEXT NOT NULL, body_sha256 TEXT NOT NULL
 );
 CREATE TABLE membership_comments (
  comment_id TEXT NOT NULL PRIMARY KEY, task_id TEXT NOT NULL, report_id TEXT NOT NULL, report_sha256 TEXT NOT NULL, body_json TEXT NOT NULL, body_sha256 TEXT NOT NULL,

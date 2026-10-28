@@ -1,7 +1,7 @@
 import {membershipRecord as closed} from './member-analysis.ts';
-import {taskHash} from './member-task.ts';
+import {hashFiniteJson} from './member-task.ts';
 import {judgmentPremises} from './open-analysis-judgment-conditions.ts';
-import {reviewedContentSources,validateReviewedContent} from './open-analysis-reviewed-content.ts';
+import {validateReviewedContent} from './open-analysis-reviewed-content.ts';
 import type {JudgmentSnapshot,JudgmentClaimReview,JudgmentRound} from '../ports/open-analysis-judgment-review.ts';
 
 // JR109: finite host invariants. Language correspondence and usefulness are
@@ -14,18 +14,18 @@ export function naturalRequirements(s:JudgmentSnapshot){
   ...(s.context.business_context?.business?.deliverables??[]).map(text=>({origin:'framework_deliverable',text}))];
  return statements.map((v,i)=>({id:'R'+(i+1),...v}));
 }
-export const naturalReviewSystem='你是独立审查者，无工具。逐条审阅本次完整自然业务内容，包括正文、策略九字段、来源和当前需求。识别错误、遗漏、附加行动、条件前提混淆及错误数值用途；保留正确有限观察与完整有据可选建议。方法名、结构标签、形成者与另一Agent同意均不证明语义。逐项需求给实际当前claim引用与fulfilled/incomplete判断，不能只说complete。人的选择不改变条件，不执行业务行动。只返回本次JSON合同；不生成新的提案文字。';
+export const naturalReviewSystem='你是独立审查者。仅可读取已批准资源，不得写报告、执行新计算或业务行动。逐条审阅本次完整自然业务内容，包括正文、策略九字段、来源和当前需求。识别错误、遗漏、附加行动、条件前提混淆及错误数值用途；保留正确有限观察与完整有据可选建议。方法名、结构标签、形成者与另一Agent同意均不证明语义。逐项需求给实际当前claim引用与fulfilled/incomplete判断，不能只说complete。人的选择不改变条件，不执行业务行动。只返回本次JSON合同；不生成新的提案文字。';
 export function naturalReviewPrompt(s:JudgmentSnapshot){
  if(!['1.3','1.4'].includes(s.document?.version??''))fail();
  return 'JuanerAI.conclusion-strategy-review.v1\n'+JSON.stringify({
   guarantee_boundary:'C007-GB-20261017-v0.1; host H and model semantic Q remain distinct',
-  snapshot_sha256:taskHash(s),requirements:naturalRequirements(s),
+  snapshot_sha256:hashFiniteJson(s),requirements:naturalRequirements(s),
   source_draft:{text:s.document!.draft,authority:'MODEL source only; not qualified delivery'},
   current_proposal:{units:s.document!.units.map((u,i)=>({id:s.claims[i]!.id,...u}))},
   condition_witnesses:judgmentPremises(s,s.document?.version!=='1.4'),
   snapshot:{identity:s.identity,claims:s.claims,context:s.context,evidence:s.evidence,report:s.report,unavailable:s.unavailable},
   current_user_input:{condition_source_catalog:s.condition_source_catalog??[],question:s.question,current_followup:s.followup_question,history:s.question_history,answers:s.condition_inputs},
-  output_contract:{version:'1.2',snapshot_sha256:taskHash(s),completeness:{verdict:'complete|incomplete',reason:'审查覆盖说明'},
+  output_contract:{version:'1.2',snapshot_sha256:hashFiniteJson(s),completeness:{verdict:'complete|incomplete',reason:'审查覆盖说明'},
    requirement_coverage:'每个requirements.id一行：requirement_id,claim_ids(实际当前ID),verdict(fulfilled|incomplete)。缺项不能由来源原稿补齐。',
    claims:'每个当前ID恰好一行，完整claim_id,kind(conclusion|strategy),level(observation|hypothesis),verdict(supported|conditional|insufficient|conflict),evidence_refs,counterevidence,reason,limitations,conditions,strategy；strategy逐字等于该受审单元字段。conditions只引用当前宿主见证id/text/source_quote/state。正文与所有字段都实际审阅。若单元content.actor_links存在，另给actor_correspondence数组，每个premise_id恰好一行verdict:same/different/unknown，独立判断原始USER前后句是否指向同一主体，不因提案自报/引用/称谓而认证。'}
  });
@@ -33,7 +33,7 @@ export function naturalReviewPrompt(s:JudgmentSnapshot){
 
 export function naturalRevisionPrompt(s:JudgmentSnapshot,round:JudgmentRound){
  return 'JuanerAI.review-revision.v1\n'+JSON.stringify({
-  output_contract:'reviewable-revision/1.1',version:'1.1',snapshot_sha256:taskHash(s),
+  output_contract:'reviewable-revision/1.1',version:'1.1',snapshot_sha256:hashFiniteJson(s),
   requirements:naturalRequirements(s),source_draft:{text:s.document!.draft,authority:'MODEL source only'},
   current_proposal:{units:s.document!.units.map((u,i)=>({id:s.claims[i]!.id,...u}))},
   initial_review:round,condition_witnesses:judgmentPremises(s,s.document?.version!=='1.4'),
@@ -61,7 +61,7 @@ export function naturalDelivery(s:JudgmentSnapshot,round:JudgmentRound|null,stat
 }
 
 export function naturalQualification(s:JudgmentSnapshot,c:JudgmentClaimReview,index:number){
- const u=s.document!.units[index]!,content=validateReviewedContent(u.content),premises=judgmentPremises(s,s.document?.version!=='1.4'),issues:string[]=[],conditions:JudgmentClaimReview['conditions'][number][]=[],sourceIds=reviewedContentSources(s);
+ const u=s.document!.units[index]!,content=validateReviewedContent(u.content),premises=judgmentPremises(s,s.document?.version!=='1.4'),issues:string[]=[],conditions:JudgmentClaimReview['conditions'][number][]=[],sourceIds=s.context.source_catalog.map(s=>s.source_id);
  const use=(id:string)=>{const p=premises.find(v=>v.id===id);if(!p||p.mapping!=='recognized'){issues.push('CONTENT_PREMISE_UNPROVEN');return;}
   if(!conditions.some(v=>v.id===id))conditions.push({id,text:p.text,source_quote:p.source_quote,state:p.state});};
  for(const m of content.materials){const p=premises.find(v=>v.id===m.premise_id);
@@ -92,7 +92,7 @@ export function naturalQualification(s:JudgmentSnapshot,c:JudgmentClaimReview,in
   else{const a=fraction(q.value),b=fraction(p.cost_limit);if(a.n*b.d>b.n*a.d)issues.push('CONTENT_QUANTITY_UNPROVEN');}
  }
  if(u.strategy&&/[0-9]/.test(u.strategy.cost)&&!content.quantities.length)issues.push('CONTENT_QUANTITY_UNPROVEN');
- for(const v of c.conditions){const p=premises.find(p=>p.id===v.id);if(!p||taskHash({text:p.text,source_quote:p.source_quote,state:p.state})!==taskHash(vWithoutId(v)))issues.push('CONTENT_PREMISE_UNPROVEN');else use(p.id);}
+ for(const v of c.conditions){const p=premises.find(p=>p.id===v.id);if(!p||hashFiniteJson({text:p.text,source_quote:p.source_quote,state:p.state})!==hashFiniteJson(vWithoutId(v)))issues.push('CONTENT_PREMISE_UNPROVEN');else use(p.id);}
  const eligible=!issues.length&&['supported','conditional'].includes(c.verdict),selectable=c.kind==='strategy'&&eligible&&(p?.operation==='passive'||conditions.length>0&&conditions.every(v=>v.state==='met'));
  return {conditions,qualification:{version:'1.0' as const,selectable,issues:[...new Set(issues)],explanation:issues.includes('CONTENT_OWNER_UNKNOWN')?'主体与本版条件的对应尚未证明，受影响建议待对应核对。':issues.length?'当前内容与已知来源或条件冲突，受影响建议不可采用。':null,alternative:c.strategy?.alternatives??'',capacity_refs:[...new Set(content.materials.map(v=>v.source_id))],premise_ids:conditions.map(v=>v.id),submitted_conditions:c.conditions}};
 }
@@ -101,13 +101,13 @@ function vWithoutId(v:JudgmentClaimReview['conditions'][number]){return {text:v.
 export function compileNaturalRound(raw:string,s:JudgmentSnapshot,phase:JudgmentRound['phase']):JudgmentRound{
  let value:unknown;try{value=JSON.parse(raw);}catch{fail();}
  const x=closed(value,['version','snapshot_sha256','completeness','requirement_coverage','claims']);
- if(x.version!=='1.2'||x.snapshot_sha256!==taskHash(s)||!Array.isArray(x.claims)||x.claims.length!==s.claims.length)fail('JUDGMENT_IDENTITY_CONFLICT');
+ if(x.version!=='1.2'||x.snapshot_sha256!==hashFiniteJson(s)||!Array.isArray(x.claims)||x.claims.length!==s.claims.length)fail('JUDGMENT_IDENTITY_CONFLICT');
  const cc=closed(x.completeness,['verdict','reason']);if(!['complete','incomplete'].includes(String(cc.verdict)))fail();string(cc.reason);
  const seen=new Set<string>(),allowed=new Set([...s.report.values.filter(v=>v.status==='verified').map(v=>v.id),'Q',...(s.condition_source_catalog??[]).map(v=>v.id)]);
  const claims=x.claims.map((raw:unknown)=>{
   const c=closed(raw,['claim_id','kind','level','verdict','evidence_refs','counterevidence','reason','limitations','conditions','strategy',...(raw&&typeof raw==='object'&&Object.hasOwn(raw,'actor_correspondence')?['actor_correspondence']:[])]),id=string(c.claim_id),index=s.claims.findIndex(v=>v.id===id),unit=s.document!.units[index];
   if(index<0||seen.has(id))fail('JUDGMENT_IDENTITY_CONFLICT');seen.add(id);
-  if(!unit||c.kind!==(unit.kind==='strategy'?'strategy':'conclusion')||c.level!==(unit.kind==='strategy'?'hypothesis':'observation')||!['supported','conditional','insufficient','conflict'].includes(String(c.verdict))||taskHash(c.strategy)!==taskHash(unit.strategy))fail();
+  if(!unit||c.kind!==(unit.kind==='strategy'?'strategy':'conclusion')||c.level!==(unit.kind==='strategy'?'hypothesis':'observation')||!['supported','conditional','insufficient','conflict'].includes(String(c.verdict))||hashFiniteJson(c.strategy)!==hashFiniteJson(unit.strategy))fail();
   const refs=strings(c.evidence_refs);if(refs.some(r=>!allowed.has(r)||![...unit.fact_refs,...unit.source_refs].includes(r))||unit.fact_refs.some(r=>!refs.includes(r))&&(s.document?.version==='1.3'||['supported','conditional'].includes(String(c.verdict))))fail('JUDGMENT_EVIDENCE_INVALID');
   if(!Array.isArray(c.conditions)||c.conditions.length>16)fail();
   const conditions=c.conditions.map(raw=>{const v=closed(raw,['id','text','source_quote','state']);return {id:string(v.id),text:string(v.text),source_quote:string(v.source_quote),state:string(v.state) as 'met'};});
@@ -121,5 +121,5 @@ export function compileNaturalRound(raw:string,s:JudgmentSnapshot,phase:Judgment
  const coverage=x.requirement_coverage.map(raw=>{const v=closed(raw,['requirement_id','claim_ids','verdict']),id=string(v.requirement_id),ids=strings(v.claim_ids);if(!requirements.some(r=>r.id===id)||covered.has(id)||!['fulfilled','incomplete'].includes(String(v.verdict))||ids.some(id=>!seen.has(id))||v.verdict==='fulfilled'&&!ids.length)fail('JUDGMENT_CONTENT_INCOMPLETE');covered.add(id);return {requirement_id:id,claim_ids:ids,verdict:v.verdict as 'fulfilled'|'incomplete'};});
  const complete=cc.verdict==='complete'&&coverage.every(v=>v.verdict==='fulfilled'&&v.claim_ids.every(id=>['supported','conditional'].includes(claims.find(c=>c.claim_id===id)!.verdict)));
  if(!complete)for(const c of claims)if(c.kind==='strategy')c.qualification.selectable=false;
- return {phase,snapshot_sha256:taskHash(s),claims,completeness:{verdict:complete?'complete':'incomplete',reason:string(cc.reason)},requirement_coverage:coverage};
+ return {phase,snapshot_sha256:hashFiniteJson(s),claims,completeness:{verdict:complete?'complete':'incomplete',reason:string(cc.reason)},requirement_coverage:coverage};
 }

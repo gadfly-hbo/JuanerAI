@@ -10,7 +10,6 @@ if(deepResearchPackage&&!internalResources)throw new Error('Deep Research delive
 const reportStudioPackage=process.env.JUANERAI_REPORT_STUDIO_PACKAGE==='1';
 const metricFactoryPackage=process.env.JUANERAI_METRIC_FACTORY_PACKAGE==='1';
 if(metricFactoryPackage&&!internalResources)throw new Error('Metric Factory delivery requires verified bundled resources');
-const browserPackage=reportStudioPackage||deepResearchPackage||metricFactoryPackage;
 if(reportStudioPackage&&!internalResources)throw new Error('Report Studio delivery requires explicit verified bundled resources');
 if (internalResources || internalOutput) {
   if (!internalResources || !internalOutput || !path.isAbsolute(internalResources) || !path.isAbsolute(internalOutput)) {
@@ -21,25 +20,6 @@ if (internalResources || internalOutput) {
   if (descriptor.schema_version !== '2.0' || !Array.isArray(descriptor.inventory) || !fs.statSync(path.join(internalResources, 'toolchain')).isDirectory() || !fs.statSync(path.join(internalResources, 'THIRD_PARTY_NOTICES')).isDirectory()) {
     throw new Error('Internal package requires verified relative toolchain resources');
   }
-}
-
-function renameToolchainDeploymentResource(
-  buildPath,
-  _electronVersion,
-  platform,
-  _arch,
-  callback,
-) {
-  const resourcesPath =
-    platform === 'darwin'
-      ? path.join(buildPath, 'Xanthil.app', 'Contents', 'Resources')
-      : path.join(buildPath, 'resources');
-
-  fs.rename(
-    path.join(resourcesPath, 'xanthil-toolchain-deployment.json'),
-    path.join(resourcesPath, 'toolchain-deployment.json'),
-    callback,
-  );
 }
 
 module.exports = {
@@ -59,10 +39,7 @@ module.exports = {
     // Packager filters dev modules during copy without npm install or lifecycle scripts.
     prune: true,
     ignore: file => file.includes('/node_modules/.') || Boolean(file) && !(/^\/(?:\.vite(?:\/|$)|node_modules(?:\/|$)|package\.json$)/.test(file)),
-    extraResource: internalResources
-      ? [path.join(internalResources, 'toolchain-deployment.json'), path.join(internalResources, 'toolchain'), path.join(internalResources, 'THIRD_PARTY_NOTICES'), ...(reportStudioPackage?[path.join(internalResources,'report-studio'),path.join(internalResources,'report-studio-deployment.json')]:[]), ...(deepResearchPackage?[path.join(internalResources,'deep-research'),path.join(internalResources,'deep-research-deployment.json')]:[]), ...(metricFactoryPackage?[path.join(internalResources,'metric-factory'),path.join(internalResources,'metric-factory-deployment.json')]:[]), '.vite/build/xanthil-resources']
-      : ['build/xanthil-toolchain-deployment.json', '.vite/build/xanthil-resources'],
-    afterCopyExtraResources: internalResources ? [] : [renameToolchainDeploymentResource],
+    extraResource: [path.join(internalResources, 'toolchain-deployment.json'), path.join(internalResources, 'toolchain'), path.join(internalResources, 'THIRD_PARTY_NOTICES'), ...(reportStudioPackage?[path.join(internalResources,'report-studio'),path.join(internalResources,'report-studio-deployment.json')]:[]), ...(deepResearchPackage?[path.join(internalResources,'deep-research'),path.join(internalResources,'deep-research-deployment.json')]:[]), ...(metricFactoryPackage?[path.join(internalResources,'metric-factory'),path.join(internalResources,'metric-factory-deployment.json')]:[]), '.vite/build/xanthil-resources'],
     ...(electronZipDir ? { electronZipDir } : {}),
   },
   rebuildConfig: {
@@ -71,24 +48,8 @@ module.exports = {
   makers: [],
   plugins: [
     new VitePlugin({
-      build: browserPackage?[{entry:'apps/browser/installed-main.ts',config:'vite.main.config.mjs',target:'main'}]:[
-        {
-          entry: browserPackage?'apps/browser/installed-main.ts':'apps/desktop/main.ts',
-          config: 'vite.main.config.mjs',
-          target: 'main',
-        },
-        {
-          entry: 'apps/desktop/preload.ts',
-          config: 'vite.preload.config.mjs',
-          target: 'preload',
-        },
-      ],
-      renderer: browserPackage?[]:[
-        {
-          name: 'main_window',
-          config: 'vite.renderer.config.mjs',
-        },
-      ],
+      build: [{entry:'apps/browser/installed-main.ts',config:'vite.main.config.mjs',target:'main'}],
+      renderer: [],
     }),
   ],
 };

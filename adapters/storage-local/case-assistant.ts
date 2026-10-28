@@ -1,15 +1,18 @@
+import {approvedMembershipPolicy} from '../../packages/product-core/member-model-policy.ts';
+import {validateMembershipPlan,membershipHash} from '../../packages/product-core/member-analysis.ts';
 import {sameAutomaticDelegationWork,assertAutomaticDelegationSubset,automaticDelegationProjection} from '../../packages/product-core/open-analysis-delegation-instruction.ts';
 import {validateNativeMemberReview} from '../../packages/product-core/open-member-review.ts';
 import {validateReviewDecision,type MembershipReview} from '../../packages/product-core/member-review.ts';
 import {assistantRecord} from '../../packages/product-core/case-assistant.ts';
-import {validateChildResult} from '../../packages/product-core/case-collaboration.ts';
+import {validateChildResult,sourceUserQuestion} from '../../packages/product-core/case-collaboration.ts';
 import type {ChildRelation,ChildPreview,ChildResult,ChildResultValue,ResultTarget,ChildDelivery,ChildReview,ParentCollaboration,CollaborationLifecycle} from '../../packages/contracts/case-collaboration.ts';
 import { DatabaseSync } from 'node:sqlite';
 import { createHash, randomUUID } from 'node:crypto';
 import { existsSync, lstatSync, realpathSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
-import type { CaseAssistantStore, AssistantHistory } from '../../packages/ports/case-assistant.ts';
-import type { AssistantSource, AssistantSession, AssistantAttempt, AssistantEvent, AssistantDraft, FormalDecision, AssistantReport } from '../../packages/contracts/case-assistant.ts';
+import type { CaseAssistantStore, AssistantHistory,CaseBusinessAuthorization } from '../../packages/ports/case-assistant.ts';
+import type {AnalysisAgent} from '../../packages/ports/analysis-agent.ts';
+import type { AssistantSource, AssistantSession, AssistantEvent, AssistantDraft, FormalDecision, AssistantReport } from '../../packages/contracts/case-assistant.ts';
 import type { OwnerRef } from '../../packages/contracts/xanthil-desktop-ipc.ts';
 import { createLocalDesktopDecisionCaseStore } from './xanthil-desktop-decision-case.ts';
 import { assistantFailure, assistantText, validateAssistantDecision, formalDecisionSections } from '../../packages/product-core/case-assistant.ts';
@@ -19,22 +22,21 @@ const encode = (value: unknown): string => JSON.stringify(value, function (_key,
         assistantFailure();
     return item && typeof item === 'object' && !Array.isArray(item) ? Object.fromEntries(Object.keys(item).sort().map(key => [key, item[key]])) : item;
 });
-const tables = ['sessions', 'attempts', 'events', 'drafts', 'decisions', 'reports'] as const;
+const tables = ['sessions', 'events', 'drafts', 'decisions', 'reports'] as const;
 type Table = typeof tables[number];
 const schema = `CREATE TABLE metadata(project_id TEXT PRIMARY KEY,version TEXT NOT NULL CHECK(version='1.0'));
 CREATE TABLE sessions(id TEXT PRIMARY KEY,parent TEXT NOT NULL,body TEXT NOT NULL,sha256 TEXT NOT NULL);
-CREATE TABLE attempts(id TEXT PRIMARY KEY,parent TEXT NOT NULL,body TEXT NOT NULL,sha256 TEXT NOT NULL);
 CREATE TABLE events(id TEXT PRIMARY KEY,parent TEXT NOT NULL,body TEXT NOT NULL,sha256 TEXT NOT NULL);
 CREATE TABLE drafts(id TEXT PRIMARY KEY,parent TEXT NOT NULL,body TEXT NOT NULL,sha256 TEXT NOT NULL);
 CREATE TABLE decisions(id TEXT PRIMARY KEY,parent TEXT NOT NULL,body TEXT NOT NULL,sha256 TEXT NOT NULL);
 CREATE TABLE reports(id TEXT PRIMARY KEY,parent TEXT NOT NULL,body TEXT NOT NULL,sha256 TEXT NOT NULL);
 CREATE TABLE heads(source TEXT PRIMARY KEY,decision_id TEXT NOT NULL);
 CREATE TABLE receipts(id TEXT PRIMARY KEY,fingerprint TEXT NOT NULL,result TEXT NOT NULL);
-CREATE INDEX attempts_parent ON attempts(parent); CREATE INDEX events_parent ON events(parent);
+CREATE INDEX events_parent ON events(parent);
 CREATE INDEX drafts_parent ON drafts(parent); CREATE INDEX decisions_parent ON decisions(parent); CREATE INDEX reports_parent ON reports(parent);`;
 const collaborationSchema = `CREATE TABLE collaboration_children(id TEXT PRIMARY KEY REFERENCES sessions(id),parent TEXT NOT NULL REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);
 CREATE TABLE collaboration_lifecycle(id TEXT PRIMARY KEY REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);
-CREATE TABLE collaboration_results(id TEXT PRIMARY KEY,child_id TEXT NOT NULL REFERENCES collaboration_children(id),attempt_id TEXT NOT NULL UNIQUE REFERENCES attempts(id),version INTEGER NOT NULL CHECK(version>0),body TEXT NOT NULL,sha256 TEXT NOT NULL,UNIQUE(child_id,version));
+CREATE TABLE collaboration_results(id TEXT PRIMARY KEY,child_id TEXT NOT NULL REFERENCES collaboration_children(id),attempt_id TEXT NOT NULL UNIQUE,version INTEGER NOT NULL CHECK(version>0),body TEXT NOT NULL,sha256 TEXT NOT NULL,UNIQUE(child_id,version));
 CREATE TABLE collaboration_returns(id TEXT PRIMARY KEY REFERENCES collaboration_results(id),parent TEXT NOT NULL REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);
 CREATE TABLE collaboration_reviews(id TEXT PRIMARY KEY REFERENCES collaboration_results(id),parent TEXT NOT NULL REFERENCES sessions(id),body TEXT NOT NULL,sha256 TEXT NOT NULL);`;
 function identity(db:DatabaseSync){return encode(db.prepare('SELECT type,name,tbl_name,sql FROM sqlite_schema ORDER BY type,name').all());}
@@ -51,7 +53,8 @@ export function createLocalCaseAssistantStore(config: {
     projectRoot: string;
     openSource?:(owner:OwnerRef)=>AssistantSource|null;
     collaborationPolicy?:'open_analysis_v13';
-}): CaseAssistantStore & {importOpenHistory(sessionId:string,source:AssistantSource,at:string):Promise<void>;reserveOpenCommand(command:OpenBrowserCommand):Promise<'new'|'accepted'>;finishOpenCommand(command:OpenBrowserCommand):Promise<void>;readOpenCommand(task_id:string,command_id:string):Promise<OpenCommandReceipt|null>} {
+    assertCompleted?:AnalysisAgent['assertCompleted'];
+}): CaseAssistantStore & {reserveOpenCommand(command:OpenBrowserCommand):Promise<'new'|'accepted'>;finishOpenCommand(command:OpenBrowserCommand):Promise<void>;readOpenCommand(task_id:string,command_id:string):Promise<OpenCommandReceipt|null>} {
     const root = realpathSync(config.projectRoot), base = join(root, '.xanthil', 'desktop', 'state.sqlite'), path = join(dirname(base), 'case-assistant.sqlite');
     const original = createLocalDesktopDecisionCaseStore({ projectRoot: root });
     let pending = false;
@@ -196,12 +199,12 @@ export function createLocalCaseAssistantStore(config: {
             if (f)
                 aggregate = db.prepare('SELECT * FROM aggregate_artifacts WHERE artifact_id=? AND revision_id=?').get(f.aggregate_id, owner.revision_id);
             const run=f?db.prepare('SELECT run_contract_version FROM analysis_runs WHERE run_id=?').get(f.run_id):null;
-            if(run?.run_contract_version==='4.0'){
+            if(run&&['4.0','5.0'].includes(String(run.run_contract_version))){
                 const task=db.prepare('SELECT task_id FROM membership_tasks WHERE project_id=? AND session_id=? AND case_id=? AND current_revision_id=?').get(owner.project_id,owner.session_id,owner.case_id,owner.revision_id);
                 if(!task)assistantFailure('INTEGRITY_BLOCKED');
                 const receipt=db.prepare("SELECT result_json FROM membership_receipts WHERE task_id=? AND json_extract(result_json,'$.kind')='prepared' ORDER BY rowid DESC LIMIT 1").get(task.task_id);
-                if(!receipt)assistantFailure('INTEGRITY_BLOCKED');const prepared=JSON.parse(String(receipt.result_json)).prepared;
-                membership_origin={version:'1.0',task_id:String(task.task_id),prepared_sha256:prepared.fingerprint};
+                let prepared_sha256:string;if(run.run_contract_version==='5.0'){const row=db.prepare('SELECT p.body_json,p.body_sha256 FROM membership_run_plans r JOIN membership_plans p ON p.plan_id=r.plan_id WHERE r.run_id=?').get(f!.run_id);if(!row)assistantFailure('INTEGRITY_BLOCKED');const plan=validateMembershipPlan(JSON.parse(String(row.body_json)));if(plan.version!=='2.0'||membershipHash(plan)!==row.body_sha256||!same(plan.owner,owner)||plan.authority.task_id!==task.task_id)assistantFailure('INTEGRITY_BLOCKED');prepared_sha256=plan.preparation.sha256;}else{if(!receipt)assistantFailure('INTEGRITY_BLOCKED');prepared_sha256=JSON.parse(String(receipt.result_json)).prepared.fingerprint;}
+                membership_origin={version:'2.0',task_id:String(task.task_id),prepared_sha256};
             }
 
         }
@@ -218,13 +221,67 @@ export function createLocalCaseAssistantStore(config: {
         return row?decode<ChildRelation>(row):null;
     }
     async function readChild(id:string){const db=connect();if(!db)return null;try{return child(db,id);}finally{db.close();}}
+    const businessKey=(id:string)=>'business-authorization:'+id;
+    function business(db:DatabaseSync,id:string):CaseBusinessAuthorization{
+        const row=db.prepare('SELECT * FROM receipts WHERE id=?').get(businessKey(id));if(!row)assistantFailure('AUTHORITY_REQUIRED');
+        const value=JSON.parse(String(row.result)) as CaseBusinessAuthorization;
+        const a=value.authorization,i=value.identity,work=a.source.open_origin?.task_id??a.source.membership_origin?.task_id??a.source.owner.case_id;
+        if(hash(encode(value))!==row.fingerprint||value.version!=='1.0'||a.id!==id||i.grant_id!==id||i.task_id!==value.session_id||i.run_id!==id||i.attempt_id!==id||i.operation_id!==id||i.revision!==a.source.owner.revision_id||i.scope_sha256!==hash(encode(a.source))||! /^[a-f0-9]{64}$/.test(i.config_sha256)||value.work_id!==work||!Number.isSafeInteger(value.epoch)||value.epoch<0)assistantFailure('INTEGRITY_BLOCKED');return value;
+    }
+    function currentBusiness(db:DatabaseSync,g:CaseBusinessAuthorization){
+        const a=g.authorization,session=get<AssistantSession>(db,'sessions',g.session_id),life=lifecycle(db,g.session_id);
+        if(!same(session.source,a.source.owner)||!life.open||life.epoch!==g.epoch||!a.config?.authorized||a.blockers.length||a.membership?.expires_at&&Date.now()>=Date.parse(a.membership.expires_at))assistantFailure('AUTHORITY_REQUIRED');
+        if(a.source.membership_origin){const m=a.membership,t=db.prepare('SELECT * FROM original.membership_tasks WHERE task_id=?').get(a.source.membership_origin.task_id);if(!m||m.version!=='2.0'||m.task_id!==a.source.membership_origin.task_id||m.source_sha256!==hash(encode(a.source))||m.session_id!==g.session_id||!t||t.epoch!==m.epoch||t.current_revision_id!==a.source.owner.revision_id||t.status!=='closed'||m.policy_sha256!==hash(encode(approvedMembershipPolicy))||a.config?.provider!==approvedMembershipPolicy.provider||a.config.model!==approvedMembershipPolicy.model)assistantFailure('AUTHORITY_REQUIRED');}
+        if((db.prepare('SELECT decision_id FROM heads WHERE source=?').get(sourceKey(a.source.owner))?.decision_id??null)!==a.baseline_decision_id)assistantFailure('AUTHORIZATION_STALE');
+        if(a.collaboration){const relation=child(db,g.session_id);if(!relation||relation.parent_session_id!==a.collaboration.parent_session_id||!same(relation.source,a.source))assistantFailure('AUTHORIZATION_STALE');const parent=lifecycle(db,relation.parent_session_id);if(!parent.open||parent.epoch!==a.collaboration.parent_epoch)assistantFailure('INTERRUPTED');}
+    }
+    async function readBusinessAuthorization(session_id:string,id?:string){const db=connect();if(!db)return null;try{
+        if(id){const g=business(db,id);if(g.session_id!==session_id)assistantFailure('FORBIDDEN');return g;}
+        const rows=db.prepare("SELECT * FROM receipts WHERE id LIKE 'business-authorization:%' ORDER BY rowid DESC").all();for(const row of rows){const g=business(db,String(row.id).slice('business-authorization:'.length));if(g.session_id===session_id)return g;}return null;
+    }finally{db.close();}}
+    function isBusinessAuthorized(id:string){const db=connect();if(!db)return false;try{
+        const g=business(db,id);if(!g.authorization.source.open_origin){safe(base);db.prepare('ATTACH DATABASE ? AS original').run(base);}
+        db.exec('BEGIN');currentBusiness(db,g);checkSource(db,g.authorization.source);return true;
+    }finally{try{db.exec('ROLLBACK');}catch{}db.close();}}
+    function authorizesWork(work_id:string,phase:'bind'|'advance'|'record'|'read'){
+        const db=connect();if(!db)return false;let ids:string[];try{ids=db.prepare("SELECT id FROM receipts WHERE id LIKE 'business-authorization:%'").all().map(row=>String(row.id).slice('business-authorization:'.length)).filter(id=>business(db,id).work_id===work_id);}finally{db.close();}
+        if(phase==='record'||phase==='read')return ids.length>0;
+        return ids.some(id=>{try{return isBusinessAuthorized(id);}catch(error){if(['AUTHORITY_REQUIRED','AUTHORIZATION_STALE','INTERRUPTED','STALE_REVISION'].includes(String((error as {code?:string}).code)))return false;throw error;}});
+    }
+    async function authorizeBusiness(input:Parameters<CaseAssistantStore['authorizeBusiness']>[0]){
+        const a=input.authorization,source=await readSource(a.source.owner);if(!same(source,a.source)||! /^[a-f0-9]{64}$/.test(input.configuration_sha256))assistantFailure('AUTHORIZATION_STALE');
+        return transaction(db=>{
+            migrate(db);const life=lifecycle(db,input.session_id),work_id=source.open_origin?.task_id??source.membership_origin?.task_id??source.owner.case_id;
+            const value:CaseBusinessAuthorization={version:'1.0',session_id:input.session_id,authorization:structuredClone(a),work_id,epoch:life.epoch,identity:{task_id:input.session_id,revision:source.owner.revision_id,run_id:a.id,attempt_id:a.id,operation_id:a.id,grant_id:a.id,scope_sha256:hash(encode(source)),config_sha256:input.configuration_sha256}};
+            currentBusiness(db,value);const key=businessKey(a.id),prior=db.prepare('SELECT * FROM receipts WHERE id=?').get(key);
+            if(prior){const old=business(db,a.id);if(!same(old,value))assistantFailure('COMMAND_CONFLICT');return old;}
+            db.prepare('INSERT INTO receipts VALUES(?,?,?)').run(key,hash(encode(value)),encode(value));return value;
+        },source);
+    }
+    async function publishModel(input:Parameters<CaseAssistantStore['publishModel']>[0],signal:AbortSignal){
+        const probe=connect();if(!probe)assistantFailure('NOT_FOUND');let g:CaseBusinessAuthorization;try{g=business(probe,input.authorization_id);}finally{probe.close();}
+        const a=g.authorization,completion=input.result.completion;
+        if(!config.assertCompleted||completion.command_id!==a.id||completion.work_id!==g.work_id||completion.purpose!=='retained_case'||!Number.isFinite(Date.parse(input.at)))assistantFailure('EFFECT_UNCONFIRMED');
+        await config.assertCompleted(g.identity,completion);
+        if(![a.config,...(a.config?.authorized_recipients??[])].some(c=>c?.provider===input.result.provider&&c.model===input.result.model))assistantFailure('FORBIDDEN');
+        if(input.child){if(input.decision)assistantFailure('FORBIDDEN');await finishChild(g,input.child,input.at,signal);return;}
+        transaction(db=>{
+            if(signal.aborted)assistantFailure('INTERRUPTED');currentBusiness(db,g);
+            if(child(db,g.session_id)||a.source.open_origin)assistantFailure('FORBIDDEN');
+            const key='model-publication:'+a.id,body=encode({result:input.result,decision:input.decision??null}),prior=db.prepare('SELECT * FROM receipts WHERE id=?').get(key);
+            if(prior){if(prior.fingerprint!==hash(body))assistantFailure('COMMAND_CONFLICT');return;}
+            if(input.decision){const fields=validateAssistantDecision(input.decision,a.source),draft:AssistantDraft={id:randomUUID(),version:1,session_id:g.session_id,attempt_id:a.id,source_revision:a.source.owner.revision_id,baseline_decision_id:a.baseline_decision_id,fields,status:'pending',edited:false,created_at:input.at,decided_at:null,reason:null};write(db,'drafts',draft.id+':1',g.session_id,draft);}
+            const event:AssistantEvent={id:randomUUID(),attempt_id:a.id,at:input.at,kind:'advice',text:input.result.text,tool:null,status:'MODEL',source_revision:a.source.owner.revision_id};write(db,'events',event.id,g.session_id,event);
+            db.prepare('INSERT INTO receipts VALUES(?,?,?)').run(key,hash(body),body);
+        },a.source);
+    }
     function lifecycle(db:DatabaseSync,id:string):CollaborationLifecycle{
         if(Number(db.prepare('PRAGMA user_version').get()?.user_version)===100)return {open:true,epoch:0};
         const row=db.prepare('SELECT * FROM collaboration_lifecycle WHERE id=?').get(id);return row?decode<CollaborationLifecycle>(row):{open:true,epoch:0};
     }
     async function readLifecycle(id:string){const db=connect();if(!db)assistantFailure('NOT_FOUND');try{get(db,'sessions',id);return lifecycle(db,id);}finally{db.close();}}
     async function closeFamily(id:string,at:string,explicitClose=false){
-        let expected:ReadonlyArray<{id:string;state:CollaborationLifecycle;attempts:AssistantAttempt[]}>|undefined;
+        let expected:ReadonlyArray<{id:string;state:CollaborationLifecycle}>|undefined;
         try{return transaction(db=>{
             get(db,'sessions',id);
             if(explicitClose)migrate(db);
@@ -237,17 +294,15 @@ export function createLocalCaseAssistantStore(config: {
             }
             for(const sessionId of ids){
                 if(modern){const old=lifecycle(db,sessionId);if(old.open){const body=encode({open:false,epoch:old.epoch+1});db.prepare('INSERT INTO collaboration_lifecycle VALUES(?,?,?) ON CONFLICT(id) DO UPDATE SET body=excluded.body,sha256=excluded.sha256').run(sessionId,body,hash(body));}}
-                for(const attempt of rows<AssistantAttempt>(db,'attempts',sessionId))if(['Running','Waiting'].includes(attempt.status))write(db,'attempts',attempt.id,sessionId,{...attempt,status:'Interrupted',ended_at:at,waiting_deadline:null,reason:'session_closed'},true);
             }
-            if(modern)expected=ids.map(id=>({id,state:lifecycle(db,id),attempts:rows<AssistantAttempt>(db,'attempts',id)}));
+            if(modern)expected=ids.map(id=>({id,state:lifecycle(db,id)}));
             return ids;
         });}catch(error){
             if(!expected)throw error;
-            // A lost COMMIT response is success only when the exact close and
-            // interruption are durable. Unreadable state leaves Application fences set.
+            // Unreadable state leaves Application fences set.
             let committed=false;
             try{const db=connect();if(!db)throw error;try{
-                committed=Number(db.prepare('PRAGMA user_version').get()?.user_version)>=101&&expected.every(item=>same(lifecycle(db,item.id),item.state)&&same(rows<AssistantAttempt>(db,'attempts',item.id),item.attempts));
+                committed=Number(db.prepare('PRAGMA user_version').get()?.user_version)>=101&&expected.every(item=>same(lifecycle(db,item.id),item.state));
             }finally{db.close();}}catch{assistantFailure('RESULT_PENDING');}
             if(committed)return expected.map(item=>item.id);
             throw error;
@@ -344,32 +399,30 @@ export function createLocalCaseAssistantStore(config: {
     async function childResults(id:string):Promise<readonly ChildResult[]>{const db=connect();if(!db)return [];try{
         if(!child(db,id))return [];return db.prepare('SELECT * FROM collaboration_results WHERE child_id=? ORDER BY version').all(id).map(r=>decode<ChildResult>(r));
     }finally{db.close();}}
-    async function finishChild(attempt:AssistantAttempt,value:ChildResultValue,signal:AbortSignal):Promise<ChildResult>{
-        const a=attempt.authorization,grant=a.collaboration;
-        if(!grant||attempt.status!=='Succeeded'||!attempt.ended_at)assistantFailure('FORBIDDEN');
-        const endedAt=attempt.ended_at;
+    async function finishChild(binding:CaseBusinessAuthorization,value:ChildResultValue,endedAt:string,signal:AbortSignal):Promise<ChildResult>{
+        const a=binding.authorization,id=a.id,session_id=binding.session_id,grant=a.collaboration;
+        if(!grant)assistantFailure('FORBIDDEN');
         const fresh=await readSource(a.source.owner);if(!same(fresh,a.source))assistantFailure('AUTHORIZATION_STALE');
         validateChildResult(value,grant.allowed_references);
         let proposed:ChildResult|undefined;
         try{return transaction(db=>{
             if(signal.aborted)assistantFailure('INTERRUPTED');
-            const relation=child(db,attempt.session_id);if(!relation||grant.child_session_id!==relation.child_session_id||grant.parent_session_id!==relation.parent_session_id||!same(a.source,relation.source))assistantFailure('FORBIDDEN');
+            currentBusiness(db,binding);
+            const relation=child(db,session_id);if(!relation||grant.child_session_id!==relation.child_session_id||grant.parent_session_id!==relation.parent_session_id||!same(a.source,relation.source))assistantFailure('FORBIDDEN');
             if((db.prepare('SELECT decision_id FROM heads WHERE source=?').get(sourceKey(a.source.owner))?.decision_id??null)!==a.baseline_decision_id)assistantFailure('AUTHORIZATION_STALE');
-            for(const [id,epoch]of [[relation.parent_session_id,grant.parent_epoch],[attempt.session_id,grant.child_epoch]] as const){const row=db.prepare('SELECT * FROM collaboration_lifecycle WHERE id=?').get(id);if(row){const state=decode<{epoch:number;open:boolean}>(row);if(!state.open||state.epoch!==epoch)assistantFailure('INTERRUPTED');}else if(epoch!==0)assistantFailure('INTERRUPTED');}
-            const prior=get<AssistantAttempt>(db,'attempts',attempt.id);
-            const committed=db.prepare('SELECT * FROM collaboration_results WHERE attempt_id=?').get(attempt.id);
-            if(committed){const result=decode<ChildResult>(committed);if(!same(result.value,value)||!same(prior,attempt))assistantFailure('COMMAND_CONFLICT');return result;}
-            if(!['Running','Waiting'].includes(prior.status)||!same(prior.authorization,a))assistantFailure('INTERRUPTED');
-            const version=Number(db.prepare('SELECT COALESCE(MAX(version),0)+1 AS version FROM collaboration_results WHERE child_id=?').get(attempt.session_id)!.version);
-            const body={id:randomUUID(),child_session_id:attempt.session_id,parent_session_id:relation.parent_session_id,attempt_id:attempt.id,authorization_id:a.id,version,source:a.source,baseline_decision_id:a.baseline_decision_id,value,created_at:endedAt};
+            for(const [id,epoch]of [[relation.parent_session_id,grant.parent_epoch],[session_id,grant.child_epoch]] as const){const row=db.prepare('SELECT * FROM collaboration_lifecycle WHERE id=?').get(id);if(row){const state=decode<{epoch:number;open:boolean}>(row);if(!state.open||state.epoch!==epoch)assistantFailure('INTERRUPTED');}else if(epoch!==0)assistantFailure('INTERRUPTED');}
+            const committed=db.prepare('SELECT * FROM collaboration_results WHERE attempt_id=?').get(id);
+            if(committed){const result=decode<ChildResult>(committed);if(!same(result.value,value))assistantFailure('COMMAND_CONFLICT');return result;}
+            const version=Number(db.prepare('SELECT COALESCE(MAX(version),0)+1 AS version FROM collaboration_results WHERE child_id=?').get(session_id)!.version);
+            const body={id:randomUUID(),child_session_id:session_id,parent_session_id:relation.parent_session_id,attempt_id:id,authorization_id:a.id,version,source:a.source,baseline_decision_id:a.baseline_decision_id,value,created_at:endedAt};
             const result:ChildResult={...body,sha256:hash(encode(body))};proposed=result;const encoded=encode(result);
-            db.prepare('INSERT INTO collaboration_results VALUES(?,?,?,?,?,?)').run(body.id,body.child_session_id,attempt.id,version,encoded,hash(encoded));
+            db.prepare('INSERT INTO collaboration_results VALUES(?,?,?,?,?,?)').run(body.id,body.child_session_id,id,version,encoded,hash(encoded));
             const delivery=encode({result_id:body.id,parent_session_id:relation.parent_session_id,status:'unreturned',returned_at:null,error:null});
             db.prepare('INSERT INTO collaboration_returns VALUES(?,?,?,?)').run(body.id,relation.parent_session_id,delivery,hash(delivery));
-            write(db,'attempts',attempt.id,attempt.session_id,attempt,true);return result;
+            return result;
         },a.source);}catch(error){
             if(!proposed)throw error;
-            try{const db=connect();if(!db)throw error;try{const committed=db.prepare('SELECT * FROM collaboration_results WHERE attempt_id=?').get(attempt.id);if(committed)return decode<ChildResult>(committed);}finally{db.close();}}catch{pending=true;assistantFailure('RESULT_PENDING');}
+            try{const db=connect();if(!db)throw error;try{const committed=db.prepare('SELECT * FROM collaboration_results WHERE attempt_id=?').get(id);if(committed)return decode<ChildResult>(committed);}finally{db.close();}}catch{pending=true;assistantFailure('RESULT_PENDING');}
             throw error;
         }
     }
@@ -404,15 +457,13 @@ export function createLocalCaseAssistantStore(config: {
             }
             const automatic=preview.automatic_instruction?automaticDelegationProjection(preview.automatic_instruction,fresh,preview.created_at):null;
             if(automatic&&(preview.task!==automatic.task||!same(preview.selected_history,preview.kind==='fork'?[automatic.history]:[])))assistantFailure('FORBIDDEN');
-            const visible=automatic?[automatic.history]:[...(parentRelation?.selected_history??[]),...rows<AssistantEvent>(db,'events',parent.id).filter(e=>['user','advice','question','tool'].includes(e.kind)&&e.source_revision===preview.source.owner.revision_id)].filter((e,i,all)=>all.findIndex(v=>v.id===e.id)===i);
+            const visible=automatic?[automatic.history]:[...(parentRelation?.selected_history??[]),...sourceUserQuestion(fresh,parent.created_at),...rows<AssistantEvent>(db,'events',parent.id).filter(e=>['user','advice','question','tool'].includes(e.kind)&&e.source_revision===preview.source.owner.revision_id)].filter((e,i,all)=>all.findIndex(v=>v.id===e.id)===i);
             const cutoff=visible.findIndex(e=>e.id===preview.cutoff_id);
             if((preview.kind==='fork'||preview.cutoff_id!==null)&&cutoff<0)assistantFailure('INVALID_CUTOFF');
             const available=preview.cutoff_id===null?visible:visible.slice(0,cutoff+1);
             if(new Set(preview.selected_history.map(e=>e.id)).size!==preview.selected_history.length||preview.selected_history.some(e=>!available.some(saved=>same(saved,e))))assistantFailure('INVALID_SELECTION');
             const head=db.prepare('SELECT decision_id FROM heads WHERE source=?').get(sourceKey(session.source));
             if((head?.decision_id??null)!==preview.baseline_decision_id)assistantFailure('AUTHORIZATION_STALE');
-            const queuedAncestors=new Set<string>();if(config.collaborationPolicy==='open_analysis_v13'&&fresh.open_origin){let cursor=parent.id;for(;;){if(queuedAncestors.has(cursor))assistantFailure('INTEGRITY_BLOCKED');queuedAncestors.add(cursor);const relation=child(db,cursor);if(!relation)break;cursor=relation.parent_session_id;}}
-            if(rows<AssistantAttempt>(db,'attempts').some(a=>['Running','Waiting'].includes(a.status)&&!queuedAncestors.has(a.session_id)))assistantFailure('BUSY');
             migrate(db);
             const life=db.prepare('SELECT * FROM collaboration_lifecycle WHERE id=?').get(parent.id);
             if(life){const state=decode<{epoch:number;open:boolean}>(life);if(!state.open||state.epoch!==preview.parent_epoch)assistantFailure('INTERRUPTED');}
@@ -429,7 +480,14 @@ export function createLocalCaseAssistantStore(config: {
             throw error;
         }
     }
-    async function createSession(commandId: string, session: AssistantSession, source: AssistantSource) {
+    async function readLinkedSession(commandId:string,owner:OwnerRef,title:string){
+        const db=connect(false,owner.project_id);if(!db)return null;
+        try{const receipt=db.prepare('SELECT * FROM receipts WHERE id=?').get(commandId);if(!receipt)return null;
+            if(receipt.fingerprint!==hash(encode({kind:'link',title,owner})))return null;
+            return get<AssistantSession>(db,'sessions',String(receipt.result));
+        }finally{db.close();}
+    }
+    async function createSession(commandId: string, session: AssistantSession, source: AssistantSource, signal?:AbortSignal,assertAdmission:()=>void=()=>{}) {
         const fresh = await readSource(source.owner);
         if (!same(fresh, source) || !source.eligible)
             assistantFailure('SOURCE_INELIGIBLE');
@@ -437,7 +495,7 @@ export function createLocalCaseAssistantStore(config: {
             assistantFailure();
         connect(true, source.owner.project_id)!.close();
         const fingerprint = hash(encode({ kind: 'link', title: session.title, owner: session.source }));
-        return transaction(db => { if(source.membership_origin)migrateMembershipSidecar(db,source.owner.project_id,'main');const prior = db.prepare('SELECT * FROM receipts WHERE id=?').get(commandId); if (prior) {
+        return transaction(db => { if(signal?.aborted)assistantFailure('INTERRUPTED');assertAdmission();if(source.membership_origin)migrateMembershipSidecar(db,source.owner.project_id,'main');const prior = db.prepare('SELECT * FROM receipts WHERE id=?').get(commandId); if (prior) {
             if (prior.fingerprint !== fingerprint)
                 assistantFailure('COMMAND_CONFLICT');
             return get<AssistantSession>(db, 'sessions', String(prior.result));
@@ -452,45 +510,27 @@ export function createLocalCaseAssistantStore(config: {
     } }
     async function readSession(id: string): Promise<AssistantHistory> { const db = connect(); if (!db)
         assistantFailure('NOT_FOUND'); try {
-        return { session: get<AssistantSession>(db, 'sessions', id), attempts: rows<AssistantAttempt>(db, 'attempts', id), events: rows<AssistantEvent>(db, 'events', id), drafts: rows<AssistantDraft>(db, 'drafts', id) };
+        return { session: get<AssistantSession>(db, 'sessions', id), events: rows<AssistantEvent>(db, 'events', id), drafts: rows<AssistantDraft>(db, 'drafts', id) };
     }
     finally {
         db.close();
     } }
-    async function saveAttempt(attempt: AssistantAttempt) { transaction(db => { const session = get<AssistantSession>(db, 'sessions', attempt.session_id); if (!same(session.source, attempt.authorization.source.owner))
-        assistantFailure('FORBIDDEN'); const relation=child(db,session.id),grant=attempt.authorization.collaboration;
-        if(relation?(!grant||grant.child_session_id!==session.id||grant.parent_session_id!==relation.parent_session_id||grant.kind!==relation.kind||!same(attempt.authorization.source,relation.source)||attempt.authorization.baseline_decision_id!==relation.baseline_decision_id):!!grant)assistantFailure('FORBIDDEN');
-        const old = db.prepare('SELECT * FROM attempts WHERE id=?').get(attempt.id); if (old) {
-        const prior = decode<AssistantAttempt>(old);
-        if (!same(prior.authorization, attempt.authorization) || !['Running', 'Waiting'].includes(prior.status) && !same(prior, attempt))
-            assistantFailure('FORBIDDEN');
-    }
-    else if (rows<AssistantAttempt>(db, 'attempts', session.id).some(a => ['Running', 'Waiting'].includes(a.status)))
-        assistantFailure('BUSY'); write(db, 'attempts', attempt.id, session.id, attempt, true); }); }
-    async function importOpenHistory(sessionId:string,source:AssistantSource,at:string){
-        if(!source.open_origin||!source.open_history||!source.eligible||!Number.isFinite(Date.parse(at)))assistantFailure('FORBIDDEN');
-        return transaction(db=>{const session=get<AssistantSession>(db,'sessions',sessionId);if(child(db,sessionId)||!same(session.source,source.owner))assistantFailure('FORBIDDEN');
-            for(const entry of source.open_history!){const prior=db.prepare('SELECT * FROM events WHERE id=?').get(entry.id);if(prior){const saved=decode<AssistantEvent>(prior);if(saved.text!==entry.text||saved.open_message_origin?.sha256!==entry.sha256)assistantFailure('INTEGRITY_BLOCKED');continue;}
-                write(db,'events',entry.id,sessionId,{id:entry.id,attempt_id:entry.attempt_id,at,kind:entry.role==='user'?'user':'advice',text:entry.text,tool:null,status:'imported_visible_history',source_revision:source.owner.revision_id,open_message_origin:{task_id:source.open_origin!.task_id,run_id:source.open_origin!.run_id,index:entry.index,sha256:entry.sha256}} satisfies AssistantEvent);
-            }
-        },source);
-    }
-    async function appendEvent(sessionId: string, event: AssistantEvent, signal?: AbortSignal) { transaction(db => { if (signal?.aborted)
-        assistantFailure('INTERRUPTED'); const attempt = get<AssistantAttempt>(db, 'attempts', event.attempt_id); if (event.kind !== 'status' && !['Running', 'Waiting'].includes(attempt.status) || attempt.session_id !== sessionId || event.source_revision !== attempt.authorization.source.owner.revision_id)
-        assistantFailure('FORBIDDEN'); write(db, 'events', event.id, sessionId, event); }); }
-    async function saveDraft(draft: AssistantDraft, signal?: AbortSignal) { transaction(db => { if (signal?.aborted)
-        assistantFailure('INTERRUPTED'); if(child(db,draft.session_id))assistantFailure('FORBIDDEN');const attempt = get<AssistantAttempt>(db, 'attempts', draft.attempt_id);if(attempt.authorization.source.open_origin)assistantFailure('FORBIDDEN'); if (draft.manual_base_id) {
+    async function appendEvent(sessionId: string, event: AssistantEvent, signal?: AbortSignal) { const probe=await readBusinessAuthorization(sessionId,event.attempt_id);if(!probe)assistantFailure('AUTHORITY_REQUIRED');transaction(db => { const grant=business(db,event.attempt_id),authorization=grant.authorization;if (signal?.aborted)
+        assistantFailure('INTERRUPTED');currentBusiness(db,grant); if (grant.session_id !== sessionId || event.source_revision !== authorization.source.owner.revision_id)
+        assistantFailure('FORBIDDEN'); write(db, 'events', event.id, sessionId, event); },probe.authorization.source); }
+    async function saveDraft(draft: AssistantDraft, signal?: AbortSignal) {const probe=connect();if(!probe)assistantFailure('NOT_FOUND');let source:AssistantSource;try{source=business(probe,draft.attempt_id).authorization.source;}finally{probe.close();}transaction(db => { const grant=business(db,draft.attempt_id),authorization=grant.authorization;if (signal?.aborted)
+        assistantFailure('INTERRUPTED'); if(child(db,draft.session_id))assistantFailure('FORBIDDEN');if(authorization.source.open_origin)assistantFailure('FORBIDDEN'); if (draft.manual_base_id) {
         const formal = get<FormalDecision>(db, 'decisions', draft.manual_base_id);if(formal.origin)assistantFailure('FORBIDDEN');const session = get<AssistantSession>(db, 'sessions', draft.session_id), origin = get<AssistantDraft>(db, 'drafts', `${formal.draft_id}:${formal.draft_version}`);
-        if (!same(session.source, formal.source) || origin.attempt_id !== draft.attempt_id || draft.baseline_decision_id !== formal.id || draft.source_revision !== formal.source.revision_id)
+        if (!lifecycle(db,draft.session_id).open||(db.prepare('SELECT decision_id FROM heads WHERE source=?').get(sourceKey(formal.source))?.decision_id??null)!==formal.id||!same(session.source, formal.source) || origin.attempt_id !== draft.attempt_id || draft.baseline_decision_id !== formal.id || draft.source_revision !== formal.source.revision_id)
             assistantFailure('FORBIDDEN');
     }
-    else if (attempt.session_id !== draft.session_id || draft.source_revision !== attempt.authorization.source.owner.revision_id || draft.baseline_decision_id !== attempt.authorization.baseline_decision_id)
-        assistantFailure('FORBIDDEN'); validateAssistantDecision(draft.fields, attempt.authorization.source); const old = rows<AssistantDraft>(db, 'drafts', draft.session_id).filter(d => d.id === draft.id).at(-1); if (old) {
+    else {currentBusiness(db,grant);if (grant.session_id !== draft.session_id || draft.source_revision !== authorization.source.owner.revision_id || draft.baseline_decision_id !== authorization.baseline_decision_id)
+        assistantFailure('FORBIDDEN');} validateAssistantDecision(draft.fields, authorization.source); const old = rows<AssistantDraft>(db, 'drafts', draft.session_id).filter(d => d.id === draft.id).at(-1); if (old) {
         if (old.status !== 'pending' || draft.version < old.version || draft.version > old.version + 1 || old.session_id !== draft.session_id || old.attempt_id !== draft.attempt_id)
             assistantFailure('FORBIDDEN');
         if (draft.version === old.version && !same(old.fields, draft.fields))
             assistantFailure('FORBIDDEN');
-    } write(db, 'drafts', `${draft.id}:${draft.version}`, draft.session_id, draft, true); }); }
+    }else if(!draft.manual_base_id)assistantFailure('EFFECT_UNCONFIRMED'); write(db, 'drafts', `${draft.id}:${draft.version}`, draft.session_id, draft, true); },source); }
     async function findFormalDraft(decisionId: string, owner: OwnerRef) { const db = connect(false, owner.project_id); if (!db)
         assistantFailure('NOT_FOUND'); try {
         const formal = get<FormalDecision>(db, 'decisions', decisionId);
@@ -531,12 +571,13 @@ export function createLocalCaseAssistantStore(config: {
         let result: FormalDecision | undefined;
         try {
             return transaction(db => {
-                const draft = get<AssistantDraft>(db, 'drafts', `${input.draft_id}:${input.draft_version}`), attempt = get<AssistantAttempt>(db, 'attempts', draft.attempt_id), session = get<AssistantSession>(db, 'sessions', input.session_id);
+                const draft = get<AssistantDraft>(db, 'drafts', `${input.draft_id}:${input.draft_version}`), session = get<AssistantSession>(db, 'sessions', input.session_id);
                 if (rows<AssistantDraft>(db, 'drafts', session.id).filter(d => d.id === draft.id).at(-1)?.version !== input.draft_version)
                     assistantFailure('STALE_DRAFT');
                 if (draft.session_id !== session.id || draft.version !== input.draft_version || draft.status !== 'pending' || draft.source_revision !== source.owner.revision_id || !same(session.source, source.owner))
                     assistantFailure('FORBIDDEN');
-                if (!attempt.authorization.config?.authorized || attempt.authorization.blockers.length || !same(attempt.authorization.source, source))
+                const authorization=business(db,draft.attempt_id).authorization;
+                if (!authorization.config?.authorized || authorization.blockers.length || !same(authorization.source, source))
                     assistantFailure('AUTHORITY_REQUIRED');
                 const key = sourceKey(source.owner), head = db.prepare('SELECT decision_id FROM heads WHERE source=?').get(key)?.decision_id ?? null;
                 if (head !== draft.baseline_decision_id)
@@ -582,11 +623,7 @@ export function createLocalCaseAssistantStore(config: {
             throw error;
         }
     }
-    async function interruptAll(at: string) { if (!existsSync(path))
-        return; transaction(db => { for (const attempt of rows<AssistantAttempt>(db, 'attempts'))
-        if (['Running', 'Waiting'].includes(attempt.status))
-            write(db, 'attempts', attempt.id, attempt.session_id, { ...attempt, status: 'Interrupted', ended_at: at, waiting_deadline: null, reason: 'application_closed' }, true); }); }
-    return { reserveOpenCommand,finishOpenCommand,readOpenCommand,importOpenHistory,readLifecycle,closeFamily,reopenSession,readParentCollaboration,returnChild,failChildReturn,reviewChild,childResults,finishChild,readChild,createChild,readSource, listSessions, createSession, readSession, saveAttempt, appendEvent, saveDraft, findFormalDraft, formalHistory, adopt, interruptAll };
+    return { authorizeBusiness,readBusinessAuthorization,isBusinessAuthorized,authorizesWork,publishModel,reserveOpenCommand,finishOpenCommand,readOpenCommand,readLifecycle,closeFamily,reopenSession,readParentCollaboration,returnChild,failChildReturn,reviewChild,childResults,readChild,createChild,readSource, listSessions, createSession, readLinkedSession, readSession, appendEvent, saveDraft, findFormalDraft, formalHistory, adopt };
 }
 
 /** Only the explicit P1 formal submission calls this local sidecar activation. */

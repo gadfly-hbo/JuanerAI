@@ -1,5 +1,5 @@
 import {membershipRecord as closed,membershipUuid,membershipBytesHash,membershipHash,validateMembershipResult,type MembershipResult} from './member-analysis.ts';
-import {taskHash} from './member-task.ts';
+import {hashFiniteJson} from './member-task.ts';
 import {desktopRuleFailure,prepareDesktopData,desktopRational,desktopMetricChanges,type DesktopSelection,type DesktopMetricPeriod} from './xanthil-desktop-decision-case.ts';
 import type {MemberSourceInspection,MemberSourceSheet} from '../ports/member-source.ts';
 
@@ -27,7 +27,7 @@ function derive(bindings:readonly Binding[],inspection:MemberSourceInspection){
 
  }
  const bytes={members:csv(rowsByRole.members),orders:csv(rowsByRole.orders)};
- return {snapshot:{members_bytes:bytes.members,orders_bytes:bytes.orders},members_sha256:membershipBytesHash(bytes.members),orders_sha256:membershipBytesHash(bytes.orders),lineage_sha256:taskHash(lineage),lineage};
+ return {snapshot:{members_bytes:bytes.members,orders_bytes:bytes.orders},members_sha256:membershipBytesHash(bytes.members),orders_sha256:membershipBytesHash(bytes.orders),lineage_sha256:hashFiniteJson(lineage),lineage};
 }
 export function compileOpenMembershipFramework(raw:unknown,inspection:MemberSourceInspection):OpenMembershipFramework{
  const p=closed(raw,['version','goal','methods','bindings','semantics']);
@@ -46,18 +46,18 @@ export function compileOpenMembershipFramework(raw:unknown,inspection:MemberSour
  const semantics=structuredClone(sem) as Semantics,group=JSON.stringify(p.methods)==='["M1","M2"]'&&bindings[0]!.columns.member_group!==null;
  const selection:DesktopSelection={...semantics,selected_group_mode:group?'mapped':'none',column_mapping:{member_id_column:'member_id',member_group_column:group?'member_group':null,order_id_column:'order_id',order_member_id_column:'order_member_id',paid_at_column:'paid_at',amount_column:'amount',status_column:'status',currency_column:'currency'}};
  const value=derive(bindings,inspection);prepareDesktopData(value.snapshot,selection);
- return {version:'1.0',kind:'membership_repurchase',goal:p.goal,methods:p.methods as OpenMembershipFramework['methods'],bindings,semantics,inspection_sha256:taskHash(inspection),selection,materialization:{members_sha256:value.members_sha256,orders_sha256:value.orders_sha256,lineage_sha256:value.lineage_sha256}};
+ return {version:'1.0',kind:'membership_repurchase',goal:p.goal,methods:p.methods as OpenMembershipFramework['methods'],bindings,semantics,inspection_sha256:hashFiniteJson(inspection),selection,materialization:{members_sha256:value.members_sha256,orders_sha256:value.orders_sha256,lineage_sha256:value.lineage_sha256}};
 }
 export function openMembershipProposal(frame:OpenMembershipFramework){return {version:frame.version,goal:frame.goal,methods:frame.methods,bindings:frame.bindings,semantics:frame.semantics};}
 export function materializeOpenMembershipFramework(frame:OpenMembershipFramework,inspection:MemberSourceInspection){
- if(frame?.inspection_sha256!==taskHash(inspection))desktopRuleFailure('SOURCE_CHANGED');
- const checked=compileOpenMembershipFramework(openMembershipProposal(frame),inspection);if(taskHash(checked)!==taskHash(frame))desktopRuleFailure('SOURCE_CHANGED');
+ if(frame?.inspection_sha256!==hashFiniteJson(inspection))desktopRuleFailure('SOURCE_CHANGED');
+ const checked=compileOpenMembershipFramework(openMembershipProposal(frame),inspection);if(hashFiniteJson(checked)!==hashFiniteJson(frame))desktopRuleFailure('SOURCE_CHANGED');
  const value=derive(checked.bindings,inspection),prepared=prepareDesktopData(value.snapshot,checked.selection);
  return {...value,qualification:{counts:prepared.counts,issues:prepared.reviewable_issues,excluded_sheets:inspection.sources.flatMap(s=>s.sheets.filter(sheet=>!checked.bindings.some(b=>b.source_id===s.source_id&&b.sheet_id===sheet.sheet_id)).map(sheet=>({source_id:s.source_id,sheet_id:sheet.sheet_id,reason:'not_bound'})))}};
 }
 export function membershipGroupMap(frame:OpenMembershipFramework,inspection:MemberSourceInspection){
  if(!frame.methods.includes('M2'))return null;const value=materializeOpenMembershipFramework(frame,inspection),prepared=prepareDesktopData(value.snapshot,frame.selection);
- return Object.fromEntries([...new Set([...prepared.member_groups.values()].map(g=>g!))].sort().map(label=>{const d=taskHash({purpose:'membership_group',label});return [label,`${d.slice(0,8)}-${d.slice(8,12)}-4${d.slice(13,16)}-a${d.slice(17,20)}-${d.slice(20,32)}`];}));
+ return Object.fromEntries([...new Set([...prepared.member_groups.values()].map(g=>g!))].sort().map(label=>{const d=hashFiniteJson({purpose:'membership_group',label});return [label,`${d.slice(0,8)}-${d.slice(8,12)}-4${d.slice(13,16)}-a${d.slice(17,20)}-${d.slice(20,32)}`];}));
 }
 /** Storage-side deterministic arithmetic check. Production primary and independent
  * proof remain the existing DuckDB and Python implementations. */
@@ -72,51 +72,51 @@ export function membershipFrameworkFacts(frame:OpenMembershipFramework,inspectio
 }
 
 /** Qualification of observed native evidence; not creation of formal Case records. */
-export function validateOpenMembershipProof(frame:OpenMembershipFramework,inspection:MemberSourceInspection,calculation:import('./open-analysis-ir.ts').OpenAnalysisValue,proof:import('../ports/open-analysis-verifier.ts').OpenAnalysisVerification,identity:import('../ports/open-analysis-store.ts').OpenTaskIdentity):void{
- const n=proof.native_evidence;if(!n)fail('VERIFICATION_FAILED');
- closed(n,['physical_run_id','task_run_id','attempt_id','code_identity','materialization_sha256','primary_sha256','independent_sha256','group_labels','primary','independent']);
- const hash=(v:unknown)=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v),same=(a:unknown,b:unknown)=>taskHash(a)===taskHash(b);
- if(!/^[a-f0-9]{8}-[a-f0-9]{4}-7[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(n.physical_run_id)||n.task_run_id!==identity.run_id||n.attempt_id!==identity.attempt_id||!hash(n.code_identity)||n.materialization_sha256!==taskHash(frame.materialization)||n.primary_sha256!==taskHash(n.primary)||n.independent_sha256!==taskHash(n.independent))fail('VERIFICATION_FAILED');
- if(calculation.method!=='checked_membership_query'||!same(JSON.parse(calculation.value),membershipFrameworkFacts(frame,inspection))||!same(n.group_labels,Object.fromEntries(Object.entries(membershipGroupMap(frame,inspection)??{}).map(([label,id])=>[id,label]))))fail('VERIFICATION_FAILED');
+export function validateOpenMembershipProof(frame:OpenMembershipFramework,inspection:MemberSourceInspection,metrics:MembershipResult,proof:import('../ports/open-membership.ts').OpenMembershipProof,identity:import('../ports/open-analysis-store.ts').OpenTaskIdentity):void{
+ const n=proof?.native_evidence;if(!n)fail('VERIFICATION_FAILED');
+ closed(proof,['version','grade','inspection_sha256','result_sha256','method','limits','native_evidence']);closed(n,['physical_run_id','task_run_id','attempt_id','code_identity','materialization_sha256','primary_sha256','independent_sha256','group_labels','primary','independent']);
+ const hash=(v:unknown)=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v),same=(a:unknown,b:unknown)=>hashFiniteJson(a)===hashFiniteJson(b);
+ if(proof.version!=='1.0'||proof.grade!=='independent_arithmetic'||proof.method!=='native_member_source_recheck'||proof.inspection_sha256!==hashFiniteJson(inspection)||identity.scope_sha256!==proof.inspection_sha256||proof.result_sha256!==hashFiniteJson(metrics)||!Array.isArray(proof.limits)||!proof.limits.length)fail('VERIFICATION_FAILED');
+ if(!/^[a-f0-9]{8}-[a-f0-9]{4}-7[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(n.physical_run_id)||n.task_run_id!==identity.run_id||n.attempt_id!==identity.attempt_id||!hash(n.code_identity)||n.materialization_sha256!==hashFiniteJson(frame.materialization)||n.primary_sha256!==hashFiniteJson(n.primary)||n.independent_sha256!==hashFiniteJson(n.independent))fail('VERIFICATION_FAILED');
+ if(!same(metrics,membershipFrameworkFacts(frame,inspection))||!same(n.group_labels,Object.fromEntries(Object.entries(membershipGroupMap(frame,inspection)??{}).map(([label,id])=>[id,label]))))fail('VERIFICATION_FAILED');
  for(const [key,implementation] of [['primary','duckdb_primary'],['independent','python_independent']] as const){
   const e=closed(n[key],['schema_version','run_id','implementation','method','method_contract_sha256','materialization','result']),method=closed(e.method,['id','version','code_identity']),materialization=closed(e.materialization,['primary_sql_sha256','python_verifier_sha256']);
-  if(e.schema_version!=='4.0'||e.run_id!==n.physical_run_id||e.implementation!==implementation||method.code_identity!==n.code_identity||typeof method.id!=='string'||!method.id||typeof method.version!=='string'||!method.version||!Object.values(materialization).every(hash)||e.method_contract_sha256!==membershipHash({selection:frame.selection,methods:frame.methods})||!same(e.result,JSON.parse(calculation.value)))fail('VERIFICATION_FAILED');
+  if(e.schema_version!=='4.0'||e.run_id!==n.physical_run_id||e.implementation!==implementation||method.code_identity!==n.code_identity||typeof method.id!=='string'||!method.id||typeof method.version!=='string'||!method.version||!Object.values(materialization).every(hash)||e.method_contract_sha256!==membershipHash({selection:frame.selection,methods:frame.methods})||!same(e.result,metrics))fail('VERIFICATION_FAILED');
  }
  if(!same(n.primary.method,n.independent.method)||!same(n.primary.materialization,n.independent.materialization)||n.primary_sha256===n.independent_sha256)fail('VERIFICATION_FAILED');
 }
-export type OpenMemberReviewSource=Readonly<{version:'1.0';kind:'open_member_evidence';task_id:string;revision:string;task_run_id:string;attempt_id:string;outcome_id:string;outcome_sha256:string;scope_sha256:string;plan_sha256:string;result_sha256:string;physical_run_id:string;primary_sha256:string;independent_sha256:string}>;
+
+export type OpenMemberReviewSource=Readonly<{version:'1.0';kind:'open_member_evidence';task_id:string;revision:string;task_run_id:string;attempt_id:string;outcome_id:string;outcome_sha256:string;scope_sha256:string;result_sha256:string;physical_run_id:string;primary_sha256:string;independent_sha256:string}>;
 export type OpenMemberSourceRecord=Readonly<{version:'1.0';origin_id:string;command_id:string;owner:import('../contracts/xanthil-desktop-ipc.ts').OwnerRef;source:OpenMemberReviewSource;task:import('../ports/open-analysis-store.ts').OpenStoredTask;created_at:string;sha256:string}>;
 export function openMemberOriginCommand(owner:OpenMemberSourceRecord['owner'],source:OpenMemberReviewSource):string{
- const hash=taskHash({kind:'open_member_source',version:'1.0',owner,source});
+ const hash=hashFiniteJson({kind:'open_member_source',version:'1.0',owner,source});
  return `${hash.slice(0,8)}-${hash.slice(8,12)}-4${hash.slice(13,16)}-8${hash.slice(17,20)}-${hash.slice(20,32)}`;
 }
 export function validateOpenMemberSourceRecord(record:OpenMemberSourceRecord):OpenMemberSourceRecord{
  closed(record,['version','origin_id','command_id','owner','source','task','created_at','sha256']);closed(record.owner,['project_id','session_id','case_id','revision_id']);
  if(record.version!=='1.0'||![record.origin_id,record.command_id,...Object.values(record.owner)].every(membershipUuid)||typeof record.created_at!=='string'||!Number.isFinite(Date.parse(record.created_at))||new Date(record.created_at).toISOString()!==record.created_at)fail('SOURCE_UNQUALIFIED');
  const source=qualifyOpenMemberReviewSource(record.task),{sha256,...body}=record;
- if(taskHash(source)!==taskHash(record.source)||record.command_id!==openMemberOriginCommand(record.owner,source)||sha256!==taskHash(body))fail('SOURCE_CHANGED');
+ if(hashFiniteJson(source)!==hashFiniteJson(record.source)||record.command_id!==openMemberOriginCommand(record.owner,source)||sha256!==hashFiniteJson(body))fail('SOURCE_CHANGED');
  return record;
 }
 export function qualifyOpenMemberReviewSource(task:import('../ports/open-analysis-store.ts').OpenStoredTask):OpenMemberReviewSource{
- const o=task.outcome,f=task.framework,p=f?.plan,v=o?.verification;
- if(task.state!=='saved'||task.pending_stop_epoch!==null||!f||!o||!v||p?.version!=='1.4'||!p.membership||!membershipUuid(o.outcome_id))fail('SOURCE_UNQUALIFIED');
- if(taskHash(f.identity)!==taskHash(task.identity)||taskHash(o.identity)!==taskHash(task.identity)||taskHash(o.framework)!==taskHash(p)||task.identity.scope_sha256!==taskHash(task.source)||p.inspection_sha256!==task.identity.scope_sha256)fail('SOURCE_CHANGED');
- if(v.version!=='1.0'||v.grade!=='independent_arithmetic'||v.method!=='python_member_source_recheck'||v.plan_sha256!==taskHash(p)||v.inspection_sha256!==task.identity.scope_sha256||v.result_sha256!==taskHash(o.calculation)||v.value!==o.calculation.value||v.rows!==o.calculation.rows)fail('VERIFICATION_FAILED');
- validateOpenMembershipProof(p.membership,task.source,o.calculation,v,task.identity);const n=v.native_evidence!;
- return {version:'1.0',kind:'open_member_evidence',task_id:task.identity.task_id,revision:task.identity.revision,task_run_id:task.identity.run_id,attempt_id:task.identity.attempt_id,outcome_id:o.outcome_id,outcome_sha256:taskHash(o),scope_sha256:task.identity.scope_sha256,plan_sha256:taskHash(p),result_sha256:taskHash(o.calculation),physical_run_id:n.physical_run_id,primary_sha256:n.primary_sha256,independent_sha256:n.independent_sha256};
+ const o=task.outcome,m=o?.membership;
+ if(task.state!=='saved'||task.pending_stop_epoch!==null||!o||!m||!membershipUuid(o.outcome_id))fail('SOURCE_UNQUALIFIED');
+ if(hashFiniteJson(o.identity)!==hashFiniteJson(task.identity)||hashFiniteJson(m.identity)!==hashFiniteJson(task.identity)||task.identity.scope_sha256!==hashFiniteJson(task.source)||m.version!=='1.0')fail('SOURCE_CHANGED');
+ validateOpenMembershipProof(m.framework,task.source,m.metrics,m.verification,task.identity);const n=m.verification.native_evidence;
+ return {version:'1.0',kind:'open_member_evidence',task_id:task.identity.task_id,revision:task.identity.revision,task_run_id:task.identity.run_id,attempt_id:task.identity.attempt_id,outcome_id:o.outcome_id,outcome_sha256:hashFiniteJson(o),scope_sha256:task.identity.scope_sha256,result_sha256:hashFiniteJson(m.metrics),physical_run_id:n.physical_run_id,primary_sha256:n.primary_sha256,independent_sha256:n.independent_sha256};
 }
 
 /** Facts for the genuine native origin, never a legacy confirmed hypothesis.
  * Publication and human review are separate Application/storage operations. */
 export type OpenMemberFindingFacts=Readonly<{version:'3.0';judgment:'Verified';owner:OpenMemberSourceRecord['owner'];origin:Readonly<{kind:'open_member_source';origin_id:string;source_record_sha256:string}>;source:OpenMemberReviewSource;methods:readonly ('M1'|'M2')[];semantics:OpenMembershipFramework['semantics'];metrics:MembershipResult;causal_claim:'not_verified'}>;
 export function openMemberFindingFacts(input:OpenMemberSourceRecord):OpenMemberFindingFacts{
- const record=validateOpenMemberSourceRecord(input),plan=record.task.framework!.plan;
- if(plan.version!=='1.4'||!plan.membership)fail('SOURCE_UNQUALIFIED');
- return structuredClone({version:'3.0',judgment:'Verified',owner:record.owner,origin:{kind:'open_member_source',origin_id:record.origin_id,source_record_sha256:taskHash(record)},source:record.source,methods:plan.membership.methods,semantics:plan.membership.semantics,metrics:membershipFrameworkFacts(plan.membership,record.task.source),causal_claim:'not_verified'});
+ const record=validateOpenMemberSourceRecord(input);
+ return structuredClone({version:'3.0',judgment:'Verified',owner:record.owner,origin:{kind:'open_member_source',origin_id:record.origin_id,source_record_sha256:hashFiniteJson(record)},source:record.source,methods:record.task.outcome!.membership!.framework.methods,semantics:record.task.outcome!.membership!.framework.semantics,metrics:record.task.outcome!.membership!.metrics,causal_claim:'not_verified'});
 }
 export function validateOpenMemberFindingFacts(raw:unknown,record:OpenMemberSourceRecord):OpenMemberFindingFacts{
  closed(raw,['version','judgment','owner','origin','source','methods','semantics','metrics','causal_claim']);const expected=openMemberFindingFacts(record);
- if(taskHash(raw)!==taskHash(expected))fail('VERIFICATION_FAILED');return expected;
+ if(hashFiniteJson(raw)!==hashFiniteJson(expected))fail('VERIFICATION_FAILED');return expected;
 }
 
 export type OpenMemberFindingReceipt=Readonly<{version:'1.0';saved:true;kind:'native_member_finding';command_id:string;origin_id:string;owner:OpenMemberSourceRecord['owner'];finding_id:string;report_id:string;expected_row_version:string;row_version:string;source_record_sha256:string}>;

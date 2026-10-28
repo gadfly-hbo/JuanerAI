@@ -9,12 +9,13 @@ import type {OpenStoredTask} from '../../../packages/ports/open-analysis-store.t
 import type {ReportStudioGateway, ReportStudioProjectIdentity} from '../../../packages/ports/report-studio.ts';
 import {createReportStudioStore} from '../../../adapters/report-studio/store.ts';
 import {createReportStudioWorkspace} from '../../../packages/application/report-studio.ts';
+import {nativeReport} from '../../fixtures/xanthil-desktop/native-report.ts';
 
 const id=(n:number)=>`${String(n).padStart(8,'0')}-1111-4111-a111-111111111111`;
-function fixture(t:{after(fn:()=>Promise<void>):void}) {
+async function fixture(t:{after(fn:()=>Promise<void>):void}) {
   const root=realpathSync(mkdtempSync(join(tmpdir(),'studio-workspace-')));t.after(()=>rm(root,{recursive:true,force:true}));
-  const projectId=id(1), taskId=id(2), store=createReportStudioStore({projectRoot:root,projectId}), projects=new Map<string,ReportStudioProjectIdentity>();
-  let current:OpenStoredTask|null={version:'1.4',identity:{task_id:taskId,revision:'1',scope_sha256:'a'.repeat(64)},question:'合成问题',state:'saved',outcome:null,conversation_outcome:{outcome_id:id(3),text:'合成结论'},history:[]} as unknown as OpenStoredTask;
+  const projectId=id(1), actual=await nativeReport({root,projectId}),taskId=actual.identity.task_id,store=createReportStudioStore({projectRoot:root,projectId}), projects=new Map<string,ReportStudioProjectIdentity>();
+  let current:OpenStoredTask|null=actual.task;
   let n=10, ensureCalls=0, loseReply=false, wrongProject=false;
   const content=Buffer.from('<html><body>合成导出</body></html>');
   const studio:ReportStudioGateway={
@@ -26,22 +27,22 @@ function fixture(t:{after(fn:()=>Promise<void>):void}) {
   return {store,projects,taskId,workspace,content,get calls(){return ensureCalls;},set lost(v:boolean){loseReply=v;},set wrong(v:boolean){wrongProject=v;},removeTarget(){current=null;}};
 }
 test('RS-WORKSPACE-01 opens one precise project; continue never generates or re-creates',async t=>{
-  const f=fixture(t),app=f.workspace(),a=await app.open(f.taskId,'1',['conclusion']);assert.equal(a.state,'ready');assert.equal(f.calls,1);
+  const f=await fixture(t),app=f.workspace(),a=await app.open(f.taskId,'1',['conclusion']);assert.equal(a.state,'ready');assert.equal(f.calls,1);
   assert.deepEqual(await app.open(f.taskId,'1',['conclusion']),a);assert.deepEqual(await f.workspace().continueProject(a.association_id),a);assert.equal(f.calls,1);
   f.projects.clear();await assert.rejects(()=>app.continueProject(a.association_id),{code:'RS_STUDIO_PROJECT_UNAVAILABLE'});assert.equal(f.calls,1);
 });
 test('RS-WORKSPACE-01 lost create reply preserves pending identity and retries same project',async t=>{
-  const f=fixture(t),app=f.workspace();f.lost=true;await assert.rejects(()=>app.open(f.taskId,'1',['conclusion']),/synthetic lost project reply/);
+  const f=await fixture(t),app=f.workspace();f.lost=true;await assert.rejects(()=>app.open(f.taskId,'1',['conclusion']),/synthetic lost project reply/);
   const pending=f.store.sourceAssociation(f.taskId,'1');assert(pending);assert.equal(pending.state,'pending');
   const a=await f.workspace().open(f.taskId,'1',['conclusion']);assert.equal(a.association_id,pending.association_id);assert.equal(a.studio_project_id,pending.studio_project_id);assert.equal(f.projects.size,1);
 });
 test('RS-WORKSPACE-01 explicit saved export publishes stable idempotent copy and reads receipt',async t=>{
-  const f=fixture(t),app=f.workspace(),a=await app.open(f.taskId,'1',['conclusion']);const delivery=await app.deliver(a.association_id,'exp_12345678');
+  const f=await fixture(t),app=f.workspace(),a=await app.open(f.taskId,'1',['conclusion']);const delivery=await app.deliver(a.association_id,'exp_12345678');
   assert.deepEqual(await app.deliver(a.association_id,'exp_12345678'),delivery);assert.deepEqual(app.receipt(a.association_id,'exp_12345678'),delivery);
   assert.deepEqual(Buffer.from(app.copy(delivery.delivery_id).content),f.content);f.projects.clear();assert.deepEqual(Buffer.from(app.copy(delivery.delivery_id).content),f.content);
 });
 test('RS-WORKSPACE-01 wrong project, deleted target and wrong source revision cannot deliver',async t=>{
-  const f=fixture(t),app=f.workspace();await assert.rejects(()=>app.open(f.taskId,'2',['conclusion']),{code:'RS_SOURCE_UNAVAILABLE'});assert.equal(f.calls,0);
+  const f=await fixture(t),app=f.workspace();await assert.rejects(()=>app.open(f.taskId,'2',['conclusion']),{code:'RS_SOURCE_UNAVAILABLE'});assert.equal(f.calls,0);
   const a=await app.open(f.taskId,'1',['conclusion']);f.wrong=true;await assert.rejects(()=>app.deliver(a.association_id,'exp_12345678'),{code:'RS_EXPORT_INVALID'});assert.equal(f.store.deliveries(f.taskId).length,0);
   f.removeTarget();await assert.rejects(()=>app.deliver(a.association_id,'exp_87654321'),{code:'RS_TARGET_UNAVAILABLE'});assert.equal(f.store.deliveries(f.taskId).length,0);
 });

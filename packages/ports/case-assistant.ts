@@ -1,13 +1,21 @@
-import type {ChildRelation,ChildPreview,ChildResult,ChildResultValue,ResultTarget,ChildDelivery,ChildReview,ParentCollaboration,CollaborationLifecycle} from '../contracts/case-collaboration.ts';
-import type { AssistantSource, AssistantSession, AssistantAttempt, AssistantEvent, AssistantDraft, FormalDecision, AssistantReport, AssistantTurn, AssistantTurnResult } from '../contracts/case-assistant.ts';
+import type {ChildRelation,ChildPreview,ChildResult,ResultTarget,ChildDelivery,ChildReview,ParentCollaboration,CollaborationLifecycle} from '../contracts/case-collaboration.ts';
+import type { AssistantSource, AssistantSession, AssistantEvent, AssistantDraft, FormalDecision, AssistantReport, Authorization,DecisionFields } from '../contracts/case-assistant.ts';
+import type {OpenTaskIdentity} from './open-analysis-store.ts';
+import type {AnalysisAgent} from './analysis-agent.ts';
 import type { OwnerRef } from '../contracts/xanthil-desktop-ipc.ts';
 export type AssistantHistory = Readonly<{
     session: AssistantSession;
-    attempts: readonly AssistantAttempt[];
     events: readonly AssistantEvent[];
     drafts: readonly AssistantDraft[];
 }>;
+/** Immutable business permission/provenance. Runtime progress is never stored here. */
+export type CaseBusinessAuthorization=Readonly<{version:'1.0';session_id:string;authorization:Authorization;identity:OpenTaskIdentity;work_id:string;epoch:number}>;
 export interface CaseAssistantStore {
+    authorizeBusiness(input:{session_id:string;authorization:Authorization;configuration_sha256:string}):Promise<CaseBusinessAuthorization>;
+    readBusinessAuthorization(session_id:string,id?:string):Promise<CaseBusinessAuthorization|null>;
+    isBusinessAuthorized(id:string):boolean;
+    authorizesWork(work_id:string,phase:'bind'|'advance'|'record'|'read'):boolean;
+    publishModel(input:{authorization_id:string;result:Awaited<ReturnType<AnalysisAgent['advance']>>;at:string;decision?:DecisionFields;child?:import('../contracts/case-collaboration.ts').ChildResultValue},signal:AbortSignal):Promise<void>;
     readLifecycle(id:string):Promise<CollaborationLifecycle>;
     closeFamily(id:string,at:string,explicitClose?:boolean):Promise<readonly string[]>;
     reopenSession(id:string,epoch:number):Promise<CollaborationLifecycle>;
@@ -16,14 +24,14 @@ export interface CaseAssistantStore {
     failChildReturn(id:string,target:ResultTarget,signal:AbortSignal):Promise<void>;
     reviewChild(id:string,target:ResultTarget,commandId:string,disposition:'adopted'|'declined',reason:string,at:string,source:AssistantSource,signal:AbortSignal):Promise<ChildReview>;
     childResults(id:string):Promise<readonly ChildResult[]>;
-    finishChild(attempt:AssistantAttempt,value:ChildResultValue,signal:AbortSignal):Promise<ChildResult>;
     readChild(id:string):Promise<ChildRelation|null>;
     createChild(commandId:string,session:AssistantSession,preview:ChildPreview,signal:AbortSignal,assertAdmission?:()=>void):Promise<ChildRelation>;
     readSource(owner: OwnerRef): Promise<AssistantSource>;
     listSessions(projectId: string): Promise<readonly AssistantSession[]>;
-    createSession(commandId: string, session: AssistantSession, source: AssistantSource): Promise<AssistantSession>;
+    createSession(commandId: string, session: AssistantSession, source: AssistantSource, signal?:AbortSignal, assertAdmission?:()=>void): Promise<AssistantSession>;
+    /** Read an existing matching link receipt only; never issues/retries a creation or exposes a conflicting intent. */
+    readLinkedSession(commandId:string,owner:OwnerRef,title:string):Promise<AssistantSession|null>;
     readSession(id: string): Promise<AssistantHistory>;
-    saveAttempt(attempt: AssistantAttempt): Promise<void>;
     appendEvent(sessionId: string, event: AssistantEvent, signal?: AbortSignal): Promise<void>;
     saveDraft(draft: AssistantDraft, signal?: AbortSignal): Promise<void>;
     findFormalDraft(decisionId: string, owner: OwnerRef): Promise<AssistantDraft>;
@@ -40,12 +48,4 @@ export interface CaseAssistantStore {
         at: string;
         source: AssistantSource;
     }>): Promise<FormalDecision>;
-    interruptAll(at: string): Promise<void>;
-}
-export type RuntimeTaskAuthority=Readonly<{conversation_id?:string;identity:import('./open-analysis-runtime.ts').OpenAnalysisRun['identity'];authorize:()=>boolean;previous_calls:number}>;
-export interface CaseAssistantRuntime {
- readonly taskAuthority?:'shared_session';
-    membershipTurn?(input:import('../product-core/member-model.ts').MembershipModelTurn):Promise<import('../product-core/member-model.ts').MembershipModelResult>;
-    describeMembershipOutcome?(value:unknown):import('../product-core/member-model.ts').MembershipPhysicalOutcome|null;
-    turn(input: AssistantTurn): Promise<AssistantTurnResult>;
 }

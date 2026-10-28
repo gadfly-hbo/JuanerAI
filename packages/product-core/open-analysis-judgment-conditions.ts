@@ -1,5 +1,5 @@
 import {readJudgmentOptionUnit} from './open-analysis-option-unit.ts';
-import {taskHash} from './member-task.ts';
+import {hashFiniteJson} from './member-task.ts';
 import type {JudgmentSnapshot,JudgmentCondition,JudgmentClaimReview} from '../ports/open-analysis-judgment-review.ts';
 
 type Kind='data'|'time'|'cost'|'authority';
@@ -33,7 +33,7 @@ export function judgmentPremises(snapshot:JudgmentSnapshot,legacyAliases=snapsho
  const put=(kind:Kind,state:State,source:typeof catalog[number],owner='负责人',mapping:'recognized'|'unproven'='recognized',subject?:string)=>{
   if(owner==='负责人'&&aliases.length>1){mapping='unproven';state='unknown';}
   owner=owner==='负责人'&&aliases.length===1?aliases[0]!:owner;
-  const key=kind==='data'?'data:'+(['1.10','1.11','1.12','1.13','1.14'].includes(snapshot.version)?judgmentMaterialSubjectKey(subject??'*'):subject??'*'):kind,priority=rank[source.origin],old=selected.get(key),id='P-'+taskHash({identity:snapshot.identity,kind,owner,source_quote:source.text,...(kind==='data'?{subject:subject??'*',scope:snapshot.user_expression?snapshot.claims.map(c=>c.text):snapshot.followup_question??snapshot.question}:{})}).slice(0,20);
+  const key=kind==='data'?'data:'+(['1.10','1.11','1.12','1.13','1.14'].includes(snapshot.version)?judgmentMaterialSubjectKey(subject??'*'):subject??'*'):kind,priority=rank[source.origin],old=selected.get(key),id='P-'+hashFiniteJson({identity:snapshot.identity,kind,owner,source_quote:source.text,...(kind==='data'?{subject:subject??'*',scope:snapshot.user_expression?snapshot.claims.map(c=>c.text):snapshot.followup_question??snapshot.question}:{})}).slice(0,20);
   // Availability-only updates do not revoke a separately stated window. Carry
   // only this actor's actual earlier USER window, with its own source pointer.
   const inherited=old?.premise.owner===owner&&old.premise.mapping==='recognized'?old.premise:undefined;
@@ -564,7 +564,7 @@ export function judgmentQualification(snapshot:JudgmentSnapshot,claim:JudgmentCl
   for(const p of applicableData){if(materialRelation(p.subject,analysisAction)==='unproven')issues.push('CONDITION_RELATION_UNPROVEN');if(p.mapping==='recognized')conditions.push({id:p.id,text:p.text,source_quote:p.source_quote,state:p.state});else issues.push('CONDITION_MAPPING_UNPROVEN');}
   if(premises.some(p=>(recordAction&&p.kind==='authority'||activeAction&&p.kind==='time')&&p.owner!==resolvedActor))issues.push('CONDITION_OWNER_MISMATCH');
   if(passive&&Object.entries(claim.strategy??{}).some(([key,value])=>key!=='owner'&&!passiveTextCovered(value)))issues.push('OPTION_CONTENT_UNPROVEN');
-  const expression=['1.8','1.9','1.10','1.11','1.12','1.13','1.14'].includes(snapshot.version)?(judgmentOptionExpression(snapshot,candidateText)??recordQualificationExpression(snapshot)):null,closedRecord=!!expression&&judgmentOptionBody(snapshot,candidateText)===expression.text&&taskHash(claim.strategy)===taskHash(expression.strategy);
+  const expression=['1.8','1.9','1.10','1.11','1.12','1.13','1.14'].includes(snapshot.version)?(judgmentOptionExpression(snapshot,candidateText)??recordQualificationExpression(snapshot)):null,closedRecord=!!expression&&judgmentOptionBody(snapshot,candidateText)===expression.text&&hashFiniteJson(claim.strategy)===hashFiniteJson(expression.strategy);
   const refundRecord=recordAction&&(recordAttributionAction(goal)||candidateText.split(/[，,。；;\n]/).some(v=>recordAttributionAction(v.trim().replace(/^[-*]\s+/,'').replace(/\*\*/g,''))));
   const contentCovered=closedRecord||!(['1.8','1.9','1.10','1.11','1.12','1.13','1.14'].includes(snapshot.version)&&refundRecord)&&[candidateText,...Object.entries(claim.strategy??{}).filter(([key])=>key!=='owner').map(([,value])=>value)].every(value=>optionTextCovered(value,resolvedActor,analysisAction));
   if((recordAction||analysisAction)&&!contentCovered)issues.push('OPTION_CONTENT_UNPROVEN');

@@ -1,10 +1,10 @@
 import type {CollaborationRequest,ChildAuthorization,ChildResultValue} from './case-collaboration.ts';
 import type { OwnerRef, DecisionCandidateInput } from './xanthil-desktop-ipc.ts';
-export type MembershipOrigin = Readonly<{version:'1.0';task_id:string;prepared_sha256:string}>;
+export type MembershipOrigin = Readonly<{version:'2.0';task_id:string;prepared_sha256:string}>;
 export type AssistantSource = Readonly<{
     membership_origin?: MembershipOrigin;
-    open_history?:readonly Readonly<{id:string;attempt_id:string;role:'user'|'assistant';text:string;index:number;sha256:string}>[];
-    open_origin?:Readonly<{version:'1.0';material_kind?:'verified_step'|'verified_bundle';task_id:string;revision:string;run_id:string;scope_sha256:string;outcome_id:string;outcome_sha256:string}>;
+    
+    open_origin?:Readonly<{version:'1.0';task_id:string;revision:string;run_id:string;scope_sha256:string;outcome_id:string;outcome_sha256:string}>;
     owner: OwnerRef;
     case_name: string;
     current_revision_id: string;
@@ -63,30 +63,22 @@ export type DecisionFields = Readonly<{
     defer_owner: string;
     outcome: OutcomeFields;
 }>;
-export type AssistantLimits = Readonly<{
-    turns: number;
-    execution_ms: number;
-    waiting_ms: number;
-    cost_microunits: number;
-    turn_cost_microunits: number;
-    currency: string;
-}>;
+
 export type AssistantConfig = Readonly<{
-    consumption_policy?:'uncapped_metered';
+    
     authorized_recipients?:readonly Readonly<{provider:string;model:string}>[];
     provider: string;
     model: string;
     authorized: boolean;
-    limits: AssistantLimits;
-    runtime_id: string;
-    runtime_version: string;
-    adapter_version: string;
+    
+    
+    
+    
 }>;
 export const ASSISTANT_TOOLS = ['read_case', 'read_evidence', 'read_candidates', 'read_aggregate', 'read_report'] as const;
 export type AssistantTool = typeof ASSISTANT_TOOLS[number];
-export type AssistantStatus = 'Running' | 'Waiting' | 'Succeeded' | 'Stopped' | 'Interrupted' | 'WaitExpired' | 'TimedOut' | 'BudgetExhausted' | 'Failed';
 export type AssistantEvent = Readonly<{
-    open_message_origin?:Readonly<{task_id:string;run_id:string;index:number;sha256:string}>;
+    
     id: string;
     attempt_id: string;
     at: string;
@@ -96,7 +88,7 @@ export type AssistantEvent = Readonly<{
     status: string;
     source_revision: string;
 }>;
-export type MembershipAuthorization={version:'1.0';task_id:string;source_sha256:string;profile:import('../product-core/member-task.ts').TaskResourceProfile;purpose:'assistant'|'fork'|'subagent';session_id:string;created_at:string;expires_at:string;usage:{calls:number;output_tokens:number;active_ms:number;wait_ms:number;local_runs:number;unresolved:number}};
+export type MembershipAuthorization={version:'2.0';task_id:string;epoch:number;source_sha256:string;policy_sha256:string;purpose:'assistant'|'fork'|'subagent';session_id:string;created_at:string;expires_at:string|null;local_usage:ReturnType<typeof import('../product-core/member-task.ts').totals>};
 export type Authorization = Readonly<{
     membership?: MembershipAuthorization;
     collaboration?:ChildAuthorization;
@@ -117,20 +109,6 @@ export type Authorization = Readonly<{
     created_at: string;
     payload: string;
     blockers: readonly string[];
-}>;
-export type AssistantAttempt = Readonly<{
-    open_checkpoint?:Readonly<{operation_id:string;checkpoint:import('../ports/open-analysis-runtime.ts').AnalysisTurnCheckpoint}>;
-    id: string;
-    session_id: string;
-    authorization: Authorization;
-    status: AssistantStatus;
-    started_at: string;
-    ended_at: string | null;
-    waiting_deadline: string | null;
-    turns: number;
-    execution_ms: number;
-    cost_microunits: number|null;
-    reason: string | null;
 }>;
 export type AssistantDraft = Readonly<{
     manual_base_id?: string;
@@ -180,44 +158,19 @@ export type AssistantSession = Readonly<{
     archived: boolean;
 }>;
 export type AssistantProjection = Readonly<{
+    last_request?:Readonly<{id:string;text:string;at:string}>|null;
+    execution?:import('../ports/open-analysis-runtime.ts').AnalysisRuntimeDiagnostics;
     version: '1.0';
     session: AssistantSession;
     source: AssistantSource;
-    attempts: readonly AssistantAttempt[];
     events: readonly AssistantEvent[];
     drafts: readonly AssistantDraft[];
     decisions: readonly FormalDecision[];
     reports: readonly AssistantReport[];
     current_decision_id: string | null;
 }>;
-export type AssistantTurn = Readonly<{
-    runtime_authority?:import('../ports/case-assistant.ts').RuntimeTaskAuthority;
-    open_analysis?:Readonly<{conversation_id?:string;runDelegation?:(work:()=>Promise<void>)=>Promise<void>;identity:import('../ports/open-analysis-runtime.ts').OpenAnalysisRun['identity'];continuation?:import('../ports/open-analysis-runtime.ts').AnalysisTurnCheckpoint;authorize:()=>boolean;saveContinuation:(checkpoint:import('../ports/open-analysis-runtime.ts').AnalysisTurnCheckpoint)=>Promise<void>}>;
-    retained_membership?:{version:'1.0'};
-    membership?:Readonly<{version:'1.0';purpose?:'comment'}>;
-    collaboration?:Readonly<{contract_version:'1.1';purpose:'fork'|'subagent'}>;
-    payload: string;
-    provider: string;
-    model: string;
-    signal: AbortSignal;
-    cost_reservation_microunits: number;
-}>;
-export type AssistantTurnResult = Readonly<{membership_usage?:Readonly<{output_tokens:number}>;
-    provider: string;
-    model: string;
-    cost_microunits: number|null;
-    output: ChildResultValue | Readonly<{
-        kind: 'advice' | 'question';
-        text: string;
-    }> | Readonly<{
-        kind: 'tool';
-        tool: AssistantTool;
-        revision_id: string;
-    }> | Readonly<{
-        kind: 'draft';
-        fields: DecisionFields;
-    }>;
-}>;
+
+
 export type CaseAssistantRequest = Readonly<{
     version: '1.0';
 }> & (Readonly<{

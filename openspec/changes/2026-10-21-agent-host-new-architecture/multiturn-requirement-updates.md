@@ -1,0 +1,61 @@
+# Multi-turn requirement updates (MU01–MU07)
+
+The user authorized repairing the common multi-turn requirement-update capability across many saved versions, not a second-version branch. Source baseline Mini-native-computation-local008, 2312 files; original branch/HEAD/index/WIP and fixed SDK005 are preserved. Evidence continues in pi-capability-closure-repair-001/multiturn-requirements-repair-001. The failed real Task remains stopped; the user-requested passive page service/root are not touched. No new Provider call, credential access, SDK change, dependency upgrade, Git or release is authorized by this repair.
+
+## Scope and existing public seams
+
+Use the actual normal Application/Workspace, business Store, public Pi Adapter/fixed SDK Sessions/tools, and normal HTTP/client receipt and rendering seams already approved for this flow. Synthetic model wire replies replace only the external Provider boundary. New synthetic Tasks/exclusive short storage roots are permitted; historical Task/session/effects are never resumed/replayed. No new test host, JSON plan parser, session/recovery framework or compatibility route.
+
+- MU01: one Task supports successive natural-language additions/corrections and multiple saved requirement versions. Cover at least eight updates in tests, with and without actual native resource reads and delayed/fragmented wire output; this is test coverage, not a product version/round limit. Each completed update has an accurate durable command receipt and currently readable user/assistant text. Mechanical IDs remain system-bound.
+- MU02: preserve every earlier saved version and actual user statement, apply each command exactly once, reject conflicting command reuse/stale sequence, and never treat an optimistic pending message or completed model response as a saved product version. A repeated receipt read adds no Provider/tool effect. Different business contents do not change the parameter protocol.
+- MU03: model/native completion, physical settlement, business save and browser pending state stay distinct. After normal successful multi-turn work, the current version/receipt and UI agree and pending clears. If saving/delivery fails, show the truthful saved/pending/failed/unconfirmed result; no infinite unexplained spinner, automatic resend, host-filled content or promotion of old text to the new version.
+- MU04: passive reopen reads all saved versions/receipts and exact current state, sends no model request, and does not change consumption. A stopped/unknown Task remains stopped/unknown; explicit later authorization is not synthesized from refresh or the existence of a response.
+- MU05: cancel/revoke/context or source change/failed audit or persistence/UNKNOWN preserve the last valid version and real request/effect/accounting facts. No late overwrite, no release/replay of unknown effects, no model fallback/retry expansion or new timeout/cumulative limit.
+- MU06: final user-confirmed requirement consumes the latest legitimately saved version and actual user conditions; it cannot silently start analysis from a stale version while a newer update is pending. Keep readable SCR/Binding/IR as context, partial-information progress and no compulsory finite computation/whole-JSON plan gate. Saving a discussion is not user confirmation or report generation.
+- MU07: causal RED at the actual failing seam before production correction; same assertions GREEN, affected multi-version/UI/receipt/persistence/native-tool/recovery regression and independent complete new candidate review. Reuse valid unchanged native computation/SDK005 evidence. Return the fixed local candidate and residual limits; real test retry needs its own still-applicable authority and is not inferred from unlimited fees.
+
+## Plan and stop
+
+Reproduce the real pattern using fresh synthetic Tasks, first native-read-bearing multi-turn Workspace and HTTP/client updates; narrow the missing completion/save/receipt boundary before changing code. Fix only the proven host seam, retire any superseded private path without a fallback shell. Keep SDK005 byte-identical; if a public SDK defect is demonstrated, preserve a minimal public reproduction and report that boundary instead of patching the SDK under this authorization. Freeze complete source/WIP/SDK and independent read-only result, then return and stop within authorized scope.
+
+## User-approved visible execution feedback (UI-A01–UI-A05)
+
+This addition applies to every actual current JuanerAI Agent execution surface, not only requirements. Inventory normal analysis/requirement conversation, report edits and postprocessing/subagents, the shared quick/professional/Desktop workbench, retained real Case/Decision entrypoints, and mounted product plugins. Reuse sufficient existing supplier indicators; do not alter fixed plugin bundles merely to rename the same state. Retired source and unreachable historical UIs are not new entrypoints. Record any actual coverage gap rather than claiming all routes from one screenshot.
+
+- UI-A01: starting an Agent operation immediately shows a visible compact spinner and plain Chinese current-work label, in the existing task/dialog/assistant context. While awaiting the actual receipt, a pending request stays visibly pending even before a Task exists. No extra user confirmations or mode switch.
+- UI-A02: actual running/waiting/result-saving/completed/failed/stopping/stopped/unconfirmed states remain distinguishable. Model completion alone is never product-save completion; unknown results never show success. Missing progress totals use indeterminate motion and text, never fabricated percentages, stages, countdown or hidden reasoning.
+- UI-A03: refreshing or changing quick/professional view reads the same durable execution facts and does not create/retry/resume an Agent request. Task switching does not carry another Task's busy state as this Task's progress; a request for another Task remains accurately identified.
+- UI-A04: use status semantics, concise live announcements, accessible busy state, visible text independent of color, reduced-motion support, preserved keyboard focus/drafts and responsive fit. Do not replace the approved workbench or add a progress backend, scheduler, state authority, timeout or resource limit.
+- UI-A05: causal missing-feedback RED, state/failure/receipt tests and actual normal-entry offline visual checks at 1440×900, 1366×768 and narrow-window robustness. Existing unmodified plugin progress needs readable source/actual-entry evidence; standalone supplier quality and real Provider acceptance remain separate.
+
+## Current package plan / evidence boundary
+
+- [x] Intake preserves local008, the stopped real Task and its passive viewing service; new isolated synthetic roots only.
+- [x] Real Workspace/Adapter/SDK multi-version and concurrent observation reproduction, then affected correction; no new Session, Agent execution engine, recovery counter, model route or SDK.
+- [x] Native completion is distinct from business save. An active save stays pending; a settled completed operation without its durable draft becomes REQUIREMENT_SAVE_FAILED only after the owning operation ends. Source-capture uncertainty and physical UNKNOWN never take this terminal shortcut.
+- [x] Passive metadata reads reuse the pre-existing SDK reader path, with denied transport and storage limited to read/list. Live facts and all mutating controls still use the actual executor. The reader permits SDK control authorization needed for reads; it does not admit model/tool/publish actions. Passive busy/unavailable observation is not an execution receipt, empty queue or permission to replay.
+- [x] Shared visible workbench feedback, pending-version start protection, postprocessing Stop visibility, Decision-board host feedback and normal-source UI checks.
+- [x] 028 complete canonical portable: 17 stages, 2803 tests / 2797 PASS / 6 historical SKIP / 0 FAIL. Display-only postprocessing Stop addition after that batch is covered by 035 causal RED and 036 affected 98 PASS; unchanged execution evidence is reused.
+- [ ] Complete fixed local candidate: independent fresh read-only Validator; return qualified result and stop.
+
+Current historical real Task failure attribution remains bounded: saved native replies and missing business save are known; the missing original lower-level exception prevents proving it was this exact race. Fresh synthetic evidence demonstrates the same failure pattern at the live-instance metadata/finalization seam. Never rewrite that historical UNKNOWN.
+
+Normal browser and Desktop's browser entry share the same UI. Separate plugin workbenches retain their own execution UI and lifecycle; this package changes only the host-owned Decision-board indicator. Report Studio's retained source has a real busy wait/tool-state surface; this does not prove currently deployed plugin adoption. Metric Factory / deep-research full plugin UI source/bundle is not available in the current deployment: plugin visual/runtime checks are NOT_REVIEWED/NOT_RUN, not PASS. Do not report cross-product universal visual acceptance from the host checks. No supplier bundle, plugin protocol, SDK or dependency is changed.
+
+## Independent local001 repair (F001/F002)
+
+The fixed local001/attempt002 remains FAIL; its source/evidence and independent report are immutable. F001 proves an already-settled report-edit request can leave a durable suggestion marked generating after result-save failure; that label alone is not live activity. The same distinction applies to other task/postprocessing activity labels, not just report edits.
+
+- Present the existing Workspace owning-operation membership as a read-only browser observation. It is not persisted, does not grant execution, and does not replace native physical/effect/accounting facts. No second progress authority or recovery mechanism.
+- A still-pending business label without a live owning operation must not claim ongoing generation. Show result/save confirmation needed, retain the prior report and user instruction, and keep the original durable event unchanged. Do not infer no effect, release reservations, fabricate a failed-save event or replay the model. An acknowledged committed result wins over a lost ACK; actual physical UNKNOWN/cancel/late results retain their stronger stop/unknown presentation.
+- Cover actual Workspace/SDK/normal HTTP: live report edit; deterministic pre-commit save failure; commit then ACK failure; close/reopen without requests; unaffected normal report/postprocessing states. Include missing activity observation and physical UNKNOWN display counterexamples.
+- F002 needs fresh normal-entry visual evidence bound to measured CSS viewport/DPR and image dimensions. A scaled image must be declared and remain readable; file names and DOM width alone are insufficient. Preserve earlier incorrectly named images as historical evidence, not target-window PASS.
+
+Then freeze a new local candidate and independently recheck F001/F002 plus affected scope. G001 plugin/shell deployment limitations remain open; no install, Provider, SDK or Git permission is inferred.
+
+
+## local002 independent F001-C01/C02 display correction
+
+The fixed local002/attempt003 and its independent FAIL are retained. F001/F002 were closed; report-detail postprocessing labels still bypassed the shared truth projection, and local pending could shadow known postprocessing UNKNOWN. Use one pure presentation judgment for header/composer and active labels in report details/editing; known task/post UNKNOWN takes precedence over local HTTP waiting. Other Task activity remains separately identified. The sidebar must not describe a known unknown Task as normal processing. No new backend facts, stored state, request/retry or native policy.
+
+Promote the actual Workspace/SDK/HTTP post-save failure/reopen and real UNKNOWN-with-delayed-rejection cases into permanent regressions before changing display code. Cover all four active postprocessing labels, true live activity, committed/failed states and missing activity observation. Preserve actual stored checking/unknown records and meter; only presentation changes. Full040 execution evidence is reusable for unchanged Runtime/persistence; rebind focused UI/HTTP/UNKNOWN/typechecks and freeze a new complete candidate.

@@ -1,14 +1,3 @@
-import {createMembershipTaskApplication} from '../../packages/application/member-task.ts';
-import {createLocalMembershipTaskStore} from '../../adapters/storage-local/member-task.ts';
-import {resourceProfile} from '../../packages/product-core/member-task.ts';
-import {createLocalModelAccess} from '../../packages/application/provider-settings.ts';
-import {createPiSessionCaseRuntime,createPiSessionDecisionAssistanceRuntime} from '../../adapters/agent-pi/native-open-analysis.ts';
-import {createLocalAnalysisRequestLedger} from '../../adapters/storage-local/analysis-request-ledger.ts';
-import type {createProviderSettings} from '../../packages/application/provider-settings.ts';
-import { createCaseAssistantApplication } from '../../packages/application/case-assistant.ts';
-import { createLocalCaseAssistantStore } from '../../adapters/storage-local/case-assistant.ts';
-import { createPiCaseAssistantRuntime, validateXiaomiActivationPolicy, XIAOMI_CREDIT_RESERVATION } from '../../adapters/agent-pi/case-assistant.ts';
-import type { AssistantConfig } from '../../packages/contracts/case-assistant.ts';
 import { createHash, randomUUID } from 'node:crypto';
 import { access, lstat, readFile, readdir, readlink, realpath } from 'node:fs/promises';
 import { constants } from 'node:fs';
@@ -16,14 +5,6 @@ import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'nod
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 
-import { createLocalDesktopDecisionCaseStore, createLocalDesktopRunEvidenceStore } from '../../adapters/storage-local/xanthil-desktop-decision-case.ts';
-import { createDuckDbPythonDesktopLocalAnalysisExecution } from '../../adapters/analytics-duckdb/xanthil-desktop-decision-case.ts';
-import { createPiDecisionAssistanceRuntime } from '../../adapters/agent-pi/local-analysis.ts';
-import { createXanthilDesktopDecisionCaseApplication } from '../../packages/application/xanthil-desktop-decision-case.ts';
-import type { ProjectOpenValue } from '../../packages/contracts/xanthil-desktop-ipc.ts';
-
-type Clock = () => Date;
-type ProjectDirectoryCapability = Readonly<{ projectRoot: string; display_name: string }>;
 
 function failure(code: string): never {
   const error = Object.assign(new Error(code), { code });
@@ -88,17 +69,6 @@ async function bundledExecutables(descriptor: Record<string, unknown>, descripto
   return { duckdb: { ...duckdb, executable_path: resource(duckdb.executable_path) }, python: { ...python, executable_path: resource(python.executable_path) } };
 }
 
-function capability(value: unknown): ProjectDirectoryCapability {
-  const selected = exactRecord(value, ['projectRoot', 'display_name']);
-  if (typeof selected.projectRoot !== 'string' || typeof selected.display_name !== 'string' || selected.display_name.length === 0) failure('VALIDATION_FAILED');
-  return Object.freeze({ projectRoot: selected.projectRoot, display_name: selected.display_name });
-}
-
-export function composePersonalXanthilDesktopProfile(dependencies:unknown){
-  exactRecord(dependencies,['store','analysisExecution','runEvidenceStore','assistanceRuntime','clock','deadlineScheduler',...(record(dependencies)&&Object.hasOwn(dependencies,'modelAccess')?['modelAccess']:[])]);
-  return createXanthilDesktopDecisionCaseApplication(dependencies);
-}
-
 export async function readPersonalDesktopToolchain(descriptorPath:string){
     try{
       const stat=await lstat(descriptorPath);if(!stat.isFile()||stat.isSymbolicLink())failure('TOOLCHAIN_UNAVAILABLE');
@@ -119,98 +89,3 @@ export async function readPersonalDesktopToolchain(descriptorPath:string){
   }
 
 /** The deployment capability is Main-owned, never an IPC/Renderer path. */
-export function createPersonalXanthilDesktopProfile(deployment: unknown) {
-  const configured = exactRecord(deployment, ['toolchainDeployment','assistanceConfig','clock','deadlineScheduler',...(record(deployment)&&Object.hasOwn(deployment,'caseAssistantConfig')?['caseAssistantConfig']:[]),...(record(deployment)&&Object.hasOwn(deployment,'providerSettings')?['providerSettings']:[]),...(record(deployment)&&Object.hasOwn(deployment,'membershipConfig')?['membershipConfig']:[])]);
-  const providerSettings=configured.providerSettings as ReturnType<typeof createProviderSettings>|undefined;
-  let caseAssistant: ReturnType<typeof createCaseAssistantApplication>|null=null;
-  let membership:ReturnType<typeof createMembershipTaskApplication>|null=null;
-  const memberConfig=configured.membershipConfig?exactRecord(configured.membershipConfig,['profile','synthetic']):null;const memberProfile=memberConfig?resourceProfile(memberConfig.profile):null;
-  if(memberProfile?.activation!=='synthetic_only'&&memberConfig)failure('AUTHORITY_REQUIRED');
-  const memberTransport=memberConfig?exactRecord(memberConfig.synthetic,['respond']):null;if(memberTransport&&typeof memberTransport.respond!=='function')failure('VALIDATION_FAILED');
-  const memberRuntime=memberProfile?createPiCaseAssistantRuntime({provider:memberProfile.provider,model:memberProfile.model,max_input_bytes:memberProfile.max_input_bytes,max_output_tokens:memberProfile.call_output_tokens},memberTransport as {respond(payload:string):Promise<unknown>}):null;
-  let modelEpoch=0;
-  const applications=new Set<ReturnType<typeof composePersonalXanthilDesktopProfile>>();
-  async function closeModelWork(){modelEpoch++;const previousMember=membership;await previousMember?.close();if(membership===previousMember)membership=null;for(const application of applications)application.closeModelWork();applications.clear();const previous=caseAssistant;await previous?.close();if(caseAssistant===previous)caseAssistant=null;}
-  const assistantSetting=configured.caseAssistantConfig??null;
-  const assistantConfig=assistantSetting===null?null:exactRecord(assistantSetting,['authorization','max_input_bytes','max_output_tokens',...(record(assistantSetting)&&Object.hasOwn(assistantSetting,'deployment')?['deployment']:[])]);
-  const authorization:AssistantConfig|null=providerSettings?{provider:'xiaomi-token-plan-cn',model:'mimo-v2.6-pro',authorized:true,consumption_policy:'uncapped_metered',runtime_id:'pi',runtime_version:'0.86.1',adapter_version:'0.4.1',limits:{turns:8,execution_ms:300000,waiting_ms:120000,cost_microunits:8*XIAOMI_CREDIT_RESERVATION,turn_cost_microunits:XIAOMI_CREDIT_RESERVATION,currency:'XIAOMI_CREDITS'}}:assistantConfig?.authorization as AssistantConfig|null;
-  const privateDeployment=assistantConfig?.deployment===undefined?null:exactRecord(assistantConfig.deployment,['policy','api_key']);
-  const activation=privateDeployment?validateXiaomiActivationPolicy(privateDeployment.policy,privateDeployment.api_key):null;
-  const runtimeDeployment=activation?{policy:activation,api_key:privateDeployment!.api_key as string}:undefined;
-  // Production Session ownership is scoped to the selected project and stable business Task.
-  const assistantRuntime=authorization?.authorized&&!providerSettings?createPiCaseAssistantRuntime({provider:authorization.provider,model:authorization.model,max_input_bytes:assistantConfig!.max_input_bytes,max_output_tokens:assistantConfig!.max_output_tokens},undefined,runtimeDeployment):null;
-  const assistanceRuntime=providerSettings||configured.assistanceConfig===null?null:createPiDecisionAssistanceRuntime(configured.assistanceConfig);
-  const modelAccess=providerSettings?.access??createLocalModelAccess(!!authorization?.authorized||assistanceRuntime!==null||memberRuntime!==null);
-  if (typeof configured.clock !== 'function') failure('VALIDATION_FAILED');
-  const clock = configured.clock as Clock;
-  const location=exactRecord(configured.toolchainDeployment,['descriptor_path']);
-  if(typeof location.descriptor_path!=='string'||!isAbsolute(location.descriptor_path))failure('VALIDATION_FAILED');
-  const descriptorPath=location.descriptor_path;
-  const schedule=exactRecord(configured.deadlineScheduler,['schedule']);if(typeof schedule.schedule!=='function')failure('VALIDATION_FAILED');
-  async function configuredAnalysis(){return createDuckDbPythonDesktopLocalAnalysisExecution(await readPersonalDesktopToolchain(descriptorPath));}
-
-  async function openProject(request: unknown) {
-    if(membership?.hasWork())failure('BUSY');
-    const closing=closeModelWork(),epoch=modelEpoch;await closing;
-    const guard=()=>{if(epoch!==modelEpoch)failure('INTERRUPTED');};
-    const input = exactRecord(request, ['contract_version', 'projectDirectoryCapability', 'display_name', 'command_id']);
-    if (input.contract_version !== '1.0' || typeof input.command_id !== 'string' || input.command_id.length === 0 || typeof input.display_name !== 'string') failure('VALIDATION_FAILED');
-    const selected = capability(input.projectDirectoryCapability);
-    if (input.display_name !== selected.display_name) failure('VALIDATION_FAILED');
-    const projectLocation = await realpath(selected.projectRoot);
-    if (activation && (projectLocation!==activation.project_root || Date.now()>=Date.parse(activation.expires_at))) failure('AUTHORITY_REQUIRED');
-    const resources = dirname(descriptorPath);
-    if (basename(resources) === 'Resources' && basename(dirname(resources)) === 'Contents') {
-      const bundle = await realpath(dirname(dirname(resources)));
-      const excluded = [bundle];
-      for (const root of excluded) {
-        const fromRoot = relative(root, projectLocation);
-        if (fromRoot === '' || (!fromRoot.startsWith('..' + sep) && fromRoot !== '..' && !isAbsolute(fromRoot))) failure('FORBIDDEN');
-      }
-    }
-    try { await access(projectLocation, constants.W_OK); } catch { failure('FORBIDDEN'); }
-    guard();const store = createLocalDesktopDecisionCaseStore({ projectRoot: selected.projectRoot });
-    let execution:ReturnType<typeof createDuckDbPythonDesktopLocalAnalysisExecution>|undefined;
-    const analysisExecution=Object.freeze({
-      async describeImplementation(input:unknown){execution=undefined;execution=await configuredAnalysis();return execution.describeImplementation(input);},
-      async calculate(input:unknown){if(!execution)failure('TOOLCHAIN_UNAVAILABLE');return execution.calculate(input);},
-      async verify(input:unknown){if(!execution)failure('TOOLCHAIN_UNAVAILABLE');return execution.verify(input);},
-    });
-    const sharedAssistance=providerSettings?createPiSessionDecisionAssistanceRuntime({projectRoot:selected.projectRoot,ledger:createLocalAnalysisRequestLedger({projectRoot:selected.projectRoot}),credential:()=>providerSettings.taskCredential()}):null;
-    const projectAssistance=sharedAssistance?{...sharedAssistance,async executeAssistance(input:Parameters<typeof sharedAssistance.executeAssistance>[0]){const generation=providerSettings!.status().generation;try{return await sharedAssistance.executeAssistance(input);}catch(error){providerSettings!.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:assistanceRuntime;
-    const application = composePersonalXanthilDesktopProfile({ store,analysisExecution,runEvidenceStore:createLocalDesktopRunEvidenceStore({projectRoot:selected.projectRoot}),assistanceRuntime:projectAssistance, clock,deadlineScheduler:configured.deadlineScheduler,modelAccess });
-    applications.add(application);
-    const opened = await application.openProject({
-      contract_version: '1.0',
-      command_id: input.command_id,
-      proposed_project_id: randomUUID(),
-      display_name: selected.display_name,
-    });
-    const sessions = await application.listSessions({ project_id: opened.project_id });
-    guard();
-    const assistantStore=createLocalCaseAssistantStore({projectRoot: selected.projectRoot});
-    const membershipStore=createLocalMembershipTaskStore(selected.projectRoot);
-    const sharedCaseRuntime=providerSettings?createPiSessionCaseRuntime({projectRoot:selected.projectRoot,ledger:createLocalAnalysisRequestLedger({projectRoot:selected.projectRoot}),credential:()=>providerSettings.taskCredential()}):null;
-    const projectAssistantRuntime=sharedCaseRuntime?{...sharedCaseRuntime,async turn(input:Parameters<typeof sharedCaseRuntime.turn>[0]){const generation=providerSettings!.status().generation;try{return await sharedCaseRuntime.turn(input);}catch(error){providerSettings!.reportTaskFailure(String((error as {code?:unknown}).code??''),generation);throw error;}}}:assistantRuntime;
-    caseAssistant=createCaseAssistantApplication({store:assistantStore,config:authorization??null,runtime:projectAssistantRuntime,clock,modelAccess,membership:{store:membershipStore,desktop:application,sourceStore:store,profile:memberProfile,runtime:memberRuntime}});
-    const openedAssistant=caseAssistant;await openedAssistant.reopen();guard();
-    membership=createMembershipTaskApplication({desktop:application,project_id:opened.project_id,store:membershipStore,sourceStore:store,profile:memberProfile,runtime:memberRuntime,modelAccess,clock});await membership.reopen();guard();
-    const value: ProjectOpenValue = Object.freeze({
-      project: Object.freeze({ project_id: opened.project_id, display_name: opened.display_name, schema_version: '1.0', write_state: 'ready' }),
-      sessions,
-    });
-    return Object.freeze({ application, value });
-  }
-
-  return Object.freeze({ hasModelWork:()=>[...applications].some(app=>app.hasModelWork())||!!caseAssistant?.hasWork()||!!membership?.hasWork(),closeModelWork, openProject, getCaseAssistant:()=>caseAssistant,getMembershipTask:()=>membership });
-}
-
-/** Main-only environment boundary; unconfigured behavior remains fail closed. */
-export function loadPersonalCaseAssistantActivation(env: Readonly<Record<string,string|undefined>>) {
-  if (!env.JUANERAI_CASE_ASSISTANT_ACTIVATION) return null;
-  try {
-    const policy=validateXiaomiActivationPolicy(JSON.parse(env.JUANERAI_CASE_ASSISTANT_ACTIVATION),env.XIAOMI_TOKEN_PLAN_CN_API_KEY);
-    const authorization:AssistantConfig={provider:policy.provider,model:policy.model,authorized:true,runtime_id:'pi',runtime_version:'0.84.2',adapter_version:'1.0',limits:{turns:policy.requests,execution_ms:300000,waiting_ms:120000,cost_microunits:policy.requests*XIAOMI_CREDIT_RESERVATION,turn_cost_microunits:XIAOMI_CREDIT_RESERVATION,currency:'XIAOMI_CREDITS'}};
-    return {authorization,max_input_bytes:12000,max_output_tokens:2048,deployment:{policy,api_key:env.XIAOMI_TOKEN_PLAN_CN_API_KEY!}};
-  } catch {return null;}
-}

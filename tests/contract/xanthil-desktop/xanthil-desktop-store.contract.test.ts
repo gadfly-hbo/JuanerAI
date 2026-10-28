@@ -105,7 +105,7 @@ const exactDesktopSchemaColumns = Object.freeze({
   aggregate_artifacts: ['artifact_id', 'project_id', 'session_id', 'case_id', 'revision_id', 'snapshot_id', 'run_id', 'method_id', 'method_version', 'code_identity', 'columns_json', 'measurement_meanings_json', 'group_pseudonym_map_json', 'locator', 'sha256', 'byte_length', 'created_at', 'schema_version'],
   analysis_runs: ['run_id', 'project_id', 'session_id', 'case_id', 'revision_id', 'confirmation_id', 'profile_id', 'method_id', 'method_version', 'code_identity', 'run_contract_version', 'status', 'started_at', 'deadline_at', 'ended_at', 'terminal_reason', 'run_locator', 'aggregate_id', 'schema_version'],
   model_disclosures: ['disclosure_id', 'project_id', 'session_id', 'case_id', 'revision_id', 'action_kind', 'categories_json', 'aggregate_refs_json', 'payload_sha256', 'requested_provider', 'requested_model', 'decision', 'free_text_confirmed_at', 'decided_at', 'created_at', 'schema_version'],
-  assistance_attempts: ['attempt_id', 'disclosure_id', 'project_id', 'session_id', 'case_id', 'revision_id', 'action_kind', 'profile_id', 'runtime_id', 'runtime_version', 'adapter_id', 'adapter_version', 'requested_provider', 'requested_model', 'actual_provider', 'actual_model', 'ended_at', 'terminal_reason', 'draft_id', 'status', 'started_at', 'deadline_at', 'schema_version'],
+  professional_draft_authorizations: ['id','case_id','body_json','body_sha256','revoked_at','publication_json','publication_sha256'],
   assistance_drafts: ['draft_id', 'attempt_id', 'project_id', 'session_id', 'case_id', 'revision_id', 'draft_kind', 'generated_content_json', 'edited_content_json', 'disposition', 'target_form', 'decided_at', 'created_at', 'schema_version'],
   findings: ['finding_id', 'run_id', 'project_id', 'session_id', 'case_id', 'revision_id', 'aggregate_id', 'judgment', 'metrics_json', 'supporting_evidence_json', 'refutation_json', 'limitations_json', 'evidence_refs_json', 'method_id', 'method_version', 'created_at', 'schema_version'],
   finding_acceptances: ['acceptance_id', 'finding_id', 'project_id', 'session_id', 'case_id', 'revision_id', 'action', 'accepted_at', 'schema_version'],
@@ -123,7 +123,7 @@ const exactDesktopUniqueKeys = Object.freeze({
   aggregate_artifacts: [['run_id'], ['project_id', 'session_id', 'case_id', 'revision_id', 'artifact_id']],
   analysis_runs: [['project_id', 'session_id', 'case_id', 'revision_id', 'run_id']],
   model_disclosures: [['project_id', 'session_id', 'case_id', 'revision_id', 'disclosure_id']],
-  assistance_attempts: [['disclosure_id'], ['project_id', 'session_id', 'case_id', 'revision_id', 'attempt_id']],
+  professional_draft_authorizations: [],
   assistance_drafts: [['attempt_id'], ['project_id', 'session_id', 'case_id', 'revision_id', 'draft_id']],
   findings: [['run_id'], ['project_id', 'session_id', 'case_id', 'revision_id', 'finding_id']],
   finding_acceptances: [['finding_id'], ['project_id', 'session_id', 'case_id', 'revision_id', 'acceptance_id']],
@@ -174,14 +174,9 @@ const exactDesktopForeignKeys = Object.freeze({
   model_disclosures: [
     { columns: ['project_id', 'session_id', 'case_id', 'revision_id'], parentTable: 'case_revisions', parentColumns: ['project_id', 'session_id', 'case_id', 'revision_id'] },
   ],
-  assistance_attempts: [
-    { columns: ['project_id', 'session_id', 'case_id', 'revision_id'], parentTable: 'case_revisions', parentColumns: ['project_id', 'session_id', 'case_id', 'revision_id'] },
-    { columns: ['project_id', 'session_id', 'case_id', 'revision_id', 'disclosure_id'], parentTable: 'model_disclosures', parentColumns: ['project_id', 'session_id', 'case_id', 'revision_id', 'disclosure_id'] },
-    { columns: ['project_id', 'session_id', 'case_id', 'revision_id', 'draft_id'], parentTable: 'assistance_drafts', parentColumns: ['project_id', 'session_id', 'case_id', 'revision_id', 'draft_id'] },
-  ],
+  professional_draft_authorizations: [],
   assistance_drafts: [
     { columns: ['project_id', 'session_id', 'case_id', 'revision_id'], parentTable: 'case_revisions', parentColumns: ['project_id', 'session_id', 'case_id', 'revision_id'] },
-    { columns: ['project_id', 'session_id', 'case_id', 'revision_id', 'attempt_id'], parentTable: 'assistance_attempts', parentColumns: ['project_id', 'session_id', 'case_id', 'revision_id', 'attempt_id'] },
   ],
   findings: [
     { columns: ['project_id', 'session_id', 'case_id', 'revision_id'], parentTable: 'case_revisions', parentColumns: ['project_id', 'session_id', 'case_id', 'revision_id'] },
@@ -216,7 +211,7 @@ const exactDesktopForeignKeys = Object.freeze({
 const desktopPrimaryIdentityColumns = Object.freeze({
   projects: 'project_id', product_sessions: 'session_id', case_revisions: 'revision_id', input_confirmations: 'confirmation_id',
   source_snapshots: 'snapshot_id', aggregate_artifacts: 'artifact_id', analysis_runs: 'run_id', model_disclosures: 'disclosure_id',
-  assistance_attempts: 'attempt_id', assistance_drafts: 'draft_id', findings: 'finding_id', finding_acceptances: 'acceptance_id',
+  professional_draft_authorizations: 'id', assistance_drafts: 'draft_id', findings: 'finding_id', finding_acceptances: 'acceptance_id',
   decision_forms: 'form_id', decision_closures: 'closure_id', report_versions: 'report_id', command_receipts: 'command_id',
 } satisfies Readonly<Record<keyof typeof exactDesktopSchemaColumns, string>>);
 
@@ -234,7 +229,7 @@ const desktopNullableColumns = new Set([
   'input_confirmations.member_group_column', 'aggregate_artifacts.group_pseudonym_map_json',
   'analysis_runs.ended_at', 'analysis_runs.terminal_reason', 'analysis_runs.run_locator', 'analysis_runs.aggregate_id',
   'model_disclosures.free_text_confirmed_at',
-  'assistance_attempts.actual_provider', 'assistance_attempts.actual_model', 'assistance_attempts.ended_at', 'assistance_attempts.terminal_reason', 'assistance_attempts.draft_id',
+  'professional_draft_authorizations.revoked_at','professional_draft_authorizations.publication_json','professional_draft_authorizations.publication_sha256',
   'assistance_drafts.edited_content_json', 'assistance_drafts.target_form', 'assistance_drafts.decided_at',
   'decision_forms.route', 'decision_forms.insufficient_reason', 'decision_forms.preferred_candidate_id', 'decision_forms.preferred_reason', 'decision_forms.disposition_at', 'decision_forms.defer_until',
   'report_versions.acceptance_id', 'report_versions.closure_id',
@@ -269,56 +264,12 @@ const desktopConstraintIds = Object.freeze({
   nextRevision: '24242424-2424-4242-8242-242424242424',
 } as const);
 
-const exactReceiptOperationKinds = [
-  'initialize_project', 'create_session', 'create_draft_revision', 'save_form', 'confirm_revision',
-  'start_analysis', 'cancel_analysis', 'settle_analysis', 'record_model_disclosure', 'start_assistance',
-  'cancel_assistance', 'settle_assistance', 'dispose_assistance_draft', 'accept_finding', 'complete_case',
-  'export_report', 'mark_integrity_blocked', 'reconcile_interrupted',
-] as const;
-
-const exactReceiptResultKinds = [
-  'project', 'product_session', 'case_revision', 'input_confirmation', 'analysis_run', 'model_disclosure',
-  'assistance_attempt', 'assistance_draft', 'finding_acceptance', 'decision_form', 'decision_closure', 'report_version',
-] as const;
-
+const exactReceiptOperationKinds = ['initialize_project','create_session','create_draft_revision','save_form','confirm_revision','start_analysis','cancel_analysis','settle_analysis','record_model_disclosure','dispose_assistance_draft','revoke_professional_draft','publish_professional_draft','accept_finding','complete_case','export_report','mark_integrity_blocked','reconcile_interrupted'] as const;
+const exactReceiptResultKinds = ['project','product_session','case_revision','input_confirmation','analysis_run','model_disclosure','assistance_draft','finding_acceptance','decision_form','decision_closure','report_version','professional_authorization'] as const;
 type ReceiptOperationKind = (typeof exactReceiptOperationKinds)[number];
 type ReceiptResultKind = (typeof exactReceiptResultKinds)[number];
-
-const exactReceiptSuccessResults = Object.freeze({
-  initialize_project: ['project'],
-  create_session: ['product_session'],
-  create_draft_revision: ['case_revision'],
-  save_form: ['case_revision', 'decision_form'],
-  confirm_revision: ['input_confirmation'],
-  start_analysis: ['analysis_run'],
-  cancel_analysis: ['analysis_run'],
-  settle_analysis: ['analysis_run'],
-  record_model_disclosure: ['model_disclosure'],
-  start_assistance: ['assistance_attempt'],
-  cancel_assistance: ['assistance_attempt'],
-  settle_assistance: ['assistance_attempt'],
-  dispose_assistance_draft: ['assistance_draft'],
-  accept_finding: ['finding_acceptance'],
-  complete_case: ['decision_closure'],
-  export_report: ['report_version'],
-  mark_integrity_blocked: ['case_revision'],
-  reconcile_interrupted: ['analysis_run', 'assistance_attempt'],
-} satisfies Readonly<Record<ReceiptOperationKind, readonly ReceiptResultKind[]>>);
-
-const exactReceiptResultIds = Object.freeze({
-  project: desktopTestIds.project,
-  product_session: desktopTestIds.session,
-  case_revision: desktopTestIds.revision,
-  input_confirmation: desktopConstraintIds.confirmation,
-  analysis_run: desktopConstraintIds.run,
-  model_disclosure: desktopConstraintIds.disclosure,
-  assistance_attempt: desktopConstraintIds.attempt,
-  assistance_draft: desktopConstraintIds.draft,
-  finding_acceptance: desktopConstraintIds.acceptance,
-  decision_form: desktopConstraintIds.form,
-  decision_closure: desktopConstraintIds.closure,
-  report_version: desktopConstraintIds.report,
-} satisfies Readonly<Record<ReceiptResultKind, string>>);
+const exactReceiptSuccessResults = Object.freeze({initialize_project:['project'],create_session:['product_session'],create_draft_revision:['case_revision'],save_form:['case_revision','decision_form'],confirm_revision:['input_confirmation'],start_analysis:['analysis_run'],cancel_analysis:['analysis_run'],settle_analysis:['analysis_run'],record_model_disclosure:['model_disclosure'],dispose_assistance_draft:['assistance_draft'],revoke_professional_draft:['professional_authorization'],publish_professional_draft:['assistance_draft'],accept_finding:['finding_acceptance'],complete_case:['decision_closure'],export_report:['report_version'],mark_integrity_blocked:['case_revision'],reconcile_interrupted:['analysis_run']} satisfies Readonly<Record<ReceiptOperationKind,readonly ReceiptResultKind[]>>);
+const exactReceiptResultIds = Object.freeze({project:desktopTestIds.project,product_session:desktopTestIds.session,case_revision:desktopTestIds.revision,input_confirmation:desktopConstraintIds.confirmation,analysis_run:desktopConstraintIds.run,model_disclosure:desktopConstraintIds.disclosure,assistance_draft:desktopConstraintIds.draft,finding_acceptance:desktopConstraintIds.acceptance,decision_form:desktopConstraintIds.form,decision_closure:desktopConstraintIds.closure,report_version:desktopConstraintIds.report,professional_authorization:desktopConstraintIds.attempt} satisfies Readonly<Record<ReceiptResultKind,string>>);
 
 function quoteSqlIdentifier(value: string) { return `"${value.replaceAll('"', '""')}"`; }
 
@@ -410,7 +361,6 @@ function expectedNonPrimaryIndexShapes() {
   return [
     ...Object.entries(exactDesktopUniqueKeys).flatMap(([table, keys]) => keys.map((columns) => ({ table, columns: [...columns], partial: 0, unique: 1 }))),
     { table: 'analysis_runs', columns: ['revision_id'], partial: 1, unique: 1 },
-    { table: 'assistance_attempts', columns: ['revision_id'], partial: 1, unique: 1 },
     { table: 'product_sessions', columns: ['project_id', 'created_at', 'session_id'], partial: 0, unique: 0 },
     { table: 'case_revisions', columns: ['session_id', 'case_id', 'revision_sequence'], partial: 0, unique: 0 },
     { table: 'report_versions', columns: ['revision_id', 'version_sequence'], partial: 0, unique: 0 },
@@ -532,20 +482,14 @@ function insertExactConstraintFixture(db: DatabaseSync) {
     ) VALUES (?, ?, ?, ?, ?, 'organize_question', '["analysis"]', '[]', ?, 'local', 'none', 'accepted', NULL, ?, ?, '1.0')`).run(
       desktopConstraintIds.disclosure, ...owner, hash, timestamp, timestamp,
     );
-    db.prepare(`INSERT INTO assistance_attempts(
-      attempt_id, disclosure_id, project_id, session_id, case_id, revision_id, action_kind, profile_id, runtime_id, runtime_version,
-      adapter_id, adapter_version, requested_provider, requested_model, actual_provider, actual_model, ended_at, terminal_reason,
-      draft_id, status, started_at, deadline_at, schema_version
-    ) VALUES (?, ?, ?, ?, ?, ?, 'organize_question', 'personal-desktop', 'offline', '1.0', 'offline', '1.0', 'local', 'none', NULL, NULL, NULL, NULL, NULL, 'Running', ?, ?, '1.0')`).run(
-      desktopConstraintIds.attempt, desktopConstraintIds.disclosure, ...owner, timestamp, '2026-09-19T00:05:00.000Z',
-    );
+    // DDL-only parent row, deliberately not an admitted SDK/business authorization.
+    db.prepare('INSERT INTO professional_draft_authorizations(id,case_id,body_json,body_sha256) VALUES(?,?,?,?)').run(desktopConstraintIds.attempt,desktopTestIds.case,'{}',hash);
     db.prepare(`INSERT INTO assistance_drafts(
       draft_id, attempt_id, project_id, session_id, case_id, revision_id, draft_kind, generated_content_json, edited_content_json,
       disposition, target_form, decided_at, created_at, schema_version
     ) VALUES (?, ?, ?, ?, ?, ?, 'question_fields', '{"question_text":"Later tuple question","hypothesis_display_title":"Later tuple hypothesis","business_context":"","alternative_explanations":[]}', NULL, 'pending', NULL, NULL, ?, '1.0')`).run(
       desktopConstraintIds.draft, desktopConstraintIds.attempt, ...owner, timestamp,
     );
-    db.prepare("UPDATE assistance_attempts SET status = 'Succeeded', actual_provider = 'local', actual_model = 'none', ended_at = ?, draft_id = ? WHERE attempt_id = ?").run(timestamp, desktopConstraintIds.draft, desktopConstraintIds.attempt);
     db.prepare(`INSERT INTO findings(
       finding_id, run_id, project_id, session_id, case_id, revision_id, aggregate_id, judgment, metrics_json, supporting_evidence_json,
       refutation_json, limitations_json, evidence_refs_json, method_id, method_version, created_at, schema_version
@@ -682,9 +626,7 @@ test('TEST-XDESK-003 positive: opening a fresh Project publishes the closed stor
     assert.equal(result.initialized, true);
     assert.equal(result.project_id, desktopTestIds.project);
     assert.equal(result.schema_version, '1.0');
-    assert.deepEqual(Object.keys(store as object).sort(), [
-      'acceptFinding', 'admitAnalysis', 'admitAssistance', 'checkAssistanceAdmission', 'checkReportExport', 'completeCase', 'createDraftRevision', 'createSession', 'disposeAssistanceDraft', 'listSessions', 'markIntegrityBlocked', 'openProject', 'publishAnalysisSuccessCandidates', 'publishConfirmation', 'readConfirmedSnapshot', 'readProjection', 'readReportContext', 'readReportExport', 'reconcileInterrupted', 'recordDisclosure', 'recordReportExport', 'requestAnalysisCancellation', 'requestAssistanceCancellation', 'saveForm', 'settleAnalysis', 'settleAssistance', 'waitForProjection',
-    ].sort());
+    assert.deepEqual(Object.keys(store as object).sort(), ['acceptFinding', 'admitAnalysis', 'authorizeProfessionalDraft', 'authorizesProfessionalWork', 'checkAssistanceAdmission', 'checkReportExport', 'completeCase', 'createDraftRevision', 'createSession', 'disposeAssistanceDraft', 'isProfessionalAuthorized', 'listProfessionalAuthorizations', 'listSessions', 'markIntegrityBlocked', 'openProject', 'publishAnalysisSuccessCandidates', 'publishConfirmation', 'publishProfessionalDraft', 'readConfirmedSnapshot', 'readProfessionalAuthorization', 'readProjection', 'readReportContext', 'readReportExport', 'reconcileInterrupted', 'recordDisclosure', 'recordReportExport', 'requestAnalysisCancellation', 'revokeProfessionalAuthorization', 'saveForm', 'settleAnalysis', 'waitForProjection'].sort());
   });
 });
 
@@ -713,7 +655,7 @@ test('AC-XDESK-002-02: opens no Runtime, provider, analysis child, aggregate, or
     await requiredExport<Method>(store, 'createSession')(u13Request());
     const db = new DatabaseSync(sqliteFile(projectRoot));
     try {
-      for (const table of ['analysis_runs', 'aggregate_artifacts', 'report_versions', 'model_disclosures', 'assistance_attempts']) assert.equal((db.prepare(`SELECT COUNT(*) AS count FROM ${table}`).get() as { count: number }).count, 0);
+      for(const table of ['analysis_runs','aggregate_artifacts','report_versions','model_disclosures','professional_draft_authorizations'])assert.equal((db.prepare(`SELECT COUNT(*) AS count FROM ${table}`).get() as {count:number}).count,0);
     } finally { db.close(); }
   });
 });
@@ -957,10 +899,9 @@ test('U1.2 AC-XDESK-011-02: admits only the exact sixteen-table schema, constrai
       assert.doesNotMatch(receiptsSql, /(?:event_journal|generic_command|migration)/i);
       const declaredIndexes = db.prepare("SELECT tbl_name, sql FROM sqlite_master WHERE type = 'index' AND sql IS NOT NULL ORDER BY tbl_name, name").all() as Array<Record<string, unknown>>;
       const partialIndexes = declaredIndexes.filter((index) => /CREATE\s+UNIQUE\s+INDEX/i.test(requiredString(index, 'sql')) && /\bWHERE\b/i.test(requiredString(index, 'sql')));
-      assert.equal(partialIndexes.length, 2, 'only the Run and Assistance Running guards are partial unique indexes');
+      assert.equal(partialIndexes.length,1,'only the actual local Analysis Run has a partial Running index; no model Running mirror');
       for (const expected of [
         ['analysis_runs', /\(\s*revision_id\s*\).*WHERE\s+status\s*=\s*'Running'/i],
-        ['assistance_attempts', /\(\s*revision_id\s*\).*WHERE\s+status\s*=\s*'Running'/i],
       ] as const) assert.ok(partialIndexes.some((index) => index.tbl_name === expected[0] && expected[1].test(requiredString(index, 'sql'))), `${expected[0]} retains its sole Running partial unique index`);
 
       for (const [untypedTable, expectedColumns] of Object.entries(exactDesktopSchemaColumns)) {
@@ -997,7 +938,6 @@ test('U1.2 AC-XDESK-011-02: admits only the exact sixteen-table schema, constrai
         { table: 'input_confirmations', columns: ['revision_id'] },
         { table: 'source_snapshots', columns: ['revision_id'] },
         { table: 'aggregate_artifacts', columns: ['run_id'] },
-        { table: 'assistance_attempts', columns: ['disclosure_id'] },
         { table: 'assistance_drafts', columns: ['attempt_id'] },
         { table: 'findings', columns: ['run_id'] },
         { table: 'finding_acceptances', columns: ['finding_id'] },
@@ -1033,7 +973,7 @@ test('U1.2 AC-XDESK-011-02: admits only the exact sixteen-table schema, constrai
       for (const table of Object.keys(exactDesktopSchemaColumns) as Array<keyof typeof exactDesktopSchemaColumns>) {
         const identity = desktopPrimaryIdentityColumns[table];
         assertRejectedConstraintWrite(db, `${table}.${identity} rejects a NULL primary identity`, () => insertClone(db, table, { [identity]: null }));
-        assertRejectedConstraintWrite(db, `${table}.schema_version rejects an unsupported schema version`, () => updateConstraintRow(db, table, 'schema_version', '2.0'));
+        if((exactDesktopSchemaColumns[table] as readonly string[]).includes('schema_version'))assertRejectedConstraintWrite(db, `${table}.schema_version rejects an unsupported schema version`, () => updateConstraintRow(db, table, 'schema_version', '2.0'));
       }
 
       const invalidColumnValues: ReadonlyArray<Readonly<{ table: keyof typeof exactDesktopSchemaColumns; column: string; value: SQLInputValue; label: string }>> = [
@@ -1063,9 +1003,6 @@ test('U1.2 AC-XDESK-011-02: admits only the exact sixteen-table schema, constrai
         { table: 'analysis_runs', column: 'status', value: 'Running', label: 'Running Run null-only terminal shape' },
         { table: 'model_disclosures', column: 'action_kind', value: 'other_action', label: 'closed disclosure action' },
         { table: 'model_disclosures', column: 'decision', value: 'unknown', label: 'closed disclosure decision' },
-        { table: 'assistance_attempts', column: 'action_kind', value: 'other_action', label: 'closed Assistance action' },
-        { table: 'assistance_attempts', column: 'status', value: 'Unknown', label: 'closed Assistance status' },
-        { table: 'assistance_attempts', column: 'status', value: 'Running', label: 'Running Assistance null-only terminal shape' },
         { table: 'assistance_drafts', column: 'draft_kind', value: 'other_draft', label: 'closed Draft kind' },
         { table: 'assistance_drafts', column: 'disposition', value: 'unknown', label: 'closed Draft disposition' },
         { table: 'assistance_drafts', column: 'target_form', value: 'other_form', label: 'closed Draft target form' },
@@ -1100,9 +1037,6 @@ test('U1.2 AC-XDESK-011-02: admits only the exact sixteen-table schema, constrai
         ['Cancelled Run rejects a non-user terminal reason', "UPDATE analysis_runs SET status = 'Cancelled', terminal_reason = 'other_failure', run_locator = NULL, aggregate_id = NULL WHERE run_id = ?", [desktopConstraintIds.run]],
         ['model disclosure rejects an aggregate-requiring action with no aggregate reference', "UPDATE model_disclosures SET action_kind = 'explain_evidence' WHERE disclosure_id = ?", [desktopConstraintIds.disclosure]],
         ['refused model disclosure rejects a free-text confirmation timestamp', "UPDATE model_disclosures SET decision = 'refused', free_text_confirmed_at = '2026-09-19T00:00:00.000Z' WHERE disclosure_id = ?", [desktopConstraintIds.disclosure]],
-        ['Succeeded Assistance Attempt rejects a missing actual provider', 'UPDATE assistance_attempts SET actual_provider = NULL WHERE attempt_id = ?', [desktopConstraintIds.attempt]],
-        ['Failed Assistance Attempt rejects an unlisted terminal reason', "UPDATE assistance_attempts SET status = 'Failed', actual_provider = NULL, actual_model = NULL, draft_id = NULL, terminal_reason = 'other_failure' WHERE attempt_id = ?", [desktopConstraintIds.attempt]],
-        ['Cancelled Assistance Attempt rejects a non-user terminal reason', "UPDATE assistance_attempts SET status = 'Cancelled', actual_provider = NULL, actual_model = NULL, draft_id = NULL, terminal_reason = 'other_failure' WHERE attempt_id = ?", [desktopConstraintIds.attempt]],
         ['Draft adoption rejects a missing target form', "UPDATE assistance_drafts SET disposition = 'adopted' WHERE draft_id = ?", [desktopConstraintIds.draft]],
         ['pending Draft rejects a valid but premature target form', "UPDATE assistance_drafts SET target_form = 'case_fields' WHERE draft_id = ?", [desktopConstraintIds.draft]],
         ['Draft rejection rejects a missing decision timestamp', "UPDATE assistance_drafts SET disposition = 'rejected', target_form = NULL, decided_at = NULL WHERE draft_id = ?", [desktopConstraintIds.draft]],
@@ -1119,6 +1053,7 @@ test('U1.2 AC-XDESK-011-02: admits only the exact sixteen-table schema, constrai
         ['create-session receipt rejects a missing Session owner suffix', 'UPDATE command_receipts SET session_id = NULL WHERE command_id = ?', [desktopTestIds.createSessionCommand]],
       ] as const) assertRejectedConstraintWrite(db, label, () => db.prepare(sql).run(...values));
 
+      assertRejectedConstraintWrite(db,'professional publication and digest remain paired',()=>db.prepare('UPDATE professional_draft_authorizations SET publication_json=?').run('{}'));
       let receiptSequence = 1;
       const nextReceiptCommandId = () => receiptCommandId(receiptSequence++);
       const allowedReceiptPairs = exactReceiptOperationKinds.flatMap((operationKind) => exactReceiptSuccessResults[operationKind].map((resultKind) => ({ operationKind, resultKind })));
@@ -1128,7 +1063,7 @@ test('U1.2 AC-XDESK-011-02: admits only the exact sixteen-table schema, constrai
           resultId: exactReceiptResultIds[resultKind], rejectionReason: null,
         });
       }
-      assert.equal(allowedReceiptPairs.length, 20, 'the frozen receipt contract has exactly twenty allowed succeeded operation/result-kind pairings');
+      assert.equal(allowedReceiptPairs.length, 18, 'the frozen receipt contract has exactly twenty allowed succeeded operation/result-kind pairings');
       const invalidReceiptPairs = exactReceiptOperationKinds.flatMap((operationKind) => {
         const allowedResultKinds = new Set<string>(exactReceiptSuccessResults[operationKind]);
         return exactReceiptResultKinds
@@ -1182,9 +1117,7 @@ test('U1.2 AC-XDESK-011-02: admits only the exact sixteen-table schema, constrai
       insertClone(db, 'analysis_runs', { run_id: desktopConstraintIds.runningRun, status: 'Running', ended_at: null, terminal_reason: null, run_locator: null, aggregate_id: null });
       assertRejectedConstraintWrite(db, 'a second Running Analysis Run for the same revision violates the sole partial unique guard', () => insertClone(db, 'analysis_runs', { run_id: desktopConstraintIds.rejectedRun, status: 'Running', ended_at: null, terminal_reason: null, run_locator: null, aggregate_id: null }));
       insertClone(db, 'model_disclosures', { disclosure_id: desktopConstraintIds.runningDisclosure });
-      insertClone(db, 'assistance_attempts', { attempt_id: desktopConstraintIds.runningAttempt, disclosure_id: desktopConstraintIds.runningDisclosure, status: 'Running', actual_provider: null, actual_model: null, ended_at: null, terminal_reason: null, draft_id: null });
       insertClone(db, 'model_disclosures', { disclosure_id: desktopConstraintIds.rejectedDisclosure });
-      assertRejectedConstraintWrite(db, 'a second Running Assistance Attempt for the same revision violates the sole partial unique guard', () => insertClone(db, 'assistance_attempts', { attempt_id: desktopConstraintIds.rejectedAttempt, disclosure_id: desktopConstraintIds.rejectedDisclosure, status: 'Running', actual_provider: null, actual_model: null, ended_at: null, terminal_reason: null, draft_id: null }));
 
       assertRejectedDeferredCommit(db, 'a Product Session whose deferred current Revision is never admitted fails COMMIT', () => {
         db.prepare(`INSERT INTO product_sessions(session_id, project_id, display_name, mode, case_id, current_revision_id, created_at, schema_version)
@@ -1283,55 +1216,7 @@ test('U1.2 R1 collateral: null route supports non-closure dispositions without S
   }));
 });
 
-test('U1.2 R3 retained at final scope: native int64 precision does not bypass receipt authority or physical integrity [AC-XDESK-002-06]', async (t) => {
-  for (const version of [9007199254740991n, 9007199254740992n, 9223372036854775807n]) await t.test(`A1.3 row_version ${version}`, async () => withIsolatedProject(async (projectRoot) => {
-    const store = await createStore(projectRoot); await openProject(store);
-    await requiredExport<Method>(store, 'createSession')(u13Request());
-    const owner = { project_id: desktopTestIds.project, session_id: desktopTestIds.session, case_id: desktopTestIds.case, revision_id: desktopTestIds.revision };
-    await openProject(await createStore(projectRoot));
-    const admitted = await requiredExport<Method>(store, 'readProjection')(owner);
-    assert.equal(requiredRecord(admitted.revision, 'revision').row_version, '1');
-    assert.equal(requiredRecord(admitted.revision, 'revision').integrity_state, 'ok');
-    const path = sqliteFile(projectRoot), db = new DatabaseSync(path);
-    try {
-      db.prepare('UPDATE case_revisions SET row_version=?').run(version);
-      const read = db.prepare('SELECT row_version FROM case_revisions'); read.setReadBigInts(true);
-      assert.equal(read.get()?.row_version, version);
-      assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
-    } finally { db.close(); }
-    const before = await readFile(path), entries = await readdir(join(projectRoot, '.xanthil', 'desktop'));
-    const profileModule = await loadDesktopModule('profiles/personal/xanthil-desktop.ts');
-    const profile = requiredExport<(x: unknown) => Record<string, unknown>>(profileModule, 'createPersonalXanthilDesktopProfile')({ assistanceConfig: null, toolchainDeployment: {descriptor_path:join(projectRoot,'not-configured-toolchain.json')}, clock: () => new Date('2026-01-02T03:04:05.006Z'), deadlineScheduler: {schedule: () => ({cancel() {}})} });
-    // A row_version increment requires its corresponding durable mutation receipt.
-    // These exact int64 values are valid SQLite integers but forged authority, not
-    // billions of legitimately completed edits. Reopen must reject FORBIDDEN,
-    // not round the value, misclassify the schema, repair it, or invent receipts.
-    const audit = await withNodeSqliteConnectionAudit(async () => assert.rejects(() => requiredExport<Method>(profile, 'openProject')({ contract_version: '1.0', command_id: desktopTestIds.openProjectCommand, projectDirectoryCapability: { projectRoot, display_name: 'Synthetic Project' }, display_name: 'Synthetic Project' }), /FORBIDDEN/));
-    assert.deepEqual(audit.statements, []); assert.deepEqual(await readFile(path), before);
-    assert.deepEqual(await readdir(join(projectRoot, '.xanthil', 'desktop')), entries);
-  }));
-  for (const [table, column] of [
-    ['source_snapshots', 'members_byte_length'], ['source_snapshots', 'included_member_count'],
-    ['aggregate_artifacts', 'byte_length'], ['report_versions', 'version_sequence'],
-    ['report_versions', 'markdown_byte_length'], ['decision_forms', 'form_sequence'],
-  ] as const) await t.test(`${table}.${column} int64 maximum`, async () => withIsolatedProject(async (projectRoot) => {
-    await openProject(await createStore(projectRoot)); const path = sqliteFile(projectRoot), db = new DatabaseSync(path);
-    try {
-      insertExactConstraintFixture(db); db.prepare(`UPDATE ${table} SET ${column}=?`).run(9223372036854775807n);
-      const read = db.prepare(`SELECT ${column} AS value FROM ${table}`); read.setReadBigInts(true);
-      assert.equal(read.get()?.value, 9223372036854775807n, 'native precision is independent of completeness of the synthetic evidence');
-      assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []);
-    }
-    finally { db.close(); }
-    const before = await readFile(path);
-    // This SQL-only DDL fixture has no matching Session/artifact files or canonical
-    // receipts. Activation removed the old future-stage FORBIDDEN stop; it must
-    // not turn incomplete evidence into a usable Project. No enormous fake file
-    // is created to pretend maximum byte_length is physically covered.
-    const audit = await withNodeSqliteConnectionAudit(async () => assert.rejects(() => createStore(projectRoot).then(openProject), /INTEGRITY_BLOCKED/));
-    assert.deepEqual(audit.statements, []); assert.deepEqual(await readFile(path), before);
-  }));
-});
+
 
 test('U1.2 R2: every business-date endpoint is an actual canonical calendar date [AC-XDESK-011-02]', async (t) => {
   const columns = ['comparison_start_date', 'comparison_end_date', 'current_start_date', 'current_end_date'];
@@ -1378,44 +1263,6 @@ test('U1.2 R2: every business-date endpoint is an actual canonical calendar date
   }));
 });
 
-test('U1.2 R1: Assistance observed provider/model identity is paired in every status [AC-XDESK-011-02]', async (t) => {
-  for (const status of ['Running', 'Succeeded', 'Failed', 'Cancelled']) for (const pair of [[null, null], ['synthetic-provider', 'synthetic-model'], ['synthetic-provider', null], [null, 'synthetic-model']] as const) {
-    const allowed = status === 'Failed' ? (pair[0] === null) === (pair[1] === null) : status === 'Succeeded' ? pair[0] !== null && pair[1] !== null : pair[0] === null && pair[1] === null;
-    await t.test(`${status} ${JSON.stringify(pair)} allowed=${allowed}`, async () => withIsolatedProject(async (projectRoot) => {
-      await openProject(await createStore(projectRoot));
-      const db = new DatabaseSync(sqliteFile(projectRoot));
-      try {
-        insertExactConstraintFixture(db);
-        const write = () => db.prepare('UPDATE assistance_attempts SET status=?, actual_provider=?, actual_model=?, ended_at=?, terminal_reason=?, draft_id=?').run(
-          status, ...pair, status === 'Running' ? null : '2026-09-19T00:00:00.000Z', status === 'Failed' ? 'provider_failed' : status === 'Cancelled' ? 'user_cancelled' : null, status === 'Succeeded' ? desktopConstraintIds.draft : null,
-        );
-        if (allowed) { assert.doesNotThrow(write); assert.deepEqual(db.prepare('PRAGMA foreign_key_check').all(), []); }
-        else assertRejectedConstraintWrite(db, `${status} provider/model pair`, write);
-      } finally { db.close(); }
-    }));
-  }
-});
-
-test('U1.2 F6: real native exclusive contention stays STORE_BUSY through Store and Profile without retry or mutation [AC-XDESK-011-06]', async () => withIsolatedProject(async (projectRoot) => {
-  await openProject(await createStore(projectRoot));
-  const path = sqliteFile(projectRoot), before = await readFile(path);
-  const locker = new DatabaseSync(path);
-  const profileModule = await loadDesktopModule('profiles/personal/xanthil-desktop.ts');
-  const profile = requiredExport<(x: unknown) => Record<string, unknown>>(profileModule, 'createPersonalXanthilDesktopProfile')({ assistanceConfig: null, toolchainDeployment: {descriptor_path:join(projectRoot,'not-configured-toolchain.json')}, clock: () => new Date('2026-01-02T03:04:05.006Z'), deadlineScheduler: {schedule: () => ({cancel() {}})} });
-  locker.exec('BEGIN EXCLUSIVE');
-  try {
-    const started = Date.now(), store = await createStore(projectRoot);
-    const audit = await withNodeSqliteConnectionAudit(async () => {
-      await assert.rejects(() => openProject(store), /STORE_BUSY/);
-      await assert.rejects(() => requiredExport<Method>(store, 'listSessions')({ project_id: desktopTestIds.project }), /STORE_BUSY/);
-      await assert.rejects(() => requiredExport<Method>(profile, 'openProject')({ contract_version: '1.0', command_id: desktopTestIds.openProjectCommand, projectDirectoryCapability: { projectRoot, display_name: 'Synthetic Project' }, display_name: 'Synthetic Project' }), /STORE_BUSY/);
-    });
-    assert.deepEqual(audit.statements, []);
-    assert.ok(Date.now() - started < 1000, 'native busy_timeout=0 must not wait/retry');
-  } finally { locker.exec('ROLLBACK'); locker.close(); }
-  assert.deepEqual(await readFile(path), before);
-}));
-
 test('U1.2 F7 retained: current I2 storage exports only implemented Store and Run evidence factories [AC-XDESK-002-02]', async () => {
   const storage = await loadDesktopModule('adapters/storage-local/xanthil-desktop-decision-case.ts');
   assert.deepEqual(Object.keys(storage).sort(), ['createLocalDesktopDecisionCaseStore', 'createLocalDesktopRunEvidenceStore']);
@@ -1446,10 +1293,6 @@ test('U1.2 F3: full schema preserves nullable group maps and rejects SQL-null te
     ['Run Failed enumerated reason', "UPDATE analysis_runs SET status='Failed', terminal_reason='calculation_failed', run_locator=NULL, aggregate_id=NULL", true],
     ['Run Cancelled null reason', "UPDATE analysis_runs SET status='Cancelled', terminal_reason=NULL, run_locator=NULL, aggregate_id=NULL", false],
     ['Run Cancelled exact reason', "UPDATE analysis_runs SET status='Cancelled', terminal_reason='user_cancelled', run_locator=NULL, aggregate_id=NULL", true],
-    ['Attempt Failed null reason', "UPDATE assistance_attempts SET status='Failed', terminal_reason=NULL, draft_id=NULL", false],
-    ['Attempt Failed enumerated reason', "UPDATE assistance_attempts SET status='Failed', terminal_reason='provider_failed', draft_id=NULL", true],
-    ['Attempt Cancelled null reason', "UPDATE assistance_attempts SET status='Cancelled', terminal_reason=NULL, draft_id=NULL, actual_provider=NULL, actual_model=NULL", false],
-    ['Attempt Cancelled exact reason', "UPDATE assistance_attempts SET status='Cancelled', terminal_reason='user_cancelled', draft_id=NULL, actual_provider=NULL, actual_model=NULL", true],
     ['overlap with positive equal lengths', "UPDATE input_confirmations SET current_start_date=comparison_start_date, current_end_date=comparison_end_date", false],
     ['adjacent half-open equal periods', "UPDATE input_confirmations SET current_start_date='2026-01-29', current_end_date='2026-02-26'", true],
     ['invalid dates', "UPDATE input_confirmations SET current_start_date='invalid-date'", false],

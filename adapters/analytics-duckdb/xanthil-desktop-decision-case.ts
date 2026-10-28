@@ -1,5 +1,5 @@
 import {plannedSelection,validateMembershipPlan,validateMembershipResult,membershipSelection,membershipHash} from '../../packages/product-core/member-analysis.ts';
-export {verifyOpenAnalysisIntegerSum} from './open-analysis-verification.ts';
+
 import { createHash } from 'node:crypto';
 import { isAbsolute } from 'node:path';
 import { canonicalDesktopJson, checkedDesktopInteger, desktopMetricChanges, desktopRational, desktopRuleFailure, prepareDesktopData, validateDesktopCalculationResult, type DesktopMetricPeriod, type DesktopSelection } from '../../packages/product-core/xanthil-desktop-decision-case.ts';

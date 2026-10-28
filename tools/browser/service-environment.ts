@@ -6,6 +6,8 @@ export function browserServiceEnvironment(root:string,source:NodeJS.ProcessEnv=p
  if(source.JUANERAI_BROWSER_CONFIG)env.JUANERAI_BROWSER_CONFIG=source.JUANERAI_BROWSER_CONFIG;
  if(source.JUANERAI_TOOLCHAIN_BIN)env.JUANERAI_TOOLCHAIN_BIN=source.JUANERAI_TOOLCHAIN_BIN;
  if(source.JUANERAI_DOCUMENT_PYTHON)env.JUANERAI_DOCUMENT_PYTHON=source.JUANERAI_DOCUMENT_PYTHON;
+ // Directed backend credential, bound to the fixed official recipient on refresh.
+ if(source.DEEPSEEK_API_KEY!==undefined)env.DEEPSEEK_API_KEY=source.DEEPSEEK_API_KEY;
  for(const key of ['JUANERAI_IMAGE_READER','JUANERAI_SOFFICE'])if(source[key])env[key]=source[key];
  // Keep Node's normal TLS verification and add only macOS's public system bundle.
  if(platform==='darwin'){

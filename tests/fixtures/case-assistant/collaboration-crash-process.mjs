@@ -14,7 +14,7 @@ if(mode==='writer'){
   const hit={pid:process.pid,operation:spec.operation,point:spec.point,sql};writeFileSync(spec.hit,JSON.stringify(hit),{flag:'wx'});process.stdout.write(JSON.stringify(hit)+'\n');Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0);throw Error('UNREACHABLE');
  }return exec.call(this,sql);};await action();throw Error('COMMIT_NOT_REACHED');
 }else{
- const before={...query(),parent:await store.readParentCollaboration(spec.parent)},app=createCaseAssistantApplication({store,runtime:null,config:null,clock:()=>new Date()});await app.reopen();const recovered={...query(),parent:await store.readParentCollaboration(spec.parent)};let first,second,error;
+ const before={...query(),parent:await store.readParentCollaboration(spec.parent)},app=createCaseAssistantApplication({store,config:null,clock:()=>new Date()});const recovered={...query(),parent:await store.readParentCollaboration(spec.parent)};let first,second,error;
  try{first=await action();second=await action();}catch(e){error=e.code??e.message;}
  const after={...query(),parent:await store.readParentCollaboration(spec.parent)};writeFileSync(spec.readback,JSON.stringify({pid:process.pid,before,recovered,first,second,error,after,model_calls:0,automatic_delivery:false},null,2),{flag:'wx'});
 }

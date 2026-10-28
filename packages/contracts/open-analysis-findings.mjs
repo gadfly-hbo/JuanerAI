@@ -1,16 +1,26 @@
-// Pure presentation of already checked, source-bound facts. Never executes or promotes model explanation.
+// Presentation of Store-qualified claims. No execution or qualification authority.
 export function openAnalysisFindings(task){
- const out=task.outcome;if(!out?.identity?.run_id||!out.outcome_id||!out.framework||!out.calculation||!out.verification?.result_sha256)return [];
- const quote=out.verification.grade==='source_attribution',evidence={task_id:task.identity.task_id,revision:task.identity.revision,run_id:out.identity.run_id,outcome_id:out.outcome_id,scope_sha256:task.identity.scope_sha256,plan_sha256:out.verification.plan_sha256,inspection_sha256:out.verification.inspection_sha256,result_sha256:out.verification.result_sha256,method:out.verification.method};
- const limitations=quote?['原文与位置核对不证明资料观点正确，不证明计算或因果。']:['核验只覆盖本版所列指标与范围，计算一致不证明因果、原因或预测或优惠券增量效果。'];
- const finding=(id,claim,value,unit,group=null,rows=out.calculation.rows)=>{const notApplicable=value==='null'&&out.calculation.relation?.total==='0'||value==='null'&&out.calculation.weighted&&(group===null?out.calculation.weighted.weight_total:out.calculation.weighted.groups?.find(g=>g.key===group)?.weight_total)==='0';return ({id:out.outcome_id+':'+id,claim,value:notApplicable?(out.calculation.relation?'不适用（总体金额为零）':'不适用（权重总额为零）'):value,unit:notApplicable?'':unit,group,rows,status:notApplicable?'not_applicable':out.verification.grade,evidence:{...evidence,group},support:{status:'checked',description:notApplicable?(out.calculation.relation?'总体金额为零，未计算占比':'本分组权重总额为零，未计算数值'):quote?'所选原文及位置对应核对':'原资料独立复算与本版计算一致'},counterevidence:{status:'not_checked',description:'尚未取得针对原因解释的合格反证；没有反证不等于原因成立。'},unknowns:['原因或替代解释仍须适用方法及对应证据。'],limitations});};
- if(quote){let values=[];try{values=JSON.parse(out.calculation.value);}catch{}return values.map((q,i)=>finding('quote-'+i,q.source_name+' · '+q.position,String(q.text),'原文',null,1));}
- if(out.calculation.method==='checked_membership_query'){
-  let facts;try{facts=JSON.parse(out.calculation.value);}catch{return [];}
-  const labels={comparison:'比较期',current:'本期'},records=[];
-  for(const key of ['comparison','current']){const p=facts.periods?.[key];if(!p)continue;for(const [field,label,unit] of [['active_member_count','活跃会员','人'],['repeat_member_count','复购会员','人'],['repeat_revenue_fen','复购收入','分']])if(p[field]!==undefined)records.push(finding(key+'-'+field,labels[key]+' · '+label,String(p[field]),unit));}
-  return records;
+ const out=task.outcome;
+ if(!out){
+  const same=record=>['task_id','revision','run_id','attempt_id','operation_id','grant_id','scope_sha256','config_sha256'].every(k=>typeof task.identity?.[k]==='string'&&record.identity?.[k]===task.identity[k]);
+  const pointer=(value,path)=>{let v=value;if(path)for(const encoded of path.slice(1).split('/')){const key=encoded.replaceAll('~1','/').replaceAll('~0','~');if(!v||typeof v!=='object'||!Object.hasOwn(v,key))return null;v=v[key];}return typeof v==='number'&&Number.isFinite(v)?String(v):typeof v==='string'&&v.length<=200?v:null;};
+  return (task.computation_records??[]).filter(record=>same(record)&&record.classification==='MODEL_COMPUTATION'&&record.verification==='not_performed'&&record.source_sha256===task.identity.scope_sha256&&record.receipt?.status==='unqualified').flatMap(record=>(record.claims??[]).map(claim=>({id:record.execution_id+':'+claim.path,claim:claim.label,value:pointer(record.value,claim.path),unit:claim.unit,group:null,rows:(record.context.source_facts??[]).reduce((n,f)=>n+f.data_rows,0),status:'not_performed',evidence:{task_id:task.identity.task_id,revision:task.identity.revision,run_id:record.identity.run_id,outcome_id:null,scope_sha256:task.identity.scope_sha256,reference_id:claim.path,result_sha256:record.receipt.outputs?.result?.sha256??null,proof_sha256:null,executions:[]},support:{status:'not_checked',description:'已保存本次实际程序产物，尚未独立核验；行数只表示实际输入资料行数，不表示主张核验覆盖。单位及方法仍是模型提出的说明。'},counterevidence:{status:'not_checked',description:'尚未完成原始来源独立取证、方法适用性或反证检查。'},unknowns:['独立核验资格、方法与单位、业务解释及未提供条件仍待确认。'],limitations:['这是MODEL_COMPUTATION/not_performed部分观察，不是正式Outcome、独立核验数字、人的业务决定或行动。',...claim.conditions]})));
  }
- const groups=out.calculation.groups??[],summary=groups.length?finding('summary',out.framework.goal+(out.calculation.groups.some(g=>g.value==='null')?' · 分组结果与适用性检查':' · 已核验分组结果'),'查看下列分组',out.calculation.unit):finding('metric',out.framework.goal,out.calculation.value,out.calculation.unit);
- return [summary,...groups.map((g,i)=>finding('group-'+i,out.framework.goal+' · '+g.key,g.value,out.calculation.unit,g.key,g.rows))];
+ if(!['task_id','revision','scope_sha256','config_sha256'].every(k=>out?.identity?.[k]===task.identity?.[k])||!out?.identity?.run_id||!out.outcome_id||!Array.isArray(out.computations)||!out.computations.length)return [];
+ const qualified=out.computations,values=out.numeric_report?.values??[];
+ if(qualified.some(f=>!['independent_arithmetic','source_attribution'].includes(f.verification?.grade)||f.verification.inspection_sha256!==task.identity.scope_sha256||!f.verification.result_sha256||f.verification.discrepancies?.length))return [];
+ const original=new Map();let ordinal=0;for(const fact of qualified)for(const claim of fact.calculation.claims)original.set('F'+(++ordinal),{fact,claim});
+ function support(id,seen=new Set()){
+  if(seen.has(id))return [];const next=new Set(seen);next.add(id);const value=values.find(v=>v.id===id);if(!value)return [];
+  if(value.grade==='derived_formula')return value.references.flatMap(ref=>support(ref,next));
+  const actual=original.get(id);return actual&&value.proof_sha256? [actual]:[];
+ }
+ const source={task_id:task.identity.task_id,revision:task.identity.revision,run_id:out.identity.run_id,outcome_id:out.outcome_id,scope_sha256:task.identity.scope_sha256};
+ return values.filter(v=>v.status==='verified'&&v.source_sha256===task.identity.scope_sha256).flatMap(v=>{
+  const proofs=support(v.id),byExecution=new Map();if(!proofs.length)return [];
+  for(const {fact,claim} of proofs){const paths=byExecution.get(fact.calculation.execution_id)?.paths??new Set();paths.add(claim.path);byExecution.set(fact.calculation.execution_id,{fact,paths});}
+  const executions=[...byExecution.values()].map(({fact:f,paths})=>({execution_id:f.calculation.execution_id,source_sha256:f.verification.inspection_sha256,result_sha256:f.verification.result_sha256,independent_execution_id:f.verification.independent.execution_id,claim_paths:[...paths],coverage:f.verification.coverage.filter(w=>paths.has(w.claim_path)),method:{primary:f.verification.method.primary,independent:f.verification.method.independent,rationale:f.verification.method.rationale,assessment:f.verification.method.assessment,claims:f.verification.method.review.claims.filter(c=>paths.has(c.path)).map(({path,applicability,independence,coverage,limitations})=>({path,applicability,independence,coverage,limitations}))}}));
+  const rows=new Set(executions.flatMap(e=>e.coverage.flatMap(w=>w.rows.map(row=>w.source_id+'/'+w.sheet_id+'/'+row)))).size;
+  return [{id:out.outcome_id+':'+v.id,claim:v.label,value:v.value,unit:v.unit,group:null,rows,status:v.grade,evidence:{...source,reference_id:v.id,result_sha256:v.result_sha256,proof_sha256:v.proof_sha256,executions},support:{status:'checked',description:v.grade==='source_attribution'?'同版获准原文、具体位置和文字对应已核对；所引观点真实性、总体及因果未核验。':v.grade==='derived_formula'?'同版已核验操作数的公式、单位及显示关系已检查；不新增独立原始来源。':'同版原始来源独立重算、逐主张覆盖与方法审查均有实际凭证。'},counterevidence:{status:'not_checked',description:'算术/来源核验不替代针对原因解释的适用反证。'},unknowns:['业务原因、替代解释及外部总体仍须相应证据。'],limitations:[...v.limitations]}];
+ });
 }

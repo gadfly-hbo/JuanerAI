@@ -1,4 +1,8 @@
 import type { AssistantSource, DecisionFields } from '../contracts/case-assistant.ts';
+const decisionTextFields=['rationale','owner','confirmed_at','alternatives','limitations','defer_trigger','defer_owner'] as const;
+const outcomeTextFields=['baseline','baseline_source','observation_object','metric','expectation','observation_window','guardrails','result_source','result_owner','assessment','assessment_owner','not_applicable_reason','reassess_trigger','reassess_owner'] as const;
+/** The business tool owns one parameter schema; Adapters pass it unchanged. */
+export const assistantDecisionParameters={type:'object',properties:{choice:{type:'string',enum:['candidate','no_action','defer']},candidate_id:{anyOf:[{type:'null'},{type:'string'}]},...Object.fromEntries(decisionTextFields.map(name=>[name,{type:'string'}])),evidence_refs:{type:'array',minItems:1,uniqueItems:true,items:{type:'string'}},finding_refs:{type:'array',minItems:1,uniqueItems:true,items:{type:'string'}},outcome:{type:'object',properties:{applicable:{type:'boolean'},...Object.fromEntries(outcomeTextFields.map(name=>[name,{type:'string'}]))},required:['applicable',...outcomeTextFields],additionalProperties:false}},required:['choice','candidate_id',...decisionTextFields,'evidence_refs','finding_refs','outcome'],additionalProperties:false};
 export function assistantFailure(code = 'VALIDATION_FAILED'): never { throw Object.assign(new Error(code), { code }); }
 export function assistantRecord(value: unknown, keys: readonly string[]): Record<string, unknown> {
     if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).length !== keys.length || keys.some(key => !Object.hasOwn(value, key)))

@@ -1,154 +1,49 @@
-import {metricAssetFrameworkParameters} from '../../../packages/contracts/metric-asset-tools.ts';
-import {assetProposal} from '../../fixtures/metric-assets.ts';
+
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {mkdtempSync} from 'node:fs';
-import {join} from 'node:path';
-import {createRuntime,type ModelRequest} from 'pi-agent-runtime';
-import * as adapter from '../../../adapters/agent-pi/open-analysis.ts';
-import {createPersistentRuntimeState} from '../../../adapters/agent-pi/persistent-runtime-state.ts';
-import type {OpenAnalysisRun,AnalysisTool} from '../../../packages/ports/open-analysis-runtime.ts';
-import {browserEvidenceRoot} from '../../fixtures/xanthil-desktop/browser-evidence.ts';
-
-const model={provider:'synthetic',id:'example',protocol:'openai-completions' as const,endpoint:'https://example.invalid/v1',contextWindow:4000,maxOutputTokens:50};
-const limits={modelCalls:10,toolCalls:10,outputTokens:1000,wallTimeMs:10000};
-function input(tools:readonly AnalysisTool[],signal=new AbortController().signal):OpenAnalysisRun{
- return {tools,signal,prompt:'synthetic',system:'synthetic',authorize:()=>true,identity:{task_id:'a',revision:'1',run_id:'a',attempt_id:'a',operation_id:'a',grant_id:'a',scope_sha256:'a'.repeat(64),config_sha256:'b'.repeat(64)}};
+import { mkdtempSync } from 'node:fs';
+import { join } from 'node:path';
+import { randomUUID } from 'node:crypto';
+import { createPiProfessionalAgent } from '../../../adapters/agent-pi/professional-agent.ts';
+import type { AnalysisTool } from '../../../packages/ports/open-analysis-runtime.ts';
+function response(n:number,calls:{name:string;args:unknown}[]=[],content='actual results observed'){
+ const delta=calls.length?{role:'assistant',tool_calls:calls.map((c,index)=>({index,id:'call-'+n+'-'+index,type:'function',function:{name:c.name,arguments:JSON.stringify(c.args)}}))}:{role:'assistant',content};
+ return new Response('data: '+JSON.stringify({id:'owned-'+n,object:'chat.completion.chunk',choices:[{index:0,delta,finish_reason:calls.length?'tool_calls':'stop'}],usage:{prompt_tokens:7,completion_tokens:3,total_tokens:10}})+'\n\ndata: [DONE]\n\n',{headers:{'content-type':'text/event-stream'}});
 }
-function gateway(current:()=>OpenAnalysisRun){
- const factory=Reflect.get(adapter,'createSharedAnalysisTool');assert.equal(typeof factory,'function','V12-RT: stable SDK boundary must dispatch only the current authorized business tools');return factory(current);
+async function fixture(tools:()=>readonly AnalysisTool[],provider:(dto:any,n:number)=>Promise<Response>|Response){
+ let n=0,allowed=true;const root=mkdtempSync(join(process.env.JUANERAI_NEWARCH_SHORT_ROOT!,'tools-')),controller=new AbortController(),agent=createPiProfessionalAgent({projectRoot:root,analysisModel:'mimo-v2.6-flash',authorizeWork:()=>allowed,credentials:{withCredential:async(_p,run)=>run({key:'offline-tool-key-not-in-input',provider:'xiaomi-token-plan-cn',model:'mimo-v2.6-flash',endpoint:'https://token-plan-cn.xiaomimimo.com/v1'})},fetch:async(_u,init)=>provider(JSON.parse(String(init!.body)),++n)}),identity={task_id:randomUUID(),revision:'1',operation_id:randomUUID(),run_id:randomUUID(),attempt_id:randomUUID(),grant_id:randomUUID(),scope_sha256:'a'.repeat(64),config_sha256:await agent.configuration()};
+ const turn={identity,command_id:identity.operation_id,purpose:'analysis' as const,prompt:'owned synthetic interface contract',system:'only current authorized tools',capabilities:async()=>tools(),authorize:()=>allowed,signal:controller.signal};
+ return {root,agent,identity,turn,count:()=>n,revoke:()=>{allowed=false;},controller};
 }
+const nested={type:'object',properties:{operation:{type:'string',enum:['sum']},rows:{type:'array',items:{type:'object',properties:{value:{type:'number'}},required:['value'],additionalProperties:false}}},required:['operation','rows'],additionalProperties:false};
+const rows={operation:'sum',rows:[{value:1.25}]};
 
-test('V12-RT: installed SDK consumes actual local result; current catalog changes do not reset pinned task',async()=>{
- let calls=0,localCalls=0;const schema={type:'object',properties:{amount:{type:'number'}},required:['amount'],additionalProperties:false};
- let current=input([{name:'calculate',description:'first bound source',parameters:schema,execute:async args=>{localCalls++;return {total:Number(args.amount)*2};}}]);
- const tool=gateway(()=>current),state=createPersistentRuntimeState({projectRoot:mkdtempSync(join(browserEvidenceRoot,'shared-dispatch-'))});
- const transport=async(request:ModelRequest)=>{
-  calls++;if(calls%2===1)return {content:[{kind:'tool' as const,id:'call-'+calls,name:tool.name,arguments:{name:current.tools[0].name,arguments_json:JSON.stringify({amount:calls===1?20:30})}}],stop:'tools' as const,usage:{inputTokens:1,outputTokens:5}};
-  assert.ok(request.messages.some(m=>m.role==='tool'&&m.text.includes(calls===2?'40':'60')),'SDK must observe the local result, not a replayed answer');
-  return {content:[{kind:'text' as const,text:calls===2?'40':'60'}],stop:'complete' as const,usage:{inputTokens:1,outputTokens:5}};
- };
- const runtime=createRuntime({...state,model,transport,authorize:async()=>true,purposes:[{id:'analysis',mode:'agent',model,transport,tools:[tool]}]});
- const first=await runtime.runAgent({taskId:'same-task',purpose:'analysis',prompt:'first actual local calculation',limits,tools:[tool]});
- assert.equal(first.status,'succeeded');if(first.status==='succeeded')assert.equal(first.value,'40');
- current=input([{name:'recalculate',description:'new current scope; original tool is no longer available',parameters:schema,execute:async args=>{localCalls++;return {total:Number(args.amount)*2};}}]);
- const second=await runtime.runAgent({taskId:'same-task',purpose:'analysis',prompt:'recalculate current scope',limits,tools:[tool]});
- assert.equal(second.status,'succeeded');if(second.status==='succeeded')assert.equal(second.value,'60');
- assert.equal(localCalls,2);assert.equal(second.usage.modelCalls,4);assert.equal(second.usage.toolCalls,2);assert.equal(second.usage.outputTokens,20);
+test('V12-RT current: original nested schema reaches DTO/native prepare/executor and actual local result returns to Pi',async()=>{
+ let effects=0;const tool:AnalysisTool={name:'calculate',effect:'write',description:'actual current calculation',parameters:nested,execute:async args=>{effects++;assert.deepEqual(args,rows);return {total:Number((args.rows as {value:number}[])[0]!.value)*2};}};
+ const f=await fixture(()=>[tool],(dto,n)=>{assert.deepEqual(dto.tools.find((t:any)=>t.function.name==='calculate').function.parameters,nested);if(n===1)return response(n,[{name:'calculate',args:rows}]);assert.ok(dto.messages.some((m:any)=>m.role==='tool'&&m.content.includes('2.5')));return response(n);});
+ const r=await f.agent.advance(f.turn);await f.agent.assertCompleted(f.identity,r.completion);assert.equal(effects,1);assert.equal(f.count(),2);assert.equal((await f.agent.diagnostics(f.identity)).meter!.tool_calls,1);
 });
-
-test('V12-RT: original nested schema rejects coercion, unknown fields and widened tool names before effects',async()=>{
- let effects=0;
- const tool:AnalysisTool={name:'calculate',description:'current only',parameters:{type:'object',properties:{operation:{enum:['sum']},rows:{type:'array',items:{type:'object',properties:{value:{type:'number'}},required:['value'],additionalProperties:false}}},required:['operation','rows'],additionalProperties:false},execute:async args=>{effects++;return args;}};
- const current=input([tool]),dispatch=gateway(()=>current),signal=new AbortController().signal;
- for(const value of [{operation:'sum',rows:[{value:'1'}]},{operation:'invented',rows:[]},{operation:'sum',rows:[{value:1,grant:true}]},{operation:'sum',rows:[],authorized:true}])await assert.rejects(dispatch.execute({name:'calculate',arguments_json:JSON.stringify(value)},signal),{code:'TOOL_ARGUMENT_INVALID'});
- await assert.rejects(dispatch.execute({name:'not-in-current-catalog',arguments_json:'{}'},signal),{code:'TOOL_POLICY_VIOLATION'});
- await assert.rejects(dispatch.execute({name:'calculate',arguments_json:'{broken'},signal),{code:'TOOL_ARGUMENT_INVALID'});
- assert.equal(effects,0);
- const exact={operation:'sum',rows:[{value:1.25}]};assert.deepEqual(await dispatch.execute({name:'calculate',arguments_json:JSON.stringify(exact)},signal),exact);assert.equal(effects,1);
+for(const mutation of [{operation:'sum',rows:[{value:'1'}]},{operation:'invented',rows:[]},{operation:'sum',rows:[{value:1,grant:true}]},{operation:'sum',rows:[],authorized:true}])test('V12-RT current native structural rejection, explicit valid correction '+JSON.stringify(mutation),async()=>{
+ let effects=0;const f=await fixture(()=>[{name:'calculate',effect:'write',description:'current nested contract',parameters:nested,execute:async args=>{effects++;assert.deepEqual(args,rows);return args;}}],(dto,n)=>{if(n===1)return response(n,[{name:'calculate',args:mutation}]);if(n===2){assert.equal(effects,0);assert.match(JSON.stringify(dto.messages),/STRUCTURE_MISMATCH|invalid_arguments|Invalid arguments/i);return response(n,[{name:'calculate',args:rows}]);}return response(n);});
+ await f.agent.advance(f.turn);assert.equal(effects,1);assert.equal(f.count(),3);
 });
-
-test('V12-RT: revoked, stopped, business waiting and changed run deny dispatch and late publication',async()=>{
- let effects=0,authorized=true,waiting=false;let release!:(v:unknown)=>void;let entered!:()=>void,started=new Promise<void>(resolve=>entered=resolve);
- const controller=new AbortController();let current={...input([{name:'calculate',description:'local',parameters:{type:'object',additionalProperties:false},execute:async()=>{effects++;entered();return new Promise(resolve=>release=resolve);}}],controller.signal),authorize:()=>authorized,shouldYield:()=>waiting};
- const dispatch=gateway(()=>current),args={name:'calculate',arguments_json:'{}'},signal=new AbortController().signal;
- authorized=false;await assert.rejects(dispatch.execute(args,signal),{code:'AUTHORITY_REQUIRED'});authorized=true;
- waiting=true;const deferred=await dispatch.execute(args,signal);assert.equal(Reflect.get(deferred as object,'code'),'ANALYSIS_YIELD');assert.equal(Reflect.get(deferred as object,'status'),'deferred');assert.equal(Reflect.get(deferred as object,'executed'),false);waiting=false;assert.equal(effects,0);
- const pending=dispatch.execute(args,signal);await started;current={...current};release({total:42});await assert.rejects(pending,{code:'TASK_CHANGED'});
- started=new Promise<void>(resolve=>entered=resolve);const late=dispatch.execute(args,signal);await started;controller.abort();release({total:42});await assert.rejects(late,{code:'CANCELLED'});
- await assert.rejects(dispatch.execute(args,signal),{code:'CANCELLED'});assert.equal(effects,2);
+test('V13 current repeated invalid native arguments hard stop before effect; no host rewrite or fault extra',async()=>{
+ let effects=0;const f=await fixture(()=>[{name:'calculate',effect:'write',description:'required number',parameters:{type:'object',properties:{n:{type:'number'}},required:['n'],additionalProperties:false},execute:async()=>{effects++;return {};}}],(_dto,n)=>response(n,[{name:'calculate',args:{}}]));await assert.rejects(()=>f.agent.advance(f.turn));assert.equal(effects,0);assert.equal(f.count(),6);assert.equal((await f.agent.diagnostics(f.identity)).meter!.model_attempts,6);
 });
-
-test('V12-RT: duplicate current names cannot choose an arbitrary executor',async()=>{
- let effects=0;const tool={name:'same',description:'local',parameters:{type:'object'},execute:async()=>{effects++;return {};}};
- const current=input([tool,{...tool,description:'different'}]);await assert.rejects(gateway(()=>current).execute({name:'same',arguments_json:'{}'},new AbortController().signal),{code:'TOOL_POLICY_VIOLATION'});assert.equal(effects,0);
+for(const failure of ['arbitrary','after-effect','nonfinite'] as const)test('V12 current '+failure+' cannot forge not-started or successful saved output',async()=>{
+ let effects=0;const f=await fixture(()=>[{name:'effect',effect:'write',description:'owned effect',parameters:{type:'object',properties:{},additionalProperties:false},execute:async()=>{effects++;if(failure==='nonfinite')return {total:Infinity};throw Object.assign(Error('PRIVATE_FAILURE_TEXT'),{code:'CANDIDATE_REFERENCE_INVALID',facts:{effect_state:'not_started',saved:false}});}}],(_dto,n)=>response(n,[{name:'effect',args:{}}]));await assert.rejects(()=>f.agent.advance(f.turn));await f.agent.waitForIdle();assert.equal(effects,1);assert.equal(f.count(),1);const d=await f.agent.diagnostics(f.identity);assert.equal(d.meter!.tool_calls,1);assert.equal(d.unconfirmed_effects,failure!=='nonfinite');assert.doesNotMatch(JSON.stringify(d),/PRIVATE_FAILURE_TEXT/);assert.ok(d.observations.some(o=>o.kind==='tool'&&o.completion===(failure==='nonfinite'?'completed':'unknown')&&o.delivery==='failed'));
 });
-
-test('V12-RT: non-finite computed number cannot be silently normalized to null',async()=>{
- const current=input([{name:'calculate',description:'local',parameters:{type:'object'},execute:async()=>({total:Infinity})}]);
- await assert.rejects(gateway(()=>current).execute({name:'calculate',arguments_json:'{}'},new AbortController().signal),{code:'TOOL_RESULT_INVALID'});
+for(const boundary of ['revoke','cancel','stale-source'] as const)test('V12 current '+boundary+' before actual tool effect and after effect cannot publish',async()=>{
+ let effects=0,f:Awaited<ReturnType<typeof fixture>>;f=await fixture(()=>[{name:'effect',effect:'write',description:'owned guarded effect',parameters:{type:'object',properties:{},additionalProperties:false},execute:async()=>{if(boundary==='stale-source')throw Object.assign(Error('SOURCE_CHANGED'),{code:'SOURCE_CHANGED'});effects++;return {};}}],(_dto,n)=>{if(boundary==='revoke')f.revoke();if(boundary==='cancel')f.controller.abort();return response(n,[{name:'effect',args:{}}]);});await assert.rejects(()=>f.agent.advance(f.turn));await f.agent.waitForIdle();assert.equal(effects,0);assert.equal(f.count(),1);
 });
-
-for(const repeat of [false,true])test(`V13-ARGUMENT-CORRECTION03: successful original operation resolves structural feedback; later repeat=${repeat} remains bounded`,async()=>{
- let turns=0;const effects:number[]=[];
- const current={...input([{name:'calculate',description:'actual original executor',parameters:{type:'object',properties:{quantity:{type:'number'}},required:['quantity'],additionalProperties:false},execute:async args=>{effects.push(Number(args.quantity));return {quantity:args.quantity};}}]),recoverInvalidArguments:true};
- const tool=adapter.createSharedAnalysisTool(()=>current,()=>turns);
- const state=createPersistentRuntimeState({projectRoot:mkdtempSync(join(browserEvidenceRoot,'structural-correction-'))});
- const transport=async(request:ModelRequest)=>{
-  turns++;
-  if(turns===2||turns===4){assert.ok(request.messages.some(m=>m.role==='tool'&&m.text.includes('invalid_arguments')));assert.deepEqual(effects,turns===2?[]:[7]);}
-  if(turns===3)assert.deepEqual(effects,[7]);
-  if(turns===5){assert.deepEqual(effects,[7,11]);return {content:[{kind:'text' as const,text:'both actual results observed'}],stop:'complete' as const,usage:{inputTokens:1,outputTokens:5}};}
-  const args=turns===2?{quantity:7}:turns===4&&!repeat?{quantity:11}:{};
-  return {content:[{kind:'tool' as const,id:'call-'+turns,name:tool.name,arguments:{name:'calculate',arguments_json:JSON.stringify(args)}}],stop:'tools' as const,usage:{inputTokens:1,outputTokens:5}};
- };
- const runtime=createRuntime({...state,model,transport,authorize:async()=>true,purposes:[{id:'analysis',mode:'agent',model,transport,tools:[tool]}]});
- const result=await runtime.runAgent({taskId:'structural-corrections',purpose:'analysis',prompt:'perform two separate exact operations',limits,tools:[tool]});
- assert.equal(result.status,repeat?'failed':'succeeded');assert.deepEqual(effects,repeat?[7]:[7,11]);assert.equal(result.usage.modelCalls,repeat?4:5);assert.equal(result.usage.toolCalls,4);
+test('V12 current duplicate capability names reject before physical request, not arbitrary selection',async()=>{
+ let effects=0;const t:AnalysisTool={name:'same',effect:'write',description:'owned',parameters:{type:'object'},execute:async()=>{effects++;return {};}};const f=await fixture(()=>[t,{...t,description:'other'}],(_dto,n)=>response(n));await assert.rejects(()=>f.agent.advance(f.turn),{code:'INVALID_REQUEST'});assert.equal(f.count(),0);assert.equal(effects,0);
 });
-
-test('V13-ARGUMENT-CORRECTION03: same-response deferred call and invalid original result do not resolve correction',async()=>{
- let turn=1,effects=0;
- const current={...input([{name:'calculate',description:'unpublishable original result',parameters:{type:'object',properties:{quantity:{type:'number'}},required:['quantity'],additionalProperties:false},execute:async()=>{effects++;return {total:Infinity};}}]),recoverInvalidArguments:true};
- const dispatch=adapter.createSharedAnalysisTool(()=>current,()=>turn),signal=new AbortController().signal;
- const call=(args:object)=>dispatch.execute({name:'calculate',arguments_json:JSON.stringify(args)},signal);
- assert.equal(Reflect.get(await call({}) as object,'status'),'invalid_arguments');
- assert.equal(Reflect.get(await call({quantity:7}) as object,'code'),'AWAITING_ARGUMENT_FEEDBACK');assert.equal(effects,0);
- turn++;await assert.rejects(call({quantity:7}),{code:'TOOL_RESULT_INVALID'});assert.equal(effects,1);
- turn++;await assert.rejects(call({}),{code:'TOOL_ARGUMENT_INVALID'});assert.equal(effects,1);
-});
-
-test('V13-NATIVE-JSON02: malformed text, non-object JSON, oversized transport and unknown names never reach original consumer',async()=>{
- let effects=0;const current={...input([{name:'calculate_and_verify',description:'exact local consumer',parameters:{type:'object',properties:{quantity:{type:'integer'}},required:['quantity'],additionalProperties:false},execute:async args=>{effects++;return args;}}]),recoverInvalidArguments:true};
- const native=adapter.createNativeBusinessTools(()=>current).find(t=>t.name==='calculate_and_verify')!,signal=new AbortController().signal;
- const first=await native.execute({arguments_json:'{broken'},signal);assert.equal(Reflect.get(first as object,'status'),'invalid_arguments');assert.equal(effects,0);
- await assert.rejects(()=>native.execute({arguments_json:'[]'},signal),{code:'TOOL_ARGUMENT_INVALID'});
- await assert.rejects(()=>native.execute({arguments_json:' '.repeat(262145)},signal),{code:'TOOL_ARGUMENT_INVALID'});
- assert.deepEqual(await native.execute({arguments_json:JSON.stringify({quantity:7})},signal),{quantity:7});assert.equal(effects,1);
- const absent=adapter.createNativeBusinessTools(()=>current).find(t=>t.name==='execute_step')!;await assert.rejects(()=>absent.execute({arguments_json:'{}'},signal),{code:'TOOL_POLICY_VIOLATION'});assert.equal(effects,1);
+test('V12 current same Task changed schema cannot reinterpret pinned configuration or dispatch the old tool',async()=>{
+ let effects=0;const schema={type:'object',properties:{amount:{type:'number'}},required:['amount'],additionalProperties:false};let name='calculate';const f=await fixture(()=>[{name,effect:'write',description:'current only',parameters:schema,execute:async a=>{effects++;return {total:Number(a.amount)*2};}}],(dto,n)=>{assert.ok(dto.tools.some((t:any)=>t.function.name===name));if(n===1||n===3)return response(n,[{name,args:{amount:n===1?20:30}}]);assert.match(JSON.stringify(dto.messages),n===2?/40/:/60/);return response(n);});await f.agent.advance(f.turn);name='recalculate';await assert.rejects(()=>f.agent.advance({...f.turn,command_id:randomUUID()}));assert.equal(f.count(),2,'changed schema cannot silently reinterpret the existing SDK configuration');assert.equal(effects,1);
 });
 
 
-test('V13-FAIR126 / RT04: IO progresses before local effect and revocation at that boundary blocks it',async()=>{
- let effects=0,io=false;const local:AnalysisTool={name:'local',description:'actual local effect',parameters:{type:'object',properties:{},additionalProperties:false},execute:async()=>{assert.equal(io,true,'a batch must not starve native storage and page IO');effects++;return {accepted:true};}};
- let current=input([local]);const dispatch=gateway(()=>current),signal=new AbortController().signal;setImmediate(()=>{io=true});
- assert.deepEqual(await dispatch.execute({name:'local',arguments_json:'{}'},signal),{accepted:true});assert.equal(effects,1);
- let authorized=true;current={...input([local]),authorize:()=>authorized};setImmediate(()=>{authorized=false});
- await assert.rejects(()=>dispatch.execute({name:'local',arguments_json:'{}'},signal),{code:'AUTHORITY_REQUIRED'});assert.equal(effects,1);
- const controller=new AbortController();current=input([local],controller.signal);setImmediate(()=>controller.abort());
- await assert.rejects(()=>dispatch.execute({name:'local',arguments_json:'{}'},signal),{code:'CANCELLED'});assert.equal(effects,1);
- current=input([local]);setImmediate(()=>{current=input([local])});await assert.rejects(()=>dispatch.execute({name:'local',arguments_json:'{}'},signal),{code:'TASK_CHANGED'});assert.equal(effects,1);
-});
 
 
-test('MF-03 native SDK catalog exposes approved asset tools and consumes their actual results',async()=>{
- let effects=0,turns=0,authorized=true;
- const schema={type:'object',properties:{asset_id:{type:'string'},version:{type:'string'}},required:['asset_id','version'],additionalProperties:false};
- const current={...input([
-  {name:'read_project_metric_asset',description:'host-approved six definitions only',parameters:{type:'object',properties:{},additionalProperties:false},execute:async()=>({asset_id:'approved',version:'1.1.0'})},
-  {name:'set_metric_asset_framework',description:'bind original current asset',parameters:schema,execute:async args=>{effects++;return {bound:args};}},
- ]),authorize:()=>authorized};
- const tools=adapter.createNativeBusinessTools(()=>current);
- for(const name of current.tools.map(t=>t.name))assert.ok(tools.some(t=>t.name===name),'native SDK must advertise '+name);
- const state=createPersistentRuntimeState({projectRoot:mkdtempSync(join(browserEvidenceRoot,'metric-native-dispatch-'))});
- const transport=async(request:ModelRequest)=>{
-  turns++;
-  if(turns===1)return {content:[{kind:'tool' as const,id:'asset-read',name:'read_project_metric_asset',arguments:{}}],stop:'tools' as const,usage:{inputTokens:1,outputTokens:5}};
-  if(turns===2){assert.ok(request.messages.some(m=>m.role==='tool'&&m.text.includes('1.1.0')));return {content:[{kind:'tool' as const,id:'asset-bind',name:'set_metric_asset_framework',arguments:{asset_id:'approved',version:'1.1.0'}}],stop:'tools' as const,usage:{inputTokens:1,outputTokens:5}};}
-  assert.ok(request.messages.some(m=>m.role==='tool'&&m.text.includes('bound')));return {content:[{kind:'text' as const,text:'actual asset binding observed'}],stop:'complete' as const,usage:{inputTokens:1,outputTokens:5}};
- };
- const runtime=createRuntime({...state,model,transport,authorize:async()=>true,purposes:[{id:'analysis',mode:'agent',model,transport,tools}]});
- const result=await runtime.runAgent({taskId:'asset-task',purpose:'analysis',prompt:'consume approved asset',limits,tools});
- assert.equal(result.status,'succeeded');assert.equal(effects,1);assert.equal(turns,3);
- const bind=tools.find(t=>t.name==='set_metric_asset_framework')!;
- await assert.rejects(bind.execute({asset_id:'approved',version:'1.1.0',grant:true},current.signal),{code:'TOOL_ARGUMENT_INVALID'});
- authorized=false;await assert.rejects(bind.execute({asset_id:'approved',version:'1.1.0'},current.signal),{code:'AUTHORITY_REQUIRED'});assert.equal(effects,1);
-});
 
-
-test('MF-BIND-02 asset channel parameters reject empty exclusions before effects and permit one explicit omission',async()=>{
- let effects=0;const p=assetProposal(),args={goal:p.goal,unit:p.unit,bindings:p.bindings,parameters:p.parameters};const current={...input([{name:'set_metric_asset_framework',description:'current approved asset',parameters:metricAssetFrameworkParameters,execute:async a=>{effects++;return {bound:a};}}]),recoverInvalidArguments:true};
- const native=adapter.createNativeBusinessTools(()=>current).find(t=>t.name==='set_metric_asset_framework')!,signal=new AbortController().signal;
- const rejected=await native.execute({...args,parameters:{...args.parameters,internal_values:[]}},signal);assert.equal(Reflect.get(rejected as object,'status'),'invalid_arguments');assert.equal(effects,0,'unsupported empty exclusions must not reach the source-bound consumer');
- const accepted=await native.execute(args,signal);assert.deepEqual(Reflect.get(accepted as object,'bound'),args);assert.equal(effects,1);
-});

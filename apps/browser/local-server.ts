@@ -2,7 +2,6 @@ import {metricFactoryHttp} from "./metric-factory-http.ts";
 import {deepResearchHttp,type ResearchHttpServices} from './deep-research-http.ts';
 import {decisionPlatformHttp,type DecisionHttpServices} from './decision-platform-http.ts';
 import {reportStudioHttp,type ReportStudioHttpServices} from './report-studio-http.ts';
-import {reportUserHistory} from '../../packages/product-core/open-analysis-report-review.ts';
 import {projectReportContent} from '../../packages/product-core/browser-report-content.ts';
 import {readFileSync} from 'node:fs';
 import {createServer, type IncomingMessage, type ServerResponse} from 'node:http';
@@ -44,20 +43,17 @@ function reply(res: ServerResponse, status: number, value: unknown) {
 }
 
 /** Presentation only; storage, Runtime and calculation retain the full snapshot. */
-function browserOpenTask(task: Omit<OpenStoredTask,'history'> & {history?:OpenStoredTask['history']}): unknown {
- return {...task,browser_report:projectReportContent(task as OpenStoredTask),browser_view:'1.0',revision_preview_supported:true,plan_reuse_supported:true,source:{...task.source,sources:task.source.sources.map(source=>({...source,sheets:source.sheets.map(sheet=>({...sheet,full_data_rows:Math.max(0,sheet.rows.length-1),rows:sheet.rows.slice(0,11)}))}))},
- checkpoint:task.checkpoint?{...task.checkpoint,messages:reportUserHistory(task.checkpoint.messages,task.identity.task_id).map(message=>{
- if(message.speaker==='tool'){const {result,...visible}=message;void result;return visible;}
- if(message.speaker==='assistant'){const {calls,...visible}=message;void calls;return visible;}
- return message;})}:task.checkpoint,...(task.history?{history:task.history.map(browserOpenTask)}:{})};
+function browserOpenTask(task: Omit<OpenStoredTask,'history'> & {history?:OpenStoredTask['history']},operationActive?:boolean): unknown {
+ return {...task,...(operationActive!==undefined?{operation_active:operationActive}:{}),browser_report:projectReportContent(task as OpenStoredTask),browser_view:'1.0',source:{...task.source,sources:task.source.sources.map(source=>({...source,sheets:source.sheets.map(sheet=>({...sheet,full_data_rows:Math.max(0,sheet.rows.length-1),rows:sheet.rows.slice(0,11)}))}))},
+ ...(task.history?{history:task.history.map(t=>browserOpenTask(t))}:{})};
 }
 
 export type BrowserServiceCommands={credential:string;check?():void;stop():Promise<void>;projects():Promise<unknown>;receipt?(id:string):Promise<unknown>;select(input:unknown):Promise<unknown>;settings(input:unknown):Promise<unknown>};
 
 /** Task-owned loopback composition. No provider, credentials, file selection or service activation. */
-export async function startBrowserMembershipServer(deps: {store: BrowserMembershipReadback;metricFactory?:import("../../packages/ports/metric-factory.ts").MetricWorkspace;deepResearch?:ResearchHttpServices;reportStudio?:ReportStudioHttpServices;decisionPlatform?:DecisionHttpServices;workspace?:BrowserWorkspaceCommands;service?:BrowserServiceCommands;formalMember?:ReturnType<typeof import('../../packages/application/browser-membership.ts').createOpenMemberCaseAdmission>;open?:ReturnType<typeof import('../../profiles/personal/open-analysis.ts').createPersonalOpenAnalysisWorkspace>}) {
+export async function startBrowserMembershipServer(deps: {store: BrowserMembershipReadback;metricFactory?:import("../../packages/ports/metric-factory.ts").MetricWorkspace;deepResearch?:ResearchHttpServices;reportStudio?:ReportStudioHttpServices;decisionPlatform?:DecisionHttpServices;workspace?:BrowserWorkspaceCommands;service?:BrowserServiceCommands;open?:ReturnType<typeof import('../../profiles/personal/open-analysis.ts').createPersonalOpenAnalysisWorkspace>}) {
   const app = createBrowserMembershipReadbackApplication(deps.store);
-  const workbenchVersion={contract:'BUI-20261015-004',started_at:new Date().toISOString(),pid:process.pid,node:process.version,source_sha256:Object.fromEntries(['apps/browser/local-server.ts','apps/browser/quick-analysis-client.mjs','apps/browser/quick-analysis-workbench.mjs','apps/browser/browser-workbench.css','packages/application/open-analysis-workspace.ts','packages/product-core/browser-report-content.ts','adapters/storage-local/open-analysis.ts'].map(path=>[path,createHash('sha256').update(readFileSync(new URL('../../'+path,import.meta.url))).digest('hex')]))};
+  const workbenchVersion={contract:'BUI-20261015-004',started_at:new Date().toISOString(),pid:process.pid,node:process.version,source_sha256:Object.fromEntries(['apps/browser/local-server.ts','apps/browser/quick-analysis-client.mjs','apps/browser/quick-analysis-workbench.mjs','apps/browser/browser-workbench.css','apps/browser/agent-activity.css','packages/application/open-analysis-workspace.ts','packages/product-core/browser-report-content.ts','adapters/storage-local/open-analysis.ts'].map(path=>[path,createHash('sha256').update(readFileSync(new URL('../../'+path,import.meta.url))).digest('hex')]))};
   const bootstrap = secret(), session = secret();
   let control=secret(),generation=0,owned=!deps.service,selecting=false;
   const bootstraps=new Map<string,number>(),sessions=new Set<string>();
@@ -98,7 +94,7 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       if(path==='/v1/service/stop'){reply(res,200,{stopping:true});setImmediate(()=>{void deps.service!.stop();});return;}
       throw new HttpFailure(404);
     }
-    const assets:Record<string,[string,string]>={'/browser-workbench.css':['browser-workbench.css','text/css'],'/':['index.html','text/html'],'/bootstrap.mjs':['bootstrap.mjs','text/javascript'],'/workspace.mjs':['workspace.mjs','text/javascript'],'/client.mjs':['client.mjs','text/javascript'],'/read-json.mjs':['read-json.mjs','text/javascript'],'/styles.css':['styles.css','text/css'],'/report-studio-client.mjs':['report-studio-client.mjs','text/javascript'],'/quick-analysis-workbench.mjs':['quick-analysis-workbench.mjs','text/javascript'],'/quick-analysis-client.mjs':['quick-analysis-client.mjs','text/javascript'],'/packages/contracts/open-analysis-findings.mjs':['../../packages/contracts/open-analysis-findings.mjs','text/javascript'],'/packages/contracts/open-analysis-recovery.mjs':['../../packages/contracts/open-analysis-recovery.mjs','text/javascript'],'/quick-analysis-workbench.css':['quick-analysis-workbench.css','text/css'],'/assets/logo.png':['../desktop/assets/juanerai-logo-slogan.png','image/png']};
+    const assets:Record<string,[string,string]>={'/browser-workbench.css':['browser-workbench.css','text/css'],'/agent-activity.css':['agent-activity.css','text/css'],'/':['index.html','text/html'],'/bootstrap.mjs':['bootstrap.mjs','text/javascript'],'/workspace.mjs':['workspace.mjs','text/javascript'],'/client.mjs':['client.mjs','text/javascript'],'/read-json.mjs':['read-json.mjs','text/javascript'],'/styles.css':['styles.css','text/css'],'/report-studio-client.mjs':['report-studio-client.mjs','text/javascript'],'/quick-analysis-workbench.mjs':['quick-analysis-workbench.mjs','text/javascript'],'/quick-analysis-client.mjs':['quick-analysis-client.mjs','text/javascript'],'/packages/contracts/open-analysis-findings.mjs':['../../packages/contracts/open-analysis-findings.mjs','text/javascript'],'/quick-analysis-workbench.css':['quick-analysis-workbench.css','text/css'],'/assets/logo.png':['../desktop/assets/juanerai-logo-slogan.png','image/png']};
     assets['/deep-research-client.mjs']=['deep-research-client.mjs','text/javascript'];
     assets['/deep-research.css']=['deep-research.css','text/css'];
     assets['/decision-platform-client.mjs']=['decision-platform-client.mjs','text/javascript'];
@@ -150,16 +146,8 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
         }finally{selecting=false;}return;
       }
     }
-    const nativeCopy=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/formal-reports\/([a-f0-9-]{36})\/copy$/.exec(path);if(deps.formalMember&&nativeCopy&&req.method==='GET'){const value=await deps.formalMember.reportCopy(nativeCopy[1],nativeCopy[2]);res.writeHead(200,{'content-type':value.media_type,'content-disposition':`attachment; filename="${value.suggested_file_name}"`,'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"});res.end(value.bytes);return;}
-    const nativeTarget=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/formal-review-target$/.exec(path);if(deps.formalMember&&nativeTarget&&req.method==='GET'){reply(res,200,deps.formalMember.reviewTarget(nativeTarget[1]));return;}
-    const nativeReview=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/formal-review(?:\/(save-receipts|submission-receipts)\/([a-f0-9-]{36}))?$/.exec(path);
-    if(deps.formalMember&&nativeReview){
-      const id=nativeReview[1];if(req.method==='GET'){reply(res,200,nativeReview[2]==='save-receipts'?deps.formalMember.reviewReceipt(id,nativeReview[3]):nativeReview[2]==='submission-receipts'?deps.formalMember.submissionReceipt(id,nativeReview[3]):deps.formalMember.readReview(id));return;}
-      if(nativeReview[2])throw new HttpFailure(405);if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const raw=await json(req,128*1024);if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new HttpFailure(400);const {operation,...body}=raw as Record<string,unknown>;
-      if(operation==='prepare'){reply(res,200,await deps.formalMember.prepareReview(id,body));return;}if(operation==='amend'){reply(res,200,await deps.formalMember.amendReview(id,body));return;}if(operation==='save'){reply(res,200,await deps.formalMember.saveReview(id,body));return;}if(operation==='submit'){reply(res,200,await deps.formalMember.submitReview(id,body));return;}throw new HttpFailure(400);
-    }
     if(deps.open&&path.startsWith('/v1/open-analysis')){
-      const present=(task:OpenStoredTask)=>req.headers['x-xanthil-view']==='browser-v1'?browserOpenTask(task):task;
+      const present=(task:OpenStoredTask)=>req.headers['x-xanthil-view']==='browser-v1'?browserOpenTask(task,deps.open!.operationActive(task.identity.task_id)):task;
       const content=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/(report-content|report-content-receipts\/[a-f0-9-]{36}|resolve-references)$/.exec(path);
       if(content){const id=content[1]!,kind=content[2]!;
        if(req.method==='GET'&&kind==='report-content'){reply(res,200,deps.open.reportContent(id));return;}
@@ -181,54 +169,41 @@ export async function startBrowserMembershipServer(deps: {store: BrowserMembersh
       }
       const assetAction=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/(metric-asset|metric-asset-execute)$/.exec(path);
       if(assetAction&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req);reply(res,200,present(await (assetAction[2]==='metric-asset'?deps.open.selectMetricAsset(assetAction[1],body):deps.open.executeMetricAssetRevision(assetAction[1],body))));return;}
-      const assetCopy=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/adoption-receipts\/([1-9][0-9]*)\/([a-f0-9-]{36})\/copy$/.exec(path);
-      if(assetCopy&&req.method==='GET'){const value=deps.open.metricAssetReceiptCopy(assetCopy[1],assetCopy[2],assetCopy[3]);res.writeHead(200,{'content-type':value.media_type,'content-disposition':`attachment; filename="${value.suggested_file_name}"`,'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"});res.end(value.bytes);return;}
       if(path==='/v1/open-analysis/methods'&&req.method==='GET'){reply(res,200,deps.open.methods());return;}
       if(path==='/v1/open-analysis'&&req.method==='GET'){reply(res,200,deps.open.list().map(present));return;}
       if(path==='/v1/open-analysis'&&req.method==='POST'){
         if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);
         const raw=await json(req,45*1024*1024);if(!raw||typeof raw!=='object'||!Array.isArray(Reflect.get(raw,'sources')))throw new HttpFailure(400);
         const sources=Reflect.get(raw,'sources').map(decodeOpenSource);
-        reply(res,200,present(await deps.open.submit({...raw,sources})));return;
+        const task=await deps.open.submit({...raw,sources});
+        // The explicit product submission owns initial admission. Passive reads
+        // and requirement drafts never start or resume an Agent operation.
+        reply(res,200,present(task.state==='ready'&&task.entry_mode!=='requirements'?await deps.open.start(task.identity.task_id):task));return;
       }
-      const reusable=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/reusable-plan\/([1-9][0-9]*)$/.exec(path);if(reusable&&req.method==='GET'){reply(res,200,deps.open.reusablePlan(reusable[1],reusable[2]));return;}
       const submission=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/(submission|stop-initial)$/.exec(path);
       if(submission&&req.method==='GET'&&submission[2]==='submission'){const receipt=deps.open.submission(submission[1]);if(!receipt)throw new HttpFailure(404);reply(res,200,receipt);return;}
-      if(submission&&req.method==='POST'&&submission[2]==='stop-initial'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req);if(!body||typeof body!=='object'||Object.keys(body).length)throw new HttpFailure(400);const receipt=deps.open.submission(submission[1]);if(!receipt)throw new HttpFailure(404);if(receipt.state==='accepted'){const task=deps.open.stop(submission[1]);reply(res,200,{...receipt,task_state:task.state});}else reply(res,200,deps.open.stopInitial(submission[1]));return;}
-      const collaborationReceipt=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/collaboration-receipts\/([a-f0-9-]{36})$/.exec(path);if(collaborationReceipt&&req.method==='GET'){reply(res,200,await deps.open.collaborationReceipt(collaborationReceipt[1],collaborationReceipt[2]));return;}
+      if(submission&&req.method==='POST'&&submission[2]==='stop-initial'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req);if(!body||typeof body!=='object'||Object.keys(body).length)throw new HttpFailure(400);const receipt=deps.open.submission(submission[1]);if(!receipt)throw new HttpFailure(404);if(receipt.state==='accepted'){const task=await deps.open.stop(submission[1]);reply(res,200,{...receipt,task_state:task.state});}else reply(res,200,deps.open.stopInitial(submission[1]));return;}
+      const discussionReceipt=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-discussion-receipts\/([a-f0-9-]{36})$/.exec(path);
+      if(discussionReceipt&&req.method==='GET'){reply(res,200,await deps.open.requirementDiscussionReceipt(discussionReceipt[1],discussionReceipt[2]));return;}
       const nativeSession=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/session-control$/.exec(path);
       if(nativeSession&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,await deps.open.sessionControl(nativeSession[1],await json(req,64*1024)));return;}
-      const collaborationSource=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/collaboration-source$/.exec(path);if(collaborationSource&&req.method==='GET'){reply(res,200,deps.open.collaborationSource(collaborationSource[1]));return;}
-      const collaboration=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/collaboration(?:\/(create|start|stop|send|return|review))?$/.exec(path);
-      if(collaboration&&req.method==='GET'&&!collaboration[2]){reply(res,200,await deps.open.collaboration(collaboration[1]));return;}
-      if(collaboration&&req.method==='POST'&&collaboration[2]){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,await deps.open.collaborationCommand(collaboration[1],collaboration[2],await json(req,128*1024)));return;}
-      const previewAction=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/(preview|adopt)$/.exec(path);if(previewAction&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const raw=await json(req,64*1024);reply(res,200,present(await (previewAction[2]==='preview'?deps.open.previewRevision(previewAction[1],raw):deps.open.adoptRevision(previewAction[1],raw))));return;}
       const requirementDraft=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-draft$/.exec(path);if(requirementDraft&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,present(deps.open.saveRequirementDraft(requirementDraft[1],await json(req,128*1024))));return;}
       const requirementMaterials=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-materials$/.exec(path);if(requirementMaterials&&req.method==='POST'){
        if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const raw=await json(req,45*1024*1024),selected=raw&&typeof raw==='object'?Reflect.get(raw,'sources'):null;if(!Array.isArray(selected))throw new HttpFailure(400);
        const sources=selected.map(decodeOpenSource);reply(res,200,present(await deps.open.addRequirementMaterials(requirementMaterials[1],{...(raw as Record<string,unknown>),sources})));return;
       }
-      const requirementAction=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-(review|start)$/.exec(path);if(requirementAction&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req,16*1024);reply(res,200,present(requirementAction[2]==='review'?deps.open.reviewRequirement(requirementAction[1],body):await deps.open.startRequirement(requirementAction[1],body)));return;}
-      const requirementDiscussion=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-discussion$/.exec(path);if(requirementDiscussion&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,present(await deps.open.discussRequirement(requirementDiscussion[1],await json(req,64*1024))));return;}
-      const cancelStep=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/cancel-step$/.exec(path);if(cancelStep&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,present(await deps.open.cancelStep(cancelStep[1],await json(req,64*1024))));return;}
+      const requirementAction=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-start$/.exec(path);if(requirementAction&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req,16*1024);reply(res,200,present(await deps.open.startRequirement(requirementAction[1],body)));return;}
+      const requirementDiscussion=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/requirement-discussion$/.exec(path);if(requirementDiscussion&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req,64*1024) as {command_id:string;expected_sequence:number},task=await deps.open.discussRequirement(requirementDiscussion[1],body),saved=task.requirement_draft?.conversation?.some(c=>c.command_id===body.command_id);reply(res,saved?200:202,Object.assign({},present(task),...(!saved?[{requirement_request:{command_id:body.command_id,expected_sequence:body.expected_sequence,accepted:true}}]:[])));return;}
       const versionChoice=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/select-version$/.exec(path);if(versionChoice&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,present(deps.open.selectVersion(versionChoice[1],await json(req,64*1024))));return;}
       const reportCopy=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/reports\/([1-9][0-9]*)\/([a-f0-9-]{36})\/copy$/.exec(path);
-      if(reportCopy&&req.method==='GET'){const value=deps.open.reportCopy(reportCopy[1],reportCopy[2],reportCopy[3],['1.0','current'].includes(String(req.headers['x-xanthil-report-content'])),typeof req.headers['x-xanthil-review-sha256']==='string'?req.headers['x-xanthil-review-sha256']:undefined);res.writeHead(200,{'content-type':value.media_type,'content-disposition':`attachment; filename="${value.suggested_file_name}"`,'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"});res.end(value.bytes);return;}
-      const reportEdit=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/(report-edit-target|report-edit|report-edits\/[a-f0-9-]{36})$/.exec(path);
-      if(reportEdit&&req.method==='GET'&&reportEdit[2]==='report-edit-target'){reply(res,200,deps.open.reportEditTarget(reportEdit[1]));return;}
-      if(reportEdit&&req.method==='GET'&&reportEdit[2].startsWith('report-edits/')){reply(res,200,deps.open.reportEditReceipt(reportEdit[1],reportEdit[2].slice('report-edits/'.length)));return;}
-      if(reportEdit&&req.method==='POST'&&reportEdit[2]==='report-edit'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,deps.open.editReport(reportEdit[1],await json(req,512*1024)));return;}
-      const reviewCondition=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/review-condition$/.exec(path);
-      if(reviewCondition&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,present(await deps.open.answerReviewCondition(reviewCondition[1],await json(req,16*1024))));return;}
-      const reviewRetry=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/review-retry$/.exec(path);
-      if(reviewRetry&&req.method==='POST'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,present(await deps.open.retryJudgmentReview(reviewRetry[1],await json(req,16*1024))));return;}
+      if(reportCopy&&req.method==='GET'){const value=deps.open.reportCopy(reportCopy[1],reportCopy[2],reportCopy[3]);res.writeHead(200,{'content-type':value.media_type,'content-disposition':`attachment; filename="${value.suggested_file_name}"`,'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','content-security-policy':"default-src 'none'; frame-ancestors 'none'; base-uri 'none'"});res.end(value.bytes);return;}
+
       const receipt=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/judgments\/([a-f0-9-]{36})$/.exec(path);if(receipt&&req.method==='GET'){reply(res,200,deps.open.judgmentReceipt(receipt[1],receipt[2]));return;}
       const judgment=/^\/v1\/open-analysis\/([a-f0-9-]{36})\/(judgment-target|acknowledge)$/.exec(path);if(judgment&&req.method==='GET'&&judgment[2]==='judgment-target'){reply(res,200,deps.open.judgmentTarget(judgment[1]));return;}if(judgment&&req.method==='POST'&&judgment[2]==='acknowledge'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);reply(res,200,deps.open.acknowledge(judgment[1],await json(req,64*1024)));return;}
-      const match=/^\/v1\/open-analysis\/([a-f0-9-]{36})(?:\/(stop|resume|revise|requests|diagnostics))?$/.exec(path);
+      const match=/^\/v1\/open-analysis\/([a-f0-9-]{36})(?:\/(stop|resume|revise|diagnostics))?$/.exec(path);
       if(match&&req.method==='GET'&&!match[2]){reply(res,200,present(deps.open.read(match[1])));return;}
-      if(match&&req.method==='GET'&&match[2]==='requests'){deps.open.read(match[1]);reply(res,200,deps.open.requests(match[1]));return;}
-      if(match&&req.method==='GET'&&match[2]==='diagnostics'){reply(res,200,deps.open.diagnostics(match[1]));return;}
-      if(match&&req.method==='POST'&&match[2]==='stop'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req);if(!body||typeof body!=='object'||Object.keys(body).length)throw new HttpFailure(400);reply(res,200,present(deps.open.stop(match[1])));return;}
+      if(match&&req.method==='GET'&&match[2]==='diagnostics'){reply(res,200,await deps.open.diagnostics(match[1]));return;}
+      if(match&&req.method==='POST'&&match[2]==='stop'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req);if(!body||typeof body!=='object'||Object.keys(body).length)throw new HttpFailure(400);reply(res,200,present(await deps.open.stop(match[1])));return;}
       if(match&&req.method==='POST'&&match[2]==='resume'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const body=await json(req);if(!body||typeof body!=='object'||Object.keys(body).length)throw new HttpFailure(400);reply(res,200,present(await deps.open.resume(match[1])));return;}
       if(match&&req.method==='POST'&&match[2]==='revise'){if(!owned||!equal(req.headers['x-xanthil-control'],control))throw new HttpFailure(403);const raw=await json(req,45*1024*1024);if(raw&&typeof raw==='object'&&Object.hasOwn(raw,'sources')){const selected=Reflect.get(raw,'sources');if(!Array.isArray(selected))throw new HttpFailure(400);const sources=selected.map(decodeOpenSource);reply(res,200,present(await deps.open.revise(match[1],{...raw,sources})));}else reply(res,200,present(await deps.open.revise(match[1],raw)));return;}
       throw new HttpFailure(404);

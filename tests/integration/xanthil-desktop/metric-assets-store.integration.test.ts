@@ -6,7 +6,7 @@ const file=(v:string)=>readFileSync(new URL(`net-sales-instance/${v}.sap.yaml`,r
 test('MF-02/03: import is only a candidate; one exact project approval survives reopen and next tasks reuse that version',()=>{
  const p=realpathSync(mkdtempSync(join(tmpdir(),'c006-assets-')));try{const store=createProjectMetricAssetStore({projectRoot:p,projectId:'synthetic-project'});
  assert.equal(store.importCandidate(file('1.1.0'),registry).approved,false);assert.equal(store.approved(),null);
- const command={command_id:randomUUID(),id:'net-sales-instance',version:'1.1.0',owner:'synthetic-maintainer',use_for_new_tasks:true};const a=store.approve(command);assert.equal(a.asset_version,'1.1.0');assert.equal(a.metrics.length,6);
+ const command={command_id:randomUUID(),id:'net-sales-instance',version:'1.1.0',owner:'synthetic-maintainer',use_for_new_tasks:true};const a=store.approve(command);assert.equal(a.asset_version,'1.1.0');assert.equal(a.metrics.length,56);assert.equal(new Set(a.metrics).size,56);
  assert.deepEqual(store.approve(command),a);const reopened=createProjectMetricAssetStore({projectRoot:p,projectId:'synthetic-project'});assert.equal(reopened.approved()!.asset.version,'1.1.0');assert.equal(reopened.approved()!.approval.owner,'synthetic-maintainer');
  }finally{rmSync(p,{recursive:true});}
 });

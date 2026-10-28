@@ -189,10 +189,7 @@ test('AC-XDESK-005-07: publishes verified aggregate terminal Run evidence and Fi
   assert.equal(Object.hasOwn(verified, 'run_bundle'), false, 'a verifier cannot publish terminal Run evidence');
 });
 
-test('AC-XDESK-010-01: keeps every existing local-analysis public seam signature and all TEST-XCLI behavior unchanged', async () => {
-  const ports = await loadDesktopModule('packages/ports/local-analysis.ts');
-  for (const name of ['defineAgentAnalysisRuntime', 'defineLocalAnalysisExecution', 'defineRunArtifactStore', 'defineDecisionAssistanceRuntime']) assert.equal(typeof requiredExport(ports, name), 'function');
-});
+
 
 test('AC-XDESK-010-02: uses closed Desktop 3.0 evidence while legacy store and Console reject it without scanning or migration', async () => {
   const ports = await loadDesktopModule('packages/ports/xanthil-desktop-decision-case.ts');
@@ -206,17 +203,9 @@ test('AC-XDESK-010-03: keeps old analytics factory behavior while Desktop owns d
   assert.equal(Object.hasOwn(analysis, 'createLocalAnalysisExecution'), false, 'Desktop must not replace the existing public analytics factory');
 });
 
-test('AC-XDESK-010-04: adds only separate DecisionAssistanceRuntime with Pi-specific details confined to its Adapter', async () => {
-  const ports = await loadDesktopModule('packages/ports/local-analysis.ts');
-  const definition = requiredExport<(value: unknown) => unknown>(ports, 'defineDecisionAssistanceRuntime');
-  assert.throws(() => definition({ preflightSelection() {}, executeAssistance() {}, cancel() {}, piSession: {} }), /INVALID_PORT_IMPLEMENTATION/);
-});
 
-test('AC-XDESK-010-05: uses the production Profile factory without Main IPC Renderer environment double selection or second package', async () => {
-  const profile = await loadDesktopModule('profiles/personal/xanthil-desktop.ts');
-  assert.equal(typeof requiredExport(profile, 'createPersonalXanthilDesktopProfile'), 'function');
-  assert.equal(Object.hasOwn(profile, 'createOfflineDesktopProfile'), false);
-});
+
+
 
 test('AC-XDESK-010-06: keeps all optional assistance failures and refusal manually completable without Runtime fallback', async () => {
   const application = await loadDesktopModule('packages/application/xanthil-desktop-decision-case.ts');

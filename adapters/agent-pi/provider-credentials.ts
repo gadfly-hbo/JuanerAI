@@ -3,11 +3,12 @@ import {join} from 'node:path';
 import {homedir} from 'node:os';
 import type {LocalCredentialStore} from '../../packages/ports/provider-settings.ts';
 
-const recipients={
+const defaultRecipients={
  'minimax-cn':{model:'MiniMax-M3',endpoint:'https://api.minimaxi.com/anthropic'},
  'xiaomi-token-plan-cn':{model:'mimo-v2.6-flash',endpoint:'https://token-plan-cn.xiaomimimo.com/v1'},
+ 'deepseek':{model:'deepseek-flash',endpoint:'https://api.deepseek.com'},
 } as const;
-type Provider=keyof typeof recipients;
+type Provider=keyof typeof defaultRecipients;
 type State='missing'|'invalid'|'unreadable'|'conflict'|'configured';
 type Credential={provider:Provider;model:string;endpoint:string;key:string};
 type Source={state:'missing'|'invalid'|'unreadable'|'loaded';data:Record<string,unknown>};
@@ -27,9 +28,10 @@ function fail(code:string):never{throw Object.assign(new Error(code),{code,stack
 
 /** Private backend snapshot. Neither status/readback nor a model request scans files. */
 export function createApprovedProviderCredentials(options:{homeDirectory?:string;environment?:Readonly<Record<string,string|undefined>>;readText?:(path:string)=>Promise<string>;legacyZcode?:boolean;backupStore?:Pick<LocalCredentialStore,'read'>}={}) {
+ const recipients=defaultRecipients;
  const home=options.homeDirectory??homedir(),env=options.environment??process.env,readText=options.readText??readBounded;
  let authorized=false,busy=false,revision=0;
- let states:Record<Provider,State>={'minimax-cn':'missing','xiaomi-token-plan-cn':'missing'};
+ let states:Record<Provider,State>={'minimax-cn':'missing','xiaomi-token-plan-cn':'missing','deepseek':'missing'};
  let snapshot=new Map<Provider,Credential>();
  async function source(path:string):Promise<Source>{
   try{const text=await readText(path);if(Buffer.byteLength(text)>262144)return {state:'invalid',data:{}};const data=record(JSON.parse(text));return data?{state:'loaded',data}:{state:'invalid',data:{}};}
@@ -49,24 +51,32 @@ export function createApprovedProviderCredentials(options:{homeDirectory?:string
  function status(){return {
   primary:{provider:'minimax-cn',host:'api.minimaxi.com',state:states['minimax-cn']},
   backup:{provider:'xiaomi-token-plan-cn',host:'token-plan-cn.xiaomimimo.com',state:states['xiaomi-token-plan-cn']},
+  deepseek:{provider:'deepseek',host:'api.deepseek.com',state:states.deepseek},
  };}
  async function refresh(permission:boolean){
-  if(!permission){revision++;authorized=false;snapshot.clear();states={'minimax-cn':'missing','xiaomi-token-plan-cn':'missing'};fail('CREDENTIAL_READ_NOT_AUTHORIZED');}
+  if(!permission){revision++;authorized=false;snapshot.clear();states={'minimax-cn':'missing','xiaomi-token-plan-cn':'missing','deepseek':'missing'};fail('CREDENTIAL_READ_NOT_AUTHORIZED');}
   if(busy)fail('CREDENTIAL_REFRESH_BUSY');
   busy=true;authorized=false;snapshot.clear();const current=++revision;
   const assertCurrent=()=>{if(current!==revision)fail('CREDENTIAL_REFRESH_REVOKED');};
-  const next=new Map<Provider,Credential>(),nextStates:Record<Provider,State>={'minimax-cn':'missing','xiaomi-token-plan-cn':'missing'};
+  const next=new Map<Provider,Credential>(),nextStates:Record<Provider,State>={'minimax-cn':'missing','xiaomi-token-plan-cn':'missing','deepseek':'missing'};
   try{
    const key=env.LLM_API_KEY,endpoint=env.LLM_BASE_URL,model=env.LLM_MODEL;
    if(key||endpoint||model){
-    const provider=(Object.keys(recipients) as Provider[]).find(p=>(recipients[p].endpoint===endpoint||p==='minimax-cn'&&endpoint==='https://api.minimax.cn/anthropic')&&recipients[p].model===model);
-    if(!provider||!validKey(key)){states={'minimax-cn':'conflict','xiaomi-token-plan-cn':'conflict'};authorized=true;return status();}
+    const provider=(Object.keys(recipients) as Provider[]).find(p=>p!=='deepseek'&&(recipients[p].endpoint===endpoint||p==='minimax-cn'&&endpoint==='https://api.minimax.cn/anthropic')&&recipients[p].model===model);
+    if(!provider||!validKey(key)){states={'minimax-cn':'conflict','xiaomi-token-plan-cn':'conflict','deepseek':'conflict'};authorized=true;return status();}
     next.set(provider,{provider,...recipients[provider],key:key.trim()});nextStates[provider]='configured';
+   }
+   // One directed private key; endpoint/model cannot be overridden by environment.
+   if(env.DEEPSEEK_API_KEY!==undefined){
+    const key=env.DEEPSEEK_API_KEY;
+    if(validKey(key)){next.set('deepseek',{provider:'deepseek',...recipients.deepseek,key:key.trim()});nextStates.deepseek='configured';}
+    else nextStates.deepseek='invalid';
    }
    if(options.legacyZcode===true){
     const zcode=await source(join(home,'.zcode','v2','config.json'));
     assertCurrent();
     for(const provider of Object.keys(recipients) as Provider[]){
+     if(provider==='deepseek')continue;
      if(next.has(provider))continue;
      const found=candidates(zcode,provider);nextStates[provider]=found.state;
      if(found.credential)next.set(provider,found.credential);

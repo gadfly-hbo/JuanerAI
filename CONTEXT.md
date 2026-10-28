@@ -17,7 +17,7 @@ JuanerAI's highest product-development execution guideline. Blueprint v4.3 is ap
 _Avoid_: Whitepaper copy, OpenSpec, automatic Change authorization
 
 **Xanthil**:
-The first JuanerAI commercial product and unified workbench for PIM and applicable OSM workflows, reusing JuanerAI's shared analysis, execution and governance capabilities. Near-term PC delivery uses a browser plus same-machine local service; the existing Desktop implementation is retained while shell packaging and distribution are deferred. The name itself grants no execution authority.
+The first JuanerAI commercial product and unified workbench for PIM and applicable OSM workflows, reusing JuanerAI's shared analysis, execution and governance capabilities. Near-term PC delivery uses a browser plus same-machine local service; shell packaging and distribution are deferred. The name itself grants no execution authority.
 _Avoid_: JuanerAI platform, Pi wrapper, CLI-first product
 
 **Personal / Team / Enterprise**:
@@ -167,3 +167,9 @@ _Avoid_: plugin, prompt bundle
 **Model Pack**:
 A versioned executable business-model package with declared inputs, outputs, runtime needs, provenance, evaluation evidence, and compatibility.
 _Avoid_: model file, algorithm script, decision authority, knowledge base
+# 2026-10-25：正常分析入口的对话式三核心（前向适用）
+
+本轮用户批准的正常入口先共同理清需求，再由用户一次确认当前正文与资料范围并分析。SCR 组织问题与获准企业专业依据；Binding 表达真实资料、字段、单位及期间对应，机械身份由系统绑定；IR 保留目标、范围、交付和未知项，作为可读业务上下文，不是 Agent 必须填写或执行的有限方法计划。用户原话不能被助手摘要覆盖，模型不能代用户确认。
+
+信息不全可以开始，只暂停依赖缺项的动作。获准 metric-factory 资产按需读取；方法引用不等于方法正文已读。报告先保存，再数字后核验、结论和策略审查；可读上下文不产生独立核验资格。当前实现与边界见 `openspec/changes/2026-10-21-agent-host-new-architecture/conversational-three-core.md`，不据此迁移、恢复或重新解释旧 Task。
+

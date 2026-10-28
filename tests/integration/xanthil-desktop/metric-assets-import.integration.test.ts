@@ -8,7 +8,7 @@ const release=(version:string)=>readFileSync(new URL(`net-sales-instance/${versi
 const registry=readFileSync(new URL('index.yaml',root));
 test('MF-01/08: no release registry remains an unverified candidate and unknown selected switches cannot execute',()=>{
  const candidate=inspectSemanticAsset(release('1.1.0'));assert.equal(candidate.release_verified,false);assert.equal(candidate.status,'candidate');
- const [bytes,index]=changed(p=>p.metrics.find((m:any)=>m.name==='gmv').caliber_switches.unrecognized_rule=true);assert.equal(inspectSemanticAsset(bytes,index).computability.usable,false);
+ const [bytes,index]=changed(p=>p.metrics.find((m:any)=>m.name==='gmv').caliber_switches.unrecognized_rule=true);const inspected=inspectSemanticAsset(bytes,index);assert.equal(inspected.computability.calculation_supported,false);assert.equal(inspected.approved,false);assert.equal(inspected.asset.metrics.find(m=>m.name==='gmv')!.caliber_switches.unrecognized_rule,true);
 });
 test('MF-01/MFC-01: fixed published SAP becomes a legal candidate with exact dual fingerprints and selected closure',()=>{
  const result:any=inspectSemanticAsset(release('1.1.0'),registry);
@@ -16,14 +16,14 @@ test('MF-01/MFC-01: fixed published SAP becomes a legal candidate with exact dua
  assert.equal(result.asset.package_fingerprint,'sha256:140e9ecf1510d3d64bf9f954a2d402cfa55bb88c398452c991ea53dec19dfa5b');
  assert.equal(result.asset.content_fingerprint,'sha256:128bb1dc71a2104a0e11eb37968514c70c94b226eb78383417595a118b775595');
  assert.equal(result.asset.id,'net-sales-instance');assert.equal(result.asset.version,'1.1.0');
- assert.equal(result.metric_count,56);assert.equal(result.unselected_count,50);
+ assert.equal(result.metric_count,56);assert.equal(result.unselected_count,0);
  assert.equal(result.computability.usable,true);assert.equal(result.approved,false);
- assert.deepEqual(result.computability.metrics,['gmv','order_count','refund_amount','net_sales','refunded_order_count','refund_rate']);
+ assert.deepEqual(result.computability.metrics,result.asset.metrics.map((m:{name:string})=>m.name));assert.equal(result.computability.calculation_supported,false);
 });
 function changed(change:(p:any)=>void){const p=YAML.parse(release('1.1.0').toString());change(p);const fp=sapFingerprints(p);p.package.fingerprint=fp.package_fingerprint;const i=YAML.parse(registry.toString());Object.assign(i.releases.find((r:any)=>r.version==='1.1.0'),fp);return [Buffer.from(YAML.stringify(p)),Buffer.from(YAML.stringify(i))] as const;}
-test('MFS-04: original fixed legal packages remain unusable candidates; new completion-attribution is usable',()=>{
+test('MFS-04: original fixed legal definitions stay candidates without an executable six-metric recipe or automatic approval',()=>{
  const old=new URL('../../../docs/planning/2026-10-12/change006-metric-assets/attachments/metric-factory/releases/',import.meta.url);
- for(const v of ['1.0.0','1.0.1']){const r=inspectSemanticAsset(readFileSync(new URL(`net-sales-instance/${v}.sap.yaml`,old)),readFileSync(new URL('index.yaml',old)));assert.equal(r.status,'candidate');assert.equal(r.computability.usable,false);assert.equal(r.approved,false);}
+ for(const v of ['1.0.0','1.0.1']){const r=inspectSemanticAsset(readFileSync(new URL(`net-sales-instance/${v}.sap.yaml`,old)),readFileSync(new URL('index.yaml',old)));assert.equal(r.status,'candidate');assert.equal(r.computability.usable,true);assert.equal(r.computability.calculation_supported,false);assert.equal(r.approved,false);}
  assert.equal(inspectSemanticAsset(release('1.1.1'),registry).computability.usable,true);
 });
 test('MFC-01: byte tamper, unknown schema/runtime, duplicate metric/scenario and hidden unreviewed LLM reject whole import',()=>{
@@ -38,6 +38,6 @@ test('MFC-01: byte tamper, unknown schema/runtime, duplicate metric/scenario and
 test('MFC-01: duplicate YAML keys, aliases, tags and non-UTF8 never produce a candidate',()=>{
  for(const b of [Buffer.from('sap: "0.1"\nsap: "0.1"\n'),Buffer.from('a: &x 1\nb: *x\n'),Buffer.from('a: !execute 1\n'),Buffer.from([0xff,0xfe])])assert.throws(()=>inspectSemanticAsset(b,registry));
 });
-test('MFC-02: unsafe/cyclic/dangling selected formula cannot be approved even in a legally re-fingerprinted package',()=>{
- for(const expr of ['net_sales + gmv','gmv - missing_metric','gmv.constructor()','gmv ** 2','gmv * refund_amount']){const [b,i]=changed(p=>p.metrics.find((m:any)=>m.name==='net_sales').type_params.expr=expr);const r=inspectSemanticAsset(b,i);assert.equal(r.status,'candidate');assert.equal(r.computability.usable,false,expr);}
+test('MFC-02: formula text remains a fingerprinted professional definition, never an evaluated generic operator recipe or numeric qualification',()=>{
+ for(const expr of ['net_sales + gmv','gmv - missing_metric','gmv.constructor()','gmv ** 2','gmv * refund_amount']){const [b,i]=changed(p=>p.metrics.find((m:any)=>m.name==='net_sales').type_params.expr=expr);const r=inspectSemanticAsset(b,i);assert.equal(r.status,'candidate');assert.equal(r.computability.calculation_supported,false,expr);assert.equal(r.approved,false);assert.equal(r.asset.metrics.find(m=>m.name==='net_sales')!.type_params!.expr,expr);assert.equal(r.asset.document.runtime_state,'design_only');}
 });

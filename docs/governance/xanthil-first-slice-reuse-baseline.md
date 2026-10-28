@@ -19,9 +19,7 @@ Do not copy archived intermediate revisions into a new Change. Start from the cu
 
 - Product Core owns closed business values and validation without SDK, filesystem, database, subprocess, Profile, or CLI dependencies.
 - Application owns use-case sequencing, business-oriented Port calls, run semantics, cancellation/deadline admission, and the semantic result.
-- Ports expose Agent Analysis Runtime, Local Analysis Execution, and Run Artifact Store capabilities.
 - Pi, DuckDB/Python, filesystem, and future infrastructure remain concrete Adapters.
-- The personal Profile is the composition root; CLI is a surface over Application.
 - Application is the single semantic writer. Adapters implement physical operations but do not invent business status, provenance, or terminal meaning.
 
 New work extends these boundaries only through an approved contract delta. It does not reintroduce generic shell, SQL, Python, HTTP, filesystem, or SDK types into Core/Application.
@@ -33,13 +31,7 @@ New work extends these boundaries only through an approved contract delta. It do
 | current capability spec | `openspec/specs/local-analysis/spec.md` | baseline behavior and non-goals |
 | fixture and exact oracle | `tests/fixtures/xanthil-local-analysis/fixture-oracle.mjs` | deterministic source identity, proposal, finding, and metric values |
 | coverage mapping | `tests/fixtures/xanthil-local-analysis/coverage-map.mjs` | AC-to-test completeness checks |
-| Port contracts and doubles | `tests/fixtures/xanthil-local-analysis/port-contracts.mjs` | shared Adapter contract drivers, deterministic sessions, analysis and artifact doubles |
-| CLI/Profile harness | `tests/fixtures/xanthil-local-analysis/cli-profile-harness.mjs` | structured input/output and lifecycle doubles |
 | public seams | `tests/fixtures/xanthil-local-analysis/public-seams.mjs` | exact approved module entrypoints |
-| Pi failure fixtures | `tests/fixtures/xanthil-local-analysis/pi-sdk-failure-*.mjs` | import/runtime/refresh/model classification without provider calls |
-| contract suite | `tests/contract/xanthil-local-analysis/local-analysis-ports.contract.test.mjs` | every replaceable Adapter implementation |
-| integration suite | `tests/integration/xanthil-local-analysis/local-analysis.integration.test.mjs` | Application sequencing, physical Adapters, virtual deadline and cancellation races |
-| E2E suite | `tests/e2e/xanthil-local-analysis/local-analysis.e2e.test.mjs` | CLI/Profile journey and gated real-model proof |
 
 Reuse these assets by adding a bounded leaf or new contract implementation. Broad rewrites require an explicit behavior or test-architecture delta.
 
@@ -49,15 +41,11 @@ Ordinary Xanthil features do not reopen these decisions:
 
 - explicit `minimax-cn/MiniMax-M3` for the archived personal-profile behavior, with no fallback;
 - Pi behind the Agent Runtime Adapter rather than inside Product Core or Application;
-- Pi remains an approved Personal Profile Adapter; a future Runtime coexists and does not implicitly retire it;
 - a second Runtime is a separate Change that first freezes Adapter-independent contracts and runtime/version/Profile/model provenance;
-- one in-memory Discovery/Execution session with approved business tools only;
 - exact source preflight before external/model effects and a physical recheck before analytical read;
 - requested configuration and observed runtime/model/tool state are distinct;
 - `in_progress`, `succeeded`, `failed`, and `cancelled` are the closed run states;
 - stable failure vocabulary distinguishes runtime initialization, model selection, source mutation, timeout, validation, analysis, tool, and artifact failures;
-- 300-second absolute attempt deadline, 30-second analytical budgets, no product retry, and no hidden repair;
-- user cancellation closes future normal admission while deadline remains the absolute winner;
 - success linearizes only at final succeeded `run.json`; candidate evidence/Markdown is not success;
 - terminal files are immutable and rollback/retirement never rewrites user-owned runs;
 - the synthetic fixture, raw rows, credentials, provider payloads, transcripts, and unrelated workspace content remain within their approved boundaries;

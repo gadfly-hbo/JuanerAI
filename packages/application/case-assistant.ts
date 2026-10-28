@@ -1,70 +1,69 @@
 import {sameAutomaticDelegationWork,assertAutomaticDelegationSubset,automaticDelegationProjection,automaticDelegationAggregate} from '../product-core/open-analysis-delegation-instruction.ts';
 import {createRetainedMembershipAccess,type RetainedMembershipDependencies} from './member-retained.ts';
-import type {TaskUsage} from '../product-core/member-task.ts';
 import {createLocalModelAccess} from './provider-settings.ts';
 import {isDeepStrictEqual} from 'node:util';
-import {validateChildResult} from '../product-core/case-collaboration.ts';
+import {validateChildResult,childResultParameters,sourceUserQuestion} from '../product-core/case-collaboration.ts';
 import type {ChildPreview,ChildKind,CollaborationProjection,CollaborationReference,ResultTarget,ParentCollaborationProjection} from '../contracts/case-collaboration.ts';
 import type { LocalModelAccess } from '../ports/provider-settings.ts';
 import {taskHash} from '../product-core/member-task.ts';
-import type {AssistantTurn} from '../contracts/case-assistant.ts';
 import { randomUUID } from 'node:crypto';
-import type { CaseAssistantStore, CaseAssistantRuntime } from '../ports/case-assistant.ts';
-import { ASSISTANT_TOOLS, type AssistantConfig, type AssistantProjection, type AssistantAttempt, type AssistantEvent, type AssistantDraft, type AssistantStatus, type Authorization, type DecisionFields } from '../contracts/case-assistant.ts';
+import type { CaseAssistantStore } from '../ports/case-assistant.ts';
+import { ASSISTANT_TOOLS, type AssistantConfig, type AssistantProjection, type AssistantEvent, type AssistantDraft, type Authorization, type DecisionFields } from '../contracts/case-assistant.ts';
 import type { OwnerRef } from '../contracts/xanthil-desktop-ipc.ts';
-import { assistantFailure, assistantRecord, assistantText, validateAssistantDecision } from '../product-core/case-assistant.ts';
+import { assistantFailure, assistantRecord, assistantText, validateAssistantDecision,assistantDecisionParameters } from '../product-core/case-assistant.ts';
+import type {AnalysisAgent} from '../ports/analysis-agent.ts';
+import type {AnalysisTool} from '../ports/open-analysis-runtime.ts';
 export function createCaseAssistantApplication(input: {
     store: CaseAssistantStore;
-    runtime: CaseAssistantRuntime | null;
     config: AssistantConfig | null;
     clock: () => Date;
     modelAccess?: LocalModelAccess;
     membership?:RetainedMembershipDependencies;
     collaborationPolicy?:'open_analysis_v13';
-    openTaskIdentity?:(owner:OwnerRef)=>import('../ports/open-analysis-runtime.ts').OpenAnalysisRun['identity'];
+    agent?:AnalysisAgent;
 }) {
-    const { store, runtime, clock } = input, config = structuredClone(input.config), previews = new Map<string, {
+    const { store, clock } = input, config = structuredClone(input.config), previews = new Map<string, {
         generation?: number;
         session: string;
         authorization: Authorization;
     }>();
-    const membership=input.membership?createRetainedMembershipAccess(input.membership,clock):null;
-    const retainedProfile=input.membership?.profile;
-    const retainedConfig:AssistantConfig|null=retainedProfile?.activation==='synthetic_only'?{provider:retainedProfile.provider,model:retainedProfile.model,authorized:true,runtime_id:'pi',runtime_version:'0.84.2',adapter_version:'1.0',limits:{turns:retainedProfile.model_calls,execution_ms:retainedProfile.total_active_ms,waiting_ms:retainedProfile.wait_ms,cost_microunits:retainedProfile.total_output_tokens,turn_cost_microunits:retainedProfile.call_output_tokens,currency:'synthetic'}}:null;
-    const uncapped=(a:Authorization)=>a.config?.consumption_policy==='uncapped_metered'&&(!!a.source.open_origin||runtimeFor(a)?.taskAuthority==='shared_session');
-    const runtimeFor=(a:Authorization)=>a.membership?(input.membership?.runtime??runtime):runtime;
+    const membership=input.membership?createRetainedMembershipAccess(input.membership,clock,{isAuthorized:id=>store.isBusinessAuthorized(id),revoke:async a=>{if(a.membership)await closeSession(a.membership.session_id,true);}}):null;
     const access=input.modelAccess??createLocalModelAccess(!!config?.authorized);
-    type Live = {
-        attempt: AssistantAttempt;
-        abort: AbortController;
-        timer: ReturnType<typeof setTimeout> | null;
-        busy: boolean;
-        physicalPending?: boolean;
-        waitingUsage?:TaskUsage;
-        waitingBegan?:number;
-        release?: () => void;
-        modelGeneration?:number;
-    };
-    const live = new Map<string, Live>();
-    const pendingStarts = new Map<string, AbortController>();
-    const executions=new Map<string,Promise<void>>();
     let closed = false, closeComplete = false;
+    let closing:Promise<void>|undefined;
+    // Issued business creations only, not native Session/runtime state. Retain
+    // their settlement until close, including an unconfirmed creation ACK.
+    const links=new Set<{abort:AbortController;done:Promise<AssistantProjection>}>();
     const sessionEpochs=new Map<string,number>(),closedSessions=new Set<string>(),usedSessions=new Set<string>();
     const now = () => clock().toISOString();
     function guards() { if (closed)
         assistantFailure('INTERRUPTED'); }
-    async function read(id: string): Promise<AssistantProjection> { usedSessions.add(id);let h = await store.readSession(id);const control=live.get(id);if(control?.attempt.authorization.membership&&['Running','Waiting'].includes(control.attempt.status)){try{await membership!.guard(control.attempt.authorization);}catch(error){await settle(control,'Failed',String((error as {code?:string}).code??'SOURCE_CHANGED'));h=await store.readSession(id);}}const source = await store.readSource(h.session.source), f = await store.formalHistory(h.session.source); return { version: '1.0', ...h, source, ...f, current_decision_id: f.decisions.at(-1)?.id ?? null }; }
-    async function link(owner: OwnerRef, title: string, commandId: string) { guards(); const source = await store.readSource(owner); if (!source.eligible)
-        assistantFailure('SOURCE_INELIGIBLE'); const session = await store.createSession(commandId, { id: randomUUID(), title, source: owner, created_at: now(), archived: false }, source); return read(session.id); }
+    async function read(id: string): Promise<AssistantProjection> { usedSessions.add(id);const h = await store.readSession(id),source = await store.readSource(h.session.source), f = await store.formalHistory(h.session.source),binding=await store.readBusinessAuthorization(id);return { version: '1.0', ...h,events:[...sourceUserQuestion(source,h.session.created_at),...h.events].filter((e,i,all)=>all.findIndex(v=>v.id===e.id)===i),source,...f,current_decision_id:f.decisions.at(-1)?.id??null,last_request:binding?{id:binding.authorization.id,text:binding.authorization.initial_text,at:binding.authorization.created_at}:null,...(binding&&input.agent?{execution:await input.agent.diagnostics(binding.identity,'retained_case')}:{})}; }
+    async function link(owner: OwnerRef, title: string, commandId: string) {
+        guards();const abort=new AbortController(),done=(async()=>{
+            const source=await store.readSource(owner);guards();if(!source.eligible)assistantFailure('SOURCE_INELIGIBLE');
+            let session;
+            try{session=await store.createSession(commandId,{id:randomUUID(),title,source:owner,created_at:now(),archived:false},source,abort.signal,guards);}
+            catch(error){
+                // A failed ACK is not proof of no effect. Qualify the existing
+                // business receipt without sending another creation command.
+                try{const committed=await store.readLinkedSession(commandId,owner,title);if(committed)usedSessions.add(committed.id);}
+                catch(readback){throw Object.assign(new Error('RESULT_PENDING'),{code:'RESULT_PENDING',cause:error,readback,link:{commandId,owner,title}});}
+                throw error;
+            }
+            usedSessions.add(session.id);guards();return read(session.id);
+        })();
+        links.add({abort,done});void done.catch(()=>undefined);return done;
+    }
     async function list(projectId: string) { return store.listSessions(projectId); }
     const childPreviews=new Map<string,ChildPreview>();
     const childCreates=new Map<string,{parent:string;abort:AbortController}>();
     async function readCollaboration(id:string):Promise<CollaborationProjection>{
         const relation=await store.readChild(id);if(!relation)assistantFailure('NOT_FOUND');
-        const results=await store.childResults(id);const h=await store.readSession(id),current=await read(id),lifecycle=await store.readLifecycle(id),parent_lifecycle=await store.readLifecycle(relation.parent_session_id);return {version:'1.1',lifecycle,parent_lifecycle,current_source:current.source,current_decision_id:current.current_decision_id,occupant:access.occupant?.()??null,deliveries:(await store.readParentCollaboration(relation.parent_session_id)).deliveries.filter(d=>results.some(r=>r.id===d.result_id)),valid:current.source.eligible&&isDeepStrictEqual(current.source,relation.source)&&current.current_decision_id===relation.baseline_decision_id,session:h.session,relation,attempts:h.attempts,events:h.events,results};
+        const results=await store.childResults(id);const h=await store.readSession(id),current=await read(id),lifecycle=await store.readLifecycle(id),parent_lifecycle=await store.readLifecycle(relation.parent_session_id);return {version:'1.1',lifecycle,parent_lifecycle,current_source:current.source,current_decision_id:current.current_decision_id,occupant:access.occupant?.()??null,deliveries:(await store.readParentCollaboration(relation.parent_session_id)).deliveries.filter(d=>results.some(r=>r.id===d.result_id)),valid:current.source.eligible&&isDeepStrictEqual(current.source,relation.source)&&current.current_decision_id===relation.baseline_decision_id,session:h.session,relation,events:current.events,results,last_request:current.last_request,...(current.execution?{execution:current.execution}:{})};
     }
     function collaborationIdle(queuedAncestors?:ReadonlySet<string>){
-        guards();const occupant=access.occupant?.();if(occupant&&(!queuedAncestors||!occupant.session_id||!queuedAncestors.has(occupant.session_id)))assistantFailure('MODEL_BUSY');if(pendingStarts.size||[...live.values()].some(c=>['Running','Waiting'].includes(c.attempt.status)&&!queuedAncestors?.has(c.attempt.session_id)))assistantFailure('BUSY');
+        guards();const occupant=access.occupant?.();if(occupant&&(!queuedAncestors||!occupant.session_id||!queuedAncestors.has(occupant.session_id)))assistantFailure('MODEL_BUSY');
     }
     async function prepareChild(id:string,kind:ChildKind,task:string,cutoffId:string|null,historyIds:readonly string[],reportIds:readonly string[],includeAggregate:boolean,creationCommandId?:string,queuedAncestors?:ReadonlySet<string>,automaticInstruction?:import('../contracts/case-collaboration.ts').AutomaticDelegationInstruction):Promise<ChildPreview>{
         collaborationIdle(queuedAncestors);const epoch=sessionEpochs.get(id)??0;if(closedSessions.has(id))assistantFailure('SESSION_CLOSED');const life=await store.readLifecycle(id);if(!life.open)assistantFailure('SESSION_CLOSED');
@@ -114,8 +113,9 @@ export function createCaseAssistantApplication(input: {
         if(closedSessions.has(id))assistantFailure('SESSION_CLOSED');
         const epoch=sessionEpochs.get(id)??0;
         if(!(await store.readLifecycle(id)).open)assistantFailure('SESSION_CLOSED');
-        const p = await read(id), previous = p.attempts.at(-1), current = p.decisions.at(-1);
-        const selectedConfig=p.source.membership_origin?retainedConfig:config;
+        const p = await read(id), current = p.decisions.at(-1);
+        const previous=await store.readBusinessAuthorization(id),baseline=rebase?(current?.id??null):(previous?previous.authorization.baseline_decision_id:current?.id??null);
+        const selectedConfig=config;
         const selected = p.events.filter(e => historyIds.includes(e.id));
         if (new Set(historyIds).size !== historyIds.length || selected.length !== historyIds.length || selected.some(e => !['user', 'advice', 'question', 'tool'].includes(e.kind) || e.source_revision !== p.source.owner.revision_id))
             assistantFailure('FORBIDDEN');
@@ -125,61 +125,22 @@ export function createCaseAssistantApplication(input: {
         const chosen = reportIds.length ? available.filter((r,i) => reportIds.includes(r.id)&&(!p.source.membership_origin||available.findIndex(v=>v.id===r.id)===i)) : [available.at(-1)!];
         if (reportIds.length && chosen.length !== new Set(reportIds).size)
             assistantFailure('FORBIDDEN');
-        const blockers = [...p.source.missing];if(selectedConfig?.consumption_policy==='uncapped_metered'&&!p.source.open_origin&&runtime?.taskAuthority!=='shared_session')blockers.push('开放计量政策不能用于正式 Case 来源');
+        const blockers = [...p.source.missing];
         if(p.source.membership_origin&&!membership)blockers.push('P1 来源需要单独配置材料范围与原任务累计资源');
         if (!assistantText(text))
             blockers.push('请填写初始任务文本');
-        if (!selectedConfig?.authorized || !(p.source.membership_origin?(input.membership?.runtime??runtime):runtime))
+        if (!selectedConfig?.authorized)
             blockers.push('模型未配置');
         const accessSnapshot=access.snapshot();
         if(accessSnapshot&&!accessSnapshot.available)blockers.push('请检查模型接入配置');
-        if (!selectedConfig || !assistantText(selectedConfig.provider) || !assistantText(selectedConfig.model) || !assistantText(selectedConfig.limits.currency) || !['turns', 'execution_ms', 'waiting_ms', 'cost_microunits', 'turn_cost_microunits'].every(k => Number.isSafeInteger(selectedConfig.limits[k as keyof typeof selectedConfig.limits]) && Number(selectedConfig.limits[k as keyof typeof selectedConfig.limits]) > 0) || selectedConfig.limits.turn_cost_microunits > selectedConfig.limits.cost_microunits)
-            blockers.push('缺少确切执行、等待或费用硬上限');
-        const baseline = rebase || !previous ? current?.id ?? null : previous.authorization.baseline_decision_id;
         if (baseline !== (current?.id ?? null))
             blockers.push('当前决定已变化，请基于当前版本重新开始');
         const context = { source: { owner: p.source.owner, finding_id: p.source.finding_id, evidence_refs: p.source.evidence_refs, limitations: p.source.limitations, closure_id: p.source.closure_id }, aggregate: p.source.aggregate, formal_baseline: baseline ? current : null, initial_text: text, selected_history: selected, selected_reports: chosen, tools: ASSISTANT_TOOLS, skill: 'Case 决策与预期 v1.0', prompt_version: '1.0' };
         let authorization: Authorization = { id: randomUUID(), source: p.source, baseline_decision_id: baseline, config:selectedConfig, initial_text: text, selected_history: selected, selected_reports: chosen, tools: ASSISTANT_TOOLS, categories: ['user_authored_text', 'verified_case', 'accepted_evidence_finding', 'approved_020_clean_subset', 'selected_report_summary', 'selected_history'], skill_version: '1.0', prompt_version: '1.0', created_at: now(), payload: JSON.stringify(context), blockers };
-        if(p.source.membership_origin&&membership){try{authorization=await membership.restrict(authorization,id);}catch(error){if((error as {code?:string}).code!=='AUTHORITY_REQUIRED')throw error;authorization={...authorization,blockers:[...authorization.blockers,'尚未配置获准的 P1 材料与累计资源']};}}
+        if(p.source.membership_origin&&!membership)assistantFailure('CAPABILITY_UNAVAILABLE');if(p.source.membership_origin&&membership){try{authorization=await membership.restrict(authorization,id);}catch(error){if((error as {code?:string}).code!=='AUTHORITY_REQUIRED')throw error;authorization={...authorization,blockers:[...authorization.blockers,'尚未配置获准的 P1 材料与累计资源']};}}
         guards();if(epoch!==(sessionEpochs.get(id)??0))assistantFailure('INTERRUPTED');
         previews.set(authorization.id, { session: id, authorization, generation: accessSnapshot?.generation });
         return structuredClone(authorization);
-    }
-    const scopeOperation=(session:string,a:Authorization)=>{
-        const digest=taskHash({session,context:JSON.parse(a.payload),config:a.config});
-        return `${digest.slice(0,8)}-${digest.slice(8,12)}-4${digest.slice(13,16)}-a${digest.slice(17,20)}-${digest.slice(20,32)}`;
-    };
-    async function openTurn(control:Live,payload:string):Promise<AssistantTurn['open_analysis']>{
-        const a=control.attempt.authorization;if(!uncapped(a)||!a.collaboration)return undefined;
-        const operation_id=scopeOperation(control.attempt.session_id,a),context=JSON.parse(payload).authorized_context;
-        const shared=input.collaborationPolicy==='open_analysis_v13';
-        const rootIdentity=shared?input.openTaskIdentity?.(a.source.owner):undefined;
-        if(shared&&!rootIdentity)assistantFailure('AUTHORITY_REQUIRED');
-        if(rootIdentity&&(rootIdentity.task_id!==a.source.open_origin?.task_id||rootIdentity.revision!==a.source.open_origin.revision||rootIdentity.run_id!==a.source.open_origin.run_id||rootIdentity.scope_sha256!==a.source.open_origin.scope_sha256))assistantFailure('AUTHORIZATION_STALE');
-        const p=await store.readSession(control.attempt.session_id);
-        let previous=[...p.attempts].reverse().find(v=>v.open_checkpoint?.operation_id===operation_id)?.open_checkpoint;
-        if(previous&&context.initial_text!==JSON.parse(payload).visible_message&&JSON.parse(payload).visible_message){previous={...previous,checkpoint:{...previous.checkpoint,messages:[...previous.checkpoint.messages,{speaker:'user',text:JSON.parse(payload).visible_message}]}};}
-        const authorize=()=>{if(closed||control.abort.signal.aborted||control.attempt.status!=='Running'||closedSessions.has(control.attempt.session_id)||closedSessions.has(a.collaboration!.parent_session_id))return false;if(rootIdentity){try{if(!isDeepStrictEqual(rootIdentity,input.openTaskIdentity?.(a.source.owner)))return false;}catch{return false;}}return true;};
-        const modelGeneration=access.snapshot().generation;
-        return {...rootIdentity?{conversation_id:control.attempt.session_id,runDelegation:async(work:()=>Promise<void>)=>{
-            if(!authorize())assistantFailure('INTERRUPTED');
-            // The trusted Adapter invokes this only after the native SDK run has returned.
-            control.physicalPending=false;control.release?.();control.release=undefined;
-            await work();
-            if(!authorize())assistantFailure('INTERRUPTED');
-            const current=await read(control.attempt.session_id),life=await store.readLifecycle(control.attempt.session_id);
-            if(!life.open||life.epoch!==a.collaboration!.child_epoch||!isDeepStrictEqual(current.source,a.source))assistantFailure('AUTHORIZATION_STALE');
-            const lease=await access.acquire(modelGeneration,{session_id:control.attempt.session_id,label:a.collaboration!.kind==='fork'?'Fork':'Subagent'});
-            if(!authorize()){lease.release();assistantFailure('INTERRUPTED');}
-            control.release=lease.release;control.physicalPending=true;
-        }}:{},identity:{task_id:rootIdentity?.task_id??control.attempt.session_id,revision:a.source.open_origin!.revision,run_id:rootIdentity?.run_id??control.attempt.id,attempt_id:control.attempt.id,operation_id,grant_id:rootIdentity?.grant_id??operation_id,scope_sha256:taskHash(context),config_sha256:rootIdentity?.config_sha256??taskHash(a.config)},continuation:previous?.checkpoint,authorize,saveContinuation:async checkpoint=>{
-            if(!authorize())assistantFailure('INTERRUPTED');
-            const current=await read(control.attempt.session_id);
-            const parent=await store.readLifecycle(a.collaboration!.parent_session_id),child=await store.readLifecycle(control.attempt.session_id);
-            if(!authorize()||!parent.open||!child.open||parent.epoch!==a.collaboration!.parent_epoch||child.epoch!==a.collaboration!.child_epoch||!isDeepStrictEqual(current.source,a.source))assistantFailure('AUTHORIZATION_STALE');
-            control.attempt={...control.attempt,open_checkpoint:{operation_id,checkpoint:structuredClone(checkpoint)}};
-            await store.saveAttempt(control.attempt);
-        }};
     }
     const localPublications=new Map<AbortController,readonly string[]>();
     async function returnedResults(id:string){
@@ -189,16 +150,16 @@ export function createCaseAssistantApplication(input: {
         for(const result of p.results){
             if(!p.deliveries.some(d=>d.result_id===result.id&&d.status==='returned'))continue;
             if(!isDeepStrictEqual(result.source,p.source)||result.baseline_decision_id!==p.current_decision_id)continue;
-            const history=await store.readSession(result.child_session_id),attempt=history.attempts.find(a=>a.id===result.attempt_id),life=await store.readLifecycle(result.child_session_id);
-            const authorizedEpoch=attempt?.authorization.collaboration?.child_epoch;
+            const life=await store.readLifecycle(result.child_session_id);
+            const authorizedEpoch=(await store.readBusinessAuthorization(result.child_session_id,result.authorization_id))?.epoch;
             // A completed delivery is MODEL context, independent of execution being open.
             // Closing once fences new work; it does not erase an opinion returned beforehand.
-            if(attempt?.status!=='Succeeded'||authorizedEpoch===undefined||life.epoch!==authorizedEpoch+(life.open?0:1))continue;
+            if(authorizedEpoch===undefined||life.epoch!==authorizedEpoch+(life.open?0:1))continue;
             materials.push({classification:'MODEL' as const,result});
         }
         return materials;
     }
-    async function readParent(id:string):Promise<ParentCollaborationProjection>{const p=await read(id),state=await store.readParentCollaboration(id);const activity=await Promise.all(state.children.map(async child=>({session_id:child.child_session_id,status:(await store.readSession(child.child_session_id)).attempts.at(-1)?.status??null,open:(await store.readLifecycle(child.child_session_id)).open})));return {...state,activity,occupant:access.occupant?.()??null,lifecycle:await store.readLifecycle(id),source:p.source,current_decision_id:p.current_decision_id};}
+    async function readParent(id:string):Promise<ParentCollaborationProjection>{const p=await read(id),state=await store.readParentCollaboration(id);const activity=await Promise.all(state.children.map(async child=>({session_id:child.child_session_id,open:(await store.readLifecycle(child.child_session_id)).open})));return {...state,activity,occupant:access.occupant?.()??null,lifecycle:await store.readLifecycle(id),source:p.source,current_decision_id:p.current_decision_id};}
     async function returnResult(id:string,target:ResultTarget,commandId:string){return deliverResult(id,target,commandId);}
     async function deliverResult(id:string,target:ResultTarget,commandId:string,continuation?:AbortSignal){
         guards();const epochs=new Map(sessionEpochs),c=new AbortController();localPublications.set(c,[id]);
@@ -244,7 +205,7 @@ export function createCaseAssistantApplication(input: {
         const ref=(kind:CollaborationReference['kind'],id:string,version:number|null=null,sha256:string|null=null)=>refs.push({kind,id,revision_id:p.source.owner.revision_id,version,sha256});
         ref('case',p.source.owner.case_id);
         const projectedAggregate=relation.automatic_instruction?automaticDelegationAggregate(p.source,relation.automatic_instruction):relation.aggregate;
-        const evidenceIds=relation.automatic_instruction?.version==='1.1'?[...new Set(relation.automatic_instruction.reference_paths.map(path=>path.split('/')[2]!))]:p.source.evidence_refs;
+        const evidenceIds=p.source.evidence_refs;
         if(relation.aggregate){for(const id of evidenceIds)ref('evidence',id);if(p.source.finding_id)ref('finding',p.source.finding_id);for(const c of p.source.candidates)ref('candidate',c.candidate_id);ref('aggregate',relation.aggregate.artifact_id,null,projectedAggregate!.sha256);}
         for(const r of relation.selected_reports){const formal=p.reports.find(v=>v.id===r.id);ref('report',r.id,formal?.sequence??p.source.report.version,formal?.markdown_sha256??p.source.report.sha256);}
         for(const e of [...relation.selected_history,...a.selected_history])ref('history',e.id);
@@ -262,277 +223,56 @@ export function createCaseAssistantApplication(input: {
         if(a.source.membership_origin&&membership)authorization=await membership.restrict(authorization,id);
         previews.set(a.id,{...snapshot,authorization});return structuredClone(authorization);
     }
-    async function event(control: Live, kind: AssistantEvent['kind'], text: string, status = 'completed', tool: AssistantEvent['tool'] = null) { await store.appendEvent(control.attempt.session_id, { id: randomUUID(), attempt_id: control.attempt.id, at: now(), kind, text, tool, status, source_revision: control.attempt.authorization.source.owner.revision_id }, kind === 'status' ? undefined : control.abort.signal); }
-    function releaseSettled(control: Live) {
-        if (!control.physicalPending && (!['Running', 'Waiting'].includes(control.attempt.status)||control.attempt.status==='Waiting'&&input.collaborationPolicy==='open_analysis_v13'&&uncapped(control.attempt.authorization))) {
-            control.release?.();
-            control.release = undefined;
-        }
+    // Live cancellation handles for business commands only. SDK owns execution,
+    // Session, queue, physical settlement, accounting and recovery admission.
+    const operations=new Map<string,{abort:AbortController;done:Promise<void>}>();
+    const completions=new Map<Promise<void>,string>();
+    async function start(id:string,authorizationId:string,freeTextConfirmed:boolean){
+        guards();if(!input.agent)assistantFailure('RUNTIME_UNAVAILABLE');if(operations.has(id))assistantFailure('MODEL_BUSY');
+        const preview=previews.get(authorizationId);if(!preview||preview.session!==id||!freeTextConfirmed)assistantFailure('AUTHORITY_REQUIRED');
+        const a=preview.authorization;if(a.source.membership_origin&&!a.membership)assistantFailure('AUTHORITY_REQUIRED');if(a.blockers.length||!a.config?.authorized||closedSessions.has(id))assistantFailure('AUTHORITY_REQUIRED');
+        const generation=preview.generation;if(generation===undefined||access.snapshot().generation!==generation)assistantFailure('CONFIGURATION_CHANGED');
+        const credential=await access.acquire(generation,{session_id:id,label:'Case 专业用途'});let handedOff=false;
+        try{guards();if(closedSessions.has(id))assistantFailure('AUTHORITY_REQUIRED');
+        const current=await read(id);if(!isDeepStrictEqual(current.source,a.source)||current.current_decision_id!==a.baseline_decision_id)assistantFailure('AUTHORIZATION_STALE');
+        const binding=await store.authorizeBusiness({session_id:id,authorization:a,configuration_sha256:await input.agent.configuration()}),abort=new AbortController();
+        const authorized=()=>!closed&&!abort.signal.aborted&&!closedSessions.has(id)&&access.snapshot().available&&access.snapshot().generation===generation&&store.isBusinessAuthorized(a.id);
+        await store.appendEvent(id,{id:randomUUID(),attempt_id:a.id,at:now(),kind:'user',text:a.initial_text,tool:null,status:'authorized',source_revision:a.source.owner.revision_id},abort.signal);
+        const done=Promise.resolve().then(async()=>{
+            let proposed:DecisionFields|undefined,child:import('../contracts/case-collaboration.ts').ChildResultValue|undefined;
+            const check=()=>{if(!authorized())assistantFailure('INTERRUPTED');};
+            const tools:AnalysisTool[]=a.tools.map(name=>({name,effect:'read',description:'Read the currently authorized '+name+' business projection; no unselected material or independent computation.',parameters:{type:'object',properties:{},additionalProperties:false},execute:async(raw,signal)=>{
+                assistantRecord(raw,[]);check();if(signal.aborted)assistantFailure('INTERRUPTED');
+                const fresh=await store.readSource(a.source.owner);if(!isDeepStrictEqual(fresh,a.source))assistantFailure('AUTHORIZATION_STALE');check();
+                if(membership&&a.membership)return membership.tool(a);
+                if(name==='read_case')return {owner:a.source.owner,name:a.source.case_name,finding:a.source.finding_summary,limitations:a.source.limitations};
+                if(name==='read_evidence')return {evidence_refs:a.source.evidence_refs,finding_id:a.source.finding_id,limitations:a.source.limitations};
+                if(name==='read_candidates')return a.source.candidates;
+                if(name==='read_aggregate')return a.source.aggregate;
+                return a.selected_reports;
+            }}));
+            if(a.collaboration)tools.push({name:'propose_child_result',effect:'write',description:'Propose a MODEL opinion within the exact selected references. It is saved only after this native operation has settled; not independent evidence or a formal decision.',parameters:childResultParameters,execute:async(raw,signal)=>{check();if(signal.aborted)assistantFailure('INTERRUPTED');child=validateChildResult(raw,a.collaboration!.allowed_references);return {accepted:true,saved:false,classification:'MODEL'};}});
+            else if(!a.source.open_origin)tools.push({name:'propose_decision',effect:'write',description:'Propose a pending Decision/Expected Outcome draft against existing verified evidence. Human adoption remains required; no business action executes.',parameters:assistantDecisionParameters,execute:async(raw,signal)=>{check();if(signal.aborted)assistantFailure('INTERRUPTED');proposed=validateAssistantDecision(raw,a.source);return {accepted:true,saved:false,classification:'MODEL_PROPOSAL'};}});
+            const result=await input.agent!.advance({identity:binding.identity,work_id:binding.work_id,command_id:a.id,purpose:'retained_case',prompt:a.payload,system:'自主使用当前获准的 Case 专业工具。模型意见与草稿不是独立核验、人工采纳或已执行业务行动；保留来源、条件、限制和 UNKNOWN。',capabilities:async()=>tools,authorize:authorized,signal:abort.signal});
+            check();await store.publishModel({authorization_id:a.id,result,at:now(),...(proposed?{decision:proposed}:{}),...(child?{child}:{})},abort.signal);
+        }).finally(async()=>{await input.agent!.waitForIdle({...binding.identity,purpose:'retained_case'});credential.release();operations.delete(id);});
+        // The returned promise is retained and observed, never a silent recovery
+        // loop. waitForIdle/close exposes its rejection and preserves all facts.
+        operations.set(id,{abort,done});completions.set(done,id);handedOff=true;void done.catch(()=>undefined);return await read(id);
+        }catch(error){if(!handedOff)credential.release();throw error;}
     }
-    async function settle(control: Live, status: AssistantStatus, reason: string | null) { if (control.timer)
-        clearTimeout(control.timer); control.timer = null; control.abort.abort(); if (!['Running', 'Waiting'].includes(control.attempt.status))
-        return; control.attempt = { ...control.attempt, status, reason, ended_at: now(), waiting_deadline: null }; try {
-            try{await store.saveAttempt(control.attempt);}catch(error){
-                if(!control.attempt.authorization.collaboration)throw error;
-                const saved=(await store.readSession(control.attempt.session_id)).attempts.find(a=>a.id===control.attempt.id);
-                const result=(await store.childResults(control.attempt.session_id)).find(r=>r.attempt_id===control.attempt.id);
-                if(saved?.status!=='Succeeded'||!result)throw error;
-                control.attempt=saved;return;
-            }
-            if(control.attempt.authorization.membership){if(control.waitingUsage){await membership!.update(control.attempt.authorization,{...control.waitingUsage,status:'settled',wait_ms:Math.min(control.waitingUsage.wait_ms,Math.max(0,clock().getTime()-(control.waitingBegan??clock().getTime())))});control.waitingUsage=undefined;}await membership!.finish(control.attempt.authorization,control.attempt);}
-            await event(control, 'status', reason ?? status, status);
-        } finally { releaseSettled(control); } }
-    async function start(id: string, previewId: string, freeTextConfirmed: boolean) {
-        guards();
-        if (!freeTextConfirmed)
-            assistantFailure('AUTHORITY_REQUIRED');
-        const preview = previews.get(previewId);
-        if (!preview || preview.session !== id)
-            assistantFailure('AUTHORITY_REQUIRED');
-        const a = preview.authorization;
-        if(a.source.membership_origin&&(!a.membership||!membership))assistantFailure('AUTHORITY_REQUIRED');
-        if (a.blockers.length || !a.config?.authorized || !runtimeFor(a))
-            assistantFailure('AUTHORITY_REQUIRED');
-        if(pendingStarts.has(id))assistantFailure('BUSY');
-        const pending=new AbortController();pendingStarts.set(id,pending);
-        let lease:{release():void}|undefined,transferred=false;
-        try {
-        lease=await access.acquire(preview.generation!,{session_id:id,label:a.collaboration?(a.collaboration.kind==='fork'?'Fork':'Subagent'):'Case Assistant'});
-        if(pending.signal.aborted||closed)return read(id);
-        const p = await read(id);
-        if(!(await store.readLifecycle(id)).open)assistantFailure('SESSION_CLOSED');
-        if(a.collaboration){const parentLife=await store.readLifecycle(a.collaboration.parent_session_id),childLife=await store.readLifecycle(id);if(!parentLife.open||!childLife.open||parentLife.epoch!==a.collaboration.parent_epoch||childLife.epoch!==a.collaboration.child_epoch)assistantFailure('AUTHORIZATION_STALE');}
-        if(pending.signal.aborted||closed)return p;
-        if (JSON.stringify(p.source) !== JSON.stringify(a.source) || p.current_decision_id !== a.baseline_decision_id || JSON.stringify(a.membership?retainedConfig:config) !== JSON.stringify(a.config))
-            assistantFailure('AUTHORIZATION_STALE');
-        if (live.has(id) && ['Running', 'Waiting'].includes(live.get(id)!.attempt.status))
-            assistantFailure('BUSY');
-        const attempt: AssistantAttempt = { id: randomUUID(), session_id: id, authorization: a, status: 'Running', started_at: now(), ended_at: null, waiting_deadline: null, turns: 0, execution_ms: 0, cost_microunits: uncapped(a)?null:0, reason: null };
-        previews.delete(previewId);
-        const control: Live = { release: lease?.release,modelGeneration:preview.generation, attempt, abort: new AbortController(), timer: null, busy: true };
-        live.set(id, control);
-        transferred=true;
-        let saved = false;
-        try {
-            if(a.membership)await membership!.grant(a,attempt);
-            await store.saveAttempt(attempt);
-            saved = true;
-            if (control.abort.signal.aborted)
-                return read(id);
-            await event(control, 'user', a.initial_text);
-            if (control.abort.signal.aborted)
-                return read(id);
-        }
-        catch (error) {
-            if (control.abort.signal.aborted)
-                return read(id);
-            if (saved)
-                await settle(control, 'Failed', String((error as { code?: string }).code ?? 'storage_failed'));
-            else
-                { live.delete(id);control.release?.();control.release=undefined; }
-            control.busy = false;
-            throw error;
-        }
-        launchExecution(control,a.initial_text);
+    async function waitForIdle(id?:string){const observed=[...completions].filter(([,session])=>id===undefined||session===id).map(([done])=>done),results=await Promise.allSettled(observed);if(id===undefined)await input.agent?.waitForIdle();for(const value of observed)completions.delete(value);const failed=results.find(r=>r.status==='rejected');if(failed?.status==='rejected')throw failed.reason;}
+    async function send(id:string,text:string){
+        guards();if(!assistantText(text)||text.length>12000)assistantFailure('INVALID_REQUEST');if(!input.agent)assistantFailure('RUNTIME_UNAVAILABLE');
+        if(!operations.has(id)){const a=await store.readChild(id)?await prepareCollaboration(id,text,[],[],true):await prepare(id,text);return start(id,a.id,true);}
+        const g=await store.readBusinessAuthorization(id);if(!g||!store.isBusinessAuthorized(g.authorization.id))assistantFailure('AUTHORITY_REQUIRED');
+        if(g.authorization.membership){if(!membership)assistantFailure('AUTHORITY_REQUIRED');(await membership.check(g.authorization)).text(text);}
+        const signal=operations.get(id)!.abort.signal;
+        await store.appendEvent(id,{id:randomUUID(),attempt_id:g.authorization.id,at:now(),kind:'user',text,tool:null,status:'FOLLOW_UP_REQUESTED',source_revision:g.authorization.source.owner.revision_id},signal);
+        await input.agent.conversation({identity:g.identity,work_id:g.work_id,purpose:'retained_case',command:{kind:'follow_up',text},authorize:()=>!closed&&!signal.aborted&&store.isBusinessAuthorized(g.authorization.id),signal});
         return read(id);
-        } finally { pendingStarts.delete(id); if(!transferred)lease?.release(); }
     }
-    function launchExecution(control:Live,text:string){const id=control.attempt.session_id;const issued=execute(control,text).finally(()=>{if(executions.get(id)===issued)executions.delete(id);});executions.set(id,issued);}
-    async function waitForIdle(id:string,signal:AbortSignal){
-        if(signal.aborted)assistantFailure('INTERRUPTED');const issued=executions.get(id);if(!issued)return;
-        let cancel!:()=>void;const aborted=new Promise<never>((_,reject)=>{cancel=()=>reject(Object.assign(new Error('INTERRUPTED'),{code:'INTERRUPTED'}));signal.addEventListener('abort',cancel,{once:true});});
-        try{await Promise.race([issued,aborted]);}finally{signal.removeEventListener('abort',cancel);}
-    }
-    async function execute(control: Live, text: string) {
-        let toolResult: unknown = null;
-        try {
-            while (!control.abort.signal.aborted) {
-                const a = control.attempt.authorization, c = a.config!, limits = c.limits;
-                const p = await read(control.attempt.session_id);
-                if (control.abort.signal.aborted)
-                    return;
-                if (!p.source.eligible || JSON.stringify(p.source) !== JSON.stringify(a.source) || p.current_decision_id !== a.baseline_decision_id) {
-                    await settle(control, 'Failed', 'source_or_decision_changed');
-                    return;
-                }
-                if (!uncapped(a)&&(control.attempt.cost_microunits===null||control.attempt.turns >= limits.turns || control.attempt.cost_microunits + limits.turn_cost_microunits > limits.cost_microunits)) {
-                    await settle(control, 'BudgetExhausted', 'budget_exhausted');
-                    return;
-                }
-                if (!uncapped(a)&&control.attempt.execution_ms >= limits.execution_ms) {
-                    await settle(control, 'TimedOut', 'execution_timeout');
-                    return;
-                }
-                control.attempt = { ...control.attempt, status: 'Running', waiting_deadline: null, turns: control.attempt.turns + 1 };
-                await store.saveAttempt(control.attempt);
-                if (control.abort.signal.aborted)
-                    return;
-                const ordinaryPayload = JSON.stringify({ authorized_context: JSON.parse(a.payload), current_attempt_history: p.events.filter(e => e.attempt_id === control.attempt.id && ['user', 'question', 'advice', 'tool'].includes(e.kind)), visible_message: text, authorized_tool_result: toolResult });
-                const payload=a.membership?await membership!.payload(a,p.events.filter(e=>e.attempt_id===control.attempt.id&&['user','question','advice','tool'].includes(e.kind)),text,toolResult):ordinaryPayload;
-                const usage=a.membership?await membership!.reserve(a,control.attempt,'model',payload):null;
-                await event(control, 'payload', payload, 'issued');
-                if (control.abort.signal.aborted)
-                    return;
-                const began = clock().getTime(), remaining = Math.min(limits.execution_ms - control.attempt.execution_ms,...(a.membership?[a.membership.profile.call_ms,Date.parse(a.membership.expires_at)-clock().getTime()]:[]));
-                if(usage)await membership!.update(a,{...usage,status:'issued'});
-                const timeout = new Promise<never>((_, reject) => { if(!uncapped(a))control.timer = setTimeout(() => { reject(Object.assign(new Error('EXECUTION_TIMEOUT'), { code: 'EXECUTION_TIMEOUT' })); control.abort.abort(); }, remaining); });
-                const aborted = new Promise<never>((_, reject) => { control.abort.signal.addEventListener('abort', () => reject(Object.assign(new Error('INTERRUPTED'), { code: 'INTERRUPTED' })), { once: true }); });
-                control.physicalPending = true;
-                // Logical cancellation is responsive; only the issued turn's settlement
-                // permits another entry point to own the shared physical model slot.
-                const open_analysis=await openTurn(control,payload);
-                let runtime_authority:import('../ports/case-assistant.ts').RuntimeTaskAuthority|undefined;
-                if(runtimeFor(a)!.taskAuthority==='shared_session'){
-                    let root=a.source.open_origin?.task_id??a.collaboration?.parent_session_id??control.attempt.session_id;
-                    if(!a.source.open_origin&&a.collaboration){const seen=new Set<string>();for(;;){if(seen.has(root))assistantFailure('VALIDATION_FAILED');seen.add(root);const parent=await store.readChild(root);if(!parent)break;root=parent.parent_session_id;}}
-                    const accountingSession=a.source.open_origin?(a.collaboration?.parent_session_id??control.attempt.session_id):root;
-                    const previous=(await store.readSession(accountingSession)).attempts.filter(v=>v.id!==control.attempt.id);
-                    runtime_authority={conversation_id:control.attempt.session_id,identity:{task_id:root,revision:a.source.open_origin?.revision??a.source.owner.revision_id,run_id:control.attempt.id,attempt_id:control.attempt.id,operation_id:randomUUID(),grant_id:a.id,scope_sha256:taskHash(JSON.parse(payload).authorized_context??JSON.parse(payload)),config_sha256:taskHash(a.config)},previous_calls:previous.reduce((n,v)=>n+v.turns,0),authorize:()=>!closed&&!control.abort.signal.aborted&&control.attempt.status==='Running'&&!closedSessions.has(control.attempt.session_id)&&(!a.collaboration||!closedSessions.has(a.collaboration.parent_session_id))};
-                }
-                const issued = (async () => runtimeFor(a)!.turn({...runtime_authority?{runtime_authority}:{},...(open_analysis?{open_analysis}:{}), ...(a.membership?{retained_membership:{version:'1.0' as const}}:{}),payload, provider: c.provider, model: c.model, signal: control.abort.signal, cost_reservation_microunits: limits.turn_cost_microunits,...(a.collaboration?{collaboration:{contract_version:'1.1' as const,purpose:a.collaboration.kind}}:{}) }))().finally(() => {
-                    control.physicalPending = false;
-                    releaseSettled(control);
-                });
-                let output;try{output=await Promise.race([issued,timeout,aborted]);if(usage)await membership!.update(a,{...usage,status:'settled',active_ms:Math.min(usage.active_ms,Math.max(0,clock().getTime()-began))});}catch(error){if(usage)await membership!.update(a,{...usage,status:'unresolved'});throw error;}
-                if(a.membership){await membership!.guard(a);output={...output,output:await membership!.output(a,output.output)};}
-                if (control.timer)
-                    clearTimeout(control.timer);
-                control.timer = null;
-                if (control.abort.signal.aborted)
-                    return;
-                if(a.collaboration||a.membership){
-                    const latest=await read(control.attempt.session_id);
-                    if(control.abort.signal.aborted)return;
-                    if(!latest.source.eligible||!isDeepStrictEqual(latest.source,a.source)||latest.current_decision_id!==a.baseline_decision_id){
-                        await settle(control,'Failed','source_or_decision_changed');return;
-                    }
-                }
-                assistantRecord(output, ['provider', 'model', 'cost_microunits', 'output']);
-                const elapsed = Math.max(0, clock().getTime() - began);
-                const recipientAllowed=output.provider===c.provider&&output.model===c.model||uncapped(a)&&c.authorized_recipients?.some(v=>v.provider===output.provider&&v.model===output.model);
-                if (!recipientAllowed || !(uncapped(a)&&output.cost_microunits===null)&&(!Number.isSafeInteger(output.cost_microunits) || output.cost_microunits===null || output.cost_microunits < 0 || !uncapped(a)&&output.cost_microunits > limits.turn_cost_microunits))
-                    assistantFailure('PROVIDER_USAGE_INVALID');
-                control.attempt = { ...control.attempt, execution_ms: control.attempt.execution_ms + elapsed, cost_microunits: control.attempt.cost_microunits===null||output.cost_microunits===null?null:control.attempt.cost_microunits + output.cost_microunits };
-                await store.saveAttempt(control.attempt);
-                if (control.abort.signal.aborted)
-                    return;
-                if (!uncapped(a)&&control.attempt.execution_ms >= limits.execution_ms) {
-                    await settle(control, 'TimedOut', 'execution_timeout');
-                    return;
-                }
-                const o = output.output;
-                if (!o || typeof o !== 'object')
-                    assistantFailure();
-                if(a.collaboration&&o.kind!=='question'&&o.kind!=='tool'&&o.kind!=='result')assistantFailure('CHILD_PROTOCOL_INVALID');
-                if(o.kind==='result'){
-                    if(!a.collaboration)assistantFailure('CHILD_RESULT_INVALID');
-                    const value=validateChildResult(o,a.collaboration.allowed_references);
-                    const ended:AssistantAttempt={...control.attempt,status:'Succeeded',reason:null,ended_at:now(),waiting_deadline:null};
-                    const result=await store.finishChild(ended,value,control.abort.signal);
-                    control.attempt=ended;if(a.membership)await membership!.finish(a,ended);control.release?.();control.release=undefined;
-                    try{
-                        await event(control,'status','Succeeded','Succeeded');
-                        if(a.collaboration.kind==='subagent'&&!control.abort.signal.aborted)await deliverResult(control.attempt.session_id,{result_id:result.id,result_version:result.version,result_sha256:result.sha256},randomUUID(),control.abort.signal);
-                    }finally{control.abort.abort();}
-                    return;
-                }
-                assistantRecord(o, o.kind === 'tool' ? ['kind', 'tool', 'revision_id'] : o.kind === 'draft' ? ['kind', 'fields'] : ['kind', 'text']);
-                if (o.kind === 'tool') {
-                    if (!a.tools.includes(o.tool) || o.revision_id !== a.source.owner.revision_id) {
-                        await event(control, 'tool', '已拒绝：超出任务授权', 'rejected', null);
-                        await settle(control, 'Failed', 'tool_outside_authorization');
-                        return;
-                    }
-                    const latest = await read(control.attempt.session_id);
-                    if (control.abort.signal.aborted)
-                        return;
-                    if (JSON.stringify(latest.source) !== JSON.stringify(a.source))
-                        assistantFailure('STALE_REVISION');
-                    const s = a.source;
-                    toolResult = a.membership?await membership!.tool(a):o.tool === 'read_case' ? { owner: s.owner, case_name: s.case_name,...(!a.collaboration||a.tools.includes('read_evidence')?{limitations:s.limitations}:{}) } : o.tool === 'read_evidence' ? { finding_id: s.finding_id, evidence_refs: s.evidence_refs, summary: s.finding_summary } : o.tool === 'read_candidates' ? s.candidates : o.tool === 'read_aggregate' ? (a.collaboration?JSON.parse(a.payload).aggregate:s.aggregate) : a.selected_reports;
-                    await event(control, 'tool', JSON.stringify({ source: s.owner, result: toolResult }), 'completed', o.tool);
-                    text = '';
-                    continue;
-                }
-                if (o.kind === 'question') {
-                    if (!assistantText(o.text))
-                        assistantFailure();
-                    await event(control, 'question', o.text);
-                    if (control.abort.signal.aborted)
-                        return;
-                    const waitMs=Math.min(limits.waiting_ms,...(a.membership?[a.membership.profile.wait_ms,Date.parse(a.membership.expires_at)-clock().getTime()]:[]));
-                    if(a.membership){control.waitingUsage=await membership!.reserve(a,control.attempt,'waiting',null);await membership!.update(a,{...control.waitingUsage,status:'issued'});control.waitingBegan=clock().getTime();}
-                    const deadline = new Date(clock().getTime() + waitMs).toISOString();
-                    control.attempt = { ...control.attempt, status: 'Waiting', waiting_deadline: deadline };
-                    await store.saveAttempt(control.attempt);
-                    if (control.abort.signal.aborted)
-                        return;
-                    control.busy = false;
-                    control.timer = setTimeout(() => void settle(control, 'WaitExpired', 'waiting_timeout'), waitMs);
-                    return;
-                }
-                if (o.kind === 'draft') {
-                    const fields = validateAssistantDecision(o.fields, a.source);
-                    if (control.abort.signal.aborted)
-                        return;
-                    const draft: AssistantDraft = { id: randomUUID(), version: 1, session_id: control.attempt.session_id, attempt_id: control.attempt.id, source_revision: a.source.owner.revision_id, baseline_decision_id: a.baseline_decision_id, fields, status: 'pending', edited: false, created_at: now(), decided_at: null, reason: null };
-                    await store.saveDraft(draft, control.abort.signal);
-                    if (control.abort.signal.aborted)
-                        return;
-                    await settle(control, 'Succeeded', null);
-                    return;
-                }
-                if (o.kind === 'advice' && assistantText(o.text)) {
-                    await event(control, 'advice', o.text);
-                    await settle(control, 'Succeeded', null);
-                    return;
-                }
-                assistantFailure();
-            }
-        }
-        catch (error) {
-            const code = String((error as {
-                code?: string;
-            }).code ?? 'provider_failed');
-            if (['Running', 'Waiting'].includes(control.attempt.status))
-                await settle(control, code === 'EXECUTION_TIMEOUT' ? 'TimedOut' : 'Failed', code).catch(() => undefined);
-        }
-        finally {
-            control.busy = false;releaseSettled(control);
-        }
-    }
-    async function send(id: string, text: string) { guards(); if (!assistantText(text))
-        assistantFailure(); const control = live.get(id); if (!control || control.busy || control.attempt.status !== 'Waiting' || control.abort.signal.aborted)
-        assistantFailure('FORBIDDEN'); if (clock().getTime() >= Date.parse(control.attempt.waiting_deadline!)) {
-        await settle(control, 'WaitExpired', 'waiting_timeout');
-        assistantFailure('WAIT_EXPIRED');
-    } control.busy = true; try {
-        const p = await read(id);
-        if (control.abort.signal.aborted)
-            assistantFailure('INTERRUPTED');
-        if (JSON.stringify(p.source) !== JSON.stringify(control.attempt.authorization.source) || p.current_decision_id !== control.attempt.authorization.baseline_decision_id)
-            assistantFailure('AUTHORIZATION_STALE');
-        if(!control.release&&input.collaborationPolicy==='open_analysis_v13'&&uncapped(control.attempt.authorization)){if(control.modelGeneration===undefined)assistantFailure('AUTHORITY_REQUIRED');const lease=await access.acquire(control.modelGeneration,{session_id:id,label:control.attempt.authorization.collaboration?.kind==='fork'?'Fork':'Subagent'});if(control.abort.signal.aborted){lease.release();assistantFailure('INTERRUPTED');}control.release=lease.release;}
-        if(control.attempt.authorization.membership){await membership!.payload(control.attempt.authorization,[],text,null);if(control.waitingUsage){await membership!.update(control.attempt.authorization,{...control.waitingUsage,status:'settled',wait_ms:Math.min(control.waitingUsage.wait_ms,Math.max(0,clock().getTime()-(control.waitingBegan??clock().getTime())))});control.waitingUsage=undefined;}}
-        // Waiting still owns the deadline until the reply is durably appended.
-        await event(control, 'user', text);
-        if (control.abort.signal.aborted)
-            return read(id);
-        if (clock().getTime() >= Date.parse(control.attempt.waiting_deadline!)) {
-            await settle(control, 'WaitExpired', 'waiting_timeout');
-            return read(id);
-        }
-    }
-    catch (error) {
-        control.busy = false;
-        if (control.abort.signal.aborted)
-            return read(id);
-        await settle(control, 'Failed', String((error as { code?: string }).code ?? 'storage_failed'));
-        throw error;
-    } if (control.timer)
-        clearTimeout(control.timer); control.timer = null; launchExecution(control,text); return read(id); }
-    async function stop(id: string) { pendingStarts.get(id)?.abort(); const c = live.get(id); if (c)
-        await settle(c, 'Stopped', 'user_stopped'); return read(id); }
+    async function stop(id:string){await closeSession(id,true);operations.get(id)?.abort.abort();return read(id);}
     async function edit(id: string, draftId: string, version: number, fields: DecisionFields) { guards(); const p = await read(id), draft = p.drafts.filter(d => d.id === draftId).at(-1); if (!draft || draft.version !== version || draft.status !== 'pending' || draft.baseline_decision_id !== p.current_decision_id || !p.source.eligible)
         assistantFailure('STALE_DRAFT'); await store.saveDraft({ ...draft, version: version + 1, fields: validateAssistantDecision(fields, p.source), edited: true, created_at: now() }); return read(id); }
     async function revise(id: string, decisionId: string) {
@@ -553,21 +293,32 @@ export function createCaseAssistantApplication(input: {
         assistantFailure('STALE_DRAFT'); await store.saveDraft({ ...draft, status: 'rejected', decided_at: now(), reason }); return read(id); }
     async function adopt(id: string, draftId: string, version: number, actor: string, commandId: string) { guards(); const p = await read(id); await store.adopt({ command_id: commandId, draft_id: draftId, draft_version: version, session_id: id, actor, at: now(), source: p.source }); return read(id); }
     async function closeSession(id:string,explicitClose=false){
-        const ids=new Set([id,...[...previews.values()].filter(p=>p.authorization.collaboration?.parent_session_id===id).map(p=>p.session),...[...live.values()].filter(c=>c.attempt.authorization.collaboration?.parent_session_id===id).map(c=>c.attempt.session_id)]),at=now();
-        for(const sessionId of ids){closedSessions.add(sessionId);sessionEpochs.set(sessionId,(sessionEpochs.get(sessionId)??0)+1);pendingStarts.get(sessionId)?.abort();const c=live.get(sessionId);if(c){if(['Running','Waiting'].includes(c.attempt.status))c.attempt={...c.attempt,status:'Interrupted',ended_at:at,waiting_deadline:null,reason:'session_closed'};c.abort.abort();if(c.timer)clearTimeout(c.timer);c.timer=null;}}
+        const ids=new Set([id,...[...previews.values()].filter(p=>p.authorization.collaboration?.parent_session_id===id).map(p=>p.session)]),at=now();
+        for(const sessionId of ids){closedSessions.add(sessionId);sessionEpochs.set(sessionId,(sessionEpochs.get(sessionId)??0)+1);}
         for(const [key,preview]of previews)if(ids.has(preview.session)||preview.authorization.collaboration?.parent_session_id===id)previews.delete(key);
         for(const [key,preview]of childPreviews)if(ids.has(preview.parent_session_id))childPreviews.delete(key);
         for(const c of childCreates.values())if(ids.has(c.parent))c.abort.abort();
         for(const [c,owners]of localPublications)if(owners.some(owner=>ids.has(owner)))c.abort();
-        try{const saved=await store.closeFamily(id,at,explicitClose);for(const sessionId of saved){if(!ids.has(sessionId)){ids.add(sessionId);sessionEpochs.set(sessionId,(sessionEpochs.get(sessionId)??0)+1);}closedSessions.add(sessionId);pendingStarts.get(sessionId)?.abort();const c=live.get(sessionId);if(c){if(['Running','Waiting'].includes(c.attempt.status))c.attempt={...c.attempt,status:'Interrupted',ended_at:at,waiting_deadline:null,reason:'session_closed'};c.abort.abort();if(c.timer)clearTimeout(c.timer);c.timer=null;}
-            // Legacy sessions have no durable close state. Keep their fresh-prepare
-            // behavior while the incremented process epoch invalidates old grants.
-            if((await store.readLifecycle(sessionId)).open)closedSessions.delete(sessionId);
-        }for(const [key,preview]of previews)if(ids.has(preview.session)||preview.authorization.collaboration&&ids.has(preview.authorization.collaboration.parent_session_id))previews.delete(key);for(const [key,preview]of childPreviews)if(ids.has(preview.parent_session_id))childPreviews.delete(key);for(const c of childCreates.values())if(ids.has(c.parent))c.abort.abort();for(const [c,owners]of localPublications)if(owners.some(owner=>ids.has(owner)))c.abort();}
-        finally{for(const sessionId of ids){const c=live.get(sessionId);if(c){if(c.attempt.authorization.membership){if(c.waitingUsage){await membership!.update(c.attempt.authorization,{...c.waitingUsage,status:'settled',wait_ms:Math.min(c.waitingUsage.wait_ms,Math.max(0,clock().getTime()-(c.waitingBegan??clock().getTime())))});c.waitingUsage=undefined;}await membership!.finish(c.attempt.authorization,c.attempt);}releaseSettled(c);}}}
+        const saved=await store.closeFamily(id,at,true);for(const sessionId of saved){operations.get(sessionId)?.abort.abort();if(!ids.has(sessionId)){ids.add(sessionId);sessionEpochs.set(sessionId,(sessionEpochs.get(sessionId)??0)+1);}closedSessions.add(sessionId);
+        }for(const [key,preview]of previews)if(ids.has(preview.session)||preview.authorization.collaboration&&ids.has(preview.authorization.collaboration.parent_session_id))previews.delete(key);for(const [key,preview]of childPreviews)if(ids.has(preview.parent_session_id))childPreviews.delete(key);for(const c of childCreates.values())if(ids.has(c.parent))c.abort.abort();for(const [c,owners]of localPublications)if(owners.some(owner=>ids.has(owner)))c.abort();
     }
     async function reopenSession(id:string,epoch:number){guards();const state=await store.reopenSession(id,epoch);closedSessions.delete(id);sessionEpochs.set(id,(sessionEpochs.get(id)??0)+1);return state;}
-    async function close(){if(closeComplete)return;closed=true;previews.clear();childPreviews.clear();for(const pending of pendingStarts.values())pending.abort();for(const c of childCreates.values())c.abort.abort();for(const c of localPublications.keys())c.abort();for(const id of usedSessions)await closeSession(id);closeComplete=true;}
-    async function reopen() { await store.interruptAll(now()); }
-    return { waitForIdle,queueChild,returnedResults,occupant:()=>access.occupant?.()??null,lifecycle:store.readLifecycle,reopenSession,prepareParent,readParent,returnResult,reviewResult,prepareCollaboration,isChild:async(id:string)=>!!await store.readChild(id),hasWork:(id?:string)=>id?pendingStarts.has(id)||!!live.get(id)&&['Running','Waiting'].includes(live.get(id)!.attempt.status):pendingStarts.size>0||[...live.values()].some(c=>['Running','Waiting'].includes(c.attempt.status)),prepareChild,createChild,readCollaboration,source: store.readSource, read, link, list, prepare, start, send, stop, edit, revise, cancelRevision, reject, adopt, closeSession, close, reopen };
+    async function close(){
+        if(closeComplete)return;if(closing)return closing;
+        closed=true;previews.clear();childPreviews.clear();for(const c of childCreates.values())c.abort.abort();for(const c of localPublications.keys())c.abort();for(const operation of operations.values())operation.abort.abort();for(const link of links)link.abort.abort();
+        closing=(async()=>{
+            const creations=await Promise.allSettled([...links].map(link=>link.done));
+            // An explicit close may read an unresolved business receipt; it
+            // never reissues the creation or relabels its original failure.
+            for(const result of creations)if(result.status==='rejected'&&result.reason?.code==='RESULT_PENDING'&&result.reason?.readback){
+                const {commandId,owner,title}=result.reason.link;
+                try{const committed=await store.readLinkedSession(commandId,owner,title);if(committed)usedSessions.add(committed.id);}
+                catch{throw result.reason;}
+            }
+            for(const id of usedSessions)await closeSession(id);
+            await Promise.allSettled([...completions.keys()]);await input.agent?.waitForIdle();
+            completions.clear();links.clear();closeComplete=true;
+        })().finally(()=>{closing=undefined;});return closing;
+    }
+    return { start,stop,send,waitForIdle,queueChild,returnedResults,occupant:()=>access.occupant?.()??null,lifecycle:store.readLifecycle,reopenSession,prepareParent,readParent,returnResult,reviewResult,prepareCollaboration,isChild:async(id:string)=>!!await store.readChild(id),prepareChild,createChild,readCollaboration,source: store.readSource, read, link, list, prepare, edit, revise, cancelRevision, reject, adopt, closeSession, close };
 }

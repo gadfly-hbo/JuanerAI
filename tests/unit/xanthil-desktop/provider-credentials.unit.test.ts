@@ -1,7 +1,20 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import * as adapter from '../../../adapters/agent-pi/xiaomi-local.ts';
 import {createApprovedProviderCredentials} from '../../../adapters/agent-pi/provider-credentials.ts';
+
+test('SM02 official DeepSeek private key remains bound, authorized and absent from status',async()=>{
+ const env:Record<string,string|undefined>={DEEPSEEK_API_KEY:'synthetic-deepseek-only'};
+ const c=createApprovedProviderCredentials({environment:env,readText:async()=>{throw Object.assign(Error('missing'),{code:'ENOENT'});}});
+ await assert.rejects(c.withCredential('deepseek',()=>assert.fail()),{code:'CREDENTIAL_UNAVAILABLE'});
+ await assert.rejects(c.refresh(false),{code:'CREDENTIAL_READ_NOT_AUTHORIZED'});
+ await c.refresh(true);
+ assert.deepEqual(await c.withCredential('deepseek',x=>({provider:x.provider,model:x.model,endpoint:x.endpoint,keyMatched:x.key===env.DEEPSEEK_API_KEY})),{provider:'deepseek',model:'deepseek-flash',endpoint:'https://api.deepseek.com',keyMatched:true});
+ assert.equal(JSON.stringify(c.status()).includes('synthetic-deepseek-only'),false);
+ await assert.rejects(c.withCredential('volcengine-plan',()=>assert.fail()),{code:'CREDENTIAL_UNAVAILABLE'});
+ await c.refresh(false).catch(()=>undefined);await assert.rejects(c.withCredential('deepseek',()=>assert.fail()),{code:'CREDENTIAL_UNAVAILABLE'});
+ env.DEEPSEEK_API_KEY='invalid\nkey';await c.refresh(true);await assert.rejects(c.withCredential('deepseek',()=>assert.fail()),{code:'CREDENTIAL_UNAVAILABLE'});
+ delete env.DEEPSEEK_API_KEY;await c.refresh(true);await assert.rejects(c.withCredential('deepseek',()=>assert.fail()),{code:'CREDENTIAL_UNAVAILABLE'});
+});
 
 test('V12-RT02: existing private Keychain supplies MiMo; normal refresh does not scan retired zcode',async()=>{
  const reads:string[]=[];let keyReads=0;
@@ -34,7 +47,7 @@ test('V12-RT02: conflicting explicit environment cannot fall through to Keychain
 
 const main='https://api.minimax.cn/anthropic',backup='https://token-plan-cn.xiaomimimo.com/v1';
 function fixture(files:Record<string,string>,environment:Record<string,string>={}) {
- const factory=Reflect.get(adapter,'createApprovedProviderCredentials');
+ const factory=createApprovedProviderCredentials;
  assert.equal(typeof factory,'function','OA-RT02: authorized bounded backend discovery must exist');
  const reads:string[]=[];
  const credentials=factory({legacyZcode:true,homeDirectory:'/synthetic',environment,readText:async(path:string)=>{reads.push(path);if(!(path in files))throw Object.assign(new Error('missing'),{code:'ENOENT'});return files[path];}});
@@ -79,7 +92,7 @@ test('OA-RT02: refresh removes stale credentials; unknown provider cannot obtain
  await assert.rejects(credentials.withCredential('minimax-cn',()=>assert.fail()),{code:'CREDENTIAL_UNAVAILABLE'});
 });
 test('OA-RT02/04: revoking permission during discovery forbids late credential publication',async()=>{
- const factory=Reflect.get(adapter,'createApprovedProviderCredentials');assert.equal(typeof factory,'function');
+ const factory=createApprovedProviderCredentials;assert.equal(typeof factory,'function');
  let release!:(value:string)=>void;const waiting=new Promise<string>(resolve=>release=resolve);
  const credentials=factory({legacyZcode:true,homeDirectory:'/synthetic',environment:{},readText:()=>waiting});
  const discovering=credentials.refresh(true);

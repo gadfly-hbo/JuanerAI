@@ -10,7 +10,7 @@ export type BrowserSourceSummary={id:string;sources:readonly {source_id:string;d
 export type BrowserOperationReadback={operations:readonly unknown[];usage:readonly OperationExecution[];totals:{calls:string;local_runs:string;unresolved:number;input_tokens:{known:string;unknown:number};output_tokens:{known:string;unknown:number};active_ms:{known:string;unknown:number};wait_ms:{known:string;unknown:number}}};
 export interface BrowserMembershipReadback {
   readBrowserReportCopy(input:{task_id:string;report_id:string}):Promise<{suggested_file_name:string;bytes:Uint8Array;media_type:string;sha256:string;byte_length:string}>;
-  readBrowserTask(input: {task_id: string}): Promise<{task:TaskState;question:string;preparation?:{status:string;failure_code:string|null;current:boolean;execution_id:string}|null;case:DesktopProjection;source_summary:BrowserSourceSummary|null;clarifications:readonly {reply:string;sha256:string}[];model:{answerable:boolean;execution_id:string;stage:string;status:string;question:string|null;failure_code:string|null;current:boolean}|null;material_grant:{grant_id:string;source_set_id:string|null;policy_sha256:string;disclose_verified_result:boolean;active:boolean}|null;operations:BrowserOperationReadback}>;
+  readBrowserTask(input: {task_id: string}): Promise<{model_requests?:readonly {grant_id:string;execution:import('./open-analysis-runtime.ts').AnalysisRuntimeDiagnostics}[];task:TaskState;question:string;preparation?:{status:string;failure_code:string|null;current:boolean;execution_id:string}|null;case:DesktopProjection;source_summary:BrowserSourceSummary|null;clarifications:readonly {reply:string;sha256:string}[];model:{answerable:boolean;execution_id:string;stage:string;status:string;question:string|null;failure_code:string|null;current:boolean}|null;material_grant:{grant_id:string;source_set_id:string|null;policy_sha256:string;disclose_verified_result:boolean;active:boolean}|null;operations:BrowserOperationReadback}>;
   readBrowserReceipt(input: {task_id: string; command_id: string}): Promise<BrowserStopReceipt | null>;
   stopBrowserTask(input: {task_id: string; command_id: string}): Promise<BrowserStopReceipt>;
 }
@@ -24,6 +24,7 @@ export interface BrowserWorkspaceReadback extends BrowserMembershipReadback {
 export interface BrowserWorkspaceCommands {
  stopWork?(taskId:string):void;
  closeWork?():Promise<void>;
+ waitForIdle?():Promise<void>;
  modelPolicy():Promise<Awaited<ReturnType<ReturnType<typeof import('../application/provider-settings.ts').createMembershipPolicyAccess>['read']>>>;
  answer(taskId:string,input:unknown):Promise<BrowserCommandReceipt>;
  authorizeModel(taskId:string,input:unknown):Promise<BrowserCommandReceipt>;

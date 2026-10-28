@@ -1,58 +1,46 @@
+import type {AnalysisTool} from '../ports/open-analysis-runtime.ts';
 import {randomUUID} from 'node:crypto';
 import {bindQualifiedPreparation} from '../product-core/member-preparation.ts';
 import {membershipBytesHash,membershipHash,validateMembershipPlan} from '../product-core/member-analysis.ts';
 import {membershipRecord as closed,membershipUuid} from '../product-core/member-analysis.ts';
 import {taskHash,fail} from '../product-core/member-task.ts';
-import {membershipAnalysisProposal,membershipModelResultHash} from '../product-core/member-model.ts';
-import type {CaseAssistantRuntime} from '../ports/case-assistant.ts';
-import type {LocalModelAccess} from '../ports/provider-settings.ts';
+import {membershipAnalysisProposal,membershipModelOutput,membershipModelOutputSchema,membershipModelPrompt} from '../product-core/member-model.ts';
 import type {MemberModelStore} from '../ports/member-model.ts';
-/** Existing Runtime/shared model slot; exact immutable material is constructed by the durable Store. */
-export function createMembershipModelApplication(deps:{store:MemberModelStore;runtime:CaseAssistantRuntime;modelAccess:LocalModelAccess;policy:()=>Promise<import('../product-core/member-operation.ts').OperationPolicy>;preparation?:ReturnType<typeof import('./member-preparation.ts').createMemberPreparationApplication>;advance?:ReturnType<typeof createPreparedMembershipAnalysis>}){
- const unresolved=new Map<string,{release():void}>();
- async function once(input:unknown,signal:AbortSignal){
-  const x=closed(input,['task_id','grant_id','stage']);if(!membershipUuid(x.task_id)||!membershipUuid(x.grant_id)||!['clarify','generate_preparation','correct_preparation','explain'].includes(String(x.stage))||!(signal instanceof AbortSignal))fail();if(signal.aborted)fail('CANCELLED');if(!deps.runtime.membershipTurn||!deps.runtime.describeMembershipOutcome)fail('RUNTIME_UNAVAILABLE');
-  const configured=await deps.policy();
-  const lease=await deps.modelAccess.acquire(deps.modelAccess.snapshot().generation,{session_id:null,label:'会员多来源分析'});let retained=false;
-  try{const attempt=await deps.store.beginMemberModel({...x,policy_sha256:taskHash(configured)});if(attempt.result)return attempt.result;const context=attempt.context;retained=true;unresolved.set(context.execution_id,lease);let returned:unknown,result;
-   try{let runtime_authority:import('../ports/case-assistant.ts').RuntimeTaskAuthority|undefined;if(deps.runtime.taskAuthority==='shared_session'){if(!deps.store.readOperations)fail('RUNTIME_UNAVAILABLE');const prior=await deps.store.readOperations({task_id:context.task_id});runtime_authority={identity:{task_id:context.task_id,revision:String(context.epoch+1),run_id:context.execution_id,attempt_id:context.execution_id,operation_id:context.operation_id,grant_id:String(x.grant_id),scope_sha256:taskHash(attempt.payload),config_sha256:taskHash(attempt.policy)},previous_calls:prior.usage.filter(u=>u.execution_id!==context.execution_id).reduce((n,u)=>n+Number(u.calls),0),authorize:()=>!signal.aborted};}result=await deps.runtime.membershipTurn({version:'2.0',context,policy:attempt.policy,payload:attempt.payload,signal,...runtime_authority?{runtime_authority}:{}});returned=result;}catch(error){returned=error;}
-   let proof=deps.runtime.describeMembershipOutcome(returned);if(proof&&(taskHash(proof.context)!==taskHash(context)||result&&proof.result_sha256!==membershipModelResultHash(result)))proof=null;
-   if(proof&&proof.physical_status!=='unknown'){retained=false;unresolved.delete(context.execution_id);}
-   const raw=(returned as {code?:unknown})?.code,failure_code=result?null:typeof raw==='string'&&/^[A-Z0-9_]{1,80}$/.test(raw)?raw:'CONNECTION_FAILED';
-   const settled=await deps.store.finishMemberModel({task_id:context.task_id,execution_id:context.execution_id,proof,result:proof?result??null:null,failure_code:proof?failure_code:'MODEL_PROVENANCE_INVALID'});
-   if(settled.status==='unknown'){unresolved.set(context.execution_id,lease);retained=true;fail('PHYSICAL_PENDING');}
-   if(!settled.result)fail(settled.status==='stopped'?'CANCELLED':settled.failure_code??'MODEL_FAILED');return settled.result;
-  }finally{if(!retained)lease.release();}
- }
- async function run(input:unknown,signal:AbortSignal){if(deps.runtime.taskAuthority==='shared_session')return once(input,signal);try{return await once(input,signal);}catch(error){if(signal.aborted||!['NETWORK_UNAVAILABLE','CONNECTION_TIMEOUT'].includes(String((error as {code?:unknown}).code)))throw error;return once(input,signal);}}
- const application={async answer(input:unknown){const x=input as {policy_sha256?:unknown};if(x?.policy_sha256!==taskHash(await deps.policy()))fail('MODEL_POLICY_CHANGED');return deps.store.answerMemberQuestion(input);},async authorize(input:unknown){const x=closed(input,['version','command_id','task_id','source_set_id','expected_row_version','epoch','policy_sha256','disclose_question','disclose_structure','confirmed',...(Object.hasOwn(input as object,'disclose_verified_result')?['disclose_verified_result']:[])]);if(x.confirmed!==true)fail('AUTHORITY_REQUIRED');const policy=await deps.policy();if(x.policy_sha256!==taskHash(policy))fail('MODEL_POLICY_CHANGED');const {confirmed,policy_sha256,...selection}=x;void confirmed;void policy_sha256;return deps.store.authorizeMemberModel({...selection,policy,expires_at:new Date(Date.now()+3600000).toISOString()});},run,async prepare(input:unknown,signal:AbortSignal){const x=closed(input,['task_id','grant_id']);if(!membershipUuid(x.task_id)||!membershipUuid(x.grant_id))fail();if(!deps.preparation)fail('RUNTIME_UNAVAILABLE');let result=await run({...x,stage:'generate_preparation'},signal);let saved=await deps.store.readMemberModel({task_id:x.task_id,execution_id:result.context.execution_id});if(saved.status!=='succeeded'||!saved.result||membershipModelResultHash(saved.result)!==membershipModelResultHash(result))fail('MODEL_PROVENANCE_INVALID');let output=saved.result.output;if(output.kind==='question')return {status:'waiting' as const,result:saved.result};if(output.kind!=='preparation')fail('OUTBOUND_FORBIDDEN');let prepared;
-   const execute=()=>deps.preparation!.prepare({version:'1.0',task_id:x.task_id,source_set_id:saved.source_set_id,grant_id:x.grant_id,bindings:output.kind==='preparation'?output.bindings:[],code:output.kind==='preparation'?output.code:''},signal);
-   try{prepared=await execute();}catch(error){
-    if(signal.aborted||!['CONVERSION_UNQUALIFIED','PREPARATION_OUTPUT_INVALID'].includes(String((error as {code?:string}).code)))throw error;
-    result=await run({...x,stage:'correct_preparation'},signal);
-    saved=await deps.store.readMemberModel({task_id:x.task_id,execution_id:result.context.execution_id});
-    if(saved.status!=='succeeded'||!saved.result||membershipModelResultHash(saved.result)!==membershipModelResultHash(result))fail('MODEL_PROVENANCE_INVALID');
-    output=saved.result.output;if(output.kind==='question')return {status:'waiting' as const,result:saved.result};if(output.kind!=='preparation')fail('OUTBOUND_FORBIDDEN');
-    prepared=await execute();
-   }
-   if(!deps.advance)return {status:'prepared' as const,result:saved.result,preparation:prepared};const advanced=await deps.advance({task_id:x.task_id,grant_id:x.grant_id,execution_id:saved.context.execution_id,preparation_execution_id:prepared.context.execution_id},signal);if(advanced.status==='waiting')return {...advanced,result:saved.result,preparation:prepared};try{const explanation=await run({...x,stage:'explain'},signal);if(explanation.output.kind==='report')await deps.store.publishMemberExplanation({task_id:x.task_id,execution_id:explanation.context.execution_id});return {status:explanation.output.kind==='report'?'explained' as const:'waiting' as const,result:explanation,preparation:prepared,run_id:advanced.run_id};}catch(error){if((error as {code?:string}).code==='MATERIAL_AUTHORITY_REQUIRED')return {status:'waiting' as const,reason:'verified_result_authorization_required',result:saved.result,preparation:prepared,run_id:advanced.run_id};throw error;}},async continue(input:unknown,signal:AbortSignal){const x=closed(input,['task_id','grant_id']);if(!membershipUuid(x.task_id)||!membershipUuid(x.grant_id))fail();const current=await deps.store.readCurrentMemberAnalysis({task_id:x.task_id});if(!current)return application.prepare(input,signal);try{const result=await run({...x,stage:'explain'},signal);if(result.output.kind==='report')await deps.store.publishMemberExplanation({task_id:x.task_id,execution_id:result.context.execution_id});return {status:result.output.kind==='report'?'explained' as const:'waiting' as const,result,run_id:current.run_id};}catch(error){if((error as {code?:string}).code==='MATERIAL_AUTHORITY_REQUIRED')return {status:'waiting' as const,reason:'verified_result_authorization_required',run_id:current.run_id};throw error;}},unresolvedExecutions:()=>[...unresolved.keys()]};
- return application;
-}
+export function createMembershipModelApplication(deps:{store:MemberModelStore;policy:()=>Promise<import('../product-core/member-operation.ts').OperationPolicy>;modelAccess?:import('../ports/provider-settings.ts').LocalModelAccess;agent?:import('../ports/analysis-agent.ts').AnalysisAgent;prepare?:ReturnType<typeof import('./member-preparation.ts').createMemberPreparationApplication>;analyse?:ReturnType<typeof createPreparedMembershipAnalysis>}){
+ const active=new Map<string,{task_id:string;abort:AbortController;done:Promise<void>}>();
+ function launch(grant_id:string){
+  const agent=deps.agent;if(!agent)fail('CAPABILITY_UNAVAILABLE');const a=deps.store.memberModelAuthorization(grant_id);if(active.has(grant_id))return;
+  const abort=new AbortController(),signal=abort.signal,authorize=()=>!signal.aborted&&deps.store.memberModelAuthorized(grant_id);
+  const done=(async()=>{
+   const generation=deps.modelAccess?.snapshot();if(generation&&!generation.available)fail('MODEL_NOT_CONFIGURED');const lease=generation?await deps.modelAccess!.acquire(generation.generation,{session_id:a.work_id,label:'会员分析'}):undefined;
+   try{const result=await agent.advance({identity:a.identity,command_id:a.command_id,work_id:a.work_id,purpose:'membership',system:membershipModelPrompt,prompt:JSON.stringify(a.payload),signal,authorize,
+    capabilities:async()=>{const tools:AnalysisTool[]=[
+     {name:'propose_member_output',description:'提交有来源的MODEL问题、准备方案或获准已核验事实的解释，不产生正式决定。',effect:'write',parameters:membershipModelOutputSchema,async execute(args,toolSignal,invocation){
+      if(!authorize()||toolSignal.aborted||!invocation)fail('AUTHORITY_REQUIRED');let raw:unknown=args;
 
-/** In-memory lifetime owner only. Construction never enumerates or resumes persisted work. */
-export function createMembershipWorkflow(application:ReturnType<typeof createMembershipModelApplication>){
- const jobs=new Map<string,{grant_id:string;abort:AbortController;done:Promise<void>}>(),failures=new Map<string,string>();let closing=false;
- return {
-  start(input:unknown){const x=closed(input,['task_id','grant_id','source_set_id']);if(!membershipUuid(x.task_id)||!membershipUuid(x.grant_id)||x.source_set_id!==null&&!membershipUuid(x.source_set_id))fail();if(closing)fail('SERVICE_CLOSING');const task_id=x.task_id,grant_id=x.grant_id,prior=jobs.get(task_id);if(prior){if(prior.grant_id!==grant_id)fail('PHYSICAL_PENDING');return;}
-   const abort=new AbortController();failures.delete(task_id);
-   const done=Promise.resolve().then(async()=>{if(x.source_set_id===null)await application.run({task_id,grant_id,stage:'clarify'},abort.signal);else await application.continue({task_id,grant_id},abort.signal);}).catch(error=>{const code=(error as {code?:unknown})?.code;failures.set(task_id,typeof code==='string'&&/^[A-Z0-9_]{1,80}$/.test(code)?code:'WORKFLOW_FAILED');}).finally(()=>{jobs.delete(task_id);});
-   jobs.set(task_id,{grant_id,abort,done});
-  },
-  stop(task_id:string){jobs.get(task_id)?.abort.abort();},
-  close(){closing=true;for(const job of jobs.values())job.abort.abort();},
-  async collect(){await Promise.all([...jobs.values()].map(job=>job.done));return {failures:Object.fromEntries(failures),unresolved:application.unresolvedExecutions()};},
-  pending:()=>[...jobs.keys()],
- };
+      const payload=args.kind==='report'?await deps.store.readMemberVerifiedPayload(grant_id):deps.store.memberModelAuthorization(grant_id).payload,output=membershipModelOutput(raw,payload);
+      const proposal=await deps.store.recordMemberProposal({grant_id,execution_id:randomUUID(),invocation_id:invocation.id,payload,output});return {accepted:true,saved:true,material:'MODEL',independent_verification:'not_performed',calculation_performed:false,proposal_id:proposal.context.execution_id};
+     }},
+     {name:'prepare_member_sources',description:'显式选择已保存准备提议，在本地执行受控Python并独立核对全部规范化来源。',effect:'write',parameters:{type:'object',additionalProperties:false,properties:{proposal_id:{type:'string',format:'uuid'}},required:['proposal_id']},async execute(args,toolSignal){
+      if(!authorize()||!deps.prepare)fail('AUTHORITY_REQUIRED');const saved=await deps.store.readMemberModelForPreparation({task_id:a.work_id,execution_id:String(args.proposal_id),grant_id}),output=saved.result.output;if(output.kind!=='preparation'||!saved.source_set_id)fail('SOURCE_CHANGED');
+      const prepared=await deps.prepare.prepare({version:'1.0',task_id:a.work_id,source_set_id:saved.source_set_id,grant_id,bindings:output.bindings,code:output.code},toolSignal);if(!prepared)fail('CANCELLED');return {preparation_execution_id:prepared.context.execution_id,sha256:prepared.sha256,conversion:'qualified'};
+     }},
+     {name:'analyse_member_preparation',description:'选择准备提议和真实已资格化预处理结果，消费完整IR、本地计算并独立核验M1。',effect:'write',parameters:{type:'object',additionalProperties:false,properties:{proposal_id:{type:'string',format:'uuid'},preparation_execution_id:{type:'string',format:'uuid'}},required:['proposal_id','preparation_execution_id']},async execute(args,toolSignal){if(!authorize()||!deps.analyse)fail('AUTHORITY_REQUIRED');return deps.analyse({task_id:a.work_id,execution_id:String(args.proposal_id),grant_id,preparation_execution_id:String(args.preparation_execution_id)},toolSignal);}},
+     {name:'read_verified_result',description:'只读当前授权允许外发的独立核验总体事实；未授权或未核验时拒绝。',effect:'read',parameters:{type:'object',additionalProperties:false,properties:{}},async execute(){if(!authorize())fail('AUTHORITY_REQUIRED');return deps.store.readMemberVerifiedPayload(grant_id);}},
+    ];return tools.filter(tool=>tool.name==='propose_member_output'||tool.name==='read_verified_result'?tool.name==='propose_member_output'||a.disclose_verified_result:a.payload.structure.length>0);}});
+   if(!authorize())fail('CANCELLED');const proposals=await deps.store.completeMemberProposals(grant_id,result.completion);
+   for(const p of proposals)if(p.result.output.kind==='report')await deps.store.publishMemberExplanation({task_id:a.work_id,execution_id:p.context.execution_id});
+   }finally{lease?.release();}
+  })();done.catch(()=>undefined);active.set(grant_id,{task_id:a.work_id,abort,done});
+ }
+ const application={
+  stopWork(task_id:string){for(const work of active.values())if(work.task_id===task_id)work.abort.abort();},
+  async waitForIdle(){const results=await Promise.allSettled([...active.values()].map(w=>w.done));await deps.agent?.waitForIdle();const failed=results.find(r=>r.status==='rejected');if(failed?.status==='rejected')throw failed.reason;},
+  async settle(){await Promise.allSettled([...active.values()].map(w=>w.done));await deps.agent?.waitForIdle();},
+  async answer(input:unknown){const x=input as {policy_sha256?:unknown};if(x?.policy_sha256!==taskHash(await deps.policy()))fail('MODEL_POLICY_CHANGED');const saved=await deps.store.answerMemberQuestion(input);if(saved.created)launch(saved.grant_id);return saved;},
+  async authorize(input:unknown){const x=closed(input,['version','command_id','task_id','source_set_id','expected_row_version','epoch','policy_sha256','disclose_question','disclose_structure','confirmed',...(Object.hasOwn(input as object,'disclose_verified_result')?['disclose_verified_result']:[])]);if(x.confirmed!==true)fail('AUTHORITY_REQUIRED');const policy=await deps.policy();if(x.policy_sha256!==taskHash(policy))fail('MODEL_POLICY_CHANGED');if(!deps.agent)fail('CAPABILITY_UNAVAILABLE');const {confirmed,policy_sha256,...selection}=x;void confirmed;void policy_sha256;
+   const saved=await deps.store.authorizeMemberModel({...selection,policy,config_sha256:await deps.agent.configuration(),expires_at:new Date(Date.now()+3600000).toISOString()});if(saved.created)launch(saved.grant_id);return saved;}
+ };return application;
 }
 
 /** Canonical qualified columns and the bounded M1 method are system facts;

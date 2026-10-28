@@ -1,0 +1,10 @@
+/* Indeterminate activity: existing request/task state, never a percentage. */
+.agent-activity{display:flex;align-items:center;gap:8px;min-width:0;color:var(--ink-2,#36443f);font-size:13px;line-height:1.6}
+.agent-activity>span:last-child{overflow-wrap:anywhere;padding:0;background:transparent}
+.agent-spinner,.agent-activity .agent-spinner{display:inline-block;flex:0 0 14px;width:14px;height:14px;padding:0;background:transparent;box-sizing:border-box;border:2px solid var(--line,#dce2d9);border-top-color:var(--brand,#27664f);border-radius:50%;animation:juanerai-agent-spin .9s linear infinite}
+.sb-item .agent-spinner{margin-inline-start:6px;vertical-align:middle}
+.composer-wrap>.agent-activity{margin:4px 4px 10px;font-size:12px}
+.agent-state-dot{display:inline-block;flex:0 0 6px;width:6px;height:6px;border-radius:50%;background:currentColor}
+.agent-activity[data-agent-state="failed"],.agent-activity[data-agent-state="unknown"]{color:var(--fail,#9b332b)}
+@keyframes juanerai-agent-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.agent-spinner{animation:none}}

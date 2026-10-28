@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, realpath } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { isAbsolute, join } from 'node:path';
 
@@ -300,11 +300,13 @@ export const desktopAcceptanceCases = Object.freeze([
     'keeps reload and duplicate delivery from duplicating any receipt or business authority',
   ]),
   ...defineCases('REQ-XDESK-010', 'TEST-XDESK-013', 'contract/xanthil-desktop/xanthil-desktop-analysis.contract.test.ts', [
-    'keeps every existing local-analysis public seam signature and all TEST-XCLI behavior unchanged',
-    'uses closed Desktop 3.0 evidence while legacy store and Console reject it without scanning or migration',
-    'keeps old analytics factory behavior while Desktop owns double-CSV computation through private process reuse',
-    'adds only separate DecisionAssistanceRuntime with Pi-specific details confined to its Adapter',
-    'uses the production Profile factory without Main IPC Renderer environment double selection or second package',
+    // D006: forward replacement of the approved retired compatibility/second-
+    // Runtime purposes. This inventory is not an execution or acceptance claim.
+    'preserves required local professional capabilities through the current Application contract without legacy execution compatibility',
+    'binds new evidence to its source and rejects unknown or altered provenance without reading or migrating old Sessions',
+    'uses real DuckDB/Python calculation and independent verification without a second model execution engine',
+    'uses one public Pi professional executor with Pi-specific structures confined to its Adapter',
+    'uses the normal production Profile and fixed SDK without environment-driven runtime selection or a second package',
     'keeps all optional assistance failures and refusal manually completable without Runtime fallback',
   ]),
   ...defineCases('REQ-XDESK-011', 'TEST-XDESK-003', 'contract/xanthil-desktop/xanthil-desktop-store.contract.test.ts', [
@@ -578,9 +580,9 @@ export async function readSyntheticCsvPair() {
 
 export async function createTemporaryDesktopProject() {
   // Native acceptance retains synthetic projects with its screenshots and raw logs.
-  const evidence = process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY;
+  const evidence = process.env.JUANERAI_GUI_EVIDENCE_DIRECTORY??process.env.JUANERAI_NEWARCH_SHORT_ROOT;
   if (evidence) assert.ok(isAbsolute(evidence), 'native evidence directory is absolute');
-  const projectRoot = await mkdtemp(join(evidence ?? tmpdir(), 'xanthil-desktop-test-'));
+  const projectRoot = await realpath(await mkdtemp(join(evidence ?? tmpdir(), 'dt-')));
   return Object.freeze({
     projectRoot,
     async dispose() {

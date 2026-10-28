@@ -43,7 +43,7 @@ test('BF-CAP01/04 E02-b: independently qualified three-source candidate feeds th
  assert.deepEqual(primary.result,independent.result);assert.equal(primary.result.m2.status,'not_selected');
  assert.equal(primary.result.periods.comparison.repeat_revenue_fen,'2000');assert.equal(primary.result.periods.current.repeat_revenue_fen,'3000');
  assert.deepEqual(primary.result.periods.current.repurchase_rate,{numerator:'1',denominator:'2'});
- const root=browserEvidenceRoot;writeFileSync(join(root,'qualified-m1.json'),JSON.stringify({qualified,plan,primary,independent},null,2)+'\n',{flag:'wx'});
+ const root=mkdtempSync(join(browserEvidenceRoot,'qualified-m1-'));console.log('qualified_m1_evidence='+root);writeFileSync(join(root,'qualified-m1.json'),JSON.stringify({qualified,plan,primary,independent},null,2)+'\n',{flag:'wx'});
 });
 
 test('BF-CAP04 E02-b: row loss, wrong conversion or an unconsumed sheet rejects before metric agreement matters',async t=>{

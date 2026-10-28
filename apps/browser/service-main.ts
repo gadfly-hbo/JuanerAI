@@ -3,65 +3,18 @@ export {};
 
 
 /** Node composition only. Passive startup never reads credentials or dispatches models. */
-type IndependentBrowserAnalysisOptions=Readonly<{newTaskPolicy?:'unified-v1';harnessFirstLoop?:import('../../packages/ports/open-analysis-runtime.ts').AnalysisHarnessFirstLoop;metricAssetDisclosureAllowed?:boolean;judgmentReviewAllowed?:boolean;m3ReviewTasks?:readonly string[];mimoThinkingReviewTasks?:readonly string[];mimoProThinkingReviewTasks?:readonly string[];mimoProNoThinkingReviewTasks?:readonly string[];mimoNoThinkingReviewTasks?:readonly string[];review60Tasks?:readonly string[];mimoProNoThinkingReport60Tasks?:readonly string[];report120Tasks?:readonly string[]}>;
-
-function validateIndependentBrowserAnalysisOptions(options:IndependentBrowserAnalysisOptions){
- if(options.newTaskPolicy!==undefined&&(options.newTaskPolicy!=='unified-v1'||options.harnessFirstLoop?.version!=='v0.2'||options.harnessFirstLoop?.work_recovery!=='v1'||options.judgmentReviewAllowed!==true))throw Error('NEW_TASK_POLICY_INVALID');
- if(options.harnessFirstLoop!==undefined){
-  try{const h=closed(options.harnessFirstLoop,['version','request_admission',...(Object.hasOwn(options.harnessFirstLoop,'work_recovery')?['work_recovery']:[])]),raw=h.request_admission,hasImage=raw!==null&&typeof raw==='object'&&Object.hasOwn(raw,'image_tokens'),p=closed(raw,['policy_version','protocol_overhead_tokens','safety_margin_tokens',...(hasImage?['image_tokens']:[])]);
-   if(h.work_recovery!==undefined&&h.work_recovery!=='v1'||h.version!=='v0.2'||typeof p.policy_version!=='string'||!p.policy_version||p.policy_version.length>256||['protocol_overhead_tokens','safety_margin_tokens',...(p.image_tokens===undefined?[]:['image_tokens'])].some(k=>!Number.isSafeInteger(p[k])||Number(p[k])<0))throw Error('invalid');
-  }catch{throw new Error('FIRST_LOOP_AUTHORITY_INVALID');}
- }
-
- if(options.judgmentReviewAllowed!==undefined&&typeof options.judgmentReviewAllowed!=='boolean')throw new Error('REVIEW_DISCLOSURE_AUTHORITY_INVALID');
- if(options.metricAssetDisclosureAllowed!==undefined&&typeof options.metricAssetDisclosureAllowed!=='boolean')throw new Error('ASSET_DISCLOSURE_AUTHORITY_INVALID');
- if(options.m3ReviewTasks!==undefined&&(!Array.isArray(options.m3ReviewTasks)||options.judgmentReviewAllowed!==true||options.m3ReviewTasks.some(id=>!membershipUuid(id))||new Set(options.m3ReviewTasks).size!==options.m3ReviewTasks.length))throw new Error('REVIEW_MODEL_AUTHORITY_INVALID');
- if(options.mimoThinkingReviewTasks!==undefined&&(!Array.isArray(options.mimoThinkingReviewTasks)||options.judgmentReviewAllowed!==true||options.mimoThinkingReviewTasks.some(id=>!membershipUuid(id)||options.m3ReviewTasks?.includes(id))||new Set(options.mimoThinkingReviewTasks).size!==options.mimoThinkingReviewTasks.length))throw new Error('REVIEW_MODEL_AUTHORITY_INVALID');
- if(options.mimoProThinkingReviewTasks!==undefined&&(!Array.isArray(options.mimoProThinkingReviewTasks)||options.judgmentReviewAllowed!==true||options.mimoProThinkingReviewTasks.some(id=>!membershipUuid(id)||options.m3ReviewTasks?.includes(id)||options.mimoThinkingReviewTasks?.includes(id))||new Set(options.mimoProThinkingReviewTasks).size!==options.mimoProThinkingReviewTasks.length))throw new Error('REVIEW_MODEL_AUTHORITY_INVALID');
- if(options.mimoProNoThinkingReviewTasks!==undefined&&(!Array.isArray(options.mimoProNoThinkingReviewTasks)||options.judgmentReviewAllowed!==true||options.mimoProNoThinkingReviewTasks.some(id=>!membershipUuid(id)||options.m3ReviewTasks?.includes(id)||options.mimoThinkingReviewTasks?.includes(id)||options.mimoProThinkingReviewTasks?.includes(id))||new Set(options.mimoProNoThinkingReviewTasks).size!==options.mimoProNoThinkingReviewTasks.length))throw new Error('REVIEW_MODEL_AUTHORITY_INVALID');
- if(options.mimoNoThinkingReviewTasks!==undefined&&(!Array.isArray(options.mimoNoThinkingReviewTasks)||options.judgmentReviewAllowed!==true||options.mimoNoThinkingReviewTasks.some(id=>!membershipUuid(id)||options.m3ReviewTasks?.includes(id)||options.mimoThinkingReviewTasks?.includes(id)||options.mimoProThinkingReviewTasks?.includes(id)||options.mimoProNoThinkingReviewTasks?.includes(id))||new Set(options.mimoNoThinkingReviewTasks).size!==options.mimoNoThinkingReviewTasks.length))throw new Error('REVIEW_MODEL_AUTHORITY_INVALID');
- if(options.review60Tasks!==undefined&&(!Array.isArray(options.review60Tasks)||options.judgmentReviewAllowed!==true||options.review60Tasks.some(id=>!membershipUuid(id)||!options.mimoProThinkingReviewTasks?.includes(id)&&!options.mimoProNoThinkingReviewTasks?.includes(id)&&!options.mimoNoThinkingReviewTasks?.includes(id))||new Set(options.review60Tasks).size!==options.review60Tasks.length))throw new Error('REVIEW_TIMEOUT_AUTHORITY_INVALID');
- if(options.mimoProNoThinkingReport60Tasks!==undefined&&(!Array.isArray(options.mimoProNoThinkingReport60Tasks)||options.judgmentReviewAllowed!==true||options.mimoProNoThinkingReport60Tasks.some(id=>!membershipUuid(id)||!options.review60Tasks?.includes(id)||!options.mimoNoThinkingReviewTasks?.includes(id))||new Set(options.mimoProNoThinkingReport60Tasks).size!==options.mimoProNoThinkingReport60Tasks.length))throw new Error('REPORT_MODEL_AUTHORITY_INVALID');
- if(options.report120Tasks!==undefined&&(!Array.isArray(options.report120Tasks)||options.report120Tasks.some(id=>!membershipUuid(id)||!options.mimoProNoThinkingReport60Tasks?.includes(id))||new Set(options.report120Tasks).size!==options.report120Tasks.length))throw new Error('REPORT_TIMEOUT_AUTHORITY_INVALID');
-}
-
-/** Same Browser production composition, isolated from service startup and credential IO.
- * Transport injection is backend-only and lets offline checks consume the actual SDK. */
-export function createIndependentBrowserOpenModel(config:Readonly<{options:IndependentBrowserAnalysisOptions;credentials:ReturnType<typeof createApprovedProviderCredentials>;documentReader:Awaited<ReturnType<typeof readIndependentWebDocumentReaders>>;modelTransport?:import('pi-agent-runtime').ModelTransport}>){
- const {options,credentials}=config;validateIndependentBrowserAnalysisOptions(options);const unified=options.newTaskPolicy==='unified-v1',assetDisclosure=options.metricAssetDisclosureAllowed===true;const harness=options.harnessFirstLoop?structuredClone(options.harnessFirstLoop):undefined,firstLoop=harness?.version;
- const report120Tasks=new Set(options.report120Tasks??[]);
- const reportPro60Tasks=new Set(options.mimoProNoThinkingReport60Tasks??[]);
- const review60Tasks=new Set(options.review60Tasks??[]);
- const m3ReviewTasks=new Set(options.m3ReviewTasks??[]),mimoThinkingReviewTasks=new Set(options.mimoThinkingReviewTasks??[]),mimoProThinkingReviewTasks=new Set(options.mimoProThinkingReviewTasks??[]),mimoProNoThinkingReviewTasks=new Set(options.mimoProNoThinkingReviewTasks??[]);
- return {...(harness?.work_recovery?{longArtifacts:{enabled:(_task:string)=>true,reportMs:(task:string)=>report120Tasks.has(task)?120000 as const:60000 as const}}:{}),judgmentReview:options.judgmentReviewAllowed===true,requireSemanticAssessment:true,metricAssetDisclosureAllowed:assetDisclosure,documentReader:config.documentReader,createRuntime:(ledger:import('../../packages/ports/analysis-request-ledger.ts').AnalysisRequestLedger,context:Readonly<{projectRoot:string;reviewPolicyForTask:(task_id:string)=>boolean}>)=>createPiSessionOpenAnalysisRuntime({...(unified?{runPolicy:'unified-v1' as const}:{}),projectRoot:context.projectRoot,ledger,credentials,...(harness?.work_recovery?{sharedWorkRecovery:'v1' as const,longArtifactsForTask:(_task:string)=>true}:{}),...(firstLoop?{firstLoop}:{}),...(harness?{r1r4:{contextAdmission:{policyVersion:harness.request_admission.policy_version,protocolOverheadTokens:harness.request_admission.protocol_overhead_tokens,safetyMarginTokens:harness.request_admission.safety_margin_tokens,...(harness.request_admission.image_tokens===undefined?{}:{imageTokens:harness.request_admission.image_tokens})}}}:{}),...(config.modelTransport?{modelTransport:config.modelTransport}:{}),reviewPolicy:context.reviewPolicyForTask,reportPro60ForTask:id=>unified&&context.reviewPolicyForTask(id)||reportPro60Tasks.has(id),reportTimeoutForTask:id=>!unified&&report120Tasks.has(id)?120000:undefined,judgmentReviewModelForTask:id=>unified&&context.reviewPolicyForTask(id)?undefined:mimoProThinkingReviewTasks.has(id)||mimoProNoThinkingReviewTasks.has(id)?'mimo-v2.6-pro':m3ReviewTasks.has(id)?'MiniMax-M3':undefined,judgmentReviewThinkingForTask:id=>!(unified&&context.reviewPolicyForTask(id))&&(mimoThinkingReviewTasks.has(id)||mimoProThinkingReviewTasks.has(id)),judgmentReviewTimeoutForTask:id=>unified&&context.reviewPolicyForTask(id)||review60Tasks.has(id)?60000:30000,nativeObjectArguments:true,reportThinking:'off'}),authorizeConfiguration:async()=>{const status=await credentials.refresh(true);if(status.primary.state!=='configured'&&!(status.primary.state==='missing'&&status.backup.state==='configured'))throw Object.assign(new Error('CREDENTIAL_UNAVAILABLE'),{code:'CREDENTIAL_UNAVAILABLE'});return {config_sha256:taskHash({version:'1.0',...(unified?{new_task_policy:{version:'unified-v1',metric_asset_disclosure_allowed:assetDisclosure,limits:approvedFirstLoopAnalysisLimits,work_lifetime:'authorization',purposes:{analysis:'MiniMax-M3',proposal_prepare:'MiniMax-M3',report_edit:'mimo-v2.6-pro:off',conclusion_strategy_review:'mimo-v2.6-flash:off'}}}:{}),...(harness?{harness_first_loop:harness}:{}),primary:{...status.primary,model:'MiniMax-M3',endpoint:'https://api.minimaxi.com/anthropic'},backup:{...status.backup,model:'mimo-v2.6-flash'}})};}};
-}
-import {approvedFirstLoopAnalysisLimits} from '../../adapters/agent-pi/persistent-runtime-state.ts';
+type IndependentBrowserAnalysisOptions=Readonly<{analysisModel?:'MiniMax-M3'|'mimo-v2.6-flash'|'deepseek-flash';metricAssetDisclosureAllowed?:boolean;judgmentReviewAllowed?:boolean;toolCorrectionLimit?:number;modelRecoveryLimit?:number;}>;
 
 /** Engineering estimate buffers, not Provider usage or a window increase.
  * Source and limitations: this Change's request-admission.md. */
 export const independentBrowserRequestAdmission=Object.freeze({policy_version:'juanerai-browser-unified-v1',protocol_overhead_tokens:4096,safety_margin_tokens:8192});
-/** Closed non-secret deployment choice. No credential or service IO here. */
-export function readIndependentBrowserLaunchOptions(path:string|undefined,root:string):IndependentBrowserAnalysisOptions{
- try{
-  if(!path||!isAbsolute(path)||realpathSync(path)!==path||!isAbsolute(root)||resolve(root)!==root)throw Error('invalid');
-  const file=lstatSync(path);if(!file.isFile()||file.isSymbolicLink()||file.size>65536)throw Error('invalid');
-  const x=closed(JSON.parse(readFileSync(path,'utf8')),['version','profile_root','analysis']);
-  if(x.version!=='1.0'||x.profile_root!==root)throw Error('invalid');
-  const a=closed(x.analysis,['newTaskPolicy',...(x.analysis&&typeof x.analysis==='object'&&Object.hasOwn(x.analysis,'metricAssetDisclosureAllowed')?['metricAssetDisclosureAllowed']:[])]);
-  if(a.newTaskPolicy!=='unified-v1'||a.metricAssetDisclosureAllowed!==undefined&&typeof a.metricAssetDisclosureAllowed!=='boolean')throw Error('invalid');
-  const options:IndependentBrowserAnalysisOptions={newTaskPolicy:'unified-v1',judgmentReviewAllowed:true,harnessFirstLoop:{version:'v0.2',work_recovery:'v1',request_admission:independentBrowserRequestAdmission},...(a.metricAssetDisclosureAllowed===undefined?{}:{metricAssetDisclosureAllowed:a.metricAssetDisclosureAllowed as boolean})};
-  validateIndependentBrowserAnalysisOptions(options);return options;
- }catch{throw Object.assign(Error('WEB_ANALYSIS_CONFIGURATION_INVALID'),{code:'WEB_ANALYSIS_CONFIGURATION_INVALID'});}
-}
 
 import {createPersonalResearchRuntime} from '../../profiles/personal/deep-research.ts';
 import type {createPersonalDecisionRuntime} from '../../profiles/personal/decision-platform.ts';
 import {readPersonalReportStudioDeployment,createPersonalReportStudioOwner} from '../../profiles/personal/report-studio.ts';
-import {createPiSessionCaseRuntime} from '../../adapters/agent-pi/native-open-analysis.ts';
-import {createLocalAnalysisRequestLedger} from '../../adapters/storage-local/analysis-request-ledger.ts';
 import {taskHash} from '../../packages/product-core/member-task.ts';
+import {createPiCredentialProbe} from '../../adapters/agent-pi/credential-probe.ts';
 import {createApprovedProviderCredentials} from '../../adapters/agent-pi/provider-credentials.ts';
-import {createPiSessionOpenAnalysisRuntime} from '../../adapters/agent-pi/open-analysis.ts';
 import {mkdirSync,readFileSync,lstatSync,realpathSync,accessSync,constants} from 'node:fs';
 import {isAbsolute,resolve} from 'node:path';
 import {createHash} from 'node:crypto';
@@ -75,12 +28,26 @@ import {readPersonalDesktopToolchain} from '../../profiles/personal/xanthil-desk
 import {createProviderSettings} from '../../packages/application/provider-settings.ts';
 import {createPersonalMetricModel,readPersonalMetricTrialGrant} from '../../profiles/personal/metric-factory-model.ts';
 import {createMacOsCredentialStore} from '../../adapters/credentials-macos/index.ts';
-import {createPiConnectionProbe} from '../../adapters/agent-pi/native-connection-probe.ts';
 import {createLocalMembershipPolicyStore} from '../../adapters/storage-local/member-model-policy.ts';
 import {prepareDevelopmentRoot} from '../desktop/development.ts';
 
 export async function readIndependentWebToolchain(descriptor:string){
  try{return await readPersonalDesktopToolchain(descriptor);}catch{throw Object.assign(new Error('本地计算环境尚未准备或与所需版本不匹配，请核对本机运行条件后重试。'),{code:'WEB_TOOLCHAIN_UNAVAILABLE'});}
+}
+
+/** Closed current deployment choices. No credentials, Task routes or execution policy overrides. */
+export function readIndependentBrowserDeployment(path:string|undefined,root:string):IndependentBrowserAnalysisOptions{
+ try{
+  if(!path||!isAbsolute(path)||realpathSync(path)!==path||!isAbsolute(root)||resolve(root)!==root)throw Error('invalid');
+  const stat=lstatSync(path);if(!stat.isFile()||stat.isSymbolicLink()||stat.size>65536)throw Error('invalid');
+  const x=closed(JSON.parse(readFileSync(path,'utf8')),['version','profile_root','analysis']);
+  if(x.version!=='2.0'||x.profile_root!==root)throw Error('invalid');
+  const a=closed(x.analysis,['analysisModel','judgmentReviewAllowed',...['toolCorrectionLimit','modelRecoveryLimit'].filter(k=>x.analysis&&typeof x.analysis==='object'&&Object.hasOwn(x.analysis,k)),...(x.analysis&&typeof x.analysis==='object'&&Object.hasOwn(x.analysis,'metricAssetDisclosureAllowed')?['metricAssetDisclosureAllowed']:[])]);
+  if(!['MiniMax-M3','mimo-v2.6-flash','deepseek-flash'].includes(String(a.analysisModel))||typeof a.judgmentReviewAllowed!=='boolean'||a.metricAssetDisclosureAllowed!==undefined&&typeof a.metricAssetDisclosureAllowed!=='boolean')throw Error('invalid');
+  const toolCorrectionLimit=a.toolCorrectionLimit===undefined?5:a.toolCorrectionLimit,modelRecoveryLimit=a.modelRecoveryLimit===undefined?3:a.modelRecoveryLimit;
+  if(typeof toolCorrectionLimit!=='number'||!Number.isSafeInteger(toolCorrectionLimit)||toolCorrectionLimit<0||toolCorrectionLimit>5||typeof modelRecoveryLimit!=='number'||!Number.isSafeInteger(modelRecoveryLimit)||modelRecoveryLimit<0||modelRecoveryLimit>3)throw Error('invalid');
+  return {toolCorrectionLimit,modelRecoveryLimit,analysisModel:a.analysisModel as NonNullable<IndependentBrowserAnalysisOptions['analysisModel']>,judgmentReviewAllowed:a.judgmentReviewAllowed,...(a.metricAssetDisclosureAllowed===undefined?{}:{metricAssetDisclosureAllowed:a.metricAssetDisclosureAllowed as boolean})};
+ }catch{throw Object.assign(Error('WEB_ANALYSIS_CONFIGURATION_INVALID'),{code:'WEB_ANALYSIS_CONFIGURATION_INVALID'});}
 }
 
 /** Trusted deployment input only; passive identity read never invokes a reader. */
@@ -122,10 +89,10 @@ export async function runReportStudioExit(parts:{lifecycle():Promise<import('../
 }
 
 /** Node composition only. Passive startup never reads credentials or dispatches models. */
-export async function startIndependentBrowserService(root:string,options:Readonly<{metricFactoryModel?:MetricModelAccess;researchBundle?:{programRoot:string;manifestSha256:string;fixtureModule?:string;credentialEnvironment?:Readonly<Record<string,string>>;authorize?:Parameters<typeof createPersonalResearchRuntime>[0]['authorize']};harnessFirstLoop?:import('../../packages/ports/open-analysis-runtime.ts').AnalysisHarnessFirstLoop;decisionPlatform?:ReturnType<typeof createPersonalDecisionRuntime>;metricAssetDisclosureAllowed?:boolean;deployment?:Readonly<{resourcesRoot:string;credentialHelper:string}>}> & IndependentBrowserAnalysisOptions={}){
- validateIndependentBrowserAnalysisOptions(options);
- if(options.harnessFirstLoop!==undefined&&options.harnessFirstLoop.version!=='v0.2')throw new Error('INVALID_REQUEST');
- const harness=options.harnessFirstLoop?structuredClone(options.harnessFirstLoop):undefined;
+export async function startIndependentBrowserService(root:string,options:Readonly<{providerAccess?:Readonly<{credentials:Pick<ReturnType<typeof createApprovedProviderCredentials>,'withCredential'>;authorizeModelUse:()=>Promise<void>;fetch:typeof globalThis.fetch}>;metricFactoryModel?:MetricModelAccess;researchBundle?:{programRoot:string;manifestSha256:string;fixtureModule?:string;credentialEnvironment?:Readonly<Record<string,string>>;authorize?:Parameters<typeof createPersonalResearchRuntime>[0]['authorize']};decisionPlatform?:ReturnType<typeof createPersonalDecisionRuntime>;metricAssetDisclosureAllowed?:boolean;deployment?:Readonly<{resourcesRoot:string;credentialHelper:string}>}> & IndependentBrowserAnalysisOptions={}){
+ const analysisModel=options.analysisModel??'MiniMax-M3';
+ for(const [value,max]of [[options.toolCorrectionLimit,5],[options.modelRecoveryLimit,3]])if(value!==undefined&&(!Number.isSafeInteger(value)||value<0||value>max!))throw Error('WEB_ANALYSIS_CONFIGURATION_INVALID');
+ if(!['MiniMax-M3','mimo-v2.6-flash','deepseek-flash'].includes(analysisModel))throw Error('WEB_ANALYSIS_MODEL_INVALID');
  if(options.metricAssetDisclosureAllowed!==undefined&&typeof options.metricAssetDisclosureAllowed!=='boolean')throw new Error('ASSET_DISCLOSURE_AUTHORITY_INVALID');
  const deployment=options.deployment;
  if(deployment&&(!isAbsolute(deployment.resourcesRoot)||realpathSync(deployment.resourcesRoot)!==deployment.resourcesRoot||!isAbsolute(deployment.credentialHelper)))throw Error('WEB_DEPLOYMENT_INVALID');
@@ -138,7 +105,7 @@ export async function startIndependentBrowserService(root:string,options:Readonl
  let researchPython:string|undefined;
  const research=createPersonalResearchRuntime({...researchBundle,pythonExecutable:()=>researchPython,hostOrigin:()=>{if(!server)throw Error('DR_HOST_NOT_READY');return server.origin;}});
  const credentialStore=createMacOsCredentialStore(deployment?.credentialHelper??join(resources,'development-keychain/xanthil-keychain'));
- const settings=createProviderSettings({store:credentialStore,probe:createPiConnectionProbe({root:join(paths.userData,'connection-tests')})});
+ const settings=createProviderSettings({store:credentialStore,probe:createPiCredentialProbe({projectRoot:directory,...(options.providerAccess?{fetch:options.providerAccess.fetch}:{})})});
  const metricFactory=readPersonalMetricDeployment(resources,paths.userData,options.metricFactoryModel??createPersonalMetricModel({settings,directory:join(paths.userData,'metric-factory/workspace-owner'),authorized:()=>readPersonalMetricTrialGrant(join(paths.userData,'metric-factory/model-grant.json'))}));
  const reportStudio=await readPersonalReportStudioDeployment({resourcesRoot:resources,userData:paths.userData});
  const closeResources=createReportStudioAwareShutdown({...(reportStudio.state==='configured'?{studio:async()=>{await options.decisionPlatform?.close();await reportStudio.runtime.close();}}:options.decisionPlatform?{studio:()=>options.decisionPlatform!.close()}:{}),server:async()=>{await research?.close();await server?.close();},workspace:async()=>{await manager?.close();},release:()=>{settings.close();identity.close();}});
@@ -148,9 +115,9 @@ export async function startIndependentBrowserService(root:string,options:Readonl
   researchPython=toolchain.pythonExecutable;
   const policy=createLocalMembershipPolicyStore(paths.userData);await policy.initializeApproved();
   const credentials=createApprovedProviderCredentials({backupStore:credentialStore});
-  const openModel=createIndependentBrowserOpenModel({options,credentials,documentReader:await readIndependentWebDocumentReaders(join(resources,'xanthil-document-readers.json'),toolchain.pythonExecutable,deployment?{}:process.env)});
-  manager=await createPersonalBrowserServiceWorkspace({...(options.decisionPlatform?{decisionPlatform:options.decisionPlatform}:{}),...(reportStudio.state==='configured'?{reportStudio:reportStudio.runtime}:{}),originDirectory:paths.userData,projectsRoot:paths.projects,toolchain,openModel,model:{createRuntime:({projectRoot})=>createPiSessionCaseRuntime({projectRoot,ledger:createLocalAnalysisRequestLedger({projectRoot}),credential:()=>settings.taskCredential()}),access:settings.access,policy}});
-  server=await startBrowserMembershipServer({metricFactory,...(research?{deepResearch:{task:(projectId:string,taskId:string,checkControl:()=>void)=>research.task({...manager!.researchContext(projectId,taskId),checkControl})}}:{}),...(options.decisionPlatform?{decisionPlatform:{project:manager.decisionProject}}:{}),reportStudio:reportStudio.state==='configured'?{runtime:reportStudio.runtime,project:manager.reportStudioProject}:{unavailable:reportStudio.state},store:manager.store,workspace:manager.workspace,open:manager.open,formalMember:manager.formalMember,service:{credential:identity.credential,check:identity.check,stop:close,projects:manager.projects,receipt:manager.receipt,select:async(...args:Parameters<NonNullable<typeof manager>['select']>)=>{await research?.assertIdle();return manager!.select(...args);},settings:settings.request}});
+  const openModel={analysisModel,...(options.toolCorrectionLimit===undefined?{}:{toolCorrectionLimit:options.toolCorrectionLimit}),...(options.modelRecoveryLimit===undefined?{}:{modelRecoveryLimit:options.modelRecoveryLimit}),credentials:options.providerAccess?.credentials??credentials,...(options.providerAccess?{fetch:options.providerAccess.fetch}:{}),authorizeModelUse:options.providerAccess?.authorizeModelUse??(async()=>{await credentials.refresh(true);}),metricAssetDisclosureAllowed:options.metricAssetDisclosureAllowed===true,judgmentReview:options.judgmentReviewAllowed===true,documentReader:await readIndependentWebDocumentReaders(join(resources,'document-readers-deployment.json'),toolchain.pythonExecutable)};
+  manager=await createPersonalBrowserServiceWorkspace({...(options.decisionPlatform?{decisionPlatform:options.decisionPlatform}:{}),...(reportStudio.state==='configured'?{reportStudio:reportStudio.runtime}:{}),originDirectory:paths.userData,projectsRoot:paths.projects,toolchain,openModel,model:{access:settings.access,policy}});
+  server=await startBrowserMembershipServer({metricFactory,...(research?{deepResearch:{task:(projectId:string,taskId:string,checkControl:()=>void)=>research.task({...manager!.researchContext(projectId,taskId),checkControl})}}:{}),...(options.decisionPlatform?{decisionPlatform:{project:manager.decisionProject}}:{}),reportStudio:reportStudio.state==='configured'?{runtime:reportStudio.runtime,project:manager.reportStudioProject}:{unavailable:reportStudio.state},store:manager.store,workspace:manager.workspace,open:manager.open,service:{credential:identity.credential,check:identity.check,stop:close,projects:manager.projects,receipt:manager.receipt,select:async(...args:Parameters<NonNullable<typeof manager>['select']>)=>{await research?.assertIdle();return manager!.select(...args);},settings:settings.request}});
   if(reportStudio.state==='configured')reportStudio.runtime.connectOwner(createPersonalReportStudioOwner({origin:()=>{if(!server)throw Object.assign(Error('RS_OWNER_UNAVAILABLE'),{code:'RS_OWNER_UNAVAILABLE'});return server.origin;},project:manager.reportStudioOriginal}));
   identity.publish(server.origin);return {origin:server.origin,close,lifecycle:async()=>reportStudio.state==='configured'?reportStudio.runtime.lifecycle():{intent:'none' as const,pending:false,request_count:0,configuration_unknown:false,operations:[]},exitIntent:async(intent:'wait'|'stop'|'cancel')=>reportStudio.state==='configured'?reportStudio.runtime.exitIntent(intent):undefined,async open(){const response=await fetch(server!.origin+'/v1/service/open',{method:'POST',headers:{'x-xanthil-service':identity.credential,'content-type':'application/json'},body:'{}',signal:AbortSignal.timeout(5000),redirect:'error'});if(!response.ok)throw Error('WEB_OPEN_UNAVAILABLE');const value=closed(await response.json(),['token']);if(typeof value.token!=='string'||! /^[a-f0-9]{64}$/.test(value.token))throw Error('WEB_OPEN_UNAVAILABLE');return server!.origin+'/#'+value.token;}};
  }catch(error){await close();throw error;}
